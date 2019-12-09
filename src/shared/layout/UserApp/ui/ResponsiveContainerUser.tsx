@@ -5,7 +5,7 @@ import {
   Responsive,
 } from 'semantic-ui-react';
 
-import UserHeader from './UserHeader';
+import Header from '../Header';
 import UserFooter from './UserFooter';
 import QuickNavContainer from '../QuickNav/ui/logic/QuickNavContainer';
 
@@ -40,7 +40,7 @@ class DesktopContainer extends Component<WrapperProps> {
 
     return (
       <Responsive {...Responsive.onlyComputer}>
-        <UserHeader />
+        <Header />
         <section className="content">
           {children}
         </section>
@@ -61,7 +61,7 @@ class TabletContainer extends Component<WrapperProps> {
 
     return (
       <Responsive {...Responsive.onlyTablet}>
-        <UserHeader />
+        <Header />
         <section className="content">
           {children}
         </section>
@@ -81,7 +81,7 @@ class MobileContainer extends Component {
 
     return (
       <Responsive {...Responsive.onlyMobile}>
-        <UserHeader />
+        <Header />
         <section className="content">
           {children}
         </section>
