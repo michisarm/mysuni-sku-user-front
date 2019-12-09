@@ -1,0 +1,4 @@
+{
+  "/posts?offset=:offset&limit=:limit": "/posts?_start=:offset&_limit=:limit",
+  "/posts/count": "/posts"
+}

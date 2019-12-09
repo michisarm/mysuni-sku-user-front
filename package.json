@@ -1,0 +1,53 @@
+{
+  "name": "sample-drama",
+  "version": "0.1.0",
+  "description": "Describe your drama",
+  "author": "Nextree",
+  "main": "./lib/snap.js",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "nara-react-scripts": "0.1.13",
+    "@nara.platform/accent": "0.0.1",
+    "@nara.platform/dock": "0.0.1",
+    "typescript": "3.4.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
+    "autobind-decorator": "2.4.0",
+    "axios": "^0.19.0",
+    "mobx": "5.9.4",
+    "mobx-react": "5.4.4",
+    "semantic-ui-react": "^0.87.1",
+    "json-server": "^0.15.0"
+  },
+  "devDependencies": {
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.7",
+    "@types/react": "16.8.19",
+    "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build_app": "react-scripts build_app",
+    "build_lib": "react-scripts build_lib",
+    "json_server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
+  },
+  "eslintConfig": {
+    "extends": "nara"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
