@@ -1,14 +1,17 @@
+
 import React from 'react';
 
-import './style/css/main.css';
-
 import Store from './Store';
+import { UserApp } from './shared';
 import Routes from './Routes';
+
 
 function App() {
   return (
     <Store>
-      <Routes />
+      <UserApp>
+        <Routes />
+      </UserApp>
     </Store>
   );
 }
