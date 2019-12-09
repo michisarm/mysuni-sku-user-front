@@ -7,7 +7,7 @@ import {
 
 import UserHeader from './UserHeader';
 import UserFooter from './UserFooter';
-import QuickNav from './QuickNav';
+import QuickNavContainer from '../QuickNav/ui/logic/QuickNavContainer';
 
 
 interface WrapperProps {
@@ -44,7 +44,7 @@ class DesktopContainer extends Component<WrapperProps> {
         <section className="content">
           {children}
         </section>
-        <QuickNav />
+        <QuickNavContainer />
         <UserFooter />
       </Responsive>
     );
@@ -65,7 +65,7 @@ class TabletContainer extends Component<WrapperProps> {
         <section className="content">
           {children}
         </section>
-        <QuickNav />
+        <QuickNavContainer />
         <UserFooter />
       </Responsive>
     );
@@ -85,7 +85,7 @@ class MobileContainer extends Component {
         <section className="content">
           {children}
         </section>
-        <QuickNav />
+        <QuickNavContainer />
         <UserFooter />
       </Responsive>
     );

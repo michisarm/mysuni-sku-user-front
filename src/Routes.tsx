@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
-import { withSplitting } from './shared';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { UserApp, withSplitting } from './shared';
 
 
 class Routes extends React.PureComponent {
@@ -10,9 +10,13 @@ class Routes extends React.PureComponent {
     //
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Route exact path="/" render={() => <Redirect exact from="/" to="/main" />} />
+        <UserApp>
+          <Switch>
+            <Route exact path="/" render={() => <Redirect exact from="/" to="/main" />} />
 
-        <Route path="/main" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
+            <Route path="/main" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
+          </Switch>
+        </UserApp>
       </BrowserRouter>
     );
   }
