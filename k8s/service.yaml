@@ -25,7 +25,7 @@ spec:
         - uri:
             exact: /
         - uri:
-            prefix: /user
+            prefix: /suni-main
       route:
         - destination:
             host: user-service

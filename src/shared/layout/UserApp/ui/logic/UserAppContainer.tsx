@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import ResponsiveContainer from './ResponsiveContainerUser';
+import AppLayoutContainer from './AppLayoutContainer';
 
 
 interface Props {
@@ -9,18 +9,18 @@ interface Props {
 }
 
 @reactAutobind
-class AppLayout extends Component<Props> {
-
+class UserAppContainer extends Component<Props> {
+  //
   render() {
     //
     const { children } = this.props;
 
     return (
-      <ResponsiveContainer>
+      <AppLayoutContainer>
         {children}
-      </ResponsiveContainer>
+      </AppLayoutContainer>
     );
   }
 }
 
-export default AppLayout;
+export default UserAppContainer;

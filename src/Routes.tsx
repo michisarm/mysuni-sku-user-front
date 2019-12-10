@@ -15,7 +15,15 @@ class Routes extends React.PureComponent {
           <Switch>
             <Route exact path="/" render={() => <Redirect exact from="/" to="/main" />} />
 
+            {/* main */}
             <Route path="/main" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
+
+            {/* personalcube  */}
+
+            {/* course  */}
+
+            {/* lecture  */}
+
             <Route path="/learning-management/expert" component={ExpertContainer} />
           </Switch>
         </UserApp>

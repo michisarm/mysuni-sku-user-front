@@ -1,13 +1,11 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import {
-  Responsive,
-} from 'semantic-ui-react';
+import { Responsive } from 'semantic-ui-react';
 
-import Header from '../Header';
-import UserFooter from './UserFooter';
-import QuickNavContainer from '../QuickNav/ui/logic/QuickNavContainer';
+import Header from '../../Header';
+import Footer from '../../Footer';
+import QuickNav from '../../QuickNav';
 
 
 interface WrapperProps {
@@ -44,8 +42,8 @@ class DesktopContainer extends Component<WrapperProps> {
         <section className="content">
           {children}
         </section>
-        <QuickNavContainer />
-        <UserFooter />
+        <QuickNav />
+        <Footer />
       </Responsive>
     );
   }
@@ -65,8 +63,8 @@ class TabletContainer extends Component<WrapperProps> {
         <section className="content">
           {children}
         </section>
-        <QuickNavContainer />
-        <UserFooter />
+        <QuickNav />
+        <Footer />
       </Responsive>
     );
   }
@@ -85,8 +83,8 @@ class MobileContainer extends Component {
         <section className="content">
           {children}
         </section>
-        <QuickNavContainer />
-        <UserFooter />
+        <QuickNav />
+        <Footer />
       </Responsive>
     );
   }

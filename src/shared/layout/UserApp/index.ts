@@ -1,2 +1,2 @@
 
-export { default } from './ui/UserApp';
+export { default } from './ui/logic/UserAppContainer';
