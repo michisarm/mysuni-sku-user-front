@@ -11,6 +11,14 @@ import {
 @reactAutobind
 class HeaderContainer extends Component {
   //
+  handleItemClick(data: any) {
+    switch (data) {
+      case 'learning':
+        window.location.href = `${process.env.PUBLIC_URL}/learning-management/expert`;
+        break;
+    }
+  }
+
   render() {
     //
     return (
@@ -21,7 +29,9 @@ class HeaderContainer extends Component {
       >
         <>
           <LogoView />
-          <MenuView />
+          <MenuView
+            handleItemClick = {this.handleItemClick}
+          />
           <SearchBarView />
           <ProfileView />
         </>
