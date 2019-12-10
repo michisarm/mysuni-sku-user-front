@@ -16,7 +16,7 @@
   "dependencies": {
     "nara-react-scripts": "0.1.13",
     "@nara.platform/accent": "0.0.1",
-    "@nara.platform/dock": "0.0.1",
+    "@nara.platform/dock": "0.0.4-sk",
     "typescript": "3.4.5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

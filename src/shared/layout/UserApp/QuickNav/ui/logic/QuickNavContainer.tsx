@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { tenantInfo } from '@nara.platform/dock';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
@@ -20,6 +21,8 @@ interface State {
 @reactAutobind
 class QuickNavContainer extends Component<Props, State> {
   //
+  userRoles = tenantInfo.getTenantRoles();
+
   state = {
     active: false,
   };
@@ -90,7 +93,9 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="building" text="SK University Introduction" onClick={this.onClickIntroduction} />
               <BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickSiteMap} />
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
-              <BottomMenuItemView iconName="admin" text="SK University Admin Site" onClick={this.onClickAdminSite} />
+              { this.userRoles.includes('Admin') && (
+                <BottomMenuItemView iconName="admin" text="SK University Admin Site" onClick={this.onClickAdminSite} />
+              )}
             </>
           }
         />
