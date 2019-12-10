@@ -1,9 +1,14 @@
 
 import React from 'react';
+import { configure } from 'mobx';
 import { Provider } from 'mobx-react';
 
 import { sharedService } from './shared';
 
+
+configure({
+  enforceActions: 'observed',
+});
 
 interface Props {
   children: React.ReactNode,

@@ -7,6 +7,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "registry": "https://sk-university-dev-nexus.cloudzcp.io/repository/npm-private/"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build_app": "react-scripts build_app",
