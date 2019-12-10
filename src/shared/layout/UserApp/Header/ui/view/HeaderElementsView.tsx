@@ -2,6 +2,8 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
 
+import profileImage from '../../../../../../style/images/all/profile-38-px.png';
+
 
 interface LogoViewProps {
 }
@@ -52,7 +54,7 @@ export const ProfileView: React.FC<ProfileViewProps> = () => (
     <button className="ui user image label">
       <span className="name">김지우</span>
       <span className="affiliation">SK C&C  플랫폼 개발 1팀</span>
-      <Image src="/images/all/profile-38-px.png" alt="profile" />
+      <Image src={profileImage} alt="profile" />
     </button>
   </div>
 );
