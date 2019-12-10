@@ -7,6 +7,8 @@ import actionHandler from './present/logic/actionHandler';
 
 
 export { default as UserApp } from './layout/UserApp';
+export { default as ContentLayout } from './layout/ContentLayout';
+
 export {
   sharedService,
   SharedService,

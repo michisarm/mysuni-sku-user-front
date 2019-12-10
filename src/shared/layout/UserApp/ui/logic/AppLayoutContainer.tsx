@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import ResponsiveContainer from '../ResponsiveContainerUser';
+import ResponsiveContainer from './ResponsiveContainerUser';
 
 
 interface Props {

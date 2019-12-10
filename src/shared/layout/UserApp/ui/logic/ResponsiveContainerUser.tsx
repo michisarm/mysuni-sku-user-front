@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Responsive } from 'semantic-ui-react';
 
-import Header from '../Header';
-import Footer from '../Footer';
-import QuickNav from '../QuickNav';
+import Header from '../../Header';
+import Footer from '../../Footer';
+import QuickNav from '../../QuickNav';
 
 
 interface WrapperProps {
