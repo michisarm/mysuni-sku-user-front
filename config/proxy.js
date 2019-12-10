@@ -5,7 +5,7 @@ module.exports = {
   },
 
   '/api/expert': {
-    target: 'http://localhost:8118',
+    target: 'http://10.178.66.114/lp-front',
     pathRewrite: { '/api/expert': 'v1/instructors' },
   },
 };
