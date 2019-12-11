@@ -18,8 +18,8 @@ const withSplitting = (getComponent: Function) => {
 
     componentDidMount() {
       getComponent().then((component: any) => {
-        if (component.default) {
-          this.setState({ component: component.default });
+        if (component.ContentHeader) {
+          this.setState({ component: component.ContentHeader });
         }
         else {
           this.setState({ component });

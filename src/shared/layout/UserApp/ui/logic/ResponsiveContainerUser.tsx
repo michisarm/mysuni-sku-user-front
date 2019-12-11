@@ -39,9 +39,7 @@ class DesktopContainer extends Component<WrapperProps> {
     return (
       <Responsive {...Responsive.onlyComputer}>
         <Header />
-        <section className="content">
-          {children}
-        </section>
+        {children}
         <QuickNav />
         <Footer />
       </Responsive>
@@ -60,9 +58,7 @@ class TabletContainer extends Component<WrapperProps> {
     return (
       <Responsive {...Responsive.onlyTablet}>
         <Header />
-        <section className="content">
-          {children}
-        </section>
+        {children}
         <QuickNav />
         <Footer />
       </Responsive>
@@ -80,9 +76,7 @@ class MobileContainer extends Component {
     return (
       <Responsive {...Responsive.onlyMobile}>
         <Header />
-        <section className="content">
-          {children}
-        </section>
+        {children}
         <QuickNav />
         <Footer />
       </Responsive>

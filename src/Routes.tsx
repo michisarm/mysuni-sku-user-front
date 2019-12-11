@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { UserApp, withSplitting } from './shared';
 
 
@@ -11,16 +12,17 @@ class Routes extends React.PureComponent {
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <UserApp>
           <Switch>
-            <Route exact path="/" render={() => <Redirect exact from="/" to="/main" />} />
-
             {/* main */}
-            <Route path="/main" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
+            <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
 
             {/* personalcube  */}
 
             {/* course  */}
 
             {/* lecture  */}
+            <Route exact path="/lecture/college-lectures" component={withSplitting(() => import('./lecture').then(({ CollegeLectureListPage }) => CollegeLectureListPage))} />
+
+            {/*  expert */}
 
             <Route path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
