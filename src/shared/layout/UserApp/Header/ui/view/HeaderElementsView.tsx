@@ -2,7 +2,7 @@
 import React from 'react';
 import { Image } from 'semantic-ui-react';
 
-import profileImage from '../../../../../../style/images/all/profile-38-px.png';
+import profileImage from 'style/images/all/profile-38-px.png';
 
 
 interface LogoViewProps {

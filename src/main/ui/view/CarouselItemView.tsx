@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Image } from 'semantic-ui-react';
 
-import imageMain from '../../../style/images/all/img-main.png';
+import imageMain from 'style/images/all/img-main.png';
 
 
 interface Props {

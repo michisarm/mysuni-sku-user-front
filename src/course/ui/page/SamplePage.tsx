@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ContentLayout } from '../../../shared';
+import { ContentLayout } from 'shared';
 
 
 @reactAutobind
