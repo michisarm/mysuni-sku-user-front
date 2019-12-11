@@ -1,8 +1,6 @@
-
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { UserApp, withSplitting } from './shared';
-import { ExpertContainer } from './expert';
 
 
 class Routes extends React.PureComponent {
@@ -24,7 +22,8 @@ class Routes extends React.PureComponent {
 
             {/* lecture  */}
 
-            <Route path="/expert/instructor" component={ExpertContainer} />
+            <Route path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
+            {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
           </Switch>
         </UserApp>
       </BrowserRouter>

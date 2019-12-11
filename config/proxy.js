@@ -4,8 +4,8 @@ module.exports = {
     pathRewrite: { '/api/sample': '/' },
   },
 
-  '/api/lp': {
+  '/api/lp/expert': {
     target: 'http://10.178.66.114/',
-    pathRewrite: { '/api/lp': '/v1/instructors'},
+    pathRewrite: { '/api/lp/expert': 'v1/instructors' },
   },
 };
