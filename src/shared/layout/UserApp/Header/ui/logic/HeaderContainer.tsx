@@ -14,7 +14,7 @@ class HeaderContainer extends Component {
   handleItemClick(data: any) {
     switch (data) {
       case 'learning':
-        window.location.href = `${process.env.PUBLIC_URL}/learning-management/expert`;
+        window.location.href = `${process.env.PUBLIC_URL}/expert/instructor`;
         break;
     }
   }

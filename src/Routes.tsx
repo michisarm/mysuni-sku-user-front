@@ -24,7 +24,7 @@ class Routes extends React.PureComponent {
 
             {/* lecture  */}
 
-            <Route path="/learning-management/expert" component={ExpertContainer} />
+            <Route path="/expert/instructor" component={ExpertContainer} />
           </Switch>
         </UserApp>
       </BrowserRouter>
