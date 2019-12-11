@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react';
 
 import { stores } from '@sku/learning';
 import { sharedService } from './shared';
+import { InstructorService } from './expert/index';
 
 
 configure({
@@ -20,6 +21,7 @@ function Store({ children }: Props) {
     <Provider
       {...stores}
       sharedService={sharedService}
+      instructorService={InstructorService.instance}
     >
       {children}
     </Provider>
