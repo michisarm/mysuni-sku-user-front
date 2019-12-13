@@ -25,6 +25,14 @@ class Routes extends React.PureComponent {
             {/*  expert */}
 
             <Route path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
+
+            {/* profile */}
+            <Route exact path="/profile/favorite" component={withSplitting(() => import('./profile').then(({ FavoriteWelcomePage }) => FavoriteWelcomePage))} />
+            <Route exact path="/profile/favorite/college" component={withSplitting(() => import('./profile').then(({ FavoriteCollegeContainer }) => FavoriteCollegeContainer))} />
+            <Route exact path="/profile/favorite/job" component={withSplitting(() => import('./profile').then(({ FavoriteJobContainer }) => FavoriteJobContainer))} />
+            <Route exact path="/profile/favorite/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
+            <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
+
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
           </Switch>
         </UserApp>

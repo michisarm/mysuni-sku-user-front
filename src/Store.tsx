@@ -6,6 +6,8 @@ import { Provider } from 'mobx-react';
 import { stores } from '@sku/learning';
 import { sharedService } from './shared';
 import { InstructorService } from './expert/index';
+import { CollegeService } from './college';
+import SkProfileService from './profile/present/logic/SkProfileService';
 
 
 configure({
@@ -22,6 +24,8 @@ function Store({ children }: Props) {
       {...stores}
       sharedService={sharedService}
       instructorService={InstructorService.instance}
+      collegeService={CollegeService.instance}
+      skProfileService={SkProfileService.instance}
     >
       {children}
     </Provider>
