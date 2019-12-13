@@ -33,6 +33,9 @@ class Routes extends React.PureComponent {
             <Route exact path="/profile/favorite/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
             <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
 
+            {/*mypage*/}
+            <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
+
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
           </Switch>
         </UserApp>
