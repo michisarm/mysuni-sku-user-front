@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Image } from 'semantic-ui-react';
 
-import imageMain from 'style/images/all/img-main.png';
+// import imageMain from 'style/images/all/img-main.png';
 
 
 interface Props {
@@ -26,7 +26,7 @@ class CarouselWrapperView extends Component<Props> {
             <div className="sub-text">{content}</div>
           </div>
           <div className="visual">
-            <Image src={imageMain} alt="CarouselMain" />
+            <Image src={`${process.env.PUBLIC_URL}/images/all/img-main.png`} alt="Main carousel" />
           </div>
         </div>
       </div>

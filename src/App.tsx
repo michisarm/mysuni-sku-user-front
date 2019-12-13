@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import Store from './Store';
+import StoreProvider from './StoreProvider';
 import Routes from './Routes';
 
 
@@ -29,9 +29,9 @@ if (process.env.NODE_ENV === 'development') {
 
 function App() {
   return (
-    <Store>
+    <StoreProvider>
       <Routes />
-    </Store>
+    </StoreProvider>
   );
 }
 
