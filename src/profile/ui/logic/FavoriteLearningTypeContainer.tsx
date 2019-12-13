@@ -44,10 +44,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     };
   }
 
-  componentDidMount(): void {
-    const { collegeService } = this.props;
-
-  }
 
   handleChange(event : any, target: any) {
     const name: 'typeGroup' | 'timeGroup' = target.name;

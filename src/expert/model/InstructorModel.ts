@@ -1,5 +1,4 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from '../../shared/model/IdName';
 import { ChannelModel } from './ChannelModel';
 import { MemberSummaryModel } from './MemberSummaryModel';
 

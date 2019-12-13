@@ -1,4 +1,4 @@
-import {DramaEntity, PatronKey} from '@nara.platform/accent';
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';

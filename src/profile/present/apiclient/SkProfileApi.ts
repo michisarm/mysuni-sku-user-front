@@ -43,9 +43,9 @@ export default class SkProfileApi {
       .then((response) => response && response.data || null);
   }
 
-  findStudySummary(memberId : string){
-    return axios.get<StudySummaryCdoModel>(this.URL+`/studySummary/${memberId}`)
-      .then((response)=>response && response.data || null);
+  findStudySummary(memberId : string) {
+    return axios.get<StudySummaryCdoModel>(this.URL + `/studySummary/${memberId}`)
+      .then((response) => response && response.data || null);
   }
 }
 
