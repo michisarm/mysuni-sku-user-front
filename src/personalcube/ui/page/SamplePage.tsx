@@ -10,7 +10,12 @@ class SamplePage extends Component {
   //
   render() {
     return (
-      <ContentLayout>
+      <ContentLayout
+        breadcrumb={[
+          { text: 'depth1', path: '/depth1-path' },
+          { text: 'depth2', path: '' },
+        ]}
+      >
         <h1>Sample</h1>
       </ContentLayout>
     );

@@ -59,21 +59,3 @@ export const ProfileView: React.FC<ProfileViewProps> = () => (
     </button>
   </div>
 );
-
-
-interface BreadcrumbsViewProps {
-}
-
-export const BreadcrumbsView: React.FC<BreadcrumbsViewProps> = () => (
-  <div className="breadcrumbs">
-    <div className="cont-inner">
-      <div className="ui standard breadcrumb">
-        <a className="section">Home</a>
-        <i className="right chevron icon divider" />
-        <a className="section">depth1</a>
-        <i className="right chevron icon divider" />
-        <div className="active section">depth2</div>
-      </div>
-    </div>
-  </div>
-);

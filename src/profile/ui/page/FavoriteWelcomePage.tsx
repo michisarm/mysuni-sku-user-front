@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import { ContentLayout } from 'shared';
 import { Button, Image } from 'semantic-ui-react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 
 interface Props extends RouteComponentProps {
 }

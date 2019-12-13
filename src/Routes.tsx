@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { UserApp, withSplitting } from './shared';
+import { UserApp, withSplitting } from 'shared';
 
 
 class Routes extends React.PureComponent {
