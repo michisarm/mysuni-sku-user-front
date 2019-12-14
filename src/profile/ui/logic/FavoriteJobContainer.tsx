@@ -119,7 +119,12 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty =  this.setJobDuties();
     return (
-      <ContentLayout className="bg-white">
+      <ContentLayout breadcrumb={[
+        { text: 'd1', path: '/depth1-path' },
+        { text: 'd2' },
+      ]}
+        className="bg-white"
+      >
         <div className="interest-content step2">
           <TitleView step={2} onSKIntroClick={this.onSKIntroClick} />
           <Form>

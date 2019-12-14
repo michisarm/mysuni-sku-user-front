@@ -8,7 +8,12 @@ import { Image } from 'semantic-ui-react';
 class LoadingPage extends Component {
   render() {
     return (
-      <ContentLayout className="center-content bg-white">
+      <ContentLayout breadcrumb={[
+        { text: 'd1', path: '/depth1-path' },
+        { text: 'd2' },
+      ]}
+        className="center-content bg-white"
+      >
         <div className="align loading">
           <div>
             <Image src="/images/all/loading-animation.jpg" alt="로딩중" />

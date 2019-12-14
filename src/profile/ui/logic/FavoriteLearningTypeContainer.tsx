@@ -101,7 +101,12 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     const { typeGroup, timeGroup, etc } = this.state;
 
     return (
-      <ContentLayout className="bg-white">
+      <ContentLayout breadcrumb={[
+        { text: 'd1', path: '/depth1-path' },
+        { text: 'd2' },
+      ]}
+        className="bg-white"
+      >
         <div className="interest-content step3">
           <TitleView step={3} onSKIntroClick={this.onSKIntroClick} />
           <Form>
