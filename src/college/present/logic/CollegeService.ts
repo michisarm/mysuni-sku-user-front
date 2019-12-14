@@ -24,6 +24,12 @@ export default class CollegeService {
   colleges: CollegeModel[] = [];
 
   @observable
+  mainCollege: CollegeModel = new CollegeModel();
+
+  @observable
+  subCollege: CollegeModel = new CollegeModel();
+
+  @observable
   jobGroups: JobGroupModel[] = [];
 
   @observable
@@ -119,6 +125,37 @@ export default class CollegeService {
       list.idNames.push({ id: channel.channelId, name: channel.name });
     });
     return list;
+  }
+
+
+  @action
+  async findMainCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.mainCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  async findSubCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.subCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  clearMainCollege() {
+    //
+    this.mainCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
+  }
+
+  @action
+  clearSubCollege() {
+    //
+    this.subCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
   }
 
 }

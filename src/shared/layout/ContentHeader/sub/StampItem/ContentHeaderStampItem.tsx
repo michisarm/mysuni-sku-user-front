@@ -26,8 +26,8 @@ class ContentHeaderStampItem extends Component<Props> {
             <div className="text">2019</div>
             <Icon className="dropdown" />
             <div className="menu">
-              {annualStamps.map(({ year }) => (
-                <div className="item">{year}</div>
+              {annualStamps.map(({ year }, index) => (
+                <div key={`stamp_${index}`} className="item">{year}</div>
               ))}
             </div>
           </div>

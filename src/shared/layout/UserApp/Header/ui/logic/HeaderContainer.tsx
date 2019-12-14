@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Context } from '../../..';
+import CategoryContainer from './CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
   LogoView, MenuView, SearchBarView, ProfileView,
@@ -14,15 +15,6 @@ import BreadcrumbView from '../view/BreadcrumbView';
 class HeaderContainer extends Component {
   //
   static contextType  = Context;
-
-
-  handleItemClick(data: any) {
-    switch (data) {
-      case 'learning':
-        window.location.href = `${process.env.PUBLIC_URL}/expert/instructor`;
-        break;
-    }
-  }
 
   render() {
     //
@@ -38,9 +30,8 @@ class HeaderContainer extends Component {
       >
         <>
           <LogoView />
-          <MenuView
-            handleItemClick = {this.handleItemClick}
-          />
+          <MenuView />
+          <CategoryContainer />
           <SearchBarView />
           <ProfileView />
         </>
