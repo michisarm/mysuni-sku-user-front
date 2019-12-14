@@ -1,11 +1,9 @@
 
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 
 import { Button, Image } from 'semantic-ui-react';
-import { UserApp, ContentLayout } from '../..';
-import ContentHeader from '.';
+import { ContentHeader, ContentLayout } from 'shared';
 
 
 export default {

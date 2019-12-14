@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 import { Icon, Image, Label, Menu, Segment, Sticky } from 'semantic-ui-react';
 import { InstructorService } from '../../index';
 

@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { ContentLayout } from 'shared';
+import TitleContainer from '../logic/TitleContainer';
+import CompletedContainer from '../logic/CompletedContainer';
 
 
 @reactAutobind
-class SamplePage extends Component {
+class MyPage extends Component {
   //
   render() {
     return (
@@ -16,10 +18,11 @@ class SamplePage extends Component {
           { text: 'depth2', path: '' },
         ]}
       >
-        <h1>Sample</h1>
+        <TitleContainer />
+        <CompletedContainer /> {/*tab event EarnedStampContainer*/}
       </ContentLayout>
     );
   }
 }
 
-export default SamplePage;
+export default MyPage;

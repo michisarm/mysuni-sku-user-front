@@ -16,6 +16,7 @@ import { Provider } from 'mobx-react';
 
 import image from './nara-logo.jpeg';
 import stores from '../src/stores';
+import { BrowserRouter } from 'react-router-dom';
 
 
 addParameters({
@@ -31,11 +32,15 @@ addParameters({
 addDecorator(withKnobs);
 
 addDecorator((storyFn) => (
-  <Provider
-    {...stores}
-  >
-    <div style={{ padding: 20 }}>{storyFn()}</div>
-  </Provider>
+  <div id="root">
+    <BrowserRouter>
+      <Provider
+        {...stores}
+      >
+        {storyFn()}
+      </Provider>
+    </BrowserRouter>
+  </div>
 ));
 
 mobxConfigure({

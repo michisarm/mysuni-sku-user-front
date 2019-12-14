@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { UserApp, withSplitting } from './shared';
+import { UserApp, withSplitting } from 'shared';
 
 
 class Routes extends React.PureComponent {
@@ -26,7 +26,7 @@ class Routes extends React.PureComponent {
 
 
             {/* lecture  */}
-            <Route exact path="/lecture/college-lectures" component={withSplitting(() => import('./lecture').then(({ CollegeLectureListPage }) => CollegeLectureListPage))} />
+            <Route exact path="/lecture/category/:categoryId" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />
 
             {/*  expert */}
 
@@ -38,6 +38,9 @@ class Routes extends React.PureComponent {
             <Route exact path="/profile/favorite/job" component={withSplitting(() => import('./profile').then(({ FavoriteJobContainer }) => FavoriteJobContainer))} />
             <Route exact path="/profile/favorite/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
             <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
+
+            {/*mypage*/}
+            <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
 
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />

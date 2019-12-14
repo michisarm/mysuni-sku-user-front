@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
