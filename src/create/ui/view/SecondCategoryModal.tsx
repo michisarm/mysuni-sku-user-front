@@ -1,24 +1,21 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import {
-  Button, Modal, Form, Header, Grid, List, Segment, Icon, Checkbox,
-} from 'semantic-ui-react';
-import { CubeModel } from '../..';
+import { Button, Checkbox, Form, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { PersonalCubeModel, PersonalCubeService } from '../..';
 import { CollegeService } from '../../../college';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import { IdName } from '../../../shared/model/IdName';
-import { ChannelListModel } from '../../model/ChannelListModel';
-
 
 interface Props {
   open: boolean
   handleChangeOpen: (open: boolean) => void
-  cube: CubeModel
-  onChangeCubeProps: (name: string, value: string | {}) => void
+  personalCube: PersonalCubeModel
+  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   colleges: CollegeModel[]
   selectedSubCollege: CollegeModel
   collegeService?: CollegeService
+  personalCubeService?: PersonalCubeService
 }
 
 interface States {
@@ -27,7 +24,7 @@ interface States {
   channelListMapForViewState: Map<IdName, IdName[]>
 }
 
-@inject('collegeService')
+@inject('collegeService', 'personalCubeService')
 @observer
 @reactAutobind
 class SecondCategoryModal extends React.Component<Props, States> {
@@ -43,7 +40,8 @@ class SecondCategoryModal extends React.Component<Props, States> {
 
   selectChannelButton(channel: IdName) {
     //
-    const { onChangeCubeProps } = this.props;
+    const { onChangePersonalCubeProps } = this.props;
+    const { changeChannelsMapProps } = this.props.personalCubeService || {} as PersonalCubeService;
     const { channelListMap, selectedCollegeState, channelListMapForViewState } = this.state;
     const tempListMap = channelListMap;
     const channelListMapForView = channelListMapForViewState;
@@ -74,16 +72,17 @@ class SecondCategoryModal extends React.Component<Props, States> {
         channelList.push({ college: key, channel });
       });
     });
-    onChangeCubeProps('channelList.channels', channelList);
-    onChangeCubeProps('channelList.channelsMap', channelListMapForView);
+    onChangePersonalCubeProps('subCategories', channelList);
+    changeChannelsMapProps(channelListMapForView);
     this.setState({ channelListMapForViewState: channelListMapForView });
   }
 
   selectCollegeButton(selectedSubCollege: CollegeModel) {
     //
-    const { collegeService, cube } = this.props;
+    const { collegeService } = this.props;
+    const { channelsMap } = this.props.personalCubeService || {} as PersonalCubeService;
     const channelListMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
-    cube.channelList.channelsMap.forEach((value, key) => {
+    channelsMap.forEach((value, key) => {
       channelListMap.set(key, value);
     });
     this.setState({
@@ -96,29 +95,30 @@ class SecondCategoryModal extends React.Component<Props, States> {
 
   handleCancel() {
     //
-    const { handleChangeOpen, onChangeCubeProps } = this.props;
+    const { handleChangeOpen, onChangePersonalCubeProps } = this.props;
     this.setState({
       selectedCollegeState: new IdName(),
       channelListMap: new Map<string, IdName>(),
       channelListMapForViewState: new Map<IdName, IdName[]>(),
     });
-    onChangeCubeProps('channelList', new ChannelListModel());
+    onChangePersonalCubeProps('subCategories', []);
     handleChangeOpen(false);
   }
 
   render() {
     //
-    const { open, cube, handleChangeOpen, colleges, selectedSubCollege } = this.props;
+    const { open, personalCube, handleChangeOpen, colleges, selectedSubCollege } = this.props;
     const { channelListMap, selectedCollegeState } = this.state;
     const selectedChannels: any = [];
-    if (cube && cube.channelList && cube.channelList.channelsMap) {
-      cube.channelList.channelsMap.forEach((value, key, map) => (
+    if (personalCube && personalCube.subCategories) {
+      const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
+      channelListMap.forEach((value, key, map) => (
         selectedChannels.push(
-          map.size === 1 ? null : <p key={key.id + '-blank'} />,
-          <span key={key.id}>{key.name} &gt; </span>,
+          map.size === 1 ? null : <p key={key} />,
+          <span key={key}>{key} &gt; </span>,
           value.map((channel, index) => {
-            if (index === 0) return <span key={index}>{channel.name}</span>;
-            else return <span key={index}>, {channel.name}</span>;
+            if (index === 0) return <span key={index}>{channel}</span>;
+            else return <span key={index}>, {channel}</span>;
           }
           )
         )
@@ -126,15 +126,16 @@ class SecondCategoryModal extends React.Component<Props, States> {
       );
     }
     const selectedChannelsInModal: any = [];
-    if (cube && cube.channelList && cube.channelList.channelsMap) {
-      cube.channelList.channelsMap.forEach((value, key) => (
+    if (personalCube && personalCube.subCategories) {
+      const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
+      channelListMap.forEach((value, key) => (
         selectedChannelsInModal.push(
-          <List key={key.id}>
+          <List key={key}>
             {
               value.map((channel, index) => (
                 <List.Item key={index}>
                   <Segment>
-                    {key.name} &gt; {channel.name}
+                    {key} &gt; {channel}
                     <div className="fl-right"><Icon name="times" /></div>
                   </Segment>
                 </List.Item>
@@ -164,10 +165,10 @@ class SecondCategoryModal extends React.Component<Props, States> {
                       <Header as="h3">선호하는 College의 학습 채널을 선택하세요.</Header>
                     </Grid.Column>
                     {
-                      cube && cube.channelList && cube.channelList.channels && cube.channelList.channels.length
+                      personalCube && personalCube.subCategories && personalCube.subCategories.length
                       && (
                         <Grid.Column width={6}>
-                          <Header as="h3">선택된 채널 {cube.channelList.channels.length} 개</Header>
+                          <Header as="h3">선택된 채널 {personalCube.subCategories.length} 개</Header>
                         </Grid.Column>
                       ) || ''
                     }
@@ -203,7 +204,10 @@ class SecondCategoryModal extends React.Component<Props, States> {
                             key={index}
                             control={Checkbox}
                             checked={!!channelListMap.get(`${channel.id}`)}
-                            disabled={cube && cube.channel && cube.channel.channel && cube.channel.channel.id === channel.id}
+                            disabled={
+                              personalCube && personalCube.category && personalCube.category.channel
+                              && personalCube.category.channel.id === channel.id
+                            }
                             label={channel.name}
                             onChange={() => this.selectChannelButton(channel)}
                           />

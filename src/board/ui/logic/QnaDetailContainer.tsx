@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
 import { CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
@@ -71,7 +71,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
   }
 
   onClose(boardId: string) {
-    this.props.history.push(`/books/support/${boardId}`);
+    this.props.history.push(`/board/support/${boardId}`);
   }
 
   render() {
@@ -148,4 +148,4 @@ class QnaDetailContainer extends React.Component<Props, States> {
   }
 }
 
-export default withRouter(QnaDetailContainer);
+export default QnaDetailContainer;

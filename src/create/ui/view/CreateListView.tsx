@@ -1,10 +1,10 @@
 import { Button, Icon, Table } from 'semantic-ui-react';
 import * as React from 'react';
-import { OpenFilter } from '../../model/OpenFilter';
-import { CubeModel } from '../..';
+import { SearchFilter } from '../../model/SearchFilter';
+import { PersonalCubeModel } from '../..';
 
 interface Props {
-  result: CubeModel[]
+  result: PersonalCubeModel[]
   handleClickCubeRow:(cubeId: string) => void
   disabled: boolean
   findAllCubes: (offset: number) => void
@@ -32,12 +32,12 @@ class CreateListView extends React.Component <Props> {
             <Table.Body>
               {
               result && result.length && result.map((cube, index) => (
-                <Table.Row key={index} onClick={() => handleClickCubeRow(cube.cubeId)}>
+                <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
                   <Table.Cell textAlign="center">{index + 1}</Table.Cell>
                   <Table.Cell>{cube.name && cube.name}</Table.Cell>
                   <Table.Cell>{cube.contents && cube.contents.type}</Table.Cell>
-                  <Table.Cell>{cube.openState}</Table.Cell>
-                  <Table.Cell>{cube.openFilter && cube.openFilter === OpenFilter.FilterOn ? 'Yes' : 'No'}</Table.Cell>
+                  <Table.Cell>{cube.cubeState}</Table.Cell>
+                  <Table.Cell>{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell>{cube.creator && cube.creator.name}</Table.Cell>
                   <Table.Cell>{cube.time && new Date(cube.time).toLocaleDateString()}</Table.Cell>
                 </Table.Row>

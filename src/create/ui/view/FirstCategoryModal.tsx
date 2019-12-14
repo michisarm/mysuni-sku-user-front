@@ -4,29 +4,29 @@ import { reactAutobind } from '@nara.platform/accent';
 import {
   Button, Modal, Form, Header, Radio, Grid, List, Segment, Icon,
 } from 'semantic-ui-react';
-import { CubeModel } from '../..';
-import { ChannelModel } from '../../model/ChannelModel';
+import { PersonalCubeModel, PersonalCubeService } from '../..';
 import { CollegeService } from '../../../college';
 import { CollegeModel } from '../../../college/model/CollegeModel';
 import { IdName } from '../../../shared/model/IdName';
+import { CategoryModel } from '../../model/CategoryModel';
 
 
 interface Props {
   open: boolean
   handleChangeOpen: (open: boolean) => void
-  cube: CubeModel
-  onChangeCubeProps: (name: string, value: string | {}) => void
+  personalCube: PersonalCubeModel
+  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   collegeService?: CollegeService
   colleges: CollegeModel[]
   selectedMainCollege: CollegeModel
-
+  personalCubeService?: PersonalCubeService;
 }
 
 interface States {
   isSelectedMainChannel: boolean
 }
 
-@inject('collegeService')
+@inject('collegeService', 'personalCubeService')
 @observer
 @reactAutobind
 class FirstCategoryModal extends React.Component<Props, States> {
@@ -38,48 +38,49 @@ class FirstCategoryModal extends React.Component<Props, States> {
 
   selectChannelButton(selectedChannel: IdName) {
     //
-    const { onChangeCubeProps } = this.props;
-    onChangeCubeProps('channel.channel', selectedChannel);
+    const { onChangePersonalCubeProps } = this.props;
+    onChangePersonalCubeProps('category.channel', selectedChannel);
   }
 
   selectCollegeButton(selectedMainCollege: CollegeModel) {
     //
-    const { onChangeCubeProps, collegeService } = this.props;
-    onChangeCubeProps('channel.college.id', selectedMainCollege.collegeId);
-    onChangeCubeProps('channel.college.name', selectedMainCollege.name);
+    const { onChangePersonalCubeProps, collegeService } = this.props;
+    onChangePersonalCubeProps('category.college.id', selectedMainCollege.collegeId);
+    onChangePersonalCubeProps('category.college.name', selectedMainCollege.name);
     if (collegeService) collegeService.findMainCollege(selectedMainCollege.collegeId);
   }
 
   handleCancel() {
     //
-    const { onChangeCubeProps, handleChangeOpen } = this.props;
-    onChangeCubeProps('channel', {} as ChannelModel);
+    const { onChangePersonalCubeProps, handleChangeOpen } = this.props;
+    onChangePersonalCubeProps('category', new CategoryModel());
     handleChangeOpen(false);
   }
 
   handleOk() {
     //
-    const { handleChangeOpen, onChangeCubeProps, cube } = this.props;
+    const { handleChangeOpen, onChangePersonalCubeProps, personalCube } = this.props;
+    const { changeChannelsMapProps } = this.props.personalCubeService || {} as PersonalCubeService;
     const channelList: any = [];
     const channelListMapForView: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
-    channelListMapForView.set(cube.channel.college, [cube.channel.channel]);
+    channelListMapForView.set(personalCube.category.college, [personalCube.category.channel]);
     channelListMapForView.forEach((value, key) => {
       value.map(channel => {
         channelList.push({ college: key, channel });
       });
     });
-    onChangeCubeProps('channelList.channels', channelList);
-    onChangeCubeProps('channelList.channelsMap', channelListMapForView);
+    onChangePersonalCubeProps('subCategories', channelList);
+    changeChannelsMapProps(channelListMapForView);
     this.setState({ isSelectedMainChannel: true });
     handleChangeOpen(false);
   }
 
   render() {
     //
-    const { open, handleChangeOpen, cube, colleges, selectedMainCollege } = this.props;
+    const { open, handleChangeOpen, personalCube, colleges, selectedMainCollege } = this.props;
     const { isSelectedMainChannel } = this.state;
-    const isSelectedCollegeAndChannel = cube && cube.channel && cube.channel.college
-      && cube.channel.college.name && cube.channel.channel && cube.channel.channel.name;
+    const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
+      && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
     return (
       <>
         <Button onClick={() => handleChangeOpen(true)}>Channel 선택</Button>
@@ -87,7 +88,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
           {/* 카테고리 선택 후 활성화 */}
           {
             isSelectedMainChannel && isSelectedCollegeAndChannel
-            && (<span>{cube.channel.college.name} &gt; {cube.channel.channel.name}</span>) || ''
+            && (<span>{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>) || ''
           }
 
           <Modal size="large" open={open} onClose={() => handleChangeOpen(false)}>
@@ -119,8 +120,8 @@ class FirstCategoryModal extends React.Component<Props, States> {
                             <List.Item
                               key={index}
                               className={
-                                cube && cube.channel && cube.channel.college
-                                && cube.channel.college.id === college.collegeId ? 'active' : ''
+                                personalCube && personalCube.category && personalCube.category.college
+                                && personalCube.category.college.id === college.collegeId ? 'active' : ''
                               }
                             >
                               <Segment
@@ -141,7 +142,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
                           <Form.Field
                             key={index}
                             control={Radio}
-                            checked={cube && cube.channel && cube.channel.channel && cube.channel.channel.id === channel.id}
+                            checked={personalCube && personalCube.category && personalCube.category.channel && personalCube.category.channel.id === channel.id}
                             label={channel.name}
                             onChange={() => this.selectChannelButton(channel)}
                           />
@@ -155,7 +156,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
                           <List>
                             <List.Item>
                               <Segment>
-                                {cube.channel.college.name} &gt; {cube.channel.channel.name}
+                                {personalCube.category.college.name} &gt; {personalCube.category.channel.name}
                                 <div className="fl-right"><Icon name="times" /></div>
                               </Segment>
                             </List.Item>

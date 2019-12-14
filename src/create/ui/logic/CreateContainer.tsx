@@ -2,7 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { reactAutobind } from '@nara.platform/accent';
-import { CubeService } from '../../index';
+import { PersonalCubeService } from '../../index';
 import CreateProfileView from '../view/CreateProfileView';
 import TabView from '../view/TabView';
 import CreateListContainer from './CreateListContainer';
@@ -10,14 +10,14 @@ import SharedListContainer from './SharedListContainer';
 
 
 interface Props extends RouteComponentProps{
-  cubeService: CubeService
+  personalCubeService: PersonalCubeService
 }
 
 interface States {
   activeItem : string
 }
 
-@inject('cubeService')
+@inject('personalCubeService')
 @observer
 @reactAutobind
 class CreateContainer extends React.Component<Props, States> {
@@ -28,8 +28,8 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   componentDidMount() {
-    const { cubeService } = this.props;
-    if (cubeService) {
+    const { personalCubeService } = this.props;
+    if (personalCubeService) {
       this.setState({ activeItem: 'Create' });
     }
   }
@@ -45,10 +45,9 @@ class CreateContainer extends React.Component<Props, States> {
 
   render() {
     const { activeItem } = this.state;
-    const { cubes } = this.props.cubeService || {} as CubeService;
-    const totalCount = cubes.totalCount;
-
-    const { cubeService } = this.props;
+    const { personalCubes } = this.props.personalCubeService || {} as PersonalCubeService;
+    const totalCount = personalCubes.totalCount;
+    const { personalCubeService } = this.props;
 
     return (
       <section className="content create">
@@ -63,14 +62,14 @@ class CreateContainer extends React.Component<Props, States> {
         {
           activeItem === 'Create' ?
             <CreateListContainer
-              cubeService ={cubeService}
+              personalCubeService = {personalCubeService}
             />
             : ''
         }
         {
           activeItem === 'Shared' ?
             <SharedListContainer
-              cubeService ={cubeService}
+              personalCubeService = {personalCubeService}
             />
             : ''
         }

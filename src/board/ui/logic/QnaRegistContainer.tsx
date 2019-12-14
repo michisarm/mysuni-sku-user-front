@@ -2,14 +2,14 @@ import React from 'react';
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import 'react-quill/dist/quill.snow.css';
+import { ContentLayout } from 'shared';
 import { BoardService, CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import { PostModel } from '../../model/PostModel';
 import Editor from './Editor';
-
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   boardService?: BoardService,
@@ -97,7 +97,7 @@ class QnaRegistContainer extends React.Component<Props, States> {
   }
 
   onClose(boardId: string) {
-    this.props.history.push(`/books/support/${boardId}`);
+    this.props.history.push(`/board/support/${boardId}`);
   }
 
   onHandleSave() {
@@ -126,7 +126,7 @@ class QnaRegistContainer extends React.Component<Props, States> {
     );
 
     return (
-      <section className="content bg-white">
+      <ContentLayout className="bg-white">
         <div className="add-personal-learning support">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">Ask a Queation</div>
@@ -216,9 +216,9 @@ class QnaRegistContainer extends React.Component<Props, States> {
           buttonYesName="저장"
           buttonNoName="취소"
         />
-      </section>
+      </ContentLayout>
     );
   }
 }
 
-export default withRouter(QnaRegistContainer);
+export default QnaRegistContainer;

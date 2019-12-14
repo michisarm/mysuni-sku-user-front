@@ -2,44 +2,44 @@ import * as React from 'react';
 import { Segment } from 'semantic-ui-react';
 import SelectView from '../view/SelectView';
 import SelectType from '../../../shared/model/SelectType';
-import { CubeService } from '../..';
+import { PersonalCubeService } from '../..';
 import CreateNoDataView from '../view/CreateNoDataView';
 import SharedListView from '../view/SharedListView';
 
 interface Props {
-  cubeService: CubeService
+  personalCubeService: PersonalCubeService
 }
 
 class CreateListContainer extends React.Component<Props> {
 
   componentDidMount() {
-    const { cubeService } = this.props;
-    if (cubeService) {
+    const { personalCubeService } = this.props;
+    if (personalCubeService) {
       this.findAllCubes();
     }
   }
 
   findAllCubes() {
-    const { cubeService } = this.props;
-    if ( cubeService) {
-      cubeService.findAllCubesByQuery();
+    const { personalCubeService } = this.props;
+    if ( personalCubeService) {
+      personalCubeService.findAllPersonalCubesByQuery();
     }
   }
 
   onChangeCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
-    const { cubeService } = this.props;
-    if (cubeService && nameSub) {
-      cubeService.changeCubeQueryProps(name, value, nameSub, valueSub);
+    const { personalCubeService } = this.props;
+    if (personalCubeService && nameSub) {
+      personalCubeService.changePersonalCubeQueryProps(name, value, nameSub, valueSub);
     }
-    if (cubeService && !nameSub) {
-      cubeService.changeCubeQueryProps(name, value);
+    if (personalCubeService && !nameSub) {
+      personalCubeService.changePersonalCubeQueryProps(name, value);
     }
   }
 
   render() {
-    const { cubes, cubeQuery } = this.props.cubeService || {} as CubeService;
-    const result = cubes.results;
-    const totalCount = cubes.totalCount;
+    const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
+    const result = personalCubes.results;
+    const totalCount = personalCubes.totalCount;
 
     return (
 
@@ -50,7 +50,7 @@ class CreateListContainer extends React.Component<Props> {
             :
             <SelectView
               totalCount={totalCount}
-              cubeQuery={cubeQuery}
+              personalCubeQuery={personalCubeQuery}
               fieldOption={SelectType.openedStateType}
               onChangeCubeQueryProps={this.onChangeCubeQueryProps}
               queryFieldName="openedStateType"

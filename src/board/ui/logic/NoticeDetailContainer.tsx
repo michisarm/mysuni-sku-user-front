@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
 import { PostService } from '../../index';
 
@@ -23,7 +23,7 @@ class NoticeDetailContainer extends React.Component<Props> {
   }
 
   onClose(boardId: string) {
-    this.props.history.push(`/books/support/${boardId}`);
+    this.props.history.push(`/board/support/${boardId}`);
   }
 
   render() {
@@ -76,4 +76,4 @@ class NoticeDetailContainer extends React.Component<Props> {
   }
 }
 
-export default withRouter(NoticeDetailContainer);
+export default NoticeDetailContainer;

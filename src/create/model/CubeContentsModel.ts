@@ -4,11 +4,13 @@ import { IdName } from '../../shared/model/IdName';
 export class CubeContentsModel {
   type: string = '';
   contents: IdName = new IdName();
+  lengthInMinute: number = 0;
   surveyId: string = '';
+
   examId: string = '';
   examTitle: string = '';
   examAuthorName: string = '';
-  lengthInMinute: number = 0;
+
   fileBoxId: string = '';
 
   constructor(cubeContents?: CubeContentsModel) {

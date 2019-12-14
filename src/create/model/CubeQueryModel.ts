@@ -1,13 +1,13 @@
 import { decorate, observable } from 'mobx';
-import { CubeRdoModel } from './CubeRdoModel';
+import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { QueryModel } from '../../shared/model/QueryModel';
 
 export class CubeQueryModel extends QueryModel {
   //
   cubeType: string = '';
-  openState: string = '';
-  openFilter: string = '';
+  cubeState: string = '';
+  searchFilter: string = '';
 
   // ApprovalContents
   serviceType: string = '';
@@ -15,7 +15,7 @@ export class CubeQueryModel extends QueryModel {
   // learner
   learnerType: string = '';
 
-  static asCubeRdo(cubeQuery: CubeQueryModel) : CubeRdoModel {
+  static asCubeRdo(cubeQuery: CubeQueryModel) : PersonalCubeRdoModel {
     let isName = false;
     let isWord = false;
     if (cubeQuery.searchPart === '과정명') isName = true;
@@ -27,8 +27,8 @@ export class CubeQueryModel extends QueryModel {
         cubeType: cubeQuery && cubeQuery.cubeType,
         channel: cubeQuery && cubeQuery.channel,
         college: cubeQuery && cubeQuery.college,
-        openState: cubeQuery && cubeQuery.openState,
-        openFilter: cubeQuery && cubeQuery.openFilter,
+        cubeState: cubeQuery && cubeQuery.cubeState,
+        searchFilter: cubeQuery && cubeQuery.searchFilter,
         name: isName && cubeQuery && cubeQuery.searchWord || '',
         creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
         offset: cubeQuery && cubeQuery.offset,
@@ -48,7 +48,7 @@ export class CubeQueryModel extends QueryModel {
         cubeType: cubeQuery && cubeQuery.cubeType,
         channel: cubeQuery && cubeQuery.channel,
         college: cubeQuery && cubeQuery.college,
-        openState: cubeQuery && cubeQuery.openState,
+        cubeState: cubeQuery && cubeQuery.cubeState,
         name: isName && cubeQuery && cubeQuery.searchWord || '',
         creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
         startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
@@ -62,8 +62,8 @@ export class CubeQueryModel extends QueryModel {
 
 decorate(CubeQueryModel, {
   cubeType: observable,
-  openState: observable,
-  openFilter: observable,
+  cubeState: observable,
+  searchFilter: observable,
 
   learnerType: observable,
   serviceType: observable,

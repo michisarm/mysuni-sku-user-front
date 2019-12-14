@@ -73,6 +73,13 @@ export default class PersonalCubeService {
   }
 
   @action
+  changePersonalCubeProps(name: string, value: string | {}) {
+    //
+    this.personalCube = { ...this.personalCube, [name]: value } as PersonalCubeModel;
+    console.log(this.personalCube);
+  }
+
+  @action
   clearPersonalCube() {
     //
     this.personalCube = new PersonalCubeModel();

@@ -33,7 +33,7 @@ class AnsweredDetailContainer extends React.Component<Props> {
   }
 
   onClose(boardId: string) {
-    this.props.history.push(`/books/support/${boardId}`);
+    this.props.history.push(`/board/support/${boardId}`);
   }
 
   render() {

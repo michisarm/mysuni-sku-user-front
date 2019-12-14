@@ -2,7 +2,6 @@ import { decorate, observable } from 'mobx';
 import { DatePeriod } from './DatePeriod';
 
 export class QueryModel {
-  // cube
   period: DatePeriod = new DatePeriod();
   college: string = '';
   channel: string = '';

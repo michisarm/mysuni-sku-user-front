@@ -24,4 +24,9 @@ module.exports = {
     pathRewrite: { '/api/sk/profiles': '/sk/profiles' },
   },
 
+  '/api/board': {
+    target: 'http://localhost:8193/',
+    pathRewrite: { '/api/board': '/board' },
+  },
+
 };

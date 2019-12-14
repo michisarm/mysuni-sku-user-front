@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
@@ -212,23 +212,24 @@ export class BookMainContainer extends React.Component<Props, States> {
   }
 
   routeToQnaRegist() {
-    this.props.history.push('/books/qna-regist');
+    console.log(56);
+    this.props.history.push('/board/support-qna');
   }
 
   routeToFaqDetail(postId: string) {
-    this.props.history.push(`/books/faq-detail/${postId}`);
+    this.props.history.push(`/board/support/faq-detail/${postId}`);
   }
 
   routeToQnaDetail(postId: string) {
-    this.props.history.push(`/books/qna-detail/${postId}`);
+    this.props.history.push(`/board/support/qna-detail/${postId}`);
   }
 
   routeToNoticeDetail(postId: string) {
-    this.props.history.push(`/books/notice-detail/${postId}`);
+    this.props.history.push(`/board/support/notice-detail/${postId}`);
   }
 
   routeToAnsweredDetail(postId: string) {
-    this.props.history.push(`/books/answered-detail/${postId}`);
+    this.props.history.push(`/board/support/answered-detail/${postId}`);
   }
 
   render() {
@@ -329,4 +330,4 @@ export class BookMainContainer extends React.Component<Props, States> {
   }
 }
 
-export default withRouter(BookMainContainer);
+export default BookMainContainer;
