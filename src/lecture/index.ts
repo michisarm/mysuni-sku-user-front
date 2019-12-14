@@ -1,2 +1,2 @@
 
-export { default as CollegeLectureListPage } from './ui/page/CollegeLectureListPage';
+export { default as CategoryLecturesPage } from './category/ui/page/CategoryLecturesPage';

@@ -5,7 +5,7 @@ import { BreadcrumbValue } from '../../..';
 
 
 interface Props {
-  values: BreadcrumbValue[];
+  values?: BreadcrumbValue[];
 }
 
 
@@ -22,9 +22,8 @@ class BreadcrumbView extends Component<Props> {
             <Link to="/" className="section">
               Home
             </Link>
-            <i className="right chevron icon divider" />
 
-            { values.map((value, index) => (
+            { Array.isArray(values) && values.map((value, index) => (
               <Fragment key={`breadcrumb_${index}`}>
                 <i className="right chevron icon divider" />
                 { index === values.length - 1 ?
@@ -36,6 +35,14 @@ class BreadcrumbView extends Component<Props> {
                 }
               </Fragment>
             ))}
+          </div>
+
+          <div className="right">
+            <Link to="/support">
+              <i className="support12 icon" />
+              <span>Support</span>
+              <i className="arrow8 black-jump icon" />
+            </Link>
           </div>
         </div>
       </div>

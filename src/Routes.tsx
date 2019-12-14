@@ -20,7 +20,7 @@ class Routes extends React.PureComponent {
             {/* course  */}
 
             {/* lecture  */}
-            <Route exact path="/lecture/college-lectures" component={withSplitting(() => import('./lecture').then(({ CollegeLectureListPage }) => CollegeLectureListPage))} />
+            <Route exact path="/lecture/category/:categoryId" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />
 
             {/*  expert */}
 

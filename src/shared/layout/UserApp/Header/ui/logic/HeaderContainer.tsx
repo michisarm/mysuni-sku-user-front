@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Context } from '../../..';
+import CategoryContainer from './CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
   LogoView, MenuView, SearchBarView, ProfileView,
@@ -41,6 +42,7 @@ class HeaderContainer extends Component {
           <MenuView
             handleItemClick = {this.handleItemClick}
           />
+          <CategoryContainer />
           <SearchBarView />
           <ProfileView />
         </>
