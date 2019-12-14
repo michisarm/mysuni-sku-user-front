@@ -4,10 +4,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import {
   Button, Modal, Form, Header, Radio, Grid, List, Segment, Icon,
 } from 'semantic-ui-react';
+import { IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from '../..';
 import { CollegeService } from '../../../college';
 import { CollegeModel } from '../../../college/model/CollegeModel';
-import { IdName } from '../../../shared/model/IdName';
 import { CategoryModel } from '../../model/CategoryModel';
 
 

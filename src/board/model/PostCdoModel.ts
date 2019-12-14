@@ -1,6 +1,6 @@
+import { IdName } from 'shared';
 import { PostConfigModel } from './PostConfigModel';
 import { PostContentsModel } from './PostContentsModel';
-import { IdName } from '../../shared/model/IdName';
 import { WriterModel } from './WriterModel';
 
 export class PostCdoModel {

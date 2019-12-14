@@ -2,13 +2,13 @@ import { observable, action, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import { OffsetElementList } from '@nara.platform/accent';
+import { IdName } from 'shared';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../..';
 import { CubeQueryModel } from '../../model/CubeQueryModel';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { ExcelView } from '../../../shared/model/ExcelView';
 import { CubeState } from '../../model/CubeState';
-import { IdName } from '../../../shared/model/IdName';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
 @autobind

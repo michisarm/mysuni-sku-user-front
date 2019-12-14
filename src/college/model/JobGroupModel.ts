@@ -1,8 +1,9 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { IdName } from 'shared';
 import { CreatorModel } from './CreatorModel';
 import { JobGroupType } from './JobGroupType';
-import { IdName } from '../../shared/model/IdName';
+
 
 export class JobGroupModel implements DramaEntity {
   entityVersion: number=0;

@@ -1,6 +1,6 @@
+import { IdName } from 'shared';
 import { CreatorModel } from './CreatorModel';
 import { CubeContentsModel } from './CubeContentsModel';
-import { IdName } from '../../shared/model/IdName';
 import { CategoryModel } from './CategoryModel';
 import { IconBox } from './IconBox';
 import { CubeState } from './CubeState';

@@ -1,10 +1,10 @@
 import { action, configure, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
+import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import { ChannelViewModel } from '../../model/ChannelViewModel';
-import { IdNameList } from '../../../shared/model/IdNameList';
 
 configure({
   enforceActions: 'observed',

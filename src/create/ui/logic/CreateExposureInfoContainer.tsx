@@ -2,9 +2,9 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Checkbox, Form, Radio, Select, Button } from 'semantic-ui-react';
+import { IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from '../..';
 import { CollegeService, SubsidiaryService } from '../../../college';
-import { IdName } from '../../../shared/model/IdName';
 import { IconType } from '../../model/IconType';
 
 interface Props {

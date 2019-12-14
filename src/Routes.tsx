@@ -38,6 +38,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
 
             {/*board*/}
+            /* eslint-disable-next-line max-len */
             {/*<Route exact path="/board/support" component={withSplitting(() => import('./board').then(({ BookMainContainer }) => BookMainContainer))} />*/}
             <Route exact path="/board/support/:boardId" component={withSplitting(() => import('./board').then(({ BookMainContainer }) => BookMainContainer))} />
             <Route exact path="/board/support/notice-detail/:postId" component={withSplitting(() => import('./board').then(({ NoticeDetailContainer }) => NoticeDetailContainer))} />

@@ -2,10 +2,11 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Checkbox, Form, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
+import { IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from '../..';
 import { CollegeService } from '../../../college';
 import { CollegeModel } from '../../../college/model/CollegeModel';
-import { IdName } from '../../../shared/model/IdName';
+
 
 interface Props {
   open: boolean

@@ -1,7 +1,7 @@
 import { IdName, IdNameList as AccentIdNameList } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
-export class IdNameList implements AccentIdNameList {
+class IdNameList implements AccentIdNameList {
   //
   idNames: IdName[] = [];
 
@@ -15,3 +15,5 @@ export class IdNameList implements AccentIdNameList {
 decorate(IdNameList, {
   idNames: observable,
 });
+
+export default IdNameList;
