@@ -4,9 +4,9 @@ module.exports = {
     pathRewrite: { '/api/sample': '/' },
   },
 
-  '/api/cube': {
+  '/api/personalCube': {
     target: 'http://localhost:8223',
-    pathRewrite: { '/api/cube': '/cube' },
+    pathRewrite: { '/api/personalCube': '/personalCube' },
   },
 
   '/api/lp/expert': {
