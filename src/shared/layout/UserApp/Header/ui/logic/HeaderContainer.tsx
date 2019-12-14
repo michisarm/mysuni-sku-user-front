@@ -1,43 +1,37 @@
+
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
+import { Context } from '../../..';
+import CategoryContainer from './CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
-import { BreadcrumbsView, LogoView, MenuView, ProfileView, SearchBarView } from '../view/HeaderElementsView';
+import {
+  LogoView, MenuView, SearchBarView, ProfileView,
+} from '../view/HeaderElementsView';
+import BreadcrumbView from '../view/BreadcrumbView';
 
 
 @reactAutobind
 class HeaderContainer extends Component {
   //
-  handleItemClick(data: any) {
-    console.log(data);
-    switch (data) {
-      case 'learning':
-        window.location.href = `${process.env.PUBLIC_URL}/expert/instructor`;
-        break;
-      case 'create':
-        window.location.href = `${process.env.PUBLIC_URL}/cube/create`;
-        break;
-
-      case 'community':
-        window.location.href = `${process.env.PUBLIC_URL}/board/support/notice`;
-        break;
-    }
-  }
+  static contextType  = Context;
 
   render() {
     //
+    const { breadcrumb } = this.context;
 
     return (
       <HeaderWrapperView
         breadcrumbs={(
-          <BreadcrumbsView />
+          <BreadcrumbView
+            values={breadcrumb.values}
+          />
         )}
       >
         <>
           <LogoView />
-          <MenuView
-            handleItemClick={this.handleItemClick}
-          />
+          <MenuView />
+          <CategoryContainer />
           <SearchBarView />
           <ProfileView />
         </>

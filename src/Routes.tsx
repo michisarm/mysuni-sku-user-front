@@ -21,8 +21,8 @@ class Routes extends React.PureComponent {
 
             {/*create*/}
 
-            <Route exact path="/cube/create" component={withSplitting(() => import('./create').then(({ CreateContainer }) => CreateContainer))} />
-            <Route exact path="/cube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
+            <Route exact path="/personalcube/create" component={withSplitting(() => import('./create').then(({ CreateContainer }) => CreateContainer))} />
+            <Route exact path="/personalcube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
 
             {/* lecture  */}
             <Route exact path="/lecture/category/:categoryId" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />

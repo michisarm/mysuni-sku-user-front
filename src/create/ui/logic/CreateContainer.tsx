@@ -40,7 +40,7 @@ class CreateContainer extends React.Component<Props, States> {
 
   routeToCreateDetail() {
     console.log(56);
-    this.props.history.push('/cube/create-detail');
+    this.props.history.push('/personalcube/create-detail');
   }
 
   render() {
