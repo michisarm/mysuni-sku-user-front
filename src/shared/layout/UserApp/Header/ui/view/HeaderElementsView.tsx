@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Image } from 'semantic-ui-react';
 
@@ -18,13 +17,13 @@ export const LogoView: React.FC<LogoViewProps> = () => (
 
 
 interface MenuViewProps {
-  handleItemClick: (data: any) => void
+  //handleItemClick: (data: any) => void
 }
 
-export const MenuView: React.FC<MenuViewProps> = ({ handleItemClick }) => (
+export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
-      <a className="item active" onClick={() => handleItemClick('learning')}>Learning</a>
+      <a className="item active">Learning</a>
       <a className="item">Community</a>
       <a className="item">Recommend</a>
       <a className="item">Create</a>

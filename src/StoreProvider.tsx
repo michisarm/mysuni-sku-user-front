@@ -3,7 +3,10 @@ import React from 'react';
 import { configure } from 'mobx';
 import { Provider } from 'mobx-react';
 
-import stores from './stores';
+import { stores } from '@sku/learning';
+import { sharedService } from './shared';
+import { InstructorService } from './expert/index';
+import { CubeService } from './create/index';
 
 
 configure({
@@ -18,6 +21,9 @@ function StoreProvider({ children }: Props) {
   return (
     <Provider
       {...stores}
+      sharedService={sharedService}
+      instructorService={InstructorService.instance}
+      cubeService={CubeService.instance}
     >
       {children}
     </Provider>

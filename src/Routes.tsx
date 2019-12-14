@@ -19,6 +19,12 @@ class Routes extends React.PureComponent {
 
             {/* course  */}
 
+            {/*create*/}
+
+            <Route exact path="/cube/create" component={withSplitting(() => import('./create').then(({ CreateContainer }) => CreateContainer))} />
+            <Route exact path="/cube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
+
+
             {/* lecture  */}
             <Route exact path="/lecture/college-lectures" component={withSplitting(() => import('./lecture').then(({ CollegeLectureListPage }) => CollegeLectureListPage))} />
 
@@ -34,6 +40,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
 
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
+            <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
           </Switch>
         </UserApp>
       </BrowserRouter>

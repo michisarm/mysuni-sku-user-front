@@ -11,13 +11,16 @@ import {
 @reactAutobind
 class HeaderContainer extends Component {
   //
-  handleItemClick(data: any) {
+  /* handleItemClick(data: any) {
     switch (data) {
       case 'learning':
         window.location.href = `${process.env.PUBLIC_URL}/expert/instructor`;
         break;
+      case 'create':
+        window.location.href = `${process.env.PUBLIC_URL}/cube/create`;
+        break;
     }
-  }
+  }*/
 
   render() {
     //
@@ -29,9 +32,7 @@ class HeaderContainer extends Component {
       >
         <>
           <LogoView />
-          <MenuView
-            handleItemClick = {this.handleItemClick}
-          />
+          <MenuView />
           <SearchBarView />
           <ProfileView />
         </>
