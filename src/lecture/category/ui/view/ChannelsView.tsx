@@ -4,27 +4,28 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
+import { ChannelModel } from 'college';
 
 
 interface Props {
   open: boolean,
-  subCategories: { id: string, text: string, active: boolean }[],
+  channels: ChannelModel[],
   onToggle: () => void,
 }
 
 @reactAutobind
-class SubCategoriesView extends Component<Props> {
+class ChannelsView extends Component<Props> {
   //
   render() {
     //
-    const { open, subCategories, onToggle } = this.props;
+    const { open, channels, onToggle } = this.props;
 
     return (
       <div className="channel-of-interest">
         <div className="table-css type2 type3">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">Channel ({subCategories.length})</div>
+              <div className="tit-set">Channel ({channels.length})</div>
             </div>
             <div className="cell vtop">
               <div
@@ -35,9 +36,9 @@ class SubCategoriesView extends Component<Props> {
               >
                 {/*  .active //  */}
                 <div className="belt">
-                  {subCategories.map((subCategory, index) => (
-                    <Button key={`sub-category-${index}`} className={`toggle toggle4 ${subCategory.active ? 'active' : ''}`}>
-                      {subCategory.text}
+                  {channels.map((channel, index) => (
+                    <Button key={`sub-category-${index}`} className={`toggle toggle4 ${channel.name ? 'active' : ''}`}>
+                      {channel.name}
                     </Button>
                   ))}
                 </div>
@@ -64,4 +65,4 @@ class SubCategoriesView extends Component<Props> {
   }
 }
 
-export default SubCategoriesView;
+export default ChannelsView;

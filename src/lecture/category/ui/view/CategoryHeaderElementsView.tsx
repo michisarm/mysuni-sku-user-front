@@ -16,8 +16,8 @@ export const ThumbnailView: React.FC<ThumbnailProps> = ({ image }) => (
 
 interface TitleProps {
   title: string,
-  subtitle: string,
-  description: string,
+  subtitle?: string,
+  description?: string,
 }
 
 export const TitleView: React.FC<TitleProps> = ({ title, subtitle, description }) => (

@@ -58,7 +58,12 @@ export default class CollegeService {
   async findCollege(collegeId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
-    if (college) return runInAction(() => this.college = new CollegeModel(college));
+    if (college) {
+      return runInAction(() => {
+        this.college = new CollegeModel(college);
+        this._channels = this.college.channels;
+      });
+    }
     return null;
   }
 

@@ -1,28 +1,31 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
+import { CollegeService } from 'college';
 import CategoryContentWrapperView from '../view/CategoryContentWrapperView';
-import SubCategoriesView from '../view/SubCategoriesView';
+import ChannelsView from '../view/ChannelsView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import SortingView from '../view/SortingView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
+interface Props {
+  collegeService?: CollegeService
+}
+
 interface State {
   categoriesOpen: boolean,
   sorting: string,
 }
 
+@inject('collegeService')
 @reactAutobind
-class CategoryLecturesContainer extends Component<{}, State> {
+@observer
+class CategoryLecturesContainer extends Component<Props, State> {
   //
-  static subCategories = [
-    { id: 'AIFundamental', text: 'AI Fundamental', active: false },
-    { id: 'SpeechAI', text: 'Speech AI', active: true },
-  ];
-
   state = {
     categoriesOpen: false,
     sorting: 'latest',
@@ -49,21 +52,24 @@ class CategoryLecturesContainer extends Component<{}, State> {
 
   render() {
     //
-    const { subCategories } = CategoryLecturesContainer;
+    const { collegeService } = this.props;
     const { categoriesOpen, sorting } = this.state;
+    const college = collegeService!.college;
+    const channels = collegeService!.channels;
+    console.log('college', college);
 
     return (
       <CategoryContentWrapperView>
-        <SubCategoriesView
+        <ChannelsView
           open={categoriesOpen}
-          subCategories={subCategories}
+          channels={channels}
           onToggle={this.onToggleCategories}
         />
         <LecturesWrapperView
           header={
             <>
               <DescriptionView
-                name="AI College"
+                name={`${college.name} College`}
                 count={230}
               />
               <SortingView
