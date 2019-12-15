@@ -102,7 +102,12 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { colleges, college, selectChannels, favoriteChannels } = this.props.collegeService;
     const { isSelectedColleage } = this.state;
     return (
-      <ContentLayout className="bg-white">
+      <ContentLayout breadcrumb={[
+        { text: 'd1', path: '/depth1-path' },
+        { text: 'd2' },
+      ]}
+        className="bg-white"
+      >
         <div className="interest-content step1">
           <TitleView step={1} onSKIntroClick={this.onSKIntroClick} />
           <Form>

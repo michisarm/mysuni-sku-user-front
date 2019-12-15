@@ -4,7 +4,9 @@ import autobind from 'autobind-decorator';
 import PageModel from '../model/PageModel';
 
 @autobind
-export class SharedService {
+class SharedService {
+
+  static instance: SharedService;
 
   @observable
   modalMap = new Map();
@@ -68,4 +70,6 @@ export class SharedService {
   }
 }
 
-export default new SharedService();
+SharedService.instance = new SharedService();
+
+export default SharedService;

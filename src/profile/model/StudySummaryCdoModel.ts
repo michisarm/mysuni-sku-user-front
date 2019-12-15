@@ -1,6 +1,6 @@
 import { AudienceKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdNameList } from '../../shared/model/IdNameList';
+import { IdNameList } from 'shared';
 
 export class StudySummaryCdoModel {
   audienceKey : AudienceKey={} as AudienceKey;

@@ -1,10 +1,10 @@
 import { action, configure, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
+import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import { ChannelViewModel } from '../../model/ChannelViewModel';
-import { IdNameList } from '../../../shared/model/IdNameList';
 
 configure({
   enforceActions: 'observed',
@@ -22,6 +22,12 @@ export default class CollegeService {
 
   @observable
   colleges: CollegeModel[] = [];
+
+  @observable
+  mainCollege: CollegeModel = new CollegeModel();
+
+  @observable
+  subCollege: CollegeModel = new CollegeModel();
 
   @observable
   jobGroups: JobGroupModel[] = [];
@@ -119,6 +125,37 @@ export default class CollegeService {
       list.idNames.push({ id: channel.channelId, name: channel.name });
     });
     return list;
+  }
+
+
+  @action
+  async findMainCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.mainCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  async findSubCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.subCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  clearMainCollege() {
+    //
+    this.mainCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
+  }
+
+  @action
+  clearSubCollege() {
+    //
+    this.subCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
   }
 
 }

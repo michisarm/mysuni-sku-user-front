@@ -1,7 +1,7 @@
 import { IdName as AccentIdName } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
-export class IdName implements AccentIdName {
+class IdName implements AccentIdName {
   //
   id: string = '';
   name: string = '';
@@ -17,3 +17,5 @@ decorate(IdName, {
   id: observable,
   name: observable,
 });
+
+export default IdName;

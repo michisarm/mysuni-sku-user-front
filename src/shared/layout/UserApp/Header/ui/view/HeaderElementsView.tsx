@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Image } from 'semantic-ui-react';
@@ -16,13 +15,12 @@ export const LogoView: React.FC = () => (
 
 
 interface MenuViewProps {
-  handleItemClick: (data: any) => void
 }
 
-export const MenuView: React.FC<MenuViewProps> = ({ handleItemClick }) => (
+export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
-      <a className="item active" onClick={() => handleItemClick('learning')}>Learning</a>
+      <Link to="/expert/instructor" className="item active">Learning</Link>
       <Link to="/personalcube/community" className="item">Community</Link>
       <Link to="/recommend" className="item">Recommend</Link>
       <Link to="/personalcube/create" className="item">Create</Link>
