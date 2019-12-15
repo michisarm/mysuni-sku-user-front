@@ -1,17 +1,27 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
 import { Button } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
+import { CollegeService } from 'college';
 import { ThumbnailView, TitleView } from '../view/CategoryHeaderElementsView';
 
 
+interface Props {
+  collegeService?: CollegeService
+}
+
+@inject('collegeService')
 @reactAutobind
-class CategoryHeaderContainer extends Component {
+@observer
+class CategoryHeaderContainer extends Component<Props> {
   //
   render() {
     //
+    const { collegeService } = this.props;
+
     return (
       <ContentHeader>
         <ContentHeader.Cell className="thumb">

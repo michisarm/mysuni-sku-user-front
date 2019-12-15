@@ -1,8 +1,4 @@
 module.exports = {
-  '/api/sample': {
-    target: 'http://localhost:8082',
-    pathRewrite: { '/api/sample': '/' },
-  },
 
   '/api/personalCube': {
     target: 'http://localhost:8223',
@@ -16,7 +12,6 @@ module.exports = {
 
   '/api/college': {
     target: 'http://10.178.66.114',
-    pathRewrite: { '/api/college': '/api/college' },
   },
 
   '/api/sk/profiles': {

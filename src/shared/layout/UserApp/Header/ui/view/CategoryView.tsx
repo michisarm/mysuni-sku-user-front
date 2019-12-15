@@ -1,28 +1,32 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import { Button } from 'semantic-ui-react';
-import HeaderCategoryModel from '../../model/HeaderCategoryModel';
+// import { CategoryModel, SubCategoryModel } from 'shared';
+import { CollegeModel, ChannelModel } from 'college';
 
 
 interface Props {
   open: boolean,
-  categories: HeaderCategoryModel[],
-  activeCategory?: HeaderCategoryModel,
+  colleges: CollegeModel[],
+  activeCollege?: CollegeModel,
+  channels?: ChannelModel[],
   onClick: (e: any) => void,
-  onActiveCategory: (e: any, category: HeaderCategoryModel) => void,
-  onClickSubCategory: (e: any, category: HeaderCategoryModel) => void,
+  onActiveCollege: (e: any, college: CollegeModel) => void,
+  onClickChannel: (e: any, channel: ChannelModel) => void,
 }
 
 @reactAutobind
+@observer
 class CategoryView extends Component<Props> {
   //
   render() {
     //
     const {
-      open, categories, activeCategory,
-      onClick, onActiveCategory, onClickSubCategory,
+      open, colleges, activeCollege, channels,
+      onClick, onActiveCollege, onClickChannel,
     } = this.props;
 
     return (
@@ -39,13 +43,13 @@ class CategoryView extends Component<Props> {
               <div className="cell vtop">
                 <div className="select-area">
                   <div className="scrolling">
-                    { categories.map((category) => (
+                    { colleges.map((college) => (
                       <Button
-                        key={`category_${category.main.id}`}
-                        className={activeCategory && activeCategory.main.id === category.main.id ? 'active' : ''}
-                        onClick={(e) => onActiveCategory(e, category)}
+                        key={`category_${college.collegeId}`}
+                        className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
+                        onClick={(e) => onActiveCollege(e, college)}
                       >
-                        {category.main.name}
+                        {college.name}
                       </Button>
                     ))}
                   </div>
@@ -54,9 +58,9 @@ class CategoryView extends Component<Props> {
               <div className="cell vtop">
                 <div className="select-area">
                   <div className="scrolling">
-                    { activeCategory && Array.isArray(activeCategory.sub) && (
-                      activeCategory.sub.map((subCategory) => (
-                        <Button key={`sub-category-${subCategory.id}`} onClick={(e) => onClickSubCategory(e, subCategory)}>{subCategory.text}<span>(125)</span></Button>
+                    { Array.isArray(channels) && (
+                      channels.map((channel) => (
+                        <Button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}<span>(125)</span></Button>
                       ))
                     )}
                   </div>

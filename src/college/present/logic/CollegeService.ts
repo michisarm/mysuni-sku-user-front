@@ -1,14 +1,12 @@
-import { action, configure, observable, runInAction } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
+import ChannelModel from '../../model/ChannelModel';
 import { ChannelViewModel } from '../../model/ChannelViewModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class CollegeService {
@@ -36,13 +34,24 @@ export default class CollegeService {
   jobGroup: JobGroupModel = new JobGroupModel();
 
   @observable
+  _channels: ChannelModel[] = [];
+
+  @observable
   selectChannels: ChannelViewModel [] = [];
 
   @observable
   favoriteChannels : ChannelViewModel [] = [];
 
+
   constructor(collegeApi: CollegeApi) {
     this.collegeApi = collegeApi;
+  }
+
+  @computed
+  get channels() {
+    //
+    const channels = this._channels as any;
+    return channels ? channels.peek() : [];
   }
 
   @action
@@ -58,6 +67,11 @@ export default class CollegeService {
     //
     const colleges = await this.collegeApi.findAllColleges();
     return runInAction(() => this.colleges = colleges);
+  }
+
+  @action
+  setCollege(colege: CollegeModel) {
+    this.college = colege;
   }
 
   @action
@@ -79,7 +93,15 @@ export default class CollegeService {
   }
 
   @action
-  setChannels() {
+  setChannels(channels?: ChannelModel[]) {
+    //
+    if (channels) {
+      this._channels = [...channels];
+    }
+  }
+
+  @action
+  setSelectChannels() {
     const channels = this.college.channels;
 
     this.selectChannels = [];

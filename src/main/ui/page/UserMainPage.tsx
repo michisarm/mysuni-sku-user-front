@@ -16,12 +16,7 @@ class UserMainPage extends Component {
   render() {
     //
     return (
-      <ContentLayout
-        breadcrumb={[
-          { text: 'd1', path: '/depth1-path' },
-          { text: 'd2' },
-        ]}
-      >
+      <ContentLayout>
         <div className="main-wrap">
           <MainCarouselContainer />
           <SearchBarContainer />

@@ -6,6 +6,11 @@ import classNames from 'classnames';
 import { Context } from 'shared/layout/UserApp';
 
 
+interface Breadcrumb {
+  text: string,
+  path?: string,
+}
+
 interface Props {
 
   children: React.ReactNode,
@@ -14,7 +19,7 @@ interface Props {
   className?: string,
 
   /** breadcrumb (page navigation) */
-  breadcrumb?: { text: string, path?: string }[],
+  breadcrumb?: Breadcrumb[],
 
   /** 내부사용 context */
   context?: any,
@@ -29,17 +34,27 @@ class ContentLayoutContainer extends Component<Props> {
 
   componentDidMount() {
     //
+    this.setBreadcrumb(this.props.breadcrumb);
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.breadcrumb !== this.props.breadcrumb) {
+      this.setBreadcrumb(this.props.breadcrumb);
+    }
+  }
+
+  setBreadcrumb(breadcrumb?: Breadcrumb[]) {
+    //
     const { breadcrumb: breadcrumbContext } = this.context;
-    const { breadcrumb } = this.props;
 
     breadcrumbContext.setBreadcrumb(breadcrumb);
   }
 
+
   render() {
     //
-
     const { className, children } = this.props;
-
 
     return (
       <section className={classNames('content', className)}>
