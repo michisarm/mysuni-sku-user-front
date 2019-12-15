@@ -1,7 +1,8 @@
 import { Button, Icon, Table } from 'semantic-ui-react';
 import * as React from 'react';
-import { SearchFilter } from '../../model/SearchFilter';
-import { PersonalCubeModel } from '../..';
+import { PersonalCubeModel } from 'personalcube/personalcube';
+import { SearchFilter } from '../../../personalcube/personalcube/model/SearchFilter';
+
 
 interface Props {
   result: PersonalCubeModel[]

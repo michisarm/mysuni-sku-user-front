@@ -2,11 +2,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
+import { PersonalCubeModel } from 'personalcube/personalcube';
+import { CollegeService } from 'college';
 import SelectType from '../../../shared/model/SelectType';
-import { CollegeService } from '../../../college';
-import { PersonalCubeModel } from '../..';
 import FirstCategoryModal from '../view/FirstCategoryModal';
 import SecondCategoryModal from '../view/SecondCategoryModal';
+
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void

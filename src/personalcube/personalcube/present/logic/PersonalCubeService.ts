@@ -4,12 +4,13 @@ import _ from 'lodash';
 import { OffsetElementList } from '@nara.platform/accent';
 import { IdName } from 'shared';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
-import { PersonalCubeModel } from '../..';
-import { CubeQueryModel } from '../../model/CubeQueryModel';
-import { ApprovalContents } from '../../model/ApprovalContents';
-import { ExcelView } from '../../../shared/model/ExcelView';
+import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { CubeState } from '../../model/CubeState';
-import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+import { CubeQueryModel } from '../../../../create/model/CubeQueryModel';
+import { ApprovalContents } from '../../../../create/model/ApprovalContents';
+import { ExcelView } from '../../../../shared/model/ExcelView';
+import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCubeRequestCdoModel';
+
 
 @autobind
 export default class PersonalCubeService {
@@ -53,6 +54,13 @@ export default class PersonalCubeService {
     console.log(personalCube);
     if (personalCube) return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
     return null;
+  }
+
+  @action
+  async findAllPersonalCubes(offset: number, limit: number) {
+    //
+    const personalCubes = await this.personalCubeApi.findAllPersonalCubes(offset, limit);
+    return runInAction(() => this.personalCubes = personalCubes);
   }
 
   @action

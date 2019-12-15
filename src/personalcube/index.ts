@@ -1,2 +1,11 @@
 
-export { default as SamplePage } from './ui/page/SamplePage';
+import { PersonalCubeService } from './personalcube';
+
+
+export const personalCubeStores = {
+  personalCubeService: PersonalCubeService.instance,
+};
+
+export {
+  PersonalCubeService,
+};

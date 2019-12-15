@@ -1,10 +1,10 @@
 import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platform/accent';
-import { PersonalCubeModel } from '../..';
+import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { PersonalCubeRdoModel } from '../../model/PersonalCubeRdoModel';
-import { ExcelView } from '../../../shared/model/ExcelView';
-import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
-import { ApprovalContents } from '../../model/ApprovalContents';
-import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+import { ExcelView } from '../../../../shared/model/ExcelView';
+import { ApprovalContentsRdo } from '../../../../create/model/ApprovalContentsRdo';
+import { ApprovalContents } from '../../../../create/model/ApprovalContents';
+import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCubeRequestCdoModel';
 
 export default class PersonalCubeApi {
   URL = '/api/personalCube/personalCubes';
@@ -25,12 +25,14 @@ export default class PersonalCubeApi {
     return axios.put<void>(this.URL + `/${personalCubeId}`, nameValues);
   }
 
-  // todo totalCount를 얻는 메소드가 필요함.
-  // findAllPersonalCubes(personalCubeRdo: PersonalCubeRdoModel) {
-  //   //
-  //   return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL + `/searchKey`, { params: personalCubeRdo })
-  //     .then((response: any) => response && response.data || null);
-  // }
+  // Todo: totalCount를 얻는 메소드가 필요함.
+  findAllPersonalCubes(offset: number, limit: number) {
+    //
+    return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL, { params: {
+      offset,
+      limit,
+    }}).then((response: any) => response && response.data || null);
+  }
 
   //Query
   findAllPersonalCubesByQuery(personalCubeRdo: PersonalCubeRdoModel) {

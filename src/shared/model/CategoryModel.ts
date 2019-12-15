@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import IdName from './IdName';
 
 export class CategoryModel {
   college: IdName = new IdName();

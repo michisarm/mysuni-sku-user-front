@@ -1,18 +1,18 @@
 import { stores as learningStores } from '@sku/learning';
 
 import { sharedStores } from './shared';
+import { personalCubeStores } from './personalcube';
 import { InstructorService } from './expert';
 import { CollegeService, SubsidiaryService } from './college';
 import { SkProfileService } from './profile';
-import { PersonalCubeService } from './create';
 import { AnswerService, BoardService, CategoryService, PostService } from './board';
 
 
 const stores = {
   ...learningStores,
   ...sharedStores,
+  ...personalCubeStores,
   instructorService: InstructorService.instance,
-  personalCubeService: PersonalCubeService.instance,
   boardService: BoardService.instance,
   categoryService: CategoryService.instance,
   postService: PostService.instance,

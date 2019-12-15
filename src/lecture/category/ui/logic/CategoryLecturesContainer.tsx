@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { CollegeService } from 'college';
+import { PersonalCubeService } from 'personalcube/personalcube';
 import CategoryContentWrapperView from '../view/CategoryContentWrapperView';
 import ChannelsView from '../view/ChannelsView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
@@ -13,7 +14,8 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
 interface Props {
-  collegeService?: CollegeService
+  collegeService?: CollegeService,
+  personalCubeService?: PersonalCubeService,
 }
 
 interface State {
@@ -21,7 +23,7 @@ interface State {
   sorting: string,
 }
 
-@inject('collegeService')
+@inject('collegeService', 'personalCubeService')
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
@@ -30,6 +32,15 @@ class CategoryLecturesContainer extends Component<Props, State> {
     categoriesOpen: false,
     sorting: 'latest',
   };
+
+  componentDidMount() {
+    //
+    const { personalCubeService } = this.props;
+
+    // Todo: 조회 서비스 교체해야함.
+    // personalCubeService!.findAllPersonalCubesByQuery();
+    personalCubeService!.findAllPersonalCubes(0, 20);
+  }
 
 
   onToggleCategories() {

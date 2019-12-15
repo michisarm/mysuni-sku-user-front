@@ -3,10 +3,11 @@ import { RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Segment } from 'semantic-ui-react';
-import { ContentLayout } from '../../../shared';
+import { PersonalCubeService } from 'personalcube/personalcube';
+import { ContentLayout } from 'shared';
 import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
-import { PersonalCubeService } from '../../index';
+
 
 interface Props extends RouteComponentProps<{cubeId: string}>{
   personalCubeService?: PersonalCubeService

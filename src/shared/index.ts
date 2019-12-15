@@ -16,6 +16,8 @@ export {
 /** Model */
 export { default as IdName } from './model/IdName';
 export { default as IdNameList } from './model/IdNameList';
+export { NameValueList } from './model/NameValueList';
+export { CategoryModel } from './model/CategoryModel';
 export { default as PageModel } from './present/model/PageModel';
 
 /** Helper */

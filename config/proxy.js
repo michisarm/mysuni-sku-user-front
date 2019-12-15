@@ -1,17 +1,18 @@
 module.exports = {
 
+  '/api/college': {
+    target: 'http://10.178.66.114',
+  },
+
   '/api/personalCube': {
-    target: 'http://localhost:8223',
-    pathRewrite: { '/api/personalCube': '/personalCube' },
+    target: 'http://10.178.66.114',
+    // target: 'http://localhost:8223',
+    // pathRewrite: { '/api/personalCube': '/personalCube' },
   },
 
   '/api/lp/expert': {
     target: 'http://localhost:8118',
     pathRewrite: { '/api/lp/expert': 'v1/instructors' },
-  },
-
-  '/api/college': {
-    target: 'http://10.178.66.114',
   },
 
   '/api/sk/profiles': {
