@@ -55,7 +55,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { collegeService } = this.props;
     if (collegeService) {
       collegeService.findCollege(collegeId)
-        .then(() => collegeService.setChannels())
+        .then(() => collegeService.setSelectChannels())
         .then(() => this.setState({
           isSelectedColleage: true,
         }));

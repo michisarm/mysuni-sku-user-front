@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { OwnerType } from './OwnerType';
-import { IconType } from './IconType';
+import { IconType } from '../../personalcube/personalcube/model/IconType';
 
 export class OwnershipModel {
   name: string = '';

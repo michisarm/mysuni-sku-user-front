@@ -1,0 +1,89 @@
+%extend-input{
+    &.rtl{
+        input{
+            text-align:right;
+            padding:rem(0 10px 0 28px) !important;
+        }
+        i.clear{
+            right:auto;
+            left:rem(3px);
+        }
+    }
+    &.write{
+        i.clear{
+            display:block;
+        }
+    }
+    &.focus{
+        input{
+            border:rem(1px) solid #6ea6ec !important;
+        }
+    }
+    &.search{
+        input{
+            padding:rem(0 60px 0 10px) !important;
+        }
+        i.clear{
+            right:rem(37px);
+        }
+    }
+    &.pop{
+        input{
+            background:#eee !important;
+            border-color:#eee;
+            &:disabled{
+                background:#dae0eb !important;
+                opacity:1 !important;
+                color:#b7c0d1 !important
+            }
+        }
+        i{
+            &.clear{
+                &::before{
+                    background:url(../img/icon-search-22-px.svg) no-repeat 0 0 !important;
+                }
+            }
+        }
+    }
+    input{
+        box-sizing:border-box;
+        border-radius:rem(4px);
+        padding:rem(0 28px 0 10px) !important;
+        color:#222;
+        border-color:#7f7f7f;
+        &::placeholder{
+            color:#999;
+        }
+        &:disabled{
+            background:#dae0eb !important;
+            opacity:1 !important;
+            border:1px solid #b7c0d1;
+            color:#b7c0d1;
+            &::placeholder{
+                color:#b7c0d1;
+            }
+        }
+    }
+    i{
+        &.clear{
+            opacity:1 !important;
+            right:rem(3px);
+            width:rem(22px) !important;
+            display:none;
+            &::before{
+                content:'';
+                width:100%;
+                height:rem(22px);
+                margin-top:rem(-11px) !important;
+                background:url(../img/btn-clear-nomal.svg) no-repeat 0 0 !important;
+                background-size:100% 100% !important;
+            }
+        }
+        &.search{
+            opacity:1 !important;
+            &::before{
+                content:'';
+            }
+        }
+    }
+}

@@ -1,12 +1,13 @@
 import { Segment } from 'semantic-ui-react';
 import * as React from 'react';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
+import { PersonalCubeService } from 'personalcube/personalcube';
 import SelectType from '../../../shared/model/SelectType';
 import SelectView from '../view/SelectView';
 import CreateListView from '../view/CreateListView';
 import CreateNoDataView from '../view/CreateNoDataView';
-import { PersonalCubeService } from '../../index';
+
 
 interface Props {
   personalCubeService: PersonalCubeService
@@ -68,8 +69,8 @@ class CreateListContainer extends React.Component<Props, States> {
     if (personalCubeService) {
       personalCubeService.findPersonalCube(cubeId)
         .then(() => {
-          const cubeType = personalCubeService.personalCube.contents.type;
-          const openState = personalCubeService.personalCube.openRequests;
+          // const cubeType = personalCubeService.personalCube.contents.type;
+          // const openState = personalCubeService.personalCube.openRequests;
           /*if (openState === OpenState.Created) this.props.history.push(`/${learningManagementUrl}/cubes/create-cube/${cubeId}/${cubeType}`);
             else this.props.history.push(`/${learningManagementUrl}/cubes/cube-detail/${cubeId}/${cubeType}`);*/
         });

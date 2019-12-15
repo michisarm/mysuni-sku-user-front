@@ -1,22 +1,15 @@
 module.exports = {
-  '/api/sample': {
-    target: 'http://localhost:8082',
-    pathRewrite: { '/api/sample': '/' },
-  },
 
-  '/api/personalCube': {
-    target: 'http://localhost:8223',
-    pathRewrite: { '/api/personalCube': '/personalCube' },
-  },
+  // '/api/personalCube': {
+  //   target: 'http://10.178.66.114',
+  //   // target: 'http://localhost:8223',
+  //   // pathRewrite: { '/api/personalCube': '/personalCube' },
+  // },
+
 
   '/api/lp/expert': {
     target: 'http://localhost:8118',
     pathRewrite: { '/api/lp/expert': 'v1/instructors' },
-  },
-
-  '/api/college': {
-    target: 'http://10.178.66.114',
-    pathRewrite: { '/api/college': '/api/college' },
   },
 
   '/api/sk/profiles': {
@@ -29,4 +22,8 @@ module.exports = {
     pathRewrite: { '/api/board': '/board' },
   },
 
+  // personalCube, college
+  '/api/**': {
+    target: 'http://10.178.66.114',
+  },
 };

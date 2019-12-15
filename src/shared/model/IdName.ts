@@ -11,6 +11,10 @@ class IdName implements AccentIdName {
       Object.assign(this, idName);
     }
   }
+
+  static new(id: string, name: string) {
+    return new IdName({ id, name });
+  }
 }
 
 decorate(IdName, {

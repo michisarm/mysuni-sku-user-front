@@ -1,27 +1,39 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import HeaderCategoryModel from '../../model/HeaderCategoryModel';
-import CategoryMenuView from '../view/CategoryView';
+import { mobxHelper } from 'shared';
+import { CollegeService, CollegeModel, ChannelModel } from 'college';
+import CategoryView from '../view/CategoryView';
 
 
 interface Props extends RouteComponentProps {
+  collegeService?: CollegeService,
 }
 
 interface State {
   categoryOpen: boolean,
-  activeCategory?: HeaderCategoryModel,
+  activeCollege?: CollegeModel,
 }
 
+@inject(mobxHelper.injectFrom('collegeService'))
 @reactAutobind
+@observer
 class CategoryContainer extends Component<Props, State> {
   //
   state = {
     categoryOpen: false,
-    activeCategory: undefined,
+    activeCollege: undefined,
   };
+
+  componentDidMount() {
+    //
+    const { collegeService } = this.props;
+
+    collegeService!.findAllColleges();
+  }
 
 
   onClickCategory() {
@@ -31,32 +43,44 @@ class CategoryContainer extends Component<Props, State> {
     }));
   }
 
-  onActiveCategory(e: any, category: HeaderCategoryModel) {
+  onActiveCollege(e: any, college: CollegeModel) {
     //
-    this.setState(() => ({
-      activeCategory: category,
-    }));
+    const { collegeService } = this.props;
+
+    // collegeService!.setCollege(college);
+    this.setState({
+      activeCollege: college,
+    });
+    collegeService!.setChannels(college.channels);
   }
 
-  onClickSubCategory(e: any, category: HeaderCategoryModel) {
-    if (category.path) {
-      this.props.history.push(category.path);
+  onClickChannel(e: any, channel: ChannelModel) {
+    //
+    const { activeCollege } = this.state;
+    const active: CollegeModel = activeCollege as any;
+
+    if (active.collegeId && channel.id) {
+      this.props.history.push(`/lecture/college/${active.collegeId}/channel/${channel.id}`);
+      this.setState({
+        categoryOpen: false,
+      });
     }
   }
 
   render() {
     //
-    const categories: HeaderCategoryModel[] = [];
-    const { categoryOpen, activeCategory } = this.state;
+    const { collegeService } = this.props;
+    const { categoryOpen, activeCollege } = this.state;
 
     return (
-      <CategoryMenuView
+      <CategoryView
         open={categoryOpen}
-        categories={categories}
-        activeCategory={activeCategory}
+        colleges={collegeService!.colleges}
+        activeCollege={activeCollege}
+        channels={collegeService!.channels}
         onClick={this.onClickCategory}
-        onActiveCategory={this.onActiveCategory}
-        onClickSubCategory={this.onClickSubCategory}
+        onActiveCollege={this.onActiveCollege}
+        onClickChannel={this.onClickChannel}
       />
     );
   }

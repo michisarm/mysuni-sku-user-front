@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
+import { PersonalCubeRdoModel } from '../../personalcube/personalcube/model/PersonalCubeRdoModel';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { QueryModel } from '../../shared/model/QueryModel';
 

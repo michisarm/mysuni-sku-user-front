@@ -4,11 +4,9 @@ import { reactAutobind } from '@nara.platform/accent';
 import {
   Button, Modal, Form, Header, Radio, Grid, List, Segment, Icon,
 } from 'semantic-ui-react';
-import { IdName } from 'shared';
-import { PersonalCubeModel, PersonalCubeService } from '../..';
-import { CollegeService } from '../../../college';
-import { CollegeModel } from '../../../college/model/CollegeModel';
-import { CategoryModel } from '../../model/CategoryModel';
+import { IdName, CategoryModel } from 'shared';
+import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
+import { CollegeService,  CollegeModel } from 'college';
 
 
 interface Props {
@@ -142,7 +140,9 @@ class FirstCategoryModal extends React.Component<Props, States> {
                           <Form.Field
                             key={index}
                             control={Radio}
-                            checked={personalCube && personalCube.category && personalCube.category.channel && personalCube.category.channel.id === channel.id}
+                            checked={personalCube && personalCube.category && personalCube.category.channel
+                              && personalCube.category.channel.id === channel.id
+                            }
                             label={channel.name}
                             onChange={() => this.selectChannelButton(channel)}
                           />

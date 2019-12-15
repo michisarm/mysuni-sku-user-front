@@ -2,7 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { reactAutobind } from '@nara.platform/accent';
-import { PersonalCubeService } from '../../index';
+import { PersonalCubeService } from 'personalcube/personalcube';
 import CreateProfileView from '../view/CreateProfileView';
 import TabView from '../view/TabView';
 import CreateListContainer from './CreateListContainer';

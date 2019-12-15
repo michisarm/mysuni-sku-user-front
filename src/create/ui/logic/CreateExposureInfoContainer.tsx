@@ -3,9 +3,9 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Checkbox, Form, Radio, Select, Button } from 'semantic-ui-react';
 import { IdName } from 'shared';
-import { PersonalCubeModel, PersonalCubeService } from '../..';
+import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from '../../../college';
-import { IconType } from '../../model/IconType';
+import { IconType } from '../../../personalcube/personalcube/model/IconType';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
@@ -105,7 +105,9 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     );
     console.log(personalCube);
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
-    if (personalCube && personalCube.requiredSubsidiaries) personalCube.requiredSubsidiaries.map(requiredSubsidiary => requiredSubsidiaryIdList.push(requiredSubsidiary.id));
+    if (personalCube && personalCube.requiredSubsidiaries) {
+      personalCube.requiredSubsidiaries.map(requiredSubsidiary => requiredSubsidiaryIdList.push(requiredSubsidiary.id));
+    }
 
     return (
       <>
