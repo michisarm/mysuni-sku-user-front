@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { NameValueList, OffsetElementList } from '@nara.platform/accent';
+import {axiosApi as axios, NameValueList, OffsetElementList} from '@nara.platform/accent';
 
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { SkProfileRdo } from '../../model/SkProfileRdo';

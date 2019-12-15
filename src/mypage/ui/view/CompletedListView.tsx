@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, Segment, Card } from 'semantic-ui-react';
+import { reactAutobind } from '@nara.platform/accent';
 import CardValueStamp from './card/CardValueStamp';
 import CardValueJoin from './card/CardValueJoin';
 import CardValueLearningStart from './card/CardValueLearningStart';
@@ -7,6 +8,7 @@ import CardValuePlay from './card/CardValuePlay';
 import CardValueDownload from './card/CardValueDownload';
 import CardValueDefault from './card/CardValueDefault';
 
+@reactAutobind
 class CompletedListView extends Component {
   render() {
     return (
