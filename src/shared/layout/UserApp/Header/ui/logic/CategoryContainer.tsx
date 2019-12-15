@@ -47,24 +47,26 @@ class CategoryContainer extends Component<Props, State> {
     //
     const { collegeService } = this.props;
 
-    // collegeService!.setCollege(college);
     this.setState({
       activeCollege: college,
     });
     collegeService!.setChannels(college.channels);
   }
 
-  onClickChannel(e: any, channel: ChannelModel) {
+  onClickChannel(e: any, channel?: ChannelModel) {
     //
     const { activeCollege } = this.state;
     const active: CollegeModel = activeCollege as any;
 
-    if (active.collegeId && channel.id) {
-      this.props.history.push(`/lecture/college/${active.collegeId}/channel/${channel.id}`);
-      this.setState({
-        categoryOpen: false,
-      });
+    if (!channel) {
+      this.props.history.push(`/lecture/college/${active.collegeId}/channels`);
     }
+    else if (active.collegeId && channel.id) {
+      this.props.history.push(`/lecture/college/${active.collegeId}/channel/${channel.id}`);
+    }
+    this.setState({
+      categoryOpen: false,
+    });
   }
 
   render() {

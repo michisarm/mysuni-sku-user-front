@@ -15,7 +15,7 @@ interface Props {
   channels?: ChannelModel[],
   onClick: (e: any) => void,
   onActiveCollege: (e: any, college: CollegeModel) => void,
-  onClickChannel: (e: any, channel: ChannelModel) => void,
+  onClickChannel: (e: any, channel?: ChannelModel) => void,
 }
 
 @reactAutobind
@@ -44,13 +44,13 @@ class CategoryView extends Component<Props> {
                 <div className="select-area">
                   <div className="scrolling">
                     { colleges.map((college) => (
-                      <Button
+                      <button
                         key={`category_${college.collegeId}`}
                         className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
                         onClick={(e) => onActiveCollege(e, college)}
                       >
                         {college.name}
-                      </Button>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -58,19 +58,25 @@ class CategoryView extends Component<Props> {
               <div className="cell vtop">
                 <div className="select-area">
                   <div className="scrolling">
-                    { Array.isArray(channels) && (
-                      channels.map((channel) => (
-                        <Button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}<span>(125)</span></Button>
-                      ))
+                    { activeCollege && (
+                      <>
+                        <button onClick={(e) => onClickChannel(e)}>{activeCollege.name} 전체보기<span>(125)</span></button>
+                        { Array.isArray(channels) && (
+                          channels.map((channel) => (
+                            <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}<span>(125)</span></button>
+                          ))
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <Button className="close" onClick={onClick}>
+
+          <button className="ui close" onClick={onClick}>
             <i className="new16x17 icon"><span className="blind">close</span></i>
-          </Button>
+          </button>
         </div>
       </div>
     );

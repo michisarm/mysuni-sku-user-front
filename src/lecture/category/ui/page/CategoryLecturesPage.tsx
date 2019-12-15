@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { CollegeService } from 'college';
-import CategoryHeaderContainer from '../logic/CategoryHeaderContainer';
+import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
 import CategoryLecturesContainer from '../logic/CategoryLecturesContainer';
 
 
@@ -40,6 +40,7 @@ class CategoryLecturesPage extends Component<Props> {
   render() {
     //
     const { collegeService } = this.props;
+    const { college } = collegeService;
 
     return (
       <ContentLayout
@@ -48,7 +49,9 @@ class CategoryLecturesPage extends Component<Props> {
           { text: `${collegeService.college.name} College` },
         ]}
       >
-        <CategoryHeaderContainer />
+        <CategoryLecturesHeaderView
+          college={college}
+        />
         <CategoryLecturesContainer />
       </ContentLayout>
     );

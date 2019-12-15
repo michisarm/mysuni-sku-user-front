@@ -1,7 +1,7 @@
 
 import 'semantic-ui-less/semantic.less';
-import './style/css/main.24e6e5fa.chunk.css';
-import './style/css/2.315000a0.chunk.css';
+import './style/css/main.63196ff4.chunk.css';
+import './style/css/2.2ef3740c.chunk.css';
 
 import 'react-app-polyfill/ie9';
 

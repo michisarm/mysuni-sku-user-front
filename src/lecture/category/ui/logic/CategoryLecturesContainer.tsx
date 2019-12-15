@@ -96,7 +96,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
           }
         >
           <>
-            Content
+            Todo: LectureCards
             <SeeMoreButtonView
               onClick={this.onClickSeeMore}
             />
