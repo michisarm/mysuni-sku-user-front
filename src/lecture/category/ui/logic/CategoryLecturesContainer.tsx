@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react';
 
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
+import { LectureCardService } from 'lecture';
 import CategoryContentWrapperView from '../view/CategoryContentWrapperView';
 import ChannelsView from '../view/ChannelsView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
@@ -16,6 +17,7 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 interface Props {
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
+  lectureCardService?: LectureCardService,
 }
 
 interface State {
@@ -23,7 +25,7 @@ interface State {
   sorting: string,
 }
 
-@inject('collegeService', 'personalCubeService')
+@inject('collegeService', 'personalCubeService', 'lectureCardService')
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
@@ -35,7 +37,10 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { personalCubeService } = this.props;
+    const { personalCubeService, lectureCardService } = this.props;
+
+    console.log(lectureCardService);
+    lectureCardService!.findAllLectureCards(0, 20);
 
     // Todo: 조회 서비스 교체해야함.
     // personalCubeService!.findAllPersonalCubesByQuery();
