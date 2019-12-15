@@ -1,4 +1,4 @@
-import {axiosApi as axios, NameValueList, OffsetElementList} from '@nara.platform/accent';
+import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platform/accent';
 
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { SkProfileRdo } from '../../model/SkProfileRdo';
@@ -17,9 +17,9 @@ export default class SkProfileApi {
       .then((response) => response && response.data || null);
   }
 
-  findSkProfile(memberId: string) {
+  findSkProfile(citizenId: string) {
     //
-    return axios.get<SkProfileModel>(this.URL + `/${memberId}`)
+    return axios.get<SkProfileModel>(this.URL + `/${citizenId}`)
       .then((response) => response && response.data || null);
   }
 

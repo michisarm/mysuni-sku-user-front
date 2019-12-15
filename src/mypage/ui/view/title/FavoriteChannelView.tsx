@@ -20,9 +20,9 @@ class FavoriteChannelView extends Component<Props> {
         <div className="table-css type2">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">관심 channel(32{/*
-                 favoriteChannels.idNames ? favoriteChannels.idNames.length : 0
-                */})
+              <div className="tit-set">관심 channel({
+                 favoriteChannels.idNames ? favoriteChannels.idNames.length : 32
+                })
                 <Button icon className="img-icon"><Icon className="setting17" />
                   <span className="blind">setting</span>
                 </Button>

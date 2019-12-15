@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 
 export class MemberModel {
-  memberId: string = '';
+  citizenId: string = '';
 
   constructor(member?: MemberModel) {
     if (member) Object.assign(this, { ...member });
@@ -9,5 +9,5 @@ export class MemberModel {
 }
 
 decorate(MemberModel, {
-  memberId: observable,
+  citizenId: observable,
 });

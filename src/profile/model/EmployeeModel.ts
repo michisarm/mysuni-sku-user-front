@@ -8,35 +8,38 @@ export class EmployeeModel extends MemberModel {
   name: string = '';
   email: string = '';           // 암호화
   phone: string = '';           // 암호화
-  base64Photo: string = '';
+  jobTitle : string = '';      //직위
+  jobRank : string ='';         //직급 rank
+  jobName : string ='';         //직무 job
+  jobDuty : string ='';         //직책 duty
+  base64Photo: string = '';     //base64 image 크기
+  photoFileUrl:string ='';      //SK IM Photo URL
   team: TeamModel = new TeamModel();
   favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
-  jobTitle:string='';
-  jobPosition:string='';
-  jobDuty:string='';
-  jobTask:string='';
+
 
 
   constructor(employee?: EmployeeModel) {
     super();
     if (employee) {
-      const memberId =  employee.email && employee.email || '';
       const team = employee.team && new TeamModel(employee.team) || this.team;
       const favoriteJobGroup = employee.favoriteJobGroup && new FavoriteJobGroupModel(employee.favoriteJobGroup) || this.favoriteJobGroup;
-      Object.assign(this, { ...employee, favoriteJobGroup, team, memberId });
+      Object.assign(this, { ...employee, favoriteJobGroup, team });
     }
   }
 }
 
-decorate(EmployeeModel, {
+decorate( EmployeeModel, {
   employeeId: observable,
   name: observable,
   email: observable,
   phone: observable,
-  base64Photo: observable,
-  team: observable,
   jobTitle: observable,
+  jobRank: observable,
+  jobName: observable,
   jobDuty: observable,
-  jobPosition: observable,
-  jobTask: observable,
+  base64Photo: observable,
+  photoFileUrl: observable,
+  team: observable,
+  favoriteJobGroup: observable,
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import ProfileView from '../view/title/ProfileView';
 import LectureTotalTimeView from '../view/title/LectureTotalTimeView';
 import StampInfoView from '../view/title/StampInfoView';

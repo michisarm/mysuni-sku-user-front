@@ -20,8 +20,8 @@ class MyPageContainer extends Component<Props> {
   componentDidMount(): void {
     const { skProfileService } = this.props;
     if (skProfileService) {
-      skProfileService.findSkProfile('hong@sk.com');  //login한 사용자
-      skProfileService.findStudySummary('hong@sk.com');
+      //skProfileService.findSkProfile('hong@sk.com');  //login한 사용자 - 수정 skProfileService.findSkProfile();
+      //skProfileService.findStudySummary('hong@sk.com');
     }
 
   }

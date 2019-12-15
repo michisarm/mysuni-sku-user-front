@@ -9,7 +9,7 @@ class CardValuePlay extends Component {
       <Card>
         <div className="card-inner">
           {/* 썸네일 */}
-          <div className="thumbnail"/>
+          <div className="thumbnail" />
 
           {/* //썸네일 */}
           <div className="title-area">

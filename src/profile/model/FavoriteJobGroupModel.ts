@@ -1,6 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { IdName } from 'shared';
 
+
 export class FavoriteJobGroupModel {
 
   favoriteJobGroup : IdName = new IdName();
