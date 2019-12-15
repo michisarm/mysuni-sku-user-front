@@ -64,7 +64,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
 
   render() {
     const {
-      onChangePersonalCubeProps, personalCube, changePersonalCubeProps
+      onChangePersonalCubeProps, personalCube, changePersonalCubeProps,
     } = this.props;
     const { firstCategoryModalOpen, secondCategoryModalOpen } = this.state;
     const { colleges, mainCollege: selectedMainCollege, subCollege: selectedSubCollege } = this.props.collegeService || {} as CollegeService;

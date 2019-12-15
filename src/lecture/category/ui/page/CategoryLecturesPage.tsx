@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-// import { reaction } from 'mobx';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -26,21 +25,13 @@ class CategoryLecturesPage extends Component<Props> {
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-
-    // reaction(
-    //   () => collegeService.college.collegeId,
-    //   (collegeId: string) => {
-    //     collegeService.findCollege(collegeId);
-    //   }
-    // );
   }
 
   componentDidUpdate(prevProps: Props) {
     //
     const { match, collegeService } = this.props;
-    console.log('componentDidUpdate', prevProps.match.params.collegeId, match.params.collegeId);
+
     if (prevProps.match.params.collegeId !== match.params.collegeId) {
-      console.log('change', prevProps.match.params.collegeId, match.params.collegeId);
       collegeService.findCollege(match.params.collegeId);
     }
   }
@@ -49,7 +40,6 @@ class CategoryLecturesPage extends Component<Props> {
   render() {
     //
     const { collegeService } = this.props;
-    console.log('college', collegeService.college.name);
 
     return (
       <ContentLayout

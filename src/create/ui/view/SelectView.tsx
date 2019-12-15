@@ -13,7 +13,7 @@ interface Props{
 class SelectView extends React.Component <Props> {
 
   render() {
-    const { totalCount, fieldOption, onChangeCubeQueryProps, personalCubeQuery, queryFieldName } = this.props;
+    const { totalCount, fieldOption, onChangeCubeQueryProps, queryFieldName } = this.props;
     return (
       <div className="top-guide-title size-type3">
         <div className="list-number">총 <strong>{totalCount}개</strong>의 리스트가 있습니다.</div>

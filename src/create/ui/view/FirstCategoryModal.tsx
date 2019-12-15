@@ -142,7 +142,9 @@ class FirstCategoryModal extends React.Component<Props, States> {
                           <Form.Field
                             key={index}
                             control={Radio}
-                            checked={personalCube && personalCube.category && personalCube.category.channel && personalCube.category.channel.id === channel.id}
+                            checked={personalCube && personalCube.category && personalCube.category.channel
+                              && personalCube.category.channel.id === channel.id
+                            }
                             label={channel.name}
                             onChange={() => this.selectChannelButton(channel)}
                           />
