@@ -16,15 +16,6 @@ class HeaderContainer extends Component {
   //
   static contextType  = Context;
 
-
-  handleItemClick(data: any) {
-    switch (data) {
-      case 'learning':
-        window.location.href = `${process.env.PUBLIC_URL}/expert/instructor`;
-        break;
-    }
-  }
-
   render() {
     //
     const { breadcrumb } = this.context;
@@ -39,9 +30,7 @@ class HeaderContainer extends Component {
       >
         <>
           <LogoView />
-          <MenuView
-            handleItemClick = {this.handleItemClick}
-          />
+          <MenuView />
           <CategoryContainer />
           <SearchBarView />
           <ProfileView />

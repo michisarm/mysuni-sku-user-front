@@ -1,8 +1,8 @@
 
 import { decorate, observable } from 'mobx';
+import { IdNameList } from 'shared';
 import { LearningTimeModel } from './LearningTimeModel';
 import { LectureSummary } from './LectureSummary';
-import { IdNameList } from '../../shared/model/IdNameList';
 
 export  class StudySummary {
   favoriteChannels : IdNameList = {} as IdNameList;

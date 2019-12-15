@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button } from 'semantic-ui-react';
-import CategoryModel from '../../model/CategoryModel';
+import HeaderCategoryModel from '../../model/HeaderCategoryModel';
 
 
 interface Props {
   open: boolean,
-  categories: CategoryModel[],
-  activeCategory?: CategoryModel,
+  categories: HeaderCategoryModel[],
+  activeCategory?: HeaderCategoryModel,
   onClick: (e: any) => void,
-  onActiveCategory: (e: any, category: CategoryModel) => void,
-  onClickSubCategory: (e: any, category: CategoryModel) => void,
+  onActiveCategory: (e: any, category: HeaderCategoryModel) => void,
+  onClickSubCategory: (e: any, category: HeaderCategoryModel) => void,
 }
 
 @reactAutobind
@@ -41,11 +41,11 @@ class CategoryView extends Component<Props> {
                   <div className="scrolling">
                     { categories.map((category) => (
                       <Button
-                        key={`category_${category.id}`}
-                        className={activeCategory && activeCategory.id === category.id ? 'active' : ''}
+                        key={`category_${category.main.id}`}
+                        className={activeCategory && activeCategory.main.id === category.main.id ? 'active' : ''}
                         onClick={(e) => onActiveCategory(e, category)}
                       >
-                        {category.text}
+                        {category.main.name}
                       </Button>
                     ))}
                   </div>

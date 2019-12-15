@@ -1,8 +1,9 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { IdName } from 'shared';
 import { CollegeType } from './CollegeType';
 import { CreatorModel } from './CreatorModel';
-import { IdName } from '../../shared/model/IdName';
+
 
 export class CollegeModel implements DramaEntity {
   id: string = '';

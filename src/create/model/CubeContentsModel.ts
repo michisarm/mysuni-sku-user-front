@@ -1,0 +1,35 @@
+import { decorate, observable } from 'mobx';
+import { IdName } from 'shared';
+
+export class CubeContentsModel {
+  type: string = '';
+  contents: IdName = new IdName();
+  lengthInMinute: number = 0;
+  surveyId: string = '';
+
+  examId: string = '';
+  examTitle: string = '';
+  examAuthorName: string = '';
+
+  fileBoxId: string = '';
+
+  constructor(cubeContents?: CubeContentsModel) {
+    if (cubeContents) {
+      const contents = cubeContents.contents && new IdName(cubeContents.contents) || this.contents;
+      Object.assign(this, { ...cubeContents, contents });
+      this.type = cubeContents.type && cubeContents.type || '';
+    }
+  }
+}
+
+decorate(CubeContentsModel, {
+  type: observable,
+  contents: observable,
+  surveyId: observable,
+  examId: observable,
+  examTitle: observable,
+  examAuthorName: observable,
+  lengthInMinute: observable,
+  fileBoxId: observable,
+});
+

@@ -18,7 +18,12 @@ class FavoriteWelcomePage extends Component<Props> {
   render() {
 
     return (
-      <ContentLayout className="content-half bg-white">
+      <ContentLayout     breadcrumb={[
+        { text: 'd1', path: '/depth1-path' },
+        { text: 'd2' },
+      ]}
+        className="content-half bg-white"
+      >
         <div className="login-content">
           <div className="left-area">
             <div className="inner">
