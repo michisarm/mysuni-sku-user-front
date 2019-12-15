@@ -7,9 +7,11 @@ import { Image } from 'semantic-ui-react';
 
 export const LogoView: React.FC = () => (
   <div className="g-logo">
-    <i className="sk-university icon">
-      <span className="blind">SK university</span>
-    </i>
+    <Link to="/">
+      <i className="sk-university icon">
+        <span className="blind">SUNI</span>
+      </i>
+    </Link>
   </div>
 );
 

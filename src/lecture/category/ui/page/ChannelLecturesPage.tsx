@@ -40,11 +40,13 @@ class ChannelLecturesPage extends Component<Props> {
   render() {
     //
     const { collegeService } = this.props;
+    const { college, channel } = collegeService;
 
     return (
       <ContentLayout
         breadcrumb={[
-          { text: `${collegeService.college.name} College` },
+          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}` },
+          { text: `${channel.name} Channel` },
         ]}
       >
         <ChannelLecturesHeaderView
