@@ -10,6 +10,7 @@ export { default as storybookHelper } from './helper/storybookHelper';
 export { default as UserApp } from './layout/UserApp';
 export { default as ContentLayout } from './layout/ContentLayout';
 export { default as ContentHeader } from './layout/ContentHeader';
+export { default as Widget } from './layout/Widget';
 
 export {
   sharedService,
