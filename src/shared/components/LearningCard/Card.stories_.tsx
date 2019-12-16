@@ -2,10 +2,9 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { text, number, select, boolean } from '@storybook/addon-knobs';
-import { storybookHelper } from 'shared';
+import { storybookHelper, CubeType } from 'shared';
 
 import CardService from '../shared/present/logic/CardService';
-import CubeType from '../shared/present/model/CubeType';
 import Card from '.';
 
 

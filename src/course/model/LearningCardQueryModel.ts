@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { QueryModel } from '../../shared/model/QueryModel';
+import { QueryModel } from 'shared';
 import { LearningCardRdoModel } from './LearningCardRdoModel';
 
 export class LearningCardQueryModel extends QueryModel {

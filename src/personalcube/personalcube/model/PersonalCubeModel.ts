@@ -1,11 +1,9 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName, NameValueList, CategoryModel, SearchFilter, CreatorModel } from 'shared';
-import { CubeState } from './CubeState';
+import { CubeState, IdName, NameValueList, CategoryModel, SearchFilter, CreatorModel, IconBox } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
-import { IconBox } from './IconBox';
 
 export class PersonalCubeModel implements DramaEntity {
   //

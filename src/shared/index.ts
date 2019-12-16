@@ -20,8 +20,13 @@ export { NameValueList } from './model/NameValueList';
 export { PatronKey } from './model/PatronKey';
 export { CategoryModel } from './model/CategoryModel';
 export { DatePeriod } from './model/DatePeriod';
+export { TimePeriod } from './model/TimePeriod';
 export { SearchFilter } from './model/SearchFilter';
 export { CreatorModel } from './model/CreatorModel';
+export { QueryModel } from './model/QueryModel';
+export { IconBox } from './model/IconBox';
+export { CubeType } from './model/CubeType';
+export { CubeState } from './model/CubeState';
 export { default as PageModel } from './present/model/PageModel';
 
 /** Helper */
