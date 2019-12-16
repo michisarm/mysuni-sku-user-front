@@ -13,8 +13,6 @@ import { CoursePlanQueryModel } from '../../model/CoursePlanQueryModel';
 import { LearningCardModel } from '../../model/LearningCardModel';
 import { CourseState } from '../../model/CourseState';
 import { CourseRequestCdoModel } from '../../model/CourseRequestCdoModel';
-import { ExamModel } from '../../../exam/model/ExamModel';
-import { SurveyFormModel } from '../../../survey/model/SurveyFormModel';
 
 @autobind
 export default class CoursePlanService {
@@ -259,22 +257,6 @@ export default class CoursePlanService {
   setCourseSet(courseSet: CoursePlanModel) {
     //
     this.courseSet = [...this.courseSet].concat([courseSet]);
-  }
-
-  @action
-  handleExamModalOk(selectedExam: ExamModel, type: string) {
-    //
-    this.changeCoursePlanContentsProps('examId', selectedExam.id);
-    this.changeCoursePlanContentsProps('examTitle', selectedExam.title);
-    this.changeCoursePlanContentsProps('examAuthorName', selectedExam.authorName);
-  }
-
-  @action
-  handleSurveyModalOk(selectedSurveyForm: SurveyFormModel, type: string) {
-    //
-    this.changeCoursePlanContentsProps('surveyId', selectedSurveyForm.id);
-    this.changeCoursePlanContentsProps('surveyTitle', selectedSurveyForm.getTitles);
-    this.changeCoursePlanContentsProps('surveyDesignerName', selectedSurveyForm.getFormDesignerName);
   }
 }
 

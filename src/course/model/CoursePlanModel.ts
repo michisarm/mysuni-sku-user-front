@@ -1,7 +1,7 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName, NameValueList, CategoryModel } from 'shared';
-import { CreatorModel, IconBox } from 'personalcube/personalcube';
+import { IdName, NameValueList, CategoryModel, CreatorModel } from 'shared';
+import { IconBox } from 'personalcube/personalcube';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from './CourseOpenModel';
 import { StampModel } from './StampModel';

@@ -1,7 +1,6 @@
 import { DramaEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { PatronKey, DatePeriod, NameValueList } from 'shared';
-import { CreatorModel } from 'personalcube/personalcube';
+import { PatronKey, DatePeriod, NameValueList, CreatorModel } from 'shared';
 import { CourseSetModel } from './CourseSetModel';
 import { CoursePlanContentsCdoModel } from './CoursePlanContentsCdoModel';
 

@@ -1,5 +1,4 @@
-import { CreatorModel } from 'personalcube/personalcube';
-import { DatePeriod } from 'shared';
+import { DatePeriod, CreatorModel } from 'shared';
 import { CourseSetModel } from './CourseSetModel';
 
 export class CoursePlanContentsCdoModel {

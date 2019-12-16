@@ -1,5 +1,5 @@
-import { CategoryModel } from 'shared';
-import { CreatorModel, IconBox } from 'personalcube/personalcube';
+import { CategoryModel, CreatorModel } from 'shared';
+import { IconBox } from 'personalcube/personalcube';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from './CourseOpenModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';

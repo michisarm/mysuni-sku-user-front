@@ -1,6 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
-import { SearchFilter } from 'personalcube/personalcube';
+import { IdName, SearchFilter } from 'shared';
 import { CourseState } from './CourseState';
 
 export class CourseOpenModel {
