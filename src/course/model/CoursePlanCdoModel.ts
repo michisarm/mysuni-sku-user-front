@@ -1,10 +1,10 @@
-import { CategoryModel } from '../../personalcube/model/CategoryModel';
+import { CategoryModel } from 'shared';
+import { CreatorModel, IconBox } from 'personalcube/personalcube';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from './CourseOpenModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { StampModel } from './StampModel';
-import { CreatorModel } from '../../personalcube/model/CreatorModel';
-import { IconBox } from '../../personalcube/model/IconBox';
+
 
 export class CoursePlanCdoModel {
   audienceKey: string = 'r2p8-r@nea-m5-c5';

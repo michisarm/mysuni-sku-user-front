@@ -1,16 +1,13 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { IdName, NameValueList, CategoryModel } from 'shared';
+import { CreatorModel, IconBox } from 'personalcube/personalcube';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from './CourseOpenModel';
 import { StampModel } from './StampModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
-import { NameValueList } from '../../shared/model/NameValueList';
-import { CreatorModel } from '../../personalcube/model/CreatorModel';
-import { CategoryModel } from '../../personalcube/model/CategoryModel';
 import { OpenRequestModel } from './OpenRequestModel';
 import { CoursePlanCdoModel } from './CoursePlanCdoModel';
-import { IconBox } from '../../personalcube/model/IconBox';
-import { IdName } from '../../shared/model/IdName';
 
 export class CoursePlanModel implements DramaEntity {
   //

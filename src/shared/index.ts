@@ -17,7 +17,9 @@ export {
 export { default as IdName } from './model/IdName';
 export { default as IdNameList } from './model/IdNameList';
 export { NameValueList } from './model/NameValueList';
+export { PatronKey } from './model/PatronKey';
 export { CategoryModel } from './model/CategoryModel';
+export { DatePeriod } from './model/DatePeriod';
 export { default as PageModel } from './present/model/PageModel';
 
 /** Helper */

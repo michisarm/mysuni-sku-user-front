@@ -1,8 +1,6 @@
 import { computed, decorate, observable } from 'mobx';
-import { IdName } from '../../shared/model/IdName';
-import { NameValueList } from '../../shared/model/NameValueList';
-import { CubeType } from '../../personalcube/model/CubeType';
-import { CategoryModel } from '../../personalcube/model/CategoryModel';
+import { IdName, NameValueList, CategoryModel } from 'shared';
+import { CubeType } from 'personalcube/personalcube';
 
 export class LearningCardModel {
   //

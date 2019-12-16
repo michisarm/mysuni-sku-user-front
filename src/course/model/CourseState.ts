@@ -5,3 +5,4 @@ export enum CourseState {
   Closed = 'Closed',
   Rejected = 'Rejected'
 }
+
