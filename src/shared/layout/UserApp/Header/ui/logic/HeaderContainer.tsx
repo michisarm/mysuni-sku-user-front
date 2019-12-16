@@ -16,6 +16,8 @@ class HeaderContainer extends Component {
   //
   static contextType  = Context;
 
+  supportPath = '/board/support/notice';
+
   render() {
     //
     const { breadcrumb } = this.context;
@@ -25,6 +27,7 @@ class HeaderContainer extends Component {
         breadcrumbs={(
           <BreadcrumbView
             values={breadcrumb.values}
+            supportPath={this.supportPath}
           />
         )}
       >

@@ -29,7 +29,7 @@
     "lodash": "^4.17.15",
     "mobx": "4.15.0",
     "mobx-react": "6.1.4",
-    "nara-react-scripts": "0.1.13",
+    "nara-react-scripts": "0.1.14",
     "numeral": "^2.0.6",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.5",

@@ -6,6 +6,7 @@ import { BreadcrumbValue } from '../../..';
 
 interface Props {
   values?: BreadcrumbValue[];
+  supportPath: string;
 }
 
 
@@ -13,7 +14,7 @@ class BreadcrumbView extends Component<Props> {
   //
   render() {
     //
-    const { values } = this.props;
+    const { values, supportPath } = this.props;
 
     return (
       <div className="breadcrumbs">
@@ -38,7 +39,7 @@ class BreadcrumbView extends Component<Props> {
           </div>
 
           <div className="right">
-            <Link to="/support">
+            <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>
               <i className="arrow8 black-jump icon" />
