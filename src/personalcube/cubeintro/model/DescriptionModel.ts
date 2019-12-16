@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { InstructorModel } from './Instructor';
+import { InstructorModel } from './InstructorModel';
 
 export class DescriptionModel {
   instructor: InstructorModel = new InstructorModel();              // 강사

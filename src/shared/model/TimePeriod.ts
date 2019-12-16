@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 
-export class TimePeriod{
+export class TimePeriod {
   //
   zoneId: string = '';
   startTime: number = 0;
