@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import { IdName, NameValueList } from 'shared';
 
 
 export class FavoriteJobGroupModel {
@@ -11,6 +11,21 @@ export class FavoriteJobGroupModel {
     Object.assign(this, { ...favoriteJobGroup });
   }
 
+  static asNameValues(favoriteJob : FavoriteJobGroupModel) : NameValueList {
+    const asNameValues = {
+      nameValues: [
+        {
+          name: 'favoriteJobGroup',
+          value: JSON.stringify(favoriteJob.favoriteJobGroup),
+        },
+        {
+          name: 'favoriteJobDudy',
+          value: JSON.stringify(favoriteJob.favoriteJobDuty),
+        },
+      ],
+    };
+    return asNameValues;
+  }
 }
 
 decorate(FavoriteJobGroupModel, {

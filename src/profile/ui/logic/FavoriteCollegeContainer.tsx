@@ -6,9 +6,9 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactConfirm } from '@nara.platform/accent';
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
-import { StudySummaryCdoModel } from '../../model/StudySummaryCdoModel';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { ContentLayout } from '../../../shared';
+import { StudySummary } from '../../model/StudySummary';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
@@ -47,7 +47,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
     if (collegeService && skProfileService) {
       collegeService.findAllColleges();
-      skProfileService.findStudySummary('hong@sk.com'); //login session id
+      skProfileService.findSkProfile();
     }
   }
 
@@ -90,9 +90,8 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       });
     } else {
       if (collegeService && skProfileService) {
-        const favoriteChannels: StudySummaryCdoModel = new StudySummaryCdoModel();
-        favoriteChannels.favoriteChannels = collegeService.getFavoriteChannels();
-        skProfileService.registerStudySummary(favoriteChannels);  //step3에서 submmit할때 서버 반영할지 점검
+        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
+        skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
       }
       this.props.history.push('/profile/favorite/job');
     }

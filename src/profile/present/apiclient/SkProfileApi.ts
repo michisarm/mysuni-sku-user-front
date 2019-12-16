@@ -2,50 +2,90 @@ import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platf
 
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { SkProfileRdo } from '../../model/SkProfileRdo';
-import { StudySummaryCdoModel } from '../../model/StudySummaryCdoModel';
+import { StudySummary } from '../../model/StudySummary';
+import { SkProfileCdoModel } from '../../model/SkProfileCdoModel';
 
 export default class SkProfileApi {
   //
-  URL = '/api/sk/profiles';
+  URL = '/api/profiles';
 
   static instance: SkProfileApi;
 
-
-  registerSkProfile(skProfile: SkProfileModel) {
+  //Manager, SuperManager
+  registerSkProfile(skProfile: SkProfileCdoModel) {
     //
-    return axios.post<SkProfileModel>(this.URL, skProfile)
+    return axios.post<SkProfileCdoModel>(this.URL, skProfile)
       .then((response) => response && response.data || null);
   }
 
-  findSkProfile(citizenId: string) {
+  //Manager, SuperManager - 관리자 컨텐츠 목록에서 상세보기
+  findSkProfileByAudienceId(audienceId: string) {
     //
-    return axios.get<SkProfileModel>(this.URL + `/${citizenId}`)
+    return axios.get<SkProfileModel>(this.URL + `/contents/${audienceId}`)
       .then((response) => response && response.data || null);
   }
 
-  //Query
-  findAllSkProfiles(skProfileRdo : SkProfileRdo) {
+  //Manager, SuperManager - 관리자 프로파일 목록에서 상세보기
+  findSkProfileByProfileId(profileId:string) {
+    return axios.get<SkProfileModel>(this.URL + `/list/${profileId}`)
+      .then((response) => response && response.data || null );
+  }
+
+  //User 본인 상세보기
+  findSkProfile() {
+    return axios.get<SkProfileModel>(this.URL )
+      .then((response) => response && response.data || null);
+  }
+
+  //Manager, SuperManager
+  findAllSkProfile(offset:number, limit:number) {
+    return axios.get<OffsetElementList<SkProfileModel>>(this.URL + '/all')
+      .then((response) => response && response.data || null);
+  }
+
+  //Manager, SuprManager : SearchKey 검색
+  findAllSkProfilesBySearchKey(skProfileRdo : SkProfileRdo) {
     return axios.get<OffsetElementList<SkProfileModel>>(this.URL + `/searchKey`, { params: skProfileRdo })
       .then(response => response && response.data || null);
   }
 
-  modifySkProfile(memberId : string, nameValues: NameValueList) {
-    return axios.put<void>(this.URL + `/${memberId}`, nameValues);
+  //Manager, SuperManager
+  modifySkProfileByProfileId(profileId : string, nameValues: NameValueList) {
+    return axios.put<void>(this.URL + `/${profileId}`, nameValues);
   }
 
-  removeSkProfile(memberId:string) {
-    return axios.delete(this.URL + `/${memberId}`);
+  //본인 정보 수정
+  modifySkProfile(nameValues:NameValueList) {
+    return axios.put<void>(this.URL, nameValues);
   }
 
-  registerStudySummary(studySummary : StudySummaryCdoModel) {
-    return axios.post<StudySummaryCdoModel>(this.URL + `/studySummary`, studySummary)
+  //Manager, SuperManager
+  removeSkProfile(profileId:string) {
+    return axios.delete(this.URL + `/${profileId}`);
+  }
+
+  //Manager, SuperManager 조회
+  findStudySummaryByProfileId(profileId : string) {
+    return axios.get<StudySummary>(this.URL + `/summary/${profileId}`)
       .then((response) => response && response.data || null);
   }
 
-  findStudySummary(memberId : string) {
-    return axios.get<StudySummaryCdoModel>(this.URL + `/studySummary/${memberId}`)
+  //본인 StudySummary조회
+  findStudySummary() {
+    return axios.get<StudySummary>(this.URL + '/summary')
       .then((response) => response && response.data || null);
   }
+
+  //본인 studysummary 등록 - 로그인시 skprofile에 생성된 studySummary update
+  modifyStudySummary(nameValues : NameValueList) {
+    return axios.put<void>(this.URL + `/summary`, nameValues);
+  }
+
+  //Manager, SuperAdmin{
+  modifyStudySummaryByProfileId(profileId:string, nameValues:NameValueList) {
+    return axios.put<void>(this.URL + `/summary/${profileId}`, nameValues);
+  }
+
 }
 
 Object.defineProperty(SkProfileApi, 'instance', {
