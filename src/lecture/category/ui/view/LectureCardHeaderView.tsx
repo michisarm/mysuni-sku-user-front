@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button } from 'semantic-ui-react';
 import { LectureContentHeader } from 'shared';
+import { PersonalCubeModel } from 'personalcube/personalcube';
 import { LectureCardModel } from 'lecture';
-import { ThumbnailView, TitleView } from './CategoryHeaderElementsView';
 
 
 interface Props {
+  personalCube: PersonalCubeModel,
   lectureCard: LectureCardModel,
 }
 
@@ -19,8 +19,13 @@ class LectureCardHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { lectureCard } = this.props;
-    console.log('lectureCard', lectureCard);
+    const { personalCube, lectureCard } = this.props;
+    console.log('View.lectureCard', lectureCard);
+
+    if (!personalCube.category) {
+      return null;
+    }
+    console.log('View.personalCube', personalCube);
 
     return (
       <LectureContentHeader>
@@ -28,8 +33,10 @@ class LectureCardHeaderView extends Component<Props> {
           image={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
         />
         <LectureContentHeader.TitleCell
-          label={{ color: 'blue', text: 'Leadership' }}
-          title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
+          label={{ color: 'blue', text: personalCube.category && personalCube.category.channel.name || '' }}
+          type={personalCube.contents.type}
+          title={personalCube.name}
+          creationTime={personalCube.time}
         />
         <LectureContentHeader.RightCell>
           <LectureContentHeader.StarRatingItem

@@ -22,6 +22,8 @@ export const Basic = () => {
       <LectureContentHeader.TitleCell
         label={{ color: 'blue', text: 'Leadership' }}
         title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
+        type="ClassRoomLecture"
+        creationTime={12123123}
       />
       <LectureContentHeader.RightCell>
         <LectureContentHeader.StarRatingItem

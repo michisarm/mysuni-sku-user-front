@@ -51,7 +51,7 @@ export default class PersonalCubeService {
   async findPersonalCube(personalCubeId: string) {
     //
     const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
-    console.log(personalCube);
+    console.log('service', personalCube);
     if (personalCube) return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
     return null;
   }

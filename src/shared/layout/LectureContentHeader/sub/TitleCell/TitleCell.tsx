@@ -7,6 +7,8 @@ import { Label, Icon, LabelProps } from 'semantic-ui-react';
 
 interface Props {
   title: string,
+  type: string,
+  creationTime: number,
   label?: { color: LabelProps['color'], text: string },
   children?: React.ReactNode,
 }
@@ -16,7 +18,7 @@ class TitleCell extends Component<Props> {
   //
   render() {
     //
-    const { label, title, children } = this.props;
+    const { label, title, type, creationTime, children } = this.props;
 
     return (
       <div className="title-area">
@@ -28,13 +30,13 @@ class TitleCell extends Component<Props> {
         <div className="deatil">
           <div className="item">
             <Label className="bold onlytext">
-              <Icon className="course" /><span>Course</span>
+              <Icon className="course" /><span>{type}</span>
             </Label>
-            <span className="channel">Leading Myself</span>
+            <span className="channel">Leading Myself (?)</span>
           </div>
           <div className="item">
             <Label className="onlytext">
-              <Icon className="date" /><span>Creation date : 2019. 12. 31</span>
+              <Icon className="date" /><span>Creation date : {new Date(creationTime).toLocaleDateString()}</span>
               <span className="ml17">Study start date, end date : 2019. 12. 31 ~ 2020. 02. 20</span>
             </Label>
           </div>

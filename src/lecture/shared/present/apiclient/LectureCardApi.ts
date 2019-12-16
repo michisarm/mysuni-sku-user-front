@@ -2,7 +2,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import LectureCardModel from '../../model/LectureCardModel';
 import { IdName } from '../../../../shared';
-import RoleBookModel from '../../model/RoleBookModel';
 
 
 class LectureCardApi {

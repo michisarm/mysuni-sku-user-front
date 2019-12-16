@@ -2,7 +2,6 @@
 import { observable, action, computed, runInAction } from 'mobx';
 import LectureCardModel from '../../model/LectureCardModel';
 import LectureCardApi from '../apiclient/LectureCardApi';
-import { PersonalCubeModel } from '../../../../personalcube/personalcube';
 
 
 class LectureCardService {
