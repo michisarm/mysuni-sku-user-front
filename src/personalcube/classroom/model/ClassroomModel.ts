@@ -4,7 +4,7 @@ import { InstructorModel, OperationModel, ReportFileBoxModel } from '../../cubei
 import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 
-export class ClassRoomModel implements DramaEntity {
+export class ClassroomModel implements DramaEntity {
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
@@ -24,20 +24,20 @@ export class ClassRoomModel implements DramaEntity {
   roundReportFileBox: ReportFileBoxModel = new ReportFileBoxModel();    // 과제여부 및 filebox(차수별)
   time: number = 0;
 
-  constructor(classRoom?: ClassRoomModel) {
-    if (classRoom) {
-      const instructor = classRoom.instructor && new InstructorModel(classRoom.instructor) || this.instructor;
-      const freeOfCharge = classRoom.freeOfCharge && new FreeOfChargeModel(classRoom.freeOfCharge) || this.freeOfCharge;
-      const enrolling = classRoom.enrolling && new EnrollingModel(classRoom.enrolling) || this.enrolling;
-      const operation = classRoom.operation && new OperationModel(classRoom.operation) || this.operation;
-      const roundReportFileBox = classRoom.roundReportFileBox && new ReportFileBoxModel(classRoom.roundReportFileBox) || this.roundReportFileBox;
-      Object.assign(this, { ...classRoom });
+  constructor(classroom?: ClassroomModel) {
+    if (classroom) {
+      const instructor = classroom.instructor && new InstructorModel(classroom.instructor) || this.instructor;
+      const freeOfCharge = classroom.freeOfCharge && new FreeOfChargeModel(classroom.freeOfCharge) || this.freeOfCharge;
+      const enrolling = classroom.enrolling && new EnrollingModel(classroom.enrolling) || this.enrolling;
+      const operation = classroom.operation && new OperationModel(classroom.operation) || this.operation;
+      const roundReportFileBox = classroom.roundReportFileBox && new ReportFileBoxModel(classroom.roundReportFileBox) || this.roundReportFileBox;
+      Object.assign(this, { ...classroom });
     }
   }
 
 }
 
-decorate(ClassRoomModel, {
+decorate(ClassroomModel, {
   id: observable,
   entityVersion: observable,
   patronKey: observable,
