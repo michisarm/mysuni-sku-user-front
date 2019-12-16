@@ -42,3 +42,4 @@ export { default as ContentHeader } from './layout/ContentHeader';
 export { default as LectureContentHeader } from './layout/LectureContentHeader';
 export { default as LectureSubInfo } from './layout/LectureSubInfo';
 export { default as LearningCard } from './components/LearningCard';
+export { default as OverviewField } from './components/OverviewField';

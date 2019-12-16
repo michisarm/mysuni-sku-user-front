@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import classNames from 'classnames';
 
 import { Label, Icon } from 'semantic-ui-react';
 
@@ -10,7 +9,6 @@ interface Props {
   icon: string,
   text: string,
 }
-
 
 @reactAutobind
 class Title extends Component<Props> {

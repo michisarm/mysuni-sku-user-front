@@ -32,7 +32,7 @@ addParameters({
 addDecorator(withKnobs);
 
 addDecorator((storyFn) => (
-  <div id="root">
+  <div id="root" style={{ background: '#f4f7fd' }}>
     <BrowserRouter>
       <Provider
         {...stores}
