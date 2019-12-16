@@ -1,17 +1,21 @@
 
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, runInAction } from 'mobx';
 import LectureCardModel from '../../model/LectureCardModel';
 import LectureCardApi from '../apiclient/LectureCardApi';
+import { PersonalCubeModel } from '../../../../personalcube/personalcube';
 
 
 class LectureCardService {
   //
   static instance: LectureCardService;
 
-  lectureCardApi: LectureCardApi;
+  private lectureCardApi: LectureCardApi;
 
   @observable
   _lectureCards: LectureCardModel[] = [];
+
+  @observable
+  lectureCard: LectureCardModel = new LectureCardModel();
 
 
   constructor(lectureCardApi:LectureCardApi) {
@@ -25,11 +29,26 @@ class LectureCardService {
     return lectureCards.peek();
   }
 
+  // LectureCards ------------------------------------------------------------------------------------------------------
+
   @action
   async findAllLectureCards(offset: number, limit: number) {
     //
-    const lectureCards = this.lectureCardApi.findAllLectureCards(offset, limit);
+    const lectureCards = await this.lectureCardApi.findAllLectureCards(offset, limit);
     console.log('lectureCards', lectureCards);
+  }
+
+  // LectureCard -------------------------------------------------------------------------------------------------------
+
+  @action
+  async findLectureCard(lectureCardId: string) {
+    //
+    const lectureCard = await this.lectureCardApi.findLectureCard(lectureCardId);
+
+    if (!lectureCard) {
+      return null;
+    }
+    return runInAction(() => this.lectureCard = new LectureCardModel(lectureCard));
   }
 }
 
