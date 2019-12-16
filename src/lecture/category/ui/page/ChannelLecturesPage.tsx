@@ -45,7 +45,7 @@ class ChannelLecturesPage extends Component<Props> {
     return (
       <ContentLayout
         breadcrumb={[
-          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}` },
+          { text: `${college.name} College`, path: `../../${college.collegeId}` },
           { text: `${channel.name} Channel` },
         ]}
       >

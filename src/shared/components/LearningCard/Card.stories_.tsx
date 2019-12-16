@@ -10,7 +10,7 @@ import Card from '.';
 
 
 export default {
-  title: 'components|card/Card',
+  title: 'components|card/[Todo: 사용금지] Card',
   component: Card,
 };
 
