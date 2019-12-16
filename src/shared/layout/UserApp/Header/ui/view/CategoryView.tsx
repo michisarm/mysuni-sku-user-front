@@ -60,10 +60,10 @@ class CategoryView extends Component<Props> {
                   <div className="scrolling">
                     { activeCollege && (
                       <>
-                        <button onClick={(e) => onClickChannel(e)}>{activeCollege.name} 전체보기<span>(125)</span></button>
+                        <button onClick={(e) => onClickChannel(e)}>{activeCollege.name} 전체보기</button>
                         { Array.isArray(channels) && (
                           channels.map((channel) => (
-                            <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}<span>(125)</span></button>
+                            <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}</button>
                           ))
                         )}
                       </>
