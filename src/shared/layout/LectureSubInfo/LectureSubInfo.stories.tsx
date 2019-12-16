@@ -1,21 +1,21 @@
 
 import React from 'react';
-import {select, object, boolean, array} from '@storybook/addon-knobs';
+import { select, object, boolean } from '@storybook/addon-knobs';
 import { Segment } from 'semantic-ui-react';
-import { storybookHelper, Widget } from 'shared';
+import { storybookHelper, LectureSubInfo } from 'shared';
 
 
 export default {
-  title: 'components|widget/Widget',
-  component: Widget,
+  title: 'components|layout/LectureSubInfo',
+  component: LectureSubInfo,
 };
 
 export const Basic = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -38,10 +38,10 @@ Basic.story = {
 export const WithState = () =>
   //
   (
-    <Widget
-      state={select('state', storybookHelper.enumValues(Widget.State), Widget.State.Joined)}
+    <LectureSubInfo
+      state={select('state', storybookHelper.enumValues(LectureSubInfo.State), LectureSubInfo.State.Joined)}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -64,10 +64,10 @@ WithState.story = {
 export const WithMainAction = () =>
   //
   (
-    <Widget
-      mainAction={object('mainAction', { type: Widget.ActionType.Enrollment, onAction: () => alert(Widget.ActionType.Enrollment)})}
+    <LectureSubInfo
+      mainAction={object('mainAction', { type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment)})}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -90,10 +90,10 @@ WithMainAction.story = {
 export const WithSubActions = () =>
   //
   (
-    <Widget
-      subActions={object('subActions', [{ type: Widget.ActionType.Retry, onAction: () => alert(Widget.ActionType.Retry)}])}
+    <LectureSubInfo
+      subActions={object('subActions', [{ type: LectureSubInfo.ActionType.Retry, onAction: () => alert(LectureSubInfo.ActionType.Retry)}])}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -116,10 +116,10 @@ WithSubActions.story = {
 export const WithCancel = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       onCancel={() => alert('cancel')}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -142,10 +142,10 @@ WithCancel.story = {
 export const WithClassCapacity = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       clazz={object('clazz', { learningTime: '12h 20m', capacity: 240, participantCount: '1,250' })}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -167,10 +167,10 @@ WithClassCapacity.story = {
 export const WithOperationInstructor = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       operator={object('operator', { instructor: '서현진', email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -192,10 +192,10 @@ WithOperationInstructor.story = {
 export const WithRemove = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       onRemove={() => alert('remove')}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
@@ -218,10 +218,10 @@ WithRemove.story = {
 export const WithSurvey = () =>
   //
   (
-    <Widget
+    <LectureSubInfo
       onSurvey={() => alert('survey')}
       required={boolean('required', false)}
-      level={select('level', storybookHelper.enumValues(Widget.Level), Widget.Level.Basic)}
+      level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}

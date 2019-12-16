@@ -14,7 +14,7 @@ import {
   OperatorView,
   FootButtons,
   Survey,
-} from '../view/WidgetElementsView';
+} from '../view/LectureSubInfoElementsView';
 
 
 
@@ -46,7 +46,7 @@ interface Props {
 }
 
 @reactAutobind
-class WidgetContainer extends Component<Props> {
+class LectureSubInfoContainer extends Component<Props> {
   //
   static Action: Action;
 
@@ -93,5 +93,5 @@ class WidgetContainer extends Component<Props> {
   }
 }
 
-export default WidgetContainer;
+export default LectureSubInfoContainer;
 

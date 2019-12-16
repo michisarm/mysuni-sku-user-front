@@ -31,5 +31,5 @@ export { default as UserApp } from './layout/UserApp';
 export { default as ContentLayout } from './layout/ContentLayout';
 export { default as ContentHeader } from './layout/ContentHeader';
 export { default as LectureContentHeader } from './layout/LectureContentHeader';
-export { default as Widget } from './layout/Widget';
+export { default as LectureSubInfo } from './layout/LectureSubInfo';
 export { default as LearningCard } from './components/LearningCard';
