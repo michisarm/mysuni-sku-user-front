@@ -14,7 +14,7 @@ import {
   OperatorView,
   FootButtons,
   Survey,
-} from '../view/WidgetElementsView';
+} from '../view/LectureSubInfoElementsView';
 
 
 
