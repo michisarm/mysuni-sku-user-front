@@ -34,7 +34,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { lectureCardService } = this.props;
 
-    lectureCardService!.findAllLectureCards(0, 20);
+    // lectureCardService!.findAllLectureCards(0, 20);
   }
 
   onChangeSorting(e: any, data: any) {

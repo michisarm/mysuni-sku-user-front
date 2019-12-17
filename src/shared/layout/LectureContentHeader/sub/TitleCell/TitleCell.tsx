@@ -37,7 +37,7 @@ class TitleCell extends Component<Props> {
           <div className="item">
             <Label className="onlytext">
               <Icon className="date" /><span>Creation date : {new Date(creationTime).toLocaleDateString()}</span>
-              <span className="ml17">Study start date, end date : 2019. 12. 31 ~ 2020. 02. 20</span>
+              <span className="ml17">Study start date, end date : 2019. 12. 31 (?) ~ 2020. 02. 20 (?)</span>
             </Label>
           </div>
         </div>
