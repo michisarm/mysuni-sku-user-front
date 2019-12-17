@@ -20,16 +20,6 @@ export class ApprovalContentsRdoModel {
       Object.assign(this, { ...approvalContents });
     }
   }
-
-  get query() {
-    const str: string[] = [];
-    Object.entries(this).forEach(([key, value]) => {
-      if (this.hasOwnProperty(key) && value) {
-        str.push(`${key}=${encodeURIComponent(value)}`);
-      }
-    });
-    return str.join('&');
-  }
 }
 
 decorate(ApprovalContentsRdoModel, {
