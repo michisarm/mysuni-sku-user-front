@@ -33,11 +33,11 @@ class Routes extends React.PureComponent {
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
 
             {/* profile */}
-            <Route exact path="/profile/favorite" component={withSplitting(() => import('./profile').then(({ FavoriteWelcomePage }) => FavoriteWelcomePage))} />
-            <Route exact path="/profile/favorite/college" component={withSplitting(() => import('./profile').then(({ FavoriteCollegeContainer }) => FavoriteCollegeContainer))} />
-            <Route exact path="/profile/favorite/job" component={withSplitting(() => import('./profile').then(({ FavoriteJobContainer }) => FavoriteJobContainer))} />
-            <Route exact path="/profile/favorite/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
-            <Route exact path="/profile/favorite/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
+            <Route exact path="/profile/interest" component={withSplitting(() => import('./profile').then(({ FavoriteWelcomePage }) => FavoriteWelcomePage))} />
+            <Route exact path="/profile/interest/college" component={withSplitting(() => import('./profile').then(({ FavoriteCollegeContainer }) => FavoriteCollegeContainer))} />
+            <Route exact path="/profile/interest/job" component={withSplitting(() => import('./profile').then(({ FavoriteJobContainer }) => FavoriteJobContainer))} />
+            <Route exact path="/profile/interest/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
+            <Route exact path="/profile/interest/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
 
             {/*board*/}
             /* eslint-disable-next-line max-len */
@@ -51,7 +51,7 @@ class Routes extends React.PureComponent {
 
 
             {/*mypage*/}
-            <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
+            <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPageContainer }) => MyPageContainer))} />
 
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />

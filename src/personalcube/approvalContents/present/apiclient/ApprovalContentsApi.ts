@@ -9,7 +9,7 @@ export default class ApprovalContentsApi {
 
   findAllApprovalContents(approvalContentsRdo: ApprovalContentsRdoModel) {
     //
-    return axios.get<OffsetElementList<ApprovalContentsModel>>(this.URL + `?${approvalContentsRdo.query}`)
+    return axios.get<OffsetElementList<ApprovalContentsModel>>(this.URL, { params: approvalContentsRdo })
       .then(response => response && response.data || null);
   }
 }

@@ -1,17 +1,10 @@
-import { observable, action, configure, runInAction } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import { NameValueList, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { SkProfileModel } from '../../model/SkProfileModel';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
-import { StudySummaryCdoModel } from '../../model/StudySummaryCdoModel';
-
-
-
-configure({
-  enforceActions: 'observed',
-});
+import { SkProfileModel } from '../..';
 
 @autobind
 export default class SkProfileService {
@@ -29,10 +22,6 @@ export default class SkProfileService {
   @observable
   skProfileQuery: SkProfileQueryModel = new SkProfileQueryModel();
 
-  @observable
-  studySummary:StudySummaryCdoModel = new StudySummaryCdoModel();
-
-
   constructor(skProfileApi: SkProfileApi) {
     this.skProfileApi = skProfileApi;
   }
@@ -42,38 +31,69 @@ export default class SkProfileService {
     this.skProfileApi.registerSkProfile(skProfile);
   }
 
-  registerStudySummary(studySummary : StudySummaryCdoModel) {
-    this.skProfileApi.registerStudySummary(studySummary);
-  }
-
   @action
-  async findStudySummary(memberId: string) {
-    const studySummary = await  this.skProfileApi.findStudySummary(memberId);
-    return runInAction(() => this.studySummary = studySummary);
-  }
-
-  @action
-  async findSkProfile(memberId: string) {
+  async findSkProfile() {
     //
-    const skProfile = await this.skProfileApi.findSkProfile(memberId);
+    const skProfile = await this.skProfileApi.findSkProfile();
     return runInAction(() => this.skProfile = skProfile);
   }
 
   @action
-  async findAllSkProfiles() {
-    const skProfiles = await this.skProfileApi.findAllSkProfiles(SkProfileQueryModel.asSkProfileRdo(this.skProfileQuery));
+  async  findSkProfileByAudienceId(audienceId: string) {
+    const  skProfile = await  this.skProfileApi.findSkProfileByAudienceId(audienceId);
+    return runInAction(() => this.skProfile = skProfile);
+  }
+
+  @action
+  async  findSkProfileByProfileId(profileId: string) {
+    const skProfile = await  this.skProfileApi.findSkProfileByProfileId(profileId);
+    return runInAction(() => this.skProfile = skProfile);
+  }
+
+  @action
+  async findAllSkProfilesBySearchKey() {
+    const skProfiles = await this.skProfileApi.findAllSkProfilesBySearchKey(SkProfileQueryModel.asSkProfileRdo(this.skProfileQuery));
     return runInAction(() => this.skProfiles = skProfiles);
   }
 
-  removeProfile(memberId:string) {
-    return this.skProfileApi.removeSkProfile(memberId);
+  @action
+  async  findAllSkProfile(offset:number, limit : number) {
+    const skProfiles = await  this.skProfileApi.findAllSkProfile(offset, limit);
+    return runInAction(() => this.skProfiles = skProfiles);
   }
 
-  modifySkProfile(memberId:string, nameValues:NameValueList) {
-    return this.skProfileApi.modifySkProfile(memberId, nameValues);
+  modfifySkProfileByProfileId(profileId:string, nameValues:NameValueList) {
+    this.skProfileApi.modifySkProfileByProfileId(profileId, nameValues);
   }
 
+  modifySkProfile(nameValues:NameValueList) {
+    this.skProfileApi.modifySkProfile(nameValues);
+  }
 
+  removeSkProfile(profileId:string) {
+    this.skProfileApi.removeSkProfile(profileId);
+  }
+
+  @action
+  async  findStudySummary() {
+    const studySummary = await this.skProfileApi.findStudySummary();
+    return runInAction(() => this.skProfile.studySummary = studySummary);
+  }
+
+  @action
+  async  finStudySummaryByProfileId(profileId : string) {
+    //profileId skProfile 검색 후 setting 필요한지 테스트 통해서 확인
+    const studySummary = await this.skProfileApi.findStudySummaryByProfileId(profileId);
+    return runInAction(() => this.skProfile.studySummary = studySummary);
+  }
+
+  modifyStudySummary(nameValues: NameValueList) {
+    this.skProfileApi.modifyStudySummary(nameValues);
+  }
+
+  modifyStudySummaryByProfileId(profileId:string, nameValues : NameValueList) {
+    this.skProfileApi.modifyStudySummaryByProfileId(profileId, nameValues);
+  }
 
   @action
   setSkQueryProfileProp(name: string, value: any) {
@@ -85,20 +105,14 @@ export default class SkProfileService {
   }
 
   @action
-  setStudySummaryProp(name:string, value:any) {
-    this.studySummary = _.set(this.studySummary, name, value);
-  }
-
-  @action
-  setFavoriteLearningType(name:string, value:any) {
-    this.studySummary.favoriteLearningType = _.set(this.studySummary.favoriteLearningType, name, value);
-  }
-
-  @action
   setFavoriteJobGroupProp(name:string, value:any) {
-    this.skProfile.favoriteJobGroup = _.set(this.skProfile.favoriteJobGroup, name, value);
+    this.skProfile.favoriteJobGroup = _.set( this.skProfile.favoriteJobGroup, name, value);
   }
 
+  @action
+  setStudySummaryProp(name:string, value:any) {
+    this.skProfile.studySummary = _.set( this.skProfile.studySummary, name, value);
+  }
 
   @action
   clearSkProfile() {

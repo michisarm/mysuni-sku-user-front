@@ -6,6 +6,8 @@ import { EmployeeModel } from './EmployeeModel';
 import { PisAgreementModel } from './PisAgreementModel';
 import { StudySummary } from './StudySummary';
 import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
+import { NameValueList } from '../../shared';
+import { SkProfileCdoModel } from './SkProfileCdoModel';
 
 export class SkProfileModel implements DramaEntity {
   id: string = '';
@@ -32,6 +34,57 @@ export class SkProfileModel implements DramaEntity {
       Object.assign(this, { ...skProfile, patronKey, member, pisAgreement, studySummary, favoriteJobGroup });
     }
   }
+
+  static asNameValues(skProfile : SkProfileModel) : NameValueList {
+    const asNameValues = {
+      nameValues: [
+        {
+          name: 'member',
+          value: JSON.stringify(skProfile.member),
+        },
+        {
+          name: 'memberType',
+          value: skProfile.memberType,
+        },
+        {
+          name: 'memberLocale',
+          value: JSON.stringify(skProfile.memberLocale),
+        },
+        {
+          name: 'pisAgreement',
+          value: JSON.stringify(skProfile.pisAgreement),
+        },
+        {
+          name: 'signedDate',
+          value: skProfile.signedDate.toISOString(),
+        },
+        {
+          name: 'studySummary',
+          value: JSON.stringify(skProfile.studySummary),
+        },
+        {
+          name: 'passwordAuthenticated',
+          value: skProfile.passwordAuthenticated ? 'true' : 'false',
+        },
+        {
+          name: 'favoriteJobGroup',
+          value: JSON.stringify(skProfile.favoriteJobGroup),
+        },
+      ],
+    };
+
+    return asNameValues;
+  }
+
+  static asCdo(skProfile : SkProfileModel) : SkProfileCdoModel {
+    return (
+      {
+        member: skProfile.member,
+        memberLocale: skProfile.memberLocale,
+      }
+    );
+  }
+
 }
 
 decorate(SkProfileModel, {

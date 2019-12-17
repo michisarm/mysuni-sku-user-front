@@ -77,7 +77,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   }
 
   onPreviousClick() {
-    this.props.history.push('/profile/favorite/job');
+    this.props.history.push('/profile/interest/job');
   }
 
 
@@ -93,7 +93,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     }
 
     //step props data server 전달 ..... main page로 이동
-    this.props.history.push('/profile/favorite/loading');
+    this.props.history.push('/profile/interest/loading');
 
   }
 

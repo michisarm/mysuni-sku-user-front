@@ -1,23 +1,41 @@
 import React, { Component } from 'react';
 import { Button, Icon, Label } from 'semantic-ui-react';
+import { observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { SkProfileModel } from '../../../../profile';
 
-class FavoriteChannelView extends Component {
+interface Props{
+  skProfile : SkProfileModel
+}
+
+@observer
+@reactAutobind
+class FavoriteChannelView extends Component<Props> {
+
   render() {
+    const { favoriteChannels } = this.props.skProfile.studySummary;
+
     return (
       <div className="channel-of-interest">
         <div className="table-css type2">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">관심 channel(32)
+              <div className="tit-set">관심 channel({
+                 favoriteChannels.idNames ? favoriteChannels.idNames.length : 32
+                })
                 <Button icon className="img-icon"><Icon className="setting17" />
                   <span className="blind">setting</span>
                 </Button>
               </div>
             </div>
             <div className="cell vtop">
-              <div className="item-wrap">{/*  skProfile.favoriteChannel : IdNameList  */}
+              <div className="item-wrap">{/*  skProfile.favoriteChannels : IdNameList  */}
                 <div className="belt">
-                  <Label className="channel">AI</Label>
+                  {/*
+                    favoriteChannels && favoriteChannels.idNames.map((idName, index) => (
+                      <Label className="channel" key={index}>{idName.name}</Label>
+                    ))
+                  */}
                   <Label className="channel">Design</Label>
                   <Label className="channel">Database</Label>
                   <Label className="channel">Project Managing</Label>
@@ -41,7 +59,7 @@ class FavoriteChannelView extends Component {
               </div>
             </div>
             <div className="cell vtop">
-              <div className="toggle-btn">{/*  .active // */}
+              <div className="toggle-btn">{/*  .active  rb.rbipt.com  html에서 i element 이벤트 적용 -- 이벤트 처리해야하는지 인영 문의// */}
                 <Button icon className="img-icon"><Icon className="sum-open" />
                   <span className="blind"> open </span>
                 </Button>

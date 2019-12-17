@@ -12,7 +12,7 @@ interface Props extends RouteComponentProps {
 class FavoriteWelcomePage extends Component<Props> {
 
   onStart() {
-    this.props.history.push('/profile/favorite/college');
+    this.props.history.push('/profile/interest/college');
   }
 
   render() {

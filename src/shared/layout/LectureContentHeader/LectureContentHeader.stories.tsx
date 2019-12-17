@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import { Button, Image } from 'semantic-ui-react';
 import { LectureContentHeader, ContentLayout } from 'shared';
+import { DatePeriod } from '@nara.platform/accent';
 
 
 export default {
@@ -12,9 +13,9 @@ export default {
 };
 
 
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <LectureContentHeader>
       <LectureContentHeader.ThumbnailCell
         image={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
@@ -24,6 +25,7 @@ export const Basic = () => {
         title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
         type="ClassRoomLecture"
         creationTime={12123123}
+        learningPeriod={{ startDate: '2019.01.01', endDate: '2020.01.01' } as DatePeriod}
       />
       <LectureContentHeader.RightCell>
         <LectureContentHeader.StarRatingItem
@@ -33,12 +35,9 @@ export const Basic = () => {
       </LectureContentHeader.RightCell>
     </LectureContentHeader>
   );
-};
-
-
-export const Stamp = () => {
+export const Stamp = () =>
   //
-  return (
+  (
     <LectureContentHeader>
       <LectureContentHeader.ThumbnailCell
         image={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
@@ -54,4 +53,4 @@ export const Stamp = () => {
       </LectureContentHeader.RightCell>
     </LectureContentHeader>
   );
-};
+
