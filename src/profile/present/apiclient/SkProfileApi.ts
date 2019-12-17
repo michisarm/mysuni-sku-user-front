@@ -7,7 +7,7 @@ import { SkProfileCdoModel } from '../../model/SkProfileCdoModel';
 
 export default class SkProfileApi {
   //
-  URL = '/api/profiles';
+  URL = '/api/profile/profiles';
 
   static instance: SkProfileApi;
 

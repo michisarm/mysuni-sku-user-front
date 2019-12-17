@@ -100,7 +100,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
   }
 
   onPreviousClick() {
-    this.props.history.push('/profile/favorite/college');
+    this.props.history.push('/profile/interest/college');
   }
 
   onNextClick() {
@@ -114,7 +114,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
         skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
       }
     }
-    this.props.history.push('/profile/favorite/learningType');
+    this.props.history.push('/profile/interest/learningType');
   }
 
   render() {
