@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { LectureSubInfo, OverviewField } from 'shared';
+import { LectureSubInfo, OverviewField, DatePeriod } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CubeIntroModel, CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
@@ -96,6 +96,49 @@ class CategoryLecturesContainer extends Component<Props, State> {
     };
   }
 
+  getViewObject() {
+    //
+    const {
+      personalCubeService, cubeIntroService, classroomService,
+    } = this.props;
+    const { personalCube } = personalCubeService!;
+    const { cubeIntro } = cubeIntroService!;
+    const { classroom } = classroomService!;
+    console.log('classroom', classroom);
+
+    return {
+      // Sub info
+      difficultyLevel: cubeIntro.difficultyLevel,
+      learningTime: cubeIntro.learningTime,
+      capacity: classroom.capacity,
+      participantCount: '1,250',
+      instructorName: cubeIntro.description.instructor.name,
+      operatorName: cubeIntro.operation.operator.name,
+      operatorCompany: cubeIntro.operation.operator.company,
+      operatorEmail: cubeIntro.operation.operator.email,
+      // Fields
+      description: cubeIntro.description.description,
+
+      applyingPeriod: classroom.enrolling.applyingPeriod,
+      cancellablePeriod: classroom.enrolling.cancellablePeriod,
+      cancellationPenalty: classroom.enrolling.cancellationPenalty,
+
+      goal: cubeIntro.description.goal,
+      applicants: cubeIntro.description.applicants,
+      organizerName: cubeIntro.operation.organizer.name,
+
+      location: cubeIntro.operation.location,
+      completionTerms: cubeIntro.description.completionTerms,
+      guide: cubeIntro.description.guide,
+
+      tags: personalCube.tags,
+    };
+  }
+
+  getPeriodDate(datePeriod: DatePeriod) {
+    return `${datePeriod.startDate} ~ ${datePeriod.endDate}`;
+  }
+
   renderSubCategories(personalCube: PersonalCubeModel) {
     //
     if (!personalCube.subCategories || personalCube.subCategories.length < 1) {
@@ -131,8 +174,8 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { classroom } = classroomService!;
-    console.log('Container.personalCube', personalCube.subCategories);
-    console.log('Container.cubeIntro', cubeIntro);
+    const viewObject = this.getViewObject();
+    console.log('Container.viewModel', viewObject);
 
     return (
       <LectureCardContentWrapperView>
@@ -151,6 +194,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
           <OverviewField.Description
             description={cubeIntro.description.description}
           />
+
           <OverviewField.List
             className={classNames('sub-category fn-parents', { open: categoryOpen })}
             header={(
@@ -169,61 +213,65 @@ class CategoryLecturesContainer extends Component<Props, State> {
               {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
             </Button>
           </OverviewField.List>
+
           <OverviewField.List icon className="period-area">
             <OverviewField.Item
               titleIcon="period"
               title="Registration Period"
-              content="2020.01.01 ~ 2020.02.01"
+              content={this.getPeriodDate(viewObject.applyingPeriod)}
             />
             <OverviewField.Item
               titleIcon="cancellation"
               title="Cancellation Period"
               content={(
                 <>
-                  2020.01.01 ~ 2020.02.01
+                  {this.getPeriodDate(viewObject.cancellablePeriod)}
                   <div className="info">
-                    Cancellation penalty : 2020 of the lecture fee and no application for training for three months
+                    Cancellation penalty : {viewObject.cancellationPenalty}
                   </div>
                 </>
               )}
             />
           </OverviewField.List>
+
           <OverviewField.List icon>
             <OverviewField.Item
               titleIcon="goal"
               title="Goal"
-              content="Goal content"
+              content={viewObject.goal}
             />
             <OverviewField.Item
               titleIcon="target"
               title="Target"
-              content="Target content"
+              content={viewObject.applicants}
             />
             <OverviewField.Item
               titleIcon="host"
               title="Hots"
-              content="Host content"
+              content={viewObject.organizerName}
             />
           </OverviewField.List>
+
           <OverviewField.List className="info-box2">
             <OverviewField.Item
               title="Place"
-              content="Place content"
+              content={viewObject.location}
             />
             <OverviewField.Item
               title="Requirements"
-              content="Requirements content"
+              content={viewObject.completionTerms}
             />
             <OverviewField.Item
               title="Other Guides"
-              content="Other Guides content"
+              contentHtml={viewObject.guide}
             />
           </OverviewField.List>
+
           <OverviewField.List className="tab-wrap" icon>
             <OverviewField.Item
-              titleIcon="tag"
+              titleIcon="tag2"
               title="Tag"
-              content="Tag content"
+              content={viewObject.tags}
             />
           </OverviewField.List>
         </OverviewField.Wrapper>
