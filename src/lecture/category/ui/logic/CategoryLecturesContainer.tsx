@@ -37,7 +37,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { personalCubeService, lectureCardService } = this.props;
+    // const { personalCubeService, lectureCardService } = this.props;
 
     // lectureCardService!.findAllLectureCards(0, 20);
 

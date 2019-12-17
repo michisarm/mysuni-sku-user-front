@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { reaction } from 'mobx';
+// import { reaction } from 'mobx';
 import { observer, inject } from 'mobx-react';
 
 import classNames from 'classnames';
@@ -34,17 +34,17 @@ class CategoryLecturesContainer extends Component<Props, State> {
     categoryOpen: false,
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    // reaction(
-    //   () => props.c
-    // );
-  }
+  // constructor(props: Props) {
+  //   super(props);
+  //
+  //   // reaction(
+  //   //   () => props.c
+  //   // );
+  // }
 
   componentDidMount() {
     //
-    const { classroomService } = this.props;
+    // const { classroomService } = this.props;
 
     // classroomService.findClassroom()
 

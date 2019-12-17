@@ -32,7 +32,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { lectureCardService } = this.props;
+    // const { lectureCardService } = this.props;
 
     // lectureCardService!.findAllLectureCards(0, 20);
   }
