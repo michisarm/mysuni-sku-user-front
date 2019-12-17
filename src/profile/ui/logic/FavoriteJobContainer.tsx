@@ -10,7 +10,6 @@ import { ContentLayout } from '../../../shared';
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { SkProfileModel } from '../..';
 
 interface Props extends RouteComponentProps{
   collegeService? : CollegeService
@@ -110,9 +109,10 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (skProfileService ) {
       if ( !isSelectedJobGroup || !isSelectedDutyGroup ) {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
-      } else {
-        skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
       }
+      // } else {
+      //   skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
+      // }
     }
     this.props.history.push('/profile/interest/learningType');
   }

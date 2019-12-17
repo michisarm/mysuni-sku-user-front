@@ -90,10 +90,11 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       skProfileService.setStudySummaryProp('area', areaGroup);
       skProfileService.setStudySummaryProp('goal', goalGroup);
       skProfileService.setStudySummaryProp('etc', etc);
-    }
 
+      // skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
+    }
     //step props data server 전달 ..... main page로 이동
-    this.props.history.push('/profile/interest/loading');
+    this.props.history.push('/');
 
   }
 
