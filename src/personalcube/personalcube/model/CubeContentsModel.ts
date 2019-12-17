@@ -1,8 +1,10 @@
 import { decorate, observable } from 'mobx';
 import { IdName } from 'shared';
+import CubeType from './CubeType';
+
 
 export class CubeContentsModel {
-  type: string = '';
+  type: CubeType = CubeType.None;
   contents: IdName = new IdName();
   lengthInMinute: number = 0;
   surveyId: string = '';
@@ -17,7 +19,7 @@ export class CubeContentsModel {
     if (cubeContents) {
       const contents = cubeContents.contents && new IdName(cubeContents.contents) || this.contents;
       Object.assign(this, { ...cubeContents, contents });
-      this.type = cubeContents.type && cubeContents.type || '';
+      this.type = cubeContents.type;
     }
   }
 }

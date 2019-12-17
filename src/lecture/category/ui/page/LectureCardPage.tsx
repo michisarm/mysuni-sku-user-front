@@ -33,14 +33,14 @@ class LectureCardPage extends Component<Props> {
     collegeService.findCollege(params.collegeId);
     personalCubeService.findPersonalCube('CUBE-4')
       .then((personalCube) => {
-        console.log('responsePersonalCube',  personalCube);
         if (personalCube) {
-          console.log('findCubeIntro', personalCube.cubeIntro.id);
+          console.log('contents', personalCube.contents);
+
           cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
           // .then((cubeIntro) => console.log('cubeIntro', cubeIntro));
         }
       });
-    lectureCardService.findLectureCard(params.lectureCardId);
+    // lectureCardService.findLectureCard(params.lectureCardId);
   }
 
 

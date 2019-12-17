@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import { DatePeriod, reactAutobind } from '@nara.platform/accent';
 
+import { CubeType } from 'personalcube/personalcube';
 import { Label, Icon, LabelProps } from 'semantic-ui-react';
 
 
 interface Props {
   title: string,
-  type: string,
+  type: CubeType,
   creationTime: number,
   label?: { color: LabelProps['color'], text: string },
   learningPeriod?: DatePeriod

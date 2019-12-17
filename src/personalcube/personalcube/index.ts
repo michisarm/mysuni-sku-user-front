@@ -4,3 +4,4 @@ export { default as PersonalCubeService } from './present/logic/PersonalCubeServ
 
 /** Model */
 export { PersonalCubeModel } from './model/PersonalCubeModel';
+export { default as CubeType } from './model/CubeType';

@@ -8,7 +8,6 @@ import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { ContentLayout } from '../../../shared';
-import { StudySummary } from '../../model/StudySummary';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
@@ -43,12 +42,17 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   componentDidMount(): void {
-    const { collegeService, skProfileService } = this.props;
+    this.init();
+  }
 
+  init() {
+    const { collegeService, skProfileService } = this.props;
     if (collegeService && skProfileService) {
       collegeService.findAllColleges();
-      skProfileService.findSkProfile();
+      //  skProfileService.findSkProfile();
+      // skProfileService.findStudySummary();
     }
+
   }
 
   selectCollege( collegeId : string) {
@@ -81,19 +85,19 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   onNextClick() {
-    const { collegeService, skProfileService } = this.props;
+    const { collegeService } = this.props;
     if (collegeService.favoriteChannels.length < 3 ) {
       reactConfirm({
         title: '알림',
         message: '관심 분야는 3개이상 선택해 주세요.</br> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
-        onClose: () => this.props.history.push('/profile/favorite/job'),
+        onClose: () => this.props.history.push('/profile/interest/job'),
       });
     } else {
-      if (collegeService && skProfileService) {
-        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
-        skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
-      }
-      this.props.history.push('/profile/favorite/job');
+      // if (collegeService && skProfileService) {
+      //   skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
+      //   skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
+      // }
+      this.props.history.push('/profile/interest/job');
     }
   }
 
