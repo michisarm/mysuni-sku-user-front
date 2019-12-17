@@ -31,7 +31,14 @@ export class ClassroomModel implements DramaEntity {
       const enrolling = classroom.enrolling && new EnrollingModel(classroom.enrolling) || this.enrolling;
       const operation = classroom.operation && new OperationModel(classroom.operation) || this.operation;
       const roundReportFileBox = classroom.roundReportFileBox && new ReportFileBoxModel(classroom.roundReportFileBox) || this.roundReportFileBox;
-      Object.assign(this, { ...classroom });
+      Object.assign(this, {
+        ...classroom,
+        instructor,
+        freeOfCharge,
+        enrolling,
+        operation,
+        roundReportFileBox,
+      });
     }
   }
 

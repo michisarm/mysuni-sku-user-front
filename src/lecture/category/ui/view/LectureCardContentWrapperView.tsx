@@ -8,7 +8,7 @@ interface Props {
   children: React.ReactNode,
 }
 
-class CategoryContentWrapperView extends Component<Props> {
+class LectureCardContentWrapperView extends Component<Props> {
   //
   render() {
     //
@@ -16,12 +16,10 @@ class CategoryContentWrapperView extends Component<Props> {
 
     return (
       <Segment className="full">
-        <div className="college-detail">
-          {children}
-        </div>
+        {children}
       </Segment>
     );
   }
 }
 
-export default CategoryContentWrapperView;
+export default LectureCardContentWrapperView;

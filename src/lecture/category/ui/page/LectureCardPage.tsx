@@ -7,29 +7,39 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentLayout } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
+import { CubeIntroService } from 'personalcube/cubeintro';
 import { LectureCardService } from 'lecture';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
-import CategoryLecturesContainer from '../logic/CategoryLecturesContainer';
+import LectureCardContainer from '../logic/LectureCardContainer';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string }> {
   collegeService: CollegeService,
   personalCubeService: PersonalCubeService,
+  cubeIntroService: CubeIntroService,
   lectureCardService: LectureCardService,
 }
 
-@inject('collegeService', 'personalCubeService', 'lectureCardService')
+@inject('collegeService', 'personalCubeService', 'cubeIntroService', 'lectureCardService')
 @reactAutobind
 @observer
 class LectureCardPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { match, collegeService, personalCubeService, lectureCardService } = this.props;
+    const { match, collegeService, personalCubeService, cubeIntroService, lectureCardService } = this.props;
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-    personalCubeService.findPersonalCube('CUBE-4');
+    personalCubeService.findPersonalCube('CUBE-4')
+      .then((personalCube) => {
+        console.log('responsePersonalCube',  personalCube);
+        if (personalCube) {
+          console.log('findCubeIntro', personalCube.cubeIntro.id);
+          cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
+          // .then((cubeIntro) => console.log('cubeIntro', cubeIntro));
+        }
+      });
     lectureCardService.findLectureCard(params.lectureCardId);
   }
 
@@ -54,9 +64,8 @@ class LectureCardPage extends Component<Props> {
       >
         <LectureCardHeaderView
           personalCube={personalCube}
-          lectureCard={lectureCard}
         />
-        <CategoryLecturesContainer />
+        <LectureCardContainer />
       </ContentLayout>
     );
   }

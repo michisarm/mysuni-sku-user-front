@@ -1,7 +1,7 @@
 
 interface Class {
-  learningTime: string
-  capacity?: string | number
+  learningTime: number
+  capacity?: number
   participantCount: string | number
 }
 

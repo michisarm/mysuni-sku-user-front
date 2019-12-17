@@ -6,7 +6,7 @@ import { storybookHelper, LectureSubInfo } from 'shared';
 
 
 export default {
-  title: 'components|layout/LectureSubInfo',
+  title: 'components|panel/LectureSubInfo',
   component: LectureSubInfo,
 };
 
@@ -16,7 +16,7 @@ export const Basic = () =>
     <LectureSubInfo
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 0, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -42,7 +42,7 @@ export const WithState = () =>
       state={select('state', storybookHelper.enumValues(LectureSubInfo.State), LectureSubInfo.State.Joined)}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -68,7 +68,7 @@ export const WithMainAction = () =>
       mainAction={object('mainAction', { type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment)})}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -94,7 +94,7 @@ export const WithSubActions = () =>
       subActions={object('subActions', [{ type: LectureSubInfo.ActionType.Retry, onAction: () => alert(LectureSubInfo.ActionType.Retry)}])}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -120,7 +120,7 @@ export const WithCancel = () =>
       onCancel={() => alert('cancel')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -143,7 +143,7 @@ export const WithClassCapacity = () =>
   //
   (
     <LectureSubInfo
-      clazz={object('clazz', { learningTime: '12h 20m', capacity: 240, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, capacity: 240, participantCount: '1,250' })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
@@ -171,7 +171,7 @@ export const WithOperationInstructor = () =>
       operator={object('operator', { instructor: '서현진', email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
     />
@@ -196,7 +196,7 @@ export const WithRemove = () =>
       onRemove={() => alert('remove')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -222,7 +222,7 @@ export const WithSurvey = () =>
       onSurvey={() => alert('survey')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: '12h 20m', participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}

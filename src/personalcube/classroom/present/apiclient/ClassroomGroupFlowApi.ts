@@ -1,4 +1,4 @@
-import { axiosApi as axios } from '@nara.platform/accent';
+// import { axiosApi as axios } from '@nara.platform/accent';
 
 export default class ClassroomGroupFlowApi {
   URL = '/api/personalCube/classroomGroups/flow';

@@ -5,12 +5,10 @@ import { observer } from 'mobx-react';
 
 import { LectureContentHeader } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
-import { LectureCardModel } from 'lecture';
 
 
 interface Props {
   personalCube: PersonalCubeModel,
-  lectureCard: LectureCardModel,
 }
 
 @reactAutobind
@@ -19,13 +17,11 @@ class LectureCardHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { personalCube, lectureCard } = this.props;
-    console.log('View.lectureCard', lectureCard);
+    const { personalCube } = this.props;
 
     if (!personalCube.category) {
       return null;
     }
-    console.log('View.personalCube', personalCube);
 
     return (
       <LectureContentHeader>

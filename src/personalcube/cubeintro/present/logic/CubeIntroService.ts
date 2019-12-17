@@ -19,13 +19,17 @@ export default class CubeIntroService {
   }
 
   @action
-  async findClassroom(cubeIntroId: string) {
+  async findCubeIntro(cubeIntroId: string) {
     const cubeIntro = await this.cubeIntroApi.findCubeIntro(cubeIntroId);
-    runInAction(() => this.cubeIntro = new CubeIntroModel(cubeIntro));
+
+    if (!cubeIntro) {
+      return null;
+    }
+    return runInAction(() => this.cubeIntro = new CubeIntroModel(cubeIntro));
   }
 
   @action
-  clearClassroom() {
+  clearCubeIntro() {
     this.cubeIntro = new CubeIntroModel();
   }
 }

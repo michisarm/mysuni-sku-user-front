@@ -4,7 +4,7 @@ import { NameValueList, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
-import { SkProfileModel } from '../..';
+import { SkProfileModel } from '../../model/SkProfileModel';
 
 @autobind
 export default class SkProfileService {
