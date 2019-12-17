@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { DatePeriod, reactAutobind } from '@nara.platform/accent';
 
 import { Label, Icon, LabelProps } from 'semantic-ui-react';
 
@@ -10,6 +10,7 @@ interface Props {
   type: string,
   creationTime: number,
   label?: { color: LabelProps['color'], text: string },
+  learningPeriod?: DatePeriod
   children?: React.ReactNode,
 }
 
@@ -18,12 +19,12 @@ class TitleCell extends Component<Props> {
   //
   render() {
     //
-    const { label, title, type, creationTime, children } = this.props;
+    const { label, title, type, creationTime, children, learningPeriod } = this.props;
 
     return (
       <div className="title-area">
         { label && (
-          <Label color={label.color}>Leadership</Label>
+          <Label color={label.color}>{label.text}</Label>
         )}
 
         <div className="header">{title}</div>
@@ -37,7 +38,11 @@ class TitleCell extends Component<Props> {
           <div className="item">
             <Label className="onlytext">
               <Icon className="date" /><span>Creation date : {new Date(creationTime).toLocaleDateString()}</span>
-              <span className="ml17">Study start date, end date : 2019. 12. 31 ~ 2020. 02. 20</span>
+              {
+                learningPeriod && (
+                  <span className="ml17">Study start date, end date : {learningPeriod.startDate} ~ {learningPeriod.endDate}</span>
+                ) || null
+              }
             </Label>
           </div>
         </div>
