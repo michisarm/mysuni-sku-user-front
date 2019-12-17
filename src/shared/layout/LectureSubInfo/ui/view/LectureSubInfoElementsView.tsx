@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Label, Button, Step, List, Icon } from 'semantic-ui-react';
+import { dateTimeHelper } from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
 import Operator from '../../model/Operator';
@@ -68,8 +69,8 @@ export const LevelView = ({ level }: LevelProp) => {
       <span className="level-txt">{level}</span>
       <Step.Group unstackable className="level">
         {
-          Object.keys(Level).map((levelKey: string) => (
-            <Step active={levelKey === level}>
+          Object.keys(Level).map((levelKey: string, index: number) => (
+            <Step key={`level-${index}`} active={levelKey === level}>
               <Step.Content>
                 <Step.Title><span className="blind">{levelKey}</span></Step.Title>
               </Step.Content>
@@ -88,12 +89,13 @@ interface ClassProp {
 
 export const ClassView = ({ clazz }: ClassProp) => {
   if (!clazz) return null;
+  const { hour, minute } = dateTimeHelper.timeToHourMinute(clazz.learningTime);
   return (
     <List className="class-info1">
       <List.Item>
         <div className="ui">
           <div className="label">Time</div>
-          <div className="value">{clazz.learningTime}</div>
+          <div className="value">{hour ? `${hour}h ` : ''}{minute}m</div>
         </div>
       </List.Item>
       {
@@ -135,7 +137,8 @@ export const OperatorView = ({ operator }: OperatorProp) => {
       }
       <List.Item>
         <List.Header>담당자</List.Header>
-        <List.Description>{operator.name}<span className="middot">{operator.company}</span>
+        <List.Description>
+          {operator.name} {operator.company && <span className="middot">{operator.company}</span> }
           <br /><a href={`mailto:${operator.email}`} className="underlink">{operator.email}</a>
         </List.Description>
       </List.Item>

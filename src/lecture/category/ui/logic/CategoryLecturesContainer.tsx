@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture';
-import CategoryContentWrapperView from '../view/CategoryContentWrapperView';
+import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import ChannelsView from '../view/ChannelsView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import SortingView from '../view/SortingView';
@@ -37,13 +37,13 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { personalCubeService, lectureCardService } = this.props;
+    // const { personalCubeService, lectureCardService } = this.props;
 
-    lectureCardService!.findAllLectureCards(0, 20);
+    // lectureCardService!.findAllLectureCards(0, 20);
 
     // Todo: 조회 서비스 교체해야함.
     // personalCubeService!.findAllPersonalCubesByQuery();
-    personalCubeService!.findAllPersonalCubes(0, 20);
+    // personalCubeService!.findAllPersonalCubes(0, 20);
   }
 
 
@@ -73,7 +73,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const channels = collegeService!.channels;
 
     return (
-      <CategoryContentWrapperView>
+      <CategoryLecturesContentWrapperView>
         <ChannelsView
           open={categoriesOpen}
           channels={channels}
@@ -100,7 +100,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
             />
           </>
         </LecturesWrapperView>
-      </CategoryContentWrapperView>
+      </CategoryLecturesContentWrapperView>
     );
   }
 }

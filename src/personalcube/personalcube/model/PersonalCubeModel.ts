@@ -13,20 +13,22 @@ export class PersonalCubeModel implements DramaEntity {
 
   personalCubeId: string = '';
   name: string = '';
-  creator: CreatorModel = new CreatorModel();
-  contents: CubeContentsModel = new CubeContentsModel();
-  cubeIntro: IdName = new IdName();
-  tags: string[] = [];
   category: CategoryModel = new CategoryModel();
   subCategories: CategoryModel[] = [];
   iconBox: IconBox = new IconBox();
+  creator: CreatorModel = new CreatorModel();
   cubeState: CubeState = CubeState.Created;
   searchFilter: SearchFilter = SearchFilter.SearchOff;
+
   subsidiaries: IdName[] = [];
   requiredSubsidiaries: IdName[] = [];
+  contents: CubeContentsModel = new CubeContentsModel();
+  cubeIntro: IdName = new IdName();
+  tags: string[] = [];
   time: number = 0;
 
   openRequests: OpenRequest[] = [];
+
 
   constructor(personalCube?: PersonalCubeModel) {
     if (personalCube) {

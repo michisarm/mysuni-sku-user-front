@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 
-import { Button, Image } from 'semantic-ui-react';
-import { LectureContentHeader, ContentLayout } from 'shared';
+import { LectureContentHeader } from 'shared';
+import { CubeType } from 'personalcube/personalcube';
 import { DatePeriod } from '@nara.platform/accent';
 
 
@@ -23,7 +22,7 @@ export const Basic = () =>
       <LectureContentHeader.TitleCell
         label={{ color: 'blue', text: 'Leadership' }}
         title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
-        type="ClassRoomLecture"
+        type={CubeType.ClassRoomLecture}
         creationTime={12123123}
         learningPeriod={{ startDate: '2019.01.01', endDate: '2020.01.01' } as DatePeriod}
       />
