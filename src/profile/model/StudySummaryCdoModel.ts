@@ -1,9 +1,7 @@
-import { AudienceKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdNameList } from 'shared';
+import { IdNameList, NameValueList } from 'shared';
 
 export class StudySummaryCdoModel {
-  audienceKey : AudienceKey={} as AudienceKey;
   profileId : string ='';
   favoriteChannels : IdNameList = {} as IdNameList;
   favoriteColleges : IdNameList = {} as IdNameList;
@@ -14,10 +12,20 @@ export class StudySummaryCdoModel {
       Object.assign(this, { studySummary });
     }
   }
+
+  static asNameValueList(idNameList : IdNameList) : NameValueList {
+    const nameValueList : NameValueList = new NameValueList();
+    idNameList.idNames.map((data) => {
+      nameValueList.nameValues.push({
+        name: data.id,
+        value: data.name,
+      });
+    });
+    return nameValueList;
+  }
 }
 
 decorate(StudySummaryCdoModel, {
-  audienceKey: observable,
   profileId: observable,
   favoriteChannels: observable,
   favoriteColleges: observable,

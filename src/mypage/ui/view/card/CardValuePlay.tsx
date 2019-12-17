@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Card, Icon, Label, Image } from 'semantic-ui-react';
+import { Button, Card, Icon, Label } from 'semantic-ui-react';
 
 @reactAutobind
 class CardValuePlay extends Component {
@@ -9,9 +9,8 @@ class CardValuePlay extends Component {
       <Card>
         <div className="card-inner">
           {/* 썸네일 */}
-          <div className="thumbnail">
-            <Image src="http://placehold.it/70x70" alt="임시이미지" size="small" />
-          </div>
+          <div className="thumbnail" />
+
           {/* //썸네일 */}
           <div className="title-area">
             <Label color="blue">Leadership</Label>

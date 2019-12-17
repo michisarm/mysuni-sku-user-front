@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Icon, Label } from 'semantic-ui-react';
+import { observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
 
+@observer
+@reactAutobind
 class LectureTotalTimeView extends Component {
   render() {
     return (
@@ -9,7 +13,7 @@ class LectureTotalTimeView extends Component {
           <div className="ui statistic total-time">
             <Button className="btn-total-time">
               <Label className="onlytext">
-                <Icon className="total-time" /><span>총 학습시간</span>
+                <Icon className="total-time" /><span>총 학습시간</span> {/* MyTraining service 구현후 적용*/}
               </Label>
               <div className="value2">
                 <strong>120</strong><span>h</span>
@@ -25,7 +29,7 @@ class LectureTotalTimeView extends Component {
             </div>
             <div className="ui list">
               <dl className="item sk">
-                <dt>SK University</dt>
+                <dt>SUNI</dt>
                 <dd>14h 50m</dd>
               </dl>
               <dl className="item my">

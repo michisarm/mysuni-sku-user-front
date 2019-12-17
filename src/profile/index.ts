@@ -4,8 +4,10 @@ import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
 import FavoriteLearningTypeContainer from './ui/logic/FavoriteLearningTypeContainer';
 import SkProfileService from './present/logic/SkProfileService';
 import LoadingPage from './ui/page/LoadingPage';
+import { SkProfileModel } from './model/SkProfileModel';
 
 export {
+  SkProfileModel,
   FavoriteWelcomePage,
   LoadingPage,
   FavoriteCollegeContainer,
