@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { DatePeriod, reactAutobind } from '@nara.platform/accent';
-import { BoardService, PostListByWriter } from '@sku/personalcube';
+import { BoardService, PostList } from '@sku/personalcube';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Segment } from 'semantic-ui-react';
 import { ContentLayout, ContentMenu, LectureContentHeader, LectureSubInfo, mobxHelper } from 'shared';
@@ -18,7 +18,7 @@ interface Props extends RouteComponentProps<{ cubeId: string }>{
 @inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'personalCube.boardService', 'personalCube.cubeIntroService'))
 @observer
 @reactAutobind
-class MyPostListPage extends React.Component<Props> {
+class PostListPage extends React.Component<Props> {
   //
   componentDidMount(): void {
     const { personalCubeService, boardService, cubeIntroService } = this.props;
@@ -44,6 +44,7 @@ class MyPostListPage extends React.Component<Props> {
     const startDate = board.learningPeriod && board.learningPeriod.startDate;
     let endDate = board.learningPeriod && board.learningPeriod.endDate;
     if (board.boardConfig && board.boardConfig.unLimited) endDate = '2100-01-01';
+
     return (
       <ContentLayout
         className="content community"
@@ -71,7 +72,7 @@ class MyPostListPage extends React.Component<Props> {
         <div>
           <ContentMenu
             menus={[{ name: 'Community', path: '' }, { name: 'My posts', path: '' }, { name: 'Overview', path: '' }] as typeof ContentMenu.Menu[]}
-            activeIndex={1}
+            activeIndex={0}
           />
           <Segment className="full">
             <LectureSubInfo
@@ -81,9 +82,11 @@ class MyPostListPage extends React.Component<Props> {
               onBookmark={() => {}}
               onShare={() => {}}
             />
-            <PostListByWriter
+            <PostList
               boardId={board && board.id || ''}
-              emptyMessage="내가 작성한 글이 없습니다."
+              emptyMessage="Community에 등록 된 글이 없습니다."
+              type={PostList.ListType.Basic}
+              linkedUrl={`/community/${cubeId}/posts`}
               routeToPost={() => this.props.history.push(`/community/${cubeId}/posts/new`)}
             />
           </Segment>
@@ -93,4 +96,4 @@ class MyPostListPage extends React.Component<Props> {
   }
 }
 
-export default withRouter(MyPostListPage);
+export default withRouter(PostListPage);
