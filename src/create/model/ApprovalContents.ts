@@ -1,8 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { CreatorModel } from '../../personalcube/personalcube/model/CreatorModel';
-import { SearchFilter } from '../../personalcube/personalcube/model/SearchFilter';
-import { CubeState } from '../../personalcube/personalcube/model/CubeState';
-import { CategoryModel } from '../../shared/model/CategoryModel';
+import { CubeState, SearchFilter, CategoryModel, CreatorModel } from 'shared';
 
 export class ApprovalContents {
   serviceId: string = '';

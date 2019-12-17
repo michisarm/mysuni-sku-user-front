@@ -1,10 +1,5 @@
-import { IdName } from 'shared';
-import { CreatorModel } from './CreatorModel';
+import { CubeState, IdName, SearchFilter, CreatorModel, CategoryModel, IconBox } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
-import { CategoryModel } from '../../../shared/model/CategoryModel';
-import { IconBox } from './IconBox';
-import { CubeState } from './CubeState';
-import { SearchFilter } from './SearchFilter';
 
 export class PersonalCubeCdoModel {
   //

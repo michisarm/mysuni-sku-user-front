@@ -39,7 +39,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     //
     const { personalCubeService, lectureCardService } = this.props;
 
-    console.log(lectureCardService);
     lectureCardService!.findAllLectureCards(0, 20);
 
     // Todo: 조회 서비스 교체해야함.
@@ -72,7 +71,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { categoriesOpen, sorting } = this.state;
     const college = collegeService!.college;
     const channels = collegeService!.channels;
-    console.log('college', college);
 
     return (
       <CategoryContentWrapperView>
@@ -96,7 +94,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
           }
         >
           <>
-            Content
+            Todo: LectureCards
             <SeeMoreButtonView
               onClick={this.onClickSeeMore}
             />

@@ -43,14 +43,13 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   onClickSupport() {
-
+    //
+    this.props.history.push('/board/support/notice');
+    this.onClickToggle();
   }
 
   onClickIntroduction() {
     //
-    const { history } = this.props;
-    console.log('router props', history);
-    history.push('/');
   }
 
   onClickSiteMap() {

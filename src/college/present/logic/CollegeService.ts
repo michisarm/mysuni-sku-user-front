@@ -42,6 +42,9 @@ export default class CollegeService {
   @observable
   favoriteChannels : ChannelViewModel [] = [];
 
+  @observable
+  channel: ChannelModel = new ChannelModel();
+
 
   constructor(collegeApi: CollegeApi) {
     this.collegeApi = collegeApi;
@@ -185,6 +188,25 @@ export default class CollegeService {
     // this.College = {} as CollegeModel;
   }
 
+
+  @action
+  async findChannel(collegeId: string, channelId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+
+    if (!college) {
+      return null;
+    }
+    return runInAction(() => {
+      this.college = new CollegeModel(college);
+      const channel = this.college.channels
+        .find((channel) => channel.id === channelId);
+
+      if (channel) {
+        this.channel = new ChannelModel(channel);
+      }
+    });
+  }
 }
 
 Object.defineProperty(CollegeService, 'instance', {
