@@ -21,13 +21,13 @@ export default class SkProfileApi {
   //Manager, SuperManager - 관리자 컨텐츠 목록에서 상세보기
   findSkProfileByAudienceId(audienceId: string) {
     //
-    return axios.get<SkProfileModel>(this.URL + `/contents/${audienceId}`)
+    return axios.get<SkProfileModel>(this.URL + `/byAudienceId/${audienceId}`)
       .then((response) => response && response.data || null);
   }
 
   //Manager, SuperManager - 관리자 프로파일 목록에서 상세보기
   findSkProfileByProfileId(profileId:string) {
-    return axios.get<SkProfileModel>(this.URL + `/list/${profileId}`)
+    return axios.get<SkProfileModel>(this.URL + `/byProfileId/${profileId}`)
       .then((response) => response && response.data || null );
   }
 
