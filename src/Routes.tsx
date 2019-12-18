@@ -16,7 +16,14 @@ class Routes extends React.PureComponent {
             <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
 
             {/* personalcube  */}
-
+            <Route exact path="/community/:cubeId/posts" component={withSplitting(() => import('./personalcube').then(({ PostListPage }) => PostListPage))} />
+            <Route exact path="/community/:cubeId/posts/new" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
+            <Route exact path="/community/:cubeId/posts/:postId" component={withSplitting(() => import('./personalcube').then(({ PostDetailPage }) => PostDetailPage))} />
+            <Route exact path="/community/:cubeId/posts/:postId/edit" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
+            <Route exact path="/community/:cubeId/posts/:postId/reply/new" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
+            <Route exact path="/community/:cubeId/posts/:postId/reply/:replyId" component={withSplitting(() => import('./personalcube').then(({ ReplyDetailPage }) => ReplyDetailPage))} />
+            <Route exact path="/community/:cubeId/posts/:postId/reply/:replyId/edit" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
+            <Route exact path="/community/:cubeId/my-posts" component={withSplitting(() => import('./personalcube').then(({ MyPostListPage }) => MyPostListPage))} />
             {/* course  */}
 
             {/*create*/}
