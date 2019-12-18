@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-app": "react-scripts build_app",
+    "build-app": "node --max_old_space_size=8192 node_modules/.bin/react-scripts build_app",
     "build-lib": "react-scripts build_lib",
     "storybook": "start-storybook -p 3009 -s public",
     "build-storybook": "build-storybook -s public",
