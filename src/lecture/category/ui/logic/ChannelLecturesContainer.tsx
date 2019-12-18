@@ -77,7 +77,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
     return (
       <ChannelLecturesContentWrapperView
-        lectureCount={80}
+        lectureCount={lectures.length}
       >
         <>
           <CardSorting
