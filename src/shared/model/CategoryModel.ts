@@ -9,7 +9,9 @@ export class CategoryModel {
   channel: IdName = new IdName();
   color: CategoryColorType = CategoryColorType.Default;
 
+
   constructor(category?: CategoryModel) {
+    //
     if (category) {
       const college = category.college && new IdName(category.college) || this.college;
       const channel = category.channel && new IdName(category.channel) || this.channel;

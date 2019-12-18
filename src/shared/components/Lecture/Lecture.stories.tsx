@@ -5,20 +5,14 @@ import { text, number, select, boolean } from '@storybook/addon-knobs';
 
 import { Lecture, CubeType, CategoryModel, IdName } from 'shared';
 import { LectureModel } from 'lecture';
-import CardService from '../shared/present/logic/CardService';
 
 
 export default {
-  title: 'components|panel/[Todo: 사용금지] Lecture',
+  title: 'components|panel/Lecture',
   component: Lecture,
 };
 
 
-const cardService = CardService.instance;
-
-/**
- * Basic Story
- */
 export const Basic = () => {
   //
   const mockLecture = new LectureModel();
@@ -30,7 +24,6 @@ export const Basic = () => {
       ...mockCategory,
       college: new IdName({ id: 'Leadership', name: 'Leadership' }),
     }),
-    required: true,
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
     cubeType: CubeType.ClassRoomLecture,
@@ -56,9 +49,6 @@ export const Basic = () => {
 };
 
 
-/**
- * Minimal Story
- */
 export const Minimal = () => {
   //
   const lecture = new LectureModel();
@@ -73,29 +63,25 @@ export const Minimal = () => {
 };
 
 
-/**
- * Required and Stamp
- */
-export const RequiredAndStamp = () => {
+export const Required = () => {
   //
-  const requiredCardId = cardService.newCard();
-  cardService.setCardProp(requiredCardId, 'required', boolean('card1.required', true));
-  cardService.setCardProp(requiredCardId, 'title', text('card1.title', 'Required Learning Card'));
+  const mockLecture = new LectureModel();
 
-  const stampCardId = cardService.newCard();
-  cardService.setCardProp(stampCardId, 'stampReady', boolean('card2.stampReady', true));
-  cardService.setCardProp(stampCardId, 'title', text('card2.title', 'Stamp Learning Card'));
+  const lecture = new LectureModel({
+    ...mockLecture,
+    requiredSubsidiaries: [
+      new IdName({ id: 'SK-University', name: 'SK-University' })
+    ],
+    name: 'Machine learning Complete Guide for Calculus - Deep',
+    description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
+    cubeType: CubeType.Documents,
+    learningTime: 40,
+  });
 
   return (
     <Lecture.Group type={Lecture.GroupType.Box}>
       <Lecture
-        lecture={new LectureModel()}
-        action={{
-          iconName: 'remove2',
-        }}
-      />
-      <Lecture
-        lecture={new LectureModel()}
+        lecture={lecture}
         action={{
           iconName: 'remove2',
         }}
