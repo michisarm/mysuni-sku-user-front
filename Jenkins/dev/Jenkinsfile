@@ -24,7 +24,7 @@ timestamps {
 
             stage('BUILD') {
                 container('node') {
-                    sh 'rm -r package-lock.json'
+                    sh 'ls -al'
                     sh 'npm install'
                     sh 'npm run build-app'
                 }
