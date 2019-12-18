@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, WorkSpace, WorkSpaceList } from '@nara.platform/accent';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
 import AppLayoutContainer from './AppLayoutContainer';
@@ -21,6 +21,18 @@ class UserAppContainer extends Component<Props, State> {
   state = {
     breadcrumbValues: [],
   };
+
+  componentDidMount(): void {
+    //
+    const cineroomId = sessionStorage.getItem('cineroomId') || '';
+    const workSpaces: WorkSpaceList = JSON.parse(`${sessionStorage.getItem('workspaces')}`);
+    const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || []).filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
+
+    if (!cineroomSpaces.length) {
+      alert('로그인 필요');
+      window.location.href= window.location.origin + '/login';
+    }
+  }
 
 
   getContext() {
