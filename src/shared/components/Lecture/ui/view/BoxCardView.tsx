@@ -4,26 +4,23 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
-import numeral from 'numeral';
-import {
-  Card, Icon, Rating, Button,
-} from 'semantic-ui-react';
-import { CardModel } from '../../../shared';
+// import numeral from 'numeral';
+import { Card, Icon, Rating, Button } from 'semantic-ui-react';
+import { dateTimeHelper } from 'shared';
+import { LectureModel } from 'lecture';
 import Action from '../../present/model/Action';
-import { CategoryType, ActionType } from '../../present/model';
-import { Title, Fields, Field, Buttons, Thumbnail, Ribbon } from './CardElementsView';
+import { Title, Fields, Field, Buttons, Thumbnail, Ribbon } from './LectureElementsView';
 
 
 interface Props {
+  lecture: LectureModel,
   hovered: boolean,
-  card?: CardModel,
-  category?: CategoryType,
   rating?: number,
   thumbnailImage?: string,
   action?: Action,
   onHover?: () => void,
   onAction?: () => void,
-  onGoToActivity?: () => void,
+  onGoToLecture?: (e: any) => void,
 }
 
 interface States {
@@ -36,19 +33,13 @@ interface States {
 class BoxCardView extends Component<Props, States> {
   //
   static defaultProps = {
-    category: null,
     rating: null,
     thumbnailImage: null,
     action: null,
     onHover: () => {},
     onAction: () => {},
-    onGoToActivity: () => {},
+    onGoToLecture: () => {},
   };
-
-
-  static CategoryType = CategoryType;
-
-  static ActionType = ActionType;
 
 
   renderBottom() {
@@ -75,12 +66,12 @@ class BoxCardView extends Component<Props, States> {
   render() {
     //
     const {
-      card, hovered, category, thumbnailImage, action,
-      onHover, onAction, onGoToActivity,
+      lecture, hovered, thumbnailImage, action,
+      onHover, onAction, onGoToLecture,
     } = this.props;
-    const { hour, minute } = card!.splitLengthInMinute();
+    const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture!.learningTime);
     const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
-
+    console.log('lecture', lecture);
     return (
       <Card
         className={classNames({
@@ -90,17 +81,20 @@ class BoxCardView extends Component<Props, States> {
         onMouseEnter={onHover}
         onMouseLeave={onHover}
       >
-        <Ribbon stampReady={card!.stampReady} required={card!.required} />
+        {/* Todo: stampReady */}
+        <Ribbon stampReady={false} required={lecture!.required} />
 
         <div className="card-inner">
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={card!.title} category={category} />
+          <Title title={lecture.name} category={lecture.category} />
 
           <Fields>
-            { card!.cubeType && <Field icon="video2" text={card!.cubeType} bold />}
+            { lecture.cubeType && <Field icon="video2" text={lecture.cubeType} bold />}
             { hourAndMinute && <Field icon="time2" text={hourAndMinute} bold />}
-            <Field icon="complete" text={`이수 ${numeral(card!.countOfComplete).format('0,0')}명`} />
+            {/* Todo: 이수 */}
+            {/*<Field icon="complete" text={`이수 ${numeral(lecture!.countOfComplete).format('0,0')}명`} />*/}
+            {/*<Field icon="complete" text="이수 (?)명" />*/}
           </Fields>
 
           {this.renderBottom()}
@@ -108,10 +102,10 @@ class BoxCardView extends Component<Props, States> {
 
         {/* hover 시 컨텐츠 */}
         <div className="hover-content">
-          <Title title={card!.title} category={category} />
+          <Title title={lecture.name} category={lecture.category} />
 
           <p className="text-area">
-            {card!.description}
+            {lecture.description}
           </p>
 
           <Buttons>
@@ -120,7 +114,7 @@ class BoxCardView extends Component<Props, States> {
                 <Icon className={action.iconName} />
               </Button>
             )}
-            <Button className="fix bg" onClick={onGoToActivity}>Go to this activity</Button>
+            <Button className="fix bg" onClick={onGoToLecture}>Go to this activity</Button>
           </Buttons>
         </div>
       </Card>

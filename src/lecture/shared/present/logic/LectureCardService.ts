@@ -17,7 +17,7 @@ class LectureCardService {
   lectureCard: LectureCardModel = new LectureCardModel();
 
 
-  constructor(lectureCardApi:LectureCardApi) {
+  constructor(lectureCardApi: LectureCardApi) {
     this.lectureCardApi = lectureCardApi;
   }
 

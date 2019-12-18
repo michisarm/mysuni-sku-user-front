@@ -2,10 +2,12 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { mobxHelper, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { LectureCardService } from 'lecture';
+import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import ChannelsView from '../view/ChannelsView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
@@ -14,9 +16,10 @@ import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
-interface Props {
+interface Props extends RouteComponentProps<{ collegeId: string }> {
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
+  lectureService?: LectureService,
   lectureCardService?: LectureCardService,
 }
 
@@ -25,7 +28,7 @@ interface State {
   sorting: string,
 }
 
-@inject('collegeService', 'personalCubeService', 'lectureCardService')
+@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
@@ -37,6 +40,10 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
+    const { lectureService } = this.props;
+
+    lectureService!.findAllLectures();
+
     // const { personalCubeService, lectureCardService } = this.props;
 
     // lectureCardService!.findAllLectureCards(0, 20);
@@ -61,16 +68,35 @@ class CategoryLecturesContainer extends Component<Props, State> {
     });
   }
 
+  onActionLecture() {
+
+  }
+
+  onGoToLecture(e: any, data: any) {
+    //
+    const { lecture } = data;
+    const { match, history } = this.props;
+    const { collegeId } = match.params;
+
+    console.log('serviceType', lecture.serviceType);
+    if (lecture.serviceType === LectureServiceType.Card) {
+      history.push(`./${collegeId}/lecture-card/${lecture.serviceId}`);
+    }
+    console.log('lecture', lecture);
+  }
+
   onClickSeeMore() {
     console.log('click see more');
   }
 
   render() {
     //
-    const { collegeService } = this.props;
+    const { collegeService, lectureService } = this.props;
     const { categoriesOpen, sorting } = this.state;
-    const college = collegeService!.college;
-    const channels = collegeService!.channels;
+    const { college, channels } = collegeService!;
+    const { lectures } = lectureService!;
+
+    console.log('CategoryLecturesContainer', lectures);
 
     return (
       <CategoryLecturesContentWrapperView>
@@ -84,7 +110,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
             <>
               <DescriptionView
                 name={`${college.name} College`}
-                count={230}
+                count={lectures.length}
               />
               <SortingView
                 value={sorting}
@@ -94,7 +120,18 @@ class CategoryLecturesContainer extends Component<Props, State> {
           }
         >
           <>
-            Todo: LectureCards
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              {lectures.map((lecture: LectureModel) => (
+                <Lecture
+                  key={lecture.id}
+                  lecture={lecture}
+                  // thumbnailImage="http://placehold.it/60x60"
+                  action={Lecture.ActionType.Add}
+                  onAction={this.onActionLecture}
+                  onGoToLecture={this.onGoToLecture}
+                />
+              ))}
+            </Lecture.Group>
             <SeeMoreButtonView
               onClick={this.onClickSeeMore}
             />
@@ -105,4 +142,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default CategoryLecturesContainer;
+
+
+export default withRouter(CategoryLecturesContainer);

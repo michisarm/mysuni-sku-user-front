@@ -1,33 +1,30 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { observer } from 'mobx-react';
 
-import _ from 'lodash';
-import { mobxHelper } from 'shared';
+import { LectureModel } from 'lecture';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
-import CardService from '../../../shared/present/logic/CardService';
 import Action from '../../present/model/Action';
-import { CategoryType, ActionType } from '../../present/model';
+import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
 
 
+export interface OnGoToLectureData {
+  lecture: LectureModel,
+}
+
 interface Props {
-  /** 내부 card service */
-  cardService?: CardService,
-  id?: string,
-  name?: string,
-  category?: CategoryType,
+  lecture: LectureModel,
   rating?: number,
   thumbnailImage?: string,
   action?: Action | ActionType,
   onAction?: () => void,
-  onGoToActivity?: () => void,
+  onGoToLecture?: (e: any, data: OnGoToLectureData ) => void,
 }
 
 interface States {
-  id: string,
   hovered: boolean,
 }
 
@@ -39,29 +36,25 @@ interface ActionWith extends Action {
 /**
  * 러닝카드 컴포넌트입니다.
  */
-@inject(mobxHelper.injectFrom('learning.cardService'))
 // @inject(({ learning }) => ({ cardService: learning.cardService }))
 @reactAutobind
 @observer
-class CardContainer extends Component<Props, States> {
+class LectureContainer extends Component<Props, States> {
   //
   static Group = CardGroup;
 
   static GroupType = GroupType;
-
-  static CategoryType = CategoryType;
 
   static ActionType = ActionType;
 
   static contextType = LearningCardContext;
 
   static defaultProps = {
-    name: null,
-    category: null,
     rating: null,
     thumbnailImage: null,
+    action: null,
     onAction: () => {},
-    onGoToActivity: () => {},
+    onGoToLecture: () => {},
   };
 
   static defaultActions: ActionWith[] = [
@@ -75,16 +68,9 @@ class CardContainer extends Component<Props, States> {
   ];
 
   state = {
-    id: '',
     hovered: false,
   };
 
-
-  constructor(props: Props) {
-    //
-    super(props);
-    this.state.id = props.id ? props.id : _.uniqueId('Card.');
-  }
 
   handleHover() {
     this.setState(prevState => ({
@@ -97,7 +83,7 @@ class CardContainer extends Component<Props, States> {
     const { action } = this.props;
     let newAction: Action | undefined;
 
-    const act: ActionWith | undefined = CardContainer.defaultActions
+    const act: ActionWith | undefined = LectureContainer.defaultActions
       .find((defaultAction) => defaultAction.type === action);
 
     if (act) {
@@ -112,29 +98,33 @@ class CardContainer extends Component<Props, States> {
     return newAction;
   }
 
+  onGoToLecture(e: any) {
+    //
+    const { lecture, onGoToLecture } = this.props;
+    const data = {
+      lecture,
+    };
+
+    onGoToLecture!(e, data);
+  }
+
   renderBoxCard() {
     //
     const {
-      cardService, category, rating, thumbnailImage,
-      onAction, onGoToActivity,
+      lecture, rating, thumbnailImage,
+      onAction,
     } = this.props;
-    const { id, hovered } = this.state;
-
-    if (!cardService) {
-      return null;
-    }
-    const card = cardService.cardMap.get(id);
+    const { hovered } = this.state;
 
     return (
       <BoxCardView
-        card={card}
+        lecture={lecture}
         hovered={hovered}
-        category={category}
         rating={rating}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
-        onGoToActivity={onGoToActivity}
+        onGoToLecture={this.onGoToLecture}
         onHover={this.handleHover}
       />
     );
@@ -143,21 +133,13 @@ class CardContainer extends Component<Props, States> {
   renderListCard() {
     //
     const {
-      cardService, name, category, thumbnailImage,
+      lecture, thumbnailImage,
       onAction,
     } = this.props;
-    const { id } = this.state;
-
-    if (!cardService) {
-      return null;
-    }
-    const card = cardService.cardMap.get(id);
 
     return (
       <ListCardView
-        card={card}
-        name={name}
-        category={category}
+        name={lecture.name}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
@@ -178,4 +160,4 @@ class CardContainer extends Component<Props, States> {
   }
 }
 
-export default CardContainer;
+export default LectureContainer;

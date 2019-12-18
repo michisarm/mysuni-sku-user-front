@@ -8,16 +8,16 @@ import {
 } from 'semantic-ui-react';
 import { CardModel } from '../../../shared';
 import Action from '../../present/model/Action';
-import { CategoryType } from '../../present/model';
+import { CategoryModel } from '../../present/model';
 import {
   Title, Fields, Field, Buttons, Thumbnail, Ribbon,
-} from './CardElementsView';
+} from './LectureElementsView';
 
 
 interface Props {
   card?: CardModel,
   name?: string,
-  category?: CategoryType,
+  category?: CategoryModel,
   thumbnailImage?: string,
   action?: Action,
   onAction?: () => void,

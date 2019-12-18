@@ -8,4 +8,9 @@ class RoleBookModel {
   name: string = '';
 }
 
+decorate(RoleBookModel, {
+  round: observable,
+  name: observable,
+});
+
 export default RoleBookModel;

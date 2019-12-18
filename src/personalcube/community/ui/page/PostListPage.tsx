@@ -59,7 +59,7 @@ class PostListPage extends React.Component<Props> {
           <LectureContentHeader.TitleCell
             label={{
               color: 'blue',
-              text: `${personalCube.category && personalCube.category.channel && personalCube.category.channel.name || ''}`
+              text: `${personalCube.category && personalCube.category.channel && personalCube.category.channel.name || ''}`,
             }}
             title={board.name || ''}
             type={personalCube.contents && personalCube.contents.type || ''}

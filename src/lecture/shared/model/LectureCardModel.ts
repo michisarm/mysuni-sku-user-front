@@ -1,23 +1,20 @@
 
 import { decorate, observable } from 'mobx';
-import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { IdName } from 'shared';
+import { DramaEntityObservableModel, IdName } from 'shared';
 
 import RoleBookModel from './RoleBookModel';
 
 
-class LectureCardModel implements DramaEntity {
+class LectureCardModel extends DramaEntityObservableModel {
   //
-  id: string = '';
-  entityVersion: number = 0;
-  patronKey: PatronKey = {} as PatronKey;
-
   lectureCardId: string = '';
   learningCard: IdName = new IdName();
   roleBooks: RoleBookModel[] = [];
 
 
   constructor(lectureCard?: LectureCardModel) {
+    //
+    super();
     if (lectureCard) {
       Object.assign(this, { ...lectureCard });
     }

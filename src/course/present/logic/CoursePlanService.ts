@@ -11,7 +11,7 @@ import { CoursePlanFlowCdoModel } from '../../model/CoursePlanFlowCdoModel';
 import { CoursePlanFlowUdoModel } from '../../model/CoursePlanFlowUdoModel';
 import { CoursePlanQueryModel } from '../../model/CoursePlanQueryModel';
 import { LearningCardModel } from '../../model/LearningCardModel';
-import { CourseState } from '../../model/CourseState';
+import { CourseState } from '../../../shared/model/CourseState';
 import { CourseRequestCdoModel } from '../../model/CourseRequestCdoModel';
 
 @autobind

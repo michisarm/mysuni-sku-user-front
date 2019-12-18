@@ -2,15 +2,15 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { text, number, select, boolean } from '@storybook/addon-knobs';
-import { storybookHelper, CubeType } from 'shared';
 
+import { Lecture, CubeType, CategoryModel, IdName } from 'shared';
+import { LectureModel } from 'lecture';
 import CardService from '../shared/present/logic/CardService';
-import Card from '.';
 
 
 export default {
-  title: 'components|card/[Todo: 사용금지] Card',
-  component: Card,
+  title: 'components|panel/[Todo: 사용금지] Lecture',
+  component: Lecture,
 };
 
 
@@ -21,28 +21,37 @@ const cardService = CardService.instance;
  */
 export const Basic = () => {
   //
-  const cardId = cardService.newCard();
-  cardService.setCardProp(cardId, 'title', text('card.title', 'Machine learning Complete Guide for Calculus'));
-  cardService.setCardProp(cardId, 'description', text('card.description', 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three'));
-  cardService.setCardProp(cardId, 'cubeType', select('card.cubeType', storybookHelper.enumValues(CubeType), CubeType.Video));
-  cardService.setCardProp(cardId, 'lengthInMinute', number('card.lengthInMinute', 80));
-  cardService.setCardProp(cardId, 'countOfComplete', number('card.countOfComplete', 2999));
+  const mockLecture = new LectureModel();
+  const mockCategory = new CategoryModel();
+
+  const lecture = new LectureModel({
+    ...mockLecture,
+    category: new CategoryModel({
+      ...mockCategory,
+      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+    }),
+    required: true,
+    name: 'Machine learning Complete Guide for Calculus - Deep',
+    description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
+    cubeType: CubeType.ClassRoomLecture,
+    learningTime: 90,
+  });
 
   return (
-    <Card.Group type={Card.GroupType.Box}>
-      <Card
-        id={cardId}
-        category={select('category', storybookHelper.enumValues(Card.CategoryType), Card.CategoryType.AI)}
-        rating={number('rating', 3, { range: true, min: 0, max: 5 })}
+    <Lecture.Group type={Lecture.GroupType.Box}>
+      <Lecture
+        lecture={lecture}
+        rating={number('rating', 4, { range: true, min: 0, max: 5 })}
         thumbnailImage="http://placehold.it/60x60"
         action={select('action', {
-          Add: Card.ActionType.Add,
-          Remove: Card.ActionType.Remove,
-          My: Card.ActionType.My,
-        }, Card.ActionType.Add)}
+          Add: Lecture.ActionType.Add,
+          Remove: Lecture.ActionType.Remove,
+          My: Lecture.ActionType.My,
+        }, Lecture.ActionType.Add)}
         onAction={action('onAction')}
+        onGoToLecture={action('onGoToLecture')}
       />
-    </Card.Group>
+    </Lecture.Group>
   );
 };
 
@@ -52,15 +61,14 @@ export const Basic = () => {
  */
 export const Minimal = () => {
   //
-  const cardId = cardService.newCard();
+  const lecture = new LectureModel();
 
   return (
-    <Card.Group type={Card.GroupType.Box}>
-      <Card
-        id={cardId}
-        onGoToActivity={action('onGoToActivity')}
+    <Lecture.Group type={Lecture.GroupType.Box}>
+      <Lecture
+        lecture={lecture}
       />
-    </Card.Group>
+    </Lecture.Group>
   );
 };
 
@@ -79,20 +87,20 @@ export const RequiredAndStamp = () => {
   cardService.setCardProp(stampCardId, 'title', text('card2.title', 'Stamp Learning Card'));
 
   return (
-    <Card.Group type={Card.GroupType.Box}>
-      <Card
-        id={requiredCardId}
+    <Lecture.Group type={Lecture.GroupType.Box}>
+      <Lecture
+        lecture={new LectureModel()}
         action={{
           iconName: 'remove2',
         }}
       />
-      <Card
-        id={stampCardId}
+      <Lecture
+        lecture={new LectureModel()}
         action={{
           iconName: 'remove2',
         }}
       />
-    </Card.Group>
+    </Lecture.Group>
   );
 };
 

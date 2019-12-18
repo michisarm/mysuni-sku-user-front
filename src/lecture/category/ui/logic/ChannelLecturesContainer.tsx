@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
+import { mobxHelper } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture';
@@ -21,7 +22,7 @@ interface State {
   sorting: string,
 }
 
-@inject('lectureCardService')
+@inject(mobxHelper.injectFrom('lecture.lectureCardService'))
 @reactAutobind
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
