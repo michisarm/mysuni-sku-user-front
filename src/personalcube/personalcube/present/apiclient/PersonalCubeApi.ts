@@ -7,8 +7,9 @@ import { ApprovalContents } from '../../../../create/model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCubeRequestCdoModel';
 
 export default class PersonalCubeApi {
-  URL = '/api/personalCube/personalCubes';
-  flowURL = '/api/personalCube/flow';
+
+  URL = '/api/personalCube/personalcubes';
+  flowURL = '/api/personalCube/cubes/flow';
   approvalURL = '/api/personalCube/approval';
 
 

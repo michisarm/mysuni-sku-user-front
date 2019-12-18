@@ -2,6 +2,7 @@
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureModel from '../../model/LectureModel';
+import LectureRdoModel from '../../model/LectureRdoModel';
 
 
 class LectureApi {
@@ -11,12 +12,10 @@ class LectureApi {
   baseUrl = '/api/lecture/lectures';
 
 
-  findAllLectures(offset?: number, limit?: number) {
+  findAllLectures(lectureRdo: LectureRdoModel) {
     //
-    const params = {
-      offset,
-      limit,
-    };
+    // Todo: API 정상작동 하면 수정
+    const params = {};
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
       .then(response => response && response.data || []);

@@ -71,7 +71,7 @@ class BoxCardView extends Component<Props, States> {
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture!.learningTime);
     const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
-    console.log('lecture', lecture);
+
     return (
       <Card
         className={classNames({
