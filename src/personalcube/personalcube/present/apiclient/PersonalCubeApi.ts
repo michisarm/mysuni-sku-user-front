@@ -9,7 +9,7 @@ import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCu
 export default class PersonalCubeApi {
 
   URL = '/api/personalCube/personalcubes';
-  flowURL = '/api/personalCube/flow';
+  flowURL = '/api/personalCube/cubes/flow';
   approvalURL = '/api/personalCube/approval';
 
 
