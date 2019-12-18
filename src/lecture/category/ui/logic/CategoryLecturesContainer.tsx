@@ -9,7 +9,7 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import ChannelsView from '../view/ChannelsView';
+import { ChannelsPanel } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import SortingView from '../view/SortingView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
@@ -100,7 +100,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
     return (
       <CategoryLecturesContentWrapperView>
-        <ChannelsView
+        <ChannelsPanel
           open={categoriesOpen}
           channels={channels}
           onToggle={this.onToggleCategories}
