@@ -9,9 +9,8 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import { ChannelsPanel } from '../../../shared';
+import { ChannelsPanel, CardSorting } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
-import SortingView from '../view/SortingView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
@@ -112,7 +111,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                 name={`${college.name} College`}
                 count={lectures.length}
               />
-              <SortingView
+              <CardSorting
                 value={sorting}
                 onChange={this.onChangeSorting}
               />

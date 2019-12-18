@@ -8,7 +8,7 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
-import SortingView from '../view/SortingView';
+import CardSortingView from '../../../shared/ui/view/CardSortingView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 
 
@@ -58,7 +58,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
         lectureCount={80}
       >
         <>
-          <SortingView
+          <CardSortingView
             value={sorting}
             onChange={this.onChangeSorting}
           />
