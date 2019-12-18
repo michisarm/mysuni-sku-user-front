@@ -26,7 +26,7 @@ class UserAppContainer extends Component<Props, State> {
     //
     const cineroomId = sessionStorage.getItem('cineroomId') || '';
     const workSpaces: WorkSpaceList = JSON.parse(`${sessionStorage.getItem('workspaces')}`);
-    const cineroomSpaces = (workSpaces.cineroomWorkspaces || []).filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
+    const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || []).filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
 
     if (!cineroomSpaces.length) {
       alert('로그인 필요');
