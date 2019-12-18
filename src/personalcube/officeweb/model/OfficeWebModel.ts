@@ -33,6 +33,3 @@ decorate(OfficeWebModel, {
   learningPeriod: observable,
   time: observable,
 });
-
-
-

@@ -21,7 +21,11 @@ export default class ClassroomService {
   @action
   async findClassroom(classroomId: string) {
     const classroom = await this.classroomApi.findClassroom(classroomId);
-    runInAction(() => this.classroom = new ClassroomModel(classroom));
+
+    if (!classroom) {
+      return null;
+    }
+    return runInAction(() => this.classroom = new ClassroomModel(classroom));
   }
 
   @action

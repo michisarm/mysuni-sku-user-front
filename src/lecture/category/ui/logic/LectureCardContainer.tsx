@@ -1,17 +1,17 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 // import { reaction } from 'mobx';
-import { observer, inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { LectureSubInfo, OverviewField, DatePeriod } from 'shared';
-import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
+import { DatePeriod, LectureSubInfo, OverviewField } from 'shared';
+import { CubeType, PersonalCubeService } from 'personalcube/personalcube';
 import { CubeIntroModel, CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
+import { ClassroomService } from 'personalcube/classroom';
 import { LectureCardService } from 'lecture';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
+import ContentsServiceType from '../../../../personalcube/personalcube/model/ContentsServiceType';
 
 
 interface Props {
@@ -79,15 +79,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     }));
   }
 
-  getClazz(cubeIntro: CubeIntroModel, classroom: ClassroomModel) {
-    //
-    return {
-      learningTime: cubeIntro.learningTime,
-      capacity: classroom.capacity,
-      participantCount: '1,250',
-    };
-  }
-
   getOperator(cubeIntro: CubeIntroModel) {
     //
     return {
@@ -99,48 +90,107 @@ class CategoryLecturesContainer extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, classroomService,
+      personalCubeService, cubeIntroService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
-    const { classroom } = classroomService!;
-    console.log('classroom', classroom);
 
     return {
       // Sub info
+      required: false,  // Todo
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
-      capacity: classroom.capacity,
-      participantCount: '1,250',
+      participantCount: '1,250',  // Todo
+
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
       operatorCompany: cubeIntro.operation.operator.company,
       operatorEmail: cubeIntro.operation.operator.email,
+
       // Fields
       description: cubeIntro.description.description,
-
-      applyingPeriod: classroom.enrolling.applyingPeriod,
-      cancellablePeriod: classroom.enrolling.cancellablePeriod,
-      cancellationPenalty: classroom.enrolling.cancellationPenalty,
 
       goal: cubeIntro.description.goal,
       applicants: cubeIntro.description.applicants,
       organizerName: cubeIntro.operation.organizer.name,
 
-      location: cubeIntro.operation.location,
       completionTerms: cubeIntro.description.completionTerms,
       guide: cubeIntro.description.guide,
 
       tags: personalCube.tags,
+
+      classroom: undefined,
     };
+  }
+
+  getTypeViewObject(): any {
+    //
+    const {
+      personalCubeService, cubeIntroService, classroomService,
+    } = this.props;
+    const { personalCube } = personalCubeService!;
+    const { cubeIntro } = cubeIntroService!;
+    const { classroom } = classroomService!;
+    console.log('personalCube', personalCube);
+    console.log('cubeIntro', cubeIntro);
+    console.log('classroom', classroom);
+
+    const contentsService = personalCube.contents.service;
+    let cubeTypeViewObject = {};
+
+    switch (contentsService.type) {
+      case ContentsServiceType.Classroom:
+        cubeTypeViewObject = this.getClassroomViewObject();
+        break;
+      case ContentsServiceType.Media:
+        cubeTypeViewObject = this.getMediaViewObject();
+        break;
+      case ContentsServiceType.OfficeWeb:
+        cubeTypeViewObject = this.getOfficeWebViewObject();
+        break;
+      case ContentsServiceType.Community:
+        cubeTypeViewObject = this.getCommunityViewObject();
+        break;
+    }
+
+    return cubeTypeViewObject;
+  }
+
+  getClassroomViewObject() {
+    //
+    const { classroom } = this.props.classroomService!;
+    console.log('ClassroomViewObject');
+
+    return {
+      capacity: classroom.capacity,
+      applyingPeriod: classroom.enrolling.applyingPeriod,
+      cancellablePeriod: classroom.enrolling.cancellablePeriod,
+      cancellationPenalty: classroom.enrolling.cancellationPenalty,
+      location: classroom.operation.location,
+    };
+  }
+
+  getMediaViewObject() {
+    //
+    return {};
+  }
+
+  getOfficeWebViewObject() {
+    return {};
+  }
+
+  getCommunityViewObject() {
+    return {};
   }
 
   getPeriodDate(datePeriod: DatePeriod) {
     return `${datePeriod.startDate} ~ ${datePeriod.endDate}`;
   }
 
-  renderSubCategories(personalCube: PersonalCubeModel) {
+  renderSubCategories() {
     //
+    const { personalCube } = this.props.personalCubeService!;
+
     if (!personalCube.subCategories || personalCube.subCategories.length < 1) {
       return null;
     }
@@ -168,22 +218,32 @@ class CategoryLecturesContainer extends Component<Props, State> {
   render() {
     //
     const {
-      personalCubeService, cubeIntroService, classroomService,
+      personalCubeService,
     } = this.props;
     const { categoryOpen } = this.state;
     const { personalCube } = personalCubeService!;
-    const { cubeIntro } = cubeIntroService!;
-    const { classroom } = classroomService!;
+    const cubeType = personalCube.contents.type;
     const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
     console.log('Container.viewModel', viewObject);
+    console.log('Container.typeViewModel', typeViewObject);
 
     return (
       <LectureCardContentWrapperView>
         <LectureSubInfo
-          required={false}  // Todo
-          level={cubeIntro.difficultyLevel}
-          clazz={this.getClazz(cubeIntro, classroom)}
-          operator={this.getOperator(cubeIntro)}
+          required={viewObject.required}
+          level={viewObject.difficultyLevel}
+          clazz={{
+            learningTime: viewObject.learningTime,
+            capacity: typeViewObject ? typeViewObject.capacity : 0,
+            participantCount: viewObject.participantCount,
+          }}
+          operator={{
+            instructor: viewObject.instructorName,
+            name: viewObject.operatorName,
+            company: viewObject.operatorCompany,
+            email: viewObject.operatorEmail,
+          }}
           mainAction={{ type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment }}
           onShare={this.onClickShare}
           onBookmark={this.onClickBookmark}
@@ -192,7 +252,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
         <OverviewField.Wrapper>
           <OverviewField.Description
-            description={cubeIntro.description.description}
+            description={viewObject.description}
           />
 
           <OverviewField.List
@@ -204,7 +264,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
               />
             )}
           >
-            {this.renderSubCategories(personalCube)}
+            {this.renderSubCategories()}
             <Button
               icon
               className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
@@ -214,25 +274,29 @@ class CategoryLecturesContainer extends Component<Props, State> {
             </Button>
           </OverviewField.List>
 
-          <OverviewField.List icon className="period-area">
-            <OverviewField.Item
-              titleIcon="period"
-              title="Registration Period"
-              content={this.getPeriodDate(viewObject.applyingPeriod)}
-            />
-            <OverviewField.Item
-              titleIcon="cancellation"
-              title="Cancellation Period"
-              content={(
-                <>
-                  {this.getPeriodDate(viewObject.cancellablePeriod)}
-                  <div className="info">
-                    Cancellation penalty : {viewObject.cancellationPenalty}
-                  </div>
-                </>
-              )}
-            />
-          </OverviewField.List>
+          { cubeType === CubeType.ClassRoomLecture && (
+            <OverviewField.List icon className="period-area">
+              <OverviewField.Item
+                titleIcon="period"
+                title="Registration Period"
+                content={this.getPeriodDate(typeViewObject.applyingPeriod)}
+              />
+              <OverviewField.Item
+                titleIcon="cancellation"
+                title="Cancellation Period"
+                content={(
+                  <>
+                    {this.getPeriodDate(typeViewObject.cancellablePeriod)}
+                    { typeViewObject.cancellationPenalty && (
+                      <div className="info">
+                        Cancellation penalty : {typeViewObject.cancellationPenalty}
+                      </div>
+                    )}
+                  </>
+                )}
+              />
+            </OverviewField.List>
+          )}
 
           <OverviewField.List icon>
             <OverviewField.Item
@@ -253,10 +317,12 @@ class CategoryLecturesContainer extends Component<Props, State> {
           </OverviewField.List>
 
           <OverviewField.List className="info-box2">
-            <OverviewField.Item
-              title="Place"
-              content={viewObject.location}
-            />
+            { cubeType === CubeType.ClassRoomLecture && (
+              <OverviewField.Item
+                title="Place"
+                content={typeViewObject.location}
+              />
+            )}
             <OverviewField.Item
               title="Requirements"
               content={viewObject.completionTerms}
