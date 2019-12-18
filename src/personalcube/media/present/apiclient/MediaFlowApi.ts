@@ -1,4 +1,4 @@
-import { axiosApi as axios } from '@nara.platform/accent';
+// import { axiosApi as axios } from '@nara.platform/accent';
 
 export default class MediaFlowApi {
   URL = '/api/personalCube/media/flow';

@@ -19,7 +19,7 @@ export default class PersonalCubeService {
   personalCubeApi: PersonalCubeApi;
 
   @observable
-  personalCube: PersonalCubeModel = {} as PersonalCubeModel;
+  personalCube: PersonalCubeModel = new PersonalCubeModel();
 
   @observable
   personalCubes: OffsetElementList<PersonalCubeModel> = { results: [], totalCount: 0 };
