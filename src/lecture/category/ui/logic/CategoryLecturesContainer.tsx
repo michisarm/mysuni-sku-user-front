@@ -9,9 +9,8 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import { ChannelsPanel, CardSorting } from '../../../shared';
+import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
-import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
@@ -32,6 +31,8 @@ interface State {
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
   //
+  lectureLimit = 20;
+
   state = {
     categoriesOpen: false,
     sorting: 'latest',
@@ -39,17 +40,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { lectureService } = this.props;
+    const { match, lectureService } = this.props;
 
-    lectureService!.findAllLectures();
-
-    // const { personalCubeService, lectureCardService } = this.props;
-
-    // lectureCardService!.findAllLectureCards(0, 20);
-
-    // Todo: 조회 서비스 교체해야함.
-    // personalCubeService!.findAllPersonalCubesByQuery();
-    // personalCubeService!.findAllPersonalCubes(0, 20);
+    lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
 
@@ -74,14 +67,12 @@ class CategoryLecturesContainer extends Component<Props, State> {
   onGoToLecture(e: any, data: any) {
     //
     const { lecture } = data;
-    const { match, history } = this.props;
-    const { collegeId } = match.params;
+    const { history } = this.props;
 
     console.log('serviceType', lecture.serviceType);
     if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./${collegeId}/lecture-card/${lecture.serviceId}`);
+      history.push(`./lecture-card/${lecture.serviceId}`);
     }
-    console.log('lecture', lecture);
   }
 
   onClickSeeMore() {
@@ -131,7 +122,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                 />
               ))}
             </Lecture.Group>
-            <SeeMoreButtonView
+            <SeeMoreButton
               onClick={this.onClickSeeMore}
             />
           </>
