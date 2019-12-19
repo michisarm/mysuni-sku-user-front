@@ -7,6 +7,7 @@ import stores from './stores';
 
 configure({
   enforceActions: 'observed',
+  isolateGlobalState: true,
 });
 
 interface Props {

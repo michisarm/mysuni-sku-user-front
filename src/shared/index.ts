@@ -1,16 +1,19 @@
 
 
 /** Service */
-import SharedService from './present/logic/SharedService_';
+import ModalService from './present/logic/ModalService';
+import  PageService from './present/logic/PageService';
 
 export const sharedStores = {
   shared: {
-    sharedService: SharedService.instance,
+    modalService: ModalService.instance,
+    pageService: PageService.instance,
   },
 };
 
 export {
-  SharedService,
+  ModalService,
+  PageService,
 };
 
 /** Model */
