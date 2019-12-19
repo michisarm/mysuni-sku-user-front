@@ -2,7 +2,8 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { OfficeWebModel } from '../../model/OfficeWebModel';
 
 export default class OfficeApi {
-  URL = '/api/personalCube/officeWebs';
+
+  URL = '/api/personalCube/officewebs';
 
   static instance: OfficeApi;
 

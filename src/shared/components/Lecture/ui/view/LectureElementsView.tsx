@@ -1,38 +1,23 @@
 
 import React from 'react';
 import { Icon, Image, Label } from 'semantic-ui-react';
-import { CategoryType } from '../../present/model';
+// import { CollegeColorType } from 'college';
+import { CategoryModel } from '../../present/model';
 
 
 interface TitleProps {
   title: string,
-  category?: CategoryType,
+  category?: CategoryModel,
   children?: React.ReactNode,
 }
 
-export const Title = ({ category, title, children }: TitleProps) => {
-  //
-  let color: any;
-
-  switch (category) {
-    case CategoryType.AI:
-      color = 'purple';
-      break;
-    case CategoryType.Global:
-      color = 'green';
-      break;
-    default:
-      color = 'blue';
-  }
-
-  return (
-    <div className="title-area">
-      <Label color={color}>{category}</Label>
-      <div className="header">{title}</div>
-      {children}
-    </div>
-  );
-};
+export const Title = ({ category, title, children }: TitleProps) => (
+  <div className="title-area">
+    {category && category.college.name && <Label color={category.color}>{category.college.name}</Label>}
+    <div className="header">{title}</div>
+    {children}
+  </div>
+);
 
 
 interface FieldsProps {
@@ -53,10 +38,12 @@ interface FieldProps {
 }
 
 export const Field = ({ icon, text, bold }: FieldProps) => (
-  <Label className={`onlytext ${bold ? 'bold' : ''}`}>
-    <Icon className={icon} />
-    <span>{text}</span>
-  </Label>
+  <div className="li">
+    <Label className={`onlytext ${bold ? 'bold' : ''}`}>
+      <Icon className={icon} />
+      <span>{text}</span>
+    </Label>
+  </div>
 );
 
 

@@ -10,7 +10,7 @@ interface Props {
 }
 
 @reactAutobind
-class SortingView extends Component<Props> {
+class CardSortingView extends Component<Props> {
   //
   render() {
     //
@@ -57,4 +57,4 @@ class SortingView extends Component<Props> {
   }
 }
 
-export default SortingView;
+export default CardSortingView;

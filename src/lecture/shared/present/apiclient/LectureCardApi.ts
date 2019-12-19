@@ -8,7 +8,7 @@ class LectureCardApi {
   //
   static instance: LectureCardApi;
 
-  baseUrl = '/api/lectureCards';
+  baseUrl = '/api/lecture/lectureCards';
 
   findAllLectureCards(offset: number, limit: number) {
     //

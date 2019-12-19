@@ -29,16 +29,16 @@ class LectureCardHeaderView extends Component<Props> {
           image={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
         />
         <LectureContentHeader.TitleCell
-          label={{ color: 'blue', text: personalCube.category && personalCube.category.channel.name || '' }}
+          category={personalCube.category}
           type={personalCube.contents.type}
           title={personalCube.name}
           creationTime={personalCube.time}
         />
         <LectureContentHeader.RightCell>
-          <LectureContentHeader.StarRatingItem
-            value={3}
-            max={5}
-          />
+          {/*<LectureContentHeader.StarRatingItem*/}
+          {/*  value={3}*/}
+          {/*  max={5}*/}
+          {/*/>*/}
         </LectureContentHeader.RightCell>
       </LectureContentHeader>
     );

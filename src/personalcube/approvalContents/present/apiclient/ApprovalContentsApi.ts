@@ -3,7 +3,8 @@ import { ApprovalContentsModel } from '../../model/ApprovalContentsModel';
 import { ApprovalContentsRdoModel } from '../../model/ApprovalContentsRdoModel';
 
 export default class ApprovalContentsApi {
-  URL = '/api/personalCube/approval';
+
+  URL = '/api/personalCube/approvalcontents';
 
   static instance: ApprovalContentsApi;
 

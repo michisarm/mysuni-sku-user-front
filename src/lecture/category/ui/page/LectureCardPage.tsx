@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService, ContentsServiceType } from 'personalcube/personalcube';
 import { CubeIntroService } from 'personalcube/cubeintro';
@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: 
   lectureCardService: LectureCardService,
 }
 
-@inject('collegeService', 'personalCubeService', 'cubeIntroService', 'classroomService', 'mediaService', 'officeWebService', 'lectureCardService')
+@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService', 'personalCube.cubeIntroService', 'personalCube.classroomService', 'personalCube.mediaService', 'personalCube.officeWebService', 'lecture.lectureCardService'))
 @reactAutobind
 @observer
 class LectureCardPage extends Component<Props> {

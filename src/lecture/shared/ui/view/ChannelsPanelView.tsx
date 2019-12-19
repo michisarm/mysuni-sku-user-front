@@ -14,7 +14,7 @@ interface Props {
 }
 
 @reactAutobind
-class ChannelsView extends Component<Props> {
+class ChannelsPanelView extends Component<Props> {
   //
   render() {
     //
@@ -65,4 +65,4 @@ class ChannelsView extends Component<Props> {
   }
 }
 
-export default ChannelsView;
+export default ChannelsPanelView;

@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { DatePeriod, LectureSubInfo, OverviewField } from 'shared';
+import { mobxHelper, DatePeriod, LectureSubInfo, OverviewField } from 'shared';
 import { CubeType, PersonalCubeService } from 'personalcube/personalcube';
 import { CubeIntroModel, CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
@@ -25,7 +25,7 @@ interface State {
   categoryOpen: boolean,
 }
 
-@inject('personalCubeService', 'cubeIntroService', 'classroomService', 'lectureCardService')
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'personalCube.cubeIntroService', 'personalCube.classroomService', 'personalCube.lectureCardService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {

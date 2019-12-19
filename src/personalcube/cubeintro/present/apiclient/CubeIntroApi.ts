@@ -2,7 +2,8 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { CubeIntroModel } from '../../model/CubeIntroModel';
 
 export default class CubeIntroApi {
-  URL = '/api/personalCube/cubeIntros';
+
+  URL = '/api/personalCube/cubeintros';
 
   static instance: CubeIntroApi;
 

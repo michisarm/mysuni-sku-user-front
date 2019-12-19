@@ -2,21 +2,22 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { mobxHelper, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { LectureCardService } from 'lecture';
+import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import ChannelsView from '../view/ChannelsView';
+import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
-import SortingView from '../view/SortingView';
-import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
-interface Props {
+interface Props extends RouteComponentProps<{ collegeId: string }> {
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
+  lectureService?: LectureService,
   lectureCardService?: LectureCardService,
 }
 
@@ -25,11 +26,13 @@ interface State {
   sorting: string,
 }
 
-@inject('collegeService', 'personalCubeService', 'lectureCardService')
+@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
   //
+  lectureLimit = 20;
+
   state = {
     categoriesOpen: false,
     sorting: 'latest',
@@ -37,13 +40,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    // const { personalCubeService, lectureCardService } = this.props;
+    const { match, lectureService } = this.props;
 
-    // lectureCardService!.findAllLectureCards(0, 20);
-
-    // Todo: 조회 서비스 교체해야함.
-    // personalCubeService!.findAllPersonalCubesByQuery();
-    // personalCubeService!.findAllPersonalCubes(0, 20);
+    lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
 
@@ -61,20 +60,37 @@ class CategoryLecturesContainer extends Component<Props, State> {
     });
   }
 
+  onActionLecture() {
+
+  }
+
+  onGoToLecture(e: any, data: any) {
+    //
+    const { lecture } = data;
+    const { history } = this.props;
+
+    console.log('serviceType', lecture.serviceType);
+    if (lecture.serviceType === LectureServiceType.Card) {
+      history.push(`./lecture-card/${lecture.serviceId}`);
+    }
+  }
+
   onClickSeeMore() {
     console.log('click see more');
   }
 
   render() {
     //
-    const { collegeService } = this.props;
+    const { collegeService, lectureService } = this.props;
     const { categoriesOpen, sorting } = this.state;
-    const college = collegeService!.college;
-    const channels = collegeService!.channels;
+    const { college, channels } = collegeService!;
+    const { lectures } = lectureService!;
+
+    console.log('CategoryLecturesContainer', lectures);
 
     return (
       <CategoryLecturesContentWrapperView>
-        <ChannelsView
+        <ChannelsPanel
           open={categoriesOpen}
           channels={channels}
           onToggle={this.onToggleCategories}
@@ -84,9 +100,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
             <>
               <DescriptionView
                 name={`${college.name} College`}
-                count={230}
+                count={lectures.length}
               />
-              <SortingView
+              <CardSorting
                 value={sorting}
                 onChange={this.onChangeSorting}
               />
@@ -94,8 +110,19 @@ class CategoryLecturesContainer extends Component<Props, State> {
           }
         >
           <>
-            Todo: LectureCards
-            <SeeMoreButtonView
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              {lectures.map((lecture: LectureModel) => (
+                <Lecture
+                  key={lecture.id}
+                  lecture={lecture}
+                  // thumbnailImage="http://placehold.it/60x60"
+                  action={Lecture.ActionType.Add}
+                  onAction={this.onActionLecture}
+                  onGoToLecture={this.onGoToLecture}
+                />
+              ))}
+            </Lecture.Group>
+            <SeeMoreButton
               onClick={this.onClickSeeMore}
             />
           </>
@@ -105,4 +132,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default CategoryLecturesContainer;
+
+
+export default withRouter(CategoryLecturesContainer);

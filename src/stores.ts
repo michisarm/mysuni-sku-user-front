@@ -1,10 +1,10 @@
 import { stores as learningStores } from '@sku/learning';
 
 import { sharedStores } from './shared';
+import { collegeStores } from './college';
 import { personalCubeStores } from './personalcube';
 import { lectureCardStores } from './lecture';
 import { InstructorService } from './expert';
-import { CollegeService, SubsidiaryService } from './college';
 import { SkProfileService } from './profile';
 import { AnswerService, BoardService, CategoryService, PostService } from './board';
 
@@ -12,6 +12,7 @@ import { AnswerService, BoardService, CategoryService, PostService } from './boa
 const stores = {
   ...learningStores,
   ...sharedStores,
+  ...collegeStores,
   ...personalCubeStores,
   ...lectureCardStores,
   instructorService: InstructorService.instance,
@@ -19,9 +20,7 @@ const stores = {
   categoryService: CategoryService.instance,
   postService: PostService.instance,
   answerService: AnswerService.instance,
-  collegeService: CollegeService.instance,
   skProfileService: SkProfileService.instance,
-  subsidiaryService: SubsidiaryService.instance,
 };
 
 export default stores;

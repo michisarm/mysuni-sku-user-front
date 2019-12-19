@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-app": "node --max_old_space_size=8192 node_modules/.bin/react-scripts build_app",
+    "build-app": "NODE_OPTIONS=\"--max-old-space-size=4096\" react-scripts build_app",
     "build-lib": "react-scripts build_lib",
     "storybook": "start-storybook -p 3009 -s public",
     "build-storybook": "build-storybook -s public",
@@ -59,8 +59,8 @@
     "@types/lodash": "^4.14.149",
     "@types/node": "12.0.7",
     "@types/numeral": "^0.0.26",
-    "@types/react": "16.8.19",
-    "@types/react-dom": "16.8.4",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
     "@types/react-router-dom": "^4.3.3"
   },
   "eslintConfig": {

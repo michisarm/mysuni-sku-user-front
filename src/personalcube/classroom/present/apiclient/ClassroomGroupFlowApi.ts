@@ -1,7 +1,8 @@
 // import { axiosApi as axios } from '@nara.platform/accent';
 
 export default class ClassroomGroupFlowApi {
-  URL = '/api/personalCube/classroomGroups/flow';
+
+  URL = '/api/personalCube/classroomgroups/flow';
 
   static instance: ClassroomGroupFlowApi;
 

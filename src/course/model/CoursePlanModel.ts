@@ -2,7 +2,7 @@ import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import { IdName, NameValueList, CategoryModel, CreatorModel, IconBox } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
-import { CourseOpenModel } from './CourseOpenModel';
+import { CourseOpenModel } from '../../shared/model/CourseOpenModel';
 import { StampModel } from './StampModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { OpenRequestModel } from './OpenRequestModel';
