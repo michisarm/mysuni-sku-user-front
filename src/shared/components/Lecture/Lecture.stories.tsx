@@ -30,19 +30,35 @@ export const Basic = () => {
     learningTime: 90,
   });
 
+  const lectureProps = {
+    lecture,
+    rating: number('rating', 4, { range: true, min: 0, max: 5 }),
+    thumbnailImage: 'http://placehold.it/60x60',
+    action: select('action', {
+      Add: Lecture.ActionType.Add,
+      Remove: Lecture.ActionType.Remove,
+      My: Lecture.ActionType.My,
+    }, Lecture.ActionType.Add),
+    onAction: action('onAction'),
+    onViewDetail: action('onViewDetail'),
+  };
+
   return (
     <Lecture.Group type={Lecture.GroupType.Box}>
       <Lecture
-        lecture={lecture}
-        rating={number('rating', 4, { range: true, min: 0, max: 5 })}
-        thumbnailImage="http://placehold.it/60x60"
-        action={select('action', {
-          Add: Lecture.ActionType.Add,
-          Remove: Lecture.ActionType.Remove,
-          My: Lecture.ActionType.My,
-        }, Lecture.ActionType.Add)}
-        onAction={action('onAction')}
-        onViewDetail={action('onViewDetail')}
+        {...lectureProps}
+      />
+      <Lecture
+        {...lectureProps}
+      />
+      <Lecture
+        {...lectureProps}
+      />
+      <Lecture
+        {...lectureProps}
+      />
+      <Lecture
+        {...lectureProps}
       />
     </Lecture.Group>
   );
@@ -112,3 +128,56 @@ export const List = () => {
   );
 };
  */
+
+export const Line = () => {
+  //
+  const mockLecture = new LectureModel();
+  const mockCategory = new CategoryModel();
+
+  const lecture = new LectureModel({
+    ...mockLecture,
+    category: new CategoryModel({
+      ...mockCategory,
+      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+    }),
+    name: 'Machine learning Complete Guide for Calculus - Deep',
+    description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
+    cubeType: CubeType.ClassRoomLecture,
+    learningTime: 90,
+  });
+
+  const lectureProps = {
+    lecture,
+    rating: number('rating', 4, { range: true, min: 0, max: 5 }),
+    thumbnailImage: 'http://placehold.it/60x60',
+    action: select('action', {
+      Add: Lecture.ActionType.Add,
+      Remove: Lecture.ActionType.Remove,
+      My: Lecture.ActionType.My,
+    }, Lecture.ActionType.Add),
+    onAction: action('onAction'),
+    onViewDetail: action('onViewDetail'),
+  };
+
+  return (
+    <div className="recommend-area">
+      <Lecture.Group type={Lecture.GroupType.Line}>
+        <Lecture
+          { ...lectureProps }
+        />
+        <Lecture
+          { ...lectureProps }
+        />
+        <Lecture
+          { ...lectureProps }
+        />
+        <Lecture
+          { ...lectureProps }
+        />
+        <Lecture
+          { ...lectureProps }
+        />
+      </Lecture.Group>
+    </div>
+  );
+};

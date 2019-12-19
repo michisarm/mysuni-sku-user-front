@@ -9,6 +9,7 @@ import Action from '../../present/model/Action';
 import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
+import { Lecture } from '../../../../index';
 
 
 export interface OnViewDetailData {
@@ -147,6 +148,32 @@ class LectureContainer extends Component<Props, States> {
     );
   }
 
+  renderLineCard() {
+    //
+    const {
+      lecture, rating, thumbnailImage,
+      onAction,
+    } = this.props;
+    const { hovered } = this.state;
+
+    return (
+      <li>
+        <Lecture.Group type={Lecture.GroupType.Box}>
+          <BoxCardView
+            lecture={lecture}
+            hovered={hovered}
+            rating={rating}
+            thumbnailImage={thumbnailImage}
+            action={this.getAction()}
+            onAction={onAction}
+            onViewDetail={this.onViewDetail}
+            onHover={this.handleHover}
+          />
+        </Lecture.Group>
+      </li>
+    );
+  }
+
   render() {
     //
     const { groupType } = this.context;
@@ -154,9 +181,13 @@ class LectureContainer extends Component<Props, States> {
     if (groupType === GroupType.Box) {
       return this.renderBoxCard();
     }
-    else {
+    else if (groupType === GroupType.List) {
       return this.renderListCard();
     }
+    else if (groupType === GroupType.Line) {
+      return this.renderLineCard();
+    }
+    return null;
   }
 }
 

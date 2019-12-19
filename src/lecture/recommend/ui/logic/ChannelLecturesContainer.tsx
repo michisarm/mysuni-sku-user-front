@@ -35,7 +35,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   }
 
-  onGoToLecture(e: any, data: any) {
+  onViewDetail(e: any, data: any) {
     //
     const { lecture } = data;
     const { history } = this.props;
@@ -77,7 +77,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
                           // thumbnailImage="http://placehold.it/60x60"
                           action={Lecture.ActionType.Add}
                           onAction={this.onActionLecture}
-                          onViewDetail={this.onGoToLecture}
+                          onViewDetail={this.onViewDetail}
                         />
                       </Lecture.Group>
                     </li>
