@@ -48,7 +48,7 @@ export default class CollegeService {
   channel: ChannelModel = new ChannelModel();
 
 
-  constructor(collegeApi: CollegeApi, channelApi: ChannelApi) {
+  constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
     this.channelApi = channelApi;
   }

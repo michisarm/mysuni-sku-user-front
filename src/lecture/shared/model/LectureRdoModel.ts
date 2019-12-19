@@ -4,8 +4,8 @@ import { decorate, observable } from 'mobx';
 
 class LectureRdoModel {
   //
-  college?: string;
-  channel?: string;
+  college: string = '';
+  channel: string = '';
   limit: number = 0;
   offset: number = 0;
 
@@ -21,6 +21,7 @@ class LectureRdoModel {
     //
     return new LectureRdoModel({
       college: collegeId,
+      channel: '',
       limit,
       offset,
     });
@@ -29,6 +30,7 @@ class LectureRdoModel {
   static newWithChannel(channelId: string, limit: number, offset: number) {
     //
     return new LectureRdoModel({
+      college: '',
       channel: channelId,
       limit,
       offset,

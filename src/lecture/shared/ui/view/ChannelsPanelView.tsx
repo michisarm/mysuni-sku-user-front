@@ -51,7 +51,6 @@ class ChannelsPanelView extends Component<Props, States> {
     //
     const { channels, title, onSettings } = this.props;
     const { open } = this.state;
-    console.log('ChannelsPanelView.render');
 
     return (
       <div className="channel-of-interest">

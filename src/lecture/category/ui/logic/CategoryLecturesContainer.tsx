@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { mobxHelper, Lecture } from 'shared';
+import { mobxHelper, PageService, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
@@ -15,6 +15,7 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {
+  pageService?: PageService,
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
   lectureService?: LectureService,
@@ -25,22 +26,52 @@ interface State {
   sorting: string,
 }
 
-@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService'))
+@inject(mobxHelper.injectFrom('shared.pageService', 'collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
   //
-  lectureLimit = 20;
+  PAGE_KEY = 'lecture.category';
+
+  PAGE_SIZE = 20;
 
   state = {
     sorting: 'latest',
   };
 
+  constructor(props: Props) {
+    //
+    super(props);
+    props.pageService!.initPageMap(this.PAGE_KEY);
+    props.pageService!.setPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+  }
+
   componentDidMount() {
     //
-    const { match, lectureService } = this.props;
+    this.findLectures();
+  }
 
-    lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
+  findLectures() {
+    //
+    const { match, pageService, lectureService } = this.props;
+    const { pageMap } = pageService!;
+    const page = pageMap.get(this.PAGE_KEY);
+
+    lectureService!.findCollegeLectures(match.params.collegeId, page!.limit, page!.offset)
+      .then((lectureOffsetList) => {
+        console.log('offsetlist', lectureOffsetList);
+        pageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
+        pageService!.setPageNo(this.PAGE_KEY, page!.pageNo + 1);
+      });
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    console.log('contentMore', page);
+    return page!.pageNo < page!.totalPages;
   }
 
   onSelectChannel(e: any, { index, channel }: any) {
@@ -61,7 +92,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   }
 
-  onGoToLecture(e: any, data: any) {
+  onViewDetail(e: any, data: any) {
     //
     const { lecture } = data;
     const { history } = this.props;
@@ -73,7 +104,8 @@ class CategoryLecturesContainer extends Component<Props, State> {
   }
 
   onClickSeeMore() {
-    console.log('click see more');
+    //
+    this.findLectures();
   }
 
   render() {
@@ -113,13 +145,15 @@ class CategoryLecturesContainer extends Component<Props, State> {
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}
                     onAction={this.onActionLecture}
-                    onViewDetail={this.onGoToLecture}
+                    onViewDetail={this.onViewDetail}
                   />
                 ))}
               </Lecture.Group>
-              <SeeMoreButton
-                onClick={this.onClickSeeMore}
-              />
+              { this.isContentMore() && (
+                <SeeMoreButton
+                  onClick={this.onClickSeeMore}
+                />
+              )}
             </>
             :
             <NoSuchContent message="수강중인 학습 과정이 없습니다." />
