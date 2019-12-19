@@ -45,6 +45,12 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     };
   }
 
+  componentDidMount(): void {
+    const { skProfileService } = this.props;
+    if (skProfileService) {
+      skProfileService.findStudySummary();
+    }
+  }
 
   handleChange(event : any, target: any) {
     const name: 'typeGroup' | 'timeGroup' = target.name;
@@ -85,13 +91,18 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   onSummit() {
     const { skProfileService } = this.props;
     const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
-    if (skProfileService) {
-      skProfileService.setStudySummaryProp('type', typeGroup);
-      skProfileService.setStudySummaryProp('time', timeGroup);
-      skProfileService.setStudySummaryProp('area', areaGroup);
-      skProfileService.setStudySummaryProp('goal', goalGroup);
-      skProfileService.setStudySummaryProp('etc', etc);
+    const { skProfile } = skProfileService as SkProfileService;
+    const { studySummary } = skProfileService as SkProfileService;
+    const { favoriteLearningType } = studySummary as StudySummary;
 
+    if (skProfileService && favoriteLearningType ) {
+      favoriteLearningType.idNames.push({ id: 'type', name: typeGroup });
+      favoriteLearningType.idNames.push({ id: 'time', name: timeGroup });
+      areaGroup.forEach((area) => favoriteLearningType.idNames.push({ id: 'area', name: area }) );
+      goalGroup.forEach((goal) => favoriteLearningType.idNames.push({ id: 'goal', name: goal }) );
+      favoriteLearningType.idNames.push({ id: 'etc', name: etc });
+
+      skProfileService.setStudySummaryProp('favoriteLearningType', favoriteLearningType);
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
     }
     //step props data server 전달 ..... main page로 이동

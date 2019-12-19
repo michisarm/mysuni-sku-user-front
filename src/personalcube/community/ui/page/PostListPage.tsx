@@ -90,8 +90,8 @@ class PostListPage extends React.Component<Props> {
               boardId={board && board.id || ''}
               emptyMessage="Community에 등록 된 글이 없습니다."
               type={PostList.ListType.Basic}
-              linkedUrl={`/community/${cubeId}/posts`}
-              routeToPost={() => this.props.history.push(`/community/${cubeId}/posts/new`)}
+              linkedUrl={`${process.env.PUBLIC_URL}/community/${cubeId}/posts`}
+              routeToPost={() => this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts/new`)}
             />
           </Segment>
         </div>

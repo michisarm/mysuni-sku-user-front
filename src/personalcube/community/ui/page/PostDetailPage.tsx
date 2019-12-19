@@ -13,7 +13,7 @@ class PostDetailPage extends React.Component<Props> {
   //
   routeTo(url: string) {
     const { cubeId } = this.props.match.params;
-    this.props.history.push(`/community/${cubeId}/${url}`);
+    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/${url}`);
   }
 
   render() {

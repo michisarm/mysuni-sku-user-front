@@ -88,7 +88,7 @@ class MyPostListPage extends React.Component<Props> {
             <PostListByWriter
               boardId={board && board.id || ''}
               emptyMessage="내가 작성한 글이 없습니다."
-              routeToPost={() => this.props.history.push(`/community/${cubeId}/posts/new`)}
+              routeToPost={() => this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts/new`)}
             />
           </Segment>
         </div>

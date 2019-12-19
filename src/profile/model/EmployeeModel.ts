@@ -1,11 +1,12 @@
 import { decorate, observable } from 'mobx';
-import { TeamModel } from './TeamModel';
 import { MemberModel } from './MemberModel';
 import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
+import { LangStrings } from '../../shared/model/LangStrings';
 
 export class EmployeeModel extends MemberModel {
   employeeId: string = '' ;      // 암호화
-  name: string = '';
+  names: LangStrings = new  LangStrings();
+  //name : string = '';
   email: string = '';           // 암호화
   phone: string = '';           // 암호화
   jobTitle : string = '';      //직위
@@ -14,17 +15,22 @@ export class EmployeeModel extends MemberModel {
   jobDuty : string ='';         //직책 duty
   base64Photo: string = '';     //base64 image 크기
   photoFileUrl:string ='';      //SK IM Photo URL
-  team: TeamModel = new TeamModel();
+  // team: TeamModel = new TeamModel();
+
+  companyCode : string ='';
+  companyNames : LangStrings = new LangStrings();
+  departmentCode : string='';
+  departmentNames : LangStrings = new LangStrings();
+  leaderId : string ='';
+  leaderNames : string = '';
+
   favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
-
-
 
   constructor(employee?: EmployeeModel) {
     super();
     if (employee) {
-      const team = employee.team && new TeamModel(employee.team) || this.team;
       const favoriteJobGroup = employee.favoriteJobGroup && new FavoriteJobGroupModel(employee.favoriteJobGroup) || this.favoriteJobGroup;
-      Object.assign(this, { ...employee, favoriteJobGroup, team });
+      Object.assign(this, { ...employee, favoriteJobGroup });
     }
   }
 
@@ -32,7 +38,7 @@ export class EmployeeModel extends MemberModel {
 
 decorate( EmployeeModel, {
   employeeId: observable,
-  name: observable,
+  names: observable,
   email: observable,
   phone: observable,
   jobTitle: observable,
@@ -41,6 +47,11 @@ decorate( EmployeeModel, {
   jobDuty: observable,
   base64Photo: observable,
   photoFileUrl: observable,
-  team: observable,
+  companyCode: observable,
+  companyNames: observable,
+  departmentCode: observable,
+  departmentNames: observable,
+  leaderId: observable,
+  leaderNames: observable,
   favoriteJobGroup: observable,
 });
