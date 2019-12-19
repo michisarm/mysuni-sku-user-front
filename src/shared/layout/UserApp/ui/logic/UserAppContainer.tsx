@@ -24,6 +24,11 @@ class UserAppContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
+    // this.checkAndRedirectAuth();
+  }
+
+  checkAndRedirectAuth() {
+    //
     const cineroomId = sessionStorage.getItem('cineroomId') || '';
     const workSpaces: WorkSpaceList = JSON.parse(`${sessionStorage.getItem('workspaces')}`);
     const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || [])

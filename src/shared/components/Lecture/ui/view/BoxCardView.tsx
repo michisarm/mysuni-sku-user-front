@@ -20,7 +20,7 @@ interface Props {
   action?: Action,
   onHover?: () => void,
   onAction?: () => void,
-  onGoToLecture?: (e: any) => void,
+  onViewDetail?: (e: any) => void,
 }
 
 interface States {
@@ -38,7 +38,7 @@ class BoxCardView extends Component<Props, States> {
     action: null,
     onHover: () => {},
     onAction: () => {},
-    onGoToLecture: () => {},
+    onViewDetail: () => {},
   };
 
 
@@ -67,7 +67,7 @@ class BoxCardView extends Component<Props, States> {
     //
     const {
       lecture, hovered, thumbnailImage, action,
-      onHover, onAction, onGoToLecture,
+      onHover, onAction, onViewDetail,
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture!.learningTime);
     const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
@@ -114,7 +114,7 @@ class BoxCardView extends Component<Props, States> {
                 <Icon className={action.iconName} />
               </Button>
             )}
-            <Button className="fix bg" onClick={onGoToLecture}>Go to this activity</Button>
+            <Button className="fix bg" onClick={onViewDetail}>View Details</Button>
           </Buttons>
         </div>
       </Card>

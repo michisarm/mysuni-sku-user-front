@@ -11,7 +11,7 @@ import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
 
 
-export interface OnGoToLectureData {
+export interface OnViewDetailData {
   lecture: LectureModel,
 }
 
@@ -21,7 +21,7 @@ interface Props {
   thumbnailImage?: string,
   action?: Action | ActionType,
   onAction?: () => void,
-  onGoToLecture?: (e: any, data: OnGoToLectureData ) => void,
+  onViewDetail?: (e: any, data: OnViewDetailData ) => void,
 }
 
 interface States {
@@ -54,7 +54,7 @@ class LectureContainer extends Component<Props, States> {
     thumbnailImage: null,
     action: null,
     onAction: () => {},
-    onGoToLecture: () => {},
+    onViewDetail: () => {},
   };
 
   static defaultActions: ActionWith[] = [
@@ -98,14 +98,14 @@ class LectureContainer extends Component<Props, States> {
     return newAction;
   }
 
-  onGoToLecture(e: any) {
+  onViewDetail(e: any) {
     //
-    const { lecture, onGoToLecture } = this.props;
+    const { lecture, onViewDetail } = this.props;
     const data = {
       lecture,
     };
 
-    onGoToLecture!(e, data);
+    onViewDetail!(e, data);
   }
 
   renderBoxCard() {
@@ -124,7 +124,7 @@ class LectureContainer extends Component<Props, States> {
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
-        onGoToLecture={this.onGoToLecture}
+        onViewDetail={this.onViewDetail}
         onHover={this.handleHover}
       />
     );
