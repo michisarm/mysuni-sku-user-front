@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, ContentHeader, mobxHelper } from 'shared';
-import { SkProfileModel, EmployeeModel, TeamModel, SkProfileService, StudySummary } from 'profile';
+import { SkProfileModel, EmployeeModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
@@ -40,8 +40,7 @@ class ChannelLecturesPage extends Component<Props> {
     const { skProfile } = skProfileService as SkProfileService;
 
     const { member } = skProfile as SkProfileModel;
-    const { team } = member as EmployeeModel;
-    const { company, team: realTeam } = team as TeamModel;
+    const { companyNames: company, departmentNames: realTeam  } = member as EmployeeModel;
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
 
@@ -59,8 +58,8 @@ class ChannelLecturesPage extends Component<Props> {
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
               image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
-              name={member.name}
-              teams={[company && company.name || '', realTeam && realTeam.name || '']}
+              name={member.names.string}
+              teams={[company && company.string || '', realTeam && realTeam.string || '']}
               imageEditable={false}
               myPageActive
             />
