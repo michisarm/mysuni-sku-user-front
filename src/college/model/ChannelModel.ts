@@ -5,10 +5,10 @@ import { decorate, observable } from 'mobx';
 
 export class ChannelModel extends IdName {
   //
-  channelId : string ='';
+  channelId : string = '';
   checked?: boolean;
 
-  constructor(channel ? : ChannelModel) {
+  constructor(channel? : ChannelModel) {
     super();
     if (channel) {
       Object.assign(this, { ...channel });

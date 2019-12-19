@@ -26,6 +26,8 @@ class LectureApi {
     //
     return Promise.resolve([
       new ChannelCountRdo({ channel: new IdName({ id: 'AI Fundamental', name: 'AI Fundamental' }), lectureCount: 10 }),
+      new ChannelCountRdo({ channel: new IdName({ id: 'AI Biz. Implementation', name: 'AI Biz. Implementation' }), lectureCount: 0 }),
+      new ChannelCountRdo({ channel: new IdName({ id: 'AI Tech Essential', name: 'AI Tech Essential' }), lectureCount: 10 }),
     ]);
     // const params = {
     //   collegeId,

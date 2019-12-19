@@ -38,13 +38,13 @@ class CategoryLecturesPage extends Component<Props> {
     collegeService.findCollege(match.params.collegeId)
       .then((college) => {
         //
-        if (!college) {
-          return;
-        }
-        const channels = college.channels;
+        // if (!college) {
+        //   return;
+        // }
+        // const channels = college.channels;
 
-        channels.map((channel) => channel.checked = true);
-        collegeService.setChannels(college.channels);
+        // channels.map((channel) => channel.checked = true);
+        // collegeService.setChannels(college.channels);
       });
   }
 

@@ -8,8 +8,10 @@ import { mobxHelper, PageService, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
-import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
+import LectureCountService from '../../present/logic/LectureCountService';
+
 import { ChannelsPanel, CardSorting, NoSuchContent, SeeMoreButton } from '../../../shared';
+import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
@@ -20,13 +22,14 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
   personalCubeService?: PersonalCubeService,
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
+  lectureCountService?: LectureCountService,
 }
 
 interface State {
   sorting: string,
 }
 
-@inject(mobxHelper.injectFrom('shared.pageService', 'collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService'))
+@inject(mobxHelper.injectFrom('shared.pageService', 'collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService', 'lecture.lectureCountService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
@@ -49,20 +52,27 @@ class CategoryLecturesContainer extends Component<Props, State> {
   componentDidMount() {
     //
     this.findLectures();
+    this.findChannels();
   }
 
-  findLectures() {
+  async findLectures() {
     //
     const { match, pageService, lectureService } = this.props;
     const { pageMap } = pageService!;
     const page = pageMap.get(this.PAGE_KEY);
 
-    lectureService!.findCollegeLectures(match.params.collegeId, page!.limit, page!.offset)
-      .then((lectureOffsetList) => {
-        console.log('offsetlist', lectureOffsetList);
-        pageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
-        pageService!.setPageNo(this.PAGE_KEY, page!.pageNo + 1);
-      });
+    const lectureOffsetList = await lectureService!.findCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
+
+    console.log('offsetlist', lectureOffsetList);
+    pageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
+    pageService!.setPageNo(this.PAGE_KEY, page!.pageNo + 1);
+  }
+
+  findChannels() {
+    //
+    const { match, lectureCountService } = this.props;
+
+    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId);
   }
 
   isContentMore() {
@@ -110,10 +120,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, lectureService } = this.props;
+    const { collegeService, lectureService, lectureCountService } = this.props;
     const { sorting } = this.state;
-    const { college, channels } = collegeService!;
+    const { college } = collegeService!;
     const { lectures } = lectureService!;
+    const { channels } = lectureCountService!;
 
     return (
       <CategoryLecturesContentWrapperView>
