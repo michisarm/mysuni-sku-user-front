@@ -6,7 +6,6 @@ import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import ChannelModel from '../../model/ChannelModel';
-import { ChannelViewModel } from '../../model/ChannelViewModel';
 
 
 @autobind
@@ -38,10 +37,10 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  selectChannels: ChannelViewModel [] = [];
+  selectChannels: ChannelModel [] = [];
 
   @observable
-  favoriteChannels : ChannelViewModel [] = [];
+  favoriteChannels : ChannelModel [] = [];
 
   @observable
   channel: ChannelModel = new ChannelModel();
@@ -157,7 +156,7 @@ export default class CollegeService {
     this.selectChannels = [];
 
     channels.map((channel) => {
-      this.selectChannels.push({ channelId: channel.id, name: channel.name, checked: false });
+      this.selectChannels.push({ id: channel.channelId, channelId: channel.channelId, name: channel.name, checked: false });
     });
   }
 
@@ -168,7 +167,7 @@ export default class CollegeService {
       if (channel.channelId === channelId) channel.checked = checked;
     });
 
-    if (checked) this.favoriteChannels.push({ channelId, name, checked });
+    if (checked) this.favoriteChannels.push({ id: channelId, channelId, name, checked });
     else this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
   }
 
@@ -212,7 +211,7 @@ export default class CollegeService {
     return runInAction(() => {
       this.college = new CollegeModel(college);
       const channel = this.college.channels
-        .find((channel) => channel.id === channelId);
+        .find((channel) => channel.channelId === channelId);
 
       if (channel) {
         this.channel = new ChannelModel(channel);

@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon } from 'semantic-ui-react';
-import { IdName } from 'shared';
+import { ChannelModel } from 'college';
 import ChannelHeaderView from './ChannelHeaderView';
 import LectureCardModel from '../../../shared/model/LectureCardModel';
 
 
 
 interface Props {
-  channel: IdName,
+  channel: ChannelModel,
   lectureCards: LectureCardModel[]
   onViewAll: () => void,
 }

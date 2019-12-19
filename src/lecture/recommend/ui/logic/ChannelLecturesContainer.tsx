@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { IdName, mobxHelper } from 'shared';
+import { mobxHelper } from 'shared';
 import { LectureCardService } from 'lecture';
+import { ChannelModel } from 'college';
 import ChannelLecturesView from '../view/ChannelLecturesView';
 
 interface Props {
   lectureCardService?: LectureCardService,
-  channel: IdName
+  channel: ChannelModel
   routeTo: (url: string) => void
 }
 
