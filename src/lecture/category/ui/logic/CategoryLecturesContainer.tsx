@@ -9,9 +9,8 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import { ChannelsPanel, CardSorting } from '../../../shared';
+import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
-import SeeMoreButtonView from '../view/SeeMoreButtonView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
@@ -23,7 +22,6 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
 }
 
 interface State {
-  categoriesOpen: boolean,
   sorting: string,
 }
 
@@ -32,32 +30,24 @@ interface State {
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
   //
+  lectureLimit = 20;
+
   state = {
-    categoriesOpen: false,
     sorting: 'latest',
   };
 
   componentDidMount() {
     //
-    const { lectureService } = this.props;
+    const { match, lectureService } = this.props;
 
-    lectureService!.findAllLectures();
-
-    // const { personalCubeService, lectureCardService } = this.props;
-
-    // lectureCardService!.findAllLectureCards(0, 20);
-
-    // Todo: 조회 서비스 교체해야함.
-    // personalCubeService!.findAllPersonalCubesByQuery();
-    // personalCubeService!.findAllPersonalCubes(0, 20);
+    lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
-
-  onToggleCategories() {
+  onSelectChannel(e: any, { index, channel }: any) {
     //
-    this.setState((state) => ({
-      categoriesOpen: !state.categoriesOpen,
-    }));
+    const { collegeService } = this.props;
+
+    collegeService!.setChannelsProp(index, 'checked', !channel.checked);
   }
 
   onChangeSorting(e: any, data: any) {
@@ -74,14 +64,12 @@ class CategoryLecturesContainer extends Component<Props, State> {
   onGoToLecture(e: any, data: any) {
     //
     const { lecture } = data;
-    const { match, history } = this.props;
-    const { collegeId } = match.params;
+    const { history } = this.props;
 
     console.log('serviceType', lecture.serviceType);
     if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./${collegeId}/lecture-card/${lecture.serviceId}`);
+      history.push(`./lecture-card/${lecture.serviceId}`);
     }
-    console.log('lecture', lecture);
   }
 
   onClickSeeMore() {
@@ -91,18 +79,17 @@ class CategoryLecturesContainer extends Component<Props, State> {
   render() {
     //
     const { collegeService, lectureService } = this.props;
-    const { categoriesOpen, sorting } = this.state;
+    const { sorting } = this.state;
     const { college, channels } = collegeService!;
     const { lectures } = lectureService!;
 
-    console.log('CategoryLecturesContainer', lectures);
+    console.log('CategoryLecturesContainer.render', channels);
 
     return (
       <CategoryLecturesContentWrapperView>
         <ChannelsPanel
-          open={categoriesOpen}
           channels={channels}
-          onToggle={this.onToggleCategories}
+          onSelectChannel={this.onSelectChannel}
         />
         <LecturesWrapperView
           header={
@@ -127,11 +114,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
                   // thumbnailImage="http://placehold.it/60x60"
                   action={Lecture.ActionType.Add}
                   onAction={this.onActionLecture}
-                  onGoToLecture={this.onGoToLecture}
+                  onViewDetail={this.onGoToLecture}
                 />
               ))}
             </Lecture.Group>
-            <SeeMoreButtonView
+            <SeeMoreButton
               onClick={this.onClickSeeMore}
             />
           </>

@@ -2,6 +2,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { MediaModel } from '../../model/MediaModel';
 
 export default class MediaApi {
+
   URL = '/api/personalCube/medias';
 
   static instance: MediaApi;

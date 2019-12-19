@@ -1,8 +1,8 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
 import { CollegeType } from './CollegeType';
 import { CreatorModel } from './CreatorModel';
+import ChannelModel from './ChannelModel';
 
 
 export class CollegeModel implements DramaEntity {
@@ -15,7 +15,7 @@ export class CollegeModel implements DramaEntity {
   name: string = '';
   description: string = '';
   iconFileBoxId: string = '';
-  channels: IdName[] = [];
+  channels: ChannelModel[] = [];
 
   creator: CreatorModel = new CreatorModel();
   openState: string = '';

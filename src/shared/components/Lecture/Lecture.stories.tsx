@@ -42,7 +42,7 @@ export const Basic = () => {
           My: Lecture.ActionType.My,
         }, Lecture.ActionType.Add)}
         onAction={action('onAction')}
-        onGoToLecture={action('onGoToLecture')}
+        onViewDetail={action('onViewDetail')}
       />
     </Lecture.Group>
   );

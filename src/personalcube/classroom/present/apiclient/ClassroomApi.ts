@@ -2,6 +2,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { ClassroomModel } from '../../model/ClassroomModel';
 
 export default class ClassroomApi {
+
   URL = '/api/personalCube/classrooms';
 
   static instance: ClassroomApi;

@@ -18,6 +18,7 @@ class HeaderContainer extends Component {
 
   supportPath = '/board/support/notice';
 
+
   render() {
     //
     const { breadcrumb } = this.context;

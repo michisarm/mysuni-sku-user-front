@@ -59,7 +59,7 @@ class CategoryContainer extends Component<Props, State> {
     const active: CollegeModel = activeCollege as any;
 
     if (!channel) {
-      this.props.history.push(`/lecture/college/${active.collegeId}`);
+      this.props.history.push(`/lecture/college/${active.collegeId}/channels`);
     }
     else if (active.collegeId && channel.id) {
       this.props.history.push(`/lecture/college/${active.collegeId}/channel/${channel.id}`);

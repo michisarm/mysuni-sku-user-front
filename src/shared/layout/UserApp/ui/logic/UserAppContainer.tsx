@@ -24,14 +24,19 @@ class UserAppContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
+    // this.checkAndRedirectAuth();
+  }
+
+  checkAndRedirectAuth() {
+    //
     const cineroomId = sessionStorage.getItem('cineroomId') || '';
     const workSpaces: WorkSpaceList = JSON.parse(`${sessionStorage.getItem('workspaces')}`);
     const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || [])
       .filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
 
     if (!cineroomSpaces.length) {
-      alert('로그인 필요');
-      window.location.href = window.location.origin + '/login';
+      // alert('로그인 필요');
+      // window.location.href= window.location.origin + '/login';
     }
   }
 

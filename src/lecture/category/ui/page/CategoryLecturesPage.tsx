@@ -24,7 +24,16 @@ class CategoryLecturesPage extends Component<Props> {
     const { match, collegeService } = this.props;
     const { params } = match;
 
-    collegeService.findCollege(params.collegeId);
+    collegeService.findCollege(params.collegeId)
+      .then((college) => {
+        //
+        if (!college) return;
+        const channels = college.channels;
+
+        channels.map((channel) => channel.checked = true);
+
+        collegeService.setChannels(college.channels);
+      });
   }
 
   componentDidUpdate(prevProps: Props) {

@@ -32,7 +32,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/personalcube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
 
             {/* lecture  */}
-            <Route exact path="/lecture/college/:collegeId" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />
+            <Route exact path="/lecture/college/:collegeId/channels" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId" component={withSplitting(() => import('./lecture').then(({ LectureCardPage }) => LectureCardPage))} />
 
@@ -56,6 +56,10 @@ class Routes extends React.PureComponent {
             <Route exact path="/board/support/qna-detail/:postId" component={withSplitting(() => import('./board').then(({ QnaDetailContainer }) => QnaDetailContainer))} />
             <Route exact path="/board/support/answered-detail/:postId" component={withSplitting(() => import('./board').then(({ AnsweredDetailContainer }) => AnsweredDetailContainer))} />
 
+
+            {/*recommend*/}
+            <Route exact path="/recommend" component={withSplitting(() => import('./lecture').then(({ ChannelsLecturesPage }) => ChannelsLecturesPage))} />
+            <Route exact path="/channel/:channelId/recommend" component={withSplitting(() => import('./lecture').then(({ ChannelsLecturesPage }) => ChannelsLecturesPage))} />
 
             {/*mypage*/}
             <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPageContainer }) => MyPageContainer))} />

@@ -1,11 +1,11 @@
 import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
+import _ from 'lodash';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import ChannelModel from '../../model/ChannelModel';
-import { ChannelViewModel } from '../../model/ChannelViewModel';
 
 
 @autobind
@@ -37,10 +37,10 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  selectChannels: ChannelViewModel [] = [];
+  selectChannels: ChannelModel [] = [];
 
   @observable
-  favoriteChannels : ChannelViewModel [] = [];
+  favoriteChannels : ChannelModel [] = [];
 
   @observable
   channel: ChannelModel = new ChannelModel();
@@ -64,10 +64,11 @@ export default class CollegeService {
     if (college) {
       return runInAction(() => {
         this.college = new CollegeModel(college);
-        this._channels = this.college.channels;
+        // this._channels = this.college.channels;
+        return this.college;
       });
     }
-    return null;
+    return undefined;
   }
 
   @action
@@ -101,64 +102,6 @@ export default class CollegeService {
   }
 
   @action
-  setChannels(channels?: ChannelModel[]) {
-    //
-    if (channels) {
-      this._channels = [...channels];
-    }
-  }
-
-  @action
-  setSelectChannels() {
-    const channels = this.college.channels;
-
-    this.selectChannels = [];
-
-    channels.map((channel) => {
-      this.selectChannels.push({ channelId: channel.id, name: channel.name, checked: false });
-    });
-  }
-
-  @action
-  selectChannel(channelId: string, name:string, checked: boolean) {
-
-    this.selectChannels.filter((channel) => {
-      if (channel.channelId === channelId) channel.checked = checked;
-    });
-
-    if (checked) this.favoriteChannels.push({ channelId, name, checked });
-    else this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
-  }
-
-  @action
-  deselectChannel(channelId : string) {
-    this.selectChannels.filter((channel) => {
-      if (channel.channelId === channelId) channel.checked = false;
-    });
-
-    this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
-  }
-
-  @action
-  setFavoriteChannel() {
-    const selectChannels = this.selectChannels;
-
-    selectChannels.map((channel) => {
-      if (channel.checked) this.favoriteChannels.push(channel);
-    });
-  }
-
-  @action
-  getFavoriteChannels() : IdNameList {
-    const list : IdNameList = new IdNameList();
-    this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.channelId, name: channel.name });
-    });
-    return list;
-  }
-
-
-  @action
   async findMainCollege(collegeId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
@@ -189,6 +132,74 @@ export default class CollegeService {
   }
 
 
+  // Channels ----------------------------------------------------------------------------------------------------------
+
+  @action
+  setChannels(channels?: ChannelModel[]) {
+    //
+    if (channels && channels.length > 0) {
+      this._channels = channels.map((channel) => new ChannelModel(channel));
+    }
+  }
+
+  @action
+  setChannelsProp(index: number, name: string, value: any) {
+    this._channels[index] = _.set(this._channels[index], name, value);
+  }
+
+  // Other Channels ----------------------------------------------------------------------------------------------------
+
+  @action
+  setSelectChannels() {
+    const channels = this.college.channels;
+
+    this.selectChannels = [];
+
+    channels.map((channel) => {
+      this.selectChannels.push({ id: channel.channelId, channelId: channel.channelId, name: channel.name, checked: false });
+    });
+  }
+
+  @action
+  selectChannel(channelId: string, name:string, checked: boolean) {
+
+    this.selectChannels.filter((channel) => {
+      if (channel.channelId === channelId) channel.checked = checked;
+    });
+
+    if (checked) this.favoriteChannels.push({ id: channelId, channelId, name, checked });
+    else this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
+  }
+
+  @action
+  deselectChannel(channelId : string) {
+    this.selectChannels.filter((channel) => {
+      if (channel.channelId === channelId) channel.checked = false;
+    });
+
+    this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
+  }
+
+  @action
+  setFavoriteChannel() {
+    const selectChannels = this.selectChannels;
+
+    selectChannels.map((channel) => {
+      if (channel.checked) this.favoriteChannels.push(channel);
+    });
+  }
+
+  @action
+  getFavoriteChannels() : IdNameList {
+    const list : IdNameList = new IdNameList();
+    this.favoriteChannels.map((channel) => {
+      list.idNames.push({ id: channel.channelId, name: channel.name });
+    });
+    return list;
+  }
+
+  // Channel -----------------------------------------------------------------------------------------------------------
+
   @action
   async findChannel(collegeId: string, channelId: string) {
     //
@@ -200,7 +211,7 @@ export default class CollegeService {
     return runInAction(() => {
       this.college = new CollegeModel(college);
       const channel = this.college.channels
-        .find((channel) => channel.id === channelId);
+        .find((channel) => channel.channelId === channelId);
 
       if (channel) {
         this.channel = new ChannelModel(channel);

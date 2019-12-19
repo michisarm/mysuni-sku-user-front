@@ -70,7 +70,11 @@ class MyPostListPage extends React.Component<Props> {
         </LectureContentHeader>
         <div>
           <ContentMenu
-            menus={[{ name: 'Community', path: '' }, { name: 'My posts', path: '' }, { name: 'Overview', path: '' }] as typeof ContentMenu.Menu[]}
+            menus={[
+              { name: 'Community', path: `/community/${cubeId}/posts` },
+              { name: 'My posts', path: `/community/${cubeId}/my-posts` },
+              { name: 'Overview', path: `/community/${cubeId}/overview` }] as typeof ContentMenu.Menu[]
+            }
             activeIndex={1}
           />
           <Segment className="full">

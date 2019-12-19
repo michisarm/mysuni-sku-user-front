@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { SkProfileModel } from '../../../../profile';
+import { StudySummary } from '../../../../profile';
 
 interface Props{
-  skProfile : SkProfileModel
+  studySummary : StudySummary
 }
 
 @observer
@@ -13,7 +13,7 @@ interface Props{
 class FavoriteChannelView extends Component<Props> {
 
   render() {
-    const { favoriteChannels } = this.props.skProfile.studySummary;
+    const { favoriteChannels } = this.props.studySummary;
 
     return (
       <div className="channel-of-interest">
