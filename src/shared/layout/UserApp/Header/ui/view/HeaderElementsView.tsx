@@ -23,7 +23,7 @@ export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
       <Link to="/expert/instructor" className="item active">Learning</Link>
-      <Link to="/personalcube/community" className="item">Community</Link>
+      <Link to="/community" className="item">Community</Link>
       <Link to="/recommend" className="item">Recommend</Link>
       <Link to="/personalcube/create" className="item">Create</Link>
     </div>
