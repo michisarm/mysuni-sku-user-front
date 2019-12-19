@@ -5,6 +5,7 @@ import { text, number, select, boolean } from '@storybook/addon-knobs';
 
 import { Lecture, CubeType, CategoryModel, IdName } from 'shared';
 import { LectureModel } from 'lecture';
+import { ChannelModel } from 'college';
 
 
 export default {
@@ -159,8 +160,19 @@ export const Line = () => {
     onViewDetail: action('onViewDetail'),
   };
 
+  const mockChannel =  new ChannelModel();
+  const channel = new ChannelModel({
+    ...mockChannel,
+    name: 'AI Tech Essential',
+  });
+
   return (
     <div className="recommend-area">
+      <Lecture.LineHeader
+        channel={channel}
+        title="의 학습과정입니다."
+        onViewAll={action('onViewAll')}
+      />
       <Lecture.Group type={Lecture.GroupType.Line}>
         <Lecture
           { ...lectureProps }

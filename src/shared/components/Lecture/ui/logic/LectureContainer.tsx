@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import { Lecture } from 'shared';
 import { LectureModel } from 'lecture';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
+import LineHeader from '../../sub/LineHeader';
 import Action from '../../present/model/Action';
 import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
-import { Lecture } from '../../../../index';
 
 
 export interface OnViewDetailData {
@@ -43,6 +44,8 @@ interface ActionWith extends Action {
 class LectureContainer extends Component<Props, States> {
   //
   static Group = CardGroup;
+
+  static LineHeader = LineHeader;
 
   static GroupType = GroupType;
 

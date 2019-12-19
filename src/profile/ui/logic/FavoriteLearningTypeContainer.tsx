@@ -91,7 +91,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   onSummit() {
     const { skProfileService } = this.props;
     const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
-    const { skProfile } = skProfileService as SkProfileService;
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteLearningType } = studySummary as StudySummary;
 

@@ -1,5 +1,6 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
+import _ from 'lodash';
 import { ChannelModel } from 'college';
 import { LectureApi } from '../../../shared';
 
@@ -40,6 +41,11 @@ class LectureCountService {
 
     runInAction(() => this._channels = channels);
     return channels;
+  }
+
+  @action
+  setChannelsProp(index: number, name: string, value: any) {
+    this._channels[index] = _.set(this._channels[index], name, value);
   }
 }
 

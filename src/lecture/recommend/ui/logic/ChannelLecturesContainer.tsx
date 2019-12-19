@@ -7,7 +7,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService, LectureServiceType } from 'lecture';
 import { ChannelModel } from 'college';
-import ChannelHeaderView from '../view/ChannelHeaderView';
 import LectureModel from '../../../shared/model/LectureModel';
 
 interface Props extends RouteComponentProps {
@@ -58,33 +57,27 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
     return (
       <>
-        <ChannelHeaderView
+        <Lecture.LineHeader
           channel={channel}
           onViewAll={this.onViewAll}
         />
         {
           lectures && lectures.length
           && (
-            <div className="scrolling">
-              <ul className="belt">
-                {
-                  lectures.map((lecture: LectureModel) => (
-                    <li>
-                      <Lecture.Group type={Lecture.GroupType.Box}>
-                        <Lecture
-                          key={lecture.id}
-                          lecture={lecture}
-                          // thumbnailImage="http://placehold.it/60x60"
-                          action={Lecture.ActionType.Add}
-                          onAction={this.onActionLecture}
-                          onViewDetail={this.onViewDetail}
-                        />
-                      </Lecture.Group>
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
+            <Lecture.Group type={Lecture.GroupType.Line}>
+              {
+                lectures.map((lecture: LectureModel) => (
+                  <Lecture
+                    key={lecture.id}
+                    lecture={lecture}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    action={Lecture.ActionType.Add}
+                    onAction={this.onActionLecture}
+                    onViewDetail={this.onViewDetail}
+                  />
+                ))
+              }
+            </Lecture.Group>
           ) || (
             <NoSuchContentPanel message="선택하신 채널에 해당하는 추천 학습과정이 없습니다." />
           )

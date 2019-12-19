@@ -4,13 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { mobxHelper, PageService, Lecture } from 'shared';
+import { mobxHelper, PageService, Lecture, NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
 
-import { ChannelsPanel, CardSorting, NoSuchContent, SeeMoreButton } from '../../../shared';
+import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
@@ -86,9 +86,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onSelectChannel(e: any, { index, channel }: any) {
     //
-    const { collegeService } = this.props;
+    const { lectureCountService } = this.props;
 
-    collegeService!.setChannelsProp(index, 'checked', !channel.checked);
+    lectureCountService!.setChannelsProp(index, 'checked', !channel.checked);
   }
 
   onChangeSorting(e: any, data: any) {
@@ -120,8 +120,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, lectureService, lectureCountService } = this.props;
+    const { pageService, collegeService, lectureService, lectureCountService } = this.props;
     const { sorting } = this.state;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { lectures } = lectureService!;
     const { channels } = lectureCountService!;
@@ -137,7 +138,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
             <>
               <DescriptionView
                 name={`${college.name} College`}
-                count={lectures.length}
+                count={page!.totalCount}
               />
               <CardSorting
                 value={sorting}
@@ -167,7 +168,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
               )}
             </>
             :
-            <NoSuchContent message="수강중인 학습 과정이 없습니다." />
+            <NoSuchContentPanel message="수강중인 학습 과정이 없습니다." />
           }
         </LecturesWrapperView>
       </CategoryLecturesContentWrapperView>

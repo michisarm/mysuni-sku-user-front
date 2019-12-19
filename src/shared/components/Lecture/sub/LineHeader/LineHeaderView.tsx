@@ -12,7 +12,7 @@ interface Props {
 }
 
 @reactAutobind
-class ChannelHeaderView extends Component<Props> {
+class LineHeaderView extends Component<Props> {
   //
   render() {
     //
@@ -31,4 +31,4 @@ class ChannelHeaderView extends Component<Props> {
   }
 }
 
-export default ChannelHeaderView;
+export default LineHeaderView;
