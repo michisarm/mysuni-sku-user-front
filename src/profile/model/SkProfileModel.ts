@@ -4,8 +4,6 @@ import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';
 import { EmployeeModel } from './EmployeeModel';
 import { PisAgreementModel } from './PisAgreementModel';
-import { StudySummary } from './StudySummary';
-import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
 import { NameValueList } from '../../shared';
 import { SkProfileCdoModel } from './SkProfileCdoModel';
 
@@ -18,10 +16,8 @@ export class SkProfileModel implements DramaEntity {
   memberType: MemberType = MemberType.SkMember;
   memberLocale: MemberLocaleModel = new MemberLocaleModel();
   pisAgreement: PisAgreementModel = new PisAgreementModel();
-  signedDate : Date = new Date();
-  studySummary : StudySummary = new StudySummary();
+  signedDate : string = '';
   passwordAuthenticated : boolean = false;
-  favoriteJobGroup : FavoriteJobGroupModel = new FavoriteJobGroupModel();
 
   constructor(skProfile?: SkProfileModel) {
     //
@@ -29,9 +25,7 @@ export class SkProfileModel implements DramaEntity {
       const patronKey = skProfile.patronKey || this.patronKey;
       const member  = skProfile.member && new EmployeeModel() || this.member;
       const pisAgreement = skProfile.pisAgreement && new PisAgreementModel() || this.pisAgreement;
-      const studySummary = skProfile.studySummary && new StudySummary() || this.studySummary;
-      const favoriteJobGroup = skProfile.favoriteJobGroup && new FavoriteJobGroupModel() || this.favoriteJobGroup;
-      Object.assign(this, { ...skProfile, patronKey, member, pisAgreement, studySummary, favoriteJobGroup });
+      Object.assign(this, { ...skProfile, patronKey, member, pisAgreement });
     }
   }
 
@@ -47,28 +41,16 @@ export class SkProfileModel implements DramaEntity {
           value: skProfile.memberType,
         },
         {
-          name: 'memberLocale',
-          value: JSON.stringify(skProfile.memberLocale),
-        },
-        {
           name: 'pisAgreement',
           value: JSON.stringify(skProfile.pisAgreement),
         },
         {
-          name: 'signedDate',
-          value: skProfile.signedDate.toISOString(),
-        },
-        {
-          name: 'studySummary',
-          value: JSON.stringify(skProfile.studySummary),
+          name: 'locale',
+          value: JSON.stringify(skProfile.memberLocale),
         },
         {
           name: 'passwordAuthenticated',
           value: skProfile.passwordAuthenticated ? 'true' : 'false',
-        },
-        {
-          name: 'favoriteJobGroup',
-          value: JSON.stringify(skProfile.favoriteJobGroup),
         },
       ],
     };
@@ -95,6 +77,5 @@ decorate(SkProfileModel, {
   memberLocale: observable,
   pisAgreement: observable,
   signedDate: observable,
-  studySummary: observable,
   passwordAuthenticated: observable,
 });

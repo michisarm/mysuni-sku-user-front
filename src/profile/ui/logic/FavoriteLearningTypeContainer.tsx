@@ -9,6 +9,7 @@ import { ContentLayout } from '../../../shared';
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
+import { StudySummary } from '../../model/StudySummary';
 
 interface Props extends RouteComponentProps{
   collegeService? : CollegeService
@@ -91,7 +92,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       skProfileService.setStudySummaryProp('goal', goalGroup);
       skProfileService.setStudySummaryProp('etc', etc);
 
-      // skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
+      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
     }
     //step props data server 전달 ..... main page로 이동
     this.props.history.push('/');

@@ -8,6 +8,7 @@ import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { ContentLayout } from '../../../shared';
+import { StudySummary } from '../../model/StudySummary';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
@@ -49,8 +50,8 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { collegeService, skProfileService } = this.props;
     if (collegeService && skProfileService) {
       collegeService.findAllColleges();
-      //  skProfileService.findSkProfile();
-      // skProfileService.findStudySummary();
+      skProfileService.findSkProfile();
+      skProfileService.findStudySummary();
     }
 
   }
@@ -85,7 +86,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   onNextClick() {
-    const { collegeService } = this.props;
+    const { collegeService, skProfileService } = this.props;
     if (collegeService.favoriteChannels.length < 3 ) {
       reactConfirm({
         title: '알림',
@@ -93,10 +94,10 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
         onClose: () => this.props.history.push('/profile/interest/job'),
       });
     } else {
-      // if (collegeService && skProfileService) {
-      //   skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
-      //   skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.skProfile.studySummary));
-      // }
+      if (collegeService && skProfileService) {
+        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
+        skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
+      }
       this.props.history.push('/profile/interest/job');
     }
   }
