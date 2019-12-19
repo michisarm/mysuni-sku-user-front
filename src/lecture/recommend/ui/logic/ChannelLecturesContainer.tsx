@@ -2,14 +2,15 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
-import { LectureService } from 'lecture';
+import { LectureService, LectureServiceType } from 'lecture';
 import { ChannelModel } from 'college';
 import ChannelHeaderView from '../view/ChannelHeaderView';
 import LectureModel from '../../../shared/model/LectureModel';
 
-interface Props {
+interface Props extends RouteComponentProps {
   lectureService?: LectureService,
   channel: ChannelModel
   routeTo: (url: string) => void
@@ -28,6 +29,21 @@ class ChannelsLecturesContainer extends Component<Props, State> {
     const { lectureService, channel } = this.props;
 
     lectureService!.findChannelLectures(channel.id, 0, 5,);
+  }
+
+  onActionLecture() {
+
+  }
+
+  onGoToLecture(e: any, data: any) {
+    //
+    const { lecture } = data;
+    const { history } = this.props;
+
+    console.log('serviceType', lecture.serviceType);
+    if (lecture.serviceType === LectureServiceType.Card) {
+      history.push(`./lecture-card/${lecture.serviceId}`);
+    }
   }
 
   onViewAll() {
@@ -60,8 +76,8 @@ class ChannelsLecturesContainer extends Component<Props, State> {
                           lecture={lecture}
                           // thumbnailImage="http://placehold.it/60x60"
                           action={Lecture.ActionType.Add}
-                          onAction={() => {}}
-                          onViewDetail={() => {}}
+                          onAction={this.onActionLecture}
+                          onViewDetail={this.onGoToLecture}
                         />
                       </Lecture.Group>
                     </li>
@@ -78,4 +94,4 @@ class ChannelsLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default ChannelsLecturesContainer;
+export default withRouter(ChannelsLecturesContainer);
