@@ -1,16 +1,19 @@
 
 
 /** Service */
-import SharedService from './present/logic/SharedService_';
+import ModalService from './present/logic/ModalService';
+import  PageService from './present/logic/PageService';
 
 export const sharedStores = {
   shared: {
-    sharedService: SharedService.instance,
+    modalService: ModalService.instance,
+    pageService: PageService.instance,
   },
 };
 
 export {
-  SharedService,
+  ModalService,
+  PageService,
 };
 
 /** Model */
@@ -53,3 +56,4 @@ export { default as LectureContentHeader } from './layout/LectureContentHeader';
 export { default as LectureSubInfo } from './layout/LectureSubInfo';
 export { default as Lecture } from './components/Lecture';
 export { default as OverviewField } from './components/OverviewField';
+export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';

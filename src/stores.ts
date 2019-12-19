@@ -1,6 +1,6 @@
 
 import { sharedStores } from './shared';
-import { collegeStores } from './college';
+import { collegeStores, CollegeService } from './college';
 import { personalCubeStores } from './personalcube';
 import { lectureCardStores } from './lecture';
 import { InstructorService } from './expert';
@@ -9,7 +9,10 @@ import { AnswerService, BoardService, CategoryService, PostService } from './boa
 
 
 const stores = {
-  ...sharedStores,
+  shared: {
+    ...sharedStores.shared,
+    collegeService: new CollegeService(),
+  },
   ...collegeStores,
   ...personalCubeStores,
   ...lectureCardStores,

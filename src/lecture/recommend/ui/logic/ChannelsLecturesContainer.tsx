@@ -45,7 +45,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
   onSelectChannel(channel: ChannelModel) {
     const { collegeService } = this.props;
     if (collegeService) {
-      const index = collegeService.channels.map((channel: ChannelModel) => channel.id).findIndex((id: string) => channel.id === id);
+      const index = collegeService._channels.map((channel: ChannelModel) => channel.id).findIndex((id: string) => channel.id === id);
       collegeService!.setChannelsProp(index, 'checked', !channel.checked);
     }
   }
@@ -69,6 +69,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
                 <ChannelLecturesContainer
                   channel={channel}
                   routeTo={routeTo}
+                  key={`channel_cont_${channel.id}`}
                 />
               );
             }) || null

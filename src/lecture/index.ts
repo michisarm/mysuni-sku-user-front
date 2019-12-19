@@ -2,13 +2,15 @@
 /** Service */
 import LectureCardService from './shared/present/logic/LectureCardService';
 import LectureService from './shared/present/logic/LectureService';
+import LectureCountService from './category/present/logic/LectureCountService';
+
 
 export const lectureCardStores = {
   lecture: {
     lectureCardService: LectureCardService.instance,
     lectureService: LectureService.instance,
+    lectureCountService: LectureCountService.instance,
   },
-
 };
 
 export {
@@ -27,4 +29,5 @@ export { default as ChannelLecturesPage } from './category/ui/page/ChannelLectur
 export { default as LectureCardPage } from './category/ui/page/LectureCardPage';
 
 export { default as ChannelsLecturesPage } from './recommend/ui/page/ChannelsLecturesPage';
+export { default as RecommendChannelLecturesPage } from './recommend/ui/page/ChannelLecturesPage';
 

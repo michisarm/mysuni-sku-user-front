@@ -1,8 +1,9 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
+import { OffsetElementList } from 'shared';
+import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
-import LectureApi from '../apiclient/LectureApi';
 
 
 class LectureService {
@@ -13,9 +14,6 @@ class LectureService {
 
   @observable
   _lectures: LectureModel[] = [];
-
-  @observable
-  offset: number = 0;
 
 
   constructor(lectureApi: LectureApi) {
@@ -34,21 +32,26 @@ class LectureService {
   @action
   async findCollegeLectures(collegeId: string, limit: number, offset: number) {
     //
-    const lectureOffsetElementList = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset));
+    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    console.log('LectureService.findCollegeLectures', lectureOffsetElementList);
-    return runInAction(() => this._lectures = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture)));
+    return runInAction(() => {
+      this._lectures = lectureOffsetElementList.results;
+      return lectureOffsetElementList;
+    });
   }
 
   @action
   async findChannelLectures(channelId: string, limit: number, offset: number) {
     //
-    const lectureOffsetElementList = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset));
+    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    console.log('LectureService.findChannelLectures', lectureOffsetElementList);
-    return runInAction(() => this._lectures = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture)));
+    return runInAction(() => {
+      this._lectures = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+      return lectureOffsetElementList;
+    });
   }
-
 }
 
 LectureService.instance = new LectureService(LectureApi.instance);

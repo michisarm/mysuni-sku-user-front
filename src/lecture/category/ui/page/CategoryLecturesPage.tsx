@@ -21,28 +21,31 @@ class CategoryLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { match, collegeService } = this.props;
-    const { params } = match;
-
-    collegeService.findCollege(params.collegeId)
-      .then((college) => {
-        //
-        if (!college) return;
-        const channels = college.channels;
-
-        channels.map((channel) => channel.checked = true);
-
-        collegeService.setChannels(college.channels);
-      });
+    this.findCollegeAndChannels();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
+    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId) {
+      this.findCollegeAndChannels();
+    }
+  }
+
+  findCollegeAndChannels() {
+    //
     const { match, collegeService } = this.props;
 
-    if (prevProps.match.params.collegeId !== match.params.collegeId) {
-      collegeService.findCollege(match.params.collegeId);
-    }
+    collegeService.findCollege(match.params.collegeId)
+      .then((college) => {
+        //
+        // if (!college) {
+        //   return;
+        // }
+        // const channels = college.channels;
+
+        // channels.map((channel) => channel.checked = true);
+        // collegeService.setChannels(college.channels);
+      });
   }
 
 
