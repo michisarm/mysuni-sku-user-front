@@ -118,7 +118,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                   // thumbnailImage="http://placehold.it/60x60"
                   action={Lecture.ActionType.Add}
                   onAction={this.onActionLecture}
-                  onGoToLecture={this.onGoToLecture}
+                  onViewDetail={this.onGoToLecture}
                 />
               ))}
             </Lecture.Group>
