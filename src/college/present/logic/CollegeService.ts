@@ -1,5 +1,6 @@
 import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
+import _ from 'lodash';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import { CollegeModel } from '../../model/CollegeModel';
@@ -106,6 +107,11 @@ export default class CollegeService {
     if (channels) {
       this._channels = [...channels];
     }
+  }
+
+  @action
+  setChannelsProp(index: number, name: string, value: any) {
+    this._channels[index] = _.set(this._channels[index], name, value);
   }
 
   @action

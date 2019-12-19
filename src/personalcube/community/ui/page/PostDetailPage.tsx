@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import {  PostDetail } from '@sku/personalcube';
+import { PostDetail } from '@sku/personalcube';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout } from 'shared';
 

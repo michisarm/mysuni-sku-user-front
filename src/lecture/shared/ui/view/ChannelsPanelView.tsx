@@ -8,24 +8,48 @@ import { ChannelModel } from 'college';
 
 
 interface Props {
-  open: boolean,
-  channels: ChannelModel[],
-  onToggle: () => void,
+  title?: string
+  channels: ChannelModel[]
+  onSettings?: () => void
+  onSelectChannel: (channel: ChannelModel) => void
+}
+
+interface States {
+  open: boolean
 }
 
 @reactAutobind
-class ChannelsPanelView extends Component<Props> {
+class ChannelsPanelView extends Component<Props, States> {
   //
+  state = {
+    open: false,
+  };
+
+  onToggle() {
+    const { open } = this.state;
+    this.setState({ open: !open });
+  }
+
   render() {
     //
-    const { open, channels, onToggle } = this.props;
+    const { channels, title, onSettings, onSelectChannel } = this.props;
+    const { open } = this.state;
 
     return (
       <div className="channel-of-interest">
         <div className="table-css type2 type3">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">Channel ({channels.length})</div>
+              <div className="tit-set">
+                { title || `Channel (${channels.length})`}
+                {
+                  onSettings && (
+                    <Button icon className="img-icon" onClick={onSettings}>
+                      <Icon className="setting17" /><span className="blind">setting</span>
+                    </Button>
+                  ) || null
+                }
+              </div>
             </div>
             <div className="cell vtop">
               <div
@@ -34,10 +58,13 @@ class ChannelsPanelView extends Component<Props> {
                   active: open,
                 })}
               >
-                {/*  .active //  */}
                 <div className="belt">
                   {channels.map((channel, index) => (
-                    <Button key={`sub-category-${index}`} className={`toggle toggle4 ${channel.name ? 'active' : ''}`}>
+                    <Button
+                      key={`sub-category-${index}`}
+                      className={`toggle toggle4 ${channel.checked ? 'active' : ''}`}
+                      onClick={() => onSelectChannel(channel)}
+                    >
                       {channel.name}
                     </Button>
                   ))}
@@ -46,7 +73,7 @@ class ChannelsPanelView extends Component<Props> {
             </div>
             <div className="cell vtop">
               <div className="toggle-btn">
-                <Button icon className="img-icon" onClick={onToggle}>
+                <Button icon className="img-icon" onClick={this.onToggle}>
                   <Icon
                     className={classNames({
                       s26: true,

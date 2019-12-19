@@ -5,11 +5,13 @@ import FavoriteLearningTypeContainer from './ui/logic/FavoriteLearningTypeContai
 import SkProfileService from './present/logic/SkProfileService';
 import LoadingPage from './ui/page/LoadingPage';
 import { SkProfileModel } from './model/SkProfileModel';
+import { EmployeeModel } from './model/EmployeeModel';
+import { TeamModel } from './model/TeamModel';
+import { CodeNameModel } from './model/CodeNameModel';
 import { StudySummary } from './model/StudySummary';
 
 export {
-  SkProfileModel,
-  StudySummary,
+  SkProfileModel, EmployeeModel, TeamModel, CodeNameModel, StudySummary,
   FavoriteWelcomePage,
   LoadingPage,
   FavoriteCollegeContainer,

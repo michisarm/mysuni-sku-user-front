@@ -1,4 +1,3 @@
-import { stores as learningStores } from '@sku/learning';
 
 import { sharedStores } from './shared';
 import { collegeStores } from './college';
@@ -10,7 +9,6 @@ import { AnswerService, BoardService, CategoryService, PostService } from './boa
 
 
 const stores = {
-  ...learningStores,
   ...sharedStores,
   ...collegeStores,
   ...personalCubeStores,

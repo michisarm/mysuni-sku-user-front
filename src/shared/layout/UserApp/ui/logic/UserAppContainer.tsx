@@ -35,8 +35,8 @@ class UserAppContainer extends Component<Props, State> {
       .filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
 
     if (!cineroomSpaces.length) {
-      alert('로그인 필요');
-      window.location.href = window.location.origin + '/login';
+      // alert('로그인 필요');
+      // window.location.href= window.location.origin + '/login';
     }
   }
 

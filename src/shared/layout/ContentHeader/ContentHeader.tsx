@@ -10,6 +10,7 @@ import TotalTimeItem from './sub/TotalTimeItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
 import StampItem from './sub/StampItem';
+import RecommendItem from './sub/RecommendItem';
 
 
 interface Props {
@@ -34,6 +35,8 @@ class ContentHeader extends Component<Props> {
   static CommunityItem = CommunityItem;
 
   static StampItem = StampItem;
+
+  static RecommendItem = RecommendItem;
 
 
   render() {

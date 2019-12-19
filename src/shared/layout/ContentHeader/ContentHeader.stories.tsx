@@ -217,3 +217,25 @@ export const CategoryExample = () => {
     </ContentLayout>
   );
 };
+
+
+export const RecommendItem = () => {
+  //
+  return (
+    <ContentHeader>
+      <ContentHeader.Cell inner>
+        {profileItem}
+      </ContentHeader.Cell>
+      <ContentHeader.Cell>
+        <ContentHeader.RecommendItem
+          favoriteChannelCount={24}
+          totalChannelCount={999}
+        />
+      </ContentHeader.Cell>
+    </ContentHeader>
+  );
+};
+
+RecommendItem.story = {
+  name: 'ContentHeader.RecommendItem',
+};

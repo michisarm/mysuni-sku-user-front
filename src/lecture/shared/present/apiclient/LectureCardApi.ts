@@ -10,11 +10,13 @@ class LectureCardApi {
 
   baseUrl = '/api/lecture/lectureCards';
 
-  findAllLectureCards(offset: number, limit: number) {
+  findAllLectureCards(offset: number, limit: number, college?: string, channel?: string) {
     //
     const params = {
       offset,
       limit,
+      college,
+      channel,
     };
 
     return axiosApi.get<LectureCardModel[]>(this.baseUrl, { params })

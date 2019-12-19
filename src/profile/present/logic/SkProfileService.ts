@@ -45,19 +45,19 @@ export default class SkProfileService {
   async findSkProfile() {
     //
     const skProfile = await this.skProfileApi.findSkProfile();
-    return runInAction(() => this.skProfile = skProfile);
+    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 
   @action
   async  findSkProfileByAudienceId(audienceId: string) {
     const  skProfile = await  this.skProfileApi.findSkProfileByAudienceId(audienceId);
-    return runInAction(() => this.skProfile = skProfile);
+    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 
   @action
   async  findSkProfileByProfileId(profileId: string) {
     const skProfile = await  this.skProfileApi.findSkProfileByProfileId(profileId);
-    return runInAction(() => this.skProfile = skProfile);
+    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 
   @action
@@ -87,14 +87,14 @@ export default class SkProfileService {
   @action
   async  findStudySummary() {
     const studySummary = await this.skProfileApi.findStudySummary();
-    return runInAction(() => this.studySummary = studySummary);
+    return runInAction(() => this.studySummary = new StudySummary(studySummary));
   }
 
   @action
   async  finStudySummaryByProfileId(profileId : string) {
     //profileId skProfile 검색 후 setting 필요한지 테스트 통해서 확인
     const studySummary = await this.skProfileApi.findStudySummaryByProfileId(profileId);
-    return runInAction(() => this.studySummary = studySummary);
+    return runInAction(() => this.studySummary = new StudySummary(studySummary));
   }
 
   modifyStudySummary(nameValues: NameValueList) {

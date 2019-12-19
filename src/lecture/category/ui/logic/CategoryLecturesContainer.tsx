@@ -22,7 +22,6 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
 }
 
 interface State {
-  categoriesOpen: boolean,
   sorting: string,
 }
 
@@ -34,7 +33,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
   lectureLimit = 20;
 
   state = {
-    categoriesOpen: false,
     sorting: 'latest',
   };
 
@@ -45,13 +43,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
-
-  onToggleCategories() {
-    //
-    this.setState((state) => ({
-      categoriesOpen: !state.categoriesOpen,
-    }));
-  }
 
   onChangeSorting(e: any, data: any) {
     //
@@ -82,7 +73,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
   render() {
     //
     const { collegeService, lectureService } = this.props;
-    const { categoriesOpen, sorting } = this.state;
+    const { sorting } = this.state;
     const { college, channels } = collegeService!;
     const { lectures } = lectureService!;
 
@@ -91,9 +82,8 @@ class CategoryLecturesContainer extends Component<Props, State> {
     return (
       <CategoryLecturesContentWrapperView>
         <ChannelsPanel
-          open={categoriesOpen}
           channels={channels}
-          onToggle={this.onToggleCategories}
+          onSelectChannel={() => {}}
         />
         <LecturesWrapperView
           header={
