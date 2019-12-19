@@ -31,7 +31,7 @@ class PostFormPage extends React.Component<Props> {
 
   routeTo() {
     const { cubeId, postId } = this.props.match.params;
-    this.props.history.push(`/community/${cubeId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
+    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
   }
 
   render() {
