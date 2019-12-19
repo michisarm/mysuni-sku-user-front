@@ -27,6 +27,7 @@ export class EmployeeModel extends MemberModel {
       Object.assign(this, { ...employee, favoriteJobGroup, team });
     }
   }
+
 }
 
 decorate( EmployeeModel, {

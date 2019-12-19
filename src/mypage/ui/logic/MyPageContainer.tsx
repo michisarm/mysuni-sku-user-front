@@ -27,7 +27,7 @@ class MyPageContainer extends Component<Props> {
   }
 
   render() {
-    const { skProfile } = this.props.skProfileService;
+    const { skProfile, studySummary } = this.props.skProfileService;
     return (
       <ContentLayout
         breadcrumb={[
@@ -35,7 +35,7 @@ class MyPageContainer extends Component<Props> {
           { text: 'depth2', path: '' },
         ]}
       >
-        <TitleContainer skProfile={skProfile} />
+        <TitleContainer skProfile={skProfile} studySummary={studySummary} />
         <MenuItemContainer />
       </ContentLayout>
     );

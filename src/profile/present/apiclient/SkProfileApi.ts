@@ -78,7 +78,7 @@ export default class SkProfileApi {
 
   //본인 studysummary 등록 - 로그인시 skprofile에 생성된 studySummary update
   modifyStudySummary(nameValues : NameValueList) {
-    return axios.put<void>(this.URL + `/summary`, nameValues);
+    return axios.put<void>(this.URL + `/summary/update`, nameValues);
   }
 
   //Manager, SuperAdmin{

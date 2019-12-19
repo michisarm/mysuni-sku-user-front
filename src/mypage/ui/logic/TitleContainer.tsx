@@ -5,10 +5,11 @@ import ProfileView from '../view/title/ProfileView';
 import LectureTotalTimeView from '../view/title/LectureTotalTimeView';
 import StampInfoView from '../view/title/StampInfoView';
 import FavoriteChannelView from '../view/title/FavoriteChannelView';
-import { SkProfileModel } from '../../../profile';
+import { SkProfileModel, StudySummary } from '../../../profile';
 
 interface Props {
   skProfile : SkProfileModel
+  studySummary : StudySummary
 }
 
 
@@ -29,7 +30,7 @@ class TitleContainer extends Component<Props, States> {
   }
 
   render() {
-    const { skProfile } = this.props;
+    const { skProfile, studySummary } = this.props;
 
     return (
       <div className="main-info-area">
@@ -41,7 +42,7 @@ class TitleContainer extends Component<Props, States> {
           <LectureTotalTimeView />
           <StampInfoView />
         </div>
-        <FavoriteChannelView skProfile={skProfile} />
+        <FavoriteChannelView studySummary={studySummary} />
       </div>
     );
   }
