@@ -65,10 +65,11 @@ export default class CollegeService {
     if (college) {
       return runInAction(() => {
         this.college = new CollegeModel(college);
-        this._channels = this.college.channels;
+        // this._channels = this.college.channels;
+        return this.college;
       });
     }
-    return null;
+    return undefined;
   }
 
   @action
@@ -102,6 +103,39 @@ export default class CollegeService {
   }
 
   @action
+  async findMainCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.mainCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  async findSubCollege(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    if (college) return runInAction(() => this.subCollege = new CollegeModel(college));
+    return null;
+  }
+
+  @action
+  clearMainCollege() {
+    //
+    this.mainCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
+  }
+
+  @action
+  clearSubCollege() {
+    //
+    this.subCollege = new CollegeModel();
+    // this.College = {} as CollegeModel;
+  }
+
+
+  // Channels ----------------------------------------------------------------------------------------------------------
+
+  @action
   setChannels(channels?: ChannelModel[]) {
     //
     if (channels) {
@@ -113,6 +147,8 @@ export default class CollegeService {
   setChannelsProp(index: number, name: string, value: any) {
     this._channels[index] = _.set(this._channels[index], name, value);
   }
+
+  // Other Channels ----------------------------------------------------------------------------------------------------
 
   @action
   setSelectChannels() {
@@ -163,37 +199,7 @@ export default class CollegeService {
     return list;
   }
 
-
-  @action
-  async findMainCollege(collegeId: string) {
-    //
-    const college = await this.collegeApi.findCollege(collegeId);
-    if (college) return runInAction(() => this.mainCollege = new CollegeModel(college));
-    return null;
-  }
-
-  @action
-  async findSubCollege(collegeId: string) {
-    //
-    const college = await this.collegeApi.findCollege(collegeId);
-    if (college) return runInAction(() => this.subCollege = new CollegeModel(college));
-    return null;
-  }
-
-  @action
-  clearMainCollege() {
-    //
-    this.mainCollege = new CollegeModel();
-    // this.College = {} as CollegeModel;
-  }
-
-  @action
-  clearSubCollege() {
-    //
-    this.subCollege = new CollegeModel();
-    // this.College = {} as CollegeModel;
-  }
-
+  // Channel -----------------------------------------------------------------------------------------------------------
 
   @action
   async findChannel(collegeId: string, channelId: string) {

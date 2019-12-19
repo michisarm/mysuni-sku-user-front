@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-// import { tenantInfo } from '@nara.platform/dock';
+import { tenantInfo } from '@nara.platform/dock';
 import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
 
@@ -31,10 +31,13 @@ class LectureModel extends DramaEntityObservableModel {
 
     if (lecture) {
       Object.assign(this, { ...lecture });
-      // Todo: required, description
-      this.required = lecture.requiredSubsidiaries.length > 0;
-      this.description = 'Description';
+
       this.serviceType = LectureModel.getServiceType(lecture.serviceType);
+      // Todo: required, description
+      const cineroom = tenantInfo.getCineroom() as any;
+      console.log('cineroom', tenantInfo.getCineroom(), lecture.requiredSubsidiaries);
+      this.required = lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
+      this.description = 'Description';
     }
   }
 

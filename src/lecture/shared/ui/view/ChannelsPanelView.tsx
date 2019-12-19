@@ -7,11 +7,16 @@ import { Button, Icon } from 'semantic-ui-react';
 import { ChannelModel } from 'college';
 
 
+interface OnSelectChannelData {
+  index: number,
+  channel: ChannelModel,
+}
+
 interface Props {
   title?: string
   channels: ChannelModel[]
   onSettings?: () => void
-  onSelectChannel: (channel: ChannelModel) => void
+  onSelectChannel: (e: any, data: OnSelectChannelData) => void
 }
 
 interface States {
@@ -28,6 +33,16 @@ class ChannelsPanelView extends Component<Props, States> {
   onToggle() {
     const { open } = this.state;
     this.setState({ open: !open });
+  }
+
+  onClickChannel(e: any, index: number, channel: ChannelModel) {
+    //
+    const { onSelectChannel } = this.props;
+
+    onSelectChannel(e, {
+      index,
+      channel,
+    });
   }
 
   render() {
@@ -63,7 +78,7 @@ class ChannelsPanelView extends Component<Props, States> {
                     <Button
                       key={`sub-category-${index}`}
                       className={`toggle toggle4 ${channel.checked ? 'active' : ''}`}
-                      onClick={() => onSelectChannel(channel)}
+                      onClick={(e) => this.onClickChannel(e, index, channel)}
                     >
                       {channel.name}
                     </Button>

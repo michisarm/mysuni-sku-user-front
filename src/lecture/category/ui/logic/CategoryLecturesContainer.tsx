@@ -43,6 +43,12 @@ class CategoryLecturesContainer extends Component<Props, State> {
     lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
+  onSelectChannel() {
+    //
+    const { collegeService } = this.props;
+
+    // collegeService.setChannelsProp();
+  }
 
   onChangeSorting(e: any, data: any) {
     //
@@ -83,7 +89,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
       <CategoryLecturesContentWrapperView>
         <ChannelsPanel
           channels={channels}
-          onSelectChannel={() => {}}
+          onSelectChannel={this.onSelectChannel}
         />
         <LecturesWrapperView
           header={
