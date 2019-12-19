@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { IdName, mobxHelper } from 'shared';
+import { mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 import ChannelLecturesContainer from './ChannelLecturesContainer';
@@ -12,7 +12,7 @@ import ChannelLecturesContainer from './ChannelLecturesContainer';
 interface Props {
   collegeService?: CollegeService
 
-  channels: IdName[]
+  channels: ChannelModel[]
   routeTo:(url: string) => void
 }
 

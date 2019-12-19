@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, ContentHeader, mobxHelper } from 'shared';
 import { SkProfileModel, EmployeeModel, TeamModel, SkProfileService, StudySummary } from 'profile';
+import { ChannelModel } from 'college';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
 
@@ -44,7 +45,8 @@ class ChannelLecturesPage extends Component<Props> {
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
 
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames || [];
+    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
+      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <ContentLayout

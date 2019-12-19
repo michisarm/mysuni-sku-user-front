@@ -2,13 +2,12 @@
 import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
-import { IdName } from 'shared';
 import { ChannelModel } from 'college';
 import ChannelsPanelView from '../../../shared/ui/view/ChannelsPanelView';
 
 
 interface Props {
-  channels: IdName[]
+  channels: ChannelModel[]
   children: React.ReactNode
   onSelectChannel: (channel: ChannelModel) => void
 }
