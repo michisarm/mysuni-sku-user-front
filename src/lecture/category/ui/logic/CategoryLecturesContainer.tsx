@@ -9,7 +9,7 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
-import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
+import { ChannelsPanel, CardSorting, NoSuchContent, SeeMoreButton } from '../../../shared';
 import LecturesWrapperView from '../view/LecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
@@ -83,8 +83,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { college, channels } = collegeService!;
     const { lectures } = lectureService!;
 
-    console.log('CategoryLecturesContainer.render', channels);
-
     return (
       <CategoryLecturesContentWrapperView>
         <ChannelsPanel
@@ -105,23 +103,27 @@ class CategoryLecturesContainer extends Component<Props, State> {
             </>
           }
         >
-          <>
-            <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel) => (
-                <Lecture
-                  key={lecture.id}
-                  lecture={lecture}
-                  // thumbnailImage="http://placehold.it/60x60"
-                  action={Lecture.ActionType.Add}
-                  onAction={this.onActionLecture}
-                  onViewDetail={this.onGoToLecture}
-                />
-              ))}
-            </Lecture.Group>
-            <SeeMoreButton
-              onClick={this.onClickSeeMore}
-            />
-          </>
+          {lectures && lectures.length > 0 ?
+            <>
+              <Lecture.Group type={Lecture.GroupType.Box}>
+                {lectures.map((lecture: LectureModel) => (
+                  <Lecture
+                    key={lecture.id}
+                    lecture={lecture}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    action={Lecture.ActionType.Add}
+                    onAction={this.onActionLecture}
+                    onViewDetail={this.onGoToLecture}
+                  />
+                ))}
+              </Lecture.Group>
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+              />
+            </>
+            :
+            <NoSuchContent message="수강중인 학습 과정이 없습니다." />
+          }
         </LecturesWrapperView>
       </CategoryLecturesContentWrapperView>
     );

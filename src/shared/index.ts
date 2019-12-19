@@ -53,3 +53,4 @@ export { default as LectureContentHeader } from './layout/LectureContentHeader';
 export { default as LectureSubInfo } from './layout/LectureSubInfo';
 export { default as Lecture } from './components/Lecture';
 export { default as OverviewField } from './components/OverviewField';
+export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';
