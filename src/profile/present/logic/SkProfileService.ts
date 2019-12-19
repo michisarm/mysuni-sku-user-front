@@ -9,9 +9,6 @@ import { StudySummary } from '../../model/StudySummary';
 import { EmployeeModel } from '../../model/EmployeeModel';
 import { MemberLocaleModel } from '../../model/MemberLocaleModel';
 import { PisAgreementModel } from '../../model/PisAgreementModel';
-import { IdNameList } from '../../../shared';
-import { LearningTimeModel } from '../../model/LearningTimeModel';
-import { LectureSummary } from '../../model/LectureSummary';
 
 @autobind
 export default class SkProfileService {
@@ -134,24 +131,6 @@ export default class SkProfileService {
   @action
   setStudySummaryProp(name:string, value:any) {
     this.studySummary = _.set(this.studySummary, name, value);
-
-    if (value instanceof IdNameList) {
-      if (name === 'favoriteChannels') {
-        this.studySummary.favoriteChannels = _.set(this.studySummary.favoriteChannels, name, value);
-      } if (name === 'favoriteColleges') {
-        this.studySummary.favoriteColleges = _.set(this.studySummary.favoriteColleges, name, value);
-      } if (name === 'favoriteLearningType') {
-        this.studySummary.favoriteLearningType = _.set(this.studySummary.favoriteLearningType, name, value);
-      }
-    }
-
-    if (value instanceof LearningTimeModel) {
-      this.studySummary.learningTime = _.set(this.studySummary.learningTime, name, value);
-    }
-
-    if (value instanceof  LectureSummary) {
-      this.studySummary.lectureSummary = _.set(this.studySummary.lectureSummary, name, value);
-    }
   }
 
   @action

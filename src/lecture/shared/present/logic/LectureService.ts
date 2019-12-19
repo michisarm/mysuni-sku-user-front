@@ -1,9 +1,9 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
 import { OffsetElementList } from 'shared';
+import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
-import LectureApi from '../apiclient/LectureApi';
 
 
 class LectureService {
@@ -51,13 +51,6 @@ class LectureService {
       this._lectures = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
       return lectureOffsetElementList;
     });
-  }
-
-  @action
-  async findLectureCountByCollegeId(collegeId: string) {
-    //
-    const channelCounts = await this.lectureApi.findLectureCountByCollegeId(collegeId);
-    console.log(channelCounts);
   }
 }
 

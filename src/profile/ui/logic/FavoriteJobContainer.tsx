@@ -40,7 +40,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (collegeService && skProfileService) {
       collegeService.findAllJobGroups();
       skProfileService.findSkProfile();
-      console.log('skProfileId ===> ' + skProfileService.skProfile.member.citizenId);
     }
   }
 
