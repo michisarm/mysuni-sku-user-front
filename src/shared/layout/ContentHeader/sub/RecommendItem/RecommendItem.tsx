@@ -15,7 +15,7 @@ class RecommendItem extends Component<Props> {
   //
   render() {
     //
-    const { totalChannelCount, favoriteChannelCount } = this.props;
+    const { favoriteChannelCount } = this.props;
 
     return (
       <div className="recommend-info">

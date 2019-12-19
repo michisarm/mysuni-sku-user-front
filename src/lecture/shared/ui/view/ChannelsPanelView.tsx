@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
@@ -24,6 +25,7 @@ interface States {
 }
 
 @reactAutobind
+@observer
 class ChannelsPanelView extends Component<Props, States> {
   //
   state = {
@@ -47,8 +49,9 @@ class ChannelsPanelView extends Component<Props, States> {
 
   render() {
     //
-    const { channels, title, onSettings, onSelectChannel } = this.props;
+    const { channels, title, onSettings } = this.props;
     const { open } = this.state;
+    console.log('ChannelsPanelView.render');
 
     return (
       <div className="channel-of-interest">

@@ -43,11 +43,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
     lectureService!.findCollegeLectures(match.params.collegeId, this.lectureLimit, 0);
   }
 
-  onSelectChannel() {
+  onSelectChannel(e: any, { index, channel }: any) {
     //
     const { collegeService } = this.props;
 
-    // collegeService.setChannelsProp();
+    collegeService!.setChannelsProp(index, 'checked', !channel.checked);
   }
 
   onChangeSorting(e: any, data: any) {
@@ -83,7 +83,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { college, channels } = collegeService!;
     const { lectures } = lectureService!;
 
-    console.log('CategoryLecturesContainer', lectures);
+    console.log('CategoryLecturesContainer.render', channels);
 
     return (
       <CategoryLecturesContentWrapperView>
