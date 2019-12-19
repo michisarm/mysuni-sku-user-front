@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { mobxHelper } from 'shared';
-import { LectureCardService } from 'lecture';
+import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
+import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
-import ChannelLecturesView from '../view/ChannelLecturesView';
+import ChannelHeaderView from '../view/ChannelHeaderView';
+import LectureModel from '../../../shared/model/LectureModel';
 
 interface Props {
-  lectureCardService?: LectureCardService,
+  lectureService?: LectureService,
   channel: ChannelModel
   routeTo: (url: string) => void
 }
@@ -17,16 +18,16 @@ interface Props {
 interface State {
 }
 
-@inject(mobxHelper.injectFrom('lecture.lectureCardService'))
+@inject(mobxHelper.injectFrom('lecture.lectureService'))
 @reactAutobind
 @observer
 class ChannelsLecturesContainer extends Component<Props, State> {
   //
   componentDidMount() {
     //
-    const { lectureCardService, channel } = this.props;
+    const { lectureService, channel } = this.props;
 
-    lectureCardService!.findAllLectureCards(0, 5, '', channel.id);
+    lectureService!.findChannelLectures(channel.id, 0, 5,);
   }
 
   onViewAll() {
@@ -36,15 +37,43 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, lectureCardService } = this.props;
-    const { lectureCards } =  lectureCardService as LectureCardService;
+    const { channel, lectureService } = this.props;
+    const { lectures } =  lectureService as LectureService;
 
     return (
-      <ChannelLecturesView
-        channel={channel}
-        lectureCards={lectureCards}
-        onViewAll={this.onViewAll}
-      />
+      <>
+        <ChannelHeaderView
+          channel={channel}
+          onViewAll={this.onViewAll}
+        />
+        {
+          lectures && lectures.length
+          && (
+            <div className="scrolling">
+              <ul className="belt">
+                {
+                  lectures.map((lecture: LectureModel) => (
+                    <li>
+                      <Lecture.Group type={Lecture.GroupType.Box}>
+                        <Lecture
+                          key={lecture.id}
+                          lecture={lecture}
+                          // thumbnailImage="http://placehold.it/60x60"
+                          action={Lecture.ActionType.Add}
+                          onAction={() => {}}
+                          onViewDetail={() => {}}
+                        />
+                      </Lecture.Group>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          ) || (
+            <NoSuchContentPanel message="선택하신 채널에 해당하는 추천 학습과정이 없습니다." />
+          )
+        }
+      </>
     );
   }
 }

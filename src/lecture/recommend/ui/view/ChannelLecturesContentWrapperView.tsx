@@ -25,7 +25,7 @@ class ChannelLecturesContentWrapperView extends Component<Props> {
             channels={channels}
             title="관심 Channel 보기"
             onSettings={() => {}}
-            onSelectChannel={onSelectChannel}
+            onSelectChannel={(e, { channel }) => onSelectChannel(channel)}
           />
           {children}
         </div>

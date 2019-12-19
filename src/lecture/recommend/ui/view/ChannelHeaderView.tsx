@@ -22,7 +22,7 @@ class ChannelHeaderView extends Component<Props> {
       <div className="section-head">
         <span className="channel">{channel.name}</span> {title}
         <div className="right">
-          <Button icon className="right btn-blue" onViewAll={onViewAll}>View all
+          <Button icon className="right btn-blue" onClick={onViewAll}>View all
             <Icon className="morelink" />
           </Button>
         </div>

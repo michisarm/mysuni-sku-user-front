@@ -3,6 +3,7 @@ import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
+import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 import ChannelModel from '../../model/ChannelModel';
@@ -14,6 +15,7 @@ export default class CollegeService {
   static instance: CollegeService;
 
   collegeApi: CollegeApi;
+  channelApi: ChannelApi;
 
   @observable
   college: CollegeModel = new CollegeModel();
@@ -46,8 +48,9 @@ export default class CollegeService {
   channel: ChannelModel = new ChannelModel();
 
 
-  constructor(collegeApi: CollegeApi) {
+  constructor(collegeApi: CollegeApi, channelApi: ChannelApi) {
     this.collegeApi = collegeApi;
+    this.channelApi = channelApi;
   }
 
   @computed
@@ -201,6 +204,18 @@ export default class CollegeService {
   // Channel -----------------------------------------------------------------------------------------------------------
 
   @action
+  async findAllChannel() {
+    const channels = await this.channelApi.findAllChannel();
+    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
+  }
+
+  @action
+  async findChannelById(channelId: string) {
+    const channel = await this.channelApi.findChannel(channelId);
+    runInAction(() => this.channel = new ChannelModel(channel));
+  }
+
+  @action
   async findChannel(collegeId: string, channelId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
@@ -221,7 +236,7 @@ export default class CollegeService {
 }
 
 Object.defineProperty(CollegeService, 'instance', {
-  value: new CollegeService(CollegeApi.instance),
+  value: new CollegeService(CollegeApi.instance, ChannelApi.instance),
   writable: false,
   configurable: false,
 });

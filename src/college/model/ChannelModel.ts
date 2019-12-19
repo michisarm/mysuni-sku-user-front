@@ -3,7 +3,7 @@ import { IdName } from 'shared';
 import { decorate, observable } from 'mobx';
 
 
-class ChannelModel extends IdName {
+export class ChannelModel extends IdName {
   //
   channelId : string ='';
   checked?: boolean;
@@ -20,7 +20,6 @@ class ChannelModel extends IdName {
 
 decorate(ChannelModel, {
   channelId: observable,
-  name: observable,
   checked: observable,
 });
 

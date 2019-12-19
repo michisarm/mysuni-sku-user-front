@@ -27,4 +27,5 @@ export { default as ChannelLecturesPage } from './category/ui/page/ChannelLectur
 export { default as LectureCardPage } from './category/ui/page/LectureCardPage';
 
 export { default as ChannelsLecturesPage } from './recommend/ui/page/ChannelsLecturesPage';
+export { default as RecommendChannelLecturesPage } from './recommend/ui/page/ChannelLecturesPage';
 
