@@ -11,9 +11,9 @@ export  class StudySummary implements DramaEntity {
   id: string='';
   patronKey: PatronKey={} as PatronKey;
 
-  favoriteChannels: IdNameList = {} as IdNameList;
-  favoriteColleges: IdNameList = {} as IdNameList;
-  favoriteLearningType: IdNameList = {} as IdNameList;
+  favoriteChannels: IdNameList = new IdNameList();
+  favoriteColleges: IdNameList = new IdNameList();
+  favoriteLearningType: IdNameList = new IdNameList();
 
   learningTime: LearningTimeModel = new LearningTimeModel();
   lectureSummary: LectureSummary = new LectureSummary();
@@ -62,6 +62,7 @@ export  class StudySummary implements DramaEntity {
         },
       ],
     };
+    console.log(asNameValues);
 
     return asNameValues;
   }
