@@ -18,6 +18,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
+  lectures: LectureModel[]
 }
 
 @inject(mobxHelper.injectFrom('lecture.lectureService', 'shared.reviewService'))
@@ -25,15 +26,29 @@ interface State {
 @observer
 class ChannelsLecturesContainer extends Component<Props, State> {
   //
+  state = {
+    lectures: [],
+  };
+
   componentDidMount() {
     //
-    const { lectureService, reviewService, channel } = this.props;
+    this.findLectures();
+  }
 
-    lectureService!.findPagingChannelLectures(channel.id, 0, 5)
-      .then(() => {
-        const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
-        if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-      });
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    const { channel } = this.props;
+    const { channel: prevChannel } = prevProps;
+
+    if (channel && channel.id !== prevChannel.id) this.findLectures();
+  }
+
+  async findLectures() {
+    //
+    const { lectureService, reviewService, channel } = this.props;
+    const { results: lectures } = await lectureService!.findPagingChannelLectures(channel.id, 5, 0);
+    this.setState(({ lectures }));
+    const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
   }
 
   onActionLecture() {
@@ -58,8 +73,8 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, lectureService, reviewService } = this.props;
-    const { lectures } =  lectureService as LectureService;
+    const { channel, reviewService } = this.props;
+    const { lectures } =  this.state;
     const { ratingMap } =  reviewService as ReviewService;
 
     return (
