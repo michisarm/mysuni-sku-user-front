@@ -4,14 +4,14 @@ import { decorate, observable } from 'mobx';
 
 class PageModel {
   //
-  offset: number;
+  nextOffset: number;
   limit: number;
   totalCount: number;
   totalPages: number;
   pageNo: number;
 
-  constructor(offset: number, limit: number) {
-    this.offset = offset;
+  constructor(nextOffset: number, limit: number) {
+    this.nextOffset = nextOffset;
     this.limit = limit;
     this.totalCount = 0;
     this.totalPages = 0;
@@ -20,7 +20,7 @@ class PageModel {
 }
 
 decorate(PageModel, {
-  offset: observable,
+  nextOffset: observable,
   limit: observable,
   totalCount: observable,
   totalPages: observable,

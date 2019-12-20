@@ -49,13 +49,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
   constructor(props: Props) {
     //
     super(props);
-    props.pageService!.initPageMap(this.PAGE_KEY);
-    props.pageService!.setPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    this.init();
   }
 
   componentDidMount() {
     //
-    this.init();
     this.findPagingCollegeLectures();
     this.findChannels();
   }
@@ -70,7 +68,10 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   init() {
     //
-    this.props.lectureService!.clear();
+    const { pageService, lectureService } = this.props;
+
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    lectureService!.clear();
   }
 
   async findPagingCollegeLectures() {
@@ -78,7 +79,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { match, pageService, lectureService, reviewService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
+    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.nextOffset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 

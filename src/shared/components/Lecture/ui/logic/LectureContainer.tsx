@@ -76,10 +76,16 @@ class LectureContainer extends Component<Props, States> {
   };
 
 
-  handleHover() {
-    this.setState(prevState => ({
-      hovered: !prevState.hovered,
-    }));
+  onHoverIn() {
+    this.setState({
+      hovered: true,
+    });
+  }
+
+  onHoverOut() {
+    this.setState({
+      hovered: false,
+    });
   }
 
   getAction() {
@@ -129,7 +135,8 @@ class LectureContainer extends Component<Props, States> {
         action={this.getAction()}
         onAction={onAction}
         onViewDetail={this.onViewDetail}
-        onHover={this.handleHover}
+        onHoverIn={this.onHoverIn}
+        onHoverOut={this.onHoverOut}
       />
     );
   }
@@ -170,7 +177,7 @@ class LectureContainer extends Component<Props, States> {
             action={this.getAction()}
             onAction={onAction}
             onViewDetail={this.onViewDetail}
-            onHover={this.handleHover}
+            onHover={this.onHoverIn}
           />
         </Lecture.Group>
       </li>

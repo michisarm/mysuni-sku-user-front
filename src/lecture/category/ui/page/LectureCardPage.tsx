@@ -272,7 +272,7 @@ class LectureCardPage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../${college.collegeId}` },
+          { text: `${college.name} College`, path: `../../${college.collegeId}/channels` },
           { text: `${college.name} Lecture` },
         ]}
       >

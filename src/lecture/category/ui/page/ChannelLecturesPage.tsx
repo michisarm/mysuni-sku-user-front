@@ -44,7 +44,6 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { collegeService } = this.props;
     const { college, channel } = collegeService;
-    console.log('channel', channel);
 
     return (
       <ContentLayout

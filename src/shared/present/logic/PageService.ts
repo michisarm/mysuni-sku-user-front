@@ -15,7 +15,8 @@ class PageService {
 
 
   @action
-  initPageMap(key: string) {
+  clearPageMap(key: string | string[]) {
+    //
     if (Array.isArray(key)) {
       key.map(mapKey => this.pageMap.delete(mapKey));
     } else {
@@ -24,8 +25,8 @@ class PageService {
   }
 
   @action
-  setPageMap(key: string, offset: number, limit: number) {
-
+  initPageMap(key: string, offset: number, limit: number) {
+    //
     this.pageMap.set(key, new PageModel(offset, limit));
   }
 
@@ -51,7 +52,7 @@ class PageService {
     if (!pageSet) {
       return;
     }
-    pageSet.offset = (pageNo - 1) * pageSet.limit;
+    pageSet.nextOffset = (pageNo - 1) * pageSet.limit;
     pageSet.pageNo = pageNo;
 
     this.pageMap.set(key, pageSet);
@@ -67,7 +68,8 @@ class PageService {
     }
     pageSet.totalCount = totalCount;
     pageSet.totalPages = Math.ceil(totalCount / pageSet.limit);
-    pageSet.offset = (pageNo - 1) * pageSet.limit;
+    // pageSet.offset = (pageNo - 1) * pageSet.limit;
+    pageSet.nextOffset = pageNo * pageSet.limit;
     pageSet.pageNo = pageNo;
 
     this.pageMap.set(key, pageSet);

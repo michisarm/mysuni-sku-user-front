@@ -18,7 +18,8 @@ interface Props {
   rating?: number,
   thumbnailImage?: string,
   action?: Action,
-  onHover?: () => void,
+  onHoverIn?: () => void,
+  onHoverOut?: () => void,
   onAction?: () => void,
   onViewDetail?: (e: any) => void,
 }
@@ -67,7 +68,7 @@ class BoxCardView extends Component<Props, States> {
     //
     const {
       lecture, hovered, thumbnailImage, action,
-      onHover, onAction, onViewDetail,
+      onHoverIn, onHoverOut, onAction, onViewDetail,
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture!.learningTime);
     const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
@@ -78,8 +79,8 @@ class BoxCardView extends Component<Props, States> {
           'card-h': true,
           on: hovered,
         })}
-        onMouseEnter={onHover}
-        onMouseLeave={onHover}
+        onMouseEnter={onHoverIn}
+        onMouseLeave={onHoverOut}
       >
         {/* Todo: stampReady */}
         <Ribbon stampReady={false} required={lecture!.required} />
