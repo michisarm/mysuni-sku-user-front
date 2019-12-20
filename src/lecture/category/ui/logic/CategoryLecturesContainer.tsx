@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { ReviewService } from '@nara.drama/feedback';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -16,6 +17,7 @@ import LecturesWrapperView from '../view/LecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
+
 interface Props extends RouteComponentProps<{ collegeId: string }> {
   pageService?: PageService,
   collegeService?: CollegeService,
@@ -23,13 +25,14 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
   lectureCountService?: LectureCountService,
+  reviewService?: ReviewService,
 }
 
 interface State {
   sorting: string,
 }
 
-@inject(mobxHelper.injectFrom('shared.pageService', 'collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService', 'lecture.lectureCountService'))
+@inject(mobxHelper.injectFrom('shared.pageService', 'collegeService', 'personalCube.personalCubeService', 'lecture.lectureService', 'lecture.lectureCardService', 'lecture.lectureCountService', 'shared.reviewService'))
 @reactAutobind
 @observer
 class CategoryLecturesContainer extends Component<Props, State> {
@@ -57,10 +60,13 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   async findAndAddLectures() {
     //
-    const { match, pageService, lectureService } = this.props;
+    const { match, pageService, lectureService, reviewService } = this.props;
     const { pageMap } = pageService!;
     const page = pageMap.get(this.PAGE_KEY);
+
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
@@ -111,17 +117,18 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.findAndAddLectures();
+    this.findLectures();
   }
 
   render() {
     //
-    const { pageService, collegeService, lectureService, lectureCountService } = this.props;
+    const { pageService, collegeService, lectureService, lectureCountService, reviewService } = this.props;
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { lectures } = lectureService!;
     const { channels } = lectureCountService!;
+    const { ratingMap } = reviewService!;
 
     return (
       <CategoryLecturesContentWrapperView>
@@ -146,16 +153,20 @@ class CategoryLecturesContainer extends Component<Props, State> {
           {lectures && lectures.length > 0 ?
             <>
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel, index: number) => (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    lecture={lecture}
-                    // thumbnailImage="http://placehold.it/60x60"
-                    action={Lecture.ActionType.Add}
-                    onAction={this.onActionLecture}
-                    onViewDetail={this.onViewDetail}
-                  />
-                ))}
+                {lectures.map((lecture: LectureModel, index: number) => {
+                  const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
+                  return (
+                    <Lecture
+                      key={`lecture-${index}`}
+                      lecture={lecture}
+                      rating={rating}
+                      // thumbnailImage="http://placehold.it/60x60"
+                      action={Lecture.ActionType.Add}
+                      onAction={this.onActionLecture}
+                      onViewDetail={this.onViewDetail}
+                    />
+                  );
+                })}
               </Lecture.Group>
               { this.isContentMore() && (
                 <SeeMoreButton

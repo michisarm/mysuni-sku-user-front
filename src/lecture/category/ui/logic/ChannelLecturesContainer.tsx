@@ -18,13 +18,14 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
   personalCubeService?: PersonalCubeService,
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
+  reviewService?: ReviewService,
 }
 
 interface State {
   sorting: string,
 }
 
-@inject(mobxHelper.injectFrom('lecture.lectureService', 'lecture.lectureCardService'))
+@inject(mobxHelper.injectFrom('lecture.lectureService', 'lecture.lectureCardService', 'shared.reviewService'))
 @reactAutobind
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
@@ -38,9 +39,13 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    const { match, lectureService } = this.props;
+    const { match, lectureService, reviewService } = this.props;
 
-    lectureService!.findPagingChannelLectures(match.params.channelId, this.lectureLimit, 0);
+    lectureService!.findPagingChannelLectures(match.params.channelId, this.lectureLimit, 0)
+      .then(() => {
+        const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+        if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+      });
   }
 
   onChangeSorting(e: any, data: any) {
@@ -71,10 +76,12 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { lectureService } = this.props;
+    const { lectureService, reviewService } = this.props;
     const { sorting } = this.state;
     const { lectures } = lectureService!;
+    const { ratingMap } = reviewService!;
 
+    console.log('rating', ratingMap);
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={lectures.length}
@@ -88,16 +95,20 @@ class ChannelLecturesContainer extends Component<Props, State> {
           <div className="section">
 
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel) => (
-                <Lecture
-                  key={lecture.id}
-                  lecture={lecture}
-                  // thumbnailImage="http://placehold.it/60x60"
-                  action={Lecture.ActionType.Add}
-                  onAction={this.onActionLecture}
-                  onViewDetail={this.onGoToLecture}
-                />
-              ))}
+              {lectures.map((lecture: LectureModel) => {
+                const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
+                return (
+                  <Lecture
+                    key={lecture.id}
+                    lecture={lecture}
+                    rating={rating}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    action={Lecture.ActionType.Add}
+                    onAction={this.onActionLecture}
+                    onViewDetail={this.onGoToLecture}
+                  />
+                );
+              })}
             </Lecture.Group>
 
             <SeeMoreButton
