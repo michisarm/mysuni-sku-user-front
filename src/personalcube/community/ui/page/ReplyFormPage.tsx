@@ -5,20 +5,20 @@ import { ReplyForm } from '@sku/personalcube';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout } from 'shared';
 
-interface Props extends RouteComponentProps<{ cubeId: string, postId: string, replyId: string }>{
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string,  postId: string, replyId: string }>{
 }
 
 @reactAutobind
 class ReplyFormPage extends React.Component<Props> {
   //
   routeTo() {
-    const { cubeId, postId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
+    const { collegeId, lectureCardId, postId } = this.props.match.params;
+    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
   }
 
   routeToList() {
-    const { cubeId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts`);
+    const { collegeId, lectureCardId,  } = this.props.match.params;
+    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}`);
   }
 
   render() {

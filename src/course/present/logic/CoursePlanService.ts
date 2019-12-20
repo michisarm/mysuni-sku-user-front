@@ -26,7 +26,7 @@ export default class CoursePlanService {
   coursePlan: CoursePlanModel = new CoursePlanModel();
 
   @observable
-  coursePlans: OffsetElementList<CoursePlanModel> = {results: [], totalCount: 0};
+  coursePlans: OffsetElementList<CoursePlanModel> = { results: [], totalCount: 0 };
 
   @observable
   coursePlanContents: CoursePlanContentsModel = new CoursePlanContentsModel();

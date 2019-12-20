@@ -6,7 +6,7 @@ import { ClassroomService } from './classroom';
 import { MediaService } from './media';
 import { OfficeWebService } from './officeweb';
 
-export { PostListPage, PostFormPage, PostDetailPage, MyPostListPage, ReplyFormPage, ReplyDetailPage } from './community';
+export { PostFormPage, PostDetailPage, ReplyFormPage, ReplyDetailPage } from './community';
 
 export const personalCubeStores = {
   personalCube: {

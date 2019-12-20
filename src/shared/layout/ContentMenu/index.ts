@@ -1,2 +1,2 @@
 
-export { default } from './ui/logic/ContentMenuContainer';
+export { default, Type } from './ui/logic/ContentMenuContainer';

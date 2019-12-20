@@ -38,7 +38,10 @@ export default class LearningCardService {
   async findLearningCard(learningCardId: string) {
     //
     const learningCard = await this.learningCardApi.findLearningCard(learningCardId);
-    return runInAction(() => this.learningCard = learningCard);
+    return runInAction(() => {
+      this.learningCard = new LearningCardModel(learningCard);
+      return learningCard;
+    });
   }
 
   @action

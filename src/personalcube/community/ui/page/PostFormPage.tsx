@@ -6,32 +6,42 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { PersonalCubeService } from 'personalcube/personalcube';
+import { LectureCardService } from 'lecture';
+import { LearningCardService } from 'course';
 
-interface Props extends RouteComponentProps<{ cubeId: string, postId: string }>{
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, postId: string }>{
   boardService?: BoardService
   personalCubeService?: PersonalCubeService
+  lectureCardService: LectureCardService
+  learningCardService: LearningCardService
 }
 
-@inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'personalCube.boardService'))
+@inject(mobxHelper.injectFrom(
+  'personalCube.personalCubeService',
+  'personalCube.boardService',
+  'lecture.lectureCardService',
+  'course.learningCardService'
+))
 @observer
 @reactAutobind
 class PostFormPage extends React.Component<Props> {
   //
   componentDidMount(): void {
-    const { personalCubeService, boardService } = this.props;
-    const { cubeId } = this.props.match.params;
+    this.init();
+  }
 
-    if (personalCubeService && boardService && cubeId) {
-      personalCubeService.findPersonalCube(cubeId)
-        .then(() => {
-          boardService.findBoard(personalCubeService.personalCube.contents.contents.id);
-        });
-    }
+  async init() {
+    const { personalCubeService, boardService, lectureCardService, learningCardService } = this.props;
+    const { lectureCardId } = this.props.match.params;
+    const lectureCard = await lectureCardService!.findLectureCard(lectureCardId);
+    const learningCard = await learningCardService!.findLearningCard(lectureCard!.learningCard.id);
+    const personalCube = await personalCubeService!.findPersonalCube(learningCard.personalCube.id);
+    boardService!.findBoard(personalCube!.contents.contents.id);
   }
 
   routeTo() {
-    const { cubeId, postId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
+    const { collegeId, lectureCardId, postId } = this.props.match.params;
+    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `/posts/${postId}` : ''}`);
   }
 
   render() {
