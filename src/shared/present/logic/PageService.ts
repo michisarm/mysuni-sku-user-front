@@ -72,7 +72,6 @@ class PageService {
     pageSet.nextOffset = pageNo * pageSet.limit;
     pageSet.pageNo = pageNo;
 
-    console.log('setPage', pageSet);
     this.pageMap.set(key, pageSet);
   }
 }

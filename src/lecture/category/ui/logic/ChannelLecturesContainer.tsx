@@ -85,7 +85,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    console.log('is more', page!.pageNo, page!.totalPages);
+
     return page!.pageNo < page!.totalPages;
   }
 
@@ -105,7 +105,6 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    console.log('serviceType', lecture.serviceType);
     if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`../lecture-card/${lecture.serviceId}`);
     }
