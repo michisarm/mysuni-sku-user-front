@@ -1,24 +1,22 @@
-import React, { Component, createRef } from 'react';
-import {
-  Icon, Button,
-  Label, Card,
-} from 'semantic-ui-react';
+
+import React from 'react';
+import { reactAutobind } from '@nara.platform/accent';
+import { Icon, Button, Label, Card } from 'semantic-ui-react';
+
 
 interface Props {
-
 }
 
 interface States {
   isHovered: boolean
 }
 
+@reactAutobind
 class CardValueDocuments extends React.Component<Props, States> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isHovered: false,
-    };
-  }
+
+  state = {
+    isHovered: false,
+  };
 
   handleHover() {
     this.setState(prevState => ({

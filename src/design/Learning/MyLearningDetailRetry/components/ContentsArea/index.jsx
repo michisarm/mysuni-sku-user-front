@@ -1,16 +1,18 @@
-import React, {Component, createRef} from 'react'
-import {
-    Segment,
-    Sticky, Menu,
-} from 'semantic-ui-react'
-import {Link} from 'react-router-dom'
-import TopGuideTitle from "../TopGuideTitle";
-import CardListGroup from "../CardListGroup";
-import ContentsMoreView from "../ContentsMoreView";
+
+import React, {Component, createRef} from 'react';
+import { Segment, Sticky, Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import TopGuideTitle from '../TopGuideTitle';
+import CardListGroup from '../CardListGroup';
+import ContentsMoreView from '../ContentsMoreView';
 
 class ContentsArea extends Component {
-    contextRef = createRef()
-    state = {activeItem: 'Retry'}
+
+    contextRef = createRef();
+
+    state = {
+      activeItem: 'Retry',
+    };
 
     handleItemClick = (e, {name}) => this.setState({activeItem: name})
 

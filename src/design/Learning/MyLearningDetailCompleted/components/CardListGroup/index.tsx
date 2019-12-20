@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import {
-  Card,
-} from 'semantic-ui-react';
+
+import React from 'react';
+import { Card } from 'semantic-ui-react';
 import CardValueLearningStart from '../CardValueElearning';
 import CardValueCourse from '../CardValueCourse';
 import CardValueVideo from '../CardValueVideo';

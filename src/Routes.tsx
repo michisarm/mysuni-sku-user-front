@@ -3,6 +3,8 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { UserApp, withSplitting } from 'shared';
 
+import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
+
 
 class Routes extends React.PureComponent {
   //
@@ -66,6 +68,10 @@ class Routes extends React.PureComponent {
 
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
+
+
+            {/* design  */}
+            <Route exact path="/design/learning/my-learning" component={MyLearningDetailDesign} />
           </Switch>
         </UserApp>
       </BrowserRouter>

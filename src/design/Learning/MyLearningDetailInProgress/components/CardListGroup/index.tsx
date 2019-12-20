@@ -1,10 +1,8 @@
-import React, { Component, createRef } from 'react';
+import React from 'react';
 import {
   Card,
 } from 'semantic-ui-react';
 import CardValueRequired from '../CardValueRequired';
-import CardValueStamp from '../CardValueStamp';
-import CardValueDefault from '../CardValueDefault';
 import CardValueExperiential from '../CardValueExperiential';
 import CardValueDocuments from '../CardValueDocuments';
 import CardValueAudio from '../CardValueAudio';

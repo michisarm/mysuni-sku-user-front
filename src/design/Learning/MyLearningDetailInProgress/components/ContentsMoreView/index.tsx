@@ -1,13 +1,12 @@
-import React, { Component, createRef } from 'react';
-import {
-  Icon, Button,
-} from 'semantic-ui-react';
+import React from 'react';
+import { reactAutobind } from '@nara.platform/accent';
+import { Icon, Button } from 'semantic-ui-react';
 
 
 interface Props{
-
 }
 
+@reactAutobind
 class ContentsMoreView extends React.Component<Props> {
   render() {
     return (

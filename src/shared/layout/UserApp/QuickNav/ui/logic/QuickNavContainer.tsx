@@ -69,6 +69,11 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
+  onClickInstructor() {
+    this.props.history.push('/expert/instructor');
+    this.onClickToggle();
+  }
+
 
   render() {
     //
@@ -92,6 +97,7 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="building" text="SK University Introduction" onClick={this.onClickIntroduction} />
               <BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickSiteMap} />
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
+              <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />
               {/*{ this.userRoles.includes('Admin') && (
                 <BottomMenuItemView iconName="admin" text="SK University Admin Site" onClick={this.onClickAdminSite} />
               )}*/}
