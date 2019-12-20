@@ -23,17 +23,18 @@ export const Basic = () => {
     {
       name: 'Menu has count',
       count: 5,
-      path: '',
+      type: ContentMenu.Type.Overview,
     },
     {
       name: 'Menu has not count',
-      path: '',
+      type: ContentMenu.Type.Comments,
     },
   ];
   return (
     <ContentMenu
       menus={menus}
-      activeIndex={number('activeIndex', 0, { range: true, min: 0, max: 1 })}
+      type={ContentMenu.Type.Overview}
+      onSelectMenu={(type) => console.log(type)}
     />
   );
 };

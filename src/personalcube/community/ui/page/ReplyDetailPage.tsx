@@ -5,15 +5,15 @@ import { ReplyDetail } from '@sku/personalcube';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout } from 'shared';
 
-interface Props extends RouteComponentProps<{ cubeId: string, postId: string, replyId: string }>{
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, postId: string, replyId: string }>{
 }
 
 @reactAutobind
 class ReplyDetailPage extends React.Component<Props> {
   //
   routeTo(url: string) {
-    const { cubeId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/community/${cubeId}/${url}`);
+    const { collegeId, lectureCardId } = this.props.match.params;
+    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}/${url}`);
   }
 
   render() {
@@ -32,8 +32,8 @@ class ReplyDetailPage extends React.Component<Props> {
             <ReplyDetail
               replyId={replyId || ''}
               onEdit={() => this.routeTo(`posts/${postId}/reply/${replyId}/edit`)}
-              onRemove={() => this.routeTo('posts')}
-              routeToList={() => this.routeTo('posts')}
+              onRemove={() => this.routeTo('')}
+              routeToList={() => this.routeTo('')}
             />
           </div>
         </section>

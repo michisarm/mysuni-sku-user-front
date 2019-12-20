@@ -35,10 +35,10 @@ class LectureCardHeaderView extends Component<Props> {
           creationTime={personalCube.time}
         />
         <LectureContentHeader.RightCell>
-          {/*<LectureContentHeader.StarRatingItem*/}
-          {/*  value={3}*/}
-          {/*  max={5}*/}
-          {/*/>*/}
+          <LectureContentHeader.StarRatingItem
+            value={3}
+            max={5}
+          />
         </LectureContentHeader.RightCell>
       </LectureContentHeader>
     );

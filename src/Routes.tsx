@@ -17,15 +17,8 @@ class Routes extends React.PureComponent {
             {/* main */}
             <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
 
-            {/* personalcube  */}
-            <Route exact path="/community/:cubeId/posts" component={withSplitting(() => import('./personalcube').then(({ PostListPage }) => PostListPage))} />
-            <Route exact path="/community/:cubeId/posts/new" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
-            <Route exact path="/community/:cubeId/posts/:postId" component={withSplitting(() => import('./personalcube').then(({ PostDetailPage }) => PostDetailPage))} />
-            <Route exact path="/community/:cubeId/posts/:postId/edit" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
-            <Route exact path="/community/:cubeId/posts/:postId/reply/new" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
-            <Route exact path="/community/:cubeId/posts/:postId/reply/:replyId" component={withSplitting(() => import('./personalcube').then(({ ReplyDetailPage }) => ReplyDetailPage))} />
-            <Route exact path="/community/:cubeId/posts/:postId/reply/:replyId/edit" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
-            <Route exact path="/community/:cubeId/my-posts" component={withSplitting(() => import('./personalcube').then(({ MyPostListPage }) => MyPostListPage))} />
+
+
             {/* course  */}
 
             {/*create*/}
@@ -37,6 +30,14 @@ class Routes extends React.PureComponent {
             <Route exact path="/lecture/college/:collegeId/channels" component={withSplitting(() => import('./lecture').then(({ CategoryLecturesPage }) => CategoryLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId" component={withSplitting(() => import('./lecture').then(({ LectureCardPage }) => LectureCardPage))} />
+
+            {/* community  */}
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/new" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/:postId" component={withSplitting(() => import('./personalcube').then(({ PostDetailPage }) => PostDetailPage))} />
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/:postId/edit" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/:postId/reply/new" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId" component={withSplitting(() => import('./personalcube').then(({ ReplyDetailPage }) => ReplyDetailPage))} />
+            <Route exact path="/lecture/college/:collegeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
 
             {/*  expert */}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />

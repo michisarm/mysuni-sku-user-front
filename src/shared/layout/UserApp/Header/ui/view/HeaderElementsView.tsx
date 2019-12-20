@@ -34,7 +34,7 @@ export const MenuView: React.FC<MenuViewProps> = () => (
 export const SearchBarView: React.FC = () => (
   <div className="g-search">
     <div className="ui h38 search input">
-      <input type="text" placeholder="Search" />
+      <input type="text" placeholder="Search"  />
       <i aria-hidden="true" className="clear link icon" />
       <i aria-hidden="true" className="search link icon" />
     </div>
