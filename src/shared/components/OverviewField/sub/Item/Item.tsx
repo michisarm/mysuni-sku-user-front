@@ -7,6 +7,7 @@ import { List, Label, Icon } from 'semantic-ui-react';
 
 interface Props {
   title: React.ReactNode,
+  className?: string
   content?: React.ReactNode,
   contentHtml?: string,
   titleIcon?: string,
@@ -21,7 +22,7 @@ class Item extends Component<Props> {
 
   render() {
     //
-    const { title, titleIcon, content, contentHtml } = this.props;
+    const { title, className, titleIcon, content, contentHtml } = this.props;
 
     return (
       <List.Item>
@@ -37,9 +38,9 @@ class Item extends Component<Props> {
           }
         </div>
         { contentHtml ?
-          <div className="detail" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+          <div className={className ? `${className} detail` : 'detail'} dangerouslySetInnerHTML={{ __html: contentHtml }} />
           :
-          <div className="detail">{content}</div>
+          <div className={className ? `${className} detail` : 'detail'}>{content}</div>
         }
       </List.Item>
     );

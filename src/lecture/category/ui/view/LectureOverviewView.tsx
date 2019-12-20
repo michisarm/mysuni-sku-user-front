@@ -158,6 +158,7 @@ class LectureOverviewView extends Component<Props, State> {
           />
           <OverviewField.Item
             title="Other Guides"
+            className="quill-des"
             contentHtml={viewObject.guide}
           />
         </OverviewField.List>

@@ -21,6 +21,7 @@ class UserMainPage extends Component {
           <MainCarouselContainer />
           <SearchBarContainer />
           <MyLearningAreaContainer />
+          {/*<RecommendContainer />*/}
         </div>
       </ContentLayout>
     );

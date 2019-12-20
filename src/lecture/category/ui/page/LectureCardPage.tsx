@@ -16,6 +16,7 @@ import { LearningCardService } from 'course';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
+import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 
 
 
@@ -211,6 +212,7 @@ class LectureCardPage extends Component<Props, State> {
     //
     const { type } = this.state;
     const { personalCube } = this.props.personalCubeService;
+    const { lectureCard } = this.props.lectureCardService;
     const { collegeId, lectureCardId } = this.props.match.params;
     switch (type) {
       case Type.Overview:
@@ -222,7 +224,12 @@ class LectureCardPage extends Component<Props, State> {
           />
         );
       case Type.Comments:
-        return null;
+        return (
+          <LectureCommentsContainer
+            reviewFeedbackId={lectureCard.reviewFeedbackId}
+            commentFeedbackId={lectureCard.commentFeedbackId}
+          />
+        );
       case Type.Posts:
         return (
           <PostList

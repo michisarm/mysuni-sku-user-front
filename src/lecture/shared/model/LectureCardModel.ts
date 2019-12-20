@@ -11,6 +11,9 @@ class LectureCardModel extends DramaEntityObservableModel {
   learningCard: IdName = new IdName();
   roleBooks: RoleBookModel[] = [];
 
+  reviewFeedbackId: string = '';
+  commentFeedbackId: string = '';
+
 
   constructor(lectureCard?: LectureCardModel) {
     //
@@ -25,6 +28,8 @@ decorate(LectureCardModel, {
   lectureCardId: observable,
   learningCard: observable,
   roleBooks: observable,
+  reviewFeedbackId: observable,
+  commentFeedbackId: observable,
 });
 
 export default LectureCardModel;
