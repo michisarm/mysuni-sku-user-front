@@ -58,6 +58,16 @@ class CategoryLecturesContainer extends Component<Props, State> {
     this.findChannels();
   }
 
+  // componentDidUpdate(prevProps: Props) {
+  //   //
+  //   console.log('did', prevProps.collegeService!.channels, this.props.collegeService!.channels);
+  //   if (prevProps.collegeService!.channels.length !== this.props.collegeService!.channels.length) {
+  //     // this.findCollegeAndChannels();
+  //     console.log('did update');
+  //     this.findChannels();
+  //   }
+  // }
+
   async findPagingCollegeLectures() {
     //
     const { match, pageService, lectureService, reviewService } = this.props;
@@ -73,9 +83,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   findChannels() {
     //
-    const { match, lectureCountService } = this.props;
-
-    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId);
+    const { match, collegeService, lectureCountService } = this.props;
+    console.log('channels', collegeService!.channels);
+    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, collegeService!.channels);
   }
 
   isContentMore() {
@@ -129,6 +139,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { lectures } = lectureService!;
     const { channels } = lectureCountService!;
     const { ratingMap } = reviewService!;
+    console.log('render.channels', channels);
 
     return (
       <CategoryLecturesContentWrapperView>

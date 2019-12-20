@@ -27,19 +27,18 @@ class LectureCountService {
   }
 
   @action
-  async findLectureCountByCollegeId(collegeId: string) {
+  async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
     //
-    const lectureCountList = await this.lectureApi.findLectureCountByCollegeId(collegeId);
-    const channels = lectureCountList
+    const lectureCountList = await this.lectureApi.findLectureCountByChannels(collegeId, channels);
+    const filteredChannels = lectureCountList
       .filter((lectureCount) => lectureCount.lectureCount > 0)
       .map((lectureCount) => new ChannelModel({
-        id: lectureCount.channel.id,
-        name: lectureCount.channel.name,
-        channelId: lectureCount.channel.id,
+        id: lectureCount.channelId,
+        name: channels.find((channel) => channel.id === lectureCount.channelId)!.name,
+        channelId: lectureCount.channelId,
         checked: true,
       }));
-
-    runInAction(() => this._channels = channels);
+    runInAction(() => this._channels = filteredChannels);
     return channels;
   }
 

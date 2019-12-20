@@ -4,17 +4,19 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout } from 'shared';
+import { mobxHelper, ContentLayout } from 'shared';
 import { CollegeService } from 'college';
+import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
 import CategoryLecturesContainer from '../logic/CategoryLecturesContainer';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {
   collegeService: CollegeService,
+  lectureCountService: LectureCountService,
 }
 
-@inject('collegeService')
+@inject(mobxHelper.injectFrom('collegeService', 'lecture.lectureCountService'))
 @reactAutobind
 @observer
 class CategoryLecturesPage extends Component<Props> {
@@ -33,17 +35,19 @@ class CategoryLecturesPage extends Component<Props> {
 
   findCollegeAndChannels() {
     //
-    const { match, collegeService } = this.props;
+    const { match, collegeService, lectureCountService } = this.props;
 
     collegeService.findCollege(match.params.collegeId)
       .then((college) => {
         //
-        // if (!college) {
-        //   return;
-        // }
-        // const channels = college.channels;
+        if (!college) {
+          return;
+        }
+        const channels = college.channels;
 
-        // channels.map((channel) => channel.checked = true);
+        channels.map((channel) => channel.checked = true);
+        console.log('set channels', college, channels);
+        lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, channels);
         // collegeService.setChannels(college.channels);
       });
   }

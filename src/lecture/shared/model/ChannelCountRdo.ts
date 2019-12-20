@@ -1,11 +1,10 @@
 
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
 
 
 class ChannelCountRdo {
   //
-  channel: IdName = new IdName();
+  channelId: string = '';
   lectureCount: number = 0;
 
   constructor(channelCountRdo?: ChannelCountRdo) {
@@ -17,7 +16,7 @@ class ChannelCountRdo {
 }
 
 decorate(ChannelCountRdo, {
-  channel: observable,
+  channelId: observable,
   lectureCount: observable,
 });
 
