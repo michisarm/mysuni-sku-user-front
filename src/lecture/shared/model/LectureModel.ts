@@ -19,11 +19,12 @@ class LectureModel extends DramaEntityObservableModel {
   learningTime: number = 0;
   roleBooks: RoleBookModel[] = [];
   reviewFeedbackId: string = '';
+  description: string = '';
+  stampCount: number = 0;
   time: number = 0;
 
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
-  description: string = '';
 
 
   constructor(lecture?: LectureModel) {
@@ -37,8 +38,6 @@ class LectureModel extends DramaEntityObservableModel {
       const cineroom = tenantInfo.getCineroom() as any;
       this.required = cineroom && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
       this.cubeTypeName = CubeTypeNameType[CubeType[lecture.cubeType]];
-      // Todo: description
-      this.description = 'Description';
     }
   }
 
