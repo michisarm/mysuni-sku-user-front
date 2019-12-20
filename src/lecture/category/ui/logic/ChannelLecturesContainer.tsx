@@ -96,11 +96,11 @@ class ChannelLecturesContainer extends Component<Props, State> {
           <div className="section">
 
             <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel) => {
+              {lectures.map((lecture: LectureModel, index: number) => {
                 const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
                 return (
                   <Lecture
-                    key={lecture.id}
+                    key={`lecture-${index}`}
                     lecture={lecture}
                     rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"

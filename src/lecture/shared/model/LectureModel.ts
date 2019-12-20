@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
 import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
-import { CubeType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import RoleBookModel from './RoleBookModel';
 import LectureServiceType from './LectureServiceType';
@@ -22,6 +22,7 @@ class LectureModel extends DramaEntityObservableModel {
   time: number = 0;
 
   required: boolean = false;
+  cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
   description: string = '';
 
 
@@ -33,10 +34,14 @@ class LectureModel extends DramaEntityObservableModel {
       Object.assign(this, { ...lecture });
 
       this.serviceType = LectureModel.getServiceType(lecture.serviceType);
-      // Todo: required, description
       const cineroom = tenantInfo.getCineroom() as any;
       this.required = cineroom && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
+      // this.cubeTypeName =
+      // Todo: description
+      this.cubeTypeName = CubeTypeNameType[CubeType[lecture.cubeType]];
+      // console.log('cubeType', );
       this.description = 'Description';
+      console.log('this', this);
     }
   }
 

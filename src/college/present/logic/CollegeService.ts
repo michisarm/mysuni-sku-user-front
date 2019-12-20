@@ -67,7 +67,6 @@ export default class CollegeService {
     if (college) {
       return runInAction(() => {
         this.college = new CollegeModel(college);
-        // this._channels = this.college.channels;
         return this.college;
       });
     }

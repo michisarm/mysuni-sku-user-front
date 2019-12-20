@@ -73,9 +73,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   findChannels() {
     //
-    const { match, lectureCountService } = this.props;
+    const { match, collegeService, lectureCountService } = this.props;
 
-    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId);
+    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, collegeService!.channels);
   }
 
   isContentMore() {

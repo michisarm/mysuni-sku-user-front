@@ -1,25 +1,31 @@
-import React, { Component, createRef } from 'react';
-import {
-  Segment,
-  Sticky, Icon, Button, Menu,
-} from 'semantic-ui-react';
+
+import React, { createRef } from 'react';
+import { reactAutobind } from '@nara.platform/accent';
 import { Link } from 'react-router-dom';
+
+import { Segment, Sticky, Menu } from 'semantic-ui-react';
 import ContentsMoreView from '../ContentsMoreView';
 import CardListGroup from '../CardListGroup';
 import TopGuideTitle from '../TopGuideTitle';
 
-interface States{
-activeItem : string
+
+interface Props {
 }
 
-interface Props{
-
+interface States {
+  activeItem : string
 }
 
+@reactAutobind
 class ContentsArea extends React.Component<Props, States> {
+
     contextRef : any = createRef();
 
-    handleItemClick(e:any, { name }:any) {
+    state = {
+      activeItem: '',
+    };
+
+    handleItemClick(e: any, { name }: any) {
       this.setState({ activeItem: name });
     }
 

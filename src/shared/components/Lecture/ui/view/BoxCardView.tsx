@@ -90,7 +90,7 @@ class BoxCardView extends Component<Props, States> {
           <Title title={lecture.name} category={lecture.category} />
 
           <Fields>
-            { lecture.cubeType && <Field icon="video2" text={lecture.cubeType} bold />}
+            { lecture.cubeTypeName && <Field icon="video2" text={lecture.cubeTypeName} bold />}
             { hourAndMinute && <Field icon="time2" text={hourAndMinute} bold />}
             {/* Todo: 이수 */}
             {/*<Field icon="complete" text={`이수 ${numeral(lecture!.countOfComplete).format('0,0')}명`} />*/}

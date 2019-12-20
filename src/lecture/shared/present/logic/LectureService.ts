@@ -35,6 +35,8 @@ class LectureService {
     const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
     return runInAction(() => {
       this._lectures = this._lectures.concat(lectureOffsetElementList.results);
       return lectureOffsetElementList;
