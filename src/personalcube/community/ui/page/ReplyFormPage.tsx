@@ -17,7 +17,7 @@ class ReplyFormPage extends React.Component<Props> {
   }
 
   routeToList() {
-    const { collegeId, lectureCardId,  } = this.props.match.params;
+    const { collegeId, lectureCardId } = this.props.match.params;
     this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}`);
   }
 
