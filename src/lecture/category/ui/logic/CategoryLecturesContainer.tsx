@@ -45,6 +45,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     sorting: 'latest',
   };
 
+
   constructor(props: Props) {
     //
     super(props);
@@ -54,15 +55,28 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
+    this.init();
     this.findPagingCollegeLectures();
     this.findChannels();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId) {
+      this.init();
+      this.findPagingCollegeLectures();
+    }
+  }
+
+  init() {
+    //
+    this.props.lectureService!.clear();
   }
 
   async findPagingCollegeLectures() {
     //
     const { match, pageService, lectureService, reviewService } = this.props;
-    const { pageMap } = pageService!;
-    const page = pageMap.get(this.PAGE_KEY);
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
@@ -168,6 +182,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                   );
                 })}
               </Lecture.Group>
+
               { this.isContentMore() && (
                 <SeeMoreButton
                   onClick={this.onClickSeeMore}

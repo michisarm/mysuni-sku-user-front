@@ -54,6 +54,12 @@ class LectureService {
       return lectureOffsetElementList;
     });
   }
+
+  @action
+  clear() {
+    //
+    return runInAction(() => this._lectures = []);
+  }
 }
 
 LectureService.instance = new LectureService(LectureApi.instance);

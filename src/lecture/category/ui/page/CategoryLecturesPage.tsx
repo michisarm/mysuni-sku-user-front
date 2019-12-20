@@ -46,7 +46,6 @@ class CategoryLecturesPage extends Component<Props> {
         const channels = college.channels;
 
         channels.map((channel) => channel.checked = true);
-        console.log('set channels', college, channels);
         lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, channels);
         // collegeService.setChannels(college.channels);
       });

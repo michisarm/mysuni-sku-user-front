@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, Lecture } from 'shared';
+import { mobxHelper, PageService, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
@@ -15,6 +15,7 @@ import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWra
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
+  pageService?: PageService,
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
   lectureService?: LectureService,
@@ -26,27 +27,65 @@ interface State {
   sorting: string,
 }
 
-@inject(mobxHelper.injectFrom('lecture.lectureService', 'lecture.lectureCardService', 'shared.reviewService'))
+@inject(mobxHelper.injectFrom('shared.pageService', 'lecture.lectureService', 'lecture.lectureCardService', 'shared.reviewService'))
 @reactAutobind
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
   //
-  lectureLimit = 20;
+  PAGE_KEY = 'lecture.channel';
+
+  PAGE_SIZE = 8;
 
   state = {
     sorting: 'latest',
   };
 
 
+  constructor(props: Props) {
+    //
+    super(props);
+    props.pageService!.initPageMap(this.PAGE_KEY);
+    props.pageService!.setPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+  }
+
+
   componentDidMount() {
     //
-    const { match, lectureService, reviewService } = this.props;
+    this.init();
+    this.findPagingChannelLectures();
+  }
 
-    lectureService!.findPagingChannelLectures(match.params.channelId, this.lectureLimit, 0)
-      .then(() => {
-        const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
-        if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-      });
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.match.params.channelId !== this.props.match.params.channelId) {
+      this.init();
+      this.findPagingChannelLectures();
+    }
+  }
+
+  init() {
+    //
+    this.props.lectureService!.clear();
+  }
+
+  async findPagingChannelLectures() {
+    //
+    const { match, pageService, lectureService, reviewService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.offset);
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    console.log('is more', page!.pageNo, page!.totalPages);
+    return page!.pageNo < page!.totalPages;
   }
 
   onChangeSorting(e: any, data: any) {
@@ -60,7 +99,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   }
 
-  onGoToLecture(e: any, data: any) {
+  onViewDetail(e: any, data: any) {
     //
     const { lecture } = data;
     const { history } = this.props;
@@ -72,20 +111,22 @@ class ChannelLecturesContainer extends Component<Props, State> {
   }
 
   onClickSeeMore() {
-    console.log('click see more');
+    //
+    this.findPagingChannelLectures();
   }
 
   render() {
     //
-    const { lectureService, reviewService } = this.props;
+    const { pageService, lectureService, reviewService } = this.props;
     const { sorting } = this.state;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
 
     console.log('rating', ratingMap);
     return (
       <ChannelLecturesContentWrapperView
-        lectureCount={lectures.length}
+        lectureCount={page!.totalCount}
       >
         <>
           <CardSorting
@@ -94,7 +135,6 @@ class ChannelLecturesContainer extends Component<Props, State> {
           />
 
           <div className="section">
-
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
                 const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
@@ -106,15 +146,17 @@ class ChannelLecturesContainer extends Component<Props, State> {
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}
                     onAction={this.onActionLecture}
-                    onViewDetail={this.onGoToLecture}
+                    onViewDetail={this.onViewDetail}
                   />
                 );
               })}
             </Lecture.Group>
 
-            <SeeMoreButton
-              onClick={this.onClickSeeMore}
-            />
+            { this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+              />
+            )}
           </div>
         </>
       </ChannelLecturesContentWrapperView>

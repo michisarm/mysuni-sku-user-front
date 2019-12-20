@@ -215,7 +215,7 @@ export default class CollegeService {
   }
 
   @action
-  async findChannel(collegeId: string, channelId: string) {
+  async findCollegeAndChannel(collegeId: string, channelId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
 
@@ -225,7 +225,7 @@ export default class CollegeService {
     return runInAction(() => {
       this.college = new CollegeModel(college);
       const channel = this.college.channels
-        .find((channel) => channel.channelId === channelId);
+        .find((channel) => channel.id === channelId);
 
       if (channel) {
         this.channel = new ChannelModel(channel);

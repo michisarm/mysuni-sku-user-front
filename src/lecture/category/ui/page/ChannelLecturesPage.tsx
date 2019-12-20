@@ -21,19 +21,22 @@ class ChannelLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { match, collegeService } = this.props;
-    const { params } = match;
-
-    collegeService.findChannel(params.collegeId, params.channelId);
+    this.findCollegeAndChannel();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
+    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId
+        || prevProps.match.params.channelId !== this.props.match.params.channelId) {
+      this.findCollegeAndChannel();
+    }
+  }
+
+  findCollegeAndChannel() {
+    //
     const { match, collegeService } = this.props;
 
-    if (prevProps.match.params.collegeId !== match.params.collegeId) {
-      collegeService.findCollege(match.params.collegeId);
-    }
+    collegeService.findCollegeAndChannel(match.params.collegeId, match.params.channelId);
   }
 
 
@@ -41,6 +44,7 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { collegeService } = this.props;
     const { college, channel } = collegeService;
+    console.log('channel', channel);
 
     return (
       <ContentLayout
