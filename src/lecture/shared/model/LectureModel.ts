@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
 import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
-import { CubeType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import RoleBookModel from './RoleBookModel';
 import LectureServiceType from './LectureServiceType';
@@ -22,6 +22,7 @@ class LectureModel extends DramaEntityObservableModel {
   time: number = 0;
 
   required: boolean = false;
+  cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
   description: string = '';
 
 
@@ -33,9 +34,11 @@ class LectureModel extends DramaEntityObservableModel {
       Object.assign(this, { ...lecture });
 
       this.serviceType = LectureModel.getServiceType(lecture.serviceType);
-      // Todo: required, description
       const cineroom = tenantInfo.getCineroom() as any;
       this.required = cineroom && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
+      // this.cubeTypeName =
+      // Todo: description
+      console.log('cubeType', LectureModel.getCubeTypeName(lecture.cubeType));
       this.description = 'Description';
     }
   }
@@ -47,6 +50,21 @@ class LectureModel extends DramaEntityObservableModel {
         return LectureServiceType.Card;
     }
     return LectureServiceType.Card;
+  }
+
+  static getCubeTypeName(cubeType: CubeType) {
+    //
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+        console.log(CubeTypeNameType[CubeType[cubeType]]);
+        break;
+      case CubeType.ELearning:
+        break;
+      case CubeType.Video:
+        break;
+      case CubeType.Audio:
+        break;
+    }
   }
 }
 
