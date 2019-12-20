@@ -1,7 +1,7 @@
 
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Image, Label } from 'semantic-ui-react';
-// import { CollegeColorType } from 'college';
 import { CategoryModel } from '../../present/model';
 
 
@@ -20,6 +20,39 @@ export const Title = ({ category, title, children }: TitleProps) => (
 );
 
 
+interface FieldProps {
+  icon: string,
+  text: string,
+  bold?: boolean,
+  subField?: SubFieldProps,
+}
+
+export const Field = ({ icon, text, bold, subField }: FieldProps) => (
+  <div className="li">
+    <Label className={`onlytext ${bold ? 'bold' : ''}`}>
+      <Icon className={icon} />
+      <span>{text}</span>
+    </Label>
+    {subField}
+  </div>
+);
+
+
+interface SubFieldProps {
+  icon: string,
+  text: string,
+  className?: string,
+  bold?: boolean,
+}
+
+export const SubField = ({ icon, text, className = '', bold = false }: SubFieldProps) => (
+  <Label className={classNames('onlytext', { bold }, className)}>
+    <Icon className={icon} />
+    <span>{text}</span>
+  </Label>
+);
+
+
 interface FieldsProps {
   children?: React.ReactNode,
 }
@@ -27,22 +60,6 @@ interface FieldsProps {
 export const Fields = ({ children }: FieldsProps) => (
   <div className="icon-area">
     {children}
-  </div>
-);
-
-
-interface FieldProps {
-  icon: string,
-  text: string,
-  bold?: boolean,
-}
-
-export const Field = ({ icon, text, bold }: FieldProps) => (
-  <div className="li">
-    <Label className={`onlytext ${bold ? 'bold' : ''}`}>
-      <Icon className={icon} />
-      <span>{text}</span>
-    </Label>
   </div>
 );
 

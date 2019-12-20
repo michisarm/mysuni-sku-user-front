@@ -105,9 +105,7 @@ class BoxCardView extends Component<Props, States> {
         <div className="hover-content">
           <Title title={lecture.name} category={lecture.category} />
 
-          <p className="text-area">
-            {lecture.description}
-          </p>
+          <p className="text-area" dangerouslySetInnerHTML={{ __html: lecture.description }} />
 
           <Buttons>
             { action && (

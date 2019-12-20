@@ -22,7 +22,8 @@ interface MenuViewProps {
 export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
-      <Link to="/expert/instructor" className="item active">Learning</Link>
+      {/* Todo: 임시 링크, 개발 완료되면 url 교체 */}
+      <Link to="/design/learning/my-learning" className="item active">Learning</Link>
       <Link to="/community" className="item">Community</Link>
       <Link to="/recommend" className="item">Recommend</Link>
       <Link to="/personalcube/create" className="item">Create</Link>
