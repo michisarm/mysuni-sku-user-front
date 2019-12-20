@@ -36,7 +36,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.category';
 
-  PAGE_SIZE = 20;
+  PAGE_SIZE = 8;
 
   state = {
     sorting: 'latest',
@@ -51,21 +51,18 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    this.findLectures();
+    this.findAndAddLectures();
     this.findChannels();
   }
 
-  async findLectures() {
+  async findAndAddLectures() {
     //
     const { match, pageService, lectureService } = this.props;
     const { pageMap } = pageService!;
     const page = pageMap.get(this.PAGE_KEY);
+    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
 
-    const lectureOffsetList = await lectureService!.findCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
-
-    console.log('offsetlist', lectureOffsetList);
-    pageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
-    pageService!.setPageNo(this.PAGE_KEY, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
   findChannels() {
@@ -80,7 +77,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    console.log('contentMore', page);
     return page!.pageNo < page!.totalPages;
   }
 
@@ -115,7 +111,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.findLectures();
+    this.findAndAddLectures();
   }
 
   render() {
@@ -150,9 +146,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
           {lectures && lectures.length > 0 ?
             <>
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel) => (
+                {lectures.map((lecture: LectureModel, index: number) => (
                   <Lecture
-                    key={lecture.id}
+                    key={`lecture-${index}`}
                     lecture={lecture}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}

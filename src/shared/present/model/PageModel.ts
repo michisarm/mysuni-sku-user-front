@@ -14,8 +14,8 @@ class PageModel {
     this.offset = offset;
     this.limit = limit;
     this.totalCount = 0;
-    this.totalPages = 1;
-    this.pageNo = 1;
+    this.totalPages = 0;
+    this.pageNo = 0;
   }
 }
 

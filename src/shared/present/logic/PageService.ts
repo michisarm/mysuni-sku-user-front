@@ -56,6 +56,22 @@ class PageService {
 
     this.pageMap.set(key, pageSet);
   }
+
+  @action
+  setTotalCountAndPageNo(key: string, totalCount: number, pageNo: number) {
+    //
+    const pageSet = { ...this.pageMap.get(key) } as PageModel;
+
+    if (!pageSet) {
+      return;
+    }
+    pageSet.totalCount = totalCount;
+    pageSet.totalPages = Math.ceil(totalCount / pageSet.limit);
+    pageSet.offset = (pageNo - 1) * pageSet.limit;
+    pageSet.pageNo = pageNo;
+
+    this.pageMap.set(key, pageSet);
+  }
 }
 
 PageService.instance = new PageService();

@@ -40,7 +40,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { match, lectureService } = this.props;
 
-    lectureService!.findChannelLectures(match.params.channelId, this.lectureLimit, 0);
+    lectureService!.findPagingChannelLectures(match.params.channelId, this.lectureLimit, 0);
   }
 
   onChangeSorting(e: any, data: any) {

@@ -27,7 +27,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
     //
     const { lectureService, channel } = this.props;
 
-    lectureService!.findChannelLectures(channel.id, 0, 5,);
+    lectureService!.findPagingChannelLectures(channel.id, 0, 5,);
   }
 
   onActionLecture() {
