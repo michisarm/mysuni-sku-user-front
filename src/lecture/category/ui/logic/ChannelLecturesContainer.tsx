@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';

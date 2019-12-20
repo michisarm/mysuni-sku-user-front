@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { ReviewService } from '@nara.drama/feedback';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, PageService, Lecture, NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
@@ -54,11 +54,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    this.findAndAddLectures();
+    this.findPagingCollegeLectures();
     this.findChannels();
   }
 
-  async findAndAddLectures() {
+  async findPagingCollegeLectures() {
     //
     const { match, pageService, lectureService, reviewService } = this.props;
     const { pageMap } = pageService!;
@@ -117,7 +117,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.findLectures();
+    this.findPagingCollegeLectures();
   }
 
   render() {
