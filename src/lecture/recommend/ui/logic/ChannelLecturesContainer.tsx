@@ -45,7 +45,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
   async findLectures() {
     //
     const { lectureService, reviewService, channel } = this.props;
-    const { results: lectures } = await lectureService!.findChannelLectures(channel.id, 5, 0);
+    const { results: lectures } = await lectureService!.findPagingChannelLectures(channel.id, 5, 0);
     this.setState(({ lectures }));
     const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);

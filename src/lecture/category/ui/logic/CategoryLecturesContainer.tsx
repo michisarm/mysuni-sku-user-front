@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { ReviewService } from '@nara.drama/feedback';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, PageService, Lecture, NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
@@ -39,7 +39,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.category';
 
-  PAGE_SIZE = 20;
+  PAGE_SIZE = 8;
 
   state = {
     sorting: 'latest',
@@ -54,23 +54,21 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    this.findLectures();
+    this.findPagingCollegeLectures();
     this.findChannels();
   }
 
-  async findLectures() {
+  async findPagingCollegeLectures() {
     //
     const { match, pageService, lectureService, reviewService } = this.props;
     const { pageMap } = pageService!;
     const page = pageMap.get(this.PAGE_KEY);
 
-    const lectureOffsetList = await lectureService!.findCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
+    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.offset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
-    console.log('offsetlist', lectureOffsetList);
-    pageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
-    pageService!.setPageNo(this.PAGE_KEY, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
   findChannels() {
@@ -85,7 +83,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    console.log('contentMore', page);
     return page!.pageNo < page!.totalPages;
   }
 
@@ -120,7 +117,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.findLectures();
+    this.findPagingCollegeLectures();
   }
 
   render() {
@@ -156,11 +153,11 @@ class CategoryLecturesContainer extends Component<Props, State> {
           {lectures && lectures.length > 0 ?
             <>
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel) => {
+                {lectures.map((lecture: LectureModel, index: number) => {
                   const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
                   return (
                     <Lecture
-                      key={lecture.id}
+                      key={`lecture-${index}`}
                       lecture={lecture}
                       rating={rating}
                       // thumbnailImage="http://placehold.it/60x60"

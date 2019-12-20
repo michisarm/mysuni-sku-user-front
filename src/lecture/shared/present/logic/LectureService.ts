@@ -30,25 +30,25 @@ class LectureService {
   // Lectures ----------------------------------------------------------------------------------------------------------
 
   @action
-  async findCollegeLectures(collegeId: string, limit: number, offset: number) {
+  async findPagingCollegeLectures(collegeId: string, limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     return runInAction(() => {
-      this._lectures = lectureOffsetElementList.results;
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
       return lectureOffsetElementList;
     });
   }
 
   @action
-  async findChannelLectures(channelId: string, limit: number, offset: number) {
+  async findPagingChannelLectures(channelId: string, limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     return runInAction(() => {
-      this._lectures = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
       return lectureOffsetElementList;
     });
   }

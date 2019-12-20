@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { ReviewService } from '@nara.drama/feedback';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, Lecture } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
@@ -42,7 +42,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { match, lectureService, reviewService } = this.props;
 
-    lectureService!.findChannelLectures(match.params.channelId, this.lectureLimit, 0)
+    lectureService!.findPagingChannelLectures(match.params.channelId, this.lectureLimit, 0)
       .then(() => {
         const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
         if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
