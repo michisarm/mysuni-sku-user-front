@@ -54,6 +54,7 @@ export class SkProfileModel implements DramaEntity {
         },
       ],
     };
+
     return asNameValues;
   }
 

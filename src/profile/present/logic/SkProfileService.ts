@@ -6,9 +6,6 @@ import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { StudySummary } from '../../model/StudySummary';
-import { EmployeeModel } from '../../model/EmployeeModel';
-import { MemberLocaleModel } from '../../model/MemberLocaleModel';
-import { PisAgreementModel } from '../../model/PisAgreementModel';
 
 @autobind
 export default class SkProfileService {
@@ -114,18 +111,6 @@ export default class SkProfileService {
   @action
   setSkProfileProp(name:string, value:any) {
     this.skProfile = _.set(this.skProfile, name, value);
-
-    if (value instanceof EmployeeModel) {
-      this.skProfile.member = _.set(this.skProfile.member, name, value);
-    }
-
-    if (value instanceof PisAgreementModel) {
-      this.skProfile.pisAgreement = _.set(this.skProfile.pisAgreement, name, value);
-    }
-
-    if (value instanceof MemberLocaleModel) {
-      this.skProfile.memberLocale = _.set(this.skProfile.memberLocale, name, value);
-    }
   }
 
   @action

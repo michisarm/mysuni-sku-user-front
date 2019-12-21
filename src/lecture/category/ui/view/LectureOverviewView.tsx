@@ -36,6 +36,7 @@ class LectureOverviewView extends Component<Props, State> {
   }
 
   getPeriodDate(datePeriod: DatePeriod) {
+    if (!datePeriod) return '';
     return `${datePeriod.startDate} ~ ${datePeriod.endDate}`;
   }
 
@@ -83,7 +84,9 @@ class LectureOverviewView extends Component<Props, State> {
         <OverviewField.Description
           description={viewObject.description}
         />
-
+        <OverviewField.FileDownload
+          fileBoxId={viewObject.fileBoxId}
+        />
         <OverviewField.List
           className={classNames('sub-category fn-parents', { open: categoryOpen })}
           header={(
@@ -103,7 +106,7 @@ class LectureOverviewView extends Component<Props, State> {
           </Button>
         </OverviewField.List>
 
-        { cubeType === CubeType.ClassRoomLecture && (
+        { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (
           <OverviewField.List icon className="period-area">
             <OverviewField.Item
               titleIcon="period"
@@ -127,7 +130,16 @@ class LectureOverviewView extends Component<Props, State> {
           </OverviewField.List>
         )}
 
-        <OverviewField.List icon>
+        <OverviewField.List
+          icon
+          header={ typeViewObject.classrooms ? (
+            <OverviewField.Table
+              titleIcon="series"
+              titleText="Class Series"
+              classrooms={typeViewObject.classrooms}
+            />
+          ) : null }
+        >
           <OverviewField.Item
             titleIcon="goal"
             title="Goal"

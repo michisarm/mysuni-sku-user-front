@@ -4,11 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { LectureSubInfo } from 'shared';
+import { CubeType } from 'personalcube/personalcube';
 import { CubeIntroModel } from 'personalcube/cubeintro';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 
 
 interface Props {
+  cubeType: CubeType
   viewObject: any
   typeViewObject: any
   children: React.ReactNode
@@ -48,6 +50,24 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('enrollment');
   }
 
+  onClickPlay() {
+    const { typeViewObject } = this.props;
+
+    if (typeViewObject.url) {
+      window.open(typeViewObject.url, '_blank');
+    }
+
+    console.log('play');
+  }
+
+  onLearningStart() {
+    console.log('learning start');
+  }
+
+  onDownload() {
+    console.log('download');
+  }
+
   onClickBookmark() {
     console.log('bookmark');
   }
@@ -60,6 +80,10 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('survey');
   }
 
+  onClickDownloadReport() {
+    console.log('report download');
+  }
+
   getOperator(cubeIntro: CubeIntroModel) {
     //
     return {
@@ -68,12 +92,30 @@ class LectureCardContainer extends Component<Props, State> {
     };
   }
 
+
+  getMainAction() {
+    const { cubeType } = this.props;
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+        return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
+      case CubeType.ELearning:
+        return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
+      case CubeType.Audio:
+      case CubeType.Video:
+        return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
+      case CubeType.WebPage:
+      case CubeType.Experiential:
+        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
+      case CubeType.Documents:
+        return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
+      default:
+        return undefined;
+    }
+  }
+
   render() {
     //
     const { viewObject, typeViewObject, children } = this.props;
-
-    console.log('Container.viewModel', viewObject);
-    console.log('Container.typeViewModel', typeViewObject);
 
     return (
       <LectureCardContentWrapperView>
@@ -91,10 +133,11 @@ class LectureCardContainer extends Component<Props, State> {
             company: viewObject.operatorCompany,
             email: viewObject.operatorEmail,
           }}
-          mainAction={{ type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment }}
+          mainAction={this.getMainAction()}
           onShare={this.onClickShare}
           onBookmark={this.onClickBookmark}
-          onSurvey={this.onClickSurvey}
+          onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
+          onDownloadReport={typeViewObject.reportFileBoxId ? this.onClickDownloadReport : undefined}
         />
 
         {children}

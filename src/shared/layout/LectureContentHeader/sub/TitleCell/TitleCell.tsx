@@ -23,7 +23,6 @@ class TitleCell extends Component<Props> {
   render() {
     //
     const { label, category, title, type, creationTime, children, learningPeriod } = this.props;
-    console.log('label', label);
     return (
       <div className="title-area">
         { label ?

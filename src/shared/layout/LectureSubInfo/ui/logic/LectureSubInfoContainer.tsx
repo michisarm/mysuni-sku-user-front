@@ -14,6 +14,7 @@ import {
   OperatorView,
   FootButtons,
   Survey,
+  Report,
 } from '../view/LectureSubInfoElementsView';
 
 
@@ -41,8 +42,10 @@ interface Props {
   onShare: () => void
   /** 삭제 액션 */
   onRemove?: () => void
-  /** 설문 액*/
+  /** 설문 액션*/
   onSurvey?: () => void
+  /** 과제 다운로드 액션*/
+  onDownloadReport?: () => void
 }
 
 @reactAutobind
@@ -64,7 +67,7 @@ class LectureSubInfoContainer extends Component<Props> {
     //
     const {
       required, mainAction, subActions, state, level, clazz, operator,
-      onCancel, onBookmark, onShare, onRemove, onSurvey,
+      onCancel, onBookmark, onShare, onRemove, onSurvey, onDownloadReport,
     } = this.props;
     return (
       <div className="sub-info-wrap">
@@ -88,6 +91,7 @@ class LectureSubInfoContainer extends Component<Props> {
           />
         </div>
         <Survey onSurvey={onSurvey} />
+        <Report onDownloadReport={onDownloadReport} />
       </div>
     );
   }

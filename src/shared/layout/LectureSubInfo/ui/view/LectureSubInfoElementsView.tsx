@@ -108,6 +108,16 @@ export const ClassView = ({ clazz }: ClassProp) => {
           </List.Item>
         ) || null
       }
+      {
+        clazz.waitingCapacity && (
+          <List.Item>
+            <div className="ui">
+              <div className="label">대기가능인원</div>
+              <div className="value">{clazz.capacity}</div>
+            </div>
+          </List.Item>
+        ) || null
+      }
       <List.Item>
         <div className="ui">
           <div className="label">참여 인원</div>
@@ -191,3 +201,19 @@ export const Survey = ({ onSurvey }: SurveyProp) => {
     </Button>
   );
 };
+
+interface ReportProps {
+  onDownloadReport?: () => void
+}
+
+export const Report = ({ onDownloadReport }: ReportProps) => {
+  //
+  if (!onDownloadReport) return null;
+  return (
+    <Button className="surv" onClick={onDownloadReport}>
+      <span>Join Survey</span>
+      <Icon className="download3" />
+    </Button>
+  );
+};
+

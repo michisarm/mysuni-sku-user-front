@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Icon, Segment, Card } from 'semantic-ui-react';
 import CardValueStamp from './card/CardValueStamp';
+import { NoSuchContentPanel } from '../../../shared';
 
 class EarnedStampListView extends Component {
   render() {
@@ -13,13 +14,16 @@ class EarnedStampListView extends Component {
           </Button>
         </div>
 
-        {/* card list */}
-        <Card.Group className="list-cards">
-          <CardValueStamp />
-          <CardValueStamp />
-          <CardValueStamp />
-        </Card.Group>
-
+        {/* card list */(
+          <Card.Group className="list-cards">
+            <CardValueStamp />
+            <CardValueStamp />
+            <CardValueStamp />
+          </Card.Group>
+        )
+        } || (
+        <NoSuchContentPanel message ="획득한 Stamp가 없습니다." />
+        )
         <div className="more-comments">
           <Button icon className="left moreview"><Icon className="moreview" /> list more</Button>
         </div>
