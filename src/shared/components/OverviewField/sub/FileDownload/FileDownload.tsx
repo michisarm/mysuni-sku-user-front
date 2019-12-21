@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-// import depot from '@nara.drama/depot';
+import depot from '@nara.drama/depot';
 import { Label, Icon, Button, Modal, Table, Checkbox } from 'semantic-ui-react';
 
 
@@ -26,24 +26,24 @@ class FileDownload extends Component<Props, State> {
 
 
   init() {
-    // const { fileBoxIds } = this.props;
-    // const files: any[] = [];
-    //
-    // const boxIds = fileBoxIds.filter(id => id);
-    // if (boxIds.length) {
-    //   Promise.all(
-    //     boxIds.map(fileBoxId => depot.getDepotFiles(fileBoxId))
-    //   ).then(filesArr => {
-    //     if (filesArr.length) {
-    //       filesArr.forEach(fileList => {
-    //         if (Array.isArray(fileList)) files.concat(fileList);
-    //         else files.push(fileList);
-    //       });
-    //     }
-    //   });
-    //
-    //   this.setState({ files });
-    // }
+    const { fileBoxIds } = this.props;
+    const files: any[] = [];
+
+    const boxIds = fileBoxIds.filter(id => id);
+    if (boxIds.length) {
+      Promise.all(
+        boxIds.map(fileBoxId => depot.getDepotFiles(fileBoxId))
+      ).then(filesArr => {
+        if (filesArr.length) {
+          filesArr.forEach(fileList => {
+            if (Array.isArray(fileList)) files.concat(fileList);
+            else files.push(fileList);
+          });
+        }
+      });
+
+      this.setState({ files });
+    }
   }
 
   show() {
@@ -57,7 +57,7 @@ class FileDownload extends Component<Props, State> {
   onDownload() {
     //
     const { checkedFileIds } = this.state;
-    // if (checkedFileIds && checkedFileIds.length) depot.downloadDepotFiles(checkedFileIds);
+    if (checkedFileIds && checkedFileIds.length) depot.downloadDepotFiles(checkedFileIds);
     this.close();
   }
 
@@ -86,7 +86,8 @@ class FileDownload extends Component<Props, State> {
   render() {
     //
     const { fileBoxIds } = this.props;
-    if (!fileBoxIds || !fileBoxIds.length) return null;
+    const boxIds = fileBoxIds.filter(id => id);
+    if (!boxIds || !boxIds.length) return null;
 
     const { open, files, checkedFileIds }: State = this.state;
 
