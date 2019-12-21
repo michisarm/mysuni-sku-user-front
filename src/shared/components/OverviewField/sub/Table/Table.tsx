@@ -4,13 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import { ClassroomModel } from 'personalcube/classroom';
 import { Button, Label, Icon, Table as SemanticTable } from 'semantic-ui-react';
+import TableModal from '../TableModal';
 
 
 interface Props {
   classrooms: ClassroomModel[],
   titleIcon?: string,
   titleText?: string,
-  onClickMore?: () => void,
 }
 
 @reactAutobind
@@ -18,7 +18,7 @@ class Table extends Component<Props> {
   //
   render() {
     //
-    const { titleIcon, titleText, classrooms, onClickMore } = this.props;
+    const { titleIcon, titleText, classrooms } = this.props;
 
     return (
       <div className="series-wrap">
@@ -31,11 +31,14 @@ class Table extends Component<Props> {
           </h3>
         )}
 
-        { onClickMore && (
-          <Button icon className="right btn-blue" onClick={onClickMore}>
-            more <Icon className="morelink" />
-          </Button>
-        )}
+        <TableModal
+          classrooms={classrooms}
+          trigger={(
+            <Button icon className="right btn-blue">
+              more <Icon className="morelink" />
+            </Button>
+          )}
+        />
 
         <SemanticTable celled>
           <SemanticTable.Header>
@@ -49,7 +52,7 @@ class Table extends Component<Props> {
           </SemanticTable.Header>
 
           <SemanticTable.Body>
-            {Array.isArray(classrooms) && classrooms.map((classroom: ClassroomModel, index: number) => (
+            {classrooms.length && classrooms.map((classroom: ClassroomModel, index: number) => (
               <SemanticTable.Row key={`table-row-${index}`}>
                 <SemanticTable.Cell className="num">{classroom.round}</SemanticTable.Cell>
                 <SemanticTable.Cell className="teacher"><span>{classroom.instructor.name}</span></SemanticTable.Cell>

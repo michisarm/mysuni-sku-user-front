@@ -8,7 +8,10 @@ import { PersonalCubeModel } from 'personalcube/personalcube';
 
 
 interface Props {
-  personalCube: PersonalCubeModel,
+  personalCube: PersonalCubeModel
+  typeViewObject: any
+  rating: number
+  maxRating: number
 }
 
 @reactAutobind
@@ -17,7 +20,7 @@ class LectureCardHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { personalCube } = this.props;
+    const { personalCube, typeViewObject, rating, maxRating } = this.props;
 
     if (!personalCube.category) {
       return null;
@@ -33,11 +36,12 @@ class LectureCardHeaderView extends Component<Props> {
           type={personalCube.contents.type}
           title={personalCube.name}
           creationTime={personalCube.time}
+          learningPeriod={typeViewObject.learningPeriod}
         />
         <LectureContentHeader.RightCell>
           <LectureContentHeader.StarRatingItem
-            value={3}
-            max={5}
+            value={rating}
+            max={maxRating}
           />
         </LectureContentHeader.RightCell>
       </LectureContentHeader>

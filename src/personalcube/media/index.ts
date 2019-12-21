@@ -4,3 +4,4 @@ export { default as MediaService } from './present/logic/MediaService';
 
 /** Model */
 export { MediaModel } from './model/MediaModel';
+export { MediaType } from './model/MediaType';

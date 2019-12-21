@@ -122,7 +122,6 @@ export const Table = () => {
               titleIcon="series"
               titleText="Class Series"
               classrooms={classrooms}
-              onClickMore={action('onClickMore')}
             />
           )}
         >
