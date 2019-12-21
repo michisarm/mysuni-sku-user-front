@@ -145,7 +145,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
       history.push(`./course-plan/${lecture.serviceId}`);
     }
     else if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./lecture-card/${lecture.serviceId}`);
+      history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
     }
   }
 
