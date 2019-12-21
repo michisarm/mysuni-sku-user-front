@@ -21,7 +21,7 @@ export const Basic = () => {
   return (
     <Segment className="full">
       <OverviewField.Wrapper>
-        <OverviewField.FileDownload fileBoxId={fileBoxId} />
+        <OverviewField.FileDownload fileBoxIds={[ fileBoxId ]} />
       </OverviewField.Wrapper>
     </Segment>
   );

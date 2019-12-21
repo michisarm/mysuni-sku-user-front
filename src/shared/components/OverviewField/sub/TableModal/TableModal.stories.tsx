@@ -3,13 +3,13 @@ import React from 'react';
 
 import { Segment } from 'semantic-ui-react';
 import { OverviewField } from 'shared';
-import {ClassroomModel} from "../../../../../personalcube/classroom";
-import {InstructorModel} from "../../../../../personalcube/cubeintro";
+import { ClassroomModel } from 'personalcube/classroom';
+import { InstructorModel } from 'personalcube/cubeintro';
 
 
 export default {
-  title: 'components|element/OverviewField/FileDownload',
-  component: OverviewField.FileDownload,
+  title: 'components|element/OverviewField/TableModal',
+  component: OverviewField.TableModal,
 };
 
 
