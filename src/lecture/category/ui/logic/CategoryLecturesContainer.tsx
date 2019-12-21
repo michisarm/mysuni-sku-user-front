@@ -139,7 +139,12 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    if (lecture.serviceType === LectureServiceType.Card) {
+    console.log('onViewDetai', data.lecture);
+
+    if (data.lecture.course) {
+      history.push(`./course-plan/${lecture.serviceId}`);
+    }
+    else if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`./lecture-card/${lecture.serviceId}`);
     }
   }
@@ -162,6 +167,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
+    console.log('lectures', lectures);
 
     return (
       <CategoryLecturesWrapperView

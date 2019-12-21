@@ -49,11 +49,9 @@ class CourseContainer extends Component<Props> {
   onViewDetail(type: CourseSetType, id: string) {
     //
     if (type === CourseSetType.Program) {
-      console.log('Course');
       this.props.history.push(`./${id}`);
     }
     else if (type === CourseSetType.Card) {
-      console.log('card');
       this.props.history.push(`../lecture-card/${id}`);
     }
   }
@@ -65,7 +63,6 @@ class CourseContainer extends Component<Props> {
     const programSet = coursePlanContents.courseSet.programSet;
 
     const mockLecture = new LectureModel();
-    console.log('programSet', programSet);
 
     return (
       <>
@@ -103,7 +100,6 @@ class CourseContainer extends Component<Props> {
     const learningCardSet = coursePlanContents.courseSet.learningCardSet;
 
     const mockLecture = new LectureModel();
-    console.log('learningCardSet', learningCardSet);
 
     return learningCardSet.cards.map((course: IdName, index: number) => (
       <Lecture
@@ -122,8 +118,6 @@ class CourseContainer extends Component<Props> {
     //
     const { coursePlanService } = this.props;
     const { coursePlanContents } = coursePlanService!;
-
-    console.log('render courseSetType', coursePlanContents.courseSet.type);
 
     return (
       <Segment className="full">

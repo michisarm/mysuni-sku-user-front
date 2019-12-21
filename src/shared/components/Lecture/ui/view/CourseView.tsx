@@ -45,8 +45,6 @@ class CourseView extends Component<Props> {
       onAction, onViewDetail, onToggle,
     } = this.props;
     // const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture.learningTime);
-    console.log('category', lecture.category);
-    console.log('toggle', toggle);
 
     return (
       <div className={classNames('course-card', 'fn-parents', { open })}>

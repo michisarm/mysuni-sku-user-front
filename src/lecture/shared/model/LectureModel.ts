@@ -5,6 +5,7 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import RoleBookModel from './RoleBookModel';
 import LectureServiceType from './LectureServiceType';
+import { CourseSetModel } from '../../../course/model/CourseSetModel';
 
 
 class LectureModel extends DramaEntityObservableModel {
@@ -16,6 +17,8 @@ class LectureModel extends DramaEntityObservableModel {
   category: CategoryModel = new CategoryModel();
   name: string = '';
   cubeType: CubeType = CubeType.None;
+  cubeId: string = '';
+  courseSetJson: CourseSetModel = new CourseSetModel();
   learningTime: number = 0;
   roleBooks: RoleBookModel[] = [];
   reviewFeedbackId: string = '';
@@ -25,6 +28,7 @@ class LectureModel extends DramaEntityObservableModel {
 
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
+  course: boolean = false;
 
 
   constructor(lecture?: LectureModel) {
@@ -36,8 +40,18 @@ class LectureModel extends DramaEntityObservableModel {
 
       this.serviceType = LectureModel.getServiceType(lecture.serviceType);
       const cineroom = tenantInfo.getCineroom() as any;
-      this.required = cineroom && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
-      this.cubeTypeName = CubeTypeNameType[CubeType[lecture.cubeType]];
+      this.required = cineroom && lecture.requiredSubsidiaries
+        && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
+
+      this.course = !!lecture.courseSetJson;
+      console.log('courseSet ---------------------------', lecture.courseSetJson);
+      if (this.course) {
+        this.cubeTypeName = CubeTypeNameType.Course;
+      }
+      else {
+        this.cubeTypeName = CubeTypeNameType[CubeType[lecture.cubeType]];
+      }
+
     }
   }
 
