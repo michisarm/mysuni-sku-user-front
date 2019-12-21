@@ -30,7 +30,9 @@ class FavoriteWelcomePage extends Component<Props> {
               <h1>Welcome!</h1>
               <p>Constant learning not only <br />makes you knowledgeable, <br />but also a better person</p>
               <div className="illust">
-                <Image src="/images/all/invalid-name.png" alt="머그컵을 들고 서있는 남자1명, 책상에 앉아있는 여자1명이 손인사를 하고있다." />
+                <Image src={`${process.env.PUBLIC_URL}/images/all/invalid-name.png`}
+                  alt="머그컵을 들고 서있는 남자1명, 책상에 앉아있는 여자1명이 손인사를 하고있다."
+                />
               </div>
             </div>
           </div>

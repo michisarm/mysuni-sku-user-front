@@ -10,6 +10,7 @@ import { SkProfileModel, StudySummary } from '../../../profile';
 interface Props {
   skProfile : SkProfileModel
   studySummary : StudySummary
+  onFavoritChannelChange : ()=>void
 }
 
 
@@ -29,6 +30,10 @@ class TitleContainer extends Component<Props, States> {
     //logout session 소멸
   }
 
+  onFavoriteChannelChange() {
+    //modal open
+  }
+
   render() {
     const { skProfile, studySummary } = this.props;
 
@@ -42,7 +47,7 @@ class TitleContainer extends Component<Props, States> {
           <LectureTotalTimeView />
           <StampInfoView />
         </div>
-        <FavoriteChannelView studySummary={studySummary} />
+        <FavoriteChannelView studySummary={studySummary} onFavoritChannelChange={this.onFavoriteChannelChange} />
       </div>
     );
   }

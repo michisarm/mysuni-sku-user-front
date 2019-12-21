@@ -47,6 +47,9 @@ export default class CollegeService {
   @observable
   channel: ChannelModel = new ChannelModel();
 
+  @observable
+  favoriteChannelChangeModalOpen: boolean = false;
+
 
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
@@ -158,7 +161,7 @@ export default class CollegeService {
     this.selectChannels = [];
 
     channels.map((channel) => {
-      this.selectChannels.push({ id: channel.channelId, channelId: channel.channelId, name: channel.name, checked: false });
+      this.selectChannels.push({ id: channel.id, channelId: channel.id, name: channel.name, checked: false });
     });
   }
 

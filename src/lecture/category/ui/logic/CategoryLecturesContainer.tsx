@@ -162,7 +162,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
-    console.log('renderCollegeLectures');
 
     return (
       <CategoryLecturesWrapperView
@@ -213,7 +212,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   renderChannelsLectures() {
     //
-    console.log('renderChannelsLectures');
     const { lectureCountService } = this.props;
     const { channels } = lectureCountService!;
 

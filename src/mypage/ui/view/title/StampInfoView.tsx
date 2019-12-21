@@ -3,6 +3,7 @@ import { Icon, Label } from 'semantic-ui-react';
 
 class StampInfoView extends Component {
   render() {
+
     return (
       <div className="cell">
         <div className="stamp-wrap">
