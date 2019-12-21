@@ -7,6 +7,7 @@ import { ContentLayout } from 'shared';
 import MainCarouselContainer from '../logic/MainCarouselContainer';
 import SearchBarContainer from '../logic/SearchBarContainer';
 import MyLearningAreaContainer from '../logic/MyLearningAreaContainer';
+import RecommendContainer from '../logic/RecommendContainer';
 
 
 @reactAutobind
@@ -21,7 +22,7 @@ class UserMainPage extends Component {
           <MainCarouselContainer />
           <SearchBarContainer />
           <MyLearningAreaContainer />
-          {/*<RecommendContainer />*/}
+          <RecommendContainer />
         </div>
       </ContentLayout>
     );
