@@ -26,6 +26,11 @@ class LectureCountService {
     return channels.peek();
   }
 
+  @computed
+  get allSelected() {
+    return this._channels.every((channel) => channel.checked);
+  }
+
   @action
   async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
     //

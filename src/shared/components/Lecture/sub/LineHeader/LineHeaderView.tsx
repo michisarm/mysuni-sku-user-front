@@ -7,8 +7,8 @@ import { ChannelModel } from 'college';
 
 interface Props {
   channel: ChannelModel
-  title?: string
-  onViewAll: () => void
+  title?: React.ReactNode,
+  onViewAll: (e: any, data: any) => void
 }
 
 @reactAutobind

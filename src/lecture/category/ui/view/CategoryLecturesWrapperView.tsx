@@ -9,7 +9,7 @@ interface Props {
 }
 
 @reactAutobind
-class LecturesWrapperView extends Component<Props> {
+class CategoryLecturesWrapperView extends Component<Props> {
   //
   render() {
     //
@@ -31,4 +31,4 @@ class LecturesWrapperView extends Component<Props> {
   }
 }
 
-export default LecturesWrapperView;
+export default CategoryLecturesWrapperView;
