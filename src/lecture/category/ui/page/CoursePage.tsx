@@ -7,7 +7,7 @@ import { BoardService } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, Type, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService, LearningCardService } from 'course';
-import { PersonalCubeService, ContentsServiceType } from 'personalcube/personalcube';
+import { PersonalCubeService, ContentsServiceType, CubeType } from 'personalcube/personalcube';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService } from 'personalcube/media';
@@ -237,6 +237,9 @@ class LectureCardPage extends Component<Props, State> {
       >
         <LectureCardHeaderView
           personalCube={personalCube}
+          typeViewObject={{}}
+          rating={1}
+          maxRating={5}
         />
         <ContentMenu
           menus={this.getMenus()}
@@ -244,6 +247,7 @@ class LectureCardPage extends Component<Props, State> {
           onSelectMenu={(type) => this.setState({ type })}
         />
         <LectureCardContainer
+          cubeType={CubeType.None}
           viewObject={viewObject}
           typeViewObject={typeViewObject}
         >
