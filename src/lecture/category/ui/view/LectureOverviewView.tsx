@@ -85,7 +85,7 @@ class LectureOverviewView extends Component<Props, State> {
           description={viewObject.description}
         />
         <OverviewField.FileDownload
-          fileBoxId={viewObject.fileBoxId}
+          fileBoxIds={[ viewObject.fileBoxId, typeViewObject.fileBoxId ]}
         />
         <OverviewField.List
           className={classNames('sub-category fn-parents', { open: categoryOpen })}

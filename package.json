@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@nara.platform/accent": "^0.0.1-beta1",
-    "@nara.drama/depot": "^0.0.6",
+    "@nara.drama/depot": "^0.0.7",
     "@nara.drama/feedback": "^0.0.3",
     "@sku/personalcube": "0.0.4",
     "autobind-decorator": "2.4.0",

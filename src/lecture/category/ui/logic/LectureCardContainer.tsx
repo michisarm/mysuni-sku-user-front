@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+// import depot from '@nara.drama/depot';
 // import { reaction } from 'mobx';
 import { observer } from 'mobx-react';
 
 import { LectureSubInfo } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
-import { CubeIntroModel } from 'personalcube/cubeintro';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 
 
@@ -65,7 +65,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onDownload() {
-    console.log('download');
+    const { typeViewObject } = this.props;
+    // depot.downloadDepot(typeViewObject.fileBoxId);
   }
 
   onClickBookmark() {
@@ -80,18 +81,10 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('survey');
   }
 
-  onClickDownloadReport() {
-    console.log('report download');
-  }
-
-  getOperator(cubeIntro: CubeIntroModel) {
+  onClickDownloadReport(fileBoxId: string) {
     //
-    return {
-      ...cubeIntro.operation.operator,
-      instructor: cubeIntro.description.instructor.name,
-    };
+    // depot.downloadDepot(fileBoxId);
   }
-
 
   getMainAction() {
     const { cubeType } = this.props;
@@ -137,7 +130,10 @@ class LectureCardContainer extends Component<Props, State> {
           onShare={this.onClickShare}
           onBookmark={this.onClickBookmark}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
-          onDownloadReport={typeViewObject.reportFileBoxId ? this.onClickDownloadReport : undefined}
+          onDownloadReport={
+            (viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) ?
+              () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+          }
         />
 
         {children}

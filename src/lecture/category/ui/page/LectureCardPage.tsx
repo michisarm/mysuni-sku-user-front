@@ -129,6 +129,7 @@ class LectureCardPage extends Component<Props, State> {
       tags: personalCube.tags,
       surveyId: personalCube.contents.surveyId,
       fileBoxId: personalCube.contents.fileBoxId,
+      reportFileBoxId: cubeIntro.reportFileBox.fileBoxId,
 
       classroom: undefined,
     };
@@ -215,15 +216,25 @@ class LectureCardPage extends Component<Props, State> {
     return {
       url,
       videoUrl,
+      learningPeriod: media.learningPeriod,
     };
   }
 
   getOfficeWebViewObject() {
-    return {};
+    //
+    const { officeWeb } = this.props.officeWebService;
+    return {
+      fileBoxId: officeWeb.fileBoxId,
+      learningPeriod: officeWeb.learningPeriod,
+    };
   }
 
   getCommunityViewObject() {
-    return {};
+    //
+    const { board } = this.props.boardService;
+    return {
+      learningPeriod: board.learningPeriod,
+    };
   }
 
   getMenus() {
@@ -321,9 +332,10 @@ class LectureCardPage extends Component<Props, State> {
             <div className="between-section">
               <div className="cont-inner" style={{ height: '480px' }}>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video width="854" height="480" id="video1">
-                  <source src={typeViewObject.videoUrl} type="video/mp4" />
-                </video>
+                {/*<video width="854" height="480" id="video1">*/}
+                {/*  <source src={typeViewObject.videoUrl} type="video/mp4" />*/}
+                {/*</video>*/}
+                <img src={typeViewObject.videoUrl} />
               </div>
             </div>
           ) || null
