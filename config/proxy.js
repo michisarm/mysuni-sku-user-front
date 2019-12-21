@@ -12,9 +12,9 @@ module.exports = {
     pathRewrite: { '/api/lp/expert': 'v1/instructors' },
   },
 
-  '/api/profile/profiles': {
-    target: 'http://localhost:9021/',
-  },
+  // '/api/profile/profiles': {
+  //   target: 'http://localhost:9021/',
+  // },
 
   // // personalCube, college
   '/api/**': {
