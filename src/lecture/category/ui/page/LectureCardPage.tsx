@@ -117,6 +117,7 @@ class LectureCardPage extends Component<Props, State> {
       operatorEmail: cubeIntro.operation.operator.email,
 
       // Fields
+      subCategories: personalCube.subCategories,
       description: cubeIntro.description.description,
 
       goal: cubeIntro.description.goal,
@@ -130,7 +131,13 @@ class LectureCardPage extends Component<Props, State> {
       surveyId: personalCube.contents.surveyId,
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId: cubeIntro.reportFileBox.fileBoxId,
+      stamp: 0,
 
+      //etc
+      category: personalCube.category,
+      cubeType: personalCube.contents.type,
+      name: personalCube.name,
+      time: personalCube.time,
       classroom: undefined,
     };
   }
@@ -268,7 +275,6 @@ class LectureCardPage extends Component<Props, State> {
       case Type.Overview:
         return (
           <LectureOverviewView
-            personalCube={personalCube}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
           />
@@ -322,7 +328,7 @@ class LectureCardPage extends Component<Props, State> {
         ]}
       >
         <LectureCardHeaderView
-          personalCube={personalCube}
+          viewObject={viewObject}
           typeViewObject={typeViewObject}
           maxRating={reviewSummary.maxStarCount}
           rating={reviewSummary.average}
