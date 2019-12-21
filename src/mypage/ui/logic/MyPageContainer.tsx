@@ -7,35 +7,51 @@ import { inject, observer } from 'mobx-react';
 import TitleContainer from './TitleContainer';
 import MenuItemContainer from './MenuItemContainer';
 import { SkProfileService } from '../../../profile';
+import { CollegeService } from '../../../college';
 
 interface Props{
   skProfileService : SkProfileService
+  collegeService : CollegeService
 }
 
-@inject('skProfileService')
+@inject('skProfileService', 'collegeService')
 @observer
 @reactAutobind
 class MyPageContainer extends Component<Props> {
 
   componentDidMount(): void {
-    const { skProfileService } = this.props;
+    const { skProfileService, collegeService } = this.props;
     if (skProfileService) {
-      skProfileService.findSkProfile();  //login한 사용자 - 수정 skProfileService.findSkProfile();
-      //skProfileService.findStudySummary();
+      skProfileService.findSkProfile();  //login한 사용자
+      skProfileService.findStudySummary();
+      collegeService.findAllColleges();
     }
 
+  }
+
+  channelChange() {
+    const { collegeService } = this.props;
+    collegeService.favoriteChannelChangeModalOpen = true;
+  }
+
+  handleCloseChannelChange() {
+    const { collegeService } = this.props;
+    collegeService.favoriteChannelChangeModalOpen = false;
   }
 
   render() {
     const { skProfile, studySummary } = this.props.skProfileService;
     return (
       <ContentLayout
+        className = "MyPage"
         breadcrumb={[
-          { text: 'depth1', path: '/depth1-path' },
-          { text: 'depth2', path: '' },
+          { text: 'MyPage', path: '/mypage' },
         ]}
       >
-        <TitleContainer skProfile={skProfile} studySummary={studySummary} />
+        <TitleContainer skProfile={skProfile}
+          studySummary={studySummary}
+          onFavoritChannelChange={this.channelChange}
+        />
         <MenuItemContainer />
       </ContentLayout>
     );
