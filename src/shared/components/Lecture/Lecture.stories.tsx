@@ -210,6 +210,7 @@ export const Course = () => {
       <Lecture.Group type={Lecture.GroupType.Course}>
         <Lecture
           {...lectureProps}
+
         />
       </Lecture.Group>
     </Segment>

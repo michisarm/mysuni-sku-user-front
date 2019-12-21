@@ -23,18 +23,20 @@ interface Props {
   rating?: number,
   thumbnailImage?: string,
   action?: Action | ActionType,
+  toggle?: boolean,
   onAction?: () => void,
   onViewDetail?: (e: any, data: OnViewDetailData ) => void,
+  onToggle?: (openState: boolean) => void,
 }
 
 interface States {
   hovered: boolean,
+  open: boolean,
 }
 
 interface ActionWith extends Action {
   type: ActionType,
 }
-
 
 /**
  * 러닝카드 컴포넌트입니다.
@@ -58,6 +60,7 @@ class LectureContainer extends Component<Props, States> {
     rating: null,
     thumbnailImage: null,
     action: null,
+    toggle: false,
     onAction: () => {},
     onViewDetail: () => {},
   };
@@ -74,6 +77,7 @@ class LectureContainer extends Component<Props, States> {
 
   state = {
     hovered: false,
+    open: false,
   };
 
 
@@ -87,6 +91,12 @@ class LectureContainer extends Component<Props, States> {
     this.setState({
       hovered: false,
     });
+  }
+
+  onToggleCourse() {
+    this.setState((prevState) => ({
+      open: !prevState.open,
+    }));
   }
 
   getAction() {
@@ -188,17 +198,21 @@ class LectureContainer extends Component<Props, States> {
   renderCourseCard() {
     //
     const {
-      lecture, thumbnailImage,
+      lecture, thumbnailImage, toggle,
       onAction,
     } = this.props;
+    const { open } = this.state;
 
     return (
       <CourseView
         lecture={lecture}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
+        toggle={toggle}
+        open={open}
         onAction={onAction}
         onViewDetail={this.onViewDetail}
+        onToggle={this.onToggleCourse}
       />
     );
   }

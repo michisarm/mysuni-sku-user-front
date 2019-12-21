@@ -101,7 +101,6 @@ export default class CoursePlanService {
   changeCoursePlanProps(name: string, value: string | {}) {
     //
     this.coursePlan = _.set(this.coursePlan, name, value);
-    console.log(this.coursePlan);
   }
 
   @action
@@ -114,7 +113,6 @@ export default class CoursePlanService {
   changeCourseRequestProps(name: string, value: string) {
     //
     this.courseRequestCdo = _.set(this.courseRequestCdo, name, value);
-    console.log(this.courseRequestCdo);
   }
 
   @action
@@ -139,9 +137,8 @@ export default class CoursePlanService {
   @action
   async findCoursePlanContents(coursePlanContentsId: string) {
     //
-    console.log(coursePlanContentsId);
     const coursePlanContents = await this.coursePlanApi.findCoursePlanContents(coursePlanContentsId);
-    console.log(coursePlanContents);
+
     return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents));
   }
 
@@ -154,7 +151,6 @@ export default class CoursePlanService {
   changeCoursePlanContentsProps(name: string, value: string | Date | IdName[]) {
     //
     this.coursePlanContents = _.set(this.coursePlanContents, name, value);
-    console.log(this.coursePlanContents);
   }
 
   @action
@@ -196,7 +192,6 @@ export default class CoursePlanService {
     if (typeof value === 'object' && nameSub) {
       this.coursePlanQuery = _.set(this.coursePlanQuery, nameSub, valueSub);
     }
-    console.log(this.coursePlanQuery);
   }
 
   @action

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import classNames from 'classnames';
 import { Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture';
@@ -16,8 +17,11 @@ interface Props {
   lecture: LectureModel,
   thumbnailImage?: string,
   action?: Action,
+  toggle?: boolean,
+  open?: boolean,
   onAction?: () => void,
   onViewDetail?: (e: any) => void,
+  onToggle?: () => void,
 }
 
 @reactAutobind
@@ -27,15 +31,18 @@ class CourseView extends Component<Props> {
   static defaultProps = {
     thumbnailImage: null,
     action: null,
+    toggle: false,
+    open: false,
     onAction: () => {},
     onViewDetail: () => {},
+    onToggle: () => {},
   };
 
   render() {
     //
     const {
-      lecture, thumbnailImage, action,
-      onAction, onViewDetail,
+      lecture, thumbnailImage, action, toggle, open,
+      onAction, onViewDetail, onToggle,
     } = this.props;
     // const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture.learningTime);
     console.log('category', lecture.category);
@@ -51,12 +58,12 @@ class CourseView extends Component<Props> {
               { lecture.cubeTypeName && (
                 <Field>
                   <SubField bold icon="course" text={lecture.cubeTypeName} />
-                  <span className="channel">{lecture.category.channel.name}</span>
+                  {/*<span className="channel">{lecture.category.channel.name}</span>*/}
                 </Field>
               )}
               <Field>
-                <SubField icon="date" text={lecture.cubeTypeName}>
-                  <span className="ml17">Study start date, end date : ??</span>
+                <SubField icon="date" text="">
+                  <span className="ml17" />
                 </SubField>
               </Field>
             </div>
@@ -66,36 +73,11 @@ class CourseView extends Component<Props> {
             <Button className="fix line" onClick={onViewDetail}>View Details</Button>
           </Buttons>
 
-          {/*<Buttons>*/}
-          {/*  { action && (*/}
-          {/*    <Button className="icon-big-line" onClick={onAction}>*/}
-          {/*      <Icon className={action.iconName} />*/}
-          {/*      { action.text && (*/}
-          {/*        <span>{action.text}</span>*/}
-          {/*      )}*/}
-          {/*    </Button>*/}
-          {/*  )}*/}
-          {/*</Buttons>*/}
-
-          {/*<div className="time-area">*/}
-          {/*  <div className="time">*/}
-          {/*    <strong>&nbsp;</strong>*/}
-          {/*    { hour > 0 && (*/}
-          {/*      <>*/}
-          {/*        <strong>{hour}</strong><span>h</span>*/}
-          {/*      </>*/}
-          {/*    )}*/}
-          {/*    { (hour > 0 || minute > 0) && (*/}
-          {/*      <>*/}
-          {/*        <strong className="ml9">{minute}</strong><span>m</span>*/}
-          {/*      </>*/}
-          {/*    )}*/}
-          {/*  </div>*/}
-          {/*  <div className="location">*/}
-          {/*    <span className="location-name">{lecture.name}</span>*/}
-          {/*    { lecture.cubeType &&  <Field icon="video2" text={lecture.cubeType} bold />}*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          { toggle && (
+            <Button icon className={classNames('img-icon fn-more-toggle', { 'card-open': toggle, 'card-cloase': !toggle })}>
+              <Icon className={classNames({ 'arrow-down': open, 'arrow-up': !open  })} />
+            </Button>
+          )}
         </div>
       </div>
     );
