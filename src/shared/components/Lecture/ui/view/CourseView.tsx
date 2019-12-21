@@ -46,9 +46,10 @@ class CourseView extends Component<Props> {
     } = this.props;
     // const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture.learningTime);
     console.log('category', lecture.category);
+    console.log('toggle', toggle);
 
     return (
-      <div className="course-card fn-parents">
+      <div className={classNames('course-card', 'fn-parents', { open })}>
         <div className="card-box first">
 
           <Thumbnail image={thumbnailImage} />
@@ -62,7 +63,7 @@ class CourseView extends Component<Props> {
                 </Field>
               )}
               <Field>
-                <SubField icon="date" text="">
+                <SubField icon="" text="">
                   <span className="ml17" />
                 </SubField>
               </Field>
@@ -74,8 +75,17 @@ class CourseView extends Component<Props> {
           </Buttons>
 
           { toggle && (
-            <Button icon className={classNames('img-icon fn-more-toggle', { 'card-open': toggle, 'card-cloase': !toggle })}>
-              <Icon className={classNames({ 'arrow-down': open, 'arrow-up': !open  })} />
+            <Button
+              icon
+              className={classNames({
+                'img-icon': true,
+                'fn-more-toggle': true,
+                'card-open': !open,
+                'card-close': open,
+              })}
+              onClick={onToggle}
+            >
+              <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
             </Button>
           )}
         </div>

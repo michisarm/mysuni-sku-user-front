@@ -210,7 +210,11 @@ export const Course = () => {
       <Lecture.Group type={Lecture.GroupType.Course}>
         <Lecture
           {...lectureProps}
-
+        />
+        <Lecture
+          {...lectureProps}
+          toggle
+          onToggle={action('onToggle')}
         />
       </Lecture.Group>
     </Segment>

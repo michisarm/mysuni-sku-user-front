@@ -54,7 +54,7 @@ class CourseContainer extends Component<Props> {
     }
     else if (type === CourseSetType.Card) {
       console.log('card');
-      this.props.history.push(`./lecture-card/${id}`);
+      this.props.history.push(`../lecture-card/${id}`);
     }
   }
 
@@ -67,17 +67,33 @@ class CourseContainer extends Component<Props> {
     const mockLecture = new LectureModel();
     console.log('programSet', programSet);
 
-    return programSet.courses.map((course: IdName, index: number) => (
-      <Lecture
-        key={`course-${index}`}
-        lecture={{
-          ...mockLecture,
-          name: course.name,
-          cubeTypeName: CubeTypeNameType.Course,
-        }}
-        onViewDetail={() => this.onViewDetail(CourseSetType.Program, course.id)}
-      />
-    ));
+    return (
+      <>
+        {programSet.courses.map((course: IdName, index: number) => (
+          <Lecture
+            key={`course-${index}`}
+            lecture={{
+              ...mockLecture,
+              name: course.name,
+              cubeTypeName: CubeTypeNameType.Course,
+            }}
+            toggle
+            onViewDetail={() => this.onViewDetail(CourseSetType.Program, course.id)}
+          />
+        ))}
+        {programSet.cards.map((card: IdName, index: number) => (
+          <Lecture
+            key={`course-${index}`}
+            lecture={{
+              ...mockLecture,
+              name: card.name,
+              cubeTypeName: CubeTypeNameType.Card,
+            }}
+            onViewDetail={() => this.onViewDetail(CourseSetType.Card, card.id)}
+          />
+        ))}
+      </>
+    );
   }
 
   renderCourseSet() {
