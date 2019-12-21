@@ -91,7 +91,6 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
-    console.log('setState');
     this.setState({
       sorting: data.value,
     });
@@ -107,7 +106,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { history } = this.props;
 
     if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`../lecture-card/${lecture.serviceId}`);
+      history.push(`../cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
     }
   }
 
