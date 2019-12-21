@@ -11,6 +11,7 @@ import Action from '../../present/model/Action';
 import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
+import CourseView from '../view/CourseView';
 
 
 export interface OnViewDetailData {
@@ -150,7 +151,7 @@ class LectureContainer extends Component<Props, States> {
 
     return (
       <ListCardView
-        name={lecture.name}
+        lecture={lecture}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
@@ -184,6 +185,24 @@ class LectureContainer extends Component<Props, States> {
     );
   }
 
+  renderCourseCard() {
+    //
+    const {
+      lecture, thumbnailImage,
+      onAction,
+    } = this.props;
+
+    return (
+      <CourseView
+        lecture={lecture}
+        thumbnailImage={thumbnailImage}
+        action={this.getAction()}
+        onAction={onAction}
+        onViewDetail={this.onViewDetail}
+      />
+    );
+  }
+
   render() {
     //
     const { groupType } = this.context;
@@ -196,6 +215,9 @@ class LectureContainer extends Component<Props, States> {
     }
     else if (groupType === GroupType.Line) {
       return this.renderLineCard();
+    }
+    else if (groupType === GroupType.Course) {
+      return this.renderCourseCard();
     }
     return null;
   }

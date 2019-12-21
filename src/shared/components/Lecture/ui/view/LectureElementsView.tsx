@@ -43,12 +43,14 @@ interface SubFieldProps {
   text: string,
   className?: string,
   bold?: boolean,
+  children?: React.ReactNode
 }
 
-export const SubField = ({ icon, text, className = '', bold = false }: SubFieldProps) => (
+export const SubField = ({ icon, text, className = '', bold = false, children = null }: SubFieldProps) => (
   <Label className={classNames('onlytext', { bold }, className)}>
     <Icon className={icon} />
     <span>{text}</span>
+    {children}
   </Label>
 );
 

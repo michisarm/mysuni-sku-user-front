@@ -4,7 +4,7 @@ import { OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
 import { IdName } from 'shared';
 import CoursePlanApi from '../apiclient/CoursePlanApi';
-import { CoursePlanModel } from '../..';
+import { CoursePlanModel } from '../../model/CoursePlanModel';
 import { CoursePlanContentsModel } from '../../model/CoursePlanContentsModel';
 import CoursePlanFlowApi from '../apiclient/CoursePlanFlowApi';
 import { CoursePlanFlowCdoModel } from '../../model/CoursePlanFlowCdoModel';

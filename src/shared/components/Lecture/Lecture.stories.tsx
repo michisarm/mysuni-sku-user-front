@@ -3,6 +3,7 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { text, number, select, boolean } from '@storybook/addon-knobs';
 
+import { Segment } from 'semantic-ui-react';
 import { Lecture, CubeType, CategoryModel, IdName } from 'shared';
 import { LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
@@ -107,28 +108,6 @@ export const Required = () => {
   );
 };
 
-/*
-export const List = () => {
-  //
-  const cardId = cardService.newCard();
-  cardService.setCardProp(cardId, 'stampReady', boolean('card.stampReady', true));
-  cardService.setCardProp(cardId, 'title', text('card.title', 'Machine learning Complete Guide for Calculus'));
-  cardService.setCardProp(cardId, 'cubeType', select('card.cubeType', storybookHelper.enumValues(CubeType), CubeType.Video));
-  cardService.setCardProp(cardId, 'lengthInMinute', number('card.lengthInMinute', 80));
-
-  return (
-    <CardGroup type={GroupType.List}>
-      <Card
-        id={cardId}
-        name="Learning Card"
-        category={Card.CategoryType.AI}
-        thumbnailImage="http://placehold.it/60x60"
-        action={Card.ActionType.Play}
-      />
-    </CardGroup>
-  );
-};
- */
 
 export const Line = () => {
   //
@@ -191,5 +170,48 @@ export const Line = () => {
         />
       </Lecture.Group>
     </div>
+  );
+};
+
+
+export const Course = () => {
+  //
+  const mockLecture = new LectureModel();
+  const mockCategory = new CategoryModel();
+
+  const lecture = new LectureModel({
+    ...mockLecture,
+    category: new CategoryModel({
+      ...mockCategory,
+      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+      channel: new IdName({ id: 'Leadership Clinic', name: 'Leadership Clinic' }),
+    }),
+    name: 'Machine learning Complete Guide for Calculus - Deep',
+    description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
+    cubeType: CubeType.ClassRoomLecture,
+    learningTime: 90,
+  });
+
+  const lectureProps = {
+    lecture,
+    rating: number('rating', 4, { range: true, min: 0, max: 5 }),
+    thumbnailImage: 'http://placehold.it/60x60',
+    action: select('action', {
+      Add: Lecture.ActionType.LearningStart,
+      Remove: Lecture.ActionType.Remove,
+      My: Lecture.ActionType.My,
+    }, Lecture.ActionType.Add),
+    onAction: action('onAction'),
+    onViewDetail: action('onViewDetail'),
+  };
+
+  return (
+    <Segment className="full">
+      <Lecture.Group type={Lecture.GroupType.Course}>
+        <Lecture
+          {...lectureProps}
+        />
+      </Lecture.Group>
+    </Segment>
   );
 };

@@ -18,6 +18,7 @@ interface Props {
 export enum Type {
   Overview= 'Overview',
   Comments= 'Comments',
+  List = 'List',
   Posts= 'Posts',
   MyPosts= 'MyPosts',
 }

@@ -8,8 +8,9 @@ import { Card } from 'semantic-ui-react';
 
 export enum GroupType {
   Box = 'Box',
-  List = 'List',
   Line = 'Line',
+  Course = 'Course',
+  List = 'List',
 }
 
 interface Props {
@@ -35,24 +36,43 @@ class CardGroup extends Component<Props> {
   render() {
     //
     const { type, children } = this.props;
+    let elements = null;
+
+    if (type === GroupType.Box) {
+      elements = (
+        <Card.Group className="box-cards">
+          {children}
+        </Card.Group>
+      );
+    }
+    else if (type === GroupType.List) {
+      elements = (
+        <Card.Group className="list-cards">
+          {children}
+        </Card.Group>
+      );
+    }
+    else if (type === GroupType.Line) {
+      elements = (
+        <div className="scrolling">
+          <ul className="belt">
+            {children}
+          </ul>
+        </div>
+      );
+    }
+    else if (type === GroupType.Course) {
+      elements = (
+        <div className="contents course-list">
+          {children}
+        </div>
+      );
+    }
+
 
     return (
       <LearningCardContext.Provider value={this.getContextValue()}>
-        { type === GroupType.Line ?
-          <div className="scrolling">
-            <ul className="belt">
-              {children}
-            </ul>
-          </div>
-          :
-          <Card.Group className={classNames({
-            'box-cards': type === GroupType.Box,
-            'list-cards': type === GroupType.List,
-          })}
-          >
-            {children}
-          </Card.Group>
-        }
+        {elements}
       </LearningCardContext.Provider>
     );
   }

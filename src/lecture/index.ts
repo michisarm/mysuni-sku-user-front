@@ -26,6 +26,7 @@ export { default as LectureServiceType } from './shared/model/LectureServiceType
 /** Component */
 export { default as CategoryLecturesPage } from './category/ui/page/CategoryLecturesPage';
 export { default as ChannelLecturesPage } from './category/ui/page/ChannelLecturesPage';
+export { default as CoursePage } from './category/ui/page/CoursePage';
 export { default as LectureCardPage } from './category/ui/page/LectureCardPage';
 
 export { default as ChannelsLecturesPage } from './recommend/ui/page/ChannelsLecturesPage';

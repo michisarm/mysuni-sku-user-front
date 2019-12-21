@@ -91,6 +91,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
+    console.log('setState');
     this.setState({
       sorting: data.value,
     });
