@@ -211,6 +211,11 @@ export const Course = () => {
         <Lecture
           {...lectureProps}
         />
+        <Lecture
+          {...lectureProps}
+          toggle
+          onToggle={action('onToggle')}
+        />
       </Lecture.Group>
     </Segment>
   );

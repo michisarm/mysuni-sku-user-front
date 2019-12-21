@@ -10,6 +10,9 @@ enum CubeTypeNameType {
   Experiential = 'Experiential',
   Community = 'Community',
   None = 'None',
+  // Todo: 임시, 제거
+  Course  = 'Course',
+  Card = 'Card',
 }
 
 export default CubeTypeNameType;

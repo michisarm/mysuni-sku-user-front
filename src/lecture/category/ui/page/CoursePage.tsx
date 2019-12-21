@@ -56,7 +56,7 @@ interface State {
 class LectureCardPage extends Component<Props, State> {
   //
   state= {
-    type: Type.Overview,
+    type: Type.List,
   };
 
   componentDidMount() {
@@ -71,7 +71,7 @@ class LectureCardPage extends Component<Props, State> {
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-    coursePlanService.findCoursePlan(params.coursePlanId);
+    // coursePlanService.findCoursePlan(params.coursePlanId);
 
 
     // const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
@@ -178,7 +178,7 @@ class LectureCardPage extends Component<Props, State> {
   getMenus() {
     //
     const menus: typeof ContentMenu.Menu[] = [
-      { name: 'Posts', type: Type.List },
+      { name: 'List', type: Type.List },
       { name: 'Overview', type: Type.Overview },
       { name: 'Comments', type: Type.Comments },
     ];
@@ -224,8 +224,6 @@ class LectureCardPage extends Component<Props, State> {
     const { personalCube } = personalCubeService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
-
-    console.log('render', 'Course');
 
     return (
       <ContentLayout
