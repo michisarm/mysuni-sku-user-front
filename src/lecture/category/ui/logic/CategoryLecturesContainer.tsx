@@ -1,22 +1,21 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, PageService, Lecture, NoSuchContentPanel } from 'shared';
+import { Lecture, mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
-import { LectureService, LectureModel, LectureServiceType } from 'lecture';
+import { LectureModel, LectureService } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
 
-import { ChannelsPanel, CardSorting, SeeMoreButton } from '../../../shared';
+import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
 import ChannelLecturesContainer from '../../../recommend/ui/logic/ChannelLecturesContainer';
-
+import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {
@@ -139,10 +138,8 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    console.log('onViewDetai', data.lecture);
-
-    if (data.lecture.course) {
-      history.push(`./course-plan/${lecture.serviceId}`);
+    if (data.lecture.serviceType === LectureServiceType.Program) {
+      history.push(`./course-plan/todo-course-plan-id/course-lecture/${lecture.serviceId}`);
     }
     else if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);

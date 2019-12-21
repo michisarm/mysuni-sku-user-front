@@ -22,7 +22,7 @@ import CourseContainer from '../logic/CourseContainer';
 
 
 
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string }> {
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, courseLectureId: string, }> {
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
   personalCubeService: PersonalCubeService,
