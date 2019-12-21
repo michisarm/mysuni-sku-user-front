@@ -14,20 +14,22 @@ interface Props extends RouteComponentProps {
   lectureService?: LectureService,
   reviewService?: ReviewService,
   channel: ChannelModel
-  routeTo: (url: string) => void
+  onViewAll: (e: any, data: any) => void
 }
 
 interface State {
   lectures: LectureModel[]
+  totalCount: number
 }
 
 @inject(mobxHelper.injectFrom('lecture.lectureService', 'shared.reviewService'))
 @reactAutobind
 @observer
-class ChannelsLecturesContainer extends Component<Props, State> {
+class ChannelLecturesContainer extends Component<Props, State> {
   //
   state = {
     lectures: [],
+    totalCount: 0,
   };
 
   componentDidMount() {
@@ -44,9 +46,14 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   async findLectures() {
     //
+    console.log('findChannelLectures');
     const { lectureService, reviewService, channel } = this.props;
-    const { results: lectures } = await lectureService!.findPagingChannelLectures(channel.id, 5, 0);
-    this.setState(({ lectures }));
+    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, 5, 0);
+
+    this.setState(({
+      lectures,
+      totalCount,
+    }));
     const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
   }
@@ -60,27 +67,34 @@ class ChannelsLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    console.log('serviceType', lecture.serviceType);
     if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`./lecture-card/${lecture.serviceId}`);
     }
   }
 
-  onViewAll() {
-    const { channel, routeTo } = this.props;
-    routeTo(`/channel/${channel.id}/recommend`);
+  onViewAll(e: any) {
+    const { channel, onViewAll } = this.props;
+
+    onViewAll(e, {
+      channel,
+    });
   }
 
   render() {
     //
     const { channel, reviewService } = this.props;
-    const { lectures } =  this.state;
+    const { lectures, totalCount } =  this.state;
     const { ratingMap } =  reviewService as ReviewService;
 
     return (
       <>
         <Lecture.LineHeader
           channel={channel}
+          title={(
+            <>
+              의 학습 과정입니다. <span className="channel">({totalCount})</span>
+            </>
+          )}
           onViewAll={this.onViewAll}
         />
         {
@@ -88,11 +102,11 @@ class ChannelsLecturesContainer extends Component<Props, State> {
           && (
             <Lecture.Group type={Lecture.GroupType.Line}>
               {
-                lectures.map((lecture: LectureModel) => {
+                lectures.map((lecture: LectureModel, index: number) => {
                   const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
                   return (
                     <Lecture
-                      key={lecture.id}
+                      key={`lecture-${index}`}
                       lecture={lecture}
                       rating={rating}
                       // thumbnailImage="http://placehold.it/60x60"
@@ -113,4 +127,4 @@ class ChannelsLecturesContainer extends Component<Props, State> {
   }
 }
 
-export default withRouter(ChannelsLecturesContainer);
+export default withRouter(ChannelLecturesContainer);

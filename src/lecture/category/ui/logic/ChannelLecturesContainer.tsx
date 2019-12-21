@@ -123,7 +123,6 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
 
-    console.log('rating', ratingMap);
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}

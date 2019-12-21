@@ -32,8 +32,8 @@ class RecommendContainer extends Component<Props> {
     skProfileService!.findStudySummary();
   }
 
-  routeTo(url: string) {
-    this.props.history.push(url);
+  routeTo(e: any, data: any) {
+    this.props.history.push(`./channel/${data.channel.id}`);
   }
 
   render() {
@@ -64,8 +64,8 @@ class RecommendContainer extends Component<Props> {
               return (
                 <RecommendChannelLecturesContainer
                   channel={channel}
-                  routeTo={this.routeTo}
                   key={`channel_cont_${channel.id}`}
+                  onViewAll={this.routeTo}
                 />
               );
             }) || null
