@@ -25,25 +25,25 @@ class CourseContainer extends Component<Props> {
   //
   componentDidMount() {
     //
-    this.findCoursePlan();
+    // this.findCoursePlan();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
-      this.findCoursePlan();
-    }
+    // if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+    //   this.findCoursePlan();
+    // }
   }
 
   async findCoursePlan() {
     //
-    const { match, coursePlanService } = this.props;
-
-    const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
-
-    if (coursePlan) {
-      coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
-    }
+    // const { match, coursePlanService } = this.props;
+    //
+    // const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
+    //
+    // if (coursePlan) {
+    //   coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
+    // }
   }
 
   onViewDetail(type: CourseSetType, id: string) {

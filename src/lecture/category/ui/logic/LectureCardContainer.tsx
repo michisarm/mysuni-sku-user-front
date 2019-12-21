@@ -131,7 +131,7 @@ class LectureCardContainer extends Component<Props, State> {
           onBookmark={this.onClickBookmark}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
           onDownloadReport={
-            (viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) ?
+            ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
           }
         />

@@ -4,13 +4,12 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { DatePeriod, OverviewField } from 'shared';
-import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
+import { CubeType } from 'personalcube/personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 
 
 interface Props {
-  personalCube: PersonalCubeModel,
   viewObject: any
   typeViewObject: any
 }
@@ -42,13 +41,13 @@ class LectureOverviewView extends Component<Props, State> {
 
   renderSubCategories() {
     //
-    const { personalCube } = this.props;
+    const { viewObject } = this.props;
 
-    if (!personalCube.subCategories || personalCube.subCategories.length < 1) {
+    if (!viewObject.subCategories || viewObject.subCategories.length < 1) {
       return null;
     }
 
-    const subCategoriesPerMain = personalCube.subCategories.reduce((prev: any, subCategory) => {
+    const subCategoriesPerMain = viewObject.subCategories.reduce((prev: any, subCategory: any) => {
       //
       const subCategories: string[] = prev[subCategory.college.name] || [];
 
@@ -70,14 +69,14 @@ class LectureOverviewView extends Component<Props, State> {
 
   render() {
     //
-    const { personalCube, viewObject, typeViewObject } = this.props;
+    const { viewObject, typeViewObject } = this.props;
 
-    if (!personalCube.category) {
+    if (!viewObject.category) {
       return null;
     }
 
     const { categoryOpen } = this.state;
-    const cubeType = personalCube.contents.type;
+    const cubeType = viewObject.cubeType;
 
     return (
       <OverviewField.Wrapper>
