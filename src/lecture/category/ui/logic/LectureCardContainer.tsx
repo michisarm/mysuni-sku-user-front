@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-// import depot from '@nara.drama/depot';
+import depot from '@nara.drama/depot';
 // import { reaction } from 'mobx';
 import { observer } from 'mobx-react';
 
@@ -66,7 +66,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onDownload() {
     const { typeViewObject } = this.props;
-    // depot.downloadDepot(typeViewObject.fileBoxId);
+    depot.downloadDepot(typeViewObject.fileBoxId);
   }
 
   onClickBookmark() {
@@ -83,7 +83,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onClickDownloadReport(fileBoxId: string) {
     //
-    // depot.downloadDepot(fileBoxId);
+    depot.downloadDepot(fileBoxId);
   }
 
   getMainAction() {
