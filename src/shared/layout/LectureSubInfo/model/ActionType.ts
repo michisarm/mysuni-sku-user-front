@@ -2,10 +2,9 @@
 enum ActionType {
   Enrollment= 'Enrollment',
   Report= 'Report',
-  Test= 'Test',
   ChangeSeries= 'Change Series',
-  Retry= 'Retry',
   LearningStart= 'Learning Start',
+  Download= 'Download',
   Play= 'Play',
   MarkComplete= 'Mark Complete',
   Join= 'Join',

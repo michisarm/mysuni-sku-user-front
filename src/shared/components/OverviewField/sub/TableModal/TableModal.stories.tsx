@@ -1,16 +1,15 @@
 
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 
 import { Segment } from 'semantic-ui-react';
 import { OverviewField } from 'shared';
-import { ClassroomGroupModel, ClassroomModel } from 'personalcube/classroom';
-import { InstructorModel } from 'personalcube/cubeintro';
+import {ClassroomModel} from "../../../../../personalcube/classroom";
+import {InstructorModel} from "../../../../../personalcube/cubeintro";
 
 
 export default {
-  title: 'components|element/OverviewField/Table',
-  component: OverviewField.Table,
+  title: 'components|element/OverviewField/FileDownload',
+  component: OverviewField.FileDownload,
 };
 
 
@@ -38,16 +37,7 @@ export const Basic = () => {
   return (
     <Segment className="full">
       <OverviewField.Wrapper>
-        <OverviewField.List
-          header={(
-            <OverviewField.Table
-              titleIcon="series"
-              titleText="Class Series"
-              classrooms={classrooms}
-            />
-          )}
-        >
-        </OverviewField.List>
+        <OverviewField.TableModal classrooms={classrooms} trigger={<button>open</button>} />
       </OverviewField.Wrapper>
     </Segment>
   );

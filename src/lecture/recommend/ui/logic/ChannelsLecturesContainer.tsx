@@ -13,7 +13,7 @@ interface Props {
   collegeService?: CollegeService
 
   channels: ChannelModel[]
-  routeTo:(url: string) => void
+  onViewAll:(e: any, data: any) => void
 }
 
 interface State {
@@ -52,7 +52,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, routeTo } = this.props;
+    const { collegeService, onViewAll } = this.props;
     const { channels } = collegeService as CollegeService;
 
     return (
@@ -68,7 +68,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
               return (
                 <ChannelLecturesContainer
                   channel={channel}
-                  routeTo={routeTo}
+                  onViewAll={onViewAll}
                   key={`channel_cont_${channel.id}`}
                 />
               );

@@ -30,8 +30,11 @@ class ChannelLecturesPage extends Component<Props> {
     skProfileService!.findStudySummary();
   }
 
-  routeTo(url: string) {
-    this.props.history.push(url);
+  routeTo(e: any, data: any) {
+    //
+    const { channel } = data;
+
+    this.props.history.push(`/channel/${channel.id}/recommend`);
   }
 
   render() {
@@ -73,7 +76,7 @@ class ChannelLecturesPage extends Component<Props> {
         </ContentHeader>
         <ChannelsLecturesContainer
           channels={channels}
-          routeTo={this.routeTo}
+          onViewAll={this.routeTo}
         />
       </ContentLayout>
     );
