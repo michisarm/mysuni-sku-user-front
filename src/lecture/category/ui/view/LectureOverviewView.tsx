@@ -129,51 +129,72 @@ class LectureOverviewView extends Component<Props, State> {
           </OverviewField.List>
         )}
 
-        <OverviewField.List
-          icon
-          header={ typeViewObject.classrooms ? (
-            <OverviewField.Table
-              titleIcon="series"
-              titleText="Class Series"
-              classrooms={typeViewObject.classrooms}
-            />
-          ) : null }
-        >
-          <OverviewField.Item
-            titleIcon="goal"
-            title="Goal"
-            content={viewObject.goal}
-          />
-          <OverviewField.Item
-            titleIcon="target"
-            title="Target"
-            content={viewObject.applicants}
-          />
-          <OverviewField.Item
-            titleIcon="host"
-            title="Hots"
-            content={viewObject.organizerName}
-          />
-        </OverviewField.List>
+        {
+          (typeViewObject.classrooms || viewObject.goal || viewObject.applicants
+          || viewObject.organizerName) && (
+            <OverviewField.List
+              icon
+              header={ typeViewObject.classrooms ? (
+                <OverviewField.Table
+                  titleIcon="series"
+                  titleText="Class Series"
+                  classrooms={typeViewObject.classrooms}
+                />
+              ) : null }
+            >
+              {
+                viewObject.goal && (
+                  <OverviewField.Item
+                    titleIcon="goal"
+                    title="Goal"
+                    content={viewObject.goal}
+                  />
+                ) || null
+              }
+              {
+                viewObject.applicants && (
+                  <OverviewField.Item
+                    titleIcon="target"
+                    title="Target"
+                    content={viewObject.applicants}
+                  />
+                ) || null
+              }
 
-        <OverviewField.List className="info-box2">
-          { cubeType === CubeType.ClassRoomLecture && (
-            <OverviewField.Item
-              title="Place"
-              content={typeViewObject.location}
-            />
-          )}
-          <OverviewField.Item
-            title="Requirements"
-            content={viewObject.completionTerms}
-          />
-          <OverviewField.Item
-            title="Other Guides"
-            className="quill-des"
-            contentHtml={viewObject.guide}
-          />
-        </OverviewField.List>
-
+              {
+                viewObject.organizerName && (
+                  <OverviewField.Item
+                    titleIcon="host"
+                    title="Hots"
+                    content={viewObject.organizerName}
+                  />
+                )
+              }
+            </OverviewField.List>
+          ) || null
+        }
+        {
+          (typeViewObject.location || viewObject.completionTerms || viewObject.guide)
+          && (
+            <OverviewField.List className="info-box2">
+              { cubeType === CubeType.ClassRoomLecture && (
+                <OverviewField.Item
+                  title="Place"
+                  content={typeViewObject.location}
+                />
+              )}
+              <OverviewField.Item
+                title="Requirements"
+                content={viewObject.completionTerms}
+              />
+              <OverviewField.Item
+                title="Other Guides"
+                className="quill-des"
+                contentHtml={viewObject.guide}
+              />
+            </OverviewField.List>
+          ) || null
+        }
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"

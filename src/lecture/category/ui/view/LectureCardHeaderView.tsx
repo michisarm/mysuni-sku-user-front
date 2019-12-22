@@ -38,6 +38,7 @@ class LectureCardHeaderView extends Component<Props> {
           learningPeriod={typeViewObject.learningPeriod}
         />
         <LectureContentHeader.RightCell>
+          <LectureContentHeader.StampItem value={viewObject.stamp} />
           <LectureContentHeader.StarRatingItem
             value={rating}
             max={maxRating}

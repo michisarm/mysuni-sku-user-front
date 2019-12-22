@@ -75,7 +75,10 @@ export default class CoursePlanService {
   async findCoursePlan(coursePlanId: string) {
     //
     const coursePlan = await this.coursePlanApi.findCoursePlan(coursePlanId);
-    return runInAction(() => this.coursePlan = new CoursePlanModel(coursePlan));
+    return runInAction(() => {
+      this.coursePlan = new CoursePlanModel(coursePlan);
+      return coursePlan;
+    });
   }
 
   @action
