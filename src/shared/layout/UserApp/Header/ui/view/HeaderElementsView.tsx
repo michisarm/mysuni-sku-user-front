@@ -46,7 +46,7 @@ export const SearchBarView: React.FC = () => (
 export const ProfileView: React.FC = () => (
   <div className="g-info">
     <button className="ui user image label">
-      <span className="name">김지우</span>
+      <span className="name">작업중</span>
       <span className="affiliation">SK C&C  플랫폼 개발 1팀</span>
       <Image src={`${process.env.PUBLIC_URL}/images/all/profile-38-px.png`} alt="profile" />
     </button>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Checkbox, Form, Grid, Header, Icon, List, Modal, Segment } from 'semantic-ui-react';
-import { IdName } from 'shared';
+import { mobxHelper, IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, CollegeModel } from 'college';
 
@@ -24,7 +24,7 @@ interface States {
   channelListMapForViewState: Map<IdName, IdName[]>
 }
 
-@inject('collegeService', 'personalCubeService')
+@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
 @observer
 @reactAutobind
 class SecondCategoryModal extends React.Component<Props, States> {

@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import {
   Button, Modal, Form, Header, Radio, Grid, List, Segment, Icon,
 } from 'semantic-ui-react';
-import { IdName, CategoryModel } from 'shared';
+import { mobxHelper, IdName, CategoryModel } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService,  CollegeModel } from 'college';
 
@@ -24,7 +24,7 @@ interface States {
   isSelectedMainChannel: boolean
 }
 
-@inject('collegeService', 'personalCubeService')
+@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
 @observer
 @reactAutobind
 class FirstCategoryModal extends React.Component<Props, States> {
