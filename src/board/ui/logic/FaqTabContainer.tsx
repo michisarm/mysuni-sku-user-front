@@ -90,10 +90,9 @@ class FaqTabContainer extends React.Component<Props> {
           {
             result && result.length && (
               <div className="more-comments">
-                <Button icon className="left moreview">
+                <Button icon className="left moreview" onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}>
                   <Icon className="moreview"
                     disabled={disabled}
-                    onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}
                   />list more
                 </Button>
               </div>
