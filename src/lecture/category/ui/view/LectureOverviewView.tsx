@@ -160,12 +160,11 @@ class LectureOverviewView extends Component<Props, State> {
                   />
                 ) || null
               }
-
               {
                 viewObject.organizerName && (
                   <OverviewField.Item
                     titleIcon="host"
-                    title="Hots"
+                    title="Host"
                     content={viewObject.organizerName}
                   />
                 )
@@ -199,7 +198,9 @@ class LectureOverviewView extends Component<Props, State> {
           <OverviewField.Item
             titleIcon="tag2"
             title="Tag"
-            content={viewObject.tags}
+            content={viewObject.tags.map((tag: string) => (
+              tag && <Button className="tag">{tag}</Button>
+            ))}
           />
         </OverviewField.List>
       </OverviewField.Wrapper>
