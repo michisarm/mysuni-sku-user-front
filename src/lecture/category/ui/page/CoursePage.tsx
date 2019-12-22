@@ -3,16 +3,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { BoardService } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, Type, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
-import { CoursePlanService, LearningCardService } from 'course';
-import { PersonalCubeService, ContentsServiceType, CubeType } from 'personalcube/personalcube';
-import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomService } from 'personalcube/classroom';
-import { MediaService } from 'personalcube/media';
-import { OfficeWebService } from 'personalcube/officeweb';
-import { LectureCardService } from 'lecture';
+import { CoursePlanService } from 'course';
+import { CubeType } from 'personalcube/personalcube';
 
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -25,14 +19,6 @@ import CourseContainer from '../logic/CourseContainer';
 interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, courseLectureId: string, }> {
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
-  // personalCubeService: PersonalCubeService,
-  // cubeIntroService: CubeIntroService,
-  // classroomService: ClassroomService,
-  // mediaService: MediaService,
-  // officeWebService: OfficeWebService,
-  // boardService: BoardService,
-  // lectureCardService: LectureCardService,
-  // learningCardService: LearningCardService,
 }
 
 interface State {
@@ -42,14 +28,6 @@ interface State {
 @inject(mobxHelper.injectFrom(
   'collegeService',
   'course.coursePlanService',
-  // 'personalCube.personalCubeService',
-  // 'personalCube.cubeIntroService',
-  // 'personalCube.classroomService',
-  // 'personalCube.mediaService',
-  // 'personalCube.officeWebService',
-  // 'personalCube.boardService',
-  // 'lecture.lectureCardService',
-  // 'course.learningCardService'
 ))
 @reactAutobind
 @observer
@@ -71,7 +49,8 @@ class LectureCardPage extends Component<Props, State> {
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-    coursePlanService.findCoursePlan(params.coursePlanId);
+    const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
+    coursePlanService.findCoursePlanContents(coursePlan.contentsId);
 
 
     // const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
@@ -89,14 +68,15 @@ class LectureCardPage extends Component<Props, State> {
     const {
       coursePlanService,
     } = this.props;
-    const { coursePlan } = coursePlanService!;
+    const { coursePlan, coursePlanContents } = coursePlanService!;
     // const { cubeIntro } = cubeIntroService!;
 
+    console.log(coursePlan);
     return {
       // Sub info
       required: false,  // Todo
       // difficultyLevel: cubeIntro.difficultyLevel,
-      // learningTime: cubeIntro.learningTime,
+      learningTime: 0,
       participantCount: '1,250',  // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
@@ -106,19 +86,12 @@ class LectureCardPage extends Component<Props, State> {
 
       // Fields
       subCategories: coursePlan.subCategories,
-      description: '',
-
-      goal: '',
-      applicants: '',
-      organizerName: '',
-
-      completionTerms: '',
-      guide:'',
+      description: coursePlanContents.description,
 
       tags: coursePlan.courseOpen.tags,
-      surveyId: '',
-      fileBoxId: '',
-      reportFileBoxId: '',
+      surveyId: coursePlanContents.surveyId,
+      fileBoxId: coursePlanContents.fileBoxId,
+      reportFileBoxId: coursePlan.reportFileBox.fileBoxId,
       stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
 
       //etc
@@ -133,30 +106,15 @@ class LectureCardPage extends Component<Props, State> {
 
   getTypeViewObject(): any {
     //
-    // const {
-    //   personalCubeService,
-    // } = this.props;
-    // const { personalCube } = personalCubeService!;
-    //
-    // const contentsService = personalCube.contents.service;
-    // let cubeTypeViewObject = {};
-    //
-    // switch (contentsService.type) {
-    //   case ContentsServiceType.Classroom:
-    //     cubeTypeViewObject = this.getClassroomViewObject();
-    //     break;
-    //   case ContentsServiceType.Media:
-    //     cubeTypeViewObject = this.getMediaViewObject();
-    //     break;
-    //   case ContentsServiceType.OfficeWeb:
-    //     cubeTypeViewObject = this.getOfficeWebViewObject();
-    //     break;
-    //   case ContentsServiceType.Community:
-    //     cubeTypeViewObject = this.getCommunityViewObject();
-    //     break;
-    // }
-    //
-    // return cubeTypeViewObject;
+    const {
+      coursePlanService,
+    } = this.props;
+    const { coursePlan, coursePlanContents } = coursePlanService!;
+
+    return {
+      learningPeriod: coursePlanContents.learningPeriod,
+      fileBoxId: '',
+    };
   }
 
   getMenus() {
