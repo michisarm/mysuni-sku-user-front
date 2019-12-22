@@ -52,7 +52,7 @@ class CourseContainer extends Component<Props> {
       this.props.history.push(`./${id}`);
     }
     else if (type === CourseSetType.Card) {
-      this.props.history.push(`../cube/todo-cube-id/lecture-card/${id}`);
+      this.props.history.push(`../../../cube/todo-cube-id/lecture-card/${id}`);
     }
   }
 

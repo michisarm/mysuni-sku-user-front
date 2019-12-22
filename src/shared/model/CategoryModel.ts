@@ -17,7 +17,6 @@ export class CategoryModel {
       const channel = category.channel && new IdName(category.channel) || this.channel;
       Object.assign(this, { college, channel });
 
-      console.log('color', this.color);
       this.color = CategoryModel.getColor(college);
     }
   }

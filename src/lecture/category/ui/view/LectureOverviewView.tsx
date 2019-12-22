@@ -151,7 +151,7 @@ class LectureOverviewView extends Component<Props, State> {
           />
           <OverviewField.Item
             titleIcon="host"
-            title="Hots"
+            title="Host"
             content={viewObject.organizerName}
           />
         </OverviewField.List>
@@ -173,12 +173,14 @@ class LectureOverviewView extends Component<Props, State> {
             contentHtml={viewObject.guide}
           />
         </OverviewField.List>
-
+        {console.log(viewObject.tags) as any || ''}
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
             title="Tag"
-            content={viewObject.tags}
+            content={viewObject.tags.map((tag: string) => (
+              tag && <Button className="tag">{tag}</Button>
+            ))}
           />
         </OverviewField.List>
       </OverviewField.Wrapper>
