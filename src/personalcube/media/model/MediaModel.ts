@@ -2,7 +2,8 @@ import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { MediaType } from './MediaType';
 import { MediaContentsModel } from './MediaContentsModel';
-import { DatePeriod } from '../../../shared';
+import { DatePeriod, NameValueList } from '../../../shared';
+import { MediaCdoModel } from './MediaCdoModel';
 
 export class MediaModel implements DramaEntity {
 
@@ -23,6 +24,45 @@ export class MediaModel implements DramaEntity {
       Object.assign(this, { ...media, mediaContents, learningPeriod });
     }
   }
+
+  static  asNameValues(media: MediaModel): NameValueList {
+    const asNameValues = {
+      nameValues: [
+        {
+          name: 'name',
+          value: media.name,
+        },
+        {
+          name: 'mediaType',
+          value: media.mediaType,
+        },
+        {
+          name: 'mediaContents',
+          value: JSON.stringify(media.mediaContents),
+        },
+        {
+          name: 'learningPeriod',
+          value: JSON.stringify(media.learningPeriod),
+        },
+      ],
+    };
+
+    return asNameValues;
+  }
+
+  static asCdo(media: MediaModel): MediaCdoModel {
+    //
+    return (
+      {
+        audienceKey: 'r2p8-r@nea-m5-c5',
+        mediaType: media.mediaType,
+        name: media.name,
+        mediaContents: media.mediaContents,
+        learningPeriod: media.learningPeriod,
+      }
+    );
+  }
+
 }
 
 decorate(MediaModel, {

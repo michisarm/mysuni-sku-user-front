@@ -1,6 +1,6 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { CubeState, IdName, NameValueList, CategoryModel, SearchFilter, CreatorModel, IconBox } from 'shared';
+import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
@@ -106,6 +106,23 @@ export class PersonalCubeModel implements DramaEntity {
         if (channelList) {
           channelList.push(channel.channel.name);
           channelListMap.set(channel.college.name, channelList);
+        }
+      }
+    });
+    return channelListMap;
+  }
+
+  static makeChannelsIdNameMap(channelList: CategoryModel[]) {
+    const channelListMap = new Map<IdName, IdName[]>();
+
+    channelList.map(channel => {
+      if (!channelListMap.get(channel.college)) {
+        channelListMap.set(channel.college, [channel.channel]);
+      } else {
+        const channelList = channelListMap.get(channel.college);
+        if (channelList) {
+          channelList.push(channel.channel);
+          channelListMap.set(channel.college, channelList);
         }
       }
     });

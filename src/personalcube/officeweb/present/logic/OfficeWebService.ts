@@ -1,8 +1,13 @@
-import { observable, action, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
+import _ from 'lodash';
+import { CubeIntroModel } from '../../../cubeintro';
 import OfficeApi from '../apiclient/OfficeApi';
 import OfficeWebFlowApi from '../apiclient/OfficeWebFlowApi';
 import { OfficeWebModel } from '../../model/OfficeWebModel';
+import { PersonalCubeModel } from '../../../personalcube';
+import { OfficeWebFlowUdoModel } from '../../model/OfficeWebFlowUdoModel';
+import { OfficeWebFlowCdoModel } from '../../model/OfficeWebFlowCdoModel';
 
 
 @autobind
@@ -21,10 +26,38 @@ export default class OfficeWebService {
     this.officeWebFlowApi = officeWebFlowApi;
   }
 
+  makeOfficeWeb(personalCube: PersonalCubeModel, cubeIntro: CubeIntroModel, officeWeb: OfficeWebModel) {
+    //
+    return this.officeWebFlowApi.makeOfficeWeb(
+      new OfficeWebFlowCdoModel(
+        PersonalCubeModel.asCdo(personalCube),
+        CubeIntroModel.asCdo(cubeIntro),
+        OfficeWebModel.asCdo(officeWeb)
+      )
+    );
+  }
+
   @action
   async findOfficeWeb(officeWebId: string) {
     const officeWeb = await this.officeApi.findOfficeWeb(officeWebId);
     runInAction(() => this.officeWeb = new OfficeWebModel(officeWeb));
+  }
+
+  @action
+  changeOfficeWebProps(name: string, value: string | Date | boolean, nameSub?: string, valueSub?: string) {
+    //
+    this.officeWeb = _.set(this.officeWeb, name, value);
+    if (typeof value === 'object' && nameSub) this.officeWeb = _.set(this.officeWeb, nameSub, valueSub);
+  }
+
+  modifyOfficeWeb(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, officeWeb: OfficeWebModel) {
+    //
+    this.officeWebFlowApi.modifyOfficeWeb(personalCubeId, new OfficeWebFlowUdoModel(cube, cubeIntro, officeWeb));
+  }
+
+  removeOfficeWeb(personalCubeId: string) {
+    //
+    this.officeWebFlowApi.removeOfficeWeb(personalCubeId);
   }
 
   @action

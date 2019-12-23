@@ -11,6 +11,7 @@ import CreateNoDataView from '../view/CreateNoDataView';
 
 interface Props {
   personalCubeService: PersonalCubeService
+  handleClickCubeRow:(personalCubeId: string) => void
 }
 
 interface States {
@@ -62,23 +63,9 @@ class CreateListContainer extends React.Component<Props, States> {
     this.findAllCubes(20);
   }
 
-
-  handleClickCubeRow(cubeId: string) {
-    //
-    const { personalCubeService } = this.props;
-    if (personalCubeService) {
-      personalCubeService.findPersonalCube(cubeId)
-        .then(() => {
-          // const cubeType = personalCubeService.personalCube.contents.type;
-          // const openState = personalCubeService.personalCube.openRequests;
-          /*if (openState === OpenState.Created) this.props.history.push(`/${learningManagementUrl}/cubes/create-cube/${cubeId}/${cubeType}`);
-            else this.props.history.push(`/${learningManagementUrl}/cubes/cube-detail/${cubeId}/${cubeType}`);*/
-        });
-    }
-  }
-
   render() {
     const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
+    const { handleClickCubeRow } = this.props;
     const result = personalCubes.results;
     const totalCount = personalCubes.totalCount;
     const { disabled, limit } = this.state;
@@ -104,7 +91,7 @@ class CreateListContainer extends React.Component<Props, States> {
           :
           <CreateListView
             result={result}
-            handleClickCubeRow={this.handleClickCubeRow}
+            handleClickCubeRow={handleClickCubeRow}
             disabled={disabled}
             findAllCubes ={this.findAllCubes}
             limit={limit}

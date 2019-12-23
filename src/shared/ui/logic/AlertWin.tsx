@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Modal, Header, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
 interface Props {
-  target: string
+  message?: string
+  target?: string
+  alertIcon?: string
   handleClose:() => void
   open: boolean
+  type?: string
+  title?: string
+  handleOk?: (type: string) => void
 }
 
 @observer
@@ -14,7 +19,7 @@ interface Props {
 class AlertWin extends React.Component<Props> {
   //
   render() {
-    const { target, handleClose, open } = this.props;
+    const { message, handleClose, handleOk, open, alertIcon, type, title, target } = this.props;
     return (
       <>
         {/*<Button onClick={this.show('tiny')}>Alert</Button>*/}
@@ -27,13 +32,34 @@ class AlertWin extends React.Component<Props> {
           </Modal.Header>
           <Modal.Content>
             <Header as="h3" icon textAlign="center">
-              <Icon name="exclamation triangle" size="tiny" color="red" />
-              <Header.Content>필수 정보 입력 안내</Header.Content>
+              {
+                alertIcon === 'triangle' ?
+                  <Icon name="exclamation triangle" size="tiny" color="red" />
+                  :
+                  <Icon name="exclamation circle" size="tiny" color="orange" />
+              }
+              {
+                title ?
+                  <Header.Content>{title}</Header.Content>
+                  :
+                  <Header.Content>필수 정보 입력 안내</Header.Content>
+              }
+
             </Header>
-            <p className="center">&quot;{target}&quot; 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.</p>
+            {
+              target ?
+                <p className="center">&quot;{target}&quot; 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.</p>
+                :
+                <p className="center">{message}</p>
+            }
           </Modal.Content>
           <Modal.Actions>
-            <Button primary onClick={handleClose}>OK</Button>
+            <Button primary onClick={handleClose}>Cancel</Button>
+            {
+              handleOk && type ?
+                <Button primary onClick={() => handleOk(type)} type="button">OK</Button>
+                : ''
+            }
           </Modal.Actions>
         </Modal>
       </>

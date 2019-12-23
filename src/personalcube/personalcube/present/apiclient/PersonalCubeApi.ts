@@ -1,10 +1,11 @@
 import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platform/accent';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { PersonalCubeRdoModel } from '../../model/PersonalCubeRdoModel';
+import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
 import { ExcelView } from '../../../../shared/model/ExcelView';
-import { ApprovalContentsRdo } from '../../../../create/model/ApprovalContentsRdo';
-import { ApprovalContents } from '../../../../create/model/ApprovalContents';
-import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCubeRequestCdoModel';
+import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
+import { ApprovalContents } from '../../model/ApprovalContents';
+import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
 export default class PersonalCubeApi {
 
@@ -14,6 +15,13 @@ export default class PersonalCubeApi {
 
 
   static instance: PersonalCubeApi;
+
+  registerCube(cubeCdo: PersonalCubeCdoModel) {
+    //
+    console.log(cubeCdo);
+    return axios.post<string>(this.URL + `/regist`, cubeCdo)
+      .then(response => response && response.data || null);
+  }
 
   findPersonalCube(personalCubeId: string) {
     //
