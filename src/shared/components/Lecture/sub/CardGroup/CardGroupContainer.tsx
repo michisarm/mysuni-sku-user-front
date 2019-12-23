@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import classNames from 'classnames';
 
 import { Card } from 'semantic-ui-react';
 

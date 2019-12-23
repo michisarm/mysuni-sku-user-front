@@ -22,6 +22,12 @@ class CourseLectureModel extends DramaEntityObservableModel {
 }
 
 decorate(CourseLectureModel, {
+  courseLectureId: observable,
+  coursePlanId: observable,
+  lectureCards: observable,
+  reviewFeedbackId: observable,
+  commentFeedbackId: observable,
+  time: observable,
 });
 
 export default CourseLectureModel;
