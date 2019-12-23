@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Button, Icon, Image } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
+import { ContentHeader } from 'shared';
 import CreateMovieDetailModal from '../view/CreateMovieDetailModal';
 
 interface Props {
@@ -35,7 +36,11 @@ class CreateProfileView extends React.Component<Props, States> {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <Image src="/images/all/profile-56-px.png" alt="프로필사진 임시이미지" />
+                  <ContentHeader.ProfileItem
+                    image={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+                    name="김유니"
+                    teams={['SK C&C', '플랫폼 개발 1팀']}
+                  />
                 </div>
               </div>
               <div className="text-info">
