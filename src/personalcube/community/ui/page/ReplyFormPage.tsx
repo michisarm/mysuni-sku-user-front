@@ -13,12 +13,12 @@ class ReplyFormPage extends React.Component<Props> {
   //
   routeTo() {
     const { collegeId, cubeId, lectureCardId, postId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/posts${postId && postId !== 'new' ? `/${postId}` : ''}`);
   }
 
   routeToList() {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`);
   }
 
   render() {
