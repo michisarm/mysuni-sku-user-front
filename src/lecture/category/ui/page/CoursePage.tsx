@@ -8,6 +8,7 @@ import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { ProgramLectureService, CourseLectureService, LectureService, LectureServiceType } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -22,6 +23,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: 
   courseLectureService: CourseLectureService,
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
+  reviewService: ReviewService,
 }
 
 interface State {
@@ -34,10 +36,11 @@ interface State {
   'lecture.courseLectureService',
   'lecture.programLectureService',
   'lecture.lectureService',
+  'shared.reviewService',
 ))
 @reactAutobind
 @observer
-class LectureCardPage extends Component<Props, State> {
+class CoursePage extends Component<Props, State> {
   //
   state= {
     type: Type.List,
@@ -71,15 +74,17 @@ class LectureCardPage extends Component<Props, State> {
 
   async findCourseLecture() {
     //
-    const { match, programLectureService, courseLectureService, lectureService } = this.props;
+    const { match, programLectureService, courseLectureService, lectureService, reviewService } = this.props;
 
     // lectureService.findLectureViews()
     if (match.params.serviceType === LectureServiceType.Program) {
       const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
+      reviewService.findReviewSummary(programLecture.reviewFeedbackId);
       // lectureService.findLectureViews(programLecture.lectureCards, []);
     }
     else {
       const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);
+      reviewService.findReviewSummary(courseLecture.reviewFeedbackId);
       lectureService.findLectureViews(courseLecture.lectureCards);
     }
   }
@@ -131,7 +136,7 @@ class LectureCardPage extends Component<Props, State> {
     const {
       coursePlanService,
     } = this.props;
-    const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { coursePlanContents } = coursePlanService!;
 
     return {
       learningPeriod: coursePlanContents.learningPeriod,
@@ -153,7 +158,19 @@ class LectureCardPage extends Component<Props, State> {
   renderChildren(viewObject: any, typeViewObject: any) {
     //
     const { type } = this.state;
-    const { coursePlan } = this.props.coursePlanService;
+
+    let reviewFeedbackId = '';
+    let commentFeedbackId = '';
+    if (this.props.match.params.serviceType === LectureServiceType.Program) {
+      const { programLecture } = this.props.programLectureService;
+      reviewFeedbackId = programLecture.reviewFeedbackId;
+      commentFeedbackId = programLecture.commentFeedbackId;
+    }
+    else {
+      const { courseLecture } = this.props.courseLectureService;
+      reviewFeedbackId = courseLecture.reviewFeedbackId;
+      commentFeedbackId = courseLecture.commentFeedbackId;
+    }
 
     switch (type) {
       case Type.List:
@@ -170,10 +187,8 @@ class LectureCardPage extends Component<Props, State> {
       case Type.Comments:
         return (
           <LectureCommentsContainer
-            // reviewFeedbackId={lectureCard.reviewFeedbackId}
-            // commentFeedbackId={lectureCard.commentFeedbackId}
-            reviewFeedbackId=""
-            commentFeedbackId=""
+            reviewFeedbackId={reviewFeedbackId}
+            commentFeedbackId={commentFeedbackId}
           />
         );
       default:
@@ -183,8 +198,9 @@ class LectureCardPage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService } = this.props;
+    const { collegeService, reviewService } = this.props;
     const { college } = collegeService;
+    const { reviewSummary } = reviewService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
 
@@ -198,9 +214,9 @@ class LectureCardPage extends Component<Props, State> {
       >
         <LectureCardHeaderView
           viewObject={viewObject}
-          typeViewObject={{}}
-          rating={1}
-          maxRating={5}
+          typeViewObject={typeViewObject}
+          rating={reviewSummary.average}
+          maxRating={reviewSummary.maxStarCount}
         />
         <ContentMenu
           menus={this.getMenus()}
@@ -219,4 +235,4 @@ class LectureCardPage extends Component<Props, State> {
   }
 }
 
-export default withRouter(LectureCardPage);
+export default withRouter(CoursePage);
