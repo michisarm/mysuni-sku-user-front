@@ -40,9 +40,8 @@ class FileDownload extends Component<Props, State> {
             else files.push(fileList);
           });
         }
+        this.setState({ files });
       });
-
-      this.setState({ files });
     }
   }
 
