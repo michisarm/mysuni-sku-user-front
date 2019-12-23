@@ -3,13 +3,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, Type, mobxHelper } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper, Type } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { ProgramLectureService, CourseLectureService, LectureService, LectureServiceType } from '../../../shared';
+import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
@@ -17,7 +17,7 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 
 
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, serviceId: string, serviceType: LectureServiceType }> {
+interface Props extends RouteComponentProps<RouteParams> {
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
   courseLectureService: CourseLectureService,
@@ -28,6 +28,14 @@ interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: 
 
 interface State {
   type: Type
+}
+
+interface RouteParams {
+  collegeId: string,
+  lectureCardId: string,
+  coursePlanId: string,
+  serviceId: string,
+  serviceType: LectureServiceType,
 }
 
 @inject(mobxHelper.injectFrom(
@@ -76,14 +84,22 @@ class CoursePage extends Component<Props, State> {
     //
     const { match, programLectureService, courseLectureService, lectureService, reviewService } = this.props;
 
-    // lectureService.findLectureViews()
     if (match.params.serviceType === LectureServiceType.Program) {
       const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
+
       reviewService.findReviewSummary(programLecture.reviewFeedbackId);
-      lectureService.findLectureViews(programLecture.lectureCards, programLecture.courseLectures);
+      const lectureViews = await lectureService.findLectureViews(programLecture.lectureCards, programLecture.courseLectures);
+
+      lectureViews.map(async (lectureView) => {
+        if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
+            && lectureView.lectureCards && lectureView.lectureCards.length > 0) {
+          await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCards);
+        }
+      });
     }
     else {
       const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);
+
       reviewService.findReviewSummary(courseLecture.reviewFeedbackId);
       lectureService.findLectureViews(courseLecture.lectureCards);
     }

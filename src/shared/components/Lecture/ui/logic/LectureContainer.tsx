@@ -7,11 +7,14 @@ import { Lecture } from 'shared';
 import { LectureModel, LectureViewModel } from 'lecture';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
+import Course from '../../sub/Course';
+import CourseSection from '../../sub/CourseSection';
+
 import Action from '../../present/model/Action';
 import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
-import CourseView from '../view/CourseView';
+import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
 
 
 export interface OnViewDetailData {
@@ -50,6 +53,10 @@ class LectureContainer extends Component<Props, States> {
   static Group = CardGroup;
 
   static LineHeader = LineHeader;
+
+  static CourseSection = CourseSection;
+
+  static Course = Course;
 
   static GroupType = GroupType;
 
@@ -206,7 +213,7 @@ class LectureContainer extends Component<Props, States> {
     const { open } = this.state;
 
     return (
-      <CourseView
+      <CourseLectureContainer
         lectureView={lectureView || {} as any}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}

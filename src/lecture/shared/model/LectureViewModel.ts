@@ -3,7 +3,6 @@ import { decorate, observable } from 'mobx';
 import { DramaEntityObservableModel, CategoryModel, DatePeriod } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from './LectureServiceType';
-import { CourseSetType } from '../../../course';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
