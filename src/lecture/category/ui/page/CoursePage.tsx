@@ -8,6 +8,7 @@ import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
 
+import { ProgramLectureService, CourseLectureService, LectureService, LectureServiceType } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
@@ -15,10 +16,12 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 
 
-
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, courseLectureId: string, }> {
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, serviceId: string, serviceType: LectureServiceType }> {
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
+  courseLectureService: CourseLectureService,
+  programLectureService: ProgramLectureService,
+  lectureService: LectureService,
 }
 
 interface State {
@@ -28,6 +31,9 @@ interface State {
 @inject(mobxHelper.injectFrom(
   'collegeService',
   'course.coursePlanService',
+  'lecture.courseLectureService',
+  'lecture.programLectureService',
+  'lecture.lectureService',
 ))
 @reactAutobind
 @observer
@@ -40,6 +46,7 @@ class LectureCardPage extends Component<Props, State> {
   componentDidMount() {
     //
     this.init();
+    this.findCourseLecture();
   }
 
   async init() {
@@ -60,6 +67,21 @@ class LectureCardPage extends Component<Props, State> {
     // if (personalCube) {
     //   cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
     // }
+  }
+
+  async findCourseLecture() {
+    //
+    const { match, programLectureService, courseLectureService, lectureService } = this.props;
+
+    // lectureService.findLectureViews()
+    if (match.params.serviceType === LectureServiceType.Program) {
+      const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
+      lectureService.findLectureViews(programLecture.lectureCards, []);
+    }
+    else {
+      const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);
+      lectureService.findLectureViews(courseLecture.lectureCards);
+    }
   }
 
 

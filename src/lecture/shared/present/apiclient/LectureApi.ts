@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
+import LectureViewModel from '../../model/LectureViewModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 
 
@@ -34,9 +35,17 @@ class LectureApi {
       .then(response => response && response.data || []);
   }
 
-  findLecture(lectureCardIds: string[], courseLectureIds: string[]) {
+  findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
     //
+    const lectureCardIdsParam = lectureCardIds.map((lectureCardId) => `lectureCardIds=${lectureCardId}`).join('&');
+    let courseLectureIdsParam = 'courseLectureIds=';
+    if (courseLectureIds && courseLectureIds.length > 0) {
+      courseLectureIdsParam = courseLectureIds.map((courseLectureId) => `courseLectureIds=${courseLectureId}`).join('&');
+    }
+    const queryParams = `${lectureCardIdsParam}&${courseLectureIdsParam}`;
 
+    return axiosApi.get<LectureViewModel[]>(this.baseUrl + `/view?${queryParams}`)
+      .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
   }
 }
 

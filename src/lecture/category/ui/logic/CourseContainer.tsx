@@ -7,16 +7,18 @@ import { Segment } from 'semantic-ui-react';
 import { IdName, Lecture, mobxHelper } from 'shared';
 import { CubeTypeNameType } from 'personalcube/personalcube';
 import { CoursePlanService, CourseSetType } from 'course';
-import { CourseLectureService, LectureModel, LectureServiceType, ProgramLectureService } from '../../../shared';
+import { ProgramLectureService, CourseLectureService, LectureService, LectureModel, LectureServiceType } from '../../../shared';
 
 
 interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
+  lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
   courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
 }
 
 @inject(mobxHelper.injectFrom(
+  'lecture.lectureService',
   'lecture.programLectureService',
   'lecture.courseLectureService',
   'course.coursePlanService',
@@ -27,29 +29,29 @@ class CourseContainer extends Component<Props> {
   //
   componentDidMount() {
     //
-    this.findCourseLecture();
+    // this.findCourseLecture();
     this.findCoursePlan();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
-      this.findCourseLecture();
+      // this.findCourseLecture();
       this.findCoursePlan();
     }
   }
 
-  async findCourseLecture() {
-    //
-    const { match, programLectureService, courseLectureService } = this.props;
-
-    if (match.params.serviceType === LectureServiceType.Program) {
-      console.log('This is programs');
-    }
-    else {
-      console.log('This is Course');
-    }
-  }
+  // async findCourseLecture() {
+  //   //
+  //   const { match, programLectureService, courseLectureService } = this.props;
+  //
+  //   if (match.params.serviceType === LectureServiceType.Program) {
+  //     console.log('This is programs');
+  //   }
+  //   else {
+  //     console.log('This is Course');
+  //   }
+  // }
 
   async findCoursePlan() {
     //

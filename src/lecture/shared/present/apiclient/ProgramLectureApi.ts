@@ -12,11 +12,7 @@ class CourseLectureApi {
 
   findProgramLecture(programLectureId: string) {
     //
-    const params = {
-      programLectureId,
-    };
-
-    return axiosApi.get<ProgramLectureModel>(this.baseUrl, { params })
+    return axiosApi.get<ProgramLectureModel>(this.baseUrl + `/${programLectureId}`)
       .then(response => response && response.data && new ProgramLectureModel(response.data) || null);
   }
 }
