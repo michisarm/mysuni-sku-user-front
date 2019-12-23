@@ -13,7 +13,7 @@ class PostDetailPage extends React.Component<Props> {
   //
   routeTo(url: string) {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${url}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${url}`);
   }
 
   render() {
