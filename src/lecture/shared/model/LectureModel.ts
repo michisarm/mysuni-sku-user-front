@@ -11,22 +11,27 @@ import { CourseSetType } from '../../../course/model/CourseSetType';
 
 class LectureModel extends DramaEntityObservableModel {
   //
-  serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
-  requiredSubsidiaries: IdName[] = [];
-  courseOpen: CourseOpenModel = new CourseOpenModel();
-  category: CategoryModel = new CategoryModel();
+  serviceType: LectureServiceType = LectureServiceType.Card;
+  coursePlanId: string = '';
+  cubeId: string = '';
+  reviewFeedbackId: string = '';
+  commentFeedbackId: string = '';
+
   name: string = '';
   cubeType: CubeType = CubeType.None;
-  cubeId: string = '';
-  courseSetJson: CourseSetModel = new CourseSetModel();
-  learningTime: number = 0;
-  roleBooks: RoleBookModel[] = [];
-  reviewFeedbackId: string = '';
+  category: CategoryModel = new CategoryModel();
+  courseOpen: CourseOpenModel = new CourseOpenModel();
   description: string = '';
+  learningTime: number = 0;
   stampCount: number = 0;
   time: number = 0;
 
+  requiredSubsidiaries: IdName[] = [];
+  courseSetJson: CourseSetModel = new CourseSetModel();
+  roleBooks: RoleBookModel[] = [];
+
+  // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
@@ -46,22 +51,35 @@ class LectureModel extends DramaEntityObservableModel {
       this.required = cineroom && lecture.requiredSubsidiaries
         && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
 
-      if (this.serviceType === LectureServiceType.Program) {
-        this.cubeTypeName = CubeTypeNameType.Course;
-      }
-      else {
-        this.cubeTypeName = CubeTypeNameType[CubeType[lecture.cubeType]];
-      }
+      this.cubeTypeName = LectureModel.getCubeTypeName(lecture.cubeType, this.serviceType);
+      console.log('this', this.name, this);
     }
   }
 
   static getServiceType(lecture: LectureModel) {
     //
+    // Todo: Program, Course 조건 API 수정되면 serviceType으로 변경해야 함.
     if (lecture.courseSetJson && lecture.courseSetJson.type === CourseSetType.Program) {
       return LectureServiceType.Program;
     }
+    else if (lecture.courseSetJson) {
+      return LectureServiceType.Course;
+    }
     else {
       return LectureServiceType.Card;
+    }
+  }
+
+  static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
+    //
+    if (serviceType === LectureServiceType.Program) {
+      return CubeTypeNameType.Program;
+    }
+    else if (serviceType === LectureServiceType.Course) {
+      return CubeTypeNameType.Course;
+    }
+    else {
+      return CubeTypeNameType[CubeType[cubeType]];
     }
   }
 }

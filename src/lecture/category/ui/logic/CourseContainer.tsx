@@ -4,19 +4,21 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Segment } from 'semantic-ui-react';
-import { IdName, mobxHelper } from 'shared';
+import { IdName, mobxHelper, Lecture } from 'shared';
 import { CubeTypeNameType } from 'personalcube/personalcube';
-import { CoursePlanService } from 'course';
-import { Lecture } from '../../../../shared';
-import { CourseSetType } from '../../../../course/model/CourseSetType';
-import LectureModel from '../../../shared/model/LectureModel';
+import { CoursePlanService, CourseSetType } from 'course';
+import { ProgramLectureService, CourseLectureServfice, LectureModel } from '../../../shared';
 
 
 interface Props extends RouteComponentProps<{ coursePlanId: string}> {
+  programLectureService?: ProgramLectureService,
+  courseLectureService?:  CourseLectureServfice,
   coursePlanService?: CoursePlanService,
 }
 
 @inject(mobxHelper.injectFrom(
+  'lecture.programLectureService',
+  'lecture.courseLectureService',
   'course.coursePlanService',
 ))
 @reactAutobind
@@ -25,6 +27,9 @@ class CourseContainer extends Component<Props> {
   //
   componentDidMount() {
     //
+    const { programLectureService, courseLectureService } = this.props;
+
+    // programLectureService.findProgramLecture()
     this.findCoursePlan();
   }
 
@@ -63,6 +68,8 @@ class CourseContainer extends Component<Props> {
     const programSet = coursePlanContents.courseSet.programSet;
 
     const mockLecture = new LectureModel();
+
+    console.log('programSet', programSet);
 
     return (
       <>

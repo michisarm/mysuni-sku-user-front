@@ -24,7 +24,7 @@ interface FieldProps {
   icon: string,
   text: string,
   bold?: boolean,
-  subField?: SubFieldProps,
+  subField?: React.ReactNode,
 }
 
 export const Field = ({ icon, text, bold, subField }: FieldProps) => (
@@ -40,7 +40,7 @@ export const Field = ({ icon, text, bold, subField }: FieldProps) => (
 
 interface SubFieldProps {
   icon: string,
-  text: string,
+  text: React.ReactNode,
   className?: string,
   bold?: boolean,
   children?: React.ReactNode

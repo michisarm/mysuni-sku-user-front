@@ -138,8 +138,8 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    if (data.lecture.serviceType === LectureServiceType.Program) {
-      history.push(`./course-plan/todo-course-plan-id/course-lecture/${lecture.serviceId}`);
+    if (data.lecture.serviceType === LectureServiceType.Program ||  data.lecture.serviceType === LectureServiceType.Course) {
+      history.push(`./course-plan/${lecture.coursePlanId}/${data.lecture.serviceType}/${lecture.serviceId}`);
     }
     else if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
@@ -164,7 +164,6 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
-    console.log('lectures', lectures);
 
     return (
       <CategoryLecturesWrapperView
