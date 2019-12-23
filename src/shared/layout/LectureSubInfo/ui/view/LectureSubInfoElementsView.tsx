@@ -135,6 +135,7 @@ interface OperatorProp {
 
 export const OperatorView = ({ operator }: OperatorProp) => {
   if (!operator) return null;
+  const emails = operator.email.split(',');
   return (
     <List className="class-info2">
       {
@@ -149,7 +150,14 @@ export const OperatorView = ({ operator }: OperatorProp) => {
         <List.Header>담당자</List.Header>
         <List.Description>
           {operator.name} {operator.company && <span className="middot">{operator.company}</span> }
-          <br /><a href={`mailto:${operator.email}`} className="underlink">{operator.email}</a>
+          <br />
+          {
+            emails.map(email => (
+              <a href={`mailto:${email}`} className="underlink">
+                {email}
+              </a>
+            ))
+          }
         </List.Description>
       </List.Item>
     </List>
