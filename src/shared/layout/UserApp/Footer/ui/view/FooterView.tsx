@@ -8,6 +8,8 @@ import {
   Button,
 } from 'semantic-ui-react';
 
+import PrivacyPolicyModalView from './PrivacyPolicyModalView';
+
 
 interface Props {
   noticePath: string
@@ -37,7 +39,9 @@ class FooterView extends Component<Props> {
             <Link to={noticePath} className="item">공지사항</Link>
             <Link to={faqPath} className="item">FAQ</Link>
             <Link to={qnaPath} className="item">문의하기</Link>
-            <a className="item active">개인정보 처리방침</a>
+            <PrivacyPolicyModalView
+              trigger={<a className="item">개인정보 처리방침</a>}
+            />
             <a className="item">서비스 이용약관</a>
           </div>
 
