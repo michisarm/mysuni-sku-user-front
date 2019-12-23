@@ -44,7 +44,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickSupport() {
     //
-    this.props.history.push('/board/support/notice');
+    this.props.history.push('/board/support/Notice');
     this.onClickToggle();
   }
 
