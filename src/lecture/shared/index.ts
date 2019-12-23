@@ -9,6 +9,7 @@ export { default as LectureModel } from './model/LectureModel';
 export { default as ProgramLectureModel } from './model/ProgramLectureModel';
 export { default as CourseLectureModel } from './model/CourseLectureModel';
 export { default as LectureServiceType } from './model/LectureServiceType';
+export { default as LectureViewModel } from './model/LectureViewModel';
 export { default as ChannelCountRdo } from './model/ChannelCountRdo';
 
 export { default as LectureApi } from './present/apiclient/LectureApi';

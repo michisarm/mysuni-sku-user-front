@@ -4,9 +4,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
+import moment from 'moment';
 import { Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LectureModel } from 'lecture';
+import { LectureViewModel } from 'lecture';
 import Action from '../../present/model/Action';
 import {
   Title, SubField, Buttons, Thumbnail,
@@ -14,7 +15,7 @@ import {
 
 
 interface Props {
-  lecture: LectureModel,
+  lectureView: LectureViewModel,
   thumbnailImage?: string,
   action?: Action,
   toggle?: boolean,
@@ -41,7 +42,7 @@ class CourseView extends Component<Props> {
   render() {
     //
     const {
-      lecture, thumbnailImage, action, toggle, open,
+      lectureView, thumbnailImage, action, toggle, open,
       onAction, onViewDetail, onToggle,
     } = this.props;
     // const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture.learningTime);
@@ -52,17 +53,23 @@ class CourseView extends Component<Props> {
 
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={lecture.name} category={lecture.category}>
+          <Title title={lectureView.name} category={lectureView.category}>
             <div className="deatil">
-              { lecture.cubeTypeName && (
+              { lectureView.cubeTypeName && (
                 <Field>
-                  <SubField bold icon="course" text={lecture.cubeTypeName} />
-                  {/*<span className="channel">{lecture.category.channel.name}</span>*/}
+                  <SubField bold icon="course" text={lectureView.cubeTypeName} />
+                  <span className="channel">{lectureView.category.channel.name}</span>
                 </Field>
               )}
               <Field>
-                <SubField icon="" text="">
-                  <span className="ml17" />
+                <SubField icon="date" text={`Creation date: ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
+                  {lectureView.learningPeriod && (
+                    <span className="ml17">
+                      Study start date, end date :
+                      {lectureView.learningPeriod && lectureView.learningPeriod.startDate}
+                       ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
+                    </span>
+                  )}
                 </SubField>
               </Field>
             </div>

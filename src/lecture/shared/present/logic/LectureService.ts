@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
+import LectureViewModel from '../../model/LectureViewModel';
 
 
 class LectureService {
@@ -15,6 +16,9 @@ class LectureService {
   @observable
   _lectures: LectureModel[] = [];
 
+  @observable
+  _lectureViews: LectureViewModel[] = [];
+
 
   constructor(lectureApi: LectureApi) {
     this.lectureApi = lectureApi;
@@ -25,6 +29,13 @@ class LectureService {
     //
     const lectures = this._lectures as any;
     return lectures.peek();
+  }
+
+  @computed
+  get lectureViews() {
+    //
+    const lectureViews = this._lectureViews as any;
+    return lectureViews.peek();
   }
 
   // Lectures ----------------------------------------------------------------------------------------------------------
@@ -55,6 +66,15 @@ class LectureService {
       this._lectures = this._lectures.concat(lectureOffsetElementList.results);
       return lectureOffsetElementList;
     });
+  }
+
+  @action
+  async findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+
+    runInAction(() => this._lectureViews = lectureViews);
+    return lectureViews;
   }
 
   @action
