@@ -76,7 +76,7 @@ class LectureCardPage extends Component<Props, State> {
     // lectureService.findLectureViews()
     if (match.params.serviceType === LectureServiceType.Program) {
       const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
-      lectureService.findLectureViews(programLecture.lectureCards, []);
+      // lectureService.findLectureViews(programLecture.lectureCards, []);
     }
     else {
       const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);

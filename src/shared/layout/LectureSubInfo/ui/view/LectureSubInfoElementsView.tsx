@@ -152,8 +152,8 @@ export const OperatorView = ({ operator }: OperatorProp) => {
           {operator.name} {operator.company && <span className="middot">{operator.company}</span> }
           <br />
           {
-            emails.map(email => (
-              <a href={`mailto:${email}`} className="underlink">
+            emails.map((email, index: number) => (
+              <a key={`email-${index}`} href={`mailto:${email}`} className="underlink">
                 {email}
               </a>
             ))
