@@ -61,6 +61,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onLearningStart() {
+    const { typeViewObject } = this.props;
+    
+    if (typeViewObject.url) {
+      window.open(typeViewObject.url, '_blank');
+    }
     console.log('learning start');
   }
 
