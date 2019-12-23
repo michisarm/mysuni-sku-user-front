@@ -233,6 +233,7 @@ class LectureCardPage extends Component<Props, State> {
     return {
       fileBoxId: officeWeb.fileBoxId,
       learningPeriod: officeWeb.learningPeriod,
+      url: officeWeb.webPageUrl,
     };
   }
 
