@@ -60,7 +60,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
         post.deleted = true;
         if (postService) postService.modifyPost(postId, post);
       });
-    this.onClose('qa');
+    this.onClose('Q&A');
   }
 
   deleteQnaDetail() {
@@ -93,11 +93,11 @@ class QnaDetailContainer extends React.Component<Props, States> {
                   </div>
                   <div className="user-info">
                     <span className="category">{category.name}</span>
-                    <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                    <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
                   </div>
                   <div className="actions">
                     <Button icon className="left postset delete"><Icon name="delete" onClick={() => this.deleteQnaDetail()} />Delete</Button>
-                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('qa')}><Icon className="commu-list16" />List</Button>
+                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
                   </div>
                 </div>
               </div>
@@ -126,7 +126,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                 <Button icon className="left post delete" onClick={() => this.deleteQnaDetail()}>
                   <Icon className="del24" /> Delete
                 </Button>
-                <Button icon className="left post list2" onClick={() => this.onClose('qa')}>
+                <Button icon className="left post list2" onClick={() => this.onClose('Q&A')}>
                   <Icon className="list24" /> List
                 </Button>
               </div>

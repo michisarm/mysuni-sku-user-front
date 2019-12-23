@@ -55,20 +55,20 @@ class FaqTabContainer extends React.Component<Props> {
               result && result.length && result.map((post, index) => {
                 if (post.pinned) {
                   return (
-                    <a target="_blank" className="row important" key={index}>
+                    <a target="_blank" className="row important" key={index} onClick={() => routeToFaqDetail(post.postId)}>
                       <span className="cell title">
                         <span className="inner">
-                          <span className="ellipsis" onClick={() => routeToFaqDetail(post.postId)}>{post.title}</span>
+                          <span className="ellipsis">{post.title}</span>
                         </span>
                       </span>
                     </a>
                   );
                 } else {
                   return (
-                    <a target="_blank" className="row" key={index}>
+                    <a target="_blank" className="row" key={index} onClick={() => routeToFaqDetail(post.postId)}>
                       <span className="cell title">
                         <span className="inner">
-                          <span className="ellipsis" onClick={() => routeToFaqDetail(post.postId)}>{post.title}</span>
+                          <span className="ellipsis">{post.title}</span>
                         </span>
                       </span>
                     </a>
@@ -89,11 +89,12 @@ class FaqTabContainer extends React.Component<Props> {
           }
           {
             result && result.length && (
-              <div className="more-comments">
-                <Button icon className="left moreview" onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}>
-                  <Icon className="moreview"
-                    disabled={disabled}
-                  />list more
+              <div className="more-comments" onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}>
+                <Button icon
+                  className="left moreview"
+                  disabled={disabled}
+                >
+                  <Icon className="moreview" />list more
                 </Button>
               </div>
             ) || ''

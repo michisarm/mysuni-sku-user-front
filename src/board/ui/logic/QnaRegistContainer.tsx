@@ -79,7 +79,7 @@ class QnaRegistContainer extends React.Component<Props, States> {
     const { post } = this.props.postService || {} as PostService;
 
     if (postService) postService.registerPost(post);
-    this.onClose('qa');
+    this.onClose('Q&A');
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {
@@ -196,7 +196,7 @@ class QnaRegistContainer extends React.Component<Props, States> {
                 </Form>
               </Form.Field>
               <div className="buttons">
-                <Button className="fix line" onClick={() => this.onClose('qa')}>Close</Button>
+                <Button className="fix line" onClick={() => this.onClose('Q&A')}>Close</Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>Submit</Button>
               </div>
             </Form>

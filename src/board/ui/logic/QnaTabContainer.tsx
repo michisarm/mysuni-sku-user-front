@@ -90,23 +90,20 @@ class QnaTabContainer extends React.Component<Props> {
                 if (post.answered) {
                   return (
                     <>
-                      <a target="_blank" className="row">
+                      <a target="_blank" className="row" onClick={() => routeToQnaDetail(post.postId)}>
                         <span className="cell title">
                           <span className="inner">
-                            <span className="ellipsis"
-                              onClick={() => routeToQnaDetail(post.postId)}
-                            >{post.title}
-                            </span>
+                            <span className="ellipsis">{post.title}</span>
                           </span>
                         </span>
                         <span className="cell category">{post.category.name}</span>
                         <span className="cell status">답변완료</span>
                         <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
                       </a>
-                      <a target="_blank" className="row reply">
+                      <a target="_blank" className="row reply" onClick={() => routeToAnsweredDetail(post.postId)}>
                         <span className="cell title">
                           <Icon className="reply16-b" /><span className="blind">reply</span>
-                          <span className="ellipsis" onClick={() => routeToAnsweredDetail(post.postId)}>{post.answer.name}</span>
+                          <span className="ellipsis">{post.answer.name}</span>
                         </span>
                         <span className="cell category" />
                         <span className="cell status" />
@@ -116,10 +113,10 @@ class QnaTabContainer extends React.Component<Props> {
                   );
                 } else {
                   return (
-                    <a target="_blank" className="row" key ={index}>
+                    <a target="_blank" className="row" key ={index} onClick={() => routeToQnaDetail(post.postId)}>
                       <span className="cell title">
                         <span className="inner">
-                          <span className="ellipsis" onClick={() => routeToQnaDetail(post.postId)}>{post.title}</span>
+                          <span className="ellipsis">{post.title}</span>
                         </span>
                       </span>
                       <span className="cell category">{post.category.name}</span>
@@ -143,9 +140,12 @@ class QnaTabContainer extends React.Component<Props> {
           }
           {
             result && result.length && (
-              <div className="more-comments">
-                <Button icon className="left moreview">
-                  <Icon className="moreview" disabled={disabled} onClick={() => findQnaPosts(answered, categorys[qnaTabIndex].categoryId, end)} />list more
+              <div className="more-comments" onClick={() => findQnaPosts(answered, categorys[qnaTabIndex].categoryId, end)}>
+                <Button icon
+                  className="left moreview"
+                  disabled={disabled}
+                >
+                  <Icon className="moreview" />list more
                 </Button>
               </div>
             ) || ''

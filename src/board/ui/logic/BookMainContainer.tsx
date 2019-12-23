@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router';
+import { ContentLayout } from 'shared';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
@@ -47,16 +48,18 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
+    console.log(1);
     const { boardId } = this.props.match.params;
-    if (boardId === 'notice' || boardId === '') {
+    console.log(boardId);
+    if (boardId === 'Notice' || boardId === '') {
 
       this.setState({ tabIndex: 0, activeItem: boardId });
       this.findNoticePinnedPosts();
-    } else if (boardId === 'faq') {
+    } else if (boardId === 'FAQ') {
 
       this.setState({ tabIndex: 1, activeItem: boardId  });
       this.findFaqCategoris();
-    } else if (boardId === 'qa') {
+    } else if (boardId === 'Q&A') {
 
       this.setState({ tabIndex: 2, activeItem: boardId });
       this.findQnaCategories();
@@ -69,11 +72,11 @@ export class BookMainContainer extends React.Component<Props, States> {
     if (postService) {
       this.setState({ activeItem: name, faqCategoryId: '', faqTabIndex: 0 });
     }
-    if (name === 'notice') {
+    if (name === 'Notice') {
       this.findNoticePinnedPosts();
-    } else if (name === 'faq') {
+    } else if (name === 'FAQ') {
       this.findFaqCategoris();
-    } else if (name === 'qa') {
+    } else if (name === 'Q&A') {
       this.findQnaCategories();
     }
   }
@@ -212,7 +215,6 @@ export class BookMainContainer extends React.Component<Props, States> {
   }
 
   routeToQnaRegist() {
-    console.log(56);
     this.props.history.push('/board/support-qna');
   }
 
@@ -238,7 +240,13 @@ export class BookMainContainer extends React.Component<Props, States> {
     const { postService, categoryService } = this.props;
 
     return (
-      <section className="content support">
+      <ContentLayout
+        className="support"
+        breadcrumb={[
+          { text: `Support`, path: `/board` },
+          { text: `${activeItem}`, path: `/board/support/${activeItem}` },
+        ]}
+      >
         <div className="main-info-area">
           <div className="support-info">
             <div className="title-area">
@@ -262,21 +270,21 @@ export class BookMainContainer extends React.Component<Props, States> {
             <div className="cont-inner">
               <Menu className="sku">
                 <Menu.Item
-                  name="notice"
-                  active={activeItem === 'notice'}
+                  name="Notice"
+                  active={activeItem === 'Notice'}
                   onClick={this.handleItemClick}
                 > Notice
                   {/*<span className="new">+N</span>*/}
                 </Menu.Item>
                 <Menu.Item
-                  name="faq"
-                  active={activeItem === 'faq'}
+                  name="FAQ"
+                  active={activeItem === 'FAQ'}
                   onClick={this.handleItemClick}
                 > FAQ
                 </Menu.Item>
                 <Menu.Item
-                  name="qa"
-                  active={activeItem === 'qa'}
+                  name="Q&A"
+                  active={activeItem === 'Q&A'}
                   onClick={this.handleItemClick}
                 > Q&A
                   {/*<span className="new">+N</span>*/}
@@ -285,7 +293,7 @@ export class BookMainContainer extends React.Component<Props, States> {
             </div>
           </Sticky>
           {
-            activeItem === 'notice' ?
+            activeItem === 'Notice' ?
               <NoticeTabContainer
                 findNoticePosts={this.findNoticePosts}
                 routeToNoticeDetail ={this.routeToNoticeDetail}
@@ -295,7 +303,7 @@ export class BookMainContainer extends React.Component<Props, States> {
               : ''
           }
           {
-            activeItem === 'faq' ?
+            activeItem === 'FAQ' ?
               <FaqTabContainer
                 faqCategoryId={faqCategoryId}
                 handleFaqCategoryTabChange={this.handleFaqCategoryTabChange}
@@ -309,7 +317,7 @@ export class BookMainContainer extends React.Component<Props, States> {
               : ''
           }
           {
-            activeItem === 'qa' ?
+            activeItem === 'Q&A' ?
               <QnaTabContainer
                 routeToQnaRegist={this.routeToQnaRegist}
                 findQnaPosts={this.findQnaPosts}
@@ -325,7 +333,7 @@ export class BookMainContainer extends React.Component<Props, States> {
               : ''
           }
         </div>
-      </section>
+      </ContentLayout>
     );
   }
 }

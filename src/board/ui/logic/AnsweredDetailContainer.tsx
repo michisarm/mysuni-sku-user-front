@@ -53,10 +53,10 @@ class AnsweredDetailContainer extends React.Component<Props> {
                   </div>
                   <div className="user-info">
                     <span className="category">{post.category.name}</span>
-                    <span className="date">{answer.writtenTime && new Date(answer.writtenTime).toLocaleDateString()}</span>
+                    <span className="date">{answer.writtenTime && new Date(answer.writtenTime).toLocaleString()}</span>
                   </div>
                   <div className="actions">
-                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('qa')}><Icon className="commu-list16" />List</Button>
+                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
                   </div>
                 </div>
               </div>
@@ -81,7 +81,7 @@ class AnsweredDetailContainer extends React.Component<Props> {
           </div>
           <Segment className="full">
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('qa')}>
+              <Button icon className="left post list2" onClick={() => this.onClose('Q&A')}>
                 <Icon className="list24" /> List
               </Button>
             </div>
