@@ -198,8 +198,8 @@ class LectureOverviewView extends Component<Props, State> {
           <OverviewField.Item
             titleIcon="tag2"
             title="Tag"
-            content={viewObject.tags.map((tag: string) => (
-              tag && <Button className="tag">{tag}</Button>
+            content={viewObject.tags.map((tag: string, index: number) => (
+              tag && <Button key={`tag-${index}`} className="tag">{tag}</Button>
             ))}
           />
         </OverviewField.List>
