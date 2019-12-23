@@ -20,7 +20,7 @@ class FaqDetailContainer extends React.Component<Props> {
     //
     const { postId } = this.props.match.params;
     const { postService, categoryService } = this.props;
-    console.log(postId);
+
     if (postService && categoryService) {
       Promise.resolve()
         .then(() => postService.findPostByPostId(postId))
@@ -48,10 +48,10 @@ class FaqDetailContainer extends React.Component<Props> {
                   <div className="title-inner">
                     <div className="title"> {post.title}</div>
                     <div className="user-info">
-                      <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                      <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
                     </div>
                     <div className="actions">
-                      <Button icon className="left postset commu-list16" onClick={() => this.onClose('faq')}><Icon
+                      <Button icon className="left postset commu-list16" onClick={() => this.onClose('FAQ')}><Icon
                         className="commu-list16"
                       />List
                       </Button>
@@ -76,7 +76,7 @@ class FaqDetailContainer extends React.Component<Props> {
           </div>
           <Segment className="full">
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('faq')}>
+              <Button icon className="left post list2" onClick={() => this.onClose('FAQ')}>
                 <Icon className="list24" /> List
               </Button>
             </div>

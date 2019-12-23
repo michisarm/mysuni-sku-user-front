@@ -33,10 +33,10 @@ class NoticeTabContainer extends React.Component<Props> {
               pinnedResult && pinnedResult.length && pinnedResult.map((pinnedPost, index) => {
                 if (pinnedPost.time && new Date(pinnedPost.time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000))) {
                   return (
-                    <a target="_blank" className="row important new" key={index}>
+                    <a target="_blank" className="row important new" key={index} onClick={() => routeToNoticeDetail(pinnedPost.postId)}>
                       <span className="cell title">
                         <span className="inner">
-                          <span className="ellipsis" onClick={() => routeToNoticeDetail(pinnedPost.postId)}>{pinnedPost.title}</span>
+                          <span className="ellipsis">{pinnedPost.title}</span>
                         </span>
                       </span>
                       <span className="cell view">{pinnedPost.readCount}명 읽음</span>
@@ -45,10 +45,10 @@ class NoticeTabContainer extends React.Component<Props> {
                   );
                 } else {
                   return (
-                    <a target="_blank" className="row important" key={index}>
+                    <a target="_blank" className="row important" key={index} onClick={() => routeToNoticeDetail(pinnedPost.postId)}>
                       <span className="cell title">
                         <span className="inner">
-                          <span className="ellipsis" onClick={() => routeToNoticeDetail(pinnedPost.postId)}>{pinnedPost.title}</span>
+                          <span className="ellipsis">{pinnedPost.title}</span>
                           {/*<Link to={`/books/notice-detail/${pinnedPost.postId}`}>{pinnedPost.title}</Link>*/}
                         </span>
                       </span>
@@ -63,10 +63,10 @@ class NoticeTabContainer extends React.Component<Props> {
             result && result.length && result.map((post, index) => {
               if (post && post.pinned === true) {
                 return (
-                  <a target="_blank" className="row important" key={index}>
+                  <a target="_blank" className="row important" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
                     <span className="cell title">
                       <span className="inner">
-                        <span className="ellipsis" onClick={() => routeToNoticeDetail(post.postId)}>{post.title}</span>
+                        <span className="ellipsis">{post.title}</span>
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
@@ -75,10 +75,10 @@ class NoticeTabContainer extends React.Component<Props> {
                 );
               } else if (post.time && new Date(post.time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000))) {
                 return (
-                  <a target="_blank" className="row new" key={index}>
+                  <a target="_blank" className="row new" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
                     <span className="cell title">
                       <span className="inner">
-                        <span className="ellipsis" onClick={() => routeToNoticeDetail(post.postId)}>{post.title}</span>
+                        <span className="ellipsis">{post.title}</span>
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
@@ -87,10 +87,10 @@ class NoticeTabContainer extends React.Component<Props> {
                 );
               } else {
                 return (
-                  <a target="_blank" className="row" key={index}>
+                  <a target="_blank" className="row" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
                     <span className="cell title">
                       <span className="inner">
-                        <span className="ellipsis" onClick={() => routeToNoticeDetail(post.postId)}>{post.title}</span>
+                        <span className="ellipsis">{post.title}</span>
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
@@ -114,9 +114,12 @@ class NoticeTabContainer extends React.Component<Props> {
           }
           {
             ( pinnedResult && pinnedResult.length || result && result.length ) && (
-              <div className="more-comments">
-                <Button icon className="left moreview" onClick={() => findNoticePosts(end)}>
-                  <Icon className="moreview" disabled={disabled} />list more
+              <div className="more-comments" onClick={() => findNoticePosts(end)}>
+                <Button icon
+                  className="left moreview"
+                  disabled={disabled}
+                >
+                  <Icon className="moreview" />list more
                 </Button>
               </div>
             ) || ''
