@@ -52,7 +52,6 @@ class LectureModel extends DramaEntityObservableModel {
         && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
 
       this.cubeTypeName = LectureModel.getCubeTypeName(lecture.cubeType, this.serviceType);
-      console.log('this', this.name, this);
     }
   }
 

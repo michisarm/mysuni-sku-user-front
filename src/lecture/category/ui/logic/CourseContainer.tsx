@@ -4,15 +4,15 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Segment } from 'semantic-ui-react';
-import { IdName, mobxHelper, Lecture } from 'shared';
+import { IdName, Lecture, mobxHelper } from 'shared';
 import { CubeTypeNameType } from 'personalcube/personalcube';
 import { CoursePlanService, CourseSetType } from 'course';
-import { ProgramLectureService, CourseLectureServfice, LectureModel } from '../../../shared';
+import { CourseLectureService, LectureModel, LectureServiceType, ProgramLectureService } from '../../../shared';
 
 
-interface Props extends RouteComponentProps<{ coursePlanId: string}> {
+interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
   programLectureService?: ProgramLectureService,
-  courseLectureService?:  CourseLectureServfice,
+  courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
 }
 
@@ -27,22 +27,35 @@ class CourseContainer extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { programLectureService, courseLectureService } = this.props;
-
-    // programLectureService.findProgramLecture()
+    this.findCourseLecture();
     this.findCoursePlan();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+      this.findCourseLecture();
       this.findCoursePlan();
+    }
+  }
+
+  async findCourseLecture() {
+    //
+    const { match, programLectureService, courseLectureService } = this.props;
+
+    if (match.params.serviceType === LectureServiceType.Program) {
+      console.log('This is programs');
+    }
+    else {
+      console.log('This is Course');
     }
   }
 
   async findCoursePlan() {
     //
     const { match, coursePlanService } = this.props;
+
+
 
     const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
 
