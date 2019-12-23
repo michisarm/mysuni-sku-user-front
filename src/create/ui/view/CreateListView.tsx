@@ -48,10 +48,9 @@ class CreateListView extends React.Component <Props> {
           </Table>
         </div>
         <div className="more-comments">
-          <Button icon className="left moreview">
+          <Button icon className="left moreview" onClick={() => findAllCubes(limit)}>
             <Icon className="moreview"
               disabled={disabled}
-              onClick={() => findAllCubes(limit)}
             />list more
           </Button>
         </div>

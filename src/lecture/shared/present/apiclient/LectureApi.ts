@@ -33,6 +33,11 @@ class LectureApi {
     return axiosApi.get<ChannelCountRdo[]>(this.baseUrl + `/count/byChannels?${queryParams}`)
       .then(response => response && response.data || []);
   }
+
+  findLecture(lectureCardIds: string[], courseLectureIds: string[]) {
+    //
+
+  }
 }
 
 LectureApi.instance = new LectureApi();

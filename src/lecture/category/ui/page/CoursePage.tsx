@@ -3,16 +3,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { BoardService } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, Type, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
-import { CoursePlanService, LearningCardService } from 'course';
-import { PersonalCubeService, ContentsServiceType, CubeType } from 'personalcube/personalcube';
-import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomService } from 'personalcube/classroom';
-import { MediaService } from 'personalcube/media';
-import { OfficeWebService } from 'personalcube/officeweb';
-import { LectureCardService } from 'lecture';
+import { CoursePlanService } from 'course';
+import { CubeType } from 'personalcube/personalcube';
 
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -22,17 +16,9 @@ import CourseContainer from '../logic/CourseContainer';
 
 
 
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string }> {
+interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, coursePlanId: string, courseLectureId: string, }> {
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
-  personalCubeService: PersonalCubeService,
-  cubeIntroService: CubeIntroService,
-  classroomService: ClassroomService,
-  mediaService: MediaService,
-  officeWebService: OfficeWebService,
-  boardService: BoardService,
-  lectureCardService: LectureCardService,
-  learningCardService: LearningCardService,
 }
 
 interface State {
@@ -42,14 +28,6 @@ interface State {
 @inject(mobxHelper.injectFrom(
   'collegeService',
   'course.coursePlanService',
-  'personalCube.personalCubeService',
-  'personalCube.cubeIntroService',
-  'personalCube.classroomService',
-  'personalCube.mediaService',
-  'personalCube.officeWebService',
-  'personalCube.boardService',
-  'lecture.lectureCardService',
-  'course.learningCardService'
 ))
 @reactAutobind
 @observer
@@ -71,7 +49,8 @@ class LectureCardPage extends Component<Props, State> {
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-    // coursePlanService.findCoursePlan(params.coursePlanId);
+    const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
+    coursePlanService.findCoursePlanContents(coursePlan.contentsId);
 
 
     // const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
@@ -87,34 +66,39 @@ class LectureCardPage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService,
+      coursePlanService,
     } = this.props;
-    const { personalCube } = personalCubeService!;
-    const { cubeIntro } = cubeIntroService!;
+    const { coursePlan, coursePlanContents } = coursePlanService!;
+    // const { cubeIntro } = cubeIntroService!;
 
+    console.log(coursePlan);
     return {
       // Sub info
       required: false,  // Todo
-      difficultyLevel: cubeIntro.difficultyLevel,
-      learningTime: cubeIntro.learningTime,
+      // difficultyLevel: cubeIntro.difficultyLevel,
+      learningTime: 0,
       participantCount: '1,250',  // Todo
 
-      instructorName: cubeIntro.description.instructor.name,
-      operatorName: cubeIntro.operation.operator.name,
-      operatorCompany: cubeIntro.operation.operator.company,
-      operatorEmail: cubeIntro.operation.operator.email,
+      // instructorName: cubeIntro.description.instructor.name,
+      operatorName: coursePlan.courseOperator.name,
+      operatorCompany: coursePlan.courseOperator.company,
+      operatorEmail: coursePlan.courseOperator.email,
 
       // Fields
-      description: cubeIntro.description.description,
+      subCategories: coursePlan.subCategories,
+      description: coursePlanContents.description,
 
-      goal: cubeIntro.description.goal,
-      applicants: cubeIntro.description.applicants,
-      organizerName: cubeIntro.operation.organizer.name,
+      tags: coursePlan.courseOpen.tags,
+      surveyId: coursePlanContents.surveyId,
+      fileBoxId: coursePlanContents.fileBoxId,
+      reportFileBoxId: coursePlan.reportFileBox.fileBoxId,
+      stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
 
-      completionTerms: cubeIntro.description.completionTerms,
-      guide: cubeIntro.description.guide,
-
-      tags: personalCube.tags,
+      //etc
+      category: coursePlan.category,
+      cubeType: CubeType.None,
+      name: coursePlan.name,
+      time: coursePlan.time,
 
       classroom: undefined,
     };
@@ -123,56 +107,14 @@ class LectureCardPage extends Component<Props, State> {
   getTypeViewObject(): any {
     //
     const {
-      personalCubeService,
+      coursePlanService,
     } = this.props;
-    const { personalCube } = personalCubeService!;
-
-    const contentsService = personalCube.contents.service;
-    let cubeTypeViewObject = {};
-
-    switch (contentsService.type) {
-      case ContentsServiceType.Classroom:
-        cubeTypeViewObject = this.getClassroomViewObject();
-        break;
-      case ContentsServiceType.Media:
-        cubeTypeViewObject = this.getMediaViewObject();
-        break;
-      case ContentsServiceType.OfficeWeb:
-        cubeTypeViewObject = this.getOfficeWebViewObject();
-        break;
-      case ContentsServiceType.Community:
-        cubeTypeViewObject = this.getCommunityViewObject();
-        break;
-    }
-
-    return cubeTypeViewObject;
-  }
-
-  getClassroomViewObject() {
-    //
-    const { classroom } = this.props.classroomService!;
-    console.log('ClassroomViewObject');
+    const { coursePlan, coursePlanContents } = coursePlanService!;
 
     return {
-      capacity: classroom.capacity,
-      applyingPeriod: classroom.enrolling.applyingPeriod,
-      cancellablePeriod: classroom.enrolling.cancellablePeriod,
-      cancellationPenalty: classroom.enrolling.cancellationPenalty,
-      location: classroom.operation.location,
+      learningPeriod: coursePlanContents.learningPeriod,
+      fileBoxId: '',
     };
-  }
-
-  getMediaViewObject() {
-    //
-    return {};
-  }
-
-  getOfficeWebViewObject() {
-    return {};
-  }
-
-  getCommunityViewObject() {
-    return {};
   }
 
   getMenus() {
@@ -189,8 +131,7 @@ class LectureCardPage extends Component<Props, State> {
   renderChildren(viewObject: any, typeViewObject: any) {
     //
     const { type } = this.state;
-    const { personalCube } = this.props.personalCubeService;
-    const { lectureCard } = this.props.lectureCardService;
+    const { coursePlan } = this.props.coursePlanService;
 
     switch (type) {
       case Type.List:
@@ -200,7 +141,6 @@ class LectureCardPage extends Component<Props, State> {
       case Type.Overview:
         return (
           <LectureOverviewView
-            personalCube={personalCube}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
           />
@@ -208,8 +148,10 @@ class LectureCardPage extends Component<Props, State> {
       case Type.Comments:
         return (
           <LectureCommentsContainer
-            reviewFeedbackId={lectureCard.reviewFeedbackId}
-            commentFeedbackId={lectureCard.commentFeedbackId}
+            // reviewFeedbackId={lectureCard.reviewFeedbackId}
+            // commentFeedbackId={lectureCard.commentFeedbackId}
+            reviewFeedbackId=""
+            commentFeedbackId=""
           />
         );
       default:
@@ -219,9 +161,8 @@ class LectureCardPage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, personalCubeService } = this.props;
+    const { collegeService } = this.props;
     const { college } = collegeService;
-    const { personalCube } = personalCubeService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
 
@@ -234,7 +175,7 @@ class LectureCardPage extends Component<Props, State> {
         ]}
       >
         <LectureCardHeaderView
-          personalCube={personalCube}
+          viewObject={viewObject}
           typeViewObject={{}}
           rating={1}
           maxRating={5}

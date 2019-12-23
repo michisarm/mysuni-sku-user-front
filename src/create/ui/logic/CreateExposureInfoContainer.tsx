@@ -2,7 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Checkbox, Form, Radio, Select, Button } from 'semantic-ui-react';
-import { IdName } from 'shared';
+import { mobxHelper, IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from '../../../college';
 import { IconType } from '../../../personalcube/personalcube/model/IconType';
@@ -20,7 +20,7 @@ interface States {
   subsidiariesAll: string
 }
 
-@inject('personalCubeService', 'subsidiaryService', 'collegeService')
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'subsidiaryService', 'collegeService'))
 @observer
 @reactAutobind
 class CreateExposureInfoContainer extends React.Component<Props, States> {

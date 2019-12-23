@@ -2,6 +2,8 @@
 /** Service */
 import LectureCardService from './shared/present/logic/LectureCardService';
 import LectureService from './shared/present/logic/LectureService';
+import ProgramLectureService from './shared/present/logic/ProgramLectureService';
+import CourseLectureService from './shared/present/logic/CourseLectureService';
 import LectureCountService from './category/present/logic/LectureCountService';
 
 
@@ -9,6 +11,8 @@ export const lectureCardStores = {
   lecture: {
     lectureCardService: LectureCardService.instance,
     lectureService: LectureService.instance,
+    programLectureService: ProgramLectureService.instance,
+    courseLectureService: CourseLectureService.instance,
     lectureCountService: LectureCountService.instance,
   },
 };
@@ -16,12 +20,16 @@ export const lectureCardStores = {
 export {
   LectureCardService,
   LectureService,
+  ProgramLectureService,
+  CourseLectureService,
 };
 
 /** Model */
 export { default as LectureCardModel } from './shared/model/LectureCardModel';
 export { default as LectureModel } from './shared/model/LectureModel';
 export { default as LectureServiceType } from './shared/model/LectureServiceType';
+export { default as ProgramLectureModel } from './shared/model/ProgramLectureModel';
+export { default as CourseLectureModel } from './shared/model/CourseLectureModel';
 
 /** Component */
 export { default as CategoryLecturesPage } from './category/ui/page/CategoryLecturesPage';

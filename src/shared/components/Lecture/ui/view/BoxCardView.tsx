@@ -1,15 +1,15 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 // import numeral from 'numeral';
-import { Card, Icon, Rating, Button } from 'semantic-ui-react';
+import { Button, Card, Icon, Rating } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture';
 import Action from '../../present/model/Action';
-import { Title, Fields, Field, Buttons, Thumbnail, Ribbon } from './LectureElementsView';
+import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from './LectureElementsView';
+import CubeTypeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
 
 
 interface Props {
@@ -83,7 +83,7 @@ class BoxCardView extends Component<Props, States> {
         onMouseLeave={onHoverOut}
       >
         {/* Todo: stampReady */}
-        <Ribbon stampReady={false} required={lecture!.required} />
+        <Ribbon required={lecture!.required} />
 
         <div className="card-inner">
           <Thumbnail image={thumbnailImage} />
@@ -92,7 +92,19 @@ class BoxCardView extends Component<Props, States> {
 
           <Fields>
             { lecture.cubeTypeName && <Field icon="video2" text={lecture.cubeTypeName} bold />}
-            { hourAndMinute && <Field icon="time2" text={hourAndMinute} bold />}
+            <div className="li">
+              { hourAndMinute && (
+                <SubField
+                  icon="time2"
+                  bold
+                  text={hourAndMinute}
+                />
+              )}
+              { (lecture.cubeTypeName === CubeTypeNameType.Program) && (
+                <SubField className={hourAndMinute ? 'card-stamp' : ''} bold icon="stamp" text={`Stamp x${lecture.stampCount}`} />
+              )}
+
+            </div>
             {/* Todo: 이수 */}
             {/*<Field icon="complete" text={`이수 ${numeral(lecture!.countOfComplete).format('0,0')}명`} />*/}
             {/*<Field icon="complete" text="이수 (?)명" />*/}

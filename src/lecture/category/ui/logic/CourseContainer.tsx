@@ -4,19 +4,21 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Segment } from 'semantic-ui-react';
-import { IdName, mobxHelper } from 'shared';
+import { IdName, Lecture, mobxHelper } from 'shared';
 import { CubeTypeNameType } from 'personalcube/personalcube';
-import { CoursePlanService } from 'course';
-import { Lecture } from '../../../../shared';
-import { CourseSetType } from '../../../../course/model/CourseSetType';
-import LectureModel from '../../../shared/model/LectureModel';
+import { CoursePlanService, CourseSetType } from 'course';
+import { CourseLectureService, LectureModel, LectureServiceType, ProgramLectureService } from '../../../shared';
 
 
-interface Props extends RouteComponentProps<{ coursePlanId: string}> {
+interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
+  programLectureService?: ProgramLectureService,
+  courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
 }
 
 @inject(mobxHelper.injectFrom(
+  'lecture.programLectureService',
+  'lecture.courseLectureService',
   'course.coursePlanService',
 ))
 @reactAutobind
@@ -25,19 +27,35 @@ class CourseContainer extends Component<Props> {
   //
   componentDidMount() {
     //
+    this.findCourseLecture();
     this.findCoursePlan();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+      this.findCourseLecture();
       this.findCoursePlan();
+    }
+  }
+
+  async findCourseLecture() {
+    //
+    const { match, programLectureService, courseLectureService } = this.props;
+
+    if (match.params.serviceType === LectureServiceType.Program) {
+      console.log('This is programs');
+    }
+    else {
+      console.log('This is Course');
     }
   }
 
   async findCoursePlan() {
     //
     const { match, coursePlanService } = this.props;
+
+
 
     const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
 
@@ -52,7 +70,7 @@ class CourseContainer extends Component<Props> {
       this.props.history.push(`./${id}`);
     }
     else if (type === CourseSetType.Card) {
-      this.props.history.push(`../lecture-card/${id}`);
+      this.props.history.push(`../../../cube/todo-cube-id/lecture-card/${id}`);
     }
   }
 
@@ -63,6 +81,8 @@ class CourseContainer extends Component<Props> {
     const programSet = coursePlanContents.courseSet.programSet;
 
     const mockLecture = new LectureModel();
+
+    console.log('programSet', programSet);
 
     return (
       <>

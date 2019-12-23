@@ -16,4 +16,6 @@ export {
   LearningCardService,
 };
 
+/** Model */
 export { CoursePlanModel } from './model/CoursePlanModel';
+export { CourseSetType } from './model/CourseSetType';

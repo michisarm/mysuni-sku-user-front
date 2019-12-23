@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { ContentLayout } from 'shared';
+import { mobxHelper, ContentLayout } from 'shared';
 import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
 
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps<{cubeId: string}>{
 
 }
 
-@inject('personalCubeService')
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
 @observer
 @reactAutobind
 class CreateDetailContainer extends React.Component<Props> {

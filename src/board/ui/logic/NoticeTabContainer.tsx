@@ -115,8 +115,8 @@ class NoticeTabContainer extends React.Component<Props> {
           {
             ( pinnedResult && pinnedResult.length || result && result.length ) && (
               <div className="more-comments">
-                <Button icon className="left moreview">
-                  <Icon className="moreview" disabled={disabled} onClick={() => findNoticePosts(end)} />list more
+                <Button icon className="left moreview" onClick={() => findNoticePosts(end)}>
+                  <Icon className="moreview" disabled={disabled} />list more
                 </Button>
               </div>
             ) || ''

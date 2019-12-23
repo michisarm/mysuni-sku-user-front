@@ -9,7 +9,7 @@ import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture';
 import { LearningCardService } from 'course';
 
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string, postId: string }>{
+interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
   boardService?: BoardService
   personalCubeService?: PersonalCubeService
   lectureCardService: LectureCardService
@@ -40,8 +40,8 @@ class PostFormPage extends React.Component<Props> {
   }
 
   routeTo() {
-    const { collegeId, lectureCardId, postId } = this.props.match.params;
-    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `/posts/${postId}` : ''}`);
+    const { collegeId, cubeId, lectureCardId, postId } = this.props.match.params;
+    this.props.history.push(`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${cubeId}lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `/posts/${postId}` : ''}`);
   }
 
   render() {

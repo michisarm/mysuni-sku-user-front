@@ -188,7 +188,8 @@ class LectureContainer extends Component<Props, States> {
             action={this.getAction()}
             onAction={onAction}
             onViewDetail={this.onViewDetail}
-            onHover={this.onHoverIn}
+            onHoverIn={this.onHoverIn}
+            onHoverOut={this.onHoverOut}
           />
         </Lecture.Group>
       </li>

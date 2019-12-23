@@ -4,13 +4,12 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { DatePeriod, OverviewField } from 'shared';
-import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
+import { CubeType } from 'personalcube/personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 
 
 interface Props {
-  personalCube: PersonalCubeModel,
   viewObject: any
   typeViewObject: any
 }
@@ -42,13 +41,13 @@ class LectureOverviewView extends Component<Props, State> {
 
   renderSubCategories() {
     //
-    const { personalCube } = this.props;
+    const { viewObject } = this.props;
 
-    if (!personalCube.subCategories || personalCube.subCategories.length < 1) {
+    if (!viewObject.subCategories || viewObject.subCategories.length < 1) {
       return null;
     }
 
-    const subCategoriesPerMain = personalCube.subCategories.reduce((prev: any, subCategory) => {
+    const subCategoriesPerMain = viewObject.subCategories.reduce((prev: any, subCategory: any) => {
       //
       const subCategories: string[] = prev[subCategory.college.name] || [];
 
@@ -70,14 +69,14 @@ class LectureOverviewView extends Component<Props, State> {
 
   render() {
     //
-    const { personalCube, viewObject, typeViewObject } = this.props;
+    const { viewObject, typeViewObject } = this.props;
 
-    if (!personalCube.category) {
+    if (!viewObject.category) {
       return null;
     }
 
     const { categoryOpen } = this.state;
-    const cubeType = personalCube.contents.type;
+    const cubeType = viewObject.cubeType;
 
     return (
       <OverviewField.Wrapper>
@@ -130,56 +129,78 @@ class LectureOverviewView extends Component<Props, State> {
           </OverviewField.List>
         )}
 
-        <OverviewField.List
-          icon
-          header={ typeViewObject.classrooms ? (
-            <OverviewField.Table
-              titleIcon="series"
-              titleText="Class Series"
-              classrooms={typeViewObject.classrooms}
-            />
-          ) : null }
-        >
-          <OverviewField.Item
-            titleIcon="goal"
-            title="Goal"
-            content={viewObject.goal}
-          />
-          <OverviewField.Item
-            titleIcon="target"
-            title="Target"
-            content={viewObject.applicants}
-          />
-          <OverviewField.Item
-            titleIcon="host"
-            title="Hots"
-            content={viewObject.organizerName}
-          />
-        </OverviewField.List>
-
-        <OverviewField.List className="info-box2">
-          { cubeType === CubeType.ClassRoomLecture && (
-            <OverviewField.Item
-              title="Place"
-              content={typeViewObject.location}
-            />
-          )}
-          <OverviewField.Item
-            title="Requirements"
-            content={viewObject.completionTerms}
-          />
-          <OverviewField.Item
-            title="Other Guides"
-            className="quill-des"
-            contentHtml={viewObject.guide}
-          />
-        </OverviewField.List>
-
+        {
+          (typeViewObject.classrooms || viewObject.goal || viewObject.applicants
+          || viewObject.organizerName) && (
+            <OverviewField.List
+              icon
+              header={ typeViewObject.classrooms ? (
+                <OverviewField.Table
+                  titleIcon="series"
+                  titleText="Class Series"
+                  classrooms={typeViewObject.classrooms}
+                />
+              ) : null }
+            >
+              {
+                viewObject.goal && (
+                  <OverviewField.Item
+                    titleIcon="goal"
+                    title="Goal"
+                    content={viewObject.goal}
+                  />
+                ) || null
+              }
+              {
+                viewObject.applicants && (
+                  <OverviewField.Item
+                    titleIcon="target"
+                    title="Target"
+                    content={viewObject.applicants}
+                  />
+                ) || null
+              }
+              {
+                viewObject.organizerName && (
+                  <OverviewField.Item
+                    titleIcon="host"
+                    title="Host"
+                    content={viewObject.organizerName}
+                  />
+                )
+              }
+            </OverviewField.List>
+          ) || null
+        }
+        {
+          (typeViewObject.location || viewObject.completionTerms || viewObject.guide)
+          && (
+            <OverviewField.List className="info-box2">
+              { cubeType === CubeType.ClassRoomLecture && (
+                <OverviewField.Item
+                  title="Place"
+                  content={typeViewObject.location}
+                />
+              )}
+              <OverviewField.Item
+                title="Requirements"
+                content={viewObject.completionTerms}
+              />
+              <OverviewField.Item
+                title="Other Guides"
+                className="quill-des"
+                contentHtml={viewObject.guide}
+              />
+            </OverviewField.List>
+          ) || null
+        }
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
             title="Tag"
-            content={viewObject.tags}
+            content={viewObject.tags.map((tag: string, index: number) => (
+              tag && <Button key={`tag-${index}`} className="tag">{tag}</Button>
+            ))}
           />
         </OverviewField.List>
       </OverviewField.Wrapper>
