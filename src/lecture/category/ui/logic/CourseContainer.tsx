@@ -7,7 +7,14 @@ import { Segment } from 'semantic-ui-react';
 import { IdName, Lecture, mobxHelper } from 'shared';
 import { CubeTypeNameType } from 'personalcube/personalcube';
 import { CoursePlanService, CourseSetType } from 'course';
-import { ProgramLectureService, CourseLectureService, LectureService, LectureModel, LectureServiceType } from '../../../shared';
+import {
+  CourseLectureService,
+  LectureModel,
+  LectureService,
+  LectureServiceType,
+  ProgramLectureService,
+} from '../../../shared';
+import LectureViewModel from '../../../shared/model/LectureViewModel';
 
 
 interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
@@ -66,26 +73,36 @@ class CourseContainer extends Component<Props> {
     }
   }
 
-  onViewDetail(type: CourseSetType, id: string) {
+  onViewDetail(serviceType: LectureServiceType, id: string) {
     //
-    if (type === CourseSetType.Program) {
+    if (serviceType === LectureServiceType.Program || serviceType === LectureServiceType.Course) {
       this.props.history.push(`./${id}`);
     }
-    else if (type === CourseSetType.Card) {
+    else if (serviceType === LectureServiceType.Card) {
       this.props.history.push(`../../../cube/todo-cube-id/lecture-card/${id}`);
     }
   }
 
   renderProgramSet() {
     //
-    const { coursePlanService } = this.props;
-    const { coursePlanContents } = coursePlanService!;
-    const programSet = coursePlanContents.courseSet.programSet;
+    const { lectureService } = this.props;
+    const { lectureViews } = lectureService!;
+    console.log('programSet lectureViews', lectureViews);
 
-    const mockLecture = new LectureModel();
-
-    console.log('programSet', programSet);
-
+    return (
+      <>
+        {lectureViews.map((lecture: LectureViewModel, index: number) => (
+          <Lecture
+            key={`course-${index}`}
+            lecture={{} as any}
+            lectureView={lecture}
+            toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+            onViewDetail={() => this.onViewDetail(lecture.serviceType, lecture.id)}
+          />
+        ))}
+      </>
+    );
+    /*
     return (
       <>
         {programSet.courses.map((course: IdName, index: number) => (
@@ -113,28 +130,29 @@ class CourseContainer extends Component<Props> {
         ))}
       </>
     );
+     */
   }
 
-  renderCourseSet() {
-    //
-    const { coursePlanService } = this.props;
-    const { coursePlanContents } = coursePlanService!;
-    const learningCardSet = coursePlanContents.courseSet.learningCardSet;
-
-    const mockLecture = new LectureModel();
-
-    return learningCardSet.cards.map((course: IdName, index: number) => (
-      <Lecture
-        key={`course-${index}`}
-        lecture={{
-          ...mockLecture,
-          name: course.name,
-          cubeTypeName: CubeTypeNameType.Card,
-        }}
-        onViewDetail={() => this.onViewDetail(CourseSetType.Card, course.id)}
-      />
-    ));
-  }
+  // renderCourseSet() {
+  //   //
+  //   const { coursePlanService } = this.props;
+  //   const { coursePlanContents } = coursePlanService!;
+  //   const learningCardSet = coursePlanContents.courseSet.learningCardSet;
+  //
+  //   const mockLecture = new LectureModel();
+  //
+  //   return learningCardSet.cards.map((course: IdName, index: number) => (
+  //     <Lecture
+  //       key={`course-${index}`}
+  //       lecture={{
+  //         ...mockLecture,
+  //         name: course.name,
+  //         cubeTypeName: CubeTypeNameType.Card,
+  //       }}
+  //       onViewDetail={() => this.onViewDetail(lecture.serviceType, course.id)}
+  //     />
+  //   ));
+  // }
 
   render() {
     //
@@ -144,11 +162,12 @@ class CourseContainer extends Component<Props> {
     return (
       <Segment className="full">
         <Lecture.Group type={Lecture.GroupType.Course}>
-          {coursePlanContents.courseSet.type ===  CourseSetType.Program ?
-            this.renderProgramSet()
-            :
-            this.renderCourseSet()
-          }
+          {this.renderProgramSet()}
+          {/*{coursePlanContents.courseSet.type ===  CourseSetType.Program ?*/}
+          {/*  this.renderProgramSet()*/}
+          {/*  :*/}
+          {/*  this.renderCourseSet()*/}
+          {/*}*/}
         </Lecture.Group>
       </Segment>
     );

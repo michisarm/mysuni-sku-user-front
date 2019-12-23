@@ -76,7 +76,8 @@ class LectureCardPage extends Component<Props, State> {
     // lectureService.findLectureViews()
     if (match.params.serviceType === LectureServiceType.Program) {
       const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
-      // lectureService.findLectureViews(programLecture.lectureCards, []);
+      lectureService.findLectureViews(programLecture.lectureCards, programLecture.courseLectures);
+      console.log('programLecture', programLecture);
     }
     else {
       const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);
@@ -93,7 +94,6 @@ class LectureCardPage extends Component<Props, State> {
     const { coursePlan, coursePlanContents } = coursePlanService!;
     // const { cubeIntro } = cubeIntroService!;
 
-    console.log(coursePlan);
     return {
       // Sub info
       required: false,  // Todo

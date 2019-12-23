@@ -30,6 +30,7 @@ export { default as LectureModel } from './shared/model/LectureModel';
 export { default as LectureServiceType } from './shared/model/LectureServiceType';
 export { default as ProgramLectureModel } from './shared/model/ProgramLectureModel';
 export { default as CourseLectureModel } from './shared/model/CourseLectureModel';
+export { default as LectureViewModel } from './shared/model/LectureViewModel';
 
 /** Component */
 export { default as CategoryLecturesPage } from './category/ui/page/CategoryLecturesPage';

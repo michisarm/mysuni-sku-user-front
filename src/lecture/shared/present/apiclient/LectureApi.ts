@@ -37,8 +37,16 @@ class LectureApi {
 
   findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
     //
-    const lectureCardIdsParam = lectureCardIds.map((lectureCardId) => `lectureCardIds=${lectureCardId}`).join('&');
+    if ((!lectureCardIds || lectureCardIds.length < 1) && (!courseLectureIds || courseLectureIds.length < 1 )) {
+      return Promise.resolve([]);
+    }
+
+    let lectureCardIdsParam = 'lectureCardIds=';
     let courseLectureIdsParam = 'courseLectureIds=';
+
+    if (lectureCardIds && lectureCardIds.length > 0) {
+      lectureCardIdsParam = lectureCardIds.map((lectureCardId) => `lectureCardIds=${lectureCardId}`).join('&');
+    }
     if (courseLectureIds && courseLectureIds.length > 0) {
       courseLectureIdsParam = courseLectureIds.map((courseLectureId) => `courseLectureIds=${courseLectureId}`).join('&');
     }
