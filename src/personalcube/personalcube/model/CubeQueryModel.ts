@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
-import { PersonalCubeRdoModel } from '../../personalcube/personalcube/model/PersonalCubeRdoModel';
+import { QueryModel } from 'shared';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
-import { QueryModel } from '../../shared/model/QueryModel';
+import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 
 export class CubeQueryModel extends QueryModel {
   //

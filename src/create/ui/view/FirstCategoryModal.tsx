@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import {
-  Button, Modal, Form, Header, Radio, Grid, List, Segment, Icon,
-} from 'semantic-ui-react';
-import { mobxHelper, IdName, CategoryModel } from 'shared';
+import { Accordion, Button, Icon, Modal, Radio } from 'semantic-ui-react';
+import { CategoryModel, IdName, mobxHelper } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
-import { CollegeService,  CollegeModel } from 'college';
-
+import { CollegeModel, CollegeService } from 'college';
 
 interface Props {
   open: boolean
@@ -22,6 +19,8 @@ interface Props {
 
 interface States {
   isSelectedMainChannel: boolean
+  activeIndex: number
+  value ?: any
 }
 
 @inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
@@ -31,11 +30,20 @@ class FirstCategoryModal extends React.Component<Props, States> {
   //
   constructor(props: Props) {
     super(props);
-    this.state = { isSelectedMainChannel: false };
+    this.state = { isSelectedMainChannel: false, activeIndex: -1 };
   }
+
+  handleClick = (e: any, titleProps: any) => {
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex });
+  };
 
   selectChannelButton(selectedChannel: IdName) {
     //
+    this.setState({ value: selectedChannel.id });
     const { onChangePersonalCubeProps } = this.props;
     onChangePersonalCubeProps('category.channel', selectedChannel);
   }
@@ -45,7 +53,8 @@ class FirstCategoryModal extends React.Component<Props, States> {
     const { onChangePersonalCubeProps, collegeService } = this.props;
     onChangePersonalCubeProps('category.college.id', selectedMainCollege.collegeId);
     onChangePersonalCubeProps('category.college.name', selectedMainCollege.name);
-    if (collegeService) collegeService.findMainCollege(selectedMainCollege.collegeId);
+    if (collegeService)  collegeService.findMainCollege(selectedMainCollege.collegeId);
+
   }
 
   handleCancel() {
@@ -76,104 +85,92 @@ class FirstCategoryModal extends React.Component<Props, States> {
   render() {
     //
     const { open, handleChangeOpen, personalCube, colleges, selectedMainCollege } = this.props;
-    const { isSelectedMainChannel } = this.state;
+    // const { isSelectedMainChannel, activeIndex, value } = this.state;
+    const { isSelectedMainChannel, activeIndex, value } = this.state;
     const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
       && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
+    console.log(isSelectedMainChannel, value);
     return (
       <>
-        <Button onClick={() => handleChangeOpen(true)}>Channel 선택</Button>
-        <React.Fragment>
+        <div className="cell v-middle">
+          <span className="text1">대표 카테고리</span>
           {/* 카테고리 선택 후 활성화 */}
-          {
-            isSelectedMainChannel && isSelectedCollegeAndChannel
-            && (<span>{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>) || ''
-          }
-
-          <Modal size="large" open={open} onClose={() => handleChangeOpen(false)}>
-            <Modal.Header>
-              대표 카테고리 선택
+          <Button icon className="left post delete" onClick={() => handleChangeOpen(true)}>카테고리 선택</Button>
+          <Modal className="base w560" open={open} onClose={() => handleChangeOpen(false)}>
+            <Modal.Header className="res">
+              Main Category Choice
+              <span className="sub f12">Please select a category</span>
             </Modal.Header>
             <Modal.Content>
-              <Form>
-                <Grid celled>
-                  <Grid.Row>
-                    <Grid.Column width={10}>
-                      <Header as="h3">선호하는 College의 학습 채널을 선택하세요.</Header>
-                    </Grid.Column>
-                    {
-                      isSelectedCollegeAndChannel
-                      && (
-                        <Grid.Column width={6}>
-                          <Header as="h3">선택된 채널</Header>
-                        </Grid.Column> || ''
-                      )
-                    }
-                  </Grid.Row>
-                  <Grid.Row>
-                    <Grid.Column width={5}>
-                      <List>
-                        {
-                          colleges && colleges.length
-                          && colleges.map((college, index) => (
-                            <List.Item
-                              key={index}
-                              className={
-                                personalCube && personalCube.category && personalCube.category.college
-                                && personalCube.category.college.id === college.collegeId ? 'active' : ''
-                              }
-                            >
-                              <Segment
-                                onClick={() => this.selectCollegeButton(college) }
-                              >
-                                {college.name}
-                                <div className="fl-right"><Icon name="check" /></div>
-                              </Segment>
-                            </List.Item>
-                          )) || ''
-                        }
-                      </List>
-                    </Grid.Column>
-                    <Grid.Column width={5}>
-                      {
-                        selectedMainCollege && selectedMainCollege.channels && selectedMainCollege.channels.length
-                        && selectedMainCollege.channels.map((channel, index) => (
-                          <Form.Field
-                            key={index}
-                            control={Radio}
-                            checked={personalCube && personalCube.category && personalCube.category.channel
-                              && personalCube.category.channel.id === channel.id
-                            }
-                            label={channel.name}
-                            onChange={() => this.selectChannelButton(channel)}
-                          />
-                        )) || null
-                      }
-                    </Grid.Column>
-                    {
-                      isSelectedCollegeAndChannel
-                      && (
-                        <Grid.Column width={6}>
-                          <List>
-                            <List.Item>
-                              <Segment>
-                                {personalCube.category.college.name} &gt; {personalCube.category.channel.name}
-                                <div className="fl-right"><Icon name="times" /></div>
-                              </Segment>
-                            </List.Item>
-                          </List>
-                        </Grid.Column>
-                      ) || ''
-                    }
-                  </Grid.Row>
-                </Grid>
-              </Form>
+              <div className="channel-change">
+                <div className="table-css">
+                  <div className="row head">
+                    <div className="cell v-middle">
+                      <span className="text01">Channel list</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="cell vtop">
+                      <div className="select-area">
+                        <div className="scrolling-60vh">
+                          {
+                            colleges && colleges.length && colleges.map((college, index) => (
+                              <Accordion className="channel" key={index}>
+                                <Accordion.Title
+                                  active={activeIndex === index}
+                                  index={index}
+                                  onClick={this.handleClick}
+                                >
+                                  <span className="name purple">{college.name}</span>
+                                  <Icon onClick={() => this.selectCollegeButton(college) } />
+                                </Accordion.Title>
+                                <Accordion.Content active={activeIndex === index}>
+                                  <ul>
+                                    {
+                                      selectedMainCollege && selectedMainCollege.channels && selectedMainCollege.channels.length
+                                      && selectedMainCollege.channels.map((channel, idx) => (
+                                        <li key = {idx}>
+                                          <Radio
+                                            className="base"
+                                            label={channel.name}
+                                            checked = {
+                                              personalCube && personalCube.category && personalCube.category.channel
+                                              && personalCube.category.channel.id === channel.id
+                                            }
+                                            onChange={() => this.selectChannelButton(channel)}
+                                          />
+                                        </li>
+                                      )) || null
+                                    }
+                                  </ul>
+                                </Accordion.Content>
+                              </Accordion>
+                            ))
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Modal.Content>
             <Modal.Actions>
-              <Button onClick={() => this.handleCancel()}>Cancel</Button>
-              <Button primary onClick={() => this.handleOk()}>OK</Button>
+              <Button className="w190 pop d" onClick={() => this.handleCancel()}>Cancel</Button>
+              <Button className="w190 pop p" onClick={() => this.handleOk()}>OK</Button>
             </Modal.Actions>
           </Modal>
-        </React.Fragment>
+        </div>
+        <div className="cell v-middle">
+          {
+            // isSelectedMainChannel && isSelectedCollegeAndChannel
+            isSelectedCollegeAndChannel ?
+              <span>{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>
+              :
+              <span className="text1">대표 카테고리를 선택해주세요.</span>
+          }
+
+        </div>
+
       </>
     );
   }

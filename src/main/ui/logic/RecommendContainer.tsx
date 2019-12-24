@@ -55,7 +55,7 @@ class RecommendContainer extends Component<Props> {
           <RecommendHeaderView
             name={member.names.string}
             favoriteChannelCount={channels.length || 0}
-            onViewAll={() => this.props.history.push(`${process.env.PUBLIC_URL}/recommend`)}
+            onViewAll={() => this.props.history.push(`/recommend`)}
           />
           {
             channels && channels.length

@@ -4,14 +4,17 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Lecture } from 'shared';
-import { LectureModel } from 'lecture';
+import { LectureModel, LectureViewModel } from 'lecture';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
+import Course from '../../sub/Course';
+import CourseSection from '../../sub/CourseSection';
+
 import Action from '../../present/model/Action';
 import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
-import CourseView from '../view/CourseView';
+import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
 
 
 export interface OnViewDetailData {
@@ -20,6 +23,7 @@ export interface OnViewDetailData {
 
 interface Props {
   lecture: LectureModel,
+  lectureView?: LectureViewModel,
   rating?: number,
   thumbnailImage?: string,
   action?: Action | ActionType,
@@ -49,6 +53,10 @@ class LectureContainer extends Component<Props, States> {
   static Group = CardGroup;
 
   static LineHeader = LineHeader;
+
+  static CourseSection = CourseSection;
+
+  static Course = Course;
 
   static GroupType = GroupType;
 
@@ -199,14 +207,14 @@ class LectureContainer extends Component<Props, States> {
   renderCourseCard() {
     //
     const {
-      lecture, thumbnailImage, toggle,
+      lectureView, thumbnailImage, toggle,
       onAction,
     } = this.props;
     const { open } = this.state;
 
     return (
-      <CourseView
-        lecture={lecture}
+      <CourseLectureContainer
+        lectureView={lectureView || {} as any}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         toggle={toggle}

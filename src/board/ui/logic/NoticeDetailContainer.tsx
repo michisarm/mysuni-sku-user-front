@@ -40,10 +40,10 @@ class NoticeDetailContainer extends React.Component<Props> {
             <div className="title-inner">
               <div className="title">{post.title}</div>
               <div className="user-info">
-                <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
               </div>
               <div className="actions">
-                <Button icon className="left postset commu-list16" onClick={() => this.onClose('notice')}><Icon className="commu-list16" />List</Button>
+                <Button icon className="left postset commu-list16" onClick={() => this.onClose('Notice')}><Icon className="commu-list16" />List</Button>
               </div>
             </div>
           </div>
@@ -65,7 +65,7 @@ class NoticeDetailContainer extends React.Component<Props> {
           </div>
           <Segment className="full">
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('notice')}>
+              <Button icon className="left post list2" onClick={() => this.onClose('Notice')}>
                 <Icon className="list24" /> List
               </Button>
             </div>

@@ -9,7 +9,7 @@ interface Props {
   open: boolean
   handleClose: () => void
   handleSaveAndApprove?: (mode?: string) => void
-  postId?: string
+  id?: string
   title: string
   handleOk: (mode?: string) => void
   buttonYesName: string
@@ -21,7 +21,7 @@ interface Props {
 class ConfirmWin extends React.Component<Props> {
   //
   render() {
-    const { handleClose, open, message, title, handleOk, buttonYesName, buttonNoName, handleSaveAndApprove, postId } = this.props;
+    const { handleClose, open, message, title, handleOk, buttonYesName, buttonNoName, handleSaveAndApprove, id } = this.props;
     return (
       <>
         <Modal size="tiny" open={open} onClose={handleClose}>
@@ -38,7 +38,7 @@ class ConfirmWin extends React.Component<Props> {
           <Modal.Actions>
             <Button basic onClick={handleClose}>{buttonNoName}</Button>
             {
-              postId ?
+              id ?
                 <>
                   <Button primary onClick={() => handleOk('modify')}>{buttonYesName}</Button>
                   {

@@ -4,13 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Checkbox, Form, Radio, Select, Button } from 'semantic-ui-react';
 import { mobxHelper, IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
-import { CollegeService, SubsidiaryService } from '../../../college';
+import { CollegeService, SubsidiaryService } from 'college';
 import { IconType } from '../../../personalcube/personalcube/model/IconType';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
-  changePersonalCubeProps: (name: string, value: string | {}) => void
   personalCube: PersonalCubeModel
+  tags: string
   personalCubeService?: PersonalCubeService
   subsidiaryService?: SubsidiaryService
   collegeService?: CollegeService
@@ -39,7 +39,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
   checkOne(checkedTargetJSON: string, name: string) {
     //
-    const { changePersonalCubeProps } = this.props;
+    const { onChangePersonalCubeProps } = this.props;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const checkedTargetIdName = JSON.parse(checkedTargetJSON);
     const checkedTargetId = checkedTargetIdName.id;
@@ -53,11 +53,11 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     }
     if (tempIdList.indexOf(checkedTargetId) !== -1) {
       const newTempSubsidiaryList = this.removeSomethingInList(tempIdList.indexOf(checkedTargetId), tempIdNameList);
-      changePersonalCubeProps(name, newTempSubsidiaryList);
+      onChangePersonalCubeProps(name, newTempSubsidiaryList);
 
     } else {
       tempIdNameList.push(checkedTargetIdName);
-      changePersonalCubeProps(name, tempIdNameList);
+      onChangePersonalCubeProps(name, tempIdNameList);
     }
   }
 
@@ -91,7 +91,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { onChangePersonalCubeProps, personalCube, changePersonalCubeProps } = this.props;
+    const { onChangePersonalCubeProps, personalCube } = this.props;
     const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
     const { colleges } = this.props.collegeService || {} as CollegeService;
     const { subsidiariesAll } = this.state;
@@ -103,10 +103,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
       collegeList.push({ key: index, value: data.collegeId, text: data.name });
     }
     );
-    console.log(personalCube);
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
     if (personalCube && personalCube.requiredSubsidiaries) {
-      personalCube.requiredSubsidiaries.map(requiredSubsidiary => requiredSubsidiaryIdList.push(requiredSubsidiary.id));
+      personalCube.requiredSubsidiaries.map(requiredSubsidiary =>
+        requiredSubsidiaryIdList.push(requiredSubsidiary.id));
     }
 
     return (
@@ -123,7 +123,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             label="SK University Icon Set"
             value={IconType.SKUniversity}
             checked={personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity}
-            onChange={(e: any, data: any) => changePersonalCubeProps('iconBox.iconType', data.value)}
+            onChange={(e: any, data: any) => onChangePersonalCubeProps('iconBox.iconType', data.value)}
 
           />
           <Radio
@@ -132,7 +132,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             name="radioGroup"
             value={IconType.Personal}
             checked={personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal}
-            onChange={(e: any, data: any) => changePersonalCubeProps('iconBox.iconType', data.value)}
+            onChange={(e: any, data: any) => onChangePersonalCubeProps('iconBox.iconType', data.value)}
           />
           {
             personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity
@@ -219,7 +219,6 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         onChange={(e: any, data: any) => this.checkOne(data.value, 'subsidiaries')}
                       />
                     </li>
-
                   )) || null
                 }
 
@@ -232,8 +231,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
           <div className="ui h48 input">
             <input
               type="text"
-              value={personalCube && personalCube.tags || ''}
-              onChange={(e: any) => changePersonalCubeProps('tags', e.target.value)}
+             /* value={personalCube && personalCube.tags || ''}*/
+              onChange={(e: any) => onChangePersonalCubeProps('tags', e.target.value)}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />
           </div>

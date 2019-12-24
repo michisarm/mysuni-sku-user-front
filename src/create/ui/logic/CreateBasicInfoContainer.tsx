@@ -10,8 +10,9 @@ import SecondCategoryModal from '../view/SecondCategoryModal';
 
 
 interface Props {
+  personalCubeId: string
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
-  changePersonalCubeProps: (name: string, value: string | {}) => void
+  //changePersonalCubeProps: (name: string, value: string | {}) => void
   collegeService?: CollegeService
   personalCube: PersonalCubeModel
 }
@@ -65,7 +66,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
 
   render() {
     const {
-      onChangePersonalCubeProps, personalCube, changePersonalCubeProps,
+      personalCubeId, onChangePersonalCubeProps, personalCube,
     } = this.props;
     const { firstCategoryModalOpen, secondCategoryModalOpen } = this.state;
     const { colleges, mainCollege: selectedMainCollege, subCollege: selectedSubCollege } = this.props.collegeService || {} as CollegeService;
@@ -98,7 +99,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
             <input type="text"
               placeholder="제목을 입력해주세요."
               value={personalCube && personalCube.name || ''}
-              onChange={(e: any) => changePersonalCubeProps('name', e.target.value)}
+              onChange={(e: any) => onChangePersonalCubeProps('name', e.target.value)}
             />
             <Icon className="clear link" />
             <span className="validation">You can enter up to 100 characters.</span>
@@ -109,61 +110,71 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
           <div>
             <div className="table-css type5">
               <div className="row">
-                <div className="cell v-middle">
-                  <span className="text1">대표 카테고리</span>
-                  <FirstCategoryModal
-                    onChangePersonalCubeProps={onChangePersonalCubeProps}
-                    personalCube={personalCube}
-                    colleges={colleges}
-                    open={firstCategoryModalOpen}
-                    handleChangeOpen={this.onChangeFirstCategoryModalOpen}
-                    selectedMainCollege={selectedMainCollege}
-                  />
-                </div>
+                {/*<div className="cell v-middle">
+                  <span className="text1">대표 카테고리</span>*/}
+                <FirstCategoryModal
+                  onChangePersonalCubeProps={onChangePersonalCubeProps}
+                  personalCube={personalCube}
+                  colleges={colleges}
+                  open={firstCategoryModalOpen}
+                  handleChangeOpen={this.onChangeFirstCategoryModalOpen}
+                  selectedMainCollege={selectedMainCollege}
+                />
+                {/*</div>
                 <div className="cell v-middle">
                   <span className="text1">대표  카테고리를 선택해주세요.</span>
-                </div>
+                </div>*/}
               </div>
             </div>
             <div className="table-css type5">
               <div className="row">
-                <div className="cell v-middle">
-                  <span className="text1">서브 카테고리</span>
-                  <SecondCategoryModal
-                    personalCube={personalCube}
-                    open={secondCategoryModalOpen}
-                    handleChangeOpen={this.onChangeSecondCategoryModalOpen}
-                    onChangePersonalCubeProps={onChangePersonalCubeProps}
-                    colleges={colleges}
-                    selectedSubCollege={selectedSubCollege}
-                  />
-                </div>
+                {/* <div className="cell v-middle">
+                  <span className="text1">서브 카테고리</span>*/}
+                <SecondCategoryModal
+                  personalCube={personalCube}
+                  open={secondCategoryModalOpen}
+                  handleChangeOpen={this.onChangeSecondCategoryModalOpen}
+                  onChangePersonalCubeProps={onChangePersonalCubeProps}
+                  colleges={colleges}
+                  selectedSubCollege={selectedSubCollege}
+                />
+                {/*</div>
                 <div className="cell v-middle">
                   <span className="text1">서브 카테고리를 선택해주세요.</span>
-
-                  {/*   <span className="text2">AI > AI Biz. Implemetation, AI Tech Essential, Computer Vison AI</span>
-                  <span className="text2">DT > DT Basics, Data Analytics, Data Analytics, Cloud Developing, Cloud Engineering</span>
-                  <span className="text2">Global Collage > 국제정세, Global 사업개발전문가, 지역 전문가</span>
-                  <span className="text2">Management > HR , 전략, Biz. Development</span>
-*/}
-                </div>
+                </div>*/}
               </div>
             </div>
           </div>
         </Form.Field>
         <Form.Field>
-          <label className="necessary">교육형태</label>
-          <div className="select-box">
-            <Select
-              placeholder="선택해주세요"
-              className="dropdown selection"
-              defaultValue={SelectType.learningType[0].value}
-              options={SelectType.learningType}
-              onChange={(e: any, data: any) => {
-                onChangePersonalCubeProps('contents.type', data.value);
-              }}
-            />
-          </div>
+          {
+            personalCubeId ?
+              <>
+                <label className="necessary">교육형태</label>
+                <div className="select-box">
+                  <input
+                    value={personalCube && personalCube.contents && personalCube.contents.type || ''}
+                    readOnly
+                  />
+                </div>
+              </>
+              :
+              <>
+                <label className="necessary">교육형태</label>
+                <div className="select-box">
+                  <Select
+                    placeholder="Select"
+                    className="dropdown selection"
+                    value={personalCube && personalCube.contents && personalCube.contents.type || ''}
+                    options={SelectType.cubeType}
+                    onChange={(e: any, data: any) => {
+                      onChangePersonalCubeProps('contents.type', data.value);
+                    }}
+                  />
+                </div>
+              </>
+          }
+
         </Form.Field>
       </>
     );

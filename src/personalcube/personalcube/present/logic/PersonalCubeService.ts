@@ -1,15 +1,14 @@
-import { observable, action, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import { OffsetElementList } from '@nara.platform/accent';
-import { IdName, CubeState } from 'shared';
+import { CubeState, IdName } from 'shared';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
-import { CubeQueryModel } from '../../../../create/model/CubeQueryModel';
-import { ApprovalContents } from '../../../../create/model/ApprovalContents';
+import { CubeQueryModel } from '../../model/CubeQueryModel';
+import { ApprovalContents } from '../../model/ApprovalContents';
 import { ExcelView } from '../../../../shared/model/ExcelView';
-import { PersonalCubeRequestCdoModel } from '../../../../create/model/PersonalCubeRequestCdoModel';
-
+import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
 @autobind
 export default class PersonalCubeService {
@@ -47,10 +46,16 @@ export default class PersonalCubeService {
   }
 
   @action
+  registerCube(personalCube: PersonalCubeModel) {
+    //
+    return this.personalCubeApi.registerCube(PersonalCubeModel.asCdo(personalCube));
+  }
+
+  @action
   async findPersonalCube(personalCubeId: string) {
     //
     const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
-
+    console.log('service', personalCube);
     if (personalCube) return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
     return null;
   }
@@ -70,19 +75,11 @@ export default class PersonalCubeService {
     return runInAction(() => this.personalCubes = personalCubes);
   }
 
-
   @action
   changeCubeProps(name: string, value: string | {} | string[]) {
     //
     console.log(name, value);
     this.personalCube = _.set(this.personalCube, name, value);
-    console.log(this.personalCube);
-  }
-
-  @action
-  changePersonalCubeProps(name: string, value: string | {}) {
-    //
-    this.personalCube = { ...this.personalCube, [name]: value } as PersonalCubeModel;
     console.log(this.personalCube);
   }
 

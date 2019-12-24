@@ -1,11 +1,14 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
+import autobind from 'autobind-decorator';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
+import LectureViewModel from '../../model/LectureViewModel';
 
 
+@autobind
 class LectureService {
   //
   static instance: LectureService;
@@ -14,6 +17,12 @@ class LectureService {
 
   @observable
   _lectures: LectureModel[] = [];
+
+  @observable
+  _lectureViews: LectureViewModel[] = [];
+
+  @observable
+  subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
   constructor(lectureApi: LectureApi) {
@@ -26,6 +35,14 @@ class LectureService {
     const lectures = this._lectures as any;
     return lectures.peek();
   }
+
+  @computed
+  get lectureViews() {
+    //
+    const lectureViews = this._lectureViews as any;
+    return lectureViews.peek();
+  }
+
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 
@@ -58,9 +75,32 @@ class LectureService {
   }
 
   @action
+  async findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+
+    runInAction(() => this._lectureViews = lectureViews);
+    return lectureViews;
+  }
+
+  @action
+  async findSubLectureViews(courseId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+
+    runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
+    return lectureViews;
+  }
+
+  @action
   clear() {
     //
     return runInAction(() => this._lectures = []);
+  }
+
+  getSubLectureViews(courseId: string) {
+    //
+    return this.subLectureViewsMap.get(courseId) || [];
   }
 }
 

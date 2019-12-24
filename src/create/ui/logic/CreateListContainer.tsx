@@ -11,6 +11,7 @@ import CreateNoDataView from '../view/CreateNoDataView';
 
 interface Props {
   personalCubeService: PersonalCubeService
+  handleClickCubeRow:(personalCubeId: string) => void
 }
 
 interface States {
@@ -62,23 +63,9 @@ class CreateListContainer extends React.Component<Props, States> {
     this.findAllCubes(20);
   }
 
-
-  handleClickCubeRow(cubeId: string) {
-    //
-    const { personalCubeService } = this.props;
-    if (personalCubeService) {
-      personalCubeService.findPersonalCube(cubeId)
-        .then(() => {
-          // const cubeType = personalCubeService.personalCube.contents.type;
-          // const openState = personalCubeService.personalCube.openRequests;
-          /*if (openState === OpenState.Created) this.props.history.push(`/${learningManagementUrl}/cubes/create-cube/${cubeId}/${cubeType}`);
-            else this.props.history.push(`/${learningManagementUrl}/cubes/cube-detail/${cubeId}/${cubeType}`);*/
-        });
-    }
-  }
-
   render() {
     const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
+    const { handleClickCubeRow } = this.props;
     const result = personalCubes.results;
     const totalCount = personalCubes.totalCount;
     const { disabled, limit } = this.state;
@@ -86,25 +73,20 @@ class CreateListContainer extends React.Component<Props, States> {
     return (
 
       <Segment className="full">
-        {
-          result && result.length === 0 ?
-            ''
-            :
-            <SelectView
-              totalCount={totalCount}
-              personalCubeQuery={personalCubeQuery}
-              fieldOption={SelectType.status}
-              onChangeCubeQueryProps={this.onChangeCubeQueryProps}
-              queryFieldName="openState"
-            />
-        }
+        <SelectView
+          totalCount={totalCount}
+          personalCubeQuery={personalCubeQuery}
+          fieldOption={SelectType.status}
+          onChangeCubeQueryProps={this.onChangeCubeQueryProps}
+          queryFieldName="cubeState"
+        />
         {
         result && result.length === 0 ?
           <CreateNoDataView />
           :
           <CreateListView
             result={result}
-            handleClickCubeRow={this.handleClickCubeRow}
+            handleClickCubeRow={handleClickCubeRow}
             disabled={disabled}
             findAllCubes ={this.findAllCubes}
             limit={limit}

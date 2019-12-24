@@ -1,17 +1,16 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, PageService, Lecture } from 'shared';
+import { Lecture, mobxHelper, PageService } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { LectureService, LectureCardService, LectureModel, LectureServiceType } from 'lecture';
+import { LectureCardService, LectureModel, LectureService } from 'lecture';
 import { CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
-
+import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
@@ -105,7 +104,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    if (lecture.serviceType === LectureServiceType.Card) {
+    if (lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course) {
+      history.push(`../course-plan/${lecture.coursePlanId}/${lecture.serviceType}/${lecture.serviceId}`);
+    }
+    else if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`../cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
     }
   }

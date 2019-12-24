@@ -8,11 +8,11 @@ import FooterView from '../view/FooterView';
 @reactAutobind
 class FooterContainer extends Component {
   //
-  noticePath = '/board/support/notice';
+  noticePath = '/board/support/Notice';
 
-  faqPath = '/board/support/faq';
+  faqPath = '/board/support/FAQ';
 
-  qnaPath = '/board/support/qa';
+  qnaPath = '/board/support/Q&A';
 
   render() {
     //

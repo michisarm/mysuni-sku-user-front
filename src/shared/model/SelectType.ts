@@ -22,6 +22,14 @@ export default {
     { key: '8', text: 'Experiential', value: 'Experiential' },
   ],
 
+  cubeType: [
+    { key: '1', text: 'Video', value: 'Video' },
+    { key: '2', text: 'Audio', value: 'Audio' },
+    { key: '3', text: 'Community', value: 'Community' },
+    { key: '4', text: 'Web Page', value: 'WebPage' },
+    { key: '5', text: 'Documents', value: 'Documents' },
+  ],
+
   cubeOrCourse: [
     { key: '0', text: '전체', value: '' },
     { key: '1', text: 'Cube', value: 'Cube' },
@@ -174,7 +182,7 @@ export default {
   ],
 
   status: [
-    { key: '0', text: '전체', value: 'All' },
+    { key: '0', text: '전체', value: '' },
     { key: '1', text: '임시저장', value: 'Created' },
     { key: '2', text: '승인요청', value: 'OpenApproval' },
     { key: '3', text: '승인', value: 'Opened' },

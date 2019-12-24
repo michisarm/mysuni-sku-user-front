@@ -1,9 +1,12 @@
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { NameValueList } from 'shared';
 import { DifficultyLevel } from './DifficultyLevel';
 import { DescriptionModel } from './DescriptionModel';
 import { OperationModel } from './OperationModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
+import { CubeIntroCdoModel } from './CubeIntroCdoModel';
+
 
 export class CubeIntroModel implements DramaEntity {
 
@@ -25,6 +28,66 @@ export class CubeIntroModel implements DramaEntity {
       const reportFileBox = intro.reportFileBox && new ReportFileBoxModel(intro.reportFileBox) || this.reportFileBox;
       Object.assign(this, { ...intro, description, operation, reportFileBox });
     }
+  }
+
+  static  asNameValues(cubeIntro: CubeIntroModel): NameValueList {
+    const asNameValues = {
+      nameValues: [
+        {
+          name: 'learningTime',
+          value: String(cubeIntro.learningTime),
+        },
+        {
+          name: 'difficultyLevel',
+          value: cubeIntro.difficultyLevel,
+        },
+        {
+          name: 'description',
+          value: JSON.stringify(cubeIntro.description),
+        },
+        {
+          name: 'operation',
+          value: JSON.stringify(cubeIntro.operation),
+        },
+        {
+          name: 'feedbackId',
+          value: cubeIntro.feedbackId,
+        },
+        {
+          name: 'reportFileBox',
+          value: JSON.stringify(cubeIntro.reportFileBox),
+        },
+      ],
+    };
+
+    return asNameValues;
+  }
+
+  static asCdo(cubeIntro: CubeIntroModel): CubeIntroCdoModel {
+    //
+    const operation = cubeIntro.operation && new OperationModel(cubeIntro.operation);
+    if (operation.etcCp) operation.organizer.name = operation.etcCp;
+    return (
+      {
+        audienceKey: 'r2p8-r@nea-m5-c5',
+        learningTime: cubeIntro.learningTime,
+        difficultyLevel: cubeIntro.difficultyLevel,
+        description: cubeIntro.description,
+        operation,
+        feedbackId: cubeIntro.feedbackId && cubeIntro.feedbackId,
+        reportFileBox: cubeIntro.reportFileBox && cubeIntro.reportFileBox,
+      }
+    );
+  }
+
+  static isBlank(cubeIntro: CubeIntroModel) : string {
+    if (!cubeIntro.description.goal) return '교육목표';
+    if (!cubeIntro.description.applicants) return '교육대상';
+    if (!cubeIntro.description.description) return '교육내용';
+    if (!cubeIntro.learningTime) return '교육시간';
+    if (!cubeIntro.difficultyLevel) return '난이도';
+    // 주관사(출처) 확인
+    return 'success';
   }
 }
 

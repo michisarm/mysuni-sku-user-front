@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
+import LectureViewModel from '../../model/LectureViewModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 
 
@@ -19,7 +20,7 @@ class LectureApi {
     const params = lectureRdo;
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
-      .then(response => response && response.data || []);
+      .then(response => response && response.data);
   }
 
   findLectureCountByChannels(collegeId: string, channels: ChannelModel[]) {
@@ -34,9 +35,25 @@ class LectureApi {
       .then(response => response && response.data || []);
   }
 
-  findLecture(lectureCardIds: string[], courseLectureIds: string[]) {
+  findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
     //
+    if ((!lectureCardIds || lectureCardIds.length < 1) && (!courseLectureIds || courseLectureIds.length < 1 )) {
+      return Promise.resolve([]);
+    }
 
+    let lectureCardIdsParam = 'lectureCardIds=';
+    let courseLectureIdsParam = 'courseLectureIds=';
+
+    if (lectureCardIds && lectureCardIds.length > 0) {
+      lectureCardIdsParam = lectureCardIds.map((lectureCardId) => `lectureCardIds=${lectureCardId}`).join('&');
+    }
+    if (courseLectureIds && courseLectureIds.length > 0) {
+      courseLectureIdsParam = courseLectureIds.map((courseLectureId) => `courseLectureIds=${courseLectureId}`).join('&');
+    }
+    const queryParams = `${lectureCardIdsParam}&${courseLectureIdsParam}`;
+
+    return axiosApi.get<LectureViewModel[]>(this.baseUrl + `/view?${queryParams}`)
+      .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
   }
 }
 

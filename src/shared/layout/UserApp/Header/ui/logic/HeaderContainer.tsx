@@ -16,7 +16,7 @@ class HeaderContainer extends Component {
   //
   static contextType  = Context;
 
-  supportPath = '/board/support/notice';
+  supportPath = '/board/support/Notice';
 
 
   render() {

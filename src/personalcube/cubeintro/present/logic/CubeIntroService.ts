@@ -1,5 +1,6 @@
-import { observable, action, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
+import _ from 'lodash';
 import CubeIntroApi from '../apiclient/CubeIntroApi';
 import { CubeIntroModel } from '../../model/CubeIntroModel';
 
@@ -13,6 +14,12 @@ export default class CubeIntroService {
 
   @observable
   cubeIntro: CubeIntroModel = new CubeIntroModel();
+
+  @observable
+  instructorListModalOpen: boolean = false;
+
+  @observable
+  managerListModalOpen: boolean = false;
 
   constructor(cubeIntroApi: CubeIntroApi) {
     this.cubeIntroApi = cubeIntroApi;
@@ -29,8 +36,27 @@ export default class CubeIntroService {
   }
 
   @action
+  changeCubeIntroProps(name: string, value: string | number | {}) {
+    //
+    this.cubeIntro = _.set(this.cubeIntro, name, value);
+    console.log(this.cubeIntro);
+  }
+
+  @action
   clearCubeIntro() {
     this.cubeIntro = new CubeIntroModel();
+  }
+
+  @action
+  changeInstructorListModalOpen(open: boolean) {
+    //
+    this.instructorListModalOpen = open;
+  }
+
+  @action
+  changeManagerListModalOpen(open: boolean) {
+    //
+    this.managerListModalOpen = open;
   }
 }
 
