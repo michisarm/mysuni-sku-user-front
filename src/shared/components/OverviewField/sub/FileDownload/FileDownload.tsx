@@ -27,7 +27,7 @@ class FileDownload extends Component<Props, State> {
 
   init() {
     const { fileBoxIds } = this.props;
-    const files: any[] = [];
+    let files: any[] = [];
 
     const boxIds = fileBoxIds.filter(id => id);
     if (boxIds.length) {
@@ -36,7 +36,7 @@ class FileDownload extends Component<Props, State> {
       ).then(filesArr => {
         if (filesArr.length) {
           filesArr.forEach(fileList => {
-            if (Array.isArray(fileList)) files.concat(fileList);
+            if (Array.isArray(fileList)) files = files.concat(fileList);
             else files.push(fileList);
           });
         }
