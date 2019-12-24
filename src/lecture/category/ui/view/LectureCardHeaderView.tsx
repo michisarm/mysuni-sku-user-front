@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { LectureContentHeader } from 'shared';
-
+import { CubeType } from 'personalcube/personalcube';
 
 interface Props {
   viewObject: any
@@ -39,10 +39,14 @@ class LectureCardHeaderView extends Component<Props> {
         />
         <LectureContentHeader.RightCell>
           <LectureContentHeader.StampItem value={viewObject.stamp} />
-          <LectureContentHeader.StarRatingItem
-            value={rating}
-            max={maxRating}
-          />
+          {
+            viewObject.cubeType !== CubeType.Community && (
+              <LectureContentHeader.StarRatingItem
+                value={rating}
+                max={maxRating}
+              />
+            ) || null
+          }
         </LectureContentHeader.RightCell>
       </LectureContentHeader>
     );

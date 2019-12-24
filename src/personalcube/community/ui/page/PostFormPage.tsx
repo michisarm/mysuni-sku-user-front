@@ -5,11 +5,13 @@ import { BoardService, PostForm } from '@sku/personalcube';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
+import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture';
 import { LearningCardService } from 'course';
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
+  collegeService?: CollegeService
   boardService?: BoardService
   personalCubeService?: PersonalCubeService
   lectureCardService: LectureCardService
@@ -17,6 +19,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 }
 
 @inject(mobxHelper.injectFrom(
+  'collegeService',
   'personalCube.personalCubeService',
   'personalCube.boardService',
   'lecture.lectureCardService',
@@ -31,8 +34,9 @@ class PostFormPage extends React.Component<Props> {
   }
 
   async init() {
-    const { personalCubeService, boardService, lectureCardService, learningCardService } = this.props;
-    const { lectureCardId } = this.props.match.params;
+    const { collegeService, personalCubeService, boardService, lectureCardService, learningCardService } = this.props;
+    const { collegeId, lectureCardId } = this.props.match.params;
+    collegeService!.findCollege(collegeId);
     const lectureCard = await lectureCardService!.findLectureCard(lectureCardId);
     const learningCard = await learningCardService!.findLearningCard(lectureCard!.learningCard.id);
     const personalCube = await personalCubeService!.findPersonalCube(learningCard.personalCube.id);
@@ -46,15 +50,18 @@ class PostFormPage extends React.Component<Props> {
 
   render() {
     //
-    const { postId } = this.props.match.params;
-    const { boardService } = this.props;
+    const { cubeId, lectureCardId, postId } = this.props.match.params;
+    const { boardService, collegeService } = this.props;
     const { board } = boardService as BoardService;
+    const { college } = collegeService as CollegeService;
 
     return (
       <ContentLayout
         className="content bg-white"
         breadcrumb={[
-          { text: `Community` },
+          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
+          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
+          { text: `${postId ? 'Edit Post' : 'New Post'}` },
         ]}
       >
         <PostForm
