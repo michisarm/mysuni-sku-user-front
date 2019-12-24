@@ -136,7 +136,7 @@ class CreateIntroView extends React.Component<Props> {
               <div className="ui h48 input time">
                 <input
                   type="text"
-                  value={hour && hour || parseInt(String(cubeIntro.learningTime / 60))}
+                  value={hour && hour || parseInt(String(cubeIntro.learningTime / 60), 10)}
                   onChange={(e: any) => setHourAndMinute('hour', e.target.value)}
                 /><label>h</label>
                 <Icon className="clear link" />
@@ -144,7 +144,7 @@ class CreateIntroView extends React.Component<Props> {
               <div className="ui h48 input time">
                 <input
                   type="text"
-                  value={minute && minute || parseInt(String(cubeIntro.learningTime % 60))}
+                  value={minute && minute || parseInt(String(cubeIntro.learningTime % 60), 10)}
                   onChange={(e: any) => setHourAndMinute('minute', e.target.value)}
                 /><label>m</label>
                 <Icon className="clear link" />

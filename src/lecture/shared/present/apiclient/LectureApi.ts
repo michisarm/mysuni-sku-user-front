@@ -20,7 +20,7 @@ class LectureApi {
     const params = lectureRdo;
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
-      .then(response => response && response.data || []);
+      .then(response => response && response.data);
   }
 
   findLectureCountByChannels(collegeId: string, channels: ChannelModel[]) {

@@ -103,9 +103,12 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
       collegeList.push({ key: index, value: data.collegeId, text: data.name });
     }
     );
-    console.log(personalCube);
-    if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
-    if (personalCube && personalCube.requiredSubsidiaries) personalCube.requiredSubsidiaries.map(requiredSubsidiary => requiredSubsidiaryIdList.push(requiredSubsidiary.id));
+    if (personalCube && personalCube.subsidiaries) {
+      personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
+    }
+    if (personalCube && personalCube.requiredSubsidiaries) {
+      personalCube.requiredSubsidiaries.map(requiredSubsidiary => requiredSubsidiaryIdList.push(requiredSubsidiary.id));
+    }
 
     return (
       <>
