@@ -48,9 +48,7 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
-    console.log(1);
     const { boardId } = this.props.match.params;
-    console.log(boardId);
     if (boardId === 'Notice' || boardId === '') {
 
       this.setState({ tabIndex: 0, activeItem: boardId });

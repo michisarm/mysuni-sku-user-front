@@ -23,26 +23,27 @@ class ContentsProviderSelectForCubeIntroView extends React.Component<Props> {
   render() {
     const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, setContentsProvider, organizer, etcCp, onChangeCubeIntroProps } = this.props;
     const contentsProviderTsx = setContentsProvider();
+
     return (
       <>
         <label className="necessary">교육기관 / 출처</label>
         <Grid className="create">
           <Grid.Column>
-            <Select placeholder="선택해주세요"
+            <Select
+              placeholder="선택해주세요"
               className="w100"
               options = {contentsProviderTsx}
               onChange={(e: any, data: any) => onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)}
               value={defaultValue && defaultValue}
             />
           </Grid.Column>
-          { organizer && organizer.id === 'PVD00013' ?
+          { organizer && organizer.id === 'PVD0002h' ?
             <Grid.Column>
               <div className="ui h48 input">
                 <input type="text"
                   placeholder="선택사항이 없는 경우, 교육기관/출처 를 입력해주세요."
                   value={etcCp || ''}
                   onChange={(e: any) => onChangeCubeIntroProps('operation.etcCp', e.target.value)}
-                  //readOnly
                 />
                 <Icon className="clear link" />
               </div>

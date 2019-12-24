@@ -31,7 +31,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    console.log(1);
     const { cubeIntroService, personalCubeId } = this.props;
     if (cubeIntroService && !personalCubeId) {
       cubeIntroService.clearCubeIntro();

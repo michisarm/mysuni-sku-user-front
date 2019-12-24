@@ -31,7 +31,6 @@ class CreateIntroView extends React.Component<Props> {
       /*managerListModalOpen,
       changeInstructorListModalOpen, changeManagerListModalOpen, instructorListModalOpen, cubeType, onHandleInstructorModalOk,*/
     } = this.props;
-    console.log(cubeIntro);
     return (
       <>
         <div className="section-tit">
@@ -170,9 +169,9 @@ class CreateIntroView extends React.Component<Props> {
             targetProps="operation.organizer"
             type="cubeInfo"
             defaultValue={
-                cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-                && JSON.stringify(cubeIntro.operation.organizer)
-              }
+              cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
+              && JSON.stringify(cubeIntro.operation.organizer)
+            }
           />
         </Form.Field>
       </>

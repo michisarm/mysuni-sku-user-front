@@ -43,7 +43,6 @@ class FirstCategoryModal extends React.Component<Props, States> {
 
   selectChannelButton(selectedChannel: IdName) {
     //
-    console.log(selectedChannel);
     this.setState({ value: selectedChannel.id });
     const { onChangePersonalCubeProps } = this.props;
     onChangePersonalCubeProps('category.channel', selectedChannel);

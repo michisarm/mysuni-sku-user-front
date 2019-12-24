@@ -84,7 +84,7 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
                   <>
                     <input type="text" readOnly placeholder="영상을 업로드해주세요." />
                     <Icon className="clear link" />
-                    <label className="ui button" onClick={() => this.onChangeCreateMovieDetailModalOpen(true)}>파일찾기</label>
+                    {/*<label className="ui button" onClick={() => this.onChangeCreateMovieDetailModalOpen(true)}>파일찾기</label>*/}
                     <CreateMovieDetailModal
                       open={createMovieDetailModalOpen}
                       handleChangeOpen={this.onChangeCreateMovieDetailModalOpen}

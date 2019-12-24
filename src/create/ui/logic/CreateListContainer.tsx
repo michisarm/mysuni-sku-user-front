@@ -73,18 +73,13 @@ class CreateListContainer extends React.Component<Props, States> {
     return (
 
       <Segment className="full">
-        {
-          result && result.length === 0 ?
-            ''
-            :
-            <SelectView
-              totalCount={totalCount}
-              personalCubeQuery={personalCubeQuery}
-              fieldOption={SelectType.status}
-              onChangeCubeQueryProps={this.onChangeCubeQueryProps}
-              queryFieldName="openState"
-            />
-        }
+        <SelectView
+          totalCount={totalCount}
+          personalCubeQuery={personalCubeQuery}
+          fieldOption={SelectType.status}
+          onChangeCubeQueryProps={this.onChangeCubeQueryProps}
+          queryFieldName="cubeState"
+        />
         {
         result && result.length === 0 ?
           <CreateNoDataView />

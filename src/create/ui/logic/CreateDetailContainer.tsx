@@ -35,7 +35,7 @@ interface States {
   confirmWinOpen: boolean
 }
 
-@inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'personalCube.mediaService'))
 @observer
 @reactAutobind
 class CreateDetailContainer extends React.Component<Props, States> {
@@ -53,18 +53,15 @@ class CreateDetailContainer extends React.Component<Props, States> {
     //
     const { personalCubeService, cubeIntroService } = this.props;
     const { personalCubeId, cubeType } = this.props.match.params;
-    if (personalCubeService && cubeIntroService ) {
+    if (personalCubeService && cubeIntroService) {
       if (!personalCubeId && !cubeType) {
         this.clearAll();
       } else {
         personalCubeService.findPersonalCube(personalCubeId)
           .then(() => cubeIntroService.findCubeIntro(personalCubeService.personalCube.cubeIntro.id))
           .then(() => {
-            const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
-              && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
-            if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
-            if (cubeType === 'Community') this.setCommunity(contentsId);
-            if (cubeType === 'Documents' || cubeType === 'WebPage' ) this.setOfficeWeb(contentsId);
+            console.log(cubeIntroService);
+
           });
       }
     }
@@ -73,35 +70,11 @@ class CreateDetailContainer extends React.Component<Props, States> {
   clearAll() {
     //
     const {
-      personalCubeService, cubeIntroService,
-      mediaService, boardService, officeWebService,
+      personalCubeService,
     } = this.props;
-    if (personalCubeService && cubeIntroService
-      && mediaService && boardService && officeWebService) {
+    if (personalCubeService) {
       personalCubeService.clearPersonalCube();
-      cubeIntroService.clearCubeIntro();
-      mediaService.clearMedia();
-      boardService.clearBoard();
-      officeWebService.clearOfficeWeb();
     }
-  }
-
-  setOfficeWeb(contentsId: string) {
-    //
-    const { officeWebService } = this.props;
-    if (officeWebService) officeWebService.findOfficeWeb(contentsId);
-  }
-
-  setCommunity(contentsId: string) {
-    //
-    const { boardService } = this.props;
-    if (boardService) boardService.findBoard(contentsId);
-  }
-
-  setMedia(contentsId: string) {
-    //
-    const { mediaService } = this.props;
-    if (mediaService) mediaService.findMedia(contentsId);
   }
 
   routeToCreateList() {
@@ -113,10 +86,8 @@ class CreateDetailContainer extends React.Component<Props, States> {
     //
     const { personalCubeService } = this.props;
     let getTagList = [];
-    console.log(name );
     if (personalCubeService && name === 'tags' && typeof value === 'string') {
       getTagList = value.split(',');
-      console.log(getTagList);
       personalCubeService.changeCubeProps('tags', getTagList);
     }
     if (personalCubeService && name !== 'tags') personalCubeService.changeCubeProps(name, value);
@@ -125,9 +96,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
   handleSave() {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    // const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
-    //const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
 
     if (personalCubeObject === 'success') {
       this.setState({ confirmWinOpen: true });
@@ -161,57 +130,10 @@ class CreateDetailContainer extends React.Component<Props, States> {
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCubeId } = this.props.match.params;
     const type = personalCube && personalCube.contents && personalCube.contents.type;
-    if (type === CubeType.Video
-      || type === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, mode && mode);
-    if (type === CubeType.Community) this.makeCommunity(personalCubeId, personalCube, cubeIntro, mode && mode);
-    if (type === CubeType.Documents
-      || type === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, mode && mode);
-  }
-
-  makeMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, mode?: string) {
-    //
-    const { mediaService } = this.props;
-    const { media } = this.props.mediaService || {} as MediaService;
-    if (mediaService && !mode) {
-      mediaService.makeMedia(cube, cubeIntro, media)
-        .then(() => this.props.history.push(`/cubes/cube-list`));
-    }
-    if (mediaService && mode) {
-      Promise.resolve()
-        .then(() => mediaService.modifyMedia(personalCubeId, cube, cubeIntro, media))
-        .then(() => this.props.history.push(`/cubes/cube-list`));
-    }
-
-  }
-
-  makeCommunity(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, mode?: string) {
-    //
-    // const { boardService } = this.props;
-    // const { board } = this.props.boardService || {} as BoardService;
-    /* if (boardService && !mode) {
-      boardService.makeBoard(new BoardFlowCdoModel(PersonalCubeModel.asCdo(cube), CubeIntroModel.asCdo(cubeIntro), BoardModel.asCdo(board)))
-        .then(() => this.props.history.push(`/cubes/cube-list`));
-    }
-    if (boardService && mode) {
-      Promise.resolve()
-        //.then(() => boardService.modifyBoard(personalCubeId, cube, cubeIntro, board))
-        .then(() => this.props.history.push(`/cubes/cube-list`));
-    }*/
-
-  }
-
-  makeOfficeWeb(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, mode?: string) {
-    //
-    const { officeWebService } = this.props;
-    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
-    if (officeWebService && !mode) {
-      officeWebService.makeOfficeWeb(cube, cubeIntro, officeWeb)
-        .then(() => this.props.history.push(`/cubes/cube-list`));
-    }
-    if (officeWebService && mode) {
-      Promise.resolve()
-        .then(() => officeWebService.modifyOfficeWeb(personalCubeId, cube, cubeIntro, officeWeb))
-        .then(() => this.props.history.push(`/cubes/cube-list`));
+    const { personalCubeService } = this.props;
+    if (personalCubeService && !personalCubeId) {
+      personalCubeService.registerCube(personalCube)
+        .then(() => this.routeToCreateIntro());
     }
   }
 
@@ -252,11 +174,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
   routeToCreateIntro() {
     //
-    //this.props.history.push(`/personalcube/create-intro/${personalCubeType}`);
     const { personalCube } = this.props.personalCubeService ||  {} as PersonalCubeService;
-
-    console.log(personalCube.contents.type);
-
     this.props.history.push(`/personalcube/create-intro/${personalCube.contents.type}`);
   }
 

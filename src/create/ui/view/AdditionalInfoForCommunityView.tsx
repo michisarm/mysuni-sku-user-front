@@ -9,7 +9,6 @@ import { BoardModel } from '@sku/personalcube';
 interface Props {
   onChangeBoardProps: (name: string, value: string | Date | boolean, nameSub?: string) => void
   board: BoardModel
-  onClickUnlimitedPeriod: () => void
 }
 
 interface States {
@@ -29,22 +28,20 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
           <Radio
             className="base"
             label="오픈형"
-            value="false"
             name="radioGroup"
-            checked={board && board.config && board.config.enClosed === false}
-            onClick={() => onChangeBoardProps('config.enClosed', false)}
+            checked={board && board.boardConfig && !board.boardConfig.enClosed}
+            onClick={() => onChangeBoardProps('boardConfig.enClosed', false)}
           />
           <Radio
             className="base"
             label="폐쇄형"
-            value="true"
             name="radioGroup"
-            checked={board && board.config && board.config.enClosed === true}
-            onClick={() => onChangeBoardProps('config.enClosed', true)}
+            checked={board && board.boardConfig && board.boardConfig.enClosed}
+            onClick={() => onChangeBoardProps('boardConfig.enClosed', true)}
           />
         </div>
         {
-          board && board.config && board.config.enClosed ?
+          board && board.boardConfig && board.boardConfig.enClosed ?
             <div className="column">
               <label className="necessary">기간</label>
               <div className="ui calendar" id="rangestart">
