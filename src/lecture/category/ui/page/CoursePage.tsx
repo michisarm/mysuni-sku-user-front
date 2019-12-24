@@ -15,6 +15,7 @@ import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
+import LectureViewModel from '../../../shared/model/LectureViewModel';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -57,52 +58,75 @@ class CoursePage extends Component<Props, State> {
   componentDidMount() {
     //
     this.init();
-    this.findCourseLecture();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
+      this.init();
+    }
   }
 
   async init() {
+    //
+    this.findBaseInfo();
+    this.findProgramOrCourseLecture();
+  }
+
+  async findBaseInfo() {
+    //
     const {
       match, collegeService, coursePlanService,
     } = this.props;
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
+
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
     coursePlanService.findCoursePlanContents(coursePlan.contentsId);
-
-
-    // const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
-    // const learningCard = await learningCardService.findLearningCard(lectureCard!.learningCard.id);
-    // const personalCube = await personalCubeService.findPersonalCube(learningCard.personalCube.id);
-
-    // if (personalCube) {
-    //   cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
-    // }
   }
 
-  async findCourseLecture() {
+  async findProgramOrCourseLecture() {
     //
-    const { match, programLectureService, courseLectureService, lectureService, reviewService } = this.props;
+    const { match, programLectureService, courseLectureService } = this.props;
 
     if (match.params.serviceType === LectureServiceType.Program) {
-      const programLecture = await programLectureService.findProgramLecture(match.params.serviceId);
+      const {
+        reviewFeedbackId,
+        lectureCards,
+        courseLectures,
+      } = await programLectureService.findProgramLecture(match.params.serviceId);
+      const lectureViews = await this.findReviewFeedbackAndLectureViews(reviewFeedbackId, lectureCards, courseLectures);
 
-      reviewService.findReviewSummary(programLecture.reviewFeedbackId);
-      const lectureViews = await lectureService.findLectureViews(programLecture.lectureCards, programLecture.courseLectures);
-
-      lectureViews.map(async (lectureView) => {
-        if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
-            && lectureView.lectureCards && lectureView.lectureCards.length > 0) {
-          await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCards);
-        }
-      });
+      this.findSubLectureViews(lectureViews);
     }
     else {
-      const courseLecture = await courseLectureService.findCourseLecture(match.params.serviceId);
-
-      reviewService.findReviewSummary(courseLecture.reviewFeedbackId);
-      lectureService.findLectureViews(courseLecture.lectureCards);
+      const {
+        reviewFeedbackId,
+        lectureCards,
+      } = await courseLectureService.findCourseLecture(match.params.serviceId);
+      this.findReviewFeedbackAndLectureViews(reviewFeedbackId, lectureCards);
     }
+  }
+
+  async findReviewFeedbackAndLectureViews(reviewFeedbackId: string, lectureCardIds: string[], courseLectureIds?: string[], ) {
+    //
+    const { lectureService, reviewService } = this.props;
+
+    reviewService.findReviewSummary(reviewFeedbackId);
+    return lectureService.findLectureViews(lectureCardIds, courseLectureIds);
+  }
+
+  async findSubLectureViews(lectureViews: LectureViewModel[]) {
+    //
+    const { lectureService } = this.props;
+
+    lectureViews.map(async (lectureView) => {
+      if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
+        && lectureView.lectureCards && lectureView.lectureCards.length > 0) {
+        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCards);
+      }
+    });
   }
 
 
@@ -223,7 +247,7 @@ class CoursePage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../${college.collegeId}/channels` },
+          { text: `${college.name} College`, path: `../../../../${college.collegeId}/channels` },
           { text: `${college.name} Course` },
         ]}
       >

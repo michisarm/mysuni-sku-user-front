@@ -6,7 +6,11 @@ import LectureServiceType from './LectureServiceType';
 
 class LectureViewModel extends DramaEntityObservableModel {
   //
+  serviceId: string = '';
   serviceType: LectureServiceType = LectureServiceType.Program;
+  coursePlanId: string = '';
+  cubeId: string = '';
+
   name: string = '';
   cubeType: CubeType = CubeType.None;
   category: CategoryModel = new CategoryModel();
@@ -32,7 +36,9 @@ class LectureViewModel extends DramaEntityObservableModel {
 
   static getServiceType(lectureView: LectureViewModel) {
     //
-    if (lectureView.serviceType === LectureServiceType.Course) {
+    const serviceType = lectureView.serviceType as string;
+
+    if (serviceType === 'COURSE') {
       return LectureServiceType.Course;
     }
     else {
