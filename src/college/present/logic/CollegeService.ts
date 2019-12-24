@@ -47,9 +47,6 @@ export default class CollegeService {
   @observable
   channel: ChannelModel = new ChannelModel();
 
-  @observable
-  favoriteChannelChangeModalOpen: boolean = false;
-
 
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
@@ -203,18 +200,29 @@ export default class CollegeService {
     return list;
   }
 
+   @action
+  clearFavoriteChannels() {
+    this.favoriteChannels = [];
+  }
   // Channel -----------------------------------------------------------------------------------------------------------
 
   @action
-  async findAllChannel() {
-    const channels = await this.channelApi.findAllChannel();
-    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
-  }
+   async findAllChannel() {
+     const channels = await this.channelApi.findAllChannel();
+     runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
+   }
 
   @action
   async findChannelById(channelId: string) {
     const channel = await this.channelApi.findChannel(channelId);
     runInAction(() => this.channel = new ChannelModel(channel));
+  }
+
+  //channel 이름 검색 추가
+  @action
+  async  findChannelByName(name:string) {
+    const channels = await this.channelApi.findChannelByName(name);
+    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
   }
 
   @action
