@@ -62,7 +62,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onLearningStart() {
     const { typeViewObject } = this.props;
-    
+
     if (typeViewObject.url) {
       window.open(typeViewObject.url, '_blank');
     }
@@ -86,6 +86,10 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('survey');
   }
 
+  onJoin() {
+    console.log('join');
+  }
+
   onClickDownloadReport(fileBoxId: string) {
     //
     depot.downloadDepot(fileBoxId);
@@ -106,6 +110,8 @@ class LectureCardContainer extends Component<Props, State> {
         return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
+      case CubeType.Community:
+        return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
     }
