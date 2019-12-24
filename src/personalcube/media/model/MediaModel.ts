@@ -69,6 +69,7 @@ decorate(MediaModel, {
   id: observable,
   entityVersion: observable,
   patronKey: observable,
+  mediaType: observable,
   mediaContents: observable,
   name: observable,
   learningPeriod: observable,

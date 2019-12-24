@@ -18,7 +18,7 @@ class SelectView extends React.Component <Props> {
       <div className="top-guide-title size-type3">
         <div className="list-number">총 <strong>{totalCount}개</strong>의 리스트가 있습니다.</div>
         {
-          queryFieldName === 'openState' ?
+          queryFieldName === 'cubeState' ?
             <div className="right-wrap">
               <Select
                 placeholder="분류를 선택해주세요"

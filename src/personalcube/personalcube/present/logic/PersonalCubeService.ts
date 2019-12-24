@@ -75,7 +75,6 @@ export default class PersonalCubeService {
     return runInAction(() => this.personalCubes = personalCubes);
   }
 
-
   @action
   changeCubeProps(name: string, value: string | {} | string[]) {
     //
@@ -83,13 +82,6 @@ export default class PersonalCubeService {
     this.personalCube = _.set(this.personalCube, name, value);
     console.log(this.personalCube);
   }
-
-  /*  @action
-  changePersonalCubeProps(name: string, value: string | {}) {
-    //
-    this.personalCube = { ...this.personalCube, [name]: value } as PersonalCubeModel;
-    console.log(this.personalCube);
-  }*/
 
   @action
   clearPersonalCube() {

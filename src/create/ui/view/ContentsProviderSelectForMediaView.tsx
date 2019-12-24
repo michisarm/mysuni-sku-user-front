@@ -16,6 +16,7 @@ interface Props extends RouteComponentProps {
 class ContentsProviderSelectForMediaView extends React.Component<Props> {
   //
   render() {
+
     const { defaultValue, targetProps, onSetMediaPropsByJSON, setContentsProvider } = this.props;
     const contentsProviderTsx = setContentsProvider();
     return (

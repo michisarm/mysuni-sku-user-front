@@ -31,7 +31,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    console.log(1);
     const { cubeIntroService, personalCubeId } = this.props;
     if (cubeIntroService && !personalCubeId) {
       cubeIntroService.clearCubeIntro();
@@ -120,32 +119,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
               <CreateMediaContainer
                 cubeType={cubeType}
               />
-              {/*{
-                cubeType === 'Community' ?
-                  <CreateMediaContainer
-                    cubeType={cubeType}
-                  />
-                  :
-                  ''
-              }*/}
-              {/* {
-                cubeType === 'Video'
-                  <CreateVideoTypeView
-                    handleChangeSearchFilter={this.handleChangeSearchFilter}
-                    searchFilter={searchFilter}
-                  />
-                  : null
-              }
-              {
-                cubeType === 'Audio' ?
-                  <CreateAudioTypeView
-                    handleChangeSearchFilter={this.handleChangeSearchFilter}
-                    onChangeCubeIntroProps={this.onChangeCubeIntroProps}
-                    searchFilter={searchFilter}
-                  />
-                  : null
-              }
-*/}
               <div className="buttons">
                 <Button className="fix line" onClick={this.routeToBasicList}>Cancel</Button>
                 <Button className="fix line">Save</Button>

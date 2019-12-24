@@ -23,7 +23,6 @@ export default {
   ],
 
   cubeType: [
-    { key: '0', text: '전체', value: '' },
     { key: '1', text: 'Video', value: 'Video' },
     { key: '2', text: 'Audio', value: 'Audio' },
     { key: '3', text: 'Community', value: 'Community' },
@@ -183,7 +182,7 @@ export default {
   ],
 
   status: [
-    { key: '0', text: '전체', value: 'All' },
+    { key: '0', text: '전체', value: '' },
     { key: '1', text: '임시저장', value: 'Created' },
     { key: '2', text: '승인요청', value: 'OpenApproval' },
     { key: '3', text: '승인', value: 'Opened' },

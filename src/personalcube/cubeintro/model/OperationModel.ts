@@ -26,6 +26,7 @@ decorate(OperationModel, {
   location: observable,
   phoneNumber: observable,
   organizer: observable,
+  etcCp: observable,
   siteUrl: observable,
 });
 

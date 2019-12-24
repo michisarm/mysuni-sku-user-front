@@ -7,6 +7,8 @@ import { CubeIntroService } from '../../../personalcube/cubeintro';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
+import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
+import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 interface Props extends RouteComponentProps {
   mediaService?: MediaService
@@ -32,20 +34,22 @@ class CreateMediaContainer extends React.Component<Props, States> {
   // 교육정보
   onChangeMediaProps(name: string, value: string | Date, nameSub?: string) {
     //
-    console.log(value);
     const { mediaService } = this.props;
     if (mediaService) mediaService.changeMediaProps(name, value);
     if (mediaService && typeof value === 'object' && nameSub) {
       const stringDate = value.toLocaleDateString().replace('. ', '-').replace('. ', '-').replace('.', '');
       mediaService.changeMediaProps(name, value, nameSub, stringDate);
+      if (name.indexOf('startDateSub') !== -1) {
+        const newName = name.replace('startDateSub', 'endDateSub');
+        mediaService.changeMediaProps(newName, value, nameSub, stringDate);
+      }
     }
-    /*  if (mediaService) {
-        mediaService.changeMediaProps(name, value);
-      }*/
+    if (mediaService) {
+      mediaService.changeMediaProps(name, value);
+    }
   }
 
   handleChangeSearchFilter(e:any, data: any) {
-    console.log(data.value);
     this.setState({ searchFilter: data.value });
   }
 
@@ -76,8 +80,26 @@ class CreateMediaContainer extends React.Component<Props, States> {
             : null
         }
         {
-          cubeType === 'WebPage' || cubeType === 'Documents' ?
+          cubeType === 'WebPage' ?
             <CreateWebPageTypeView
+              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangeMediaProps={this.onChangeMediaProps}
+              searchFilter={searchFilter}
+            />
+            : null
+        }
+        {
+          cubeType === 'Documents' ?
+            <CreateDocumentTypeView
+              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangeMediaProps={this.onChangeMediaProps}
+              searchFilter={searchFilter}
+            />
+            : null
+        }
+        {
+          cubeType === 'Community' ?
+            <CreateCommunityTypeView
               handleChangeSearchFilter={this.handleChangeSearchFilter}
               onChangeMediaProps={this.onChangeMediaProps}
               searchFilter={searchFilter}

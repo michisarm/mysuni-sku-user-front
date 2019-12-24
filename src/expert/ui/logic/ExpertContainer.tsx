@@ -17,13 +17,7 @@ class ExpertContainer extends React.Component<Props> {
 
   componentDidMount() {
     const { instructorService } = this.props;
-    if (instructorService) {
-
-      instructorService.findInstructor()
-        .then(() => {
-          console.log(instructorService.instructor.result.channel.channel);
-        });
-    }
+    if (instructorService) instructorService.findInstructor();
   }
 
   handleItemClick = (e: any, { name } : any) => this.setState({ activeItem: name });

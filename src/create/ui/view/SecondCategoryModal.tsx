@@ -55,8 +55,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
     const { channelListMap, selectedCollegeState, channelListMapForViewState } = this.state;
     const tempListMap = channelListMap;
     const channelListMapForView = channelListMapForViewState;
-    console.log(channelListMap);
-    console.log(`${channel.id}`);
+
     if (tempListMap.get(`${channel.id}`)) {
       tempListMap.delete(`${channel.id}`);
 
@@ -139,7 +138,6 @@ class SecondCategoryModal extends React.Component<Props, States> {
       categoryId = category.channel.id;
     }
     );
-    console.log(categoryId);
 
     const newCategories = [
       ...categories.slice(0, index),

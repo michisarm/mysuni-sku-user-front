@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import ProfileView from '../view/title/ProfileView';
 import LectureTotalTimeView from '../view/title/LectureTotalTimeView';
 import StampInfoView from '../view/title/StampInfoView';
-import FavoriteChannelView from '../view/title/FavoriteChannelView';
-import { SkProfileModel, StudySummary } from '../../../profile';
+import { SkProfileService } from '../../../profile';
 
 interface Props {
-  skProfile : SkProfileModel
-  studySummary : StudySummary
-  onFavoritChannelChange : ()=>void
+  skProfileService? : SkProfileService
 }
 
 
@@ -18,6 +15,7 @@ interface States{
 
 }
 
+@inject('skProfileService', 'collegeService')
 @observer
 @reactAutobind
 class TitleContainer extends Component<Props, States> {
@@ -35,19 +33,17 @@ class TitleContainer extends Component<Props, States> {
   }
 
   render() {
-    const { skProfile, studySummary } = this.props;
+    const { skProfileService } = this.props;
+    const { skProfile } = skProfileService as SkProfileService;
 
     return (
-      <div className="main-info-area">
-        <div className="progress-info-wrap">
-          <ProfileView skProfile={skProfile}
-            onSignOut={this.onSignOut}
-            onChangePhoto={this.onChangePhoto}
-          />
-          <LectureTotalTimeView />
-          <StampInfoView />
-        </div>
-        <FavoriteChannelView studySummary={studySummary} onFavoritChannelChange={this.onFavoriteChannelChange} />
+      <div className="progress-info-wrap">
+        <ProfileView skProfile={skProfile}
+          onSignOut={this.onSignOut}
+          onChangePhoto={this.onChangePhoto}
+        />
+        <LectureTotalTimeView />
+        <StampInfoView />
       </div>
     );
   }

@@ -27,11 +27,10 @@ class CreateIntroView extends React.Component<Props> {
   render() {
 
     const {
-      cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute,
+      cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute, cubeType,
       /*managerListModalOpen,
       changeInstructorListModalOpen, changeManagerListModalOpen, instructorListModalOpen, cubeType, onHandleInstructorModalOk,*/
     } = this.props;
-    console.log(cubeIntro);
     return (
       <>
         <div className="section-tit">
@@ -161,18 +160,22 @@ class CreateIntroView extends React.Component<Props> {
             </div>
           </div>
         </Form.Field>
-        <Form.Field>
-          <CreateBoardContainer />
-
-        </Form.Field>
+        {
+          cubeType === 'Community' ?
+            <Form.Field>
+              <CreateBoardContainer />
+            </Form.Field>
+            : null
+        }
+        {/* */}
         <Form.Field>
           <ContentsProviderSelectContainer
             targetProps="operation.organizer"
             type="cubeInfo"
             defaultValue={
-                cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-                && JSON.stringify(cubeIntro.operation.organizer)
-              }
+              cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
+              && JSON.stringify(cubeIntro.operation.organizer)
+            }
           />
         </Form.Field>
       </>

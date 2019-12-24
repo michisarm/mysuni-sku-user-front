@@ -84,7 +84,7 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
                   <>
                     <input type="text" readOnly placeholder="영상을 업로드해주세요." />
                     <Icon className="clear link" />
-                    <label className="ui button" onClick={() => this.onChangeCreateMovieDetailModalOpen(true)}>파일찾기</label>
+                    {/*<label className="ui button" onClick={() => this.onChangeCreateMovieDetailModalOpen(true)}>파일찾기</label>*/}
                     <CreateMovieDetailModal
                       open={createMovieDetailModalOpen}
                       handleChangeOpen={this.onChangeCreateMovieDetailModalOpen}
@@ -97,8 +97,9 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
                 media && media.mediaType === MediaType.LinkMedia ? (
                   <>
                     <input type="text" readOnly placeholder="http://" />
-                    <Icon className="clear link" />
-                    <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>
+                    {/* <Icon className="clear link" />*/}
+
+                    {/* <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
                     <input type="file" id="hidden-new-file" />
                   </>
                 ) : ''

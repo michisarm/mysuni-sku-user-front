@@ -5,22 +5,22 @@ import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { BoardModel } from '@sku/personalcube';
 
-
 interface Props {
   onChangeBoardProps: (name: string, value: string | Date | boolean, nameSub?: string) => void
   board: BoardModel
-  onClickUnlimitedPeriod: () => void
+
 }
 
 interface States {
 }
 
-@observer
 @reactAutobind
+@observer
 class AdditionalInfoForCommunityView extends React.Component<Props, States> {
   //
   render() {
     const { onChangeBoardProps, board } = this.props;
+    console.log('jfkldjsafjkdls');
     return (
 
       <div className="ui grid create">
@@ -86,6 +86,7 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
     );
   }
 }
+
 
 export default AdditionalInfoForCommunityView;
 
