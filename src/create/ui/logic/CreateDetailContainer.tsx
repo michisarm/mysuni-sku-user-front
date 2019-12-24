@@ -125,7 +125,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
   handleSave() {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    // const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
     //const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
 
@@ -186,8 +186,8 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
   makeCommunity(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, mode?: string) {
     //
-    const { boardService } = this.props;
-    const { board } = this.props.boardService || {} as BoardService;
+    // const { boardService } = this.props;
+    // const { board } = this.props.boardService || {} as BoardService;
     /* if (boardService && !mode) {
       boardService.makeBoard(new BoardFlowCdoModel(PersonalCubeModel.asCdo(cube), CubeIntroModel.asCdo(cubeIntro), BoardModel.asCdo(board)))
         .then(() => this.props.history.push(`/cubes/cube-list`));

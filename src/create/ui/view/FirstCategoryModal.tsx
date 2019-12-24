@@ -86,9 +86,11 @@ class FirstCategoryModal extends React.Component<Props, States> {
   render() {
     //
     const { open, handleChangeOpen, personalCube, colleges, selectedMainCollege } = this.props;
+    // const { isSelectedMainChannel, activeIndex, value } = this.state;
     const { isSelectedMainChannel, activeIndex, value } = this.state;
     const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
       && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
+    console.log(isSelectedMainChannel, value);
     return (
       <>
         <div className="cell v-middle">

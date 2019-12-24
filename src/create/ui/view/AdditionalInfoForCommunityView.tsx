@@ -20,7 +20,7 @@ interface States {
 class AdditionalInfoForCommunityView extends React.Component<Props, States> {
   //
   render() {
-    const { onChangeBoardProps, board, onClickUnlimitedPeriod } = this.props;
+    const { onChangeBoardProps, board } = this.props;
     return (
 
       <div className="ui grid create">

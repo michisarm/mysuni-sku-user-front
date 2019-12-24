@@ -87,7 +87,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
   render() {
 
     const {
-      cubeIntro, changeInstructorListModalOpen, changeManagerListModalOpen, instructorListModalOpen,
+      cubeIntro, changeManagerListModalOpen, instructorListModalOpen,
     } = this.props.cubeIntroService || {} as CubeIntroService;
     const { hour, minute } = this.state;
     //const cubeType = personalCube && personalCube.contents && personalCube.contents.type;

@@ -6,7 +6,6 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import RoleBookModel from './RoleBookModel';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../../course/model/CourseSetModel';
-import { CourseSetType } from '../../../course/model/CourseSetType';
 
 
 class LectureModel extends DramaEntityObservableModel {
@@ -46,7 +45,7 @@ class LectureModel extends DramaEntityObservableModel {
       this.serviceType = LectureModel.getServiceType(lecture);
       this.category = new CategoryModel(lecture.category);
 
-      // Ui Model
+      // UI Model
       const cineroom = tenantInfo.getCineroom() as any;
       this.required = cineroom && lecture.requiredSubsidiaries
         && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
@@ -57,11 +56,12 @@ class LectureModel extends DramaEntityObservableModel {
 
   static getServiceType(lecture: LectureModel) {
     //
-    // Todo: Program, Course 조건 API 수정되면 serviceType으로 변경해야 함.
-    if (lecture.courseSetJson && lecture.courseSetJson.type === CourseSetType.Program) {
+    const serviceType = lecture.serviceType as string;
+
+    if (serviceType === 'PROGRAM') {
       return LectureServiceType.Program;
     }
-    else if (lecture.courseSetJson) {
+    else if (serviceType === 'COURSE') {
       return LectureServiceType.Course;
     }
     else {

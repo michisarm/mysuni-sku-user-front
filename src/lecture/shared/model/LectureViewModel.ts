@@ -1,6 +1,5 @@
-
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel, CategoryModel, DatePeriod } from 'shared';
+import { CategoryModel, DatePeriod, DramaEntityObservableModel } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from './LectureServiceType';
 
@@ -33,8 +32,7 @@ class LectureViewModel extends DramaEntityObservableModel {
 
   static getServiceType(lectureView: LectureViewModel) {
     //
-    // Todo: Program, Course 조건 API 수정되면 serviceType으로 변경해야 함.
-    if (lectureView.lectureCards && lectureView.lectureCards.length > 0) {
+    if (lectureView.serviceType === LectureServiceType.Course) {
       return LectureServiceType.Course;
     }
     else {

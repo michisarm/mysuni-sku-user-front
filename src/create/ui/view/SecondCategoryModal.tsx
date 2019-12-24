@@ -129,7 +129,8 @@ class SecondCategoryModal extends React.Component<Props, States> {
   onRemove(channel: string, key: string ) {
 
     const { personalCube, onChangePersonalCubeProps } = this.props;
-    const { channelListMap, selectedCollegeState, channelListMapForViewState } = this.state;
+    // const { channelListMap, selectedCollegeState, channelListMapForViewState } = this.state;
+    const { channelListMap } = this.state;
     const tempListMap = channelListMap;
     const categories = personalCube.subCategories;
     const index = categories.findIndex(category => category.channel.name === channel);
@@ -170,7 +171,8 @@ class SecondCategoryModal extends React.Component<Props, States> {
   render() {
     //
     const { open, personalCube, handleChangeOpen, colleges, selectedSubCollege } = this.props;
-    const { channelListMap, selectedCollegeState, activeIndex } = this.state;
+    // const { channelListMap, selectedCollegeState, activeIndex } = this.state;
+    const { channelListMap, activeIndex } = this.state;
     const selectedChannels: any = [];
     if (personalCube && personalCube.subCategories) {
       const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
