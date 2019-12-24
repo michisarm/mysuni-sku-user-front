@@ -2,15 +2,36 @@
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { PostDetail } from '@sku/personalcube';
+import { CollegeService } from 'college';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
+import { inject, observer } from 'mobx-react';
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
+  collegeService: CollegeService,
 }
 
+@inject(mobxHelper.injectFrom(
+  'collegeService',
+))
 @reactAutobind
+@observer
 class PostDetailPage extends React.Component<Props> {
   //
+  componentDidMount() {
+    //
+    this.init();
+  }
+
+  init() {
+    const {
+      match, collegeService,
+    } = this.props;
+    const { params } = match;
+
+    collegeService.findCollege(params.collegeId);
+  }
+
   routeTo(url: string) {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
     this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${url}`);
@@ -18,13 +39,17 @@ class PostDetailPage extends React.Component<Props> {
 
   render() {
     //
-    const { postId } = this.props.match.params;
+    const { lectureCardId, cubeId, postId } = this.props.match.params;
+    const { collegeService } = this.props;
+    const { college } = collegeService;
 
     return (
       <ContentLayout
         className="content community"
         breadcrumb={[
-          { text: `Community` },
+          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
+          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
+          { text: `Detail` },
         ]}
       >
         <section className="content community">
