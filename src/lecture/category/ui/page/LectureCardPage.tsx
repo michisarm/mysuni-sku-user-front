@@ -109,7 +109,7 @@ class LectureCardPage extends Component<Props, State> {
       required: false,  // Todo
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
-      participantCount: '1,250',  // Todo
+      participantCount: '0',  // Todo
 
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
@@ -339,10 +339,10 @@ class LectureCardPage extends Component<Props, State> {
             <div className="between-section">
               <div className="cont-inner" style={{ height: '480px' }}>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                {/*<video width="854" height="480" id="video1">*/}
-                {/*  <source src={typeViewObject.videoUrl} type="video/mp4" />*/}
-                {/*</video>*/}
-                <img src={typeViewObject.videoUrl} />
+                <video width="854" height="480" id="video1">
+                  <source src={typeViewObject.videoUrl} type="video/mp4" />
+                </video>
+                {/*<img src={typeViewObject.videoUrl} />*/}
               </div>
             </div>
           ) || null
