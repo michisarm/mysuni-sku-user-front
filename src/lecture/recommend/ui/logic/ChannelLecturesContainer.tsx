@@ -1,14 +1,14 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ReviewService } from '@nara.drama/feedback';
-import { observer, inject } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
-import { LectureService, LectureServiceType } from 'lecture';
+import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
 import LectureModel from '../../../shared/model/LectureModel';
+import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 interface Props extends RouteComponentProps {
   lectureService?: LectureService,
@@ -27,6 +27,8 @@ interface State {
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
   //
+  PAGE_SIZE = 8;
+
   state = {
     lectures: [],
     totalCount: 0,
@@ -46,9 +48,8 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   async findLectures() {
     //
-    console.log('findChannelLectures');
     const { lectureService, reviewService, channel } = this.props;
-    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, 5, 0);
+    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0);
 
     this.setState(({
       lectures,
@@ -67,7 +68,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { lecture } = data;
     const { history } = this.props;
 
-    if (lecture.serviceType === LectureServiceType.Card) {
+    if (lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course) {
+      history.push(`./course-plan/${lecture.coursePlanId}/${lecture.serviceType}/${lecture.serviceId}`);
+    }
+    else if (lecture.serviceType === LectureServiceType.Card) {
       history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
     }
   }
