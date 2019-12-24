@@ -7,6 +7,8 @@ import { CubeIntroService } from '../../../personalcube/cubeintro';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
+import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
+import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 interface Props extends RouteComponentProps {
   mediaService?: MediaService
@@ -78,8 +80,26 @@ class CreateMediaContainer extends React.Component<Props, States> {
             : null
         }
         {
-          cubeType === 'WebPage' || cubeType === 'Documents' ?
+          cubeType === 'WebPage' ?
             <CreateWebPageTypeView
+              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangeMediaProps={this.onChangeMediaProps}
+              searchFilter={searchFilter}
+            />
+            : null
+        }
+        {
+          cubeType === 'Documents' ?
+            <CreateDocumentTypeView
+              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangeMediaProps={this.onChangeMediaProps}
+              searchFilter={searchFilter}
+            />
+            : null
+        }
+        {
+          cubeType === 'Community' ?
+            <CreateCommunityTypeView
               handleChangeSearchFilter={this.handleChangeSearchFilter}
               onChangeMediaProps={this.onChangeMediaProps}
               searchFilter={searchFilter}

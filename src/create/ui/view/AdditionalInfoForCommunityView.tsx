@@ -5,21 +5,22 @@ import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { BoardModel } from '@sku/personalcube';
 
-
 interface Props {
   onChangeBoardProps: (name: string, value: string | Date | boolean, nameSub?: string) => void
   board: BoardModel
+
 }
 
 interface States {
 }
 
-@observer
 @reactAutobind
+@observer
 class AdditionalInfoForCommunityView extends React.Component<Props, States> {
   //
   render() {
     const { onChangeBoardProps, board } = this.props;
+    console.log('jfkldjsafjkdls');
     return (
 
       <div className="ui grid create">
@@ -28,20 +29,22 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
           <Radio
             className="base"
             label="오픈형"
+            value="false"
             name="radioGroup"
-            checked={board && board.boardConfig && !board.boardConfig.enClosed}
-            onClick={() => onChangeBoardProps('boardConfig.enClosed', false)}
+            checked={board && board.config && board.config.enClosed === false}
+            onClick={() => onChangeBoardProps('config.enClosed', false)}
           />
           <Radio
             className="base"
             label="폐쇄형"
+            value="true"
             name="radioGroup"
-            checked={board && board.boardConfig && board.boardConfig.enClosed}
-            onClick={() => onChangeBoardProps('boardConfig.enClosed', true)}
+            checked={board && board.config && board.config.enClosed === true}
+            onClick={() => onChangeBoardProps('config.enClosed', true)}
           />
         </div>
         {
-          board && board.boardConfig && board.boardConfig.enClosed ?
+          board && board.config && board.config.enClosed ?
             <div className="column">
               <label className="necessary">기간</label>
               <div className="ui calendar" id="rangestart">
@@ -83,6 +86,7 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
     );
   }
 }
+
 
 export default AdditionalInfoForCommunityView;
 

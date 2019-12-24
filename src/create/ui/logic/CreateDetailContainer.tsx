@@ -4,11 +4,11 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
-import { ContentLayout, CubeType, mobxHelper } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { BoardService } from '@sku/personalcube';
 import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
-import { CubeIntroModel, CubeIntroService } from '../../../personalcube/cubeintro';
+import { CubeIntroService } from '../../../personalcube/cubeintro';
 import { MediaService } from '../../../personalcube/media';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
@@ -22,7 +22,6 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   boardService?: BoardService
 
 }
-
 
 interface States {
   tags: string
@@ -127,9 +126,9 @@ class CreateDetailContainer extends React.Component<Props, States> {
   handleOKConfirmWin(mode?: string) {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    //const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCubeId } = this.props.match.params;
-    const type = personalCube && personalCube.contents && personalCube.contents.type;
+    // const type = personalCube && personalCube.contents && personalCube.contents.type;
     const { personalCubeService } = this.props;
     if (personalCubeService && !personalCubeId) {
       personalCubeService.registerCube(personalCube)

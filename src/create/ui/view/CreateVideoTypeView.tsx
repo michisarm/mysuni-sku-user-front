@@ -97,8 +97,9 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
                 media && media.mediaType === MediaType.LinkMedia ? (
                   <>
                     <input type="text" readOnly placeholder="http://" />
-                    <Icon className="clear link" />
-                    <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>
+                    {/* <Icon className="clear link" />*/}
+
+                    {/* <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
                     <input type="file" id="hidden-new-file" />
                   </>
                 ) : ''

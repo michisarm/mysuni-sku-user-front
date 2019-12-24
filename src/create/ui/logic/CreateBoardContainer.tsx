@@ -10,14 +10,10 @@ interface Props extends RouteComponentProps {
   boardService?: BoardService
 }
 
-interface States {
-
-}
-
 @inject('boardService')
 @observer
 @reactAutobind
-class CreateBoardContainer extends React.Component<Props, States> {
+class CreateBoardContainer extends React.Component<Props> {
   //
   onChangeBoardProps(name: string, value: string | Date | boolean, nameSub?: string) {
     //
@@ -34,23 +30,13 @@ class CreateBoardContainer extends React.Component<Props, States> {
     }
   }
 
-  onClickUnlimitedPeriod() {
-    //
-    const { board } = this.props.boardService || {} as BoardService;
-    if (board) {
-      if (board.learningPeriod.endDateSub.toLocaleDateString() === new Date(2100, 12, 30).toLocaleDateString()) {
-        this.onChangeBoardProps('learningPeriod.endDateSub', new Date(), 'learningPeriod.endDate');
-      } else this.onChangeBoardProps('learningPeriod.endDateSub', new Date(2100, 12, 30), 'learningPeriod.endDate');
-    }
-  }
-
   render() {
     const { board } = this.props.boardService || {} as BoardService;
+
     return (
       <AdditionalInfoForCommunityView
         onChangeBoardProps={this.onChangeBoardProps}
         board={board}
-        onClickUnlimitedPeriod={this.onClickUnlimitedPeriod}
       />
     );
   }
