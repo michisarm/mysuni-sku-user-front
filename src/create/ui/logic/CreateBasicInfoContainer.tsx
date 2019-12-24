@@ -165,7 +165,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
                   <Select
                     placeholder="Select"
                     className="dropdown selection"
-                    value={personalCube && personalCube.contents && personalCube.contents.type || ''}
+                    value={personalCube && personalCube.contents && personalCube.contents.type || 'Select'}
                     options={SelectType.cubeType}
                     onChange={(e: any, data: any) => {
                       onChangePersonalCubeProps('contents.type', data.value);

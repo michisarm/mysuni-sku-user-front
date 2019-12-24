@@ -8,6 +8,7 @@ import { OfficeWebModel } from '../../model/OfficeWebModel';
 import { PersonalCubeModel } from '../../../personalcube';
 import { OfficeWebFlowUdoModel } from '../../model/OfficeWebFlowUdoModel';
 import { OfficeWebFlowCdoModel } from '../../model/OfficeWebFlowCdoModel';
+import { OfficeWebFlowUserCdoModel } from '../../model/OfficeWebFlowUserCdoModel';
 
 
 @autobind
@@ -31,6 +32,17 @@ export default class OfficeWebService {
     return this.officeWebFlowApi.makeOfficeWeb(
       new OfficeWebFlowCdoModel(
         PersonalCubeModel.asCdo(personalCube),
+        CubeIntroModel.asCdo(cubeIntro),
+        OfficeWebModel.asCdo(officeWeb)
+      )
+    );
+  }
+
+  makeOfficeWebByUser(personalCubeId: string, cubeIntro: CubeIntroModel, officeWeb: OfficeWebModel) {
+    console.log(1);
+    return this.officeWebFlowApi.makeOfficeWebByUser(
+      new OfficeWebFlowUserCdoModel(
+        personalCubeId,
         CubeIntroModel.asCdo(cubeIntro),
         OfficeWebModel.asCdo(officeWeb)
       )

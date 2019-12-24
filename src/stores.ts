@@ -1,9 +1,8 @@
-
 import { ReviewService } from '@nara.drama/feedback';
 import { sharedStores } from 'shared';
-import { collegeStores, CollegeService } from 'college';
+import { CollegeService, collegeStores } from 'college';
 import { courseStores } from 'course';
-import { CubeIntroService, MediaService, personalCubeStores } from 'personalcube';
+import { CubeIntroService, MediaService, OfficeWebService, PersonalCubeService, personalCubeStores } from 'personalcube';
 import { lectureCardStores } from 'lecture';
 import { InstructorService } from 'expert';
 import { SkProfileService } from 'profile';
@@ -20,6 +19,8 @@ const stores = {
   ...personalCubeStores,
   ...lectureCardStores,
   ...courseStores,
+  personalCubeService: PersonalCubeService.instance,
+  officeWebService: OfficeWebService.instance,
   mediaService: MediaService.instance,
   instructorService: InstructorService.instance,
   cubeIntroService: CubeIntroService.instance,

@@ -1,16 +1,23 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { OfficeWebFlowCdoModel } from '../../model/OfficeWebFlowCdoModel';
 import { OfficeWebFlowUdoModel } from '../../model/OfficeWebFlowUdoModel';
+import { OfficeWebFlowUserCdoModel } from '../../model/OfficeWebFlowUserCdoModel';
 
 export default class OfficeWebFlowApi {
 
-  URL = '/api/personalCube/officeweb/flow';
+  URL = '/api/personalCube/officewebs/flow';
 
   static instance: OfficeWebFlowApi;
 
   makeOfficeWeb(officeWeb: OfficeWebFlowCdoModel) {
     //
     return axios.post<string>(this.URL, officeWeb)
+      .then(response => response && response.data || null);
+  }
+
+  makeOfficeWebByUser(officeWeb: OfficeWebFlowUserCdoModel) {
+    //
+    return axios.post<string>(this.URL + '/byUser', officeWeb)
       .then(response => response && response.data || null);
   }
 
