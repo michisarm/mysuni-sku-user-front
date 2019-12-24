@@ -63,7 +63,9 @@ class FavoriteChannelContainer extends Component<Props, States> {
     const { open, favoriteModal } = this.state;
 
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })) || [];
+      && favoriteChannels.idNames.map(channel =>
+        new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+      ) || [];
 
     return (
       <div className="channel-of-interest">
