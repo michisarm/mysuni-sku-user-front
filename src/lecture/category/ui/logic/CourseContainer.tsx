@@ -55,13 +55,15 @@ class CourseContainer extends Component<Props> {
     }
   }
 
-  onViewDetail(serviceType: LectureServiceType, id: string) {
+  onViewDetail(lecture: LectureViewModel) {
     //
+    const { serviceId, serviceType, coursePlanId, cubeId } = lecture;
+
     if (serviceType === LectureServiceType.Program || serviceType === LectureServiceType.Course) {
-      this.props.history.push(`./${id}`);
+      this.props.history.push(`../../${coursePlanId}/${serviceType}/${serviceId}`);
     }
     else if (serviceType === LectureServiceType.Card) {
-      this.props.history.push(`../../../cube/todo-cube-id/lecture-card/${id}`);
+      this.props.history.push(`../../../cube/${cubeId}/lecture-card/${serviceId}`);
     }
   }
 
@@ -81,7 +83,7 @@ class CourseContainer extends Component<Props> {
                   className="first"
                   lectureView={lecture}
                   toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                  onViewDetail={() => this.onViewDetail(lecture.serviceType, lecture.id)}
+                  onViewDetail={() => this.onViewDetail(lecture)}
                 />
               )}
             >
@@ -90,7 +92,7 @@ class CourseContainer extends Component<Props> {
                   key={`sub-lecture-${index}`}
                   className="included"
                   lectureView={subLecture}
-                  onViewDetail={() => this.onViewDetail(subLecture.serviceType, subLecture.id)}
+                  onViewDetail={() => this.onViewDetail(subLecture)}
                 />
               )}
             </Lecture.CourseSection>
