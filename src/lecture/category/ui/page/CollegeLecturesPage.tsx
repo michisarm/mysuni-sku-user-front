@@ -19,7 +19,7 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
 @inject(mobxHelper.injectFrom('collegeService', 'lecture.lectureCountService'))
 @reactAutobind
 @observer
-class CategoryLecturesPage extends Component<Props> {
+class CollegeLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
@@ -33,22 +33,20 @@ class CategoryLecturesPage extends Component<Props> {
     }
   }
 
-  findCollegeAndChannels() {
+  async findCollegeAndChannels() {
     //
     const { match, collegeService, lectureCountService } = this.props;
 
-    collegeService.findCollege(match.params.collegeId)
-      .then((college) => {
-        //
-        if (!college) {
-          return;
-        }
-        const channels = college.channels;
+    const college = await collegeService.findCollege(match.params.collegeId);
 
-        channels.map((channel) => channel.checked = true);
-        lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, channels);
-        // collegeService.setChannels(college.channels);
-      });
+    if (!college) {
+      return;
+    }
+    const channels = college.channels;
+
+    channels.map((channel) => channel.checked = true);
+    lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, channels);
+    // collegeService.setChannels(college.channels);
   }
 
 
@@ -73,4 +71,4 @@ class CategoryLecturesPage extends Component<Props> {
   }
 }
 
-export default withRouter(CategoryLecturesPage);
+export default withRouter(CollegeLecturesPage);

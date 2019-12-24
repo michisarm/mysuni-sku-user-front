@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import MainCarouselContainer from '../logic/MainCarouselContainer';
-import SearchBarContainer from '../logic/SearchBarContainer';
+import SearchBar from '../../sub/SearchBar';
 import MyLearningAreaContainer from '../logic/MyLearningAreaContainer';
 import RecommendContainer from '../logic/RecommendContainer';
 
@@ -20,7 +20,7 @@ class UserMainPage extends Component {
       <ContentLayout>
         <div className="main-wrap">
           <MainCarouselContainer />
-          <SearchBarContainer />
+          <SearchBar />
           <MyLearningAreaContainer />
           <RecommendContainer />
         </div>
