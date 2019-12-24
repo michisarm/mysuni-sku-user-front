@@ -13,20 +13,20 @@ class SearchBarContainer extends Component {
   render() {
     //
     return (
-      <InputWrapper>
-        {({ value, focused, onChange, onClick, onBlur, onClear }) => (
-          <div className="search-area">
-            <Segment className="full">
+      <div className="search-area">
+        <Segment className="full">
+          <InputWrapper>
+            {({ value, focused, onChange, onClick, onBlur, onClear }) => (
               <div className={classNames('ui main search input', { focus: focused, write: value })}>
                 <span className="placeholder">SUNI에서 다양한 컨텐츠를 탐색해 보세요.</span>
                 <input type="text" placeholder="" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
                 <Icon className="clear link" onClick={onClear} />
                 <Icon className="search link" />
               </div>
-            </Segment>
-          </div>
-        )}
-      </InputWrapper>
+            )}
+          </InputWrapper>
+        </Segment>
+      </div>
     );
   }
 }

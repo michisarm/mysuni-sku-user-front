@@ -37,17 +37,17 @@ export const MenuView: React.FC<MenuViewProps> = () => (
 
 
 export const SearchBarView: React.FC = () => (
-  <InputWrapper>
-    {({ value, focused, onChange, onBlur, onClick, onClear }) => (
-      <div className="g-search">
+  <div className="g-search">
+    <InputWrapper>
+      {({ value, focused, onChange, onBlur, onClick, onClear }) => (
         <div className={classNames('ui h38 search input', { focus: focused, write: value })}>
           <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
           <i aria-hidden="true" className="clear link icon" onClick={onClear} />
           <i aria-hidden="true" className="search link icon" />
         </div>
-      </div>
-    )}
-  </InputWrapper>
+      )}
+    </InputWrapper>
+  </div>
 );
 
 
