@@ -1,2 +1,2 @@
 
-export { default as MyPageContainer } from './ui/logic/MyPageContainer';
+export { default as MyPage } from './ui/page/MyPage';

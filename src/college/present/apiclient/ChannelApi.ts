@@ -18,6 +18,12 @@ export default class ChannelApi {
     return axios.get<ChannelModel[]>(this.URL)
       .then(response => response && response.data || null);
   }
+
+  findChannelByName(name : string) {
+    //이름으로 채널 검색
+    return axios.get<ChannelModel[]>(this.URL + `/byName?name=${name}`)
+      .then(response => response && response.data || null);
+  }
 }
 
 Object.defineProperty(ChannelApi, 'instance', {
