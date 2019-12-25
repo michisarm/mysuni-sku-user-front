@@ -51,6 +51,16 @@ export default class PersonalCubeService {
     return this.personalCubeApi.registerCube(PersonalCubeModel.asCdo(personalCube));
   }
 
+  modifyPersonalCube(personalCubeId: string, personalCube: PersonalCubeModel) {
+    //
+    return this.personalCubeApi.modifyPersonalCube(personalCubeId, PersonalCubeModel.asNameValues(personalCube));
+  }
+
+  removePersonalCube(personalCubeId: string){
+    //
+    this.personalCubeApi.removePersonalCube(personalCubeId);
+  }
+
   @action
   async findPersonalCube(personalCubeId: string) {
     //
@@ -71,7 +81,6 @@ export default class PersonalCubeService {
   async findAllPersonalCubesByQuery() {
     //
     const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCubeRdo(this.personalCubeQuery));
-    console.log(personalCubes);
     return runInAction(() => this.personalCubes = personalCubes);
   }
 

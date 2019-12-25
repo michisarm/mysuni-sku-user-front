@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Checkbox, Form, Radio, Select, Button } from 'semantic-ui-react';
-import { mobxHelper, IdName } from 'shared';
+import { Button, Checkbox, Form, Radio, Select } from 'semantic-ui-react';
+import { IdName, mobxHelper } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
 import { IconType } from '../../../personalcube/personalcube/model/IconType';
@@ -231,7 +231,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
           <div className="ui h48 input">
             <input
               type="text"
-             /* value={personalCube && personalCube.tags || ''}*/
+              value={personalCube && personalCube.tags || ''}
               onChange={(e: any) => onChangePersonalCubeProps('tags', e.target.value)}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />

@@ -9,6 +9,7 @@ import { CubeIntroModel } from '../../../cubeintro';
 import { MediaFlowCdoModel } from '../../model/MediaFlowCdoModel';
 import { MediaFlowUdoModel } from '../../model/MediaFlowUdoModel';
 import { MediaFlowUserCdoModel } from '../../model/MediaFlowUserCdoModel';
+import { MediaFlowUserUdoModel } from '../../model/MediaFlowUserUdoModel';
 
 @autobind
 export default class MediaService {
@@ -50,6 +51,10 @@ export default class MediaService {
         CubeIntroModel.asCdo(cubeIntro),
         MediaModel.asCdo(media))
     );
+  }
+
+  modifyMediaByUser(personalCubeId: string, cubeIntro : CubeIntroModel, media: MediaModel) {
+    this.mediaFlowApi.modifyMediaByUser(personalCubeId, new MediaFlowUserUdoModel(cubeIntro, media));
   }
 
   modifyMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {

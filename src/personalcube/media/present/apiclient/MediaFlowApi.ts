@@ -3,6 +3,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { MediaFlowCdoModel } from '../../model/MediaFlowCdoModel';
 import { MediaFlowUdoModel } from '../../model/MediaFlowUdoModel';
 import { MediaFlowUserCdoModel } from '../../model/MediaFlowUserCdoModel';
+import { MediaFlowUserUdoModel } from '../../model/MediaFlowUserUdoModel';
 
 export default class MediaFlowApi {
 
@@ -19,6 +20,11 @@ export default class MediaFlowApi {
     console.log(media);
     return axios.post<string>(this.URL + '/byUser', media)
       .then(response => response && response.data || null);
+  }
+
+  modifyMediaByUser(personalCubeId: string, mediaFlowUserUdoModel: MediaFlowUserUdoModel) {
+    //
+    return axios.put<void>(this.URL +  `/byUser/${personalCubeId}`, mediaFlowUserUdoModel);
   }
 
   modifyMedia(personalCubeId: string, mediaFlowUdoModel: MediaFlowUdoModel) {

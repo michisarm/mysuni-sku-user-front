@@ -2,6 +2,7 @@ import { axiosApi as axios } from '@nara.platform/accent';
 import { OfficeWebFlowCdoModel } from '../../model/OfficeWebFlowCdoModel';
 import { OfficeWebFlowUdoModel } from '../../model/OfficeWebFlowUdoModel';
 import { OfficeWebFlowUserCdoModel } from '../../model/OfficeWebFlowUserCdoModel';
+import { OfficeWebFlowUserUdoModel } from '../../model/OfficeWebFlowUserUdoModel';
 
 export default class OfficeWebFlowApi {
 
@@ -19,6 +20,11 @@ export default class OfficeWebFlowApi {
     //
     return axios.post<string>(this.URL + '/byUser', officeWeb)
       .then(response => response && response.data || null);
+  }
+
+  modifyOfficeWebByUser(personalCubeId: string, officeWebFlowUserUdoModel: OfficeWebFlowUserUdoModel) {
+    //
+    return axios.put<void>(this.URL + `/byUser/${personalCubeId}`, officeWebFlowUserUdoModel);
   }
 
   modifyOfficeWeb(personalCubeId: string, officeWebFlowUdoModel: OfficeWebFlowUdoModel) {

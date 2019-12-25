@@ -14,13 +14,13 @@ interface Props {
 interface States {
 }
 
-@reactAutobind
 @observer
+@reactAutobind
 class AdditionalInfoForCommunityView extends React.Component<Props, States> {
   //
   render() {
     const { onChangeBoardProps, board } = this.props;
-    console.log('jfkldjsafjkdls');
+
     return (
 
       <div className="ui grid create">
@@ -29,17 +29,15 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
           <Radio
             className="base"
             label="오픈형"
-            value="false"
-            name="radioGroup"
-            checked={board && board.config && board.config.enClosed === false}
+            name="config"
+            checked={board && board.config && String(board.config.enClosed) === 'false'}
             onClick={() => onChangeBoardProps('config.enClosed', false)}
           />
           <Radio
             className="base"
             label="폐쇄형"
-            value="true"
-            name="radioGroup"
-            checked={board && board.config && board.config.enClosed === true}
+            name="config"
+            checked={board && board.config && String(board.config.enClosed) === 'true'}
             onClick={() => onChangeBoardProps('config.enClosed', true)}
           />
         </div>

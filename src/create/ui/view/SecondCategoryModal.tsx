@@ -126,18 +126,17 @@ class SecondCategoryModal extends React.Component<Props, States> {
   }
 
   onRemove(channel: string, key: string ) {
-
     const { personalCube, onChangePersonalCubeProps } = this.props;
-    // const { channelListMap, selectedCollegeState, channelListMapForViewState } = this.state;
     const { channelListMap } = this.state;
     const tempListMap = channelListMap;
     const categories = personalCube.subCategories;
     const index = categories.findIndex(category => category.channel.name === channel);
     let categoryId = '';
-    categories.map((category, index ) => {
-      categoryId = category.channel.id;
-    }
-    );
+    categories.map((category, idx ) => {
+      if (idx === index) {
+        categoryId = category.channel.id;
+      }
+    });
 
     const newCategories = [
       ...categories.slice(0, index),
@@ -148,21 +147,8 @@ class SecondCategoryModal extends React.Component<Props, States> {
 
     if (tempListMap.get(categoryId)) {
       tempListMap.delete(categoryId);
-
       this.setState({ channelListMap: tempListMap });
     }
-
-    //tempListMap.slice(0, 2).concat(array.slice(3, 5));
-    /* if (tempListMap.get(`${channel.id}`)) {
-      tempListMap.delete(`${channel.id}`);
-
-      this.setState({ channelListMap: tempListMap });
-    } else {
-      tempListMap.set(channel.id, channel);
-
-      this.setState({ channelListMap: tempListMap });
-    }*/
-
 
   }
 
@@ -239,7 +225,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
                           personalCube && personalCube.subCategories && personalCube.subCategories.length
                            && (
                              <span className="text01 add">{personalCube.subCategories.length}</span>
-                           ) || ''
+                           ) || '0'
                          }
                         <span className="text02"> / 80</span>
                       </span>
@@ -255,42 +241,50 @@ class SecondCategoryModal extends React.Component<Props, States> {
                       <div className="select-area">
                         <div className="scrolling-60vh">
                           {
-                            colleges && colleges.length && colleges.map((college, index) => (
-                              <Accordion className="channel" key={index}>
-                                <Accordion.Title
-                                  active={activeIndex === index}
-                                  index={index}
-                                  onClick={this.handleClick}
-                                  key ={index}
-                                >
-                                  <span className="name purple">{college.name}</span>
-                                  <Icon onClick={() => this.selectCollegeButton(college) } />
-                                </Accordion.Title>
-                                <Accordion.Content active={activeIndex === index}>
-                                  <ul>
-                                    {
-                                      selectedSubCollege && selectedSubCollege.channels && selectedSubCollege.channels.length
-                                      && selectedSubCollege.channels.map((channel, idx) => (
-                                        <li key={channel.id}>
-                                          <Checkbox
-                                            className="base"
-                                            key ={channel.id}
-                                            checked={!!channelListMap.get(`${channel.id}`)}
-                                            disabled={
-                                                      personalCube && personalCube.category && personalCube.category.channel
-                                                      && personalCube.category.channel.id === channel.id
-                                                    }
-                                            label={channel.name}
-                                            onChange={() => this.selectChannelButton(channel)}
-                                          />
-                                        </li>
-                                      )) || null
-                                    }
-                                  </ul>
-                                </Accordion.Content>
-                              </Accordion>
-                            ))
+                            colleges && colleges.length && colleges.map((college, index) => {
+                              const keyValue = String(index).concat('-', String(index));
+                              return (
+                                <Accordion className="channel" key={keyValue}>
+                                  <Accordion.Title
+                                    active={activeIndex === index}
+                                    index={index}
+                                    onClick={this.handleClick}
+                                    key={keyValue}
+                                  >
+                                    <span className="name purple">{college.name}</span>
+                                    <Icon onClick={() => this.selectCollegeButton(college)} />
+                                  </Accordion.Title>
+                                  <Accordion.Content active={activeIndex === index}>
+                                    <ul>
+                                      {
+                                        activeIndex === index && selectedSubCollege && selectedSubCollege.channels && selectedSubCollege.channels.length
+                                        && selectedSubCollege.channels.map((channel, idx) => {
+                                          const keySubValue = keyValue.concat('-', String(idx));
+                                          return (
+                                            <li key={keySubValue}>
+                                              <Checkbox
+                                                className="base"
+                                                key={keySubValue}
+                                                checked={!!channelListMap.get(`${channel.id}`)}
+                                                disabled={
+                                                  personalCube && personalCube.category && personalCube.category.channel
+                                                  && personalCube.category.channel.id === channel.id
+                                                }
+                                                label={channel.name}
+                                                onChange={() => this.selectChannelButton(channel)}
+                                              />
+                                            </li>
+                                          );
+                                        }) || null
+                                      }
+                                    </ul>
+                                  </Accordion.Content>
+                                </Accordion>
+                              );
+                            }
+                            )
                           }
+
                         </div>
                       </div>
                     </div>

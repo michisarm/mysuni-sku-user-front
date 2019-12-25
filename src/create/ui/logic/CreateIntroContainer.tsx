@@ -147,31 +147,30 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { personalCubeId, cubeType } = this.props.match.params;
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
-    console.log(personalCubeId);
+
     if (cubeType === CubeType.Video
-      || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, cubeIntro, contentId, cubeIntroId);
+      || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, cubeIntro, contentId, cubeIntroId, mode && mode);
     if (cubeType === CubeType.Community) this.makeCommunity(personalCubeId, cubeIntro,  contentId, cubeIntroId);
     if (cubeType === CubeType.Documents
-      || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, cubeIntro, contentId, cubeIntroId);
+      || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, cubeIntro, contentId, cubeIntroId, mode && mode);
   }
 
-  makeMedia(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string  ) {
+  makeMedia(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {
     //
     const { mediaService } = this.props;
     const { media } = this.props.mediaService || {} as MediaService;
-    if (mediaService && !contentId && !cubeIntroId) {
+    if (mediaService && !contentId && !cubeIntroId && !mode) {
       mediaService.makeMediaByUser(personalCubeId, cubeIntro, media)
         .then(() => this.routeToCreateList());
     }
-    /* if (mediaService && mode) {
+    if (mediaService && mode) {
       Promise.resolve()
-        .then(() => mediaService.modifyMedia(personalCubeId, cubeIntro, media))
-        .then(() => this.routeToBasicList());
-    }*/
-
+        .then(() => mediaService.modifyMediaByUser(personalCubeId, cubeIntro, media))
+        .then(() => this.routeToCreateList());
+    }
   }
 
-  makeCommunity(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string  ) {
+  makeCommunity(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string ) {
     //
     // const { boardService } = this.props;
     // const { board } = this.props.boardService || {} as BoardService;
@@ -187,7 +186,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   }
 
-  makeOfficeWeb(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string  ) {
+  makeOfficeWeb(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {
     //
     const { officeWebService } = this.props;
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
@@ -195,11 +194,11 @@ class CreateIntroContainer extends React.Component<Props, States> {
       officeWebService.makeOfficeWebByUser(personalCubeId, cubeIntro, officeWeb)
         .then(() => this.routeToCreateList());
     }
-    /*if (officeWebService && mode) {
+    if (officeWebService && mode) {
       Promise.resolve()
-        .then(() => officeWebService.modifyOfficeWeb(personalCubeId, cube, cubeIntro, officeWeb))
-        .then(() => this.routeToCubeList());
-    }*/
+        .then(() => officeWebService.modifyOfficeWebByUser(personalCubeId, cubeIntro, officeWeb))
+        .then(() => this.routeToCreateList());
+    }
   }
 
   handleAlertOk(type: string) {
@@ -236,12 +235,9 @@ class CreateIntroContainer extends React.Component<Props, States> {
     //const cubeType = personalCube && personalCube.contents && personalCube.contents.type;
     const { cubeType, personalCubeId } = this.props.match.params;
 
-    console.log(cubeType);
-    console.log(personalCubeId);
     const message = (
       <>
-        <p className="center">입력하신 학습 강좌에 대해 승인 요청하시겠습니까?</p>
-        <p className="center">바로 승인 요청을 하지 않아도 원하시는 시점에 승인 요청을 하실 수 있습니다. </p>
+        <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
       </>
     );
     return (
