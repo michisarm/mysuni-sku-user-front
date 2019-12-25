@@ -21,6 +21,9 @@ export enum Type {
   List = 'List',
   Posts= 'Posts',
   MyPosts= 'MyPosts',
+  MyCommunity= 'MyCommunity',
+  MyCreatedCommunity= 'MyCreatedCommunity',
+  MyFeed= 'MyFeed',
 }
 
 @reactAutobind

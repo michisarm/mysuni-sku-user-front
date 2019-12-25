@@ -75,6 +75,7 @@ class Routes extends React.PureComponent {
 
             {/*mypage*/}
             <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
+            <Route exact path="/community" component={withSplitting(() => import('./mypage').then(({ MyCommunityPage }) => MyCommunityPage))} />
 
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />

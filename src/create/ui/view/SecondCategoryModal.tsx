@@ -257,7 +257,8 @@ class SecondCategoryModal extends React.Component<Props, States> {
                                   <Accordion.Content active={activeIndex === index}>
                                     <ul>
                                       {
-                                        activeIndex === index && selectedSubCollege && selectedSubCollege.channels && selectedSubCollege.channels.length
+                                        activeIndex === index && selectedSubCollege
+                                        && selectedSubCollege.channels && selectedSubCollege.channels.length
                                         && selectedSubCollege.channels.map((channel, idx) => {
                                           const keySubValue = keyValue.concat('-', String(idx));
                                           return (

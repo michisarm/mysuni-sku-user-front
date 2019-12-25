@@ -9,7 +9,7 @@ import { LectureViewModel } from 'lecture';
 import Action from '../../present/model/Action';
 import { CourseSectionContext } from '../CourseSection';
 import {
-  Title, SubField, Buttons, Thumbnail,
+  Title, Buttons,
 } from '../../ui/view/LectureElementsView';
 
 
@@ -53,7 +53,9 @@ class CommunityLectureContainer extends Component<Props> {
   render() {
     //
     const {
-      className, lectureView, thumbnailImage, toggle,
+      lectureView,
+      // thumbnailImage,
+      toggle,
       onViewDetail,
     } = this.props;
     const { open } = this.context;
@@ -99,15 +101,5 @@ class CommunityLectureContainer extends Component<Props> {
   }
 }
 
-
-interface FieldProps {
-  children: React.ReactNode,
-}
-
-const Field = ({ children }: FieldProps) => (
-  <div className="item">
-    {children}
-  </div>
-);
 
 export default CommunityLectureContainer;
