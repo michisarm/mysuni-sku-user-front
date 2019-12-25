@@ -2,22 +2,23 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon, Modal, Accordion, Checkbox } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { SkProfileService } from '../../../profile';
+import { SkProfileService, StudySummary } from '../../../profile';
 import { CollegeModel, ChannelModel, CollegeService } from '../../../college';
 
 interface Props {
   skProfileService? : SkProfileService
   collegeService? : CollegeService
 
+  trigger: React.ReactNode
   favorites : ChannelModel[]
-  open : boolean
-  handleClose : ()=>void
-  handleConfirm : ()=>void
+  onConfirmCallback:() => void
 }
 
 interface State{
+  open: boolean
   searchKey : string
-  activeIndex : number
+  selectedCollegeIds: string[]
+  favoriteChannels : ChannelModel [];
 }
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
@@ -25,35 +26,59 @@ const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green
 @inject('skProfileService', 'collegeService')
 @observer
 @reactAutobind
-class FavoriteChannelChangeModal extends Component<Props, State> {
-
+class FavoriteChannelChangeModalContainer extends Component<Props, State> {
+  //
   state={
+    open: false,
     searchKey: '',
-    activeIndex: 0,
+    selectedCollegeIds: [],
+    favoriteChannels: [],
   };
 
   componentDidMount(): void {
-    const { collegeService, favorites } = this.props;
+    const { collegeService } = this.props;
 
     if (collegeService) {
       collegeService.findAllColleges();
-      collegeService.setChannels(favorites);
     }
   }
 
-  onSelectChannel(e:any, checkboxProps : any) {
-    const { collegeService } = this.props;
+  onOpenModal() {
+    this.setState({
+      open: true,
+      favoriteChannels: [ ...this.props.favorites ],
+    });
+  }
 
-    if (collegeService) {
-      collegeService.selectChannel(checkboxProps.id, checkboxProps.name, checkboxProps.checked);
+  onCloseModal() {
+    this.setState({
+      open: false,
+      selectedCollegeIds: [],
+      favoriteChannels: [],
+    });
+  }
+
+  onConfirm() {
+    //favoriteChannel 변경사항 저장하기
+    const { skProfileService, collegeService, onConfirmCallback } = this.props;
+    if (skProfileService && collegeService) {
+      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary))
+        .then(() => {
+          if (onConfirmCallback && typeof onConfirmCallback === 'function') onConfirmCallback();
+          this.onCloseModal();
+        });
     }
   }
 
-  onDeselectChannel(e:any, buttonProps:any) {
-    const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.deselectChannel(buttonProps.id);
+  onSelectChannel(channel: ChannelModel) {
+    //
+    let { favoriteChannels }: State = this.state;
+    if (favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
+      favoriteChannels = favoriteChannels.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
+    else favoriteChannels.push(channel);
+    this.setState({ favoriteChannels });
   }
 
   searchKey(event : any) {
@@ -74,39 +99,34 @@ class FavoriteChannelChangeModal extends Component<Props, State> {
   }
 
   onReset() {
-    const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.clearFavoriteChannels();
-      //college channel checked false로 변경
-    }
+    this.setState({ selectedCollegeIds: [], favoriteChannels: [ ...this.props.favorites ]});
   }
 
-  handleClick(e : any, titleProps:any) {
-    const { collegeService } = this.props;
-    const { index } = titleProps;
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-
-    if (collegeService && (activeIndex !== index)) {
-      collegeService.setCollege(titleProps.college);
-      collegeService.setSelectChannels();
-      collegeService.setFavoriteChannel();
+  handleClick(college: CollegeModel) {
+    //
+    let { selectedCollegeIds }: State = this.state;
+    if (selectedCollegeIds.includes(college.collegeId)) {
+      selectedCollegeIds = selectedCollegeIds.filter(collegeId => collegeId !== college.collegeId);
     }
-
-    this.setState({
-      activeIndex: newIndex,
-    });
+    else selectedCollegeIds.push(college.collegeId);
+    this.setState({ selectedCollegeIds });
   }
 
   render() {
-    const { open, handleClose, handleConfirm, collegeService } = this.props;
-    const { colleges, favoriteChannels } = collegeService as CollegeService;
-
-    const { activeIndex } = this.state;
+    const { collegeService, trigger } = this.props;
+    const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
+    const { colleges } = collegeService as CollegeService;
 
     return (
 
-      <Modal size="large" open={open} onClose={handleClose} className="base w1000">
+      <Modal
+        size="large"
+        open={open}
+        onOpen={this.onOpenModal}
+        onClose={this.onCloseModal}
+        className="base w1000"
+        trigger={trigger}
+      >
 
         <Modal.Header className="res">
           관심 Channel 변경
@@ -152,18 +172,16 @@ class FavoriteChannelChangeModal extends Component<Props, State> {
                         && (
                           <Accordion className="channel">
                             {
-                              colleges.map((college:CollegeModel, index:number) => (
+                              colleges.map((college: CollegeModel, index:number) => (
                                 <div key={`college-${index}`}>
                                   <Accordion.Title
-                                    active={activeIndex === index}
-                                    index={index}
-                                    college={college}
-                                    onClick={(e, titleProps) => this.handleClick(e, titleProps)}
+                                    active={selectedCollegeIds.includes(college.collegeId)}
+                                    onClick={() => this.handleClick(college)}
                                   >
                                     <span className={`name ${color[index]}`}>{college.name}</span>
                                     <Icon />
                                   </Accordion.Title>
-                                  <Accordion.Content active={activeIndex === index}>
+                                  <Accordion.Content active={selectedCollegeIds.includes(college.collegeId)}>
                                     <ul>
                                       {
                                         college.channels && college.channels.length && college.channels.map((channel, index) => (
@@ -171,9 +189,9 @@ class FavoriteChannelChangeModal extends Component<Props, State> {
                                             <Checkbox
                                               label={channel.name}
                                               name={channel.name}
-                                              id={channel.id}
                                               className="base"
-                                              onChange={(e, checkboxProps ) => this.onSelectChannel(e, checkboxProps)}
+                                              checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                              onChange={() => this.onSelectChannel(channel)}
                                             />
                                           </li>
                                         ))
@@ -199,11 +217,10 @@ class FavoriteChannelChangeModal extends Component<Props, State> {
                     <div className="scrolling-60vh">
                       <div className="select-item">
                         {
-                          favoriteChannels && favoriteChannels.length && favoriteChannels.map((channel, index) => (
+                          favoriteChannels && favoriteChannels.length && favoriteChannels.map((channel: ChannelModel) => (
                             <Button className="del"
-                              key={`del_${index}`}
-                              id={channel.id}
-                              onClick={(event, buttonProps) => this.onDeselectChannel(event, buttonProps)}
+                              key={`del_${channel.id}`}
+                              onClick={() => this.onSelectChannel(channel)}
                             >
                               {channel.name}
                             </Button>
@@ -219,12 +236,12 @@ class FavoriteChannelChangeModal extends Component<Props, State> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={handleClose}>Cancel</Button>
-          <Button className="w190 pop p" onClick={handleConfirm}>Confirm</Button>
+          <Button className="w190 pop d" onClick={this.onCloseModal}>Cancel</Button>
+          <Button className="w190 pop p" onClick={this.onConfirm}>Confirm</Button>
         </Modal.Actions>
       </Modal>
     );
   }
 }
 
-export default FavoriteChannelChangeModal;
+export default FavoriteChannelChangeModalContainer;

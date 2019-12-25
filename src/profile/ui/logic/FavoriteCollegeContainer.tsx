@@ -95,7 +95,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       });
     } else {
       if (collegeService && skProfileService) {
-        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
+        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
         skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
       }
       this.props.history.push('/profile/interest/job');

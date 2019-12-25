@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
 import { ChannelModel } from 'college';
-import ChannelsPanelView from '../../../shared/ui/view/ChannelsPanelView';
+import ChannelsPanelContainer from '../../../shared/ui/logic/ChannelsPanelContainer';
 
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   onSelectChannel: (channel: ChannelModel) => void
 }
 
-class ChannelLecturesContentWrapperView extends Component<Props> {
+class ChannelLecturesContentWrapperContainer extends Component<Props> {
   //
   render() {
     //
@@ -21,10 +21,9 @@ class ChannelLecturesContentWrapperView extends Component<Props> {
     return (
       <Segment className="full">
         <div className="recommend-detail">
-          <ChannelsPanelView
+          <ChannelsPanelContainer
             channels={channels}
             title="관심 Channel 보기"
-            onSettings={() => {}}
             onSelectChannel={(e, { channel }) => onSelectChannel(channel)}
           />
           {children}
@@ -34,4 +33,4 @@ class ChannelLecturesContentWrapperView extends Component<Props> {
   }
 }
 
-export default ChannelLecturesContentWrapperView;
+export default ChannelLecturesContentWrapperContainer;

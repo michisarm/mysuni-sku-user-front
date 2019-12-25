@@ -5,7 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
 import { SkProfileService, StudySummary } from '../../../profile';
 import { ChannelModel, CollegeService } from '../../../college';
-import FavoriteChannelChangeModal from './FavoriteChannelChangeModal';
+import FavoriteChannelChangeModalContainer from './FavoriteChannelChangeModalContainer';
 
 
 interface Props{
@@ -15,7 +15,6 @@ interface Props{
 
 interface States {
   open: boolean
-  favoriteModal : boolean
 }
 
 @inject('skProfileService', 'collegeService')
@@ -25,30 +24,15 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
   state = {
     open: false,
-    favoriteModal: false,
   };
 
-  onOpenModal() {
-    this.setState({
-      favoriteModal: true,
-    });
+  componentDidMount(): void {
+    this.init();
   }
 
-  onCloseModal() {
-    this.setState({
-      favoriteModal: false,
-    });
-  }
-
-  onConfirmModal() {
-    //favoriteChannel 변경사항 저장하기
-    const { skProfileService, collegeService } = this.props;
-    if (skProfileService && collegeService) {
-      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.getFavoriteChannels());
-    }
-    this.setState({
-      favoriteModal: false,
-    });
+  init() {
+    const { skProfileService } = this.props;
+    skProfileService!.findStudySummary();
   }
 
   onToggle() {
@@ -60,7 +44,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
     const { skProfileService } = this.props;
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
-    const { open, favoriteModal } = this.state;
+    const { open } = this.state;
 
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
       && favoriteChannels.idNames.map(channel =>
@@ -73,19 +57,26 @@ class FavoriteChannelContainer extends Component<Props, States> {
           <div className="row">
             <div className="cell vtop">
               <div className="tit-set">관심 channel({channels.length || 0})
-                <Button icon className="img-icon" onClick={this.onOpenModal}><Icon className="setting17" />
-                  <span className="blind">setting</span> {/* favoritChannelModal open */}
-                </Button>
-                <FavoriteChannelChangeModal
-                  open={favoriteModal}
-                  handleClose={this.onCloseModal}
-                  handleConfirm={this.onConfirmModal}
+
+                <FavoriteChannelChangeModalContainer
+                  // handleConfirm={this.onConfirmModal}
                   favorites={channels}
+                  onConfirmCallback={this.init}
+                  trigger={(
+                    <Button icon className="img-icon"><Icon className="setting17" />
+                      <span className="blind">setting</span> {/* favoritChannelModal open */}
+                    </Button>
+                  )}
                 />
               </div>
             </div>
             <div className="cell vtop">
-              <div className="item-wrap">{/*  favoriteChannels : IdNameList  */}
+              <div
+                className={classNames({
+                  'item-wrap': true,
+                  active: open,
+                })}
+              >
                 <div className="belt">
                   {
                     channels && channels.length !== 0 && channels.map((channel, index) => (
