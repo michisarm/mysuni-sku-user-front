@@ -24,6 +24,13 @@ spec:
     - match:
         - uri:
             exact: /
+      rewrite: /suni-main
+      route:
+        - destination:
+            host: user-service
+            port:
+              number: 80
+    - match:
         - uri:
             prefix: /suni-main
       route:
