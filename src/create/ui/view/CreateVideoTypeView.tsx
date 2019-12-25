@@ -3,7 +3,7 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { SearchFilter } from 'shared';
-import { MediaType, MediaModel } from '../../../personalcube/media';
+import { MediaModel, MediaType } from '../../../personalcube/media';
 import CreateMovieDetailModal from './CreateMovieDetailModal';
 
 interface Props {
@@ -67,21 +67,19 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
           />
           <div className="ui form">
-            <div className="ui input file">
-              {
+            {
                 media && media.mediaType === MediaType.InternalMedia ? (
-
-                  <>
+                  <div className="ui input file">
                     <input type="text" readOnly placeholder="영상을 업로드해주세요." />
                     <Icon className="clear link" />
                     <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>
                     <input type="file" id="hidden-new-file" />
-                  </>
+                  </div>
                 ) : ''
               }
-              {
+            {
                 media && media.mediaType === MediaType.ContentsProviderMedia ? (
-                  <>
+                  <div className="ui input file">
                     <input type="text" readOnly placeholder="영상을 업로드해주세요." />
                     <Icon className="clear link" />
                     {/*<label className="ui button" onClick={() => this.onChangeCreateMovieDetailModalOpen(true)}>파일찾기</label>*/}
@@ -90,21 +88,16 @@ class CreateVideoTypeView  extends React.Component<Props, States> {
                       handleChangeOpen={this.onChangeCreateMovieDetailModalOpen}
                     />
                     <input type="file" id="hidden-new-file" />
-                  </>
+                  </div>
                 ) : ''
               }
-              {
-                media && media.mediaType === MediaType.LinkMedia ? (
-                  <>
-                    <input type="text" readOnly placeholder="http://" />
-                    {/* <Icon className="clear link" />*/}
-
-                    {/* <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
-                    <input type="file" id="hidden-new-file" />
-                  </>
-                ) : ''
+            {
+                media && media.mediaType === MediaType.LinkMedia  ?
+                  <div className="ui input h48">
+                    <input type="text" name="" placeholder="http://" />
+                  </div>
+                  : ''
               }
-            </div>
             <div className="info-text"><Icon className="info16" />
               <span className="blind">infomation</span>
               교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 000 Byte 용량의 파일을 등록하실 수 있습니다.

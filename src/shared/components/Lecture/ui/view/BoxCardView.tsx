@@ -7,9 +7,10 @@ import classNames from 'classnames';
 import { Button, Card, Icon, Rating } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture';
+import { CubeTypeNameType } from 'personalcube/personalcube';
 import Action from '../../present/model/Action';
+import { CubeIconType } from '../../present/model';
 import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from './LectureElementsView';
-import CubeTypeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
 
 
 interface Props {
@@ -91,7 +92,9 @@ class BoxCardView extends Component<Props, States> {
           <Title title={lecture.name} category={lecture.category} />
 
           <Fields>
-            { lecture.cubeTypeName && <Field icon="video2" text={lecture.cubeTypeName} bold />}
+            { lecture.cubeTypeName && (
+              <Field icon={CubeIconType[lecture.cubeType] || CubeIconType[lecture.serviceType]} text={lecture.cubeTypeName} bold />
+            )}
             <div className="li">
               { hourAndMinute && (
                 <SubField

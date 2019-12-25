@@ -135,7 +135,7 @@ interface OperatorProp {
 
 export const OperatorView = ({ operator }: OperatorProp) => {
   if (!operator) return null;
-  const emails = operator.email.split(',');
+  const emails = operator.email ? operator.email.split(',') : [];
   return (
     <List className="class-info2">
       {

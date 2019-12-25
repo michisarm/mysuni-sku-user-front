@@ -8,6 +8,7 @@ import { PersonalCubeModel } from '../../../personalcube';
 import { CubeIntroModel } from '../../../cubeintro';
 import { MediaFlowCdoModel } from '../../model/MediaFlowCdoModel';
 import { MediaFlowUdoModel } from '../../model/MediaFlowUdoModel';
+import { MediaFlowUserCdoModel } from '../../model/MediaFlowUserCdoModel';
 
 @autobind
 export default class MediaService {
@@ -36,6 +37,16 @@ export default class MediaService {
     return this.mediaFlowApi.makeMedia(
       new MediaFlowCdoModel(
         PersonalCubeModel.asCdo(personalCubeModel),
+        CubeIntroModel.asCdo(cubeIntro),
+        MediaModel.asCdo(media))
+    );
+  }
+
+  makeMediaByUser(personalCubeId : string, cubeIntro: CubeIntroModel, media: MediaModel) {
+    //
+    return this.mediaFlowApi.makeMediaByUser(
+      new MediaFlowUserCdoModel(
+        personalCubeId,
         CubeIntroModel.asCdo(cubeIntro),
         MediaModel.asCdo(media))
     );

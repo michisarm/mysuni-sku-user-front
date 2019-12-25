@@ -75,10 +75,6 @@ class CreateIntroView extends React.Component<Props> {
           <div className="ui right-top-count input">
             {/* .error // */}
             <span className="count"><span className="now">0</span>/
-              {/*<span
-                    className="max"
-                  >500
-                  </span>*/}
             </span>
             <textarea placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
               value={cubeIntro && cubeIntro.description && cubeIntro.description.applicants || ''}

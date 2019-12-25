@@ -132,7 +132,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
     const { personalCubeService } = this.props;
     if (personalCubeService && !personalCubeId) {
       personalCubeService.registerCube(personalCube)
-        .then(() => this.routeToCreateIntro());
+        .then((personalCubeId) => this.routeToCreateIntro(personalCubeId || ''));
     }
   }
 
@@ -171,10 +171,10 @@ class CreateDetailContainer extends React.Component<Props, States> {
       .then(() => this.props.history.push(`/cubes/cube-list`));
   }
 
-  routeToCreateIntro() {
+  routeToCreateIntro(personalCubeId?: string) {
     //
     const { personalCube } = this.props.personalCubeService ||  {} as PersonalCubeService;
-    this.props.history.push(`/personalcube/create-intro/${personalCube.contents.type}`);
+    this.props.history.push(`/personalcube/create-intro/${personalCubeId}/${personalCube.contents.type}`);
   }
 
   render() {
@@ -218,13 +218,13 @@ class CreateDetailContainer extends React.Component<Props, States> {
                     <Button className="fix line">Delete</Button>
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
-                    <Button className="fix bg" onClick={this.routeToCreateIntro}>Next</Button>
+                    <Button className="fix bg" onClick={() => this.routeToCreateIntro(personalCubeId)}>Next</Button>
                   </div>
                   :
                   <div className="buttons">
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
-                    <Button className=" fix bg" onClick={this.routeToCreateIntro}>Next</Button>
+                    <Button className="fix bg" onClick={() => this.routeToCreateIntro(personalCubeId)}>Next</Button>
                   </div>
               }
               <AlertWin

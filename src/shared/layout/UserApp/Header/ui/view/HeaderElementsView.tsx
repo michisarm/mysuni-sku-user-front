@@ -1,6 +1,10 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import classNames from 'classnames';
 import { Image } from 'semantic-ui-react';
+import { InputWrapper } from 'shared';
 
 // import profileImage from 'style/images/all/profile-38-px.png';
 
@@ -34,11 +38,15 @@ export const MenuView: React.FC<MenuViewProps> = () => (
 
 export const SearchBarView: React.FC = () => (
   <div className="g-search">
-    <div className="ui h38 search input">
-      <input type="text" placeholder="Search"  />
-      <i aria-hidden="true" className="clear link icon" />
-      <i aria-hidden="true" className="search link icon" />
-    </div>
+    <InputWrapper>
+      {({ value, focused, onChange, onBlur, onClick, onClear }) => (
+        <div className={classNames('ui h38 search input', { focus: focused, write: value })}>
+          <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
+          <i aria-hidden="true" className="clear link icon" onClick={onClear} />
+          <i aria-hidden="true" className="search link icon" />
+        </div>
+      )}
+    </InputWrapper>
   </div>
 );
 

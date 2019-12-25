@@ -33,7 +33,7 @@ export { default as CourseLectureModel } from './shared/model/CourseLectureModel
 export { default as LectureViewModel } from './shared/model/LectureViewModel';
 
 /** Component */
-export { default as CategoryLecturesPage } from './category/ui/page/CategoryLecturesPage';
+export { default as CollegeLecturesPage } from './category/ui/page/CollegeLecturesPage';
 export { default as ChannelLecturesPage } from './category/ui/page/ChannelLecturesPage';
 export { default as CoursePage } from './category/ui/page/CoursePage';
 export { default as LectureCardPage } from './category/ui/page/LectureCardPage';
