@@ -92,7 +92,7 @@ export default class SkProfileService {
   }
 
   modifyStudySummary(nameValues: NameValueList) {
-    this.skProfileApi.modifyStudySummary(nameValues);
+    return this.skProfileApi.modifyStudySummary(nameValues);
   }
 
   modifyStudySummaryByProfileId(profileId:string, nameValues : NameValueList) {

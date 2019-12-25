@@ -191,15 +191,6 @@ export default class CollegeService {
     });
   }
 
-  @action
-  getFavoriteChannels() : IdNameList {
-    const list : IdNameList = new IdNameList();
-    this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.channelId, name: channel.name });
-    });
-    return list;
-  }
-
    @action
   clearFavoriteChannels() {
     this.favoriteChannels = [];
@@ -242,6 +233,15 @@ export default class CollegeService {
         this.channel = new ChannelModel(channel);
       }
     });
+  }
+
+  @computed
+  get favoriteChannelIdNames() : IdNameList {
+    const list : IdNameList = new IdNameList();
+    this.favoriteChannels.map((channel) => {
+      list.idNames.push({ id: channel.channelId, name: channel.name });
+    });
+    return list;
   }
 }
 
