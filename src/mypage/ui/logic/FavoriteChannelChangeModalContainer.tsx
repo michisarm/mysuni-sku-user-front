@@ -9,7 +9,7 @@ interface Props {
   skProfileService? : SkProfileService
   collegeService? : CollegeService
 
-  trigger: React.ReactNode
+  trigger?: React.ReactNode
   favorites : ChannelModel[]
   onConfirmCallback:() => void
 }

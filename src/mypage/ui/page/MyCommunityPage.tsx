@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ContentHeader, ContentLayout, mobxHelper, ContentMenu, Type } from 'shared';
+import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { EmployeeModel, SkProfileModel, SkProfileService } from 'profile';
@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  type: Type
+  type: string
 }
 
 @inject(mobxHelper.injectFrom('skProfileService'))
@@ -22,7 +22,7 @@ interface State {
 class MyCommunityPage extends Component<Props, State> {
   //
   state = {
-    type: Type.MyCommunity,
+    type: 'MyCommunity',
   };
 
   componentDidMount(): void {
@@ -41,9 +41,9 @@ class MyCommunityPage extends Component<Props, State> {
     //
     const menus: typeof ContentMenu.Menu[] = [];
     menus.push(
-      { name: 'My Community', type: Type.MyCommunity },
-      { name: 'My Created Community', type: Type.MyCreatedCommunity },
-      { name: 'My Feed', type: Type.MyFeed },
+      { name: 'My Community', type: 'MyCommunity' },
+      { name: 'My Created Community', type: 'MyCreatedCommunity' },
+      { name: 'My Feed', type: 'MyFeed' },
     );
 
     return menus;

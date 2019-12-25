@@ -6,32 +6,19 @@ import { Menu as SemanticMenu } from 'semantic-ui-react';
 interface Menu {
   name: string,
   count?: number
-  type: Type,
+  type: string,
 }
 
 interface Props {
   menus: Menu[]
-  type: Type
-  onSelectMenu:(type: Type) => void
-}
-
-export enum Type {
-  Overview= 'Overview',
-  Comments= 'Comments',
-  List = 'List',
-  Posts= 'Posts',
-  MyPosts= 'MyPosts',
-  MyCommunity= 'MyCommunity',
-  MyCreatedCommunity= 'MyCreatedCommunity',
-  MyFeed= 'MyFeed',
+  type: string
+  onSelectMenu:(type: string) => void
 }
 
 @reactAutobind
 class ContentMenuContainer extends Component<Props> {
   //
   static Menu: Menu;
-
-  static Type= Type;
 
   render() {
     //
