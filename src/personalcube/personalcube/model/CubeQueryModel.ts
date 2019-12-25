@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
-import { QueryModel } from 'shared';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
+import { QueryModel } from '../../../shared';
 
 
 console.log('QueryModel', QueryModel);

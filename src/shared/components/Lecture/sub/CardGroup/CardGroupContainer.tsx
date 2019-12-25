@@ -10,6 +10,7 @@ export enum GroupType {
   Line = 'Line',
   Course = 'Course',
   List = 'List',
+  Community = 'Community',
 }
 
 interface Props {
@@ -67,6 +68,14 @@ class CardGroup extends Component<Props> {
         </div>
       );
     }
+    else if (type === GroupType.Community) {
+      elements = (
+        <div className="community-accordion">
+          {children}
+        </div>
+      );
+    }
+
 
 
     return (

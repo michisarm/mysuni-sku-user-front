@@ -1,4 +1,5 @@
-
+/* eslint-disable */
+console.log('start');
 import 'semantic-ui-less/semantic.less';
 import './style/css/main.84b0330d.chunk.css';
 import './style/css/2.7b982145.chunk.css';
