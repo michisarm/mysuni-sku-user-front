@@ -20,6 +20,13 @@ spec:
         ports:
         - containerPort: 80
         imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /etc/localtime
+            name: timezone-config
+      volumes:
+        - hostPath:
+            path: /usr/share/zoneinfo/Asia/Seoul
+          name: timezone-config
       imagePullSecrets:
       - name: user-secret
   strategy:
