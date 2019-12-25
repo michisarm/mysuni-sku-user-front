@@ -4,12 +4,12 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Segment } from 'semantic-ui-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
+import { SkProfileService, StudySummary } from 'profile';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { RecommendChannelLecturesContainer } from 'lecture';
-import RecommendHeaderView from '../view/RecommendHeaderView';
+import RecommendHeaderContainer from './RecommendHeaderContainer';
 
 interface Props extends RouteComponentProps{
   skProfileService?: SkProfileService
@@ -38,9 +38,7 @@ class RecommendContainer extends Component<Props> {
 
   render() {
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService as SkProfileService;
 
-    const { member } = skProfile as SkProfileModel;
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
 
@@ -52,11 +50,7 @@ class RecommendContainer extends Component<Props> {
     return (
       <div className="recommend-area" id="recommend">
         <Segment className="full">
-          <RecommendHeaderView
-            name={member.names.string}
-            favoriteChannelCount={channels.length || 0}
-            onViewAll={() => this.props.history.push(`/recommend`)}
-          />
+          <RecommendHeaderContainer />
           {
             channels && channels.length
             && channels.map((channel: ChannelModel) => {

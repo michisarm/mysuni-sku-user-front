@@ -1,11 +1,14 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { ChannelModel } from 'college';
+import { FavoriteChannelChangeModalContainer } from 'mypage';
+import { SkProfileService } from 'profile';
+import { mobxHelper } from 'shared';
 
 
 interface OnSelectChannelData {
@@ -14,9 +17,9 @@ interface OnSelectChannelData {
 }
 
 interface Props {
+  skProfileService?: SkProfileService
   title?: string
   channels: ChannelModel[]
-  onSettings?: () => void
   onSelectChannel: (e: any, data: OnSelectChannelData) => void
 }
 
@@ -24,13 +27,20 @@ interface States {
   open: boolean
 }
 
-@reactAutobind
+@inject(mobxHelper.injectFrom('skProfileService'))
 @observer
-class ChannelsPanelView extends Component<Props, States> {
+@reactAutobind
+class ChannelsPanelContainer extends Component<Props, States> {
   //
   state = {
     open: false,
   };
+
+  findStudySummary() {
+    const { skProfileService } = this.props;
+
+    skProfileService!.findStudySummary();
+  }
 
   onToggle() {
     const { open } = this.state;
@@ -49,7 +59,7 @@ class ChannelsPanelView extends Component<Props, States> {
 
   render() {
     //
-    const { channels, title, onSettings } = this.props;
+    const { channels, title } = this.props;
     const { open } = this.state;
 
     return (
@@ -59,13 +69,15 @@ class ChannelsPanelView extends Component<Props, States> {
             <div className="cell vtop">
               <div className="tit-set">
                 { title || `Channel (${channels.length})`}
-                {
-                  onSettings && (
-                    <Button icon className="img-icon" onClick={onSettings}>
+                <FavoriteChannelChangeModalContainer
+                  trigger={(
+                    <Button icon className="img-icon">
                       <Icon className="setting17" /><span className="blind">setting</span>
                     </Button>
-                  ) || null
-                }
+                  )}
+                  favorites={channels}
+                  onConfirmCallback={this.findStudySummary}
+                />
               </div>
             </div>
             <div className="cell vtop">
@@ -109,4 +121,4 @@ class ChannelsPanelView extends Component<Props, States> {
   }
 }
 
-export default ChannelsPanelView;
+export default ChannelsPanelContainer;

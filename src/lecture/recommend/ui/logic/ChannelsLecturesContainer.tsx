@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 
 import { mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
-import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
+import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesContainer from './ChannelLecturesContainer';
 
 
@@ -56,7 +56,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
     const { channels } = collegeService as CollegeService;
 
     return (
-      <ChannelLecturesContentWrapperView
+      <ChannelLecturesContentWrapperContainer
         channels={channels}
         onSelectChannel={this.onSelectChannel}
       >
@@ -75,7 +75,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
             }) || null
           }
         </div>
-      </ChannelLecturesContentWrapperView>
+      </ChannelLecturesContentWrapperContainer>
     );
   }
 }
