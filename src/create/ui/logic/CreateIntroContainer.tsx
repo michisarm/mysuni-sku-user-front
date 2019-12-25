@@ -173,8 +173,8 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   makeCommunity(personalCubeId: string, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string  ) {
     //
-    const { boardService } = this.props;
-    const { board } = this.props.boardService || {} as BoardService;
+    // const { boardService } = this.props;
+    // const { board } = this.props.boardService || {} as BoardService;
     /* if (boardService && !mode) {
       boardService.makeBoardByUser(personalCubeId, cubeIntro, board)
         .then(() => this.routeToBasicList());
