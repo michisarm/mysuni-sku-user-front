@@ -71,7 +71,12 @@ class FavoriteChannelContainer extends Component<Props, States> {
               </div>
             </div>
             <div className="cell vtop">
-              <div className="item-wrap">{/*  favoriteChannels : IdNameList  */}
+              <div
+                className={classNames({
+                  'item-wrap': true,
+                  active: open,
+                })}
+              >
                 <div className="belt">
                   {
                     channels && channels.length !== 0 && channels.map((channel, index) => (
