@@ -3,6 +3,9 @@ import { QueryModel } from 'shared';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 
+
+console.log('QueryModel', QueryModel);
+
 export class CubeQueryModel extends QueryModel {
   //
   cubeType: string = '';
