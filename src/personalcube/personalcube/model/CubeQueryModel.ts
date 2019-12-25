@@ -1,12 +1,13 @@
 import { decorate, observable } from 'mobx';
+import { DatePeriod } from 'shared';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
-import { QueryModel } from '../../../shared';
 
 
-console.log('QueryModel', QueryModel);
+console.log('DatePeriod', DatePeriod);
 
-export class CubeQueryModel extends QueryModel {
+// export class CubeQueryModel extends QueryModel {
+export class CubeQueryModel {
   //
   cubeType: string = '';
   cubeState: string = '';
@@ -17,6 +18,16 @@ export class CubeQueryModel extends QueryModel {
 
   // learner
   learnerType: string = '';
+
+  //임시
+  period: DatePeriod = new DatePeriod();
+  college: string = '';
+  channel: string = '';
+  searchPart: string = '';
+  searchWord: string = '';
+
+  offset: number = 0;
+  limit: number = 20;
 
   static asCubeRdo(cubeQuery: CubeQueryModel) : PersonalCubeRdoModel {
     let isName = false;
