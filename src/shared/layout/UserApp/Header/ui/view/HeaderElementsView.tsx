@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { Image } from 'semantic-ui-react';
@@ -27,10 +27,10 @@ export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
       {/* Todo: 임시 링크, 개발 완료되면 url 교체 */}
-      <Link to="/design/learning/my-learning" className="item active">Learning</Link>
-      <Link to="/community" className="item">Community</Link>
-      <Link to="/recommend" className="item">Recommend</Link>
-      <Link to="/personalcube/create" className="item">Create</Link>
+      <NavLink to="/design/learning/my-learning" className="item">Learning</NavLink>
+      <NavLink to="/community" className="item">Community</NavLink>
+      <NavLink to="/recommend" className="item">Recommend</NavLink>
+      <NavLink to="/personalcube/create" className="item">Create</NavLink>
     </div>
   </div>
 );

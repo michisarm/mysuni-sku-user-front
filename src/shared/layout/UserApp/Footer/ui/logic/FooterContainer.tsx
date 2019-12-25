@@ -2,25 +2,35 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
+import { NavLink } from 'react-router-dom';
 import FooterView from '../view/FooterView';
+import PrivacyPolicyModalView from '../view/PrivacyPolicyModalView';
 
 
 @reactAutobind
 class FooterContainer extends Component {
   //
-  noticePath = '/board/support/Notice';
-
-  faqPath = '/board/support/FAQ';
-
-  qnaPath = '/board/support/Q&A';
+  renderNav() {
+    //
+    return (
+      <>
+        <NavLink to="" className="item">Introduction</NavLink>
+        <NavLink to="/board/support/Notice" className="item">공지사항</NavLink>
+        <NavLink to="/board/support/FAQ" className="item">FAQ</NavLink>
+        <NavLink to="/board/support/Q&A" className="item">문의하기</NavLink>
+        <PrivacyPolicyModalView
+          trigger={<a className="item">개인정보 처리방침</a>}
+        />
+        <a className="item">서비스 이용약관</a>
+      </>
+    );
+  }
 
   render() {
     //
     return (
       <FooterView
-        noticePath={this.noticePath}
-        faqPath={this.faqPath}
-        qnaPath={this.qnaPath}
+        nav={this.renderNav()}
       />
     );
   }

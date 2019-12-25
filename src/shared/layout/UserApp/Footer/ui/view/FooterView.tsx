@@ -2,19 +2,12 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { Link } from 'react-router-dom';
-import {
-  Icon,
-  Button,
-} from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 
-import PrivacyPolicyModalView from './PrivacyPolicyModalView';
 
 
 interface Props {
-  noticePath: string
-  faqPath: string
-  qnaPath: string
+  nav: React.ReactNode,
 }
 
 @reactAutobind
@@ -22,7 +15,7 @@ class FooterView extends Component<Props> {
   //
   render() {
     //
-    const { noticePath, faqPath, qnaPath } = this.props;
+    const { nav } = this.props;
 
     return (
       <section className="footer">
@@ -35,14 +28,7 @@ class FooterView extends Component<Props> {
             university. ALL RIGHTS RESERVED.
           </div>
           <div className="f-nav">
-            <a className="item">Introduction</a>
-            <Link to={noticePath} className="item">공지사항</Link>
-            <Link to={faqPath} className="item">FAQ</Link>
-            <Link to={qnaPath} className="item">문의하기</Link>
-            <PrivacyPolicyModalView
-              trigger={<a className="item">개인정보 처리방침</a>}
-            />
-            <a className="item">서비스 이용약관</a>
+            {nav}
           </div>
 
           <Button.Group className="country">
