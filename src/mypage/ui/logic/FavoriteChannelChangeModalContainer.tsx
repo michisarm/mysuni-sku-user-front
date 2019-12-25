@@ -99,7 +99,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ selectedCollegeIds: [], favoriteChannels: [ ...this.props.favorites ] });
+    this.setState({ selectedCollegeIds: [], favoriteChannels: [ ...this.props.favorites ]});
   }
 
   handleClick(college: CollegeModel) {
@@ -113,7 +113,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 
   render() {
-    const { collegeService, trigger, favorites } = this.props;
+    const { collegeService, trigger } = this.props;
     const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
     const { colleges } = collegeService as CollegeService;
 
