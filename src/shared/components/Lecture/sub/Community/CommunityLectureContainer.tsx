@@ -4,11 +4,9 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
-import moment from 'moment';
 import { Icon, Button, Accordion } from 'semantic-ui-react';
 import { LectureViewModel } from 'lecture';
 import Action from '../../present/model/Action';
-import { CubeIconType } from '../../present/model';
 import { CourseSectionContext } from '../CourseSection';
 import {
   Title, SubField, Buttons, Thumbnail,

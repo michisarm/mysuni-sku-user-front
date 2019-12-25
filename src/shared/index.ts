@@ -29,6 +29,7 @@ export { SearchFilter } from './model/SearchFilter';
 export { CreatorModel } from './model/CreatorModel';
 export { QueryModel } from './model/QueryModel';
 export { IconBox } from './model/IconBox';
+export { IconType } from './model/IconType';
 export { CubeType } from './model/CubeType';
 export { CubeState } from './model/CubeState';
 export { CourseOpenModel } from './model/CourseOpenModel';

@@ -1,5 +1,6 @@
 import { decorate, observable } from 'mobx';
-import { IdName, SearchFilter } from 'shared/index';
+import IdName from './IdName';
+import { SearchFilter } from './SearchFilter';
 import { CourseState } from './CourseState';
 
 export class CourseOpenModel {

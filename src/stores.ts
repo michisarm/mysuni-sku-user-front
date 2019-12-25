@@ -6,7 +6,7 @@ import { CubeIntroService, MediaService, OfficeWebService, PersonalCubeService, 
 import { lectureCardStores } from 'lecture';
 import { InstructorService } from 'expert';
 import { SkProfileService } from 'profile';
-import { AnswerService, BoardService, CategoryService, PostService } from './board';
+import { AnswerService, BoardService, CategoryService, PostService } from 'board';
 
 
 const stores = {
