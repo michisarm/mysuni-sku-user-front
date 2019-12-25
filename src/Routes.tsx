@@ -1,7 +1,13 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { UserApp, withSplitting } from 'shared';
+// import { UserApp, withSplitting } from 'shared';
+import * as shared from 'shared';
+
+const UserApp = shared.UserApp;
+const withSplitting = shared.withSplitting;
+/* eslint-disable */
+console.log('Routs shared import', shared);
 
 import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
 
