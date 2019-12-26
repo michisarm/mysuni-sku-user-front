@@ -62,7 +62,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //favoriteChannel 변경사항 저장하기
     const { skProfileService, collegeService, onConfirmCallback } = this.props;
     if (skProfileService && collegeService) {
-      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+      skProfileService.setStudySummaryProp('favoriteChannels', this.state.favoriteChannels);
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary))
         .then(() => {
           if (onConfirmCallback && typeof onConfirmCallback === 'function') onConfirmCallback();
