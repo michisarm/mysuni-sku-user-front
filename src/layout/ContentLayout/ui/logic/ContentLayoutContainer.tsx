@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
 
-import { Context } from 'shared/layout/UserApp';
+import { Context } from 'layout/UserApp';
 
 
 interface Breadcrumb {

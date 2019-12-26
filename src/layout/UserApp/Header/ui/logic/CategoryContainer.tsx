@@ -6,9 +6,9 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { mobxHelper } from 'shared';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
-import { FavoriteChannelChangeModalContainer } from 'mypage/index';
+import { FavoriteChannelChangeModalContainer } from 'mypage';
 import { SkProfileService } from 'profile';
-import CategoryView from '../../../shared/layout/UserApp/Header/ui/view/CategoryView';
+import CategoryView from '../view/CategoryView';
 
 
 

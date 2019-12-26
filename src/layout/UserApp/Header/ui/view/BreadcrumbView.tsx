@@ -1,7 +1,7 @@
 
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { BreadcrumbValue } from '../../..';
+import { BreadcrumbValue } from '../../../index';
 
 
 interface Props {
