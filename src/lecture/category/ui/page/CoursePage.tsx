@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, mobxHelper, Type } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
@@ -28,7 +28,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 }
 
 interface State {
-  type: Type
+  type: string
 }
 
 interface RouteParams {
@@ -52,7 +52,7 @@ interface RouteParams {
 class CoursePage extends Component<Props, State> {
   //
   state= {
-    type: Type.List,
+    type: 'List',
   };
 
   componentDidMount() {
@@ -186,9 +186,9 @@ class CoursePage extends Component<Props, State> {
   getMenus() {
     //
     const menus: typeof ContentMenu.Menu[] = [
-      { name: 'List', type: Type.List },
-      { name: 'Overview', type: Type.Overview },
-      { name: 'Comments', type: Type.Comments },
+      { name: 'List', type: 'List' },
+      { name: 'Overview', type: 'Overview' },
+      { name: 'Comments', type: 'Comments' },
     ];
 
     return menus;
@@ -212,18 +212,18 @@ class CoursePage extends Component<Props, State> {
     }
 
     switch (type) {
-      case Type.List:
+      case 'List':
         return (
           <CourseContainer />
         );
-      case Type.Overview:
+      case 'Overview':
         return (
           <LectureOverviewView
             viewObject={viewObject}
             typeViewObject={typeViewObject}
           />
         );
-      case Type.Comments:
+      case 'Comments':
         return (
           <LectureCommentsContainer
             reviewFeedbackId={reviewFeedbackId}

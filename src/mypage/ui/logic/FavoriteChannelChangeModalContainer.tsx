@@ -9,7 +9,7 @@ interface Props {
   skProfileService? : SkProfileService
   collegeService? : CollegeService
 
-  trigger: React.ReactNode
+  trigger?: React.ReactNode
   favorites : ChannelModel[]
   onConfirmCallback:() => void
 }
@@ -62,7 +62,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     //favoriteChannel 변경사항 저장하기
     const { skProfileService, collegeService, onConfirmCallback } = this.props;
     if (skProfileService && collegeService) {
-      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+      skProfileService.setStudySummaryProp('favoriteChannels', { idNames: this.state.favoriteChannels });
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary))
         .then(() => {
           if (onConfirmCallback && typeof onConfirmCallback === 'function') onConfirmCallback();
@@ -77,7 +77,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     if (favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
       favoriteChannels = favoriteChannels.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
-    else favoriteChannels.push(channel);
+    else favoriteChannels.push(new ChannelModel(channel));
     this.setState({ favoriteChannels });
   }
 

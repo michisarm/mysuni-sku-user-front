@@ -149,7 +149,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
   handleDeleteCube(personalCubeId: string) {
     //
     const { personalCubeService } = this.props;
-    if(personalCubeService){
+    if (personalCubeService) {
       Promise.resolve()
         .then(() => personalCubeService.removePersonalCube(personalCubeId))
         .then(() => this.props.history.push(`/personalcube/create`));

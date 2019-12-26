@@ -39,9 +39,6 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  selectChannels: ChannelModel [] = [];
-
-  @observable
   favoriteChannels : ChannelModel [] = [];
 
   @observable
@@ -155,38 +152,14 @@ export default class CollegeService {
   setSelectChannels() {
     const channels = this.college.channels;
 
-    this.selectChannels = [];
-
     channels.map((channel) => {
-      this.selectChannels.push({ id: channel.id, channelId: channel.id, name: channel.name, checked: false });
+      this.college.channels.push({ ...channel, id: channel.id, channelId: channel.id, name: channel.name, checked: false });
     });
-  }
-
-  @action
-  selectChannel(channelId: string, name:string, checked: boolean) {
-
-    this.selectChannels.filter((channel) => {
-      if (channel.channelId === channelId) channel.checked = checked;
-    });
-
-    if (checked) this.favoriteChannels.push({ id: channelId, channelId, name, checked });
-    else this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
-  }
-
-  @action
-  deselectChannel(channelId : string) {
-    this.selectChannels.filter((channel) => {
-      if (channel.channelId === channelId) channel.checked = false;
-    });
-
-    this.favoriteChannels = this.favoriteChannels.filter(channel => channel.channelId !== channelId);
   }
 
   @action
   setFavoriteChannel() {
-    const selectChannels = this.selectChannels;
-
-    selectChannels.map((channel) => {
+    this.college.channels.map((channel) => {
       if (channel.checked) this.favoriteChannels.push(channel);
     });
   }

@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IconType } from '../../personalcube/personalcube/model/IconType';
+import { IconType } from './IconType';
 
 export class IconBox {
   //

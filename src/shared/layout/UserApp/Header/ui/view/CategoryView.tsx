@@ -15,6 +15,7 @@ interface Props {
   onClick: (e: any) => void,
   onActiveCollege: (e: any, college: CollegeModel) => void,
   onClickChannel: (e: any, channel?: ChannelModel) => void,
+  onModalOpen: () => void,
 }
 
 @reactAutobind
@@ -25,7 +26,7 @@ class CategoryView extends Component<Props> {
     //
     const {
       open, colleges, activeCollege, channels,
-      onClick, onActiveCollege, onClickChannel,
+      onClick, onActiveCollege, onClickChannel, onModalOpen,
     } = this.props;
 
     return (
@@ -84,8 +85,7 @@ class CategoryView extends Component<Props> {
             <Button
               icon
               className="img-icon change-channel-of-interest"
-              href="../mypage/channel-change-modal"
-              target="_blank"
+              onClick={onModalOpen}
             >
               <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
             </Button>

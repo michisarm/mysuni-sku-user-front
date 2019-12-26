@@ -25,7 +25,8 @@ export class CollegeModel implements DramaEntity {
     //
     if (college) {
       const creator = college.creator && new CreatorModel(college.creator) || this.creator;
-      Object.assign(this, { ...college, creator });
+      const channels = college.channels || this.channels;
+      Object.assign(this, { ...college, creator, channels });
     }
   }
 }

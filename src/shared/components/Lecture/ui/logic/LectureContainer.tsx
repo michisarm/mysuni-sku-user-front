@@ -15,6 +15,7 @@ import { ActionType } from '../../present/model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
 import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
+import CommunityLectureContainer from '../../sub/Community/CommunityLectureContainer';
 
 
 export interface OnViewDetailData {
@@ -226,6 +227,28 @@ class LectureContainer extends Component<Props, States> {
     );
   }
 
+  renderCommunityCard() {
+    //
+    const {
+      lectureView, thumbnailImage, toggle,
+      onAction,
+    } = this.props;
+    const { open } = this.state;
+
+    return (
+      <CommunityLectureContainer
+        lectureView={lectureView || {} as any}
+        thumbnailImage={thumbnailImage}
+        action={this.getAction()}
+        toggle={toggle}
+        open={open}
+        onAction={onAction}
+        onViewDetail={this.onViewDetail}
+        onToggle={this.onToggleCourse}
+      />
+    );
+  }
+
   render() {
     //
     const { groupType } = this.context;
@@ -241,6 +264,9 @@ class LectureContainer extends Component<Props, States> {
     }
     else if (groupType === GroupType.Course) {
       return this.renderCourseCard();
+    }
+    else if (groupType === GroupType.Community) {
+      return this.renderCommunityCard();
     }
     return null;
   }

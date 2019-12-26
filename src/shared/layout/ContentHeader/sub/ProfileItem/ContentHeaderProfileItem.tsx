@@ -25,7 +25,7 @@ class ContentHeaderProfileItem extends Component<Props> {
   };
 
   onClickMyPage() {
-    window.alert('Todo');
+    window.location.href = '/mypage';
   }
 
   render() {

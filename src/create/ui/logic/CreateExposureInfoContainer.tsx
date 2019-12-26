@@ -2,10 +2,9 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Checkbox, Form, Radio, Select } from 'semantic-ui-react';
-import { IdName, mobxHelper } from 'shared';
+import { IdName, mobxHelper, IconType } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
-import { IconType } from '../../../personalcube/personalcube/model/IconType';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void

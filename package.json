@@ -19,10 +19,10 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "^0.0.1-beta1",
-    "@nara.drama/depot": "^0.0.8",
-    "@nara.drama/feedback": "^0.0.4",
-    "@sku/personalcube": "0.0.6",
+    "@nara.platform/accent": "^0.0.2",
+    "@nara.drama/depot": "^0.0.11",
+    "@nara.drama/feedback": "^0.0.8",
+    "@sku/personalcube": "0.0.9",
     "@types/react-datepicker": "^2.9.5",
     "autobind-decorator": "2.4.0",
     "axios": "^0.19.0",
@@ -31,7 +31,7 @@
     "lodash": "^4.17.15",
     "mobx": "4.15.0",
     "mobx-react": "6.1.4",
-    "nara-react-scripts": "0.1.16",
+    "nara-react-scripts": "0.1.19",
     "numeral": "^2.0.6",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.5",

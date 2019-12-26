@@ -9,6 +9,7 @@ import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { ContentLayout } from '../../../shared';
 import { StudySummary } from '../../model/StudySummary';
+import { ChannelModel } from '../../../college';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
@@ -16,7 +17,7 @@ interface Props extends RouteComponentProps{
 }
 
 interface States{
-  isSelectedColleage : boolean
+  favorites : ChannelModel [],
 }
 
 const style = {
@@ -38,7 +39,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   constructor(props:Props) {
     super(props);
     this.state = {
-      isSelectedColleage: false,
+      favorites: [],
     };
   }
 
@@ -48,37 +49,44 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
   init() {
     const { collegeService, skProfileService } = this.props;
+    const { studySummary } = skProfileService as SkProfileService;
+    const { favoriteChannels } = studySummary as StudySummary;
+
     if (collegeService && skProfileService) {
       collegeService.findAllColleges();
       skProfileService.findSkProfile();
       skProfileService.findStudySummary();
-    }
 
-  }
+      if (favoriteChannels) {
+        const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
+          && favoriteChannels.idNames.map(channel =>
+            new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+          ) || [];
 
-  selectCollege( collegeId : string) {
-    const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.findCollege(collegeId)
-        .then(() => collegeService.setSelectChannels())
-        .then(() => this.setState({
-          isSelectedColleage: true,
-        }));
+        this.setState({ favorites: [...channels]});
+      }
     }
   }
 
-  selectChannel(channelId : string, name : string, checked : boolean) {
+
+  onSelectCollege( collegeId : string) {
     const { collegeService } = this.props;
+
     if (collegeService) {
-      collegeService.selectChannel(channelId, name, checked);
+      //college의 channels favorites.channels.channel.id 인것 check
+      collegeService.findCollege(collegeId);
     }
   }
 
-  deselectChannel(channelId : string) {
-    const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.deselectChannel(channelId);
+  onSelectChannel(channel : ChannelModel) {
+    let { favorites }: States = this.state;
+
+    if (favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
+      favorites = favorites.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
+    else favorites.push(channel);
+    this.setState({ favorites });
+
   }
 
   onSKIntroClick() {
@@ -87,7 +95,9 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
   onNextClick() {
     const { collegeService, skProfileService } = this.props;
-    if (collegeService.favoriteChannels.length < 3 ) {
+    const { favorites } = this.state;
+
+    if (favorites.length < 3 ) {
       reactConfirm({
         title: '알림',
         message: '관심 분야는 3개이상 선택해 주세요.</br> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
@@ -95,6 +105,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       });
     } else {
       if (collegeService && skProfileService) {
+        collegeService.favoriteChannels = [...favorites];
         skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
         skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
       }
@@ -103,8 +114,10 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { colleges, college, selectChannels, favoriteChannels } = this.props.collegeService;
-    const { isSelectedColleage } = this.state;
+    const { colleges, college } = this.props.collegeService;
+    const { favorites } = this.state;
+
+
     return (
       <ContentLayout breadcrumb={[
         { text: 'd1', path: '/depth1-path' },
@@ -122,21 +135,20 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                 <div className="f-list">
                   <div className="scrolling">
                     <div className="college">
-                      {colleges && colleges.length && colleges.map((data, index) => (
+                      {colleges && colleges.length && colleges.map((college, index) => (
                         <div className="ui rect-icon radio checkbox" key={index}>
                           <input type="radio"
                             id={`radio_${index}`}
                             name="college"
                             className="hidden"
-                            checked= { data.collegeId === college.collegeId}
                             tabIndex={index}
-                            value={data.collegeId}
-                            onChange={() => this.selectCollege(data.collegeId) }
+                            value={college.collegeId}
+                            onChange={() => this.onSelectCollege(college.collegeId) }
                           />
-                          <label htmlFor={`radio_${index}`}>{data.name}</label>
+                          <label htmlFor={`radio_${index}`}>{college.name}</label>
                         </div>
                       )) || ''
-                    }
+                      }
                     </div>
                   </div>
                 </div>
@@ -147,48 +159,48 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                   <div className="scrolling">
                     <div className="channel">
                       <ul>
+                        {console.log(college.channels.length)}
                         {
-                        isSelectedColleage && selectChannels && selectChannels.map((channel, index) => (
-                          <li key={index}>
-                            <div className="ui base checkbox popup-wrap">
-                              <input type="checkbox"
-                                id={`checkbox_${index}`}
-                                className="hidden"
-                                tabIndex={index}
-                                checked ={channel.checked}
-                                onChange={() => this.selectChannel(channel.channelId, channel.name, !channel.checked)}
-                              />
-                              <Popup className="custom-black"
-                                content={channel.name /*channel.description*/}
-                                inverted
-                                style={style}
-                                trigger={
-                                  <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
-                                    {channel.name} <span>{/*channel contents 수*/}</span>
-                                  </label>
-                                     }
-                              />
-                            </div>
-                          </li>
-                        )) || ''
-                      }
+                          college && college.channels.map((channel, index) => (
+                            <li key={index}>
+                              <div className="ui base checkbox popup-wrap">
+                                <input type="checkbox"
+                                  id={`checkbox_${index}`}
+                                  className="hidden"
+                                  tabIndex={index}
+                                  checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                  onChange={() => this.onSelectChannel(channel)}
+                                />
+                                <Popup className="custom-black"
+                                  content={channel.description /*channel.description*/}
+                                  inverted
+                                  style={style}
+                                  trigger={
+                                    <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
+                                      {channel.name} <span>{/*channel contents 수*/}</span>
+                                    </label>
+                                       }
+                                />
+                              </div>
+                            </li>
+                          )) || ''
+                        }
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="column">
-                <div className="f-tit">Selected <span className="counter"><span className="now">{favoriteChannels.length}</span> / 80</span>
+                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / 80</span>
                 </div>
                 <div className="f-list">
                   <div className="scrolling">
                     <div className="selected">
                       {
-                        favoriteChannels && favoriteChannels.map((channel, index) => (
-                          channel.checked ?
-                            <Button className="del type2" key={index} onClick={() => this.deselectChannel(channel.channelId)}>{channel.name}</Button> : ''
+                        favorites && favorites.map((channel, index) => (
+                          <Button className="del type2" key={index} onClick={() => this.onSelectChannel(channel)}>{channel.name}</Button>
                         )) || ''
-                    }
+                      }
                     </div>
                   </div>
                 </div>

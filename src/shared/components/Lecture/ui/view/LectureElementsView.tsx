@@ -14,7 +14,7 @@ interface TitleProps {
 export const Title = ({ category, title, children }: TitleProps) => (
   <div className="title-area">
     {category && category.college.name && <Label color={category.color}>{category.college.name}</Label>}
-    <div className="header">{title}</div>
+    <div className="header ellipsis">{title}</div>
     {children}
   </div>
 );

@@ -1,24 +1,30 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentHeader, mobxHelper } from 'shared';
-import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
-import { ChannelModel } from 'college';
-import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
+import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router';
+import { SkProfileModel, SkProfileService } from 'profile';
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
 }
 
+interface State {
+  type: string
+}
+
 @inject(mobxHelper.injectFrom('skProfileService'))
 @observer
 @reactAutobind
-class ChannelLecturesPage extends Component<Props> {
+class MyCommunityPage extends Component<Props, State> {
   //
+  state = {
+    type: 'MyCommunity',
+  };
+
   componentDidMount(): void {
     this.init();
   }
@@ -30,30 +36,31 @@ class ChannelLecturesPage extends Component<Props> {
     skProfileService!.findStudySummary();
   }
 
-  routeTo(e: any, data: any) {
-    //
-    const { channel } = data;
 
-    this.props.history.push(`/channel/${channel.id}/recommend`);
+  getMenus() {
+    //
+    const menus: typeof ContentMenu.Menu[] = [];
+    menus.push(
+      { name: 'My Community', type: 'MyCommunity' },
+      { name: 'My Created Community', type: 'MyCreatedCommunity' },
+      { name: 'My Feed', type: 'MyFeed' },
+    );
+
+    return menus;
   }
 
   render() {
-    //
+
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
 
     const { member } = skProfile as SkProfileModel;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <ContentLayout
-        className="mylearning"
+        className = "community"
         breadcrumb={[
-          { text: `Recommend`, path: `/recommend` },
+          { text: 'Community', path: '/community' },
         ]}
       >
         <ContentHeader className="content-division">
@@ -67,19 +74,21 @@ class ChannelLecturesPage extends Component<Props> {
             />
           </ContentHeader.Cell>
           <ContentHeader.Cell inner>
-            <ContentHeader.RecommendItem
-              totalChannelCount={999}
-              favoriteChannelCount={channels.length || 0}
+            <ContentHeader.CommunityItem
+              joinedCount={0}
+              myCount={0}
             />
           </ContentHeader.Cell>
         </ContentHeader>
-        <ChannelsLecturesContainer
-          channels={channels}
-          onViewAll={this.routeTo}
+        <ContentMenu
+          menus={this.getMenus()}
+          type={this.state.type}
+          onSelectMenu={(type) => this.setState({ type })}
         />
+        {/*<MenuItemContainer />*/}
       </ContentLayout>
     );
   }
 }
 
-export default withRouter(ChannelLecturesPage);
+export default MyCommunityPage;

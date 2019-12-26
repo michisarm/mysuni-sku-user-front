@@ -56,7 +56,7 @@ export default class PersonalCubeService {
     return this.personalCubeApi.modifyPersonalCube(personalCubeId, PersonalCubeModel.asNameValues(personalCube));
   }
 
-  removePersonalCube(personalCubeId: string){
+  removePersonalCube(personalCubeId: string) {
     //
     this.personalCubeApi.removePersonalCube(personalCubeId);
   }

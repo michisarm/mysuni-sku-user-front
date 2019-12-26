@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { BoardService, PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, mobxHelper, Type } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
 import { ContentsServiceType, PersonalCubeService } from 'personalcube/personalcube';
 import { CubeIntroService } from 'personalcube/cubeintro';
@@ -34,7 +34,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: 
 }
 
 interface State {
-  type: Type
+  type: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -54,7 +54,7 @@ interface State {
 class LectureCardPage extends Component<Props, State> {
   //
   state= {
-    type: Type.Overview,
+    type: 'OverView',
   };
 
   componentDidMount() {
@@ -89,7 +89,7 @@ class LectureCardPage extends Component<Props, State> {
       }
       else if (service.type === ContentsServiceType.Community) {
         boardService.findBoard(contents.id);
-        this.setState({ type: Type.Posts });
+        this.setState({ type: 'Posts' });
       }
     }
     // lectureCardService.findLectureCard(params.lectureCardId);
@@ -251,15 +251,15 @@ class LectureCardPage extends Component<Props, State> {
     const menus: typeof ContentMenu.Menu[] = [];
     if (personalCube.contents.type === 'Community') {
       menus.push(
-        { name: 'Posts', type: Type.Posts },
-        { name: 'My Posts', type: Type.MyPosts },
-        { name: 'Overview', type: Type.Overview },
+        { name: 'Posts', type: 'Posts' },
+        { name: 'My Posts', type: 'MyPosts' },
+        { name: 'Overview', type: 'Overview' },
       );
     }
     else {
       menus.push(
-        { name: 'Overview', type: Type.Overview },
-        { name: 'Comments', type: Type.Comments },
+        { name: 'Overview', type: 'Overview' },
+        { name: 'Comments', type: 'Comments' },
       );
     }
 
@@ -273,21 +273,21 @@ class LectureCardPage extends Component<Props, State> {
     const { lectureCard } = this.props.lectureCardService;
     const { collegeId, lectureCardId } = this.props.match.params;
     switch (type) {
-      case Type.Overview:
+      case 'Overview':
         return (
           <LectureOverviewView
             viewObject={viewObject}
             typeViewObject={typeViewObject}
           />
         );
-      case Type.Comments:
+      case 'Comments':
         return (
           <LectureCommentsContainer
             reviewFeedbackId={lectureCard.reviewFeedbackId}
             commentFeedbackId={lectureCard.commentFeedbackId}
           />
         );
-      case Type.Posts:
+      case 'Posts':
         return (
           <PostList
             boardId={personalCube.contents.contents.id}
@@ -297,7 +297,7 @@ class LectureCardPage extends Component<Props, State> {
             type={PostList.ListType.Basic}
           />
         );
-      case Type.MyPosts:
+      case 'MyPosts':
         return (
           <PostListByWriter
             boardId={personalCube.contents.contents.id}

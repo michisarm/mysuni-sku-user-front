@@ -40,6 +40,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (collegeService && skProfileService) {
       collegeService.findAllJobGroups();
       skProfileService.findSkProfile();
+
     }
   }
 
@@ -51,8 +52,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
         jobGroupSelect.push({ key: index + 1, value: jobGroup.jobGroupId, text: jobGroup.name });
       });
     }
-
-
     return jobGroupSelect;
   }
 

@@ -1,4 +1,3 @@
-import { PersonalCubeModel } from 'personalcube/personalcube';
 import { CubeIntroModel } from '../../cubeintro';
 import { NameValueList } from '../../../shared/model/NameValueList';
 import { OfficeWebModel } from './OfficeWebModel';
