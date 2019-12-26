@@ -4,11 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Lecture, mobxHelper, PageService } from 'shared';
+import { mobxHelper, PageService } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
 import { CardSorting, SeeMoreButton } from '../../../shared';
+import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 

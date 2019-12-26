@@ -29,6 +29,7 @@ export function injectFrom( ...serviceNames: string[] ) {
 
 }
 
+console.log(injectFrom);
 export default {
   injectFrom,
 };

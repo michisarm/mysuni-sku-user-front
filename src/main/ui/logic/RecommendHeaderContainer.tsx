@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
-import { FavoriteChannelChangeModalContainer } from 'mypage';
+import { FavoriteChannelChangeModal } from 'shared-component';
 import { inject, observer } from 'mobx-react';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
@@ -27,6 +27,7 @@ class RecommendHeaderContainer extends Component<Props> {
     const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
+    this.findStudySummary();
   }
 
   findStudySummary() {
@@ -47,6 +48,8 @@ class RecommendHeaderContainer extends Component<Props> {
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
       && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
+    console.log(channels);
+
     return (
       <div className="recommend-head">
         <span className="tit">{member.names.string}님을 위한 추천 채널</span>
@@ -54,7 +57,7 @@ class RecommendHeaderContainer extends Component<Props> {
           View all<Icon className="morelink" />
         </Button>
         <div className="right">
-          <FavoriteChannelChangeModalContainer
+          <FavoriteChannelChangeModal
             trigger={(
               <Button icon className="img-icon">
                 <span className="underline">현재 선택된 관심 Channel(<span className="sel">{channels.length}</span>)</span>

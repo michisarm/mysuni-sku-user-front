@@ -1,10 +1,10 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { NameValueList } from 'shared';
 import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';
 import { EmployeeModel } from './EmployeeModel';
 import { PisAgreementModel } from './PisAgreementModel';
-import { NameValueList } from '../../shared';
 import { SkProfileCdoModel } from './SkProfileCdoModel';
 
 export class SkProfileModel implements DramaEntity {
