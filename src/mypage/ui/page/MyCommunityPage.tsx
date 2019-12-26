@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { EmployeeModel, SkProfileModel, SkProfileService } from 'profile';
+import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
+import { SkProfileModel, SkProfileService } from 'profile';
 
 
 interface Props extends RouteComponentProps {
@@ -16,6 +16,7 @@ interface State {
   type: string
 }
 
+console.log('community', mobxHelper);
 @inject(mobxHelper.injectFrom('skProfileService'))
 @observer
 @reactAutobind
@@ -55,7 +56,6 @@ class MyCommunityPage extends Component<Props, State> {
     const { skProfile } = skProfileService as SkProfileService;
 
     const { member } = skProfile as SkProfileModel;
-    const { companyNames: company, departmentNames: realTeam  } = member as EmployeeModel;
 
     return (
       <ContentLayout
@@ -68,8 +68,8 @@ class MyCommunityPage extends Component<Props, State> {
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
               image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
-              name={member.names.string}
-              teams={[company && company.string || '', realTeam && realTeam.string || '']}
+              name={member.name}
+              teams={[member.company || '', member.department || '']}
               imageEditable={false}
               myPageActive
             />

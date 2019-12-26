@@ -1,10 +1,10 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { NameValueList } from 'shared';
 import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';
 import { EmployeeModel } from './EmployeeModel';
 import { PisAgreementModel } from './PisAgreementModel';
-import { NameValueList } from '../../shared';
 import { SkProfileCdoModel } from './SkProfileCdoModel';
 
 export class SkProfileModel implements DramaEntity {
@@ -22,9 +22,10 @@ export class SkProfileModel implements DramaEntity {
   constructor(skProfile?: SkProfileModel) {
     //
     if (skProfile) {
+      console.log('..', skProfile);
       const patronKey = skProfile.patronKey || this.patronKey;
-      const member  = skProfile.member && new EmployeeModel() || this.member;
-      const pisAgreement = skProfile.pisAgreement && new PisAgreementModel() || this.pisAgreement;
+      const member  = skProfile.member && new EmployeeModel(skProfile.member) || this.member;
+      const pisAgreement = skProfile.pisAgreement && new PisAgreementModel(skProfile.pisAgreement) || this.pisAgreement;
       Object.assign(this, { ...skProfile, patronKey, member, pisAgreement });
     }
   }

@@ -35,20 +35,20 @@ class LectureApi {
       .then(response => response && response.data || []);
   }
 
-  findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
+  findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
-    if ((!lectureCardIds || lectureCardIds.length < 1) && (!courseLectureIds || courseLectureIds.length < 1 )) {
+    if ((!lectureCardUsids || lectureCardUsids.length < 1) && (!courseLectureUsids || courseLectureUsids.length < 1 )) {
       return Promise.resolve([]);
     }
 
     let lectureCardIdsParam = 'lectureCardIds=';
     let courseLectureIdsParam = 'courseLectureIds=';
 
-    if (lectureCardIds && lectureCardIds.length > 0) {
-      lectureCardIdsParam = lectureCardIds.map((lectureCardId) => `lectureCardIds=${lectureCardId}`).join('&');
+    if (lectureCardUsids && lectureCardUsids.length > 0) {
+      lectureCardIdsParam = lectureCardUsids.map((lectureCardUsid) => `lectureCardIds=${lectureCardUsid}`).join('&');
     }
-    if (courseLectureIds && courseLectureIds.length > 0) {
-      courseLectureIdsParam = courseLectureIds.map((courseLectureId) => `courseLectureIds=${courseLectureId}`).join('&');
+    if (courseLectureUsids && courseLectureUsids.length > 0) {
+      courseLectureIdsParam = courseLectureUsids.map((courseLectureUsid) => `courseLectureIds=${courseLectureUsid}`).join('&');
     }
     const queryParams = `${lectureCardIdsParam}&${courseLectureIdsParam}`;
 

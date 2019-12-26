@@ -4,12 +4,13 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Lecture, mobxHelper, NoSuchContentPanel, PageService } from 'shared';
+import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
 
 import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
+import Lecture from '../../../shared/Lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
@@ -91,7 +92,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.nextOffset);
-    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
     this.setState((prevState) => ({
@@ -184,7 +185,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
-                const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
+                const rating = ratingMap.get(lecture.reviewId) || 0;
                 return (
                   <Lecture
                     key={`lecture-${index}`}

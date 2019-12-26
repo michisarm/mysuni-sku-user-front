@@ -27,3 +27,5 @@ export {
   OfficeWebService,
   BoardService,
 };
+
+export { default as OverviewField } from './shared/OverviewField';

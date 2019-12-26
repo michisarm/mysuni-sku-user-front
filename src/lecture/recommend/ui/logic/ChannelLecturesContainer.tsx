@@ -4,9 +4,10 @@ import { ReviewService } from '@nara.drama/feedback';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
+import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
+import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 
@@ -55,7 +56,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
       lectures,
       totalCount,
     }));
-    const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
   }
 
@@ -107,7 +108,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
             <Lecture.Group type={Lecture.GroupType.Line}>
               {
                 lectures.map((lecture: LectureModel, index: number) => {
-                  const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
+                  const rating = ratingMap.get(lecture.reviewId) || 0;
                   return (
                     <Lecture
                       key={`lecture-${index}`}

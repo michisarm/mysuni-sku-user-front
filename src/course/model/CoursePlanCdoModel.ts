@@ -1,6 +1,5 @@
-import { CategoryModel, CreatorModel, IconBox } from 'shared';
+import { CategoryModel, CreatorModel, IconBox, CourseOpenModel } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
-import { CourseOpenModel } from '../../shared/model/CourseOpenModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { StampModel } from './StampModel';
 
