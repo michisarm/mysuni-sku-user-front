@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Context } from '../../..';
-import CategoryContainer from './CategoryContainer';
+import CategoryContainer from '../../../../../../mypage/ui/logic/CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
   LogoView, MenuView, SearchBarView, ProfileView,
