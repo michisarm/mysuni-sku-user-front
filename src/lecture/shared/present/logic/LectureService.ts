@@ -75,9 +75,9 @@ class LectureService {
   }
 
   @action
-  async findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
+  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+    const lectureViews = await this.lectureApi.findLectureViews(lectureCardUsids, courseLectureUsids);
 
     runInAction(() => this._lectureViews = lectureViews);
     return lectureViews;

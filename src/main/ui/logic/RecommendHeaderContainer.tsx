@@ -48,8 +48,6 @@ class RecommendHeaderContainer extends Component<Props> {
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
       && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
-    console.log(channels);
-
     return (
       <div className="recommend-head">
         <span className="tit">{member.names.string}님을 위한 추천 채널</span>

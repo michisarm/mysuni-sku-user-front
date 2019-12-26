@@ -75,7 +75,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset);
-    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewFeedbackId);
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
@@ -139,7 +139,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
           <div className="section">
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
-                const rating = ratingMap.get(lecture.reviewFeedbackId) || 0;
+                const rating = ratingMap.get(lecture.reviewId) || 0;
                 return (
                   <Lecture
                     key={`lecture-${index}`}
