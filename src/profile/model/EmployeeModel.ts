@@ -1,4 +1,4 @@
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { MemberModel } from './MemberModel';
 import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
 import { LangStrings } from '../../shared/model/LangStrings';
@@ -30,10 +30,36 @@ export class EmployeeModel extends MemberModel {
     super();
     if (employee) {
       const favoriteJobGroup = employee.favoriteJobGroup && new FavoriteJobGroupModel(employee.favoriteJobGroup) || this.favoriteJobGroup;
-      Object.assign(this, { ...employee, favoriteJobGroup });
+      const names = employee.names && new LangStrings(employee.names) || this.names;
+      const companyNames = employee.companyNames && new LangStrings(employee.companyNames) || this.companyNames;
+      const departmentNames = employee.departmentNames && new LangStrings(employee.departmentNames) || this.departmentNames;
+      Object.assign(this, { ...employee, favoriteJobGroup, names, companyNames, departmentNames });
     }
   }
 
+  @computed
+  get name() {
+    if (this.names && this.names.langStringMap) {
+      return this.names.langStringMap.get(this.names.defaultLanguage) || '';
+    }
+    return '';
+  }
+
+  @computed
+  get company() {
+    if (this.companyNames && this.companyNames.langStringMap) {
+      return this.companyNames.langStringMap.get(this.companyNames.defaultLanguage) || '';
+    }
+    return '';
+  }
+
+  @computed
+  get department() {
+    if (this.departmentNames && this.departmentNames.langStringMap) {
+      return this.departmentNames.langStringMap.get(this.departmentNames.defaultLanguage) || '';
+    }
+    return '';
+  }
 }
 
 decorate( EmployeeModel, {
