@@ -2,7 +2,7 @@ import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import { OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { IdName } from 'shared-model';
+import { IdName } from 'shared';
 import CoursePlanApi from '../apiclient/CoursePlanApi';
 import { CoursePlanModel } from '../../model/CoursePlanModel';
 import { CoursePlanContentsModel } from '../../model/CoursePlanContentsModel';
@@ -11,7 +11,7 @@ import { CoursePlanFlowCdoModel } from '../../model/CoursePlanFlowCdoModel';
 import { CoursePlanFlowUdoModel } from '../../model/CoursePlanFlowUdoModel';
 import { CoursePlanQueryModel } from '../../model/CoursePlanQueryModel';
 import { LearningCardModel } from '../../model/LearningCardModel';
-import { CourseState } from '../../../shared-model/CourseState';
+import { CourseState } from '../../../shared/model/CourseState';
 import { CourseRequestCdoModel } from '../../model/CourseRequestCdoModel';
 
 @autobind

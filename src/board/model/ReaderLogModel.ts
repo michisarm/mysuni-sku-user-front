@@ -1,6 +1,6 @@
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared-model';
+import { IdName } from 'shared';
 
 export class ReaderLogModel implements DomainEntity {
   //

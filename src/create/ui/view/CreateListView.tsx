@@ -1,6 +1,6 @@
 import { Button, Icon, Table } from 'semantic-ui-react';
 import * as React from 'react';
-import { SearchFilter } from 'shared-model';
+import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 
 

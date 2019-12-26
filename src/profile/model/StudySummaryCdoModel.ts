@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdNameList, NameValueList } from 'shared-model';
+import { IdNameList, NameValueList } from 'shared';
 
 export class StudySummaryCdoModel {
   profileId : string ='';

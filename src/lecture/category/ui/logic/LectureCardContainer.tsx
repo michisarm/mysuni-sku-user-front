@@ -4,8 +4,8 @@ import depot from '@nara.drama/depot';
 // import { reaction } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { LectureSubInfo } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 
 

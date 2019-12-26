@@ -3,7 +3,7 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { CubeType } from 'shared-model';
+import { CubeType } from 'shared';
 import { BoardService } from '@sku/personalcube';
 import CreateIntroView from '../view/CreateIntroView';
 import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../personalcube/cubeintro';

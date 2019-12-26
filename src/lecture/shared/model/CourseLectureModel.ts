@@ -1,15 +1,15 @@
 
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel } from 'shared-model';
+import { DramaEntityObservableModel } from 'shared';
 
 
 class CourseLectureModel extends DramaEntityObservableModel {
   //
-  courseLectureId: string = '';
+  usid: string = '';
   coursePlanId: string = '';
-  lectureCards: string[] = [];
-  reviewFeedbackId: string = '';
-  commentFeedbackId: string = '';
+  lectureCardUsids: string[] = [];
+  reviewId: string = '';
+  commentId: string = '';
   time: number = 0;
 
 
@@ -22,11 +22,11 @@ class CourseLectureModel extends DramaEntityObservableModel {
 }
 
 decorate(CourseLectureModel, {
-  courseLectureId: observable,
+  usid: observable,
   coursePlanId: observable,
-  lectureCards: observable,
-  reviewFeedbackId: observable,
-  commentFeedbackId: observable,
+  lectureCardUsids: observable,
+  reviewId: observable,
+  commentId: observable,
   time: observable,
 });
 

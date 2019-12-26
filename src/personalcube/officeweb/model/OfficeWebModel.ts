@@ -1,7 +1,7 @@
 
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { DatePeriod, NameValueList } from 'shared-model';
+import { DatePeriod, NameValueList } from 'shared';
 import { OfficeWebCdoModel } from './OfficeWebCdoModel';
 
 export class OfficeWebModel implements DramaEntity {

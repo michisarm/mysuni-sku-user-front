@@ -1,6 +1,6 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { ContentsProviderModel } from '../../model/ContentsProviderModel';
-import { NameValueList } from '../../../shared-model/NameValueList';
+import { NameValueList } from '../../../shared/model/NameValueList';
 
 export default class ContentsProviderApi {
   //

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { LectureContentHeader } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
+import LectureContentHeader from '../../../shared/LectureContentHeader';
 
 interface Props {
   viewObject: any

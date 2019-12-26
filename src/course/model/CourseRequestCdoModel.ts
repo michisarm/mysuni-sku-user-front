@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName, CourseState } from 'shared-model';
+import { IdName, CourseState } from 'shared';
 
 export class CourseRequestCdoModel {
   //

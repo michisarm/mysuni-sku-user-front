@@ -1,9 +1,9 @@
 
-import { IdName } from 'shared-model';
+import { IdName } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
 
-export class ChannelModel extends IdName {
+export class ChannelModel implements IdName {
   //
   id: string = '';
   name: string = '';
@@ -15,7 +15,6 @@ export class ChannelModel extends IdName {
   time : number =0;
 
   constructor(channel? : ChannelModel | any) {
-    super();
     if (channel) {
       Object.assign(this, { ...channel });
       this.id = channel.channelId ? channel.channelId : this.id;
@@ -26,6 +25,8 @@ export class ChannelModel extends IdName {
 }
 
 decorate(ChannelModel, {
+  id: observable,
+  name: observable,
   channelId: observable,
   checked: observable,
   iconfileBoxId: observable,

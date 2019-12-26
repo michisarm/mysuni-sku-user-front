@@ -2,8 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { reactAutobind } from '@nara.platform/accent';
-import { CubeState } from 'shared-model';
-import { mobxHelper } from 'shared';
+import { CubeState, mobxHelper } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import CreateProfileView from '../view/CreateProfileView';
 import TabView from '../view/TabView';
@@ -19,6 +18,7 @@ interface States {
   activeItem : string
 }
 
+console.log(mobxHelper);
 @inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
 @observer
 @reactAutobind

@@ -1,7 +1,7 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
-import { OffsetElementList } from 'shared-model';
+import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
@@ -75,9 +75,9 @@ class LectureService {
   }
 
   @action
-  async findLectureViews(lectureCardIds: string[], courseLectureIds?: string[]) {
+  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+    const lectureViews = await this.lectureApi.findLectureViews(lectureCardUsids, courseLectureUsids);
 
     runInAction(() => this._lectureViews = lectureViews);
     return lectureViews;

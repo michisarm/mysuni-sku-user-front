@@ -1,6 +1,6 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { NameValueList } from 'shared-model';
+import { NameValueList } from 'shared';
 import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';
 import { EmployeeModel } from './EmployeeModel';

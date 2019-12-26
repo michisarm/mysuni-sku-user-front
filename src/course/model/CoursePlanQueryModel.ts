@@ -1,4 +1,4 @@
-import { QueryModel } from 'shared-model';
+import { QueryModel } from 'shared';
 import { CoursePlanRdoModel } from './CoursePlanRdoModel';
 
 export class CoursePlanQueryModel extends QueryModel {

@@ -1,16 +1,16 @@
 
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel } from 'shared-model';
+import { DramaEntityObservableModel } from 'shared';
 
 
 class ProgramLectureModel extends DramaEntityObservableModel {
   //
-  programLectureId: string = '';
+  usid: string = '';
   coursePlanId: string = '';
-  courseLectures: string[] = [];
-  lectureCards: string[] = [];
-  reviewFeedbackId: string = '';
-  commentFeedbackId: string = '';
+  courseLectureUsids: string[] = [];
+  lectureCardUsids: string[] = [];
+  reviewId: string = '';
+  commentId: string = '';
   time: number = 0;
 
   constructor(programLecture?: ProgramLectureModel) {
@@ -22,12 +22,12 @@ class ProgramLectureModel extends DramaEntityObservableModel {
 }
 
 decorate(ProgramLectureModel, {
-  programLectureId: observable,
+  usid: observable,
   coursePlanId: observable,
-  courseLectures: observable,
-  lectureCards: observable,
-  reviewFeedbackId: observable,
-  commentFeedbackId: observable,
+  courseLectureUsids: observable,
+  lectureCardUsids: observable,
+  reviewId: observable,
+  commentId: observable,
   time: observable,
 });
 

@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Segment } from 'semantic-ui-react';
-import { Lecture, mobxHelper } from 'shared';
+import { mobxHelper } from 'shared';
 import { CoursePlanService } from 'course';
 import {
   CourseLectureService,
@@ -13,6 +13,7 @@ import {
   ProgramLectureService,
   LectureViewModel,
 } from '../../../shared';
+import Lecture from '../../../shared/Lecture';
 
 
 interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {

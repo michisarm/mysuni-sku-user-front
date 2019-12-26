@@ -1,34 +1,36 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
-import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared-model';
+import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
-import RoleBookModel from './RoleBookModel';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../../course/model/CourseSetModel';
 
 
 class LectureModel extends DramaEntityObservableModel {
   //
-  serviceId: string = '';
   serviceType: LectureServiceType = LectureServiceType.Card;
+  serviceId: string = '';
   coursePlanId: string = '';
-  cubeId: string = '';
-  reviewFeedbackId: string = '';
-  commentFeedbackId: string = '';
-
+  requiredSubsidiaries: IdName[] = [];
+  courseOpen: CourseOpenModel = new CourseOpenModel();
+  category: CategoryModel = new CategoryModel();
   name: string = '';
   cubeType: CubeType = CubeType.None;
-  category: CategoryModel = new CategoryModel();
-  courseOpen: CourseOpenModel = new CourseOpenModel();
-  description: string = '';
+  cubeId: string = '';
+  courseSetJson: CourseSetModel = new CourseSetModel();
+  courseLectureUsids: string[] = [];
+  lectureCardUsids: string[] = [];
   learningTime: number = 0;
+
+  reviewId: string = '';
+  commentId: string = '';
+  description: string = '';
+
   stampCount: number = 0;
+  studentCount: number = 0;
   time: number = 0;
 
-  requiredSubsidiaries: IdName[] = [];
-  courseSetJson: CourseSetModel = new CourseSetModel();
-  roleBooks: RoleBookModel[] = [];
 
   // UI only
   required: boolean = false;
@@ -86,15 +88,25 @@ class LectureModel extends DramaEntityObservableModel {
 decorate(LectureModel, {
   serviceType: observable,
   serviceId: observable,
+  coursePlanId: observable,
   requiredSubsidiaries: observable,
   courseOpen: observable,
   category: observable,
   name: observable,
   cubeType: observable,
+  cubeId: observable,
+  courseSetJson: observable,
   learningTime: observable,
-  roleBooks: observable,
-  reviewFeedbackId: observable,
+  courseLectureUsids: observable,
+  lectureCardUsids: observable,
+  reviewId: observable,
+  commentId: observable,
+  description: observable,
+  stampCount: observable,
+  studentCount: observable,
   time: observable,
+  required: observable,
+  cubeTypeName: observable,
 });
 
 export default LectureModel;

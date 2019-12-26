@@ -5,10 +5,10 @@ import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { ChannelModel } from 'college';
-import { FavoriteChannelChangeModalContainer } from 'mypage';
-import { SkProfileService } from 'profile';
 import { mobxHelper } from 'shared';
+import { FavoriteChannelChangeModal } from 'shared-component';
+import { ChannelModel } from 'college';
+import { SkProfileService } from 'profile';
 
 
 interface OnSelectChannelData {
@@ -69,7 +69,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
             <div className="cell vtop">
               <div className="tit-set">
                 { title || `Channel (${channels.length})`}
-                <FavoriteChannelChangeModalContainer
+                <FavoriteChannelChangeModal
                   trigger={(
                     <Button icon className="img-icon">
                       <Icon className="setting17" /><span className="blind">setting</span>
