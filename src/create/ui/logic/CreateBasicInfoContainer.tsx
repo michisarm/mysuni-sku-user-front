@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import { CollegeService } from 'college';
-import SelectType from '../../../shared/model/SelectType';
+import SelectType from '../../../shared-model/SelectType';
 import FirstCategoryModal from '../view/FirstCategoryModal';
 import SecondCategoryModal from '../view/SecondCategoryModal';
 

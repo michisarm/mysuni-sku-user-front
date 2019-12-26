@@ -1,5 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { IdName, NameValueList, CategoryModel, CubeType } from 'shared';
+import { IdName, NameValueList, CategoryModel, CubeType } from 'shared-model';
 
 export class LearningCardModel {
   //

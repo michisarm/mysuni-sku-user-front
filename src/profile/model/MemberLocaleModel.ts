@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { LangStrings } from '../../shared/model/LangStrings';
+import { LangStrings } from '../../shared-model/LangStrings';
 
 export class MemberLocaleModel {
   nations: LangStrings = new LangStrings();

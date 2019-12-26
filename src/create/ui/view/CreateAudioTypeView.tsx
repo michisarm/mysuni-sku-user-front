@@ -2,7 +2,7 @@ import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import * as React from 'react';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { SearchFilter } from 'shared';
+import { SearchFilter } from 'shared-model';
 import { MediaModel, MediaType } from '../../../personalcube/media';
 
 interface Props {

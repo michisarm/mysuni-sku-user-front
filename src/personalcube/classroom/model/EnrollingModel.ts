@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { DatePeriod } from 'shared';
+import { DatePeriod } from 'shared-model';
 
 export class EnrollingModel {
   //

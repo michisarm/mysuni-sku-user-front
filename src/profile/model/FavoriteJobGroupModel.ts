@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName, NameValueList } from 'shared';
+import { IdName, NameValueList } from 'shared-model';
 
 
 export class FavoriteJobGroupModel {

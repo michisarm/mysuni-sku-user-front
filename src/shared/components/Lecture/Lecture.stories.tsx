@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { text, number, select, boolean } from '@storybook/addon-knobs';
+import { number, select } from '@storybook/addon-knobs';
 
 import { Segment } from 'semantic-ui-react';
-import { Lecture, CubeType, CategoryModel, IdName } from 'shared';
+import { Lecture } from 'shared';
+import { CubeType, CategoryModel, IdName } from 'shared-model';
 import { LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 

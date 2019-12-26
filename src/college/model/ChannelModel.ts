@@ -1,10 +1,13 @@
 
-import { IdName } from 'shared';
+import { IdName } from 'shared-model';
 import { decorate, observable } from 'mobx';
 
 
 export class ChannelModel extends IdName {
   //
+  id: string = '';
+  name: string = '';
+
   channelId : string = '';
   checked?: boolean;
   iconfileBoxId : string = '';

@@ -1,6 +1,6 @@
 import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
-import { NameValueList } from '../../../shared/model/NameValueList';
+import { NameValueList } from '../../../shared-model/NameValueList';
 import { SubsidiaryModel } from '../../model/SubsidiaryModel';
 import SubsidiaryApi from '../apiclient/SubsidiaryApi';
 

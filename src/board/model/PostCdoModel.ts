@@ -1,4 +1,4 @@
-import { IdName } from 'shared';
+import { IdName } from 'shared-model';
 import { PostConfigModel } from './PostConfigModel';
 import { PostContentsModel } from './PostContentsModel';
 import { WriterModel } from './WriterModel';

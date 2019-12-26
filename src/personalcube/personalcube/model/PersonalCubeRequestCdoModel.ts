@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName, CubeState } from 'shared';
+import { IdName, CubeState } from 'shared-model';
 
 export class PersonalCubeRequestCdoModel {
   //

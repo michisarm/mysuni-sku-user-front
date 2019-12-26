@@ -1,7 +1,7 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared-model';
 import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';

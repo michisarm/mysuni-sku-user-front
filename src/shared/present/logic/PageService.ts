@@ -2,7 +2,7 @@
 import { observable, action } from 'mobx';
 import autobind from 'autobind-decorator';
 
-import PageModel from '../model/PageModel';
+import { PageModel } from 'shared-model';
 
 
 @autobind

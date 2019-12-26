@@ -1,4 +1,4 @@
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared-model';
 import { CoursePlanModel } from './CoursePlanModel';
 import { CoursePlanContentsModel } from './CoursePlanContentsModel';
 

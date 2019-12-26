@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import { IdName } from 'shared-model';
 import CubeType from './CubeType';
 import ContentsService from './ContentsService';
 

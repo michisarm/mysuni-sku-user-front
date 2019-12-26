@@ -1,6 +1,6 @@
 import { axiosApi as axios } from '@nara.platform/accent';
 import { SubsidiaryModel } from '../../model/SubsidiaryModel';
-import { NameValueList } from '../../../shared/model/NameValueList';
+import { NameValueList } from '../../../shared-model/NameValueList';
 
 export default class SubsidiaryApi {
   URL = '/api/college/subsidiaries';

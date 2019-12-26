@@ -1,7 +1,7 @@
 import { computed, decorate, observable } from 'mobx';
 import { MemberModel } from './MemberModel';
 import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
-import { LangStrings } from '../../shared/model/LangStrings';
+import { LangStrings } from '../../shared-model/LangStrings';
 
 export class EmployeeModel extends MemberModel {
   employeeId: string = '' ;      // 암호화

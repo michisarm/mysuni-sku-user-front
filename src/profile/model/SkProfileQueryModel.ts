@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { SkProfileRdo } from './SkProfileRdo';
-import { DatePeriod } from '../../shared/model/DatePeriod';
+import { DatePeriod } from '../../shared-model/DatePeriod';
 
 export class SkProfileQueryModel implements SkProfileRdo {
   //DatePeriod

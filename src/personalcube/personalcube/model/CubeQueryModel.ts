@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { DatePeriod } from 'shared';
+import { DatePeriod } from 'shared-model';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 

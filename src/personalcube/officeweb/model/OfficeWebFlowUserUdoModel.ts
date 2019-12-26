@@ -1,5 +1,5 @@
 import { CubeIntroModel } from '../../cubeintro';
-import { NameValueList } from '../../../shared/model/NameValueList';
+import { NameValueList } from '../../../shared-model/NameValueList';
 import { OfficeWebModel } from './OfficeWebModel';
 
 export class OfficeWebFlowUserUdoModel {

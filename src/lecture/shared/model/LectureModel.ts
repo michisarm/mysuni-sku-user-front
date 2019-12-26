@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
-import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
+import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared-model';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import RoleBookModel from './RoleBookModel';

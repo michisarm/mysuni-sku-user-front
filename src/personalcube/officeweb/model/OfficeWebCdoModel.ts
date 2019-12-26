@@ -1,4 +1,4 @@
-import { DatePeriod } from '../../../shared/model/DatePeriod';
+import { DatePeriod } from '../../../shared-model/DatePeriod';
 
 export class OfficeWebCdoModel {
   //

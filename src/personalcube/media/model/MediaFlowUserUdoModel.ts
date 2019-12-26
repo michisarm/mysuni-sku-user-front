@@ -1,4 +1,4 @@
-import { NameValueList } from '../../../shared/model/NameValueList';
+import { NameValueList } from '../../../shared-model/NameValueList';
 import { CubeIntroModel } from '../../cubeintro';
 import { MediaModel } from './MediaModel';
 

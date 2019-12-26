@@ -1,7 +1,7 @@
 import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
-import { IdNameList } from 'shared';
+import { IdNameList } from 'shared-model';
 import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';

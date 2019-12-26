@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IconType } from 'shared';
+import { IconType } from 'shared-model';
 import { OwnerType } from './OwnerType';
 
 

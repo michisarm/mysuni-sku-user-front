@@ -1,13 +1,13 @@
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import { IdName } from 'shared-model';
 import { PostContentsModel } from './PostContentsModel';
 import { PostConfigModel } from './PostConfigModel';
 import { PostCdoModel } from './PostCdoModel';
 import { OpenState } from './OpenState';
 import { WriterModel } from './WriterModel';
-import { NameValueList } from '../../shared/model/NameValueList';
-import { DatePeriod } from '../../shared/model/DatePeriod';
+import { NameValueList } from '../../shared-model/NameValueList';
+import { DatePeriod } from '../../shared-model/DatePeriod';
 
 export class PostModel implements DomainEntity {
   //

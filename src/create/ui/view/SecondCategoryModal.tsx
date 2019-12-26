@@ -2,7 +2,8 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Accordion, Button, Checkbox, Icon, List, Modal } from 'semantic-ui-react';
-import { IdName, mobxHelper } from 'shared';
+import { IdName } from 'shared-model';
+import { mobxHelper } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeModel, CollegeService } from 'college';
 

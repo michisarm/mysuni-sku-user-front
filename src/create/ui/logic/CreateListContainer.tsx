@@ -3,7 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import SelectType from '../../../shared/model/SelectType';
+import SelectType from '../../../shared-model/SelectType';
 import SelectView from '../view/SelectView';
 import CreateListView from '../view/CreateListView';
 import CreateNoDataView from '../view/CreateNoDataView';
