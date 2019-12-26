@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
-import { Lecture } from '../../../shared';
+import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 

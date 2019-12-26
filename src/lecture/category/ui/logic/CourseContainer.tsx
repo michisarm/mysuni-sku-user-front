@@ -12,8 +12,8 @@ import {
   LectureServiceType,
   ProgramLectureService,
   LectureViewModel,
-  Lecture,
 } from '../../../shared';
+import Lecture from '../../../shared/Lecture';
 
 
 interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
