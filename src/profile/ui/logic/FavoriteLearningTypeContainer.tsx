@@ -89,22 +89,24 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
 
 
   onSummit() {
-    const { skProfileService } = this.props;
+    const { skProfileService, collegeService } = this.props;
     const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteLearningType } = studySummary as StudySummary;
 
-    if (skProfileService && favoriteLearningType ) {
+    if (skProfileService && collegeService) {
       favoriteLearningType.idNames.push({ id: 'type', name: typeGroup });
       favoriteLearningType.idNames.push({ id: 'time', name: timeGroup });
       areaGroup.forEach((area) => favoriteLearningType.idNames.push({ id: 'area', name: area }) );
       goalGroup.forEach((goal) => favoriteLearningType.idNames.push({ id: 'goal', name: goal }) );
       favoriteLearningType.idNames.push({ id: 'etc', name: etc });
 
+      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
       skProfileService.setStudySummaryProp('favoriteLearningType', favoriteLearningType);
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
+      console.log(StudySummary.asNameValues(skProfileService.studySummary));
     }
-    //step props data server 전달 ..... main page로 이동
+
     this.props.history.push('/');
 
   }

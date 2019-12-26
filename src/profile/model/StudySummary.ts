@@ -45,7 +45,6 @@ export  class StudySummary implements DramaEntity {
         },
       ],
     };
-    console.log(asNameValues);
 
     return asNameValues;
   }
