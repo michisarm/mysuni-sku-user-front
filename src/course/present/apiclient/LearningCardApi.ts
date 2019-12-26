@@ -1,6 +1,6 @@
 import { axiosApi as axios, OffsetElementList } from '@nara.platform/accent';
 import { LearningCardModel } from '../../model/LearningCardModel';
-import { NameValueList } from '../../../shared-model/NameValueList';
+import { NameValueList } from '../../../shared/model/NameValueList';
 import { LearningCardRdoModel } from '../../model/LearningCardRdoModel';
 
 export default class LearningCardApi {

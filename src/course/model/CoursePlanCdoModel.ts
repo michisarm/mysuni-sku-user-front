@@ -1,4 +1,4 @@
-import { CategoryModel, CreatorModel, IconBox, CourseOpenModel } from 'shared-model';
+import { CategoryModel, CreatorModel, IconBox, CourseOpenModel } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { StampModel } from './StampModel';

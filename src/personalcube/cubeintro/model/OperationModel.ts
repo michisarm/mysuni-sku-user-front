@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared-model';
+import { IdName } from 'shared';
 import { OperatorModel } from './OperatorModel';
 
 export class OperationModel {

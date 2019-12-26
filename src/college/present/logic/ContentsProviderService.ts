@@ -2,7 +2,7 @@ import { action, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import { ContentsProviderModel } from '../../model/ContentsProviderModel';
 import ContentsProviderApi from '../apiclient/ContentsProviderApi';
-import { NameValueList } from '../../../shared-model/NameValueList';
+import { NameValueList } from '../../../shared/model/NameValueList';
 
 
 @autobind

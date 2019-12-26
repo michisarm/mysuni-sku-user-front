@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
 import { CubeIntroModel, InstructorModel } from '../../../personalcube/cubeintro';
-import SelectType from '../../../shared-model/SelectType';
+import SelectType from '../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CreateBoardContainer from '../logic/CreateBoardContainer';
 

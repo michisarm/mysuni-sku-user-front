@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel } from 'shared-model';
+import { DramaEntityObservableModel } from 'shared';
 
 
 class ProgramLectureModel extends DramaEntityObservableModel {

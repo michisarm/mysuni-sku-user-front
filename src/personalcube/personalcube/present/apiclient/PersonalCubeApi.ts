@@ -2,7 +2,7 @@ import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platf
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { PersonalCubeRdoModel } from '../../model/PersonalCubeRdoModel';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
-import { ExcelView } from '../../../../shared-model/ExcelView';
+import { ExcelView } from '../../../../shared/model/ExcelView';
 import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';

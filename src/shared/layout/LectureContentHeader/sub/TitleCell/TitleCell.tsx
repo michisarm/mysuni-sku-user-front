@@ -4,7 +4,7 @@ import { DatePeriod, reactAutobind } from '@nara.platform/accent';
 
 import { CubeType } from 'personalcube/personalcube';
 import { Label, Icon, LabelProps } from 'semantic-ui-react';
-import { CategoryModel } from 'shared-model';
+import { CategoryModel } from 'shared';
 
 
 interface Props {

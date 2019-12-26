@@ -1,6 +1,6 @@
 import { DramaEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName, PatronKey } from 'shared-model';
+import { IdName, PatronKey } from 'shared';
 import { AreaType } from './AreaType';
 
 export class ContentsProviderModel implements DramaEntity {

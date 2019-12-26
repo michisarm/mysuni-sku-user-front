@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel, IdName } from 'shared-model';
+import { DramaEntityObservableModel, IdName } from 'shared';
 
 import RoleBookModel from './RoleBookModel';
 

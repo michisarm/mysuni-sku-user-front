@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared-model';
+import { IdName } from 'shared';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 
 export class ClassroomGroupModel implements DramaEntity {

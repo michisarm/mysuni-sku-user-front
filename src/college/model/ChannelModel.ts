@@ -1,5 +1,5 @@
 
-import { IdName } from 'shared-model';
+import { IdName } from 'shared';
 import { decorate, observable } from 'mobx';
 
 
