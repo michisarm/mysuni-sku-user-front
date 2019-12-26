@@ -23,7 +23,7 @@ class TitleView extends React.Component<Props> {
             <Icon className="sk-university-login" />
             <span className="blind">SK university</span>
           </div>
-          <Step.Group>
+          <Step.Group className="number-step">
             <Step active={step === 1} completed={step !== 1}>
               <Step.Content>
                 <span className="number"><span className="blind">1</span></span>
@@ -47,7 +47,7 @@ class TitleView extends React.Component<Props> {
         <div className="title-box">
           <Icon className="woman" />
           <TitleText step={step} />
-          <Button className="intro-sk" onClick={onSKIntroClick}>SK university 소개</Button>
+          <Button className="intro-sk" onClick={onSKIntroClick}>SUNI 소개</Button>
         </div>
       </div>
     );

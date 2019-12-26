@@ -2,8 +2,6 @@
 import { decorate, observable } from 'mobx';
 import { IdNameList, NameValueList } from 'shared';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { LearningTimeModel } from './LearningTimeModel';
-import { LectureSummary } from './LectureSummary';
 import { StudySummaryCdoModel } from './StudySummaryCdoModel';
 
 export  class StudySummary implements DramaEntity {
@@ -15,17 +13,18 @@ export  class StudySummary implements DramaEntity {
   favoriteColleges: IdNameList = new IdNameList();
   favoriteLearningType: IdNameList = new IdNameList();
 
-  learningTime: LearningTimeModel = new LearningTimeModel();
-  lectureSummary: LectureSummary = new LectureSummary();
-  stampCount: number = 0;
-  joinedCommunity: number = 0;
+  //Donmain 변경 :   My training
+  // learningTime: LearningTimeModel = new LearningTimeModel();
+  // lectureSummary: LectureSummary = new LectureSummary();
+  // stampCount: number = 0;
+  // joinedCommunity: number = 0;
 
   constructor(studySummary?: StudySummary) {
     if (studySummary) {
-      const learningTime = studySummary.learningTime && new LearningTimeModel(studySummary.learningTime) || '';
-      const lectureSummary = studySummary.lectureSummary && new LectureSummary((studySummary.lectureSummary)) || '';
+      // const learningTime = studySummary.learningTime && new LearningTimeModel(studySummary.learningTime) || '';
+      // const lectureSummary = studySummary.lectureSummary && new LectureSummary((studySummary.lectureSummary)) || '';
 
-      Object.assign(this, { ...studySummary, learningTime, lectureSummary });
+      Object.assign(this, { ...studySummary });
     }
   }
 
@@ -43,22 +42,6 @@ export  class StudySummary implements DramaEntity {
         {
           name: 'favoriteLearningType',
           value: JSON.stringify(studySummary.favoriteLearningType),
-        },
-        {
-          name: 'learningTime',
-          value: JSON.stringify(studySummary.learningTime),
-        },
-        {
-          name: 'lectureSummary',
-          value: JSON.stringify(studySummary.lectureSummary),
-        },
-        {
-          name: 'stampCount',
-          value: studySummary.stampCount.toString(),
-        },
-        {
-          name: 'joinedCommunity',
-          value: studySummary.joinedCommunity.toString(),
         },
       ],
     };
@@ -87,8 +70,5 @@ decorate(StudySummary, {
   favoriteChannels: observable,
   favoriteColleges: observable,
   favoriteLearningType: observable,
-  learningTime: observable,
-  lectureSummary: observable,
-  stampCount: observable,
-  joinedCommunity: observable,
+
 });
