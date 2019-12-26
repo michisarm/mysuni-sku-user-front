@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { ContentHeader, ContentLayout, mobxHelper, ContentMenu } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 
 
@@ -16,6 +16,7 @@ interface State {
   type: string
 }
 
+console.log(mobxHelper);
 @inject(mobxHelper.injectFrom('skProfileService'))
 @observer
 @reactAutobind
