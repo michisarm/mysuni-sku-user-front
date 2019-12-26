@@ -4,12 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Lecture, mobxHelper, NoSuchContentPanel, PageService } from 'shared';
+import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
 
-import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
+import { CardSorting, ChannelsPanel, SeeMoreButton, Lecture } from '../../../shared';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';

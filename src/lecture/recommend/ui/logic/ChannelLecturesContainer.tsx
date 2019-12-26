@@ -4,9 +4,10 @@ import { ReviewService } from '@nara.drama/feedback';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Lecture, mobxHelper, NoSuchContentPanel } from 'shared';
+import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
+import { Lecture } from '../../../shared';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 

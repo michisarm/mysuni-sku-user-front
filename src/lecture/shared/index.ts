@@ -18,4 +18,5 @@ export { default as LectureApi } from './present/apiclient/LectureApi';
 export { default as ChannelsPanel } from './ui/logic/ChannelsPanelContainer';
 export { default as CardSorting } from './ui/view/CardSortingView';
 export { default as SeeMoreButton } from './ui/view/SeeMoreButtonView';
+export { default as Lecture } from './ui/logic/LectureContainer';
 

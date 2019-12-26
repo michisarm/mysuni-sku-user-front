@@ -4,12 +4,14 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
-import { Icon, Button, Accordion } from 'semantic-ui-react';
-import { LectureViewModel } from 'lecture';
-import Action from '../../present/model/Action';
+import moment from 'moment';
+import { Icon, Button } from 'semantic-ui-react';
+import { LectureViewModel } from 'lecture/index';
+import Action from '../../model/Action';
+import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
 import {
-  Title, Buttons,
+  Title, SubField, Buttons, Thumbnail,
 } from '../../ui/view/LectureElementsView';
 
 
@@ -27,7 +29,7 @@ interface Props {
 
 @reactAutobind
 @observer
-class CommunityLectureContainer extends Component<Props> {
+class CourseLectureContainer extends Component<Props> {
   //
   static defaultProps = {
     className: '',
@@ -52,29 +54,40 @@ class CommunityLectureContainer extends Component<Props> {
 
   render() {
     //
+    // const {
+    //   className, lectureView, thumbnailImage, action, toggle,
+    //   onAction, onViewDetail, onToggle,
+    // } = this.props;
     const {
-      lectureView,
-      // thumbnailImage,
-      toggle,
+      className, lectureView, thumbnailImage, toggle,
       onViewDetail,
     } = this.props;
     const { open } = this.context;
 
     return (
-      <Accordion className="community-item">
-        <Accordion.Title>
-          <div className="thumbnail">
-            <div>
-              {/*TODO 썸네일 어쩔것인지*/}
-              <Icon className="thumb60-1" />
-            </div>
-          </div>
-        </Accordion.Title>
+      <div className={`card-box ${className}`}>
+
+        <Thumbnail image={thumbnailImage} />
 
         <Title title={lectureView.name} category={lectureView.category}>
           <div className="deatil">
-            <span>새로운 글: 5</span>
-            <span>멤버 : 1,427</span>
+            { lectureView.cubeTypeName && (
+              <Field>
+                <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />
+                <span className="channel">{lectureView.category.channel.name}</span>
+              </Field>
+            )}
+            <Field>
+              <SubField icon="date" text={`Creation date: ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
+                {lectureView.learningPeriod && (
+                  <span className="ml17">
+                    Study start date, end date :
+                    {lectureView.learningPeriod && lectureView.learningPeriod.startDate}
+                     ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
+                  </span>
+                )}
+              </SubField>
+            </Field>
           </div>
         </Title>
 
@@ -96,10 +109,20 @@ class CommunityLectureContainer extends Component<Props> {
             <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
           </Button>
         )}
-      </Accordion>
+      </div>
     );
   }
 }
 
 
-export default CommunityLectureContainer;
+interface FieldProps {
+  children: React.ReactNode,
+}
+
+const Field = ({ children }: FieldProps) => (
+  <div className="item">
+    {children}
+  </div>
+);
+
+export default CourseLectureContainer;

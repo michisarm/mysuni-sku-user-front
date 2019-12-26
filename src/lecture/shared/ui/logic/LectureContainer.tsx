@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Lecture } from 'shared';
-import { LectureModel, LectureViewModel } from 'lecture';
+import { LectureModel, LectureViewModel } from 'lecture/index';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';
 import CourseSection from '../../sub/CourseSection';
 
-import Action from '../../present/model/Action';
-import { ActionType } from '../../present/model';
+import Action from '../../model/Action';
+import { ActionType } from '../../model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
 import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
@@ -188,7 +187,7 @@ class LectureContainer extends Component<Props, States> {
 
     return (
       <li>
-        <Lecture.Group type={Lecture.GroupType.Box}>
+        <CardGroup type={GroupType.Box}>
           <BoxCardView
             lecture={lecture}
             hovered={hovered}
@@ -200,7 +199,7 @@ class LectureContainer extends Component<Props, States> {
             onHoverIn={this.onHoverIn}
             onHoverOut={this.onHoverOut}
           />
-        </Lecture.Group>
+        </CardGroup>
       </li>
     );
   }

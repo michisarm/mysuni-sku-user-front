@@ -6,10 +6,10 @@ import classNames from 'classnames';
 // import numeral from 'numeral';
 import { Button, Card, Icon, Rating } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LectureModel } from 'lecture';
+import { LectureModel } from 'lecture/index';
 import { CubeTypeNameType } from 'personalcube/personalcube';
-import Action from '../../present/model/Action';
-import { CubeIconType } from '../../present/model';
+import Action from '../../model/Action';
+import { CubeIconType } from '../../model';
 import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from './LectureElementsView';
 
 

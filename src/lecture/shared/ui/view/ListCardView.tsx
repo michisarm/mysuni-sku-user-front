@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LectureModel } from 'lecture';
-import Action from '../../present/model/Action';
+import { LectureModel } from 'lecture/index';
+import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail, Ribbon,
 } from './LectureElementsView';

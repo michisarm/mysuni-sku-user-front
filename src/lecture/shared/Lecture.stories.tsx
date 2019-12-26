@@ -4,10 +4,10 @@ import { action } from '@storybook/addon-actions';
 import { number, select } from '@storybook/addon-knobs';
 
 import { Segment } from 'semantic-ui-react';
-import { Lecture } from 'shared';
 import { CubeType, CategoryModel, IdName } from 'shared';
-import { LectureModel } from 'lecture';
+import { LectureModel } from 'lecture/index';
 import { ChannelModel } from 'college';
+import Lecture from './ui/logic/LectureContainer';
 
 
 export default {
