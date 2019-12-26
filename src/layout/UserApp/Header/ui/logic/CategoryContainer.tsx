@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { mobxHelper } from 'shared';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
-import { SkProfileService } from 'profile';
+import { SkProfileService, StudySummary } from 'profile';
 import CategoryView from '../view/CategoryView';
 
 
@@ -39,6 +39,7 @@ class CategoryContainer extends Component<Props, State> {
     const { collegeService } = this.props;
 
     collegeService!.findAllColleges();
+    this.findStudySummary();
   }
 
   findStudySummary() {
@@ -89,6 +90,13 @@ class CategoryContainer extends Component<Props, State> {
     //
     const { collegeService } = this.props;
     const { categoryOpen, activeCollege } = this.state;
+    const { skProfileService } = this.props;
+
+    const { studySummary } = skProfileService as SkProfileService;
+    const { favoriteChannels } = studySummary as StudySummary;
+
+    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
+      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <>
@@ -104,7 +112,7 @@ class CategoryContainer extends Component<Props, State> {
         />
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
-          favorites={collegeService!.channels}
+          favorites={channels}
           onConfirmCallback={this.findStudySummary}
         />
       </>

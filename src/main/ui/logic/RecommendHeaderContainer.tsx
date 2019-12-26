@@ -27,6 +27,7 @@ class RecommendHeaderContainer extends Component<Props> {
     const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
+    this.findStudySummary();
   }
 
   findStudySummary() {
@@ -46,6 +47,8 @@ class RecommendHeaderContainer extends Component<Props> {
 
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
       && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+
+    console.log(channels);
 
     return (
       <div className="recommend-head">
