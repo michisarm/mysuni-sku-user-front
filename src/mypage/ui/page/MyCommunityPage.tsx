@@ -16,7 +16,7 @@ interface State {
   type: string
 }
 
-console.log(mobxHelper);
+console.log('community', mobxHelper);
 @inject(mobxHelper.injectFrom('skProfileService'))
 @observer
 @reactAutobind

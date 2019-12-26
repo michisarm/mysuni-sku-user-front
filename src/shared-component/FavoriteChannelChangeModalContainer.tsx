@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon, Modal, Accordion, Checkbox } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { SkProfileService, StudySummary } from '../../../profile';
-import { CollegeModel, ChannelModel, CollegeService } from '../../../college';
+import { SkProfileService, StudySummary } from 'profile';
+import { CollegeModel, ChannelModel, CollegeService } from 'college';
 
 interface Props {
   skProfileService? : SkProfileService

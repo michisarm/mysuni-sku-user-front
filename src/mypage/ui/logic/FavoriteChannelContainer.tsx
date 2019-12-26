@@ -5,7 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
 import { SkProfileService, StudySummary } from '../../../profile';
 import { ChannelModel, CollegeService } from '../../../college';
-import FavoriteChannelChangeModalContainer from './FavoriteChannelChangeModalContainer';
+import FavoriteChannelChangeModalContainer from '../../../shared-component/FavoriteChannelChangeModalContainer';
 
 
 interface Props{

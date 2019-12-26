@@ -2,7 +2,10 @@
 
 /** Service */
 import ModalService from './present/logic/ModalService';
-import  PageService from './present/logic/PageService';
+import PageService from './present/logic/PageService';
+import mobxHelper from './helper/mobxHelper';
+
+console.log(mobxHelper);
 
 export const sharedStores = {
   shared: {
@@ -56,3 +59,5 @@ export { default as ContentHeader } from '../layout/ContentHeader';
 export { default as ContentMenu } from '../layout/ContentMenu';
 export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';
 export { default as InputWrapper } from './components/InputWrapper';
+
+console.log(mobxHelper);

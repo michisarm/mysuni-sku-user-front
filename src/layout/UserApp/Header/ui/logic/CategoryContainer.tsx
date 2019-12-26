@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { mobxHelper } from 'shared';
+import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
-import { FavoriteChannelChangeModalContainer } from 'mypage';
 import { SkProfileService } from 'profile';
 import CategoryView from '../view/CategoryView';
 
@@ -102,7 +102,7 @@ class CategoryContainer extends Component<Props, State> {
           onClickChannel={this.onClickChannel}
           onModalOpen={this.onModalOpen}
         />
-        <FavoriteChannelChangeModalContainer
+        <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={collegeService!.channels}
           onConfirmCallback={this.findStudySummary}
