@@ -2,7 +2,7 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { reactAutobind } from '@nara.platform/accent';
-import { CubeState, mobxHelper } from 'shared';
+import { ContentLayout, CubeState, mobxHelper } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import CreateProfileView from '../view/CreateProfileView';
 import TabView from '../view/TabView';
@@ -65,7 +65,12 @@ class CreateContainer extends React.Component<Props, States> {
     const { personalCubeService } = this.props;
 
     return (
-      <section className="content create">
+      <ContentLayout
+        className="create"
+        breadcrumb={[
+          { text: 'Create' },
+        ]}
+      >
         <CreateProfileView
           routeToCreateDetail={this.routeToCreateDetail}
         />
@@ -75,21 +80,21 @@ class CreateContainer extends React.Component<Props, States> {
           handleItemClick={this.handleItemClick}
         />
         {
-          activeItem === 'Create' ?
+          activeItem === 'Create' && (
             <CreateListContainer
               personalCubeService = {personalCubeService}
               handleClickCubeRow={this.handleClickCubeRow}
             />
-            : ''
+          )
         }
         {
-          activeItem === 'Shared' ?
+          activeItem === 'Shared' && (
             <SharedListContainer
               personalCubeService = {personalCubeService}
             />
-            : ''
+          )
         }
-      </section>
+      </ContentLayout>
     );
   }
 }

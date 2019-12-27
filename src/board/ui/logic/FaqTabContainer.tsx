@@ -82,7 +82,7 @@ class FaqTabContainer extends React.Component<Props> {
               <Segment className="full">
                 <div className="no-cont-wrap">
                   <i className="icon no-contents80"><span className="blind">콘텐츠 없음</span></i>
-                  <div className="text">등록된 FAQ 없습니다.</div>
+                  <div className="text">등록된 FAQ가 없습니다.</div>
                 </div>
               </Segment>
             ) || ''

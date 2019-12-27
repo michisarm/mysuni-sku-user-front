@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router-dom';
 import { Icon, Image, Label, Menu, Segment, Sticky } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import { InstructorService } from '../../index';
 
 interface Props extends RouteComponentProps {
@@ -27,7 +28,12 @@ class ExpertContainer extends React.Component<Props> {
     const { instructor } = this.props.instructorService || {} as InstructorService;
     const result = instructor.result;
     return (
-      <section className="content mylearning">
+      <ContentLayout
+        className="mylearning"
+        breadcrumb={[
+          { text: 'Expert' },
+        ]}
+      >
         <div className="main-info-area">
           <div className="progress-info-wrap">
             <div className="cell">
@@ -119,7 +125,7 @@ class ExpertContainer extends React.Component<Props> {
             </div>
           </Segment>
         </div>
-      </section>
+      </ContentLayout>
     );
   }
 
