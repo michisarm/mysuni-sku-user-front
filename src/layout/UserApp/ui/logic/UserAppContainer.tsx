@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, WorkSpace, WorkSpaceList } from '@nara.platform/accent';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
 import AppLayoutContainer from './AppLayoutContainer';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   children: React.ReactNode,
 }
 
@@ -27,6 +28,11 @@ class UserAppContainer extends Component<Props, State> {
     // this.checkAndRedirectAuth();
   }
 
+  componentDidUpdate(prevProps: Props) {
+    //
+    this.initScrollTopOnRoute(prevProps);
+  }
+
   checkAndRedirectAuth() {
     //
     const cineroomId = sessionStorage.getItem('cineroomId') || '';
@@ -40,6 +46,12 @@ class UserAppContainer extends Component<Props, State> {
     }
   }
 
+  initScrollTopOnRoute(prevProps: Props) {
+    //
+    if (prevProps.location.key !== this.props.location.key) {
+      window.scrollTo(0, 0);
+    }
+  }
 
   getContext() {
     //
@@ -74,4 +86,4 @@ class UserAppContainer extends Component<Props, State> {
   }
 }
 
-export default UserAppContainer;
+export default withRouter(UserAppContainer);

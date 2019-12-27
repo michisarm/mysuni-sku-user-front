@@ -3,7 +3,6 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
-import { InputWrapper } from 'shared';
 
 // import profileImage from 'style/images/all/profile-38-px.png';
 
@@ -34,16 +33,23 @@ export const MenuView: React.FC<MenuViewProps> = () => (
 );
 
 
-export const SearchBarView: React.FC = () => (
+interface SearchBarViewProps {
+  value: string,
+  focused?: boolean,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>  void,
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void,
+  onBlur?: (e: React.FormEvent<HTMLInputElement>) => void,
+  onClear?: () => void,
+}
+
+export const SearchBarView: React.FC<SearchBarViewProps> = ({ value, focused, onChange, onBlur, onClick, onClear }) => (
   <div className="g-search">
-    <InputWrapper>
-      {({ value, focused, onChange, onBlur, onClick, onClear }) => (
-        <div className={classNames('ui h38 search input', { focus: focused, write: value })} style={{ display: 'block' }}>
-          <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
-          <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-          <i aria-hidden="true" className="search link icon" />
-        </div>
-      )}
-    </InputWrapper>
+
+    <div className={classNames('ui h38 search input', { focus: focused, write: value })} style={{ display: 'block' }}>
+      <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
+      <i aria-hidden="true" className="clear link icon" onClick={onClear} />
+      <i aria-hidden="true" className="search link icon" />
+    </div>
+
   </div>
 );
