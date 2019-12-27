@@ -25,7 +25,7 @@ class ContentHeaderProfileItem extends Component<Props> {
   };
 
   onClickMyPage() {
-    window.location.href = '/mypage';
+    window.location.href = `${process.env.PUBLIC_URL}/mypage`;
   }
 
   render() {

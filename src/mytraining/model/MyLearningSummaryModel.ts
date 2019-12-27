@@ -12,7 +12,6 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   completeLectureCount: number= 0;
   acheiveStampCount: number= 0;
 
-
   constructor(summary?: MyLearningSummaryModel) {
     super();
     if (summary) {

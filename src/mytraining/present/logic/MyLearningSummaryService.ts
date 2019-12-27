@@ -13,7 +13,7 @@ class MyLearningSummaryService {
   private myLearningSummaryApi: MyLearningSummaryApi;
 
   @observable
-  myLearningSummary: MyLearningSummaryModel = new MyLearningSummaryModel();
+  myLearningSummary: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
