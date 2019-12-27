@@ -6,9 +6,10 @@ import { Context } from '../../../index';
 import CategoryContainer from './CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
-  LogoView, MenuView, SearchBarView, ProfileView,
+  LogoView, MenuView, SearchBarView,
 } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
+import ProfileContainer from './ProfileContainer';
 
 
 @reactAutobind
@@ -37,7 +38,7 @@ class HeaderContainer extends Component {
           <MenuView />
           <CategoryContainer />
           <SearchBarView />
-          <ProfileView />
+          <ProfileContainer />
         </>
       </HeaderWrapperView>
     );
