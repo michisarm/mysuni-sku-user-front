@@ -90,6 +90,11 @@ class FirstCategoryModal extends React.Component<Props, States> {
     const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
       && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
 
+    // FIXME: 사용안하는 state 제거 후 아래 코드 삭제하세요
+    if (!personalCube) {
+      console.log(isSelectedMainChannel, value);
+    }
+
     return (
       <>
         <div className="cell v-middle">
