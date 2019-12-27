@@ -73,7 +73,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { collegeService } = this.props;
 
     if (collegeService) {
-      //college의 channels favorites.channels.channel.id 인것 check
       collegeService.findCollege(collegeId);
     }
   }
@@ -91,6 +90,10 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
   onSKIntroClick() {
     /* SK University 소개 */
+  }
+
+  onReset() {
+    this.setState({ favorites: []});
   }
 
   onNextClick() {
@@ -145,7 +148,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                             value={college.collegeId}
                             onChange={() => this.onSelectCollege(college.collegeId) }
                           />
-                          <label htmlFor={`radio_${index}`}>{college.name}</label>
+                          <label htmlFor={`radio_${index}`}>{college.name}({college.channels.length})</label>
                         </div>
                       )) || ''
                       }
@@ -205,7 +208,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                   </div>
                 </div>
               </div>
-              <Button className="clear"><Icon value="reset" /><span className="blind">reset</span></Button>
+              <Button className="clear" onClick={this.onReset}><Icon className="reset" /><span className="blind">reset</span></Button>
             </div>
             <div className="select-error">
               <Icon value="error16" /><span className="blind">error</span>

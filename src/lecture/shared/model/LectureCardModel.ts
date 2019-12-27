@@ -2,18 +2,15 @@
 import { decorate, observable } from 'mobx';
 import { DramaEntityObservableModel, IdName } from 'shared';
 
-import RoleBookModel from './RoleBookModel';
-
-
 class LectureCardModel extends DramaEntityObservableModel {
   //
-  lectureCardId: string = '';
+  usid: string = '';
   learningCard: IdName = new IdName();
-  roleBooks: RoleBookModel[] = [];
 
-  reviewFeedbackId: string = '';
-  commentFeedbackId: string = '';
+  reviewId: string = '';
+  commentId: string = '';
 
+  time: number = 0;
 
   constructor(lectureCard?: LectureCardModel) {
     //
@@ -25,11 +22,11 @@ class LectureCardModel extends DramaEntityObservableModel {
 }
 
 decorate(LectureCardModel, {
-  lectureCardId: observable,
+  usid: observable,
   learningCard: observable,
-  roleBooks: observable,
-  reviewFeedbackId: observable,
-  commentFeedbackId: observable,
+  reviewId: observable,
+  commentId: observable,
+  time: observable,
 });
 
 export default LectureCardModel;

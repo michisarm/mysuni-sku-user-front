@@ -71,7 +71,7 @@ class LectureCardPage extends Component<Props, State> {
 
     collegeService.findCollege(params.collegeId);
     const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
-    reviewService.findReviewSummary(lectureCard!.reviewFeedbackId);
+    reviewService.findReviewSummary(lectureCard!.reviewId);
     const learningCard = await learningCardService.findLearningCard(lectureCard!.learningCard.id);
     const personalCube = await personalCubeService.findPersonalCube(learningCard.personalCube.id);
     if (personalCube) {
@@ -283,8 +283,8 @@ class LectureCardPage extends Component<Props, State> {
       case 'Comments':
         return (
           <LectureCommentsContainer
-            reviewFeedbackId={lectureCard.reviewFeedbackId}
-            commentFeedbackId={lectureCard.commentFeedbackId}
+            reviewFeedbackId={lectureCard.reviewId}
+            commentFeedbackId={lectureCard.commentId}
           />
         );
       case 'Posts':

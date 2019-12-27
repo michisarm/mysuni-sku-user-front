@@ -92,29 +92,29 @@ class CoursePage extends Component<Props, State> {
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
-        reviewFeedbackId,
-        lectureCards,
-        courseLectures,
+        reviewId,
+        lectureCardUsids,
+        courseLectureUsids,
       } = await programLectureService.findProgramLecture(match.params.serviceId);
-      const lectureViews = await this.findReviewFeedbackAndLectureViews(reviewFeedbackId, lectureCards, courseLectures);
+      const lectureViews = await this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids, courseLectureUsids);
 
       this.findSubLectureViews(lectureViews);
     }
     else {
       const {
-        reviewFeedbackId,
-        lectureCards,
+        reviewId,
+        lectureCardUsids,
       } = await courseLectureService.findCourseLecture(match.params.serviceId);
-      this.findReviewFeedbackAndLectureViews(reviewFeedbackId, lectureCards);
+      this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids);
     }
   }
 
-  async findReviewFeedbackAndLectureViews(reviewFeedbackId: string, lectureCardIds: string[], courseLectureIds?: string[], ) {
+  async findReviewFeedbackAndLectureViews(reviewId: string, lectureCardUsids: string[], courseLectureUsids?: string[], ) {
     //
     const { lectureService, reviewService } = this.props;
 
-    reviewService.findReviewSummary(reviewFeedbackId);
-    return lectureService.findLectureViews(lectureCardIds, courseLectureIds);
+    reviewService.findReviewSummary(reviewId);
+    return lectureService.findLectureViews(lectureCardUsids, courseLectureUsids);
   }
 
   async findSubLectureViews(lectureViews: LectureViewModel[]) {
@@ -202,13 +202,13 @@ class CoursePage extends Component<Props, State> {
     let commentFeedbackId = '';
     if (this.props.match.params.serviceType === LectureServiceType.Program) {
       const { programLecture } = this.props.programLectureService;
-      reviewFeedbackId = programLecture.reviewFeedbackId;
-      commentFeedbackId = programLecture.commentFeedbackId;
+      reviewFeedbackId = programLecture.reviewId;
+      commentFeedbackId = programLecture.commentId;
     }
     else {
       const { courseLecture } = this.props.courseLectureService;
-      reviewFeedbackId = courseLecture.reviewFeedbackId;
-      commentFeedbackId = courseLecture.commentFeedbackId;
+      reviewFeedbackId = courseLecture.reviewId;
+      commentFeedbackId = courseLecture.commentId;
     }
 
     switch (type) {

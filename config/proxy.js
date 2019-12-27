@@ -19,5 +19,9 @@ module.exports = {
   // // personalCube, college
   '/api/**': {
     target: 'http://10.178.66.114',
+    // target: 'https://mysuni.sk.com',
+    secure: false,
+    crossOrigin: true,
   },
 };
+
