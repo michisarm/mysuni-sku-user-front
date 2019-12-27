@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { BoardService, PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
-import { ContentsServiceType, PersonalCubeService } from 'personalcube/personalcube';
+import {ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService} from 'personalcube/personalcube';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
@@ -135,7 +135,7 @@ class LectureCardPage extends Component<Props, State> {
 
       //etc
       category: personalCube.category,
-      cubeType: personalCube.contents.type,
+      cubeType: CubeTypeNameType[CubeType[personalCube.contents.type]],
       name: personalCube.name,
       time: personalCube.time,
       classroom: undefined,
