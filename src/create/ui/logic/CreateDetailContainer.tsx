@@ -9,9 +9,15 @@ import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
+import { MediaService } from '../../../personalcube/media';
+import { BoardService } from '../../../personalcube/board';
+import { OfficeWebService } from '../../../personalcube/officeweb';
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   personalCubeService?: PersonalCubeService
+  mediaService?: MediaService
+  boardService?:BoardService
+  officeWebService?: OfficeWebService
 }
 
 interface States {
@@ -25,7 +31,8 @@ interface States {
   confirmWinOpen: boolean
 }
 
-@inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService',
+  'personalCube.mediaService', 'personalCube.boardService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind
 class CreateDetailContainer extends React.Component<Props, States> {
@@ -42,9 +49,9 @@ class CreateDetailContainer extends React.Component<Props, States> {
   componentDidMount(): void {
     //
     const { personalCubeService } = this.props;
-    const { personalCubeId, cubeType } = this.props.match.params;
+    const { personalCubeId } = this.props.match.params;
     if (personalCubeService ) {
-      if (!personalCubeId && !cubeType) {
+      if (!personalCubeId) {
         this.clearAll();
       } else {
         personalCubeService.findPersonalCube(personalCubeId);
@@ -148,11 +155,25 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
   handleDeleteCube(personalCubeId: string) {
     //
-    const { personalCubeService } = this.props;
-    if (personalCubeService) {
-      Promise.resolve()
-        .then(() => personalCubeService.removePersonalCube(personalCubeId))
-        .then(() => this.props.history.push(`/personalcube/create`));
+    const { cubeType } = this.props.match.params;
+    const { personalCubeService, mediaService, boardService, officeWebService } = this.props;
+
+    if (personalCubeService && mediaService && boardService && officeWebService) {
+      const cubeIntroId = personalCubeService.personalCube.cubeIntro.id;
+      if (!cubeIntroId) {
+        Promise.resolve()
+          .then(() => personalCubeService.removePersonalCube(personalCubeId))
+          .then(() => this.props.history.push(`/personalcube/create`));
+      } else {
+        Promise.resolve()
+          .then(() => {
+            if (cubeType === 'Video' || cubeType === 'Audio') mediaService.removeMedia(personalCubeId);
+            if (cubeType === 'Community') boardService.removeBoard(personalCubeId);
+            if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService.removeOfficeWeb(personalCubeId);
+          })
+          .then(() => this.props.history.push(`/personalcube/create`));
+
+      }
     }
   }
 
@@ -200,7 +221,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
               {
                 personalCubeId ?
                   <div className="buttons">
-                    <Button className="fix line" onClick={() => this.onDeleteCube()}>Delete</Button>
+                    <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
                     <Button className="fix bg" onClick={() => this.routeToCreateIntro(personalCubeId)}>Next</Button>

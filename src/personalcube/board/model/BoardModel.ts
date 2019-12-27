@@ -1,0 +1,78 @@
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { computed, decorate, observable } from 'mobx';
+import { DatePeriod, NameValueList } from 'shared';
+import { BoardConfigModel } from './BoardConfigModel';
+import { BoardCdoModel } from './BoardCdoModel';
+
+export class BoardModel implements DramaEntity {
+  //
+  id: string = '';
+  entityVersion: number = 0;
+
+  name: string = '';
+  boardConfig: BoardConfigModel = new BoardConfigModel();
+  learningPeriod: DatePeriod = {} as DatePeriod;
+  config: BoardConfigModel = new BoardConfigModel();
+  time: number = 0;
+
+  patronKey: PatronKey = {} as PatronKey;
+
+  constructor(board?: BoardModel) {
+    //
+    if (board) {
+      const boardConfig = board.boardConfig && new BoardConfigModel(board.boardConfig) || this.boardConfig;
+
+      Object.assign(this, { ...board, boardConfig });
+    }
+  }
+
+  static  asNameValues(board: BoardModel): NameValueList {
+    const asNameValues = {
+      nameValues: [
+        {
+          name: 'name',
+          value: board.name,
+        },
+        {
+          name: 'config',
+          value: JSON.stringify(board.config),
+        },
+        {
+          name: 'learningPeriod',
+          value: JSON.stringify(board.learningPeriod),
+        },
+      ],
+    };
+
+    return asNameValues;
+  }
+
+  static asCdo(board: BoardModel): BoardCdoModel {
+    //
+    return (
+      {
+        audienceKey: 'r2p8-r@nea-m5-c5',
+        name: board.name,
+        config: board.config,
+        learningPeriod: board.learningPeriod,
+      }
+    );
+  }
+
+  @computed
+  get timeStr() {
+    if (this.time) return new Date(this.time).toLocaleDateString();
+    return '';
+  }
+}
+
+decorate(BoardModel, {
+  id: observable,
+  entityVersion: observable,
+
+  name: observable,
+  boardConfig: observable,
+  learningPeriod: observable,
+  config: observable,
+  time: observable,
+});

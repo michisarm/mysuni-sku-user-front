@@ -40,7 +40,6 @@ export default class OfficeWebService {
   }
 
   makeOfficeWebByUser(personalCubeId: string, cubeIntro: CubeIntroModel, officeWeb: OfficeWebModel) {
-    console.log(1);
     return this.officeWebFlowApi.makeOfficeWebByUser(
       new OfficeWebFlowUserCdoModel(
         personalCubeId,

@@ -1,10 +1,10 @@
-
-import { BoardService } from '@sku/personalcube';
+//import { BoardService } from '@sku/personalcube';
 import { PersonalCubeService } from './personalcube';
 import { CubeIntroService } from './cubeintro';
 import { ClassroomService } from './classroom';
 import { MediaService } from './media';
 import { OfficeWebService } from './officeweb';
+import { BoardService } from './board';
 
 export { PostFormPage, PostDetailPage, ReplyFormPage, ReplyDetailPage } from './community';
 
