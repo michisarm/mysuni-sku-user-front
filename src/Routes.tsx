@@ -44,9 +44,6 @@ class Routes extends React.PureComponent {
             <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId" component={withSplitting(() => import('./personalcube').then(({ ReplyDetailPage }) => ReplyDetailPage))} />
             <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
 
-            {/*  expert */}
-            <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
-
             {/* profile */}
             <Route exact path="/profile/interest" component={withSplitting(() => import('./profile').then(({ FavoriteWelcomePage }) => FavoriteWelcomePage))} />
             <Route exact path="/profile/interest/college" component={withSplitting(() => import('./profile').then(({ FavoriteCollegeContainer }) => FavoriteCollegeContainer))} />
@@ -74,9 +71,9 @@ class Routes extends React.PureComponent {
             <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
             <Route exact path="/community" component={withSplitting(() => import('./mypage').then(({ MyCommunityPage }) => MyCommunityPage))} />
 
+            {/*  expert */}
             {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
-
 
             {/* design  */}
             <Route exact path="/design/learning/my-learning" component={MyLearningDetailDesign} />
