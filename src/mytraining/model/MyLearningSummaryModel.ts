@@ -14,9 +14,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
 
 
   constructor(summary?: MyLearningSummaryModel) {
-    //
     super();
-
     if (summary) {
       Object.assign(this, { ...summary });
     }
