@@ -54,7 +54,7 @@ interface State {
 class LectureCardPage extends Component<Props, State> {
   //
   state= {
-    type: 'OverView',
+    type: 'Overview',
   };
 
   componentDidMount() {
