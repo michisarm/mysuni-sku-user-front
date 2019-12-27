@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ContentLayout, mobxHelper} from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';

@@ -9,7 +9,7 @@ interface Props {
 
 class SharedDetailBasicInfoView extends React.Component<Props> {
   render() {
-    const { personalCube, filesMap } = this.props;
+    const { personalCube } = this.props;
     const selectedChannels: any = [];
     if (personalCube && personalCube.subCategories) {
       const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);

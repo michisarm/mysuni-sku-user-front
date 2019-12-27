@@ -233,7 +233,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
     }
   }
 
-  makeOfficeWeb(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {
+  makeOfficeWeb(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string) {
     //
     const { officeWebService } = this.props;
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;

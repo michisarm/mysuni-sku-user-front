@@ -103,7 +103,7 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
             <div className="column"><label>교육시간</label></div>
             <div className="column">
               <div className="text1">
-                {parseInt(String(cubeIntro.learningTime / 60))}  h {cubeIntro.learningTime % 60} m
+                {parseInt(String(cubeIntro.learningTime / 60), 10)}  h {cubeIntro.learningTime % 60} m
               </div>
             </div>
           </div>

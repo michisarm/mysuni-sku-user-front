@@ -64,7 +64,7 @@ class SharedDetailIntroView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>교육시간</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{parseInt(String(cubeIntro.learningTime / 60))} h {cubeIntro.learningTime % 60} m</div>
+                    <div>{parseInt(String(cubeIntro.learningTime / 60), 10)} h {cubeIntro.learningTime % 60} m</div>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
