@@ -4,8 +4,6 @@ import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 
 
-console.log('DatePeriod', DatePeriod);
-
 // export class CubeQueryModel extends QueryModel {
 export class CubeQueryModel {
   //

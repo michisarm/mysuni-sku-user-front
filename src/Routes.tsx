@@ -1,14 +1,12 @@
+
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-// import { UserApp, withSplitting } from 'shared';
 import * as shared from 'shared';
+
+import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
 
 const UserApp = shared.UserApp;
 const withSplitting = shared.withSplitting;
-/* eslint-disable */
-console.log('Routs shared import', shared);
-
-import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
 
 
 class Routes extends React.PureComponent {
@@ -21,8 +19,6 @@ class Routes extends React.PureComponent {
           <Switch>
             {/* main */}
             <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
-
-
 
             {/* course  */}
 
