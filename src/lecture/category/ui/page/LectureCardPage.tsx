@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { BoardService, PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { CollegeService } from 'college';
-import {ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService} from 'personalcube/personalcube';
+import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
