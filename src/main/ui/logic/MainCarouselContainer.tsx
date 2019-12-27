@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { Button } from 'semantic-ui-react';
 import CarouselWrapperView from '../view/CarouselWrapperView';
 import CarouselItemView from '../view/CarouselItemView';
 
@@ -52,8 +51,8 @@ class MainCarouselContainer extends Component<Props, State> {
       <CarouselWrapperView
         actions={
           <>
-            <Button className={`swiper-button-prev ${isFirst ? 'swiper-button-disabled' : ''}`} disabled={isFirst} onClick={this.onClickPrev} />
-            <Button className={`swiper-button-next ${isLast ? 'swiper-button-disabled' : ''}`} disabled={isLast} onClick={this.onClickNext} />
+            <button className={`swiper-button-prev ${isFirst ? 'swiper-button-disabled' : ''}`} disabled={isFirst} onClick={this.onClickPrev} />
+            <button className={`swiper-button-next ${isLast ? 'swiper-button-disabled' : ''}`} disabled={isLast} onClick={this.onClickNext} />
           </>
         }
       >
