@@ -1,16 +1,17 @@
-import React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router';
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { BoardService } from '@sku/personalcube';
+import { BoardService } from '../../../personalcube/board';
 import AdditionalInfoForCommunityView from '../view/AdditionalInfoForCommunityView';
+import { mobxHelper } from '../../../shared';
 
 
 interface Props extends RouteComponentProps {
   boardService?: BoardService
 }
 
-@inject('boardService')
+@inject(mobxHelper.injectFrom('personalCube.boardService'))
 @observer
 @reactAutobind
 class CreateBoardContainer extends React.Component<Props> {

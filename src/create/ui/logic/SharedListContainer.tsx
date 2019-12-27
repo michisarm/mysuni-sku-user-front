@@ -1,15 +1,21 @@
 import * as React from 'react';
 import { Segment } from 'semantic-ui-react';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import SelectView from '../view/SelectView';
+import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
 import SelectType from '../../../shared/model/SelectType';
 import CreateNoDataView from '../view/CreateNoDataView';
 import SharedListView from '../view/SharedListView';
+import { mobxHelper } from '../../../shared';
+import SelectView from '../view/SelectView';
 
 interface Props {
   personalCubeService: PersonalCubeService
 }
 
+@inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
+@observer
+@reactAutobind
 class CreateListContainer extends React.Component<Props> {
 
   componentDidMount() {

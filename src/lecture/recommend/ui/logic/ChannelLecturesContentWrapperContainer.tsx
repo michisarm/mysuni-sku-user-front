@@ -24,6 +24,7 @@ class ChannelLecturesContentWrapperContainer extends Component<Props> {
           <ChannelsPanelContainer
             channels={channels}
             title="관심 Channel 보기"
+            configurable
             onSelectChannel={(e, { channel }) => onSelectChannel(channel)}
           />
           {children}

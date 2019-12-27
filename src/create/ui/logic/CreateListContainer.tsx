@@ -76,7 +76,7 @@ class CreateListContainer extends React.Component<Props, States> {
         <SelectView
           totalCount={totalCount}
           personalCubeQuery={personalCubeQuery}
-          fieldOption={SelectType.status}
+          fieldOption={SelectType.userStatus}
           onChangeCubeQueryProps={this.onChangeCubeQueryProps}
           queryFieldName="cubeState"
         />

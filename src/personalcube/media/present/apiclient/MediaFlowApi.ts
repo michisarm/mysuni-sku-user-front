@@ -17,7 +17,6 @@ export default class MediaFlowApi {
   }
 
   makeMediaByUser(media: MediaFlowUserCdoModel) {
-    console.log(media);
     return axios.post<string>(this.URL + '/byUser', media)
       .then(response => response && response.data || null);
   }

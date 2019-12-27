@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import { UserApp, withSplitting } from 'shared';
@@ -33,6 +32,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/personalcube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
             <Route exact path="/personalcube/create-detail/:personalCubeId/:cubeType" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
             <Route exact path="/personalcube/create-intro/:personalCubeId/:cubeType" component={withSplitting(() => import('./create').then(({ CreateIntroContainer }) => CreateIntroContainer))} />
+            <Route exact path="/personalcube/shared-detail/:personalCubeId/:cubeType/:cubeState" component={withSplitting(() => import('./create').then(({ SharedDetailContainer }) => SharedDetailContainer))} />
 
             {/* lecture  */}
             <Route exact path="/lecture/college/:collegeId/channels" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />

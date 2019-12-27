@@ -110,6 +110,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       if ( !isSelectedJobGroup || !isSelectedDutyGroup ) {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
       } else {
+        console.log(SkProfileModel.asNameValues(skProfileService.skProfile));
         skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
       }
     }

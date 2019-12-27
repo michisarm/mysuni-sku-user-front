@@ -89,7 +89,12 @@ class FirstCategoryModal extends React.Component<Props, States> {
     const { isSelectedMainChannel, activeIndex, value } = this.state;
     const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
       && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
-    console.log(isSelectedMainChannel, value);
+
+    // FIXME: 사용안하는 state 제거 후 아래 코드 삭제하세요
+    if (!personalCube) {
+      console.log(isSelectedMainChannel, value);
+    }
+
     return (
       <>
         <div className="cell v-middle">
@@ -115,14 +120,14 @@ class FirstCategoryModal extends React.Component<Props, States> {
                         <div className="scrolling-60vh">
                           {
                             colleges && colleges.length && colleges.map((college, index) => (
-                              <Accordion className="channel" key={index}>
+                              <Accordion className="channel" key={index} onClick={() => this.selectCollegeButton(college) }>
                                 <Accordion.Title
                                   active={activeIndex === index}
                                   index={index}
                                   onClick={this.handleClick}
                                 >
                                   <span className="name purple">{college.name}</span>
-                                  <Icon onClick={() => this.selectCollegeButton(college) } />
+                                  <Icon />
                                 </Accordion.Title>
                                 <Accordion.Content active={activeIndex === index}>
                                   <ul>
