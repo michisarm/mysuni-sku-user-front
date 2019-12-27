@@ -34,7 +34,7 @@ class ExpertContainer extends React.Component<Props> {
               <div className="cell-inner">
                 <div className="profile">
                   <div className="pic">
-                    <Image src="/images/all/profile-56-px.png" alt="프로필사진 임시이미지" />
+                    <Image src={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`} alt="기본 프로필사진" />
                   </div>
                 </div>
                 <div className="text-info">
@@ -42,22 +42,28 @@ class ExpertContainer extends React.Component<Props> {
                     {result.memberSummary.name}
                   </div>
                   <div className="part">
-                    <span>{result.memberSummary.department}</span><span>{result.internal ? '사내강사' : '사외강사'}</span>
+                    <span>{result.memberSummary.department}</span>
+                    <span>{result.internal ? '사내강사' : '사외강사'}</span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="cell">
               <div className="cell-inner">
-                <div className="expert-info">
-                  <Label className="onlytext">
-                    <Icon className="college16" /><span>전문분야</span>
-                  </Label>
-                  <span className="value1">
-                    <span>{result.channel.college.name}/ {result.channel.channel.name}</span>
-                    <a href="#">{result.memberSummary.email}</a>
-                  </span>
-                </div>
+
+                {(result.channel.college.name || result.channel.channel.name || result.memberSummary.email) && (
+                  <div className="expert-info">
+                    <Label className="onlytext">
+                      <Icon className="college16" /><span>전문분야</span>
+                    </Label>
+
+                    <span className="value1">
+                      <span>{result.channel.college.name}/ {result.channel.channel.name}</span>
+                      <a href="#">{result.memberSummary.email}</a>
+                    </span>
+                  </div>
+                )}
+
                 <div className="expert-info">
                   <Label className="onlytext">
                     <Icon className="class16" /><span>참여한 강의</span>
