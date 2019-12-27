@@ -31,7 +31,7 @@ class MyTrainingService {
   // My Trainings ----------------------------------------------------------------------------------------------------------
 
   @action
-  async findPagingCollegeLectures(limit: number, offset: number) {
+  async findAllMyTrainings(limit: number, offset: number) {
     //
     const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.new(limit, offset));
     const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);

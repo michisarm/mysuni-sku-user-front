@@ -3,7 +3,7 @@ import { DramaEntityObservableModel } from 'shared';
 
 
 
-class MyLearningSummary extends DramaEntityObservableModel {
+class MyLearningSummaryModel extends DramaEntityObservableModel {
   //
   year: number= 0;
   totalLearningTime: number= 0;
@@ -13,7 +13,7 @@ class MyLearningSummary extends DramaEntityObservableModel {
   acheiveStampCount: number= 0;
 
 
-  constructor(summary?: MyLearningSummary) {
+  constructor(summary?: MyLearningSummaryModel) {
     //
     super();
 
@@ -23,7 +23,7 @@ class MyLearningSummary extends DramaEntityObservableModel {
   }
 }
 
-decorate(MyLearningSummary, {
+decorate(MyLearningSummaryModel, {
   year: observable,
   totalLearningTime: observable,
   suniLearningTime: observable,
@@ -32,4 +32,4 @@ decorate(MyLearningSummary, {
   acheiveStampCount: observable,
 });
 
-export default MyLearningSummary;
+export default MyLearningSummaryModel;

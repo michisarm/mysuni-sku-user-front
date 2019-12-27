@@ -7,6 +7,7 @@ import { lectureCardStores } from 'lecture';
 import { InstructorService } from 'expert';
 import { SkProfileService } from 'profile';
 import { AnswerService, BoardService, CategoryService, PostService } from 'board';
+import { myTrainingStores } from 'mytraining';
 
 
 const stores = {
@@ -19,6 +20,7 @@ const stores = {
   ...personalCubeStores,
   ...lectureCardStores,
   ...courseStores,
+  ...myTrainingStores,
   personalCubeService: PersonalCubeService.instance,
   officeWebService: OfficeWebService.instance,
   mediaService: MediaService.instance,
