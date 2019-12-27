@@ -6,18 +6,20 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentHeader, ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
+import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
+  myLearningSummaryService?: MyLearningSummaryService
 }
 
 interface State {
   type: string
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('skProfileService', 'myTraining.myLearningSummaryService'))
 @observer
 @reactAutobind
 class MyTrainingPage extends Component<Props, State> {
@@ -31,9 +33,10 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   init() {
-    const { skProfileService } = this.props;
+    const { skProfileService, myLearningSummaryService } = this.props;
 
     skProfileService!.findSkProfile();
+    myLearningSummaryService!.findMyLearningSummary();
     this.onSelectMenu(this.state.type);
   }
 
@@ -54,8 +57,9 @@ class MyTrainingPage extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService } = this.props;
+    const { skProfileService, myLearningSummaryService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
+    const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
     const { member } = skProfile as SkProfileModel;
 
@@ -77,12 +81,18 @@ class MyTrainingPage extends Component<Props, State> {
           </ContentHeader.Cell>
           <ContentHeader.Cell inner>
             <ContentHeader.TotalTimeItem
-              minute={0}
+              minute={myLearningSummary.totalLearningTime}
             />
-            <ContentHeader.ChartItem
-              universityTime={0}
-              myCompanyTime={0}
-            />
+            {
+              myLearningSummary.suniLearningTime > 0 && myLearningSummary.myCompanyLearningTime > 0 && (
+                <ContentHeader.ChartItem
+                  universityTime={myLearningSummary.suniLearningTime}
+                  myCompanyTime={myLearningSummary.myCompanyLearningTime}
+                />
+              ) || (
+                <ContentHeader.WaitingItem />
+              )
+            }
           </ContentHeader.Cell>
         </ContentHeader>
         <ContentMenu

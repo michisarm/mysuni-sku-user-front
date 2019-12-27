@@ -33,7 +33,7 @@ class RecommendContainer extends Component<Props> {
   }
 
   routeTo(e: any, data: any) {
-    this.props.history.push(`./channel/${data.channel.id}`);
+    this.props.history.push(`/channel/${data.channel.id}/recommend`);
   }
 
   render() {

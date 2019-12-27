@@ -1,13 +1,13 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
-import { CategoryModel, DramaEntityObservableModel, IdName, ProposalState, LearningState } from 'shared';
+import { CategoryModel, DramaEntityObservableModel, IdName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
 
 
 
-class InMyLecture extends DramaEntityObservableModel {
+class InMyLectureModel extends DramaEntityObservableModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
@@ -36,14 +36,14 @@ class InMyLecture extends DramaEntityObservableModel {
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
 
-  constructor(inMyLecture?: InMyLecture) {
+  constructor(inMyLecture?: InMyLectureModel) {
     //
     super();
 
     if (inMyLecture) {
       Object.assign(this, { ...inMyLecture });
 
-      this.serviceType = InMyLecture.getServiceType(inMyLecture);
+      this.serviceType = InMyLectureModel.getServiceType(inMyLecture);
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
@@ -51,11 +51,11 @@ class InMyLecture extends DramaEntityObservableModel {
       this.required = cineroom && inMyLecture.requiredSubsidiaries
         && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
 
-      this.cubeTypeName = InMyLecture.getCubeTypeName(inMyLecture.cubeType, this.serviceType);
+      this.cubeTypeName = InMyLectureModel.getCubeTypeName(inMyLecture.cubeType, this.serviceType);
     }
   }
 
-  static getServiceType(inMyLecture: InMyLecture) {
+  static getServiceType(inMyLecture: InMyLectureModel) {
     //
     const serviceType = inMyLecture.serviceType as string;
 
@@ -84,7 +84,7 @@ class InMyLecture extends DramaEntityObservableModel {
   }
 }
 
-decorate(InMyLecture, {
+decorate(InMyLectureModel, {
   serviceType: observable,
   serviceId: observable,
   // student: observable,
@@ -107,4 +107,4 @@ decorate(InMyLecture, {
   cubeTypeName: observable,
 });
 
-export default InMyLecture;
+export default InMyLectureModel;

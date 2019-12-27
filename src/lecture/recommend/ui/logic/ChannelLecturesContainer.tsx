@@ -73,7 +73,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
       history.push(`./course-plan/${lecture.coursePlanId}/${lecture.serviceType}/${lecture.serviceId}`);
     }
     else if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
+      history.push(`./cube/${lecture.cubeId}/cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
     }
   }
 
