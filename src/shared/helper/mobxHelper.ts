@@ -2,7 +2,6 @@
 
 export function injectFrom( ...serviceNames: string[] ) {
   //
-
   return (stores: any) => {
     //
     const willInjected: any = {};
@@ -26,10 +25,8 @@ export function injectFrom( ...serviceNames: string[] ) {
 
     return willInjected;
   };
-
 }
 
-console.log(injectFrom);
 export default {
   injectFrom,
 };

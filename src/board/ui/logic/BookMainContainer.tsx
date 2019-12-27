@@ -48,7 +48,19 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
+    this.init();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.match.params.boardId !== this.props.match.params.boardId) {
+      this.init();
+    }
+  }
+
+  init() {
+    //
     const { boardId } = this.props.match.params;
+
     if (boardId === 'Notice' || boardId === '') {
 
       this.setState({ tabIndex: 0, activeItem: boardId });
@@ -62,10 +74,6 @@ export class BookMainContainer extends React.Component<Props, States> {
       this.setState({ tabIndex: 2, activeItem: boardId });
       this.findQnaCategories();
     }
-  }
-
-  componentDidUpdate() {
-    console.log(this.props.match.params);
   }
 
   handleItemClick(e: any, { name }: any) {
