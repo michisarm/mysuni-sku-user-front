@@ -35,7 +35,7 @@ class FaqTabContainer extends React.Component<Props> {
           <div className="list-top">
             <div className="radio-wrap">
               {
-                categorys && categorys.length && categorys.map((category, index) => (
+                categorys && categorys.length > 0 && categorys.map((category, index) => (
                   <Radio
                     key={index}
                     className="base"
@@ -52,7 +52,7 @@ class FaqTabContainer extends React.Component<Props> {
           </div>
           <div className="su-list faq">
             {
-              result && result.length && result.map((post, index) => {
+              result && result.length > 0 && result.map((post, index) => {
                 if (post.pinned) {
                   return (
                     <a target="_blank" className="row important" key={index} onClick={() => routeToFaqDetail(post.postId)}>
@@ -88,7 +88,7 @@ class FaqTabContainer extends React.Component<Props> {
             ) || ''
           }
           {
-            result && result.length && (
+            result && result.length > 0 && (
               <div className="more-comments" onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}>
                 <Button icon
                   className="left moreview"
