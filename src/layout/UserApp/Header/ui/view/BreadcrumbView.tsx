@@ -1,5 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
+import { reactAutobind } from '@nara.platform/accent';
 import { Link } from 'react-router-dom';
 import { BreadcrumbValue } from '../../../index';
 
@@ -10,8 +11,25 @@ interface Props {
 }
 
 
+@reactAutobind
 class BreadcrumbView extends Component<Props> {
   //
+  renderItem(value: BreadcrumbValue, index: number) {
+    //
+    const { values } = this.props;
+    const isLast = values && index === values.length - 1;
+
+    if (isLast) {
+      return <div className="section active">{value.text}</div>;
+    }
+    else if (value.path) {
+      return <Link to={value.path} className="section">{value.text}</Link>;
+    }
+    else {
+      return <a>{value.text}</a>;
+    }
+  }
+
   render() {
     //
     const { values, supportPath } = this.props;
@@ -27,13 +45,8 @@ class BreadcrumbView extends Component<Props> {
             { Array.isArray(values) && values.map((value, index) => (
               <Fragment key={`breadcrumb_${index}`}>
                 <i className="right chevron icon divider" />
-                { index === values.length - 1 ?
-                  <div className="active section">{value.text}</div>
-                  :
-                  <Link to={value.path || ''} className="section">
-                    {value.text}
-                  </Link>
-                }
+
+                {this.renderItem(value, index)}
               </Fragment>
             ))}
           </div>

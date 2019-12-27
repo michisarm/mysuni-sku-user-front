@@ -241,7 +241,7 @@ export class BookMainContainer extends React.Component<Props, States> {
       <ContentLayout
         className="support"
         breadcrumb={[
-          { text: `Support`, path: `/board` },
+          { text: `Support` },
           { text: `${activeItem}`, path: `/board/support/${activeItem}` },
         ]}
       >
