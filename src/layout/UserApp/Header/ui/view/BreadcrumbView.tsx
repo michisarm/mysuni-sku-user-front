@@ -54,6 +54,7 @@ class BreadcrumbView extends Component<Props, State> {
           if (data.additionalInformation && data.additionalInformation.companyCode) {
             window.sessionStorage.setItem('companyCode', data.additionalInformation.companyCode);
           }
+          window.location.href = window.location.href;
         }
       });
 
