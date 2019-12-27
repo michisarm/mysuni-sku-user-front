@@ -1,6 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, axiosApi } from '@nara.platform/accent';
 import { Link } from 'react-router-dom';
 import { BreadcrumbValue } from '../../../index';
 
@@ -10,10 +10,55 @@ interface Props {
   supportPath: string;
 }
 
+interface State {
+  //TODO:: 임시
+  id: string
+}
 
 @reactAutobind
-class BreadcrumbView extends Component<Props> {
+class BreadcrumbView extends Component<Props, State> {
   //
+  state = {
+    id: 'SKCC.00003331@sk.com',
+  };
+
+  //TODO::삭제해야
+  onLogin() {
+    const postData = new FormData();
+    postData.append('grant_type', 'password');
+    postData.append('scope', 'client');
+    postData.append('username', this.state.id);
+    postData.append('password', '1');
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Basic ' + btoa('nara:narasecret'),
+      },
+      noAuth: true,
+    };
+
+    return axiosApi.post('/api/checkpoint/oauth/token',
+      postData,
+      config,
+    )
+      .then(({ data }: any) => {
+        if (data.access_token) {
+          const accessToken = data.access_token;
+
+          window.sessionStorage.setItem('token', accessToken);
+          window.sessionStorage.setItem('workspaces', JSON.stringify(data.workspaces));
+          window.sessionStorage.setItem('displayName', data.displayName);
+          window.sessionStorage.setItem('email', this.state.id);
+          window.sessionStorage.setItem('cineroomId', data.workspaces.cineroomWorkspaces[data.workspaces.cineroomWorkspaces.length - 1].id);
+          if (data.additionalInformation && data.additionalInformation.companyCode) {
+            window.sessionStorage.setItem('companyCode', data.additionalInformation.companyCode);
+          }
+        }
+      });
+
+  }
+
   renderItem(value: BreadcrumbValue, index: number) {
     //
     const { values } = this.props;
@@ -29,6 +74,7 @@ class BreadcrumbView extends Component<Props> {
       return <a>{value.text}</a>;
     }
   }
+
 
   render() {
     //
@@ -52,6 +98,15 @@ class BreadcrumbView extends Component<Props> {
           </div>
 
           <div className="right">
+            {
+              process.env.NODE_ENV === 'development' && (
+                <>
+                  <input value={this.state.id} onChange={(e) => this.setState({ id: e.target.value })} />
+                  <button onClick={this.onLogin}>로그인</button>
+                </>
+              )
+            }
+
             <Link to={supportPath}>
               <i className="support12 icon" />
               <span>Support</span>
