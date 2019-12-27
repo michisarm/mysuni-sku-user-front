@@ -3,7 +3,6 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
-import { Image } from 'semantic-ui-react';
 import { InputWrapper } from 'shared';
 
 // import profileImage from 'style/images/all/profile-38-px.png';
