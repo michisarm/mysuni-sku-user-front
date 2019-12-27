@@ -64,6 +64,10 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
+  componentDidUpdate() {
+    console.log(this.props.match.params);
+  }
+
   handleItemClick(e: any, { name }: any) {
     //
     const { postService } = this.props;

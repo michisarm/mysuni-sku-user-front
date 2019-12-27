@@ -52,7 +52,7 @@ class QnaTabContainer extends React.Component<Props> {
           <div className="list-top">
             <div className="radio-wrap">
               {
-                categorys && categorys.length && categorys.map((category, index) => (
+                categorys && categorys.length > 0&& categorys.map((category, index) => (
                   <Radio
                     key={index}
                     className="base"
@@ -86,7 +86,7 @@ class QnaTabContainer extends React.Component<Props> {
           </div>
           <div className="su-list qna">
             {
-              result && result.length && result.map((post, index) => {
+              result && result.length > 0&& result.map((post, index) => {
                 if (post.answered) {
                   return (
                     <>
@@ -139,7 +139,7 @@ class QnaTabContainer extends React.Component<Props> {
             )
           }
           {
-            result && result.length && (
+            result && result.length > 0 && (
               <div className="more-comments" onClick={() => findQnaPosts(answered, categorys[qnaTabIndex].categoryId, end)}>
                 <Button icon
                   className="left moreview"
