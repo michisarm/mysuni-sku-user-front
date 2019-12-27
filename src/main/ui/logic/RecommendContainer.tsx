@@ -43,7 +43,7 @@ class RecommendContainer extends Component<Props> {
     const { favoriteChannels } = studySummary as StudySummary;
 
     const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id, checked: true })) || [];
 
     // channels.push(new ChannelModel({ id: 'CHN0000v', channelId: 'CHN0000v', name: '행복의 이해', checked: true }));
     // channels.push(new ChannelModel({ id: 'CHN0000q', channelId: 'CHN0000q', name: '마케팅', checked: true }));

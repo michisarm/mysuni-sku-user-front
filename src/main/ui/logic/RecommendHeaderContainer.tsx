@@ -50,7 +50,7 @@ class RecommendHeaderContainer extends Component<Props> {
 
     return (
       <div className="recommend-head">
-        <span className="tit">{member.names.string}님을 위한 추천 채널</span>
+        <span className="tit">{member.name}님을 위한 추천 채널</span>
         <Button icon className="right btn-black" onClick={() => this.props.history.push('/recommend')}>
           View all<Icon className="morelink" />
         </Button>

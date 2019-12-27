@@ -38,6 +38,8 @@ export { CubeType } from './model/CubeType';
 export { CubeState } from './model/CubeState';
 export { CourseOpenModel } from './model/CourseOpenModel';
 export { CourseState } from './model/CourseState';
+export { ProposalState } from './model/ProposalState';
+export { LearningState } from './model/LearningState';
 
 export { DatePeriod } from './model/DatePeriod';
 export { TimePeriod } from './model/TimePeriod';
