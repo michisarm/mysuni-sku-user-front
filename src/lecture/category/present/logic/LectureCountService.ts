@@ -35,6 +35,7 @@ class LectureCountService {
   async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
     //
     const lectureCountList = await this.lectureApi.findLectureCountByChannels(collegeId, channels);
+    console.log('lectureCountList', lectureCountList);
     const filteredChannels = lectureCountList
       .filter((lectureCount) => lectureCount.lectureCount > 0)
       .map((lectureCount) => new ChannelModel({
