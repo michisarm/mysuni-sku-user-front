@@ -53,7 +53,7 @@ class CreateContainer extends React.Component<Props, States> {
           const cubeType = personalCubeService.personalCube.contents.type;
           const cubeState = personalCubeService.personalCube.cubeState;
           if (cubeState === CubeState.Created) this.props.history.push(`/personalcube/create-detail/${personalCubeId}/${cubeType}`);
-          else this.props.history.push(`/personalcube/cube-detail/${personalCubeId}/${cubeType}`);
+          else  this.props.history.push(`/personalcube/shared-detail/${personalCubeId}/${cubeType}/${cubeState}`);
         });
     }
   }

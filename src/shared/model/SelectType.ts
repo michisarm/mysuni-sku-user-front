@@ -190,6 +190,14 @@ export default {
     { key: '5', text: '반려', value: 'Rejected' },
   ],
 
+  userStatus: [
+    { key: '0', text: '전체', value: '' },
+    { key: '1', text: '저장', value: 'Created' },
+    { key: '2', text: '승인대기', value: 'OpenApproval' },
+    { key: '3', text: '승인', value: 'Opened' },
+    { key: '4', text: '반려', value: 'Rejected' },
+  ],
+
   openType: [
     { key: '0', text: '전체', value: '' },
     { key: '1', text: 'Yes', value: 'FilterOn' },

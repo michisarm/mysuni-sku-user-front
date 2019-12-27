@@ -18,8 +18,7 @@ export default class PersonalCubeApi {
 
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
-    console.log(cubeCdo);
-    return axios.post<string>(this.URL + `/regist`, cubeCdo)
+    return axios.post<string>(this.URL, cubeCdo)
       .then(response => response && response.data || null);
   }
 
