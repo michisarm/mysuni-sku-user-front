@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ContentLayout, mobxHelper } from 'shared';
+import { ContentLayout, CubeType, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeService } from '../../../personalcube/personalcube';
-import { CubeIntroService } from '../../../personalcube/cubeintro';
+import { CubeIntroModel, CubeIntroService } from '../../../personalcube/cubeintro';
 import { MediaService } from '../../../personalcube/media';
 import { OfficeWebService } from '../../../personalcube/officeweb';
 import { BoardService } from '../../../personalcube/board';
@@ -14,6 +14,8 @@ import SharedDetailExposureInfoView from '../view/SharedDetailExposureInfoView';
 import SharedDetailIntroView from '../view/SharedDetailIntroView';
 import SharedTypeDetailView from '../view/SharedTypeDetailView';
 import SharedDetailIntroEditContainer from './SharedDetailIntroEditContainer';
+import AlertWin from '../../../shared/ui/logic/AlertWin';
+import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string, cubeState: string }> {
   personalCubeService?: PersonalCubeService
@@ -23,12 +25,29 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   officeWebService?: OfficeWebService
 }
 
+interface States {
+  alertWinOpen: boolean
+  alertIcon: string
+  alertTitle: string
+  alertType: string
+  alertMessage: string
+
+  confirmWinOpen: boolean
+}
+
 @inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
   'personalCube.cubeIntroService', 'personalCube.mediaService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind
-class SharedDetailContainer extends React.Component<Props> {
+class SharedDetailContainer extends React.Component<Props, States> {
   //
+  constructor(props: Props) {
+    super(props);
+    this.state = { alertWinOpen: false,
+      alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
+      confirmWinOpen: false };
+  }
+
   componentDidMount() {
     const { personalCubeService, cubeIntroService } = this.props;
     const { personalCubeId, cubeType } = this.props.match.params;
@@ -68,6 +87,92 @@ class SharedDetailContainer extends React.Component<Props> {
     if ( boardService) boardService.findBoard(contentsId);
   }
 
+  handleAlertOk(type: string) {
+    //
+    this.handleOKConfirmWin();
+    /*const { personalCubeId } = this.props.match.params;
+    if (type === 'approvalRequest') this.handleOKConfirmWin('approvalRequest');*/
+  }
+
+  handleSave() {
+
+    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
+    const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
+    if ( cubeIntroObject === 'success') {
+      this.setState({ confirmWinOpen: true });
+      return;
+    }
+    if (cubeIntroObject !== 'success') this.confirmBlank(cubeIntroMessage);
+  }
+
+  confirmBlank(message: string) {
+    //
+    this.setState({ alertMessage: message, alertWinOpen: true, alertTitle: '필수 정보 입력 안내', alertIcon: 'triangle' });
+  }
+
+  handleCloseAlertWin() {
+    //
+    this.setState({
+      alertWinOpen: false,
+    });
+  }
+
+  handleCloseConfirmWin() {
+    //
+    this.setState({
+      confirmWinOpen: false,
+    });
+  }
+
+  handleOKConfirmWin(mode?: string) {
+    //
+    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { personalCubeId, cubeType } = this.props.match.params;
+
+    if (cubeType === CubeType.Video
+      || cubeType === CubeType.Audio) this.modifyMedia(personalCubeId, cubeIntro);
+    if (cubeType === CubeType.Community) this.modifyCommunity(personalCubeId, cubeIntro);
+    if (cubeType === CubeType.Documents
+      || cubeType === CubeType.WebPage) this.modifyOfficeWeb(personalCubeId, cubeIntro);
+  }
+
+  modifyMedia(personalCubeId: string, cubeIntro: CubeIntroModel) {
+    //
+    const { mediaService } = this.props;
+    const { media } = this.props.mediaService || {} as MediaService;
+
+    if (mediaService) {
+      Promise.resolve()
+        .then(() => mediaService.modifyMediaByUser(personalCubeId, cubeIntro, media))
+        .then(() => this.routeToCreateList());
+    }
+  }
+
+  modifyCommunity(personalCubeId: string, cubeIntro: CubeIntroModel) {
+    //
+    const { boardService } = this.props;
+    const { board } = this.props.boardService || {} as BoardService;
+
+    if (boardService ) {
+      Promise.resolve()
+        .then(() => boardService.modifyBoardByUser(personalCubeId, cubeIntro, board))
+        .then(() => this.routeToCreateList());
+    }
+  }
+
+  modifyOfficeWeb(personalCubeId: string, cubeIntro: CubeIntroModel ) {
+    //
+    const { officeWebService } = this.props;
+    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+
+    if (officeWebService ) {
+      Promise.resolve()
+        .then(() => officeWebService.modifyOfficeWebByUser(personalCubeId, cubeIntro, officeWeb))
+        .then(() => this.routeToCreateList());
+    }
+  }
+
   routeToCreateList() {
     //
     this.props.history.push(`/personalcube/create`);
@@ -76,7 +181,15 @@ class SharedDetailContainer extends React.Component<Props> {
   render() {
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
-    const { cubeType, cubeState } = this.props.match.params;
+    const { cubeType, cubeState, personalCubeId } = this.props.match.params;
+    const {
+      alertWinOpen, confirmWinOpen, alertMessage, alertIcon, alertTitle, alertType,
+    } = this.state;
+    const message = (
+      <>
+        <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
+      </>
+    );
 
     return (
       <ContentLayout className="bg-white">
@@ -142,10 +255,29 @@ class SharedDetailContainer extends React.Component<Props> {
                   :
                   <div className="buttons">
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button className="fix bg">Save</Button>
+                    <Button className="fix bg" onClick={this.handleSave}>Save</Button>
                   </div>
               }
-
+              <AlertWin
+                message={alertMessage}
+                handleClose={this.handleCloseAlertWin}
+                open={alertWinOpen}
+                alertIcon={alertIcon}
+                title={alertTitle}
+                type={alertType}
+                handleOk={this.handleAlertOk}
+              />
+              <ConfirmWin
+                id={personalCubeId}
+                message={message}
+                open={confirmWinOpen}
+                handleClose={this.handleCloseConfirmWin}
+                handleOk={this.handleOKConfirmWin}
+                //handleSaveAndApprove={this.handleSaveAndApprove}
+                title="저장 안내"
+                buttonYesName="저장"
+                buttonNoName="취소"
+              />
             </Form>
           </div>
         </Segment>
