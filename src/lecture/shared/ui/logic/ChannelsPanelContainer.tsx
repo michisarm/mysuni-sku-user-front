@@ -18,7 +18,8 @@ interface OnSelectChannelData {
 
 interface Props {
   skProfileService?: SkProfileService
-  title?: string
+  title?: React.ReactNode,
+  configurable?: boolean,
   channels: ChannelModel[]
   onSelectChannel: (e: any, data: OnSelectChannelData) => void
 }
@@ -32,6 +33,11 @@ interface States {
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {
   //
+  static defaultProps = {
+    title: null,
+    configurable: false,
+  };
+
   state = {
     open: false,
   };
@@ -59,7 +65,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
 
   render() {
     //
-    const { channels, title } = this.props;
+    const { channels, title, configurable } = this.props;
     const { open } = this.state;
 
     return (
@@ -69,15 +75,17 @@ class ChannelsPanelContainer extends Component<Props, States> {
             <div className="cell vtop">
               <div className="tit-set">
                 { title || `Channel (${channels.length})`}
-                <FavoriteChannelChangeModal
-                  trigger={(
-                    <Button icon className="img-icon">
-                      <Icon className="setting17" /><span className="blind">setting</span>
-                    </Button>
-                  )}
-                  favorites={channels}
-                  onConfirmCallback={this.findStudySummary}
-                />
+                {configurable && (
+                  <FavoriteChannelChangeModal
+                    trigger={(
+                      <Button icon className="img-icon">
+                        <Icon className="setting17" /><span className="blind">setting</span>
+                      </Button>
+                    )}
+                    favorites={channels}
+                    onConfirmCallback={this.findStudySummary}
+                  />
+                )}
               </div>
             </div>
             <div className="cell vtop">
