@@ -7,8 +7,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentHeader, ContentLayout, ContentMenu, mobxHelper } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
-import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
-
 
 
 interface Props extends RouteComponentProps {
@@ -60,13 +58,13 @@ class MyTrainingPage extends Component<Props, State> {
     //
     const { skProfileService, myLearningSummaryService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
-    // const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
+    const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
-    const myLearningSummary = {} as MyLearningSummaryModel;
     const { member } = skProfile as SkProfileModel;
 
     return (
       <ContentLayout
+        className="mylearning"
         breadcrumb={[
           { text: `Learning` },
         ]}
@@ -92,7 +90,9 @@ class MyTrainingPage extends Component<Props, State> {
                   myCompanyTime={myLearningSummary.myCompanyLearningTime}
                 />
               ) || (
-                <ContentHeader.WaitingItem />
+                <ContentHeader.WaitingItem
+                  onClick={() => this.props.history.push('/recommend')}
+                />
               )
             }
           </ContentHeader.Cell>
@@ -127,7 +127,6 @@ class MyTrainingPage extends Component<Props, State> {
           type={this.state.type}
           onSelectMenu={this.onSelectMenu}
         />
-        {/*<ChannelLecturesContainer />*/}
       </ContentLayout>
     );
   }

@@ -3,7 +3,6 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
-import { Image } from 'semantic-ui-react';
 
 // import profileImage from 'style/images/all/profile-38-px.png';
 
@@ -52,16 +51,5 @@ export const SearchBarView: React.FC<SearchBarViewProps> = ({ value, focused, on
       <i aria-hidden="true" className="search link icon" />
     </div>
 
-  </div>
-);
-
-
-export const ProfileView: React.FC = () => (
-  <div className="g-info">
-    <button className="ui user image label">
-      <span className="name">작업중</span>
-      <span className="affiliation">SK C&C  플랫폼 개발 1팀</span>
-      <Image src={`${process.env.PUBLIC_URL}/images/all/profile-38-px.png`} alt="profile" />
-    </button>
   </div>
 );

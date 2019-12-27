@@ -7,9 +7,10 @@ import { Context } from '../../../index';
 import CategoryContainer from './CategoryContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
-  LogoView, MenuView, SearchBarView, ProfileView,
+  LogoView, MenuView, SearchBarView,
 } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
+import ProfileContainer from './ProfileContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -81,6 +82,7 @@ class HeaderContainer extends Component<Props, State> {
           <LogoView />
           <MenuView />
           <CategoryContainer />
+
           <SearchBarView
             value={searchValue}
             focused={focused}
@@ -89,7 +91,8 @@ class HeaderContainer extends Component<Props, State> {
             onChange={this.onChangeSearchInput}
             onClear={this.onClickClearSearch}
           />
-          <ProfileView />
+
+          <ProfileContainer />
         </>
       </HeaderWrapperView>
     );
