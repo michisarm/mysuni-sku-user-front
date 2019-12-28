@@ -30,6 +30,7 @@ export const Basic = () => {
         category={category}
         title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
         type={CubeType.ClassRoomLecture}
+        typeName=""
         creationTime={1576664937754}
         learningPeriod={{ startDate: '2019.01.01', endDate: '2020.01.01' } as DatePeriod}
       />
@@ -60,6 +61,7 @@ export const CategoryAndLabel = () => {
         <LectureContentHeader.TitleCell
           category={category}
           title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
+          typeName=""
           type={CubeType.ClassRoomLecture}
           creationTime={1576664937754}
         />
@@ -69,6 +71,7 @@ export const CategoryAndLabel = () => {
         <LectureContentHeader.TitleCell
           label={label}
           title="Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석"
+          typeName=""
           type={CubeType.ClassRoomLecture}
           creationTime={1576664937754}
         />
