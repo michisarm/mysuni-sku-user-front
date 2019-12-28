@@ -33,6 +33,7 @@ class LectureCardHeaderView extends Component<Props> {
         <LectureContentHeader.TitleCell
           category={viewObject.category}
           type={viewObject.cubeType}
+          typeName={viewObject.cubeTypeName}
           title={viewObject.name}
           creationTime={viewObject.time}
           learningPeriod={typeViewObject.learningPeriod}

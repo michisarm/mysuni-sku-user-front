@@ -135,7 +135,8 @@ class LectureCardPage extends Component<Props, State> {
 
       //etc
       category: personalCube.category,
-      cubeType: CubeTypeNameType[CubeType[personalCube.contents.type]],
+      cubeType: CubeType[personalCube.contents.type],
+      cubeTypeName: CubeTypeNameType[CubeType[personalCube.contents.type]],
       name: personalCube.name,
       time: personalCube.time,
       classroom: undefined,

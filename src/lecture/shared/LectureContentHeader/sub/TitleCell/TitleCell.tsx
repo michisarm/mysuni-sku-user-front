@@ -11,6 +11,7 @@ import CubeIconType from '../../../Lecture/model/CubeIconType';
 interface Props {
   title: string,
   type: CubeType,
+  typeName: string,
   creationTime: number,
   label?: { color: LabelProps['color'], text: string },
   category?: CategoryModel,
@@ -23,7 +24,7 @@ class TitleCell extends Component<Props> {
   //
   render() {
     //
-    const { label, category, title, type, creationTime, children, learningPeriod } = this.props;
+    const { label, category, title, type, typeName, creationTime, children, learningPeriod } = this.props;
     return (
       <div className="title-area">
         { label ?
@@ -38,7 +39,7 @@ class TitleCell extends Component<Props> {
         <div className="deatil">
           <div className="item">
             <Label className="bold onlytext">
-              <Icon className={CubeIconType[type]} /><span>{type}</span>
+              <Icon className={CubeIconType[type]} /><span>{typeName}</span>
             </Label>
             { category && category.channel.name && <span className="channel">{category.channel.name}</span>}
           </div>
