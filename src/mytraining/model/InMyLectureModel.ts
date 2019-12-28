@@ -11,14 +11,11 @@ class InMyLectureModel extends DramaEntityObservableModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
-  // student: IdName = new IdName();
   category: CategoryModel = new CategoryModel();
   name: string = '';
   description: string = '';
   cubeType: CubeType = CubeType.None;
-  // proposalState: ProposalState = ProposalState.Submitted;
-  // learningState: LearningState = LearningState.Progress;
-  // learningTime: number = 0;
+  learningTime: number = 0;
   stampCount: number = 0;
   coursePlanId: string = '';
 
@@ -28,6 +25,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
   courseLectureUsids: string[] = [];
   lectureCardUsids: string[] = [];
 
+  reviewId: string = '';
   time: number = 0;
 
 
@@ -87,14 +85,11 @@ class InMyLectureModel extends DramaEntityObservableModel {
 decorate(InMyLectureModel, {
   serviceType: observable,
   serviceId: observable,
-  // student: observable,
   category: observable,
   name: observable,
   description: observable,
   cubeType: observable,
-  // proposalState: observable,
-  // learningState: observable,
-  // learningTime: observable,
+  learningTime: observable,
   stampCount: observable,
   coursePlanId: observable,
   requiredSubsidiaries: observable,
@@ -105,6 +100,7 @@ decorate(InMyLectureModel, {
   time: observable,
   required: observable,
   cubeTypeName: observable,
+  reviewId: observable,
 });
 
 export default InMyLectureModel;

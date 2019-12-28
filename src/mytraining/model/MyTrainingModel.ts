@@ -1,10 +1,8 @@
-import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
-import { CategoryModel, DramaEntityObservableModel, IdName, ProposalState, LearningState } from 'shared';
+import { computed, decorate, observable } from 'mobx';
+import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, ProposalState } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
-
 
 
 class MyTrainingModel extends DramaEntityObservableModel {
@@ -23,6 +21,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   coursePlanId: string = '';
 
   requiredSubsidiaries: IdName[] = [];
+  required: boolean = false;
   cubeId: string = '';
   courseSetJson: CourseSetModel = new CourseSetModel();
   courseLectureUsids: string[] = [];
@@ -32,7 +31,6 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
 
   // UI only
-  required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
 
@@ -47,10 +45,6 @@ class MyTrainingModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(myTraining.category);
 
       // UI Model
-      const cineroom = tenantInfo.getCineroom() as any;
-      this.required = cineroom && myTraining.requiredSubsidiaries
-        && myTraining.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
-
       this.cubeTypeName = MyTrainingModel.getCubeTypeName(myTraining.cubeType, this.serviceType);
     }
   }
@@ -81,6 +75,17 @@ class MyTrainingModel extends DramaEntityObservableModel {
     else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
+  }
+
+  @computed
+  get state() {
+    if (this.proposalState === ProposalState.Approved) {
+      if (this.learningState === LearningState.Progress) return 'In Progress';
+      if (this.learningState === LearningState.Passed) return 'Completed';
+      if (this.learningState === LearningState.Missed) return 'Missed';
+      else return 'Enrolled';
+    }
+    else return this.proposalState.toString();
   }
 }
 

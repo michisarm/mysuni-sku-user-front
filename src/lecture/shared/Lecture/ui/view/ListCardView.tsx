@@ -6,18 +6,20 @@ import { observer } from 'mobx-react';
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
+import { MyTrainingModel, InMyLectureModel } from 'mytraining';
 import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail, Ribbon,
 } from '../../../ui/view/LectureElementsView';
 
 
+
 interface Props {
-  lecture: LectureModel,
+  model: LectureModel | MyTrainingModel | InMyLectureModel,
   thumbnailImage?: string,
   action?: Action,
-  onAction?: () => void,
-  onViewDetail?: (e: any) => void,
+  onAction?: (e: any) => void,
+  onViewDetail?: () => void,
 }
 
 @reactAutobind
@@ -27,30 +29,29 @@ class ListCardView extends Component<Props> {
   static defaultProps = {
     thumbnailImage: null,
     action: null,
-    onAction: () => {},
+    onAction: (e: any) => {},
     onViewDetail: () => {},
   };
 
   render() {
     //
     const {
-      lecture, thumbnailImage, action,
+      model, thumbnailImage, action,
       onAction,
     } = this.props;
-    console.log(this.props);
-    const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture.learningTime);
+    const { hour, minute } = dateTimeHelper.timeToHourMinute(model.learningTime);
 
     return (
       <Card>
         <div className="card-inner">
           {/* Todo: stampReady, 미사용이면 제거 */}
-          <Ribbon stampReady={false} />
+          {/*<Ribbon stampReady={false} />*/}
 
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={lecture.name} category={lecture.category}>
+          <Title title={model.name} category={model.category}>
             <Fields>
-              <Field icon="date" text="Complated date : 19. 01. 31" />
+              <Field icon="date" text={`Completed date : ${new Date(model.time).toLocaleDateString()}`} />
             </Fields>
           </Title>
 
@@ -80,8 +81,8 @@ class ListCardView extends Component<Props> {
               )}
             </div>
             <div className="location">
-              <span className="location-name">{lecture.name}</span>
-              { lecture.cubeType &&  <Field icon="video2" text={lecture.cubeType} bold />}
+              <span className="location-name">{model.name}</span>
+              { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
           </div>
         </div>

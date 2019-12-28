@@ -1,16 +1,30 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { ReviewService } from '@nara.drama/feedback';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Segment } from 'semantic-ui-react';
 
-import { ContentHeader, ContentLayout, ContentMenu, mobxHelper } from 'shared';
+import { ContentHeader, ContentLayout, ContentMenu, mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
+import { Lecture } from 'lecture';
+import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
+import MyTrainingService from '../../present/logic/MyTrainingService';
+import InMyLectureService from '../../present/logic/InMyLectureService';
+import LineHeaderView from '../view/LineHeaderView';
+
+import MyTrainingModel from '../../model/MyTrainingModel';
+import InMyLectureModel from '../../model/InMyLectureModel';
 
 
 interface Props extends RouteComponentProps {
+  pageService?: PageService,
+  reviewService?: ReviewService,
   skProfileService?: SkProfileService
+  myTrainingService?: MyTrainingService
+  inMyLectureService?: InMyLectureService
   myLearningSummaryService?: MyLearningSummaryService
 }
 
@@ -18,11 +32,22 @@ interface State {
   type: string
 }
 
-@inject(mobxHelper.injectFrom('skProfileService', 'myTraining.myLearningSummaryService'))
+@inject(mobxHelper.injectFrom(
+  'shared.pageService',
+  'shared.reviewService',
+  'skProfileService',
+  'myTraining.myTrainingService',
+  'myTraining.inMyLectureService',
+  'myTraining.myLearningSummaryService',
+))
 @observer
 @reactAutobind
 class MyTrainingPage extends Component<Props, State> {
   //
+  PAGE_KEY = 'training';
+
+  PAGE_SIZE = 8;
+
   state= {
     type: 'InProgress',
   };
@@ -32,25 +57,131 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   init() {
-    const { skProfileService, myLearningSummaryService } = this.props;
+    const { skProfileService, myLearningSummaryService, pageService } = this.props;
 
     skProfileService!.findSkProfile();
     myLearningSummaryService!.findMyLearningSummary();
-    this.onSelectMenu(this.state.type);
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    this.findPagingList();
   }
 
   onSelectMenu(type: string) {
+    //
+    const { pageService } = this.props;
+
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    this.setState({ type }, this.findPagingList);
+  }
+
+  async findPagingList() {
+    const { inMyLectureService, myTrainingService, pageService, reviewService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { type } = this.state;
+    let offsetList: any = null;
+    let feedbackIds: string[] = [];
+
     switch (type) {
       case 'InMyList':
+        offsetList = await inMyLectureService!.findAllInMyLectures(page!.limit, page!.nextOffset);
+        feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
+        await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
         break;
       case 'Required':
+        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
         break;
       case 'Retry':
+        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
         break;
       default:
+        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
+        break;
+    }
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
+  }
+
+  onActionLecture() {
+
+  }
+
+  onViewDetail(e: any, data: any) {
+    //
+    const { model } = data;
+    const { history } = this.props;
+
+    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
+      history.push(`/lecture/college/${model.category.college.id}/course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+    }
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(`/lecture/college/${model.category.college.id}/cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+    }
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    if (!page || !page.pageNo || !page.totalPages) return false;
+    return page!.pageNo < page!.totalPages;
+  }
+
+  renderList() {
+    const { inMyLectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { ratingMap } =  reviewService as ReviewService;
+    const { type } = this.state;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    let cardType = Lecture.GroupType.Box;
+    let list: (MyTrainingModel | InMyLectureModel)[] = [];
+
+    switch (type) {
+      case 'InMyList':
+        list = inMyLectureService!.inMyLectures;
+        break;
+      case 'Completed':
+        cardType = Lecture.GroupType.List;
+        list = myTrainingService!.myTrainings;
+        break;
+      default:
+        list = myTrainingService!.myTrainings;
+        break;
     }
 
-    this.setState({ type });
+    return (
+      <Segment className="full">
+        <LineHeaderView count={page && page.totalCount || 0} />
+        {
+          list && list.length && (
+            <Lecture.Group type={cardType}>
+              {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
+                let rating: number | undefined = 0;
+                if (value instanceof InMyLectureModel) {
+                  rating = ratingMap.get(value.reviewId);
+                }
+                return (
+                  <Lecture
+                    key={`training-${index}`}
+                    model={value}
+                    rating={rating || undefined}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    action={Lecture.ActionType.Add}
+                    onAction={this.onActionLecture}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
+          ) || (
+            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+          )
+        }
+
+        { this.isContentMore() && (
+          <SeeMoreButton
+            onClick={this.findPagingList}
+          />
+        )}
+      </Segment>
+    );
   }
 
 
@@ -127,6 +258,7 @@ class MyTrainingPage extends Component<Props, State> {
           type={this.state.type}
           onSelectMenu={this.onSelectMenu}
         />
+        { this.renderList() }
       </ContentLayout>
     );
   }

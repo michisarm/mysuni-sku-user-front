@@ -136,14 +136,14 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onViewDetail(e: any, data: any) {
     //
-    const { lecture } = data;
+    const { model } = data;
     const { history } = this.props;
 
-    if (data.lecture.serviceType === LectureServiceType.Program ||  data.lecture.serviceType === LectureServiceType.Course) {
-      history.push(`./course-plan/${lecture.coursePlanId}/${data.lecture.serviceType}/${lecture.serviceId}`);
+    if (model.serviceType === LectureServiceType.Program ||  model.serviceType === LectureServiceType.Course) {
+      history.push(`./course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
     }
-    else if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(`./cube/${model.cubeId}/lecture-card/${model.serviceId}`);
     }
   }
 
@@ -189,7 +189,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                 return (
                   <Lecture
                     key={`lecture-${index}`}
-                    lecture={lecture}
+                    model={lecture}
                     rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}
