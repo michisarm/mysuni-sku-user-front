@@ -70,7 +70,6 @@ export const TotalTimeItem = () => {
       <ContentHeader.Cell inner>
         <ContentHeader.TotalTimeItem
           minute={90}
-          onClick={action('clickTotalTimeItem')}
         />
       </ContentHeader.Cell>
     </ContentHeader>

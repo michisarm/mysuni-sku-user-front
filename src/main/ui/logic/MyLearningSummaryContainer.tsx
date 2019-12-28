@@ -5,7 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { MyLearningSummaryService } from 'mytraining';
+import { MyLearningSummaryModal, MyLearningSummaryService } from 'mytraining';
 import { ContentHeader, mobxHelper } from 'shared';
 
 interface Props extends RouteComponentProps{
@@ -75,19 +75,23 @@ class MyLearningSummaryContainer extends Component<Props> {
               </div>
 
               <ItemWrapper>
-                <Button className="btn-complex48">
-                  <span className="i">
-                    <Icon className="time48" />
-                    <span className="blind">total time</span>
-                  </span>
-                  <span className="t">
-                    <span className="underline">총 학습시간</span>
-                    <span className="div">
-                      <span className="t1">{hour}</span><span className="t2">h</span>
-                      <span className="t1">{onlyMinute || 0}</span><span className="t2">m</span>
-                    </span>
-                  </span>
-                </Button>
+                <MyLearningSummaryModal
+                  trigger={(
+                    <Button className="btn-complex48">
+                      <span className="i">
+                        <Icon className="time48" />
+                        <span className="blind">total time</span>
+                      </span>
+                      <span className="t">
+                        <span className="underline">총 학습시간</span>
+                        <span className="div">
+                          <span className="t1">{hour}</span><span className="t2">h</span>
+                          <span className="t1">{onlyMinute || 0}</span><span className="t2">m</span>
+                        </span>
+                      </span>
+                    </Button>
+                  )}
+                />
               </ItemWrapper>
 
               <ItemWrapper>
