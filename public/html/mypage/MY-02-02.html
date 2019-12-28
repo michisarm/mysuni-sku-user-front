@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>SUNI</title>
+    <link rel="stylesheet" href="../../css/semantic.min.css">
+    <link rel="stylesheet" href="../../css/calendar.min.css">
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- vendor prefix version
+<link rel="stylesheet" href="../../css/style.min.css">
+-->
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/semantic.min.js"></script>
+    <script src="../../js/state.min.js"></script>
+    <script src="../../js/calendar.min.js"></script>
+    <script src="../../js/modal.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/ui.js"></script>
+</head>
+
+
+<body>
+    <!-- .header -->
+    <section class="header">
+        <div class="group">
+            <div class="cont-inner">
+                <div class="g-logo">
+                    <a href="../main/MA-01-01.html" target="_blank">
+                        <i class="sk-university icon"><span class="blind">my SUNI</span></i>
+                    </a>
+                </div>
+                <div class="g-menu-detail">
+                    <button class="ui detail-open">
+                        <button class="ui detail-open">Category</button>
+                    </button>
+                    <div class="layer">
+                        <div class="table-css">
+                            <div class="row head">
+                                <div class="cell v-middle">College</div>
+                                <div class="cell v-middle">Channel</div>
+                            </div>
+                            <div class="row body">
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button class="active">AI</button><!-- .active 활성화 // -->
+                                            <button>DT</button>
+                                            <button>행복</button>
+                                            <button>SV</button>
+                                            <button>혁신디자인</button>
+                                            <button>Global</button>
+                                            <button>Leadership</button>
+                                            <button>Management</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button onclick="window.open('../common/CO-05-01-01.html')">AI 전체보기 <span>(125)</span></button>
+                                            <button onclick="window.open('../common/CO-05-01-04.html')">AI Fundamental <span>(34)</span></button>
+                                            <button>AI Biz. Implemetation <span>(20)</span></button>
+                                            <button>AI Tech Essential <span>(14)</span></button>
+                                            <button>Computer Vison AI <span>(20)</span></button>
+                                            <button>Language AI <span>(13)</span></button>
+                                            <button>Speech AI <span>(8)</span></button>
+                                            <button>AI Tech Advanced <span>(13)</span></button>
+                                            <button>AI technologies <span>(3)</span></button>
+                                            <button>AI Digital Reasoning <span>(19)</span></button>
+                                            <button>AI Lucidworks <span>(15)</span></button>
+                                            <button>AI Narrative Science <span>(12)</span></button>
+                                            <button>AI SAS <span>(8)</span></button>
+                                            <button>AI Yseop <span>(5)</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="window.open('../mypage/MY-01-01-P02-2.html')" class="ui icon button img-icon change-channel-of-interest"><span class="underline">관심 Channel 변경<i class="setting17 icon"></i></button>
+                    <button class="ui close"><i class="new16x17 icon"><span class="blind">close</span></i></button>
+                    </div>
+                </div>
+                <div class="g-menu">
+                    <div class="nav">
+                        <a href="../learning/ML-02-02.html" target="_blank" class="item active">Learning</a><!-- .active // -->
+                        <a href="../community/CM-01-01.html" target="_blank" class="item">Community</a>
+                        <a href="../recommend/RC-01-01.html" target="_blank" class="item">Recommend</a>
+                        <a href="../create/CR-01-02.html" target="_blank" class="item">Create</a>
+                    </div>
+                </div>
+                <div class="g-search">
+                    <div class="ui h38 search input">
+                        <input type="text" placeholder="Search" value="" />
+                        <i aria-hidden="true" class="clear link icon"></i>
+                        <a href="../search/SE-01-01.html" target="_blank"><i aria-hidden="true" class="search link icon"></i></a>
+                    </div>
+                </div>
+                <div class="g-info">
+                    <button onclick="window.open('../mypage/MY-01-01.html')" class="ui user image label">
+                        <span class="name">김유니</span>
+                        <span class="affiliation">SK C&C  플랫폼 개발 1팀</span>
+                        <img src="../../img/profile-36-px.png" alt="profile" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumbs">
+            <div class="cont-inner">
+                <div class="ui standard breadcrumb">
+                    <a class="section">Home</a>
+                    <i class="right chevron icon divider"></i>
+                    <a class="section">depth1</a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">depth2</div>
+                </div>
+                <div class="right">
+                    <a href="../support/SU-01-01.html" target="_blank">
+                        <i class="support12 icon"></i>
+                        <span>Support</span>
+                        <i class="arrow8 black-jump icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .header -->
+    <!-- .content -->
+    <section class="content">
+
+        <div class="main-info-area">
+            <div class="progress-info-wrap">
+                <div class="cell">
+                    <div class="cell-inner">
+                        <div class="profile">
+                            <div class="pic">
+                                <img src="../../img/profile-56-px.png" alt="프로필사진 임시이미지" />
+                            </div>
+                            <button class="ui icon button img-icon" onclick="window.open('../mypage/MY-01-01-P01.html')"><i aria-hidden="true" class="photo-edit icon"></i></button>
+                        </div>
+                        <div class="text-info">
+                            <div class="name">
+                                김유니
+                            </div>
+                            <div class="part">
+                                <span>SK C&C</span><span>플랫폼 개발 1팀</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="cell-inner">
+                        <div class="ui statistic total-time">
+                            <button class="button btn-total-time" onclick="window.open('../mypage/MY-01-01-P03.html')">
+                                <span class="ui label onlytext"><i aria-hidden="true" class="total-time icon"></i><span>총 학습시간</span></span>
+                                <span class="value2">
+                                <strong>120</strong><span>h</span>
+                                <strong class="min">00</strong><span>m</span>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="chart-wrap">
+                            <div class="ui pie w56" data-value="150">
+                                <span class="left"></span>
+                                <span class="right"></span>
+                            </div>
+                            <div class="ui list">
+                                <dl class="item sk">
+                                    <dt>SUNI</dt>
+                                    <dd>14h 50m</dd>
+                                </dl>
+                                <dl class="item my">
+                                    <dt>My company</dt>
+                                    <dd>35h 30m</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="stamp-wrap">
+                        <div class="ui stamp label">
+                            <div><span class="text1">획득가능</span></div>
+                            <div><i class="icon stamp35"></i><span class="text2">x</span><span class="text3">12</span></div>
+                        </div>
+                        <div class="year">
+                            <div class="ui inline dropdown tight">
+                                <div class="text">2019</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item">2019</div>
+                                    <div class="item">2018</div>
+                                    <div class="item">2017</div>
+                                    <div class="item">2016</div>
+                                    <div class="item">2015</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="channel-of-interest">
+                <div class="table-css type2">
+                    <div class="row">
+                        <div class="cell vtop">
+                            <div class="tit-set">관심 Channel(32)<button class="ui icon button img-icon" onclick="window.open('../mypage/MY-01-01-P02-2.html')"><i class="setting17 icon"></i><span class="blind">setting</span></button></div>
+                        </div>
+                        <div class="cell vtop">
+                            <div class="item-wrap">
+                                <!-- .active // -->
+                                <div class="belt">
+                                    <div class="ui channel label">AI</div>
+                                    <div class="ui channel label">Design</div>
+                                    <div class="ui channel label">Database</div>
+                                    <div class="ui channel label">Project Managing</div>
+                                    <div class="ui channel label">디자인 방법론</div>
+                                    <div class="ui channel label">Engineering</div>
+                                    <div class="ui channel label">Production Data Analysis</div>
+                                    <div class="ui channel label">DT Basics</div>
+                                    <div class="ui channel label">Value</div>
+                                    <div class="ui channel label">Mindfulness</div>
+                                    <div class="ui channel label">AI</div>
+                                    <div class="ui channel label">Design</div>
+                                    <div class="ui channel label">Database</div>
+                                    <div class="ui channel label">Project Managing</div>
+                                    <div class="ui channel label">디자인 방법론</div>
+                                    <div class="ui channel label">Engineering</div>
+                                    <div class="ui channel label">Production Data Analysis</div>
+                                    <div class="ui channel label">DT Basics</div>
+                                    <div class="ui channel label">Value</div>
+                                    <div class="ui channel label">Mindfulness</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell vtop">
+                            <div class="toggle-btn">
+                                <!-- .active // -->
+                                <button class="ui icon button img-icon"><i class="sum-open icon"></i><span class="blind">open</span></button>
+                                <button class="ui icon button img-icon"><i class="sum-close icon"></i><span class="blind">close</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="ui tab-menu offset0 sticky">
+            <div class="cont-inner">
+                <div class="ui sku menu">
+                    <a class="item" data-tab="first">Completed List</a>
+                    <a class="active item" data-tab="second">Earned Stamp List</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui full segment">
+
+            <!-- data-tab="first" -->
+            <div class="ui tab" data-tab="first">
+                <div class="top-guide-title">
+                    <div class="list-number">총 <strong>3개</strong>의 리스트가 있습니다.</div>
+                    <button class="ui icon left button post" onclick="window.open('../common/MY-01-01-P04.html')"><i aria-hidden="true" class="filter2 icon"></i>Filter</button>
+                </div>
+                <div class="ui cards list-cards">
+                    <div class="ui card">
+                        <div class="card-inner">
+                            <!--썸네일-->
+                            <div class="thumbnail"></div>
+                            <!--//썸네일-->
+                            <div class="title-area">
+                                <div class="ui color teal label">Management</div>
+                                <div class="header"><a href="../learning/ML-05-01.html" target="_blank">Machine learning Complete Guide for Calculus - Deep ning Complning Compl</a></div>
+                                <div class="icon-area">
+                                    <div class="ui label onlytext"><i aria-hidden="true" class="date icon"></i><span>Completed date : 2019.01.31</span></div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="ui button icon-big-line" onclick="window.open('../learning/ML-05-01.html')"><i class="icon play2"></i><span>View Details</span></button>
+                            </div>
+                            <div class="time-area">
+                                <div class="location">
+                                    <div class="ui label bold onlytext"><i aria-hidden="true" class="course icon"></i><span>Course</span></div>
+                                </div>
+                                <div class="stamp">Stamp<strong>x2</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card">
+                        <div class="card-inner">
+                            <!--썸네일-->
+                            <div class="thumbnail"></div>
+                            <!--//썸네일-->
+                            <div class="title-area">
+                                <div class="ui color teal label">Management</div>
+                                <div class="header"><a href="../learning/ML-05-01.html" target="_blank">Machine learning Complete Guide for Calculus - Deep ning Complning Compl</a></div>
+                                <div class="icon-area">
+                                    <div class="ui label onlytext"><i aria-hidden="true" class="date icon"></i><span>Completed date : 2019.01.31</span></div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="ui button icon-big-line" onclick="window.open('../learning/ML-05-01.html')"><i class="icon play2"></i><span>View Details</span></button>
+                            </div>
+                            <div class="time-area">
+                                <div class="location">
+                                    <div class="ui label bold onlytext"><i aria-hidden="true" class="course icon"></i><span>Course</span></div>
+                                </div>
+                                <div class="stamp">Stamp<strong>x2</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card">
+                        <div class="card-ribbon-wrap">
+                            <div class="ui ribbon2 label">Required</div>
+                        </div>
+                        <div class="card-inner">
+                            <!--썸네일-->
+                            <div class="thumbnail">
+                                <!--썸네일 이미지-->
+                                <img class="ui small image" src="http://placehold.it/60x60" alt="임시이미지">
+                            </div>
+                            <!--//썸네일-->
+                            <div class="title-area">
+                                <div class="ui color blue label">Leadership</div>
+                                <div class="header"><a href="../learning/ML-05-01.html" target="_blank">Machine learning Complete Guide for Calculus - Deep ning Complning Compl</a></div>
+                                <div class="icon-area">
+                                    <div class="ui label onlytext"><i aria-hidden="true" class="date icon"></i><span>Completed date : 2019.01.31</span></div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="ui button icon-big-line" onclick="window.open('../learning/ML-05-01.html')"><i class="icon play2"></i><span>View Details</span></button>
+                            </div>
+                            <div class="time-area">
+                                <div class="location">
+                                    <div class="ui label bold onlytext"><i aria-hidden="true" class="e-learning icon"></i><span>e-learning</span></div>
+                                </div>
+                                <div class="time">
+                                    <strong>50</strong><span>h</span><strong class="ml9">27</strong><span>m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card">
+                        <div class="card-ribbon-wrap">
+                            <div class="ui ribbon2 label">Required</div>
+                        </div>
+                        <div class="card-inner">
+                            <!--썸네일-->
+                            <div class="thumbnail">
+                                <!--썸네일 이미지-->
+                                <img class="ui small image" src="http://placehold.it/60x60" alt="임시이미지">
+                            </div>
+                            <!--//썸네일-->
+                            <div class="title-area">
+                                <div class="ui color blue label">Leadership</div>
+                                <div class="header"><a href="../learning/ML-05-01.html" target="_blank">Machine learning Complete Guide for Calculus - Deep ning Complning Compl</a></div>
+                                <div class="icon-area">
+                                    <div class="ui label onlytext"><i aria-hidden="true" class="date icon"></i><span>Completed date : 2019.01.31</span></div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="ui button icon-big-line" onclick="window.open('../learning/ML-05-01.html')"><i class="icon play2"></i><span>View Details</span></button>
+                            </div>
+                            <div class="time-area">
+                                <div class="location">
+                                    <div class="ui label bold onlytext"><i aria-hidden="true" class="e-learning icon"></i><span>e-learning</span></div>
+                                </div>
+                                <div class="time">
+                                    <strong>50</strong><span>h</span><strong class="ml9">27</strong><span>m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card">
+                        <div class="card-ribbon-wrap">
+                            <div class="ui ribbon2 label">Required</div>
+                        </div>
+                        <div class="card-inner">
+                            <!--썸네일-->
+                            <div class="thumbnail">
+                                <!--썸네일 이미지-->
+                                <img class="ui small image" src="http://placehold.it/60x60" alt="임시이미지">
+                            </div>
+                            <!--//썸네일-->
+                            <div class="title-area">
+                                <div class="ui color blue label">Leadership</div>
+                                <div class="header"><a href="../learning/ML-05-01.html" target="_blank">Machine learning Complete Guide for Calculus - Deep ning Complning Compl</a></div>
+                                <div class="icon-area">
+                                    <div class="ui label onlytext"><i aria-hidden="true" class="date icon"></i><span>Completed date : 2019.01.31</span></div>
+                                </div>
+                            </div>
+                            <div class="btn-area">
+                                <button class="ui button icon-big-line" onclick="window.open('../learning/ML-05-01.html')"><i class="icon play2"></i><span>View Details</span></button>
+                            </div>
+                            <div class="time-area">
+                                <div class="location">
+                                    <div class="ui label bold onlytext"><i aria-hidden="true" class="e-learning icon"></i><span>e-learning</span></div>
+                                </div>
+                                <div class="time">
+                                    <strong>50</strong><span>h</span><strong class="ml9">27</strong><span>m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="more-comments">
+                    <button class="ui icon left button moreview"><i aria-hidden="true" class="moreview icon"></i>list more</button>
+                </div>
+            </div>
+            <!-- // data-tab="first" -->
+            <!-- data-tab="second" -->
+            <div class="ui tab active" data-tab="second">
+                <div class="no-cont-wrap">
+                    <i class="icon no-contents80"><span class="blind">콘텐츠 없음</span></i>
+                    <div class="text">획득한 Stamp가 없습니다.</div>
+                </div>
+            </div>
+            <!-- // data-tab="second" -->
+
+        </div>
+    </section>
+    <!-- // .content -->
+    <!-- .quick -->
+    <section class="quick">
+        <div class="cont-inner">
+            <div class="q-group">
+                <a href="#top" class="ui top button">TOP</a>
+                <button class="ui quick button"></button><!-- .active // -->
+
+                <div class="quick-menu">
+                    <div class="ui quick-black horizontal buttons">
+                        <button onclick="window.open('../learning/ML-02-02.html')" class="ui button"><i aria-hidden="ture" class="learning32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Learning</button>
+                        <button onclick="window.open('../community/CM-08-01.html')" class="ui button"><i aria-hidden="ture" class="community32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Community</button>
+                        <button onclick="window.open('../support/SU-03-01.html')" class="ui button"><i aria-hidden="ture" class="support32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Support</button>
+                    </div>
+                    <div class="ui quick-black vertical buttons">
+                        <button onclick="window.open('../introduction/IN_01_01.html')" class="ui button"><i aria-hidden="ture" class="building icon"></i>mySUNI Introduction</button>
+                        <button onclick="window.open('../mypage/MY-01-01-P02.html')" class="ui button"><i aria-hidden="ture" class="admin icon"></i>관심 Channel</button>
+                        <button onclick="window.open('../common/CO-05-01.html')" class="ui button"><i aria-hidden="ture" class="sitemap icon"></i>Site Map</button>
+                        <button class="ui button"><i aria-hidden="ture" class="admin24 icon"></i>Admin Site</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .quick -->
+    <!-- .footer -->
+    <section class="footer">
+        <div class="cont-inner">
+            <i class="s-kuniversity icon"><span class="blind">my SUNI</span></i>
+            <div class="f-copyright">
+                COPYRIGHT<i class="copyright icon"><span class="blind">copyright sign</span></i>mySUNI. ALL RIGHTS RESERVED.
+            </div>
+            <div class="f-nav">
+                <a href="../introduction/IN-01-01.html" target="_blank" class="item">Introduction</a>
+                <a href="../support/SU-01-01.html" target="_blank" class="item">공지사항</a>
+                <a href="../support/SU-02-01.html" target="_blank" class="item">FAQ</a>
+                <a href="../support/SU-03-01.html" target="_blank" class="item">문의하기</a>
+                <a href="../common/CO-03-02.html" target="_blank" class="item active">개인정보 처리방침</a>
+            </div>
+            <div class="ui country buttons">
+                <button class="ui button active">KR</button>
+                <button class="ui button">EN</button>
+            </div>
+        </div>
+    </section>
+    <!-- // .footer -->
+    <script>
+        /**
+         * comment  : semantic-ui 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+
+
+        /* 국가 선택 */
+        var $buttons = $('.ui.buttons.country .button'),
+            handler = {
+                activate: function() {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                },
+                toggleReplies: function() { // 덧글 
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active').text('View Replies');
+                        $(this).closest('.comment').find('.comments, .more').addClass('collapsed');
+                    } else {
+                        $(this).addClass('active').text('Hide Replies');
+                        $(this).closest('.comment').find('.comments, .more').removeClass('collapsed');
+                    }
+                },
+            }
+        $buttons.on('click', handler.activate);
+        /* 스틱키 */
+        $('.ui.sticky.offset0').visibility({
+            type: 'fixed',
+            offset: 0
+        });
+        $('.ui.sticky.offset48').visibility({
+            type: 'fixed',
+            offset: 48
+        });
+        $('#example3 .ui.sticky').sticky({
+            context: '#example3',
+            offset: 150
+        });
+        /* 퀵메뉴  */
+        $toggle = $('button.quick');
+        $toggle.state();
+
+        /* 탭 */
+        $('.menu .item').tab();
+        /* 체크박스 라디오버튼 */
+        $('.ui.checkbox').checkbox();
+
+        /* 덧글 대댓글 토글 버튼 */
+        $reply = $('.cmt');
+        $reply.on('click', handler.toggleReplies);
+
+        /* dropdown : 선택시 추가 텍스트가 필요하면 data-add속성 사용 */
+
+        $('.ui.dropdown').dropdown({
+            onChange: function(val, text, choice) {
+                if (this.getAttribute("data-add") !== undefined && this.getAttribute("data-add") !== null) {
+                    this.getElementsByClassName("text")[0].innerHTML = text + this.getAttribute("data-add");
+                }
+            }
+        });
+
+
+        /* ML-03-01 : 시작일 종료일 */
+        if ($('#rangestart').length) {
+            $('#rangestart').calendar({
+                type: 'date',
+                endCalendar: $('#rangeend'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        if ($('#rangeend').length) {
+            $('#rangeend').calendar({
+                type: 'date',
+                startCalendar: $('#rangestart'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        /* MY-01-01-P02 : 아코디언 */
+
+        $('.select-area .accordion').accordion({
+            selector: {
+                trigger: '.title'
+            },
+            exclusive: false
+        });
+
+        /* CM-01-01 : 아코디언 */
+
+        $('.community-accordion .accordion').accordion({
+            selector: {
+                trigger: '.dropdown'
+            }
+        });
+
+        /*LO-07-01 hover시 popup*/
+        $('label.pop').popup({
+            inline: false,
+            hoverable: true,
+            position: 'bottom left'
+        });
+
+
+        /* 탭 기능 */
+        $('.ui.sku.menu').tab();
+
+        /*button toggle 공통 (CO-05-01-01,RC-01-01) */
+        $('.ui.button.toggle').state();
+
+        /**
+         * comment  : ui.js 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+        (function() {
+            ui.fxInit();
+        })();
+    </script>
+</body>
+
+</html>

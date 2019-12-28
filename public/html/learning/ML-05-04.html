@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>SUNI</title>
+    <link rel="stylesheet" href="../../css/semantic.min.css">
+    <link rel="stylesheet" href="../../css/calendar.min.css">
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- vendor prefix version
+<link rel="stylesheet" href="../../css/style.min.css">
+-->
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/semantic.min.js"></script>
+    <script src="../../js/state.min.js"></script>
+    <script src="../../js/calendar.min.js"></script>
+    <script src="../../js/modal.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/ui.js"></script>
+</head>
+
+
+<body>
+    <!-- .header -->
+    <section class="header">
+        <div class="group">
+            <div class="cont-inner">
+                <div class="g-logo">
+                    <a href="../main/MA-01-01.html" target="_blank">
+                        <i class="sk-university icon"><span class="blind">my SUNI</span></i>
+                    </a>
+                </div>
+                <div class="g-menu-detail">
+                    <button class="ui detail-open">
+                        <button class="ui detail-open">Category</button>
+                    </button>
+                    <div class="layer">
+                        <div class="table-css">
+                            <div class="row head">
+                                <div class="cell v-middle">College</div>
+                                <div class="cell v-middle">Channel</div>
+                            </div>
+                            <div class="row body">
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button class="active">AI</button><!-- .active 활성화 // -->
+                                            <button>DT</button>
+                                            <button>행복</button>
+                                            <button>SV</button>
+                                            <button>혁신디자인</button>
+                                            <button>Global</button>
+                                            <button>Leadership</button>
+                                            <button>Management</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button onclick="window.open('../common/CO-05-01-01.html')">AI 전체보기 <span>(125)</span></button>
+                                            <button onclick="window.open('../common/CO-05-01-04.html')">AI Fundamental <span>(34)</span></button>
+                                            <button>AI Biz. Implemetation <span>(20)</span></button>
+                                            <button>AI Tech Essential <span>(14)</span></button>
+                                            <button>Computer Vison AI <span>(20)</span></button>
+                                            <button>Language AI <span>(13)</span></button>
+                                            <button>Speech AI <span>(8)</span></button>
+                                            <button>AI Tech Advanced <span>(13)</span></button>
+                                            <button>AI technologies <span>(3)</span></button>
+                                            <button>AI Digital Reasoning <span>(19)</span></button>
+                                            <button>AI Lucidworks <span>(15)</span></button>
+                                            <button>AI Narrative Science <span>(12)</span></button>
+                                            <button>AI SAS <span>(8)</span></button>
+                                            <button>AI Yseop <span>(5)</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="window.open('../mypage/MY-01-01-P02-2.html')" class="ui icon button img-icon change-channel-of-interest"><span class="underline">관심 Channel 변경<i class="setting17 icon"></i></button>
+                    <button class="ui close"><i class="new16x17 icon"><span class="blind">close</span></i></button>
+                    </div>
+                </div>
+                <div class="g-menu">
+                    <div class="nav">
+                        <a href="../learning/ML-02-02.html" target="_blank" class="item active">Learning</a><!-- .active // -->
+                        <a href="../community/CM-01-01.html" target="_blank" class="item">Community</a>
+                        <a href="../recommend/RC-01-01.html" target="_blank" class="item">Recommend</a>
+                        <a href="../create/CR-01-02.html" target="_blank" class="item">Create</a>
+                    </div>
+                </div>
+                <div class="g-search">
+                    <div class="ui h38 search input">
+                        <input type="text" placeholder="Search" value="" />
+                        <i aria-hidden="true" class="clear link icon"></i>
+                        <a href="../search/SE-01-01.html" target="_blank"><i aria-hidden="true" class="search link icon"></i></a>
+                    </div>
+                </div>
+                <div class="g-info">
+                    <button onclick="window.open('../mypage/MY-01-01.html')" class="ui user image label">
+                        <span class="name">김유니</span>
+                        <span class="affiliation">SK C&C  플랫폼 개발 1팀</span>
+                        <img src="../../img/profile-36-px.png" alt="profile" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumbs">
+            <div class="cont-inner">
+                <div class="ui standard breadcrumb">
+                    <a class="section">Home</a>
+                    <i class="right chevron icon divider"></i>
+                    <a class="section">depth1</a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">depth2</div>
+                </div>
+                <div class="right">
+                    <a href="../support/SU-01-01.html" target="_blank">
+                        <i class="support12 icon"></i>
+                        <span>Support</span>
+                        <i class="arrow8 black-jump icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .header -->
+    <!-- .content -->
+    <section class="content mylearning">
+        <div class="main-info-area">
+            <div class="main-info-wrap">
+                <!--썸네일-->
+                <div class="thumbnail">
+                    <!--썸네일 이미지 영역-->
+                </div>
+                <!--//썸네일-->
+                <div class="title-area">
+                    <div class="ui color blue label">Leadership</div>
+                    <div class="header">Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석</div>
+                    <div class="deatil">
+                        <div class="item">
+                            <div class="ui label onlytext bold"><i aria-hidden="true" class="e-learning icon"></i><span>E-learning</span></div>
+                            <span class="channel">Leading Myself</span>
+                        </div>
+                        <div class="item">
+                            <div class="ui label onlytext">
+                                <i aria-hidden="true" class="date icon"></i><span>Creation date : 2019.12.31</span>
+                                <span class="ml17">Study start date, end date : 2020.12.31  ~  2020.02.20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-area">
+                    <!--별 개수 표시는 .s5~s1 클래스명에 따라 달라짐-->
+                    <div class="fixed-rating s4">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui summary offset0 sticky">
+            <div class="cont-inner">
+                <div class="ui color blue label">leadership</div>
+                <span class="detail-tit">Open Source를 활용한 Big Data 기반 플랫폼을 이용한 데이터 분석</span>
+            </div>
+        </div>
+        <div class="ui tab-menu offset48 sticky">
+            <div class="cont-inner">
+                <div class="ui sku menu">
+                    <a class="active item" data-tab="first">Overview</a>
+                    <a class="item" data-tab="second">Comment<span class="count">+12</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="ui full segment">
+            <div class="ui tab active" data-tab="first">
+                <!--우측 sub info -->
+                <div class="sub-info-wrap">
+                    <div class="sub-info-box">
+                        <!--Required-->
+                        <div class="pd30">
+                            <!--버튼영역-->
+                            <div class="btn-area">
+                                <button class="ui button fix bg">Enrollment</button>
+                            </div>
+                            <!--Level-->
+                            <div class="level-wrap">
+                                <span class="level-txt step1">Basic</span>
+                                <div class="ui steps level unstackable">
+                                    <div class="step active"><span class="blind">Lv.1</span></div>
+                                    <div class="step"><span class="blind">Lv.2</span></div>
+                                    <div class="step"><span class="blind">Lv.3</span></div>
+                                    <div class="step"><span class="blind">Lv.4</span></div>
+                                </div>
+                            </div>
+                            <!-- 학습시간, 인원-->
+                            <div class="ui list class-info1">
+                                <div class="item">
+                                    <div class="ui">
+                                        <div class="label">Time</div>
+                                        <div class="value">12h 20m</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui">
+                                        <div class="label">정원정보</div>
+                                        <div class="value">240</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="ui">
+                                        <div class="label">이수 인원</div>
+                                        <div class="value">1,250</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--강사, 담당자-->
+                            <div class="ui list class-info2">
+                                <div class="item">
+                                    <div class="header">강사</div>
+                                    <div class="description">김수현</div>
+                                </div>
+                                <div class="item">
+                                    <div class="header">담당자</div>
+                                    <div class="description">김수현<span class="middot">SK telecom</span>
+                                        <br /><a href="mailto:univ@sk.com" class="underlink">univ@sk.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--북마크/공유-->
+                        <div class="foot-buttons">
+                            <button class="ui icon button img-icon"><i aria-hidden="true" class="bookmark2 icon"></i><span class="blind">북마크</span></button>
+                            <button class="ui icon button img-icon"><i aria-hidden="true" class="share2 icon"></i><span class="blind">공유</span></button>
+                        </div>
+                    </div>
+                    <button class="ui button surv"><span>Join Survey</span><i class="icon ar-survay"></i></button>
+                </div>
+                <!--//우측 sub info-->
+
+                <!--좌측 contents-->
+                <div class="contents overview">
+                    <!--교육내용 (필수)-->
+                    <div class="class-guide-txt">
+                        UI/UX의 세계로 들어가도 어디서부터 시작해야 할지 모르겠나요?<br />
+                    이 과정을 통해 당신은 당신의 CV에 UX 디자이너를 추가하고 당신의 새로운 기술에 대한 보수를 받기 시작할 수 있을 것입니다.<br/><br/>
+                    안녕하세요. 내 이름은 홍길동이며, Adobe Certified 강사입니다. 어도비 XD를 효율적이고 포괄적으로 배울 수 있도록 도와주러 이 강좌를 개설하였습니다. XD는 업계 전문가들이 고품질의 기능성 모형을 생산하기 위해 사용하는 환상적인 디자인 도구입니다. 본 코스를 통해 실용적이고 효과적인 UX(User Experience) 및 UI(User Interface) 설계를 제작할 수 있습니다.
+                </div>
+                        <!--//교육내용-->
+                        <!--파일다운로드 (선택)-->
+                        <div class="download-file">
+                            <div class="label-wrap">
+                                <div class="ui label onlytext size24"><i aria-hidden="true" class="file2 icon"></i><span>Download the learning materials that come with this class.</span></div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button onclick="window.open('../learning/ML-05-P03.html')" class="ui icon left button icon-big-line2"><i class="icon download2"></i><span>Download File</span></button>
+                            </div>
+                        </div>
+                        <!--//파일 다운로드-->
+
+                        <!--Sub Category
+                    .open추가 시 : hide 버튼 show / more 버튼 hide / list 높이 auto
+                -->
+                        <div class="ov-paragraph sub-category fn-parents open">
+                            <h3 class="title-style">
+                                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="category icon"></i><span>Sub Category</span></div>
+                            </h3>
+                            <div class="ui bulleted list">
+                                <div class="item">
+                                    <div class="title">AI</div>
+                                    <div class="detail">
+                                        AI Biz Essential / AI Tech Biginner / Language AI / AI Tech Advanced / Speech AI
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">Leadership</div>
+                                    <div class="detail">
+                                        Leadership / Leading Myself / Leading Business / Leadership Pipeline / Leadership Clinic Leadership / Leading Myself / Leading Business / Leadership Pipeline
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">DT</div>
+                                    <div class="detail">
+                                        Leadership / Leading Myself / Leading Business / Leadership Pipeline / Leadership Clinic Leadership / Leading Myself / Leading Business / Leadership Pipeline
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="ui icon right btn-blue btn-more fn-more-toggle">more<i class="icon more2"></i></button>
+                            <button class="ui icon right btn-blue btn-hide fn-more-toggle">hide<i class="icon hide2"></i></button>
+                        </div>
+                        <!--//Sub Category-->
+
+                        <!--기간-->
+                        <div class="ov-paragraph period-area">
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="period icon"></i><span>Registration period</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">2020.01.01 ~ 2020.02.01</div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="cancellation icon"></i><span>Cancellation period</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">
+                                        2020.01.15 ~ 2020.01.25
+                                        <div class="info">Cancellation penalty : 2020 of the lecture fee and no application for training for three months </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--//기간-->
+
+                        <!--강좌소개영역1-->
+                        <div class="ov-paragraph">
+                            <!--차수-->
+                            <div class="series-wrap">
+                                <h3 class="title-style">
+                                    <div class="ui label onlytext bold size24"><i aria-hidden="true" class="series icon"></i><span>Class Series</span></div>
+                                </h3>
+                                <button onclick="window.open('../learning/ML-05-P01.html')" class="ui icon right btn-blue">more<i class="icon morelink"></i></button>
+                                <table class="ui celled table">
+                                    <thead>
+                                        <tr>
+                                            <th>차수</th>
+                                            <th>강사</th>
+                                            <th>장소</th>
+                                            <th>수강신청 기간</th>
+                                            <th>시작일 및 종료일</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="num">1</td>
+                                            <td class="teacher"><span>손흥민이이이이</span></td>
+                                            <td class="location"><span>SKSK planet 본사 4층 미팅룸SK planet 본사 4층 미팅룸 planet 본사 4층 미팅룸</span></td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="num">2</td>
+                                            <td class="teacher"><span>손흥</span></td>
+                                            <td class="location"><span>SKSK plane팅룸</span></td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="num">3</td>
+                                            <td class="teacher"><span>손흥민</span></td>
+                                            <td class="location"><span>SKSK planet 본사 4층 미팅룸SK planet 본사 4층 미팅룸 planet 본사 4층 미팅룸</span></td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="num">4</td>
+                                            <td class="teacher"><span>손흥민</span></td>
+                                            <td class="location"><span>SKSK planet 본사 4층 미팅룸</span></td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                            <td class="center">2019.01.02 ~ 2019.02.24</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--//차수-->
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="goal icon"></i><span>Goal</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">UX 디자이너가 되기위한 발걸음</div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="target icon"></i><span>Target</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">SUNI 모든 회원</div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="host icon"></i><span>Host</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">SK커뮤니케이션즈</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--//강좌소개영역1-->
+
+                        <!--강좌소개영역2-->
+                        <div class="ov-paragraph info-box2">
+                            <div class="ui bulleted list">
+                                <div class="item">
+                                    <div class="title">Place</div>
+                                    <div class="detail">SK Telecom 본사 11층 대회의실</div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">Requirements</div>
+                                    <div class="detail">총 강의 3시간 중 전제적인 분위기가 다운되지 않으면 됨</div>
+                                </div>
+                                <div class="item">
+                                    <div class="title">Other Guides</div>
+                                    <div class="detail">주말 학습장소는 주차공간이 협소하니 대중교통을 이용해 주시기 바랍니다. 주말 학습장소는 주차공간이 협소하니 대중교통을 이용해 주시기 바랍니다. 주말 학습장소는 주차공간이 협소하니 대중교통을 이용해 주시기 바랍니다. 주말 학습장소는 주차공간이 협소하니 대중교통을 이용해 주시기 바랍니다.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--//강좌소개영역2-->
+
+                        <!--url 정보-->
+                        <!--
+                    <div class="ov-paragraph">
+                    <div class="ui list">
+                        <div class="item">
+                            <div class="title">
+                                <h3 class="title-style"><div class="ui label onlytext bold size24"><i aria-hidden="true" class="url icon"></i><span>URL 정보</span></div></h3>
+                            </div>
+                            <div class="detail"><a href="#" class="link-style">https://SKuniversity.com/front/courseinfo/campus.action</a></div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                        <!--//url 정보-->
+
+                        <!--태그-->
+                        <div class="ov-paragraph tag-wrap">
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="title">
+                                        <h3 class="title-style">
+                                            <div class="ui label onlytext bold size24"><i aria-hidden="true" class="tag2 icon"></i><span>Tag</span></div>
+                                        </h3>
+                                    </div>
+                                    <div class="detail">
+                                        <span class="ui label tag">AI</span>
+                                        <span class="ui label tag">Database</span>
+                                        <span class="ui label tag">Design</span>
+                                        <span class="ui label tag">Project Managing</span>
+                                        <span class="ui label tag">Project Managing</span>
+                                        <span class="ui label tag">AI</span>
+                                        <span class="ui label tag">AI</span>
+                                        <span class="ui label tag">AI</span>
+                                        <span class="ui label tag">Database</span>
+                                        <span class="ui label tag">Design</span>
+                                        <span class="ui label tag">Project Managing</span>
+                                        <span class="ui label tag">Project Managing</span>
+                                        <span class="ui label tag">AI</span>
+                                        <span class="ui label tag">AI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--//태그-->
+                    </div>
+                    <!--좌측 contents-->
+                </div>
+                <div class="ui tab" data-tab="second">
+                    <!--우측 sub info -->
+                    <div class="sub-info-wrap">
+                        <div class="sub-info-box">
+                            <!--Required-->
+                            <div class="ui ribbon2 label">Required</div>
+                            <div class="pd30">
+                                <!--버튼영역-->
+                                <div class="btn-area">
+                                    <button onclick="window.open('../learning/ML-05-P02.html')" class="ui button fix bg">Enrollment</button>
+                                </div>
+                                <!--Level-->
+                                <div class="level-wrap">
+                                    <span class="level-txt step4">Expert</span>
+                                    <div class="ui steps level unstackable">
+                                        <div class="step"><span class="blind">Lv.1</span></div>
+                                        <div class="step"><span class="blind">Lv.2</span></div>
+                                        <div class="step"><span class="blind">Lv.3</span></div>
+                                        <div class="step active"><span class="blind">Lv.4</span></div>
+                                    </div>
+                                </div>
+                                <!-- 학습시간, 인원-->
+                                <div class="ui list class-info1">
+                                    <div class="item">
+                                        <div class="ui">
+                                            <div class="label">Time</div>
+                                            <div class="value">12h 20m</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="ui">
+                                            <div class="label">정원정보</div>
+                                            <div class="value">240</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="ui">
+                                            <div class="label">이수 인원</div>
+                                            <div class="value">1,250</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--강사, 담당자-->
+                                <div class="ui list class-info2">
+                                    <div class="item">
+                                        <div class="header">강사</div>
+                                        <div class="description">김수현</div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="header">담당자</div>
+                                        <div class="description">김수현<span class="middot">SK telecom</span>
+                                            <br /><a href="mailto:univ@sk.com" class="underlink">univ@sk.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--북마크/공유-->
+                            <div class="foot-buttons">
+                                <button class="ui icon button img-icon"><i aria-hidden="true" class="bookmark2 icon"></i><span class="blind">북마크</span></button>
+                                <button class="ui icon button img-icon"><i aria-hidden="true" class="share2 icon"></i><span class="blind">공유</span></button>
+                            </div>
+                        </div>
+                        <button class="ui button surv"><span>Join Survey</span><i class="icon ar-survay"></i></button>
+                    </div>
+                    <!--//우측 sub info-->
+                    <!--좌측 contents-->
+                    <div class="contents comment">
+                        <!-- .comment-star-rating -->
+                        <div class="comment-star-rating">
+                            <div class="table-css">
+                                <div class="row">
+                                    <div class="cell vtop">
+                                        <div class="ws">
+                                            <span class="t">Total</span>
+                                            <span class="c">51,378</span>
+                                            <span class="fixed-rating s4">
+                                        <span></span><span></span><span></span><span></span><span></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="cell vtop">
+                                        <div class="ws">
+                                            <span class="dash"></span>
+                                            <span class="t">The score I gave </span>
+                                            <div class="ui rating line" data-max-rating="5"></div>
+
+
+                                            <!--
+                                    <span class="fixed-rating line">
+                                        <span></span><span></span><span></span><span></span><span></span>
+                                    </span>
+                                    -->
+                                            <!--
+                                    <button class="ui orange-arrow button"><i aria-hidden="true" class="post icon"></i>Modify</button>
+                                    -->
+                                            <button class="ui orange-arrow button"><i aria-hidden="true" class="post icon"></i>Register</button>
+                                        </div>
+                                        <!--
+                                <div class="update-date">2019.01.10</div>
+                                -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- // .comment-star-rating -->
+                        <!-- .reply -->
+                        <form class="ui base reply form">
+                            <div class="outline">
+                                <div class="field">
+                                    <textarea placeholder="Writing..."></textarea>
+                                </div>
+                                <div class="more">
+                                    <div class="count"><span class="now">0</span>/<span class="max">500</span></div>
+                                    <button class="ui submit button">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- // .reply -->
+                        <!-- .comments-sort -->
+                        <div class="comments-sort">
+                            <div class="ui base radio checkbox">
+                                <input type="radio" name="radio" checked="checked">
+                                <label>Newest</label>
+                            </div>
+                            <div class="ui base radio checkbox">
+                                <input type="radio" name="radio">
+                                <label>Oldest</label>
+                            </div>
+                        </div>
+                        <!-- // .comments-sort -->
+                        <!-- .comments -->
+                        <div class="ui base comments">
+                            <!-- .comment : 짧은 댓글 -->
+                            <div class="comment">
+                                <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                                <div class="content">
+                                    <span class="author">김연아</span>
+                                    <div class="metadata"><span class="date">2019.10.23</span></div>
+                                    <div class="text">
+                                        <div class="ellipsis">
+                                            <!-- .expend // -->
+                                            <span class="tag">@강하늘</span>
+                                            <span>이거 진짜 안들으면 후회합니다.</span>
+                                        </div>
+                                        <!-- 한줄일때는 숨김
+                                <button>+ View more</button>
+                                -->
+                                    </div>
+                                    <div class="actions">
+                                        <div class="right top">
+                                            <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                            <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                            <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comment -->
+                            <!-- .comment : 2줄이상 말줄임, 대댓글 -->
+                            <div class="comment">
+                                <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                                <div class="content">
+                                    <span class="author">김연아</span>
+                                    <div class="metadata"><span class="date">2019.10.23</span></div>
+                                    <div class="text">
+                                        <div class="ellipsis">
+                                            <!-- .expend // -->
+                                            <span class="tag">@강하늘</span>
+                                            <span>이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요.</span>
+                                        </div>
+                                        <button>+ View more</button>
+                                    </div>
+                                    <div class="actions">
+                                        <div class="right top">
+                                            <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                            <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                            <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                        </div>
+                                        <button class="cmt">View Replies</button><span class="count">3</span>
+                                    </div>
+                                </div>
+                                <!-- .comments -->
+                                <div class="comments collapsed">
+                                    <!-- .collapsed // -->
+                                    <div class="comment">
+                                        <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                        <div class="content">
+                                            <span class="empty">삭제된 댓글입니다.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- // .comments -->
+                                <!-- .comments -->
+                                <div class="comments collapsed">
+                                    <!-- .collapsed // -->
+                                    <div class="comment">
+                                        <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                        <div class="content">
+                                            <span class="empty">삭제된 댓글입니다.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- // .comments -->
+                                <!-- .comments -->
+                                <div class="comments collapsed">
+                                    <!-- .collapsed // -->
+                                    <div class="comment">
+                                        <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                        <div class="content">
+                                            <span class="empty">삭제된 댓글입니다.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- // .comments -->
+                            </div>
+                            <!-- // .comment -->
+                            <!-- .comment : 삭제된 댓글 -->
+                            <div class="comment">
+                                <span class="avatar"><i class="icon avatar56"><span class="blind">avatar</span></i></span>
+                                <div class="content">
+                                    <span class="empty h56">삭제된 댓글입니다.</span>
+                                </div>
+                            </div>
+                            <!-- // .comment -->
+                        </div>
+                        <!-- // .comments -->
+                        <!-- .more-comments -->
+                        <div class="more-comments"><button class="ui icon left button moreview"><i aria-hidden="true" class="moreview icon"></i>more comments (15)</button></div>
+                        <!-- // .more-comments -->
+                    </div>
+                    <!--좌측 contents-->
+                </div>
+            </div>
+    </section>
+    <!-- // .content -->
+    <!-- .quick -->
+    <section class="quick">
+        <div class="cont-inner">
+            <div class="q-group">
+                <a href="#top" class="ui top button">TOP</a>
+                <button class="ui quick button"></button><!-- .active // -->
+
+                <div class="quick-menu">
+                    <div class="ui quick-black horizontal buttons">
+                        <button onclick="window.open('../learning/ML-02-02.html')" class="ui button"><i aria-hidden="ture" class="learning32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Learning</button>
+                        <button onclick="window.open('../community/CM-08-01.html')" class="ui button"><i aria-hidden="ture" class="community32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Community</button>
+                        <button onclick="window.open('../support/SU-03-01.html')" class="ui button"><i aria-hidden="ture" class="support32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Support</button>
+                    </div>
+                    <div class="ui quick-black vertical buttons">
+                        <button onclick="window.open('../introduction/IN_01_01.html')" class="ui button"><i aria-hidden="ture" class="building icon"></i>mySUNI Introduction</button>
+                        <button onclick="window.open('../mypage/MY-01-01-P02.html')" class="ui button"><i aria-hidden="ture" class="admin icon"></i>관심 Channel</button>
+                        <button onclick="window.open('../common/CO-05-01.html')" class="ui button"><i aria-hidden="ture" class="sitemap icon"></i>Site Map</button>
+                        <button class="ui button"><i aria-hidden="ture" class="admin24 icon"></i>Admin Site</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .quick -->
+    <!-- .footer -->
+    <section class="footer">
+        <div class="cont-inner">
+            <i class="s-kuniversity icon"><span class="blind">my SUNI</span></i>
+            <div class="f-copyright">
+                COPYRIGHT<i class="copyright icon"><span class="blind">copyright sign</span></i>mySUNI. ALL RIGHTS RESERVED.
+            </div>
+            <div class="f-nav">
+                <a href="../introduction/IN-01-01.html" target="_blank" class="item">Introduction</a>
+                <a href="../support/SU-01-01.html" target="_blank" class="item">공지사항</a>
+                <a href="../support/SU-02-01.html" target="_blank" class="item">FAQ</a>
+                <a href="../support/SU-03-01.html" target="_blank" class="item">문의하기</a>
+                <a href="../common/CO-03-02.html" target="_blank" class="item active">개인정보 처리방침</a>
+            </div>
+            <div class="ui country buttons">
+                <button class="ui button active">KR</button>
+                <button class="ui button">EN</button>
+            </div>
+        </div>
+    </section>
+    <!-- // .footer -->
+    <script>
+        /**
+         * comment  : semantic-ui 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+
+
+        /* 국가 선택 */
+        var $buttons = $('.ui.buttons.country .button'),
+            handler = {
+                activate: function() {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                },
+                toggleReplies: function() { // 덧글 
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active').text('View Replies');
+                        $(this).closest('.comment').find('.comments, .more').addClass('collapsed');
+                    } else {
+                        $(this).addClass('active').text('Hide Replies');
+                        $(this).closest('.comment').find('.comments, .more').removeClass('collapsed');
+                    }
+                },
+            }
+        $buttons.on('click', handler.activate);
+        /* 스틱키 */
+        $('.ui.sticky.offset0').visibility({
+            type: 'fixed',
+            offset: 0
+        });
+        $('.ui.sticky.offset48').visibility({
+            type: 'fixed',
+            offset: 48
+        });
+        $('#example3 .ui.sticky').sticky({
+            context: '#example3',
+            offset: 150
+        });
+        /* 퀵메뉴  */
+        $toggle = $('button.quick');
+        $toggle.state();
+
+        /* 탭 */
+        $('.menu .item').tab();
+        /* 체크박스 라디오버튼 */
+        $('.ui.checkbox').checkbox();
+
+        /* 덧글 대댓글 토글 버튼 */
+        $reply = $('.cmt');
+        $reply.on('click', handler.toggleReplies);
+
+        /* dropdown : 선택시 추가 텍스트가 필요하면 data-add속성 사용 */
+
+        $('.ui.dropdown').dropdown({
+            onChange: function(val, text, choice) {
+                if (this.getAttribute("data-add") !== undefined && this.getAttribute("data-add") !== null) {
+                    this.getElementsByClassName("text")[0].innerHTML = text + this.getAttribute("data-add");
+                }
+            }
+        });
+
+
+        /* ML-03-01 : 시작일 종료일 */
+        if ($('#rangestart').length) {
+            $('#rangestart').calendar({
+                type: 'date',
+                endCalendar: $('#rangeend'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        if ($('#rangeend').length) {
+            $('#rangeend').calendar({
+                type: 'date',
+                startCalendar: $('#rangestart'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        /* MY-01-01-P02 : 아코디언 */
+
+        $('.select-area .accordion').accordion({
+            selector: {
+                trigger: '.title'
+            },
+            exclusive: false
+        });
+
+        /* CM-01-01 : 아코디언 */
+
+        $('.community-accordion .accordion').accordion({
+            selector: {
+                trigger: '.dropdown'
+            }
+        });
+
+        /*LO-07-01 hover시 popup*/
+        $('label.pop').popup({
+            inline: false,
+            hoverable: true,
+            position: 'bottom left'
+        });
+
+
+        /* 탭 기능 */
+        $('.ui.sku.menu').tab();
+
+        /*button toggle 공통 (CO-05-01-01,RC-01-01) */
+        $('.ui.button.toggle').state();
+
+        /**
+         * comment  : ui.js 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+        (function() {
+            ui.fxInit();
+        })();
+    </script>
+</body>
+
+</html>

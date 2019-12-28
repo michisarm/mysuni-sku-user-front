@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>SUNI</title>
+    <link rel="stylesheet" href="../../css/semantic.min.css">
+    <link rel="stylesheet" href="../../css/calendar.min.css">
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- vendor prefix version
+<link rel="stylesheet" href="../../css/style.min.css">
+-->
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/semantic.min.js"></script>
+    <script src="../../js/state.min.js"></script>
+    <script src="../../js/calendar.min.js"></script>
+    <script src="../../js/modal.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/ui.js"></script>
+</head>
+
+
+<body>
+    <!-- .header -->
+    <section class="header">
+        <div class="group">
+            <div class="cont-inner">
+                <div class="g-logo">
+                    <a href="../main/MA-01-01.html" target="_blank">
+                        <i class="sk-university icon"><span class="blind">my SUNI</span></i>
+                    </a>
+                </div>
+                <div class="g-menu-detail">
+                    <button class="ui detail-open">
+                        <button class="ui detail-open">Category</button>
+                    </button>
+                    <div class="layer">
+                        <div class="table-css">
+                            <div class="row head">
+                                <div class="cell v-middle">College</div>
+                                <div class="cell v-middle">Channel</div>
+                            </div>
+                            <div class="row body">
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button class="active">AI</button><!-- .active 활성화 // -->
+                                            <button>DT</button>
+                                            <button>행복</button>
+                                            <button>SV</button>
+                                            <button>혁신디자인</button>
+                                            <button>Global</button>
+                                            <button>Leadership</button>
+                                            <button>Management</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button onclick="window.open('../common/CO-05-01-01.html')">AI 전체보기 <span>(125)</span></button>
+                                            <button onclick="window.open('../common/CO-05-01-04.html')">AI Fundamental <span>(34)</span></button>
+                                            <button>AI Biz. Implemetation <span>(20)</span></button>
+                                            <button>AI Tech Essential <span>(14)</span></button>
+                                            <button>Computer Vison AI <span>(20)</span></button>
+                                            <button>Language AI <span>(13)</span></button>
+                                            <button>Speech AI <span>(8)</span></button>
+                                            <button>AI Tech Advanced <span>(13)</span></button>
+                                            <button>AI technologies <span>(3)</span></button>
+                                            <button>AI Digital Reasoning <span>(19)</span></button>
+                                            <button>AI Lucidworks <span>(15)</span></button>
+                                            <button>AI Narrative Science <span>(12)</span></button>
+                                            <button>AI SAS <span>(8)</span></button>
+                                            <button>AI Yseop <span>(5)</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="window.open('../mypage/MY-01-01-P02-2.html')" class="ui icon button img-icon change-channel-of-interest"><span class="underline">관심 Channel 변경<i class="setting17 icon"></i></button>
+                    <button class="ui close"><i class="new16x17 icon"><span class="blind">close</span></i></button>
+                    </div>
+                </div>
+                <div class="g-menu">
+                    <div class="nav">
+                        <a href="../learning/ML-02-02.html" target="_blank" class="item active">Learning</a><!-- .active // -->
+                        <a href="../community/CM-01-01.html" target="_blank" class="item">Community</a>
+                        <a href="../recommend/RC-01-01.html" target="_blank" class="item">Recommend</a>
+                        <a href="../create/CR-01-02.html" target="_blank" class="item">Create</a>
+                    </div>
+                </div>
+                <div class="g-search">
+                    <div class="ui h38 search input">
+                        <input type="text" placeholder="Search" value="" />
+                        <i aria-hidden="true" class="clear link icon"></i>
+                        <a href="../search/SE-01-01.html" target="_blank"><i aria-hidden="true" class="search link icon"></i></a>
+                    </div>
+                </div>
+                <div class="g-info">
+                    <button onclick="window.open('../mypage/MY-01-01.html')" class="ui user image label">
+                        <span class="name">김유니</span>
+                        <span class="affiliation">SK C&C  플랫폼 개발 1팀</span>
+                        <img src="../../img/profile-36-px.png" alt="profile" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumbs">
+            <div class="cont-inner">
+                <div class="ui standard breadcrumb">
+                    <a class="section">Home</a>
+                    <i class="right chevron icon divider"></i>
+                    <a class="section">depth1</a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">depth2</div>
+                </div>
+                <div class="right">
+                    <a href="../support/SU-01-01.html" target="_blank">
+                        <i class="support12 icon"></i>
+                        <span>Support</span>
+                        <i class="arrow8 black-jump icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .header -->
+    <!-- .content -->
+    <section class="content support">
+
+        <div class="post-view-wrap">
+            <!--post view -->
+            <div class="post-view">
+                <div class="title-area">
+                    <div class="title-inner">
+                        <div class="title">일이삼사오육칠팔구십일이삼사오육칠팔이십일이삼사오육칠팔삼십일이삼사오육칠팔사십일이삼사오육칠팔오십일이삼사오육칠팔육십일이삼사오육칠팔칠십일이삼사오육칠팔팔십일이삼사오육칠팔구십일이삼사오육칠팔구백</div>
+                        <div class="user-info">
+                            <span class="date">2020.01.06 14:33</span>
+                        </div>
+                        <div class="actions">
+                            <button class="ui icon left button postset commu-list16" onclick="window.open('../support/SU-01-01.html')"><i aria-hidden="true" class="commu-list16 icon"></i>List</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-area">
+                    <div class="content-inner">
+                        <p>과거에는 경제적 가치 창출만으로도 고객의 지지를 받고 사회로부터 존재 가치를 인정받을 수 있었습니다. 그러나 이제는 경제적 가치뿐 아니라 고객과 사회가 요구하는 여러 가치를 충족시 켜야만 기업의 지속 성장과 생존이 가능합니다.이에 SK는 사회적 가치 창출을 새로운 경영전략으로 추진함으로써 사회 구성원들로부터 견고한 지지를 받고, 이를 통해 이해관계자들의 행복을 극대화하고자 합니다.</p>
+                        <img src="../../img/img-800-x-450.jpg" alt="본문 임시이미지" />
+                        <p>
+                            ‘DBL(Double Bottom Line) 추구’란 경영 활동 전반에서 경제적 가치와 사회적 가치 창출을 동시에 추구하는 것을 의미합니다. SK는 DBL 추구를 통해 사회적 가치를 담아낼 수 있는 형태로 비즈니스 모델(Business Model, BM)의 혁신을 진행하고 있습니다. ‘DBL(Double Bottom Line) 추구’란 경영 활동 전반에서 경제적 가치와 사회적 가치 창출을 동시에 추구하는 것을 의미합니다. SK는 DBL 추구를 통해 사회적 가치를 담아낼 수 있는 형태로 비즈니스 모델(Business Model, BM)의 혁신을 진행하고 있습니다.<br/><br/>
+                    'DBL(Double Bottom Line) 추구’란 경영 활동 전반에서 경제적 가치와 사회적 가치 창출을 동시에 추구하는 것을 의미합니다. SK는 DBL 추구를 통해 사회적 가치를 담아낼 수 있는 형태로 비즈니스 모델(Business Model, BM)의 혁신을 진행하고 있습니다.
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui full segment">
+                <div class="comment-area">
+                    <!-- .reply-->
+                    <form class="ui base reply form">
+                        <div class="outline">
+                            <div class="field h173">
+                                <textarea placeholder="Writing..."></textarea>
+                            </div>
+                            <div class="more">
+                                <div class="count"><span class="now">0</span>/<span class="max">500</span></div>
+                                <button class="ui icon button img-icon photo"><i class="photo50 icon"></i><span class="blind">photo</span></button>
+                                <button class="ui submit button">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!--// .reply -->
+
+                    <!-- .comments -->
+                    <div class="ui base comments">
+                        <!-- .comment : 2줄이상 말줄임, 대댓글 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="text">
+                                    <div class="ellipsis">
+                                        <!-- .expend // -->
+                                        <span class="tag">@강하늘</span>
+                                        <span>이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요.</span>
+                                    </div>
+                                    <button>+ View more</button>
+                                </div>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                    <button class="cmt">View Replies</button><span class="count">3</span>
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 2줄이상 노출, 대댓글 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="text">
+                                    <div class="ellipsis">
+                                        <!-- .expend // -->
+                                        <span>이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요.</span>
+                                    </div>
+                                    <button>+ View more</button>
+                                </div>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                    <button class="cmt">View Replies</button><span class="count">3</span>
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 삭제된 댓글 -->
+                        <div class="comment">
+                            <span class="avatar"><i class="icon avatar56"><span class="blind">avatar</span></i></span>
+                            <div class="content">
+                                <span class="empty h56">삭제된 댓글입니다.</span>
+                            </div>
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 삭제된 댓글 + 대댓글 -->
+                        <div class="comment">
+                            <span class="avatar"><i class="icon avatar56"><span class="blind">avatar</span></i></span>
+                            <div class="content">
+                                <span class="empty">삭제된 댓글입니다.</span>
+                                <div class="actions">
+                                    <button class="cmt">View Replies</button><span class="count">3</span>
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments collapsed">
+                                <!-- .collapsed // -->
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 댓글 확장 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="text">
+                                    <div class="ellipsis">
+                                        <!-- .expend // -->
+                                        <span>이거 진짜 안들으면 후회합니다.</span>
+                                    </div>
+                                    <button>+ View more</button>
+                                </div>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                    <button class="cmt active">Hide Replies</button><span class="count">2</span><!-- .active // -->
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="text">
+                                            <div>
+                                                <span class="tag">@강다니엘</span>
+                                                <span>대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.대댓글은 말줌임이 없습니다.</span>
+                                            </div>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="right top">
+                                                <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                                <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/icon-noti-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="empty">삭제된 댓글입니다.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="text">
+                                            <div>
+                                                <span class="tag">@강다니엘</span>
+                                                <span>대댓글은 말줌임이 없습니다.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                        </div>
+                        <!-- // .comments -->
+                        <!-- .comment : 본인 댓글 수정 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left active button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                </div>
+                                <form class="ui base reply form">
+                                    <div class="outline">
+                                        <div class="field h173">
+                                            <textarea placeholder="Writing...">대댓글 입력</textarea>
+                                        </div>
+                                        <div class="more">
+                                            <div class="count"><span class="now">0</span>/<span class="max">500</span></div>
+                                            <button class="ui icon button img-icon photo"><i class="photo50 icon"></i><span class="blind">photo</span></button>
+                                            <button class="ui cancel button">Cancel</button>
+                                            <button class="ui submit button">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 대댓글 수정 + 사용자 태그 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="text">
+                                    <div class="ellipsis">
+                                        <!-- .expend // -->
+                                        <span class="tag">@강하늘</span>
+                                        <span>이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요.</span>
+                                    </div>
+                                    <button>+ View more</button>
+                                </div>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                    <button class="cmt active">Hide Replies</button><span class="count">18</span><!-- .active // -->
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="text">
+                                            <div>
+                                                <span class="tag">@강다니엘</span>
+                                                <span>이전 작성 대댓글</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="actions">
+                                            <div class="right top">
+                                                <button class="ui icon left active button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                                <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                            </div>
+                                        </div>
+                                        <form class="ui base reply form">
+                                            <div class="outline">
+                                                <div class="field h173">
+                                                    <textarea placeholder="Writing...">@강하늘 대댓글 수정</textarea>
+                                                    <!-- .tag-menu -->
+                                                    <div class="tag-menu" style="position:absolute;left:20px;top:50px;">
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                        <button class="item" data-value="">
+                                                            <span class="pic"><img src="../../img/profile-36-px.png" /></span>
+                                                            <span class="info"><span class="name"><span class="match">성</span>춘향</span><span class="co">SK C&C / 플랫폼 사업 1팀</span></span>
+                                                            <span class="mail">Chunhyang.sung@sk.com</span>
+                                                        </button>
+                                                    </div>
+                                                    <!-- // .tag-menu -->
+
+
+                                                </div>
+                                                <div class="more">
+                                                    <div class="count"><span class="now">0</span>/<span class="max">500</span></div>
+                                                    <button class="ui icon button img-icon photo"><i class="photo50 icon"></i><span class="blind">photo</span></button>
+                                                    <button class="ui cancel button">Cancel</button>
+                                                    <button class="ui submit button">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="text">
+                                            <div>
+                                                <span class="tag">@강다니엘</span>
+                                                <span>이전 작성 대댓글</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                            <!-- more -->
+                            <div class="more">
+                                <!-- .collapsed 추가시 display:none // -->
+                                <button>more replies(<span class="count">15</span>)</button>
+                            </div>
+                            <!-- // more -->
+                        </div>
+                        <!-- // .comment -->
+                        <!-- .comment : 대댓글 입력 -->
+                        <div class="comment">
+                            <span class="avatar"><img src="../../img/profile-56-px.png" /></span>
+                            <div class="content">
+                                <span class="author">김연아</span>
+                                <div class="metadata"><span class="date">2019.10.23</span></div>
+                                <div class="text">
+                                    <div class="ellipsis">
+                                        <!-- .expend // -->
+                                        <span class="tag">@강하늘</span>
+                                        <span>이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요. text width 640px text width 이거 진짜 안들으면 후회합니다. 최고의 강사가 귀에 쏙쏙 들어오게 강의하네요.</span>
+                                    </div>
+                                    <button>+ View more</button>
+                                </div>
+                                <form class="ui base reply form">
+                                    <div class="outline">
+                                        <div class="field h173">
+                                            <textarea placeholder="Writing...">대댓글 입력</textarea>
+                                        </div>
+                                        <div class="more">
+                                            <div class="count"><span class="now">0</span>/<span class="max">500</span></div>
+                                            <button class="ui icon button img-icon photo"><i class="photo50 icon"></i><span class="blind">photo</span></button>
+                                            <button class="ui cancel button">Cancel</button>
+                                            <button class="ui submit button">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="actions">
+                                    <div class="right top">
+                                        <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                                        <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                                        <button class="ui icon left active button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                                    </div>
+                                    <button class="cmt active">Hide Replies</button><span class="count">1</span><!-- .active // -->
+                                </div>
+                            </div>
+                            <!-- .comments -->
+                            <div class="comments">
+                                <div class="comment">
+                                    <span class="avatar"><img src="../../img/profile-48-px.png" /></span>
+                                    <div class="content">
+                                        <span class="author">김연아</span>
+                                        <div class="metadata">
+                                            <span class="date">2019.10.23</span>
+                                        </div>
+                                        <div class="text">
+                                            <div>
+                                                <span class="tag">@강다니엘</span>
+                                                <span>이전 작성 대댓글</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- // .comments -->
+                        </div>
+                        <!-- // .comment -->
+                    </div>
+                    <!-- // .comments -->
+                    <!-- .more-comments -->
+                    <div class="more-comments"><button class="ui icon left button moreview"><i aria-hidden="true" class="moreview icon"></i>more comments (15)</button></div>
+                    <!-- // .more-comments -->
+                </div>
+                <div class="actions bottom">
+                    <button class="ui icon left button post list2" onclick="window.open('../support/SU-01-01.html')"><i aria-hidden="true" class="list24 icon"></i>List</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .content -->
+    <!-- // .content -->
+    <!-- .quick -->
+    <section class="quick">
+        <div class="cont-inner">
+            <div class="q-group">
+                <a href="#top" class="ui top button">TOP</a>
+                <button class="ui quick button"></button><!-- .active // -->
+
+                <div class="quick-menu">
+                    <div class="ui quick-black horizontal buttons">
+                        <button onclick="window.open('../learning/ML-02-02.html')" class="ui button"><i aria-hidden="ture" class="learning32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Learning</button>
+                        <button onclick="window.open('../community/CM-08-01.html')" class="ui button"><i aria-hidden="ture" class="community32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Community</button>
+                        <button onclick="window.open('../support/SU-03-01.html')" class="ui button"><i aria-hidden="ture" class="support32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Support</button>
+                    </div>
+                    <div class="ui quick-black vertical buttons">
+                        <button onclick="window.open('../introduction/IN_01_01.html')" class="ui button"><i aria-hidden="ture" class="building icon"></i>mySUNI Introduction</button>
+                        <button onclick="window.open('../mypage/MY-01-01-P02.html')" class="ui button"><i aria-hidden="ture" class="admin icon"></i>관심 Channel</button>
+                        <button onclick="window.open('../common/CO-05-01.html')" class="ui button"><i aria-hidden="ture" class="sitemap icon"></i>Site Map</button>
+                        <button class="ui button"><i aria-hidden="ture" class="admin24 icon"></i>Admin Site</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .quick -->
+    <!-- .footer -->
+    <section class="footer">
+        <div class="cont-inner">
+            <i class="s-kuniversity icon"><span class="blind">my SUNI</span></i>
+            <div class="f-copyright">
+                COPYRIGHT<i class="copyright icon"><span class="blind">copyright sign</span></i>mySUNI. ALL RIGHTS RESERVED.
+            </div>
+            <div class="f-nav">
+                <a href="../introduction/IN-01-01.html" target="_blank" class="item">Introduction</a>
+                <a href="../support/SU-01-01.html" target="_blank" class="item">공지사항</a>
+                <a href="../support/SU-02-01.html" target="_blank" class="item">FAQ</a>
+                <a href="../support/SU-03-01.html" target="_blank" class="item">문의하기</a>
+                <a href="../common/CO-03-02.html" target="_blank" class="item active">개인정보 처리방침</a>
+            </div>
+            <div class="ui country buttons">
+                <button class="ui button active">KR</button>
+                <button class="ui button">EN</button>
+            </div>
+        </div>
+    </section>
+    <!-- // .footer -->
+    <script>
+        /**
+         * comment  : semantic-ui 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+
+
+        /* 국가 선택 */
+        var $buttons = $('.ui.buttons.country .button'),
+            handler = {
+                activate: function() {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                },
+                toggleReplies: function() { // 덧글 
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active').text('View Replies');
+                        $(this).closest('.comment').find('.comments, .more').addClass('collapsed');
+                    } else {
+                        $(this).addClass('active').text('Hide Replies');
+                        $(this).closest('.comment').find('.comments, .more').removeClass('collapsed');
+                    }
+                },
+            }
+        $buttons.on('click', handler.activate);
+        /* 스틱키 */
+        $('.ui.sticky.offset0').visibility({
+            type: 'fixed',
+            offset: 0
+        });
+        $('.ui.sticky.offset48').visibility({
+            type: 'fixed',
+            offset: 48
+        });
+        $('#example3 .ui.sticky').sticky({
+            context: '#example3',
+            offset: 150
+        });
+        /* 퀵메뉴  */
+        $toggle = $('button.quick');
+        $toggle.state();
+
+        /* 탭 */
+        $('.menu .item').tab();
+        /* 체크박스 라디오버튼 */
+        $('.ui.checkbox').checkbox();
+
+        /* 덧글 대댓글 토글 버튼 */
+        $reply = $('.cmt');
+        $reply.on('click', handler.toggleReplies);
+
+        /* dropdown : 선택시 추가 텍스트가 필요하면 data-add속성 사용 */
+
+        $('.ui.dropdown').dropdown({
+            onChange: function(val, text, choice) {
+                if (this.getAttribute("data-add") !== undefined && this.getAttribute("data-add") !== null) {
+                    this.getElementsByClassName("text")[0].innerHTML = text + this.getAttribute("data-add");
+                }
+            }
+        });
+
+
+        /* ML-03-01 : 시작일 종료일 */
+        if ($('#rangestart').length) {
+            $('#rangestart').calendar({
+                type: 'date',
+                endCalendar: $('#rangeend'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        if ($('#rangeend').length) {
+            $('#rangeend').calendar({
+                type: 'date',
+                startCalendar: $('#rangestart'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        /* MY-01-01-P02 : 아코디언 */
+
+        $('.select-area .accordion').accordion({
+            selector: {
+                trigger: '.title'
+            },
+            exclusive: false
+        });
+
+        /* CM-01-01 : 아코디언 */
+
+        $('.community-accordion .accordion').accordion({
+            selector: {
+                trigger: '.dropdown'
+            }
+        });
+
+        /*LO-07-01 hover시 popup*/
+        $('label.pop').popup({
+            inline: false,
+            hoverable: true,
+            position: 'bottom left'
+        });
+
+
+        /* 탭 기능 */
+        $('.ui.sku.menu').tab();
+
+        /*button toggle 공통 (CO-05-01-01,RC-01-01) */
+        $('.ui.button.toggle').state();
+
+        /**
+         * comment  : ui.js 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+        (function() {
+            ui.fxInit();
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>SUNI</title>
+    <link rel="stylesheet" href="../../css/semantic.min.css">
+    <link rel="stylesheet" href="../../css/calendar.min.css">
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- vendor prefix version
+<link rel="stylesheet" href="../../css/style.min.css">
+-->
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/semantic.min.js"></script>
+    <script src="../../js/state.min.js"></script>
+    <script src="../../js/calendar.min.js"></script>
+    <script src="../../js/modal.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/ui.js"></script>
+</head>
+
+
+
+<body>
+    <style type="text/css">
+        /* guide 레이아웃 스타일 */
+        .gWrap header {
+            width: 100%;
+            padding: 25px 0;
+        }
+
+        .gWrap header h1 {
+            padding-left: 20px;
+            color: #121212;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .gCont {
+            max-width: 1200px;
+            padding: 0 20px 20px;
+        }
+
+        .test {
+            margin-top: 10px;
+            padding: 10px 0;
+            border-top: 1px dashed #666;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .gCont .gTit:before {
+            content: '*';
+            margin-right: 10px;
+            color: #ac0c3c;
+        }
+
+        .gCont .gInfo {
+            margin: 0 0 10px;
+            padding-left: 20px;
+            color: #000;
+            font-size: 12px;
+            line-height: 1.5
+        }
+
+        .gCont .gInfo:before {
+            content: "●";
+            display: inline-block;
+            margin-right: 10px;
+            color: #777;
+            font-size: 10px;
+        }
+
+        .gCont .preview {
+            min-height: 30px;
+            margin-bottom: 40px;
+            padding: 0 0 0 20px;
+            /* overflow: hidden */
+        }
+
+        .link {
+            text-decoration: underline;
+        }
+
+        .test {
+            color: red;
+        }
+    </style>
+    <div class="gWrap">
+        <header>
+            <h1>Skuniversity Publishing Guide</h1>
+        </header>
+        <div class="gCont">
+            <!-- Version -->
+            <section>
+                <h2 class="test">JAVASCRIPT Version (해당 파일은 수정 금지)</h2>
+                <p class="gInfo">/js/semantic.min.js <a href="https://semantic-ui.com/introduction/getting-started.html" target="_blank" class="link">(Semantic UI - 2.4.1)</a></p>
+                <p class="gInfo">/js/state.min.js <a href="https://semantic-ui.com/introduction/getting-started.html" target="_blank" class="link">(Semantic UI - 2.4.1)</a></p>
+                <p class="gInfo">/js/calendar.min.js <a href="https://fomantic-ui.com/" target="_blank" class="link">(Fomantic UI - 2.7.8)</a></p>
+                <p class="gInfo">/js/modal.min.js <a href="https://fomantic-ui.com/" target="_blank" class="link">(Fomantic UI - 2.7.8) </a><a href="https://github.com/Semantic-Org/Semantic-UI/issues/6449" target="_blank">Semantic UI - 2.4.1 팝업내에 스크롤 문제</a></p>
+                <p class="gInfo">/js/swiper.min.js <a href="https://github.com/nolimits4web/swiper" target="_blank" class="link"><del>(Swiper 5.2.0) ie에서 문제 발생 </del>(Swiper 4.5.1)</a></p>
+                <p class="gInfo">/js/jquery-1.12.4.js <a href="https://jquery.com/" target="_blank" class="link">(Jquery- 1.12.4)</a></p>
+                <h2 class="test">CSS Version (해당 파일은 수정 금지)</h2>
+                <p class="gInfo">/css/semantic.min.css <a href="https://semantic-ui.com/introduction/getting-started.html" target="_blank" class="link">(Semantic UI - 2.4.0)</a></p>
+                <p class="gInfo">/css/calendar.min.css <a href="https://fomantic-ui.com/" target="_blank" class="link">(Fomantic UI - 2.7.8)</a></p>
+                <p class="gInfo">/css/swiper.min.css <a href="https://github.com/nolimits4web/swiper" target="_blank" class="link">(Swiper 5.2.0)</a></p>
+
+
+            </section>
+            <!-- // Version -->
+            <!-- Version -->
+            <section>
+                <h2 class="test">Rule</h2>
+                <p class="gInfo">HTML : semantic-ui 기반 elements를 가져다가 .ui에 class를 추가 정의하여 작성</p>
+                <p class="gInfo">CSS : IE10 ~ , 기타 최신 브라우저 고려하여 작성</p>
+                <p class="gInfo">JAVASCRIPT : 가능하면 바닐라JS로 작성</p>
+            </section>
+            <!-- // Version -->
+            <!-- 파이 -->
+            <section>
+                <h2 class="test">파이</h2>
+                <div class="preview" style="overflow:visible">
+                    <p class="gInfo">data-value 값을 조절 0~360값</p>
+                    <div class="ui pie w56 empty"></div>
+                    <div class="ui pie w200 empty"></div>
+                    <div class="ui pie w56" data-value="150">
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </div>
+                    <div class="ui pie w200" data-value="30">
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </div>
+
+                </div>
+            </section>
+            <!-- 스텝 -->
+            <section>
+                <h2 class="test">스텝</h2>
+                <p class="gInfo">.create</p>
+                <div class="preview" style="overflow:visible">
+                    <div class="ui steps number-step">
+                        <div class="completed step">
+                            <!-- .active .completed // -->
+                            <span class="number"><span class="blind">1</span></span>
+                            <span class="title">기본정보 및 노출정보</span>
+                        </div>
+                        <div class="active step">
+                            <span class="number"><span class="blind">2</span></span>
+                            <span class="title">교육정보 및 부가정보</span>
+                        </div>
+                        <div class=" step">
+                            <span class="number"><span class="blind">2</span></span>
+                            <span class="title">교육정보 및 부가정보</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <!-- 팝업 -->
+            <section>
+                <h2 class="test">팝업</h2>
+                <div class="preview" style="overflow:visible">
+                    <button class="ui icon img-icon custom button"><i aria-hidden="ture" class="noti32 icon"></i><span
+							class="blind">취소 패널티</span></button>
+                    <div class="ui custom red popup">강좌 취소 시 다음 차수 완료에도 불이익이 갈수 있음</div>
+                </div>
+
+                <div class="ui jsk button" data-content="This popup is very long but wont escape the segment it is placed in">Hover Me</div>
+
+                <script>
+                    $('.custom.button').popup({
+                        popup: $('.custom.popup'),
+                        on: 'click'
+                    });
+                    $('.jsk.button').popup({});
+                </script>
+
+            </section>
+            <!-- 테이블 -->
+            <section>
+                <h2 class="test">테이블</h2>
+                <p class="gInfo">CSS 테이블 .table-css</p>
+                <div class="preview">
+                    <div class="table-css">
+                        <div class="row">
+                            <div class="cell">TEXT</div>
+                            <div class="cell">TEXT</div>
+                        </div>
+                        <div class="row">
+                            <div class="cell vtop">VERTICAL ALIGN TOP</div>
+                            <div class="cell ">TEXT<br />TEXT</div>
+                            </div>
+                            <div class="row">
+                                <div class="cell v-middle">VERTICAL ALIGN MIDDLE</div>
+                                <div class="cell ">TEXT<br />TEXT</div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell v-bottom">VERTICAL ALIGN BOTTOM</div>
+                                    <div class="cell ">TEXT<br />TEXT</div>
+                                    </div>
+                                </div>
+                            </div>
+
+            </section>
+            <!-- 테이블 -->
+            <!-- 스크롤 -->
+            <section>
+                <h2 class="test">스크롤 (common.scss 참고)</h2>
+                <p class="gInfo">.scrolling-40vh, scrolling-60vh, scrolling-80vh</p>
+            </section>
+            <!-- 스크롤 -->
+            <h2 class="test">profile</h2>
+            <section>
+                <div class="preview">
+                    <div class="ui profile">
+                        <div class="pic">
+                            <!--프로필 사진 자리-->
+                            <img src="../../img/profile-56-px.png" alt="프로필사진 임시이미지" />
+                        </div>
+                    </div>
+                    <div class="ui profile">
+                        <div class="pic s80">
+                            <!--프로필 사진 자리
+							<img src="../../img/profile-56-px.png" alt="프로필사진 임시이미지" />
+							-->
+                        </div>
+                    </div>
+                    <div class="ui profile">
+                        <div class="pic s110">
+                            <!--프로필 사진 자리
+							<img src="../../img/profile-56-px.png" alt="프로필사진 임시이미지" />
+							-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Icon -->
+            <section>
+                <h2 class="test">아이콘</h2>
+
+                <p class="gInfo">Logo</p>
+                <div class="preview">
+                    <i class="sk-university icon"><span class="blind">SUNI</span></i>
+                    <br />
+                    <i class="sk-university-login icon"><span class="blind">SK university</span></i>
+                </div>
+
+                <p class="gInfo">8 x 8</p>
+                <div class="preview">
+                    <i class="arrow8 blue-close icon"></i>
+                    <i class="arrow8 blue-open icon"></i>
+                    <i class="arrow8 blue-link icon"></i>
+                    <i class="arrow8 orange-close icon"></i>
+                    <i class="arrow8 orange-open icon"></i>
+                    <i class="arrow8 orange-right icon"></i>
+                    <i class="arrow8 orange-link icon"></i>
+                    <i class="arrow8 black-jump icon"></i>
+                </div>
+
+                <p class="gInfo">12 x 12</p>
+                <div class="preview">
+                    <i class="support12 icon"></i>
+                </div>
+
+                <p class="gInfo">16 x 16</p>
+                <div class="preview">
+                    <i class="new16 icon"><span class="blind">new</span></i>
+                    <i class="info16 icon"><span class="blind">infomation</span></i>
+                    <i class="delete16 icon"><span class="blind">delete</span></i>
+                    <i class="edit16 icon"><span class="blind">edit</span></i>
+                    <i class="reply16-b icon"><span class="blind">reply</span></i>
+                    <i class="listmore16 icon"><span class="blind">list more</span></i>
+                    <i class="subinfo-down16 icon"><span class="blind">subinfo down</span></i>
+                    <i class="commu-info16 icon"><span class="blind">community info</span></i>
+                    <i class="commu-info16-2 icon"><span class="blind">community info2</span></i>
+                    <i class="rate16-ov icon"><span class="blind">rate</span></i>
+                    <i class="rate16 icon"><span class="blind">rate</span></i>
+                    <i class="card-share16 icon"><span class="blind">share</span></i>
+                    <i class="down-orange16 icon"><span class="blind">down</span></i>
+                    <i class="completed16 icon"><span class="blind">completed</span></i>
+                    <i class="card-join16 icon"><span class="blind">card join</span></i>
+                    <i class="card-time16 icon"><span class="blind">card join</span></i>
+                    <i class="reply16 icon"><span class="blind">reply</span></i>
+                    <i class="card-play16 icon"><span class="blind">play</span></i>
+                    <i class="price16 icon"><span class="blind">price</span></i>
+                    <i class="check16 icon"><span class="blind">check</span></i>
+                    <i class="community16 icon"><span class="blind">community</span></i>
+                    <i class="video16 icon"><span class="blind">video</span></i>
+                    <i class="date16 icon"><span class="blind">date</span></i>
+                    <i class="subinfo16 icon"><span class="blind">sub info</span></i>
+                    <i class="up16 icon"><span class="blind">up</span></i>
+                    <i class="commu-list16 icon"><span class="blind">community list</span></i>
+                    <i class="delete-gray16 icon"><span class="blind">delete</span></i>
+                    <i class="reply-gray16 icon"><span class="blind">reply</span></i>
+                    <i class="edit-gray16 icon"><span class="blind">edit</span></i>
+                    <i class="total-time16 icon"><span class="blind">total time</span></i>
+                    <i class="college16 icon"><span class="blind">college</span></i>
+                    <i class="channel16 icon"><span class="blind">channel</span></i>
+                    <i class="class16 icon"><span class="blind">class</span></i>
+                    <i class="error16 icon"><span class="blind">error</span></i>
+                    <i class="tip16 icon"><span class="blind">support tip</span></i>
+                    <i class="supporttel16 icon"><span class="blind">support tel</span></i>
+                    <i class="create16 icon"><span class="blind">create</span></i>
+                    <i class="movie16 icon"><span class="blind">create movie</span></i>
+                    <i class="category16 icon"></i>
+                </div>
+                <p class="gInfo">16 x 17</p>
+                <div class="preview">
+                    <i class="new16x17 icon"><span class="blind">close</span></i>
+                </div>
+                <p class="gInfo">22 x 22</p>
+                <div class="preview" style="background:#73f8c1;">
+                    <i class="clear icon"><span class="blind">delete</span></i>
+                </div>
+                <p class="gInfo">24 x 24</p>
+                <div class="preview" style="background:#73f8c1;">
+                    <i class="icon delete24"><span class="blind">delete</span></i>
+                    <i class="icon series24"><span class="blind">series</span></i>
+                    <i class="icon url24"><span class="blind">period</span></i>
+                    <i class="icon card-add24"><span class="blind">period</span></i>
+                    <i class="building24 icon"><span class="blind">Sk univ</span></i>
+                    <i class="listdel24 icon"><span class="blind">list del</span></i>
+                    <i class="filter24 icon"><span class="blind">filter</span></i>
+                    <i class="calendar24 icon"><span class="blind">date</span></i>
+                    <i class="rate24-ov icon"><span class="blind">rate</span></i>
+                    <i class="rate24 icon"><span class="blind">rate</span></i>
+                    <i class="rate24-line icon"><span class="blind">rate</span></i>
+                    <i class="check24 icon"><span class="blind">check</span></i>
+                    <i class="disable-check24 icon"><span class="blind">check disable</span></i>
+                    <i class="sitemap24 icon"><span class="blind">sitemap</span></i>
+                    <i class="req24 icon"><span class="blind">requirements</span></i>
+                    <i class="target24 icon"><span class="blind">target</span></i>
+                    <i class="cancel24 icon"><span class="blind">cancel</span></i>
+                    <i class="tag24 icon"><span class="blind">tag</span></i>
+                    <i class="goto24 icon"><span class="blind">goto</span></i>
+                    <i class="menu24 icon"><span class="blind">menu</span></i>
+                    <i class="down24 icon"><span class="blind">down</span></i>
+                    <i class="down-blue24 icon"><span class="blind">down</span></i>
+                    <i class="down-orange24 icon"><span class="blind">down</span></i>
+                    <i class="drop24-up icon"><span class="blind">drop down arrow up</span></i>
+                    <i class="drop24-down icon"><span class="blind">drop down arrow down</span></i>
+                    <i class="goal24 icon"><span class="blind">goal</span></i>
+                    <i class="close24 icon"><span class="blind">close</span></i>
+                    <i class="category24 icon"><span class="blind">category</span></i>
+                    <i class="admin24 icon"><span class="blind">admin</span></i>
+                    <i class="host24 icon"><span class="blind">host</span></i>
+                    <i class="post24 icon"><span class="blind">post</span></i>
+                    <i class="ask24 icon"><span class="blind">ask</span></i>
+                    <i class="imgdelte24 icon"><span class="blind">imgdelte</span></i>
+                    <i class="zoom24 icon"><span class="blind">zoom</span></i>
+                    <i class="photo24 icon"><span class="blind">photo</span></i>
+                    <i class="photo24-w icon"><span class="blind">photo</span></i>
+                    <i class="search24 icon"><span class="blind">zoom</span></i>
+                    <i class="filter24-w icon"><span class="blind">filter</span></i>
+                    <i class="filter24-o icon"><span class="blind">filter</span></i>
+                </div>
+
+                <p class="gInfo">28 x 28</p>
+                <div class="preview" style="background:#73f8c1;">
+                    <i class="icon reset"><span class="blind">reset</span></i>
+                    <i class="icon pagenavi-back-disabled-28"><span class="blind">back disabled</span></i>
+                    <i class="icon pagenavi-back-noraml-28"><span class="blind">back</span></i>
+                    <i class="icon pagenavi-next-disabled-28"><span class="blind">next disabled</span></i>
+                    <i class="icon pagenavi-next-noraml-28"><span class="blind">next</span></i>
+                </div>
+
+                <p class="gInfo">32 x 32</p>
+                <div class="preview">
+                    <i aria-hidden="ture" class="learning32 icon"></i>
+                    <i aria-hidden="ture" class="community32 icon"></i>
+                    <i aria-hidden="ture" class="support32 icon"></i>
+                    <i aria-hidden="ture" class="noti32 icon"></i>
+                    <i aria-hidden="ture" class="price32 icon"></i>
+                    <i aria-hidden="ture" class="search32 icon"></i>
+                    <i aria-hidden="ture" class="rate32 icon"></i>
+                    <i aria-hidden="ture" class="rate32-ov icon"></i>
+                    <i aria-hidden="ture" class="drop32-up icon"></i>
+                    <i aria-hidden="ture" class="drop32-down icon"></i>
+                    <i aria-hidden="ture" class="card-delete32 icon"></i>
+                </div>
+
+                <p class="gInfo">35 x 35</p>
+                <div class="preview">
+                    <i class="icon stamp35"><span class="blind">stamp</span></i>
+                </div>
+
+
+
+                <p class="gInfo">40 x 40</p>
+                <div class="preview">
+                    <i aria-hidden="ture" class="search40 icon"></i>
+                </div>
+                <p class="gInfo">48 x 48</p>
+                <div class="preview">
+                    <i class="icon avatar48"><span class="blind">avatar</span></i>
+                    <i class="icon time48"><span class="blind">total time</span></i>
+                    <i class="icon complete48"><span class="blind">complete edu</span></i>
+                    <i class="icon stamp48"><span class="blind">stamp</span></i>
+                </div>
+                <p class="gInfo">50 x 50</p>
+                <div class="preview">
+                    <i class="icon no-contents50"><span class="blind">콘텐츠 없음</span></i>
+                </div>
+                <p class="gInfo">56 x 56</p>
+                <div class="preview">
+                    <i class="icon avatar56"><span class="blind">avatar</span></i>
+                </div>
+
+                <p class="gInfo">60 x 60</p>
+                <div class="preview">
+                    <i class="icon thumb60-1"></i>
+                    <i class="icon thumb60-2"></i>
+                    <i class="icon thumb60-3"></i>
+                    <i class="icon thumb60-4"></i>
+
+
+                </div>
+                <p class="gInfo">70 x 70</p>
+                <i class="icon channel-ai1"></i>
+                <i class="icon channel-ai2"></i>
+                <i class="icon channel-ai3"></i>
+                <i class="icon channel-ai4"></i>
+                <i class="icon channel-ai5"></i>
+                <i class="icon channel-ai6"></i>
+
+                <i class="icon channel-design1"></i>
+                <i class="icon channel-design2"></i>
+                <i class="icon channel-design3"></i>
+                <i class="icon channel-design4"></i>
+                <i class="icon channel-design5"></i>
+                <i class="icon channel-design6"></i>
+
+                <i class="icon channel-dt1"></i>
+                <i class="icon channel-dt2"></i>
+                <i class="icon channel-dt3"></i>
+                <i class="icon channel-dt4"></i>
+                <i class="icon channel-dt5"></i>
+                <i class="icon channel-dt6"></i>
+                <i class="icon channel-dt7"></i>
+
+
+                <i class="icon channel-global1"></i>
+                <i class="icon channel-global2"></i>
+                <i class="icon channel-global3"></i>
+                <i class="icon channel-global4"></i>
+                <i class="icon channel-global5"></i>
+
+                <i class="icon channel-happy1"></i>
+                <i class="icon channel-happy2"></i>
+                <i class="icon channel-happy3"></i>
+                <i class="icon channel-happy4"></i>
+                <i class="icon channel-happy5"></i>
+                <i class="icon channel-happy6"></i>
+                <i class="icon channel-happy7"></i>
+                <i class="icon channel-happy8"></i>
+
+                <i class="icon channel-leadership1"></i>
+                <i class="icon channel-leadership2"></i>
+                <i class="icon channel-leadership3"></i>
+                <i class="icon channel-leadership4"></i>
+                <i class="icon channel-leadership5"></i>
+
+
+                <i class="icon channel-mngt1"></i>
+                <i class="icon channel-mngt2"></i>
+                <i class="icon channel-mngt3"></i>
+                <i class="icon channel-mngt4"></i>
+                <i class="icon channel-mngt5"></i>
+                <i class="icon channel-mngt6"></i>
+
+                <i class="icon channel-sv1"></i>
+                <i class="icon channel-sv2"></i>
+                <i class="icon channel-sv3"></i>
+                <i class="icon channel-sv4"></i>
+                <i class="icon channel-sv5"></i>
+                <i class="icon channel-sv6"></i>
+
+
+
+
+
+
+                <p class="gInfo">80 x 80</p>
+                <div class="preview">
+                    <i class="icon no-contents80"><span class="blind">콘텐츠 없음</span></i>
+                </div>
+                <p class="gInfo">110 x 110 </p>
+                <div class="preview">
+                    <i class="icon profile110"></i>
+                </div>
+
+            </section>
+            <!-- Icon -->
+            <!-- rating -->
+            <section>
+                <h2 class="test">rating</h2>
+                <div class="preview">
+                    <div class="ui rating" data-max-rating="5"></div>
+                </div>
+                <p class="gInfo">.pop</p>
+                <div class="preview">
+                    <div class="ui pop rating" data-max-rating="5"></div>
+                </div>
+                <p class="gInfo">.line</p>
+                <div class="preview">
+                    <div class="ui pop rating line" data-max-rating="5"></div>
+                </div>
+                <p class="gInfo">.fixed-rating (기능 없는 별점표시)</p>
+                <div class="preview">
+                    <!--별 개수 표시는 .s5~s1 클래스명에 따라 달라짐
+					width height margin은 그 때 그 때 필요에 따라 따로 지정하시면 됩니다, 기본은 16px / 별 사이 간격 margin:4px-->
+                    <div class="fixed-rating s3">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+                <p class="gInfo">.fixed-rating .line .pop (기능 없는 별점표시 / 배경컬러 없음 테두리 / size up)</p>
+                <div class="preview">
+                    <div class="fixed-rating line pop">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </section>
+            <!-- // rating -->
+
+            <!-- Button -->
+            <section>
+                <h2 class="test">Button</h2>
+
+                <p>.swiper-unit</p>
+                <div class="preview" style="background:#73f8c1;">
+                    <button class="ui button swiper-unit pagination"></button>
+                    <button class="ui button swiper-unit pagination active"></button>
+                    <button class="ui button swiper-unit prev"></button>
+                    <button class="ui button swiper-unit prev disabled"></button>
+                    <button class="ui button swiper-unit next"></button>
+                    <button class="ui button swiper-unit next disabled"></button>
+                </div>
+
+                <p class="gInfo">.btn-black</p>
+                <div class="preview">
+                    <button class="ui icon right button btn-black">View all<i class="icon morelink"></i></button>
+                </div>
+
+                <p class="gInfo">.btn-complex48</p>
+                <div class="preview">
+                    <button class="ui button btn-complex48">
+                        <span class="i"><i class="icon time48"><span class="blind">total time</span></i></span>
+                        <span class="t">
+							<span class="underline">총 학습시간</span>
+                        <span class="div">
+								<span class="t1">120</span><span class="t2">h</span><span class="t1">00</span><span class="t2">m</span>
+                        </span>
+                        </span>
+                    </button>
+                    <button class="ui button btn-complex48">
+                        <span class="i"><i class="icon time48"><span class="blind">total time</span></i></span>
+                        <span class="t">
+							<span class="underline">총 학습시간</span>
+                        <span class="div">
+								<span class="t4">학습대기중</span>
+                        </span>
+                        </span>
+                    </button>
+                    <button class="ui button btn-complex48">
+                        <span class="i">
+							<i class="icon complete48"><span class="blind">complete edu</span></i>
+                        </span>
+                        <span class="t">
+							<span class="underline">완료한 학습</span>
+                        <span class="div">
+								<span class="t1">14</span><span class="t3">개</span>
+                        </span>
+                        </span>
+                    </button>
+                    <button class="ui button btn-complex48">
+                        <span class="i">
+							<i class="icon stamp48"><span class="blind">stamp</span></i>
+                        </span>
+                        <span class="t">
+							<span class="underline">획득 Stamp</span>
+                        <span class="div">
+								<span class="t1">14</span><span  class="t3">개</span>
+                        </span>
+                        </span>
+                    </button>
+                </div>
+                <p class="gInfo">.btn-blue</p>
+                <div class="preview">
+                    <button class="ui icon right button btn-blue btn-more">more<i class="icon more2"></i></button>
+                    <button class="ui icon right button btn-blue btn-hide">hide<i class="icon hide2"></i></button>
+                    <button class="ui icon right button btn-blue">more<i class="icon morelink"></i></button>
+                    <button class="ui icon right button btn-blue">View all<i class="icon morelink"></i></button>
+
+                </div>
+                <p class="gInfo">.btn-blue2</p>
+                <div class="preview">
+                    <button class="ui icon right button btn-blue2">김유니 님에게 추천하는 학습 과정 보기<i class="icon morelink"></i></button>
+                    <button class="ui icon right button btn-blue2"><i class="icon homelink"></i>Home</button>
+                </div>
+                <p class="gInfo">.orange-arrow</p>
+                <div class="preview">
+                    <button class="ui orange-arrow button">Modify</button>
+                    <button class="ui orange-arrow2 button">Sign out</button>
+                    <button class="ui orange-arrow3 button">Image upload</button>
+                </div>
+
+                <p class="gInfo">.country</p>
+                <div class="preview">
+                    <div class="ui country buttons">
+                        <button class="ui button active">KR</button>
+                        <button class="ui button">EN</button>
+                    </div>
+                </div>
+
+                <p class="gInfo">.left</p>
+                <div class="preview">
+                    <button class="ui icon left button post"><i aria-hidden="true" class="post icon"></i>Post</button>
+                    <button class="ui icon left button post"><i aria-hidden="true" class="filter2 icon"></i>Filter</button>
+                    <button class="ui icon left button post ask"><i aria-hidden="true" class="ask24 icon"></i>Ask a Question</button>
+                    <button class="ui icon left button post reply"><i aria-hidden="true" class="reply24 icon"></i>Reply</button>
+                    <button class="ui icon left button post list2"><i aria-hidden="true" class="list24 icon"></i>List</button>
+                    <button class="ui icon left button post edit"><i aria-hidden="true" class="edit24 icon"></i>Edit</button>
+                    <button class="ui icon left button post delete"><i aria-hidden="true" class="del24 icon"></i>Delete</button>
+                    <button class="ui icon left button postset delete"><i aria-hidden="true" class="delete icon"></i>Delete</button>
+                    <button class="ui icon left button postset edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                    <button class="ui icon left button postset active edit2"><i aria-hidden="true" class="edit2 icon"></i>Edit</button>
+                    <button class="ui icon left button postset reply2"><i aria-hidden="true" class="reply2 icon"></i>Reply</button>
+                    <button class="ui icon left button postset list2"><i aria-hidden="true" class="list2 icon"></i>List</button>
+                    <button class="ui icon left button moreview"><i aria-hidden="true" class="moreview icon"></i>list more</button>
+                    <button class="ui icon left button moreview"><i aria-hidden="true" class="moreview icon"></i>more comments (15)</button>
+                    <button class="ui icon left button underline"><i aria-hidden="true" class="down-blue24 icon"></i>Download</button>
+                    <button class="ui icon left button filter"><i aria-hidden="true" class="filter24 icon"></i>Filter</button>
+                    <button class="ui icon left button filter color2"><i aria-hidden="true" class="filter24-o icon"></i>Filter</button>
+                </div>
+
+                <p class="gInfo">.toggle</p>
+                <div class="preview">
+
+                    <button class="ui toggle button toggle4" aria-pressed="false">Text</button>
+                    <button class="ui active toggle button toggle4" aria-pressed="true">Text</button>
+
+
+                    <button class="ui toggle button toggle2" aria-pressed="false">Text</button>
+                    <button class="ui active toggle button toggle2" aria-pressed="true">Text</button>
+                    <button class="ui disabled toggle button toggle2" aria-pressed="true">Text</button>
+                    <button class="ui toggle button toggle3" aria-pressed="false">AI</button>
+                    <button class="ui active toggle button toggle3" aria-pressed="false">AI</button>
+                    <button class="ui disabled toggle button toggle3" aria-pressed="false">AI</button>
+                </div>
+
+                <!--삭제버튼-->
+                <p class="gInfo">.del</p>
+                <div class="preview">
+                    <button class="ui button del">AI</button>
+                    <button class="ui button del type2">Cloud Developing</button>
+                    <!--아래 이미지버튼에도 따로 빼두었음-->
+                    <button class="ui icon button img-icon"><i class="del icon"></i><span class="blind">del</span></button>
+                </div>
+
+                <!--팝업 긍정 부정-->
+                <p class="gInfo">.pop</p>
+                <div class="preview">
+                    <button class="ui button w190 pop d">Cancel</button>
+                    <button class="ui button w190 pop p">Filter</button>
+                </div>
+
+
+                <!--팝업 full -->
+                <p class="gInfo">.pop2 (팝업 .actions2 에서 사용되는 버튼 flex:1)</p>
+                <div class="preview">
+                    <button class="ui button pop2 d">Cancel</button>
+                    <button class="ui button pop2 p">Select Download</button>
+                </div>
+
+                <!--가로사이즈 유동적인 버튼, 
+          width값 없음/height:48px 고정. .p00 클래스 넣어서 가로 패딩 추가.
+        -->
+                <p class="gInfo">.free</p>
+                <div class="preview">
+                    <button class="ui button free line p23">Go To This Community</button>
+                    <button class="ui button free line p18">View Details</button>
+                    <button class="ui button free line p18 disabled" disabled>View Details</button>
+                    <button class="ui button free bg p18">View Details</button>
+                    <button class="ui button free bg p18 disabled" disabled>View Details</button>
+                </div>
+
+                <!--가로 사이즈 고정되어있는 버튼
+          기본: 220x48 사이즈 잡혀있음 (필요시 각 버튼에서 수정), padding:0
+        -->
+                <p class="gInfo">.fix</p>
+                <div class="preview">
+                    <button class="ui button fix bg">TEXT</button>
+                    <button class="ui button fix bg disabled" disabled>TEXT</button>
+                    <button class="ui button fix line">TEXT</button>
+                    <button class="ui button fix line disabled" disabled>TEXT</button>
+                </div>
+
+                <p class="gInfo">.personal</p>
+                <!--add personal learning-->
+                <div class="preview">
+                    <button class="ui button personal line">+ Add Personal Learning</button>
+                </div>
+
+                <!--위에 아이콘 있는 큰 버튼-->
+                <p class="gInfo">.icon-big-line</p>
+                <div class="preview">
+                    <button class="ui button icon-big-line"><i class="icon download2"></i><span>Download</span></button>
+                    <button class="ui button icon-big-line"><i class="icon play2"></i><span>Learning
+							Start</span></button>
+                    <button class="ui button icon-big-line"><i class="icon join"></i><span>Join</span></button>
+                </div>
+
+                <!-- 옆에 아이콘 있는 큰 버튼-->
+                <p class="gInfo">.icon-big-line2</p>
+                <div class="preview">
+                    <button class="ui icon left button icon-big-line2"><i class="icon download2"></i><span>Download</span></button>
+                </div>
+                <div class="preview">
+                    <button class="ui icon left button icon-big-line2"><i class="icon open"></i><span>Panopto 열기</span></button>
+                </div>
+
+                <p class="gInfo">.surv</p>
+                <div class="preview">
+                    <button class="ui button surv"><span>Join Survey</span><i class="icon ar-survay"></i></button>
+                    <button class="ui button surv"><span>Report Download</span><i class="icon download3"></i></button>
+                    <button class="ui button surv"><span>Complete Survey</span><i class="icon ar-survay"></i></button>
+                </div>
+
+                <p class="gInfo">.filter-w</p>
+                <div class="preview">
+                    <button class="ui button filter-w"><i class="filter24-w icon"></i><span>Filter</span></button>
+                    <button class="ui button filter-w disabled" disabled><i class="filter24-w icon"></i><span>Filter</span></button>
+                </div>
+
+                <p class="gInfo">.button .img-icon</p>
+                <!--이미지아이콘 버튼-->
+                <div class="preview">
+                    <button class="ui icon button img-icon"><i class="zoom2 icon"></i><span class="blind">확대</span></button>
+                    <button class="ui icon button img-icon"><i class="bookmark2 icon"></i><span class="blind">마이리스트에저장</span></button>
+                    <button class="ui icon button img-icon"><i class="share2 icon"></i><span class="blind">공유</span></button>
+                    <button class="ui icon button img-icon"><i class="remove3 icon"></i><span class="blind">삭제</span></button>
+                    <button class="ui icon button img-icon"><i class="photo-edit icon"></i><span class="blind">프로필편집</span></button>
+                    <button class="ui icon button img-icon"><i class="arrow-up icon"></i><span class="blind">card down</span></button>
+                    <button class="ui icon button img-icon"><i class="arrow-down icon"></i><span class="blind">card up</span></button>
+                    <button class="ui icon button img-icon"><i class="arrow-up s26 icon"></i><span class="blind">card down</span></button>
+                    <button class="ui icon button img-icon"><i class="arrow-down s26 icon"></i><span class="blind">card up</span></button>
+                    <button class="ui icon button img-icon"><i class="photo-edit icon"></i><span class="blind">프로필편집</span></button>
+                    <button class="ui icon button img-icon"><i class="close32 icon"></i><span class="blind">닫기</span></button>
+                    <button class="ui icon button img-icon"><i class="reset icon"></i><span class="blind">reset</span></button>
+                    <button class="ui icon button img-icon"><i class="photo50 icon"></i><span class="blind">photo</span></button>
+                    <button class="ui icon button img-icon"><i class="photo50-opacity icon"></i><span class="blind">photo</span></button>
+                    <button class="ui icon button img-icon"><i class="setting17 icon"></i><span class="blind">setting</span></button>
+                    <button class="ui icon button img-icon"><i class="sum-open icon"></i><span class="blind">summary open</span></button>
+                    <button class="ui icon button img-icon"><i class="sum-close icon"></i><span class="blind">summary close</span></button>
+                    <button class="ui icon button img-icon"><i class="del icon"></i><span class="blind">del</span></button>
+
+                    <button class="ui icon button img-icon"><i class="clear2 link icon"></i></button>
+                    <button class="ui icon button img-icon"><i class="clear2 disabled link icon"></i></button>
+                    <button class="ui icon button img-icon"><i class="clear2 selected link icon"></i></button>
+
+                </div>
+
+                <p class="gInfo">.button .icon-line</p>
+                <div class="preview" style="background:#ccc;">
+                    <button class="ui icon button icon-line"><i class="my icon"></i><span class="blind">Go to my learning</span></button>
+                    <button class="ui icon button icon-line"><i class="remove2 icon"></i><span class="blind">Remove form my list</span></button>
+                    <button class="ui icon button icon-line"><i class="add-list icon"></i><span class="blind">Add to my list</span></button>
+                </div>
+
+                <p class="gInfo">.btn-total-time</p>
+                <div class="preview">
+                    <div class="ui statistic total-time">
+                        <button onclick="window.open('../mypage/MY-01-01-P03.html')" class="button btn-total-time">
+                            <span class="ui label onlytext"><i aria-hidden="true" class="total-time icon"></i><span>총 학습시간</span></span>
+                            <span class="value2">
+								<strong>0</strong><span>h</span>
+                            <strong class="min">00</strong><span>m</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <p class="gInfo">.change-channel-of-interest</p>
+                <div class="preview">
+                    <button class="ui icon button img-icon change-channel-of-interest"><span class="underline">관심 Channel 변경<i class="setting17 icon"></i></button>
+				</div>
+			</section>
+			<!-- // Button -->
+			<!--checkbox/radio-->
+			<section>
+				<h2 class="test">Checkbox / Radio</h2>
+				<div class="preview">
+					<div class="ui checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" />
+						<label></label>
+					</div>
+					<div class="ui checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" checked="checked" />
+						<label></label>
+					</div>
+					<div class="ui checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" disabled="disabled" />
+						<label></label>
+					</div>
+					<!--디자인 변경 필요 (제플린에 안잘라져있었음)-->
+					<div class="ui checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" checked="checked" disabled="disabled" />
+						<label></label>
+					</div>
+				</div>
+
+				<p class="gInfo">.black</p>
+				<div class="preview">
+					<div class="ui black checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" />
+						<label></label>
+					</div>
+					<div class="ui black checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" checked="checked" />
+						<label></label>
+					</div>
+					<div class="ui black checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" disabled="disabled" />
+						<label></label>
+					</div>
+					<div class="ui black checkbox">
+						<input type="checkbox" class="hidden" tabindex="0" checked="checked" disabled="disabled" />
+						<label></label>
+					</div>
+					<div>disabled, disabled + checked 디자인 미 수급</div>
+				</div>
+
+				<p class="gInfo">.v-icon</p>
+				<div class="preview">
+					<div class="ui v-icon radio checkbox">
+						<input type="radio" name="base" checked="checked" tabindex="0" class="hidden">
+						<label>
+							<span>
+								<span>
+									<span><img src="../../img/thumb-card-60-px.jpg" /></span>
+                        <span><span class="text1">Growth Mindset (Leadership Specialist)</span></span>
+                        </span>
+                        </span>
+                        </label>
+                </div>
+        </div>
+
+
+
+
+
+        <p class="gInfo">.base</p>
+        <div class="preview">
+            <div class="ui base radio checkbox">
+                <input type="radio" name="base3">
+                <label>nomal</label>
+            </div>
+            <div class="ui base radio checkbox">
+                <input type="radio" name="base3" checked="checked">
+                <label>checked</label>
+            </div>
+            <div class="ui base radio checkbox">
+                <input type="radio" name="base4" disabled="disabled">
+                <label>disabled</label>
+            </div>
+            <div class="ui base radio checkbox">
+                <input type="radio" name="base4" checked="checked" disabled="disabled">
+                <label>checked disabled</label>
+            </div>
+            <div>disabled, disabled + checked 디자인 미 수급</div>
+        </div>
+
+        <p class="gInfo">.base2</p>
+        <div class="preview">
+            <div class="ui base2 radio checkbox">
+                <input type="radio" name="base2">
+                <label>nomal</label>
+            </div>
+            <div class="ui base2 radio checkbox">
+                <input type="radio" name="base2" checked="checked">
+                <label>checked</label>
+            </div>
+            <div class="ui base radio checkbox">
+                <input type="radio" name="base2" disabled="disabled">
+                <label>disabled</label>
+            </div>
+            <!--
+					<div class="ui base radio checkbox">
+						<input type="radio" name="base2" checked="checked" disabled="disabled">
+						<label>checked disabled</label>
+					</div>
+					-->
+            <div>disabled + checked 디자인 미 수급</div>
+        </div>
+
+
+
+        <p class="gInfo">.round</p>
+        <div class="preview">
+            <div class="ui round radio checkbox">
+                <input type="radio" name="round" checked="checked">
+                <label>checked</label>
+            </div>
+            <div class="ui round radio checkbox">
+                <input type="radio" name="round">
+                <label>normal</label>
+            </div>
+            <div class="ui round radio checkbox">
+                <input type="radio" name="round" disabled="disabled">
+                <label>disabled</label>
+            </div>
+            <div>disabled + checked 디자인 미 수급</div>
+        </div>
+
+        <p class="gInfo">.round2</p>
+        <div class="preview">
+            <div class="ui round2 radio checkbox">
+                <input type="radio" name="round2" checked="checked">
+                <label>checked</label>
+            </div>
+            <div class="ui round2 radio checkbox">
+                <input type="radio" name="round2">
+                <label>normal</label>
+            </div>
+            <div class="ui round2 radio checkbox">
+                <input type="radio" name="round2" disabled="disabled">
+                <label>disabled</label>
+            </div>
+            <div>disabled + checked 디자인 미 수급</div>
+        </div>
+
+        <p class="gInfo">.rect-icon</p>
+        <div class="preview">
+            <div class="ui rect-icon radio checkbox">
+                <input type="radio" name="rect" checked="checked">
+                <label>checked</label>
+            </div>
+            <div class="ui rect-icon radio checkbox">
+                <input type="radio" name="rect">
+                <label>normal</label>
+            </div>
+            <div class="ui rect-icon radio checkbox">
+                <input type="radio" name="rect" disabled="disabled">
+                <label>disabled</label>
+            </div>
+            <span>disabled + checked 디자인 미 수급</span>
+        </div>
+
+
+
+
+        <p class="gInfo">.base</p>
+        <div class="preview">
+            <div class="ui base checkbox">
+                <input type="checkbox" class="hidden" tabindex="0" />
+                <label>AI 공통 <span>(30)</span></label>
+            </div>
+        </div>
+        </section>
+        <!--//checkbox-->
+
+        <!-- dropdown -->
+        <section>
+            <h2 class="test">dropdown</h2>
+            <div class="preview" style="overflow:visible">
+                <select class="ui selection dropdown">
+                    <option value="">선택해주세요.</option>
+                    <option value="a">Classroom</option>
+                    <option value="b">e-learning</option>
+                    <option value="c">Video</option>
+                    <option value="d">Audio</option>
+                    <option value="e">Webpage</option>
+                    <option value="f">Experiential</option>
+                    <option value="g">Document</option>
+                    <option value="h">Community</option>
+                    <option value="i">Test</option>
+                </select>
+            </div>
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline</p>
+                <div class="ui inline dropdown">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline .tight</p>
+                <div class="ui inline dropdown tight">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline .transparent</p>
+                <div class="ui inline transparent dropdown">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline .large</p>
+                <div class="ui inline large dropdown">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                        <div class="item">긴텍스트긴테스트</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline .large .tight</p>
+                <div class="ui inline large tight dropdown">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                        <div class="item">긴텍스트긴테스트</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview" style="overflow:visible">
+                <p class="gInfo">.inline .large .transparent</p>
+                <div class="ui inline transparent large dropdown">
+                    <div class="text">2019</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">2019</div>
+                        <div class="item">2018</div>
+                        <div class="item">2017</div>
+                        <div class="item">2016</div>
+                        <div class="item">2015</div>
+                        <div class="item">긴텍스트긴테스트</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview">
+                <p class="gInfo">.small-border</p>
+                <div class="preview" style="overflow:visible">
+                    <select class="ui small-border dropdown">
+                        <option value="All">All</option>
+                        <option value="a">a</option>
+                    </select>
+                </div>
+            </div>
+
+        </section>
+        <!-- // dropdown -->
+
+        <!-- Label -->
+        <section>
+            <h2 class="test">Label</h2>
+
+            <p class="gInfo">.tag</p>
+            <div class="preview">
+                <span class="ui label tag">AI</span>
+            </div>
+
+            <p class="gInfo">.stamp</p>
+            <div class="preview">
+                <div class="ui stamp label">
+                    <div><span class="text1">획득 Stamp</span></div>
+                    <div><i class="icon stamp35"></i><span class="text2">x</span><span class="text3">12</span></div>
+                </div>
+            </div>
+
+            <p class="gInfo">.stamp2</p>
+            <div class="preview">
+                <div class="ui stamp2 label">
+                    <div><i class="icon stamp48"></i><span class="text1">x</span><span class="text2">12</span></div>
+                    <div><span class="text3">획득가능 Stamp</span></div>
+                </div>
+            </div>
+
+            <p class="gInfo">.ribbon2</p>
+            <div class="preview">
+                <div class="ui ribbon2 label">Hotel</div>
+                <div class="ui ribbon2 label">Required</div>
+            </div>
+            <p class="gInfo">.color</p>
+            <div class="preview">
+                <div class="ui color purple label">AI</div>
+                <div class="ui color violet label">DT</div>
+                <div class="ui color yellow label">행복</div>
+                <div class="ui color orange label">SV</div>
+                <div class="ui color red label">혁신디자인</div>
+                <div class="ui color green label">Global</div>
+                <div class="ui color blue label">Leadership</div>
+                <div class="ui color teal label">Management</div>
+                <div class="ui color navy label">SK하이닉스</div>
+            </div>
+            <p class="gInfo">.channel</p>
+            <div class="preview">
+                <div class="ui channel label">AI</div>
+            </div>
+
+            <p class="gInfo">.onlytext (버튼 아님)</p>
+            <div class="preview">
+                <!--normal-->
+                <div class="ui label onlytext"><i aria-hidden="true" class="complete icon"></i><span>이수
+							3,300명</span></div>
+                <div class="ui label onlytext"><i aria-hidden="true" class="price icon"></i><span>12,000원</span>
+                </div>
+                <!--bold-->
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="video2 icon"></i><span>Video</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="classroom icon"></i><span>Classroom</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="course icon"></i><span>Course</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="e-learning icon"></i><span>e-learning</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="community icon"></i><span>Community</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="experiential icon"></i><span>Experiential</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="documents icon"></i><span>Documents</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="audio icon"></i><span>Audio</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="webpage icon"></i><span>Webpage</span></div>
+                <div class="ui label bold onlytext"><i aria-hidden="true" class="time2 icon"></i><span>1h 30m</span></div>
+                <!--24size-->
+                <div class="ui label onlytext size24"><i aria-hidden="true" class="file2 icon"></i><span>Download the learning</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="host icon"></i><span>Host</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="goal icon"></i><span>Goal</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="target icon"></i><span>Target</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="tag2 icon"></i><span>Tag</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="url icon"></i><span>URL 정보</span></div>
+                <div class="ui label onlytext bold size24"><i aria-hidden="true" class="category icon"></i><span>Sub Category</span></div>
+            </div>
+        </section>
+        <!-- // Label -->
+        <!-- Input -->
+        <section>
+            <h2 class="test">Input</h2>
+
+            <p class="gInfo">.h30</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h30 input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h30 input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h30 error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+            <p class="gInfo">.h30 .right</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h30 right input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h30 right input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h30 right error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+
+            <p class="gInfo">.h30 .search</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h30 search input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+                <div class="ui h30 search input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+            </div>
+
+            <p class="gInfo">.h38</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h38 input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h38 input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h38 error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+            <p class="gInfo">.h38 .right</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h38 right input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h38 right input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h38 right error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+
+
+            <p class="gInfo">.h38 .search</p>
+
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h38 search input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+                <div class="ui h38 search input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+            </div>
+
+
+            <p class="gInfo">.h48</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h48 input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h48 input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h48 error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+            <p class="gInfo">.h48 .right</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h48 right input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h48 right input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                </div>
+                <div class="ui h48 right error input">
+                    <input type="text" placeholder="오류" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <span class="validation">validation check</span>
+                </div>
+            </div>
+
+            <p class="gInfo">.h48 .search</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui h48 search input">
+                    <input type="text" placeholder="placeholder" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+                <div class="ui h48 search input">
+                    <input type="text" placeholder="쓰기금지" disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+            </div>
+
+            <p class="gInfo">.main .search</p>
+            <div class="preview" style="overflow:visible;">
+                <div class="ui main search input">
+                    <span class="placeholder">SK University의 다양한 학습 및 포럼에 참여하세요. <span class="orange">AI</span>를 검색해보시는건 어떨까요?</span>
+                    <input type="text" placeholder="" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <i aria-hidden="true" class="search link icon"></i>
+                </div>
+            </div>
+
+
+
+            <p class="gInfo">.action (height 48px)</p>
+            <div class="preview">
+                <div class="ui action input">
+                    <input type="text" placeholder="Search..." />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <button class="ui button">승인자찾기</button>
+                </div>
+
+                <div class="ui focus write action input">
+                    <input type="text" placeholder="Search..." value="입력중" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <button class="ui button">승인자찾기</button>
+                </div>
+
+                <div class="ui disabled action input">
+                    <input type="text" placeholder="Search..." disabled />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <button class="ui button">승인자찾기</button>
+                </div>
+
+                <div class="ui disabled action write input">
+                    <input type="text" placeholder="Search..." disabled value="입력된값" />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <button class="ui button">승인자찾기</button>
+                </div>
+            </div>
+
+            <p class="gInfo">.input.file (height 48px)</p>
+            <div class="preview">
+                <div class="ui input file">
+                    <input type="text" readonly />
+                    <i aria-hidden="true" class="clear link icon"></i>
+                    <label for="hidden-new-file" class="ui button">파일찾기</label>
+                    <input type="file" id="hidden-new-file">
+                </div>
+            </div>
+
+            <p class="gInfo">.input.file2 (height 48px)</p>
+            <div class="preview">
+                <div class="ui input file2">
+                    <label for="hidden-new-file" class="ui button">파일찾기</label>
+                    <input type="file" id="hidden-new-file2">
+                </div>
+            </div>
+
+
+            <p class="gInfo">.right-top-count (우측 상단 카운팅) </p>
+
+            <div class="preview" style="padding-top:50px;">
+                <div class="ui form">
+                    <div class="ui right-top-count input" style="width:500px;">
+                        <!-- .error // -->
+                        <span class="count"><span class="now">0</span>/<span class="max">100</span></span>
+                        <input type="text" placeholder="강좌명을 입력해주세요." />
+                        <i aria-hidden="true" class="clear link icon"></i>
+                        <span class="validation">You can enter up to 100 characters.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="preview" style="padding-top:50px;">
+                <div class="ui form">
+                    <div class="ui right-top-count input" style="width:500px;">
+                        <!-- .error // -->
+                        <span class="count"><span class="now">0</span>/<span class="max">500</span></span>
+                        <textarea placeholder="500자 이내로 입력하세요."></textarea>
+                        <span class="validation">You can enter up to 500 characters.</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </section>
+        <!-- // Input -->
+        <!-- Calendar -->
+        <section>
+            <h2 class="test">Calendar</h2>
+            <p class="gInfo">.calendar </p>
+            <div class="preview">
+                <div class="ui calendar">
+                    <div class="ui input right icon">
+                        <label>시작일</label>
+                        <i class="calendar24 icon"><span class="blind">date</span></i>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+
+            <p class="gInfo">.calendar h40</p>
+            <div class="preview">
+                <div class="ui h40 calendar">
+                    <div class="ui input right icon">
+                        <label>시작일</label>
+                        <i class="calendar24 icon"><span class="blind">date</span></i>
+                        <input type="text">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- // Calendar -->
+        <!-- input type="file" preview -->
+        <section>
+            <h2 class="test">이미지 업로드 미리보기 *기능확인용 (ui.js파일내 ui.fxImageUploadPreview)</h2>
+            <div class="preview">
+                <img src="" id="blah" />
+                <input type="file" id="profileIage" />
+                <label for="profileIage">Image upload</label>
+            </div>
+            <script>
+                ui.fxImageUploadPreview($("#profileIage"), $('#blah'));
+            </script>
+        </section>
+
+
+        <!-- // input type="file" preview -->
+        <!-- input type="file" preview -->
+        <section>
+            <h2 class="test">아코디언</h2>
+            <div class="preview">
+                <div class="ui accordion channel">
+                    <!-- .channel -->
+                    <div class="title">
+                        <span class="name b1">AI</span>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="content">
+                        <ul>
+                            <li>
+                                <div class="ui base checkbox">
+                                    <input type="checkbox" class="hidden" tabindex="0" />
+                                    <label>AI 공통</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="ui base checkbox">
+                                    <input type="checkbox" class="hidden" tabindex="0" />
+                                    <label>AI 공통</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="ui base checkbox">
+                                    <input type="checkbox" class="hidden" tabindex="0" />
+                                    <label>AI 공통</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="title">
+                        <span class="name b2">Management</span>
+                        <i class="icon"></i>
+                    </div>
+                    <div class="content">
+                        <li>
+                            <div class="ui base checkbox">
+                                <input type="checkbox" class="hidden" tabindex="0" />
+                                <label>AI 공통</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ui base checkbox">
+                                <input type="checkbox" class="hidden" tabindex="0" />
+                                <label>AI 공통</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="ui base checkbox">
+                                <input type="checkbox" class="hidden" tabindex="0" />
+                                <label>AI 공통</label>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $('.accordion').accordion({
+                    selector: {
+                        trigger: '.title'
+                    }
+                });
+            </script>
+        </section>
+
+
+        <!-- input type="file" preview -->
+        <section>
+            <h2 class="test">뺏지</h2>
+            <div class="preview">
+                <div class="acheive-stamp">
+                    <div class="value">3</div>
+                    <div class="label">획득 Stamp</div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- // input type="file" preview -->
+    </div>
+    <!-- // wrap -->
+    <script>
+        var $buttons = $('.ui.buttons .button'),
+            handler = {
+                activate: function() {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                }
+            }
+        $buttons.on('click', handler.activate);
+    </script>
+    <script>
+        ui.fxInit();
+    </script>
+    <script>
+        $('#select1').dropdown();
+        $('.ui.button.toggle').state();
+        $('.ui.checkbox').checkbox();
+        $('.ui.rating').rating();
+        $('.ui.dropdown').dropdown();
+        $('.ui.calendar').calendar({
+            type: 'date',
+            formatter: {
+                date: function(date, settings) {
+                    if (!date) return '';
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = (date.getFullYear() + '');
+                    return year + '.' + month + '.' + day;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

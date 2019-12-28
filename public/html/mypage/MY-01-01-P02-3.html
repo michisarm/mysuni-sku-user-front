@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>SUNI</title>
+    <link rel="stylesheet" href="../../css/semantic.min.css">
+    <link rel="stylesheet" href="../../css/calendar.min.css">
+    <link rel="stylesheet" href="../../css/swiper.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <!-- vendor prefix version
+<link rel="stylesheet" href="../../css/style.min.css">
+-->
+    <script src="../../js/jquery-1.12.4.js"></script>
+    <script src="../../js/semantic.min.js"></script>
+    <script src="../../js/state.min.js"></script>
+    <script src="../../js/calendar.min.js"></script>
+    <script src="../../js/modal.min.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/ui.js"></script>
+</head>
+
+
+<body>
+    <!-- .header -->
+    <section class="header">
+        <div class="group">
+            <div class="cont-inner">
+                <div class="g-logo">
+                    <a href="../main/MA-01-01.html" target="_blank">
+                        <i class="sk-university icon"><span class="blind">my SUNI</span></i>
+                    </a>
+                </div>
+                <div class="g-menu-detail">
+                    <button class="ui detail-open">
+                        <button class="ui detail-open">Category</button>
+                    </button>
+                    <div class="layer">
+                        <div class="table-css">
+                            <div class="row head">
+                                <div class="cell v-middle">College</div>
+                                <div class="cell v-middle">Channel</div>
+                            </div>
+                            <div class="row body">
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button class="active">AI</button><!-- .active 활성화 // -->
+                                            <button>DT</button>
+                                            <button>행복</button>
+                                            <button>SV</button>
+                                            <button>혁신디자인</button>
+                                            <button>Global</button>
+                                            <button>Leadership</button>
+                                            <button>Management</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling">
+                                            <button onclick="window.open('../common/CO-05-01-01.html')">AI 전체보기 <span>(125)</span></button>
+                                            <button onclick="window.open('../common/CO-05-01-04.html')">AI Fundamental <span>(34)</span></button>
+                                            <button>AI Biz. Implemetation <span>(20)</span></button>
+                                            <button>AI Tech Essential <span>(14)</span></button>
+                                            <button>Computer Vison AI <span>(20)</span></button>
+                                            <button>Language AI <span>(13)</span></button>
+                                            <button>Speech AI <span>(8)</span></button>
+                                            <button>AI Tech Advanced <span>(13)</span></button>
+                                            <button>AI technologies <span>(3)</span></button>
+                                            <button>AI Digital Reasoning <span>(19)</span></button>
+                                            <button>AI Lucidworks <span>(15)</span></button>
+                                            <button>AI Narrative Science <span>(12)</span></button>
+                                            <button>AI SAS <span>(8)</span></button>
+                                            <button>AI Yseop <span>(5)</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="window.open('../mypage/MY-01-01-P02-2.html')" class="ui icon button img-icon change-channel-of-interest"><span class="underline">관심 Channel 변경<i class="setting17 icon"></i></button>
+                    <button class="ui close"><i class="new16x17 icon"><span class="blind">close</span></i></button>
+                    </div>
+                </div>
+                <div class="g-menu">
+                    <div class="nav">
+                        <a href="../learning/ML-02-02.html" target="_blank" class="item active">Learning</a><!-- .active // -->
+                        <a href="../community/CM-01-01.html" target="_blank" class="item">Community</a>
+                        <a href="../recommend/RC-01-01.html" target="_blank" class="item">Recommend</a>
+                        <a href="../create/CR-01-02.html" target="_blank" class="item">Create</a>
+                    </div>
+                </div>
+                <div class="g-search">
+                    <div class="ui h38 search input">
+                        <input type="text" placeholder="Search" value="" />
+                        <i aria-hidden="true" class="clear link icon"></i>
+                        <a href="../search/SE-01-01.html" target="_blank"><i aria-hidden="true" class="search link icon"></i></a>
+                    </div>
+                </div>
+                <div class="g-info">
+                    <button onclick="window.open('../mypage/MY-01-01.html')" class="ui user image label">
+                        <span class="name">김유니</span>
+                        <span class="affiliation">SK C&C  플랫폼 개발 1팀</span>
+                        <img src="../../img/profile-36-px.png" alt="profile" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="breadcrumbs">
+            <div class="cont-inner">
+                <div class="ui standard breadcrumb">
+                    <a class="section">Home</a>
+                    <i class="right chevron icon divider"></i>
+                    <a class="section">depth1</a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">depth2</div>
+                </div>
+                <div class="right">
+                    <a href="../support/SU-01-01.html" target="_blank">
+                        <i class="support12 icon"></i>
+                        <span>Support</span>
+                        <i class="arrow8 black-jump icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .header -->
+    <!-- .content -->
+    <section class="content">
+        <div class="ui full segment">
+
+            <div class="ui base w1000 modal">
+                <div class="header res">
+                    관심 Channel 변경
+                    <span class="sub f12">맞춤형 학습 과정 추천을 위한 관심 채널을 3개 이상 선택해주세요.</span>
+                </div>
+                <div class="content">
+
+                    <div class="channel-change">
+
+                        <div class="table-css">
+                            <div class="row head">
+                                <div class="cell v-middle">
+                                    <span class="text01">Channel list</span>
+                                    <div class="right">
+                                        <div class="ui h30 search input">
+                                            <input type="text" placeholder="Search" value="이것만 검색되라" />
+                                            <i aria-hidden="true" class="clear link icon"></i>
+                                            <i aria-hidden="true" class="search link icon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell v-middle">
+                                    <span class="text01">Selected</span>
+                                    <!-- 선택갯수 0 개 일때 -->
+                                    <!--
+                                <span class="count"><span class="text01">0</span><span class="text02"> / 80</span></span>
+                                -->
+                                    <!-- // 선택갯수 0 개 일때 -->
+                                    <!-- 선택갯수 0 이 아닐때 -->
+                                    <span class="count"><span class="text01 add">7</span><span class="text02"> / 80</span></span>
+                                    <!-- // 선택갯수 0 이 아닐때 -->
+                                    <div class="right">
+                                        <button class="clear"><i class="icon reset"><span class="blind">reset</span></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling-60vh">
+                                            <!-- .search-empty -->
+                                            <!--
+                                        <div class="search-empty">
+                                            <i class="icon rocket50"></i>
+                                            <div>검색된 Channel이 없습니다.</div>
+                                        </div>
+                                        -->
+                                            <!-- // .search-empty -->
+                                            <div class="ui accordion channel">
+                                                <!-- .channel -->
+                                                <div class="title">
+                                                    <span class="name purple">AI</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>AI 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>AI 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>AI 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name violet">DT</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>DT 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>DT 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>DT 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name yellow">행복</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>행복 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>행복 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>행복 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name orange">SV</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>SV 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>SV 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>SV 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name red">혁신디자인</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>혁신디자인 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>혁신디자인 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>혁신디자인 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name green">Global</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Global 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Global 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Global 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name blue">Leadership</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Leadership 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Leadership 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Leadership 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="title">
+                                                    <span class="name teal">Management</span>
+                                                    <i class="icon"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Management 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Management 공통</label>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="ui base checkbox">
+                                                                <input type="checkbox" class="hidden" tabindex="0" />
+                                                                <label>Management 공통</label>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell vtop">
+                                    <div class="select-area">
+                                        <div class="scrolling-60vh">
+                                            <!-- .select-empty -->
+                                            <!--
+                                        <div class="select-empty">
+                                            Not Selected
+                                        </div>
+                                        -->
+                                            <!-- // .select-empty -->
+                                            <!-- .select-item -->
+                                            <div class="select-item">
+                                                <button class="ui button del">AI 공통 1 (이것만 검색되라)</button>
+                                                <button class="ui button del">AI 공통 3 (이것만 검색되라)</button>
+                                            </div>
+                                            <!-- // .select-item -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                
+                <button class="ui icon button img-icon"><i class="arrow-up s26 icon"></i><span class="blind">open</span></button>
+				<button class="ui icon button img-icon"><i class="arrow-down s26 icon"></i><span class="blind">close</span></button>
+                
+-->
+
+                </div>
+                <div class="actions">
+                    <button class="ui button w190 pop d">Cancel</button>
+                    <button class="ui button w190 pop p">Confirm</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- // .content -->
+
+    <script>
+        $('.ui.modal').modal('show');
+    </script>
+
+    <!-- .quick -->
+    <section class="quick">
+        <div class="cont-inner">
+            <div class="q-group">
+                <a href="#top" class="ui top button">TOP</a>
+                <button class="ui quick button"></button><!-- .active // -->
+
+                <div class="quick-menu">
+                    <div class="ui quick-black horizontal buttons">
+                        <button onclick="window.open('../learning/ML-02-02.html')" class="ui button"><i aria-hidden="ture" class="learning32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Learning</button>
+                        <button onclick="window.open('../community/CM-08-01.html')" class="ui button"><i aria-hidden="ture" class="community32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Community</button>
+                        <button onclick="window.open('../support/SU-03-01.html')" class="ui button"><i aria-hidden="ture" class="support32 icon"></i><i class="new16 icon"><span class="blind">new</span></i>Support</button>
+                    </div>
+                    <div class="ui quick-black vertical buttons">
+                        <button onclick="window.open('../introduction/IN_01_01.html')" class="ui button"><i aria-hidden="ture" class="building icon"></i>mySUNI Introduction</button>
+                        <button onclick="window.open('../mypage/MY-01-01-P02.html')" class="ui button"><i aria-hidden="ture" class="admin icon"></i>관심 Channel</button>
+                        <button onclick="window.open('../common/CO-05-01.html')" class="ui button"><i aria-hidden="ture" class="sitemap icon"></i>Site Map</button>
+                        <button class="ui button"><i aria-hidden="ture" class="admin24 icon"></i>Admin Site</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // .quick -->
+    <!-- .footer -->
+    <section class="footer">
+        <div class="cont-inner">
+            <i class="s-kuniversity icon"><span class="blind">my SUNI</span></i>
+            <div class="f-copyright">
+                COPYRIGHT<i class="copyright icon"><span class="blind">copyright sign</span></i>mySUNI. ALL RIGHTS RESERVED.
+            </div>
+            <div class="f-nav">
+                <a href="../introduction/IN-01-01.html" target="_blank" class="item">Introduction</a>
+                <a href="../support/SU-01-01.html" target="_blank" class="item">공지사항</a>
+                <a href="../support/SU-02-01.html" target="_blank" class="item">FAQ</a>
+                <a href="../support/SU-03-01.html" target="_blank" class="item">문의하기</a>
+                <a href="../common/CO-03-02.html" target="_blank" class="item active">개인정보 처리방침</a>
+            </div>
+            <div class="ui country buttons">
+                <button class="ui button active">KR</button>
+                <button class="ui button">EN</button>
+            </div>
+        </div>
+    </section>
+    <!-- // .footer -->
+    <script>
+        /**
+         * comment  : semantic-ui 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+
+
+        /* 국가 선택 */
+        var $buttons = $('.ui.buttons.country .button'),
+            handler = {
+                activate: function() {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                },
+                toggleReplies: function() { // 덧글 
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active').text('View Replies');
+                        $(this).closest('.comment').find('.comments, .more').addClass('collapsed');
+                    } else {
+                        $(this).addClass('active').text('Hide Replies');
+                        $(this).closest('.comment').find('.comments, .more').removeClass('collapsed');
+                    }
+                },
+            }
+        $buttons.on('click', handler.activate);
+        /* 스틱키 */
+        $('.ui.sticky.offset0').visibility({
+            type: 'fixed',
+            offset: 0
+        });
+        $('.ui.sticky.offset48').visibility({
+            type: 'fixed',
+            offset: 48
+        });
+        $('#example3 .ui.sticky').sticky({
+            context: '#example3',
+            offset: 150
+        });
+        /* 퀵메뉴  */
+        $toggle = $('button.quick');
+        $toggle.state();
+
+        /* 탭 */
+        $('.menu .item').tab();
+        /* 체크박스 라디오버튼 */
+        $('.ui.checkbox').checkbox();
+
+        /* 덧글 대댓글 토글 버튼 */
+        $reply = $('.cmt');
+        $reply.on('click', handler.toggleReplies);
+
+        /* dropdown : 선택시 추가 텍스트가 필요하면 data-add속성 사용 */
+
+        $('.ui.dropdown').dropdown({
+            onChange: function(val, text, choice) {
+                if (this.getAttribute("data-add") !== undefined && this.getAttribute("data-add") !== null) {
+                    this.getElementsByClassName("text")[0].innerHTML = text + this.getAttribute("data-add");
+                }
+            }
+        });
+
+
+        /* ML-03-01 : 시작일 종료일 */
+        if ($('#rangestart').length) {
+            $('#rangestart').calendar({
+                type: 'date',
+                endCalendar: $('#rangeend'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        if ($('#rangeend').length) {
+            $('#rangeend').calendar({
+                type: 'date',
+                startCalendar: $('#rangestart'),
+                formatter: {
+                    date: function(date, settings) {
+                        if (!date) return '';
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = (date.getFullYear() + '');
+                        return year + '.' + month + '.' + day;
+                    }
+                }
+            });
+        }
+        /* MY-01-01-P02 : 아코디언 */
+
+        $('.select-area .accordion').accordion({
+            selector: {
+                trigger: '.title'
+            },
+            exclusive: false
+        });
+
+        /* CM-01-01 : 아코디언 */
+
+        $('.community-accordion .accordion').accordion({
+            selector: {
+                trigger: '.dropdown'
+            }
+        });
+
+        /*LO-07-01 hover시 popup*/
+        $('label.pop').popup({
+            inline: false,
+            hoverable: true,
+            position: 'bottom left'
+        });
+
+
+        /* 탭 기능 */
+        $('.ui.sku.menu').tab();
+
+        /*button toggle 공통 (CO-05-01-01,RC-01-01) */
+        $('.ui.button.toggle').state();
+
+        /**
+         * comment  : ui.js 호출 영역
+         * param    : 
+         * @author  : kimjaeseong
+         * @date    : 
+         */
+        (function() {
+            ui.fxInit();
+        })();
+    </script>
+</body>
+
+</html>
