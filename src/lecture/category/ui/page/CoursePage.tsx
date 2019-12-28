@@ -163,6 +163,7 @@ class CoursePage extends Component<Props, State> {
       //etc
       category: coursePlan.category,
       cubeType: 'Course',
+      cubeTypeName: 'Course',
       name: coursePlan.name,
       time: coursePlan.time,
 
