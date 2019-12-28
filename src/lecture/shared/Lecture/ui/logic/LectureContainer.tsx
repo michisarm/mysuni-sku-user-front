@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { LectureModel, LectureViewModel } from 'lecture/index';
+import { MyTrainingModel, InMyLectureModel } from 'mytraining';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';
@@ -18,11 +19,11 @@ import CommunityLectureContainer from '../../sub/Community/CommunityLectureConta
 
 
 export interface OnViewDetailData {
-  lecture: LectureModel,
+  model: LectureModel | MyTrainingModel | InMyLectureModel,
 }
 
 interface Props {
-  lecture: LectureModel,
+  model: LectureModel | MyTrainingModel | InMyLectureModel,
   lectureView?: LectureViewModel,
   rating?: number,
   thumbnailImage?: string,
@@ -129,9 +130,9 @@ class LectureContainer extends Component<Props, States> {
 
   onViewDetail(e: any) {
     //
-    const { lecture, onViewDetail } = this.props;
+    const { model, onViewDetail } = this.props;
     const data = {
-      lecture,
+      model,
     };
 
     onViewDetail!(e, data);
@@ -140,16 +141,24 @@ class LectureContainer extends Component<Props, States> {
   renderBoxCard() {
     //
     const {
-      lecture, rating, thumbnailImage,
+      model, rating, thumbnailImage,
       onAction,
     } = this.props;
     const { hovered } = this.state;
+    let state = '';
+    let date = '';
+    if (model instanceof MyTrainingModel) {
+      state = model.state;
+      date = new Date(model.time).toLocaleDateString();
+    }
 
     return (
       <BoxCardView
-        lecture={lecture}
+        model={model}
         hovered={hovered}
         rating={rating}
+        state={state || undefined}
+        date={date || undefined}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
@@ -163,16 +172,16 @@ class LectureContainer extends Component<Props, States> {
   renderListCard() {
     //
     const {
-      lecture, thumbnailImage,
-      onAction,
+      model, thumbnailImage,
+      // onAction,
     } = this.props;
 
     return (
       <ListCardView
-        lecture={lecture}
+        model={model}
         thumbnailImage={thumbnailImage}
-        action={this.getAction()}
-        onAction={onAction}
+        action={{ iconName: 'play2', text: 'View Details' }}
+        onAction={this.onViewDetail}
       />
     );
   }
@@ -180,7 +189,7 @@ class LectureContainer extends Component<Props, States> {
   renderLineCard() {
     //
     const {
-      lecture, rating, thumbnailImage,
+      model, rating, thumbnailImage,
       onAction,
     } = this.props;
     const { hovered } = this.state;
@@ -189,7 +198,7 @@ class LectureContainer extends Component<Props, States> {
       <li>
         <CardGroup type={GroupType.Box}>
           <BoxCardView
-            lecture={lecture}
+            model={model}
             hovered={hovered}
             rating={rating}
             thumbnailImage={thumbnailImage}

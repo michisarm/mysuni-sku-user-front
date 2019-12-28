@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -10,9 +11,12 @@ import MyLearningAreaContainer from '../logic/MyLearningAreaContainer';
 import RecommendContainer from '../logic/RecommendContainer';
 
 
+interface Props extends RouteComponentProps{
+}
+
 @reactAutobind
 @observer
-class UserMainPage extends Component {
+class UserMainPage extends Component<Props> {
   //
   render() {
     //
@@ -29,4 +33,4 @@ class UserMainPage extends Component {
   }
 }
 
-export default UserMainPage;
+export default withRouter(UserMainPage);

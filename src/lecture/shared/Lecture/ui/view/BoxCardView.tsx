@@ -4,9 +4,10 @@ import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 // import numeral from 'numeral';
-import { Button, Card, Icon, Rating } from 'semantic-ui-react';
+import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
+import { InMyLectureModel, MyTrainingModel } from 'mytraining';
 import { CubeTypeNameType } from 'personalcube/personalcube';
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
@@ -14,9 +15,11 @@ import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from '../.
 
 
 interface Props {
-  lecture: LectureModel,
+  model: LectureModel | MyTrainingModel | InMyLectureModel,
   hovered: boolean,
   rating?: number,
+  state?: string,
+  date?: string,
   thumbnailImage?: string,
   action?: Action,
   onHoverIn?: () => void,
@@ -36,6 +39,8 @@ class BoxCardView extends Component<Props, States> {
   //
   static defaultProps = {
     rating: null,
+    state: null,
+    date: null,
     thumbnailImage: null,
     action: null,
     onHover: () => {},
@@ -46,7 +51,7 @@ class BoxCardView extends Component<Props, States> {
 
   renderBottom() {
     //
-    const { rating } = this.props;
+    const { rating, state, date } = this.props;
 
     return (
       <div className="foot-area">
@@ -55,6 +60,18 @@ class BoxCardView extends Component<Props, States> {
             <Rating className="rating-num" size="small" disabled rating={rating} maxRating={5} />
           </div>
         )}
+        {
+          typeof state === 'string'  && (
+            <Label className="onlytext bold">
+              <Icon className="state" /><span>{state}</span>
+            </Label>
+          )
+        }
+        {
+          typeof date === 'string'  && (
+            <div className="study-date">{date} 학습 시작</div>
+          )
+        }
 
         {/* Todo: 기획, 도메인 확인 후 속성명 정의하여 props에 추가 */}
         {/*<Label className="bold onlytext">*/}
@@ -68,10 +85,10 @@ class BoxCardView extends Component<Props, States> {
   render() {
     //
     const {
-      lecture, hovered, thumbnailImage, action,
+      model, hovered, thumbnailImage, action,
       onHoverIn, onHoverOut, onAction, onViewDetail,
     } = this.props;
-    const { hour, minute } = dateTimeHelper.timeToHourMinute(lecture!.learningTime);
+    const { hour, minute } = dateTimeHelper.timeToHourMinute(model!.learningTime);
     const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
 
     return (
@@ -84,16 +101,16 @@ class BoxCardView extends Component<Props, States> {
         onMouseLeave={onHoverOut}
       >
         {/* Todo: stampReady */}
-        <Ribbon required={lecture!.required} />
+        <Ribbon required={model!.required} />
 
         <div className="card-inner">
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={lecture.name} category={lecture.category} />
+          <Title title={model.name} category={model.category} />
 
           <Fields>
-            { lecture.cubeTypeName && (
-              <Field icon={CubeIconType[lecture.cubeType] || CubeIconType[lecture.serviceType]} text={lecture.cubeTypeName} bold />
+            { model.cubeTypeName && (
+              <Field icon={CubeIconType[model.cubeType] || CubeIconType[model.serviceType]} text={model.cubeTypeName} bold />
             )}
             <div className="li">
               { hourAndMinute && (
@@ -103,8 +120,8 @@ class BoxCardView extends Component<Props, States> {
                   text={hourAndMinute}
                 />
               )}
-              { (lecture.cubeTypeName === CubeTypeNameType.Program) && (
-                <SubField className={hourAndMinute ? 'card-stamp' : ''} bold icon="stamp" text={`Stamp x${lecture.stampCount}`} />
+              { (model.cubeTypeName === CubeTypeNameType.Program) && (
+                <SubField className={hourAndMinute ? 'card-stamp' : ''} bold icon="stamp" text={`Stamp x${model.stampCount}`} />
               )}
 
             </div>
@@ -118,9 +135,9 @@ class BoxCardView extends Component<Props, States> {
 
         {/* hover 시 컨텐츠 */}
         <div className="hover-content">
-          <Title title={lecture.name} category={lecture.category} />
+          <Title title={model.name} category={model.category} />
 
-          <p className="text-area" dangerouslySetInnerHTML={{ __html: lecture.description }} />
+          <p className="text-area" dangerouslySetInnerHTML={{ __html: model.description }} />
 
           <Buttons>
             { action && (

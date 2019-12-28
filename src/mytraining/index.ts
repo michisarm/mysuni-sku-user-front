@@ -18,3 +18,8 @@ export {
   MyLearningSummaryService,
   InMyLectureService,
 };
+
+
+/** Model */
+export { default as MyTrainingModel } from './model/MyTrainingModel';
+export { default as InMyLectureModel } from './model/InMyLectureModel';

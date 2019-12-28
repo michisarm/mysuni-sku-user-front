@@ -34,7 +34,7 @@ export const Basic = () => {
   });
 
   const lectureProps = {
-    lecture,
+    model: lecture,
     rating: number('rating', 4, { range: true, min: 0, max: 5 }),
     thumbnailImage: 'http://placehold.it/60x60',
     action: select('action', {
@@ -75,7 +75,7 @@ export const Minimal = () => {
   return (
     <Lecture.Group type={Lecture.GroupType.Box}>
       <Lecture
-        lecture={lecture}
+        model={lecture}
       />
     </Lecture.Group>
   );
@@ -100,7 +100,7 @@ export const Required = () => {
   return (
     <Lecture.Group type={Lecture.GroupType.Box}>
       <Lecture
-        lecture={lecture}
+        model={lecture}
         action={{
           iconName: 'remove2',
         }}
@@ -128,7 +128,7 @@ export const Line = () => {
   });
 
   const lectureProps = {
-    lecture,
+    model: lecture,
     rating: number('rating', 4, { range: true, min: 0, max: 5 }),
     thumbnailImage: 'http://placehold.it/60x60',
     action: select('action', {
@@ -194,7 +194,7 @@ export const Course = () => {
   });
 
   const lectureProps = {
-    lecture,
+    model: lecture,
     rating: number('rating', 4, { range: true, min: 0, max: 5 }),
     thumbnailImage: 'http://placehold.it/60x60',
     action: select('action', {

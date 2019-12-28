@@ -1,15 +1,60 @@
 
 import React, { Component } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Segment, Button, Icon } from 'semantic-ui-react';
+import { inject, observer } from 'mobx-react';
+import { MyLearningSummaryService } from 'mytraining';
+import { ContentHeader, mobxHelper } from 'shared';
 
+interface Props extends RouteComponentProps{
+  myLearningSummaryService?: MyLearningSummaryService
+}
 
+@inject(mobxHelper.injectFrom(
+  'myTraining.myLearningSummaryService',
+))
+@observer
 @reactAutobind
-class MyLearningSummaryView extends Component {
+class MyLearningSummaryContainer extends Component<Props> {
   //
+  componentDidMount(): void {
+    this.init();
+  }
+
+  init() {
+    const { myLearningSummaryService } = this.props;
+
+    myLearningSummaryService!.findMyLearningSummary();
+  }
+
+  timeToHourMinute(minuteTime: number) {
+    //
+    let hour = 0;
+    let minute = minuteTime;
+
+    if (minuteTime) {
+      hour = Math.floor(minuteTime / 60);
+      minute = minuteTime % 60;
+    }
+    return { hour, minute };
+  }
+
   render() {
     //
+    const { myLearningSummaryService } = this.props;
+    const { myLearningSummary } = myLearningSummaryService!;
+
+    const minute = myLearningSummary.totalLearningTime;
+    let hour = 0;
+    let onlyMinute = minute;
+
+    if (minute) {
+      hour = Math.floor(minute / 60);
+      onlyMinute = minute % 60;
+    }
+
     return (
       <div className="my-learning-area">
         <Segment className="full">
@@ -18,7 +63,11 @@ class MyLearningSummaryView extends Component {
               <div className="cell v-middle">
                 <div className="cell-inner">
                   <span className="text01">My Learning</span>
-                  <Button icon className="right btn-black">
+                  <Button
+                    icon
+                    className="right btn-black"
+                    onClick={() => this.props.history.push('/my-training')}
+                  >
                     View all
                     <Icon className="morelink" />
                   </Button>
@@ -34,30 +83,18 @@ class MyLearningSummaryView extends Component {
                   <span className="t">
                     <span className="underline">총 학습시간</span>
                     <span className="div">
-                      <span className="t1">120</span><span className="t2">h</span>
-                      <span className="t1">00</span><span className="t2">m</span>
+                      <span className="t1">{hour}</span><span className="t2">h</span>
+                      <span className="t1">{onlyMinute || 0}</span><span className="t2">m</span>
                     </span>
                   </span>
                 </Button>
               </ItemWrapper>
 
               <ItemWrapper>
-                <div className="chart-wrap">
-                  <div className="ui pie w56" data-value="30">
-                    <span className="left" />
-                    <span className="right" />
-                  </div>
-                  <div className="ui list">
-                    <dl className="item sk">
-                      <dt>SK University</dt>
-                      <dd>14h 50m</dd>
-                    </dl>
-                    <dl className="item my">
-                      <dt>My company</dt>
-                      <dd>35h 30m</dd>
-                    </dl>
-                  </div>
-                </div>
+                <ContentHeader.ChartItem
+                  universityTime={myLearningSummary.suniLearningTime || 0}
+                  myCompanyTime={myLearningSummary.myCompanyLearningTime || 0}
+                />
               </ItemWrapper>
 
               <ItemWrapper>
@@ -69,7 +106,7 @@ class MyLearningSummaryView extends Component {
                   <span className="t">
                     <span className="underline">완료한 학습</span>
                     <span className="div">
-                      <span className="t1">14</span><span className="t3">개</span>
+                      <span className="t1">{myLearningSummary.completeLectureCount || 0}</span><span className="t3">개</span>
                     </span>
                   </span>
                 </Button>
@@ -83,7 +120,7 @@ class MyLearningSummaryView extends Component {
                   <span className="t">
                     <span className="underline">획득 Stamp</span>
                     <span className="div">
-                      <span className="t1">14</span><span className="t3">개</span>
+                      <span className="t1">{myLearningSummary.acheiveStampCount || 0}</span><span className="t3">개</span>
                     </span>
                   </span>
                 </Button>
@@ -114,4 +151,4 @@ class ItemWrapper extends Component {
   }
 }
 
-export default MyLearningSummaryView;
+export default withRouter(MyLearningSummaryContainer);
