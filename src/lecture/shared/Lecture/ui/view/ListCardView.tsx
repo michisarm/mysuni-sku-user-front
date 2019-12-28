@@ -9,7 +9,7 @@ import { LectureModel } from 'lecture/index';
 import { MyTrainingModel, InMyLectureModel } from 'mytraining';
 import Action from '../../model/Action';
 import {
-  Title, Fields, Field, Buttons, Thumbnail, Ribbon,
+  Title, Fields, Field, Buttons, Thumbnail,
 } from '../../../ui/view/LectureElementsView';
 
 

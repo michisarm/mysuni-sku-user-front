@@ -53,12 +53,12 @@ class RecommendContainer extends Component<Props> {
           <RecommendHeaderContainer />
           {
             channels && channels.length
-            && channels.map((channel: ChannelModel) => {
+            && channels.map((channel: ChannelModel, index: number) => {
               if (!channel.checked) return null;
               return (
                 <RecommendChannelLecturesContainer
                   channel={channel}
-                  key={`channel_cont_${channel.id}`}
+                  key={`channel_cont_${index}`}
                   onViewAll={this.routeTo}
                 />
               );
