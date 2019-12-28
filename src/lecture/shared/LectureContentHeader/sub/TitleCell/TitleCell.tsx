@@ -5,6 +5,7 @@ import { DatePeriod, reactAutobind } from '@nara.platform/accent';
 import { CubeType } from 'personalcube/personalcube';
 import { Label, Icon, LabelProps } from 'semantic-ui-react';
 import { CategoryModel } from 'shared';
+import CubeIconType from '../../../Lecture/model/CubeIconType';
 
 
 interface Props {
@@ -37,7 +38,7 @@ class TitleCell extends Component<Props> {
         <div className="deatil">
           <div className="item">
             <Label className="bold onlytext">
-              <Icon className="course" /><span>{type}</span>
+              <Icon className={CubeIconType[type]} /><span>{type}</span>
             </Label>
             { category && category.channel.name && <span className="channel">{category.channel.name}</span>}
           </div>

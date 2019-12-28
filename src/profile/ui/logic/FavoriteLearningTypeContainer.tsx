@@ -4,7 +4,7 @@ import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ContentLayout } from '../../../shared';
+import { ContentLayout, IdNameList } from '../../../shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
@@ -88,27 +88,27 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   }
 
 
-  onSummit() {
+  onSubmmit() {
     const { skProfileService, collegeService } = this.props;
-    const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteLearningType } = studySummary as StudySummary;
 
-    if (skProfileService && collegeService) {
-      favoriteLearningType.idNames.push({ id: 'type', name: typeGroup });
-      favoriteLearningType.idNames.push({ id: 'time', name: timeGroup });
-      areaGroup.forEach((area) => favoriteLearningType.idNames.push({ id: 'area', name: area }) );
-      goalGroup.forEach((goal) => favoriteLearningType.idNames.push({ id: 'goal', name: goal }) );
-      favoriteLearningType.idNames.push({ id: 'etc', name: etc });
+    const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
+    const learningTyps : IdNameList = new IdNameList();
+
+    if (skProfileService && collegeService )  {
+      learningTyps.idNames.push({ id: 'type', name: typeGroup });
+      learningTyps.idNames.push({ id: 'time', name: timeGroup });
+      areaGroup.forEach((area) => learningTyps.idNames.push({ id: 'area', name: area }) );
+      goalGroup.forEach((goal) => learningTyps.idNames.push({ id: 'goal', name: goal }) );
+      learningTyps.idNames.push({ id: 'etc', name: etc });
 
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
-      skProfileService.setStudySummaryProp('favoriteLearningType', favoriteLearningType);
+      skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
       console.log(StudySummary.asNameValues(skProfileService.studySummary));
     }
 
     this.props.history.push('/');
-
+    //window.location.href = `${process.env.PUBLIC_URL}/`;
   }
 
   render() {
@@ -200,7 +200,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
             </div>
             <div className="button-area">
               <Button className="fix line" onClick={this.onPreviousClick}>Previous</Button>
-              <Button className="fix bg" onClick={this.onSummit}>Submit</Button>
+              <Button className="fix bg" onClick={this.onSubmmit}>Submit</Button>
             </div>
           </Form>
         </div>
