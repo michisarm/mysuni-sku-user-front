@@ -123,8 +123,8 @@ class CoursePage extends Component<Props, State> {
 
     lectureViews.map(async (lectureView) => {
       if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
-        && lectureView.lectureCards && lectureView.lectureCards.length > 0) {
-        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCards);
+        && lectureView.lectureCardUsids && lectureView.lectureCardUsids.length > 0) {
+        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCardUsids);
       }
     });
   }
