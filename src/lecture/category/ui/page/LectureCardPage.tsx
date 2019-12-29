@@ -14,6 +14,7 @@ import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
 import { LectureCardService } from 'lecture';
 import { LearningCardService } from 'course';
+import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
@@ -135,7 +136,8 @@ class LectureCardPage extends Component<Props, State> {
 
       //etc
       category: personalCube.category,
-      cubeType: CubeTypeNameType[CubeType[personalCube.contents.type]],
+      cubeType: CubeType[personalCube.contents.type],
+      cubeTypeName: CubeTypeNameType[CubeType[personalCube.contents.type]],
       name: personalCube.name,
       time: personalCube.time,
       classroom: undefined,
@@ -324,7 +326,7 @@ class LectureCardPage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../../../${college.collegeId}/channels` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
           { text: `${college.name} Lecture` },
         ]}
       >

@@ -1,22 +1,29 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import MyLearningSummaryContainer from './MyLearningSummaryContainer';
+import MyLearningContentContainer from './MyLearningContentContainer';
 
-import MyLearningSummaryView from '../view/MyLearningSummaryView';
-import MyLearningContentView from '../view/MyLearningContentView';
 
+interface Props extends RouteComponentProps {
+}
+
+interface State {
+}
 
 @reactAutobind
-class MyLearningAreaContainer extends Component {
+class MyLearningAreaContainer extends Component<Props, State> {
   //
+
   render() {
     return (
       <>
-        <MyLearningSummaryView />
-        <MyLearningContentView />
+        <MyLearningSummaryContainer />
+        <MyLearningContentContainer />
       </>
     );
   }
 }
 
-export default MyLearningAreaContainer;
+export default withRouter(MyLearningAreaContainer);

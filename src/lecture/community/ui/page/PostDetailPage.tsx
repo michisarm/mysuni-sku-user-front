@@ -1,13 +1,15 @@
 
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { ReplyDetail } from '@sku/personalcube';
+import { PostDetail } from '@sku/personalcube';
 import { CollegeService } from 'college';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
+import routePaths from '../../../routePaths';
 
-interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string, replyId: string }>{
+
+interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
   collegeService: CollegeService,
 }
 
@@ -16,7 +18,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 ))
 @reactAutobind
 @observer
-class ReplyDetailPage extends React.Component<Props> {
+class PostDetailPage extends React.Component<Props> {
   //
   componentDidMount() {
     //
@@ -39,7 +41,7 @@ class ReplyDetailPage extends React.Component<Props> {
 
   render() {
     //
-    const { lectureCardId, cubeId, postId, replyId } = this.props.match.params;
+    const { lectureCardId, cubeId, postId } = this.props.match.params;
     const { collegeService } = this.props;
     const { college } = collegeService;
 
@@ -47,17 +49,18 @@ class ReplyDetailPage extends React.Component<Props> {
       <ContentLayout
         className="content community"
         breadcrumb={[
-          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
-          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
-          { text: `Detail Reply` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
+          { text: `Detail` },
         ]}
       >
         <section className="content community">
           <div className="post-view-wrap">
-            <ReplyDetail
-              replyId={replyId || ''}
-              onEdit={() => this.routeTo(`posts/${postId}/reply/${replyId}/edit`)}
+            <PostDetail
+              postId={postId || ''}
+              onEdit={() => this.routeTo(`posts/${postId}/edit`)}
               onRemove={() => this.routeTo('')}
+              onWriteReply={() => this.routeTo(`posts/${postId}/reply/new`)}
               routeToList={() => this.routeTo('')}
             />
           </div>
@@ -67,4 +70,4 @@ class ReplyDetailPage extends React.Component<Props> {
   }
 }
 
-export default withRouter(ReplyDetailPage);
+export default withRouter(PostDetailPage);

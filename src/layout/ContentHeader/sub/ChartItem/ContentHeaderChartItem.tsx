@@ -26,6 +26,10 @@ class ContentHeaderChartItem extends Component<Props> {
   getChartValue() {
     //
     const { universityTime, myCompanyTime } = this.props;
+
+    if (!(universityTime + myCompanyTime)) {
+      return 0;
+    }
     return  Math.floor(universityTime / (universityTime + myCompanyTime) * 360);
   }
 

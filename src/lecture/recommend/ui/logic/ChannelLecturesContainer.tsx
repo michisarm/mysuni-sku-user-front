@@ -7,9 +7,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
+import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
+
 
 interface Props extends RouteComponentProps {
   lectureService?: LectureService,
@@ -66,14 +68,15 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onViewDetail(e: any, data: any) {
     //
-    const { lecture } = data;
+    const { model } = data;
     const { history } = this.props;
+    const collegeId = model.category.college.id;
 
-    if (lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course) {
-      history.push(`/lecture/college/${lecture.category.college.id}/course-plan/${lecture.coursePlanId}/${lecture.serviceType}/${lecture.serviceId}`);
+    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
+      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
-    else if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`/lecture/college/${lecture.category.college.id}/cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 
@@ -112,7 +115,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
                   return (
                     <Lecture
                       key={`lecture-${index}`}
-                      lecture={lecture}
+                      model={lecture}
                       rating={rating}
                       // thumbnailImage="http://placehold.it/60x60"
                       action={Lecture.ActionType.Add}

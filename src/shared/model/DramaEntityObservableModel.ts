@@ -8,6 +8,10 @@ class DramaEntityObservableModel implements DramaEntity {
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
+
+  constructor(dramaEntity?: DramaEntity) {
+    if (dramaEntity) Object.assign(this, dramaEntity);
+  }
 }
 
 decorate(DramaEntityObservableModel, {

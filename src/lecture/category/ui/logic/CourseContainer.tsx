@@ -14,13 +14,21 @@ import {
   LectureViewModel,
 } from '../../../shared';
 import Lecture from '../../../shared/Lecture';
+import routePaths from '../../../routePaths';
 
 
-interface Props extends RouteComponentProps<{ coursePlanId: string, serviceType: LectureServiceType, serviceId: string }> {
+interface Props extends RouteComponentProps<RouteParams> {
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
   courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
+}
+
+interface RouteParams {
+  collegeId: string,
+  coursePlanId: string,
+  serviceType: LectureServiceType,
+  serviceId: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -58,13 +66,15 @@ class CourseContainer extends Component<Props> {
 
   onViewDetail(lecture: LectureViewModel) {
     //
-    const { serviceId, serviceType, coursePlanId, cubeId } = lecture;
+    const { cubeId, coursePlanId, serviceId, serviceType } = lecture;
+    const { match, history } = this.props;
+    const { params } = match;
 
     if (serviceType === LectureServiceType.Program || serviceType === LectureServiceType.Course) {
-      this.props.history.push(`../../${coursePlanId}/${serviceType}/${serviceId}`);
+      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId));
     }
     else if (serviceType === LectureServiceType.Card) {
-      this.props.history.push(`../../../cube/${cubeId}/lecture-card/${serviceId}`);
+      history.push(routePaths.lectureCardInCourseOverview(params.collegeId, params.coursePlanId, cubeId, serviceId));
     }
   }
 

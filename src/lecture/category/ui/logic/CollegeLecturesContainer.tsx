@@ -8,6 +8,7 @@ import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
+import routePaths from '../../../routePaths';
 
 import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
 import Lecture from '../../../shared/Lecture';
@@ -37,7 +38,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class CategoryLecturesContainer extends Component<Props, State> {
+class CollegeLecturesContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.category';
 
@@ -134,16 +135,16 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   }
 
-  onViewDetail(e: any, data: any) {
+  onViewDetail(e: any, { model }: any) {
     //
-    const { lecture } = data;
-    const { history } = this.props;
+    const { history, collegeService } = this.props;
+    const { college } = collegeService!;
 
-    if (data.lecture.serviceType === LectureServiceType.Program ||  data.lecture.serviceType === LectureServiceType.Course) {
-      history.push(`./course-plan/${lecture.coursePlanId}/${data.lecture.serviceType}/${lecture.serviceId}`);
+    if (model.serviceType === LectureServiceType.Program ||  model.serviceType === LectureServiceType.Course) {
+      history.push(routePaths.courseOverview(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
-    else if (lecture.serviceType === LectureServiceType.Card) {
-      history.push(`./cube/${lecture.cubeId}/lecture-card/${lecture.serviceId}`);
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.lectureCardOverview(college.collegeId, model.cubeId, model.serviceId));
     }
   }
 
@@ -154,7 +155,9 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   onViewChannelAll(e: string, data: any) {
     //
-    this.props.history.push(`./channel/${data.channel.id}`);
+    const { match, history } = this.props;
+
+    history.push(routePaths.channelLectures(match.params.collegeId, data.channel.id));
   }
 
 
@@ -189,7 +192,7 @@ class CategoryLecturesContainer extends Component<Props, State> {
                 return (
                   <Lecture
                     key={`lecture-${index}`}
-                    lecture={lecture}
+                    model={lecture}
                     rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}
@@ -258,4 +261,4 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
 
 
-export default withRouter(CategoryLecturesContainer);
+export default withRouter(CollegeLecturesContainer);

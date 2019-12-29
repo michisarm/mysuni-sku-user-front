@@ -8,7 +8,7 @@ import { mobxHelper, ContentLayout } from 'shared';
 import { CollegeService } from 'college';
 import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
-import CategoryLecturesContainer from '../logic/CategoryLecturesContainer';
+import CategoryLecturesContainer from '../logic/CollegeLecturesContainer';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string }> {

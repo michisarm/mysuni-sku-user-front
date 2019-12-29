@@ -7,8 +7,10 @@ import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { LectureCardService } from 'lecture';
+import { LectureCardService } from 'lecture/index';
 import { LearningCardService } from 'course';
+import routePaths from '../../../routePaths';
+
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
   collegeService?: CollegeService
@@ -59,8 +61,8 @@ class PostFormPage extends React.Component<Props> {
       <ContentLayout
         className="content bg-white"
         breadcrumb={[
-          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
-          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
           { text: `${postId ? 'Edit Post' : 'New Post'}` },
         ]}
       >

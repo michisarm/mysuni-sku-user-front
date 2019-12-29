@@ -6,6 +6,8 @@ import { CollegeService } from 'college';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
+import routePaths from '../../../routePaths';
+
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string,  postId: string, replyId: string }>{
   collegeService: CollegeService,
@@ -40,7 +42,7 @@ class ReplyFormPage extends React.Component<Props> {
 
   routeToList() {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`);
+    this.props.history.push(routePaths.lectureCardOverview(collegeId, cubeId, lectureCardId));
   }
 
   render() {
@@ -53,8 +55,8 @@ class ReplyFormPage extends React.Component<Props> {
       <ContentLayout
         className="content bg-white"
         breadcrumb={[
-          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
-          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
           { text: `Post`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/posts/${postId}` },
           { text: `Detail Reply` },
         ]}

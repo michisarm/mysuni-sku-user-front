@@ -9,6 +9,7 @@ import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
 
 import { ReviewService } from '@nara.drama/feedback';
+import routePaths from '../../../routePaths';
 import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -123,8 +124,8 @@ class CoursePage extends Component<Props, State> {
 
     lectureViews.map(async (lectureView) => {
       if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
-        && lectureView.lectureCards && lectureView.lectureCards.length > 0) {
-        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCards);
+        && lectureView.lectureCardUsids && lectureView.lectureCardUsids.length > 0) {
+        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCardUsids);
       }
     });
   }
@@ -162,7 +163,8 @@ class CoursePage extends Component<Props, State> {
 
       //etc
       category: coursePlan.category,
-      cubeType: CubeType.None,
+      cubeType: 'Course',
+      cubeTypeName: 'Course',
       name: coursePlan.name,
       time: coursePlan.time,
 
@@ -247,7 +249,7 @@ class CoursePage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../../../${college.collegeId}/channels` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
           { text: `${college.name} Course` },
         ]}
       >
