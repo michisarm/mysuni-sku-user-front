@@ -11,7 +11,7 @@ export class BoardModel implements DramaEntity {
 
   name: string = '';
   boardConfig: BoardConfigModel = new BoardConfigModel();
-  learningPeriod: DatePeriod = {} as DatePeriod;
+  learningPeriod: DatePeriod = new DatePeriod();
   config: BoardConfigModel = new BoardConfigModel();
   time: number = 0;
 
@@ -21,8 +21,10 @@ export class BoardModel implements DramaEntity {
     //
     if (board) {
       const boardConfig = board.boardConfig && new BoardConfigModel(board.boardConfig) || this.boardConfig;
+      const learningPeriod = board.learningPeriod && new DatePeriod(board.learningPeriod) || this.learningPeriod;
+      const config = board.config && new BoardConfigModel(board.config) || this.config;
 
-      Object.assign(this, { ...board, boardConfig });
+      Object.assign(this, { ...board, boardConfig, learningPeriod, config });
     }
   }
 
@@ -69,6 +71,7 @@ export class BoardModel implements DramaEntity {
 decorate(BoardModel, {
   id: observable,
   entityVersion: observable,
+  patronKey: observable,
 
   name: observable,
   boardConfig: observable,

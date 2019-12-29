@@ -8,6 +8,7 @@ import { InstructorService } from 'expert';
 import { SkProfileService } from 'profile';
 import { AnswerService, BoardService, CategoryService, PostService } from 'board';
 import { myTrainingStores } from 'mytraining';
+import SharedService from './shared/present/logic/SharedService';
 
 
 const stores = {
@@ -21,6 +22,7 @@ const stores = {
   ...lectureCardStores,
   ...courseStores,
   ...myTrainingStores,
+  sharedService: SharedService.instance,
   personalCubeService: PersonalCubeService.instance,
   officeWebService: OfficeWebService.instance,
   mediaService: MediaService.instance,

@@ -22,7 +22,6 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   mediaService ?: MediaService
   boardService?: BoardService
   officeWebService ?: OfficeWebService
-  //personalCubeId?: string
 }
 
 interface States{
@@ -55,14 +54,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
   componentDidMount() {
     //
     const { cubeIntroService, personalCubeService } = this.props;
-    const { personalCubeId, cubeType } = this.props.match.params;
+    const { cubeType, personalCubeId } = this.props.match.params;
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
 
     if (personalCubeService && cubeIntroService ) {
-      if (cubeIntroService && !personalCubeId && !cubeIntroId) {
+      if (!cubeIntroId) {
         cubeIntroService.clearCubeIntro();
-      } else if (cubeIntroId) {
+      } else if (personalCubeId && cubeIntroId) {
         cubeIntroService.findCubeIntro(cubeIntroId)
           .then(() => {
             const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
@@ -182,14 +181,20 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { personalCubeId, cubeType } = this.props.match.params;
+    const { personalCubeService } = this.props;
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
-    if (cubeType === CubeType.Video
-      || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
-    if (cubeType === CubeType.Community) this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
-    if (cubeType === CubeType.Documents
-      || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+    if (personalCubeService && personalCubeId) {
+      personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+        .then(() => {
+          if (cubeType === CubeType.Video
+            || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+          if (cubeType === CubeType.Community) this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
+          if (cubeType === CubeType.Documents
+            || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+        });
+    }
   }
 
   makeMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {
@@ -281,13 +286,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
     });
   }
 
-  handleSaveAndApprove(mode?: string) {
-    //
-    Promise.resolve()
-      .then(() => this.onChangePersonalCubeProps('cubeState', CubeState.OpenApproval))
-      .then(() => this.handleOKConfirmWin(mode));
-  }
-
   onChangePersonalCubeProps(name: string, value: string | {} | []) {
     //
     const { personalCubeService } = this.props;
@@ -325,13 +323,10 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   render() {
 
-    const {
-      cubeIntro, changeManagerListModalOpen, instructorListModalOpen,
-    } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const {
       hour, minute, alertWinOpen, confirmWinOpen, alertMessage, alertIcon, alertTitle, alertType,
     } = this.state;
-    //const cubeType = personalCube && personalCube.contents && personalCube.contents.type;
     const { cubeType, personalCubeId } = this.props.match.params;
     const cubeIntroId  = cubeIntro && cubeIntro.id;
 
@@ -361,9 +356,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 hour={hour}
                 minute={minute}
                 cubeType={cubeType}
-                changeManagerListModalOpen={changeManagerListModalOpen}
-                instructorListModalOpen={instructorListModalOpen}
-                onHandleInstructorModalOk={this.onHandleInstructorModalOk}
               />
               <CreateMediaContainer
                 cubeType={cubeType}
@@ -371,7 +363,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
               {
                 personalCubeId ?
                   <div className="buttons">
-                    <Button className="fix line" onClict={this.onDeleteCube}>Delete</Button>
+                    <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
                     <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
@@ -400,7 +392,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 open={confirmWinOpen}
                 handleClose={this.handleCloseConfirmWin}
                 handleOk={this.handleOKConfirmWin}
-                //handleSaveAndApprove={this.handleSaveAndApprove}
                 title="저장 안내"
                 buttonYesName="저장"
                 buttonNoName="취소"

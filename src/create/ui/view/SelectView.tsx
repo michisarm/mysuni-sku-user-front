@@ -21,7 +21,7 @@ class SelectView extends React.Component <Props> {
           queryFieldName === 'cubeState' ?
             <div className="right-wrap">
               <Select
-                placeholder="분류를 선택해주세요"
+                placeholder="전체"
                 className="ui small-border dropdown m0"
                 defaultValue={fieldOption[0].value}
                 options={fieldOption}
@@ -32,7 +32,7 @@ class SelectView extends React.Component <Props> {
             :
             <div className="right-wrap">
               <Select
-                placeholder="분류를 선택해주세요"
+                placeholder="전체"
                 className="ui small-border dropdown"
                 defaultValue={fieldOption[0].value}
                 options={fieldOption}
