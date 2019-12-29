@@ -23,6 +23,8 @@ interface States {
   value ?: any
 }
 
+const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
+
 @inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
 @observer
 @reactAutobind
@@ -126,7 +128,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
                                   index={index}
                                   onClick={this.handleClick}
                                 >
-                                  <span className="name purple">{college.name}</span>
+                                  <span className={`name ${color[index]}`}>{college.name}</span>
                                   <Icon />
                                 </Accordion.Title>
                                 <Accordion.Content active={activeIndex === index}>
