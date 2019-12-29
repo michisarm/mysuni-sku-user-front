@@ -42,7 +42,7 @@ class ReplyFormPage extends React.Component<Props> {
 
   routeToList() {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(routePaths.lectureOverview(collegeId, cubeId, lectureCardId));
+    this.props.history.push(routePaths.lectureCardOverview(collegeId, cubeId, lectureCardId));
   }
 
   render() {
@@ -56,7 +56,7 @@ class ReplyFormPage extends React.Component<Props> {
         className="content bg-white"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture`, path: routePaths.lectureOverview(college.collegeId, cubeId, lectureCardId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
           { text: `Post`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/posts/${postId}` },
           { text: `Detail Reply` },
         ]}

@@ -59,7 +59,7 @@ class MyLearningContentContainer extends Component<Props, State> {
       history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureOverview(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 

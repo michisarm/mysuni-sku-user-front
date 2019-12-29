@@ -144,7 +144,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
       history.push(routePaths.courseOverview(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureOverview(college.collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(college.collegeId, model.cubeId, model.serviceId));
     }
   }
 

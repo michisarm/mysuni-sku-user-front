@@ -68,13 +68,13 @@ class CourseContainer extends Component<Props> {
     //
     const { cubeId, coursePlanId, serviceId, serviceType } = lecture;
     const { match, history } = this.props;
-    const { collegeId } = match.params;
+    const { params } = match;
 
     if (serviceType === LectureServiceType.Program || serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(collegeId, coursePlanId, serviceType, serviceId));
+      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId));
     }
     else if (serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureOverview(collegeId, cubeId, serviceId));
+      history.push(routePaths.lectureCardInCourseOverview(params.collegeId, params.coursePlanId, cubeId, serviceId));
     }
   }
 

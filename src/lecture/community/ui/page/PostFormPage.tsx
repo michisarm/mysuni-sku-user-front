@@ -62,7 +62,7 @@ class PostFormPage extends React.Component<Props> {
         className="content bg-white"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture`, path: routePaths.lectureOverview(college.collegeId, cubeId, lectureCardId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
           { text: `${postId ? 'Edit Post' : 'New Post'}` },
         ]}
       >

@@ -114,7 +114,7 @@ class MyTrainingPage extends Component<Props, State> {
       history.push(routePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureOverview(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 

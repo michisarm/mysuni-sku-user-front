@@ -76,7 +76,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
       history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureOverview(collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 
