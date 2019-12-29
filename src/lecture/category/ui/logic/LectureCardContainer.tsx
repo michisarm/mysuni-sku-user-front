@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import depot from '@nara.drama/depot';
-// import { reaction } from 'mobx';
 import { observer } from 'mobx-react';
 
+import depot from '@nara.drama/depot';
 import { CubeType } from 'personalcube/personalcube';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
@@ -23,29 +22,6 @@ interface State {
 @observer
 class LectureCardContainer extends Component<Props, State> {
   //
-
-  // constructor(props: Props) {
-  //   super(props);
-  //
-  //   // reaction(
-  //   //   () => props.c
-  //   // );
-  // }
-
-  componentDidMount() {
-    //
-    // const { classroomService } = this.props;
-
-    // classroomService.findClassroom()
-
-
-    // lectureCardService!.findAllLectureCards(0, 20);
-
-    // Todo: 조회 서비스 교체해야함.
-    // personalCubeService!.findAllPersonalCubesByQuery();
-    // personalCubeService!.findAllPersonalCubes(0, 20);
-  }
-
   onClickEnrollment() {
     console.log('enrollment');
   }
@@ -56,8 +32,9 @@ class LectureCardContainer extends Component<Props, State> {
     if (typeViewObject.url) {
       window.open(typeViewObject.url, '_blank');
     }
-
-    console.log('play');
+    else {
+      console.log('[UserFront] Url is empty.');
+    }
   }
 
   onLearningStart() {
@@ -66,7 +43,9 @@ class LectureCardContainer extends Component<Props, State> {
     if (typeViewObject.url) {
       window.open(typeViewObject.url, '_blank');
     }
-    console.log('learning start');
+    else {
+      console.log('[UserFront] Url is empty.');
+    }
   }
 
   onDownload() {

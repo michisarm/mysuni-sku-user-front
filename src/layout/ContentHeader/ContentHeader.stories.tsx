@@ -4,6 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import { Button, Image } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout } from 'shared';
+import { ContentHeaderTotalTimeItem } from 'mytraining/shared';
 
 
 export default {
@@ -68,7 +69,7 @@ export const TotalTimeItem = () => {
         {profileItem}
       </ContentHeader.Cell>
       <ContentHeader.Cell inner>
-        <ContentHeader.TotalTimeItem
+        <ContentHeaderTotalTimeItem
           minute={90}
         />
       </ContentHeader.Cell>

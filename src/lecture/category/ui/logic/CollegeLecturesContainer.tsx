@@ -8,6 +8,7 @@ import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import LectureCountService from '../../present/logic/LectureCountService';
+import routePaths from '../../../routePaths';
 
 import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
 import Lecture from '../../../shared/Lecture';
@@ -37,7 +38,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class CategoryLecturesContainer extends Component<Props, State> {
+class CollegeLecturesContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'lecture.category';
 
@@ -134,16 +135,18 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
   }
 
-  onViewDetail(e: any, data: any) {
+  onViewDetail(e: any, { model }: any) {
     //
-    const { model } = data;
-    const { history } = this.props;
+    const { history, collegeService } = this.props;
+    const { college } = collegeService!;
+
 
     if (model.serviceType === LectureServiceType.Program ||  model.serviceType === LectureServiceType.Course) {
       history.push(`./course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(`./cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+      history.push(routePaths.lectureOverview(college.collegeId, model.cubeId, model.serviceId));
+      // history.push(`./cube/${model.cubeId}/lecture-card/${model.serviceId}`);
     }
   }
 
@@ -258,4 +261,4 @@ class CategoryLecturesContainer extends Component<Props, State> {
 
 
 
-export default withRouter(CategoryLecturesContainer);
+export default withRouter(CollegeLecturesContainer);

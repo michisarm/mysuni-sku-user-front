@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import Cell from './sub/Cell';
 import ProfileItem from './sub/ProfileItem';
 import WaitingItem from './sub/WaitingItem';
-import TotalTimeItem from './sub/TotalTimeItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
 import StampItem from './sub/StampItem';
@@ -27,8 +26,6 @@ class ContentHeader extends Component<Props> {
   static ProfileItem = ProfileItem;
 
   static WaitingItem = WaitingItem;
-
-  static TotalTimeItem = TotalTimeItem;
 
   static ChartItem = ChartItem;
 

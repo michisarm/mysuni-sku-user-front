@@ -10,6 +10,7 @@ import { ContentHeader, ContentLayout, ContentMenu, mobxHelper, NoSuchContentPan
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
 import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
+import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import InMyLectureService from '../../present/logic/InMyLectureService';
@@ -211,7 +212,7 @@ class MyTrainingPage extends Component<Props, State> {
             />
           </ContentHeader.Cell>
           <ContentHeader.Cell inner>
-            <ContentHeader.TotalTimeItem
+            <ContentHeaderTotalTimeItem
               minute={myLearningSummary.totalLearningTime}
             />
             {

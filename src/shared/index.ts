@@ -3,9 +3,7 @@
 /** Service */
 import ModalService from './present/logic/ModalService';
 import PageService from './present/logic/PageService';
-import mobxHelper from './helper/mobxHelper';
 
-console.log(mobxHelper);
 
 export const sharedStores = {
   shared: {
