@@ -17,28 +17,12 @@ interface Props {
   personalCube: PersonalCubeModel
 }
 
-interface States {
-  createMovieDetailModalOpen : boolean
-}
-
 @observer
 @reactAutobind
-class CreateVideoTypeView  extends React.Component<Props, States> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      createMovieDetailModalOpen: false,
-    };
-  }
-
-  onChangeCreateMovieDetailModalOpen(createMovieDetailModalOpen: boolean) {
-    this.setState({ createMovieDetailModalOpen });
-  }
+class CreateVideoTypeView  extends React.Component<Props> {
 
   render() {
     const {  handleChangeSearchFilter, searchFilter, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
-    const { createMovieDetailModalOpen } = this.state;
     const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
     return (
       <>
