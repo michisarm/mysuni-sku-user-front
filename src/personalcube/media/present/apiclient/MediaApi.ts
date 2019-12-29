@@ -1,5 +1,7 @@
-import { axiosApi as axios } from '@nara.platform/accent';
+import { axiosApi as axios, OffsetElementList } from '@nara.platform/accent';
 import { MediaModel } from '../../model/MediaModel';
+import { PanoptoCdoModel } from '../../model/PanoptoCdoModel';
+import { InternalMediaConnectionModel } from '../../model/InternalMediaConnectionModel';
 
 export default class MediaApi {
 
@@ -10,6 +12,12 @@ export default class MediaApi {
   findMedia(mediaId: string) {
     //
     return axios.get<MediaModel>(this.URL + `/${mediaId}`)
+      .then(response => response && response.data || null);
+  }
+
+  findPanoptoList(panoptoCdo: PanoptoCdoModel) {
+    //
+    return axios.get<OffsetElementList<InternalMediaConnectionModel>>(this.URL + '/panoptos', { params: panoptoCdo })
       .then(response => response && response.data || null);
   }
 }

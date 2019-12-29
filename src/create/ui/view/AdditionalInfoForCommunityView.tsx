@@ -8,7 +8,6 @@ import { BoardModel } from '@sku/personalcube';
 interface Props {
   onChangeBoardProps: (name: string, value: string | Date | boolean, nameSub?: string) => void
   board: BoardModel
-
 }
 
 interface States {
@@ -30,19 +29,19 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
             className="base"
             label="오픈형"
             name="config"
-            checked={board && board.config && String(board.config.enClosed) === 'false'}
+            checked={board && board.config && board.config.enClosed === false}
             onClick={() => onChangeBoardProps('config.enClosed', false)}
           />
           <Radio
             className="base"
             label="폐쇄형"
             name="config"
-            checked={board && board.config && String(board.config.enClosed) === 'true'}
+            checked={board && board.config && board.config.enClosed === true}
             onClick={() => onChangeBoardProps('config.enClosed', true)}
           />
         </div>
         {
-          board && board.config && board.config.enClosed ?
+          board && board.config && board.config.enClosed && (
             <div className="column">
               <label className="necessary">기간</label>
               <div className="ui calendar" id="rangestart">
@@ -54,6 +53,7 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
                     selected={board && board.learningPeriod && board.learningPeriod.startDateSub || ''}
                     onChange={(date: Date) => onChangeBoardProps('learningPeriod.startDateSub', date, 'learningPeriod.startDate')}
                     minDate={new Date()}
+                    dateFormat="yyyy.MM.d"
                   />
                   <i className="calendar24 icon"><span className="blind">date</span></i>
                 </div>
@@ -72,13 +72,13 @@ class AdditionalInfoForCommunityView extends React.Component<Props, States> {
                       board && board.learningPeriod
                       && board.learningPeriod.endDateSub.toLocaleDateString() === new Date(2100, 12, 30).toLocaleDateString()
                     }
+                    dateFormat="yyyy.MM.d"
                   />
                   <i className="calendar24 icon"><span className="blind">date</span></i>
                 </div>
               </div>
             </div>
-            :
-            null
+          )
         }
       </div>
     );

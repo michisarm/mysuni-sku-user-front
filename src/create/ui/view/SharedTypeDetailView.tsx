@@ -4,12 +4,15 @@ import { mobxHelper, SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
+import depot from '@nara.drama/depot';
+import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import { MediaService, MediaType } from '../../../personalcube/media';
 
 interface Props {
   personalCube: PersonalCubeModel
   cubeType: string
   mediaService?: MediaService
+  filesMap?: Map<string, any>
 }
 
 @inject(mobxHelper.injectFrom('personalCube.mediaService'))
@@ -17,7 +20,7 @@ interface Props {
 @reactAutobind
 class SharedTypeDetailView extends React.Component<Props> {
   render() {
-    const { personalCube } = this.props;
+    const { personalCube, filesMap } = this.props;
     const { media } = this.props.mediaService || {} as MediaService;
 
     return (
@@ -88,11 +91,12 @@ class SharedTypeDetailView extends React.Component<Props> {
             <Table.Row>
               <Table.HeaderCell>참고자료</Table.HeaderCell>
               <Table.Cell>
-                <div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>
-                <div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>
-                <div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>
-                <div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>
-                <div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>
+                {
+                  filesMap && filesMap.get('reference')
+                  && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                    <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
+                  )) || '-'
+                }
               </Table.Cell>
             </Table.Row>
             <Table.Row>

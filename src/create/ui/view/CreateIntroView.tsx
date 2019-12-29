@@ -15,9 +15,6 @@ interface Props {
   hour: number
   minute: number
   cubeType?: string
-  changeManagerListModalOpen: (open: boolean) => void
-  instructorListModalOpen: boolean
-  onHandleInstructorModalOk?: (selectedInstructor: InstructorModel) => void
 }
 
 
@@ -28,8 +25,6 @@ class CreateIntroView extends React.Component<Props> {
 
     const {
       cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute, cubeType,
-      /*managerListModalOpen,
-      changeInstructorListModalOpen, changeManagerListModalOpen, instructorListModalOpen, cubeType, onHandleInstructorModalOk,*/
     } = this.props;
     return (
       <>

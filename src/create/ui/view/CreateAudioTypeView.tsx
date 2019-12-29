@@ -82,25 +82,13 @@ class CreateAudioTypeView extends React.Component<Props> {
 
         <Form.Field>
           <label>참고자료</label>
-          <div className="round-wrap2">
-            <div className="top text">
-              <ul>
-                <li><span className="empty">파일을 업로드해주세요.</span></li>
-              </ul>
-            </div>
-            <div className="bottom">
-              <span className="text1"><Icon className="info16" />
-                <span className="blind">infomation</span>
-DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 000 Byte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
-              </span>
-              <div className="right-btn">
-                <div className="ui input file2">
-                  <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>
-                  <input type="file" id="hidden-new-file2" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <FileBox
+            patronType={PatronType.Audience}
+            patronKeyString="sampleAudience"
+            onChange={getFileBoxIdForReference}
+            pavilionId="samplePavilion"
+            id={personalCube && personalCube.contents && personalCube.contents.fileBoxId || ''}
+          />
         </Form.Field>
 
         <Form.Field>
