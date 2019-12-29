@@ -27,6 +27,26 @@ class QuickNavContainer extends Component<Props, State> {
     active: false,
   };
 
+
+  componentDidMount() {
+    window.addEventListener('click', this.deactive);
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    //
+    if (prevProps.location.key !== this.props.location.key) {
+      this.deactive();
+    }
+    // if (prevState.active !== this.state.active && this.state.active) {
+    //   window.addEventListener('click', this.deactive);
+    // }
+  }
+
+  deactive() {
+    console.log('deactive');
+    this.setState({ active: false });
+  }
+
   onClickToggle() {
     //
     this.setState((prevState) => ({
@@ -94,7 +114,7 @@ class QuickNavContainer extends Component<Props, State> {
           }
           bottomButtons={
             <>
-              <BottomMenuItemView iconName="building" text="SK University Introduction" onClick={this.onClickIntroduction} />
+              <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
               <BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickSiteMap} />
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
               <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />

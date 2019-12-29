@@ -20,7 +20,7 @@ class QuickNavWrapperView extends Component<Props> {
     } = this.props;
 
     return (
-      <section className="quick">
+      <section className="quick" onClick={(e: any) => e.stopPropagation()}>
         <div className="cont-inner">
           <div className="q-group">
             <a href="#top" className="ui top button">TOP</a>
