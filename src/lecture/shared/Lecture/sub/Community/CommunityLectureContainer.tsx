@@ -5,32 +5,36 @@ import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Icon, Button, Accordion } from 'semantic-ui-react';
-import { LectureViewModel } from 'lecture/index';
+import { MyTrainingModel, InMyLectureModel } from 'mytraining';
 import Action from '../../model/Action';
 import { CourseSectionContext } from '../CourseSection';
 import {
   Title, Buttons,
 } from '../../../ui/view/LectureElementsView';
+import LectureModel from '../../../model/LectureModel';
 
 
 interface Props {
-  lectureView: LectureViewModel,
-  className: string,
+  model: LectureModel | MyTrainingModel | InMyLectureModel,
+  children: React.ReactNode,
   thumbnailImage?: string,
   action?: Action,
   toggle?: boolean,
   open?: boolean,
   onAction?: () => void,
   onViewDetail?: (e: any) => void,
-  onToggle?: () => void,
+  onToggle?: (openState: boolean) => void,
+}
+
+interface State {
+  open: boolean
 }
 
 @reactAutobind
 @observer
-class CommunityLectureContainer extends Component<Props> {
+class CommunityLectureContainer extends Component<Props, State> {
   //
   static defaultProps = {
-    className: '',
     thumbnailImage: null,
     action: null,
     toggle: false,
@@ -42,60 +46,59 @@ class CommunityLectureContainer extends Component<Props> {
 
   static contextType = CourseSectionContext;
 
+  state = {
+    open: false,
+  };
 
   onToggle() {
     //
-    const { open, setOpen } = this.context;
+    const { open } = this.state;
+    const { onToggle } = this.props;
+    this.setState({ open: !open });
 
-    setOpen(!open);
+    if (typeof onToggle === 'function') onToggle(!open);
   }
 
   render() {
     //
     const {
-      lectureView,
+      model,
       // thumbnailImage,
+      children,
       toggle,
       onViewDetail,
     } = this.props;
-    const { open } = this.context;
+    const { open } = this.state;
 
     return (
       <Accordion className="community-item">
-        <Accordion.Title>
-          <div className="thumbnail">
-            <div>
-              {/*TODO 썸네일 어쩔것인지*/}
-              <Icon className="thumb60-1" />
+        <Accordion.Title className={open ? 'active' : ''}>
+          <div className="commu-list-item">
+            <div className="thumbnail">
+              <div>
+                {/*TODO 썸네일 어쩔것인지*/}
+                <Icon className="thumb60-1" />
+              </div>
             </div>
+            <Title title={<a>{model.name}</a>} category={model.category} >
+              <div className="deatil">
+                {/*<span>새로운 글: 5</span>*/}
+                {/*<span>멤버 : 1,427</span>*/}
+              </div>
+            </Title>
+
+            <Buttons>
+              <Button className="fix line" onClick={onViewDetail}>View Details</Button>
+            </Buttons>
+
+            { toggle && (
+              <div className="icon-area" onClick={this.onToggle}>
+                <Icon className={classNames({ 'dropdown icon arrow-down': !open, 'arrow-up': open  })} />
+              </div>
+            )}
           </div>
         </Accordion.Title>
-
-        <Title title={lectureView.name} category={lectureView.category}>
-          <div className="deatil">
-            <span>새로운 글: 5</span>
-            <span>멤버 : 1,427</span>
-          </div>
-        </Title>
-
-        <Buttons>
-          <Button className="fix line" onClick={onViewDetail}>View Details</Button>
-        </Buttons>
-
-        { toggle && (
-          <Button
-            icon
-            className={classNames({
-              'img-icon': true,
-              'fn-more-toggle': true,
-              'card-open': !open,
-              'card-close': open,
-            })}
-            onClick={this.onToggle}
-          >
-            <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-          </Button>
-        )}
+        {children}
       </Accordion>
     );
   }

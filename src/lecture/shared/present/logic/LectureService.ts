@@ -6,6 +6,7 @@ import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
+import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 
 
 @autobind
@@ -64,6 +65,20 @@ class LectureService {
   async findPagingChannelLectures(channelId: string, limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    return runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      return lectureOffsetElementList;
+    });
+  }
+
+  @action
+  async findPagingCommunityLectures(limit: number, offset: number) {
+    //
+    const response = await this.lectureApi.findAllCommunityLectures(CommunityLectureRdoModel.new(limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));

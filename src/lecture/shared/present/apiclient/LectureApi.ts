@@ -6,6 +6,7 @@ import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
+import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 
 
 class LectureApi {
@@ -20,6 +21,14 @@ class LectureApi {
     const params = lectureRdo;
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
+      .then(response => response && response.data);
+  }
+
+  findAllCommunityLectures(lectureRdo: CommunityLectureRdoModel) {
+    //
+    const params = lectureRdo;
+
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/community', { params })
       .then(response => response && response.data);
   }
 

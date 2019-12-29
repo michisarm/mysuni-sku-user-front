@@ -43,6 +43,11 @@ class MyTrainingService {
       return trainingOffsetElementList;
     });
   }
+
+  @action
+  clear() {
+    this._myTrainings = [];
+  }
 }
 
 MyTrainingService.instance = new MyTrainingService(MyTrainingApi.instance);

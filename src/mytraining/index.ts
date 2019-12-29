@@ -4,6 +4,7 @@ import MyLearningSummaryService from './present/logic/MyLearningSummaryService';
 import InMyLectureService from './present/logic/InMyLectureService';
 
 export { default as MyTrainingPage } from './ui/page/MyTrainingPage';
+export { default as MyCommunityPage } from './ui/page/MyCommunityPage';
 
 export const myTrainingStores = {
   myTraining: {

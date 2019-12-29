@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Image, Button, Icon } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
-import { EmployeeModel, SkProfileModel } from '../../../../profile';
+import { SkProfileModel } from 'profile';
 
 interface Props {
   skProfile : SkProfileModel
@@ -17,7 +17,6 @@ class ProfileView extends Component<Props> {
 
     const { skProfile, onSignOut, onChangePhoto } = this.props;
     const { member } = skProfile as SkProfileModel;
-    const { companyNames: company, departmentNames: team  } = member as EmployeeModel;
 
     return (
       <div className="cell">
@@ -30,11 +29,11 @@ class ProfileView extends Component<Props> {
           </div>
           <div className="text-info">
             <div className="name">
-              {member.names.string}
+              {member.name}
               <Button className="orange-arrow2" onClick={onSignOut}>My Page</Button>
             </div>
             <div className="part">
-              <span>{company.string}</span><span>{team.string}</span>
+              <span>{member.company}</span><span>{member.department}</span>
             </div>
           </div>
         </div>
