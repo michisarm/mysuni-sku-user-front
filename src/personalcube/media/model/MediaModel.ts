@@ -1,4 +1,4 @@
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { DatePeriod, NameValueList } from 'shared';
 import { MediaType } from './MediaType';
@@ -23,6 +23,11 @@ export class MediaModel implements DramaEntity {
       const learningPeriod = media.learningPeriod && new DatePeriod(media.learningPeriod) || this.learningPeriod;
       Object.assign(this, { ...media, mediaContents, learningPeriod });
     }
+  }
+
+  @computed
+  get getInternalMedias() {
+    return this.mediaContents && this.mediaContents.internalMedias;
   }
 
   static  asNameValues(media: MediaModel): NameValueList {

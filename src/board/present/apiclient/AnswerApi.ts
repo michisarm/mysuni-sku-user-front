@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosApi as axios } from '@nara.platform/accent';
 import { AnswerModel } from '../../model/AnswerModel';
 
 export default class AnswerApi {

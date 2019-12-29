@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
+import { observer } from 'mobx-react';
 
-class StampInfoView extends Component {
+interface Props {
+  stampCount: number
+}
+
+@observer
+class StampInfoView extends Component<Props> {
+  //
   render() {
-
+    //
+    const { stampCount } = this.props;
     return (
       <div className="cell">
         <div className="stamp-wrap">
@@ -11,7 +19,7 @@ class StampInfoView extends Component {
             <div><span className="text1">획득 Stamp</span></div>
             <div>
               <Icon className="stamp35" /><span className="text2">x</span>
-              <span className="text3">12</span>
+              <span className="text3">{stampCount || 0}</span>
             </div>
           </Label>
 

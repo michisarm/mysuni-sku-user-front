@@ -3,9 +3,8 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { BoardService } from '../../../personalcube/board';
-import AdditionalInfoForCommunityView from '../view/AdditionalInfoForCommunityView';
 import { mobxHelper } from '../../../shared';
-
+import AdditionalInfoForCommunityView from '../view/AdditionalInfoForCommunityView';
 
 interface Props extends RouteComponentProps {
   boardService?: BoardService
@@ -26,7 +25,7 @@ class CreateBoardContainer extends React.Component<Props> {
         .replace('.', '');
       boardService.changeBoardProps(name, value, nameSub, stringDate);
     }
-    if (boardService) {
+    if (boardService && !nameSub) {
       boardService.changeBoardProps(name, value);
     }
   }

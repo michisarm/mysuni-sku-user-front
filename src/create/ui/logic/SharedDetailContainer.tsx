@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ContentLayout, CubeType, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
+import depot from '@nara.drama/depot';
 import { RouteComponentProps } from 'react-router';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeService } from '../../../personalcube/personalcube';
@@ -33,6 +34,8 @@ interface States {
   alertMessage: string
 
   confirmWinOpen: boolean
+
+  filesMap: Map<string, any>
 }
 
 @inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
@@ -45,7 +48,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     super(props);
     this.state = { alertWinOpen: false,
       alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
-      confirmWinOpen: false };
+      confirmWinOpen: false, filesMap: new Map<string, any>() };
   }
 
   componentDidMount() {
@@ -65,8 +68,38 @@ class SharedDetailContainer extends React.Component<Props, States> {
           if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
           if (cubeType === 'Community') this.setCommunity(contentsId);
           if (cubeType === 'Documents' || cubeType === 'WebPage') this.setOfficeWeb(contentsId);
-        });
+        })
+        .then(() => this.getFileIds());
     }
+  }
+
+  getFileIds() {
+    //
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
+    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+
+    const referenceFileBoxId = personalCube && personalCube.contents && personalCube.contents.fileBoxId;
+    const reportFileBoxId = cubeIntro && cubeIntro.reportFileBox && cubeIntro.reportFileBox.fileBoxId;
+    const officeWebFileBoxId = officeWeb.fileBoxId;
+
+    Promise.resolve()
+      .then(() => {
+        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
+        if (reportFileBoxId) this.findFiles('report', reportFileBoxId);
+        if (officeWebFileBoxId) this.findFiles('officeweb', officeWebFileBoxId);
+      })
+      .then(() => console.log(this.state.filesMap));
+  }
+
+  findFiles(type: string, fileBoxId: string) {
+    const { filesMap } = this.state;
+    depot.getDepotFiles(fileBoxId)
+      .then(files => {
+        filesMap.set(type, files);
+        const newMap = new Map(filesMap.set(type, files));
+        this.setState({ filesMap: newMap });
+      });
   }
 
   setOfficeWeb(contentsId: string) {
@@ -185,6 +218,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     const {
       alertWinOpen, confirmWinOpen, alertMessage, alertIcon, alertTitle, alertType,
     } = this.state;
+    const { filesMap } = this.state;
     const message = (
       <>
         <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
@@ -226,6 +260,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
               <SharedTypeDetailView
                 personalCube={personalCube}
                 cubeType={cubeType}
+                filesMap={filesMap}
               />
               {
                 cubeState === 'OpenApproval' ?

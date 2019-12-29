@@ -6,6 +6,8 @@ import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
+import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
+import InstructorRdoModel from '../../model/InstructorRdoModel';
 
 
 class LectureApi {
@@ -20,6 +22,14 @@ class LectureApi {
     const params = lectureRdo;
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl, { params })
+      .then(response => response && response.data);
+  }
+
+  findAllCommunityLectures(lectureRdo: CommunityLectureRdoModel) {
+    //
+    const params = lectureRdo;
+
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/community', { params })
       .then(response => response && response.data);
   }
 
@@ -54,6 +64,14 @@ class LectureApi {
 
     return axiosApi.get<LectureViewModel[]>(this.baseUrl + `/view?${queryParams}`)
       .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
+  }
+
+  findAllLecturesByInstructorId(instructorRdo: InstructorRdoModel) {
+    //
+    const params = instructorRdo;
+    console.log(params);
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/byInstructorId', { params })
+      .then(response => response && response.data);
   }
 }
 

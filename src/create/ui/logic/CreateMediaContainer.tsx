@@ -4,6 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { MediaService } from '../../../personalcube/media';
 import { CubeIntroService } from '../../../personalcube/cubeintro';
+import { OfficeWebService } from '../../../personalcube/officeweb';
+import { PersonalCubeService } from '../../../personalcube/personalcube';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
@@ -12,7 +14,9 @@ import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 interface Props extends RouteComponentProps {
   mediaService?: MediaService
+  officeWebService?: OfficeWebService
   cubeIntroService?: CubeIntroService
+  personalCubeService?: PersonalCubeService
   cubeType: string
 }
 
@@ -20,7 +24,7 @@ interface States {
   searchFilter: string
 }
 
-@inject('mediaService', 'cubeIntroService')
+@inject('mediaService', 'cubeIntroService', 'officeWebService', 'personalCubeService')
 @observer
 @reactAutobind
 class CreateMediaContainer extends React.Component<Props, States> {
@@ -49,12 +53,34 @@ class CreateMediaContainer extends React.Component<Props, States> {
     }
   }
 
+  onChangeOfficeWebProps(name: string, value: string | Date | boolean, nameSub?: string) {
+    //
+    const { officeWebService } = this.props;
+    if (officeWebService && typeof value === 'object' && nameSub) {
+      const stringDate = value.toLocaleDateString()
+        .replace('. ', '-')
+        .replace('. ', '-')
+        .replace('.', '');
+      officeWebService.changeOfficeWebProps(name, value, nameSub, stringDate);
+    }
+    if (officeWebService) officeWebService.changeOfficeWebProps(name, value);
+  }
+
   handleChangeSearchFilter(e:any, data: any) {
     this.setState({ searchFilter: data.value });
   }
 
+  getFileBoxIdForReference(fileBoxId: string) {
+    //
+    const { personalCubeService } = this.props;
+    const { personalCube } = personalCubeService || {} as PersonalCubeService;
+    if (personalCubeService && personalCube.contents) personalCubeService.changeCubeProps('contents.fileBoxId', fileBoxId);
+  }
+
   render() {
     const { media } = this.props.mediaService || {} as MediaService;
+    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { searchFilter } = this.state;
     const { cubeType } = this.props;
     return (
@@ -66,6 +92,8 @@ class CreateMediaContainer extends React.Component<Props, States> {
               handleChangeSearchFilter={this.handleChangeSearchFilter}
               onChangeMediaProps={this.onChangeMediaProps}
               searchFilter={searchFilter}
+              getFileBoxIdForReference ={this.getFileBoxIdForReference}
+              personalCube={personalCube}
             />
             : null
         }
@@ -76,15 +104,20 @@ class CreateMediaContainer extends React.Component<Props, States> {
               handleChangeSearchFilter={this.handleChangeSearchFilter}
               onChangeMediaProps={this.onChangeMediaProps}
               searchFilter={searchFilter}
+              getFileBoxIdForReference ={this.getFileBoxIdForReference}
+              personalCube={personalCube}
             />
             : null
         }
         {
           cubeType === 'WebPage' ?
             <CreateWebPageTypeView
+              onChangeOfficeWebProps={this.onChangeOfficeWebProps}
+              officeWeb={officeWeb}
               handleChangeSearchFilter={this.handleChangeSearchFilter}
-              onChangeMediaProps={this.onChangeMediaProps}
               searchFilter={searchFilter}
+              getFileBoxIdForReference ={this.getFileBoxIdForReference}
+              personalCube={personalCube}
             />
             : null
         }
@@ -92,8 +125,11 @@ class CreateMediaContainer extends React.Component<Props, States> {
           cubeType === 'Documents' ?
             <CreateDocumentTypeView
               handleChangeSearchFilter={this.handleChangeSearchFilter}
-              onChangeMediaProps={this.onChangeMediaProps}
+              onChangeOfficeWebProps={this.onChangeOfficeWebProps}
+              officeWeb={officeWeb}
               searchFilter={searchFilter}
+              getFileBoxIdForReference ={this.getFileBoxIdForReference}
+              personalCube={personalCube}
             />
             : null
         }

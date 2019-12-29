@@ -238,22 +238,24 @@ class LectureContainer extends Component<Props, States> {
   renderCommunityCard() {
     //
     const {
-      lectureView, thumbnailImage, toggle,
-      onAction,
+      model, thumbnailImage, toggle,
+      onAction, onToggle, children,
     } = this.props;
     const { open } = this.state;
 
     return (
       <CommunityLectureContainer
-        lectureView={lectureView || {} as any}
+        model={model || {} as any}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         toggle={toggle}
         open={open}
         onAction={onAction}
         onViewDetail={this.onViewDetail}
-        onToggle={this.onToggleCourse}
-      />
+        onToggle={onToggle}
+      >
+        {children}
+      </CommunityLectureContainer>
     );
   }
 

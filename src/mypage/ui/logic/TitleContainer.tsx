@@ -1,24 +1,41 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
+import { MyLearningSummaryService } from 'mytraining';
+import { SkProfileService } from 'profile';
+import { mobxHelper } from 'shared';
 import ProfileView from '../view/title/ProfileView';
 import LectureTotalTimeView from '../view/title/LectureTotalTimeView';
 import StampInfoView from '../view/title/StampInfoView';
-import { SkProfileService } from '../../../profile';
+
+
 
 interface Props {
   skProfileService? : SkProfileService
+  myLearningSummaryService? : MyLearningSummaryService
 }
 
 
 interface States{
-
+  year: number
 }
 
-@inject('skProfileService', 'collegeService')
+@inject(mobxHelper.injectFrom(
+  'skProfileService',
+  'myTraining.myLearningSummaryService'
+))
 @observer
 @reactAutobind
 class TitleContainer extends Component<Props, States> {
+  //
+  componentDidMount(): void {
+    this.init();
+  }
+
+  init() {
+    const { myLearningSummaryService } = this.props;
+    myLearningSummaryService!.findMyLearningSummary();
+  }
 
   onChangePhoto() {
     //depot으로 이미지 변경구현
@@ -33,8 +50,9 @@ class TitleContainer extends Component<Props, States> {
   }
 
   render() {
-    const { skProfileService } = this.props;
+    const { skProfileService, myLearningSummaryService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
+    const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
     return (
       <div className="progress-info-wrap">
@@ -42,8 +60,14 @@ class TitleContainer extends Component<Props, States> {
           onSignOut={this.onSignOut}
           onChangePhoto={this.onChangePhoto}
         />
-        <LectureTotalTimeView />
-        <StampInfoView />
+        <LectureTotalTimeView
+          totalLearningTime={myLearningSummary.totalLearningTime}
+          suniLearningTime={myLearningSummary.suniLearningTime}
+          myCompanyLearningTime={myLearningSummary.myCompanyLearningTime}
+        />
+        <StampInfoView
+          stampCount={myLearningSummary.acheiveStampCount}
+        />
       </div>
     );
   }

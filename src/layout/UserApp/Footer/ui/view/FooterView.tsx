@@ -21,11 +21,11 @@ class FooterView extends Component<Props> {
       <section className="footer">
         <div className="cont-inner">
           <i className="s-kuniversity icon">
-            <span className="blind">SK university</span>
+            <span className="blind">mySUNI</span>
           </i>
           <div className="f-copyright">
-            COPYRIGHT <Icon name="copyright"><span className="blind">copyright sign</span></Icon>SK
-            university. ALL RIGHTS RESERVED.
+            COPYRIGHT <Icon name="copyright"><span className="blind">copyright sign</span></Icon>
+            my SUNI. ALL RIGHTS RESERVED.
           </div>
           <div className="f-nav">
             {nav}

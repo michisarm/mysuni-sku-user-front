@@ -21,7 +21,6 @@ class FooterContainer extends Component {
         <PrivacyPolicyModalView
           trigger={<a className="item">개인정보 처리방침</a>}
         />
-        <a className="item">서비스 이용약관</a>
       </>
     );
   }

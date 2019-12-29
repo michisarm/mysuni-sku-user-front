@@ -3,7 +3,7 @@ import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
-import { CubeIntroModel, InstructorModel } from '../../../personalcube/cubeintro';
+import { CubeIntroModel } from '../../../personalcube/cubeintro';
 import SelectType from '../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CreateBoardContainer from '../logic/CreateBoardContainer';
@@ -15,9 +15,6 @@ interface Props {
   hour: number
   minute: number
   cubeType?: string
-  changeManagerListModalOpen: (open: boolean) => void
-  instructorListModalOpen: boolean
-  onHandleInstructorModalOk?: (selectedInstructor: InstructorModel) => void
 }
 
 
@@ -28,8 +25,6 @@ class CreateIntroView extends React.Component<Props> {
 
     const {
       cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute, cubeType,
-      /*managerListModalOpen,
-      changeInstructorListModalOpen, changeManagerListModalOpen, instructorListModalOpen, cubeType, onHandleInstructorModalOk,*/
     } = this.props;
     return (
       <>

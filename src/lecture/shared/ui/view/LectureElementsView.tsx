@@ -6,7 +6,7 @@ import { CategoryModel } from 'shared';
 
 
 interface TitleProps {
-  title: string,
+  title: string | React.ReactNode,
   category?: CategoryModel,
   children?: React.ReactNode,
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosApi as axios } from '@nara.platform/accent';
 import { CategoryModel } from '../../model/CategoryModel';
 
 export default class CategoryApi {
