@@ -2,31 +2,124 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router-dom';
-import { Icon, Image, Label, Menu, Segment, Sticky } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
+import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import { ContentLayout, mobxHelper, PageService } from 'shared';
+import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import { InstructorService } from '../../index';
+import ExpertHeaderView from '../view/ExpertHeaderView';
+import InstructorIntroduceView from '../view/InstructorIntroduceView';
+import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
+import { LectureCardService, LectureModel, LectureService } from '../../../lecture';
+import { SeeMoreButton } from '../../../lecture/shared';
+import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
+import routePaths from '../../../lecture/routePaths';
+import { CollegeService } from '../../../college';
+import { PersonalCubeService } from '../../../personalcube/personalcube';
 
 interface Props extends RouteComponentProps {
   instructorService :InstructorService
+  pageService?: PageService,
+  collegeService?: CollegeService,
+  personalCubeService?: PersonalCubeService,
+  lectureService?: LectureService,
+  lectureCardService?: LectureCardService,
+  reviewService?: ReviewService,
 }
 
-@inject('instructorService')
+
+@inject(mobxHelper.injectFrom('shared.pageService', 'lecture.lectureService', 'lecture.lectureCardService', 'shared.reviewService', 'instructorService'))
+@reactAutobind
+@observer
 @observer
 @reactAutobind
 class ExpertContainer extends React.Component<Props> {
   state = { activeItem: 'Introduce' };
+  //
+  PAGE_KEY = 'lecture.instructor';
 
-  componentDidMount() {
-    const { instructorService } = this.props;
-    if (instructorService) instructorService.findInstructor();
+  PAGE_SIZE = 8;
+
+  constructor(props: Props) {
+    //
+    super(props);
+    this.init();
   }
 
-  handleItemClick = (e: any, { name } : any) => this.setState({ activeItem: name });
+  componentDidMount() {
+    //
+    const { instructorService } = this.props;
+    if (instructorService) instructorService.findInstructor();
+    this.findPagingInstructorLectures();
+  }
+
+  handleItemClick(e: any, { name } : any) {
+    this.setState({ activeItem: name });
+  }
+
+  init() {
+    //
+    const { pageService, lectureService } = this.props;
+
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    lectureService!.clear();
+  }
+
+  async findPagingInstructorLectures() {
+    //
+    const { pageService, lectureService, reviewService } = this.props;
+    const { instructor } = this.props.instructorService || {} as InstructorService;
+    const instructorId = instructor.result.id;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(instructorId, page!.limit, page!.nextOffset);
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
+    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+  }
+
+  onActionLecture() {
+
+  }
+
+  onViewDetail(e: any, data: any) {
+    //
+    const { model } = data;
+    const { history } = this.props;
+    const collegeId = model.category.college.id;
+
+    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
+      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+    }
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
+    }
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    return page!.pageNo < page!.totalPages;
+  }
+
+  onClickSeeMore() {
+    //
+    this.findPagingInstructorLectures();
+  }
+
 
   render() {
     const { activeItem } = this.state;
     const { instructor } = this.props.instructorService || {} as InstructorService;
     const result = instructor.result;
+
+    const { pageService, lectureService, reviewService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { lectures } = lectureService!;
+    const { ratingMap } = reviewService!;
+
     return (
       <ContentLayout
         className="mylearning"
@@ -34,63 +127,9 @@ class ExpertContainer extends React.Component<Props> {
           { text: 'Expert' },
         ]}
       >
-        <div className="main-info-area">
-          <div className="progress-info-wrap">
-            <div className="cell">
-              <div className="cell-inner">
-                <div className="profile">
-                  <div className="pic">
-                    <Image src={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`} alt="기본 프로필사진" />
-                  </div>
-                </div>
-                <div className="text-info">
-                  <div className="name">
-                    {result.memberSummary.name}
-                  </div>
-                  <div className="part">
-                    <span>{result.memberSummary.department}</span>
-                    <span>{result.internal ? '사내강사' : '사외강사'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="cell">
-              <div className="cell-inner">
-
-                {(result.channel.college.name || result.channel.channel.name || result.memberSummary.email) && (
-                  <div className="expert-info">
-                    <Label className="onlytext">
-                      <Icon className="college16" /><span>전문분야</span>
-                    </Label>
-
-                    <span className="value1">
-                      <span>{result.channel.college.name}/ {result.channel.channel.name}</span>
-                      <a href="#">{result.memberSummary.email}</a>
-                    </span>
-                  </div>
-                )}
-
-                <div className="expert-info">
-                  <Label className="onlytext">
-                    <Icon className="class16" /><span>참여한 강의</span>
-                  </Label>
-                  <span className="value2">
-                    <strong>{result.lectureCount}</strong><span>개</span>
-                  </span>
-                </div>
-                <div className="expert-info">
-                  <Label className="onlytext">
-                    <Icon className="total-time" /><span>총 강의시간</span>
-                  </Label>
-                  <span className="value3">
-                    <strong>{result.lectureHour}</strong><span>h</span>
-                    <strong className="min">00</strong><span>m</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ExpertHeaderView
+          result={result}
+        />
         <div>
           <Sticky className="tab-menu offset0">
             <div className="cont-inner">
@@ -114,16 +153,39 @@ class ExpertContainer extends React.Component<Props> {
               </Menu>
             </div>
           </Sticky>
-          <Segment className="full">
-            <div className="expert-cont">
-              <div className="text-info">
-                <div className="text02">{result.career}</div>
-                <div className="dash" />
-                <div className="text01">강사소개</div>
-                <div className="text02">{result.memberSummary.introduction}</div>
-              </div>
-            </div>
-          </Segment>
+          {
+            activeItem === 'Introduce' ?
+              <InstructorIntroduceView
+                result={result}
+              />
+              :
+              <Segment className="full">
+                <div className="section">
+                  <Lecture.Group type={Lecture.GroupType.Box}>
+                    {lectures.map((lecture: LectureModel, index: number) => {
+                      const rating = ratingMap.get(lecture.reviewId) || 0;
+                      return (
+                        <Lecture
+                          key={`lecture-${index}`}
+                          model={lecture}
+                          rating={rating}
+                          // thumbnailImage="http://placehold.it/60x60"
+                          action={Lecture.ActionType.Add}
+                          onAction={this.onActionLecture}
+                          onViewDetail={this.onViewDetail}
+                        />
+                      );
+                    })}
+                  </Lecture.Group>
+
+                  { this.isContentMore() && (
+                    <SeeMoreButton
+                      onClick={this.onClickSeeMore}
+                    />
+                  )}
+                </div>
+              </Segment>
+          }
         </div>
       </ContentLayout>
     );

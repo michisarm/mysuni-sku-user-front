@@ -7,6 +7,7 @@ import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
+import InstructorRdoModel from '../../model/InstructorRdoModel';
 
 
 @autobind
@@ -116,6 +117,23 @@ class LectureService {
   getSubLectureViews(courseId: string) {
     //
     return this.subLectureViewsMap.get(courseId) || [];
+  }
+
+  @action
+  async findAllLecturesByInstructorId(instructorId: string, limit: number, offset: number) {
+    //
+    console.log(instructorId);
+    instructorId = 'adfs';
+    const response = await this.lectureApi.findAllLecturesByInstructorId(InstructorRdoModel.new(instructorId, limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    return runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      return lectureOffsetElementList;
+    });
+
   }
 }
 
