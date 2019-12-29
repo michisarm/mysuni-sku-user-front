@@ -17,23 +17,23 @@ class ProfileView extends Component<Props> {
 
     const { skProfile, onSignOut, onChangePhoto } = this.props;
     const { member } = skProfile as SkProfileModel;
-
+    const { name, company, department } = member as EmployeeModel;
     return (
       <div className="cell">
         <div className="cell-inner">
           <div className="profile">
             <div className="pic">
-              <Image src="/images/all/profile-56-px.png" alt={member.names.string} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
+              <Image src="/images/all/profile-56-px.png" alt={name} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
             </div>
             <Button icon className="img-icon" onClick={onChangePhoto} id="image_photo"><Icon className="photo-edit" /></Button>
           </div>
           <div className="text-info">
             <div className="name">
-              {member.name}
-              <Button className="orange-arrow2" onClick={onSignOut}>My Page</Button>
+              {name}
+              <Button className="orange-arrow2" onClick={onSignOut}>Signed Out</Button>
             </div>
             <div className="part">
-              <span>{member.company}</span><span>{member.department}</span>
+              <span>{company}</span><span>{department}</span>
             </div>
           </div>
         </div>

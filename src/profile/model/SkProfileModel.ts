@@ -1,5 +1,5 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { NameValueList } from 'shared';
 import { MemberType } from './MemberType';
 import { MemberLocaleModel } from './MemberLocaleModel';
@@ -57,6 +57,14 @@ export class SkProfileModel implements DramaEntity {
     };
 
     return asNameValues;
+  }
+
+  @computed
+  get getSignedDate() {
+    if (this.signedDate && this.signedDate !== '' ) {
+      return new Date(this.signedDate).toISOString().slice(0, 10);
+    }
+    return '';
   }
 
   static asCdo(skProfile : SkProfileModel) : SkProfileCdoModel {

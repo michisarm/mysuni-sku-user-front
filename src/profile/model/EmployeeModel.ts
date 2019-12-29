@@ -28,6 +28,7 @@ export class EmployeeModel extends MemberModel {
 
   constructor(employee?: EmployeeModel) {
     super();
+    console.log('member', employee);
     if (employee) {
       const favoriteJobGroup = employee.favoriteJobGroup && new FavoriteJobGroupModel(employee.favoriteJobGroup) || this.favoriteJobGroup;
       const names = employee.names && new LangStrings(employee.names) || this.names;

@@ -20,6 +20,7 @@ export  class StudySummary implements DramaEntity {
   // joinedCommunity: number = 0;
 
   constructor(studySummary?: StudySummary) {
+
     if (studySummary) {
       // const learningTime = studySummary.learningTime && new LearningTimeModel(studySummary.learningTime) || '';
       // const lectureSummary = studySummary.lectureSummary && new LectureSummary((studySummary.lectureSummary)) || '';

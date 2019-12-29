@@ -5,6 +5,7 @@ import {  Form, Button, Icon, Select } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAlert, reactAutobind } from '@nara.platform/accent';
 
+import classNames from 'classnames';
 import { ContentLayout } from '../../../shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
@@ -19,7 +20,11 @@ interface Props extends RouteComponentProps{
 
 interface States{
   isSelectedJobGroup : boolean
-  isSelectedDutyGroup : boolean
+  isSelectedDutyGroup: boolean
+  isEtc : boolean
+  focus : boolean
+  write : string
+
 }
 
 @inject('collegeService', 'skProfileService')
@@ -32,6 +37,9 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     this.state = {
       isSelectedJobGroup: false,
       isSelectedDutyGroup: false,
+      isEtc: false,
+      focus: false,
+      write: '',
     };
   }
 
@@ -51,22 +59,37 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       jobGroups.map((jobGroup, index ) => {
         jobGroupSelect.push({ key: index + 1, value: jobGroup.jobGroupId, text: jobGroup.name });
       });
+      jobGroupSelect.push({ key: jobGroups.length + 1, value: 'etc', text: '기타' });
     }
     return jobGroupSelect;
   }
 
   selectJobGroup(event:any, data:any ) {
     const { collegeService, skProfileService } = this.props;
-    if (collegeService && skProfileService) {
-      collegeService.findJobGroupById(data.value)
-        .then(() =>
-          this.setState({
-            isSelectedJobGroup: true,
-            isSelectedDutyGroup: false,
-          })
-        );
-      skProfileService.setFavoriteJobGroupProp('favoriteJobGroup', { id: data.value, name: data.text });
+
+    if (data.value === 'etc') {
+      this.setState({
+        isEtc: true,
+      });
+    } else {
+      this.setState({
+        isEtc: false,
+      });
     }
+
+    if (collegeService ) {
+      collegeService.findJobGroupById(data.value);
+    }
+
+    this.setState({
+      isSelectedJobGroup: true,
+      isSelectedDutyGroup: false,
+    });
+
+    if (skProfileService) {
+      skProfileService.setFavoriteJobGroupProp('favoriteJobGroup', { id: data.value, name: event.target.innerText });
+    }
+
   }
 
   setJobDuties() {
@@ -86,11 +109,28 @@ class FavoriteJobContainer extends React.Component<Props, States> {
 
   selectJobDuty(event:any, data:any ) {
     const { skProfileService } = this.props;
+
+    this.setState({
+      isSelectedDutyGroup: true,
+      focus: false,
+    });
+
     if (skProfileService) {
-      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', { id: data.value, name: data.text });
-      this.setState({
-        isSelectedDutyGroup: true,
-      });
+      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', { id: data.value, name: event.target.innerText });
+    }
+  }
+
+  selectEtcJobDuty(data:any) {
+    const { skProfileService } = this.props;
+    const { isEtc, write } = this.state;
+
+    this.setState({
+      isSelectedDutyGroup: true,
+      focus: false,
+    });
+
+    if (skProfileService && isEtc) {
+      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', { id: 'etc', name: write } );
     }
   }
 
@@ -103,14 +143,12 @@ class FavoriteJobContainer extends React.Component<Props, States> {
   }
 
   onNextClick() {
-    //favoriteJobGroup setting 호출 여기? stetp3 submit?
     const { skProfileService } = this.props;
     const { isSelectedJobGroup, isSelectedDutyGroup } = this.state;
     if (skProfileService ) {
       if ( !isSelectedJobGroup || !isSelectedDutyGroup ) {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
       } else {
-        console.log(SkProfileModel.asNameValues(skProfileService.skProfile));
         skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
       }
     }
@@ -121,6 +159,8 @@ class FavoriteJobContainer extends React.Component<Props, States> {
 
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty =  this.setJobDuties();
+    const {  isSelectedJobGroup,  isEtc } = this.state;
+
     return (
       <ContentLayout breadcrumb={[
         { text: 'd1', path: '/depth1-path' },
@@ -140,13 +180,34 @@ class FavoriteJobContainer extends React.Component<Props, States> {
                   onChange={(event:any, data:any) => this.selectJobGroup(event, data)}
                 />
               </div>
-              <div className="select-box">
-                <div className="select-title">관심 있는 직무를 선택해주세요.</div>
-                <Select placeholder="선택해주세요"
-                  options={ selectOptionJobDuty}
-                  onChange={(event:any, data:any) => this.selectJobDuty(event, data)}
-                />
-              </div>
+              {
+                isSelectedJobGroup && !isEtc ? (
+                  <div className="select-box">
+                    <div className="select-title">관심 있는 직무를 선택해주세요.</div>
+                    <Select placeholder="선택해주세요"
+                      options={selectOptionJobDuty}
+                      onChange={(event:any, data:any) => this.selectJobDuty(event, data)}
+                    />
+                  </div>
+                ) : ''
+              }
+              {
+                isSelectedJobGroup && isEtc ? (
+                  <div className="select-box">
+                    <div className="select-title">해당 되는 직무가 없을 경우 직접 입력해주세요.</div>
+                    <div className={classNames('ui h48 input', { focus: this.state.focus, write: this.state.write })}>
+                      <input type="text"
+                        placeholder="Text.."
+                        value={this.state.write}
+                        onClick={() => this.setState({ focus: true })}
+                        onBlur={( data:any) => this.selectEtcJobDuty(data) }
+                        onChange={(e) => this.setState({ write: e.target.value })}
+                      />
+                      <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
+                    </div>
+                  </div>
+                ) : ''
+              }
             </div>
             <div className="select-error">
               <Icon className="error16" /><span className="blind">error</span>
