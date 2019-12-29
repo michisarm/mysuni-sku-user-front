@@ -25,7 +25,7 @@ export default class InstructorService {
   @action
   async findInstructor() {
     //
-    const id = 'IS-0001';
+    const id = 'Admin';
     const instructor = await this.instructorApi.findInstructor(id);
     if (instructor) {
       return runInAction(() => this.instructor = instructor);

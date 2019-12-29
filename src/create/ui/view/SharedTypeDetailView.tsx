@@ -63,7 +63,7 @@ class SharedTypeDetailView extends React.Component<Props> {
                   ) : ''
                 }
                 {
-                  media && media.mediaType === MediaType.ContentsProviderMedia ? (
+                  media && media.mediaType === MediaType.InternalMediaUpload ? (
                     <>
                       <div className="text2">
                         <a href="#">

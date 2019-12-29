@@ -371,7 +371,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
               {
                 personalCubeId ?
                   <div className="buttons">
-                    <Button className="fix line" onClict={this.onDeleteCube}>Delete</Button>
+                    <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
                     <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
