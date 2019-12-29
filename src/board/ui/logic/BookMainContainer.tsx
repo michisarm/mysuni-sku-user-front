@@ -82,6 +82,8 @@ export class BookMainContainer extends React.Component<Props, States> {
     if (postService) {
       this.setState({ activeItem: name, faqCategoryId: '', faqTabIndex: 0 });
     }
+    this.props.history.push(`/board/support/${name}`);
+
     if (name === 'Notice') {
       this.findNoticePinnedPosts();
     } else if (name === 'FAQ') {
@@ -264,8 +266,8 @@ export class BookMainContainer extends React.Component<Props, States> {
                 <div className="title">Support</div>
                 <div className="text">SK University에 대한 궁금증을 풀어드립니다.<br />Help Desk<span
                   className="dash"
-                /><Icon className="supporttel16" /><span className="blind">support tel</span>Tel.
-                  02)0000-0000
+                /><Icon className="supporttel16" /><span className="blind">support tel</span>
+                  02)6323-9002
                 </div>
               </div>
             </div>
