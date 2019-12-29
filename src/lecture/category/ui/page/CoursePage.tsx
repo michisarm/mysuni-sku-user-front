@@ -9,6 +9,7 @@ import { CoursePlanService } from 'course';
 import { CubeType } from 'personalcube/personalcube';
 
 import { ReviewService } from '@nara.drama/feedback';
+import routePaths from '../../../routePaths';
 import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -248,7 +249,7 @@ class CoursePage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../../../${college.collegeId}/channels` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
           { text: `${college.name} Course` },
         ]}
       >

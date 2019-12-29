@@ -9,6 +9,7 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
 import { CardSorting, SeeMoreButton } from '../../../shared';
+import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
@@ -104,12 +105,13 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { model } = data;
     const { history } = this.props;
+    const collegeId = model.category.college.id;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(`/lecture/college/${model.category.college.id}/course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(`/lecture/college/${model.category.college.id}/cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+      history.push(routePaths.lectureOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 

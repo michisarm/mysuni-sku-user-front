@@ -8,6 +8,7 @@ import { mobxHelper } from 'shared';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
 import { SkProfileService, StudySummary } from 'profile';
+import lectureRoutePaths from 'lecture/routePaths';
 import CategoryView from '../view/CategoryView';
 
 
@@ -68,13 +69,14 @@ class CategoryContainer extends Component<Props, State> {
   onClickChannel(e: any, channel?: ChannelModel) {
     //
     const { activeCollege } = this.state;
+    const { history } = this.props;
     const active: CollegeModel = activeCollege as any;
 
     if (!channel) {
-      this.props.history.push(`/lecture/college/${active.collegeId}/channels`);
+      history.push(lectureRoutePaths.collegeLectures(active.collegeId));
     }
     else if (active.collegeId && channel.id) {
-      this.props.history.push(`/lecture/college/${active.collegeId}/channel/${channel.id}`);
+      history.push(lectureRoutePaths.channelLectures(active.collegeId, channel.id));
     }
     this.setState({
       categoryOpen: false,

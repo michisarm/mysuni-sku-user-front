@@ -10,6 +10,7 @@ import { ContentHeader, ContentLayout, ContentMenu, mobxHelper, NoSuchContentPan
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
 import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
+import routePaths from 'lecture/routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
@@ -110,10 +111,10 @@ class MyTrainingPage extends Component<Props, State> {
     const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(`/lecture/college/${model.category.college.id}/course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+      history.push(routePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(`/lecture/college/${model.category.college.id}/cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+      history.push(routePaths.lectureOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 

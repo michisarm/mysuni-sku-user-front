@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { CollegeService } from 'college';
+import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../logic/ChannelLecturesContainer';
 
@@ -48,7 +49,7 @@ class ChannelLecturesPage extends Component<Props> {
     return (
       <ContentLayout
         breadcrumb={[
-          { text: `${college.name} College`, path: `../../${college.collegeId}/channels` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
           { text: `${channel.name} Channel` },
         ]}
       >

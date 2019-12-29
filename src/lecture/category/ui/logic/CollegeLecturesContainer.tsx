@@ -140,13 +140,11 @@ class CollegeLecturesContainer extends Component<Props, State> {
     const { history, collegeService } = this.props;
     const { college } = collegeService!;
 
-
     if (model.serviceType === LectureServiceType.Program ||  model.serviceType === LectureServiceType.Course) {
-      history.push(`./course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+      history.push(routePaths.courseOverview(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
       history.push(routePaths.lectureOverview(college.collegeId, model.cubeId, model.serviceId));
-      // history.push(`./cube/${model.cubeId}/lecture-card/${model.serviceId}`);
     }
   }
 
@@ -157,7 +155,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onViewChannelAll(e: string, data: any) {
     //
-    this.props.history.push(`./channel/${data.channel.id}`);
+    const { match, history } = this.props;
+
+    history.push(routePaths.channelLectures(match.params.collegeId, data.channel.id));
   }
 
 

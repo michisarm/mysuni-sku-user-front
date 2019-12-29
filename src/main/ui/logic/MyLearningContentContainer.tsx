@@ -11,6 +11,7 @@ import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { InMyLectureModel, InMyLectureService, MyTrainingService } from 'mytraining';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
+import lectureRoutePaths from 'lecture/routePaths';
 import MyTrainingModel from '../../../mytraining/model/MyTrainingModel';
 
 interface Props extends RouteComponentProps {
@@ -55,10 +56,10 @@ class MyLearningContentContainer extends Component<Props, State> {
     const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(`/lecture/college/${model.category.college.id}/course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+      history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(`/lecture/college/${model.category.college.id}/cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+      history.push(lectureRoutePaths.lectureOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 

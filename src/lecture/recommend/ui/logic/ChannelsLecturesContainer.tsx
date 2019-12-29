@@ -63,13 +63,13 @@ class ChannelsLecturesContainer extends Component<Props, State> {
         <div className="recommend-area">
           {
             channels && channels.length
-            && channels.map((channel: ChannelModel) => {
+            && channels.map((channel: ChannelModel, index: number) => {
               if (!channel.checked) return null;
               return (
                 <ChannelLecturesContainer
                   channel={channel}
                   onViewAll={onViewAll}
-                  key={`channel_cont_${channel.id}`}
+                  key={`channel_cont_${index}`}
                 />
               );
             }) || null

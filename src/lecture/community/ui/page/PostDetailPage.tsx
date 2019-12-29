@@ -6,6 +6,8 @@ import { CollegeService } from 'college';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ContentLayout, mobxHelper } from 'shared';
 import { inject, observer } from 'mobx-react';
+import routePaths from '../../../routePaths';
+
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
   collegeService: CollegeService,
@@ -47,8 +49,8 @@ class PostDetailPage extends React.Component<Props> {
       <ContentLayout
         className="content community"
         breadcrumb={[
-          { text: `${college.name} College`, path: `/lecture/college/${college.collegeId}/channels` },
-          { text: `${college.name} Lecture`, path: `/lecture/college/${college.collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}` },
+          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureOverview(college.collegeId, cubeId, lectureCardId) },
           { text: `Detail` },
         ]}
       >

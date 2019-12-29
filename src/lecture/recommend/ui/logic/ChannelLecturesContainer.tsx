@@ -7,9 +7,11 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
+import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
+
 
 interface Props extends RouteComponentProps {
   lectureService?: LectureService,
@@ -68,12 +70,13 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { model } = data;
     const { history } = this.props;
+    const collegeId = model.category.college.id;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(`/lecture/college/${model.category.college.id}/course-plan/${model.coursePlanId}/${model.serviceType}/${model.serviceId}`);
+      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(`/lecture/college/${model.category.college.id}/cube/${model.cubeId}/lecture-card/${model.serviceId}`);
+      history.push(routePaths.lectureOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 
