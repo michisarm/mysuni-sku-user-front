@@ -48,7 +48,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (collegeService && skProfileService) {
       collegeService.findAllJobGroups();
       skProfileService.findSkProfile();
-
+      console.log('member init : ', skProfileService.skProfile.member);
     }
   }
 
@@ -149,7 +149,8 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       if ( !isSelectedJobGroup || !isSelectedDutyGroup ) {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
       } else {
-        skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
+        console.log(SkProfileModel.asNameValues(skProfileService.skProfile));
+      //  skProfileService.modifySkProfile(SkProfileModel.asNameValues(skProfileService.skProfile));
       }
     }
     this.props.history.push('/profile/interest/learningType');
