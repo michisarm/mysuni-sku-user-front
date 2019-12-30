@@ -27,6 +27,7 @@ class PageService {
   @action
   initPageMap(key: string, offset: number, limit: number) {
     //
+    console.log(key, offset, limit);
     this.pageMap.set(key, new PageModel(offset, limit));
   }
 
