@@ -6,6 +6,7 @@ import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { StudySummary } from '../../model/StudySummary';
+import { SkProfileUdo } from '../../model/SkProfileUdo';
 
 @autobind
 export default class SkProfileService {
@@ -66,12 +67,12 @@ export default class SkProfileService {
     return runInAction(() => this.skProfiles = skProfiles);
   }
 
-  modfifySkProfileByProfileId(profileId:string, nameValues:NameValueList) {
-    this.skProfileApi.modifySkProfileByProfileId(profileId, nameValues);
+  modfifySkProfileByProfileId(profileId:string, skProfileUdo : SkProfileUdo) {
+    this.skProfileApi.modifySkProfileByProfileId(profileId, skProfileUdo);
   }
 
-  modifySkProfile(nameValues:NameValueList) {
-    this.skProfileApi.modifySkProfile(nameValues);
+  modifySkProfile(skProfileUdo : SkProfileUdo) {
+    this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 
   removeSkProfile(profileId:string) {

@@ -212,7 +212,7 @@ export default class CollegeService {
   get favoriteChannelIdNames() : IdNameList {
     const list : IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.channelId, name: channel.name });
+      list.idNames.push({ id: channel.id, name: channel.name });
     });
     return list;
   }

@@ -21,9 +21,9 @@ interface States{
 }
 
 const style = {
-  background: 'rgba(50, 53, 59, 0.9)',
+  opacity: '0.83',
   boxShadow: '0 2px 6px 0 #888888',
-  border: 0,
+  border: '0',
   color: '#fff',
   fontSize: '0.75rem',
   lineHeight: '1rem',
@@ -85,9 +85,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     }
     else {
       favorites.push(channel);
-
-      favorites.map(f => console.log('====', f));
-
     }
     this.setState({ favorites });
 
@@ -115,6 +112,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       if (collegeService && skProfileService) {
         collegeService.favoriteChannels = [...favorites];
         skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+        console.log(StudySummary.asNameValues(skProfileService.studySummary));
         skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
       }
       this.props.history.push('/profile/interest/job');

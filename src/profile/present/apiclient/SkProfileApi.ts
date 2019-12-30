@@ -4,6 +4,7 @@ import { SkProfileModel } from '../../model/SkProfileModel';
 import { SkProfileRdo } from '../../model/SkProfileRdo';
 import { StudySummary } from '../../model/StudySummary';
 import { SkProfileCdoModel } from '../../model/SkProfileCdoModel';
+import { SkProfileUdo } from '../../model/SkProfileUdo';
 
 export default class SkProfileApi {
   //
@@ -50,13 +51,13 @@ export default class SkProfileApi {
   }
 
   //Manager, SuperManager
-  modifySkProfileByProfileId(profileId : string, nameValues: NameValueList) {
-    return axios.put<void>(this.URL + `/${profileId}`, nameValues);
+  modifySkProfileByProfileId(profileId : string, skProfileUdo:SkProfileUdo) {
+    return axios.put<void>(this.URL + `/${profileId}`, skProfileUdo);
   }
 
   //본인 정보 수정
-  modifySkProfile(nameValues:NameValueList) {
-    return axios.put<void>(this.URL, nameValues);
+  modifySkProfile(skProfileUdo:SkProfileUdo) {
+    return axios.put<void>(this.URL, skProfileUdo);
   }
 
   //Manager, SuperManager
