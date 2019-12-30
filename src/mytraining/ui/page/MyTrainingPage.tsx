@@ -78,8 +78,14 @@ class MyTrainingPage extends Component<Props, State> {
 
   onSelectMenu(type: string) {
     //
-    const { pageService } = this.props;
+    const { pageService, inMyLectureService, myTrainingService } = this.props;
 
+    if (type === Type.InMyList) {
+      inMyLectureService!.clear();
+    }
+    else {
+       myTrainingService!.clear();
+    }
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     this.setState({ type }, this.findPagingList);
   }

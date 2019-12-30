@@ -64,6 +64,22 @@ class InMyLectureService {
     });
   }
 
+  @action
+  async findInMyLecturesAll() {
+    //
+    const inMyLectures = await this.inMyLectureApi.findInMyLecturesAll();
+
+    return runInAction(() => {
+      this._inMyLectures = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture));
+      return inMyLectures;
+    });
+  }
+
+  @action
+  clear() {
+    this._inMyLectures = [];
+  }
+
   @computed
   get inMyLectureMap() {
     const map = new Map<string, InMyLectureModel>();

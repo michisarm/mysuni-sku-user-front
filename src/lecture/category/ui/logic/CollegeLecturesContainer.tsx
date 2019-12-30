@@ -67,6 +67,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     //
     this.findPagingCollegeLectures();
     this.findChannels();
+    this.findInMyLectures();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -74,6 +75,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     if (prevProps.match.params.collegeId !== this.props.match.params.collegeId) {
       this.reInit();
       this.findPagingCollegeLectures();
+      this.findInMyLectures();
     }
   }
 
@@ -92,6 +94,11 @@ class CollegeLecturesContainer extends Component<Props, State> {
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     lectureService!.clear();
     this.setState({ lectures: []});
+  }
+
+  findInMyLectures() {
+    const { inMyLectureService } = this.props;
+    inMyLectureService!.findInMyLecturesAll();
   }
 
   async findPagingCollegeLectures() {
@@ -144,7 +151,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
     const { inMyLectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(this.findPagingCollegeLectures);
+        .then(this.findPagingCollegeLectures)
+        .then(this.findInMyLectures);
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -165,7 +173,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
-      }));
+      }))
+        .then(this.findPagingCollegeLectures)
+        .then(this.findInMyLectures);
     }
   }
 

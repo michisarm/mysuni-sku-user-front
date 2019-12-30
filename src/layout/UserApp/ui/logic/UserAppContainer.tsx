@@ -28,11 +28,6 @@ class UserAppContainer extends Component<Props, State> {
     // this.checkAndRedirectAuth();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    //
-    this.initScrollTopOnRoute(prevProps);
-  }
-
   checkAndRedirectAuth() {
     //
     const cineroomId = sessionStorage.getItem('cineroomId') || '';
@@ -43,13 +38,6 @@ class UserAppContainer extends Component<Props, State> {
     if (!cineroomSpaces.length) {
       // alert('로그인 필요');
       // window.location.href= window.location.origin + '/login';
-    }
-  }
-
-  initScrollTopOnRoute(prevProps: Props) {
-    //
-    if (prevProps.location.key !== this.props.location.key) {
-      window.scrollTo(0, 0);
     }
   }
 
