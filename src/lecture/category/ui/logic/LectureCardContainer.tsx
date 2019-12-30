@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
+import { mobxHelper } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
+import { MediaType } from 'personalcube/media';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mytraining';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 
 
 interface Props {
+  inMyLectureService?: InMyLectureService
+  inMyLectureCdo: InMyLectureCdoModel
+  inMyLecture: InMyLectureModel
   cubeType: CubeType
   viewObject: any
   typeViewObject: any
@@ -18,6 +24,9 @@ interface Props {
 interface State {
 }
 
+@inject(mobxHelper.injectFrom(
+  'myTraining.inMyLectureService',
+))
 @reactAutobind
 @observer
 class LectureCardContainer extends Component<Props, State> {
@@ -41,7 +50,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url) {
-      window.open(typeViewObject.url, '_blank');
+      window.open(`https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
@@ -54,7 +63,17 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickBookmark() {
-    console.log('bookmark');
+    const { inMyLecture, inMyLectureCdo, inMyLectureService } = this.props;
+    if (!inMyLecture || !inMyLecture.id) {
+      inMyLectureService!.addInMyLecture(inMyLectureCdo);
+    }
+  }
+
+  onRemove() {
+    const { inMyLecture, inMyLectureService } = this.props;
+    if (inMyLecture && inMyLecture.id) {
+      inMyLectureService!.removeInMyLecture(inMyLecture.id);
+    }
   }
 
   onClickShare() {
@@ -75,7 +94,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getMainAction() {
-    const { cubeType } = this.props;
+    const { cubeType, typeViewObject } = this.props;
+
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
         return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
@@ -83,7 +103,12 @@ class LectureCardContainer extends Component<Props, State> {
         return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
       case CubeType.Audio:
       case CubeType.Video:
-        return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
+        if (typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
+        }
+        else {
+          return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
+        }
       case CubeType.WebPage:
       case CubeType.Experiential:
         return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
@@ -98,7 +123,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { viewObject, typeViewObject, children } = this.props;
+    const { inMyLecture, viewObject, typeViewObject, children } = this.props;
 
     return (
       <LectureCardContentWrapperView>
@@ -118,7 +143,8 @@ class LectureCardContainer extends Component<Props, State> {
           }}
           mainAction={this.getMainAction()}
           onShare={this.onClickShare}
-          onBookmark={this.onClickBookmark}
+          onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
+          onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
           onDownloadReport={
             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?

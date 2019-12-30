@@ -24,6 +24,7 @@ export {
 /** Model */
 export { default as MyTrainingModel } from './model/MyTrainingModel';
 export { default as InMyLectureModel } from './model/InMyLectureModel';
+export { default as InMyLectureCdoModel } from './model/InMyLectureCdoModel';
 
 
 /** Component */

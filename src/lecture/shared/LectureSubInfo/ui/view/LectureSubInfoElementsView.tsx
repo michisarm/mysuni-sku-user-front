@@ -165,20 +165,24 @@ export const OperatorView = ({ operator }: OperatorProp) => {
 };
 
 interface FootButtonsProp {
-  onBookmark: () => void
+  onBookmark?: () => void
   onShare: () => void
   onRemove?: () => void
 }
 
 export const FootButtons = ({ onBookmark, onShare, onRemove }: FootButtonsProp) => {
   //
-  if (!onBookmark && !onShare && onRemove) return null;
+  if (!onShare && onRemove) return null;
   return (
     <div className="foot-buttons">
-      <Button icon className="img-icon" onClick={onBookmark}>
-        <Icon className="bookmark2" />
-        <span className="blind">북마크</span>
-      </Button>
+      {
+        onBookmark && (
+          <Button icon className="img-icon" onClick={onBookmark}>
+            <Icon className="bookmark2" />
+            <span className="blind">북마크</span>
+          </Button>
+        ) || null
+      }
       {
         onRemove && (
           <Button icon className="img-icon" onClick={onRemove}>

@@ -8,4 +8,5 @@ export enum CubeType {
   Documents = 'Documents',
   Experiential = 'Experiential',
   Community = 'Community',
+  None = 'None',
 }

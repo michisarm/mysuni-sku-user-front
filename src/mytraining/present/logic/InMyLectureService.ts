@@ -5,6 +5,7 @@ import { OffsetElementList } from 'shared';
 import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
+import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 
 
 @autobind
@@ -16,6 +17,9 @@ class InMyLectureService {
 
   @observable
   _inMyLectures: InMyLectureModel[] = [];
+
+  @observable
+  inMyLecture: InMyLectureModel = new InMyLectureModel();
 
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
@@ -29,6 +33,22 @@ class InMyLectureService {
   }
 
   // In My Lectures ----------------------------------------------------------------------------------------------------------
+  addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
+    return this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
+  }
+
+  removeInMyLecture(inMyLectureId: string) {
+    return this.inMyLectureApi.removeInMyLecture(inMyLectureId);
+  }
+
+  @action
+  async findInMyLecture(serviceId: string, serviceType: string) {
+    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+    runInAction(() => {
+      this.inMyLecture = new InMyLectureModel(inMyLecture);
+      return inMyLecture;
+    });
+  }
 
   @action
   async findAllInMyLectures(limit: number, offset: number) {
@@ -42,6 +62,17 @@ class InMyLectureService {
       this._inMyLectures = this._inMyLectures.concat(lecturesOffsetElementList.results);
       return lecturesOffsetElementList;
     });
+  }
+
+  @computed
+  get inMyLectureMap() {
+    const map = new Map<string, InMyLectureModel>();
+
+    this._inMyLectures.forEach(inMyLecture => {
+      map.set(inMyLecture.serviceId, inMyLecture);
+    });
+
+    return map;
   }
 }
 
