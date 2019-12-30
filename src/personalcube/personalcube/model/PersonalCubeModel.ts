@@ -56,7 +56,13 @@ export class PersonalCubeModel implements DramaEntity {
     if (!personalCubeModel.category.channel.name) return '대표 카테고리';
     if (!personalCubeModel.subCategories.length) return '서브 카테고리';
     if (!personalCubeModel.name) return '강좌정보';
-    if (!personalCubeModel.contents.type) return '학습유형';
+    if (personalCubeModel.contents.type === 'None') return '학습유형';
+    return 'success';
+  }
+
+  static typeIsBlank(personalCubeModel: PersonalCubeModel) : string {
+    //    if (!personalCubeModel.personalCubeId) return '';//
+    if (personalCubeModel.contents.type === 'None') return '학습유형';
     return 'success';
   }
 
