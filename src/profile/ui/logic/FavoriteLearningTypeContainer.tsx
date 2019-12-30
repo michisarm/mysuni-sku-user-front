@@ -4,6 +4,7 @@ import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 
+import classNames from 'classnames';
 import { ContentLayout, IdNameList } from '../../../shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
@@ -21,7 +22,8 @@ interface States{
   timeGroup : string
   areaGroup : string []
   goalGroup : string []
-  etc : string
+  focus:boolean
+  write:string
 }
 
 const type : string [] = ['오프라인', '온라인', '상관없음'];
@@ -41,7 +43,8 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       timeGroup: '오전',
       areaGroup: ['서울 - 강북'],
       goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
-      etc: '',
+      focus: false,
+      write: '',
     };
   }
 
@@ -73,11 +76,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     this.setState(state);
   }
 
-  handleText(event:any) {
-    this.setState({
-      etc: event.target.value,
-    });
-  }
 
   onSKIntroClick() {
 
@@ -91,7 +89,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   onSubmmit() {
     const { skProfileService, collegeService } = this.props;
 
-    const { typeGroup, timeGroup, areaGroup, goalGroup, etc } = this.state;
+    const { typeGroup, timeGroup, areaGroup, goalGroup, write } = this.state;
     const learningTyps : IdNameList = new IdNameList();
 
     if (skProfileService && collegeService )  {
@@ -99,7 +97,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       learningTyps.idNames.push({ id: 'time', name: timeGroup });
       areaGroup.forEach((area) => learningTyps.idNames.push({ id: 'area', name: area }) );
       goalGroup.forEach((goal) => learningTyps.idNames.push({ id: 'goal', name: goal }) );
-      learningTyps.idNames.push({ id: 'etc', name: etc });
+      learningTyps.idNames.push({ id: 'etc', name: write });
 
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
       skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
@@ -112,7 +110,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { typeGroup, timeGroup, etc } = this.state;
+    const { typeGroup, timeGroup } = this.state;
 
     return (
       <ContentLayout breadcrumb={[
@@ -186,9 +184,19 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
                   }
                   <div className="etc-input">
                     <label>기타</label>
-                    <div className="ui h48 input">
-                      <input type="text" placeholder="Optional…" value={etc} onChange={this.handleText} />
-                      <Icon className="clear link" />
+                    <div className={classNames('ui h48 input', {
+                      focus: this.state.focus,
+                      write: this.state.write,
+                    })}
+                    >
+                      <input type="text"
+                        placeholder="Optional…"
+                        value={this.state.write}
+                        onClick={() => this.setState({ focus: true })}
+                        onBlur={() => this.setState({ focus: false })}
+                        onChange={(e) => this.setState({ write: e.target.value })}
+                      />
+                      <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
                     </div>
                   </div>
                 </div>

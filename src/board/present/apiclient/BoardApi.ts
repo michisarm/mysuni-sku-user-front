@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosApi as axios } from '@nara.platform/accent';
 import { BoardModel } from '../../model/BoardModel';
 
 export default class BoardApi {

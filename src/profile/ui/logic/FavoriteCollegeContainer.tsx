@@ -83,7 +83,12 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     if (favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
       favorites = favorites.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
-    else favorites.push(channel);
+    else {
+      favorites.push(channel);
+
+      favorites.map(f => console.log('====', f));
+
+    }
     this.setState({ favorites });
 
   }
@@ -162,7 +167,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                   <div className="scrolling">
                     <div className="channel">
                       <ul>
-                        {console.log(college.channels.length)}
                         {
                           college && college.channels.map((channel, index) => (
                             <li key={index}>
