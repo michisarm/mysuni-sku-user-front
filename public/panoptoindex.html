@@ -156,7 +156,6 @@
         return xhr;
       },
       success : function(ret) {
-        console.log(ret);
         uploadStatus.count++;
         setProgress(uploadStatus.count / uploadStatus.total * 100); //전체 프로그레스바 진행
         setTimeout(eachUpload, 500); //다음 파일 업로드

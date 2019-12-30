@@ -4,7 +4,7 @@ import { IdNameList, NameValueList } from 'shared';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { StudySummaryCdoModel } from './StudySummaryCdoModel';
 
-export  class StudySummary implements DramaEntity {
+export class StudySummary implements DramaEntity {
   entityVersion: number=0;
   id: string='';
   patronKey: PatronKey={} as PatronKey;
@@ -20,7 +20,6 @@ export  class StudySummary implements DramaEntity {
   // joinedCommunity: number = 0;
 
   constructor(studySummary?: StudySummary) {
-
     if (studySummary) {
       // const learningTime = studySummary.learningTime && new LearningTimeModel(studySummary.learningTime) || '';
       // const lectureSummary = studySummary.lectureSummary && new LectureSummary((studySummary.lectureSummary)) || '';

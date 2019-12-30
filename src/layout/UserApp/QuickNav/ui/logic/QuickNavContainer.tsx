@@ -43,7 +43,6 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   deactive() {
-    console.log('deactive');
     this.setState({ active: false });
   }
 

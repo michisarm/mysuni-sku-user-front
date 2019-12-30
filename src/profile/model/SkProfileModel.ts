@@ -22,7 +22,6 @@ export class SkProfileModel implements DramaEntity {
   constructor(skProfile?: SkProfileModel) {
     //
     if (skProfile) {
-      console.log('..', skProfile);
       const patronKey = skProfile.patronKey || this.patronKey;
       const member  = skProfile.member && new EmployeeModel(skProfile.member) || this.member;
       const pisAgreement = skProfile.pisAgreement && new PisAgreementModel(skProfile.pisAgreement) || this.pisAgreement;

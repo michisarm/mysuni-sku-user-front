@@ -43,7 +43,6 @@ export default class CategoryService {
   changeCategoryProps(name: string, value: string | {}) {
     //
     this.category = _.set(this.category, name, value);
-    console.log(this.category);
   }
 
   @action

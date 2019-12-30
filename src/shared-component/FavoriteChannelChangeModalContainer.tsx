@@ -93,7 +93,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     if (collegeService) {
       collegeService.findChannelByName(this.state.searchKey);
       //화면기획 불명확
-      console.log(collegeService._channels.length);
     }
     //
   }

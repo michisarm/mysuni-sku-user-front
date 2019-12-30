@@ -122,7 +122,6 @@ class LectureService {
   @action
   async findAllLecturesByInstructorId(instructorId: string, limit: number, offset: number) {
     //
-    console.log(instructorId);
     instructorId = 'adfs';
     const response = await this.lectureApi.findAllLecturesByInstructorId(InstructorRdoModel.new(instructorId, limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);

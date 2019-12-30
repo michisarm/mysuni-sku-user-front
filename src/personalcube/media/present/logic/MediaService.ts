@@ -92,7 +92,6 @@ export default class MediaService {
     if (typeof value === 'object' && nameSub) {
       this.media = _.set(this.media, nameSub, valueSub);
     }
-    console.log(this.media);
   }
 
   @action

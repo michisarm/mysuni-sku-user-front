@@ -39,7 +39,6 @@ export default class CubeIntroService {
   changeCubeIntroProps(name: string, value: string | number | {}) {
     //
     this.cubeIntro = _.set(this.cubeIntro, name, value);
-    console.log(this.cubeIntro);
   }
 
   @action

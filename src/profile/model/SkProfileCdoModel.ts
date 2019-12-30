@@ -9,8 +9,8 @@ export class SkProfileCdoModel {
   constructor(skProfile?: SkProfileCdoModel) {
     //
     if (skProfile) {
-      const member  = skProfile.member && new EmployeeModel() || this.member;
-      const memberLocale = skProfile.memberLocale && new MemberLocaleModel() || this.memberLocale;
+      const member  = skProfile.member && new EmployeeModel(skProfile.member) || this.member;
+      const memberLocale = skProfile.memberLocale && new MemberLocaleModel(skProfile.memberLocale) || this.memberLocale;
       Object.assign(this, { ...skProfile, member, memberLocale });
     }
   }
