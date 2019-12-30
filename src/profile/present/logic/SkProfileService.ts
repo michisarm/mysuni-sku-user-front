@@ -24,7 +24,7 @@ export default class SkProfileService {
   skProfileQuery: SkProfileQueryModel = new SkProfileQueryModel();
 
   @observable
-  studySummary : StudySummary = new StudySummary();
+  studySummary: StudySummary = new StudySummary();
 
   constructor(skProfileApi: SkProfileApi) {
     this.skProfileApi = skProfileApi;

@@ -4,12 +4,12 @@ import { RouteComponentProps } from 'react-router-dom';
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactConfirm } from '@nara.platform/accent';
+import { ContentLayout } from 'shared';
+import { ChannelModel } from 'college';
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { ContentLayout } from '../../../shared';
 import { StudySummary } from '../../model/StudySummary';
-import { ChannelModel } from '../../../college';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
