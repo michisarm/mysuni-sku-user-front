@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import classNames from 'classnames';
 import { Icon, Button, Accordion } from 'semantic-ui-react';
 import { MyTrainingModel, InMyLectureModel } from 'mytraining';
 import Action from '../../model/Action';
@@ -72,7 +71,7 @@ class CommunityLectureContainer extends Component<Props, State> {
 
     return (
       <Accordion className="community-item">
-        <Accordion.Title className={open ? 'active' : ''}>
+        <Accordion.Title active={open}>
           <div className="commu-list-item">
             <div className="thumbnail">
               <div>
@@ -93,7 +92,7 @@ class CommunityLectureContainer extends Component<Props, State> {
 
             { toggle && (
               <div className="icon-area" onClick={this.onToggle}>
-                <Icon className={classNames({ 'dropdown icon arrow-down': !open, 'arrow-up': open  })} />
+                <Icon className="dropdown icon" />
               </div>
             )}
           </div>
