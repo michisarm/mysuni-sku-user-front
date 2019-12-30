@@ -85,8 +85,8 @@ class MyLearningSummaryContainer extends Component<Props> {
                       <span className="t">
                         <span className="underline">총 학습시간</span>
                         <span className="div">
-                          <span className="t1">{hour}</span><span className="t2">h</span>
-                          <span className="t1">{onlyMinute || 0}</span><span className="t2">m</span>
+                          <span className="t1">{hour || '00'}</span><span className="t2">h</span>
+                          <span className="t1">{onlyMinute || '00'}</span><span className="t2">m</span>
                         </span>
                       </span>
                     </Button>

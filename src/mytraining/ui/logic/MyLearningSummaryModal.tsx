@@ -90,8 +90,8 @@ class MyLearningSummaryModal extends Component<Props> {
                   <div className="cell vtop">
                     <div className="legend">(단위 : 시간)</div>
                     <div className="total">
-                      <span>{hour}</span><span className="u">h</span>
-                      <span>{minute}</span><span className="u">m</span>
+                      <span>{hour || '00'}</span><span className="u">h</span>
+                      <span>{minute || '00'}</span><span className="u">m</span>
                     </div>
                     <div className="chart">
                       <div className="ui pie w200" data-value="30">
@@ -101,10 +101,10 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                     <ul className="bullet-list1">
                       <li>
-                        <span className="name b1">SUNI</span><span className="time">{suniHour}h {suniMinute}m</span>
+                        <span className="name b1">SUNI</span><span className="time">{suniHour || '00'}h {suniMinute || '00'}m</span>
                       </li>
                       <li>
-                        <span className="name b2">My company</span><span className="time">{compHour}h {compMinute}m</span>
+                        <span className="name b2">My company</span><span className="time">{compHour || '00'}h {compMinute || '00'}m</span>
                       </li>
                     </ul>
                   </div>
@@ -112,35 +112,35 @@ class MyLearningSummaryModal extends Component<Props> {
                     <ul className="bullet-list2">
                       <li>
                         <span className="name b1">AI</span>
-                        <span className="time">{aiHour}h {aiMinute}m</span>
+                        <span className="time">{aiHour || '00'}h {aiMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b2">DT</span>
-                        <span className="time">{dtHour}h {dtMinute}m</span>
+                        <span className="time">{dtHour || '00'}h {dtMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b3">행복</span>
-                        <span className="time">{happyHour}h {happyMinute}m</span>
+                        <span className="time">{happyHour || '00'}h {happyMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b4">SV</span>
-                        <span className="time">{svHour}h {svMinute}m</span>
+                        <span className="time">{svHour || '00'}h {svMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b5">혁신디자인</span>
-                        <span className="time">{designHour}h {designMinute}m</span>
+                        <span className="time">{designHour || '00'}h {designMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b6">Global</span>
-                        <span className="time">{globalHour}h {globalMinute}m</span>
+                        <span className="time">{globalHour || '00'}h {globalMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b7">Leadership</span>
-                        <span className="time">{leadershipHour}h {leadershipMinute}m</span>
+                        <span className="time">{leadershipHour || '00'}h {leadershipMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b8">Management</span>
-                        <span className="time">{managementHour}h {managementMinute}m</span>
+                        <span className="time">{managementHour || '00'}h {managementMinute || '00'}m</span>
                       </li>
                     </ul>
                   </div>

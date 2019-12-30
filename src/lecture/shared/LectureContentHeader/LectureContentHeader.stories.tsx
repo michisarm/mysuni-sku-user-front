@@ -2,8 +2,7 @@
 import React from 'react';
 
 import { CubeType } from 'personalcube/personalcube';
-import { DatePeriod } from '@nara.platform/accent';
-import { CategoryModel, IdName } from 'shared';
+import { CategoryModel, IdName, DatePeriod } from 'shared';
 import LectureContentHeader from '../LectureContentHeader';
 
 

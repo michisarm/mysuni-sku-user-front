@@ -1,15 +1,15 @@
 
 import React from 'react';
-import { Image } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 
 interface ThumbnailProps {
-  image: string,
+  icon: string,
 }
 
-export const ThumbnailView: React.FC<ThumbnailProps> = ({ image }) => (
+export const ThumbnailView: React.FC<ThumbnailProps> = ({ icon }) => (
   <div>
-    <Image src={image} alt="College thumbnail" />
+    <Icon className={icon} /><span className="blind">DT</span>
   </div>
 );
 

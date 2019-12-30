@@ -89,7 +89,7 @@ class BoxCardView extends Component<Props, States> {
       onHoverIn, onHoverOut, onAction, onViewDetail,
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(model!.learningTime);
-    const  hourAndMinute = `${hour > 0 ? `${hour}h ` : ''}${minute > 0 ? `${minute}m` : ''}`;
+    const  hourAndMinute = `${hour > 0 ? `${hour}h ` : '00h'}${minute > 0 ? `${minute}m` : '00m'}`;
 
     return (
       <Card
@@ -97,8 +97,8 @@ class BoxCardView extends Component<Props, States> {
           'card-h': true,
           on: hovered,
         })}
-        onMouseEnter={onHoverIn}
-        onMouseLeave={onHoverOut}
+        onMouseOver={onHoverIn}
+        onMouseOut={onHoverOut}
       >
         {/* Todo: stampReady */}
         <Ribbon required={model!.required} />

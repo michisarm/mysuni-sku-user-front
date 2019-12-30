@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Checkbox, Form, Radio, Select } from 'semantic-ui-react';
-import { IdName, IconType, mobxHelper } from 'shared';
+import { Button, Checkbox, Form, Icon, Radio, Select } from 'semantic-ui-react';
+import { IconType, IdName, mobxHelper } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
+import classNames from 'classnames';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
@@ -17,6 +18,8 @@ interface Props {
 
 interface States {
   subsidiariesAll: string
+  focus: boolean
+  write: string
 }
 
 @inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'subsidiaryService', 'collegeService'))
@@ -25,7 +28,11 @@ interface States {
 class CreateExposureInfoContainer extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
-    this.state = { subsidiariesAll: 'No' };
+    this.state = {
+      subsidiariesAll: 'No',
+      focus: false,
+      write: '',
+    };
   }
 
   componentDidMount() {
@@ -227,12 +234,23 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
         </Form.Field>
         <Form.Field>
           <label>Tag 정보 </label>
-          <div className="ui h48 input">
+          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
             <input
               type="text"
               value={personalCube && personalCube.tags || ''}
-              onChange={(e: any) => onChangePersonalCubeProps('tags', e.target.value)}
+              onClick={() => this.setState({ focus: true })}
+              onBlur={() => this.setState({ focus: false })}
+              onChange={(e: any) => {
+                this.setState({ write: e.target.value });
+                onChangePersonalCubeProps('tags', e.target.value);
+              }}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
+            />
+            <Icon className="clear link"
+              onClick={(e: any) => {
+                this.setState({ write: '' });
+                onChangePersonalCubeProps('tags', '');
+              }}
             />
           </div>
         </Form.Field>

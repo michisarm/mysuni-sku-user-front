@@ -18,9 +18,7 @@ interface Props {
 }
 
 interface States {
-  isSelectedMainChannel: boolean
   activeIndex: number
-  value ?: any
 }
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
@@ -32,7 +30,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
   //
   constructor(props: Props) {
     super(props);
-    this.state = { isSelectedMainChannel: false, activeIndex: -1 };
+    this.state = { activeIndex: -1 };
   }
 
   handleClick = (e: any, titleProps: any) => {
@@ -45,7 +43,6 @@ class FirstCategoryModal extends React.Component<Props, States> {
 
   selectChannelButton(selectedChannel: IdName) {
     //
-    this.setState({ value: selectedChannel.id });
     const { onChangePersonalCubeProps } = this.props;
     onChangePersonalCubeProps('category.channel', selectedChannel);
   }
@@ -80,29 +77,22 @@ class FirstCategoryModal extends React.Component<Props, States> {
     });
     onChangePersonalCubeProps('subCategories', channelList);
     changeChannelsMapProps(channelListMapForView);
-    this.setState({ isSelectedMainChannel: true });
     handleChangeOpen(false);
   }
 
   render() {
     //
     const { open, handleChangeOpen, personalCube, colleges, selectedMainCollege } = this.props;
-    // const { isSelectedMainChannel, activeIndex, value } = this.state;
-    const { isSelectedMainChannel, activeIndex, value } = this.state;
+    const { activeIndex } = this.state;
     const isSelectedCollegeAndChannel = personalCube && personalCube.category && personalCube.category.college
       && personalCube.category.college.name && personalCube.category.channel && personalCube.category.channel.name;
-
-    // FIXME: 사용안하는 state 제거 후 아래 코드 삭제하세요
-    if (!personalCube) {
-      console.log(isSelectedMainChannel, value);
-    }
 
     return (
       <>
         <div className="cell v-middle">
           <span className="text1">대표 카테고리</span>
           {/* 카테고리 선택 후 활성화 */}
-          <Button icon className="left post delete" onClick={() => handleChangeOpen(true)}>카테고리 선택</Button>
+          <Button icon className="left post delete" type="button" onClick={() => handleChangeOpen(true)}>카테고리 선택</Button>
           <Modal className="base w560" open={open} onClose={() => handleChangeOpen(false)}>
             <Modal.Header className="res">
               Main Category Choice
@@ -162,14 +152,13 @@ class FirstCategoryModal extends React.Component<Props, States> {
               </div>
             </Modal.Content>
             <Modal.Actions>
-              <Button className="w190 pop d" onClick={() => this.handleCancel()}>Cancel</Button>
-              <Button className="w190 pop p" onClick={() => this.handleOk()}>OK</Button>
+              <Button type="button" className="w190 pop d" onClick={() => this.handleCancel()}>Cancel</Button>
+              <Button type="button" className="w190 pop p" onClick={() => this.handleOk()}>OK</Button>
             </Modal.Actions>
           </Modal>
         </div>
         <div className="cell v-middle">
           {
-            // isSelectedMainChannel && isSelectedCollegeAndChannel
             isSelectedCollegeAndChannel ?
               <span>{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>
               :

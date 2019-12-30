@@ -26,8 +26,10 @@ class InMyLectureApi {
     //
     const params = inMyLectureRdo;
 
-    return axiosApi.get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
-      .then(response => response && response.data);
+    return Promise.resolve(new InMyLectureModel());
+
+    // return axiosApi.get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
+    //   .then(response => response && response.data);
   }
 
   findAllInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {

@@ -38,8 +38,8 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
                   <Icon className="total-time" /><span>총 학습시간</span>
                 </Label>
                 <div className="value2">
-                  <strong>{hour}</strong><span>h</span>
-                  <strong className="min">{onlyMinute}</strong><span>m</span>
+                  <strong>{hour || '00'}</strong><span>h</span>
+                  <strong className="min">{onlyMinute || '00'}</strong><span>m</span>
                 </div>
               </Button>
             )}
