@@ -34,6 +34,15 @@ interface State {
   type: string
 }
 
+enum Type {
+  InProgress= 'InProgress',
+  InMyList= 'InMyList',
+  Enrolled= 'Enrolled',
+  Required= 'Required',
+  Completed= 'Completed',
+  Retry= 'Retry',
+}
+
 @inject(mobxHelper.injectFrom(
   'shared.pageService',
   'shared.reviewService',
@@ -51,7 +60,7 @@ class MyTrainingPage extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state= {
-    type: 'InProgress',
+    type: Type.InProgress,
   };
 
   componentDidMount(): void {
@@ -82,22 +91,18 @@ class MyTrainingPage extends Component<Props, State> {
     let offsetList: any = null;
     let feedbackIds: string[] = [];
 
-    switch (type) {
-      case 'InMyList':
-        offsetList = await inMyLectureService!.findAllInMyLectures(page!.limit, page!.nextOffset);
-        feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
-        await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-        break;
-      case 'Required':
-        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
-        break;
-      case 'Retry':
-        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
-        break;
-      default:
-        offsetList = await myTrainingService!.findAllMyTrainings(page!.limit, page!.nextOffset);
-        break;
+    if (type === Type.InMyList) {
+      offsetList = await inMyLectureService!.findAllInMyLectures(page!.limit, page!.nextOffset);
+      feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
+      await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
+    else if (type === Type.Required) {
+      offsetList = await myTrainingService!.findAllMyTrainingsWithRequired(page!.limit, page!.nextOffset);
+    }
+    else {
+      offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, page!.limit, page!.nextOffset);
+    }
+
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
   }
 

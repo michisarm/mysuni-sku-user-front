@@ -9,14 +9,14 @@ class InMyLectureApi {
   //
   static instance: InMyLectureApi;
 
-  baseUrl = '/api/mytraining/inmylectures';
+  baseUrl = '/api/mytraining/mytraining/inmylectures';
 
 
   findAllInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
     //
     const params = inMyLectureRdo;
 
-    return axiosApi.get<OffsetElementList<InMyLectureModel>>(this.baseUrl, { params })
+    return axiosApi.get<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures', { params })
       .then(response => response && response.data);
   }
 }

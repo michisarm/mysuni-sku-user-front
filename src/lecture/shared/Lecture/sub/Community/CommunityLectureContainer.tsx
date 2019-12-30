@@ -80,7 +80,7 @@ class CommunityLectureContainer extends Component<Props, State> {
                 <Icon className="thumb60-1" />
               </div>
             </div>
-            <Title title={<a>{model.name}</a>} category={model.category} >
+            <Title title={<a>{model.name}</a>} category={model.category}>
               <div className="deatil">
                 {/*<span>새로운 글: 5</span>*/}
                 {/*<span>멤버 : 1,427</span>*/}

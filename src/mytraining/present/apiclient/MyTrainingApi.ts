@@ -9,14 +9,14 @@ class MyTrainingApi {
   //
   static instance: MyTrainingApi;
 
-  baseUrl = '/api/mytraining/mytrainings';
+  baseUrl = '/api/mytraining/mytraining/mytrainings';
 
 
   findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
     const params = myTrainingRdo;
 
-    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl, { params })
+    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState', { params })
       .then(response => response && response.data);
   }
 }
