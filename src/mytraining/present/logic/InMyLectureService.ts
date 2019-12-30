@@ -64,6 +64,11 @@ class InMyLectureService {
     });
   }
 
+  @action
+  clear() {
+    this._inMyLectures = [];
+  }
+
   @computed
   get inMyLectureMap() {
     const map = new Map<string, InMyLectureModel>();

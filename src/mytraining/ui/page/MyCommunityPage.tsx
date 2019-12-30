@@ -75,7 +75,6 @@ class MyCommunityPage extends Component<Props, State> {
   onSelectMenu(type: string) {
     //
     const { pageService, lectureService, myTrainingService } = this.props;
-    console.log('------------------ selectMenu', type);
     pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
     lectureService!.clear();
     myTrainingService!.clear();
