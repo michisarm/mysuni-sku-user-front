@@ -39,6 +39,11 @@ class InMyLectureApi {
     return axiosApi.get<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures', { params })
       .then(response => response && response.data);
   }
+
+  findInMyLecturesAll() {
+    return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
+      .then(response => response && response.data);
+  }
 }
 
 InMyLectureApi.instance = new InMyLectureApi();
