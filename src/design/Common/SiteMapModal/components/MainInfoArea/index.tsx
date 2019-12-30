@@ -16,7 +16,7 @@ class MainInfoArea extends React.Component {
     state = { activeItem: 'Comment' };
 
     handleItemClick(e:any, { name }:any) {
-      this.setState({ activeItem : name });
+      this.setState({ activeItem: name });
     }
 
     render() {

@@ -89,7 +89,7 @@ export const Required = () => {
   const lecture = new LectureModel({
     ...mockLecture,
     requiredSubsidiaries: [
-      new IdName({ id: 'SK-University', name: 'SK-University' })
+      new IdName({ id: 'SK-University', name: 'SK-University' }),
     ],
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',

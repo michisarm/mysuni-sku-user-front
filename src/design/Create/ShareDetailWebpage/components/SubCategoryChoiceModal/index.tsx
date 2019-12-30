@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   Icon,
@@ -33,7 +33,7 @@ class SubCategoryChoiceModal extends React.Component {
                   </span>
                   <div className="right">
                     <Button className="clear">
-                      <Icon className="reset"/><span className="blind">reset</span>
+                      <Icon className="reset" /><span className="blind">reset</span>
                     </Button>
                   </div>
                 </div>
@@ -53,15 +53,15 @@ class SubCategoryChoiceModal extends React.Component {
                       <div className="ui accordion channel">{/* .channel */}
                         <div className="title active">
                           <span className="name b1">AI</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content active">
                           <ul>
                             <li>
                               <div className="ui base checkbox">
                                 <input type="checkbox"
-                                       className="hidden"
-                                       tabIndex={0}
+                                  className="hidden"
+                                  tabIndex={0}
                                 />
                                 <label>AI 공통</label>
                               </div>
@@ -69,8 +69,8 @@ class SubCategoryChoiceModal extends React.Component {
                             <li>
                               <div className="ui base checkbox">
                                 <input type="checkbox"
-                                       className="hidden"
-                                       tabIndex={0}
+                                  className="hidden"
+                                  tabIndex={0}
                                 />
                                 <label>AI 공통</label>
                               </div>
@@ -78,8 +78,8 @@ class SubCategoryChoiceModal extends React.Component {
                             <li>
                               <div className="ui base checkbox">
                                 <input type="checkbox"
-                                       className="hidden"
-                                       tabIndex={0}
+                                  className="hidden"
+                                  tabIndex={0}
                                 />
                                 <label>AI 공통</label>
                               </div>
@@ -88,12 +88,12 @@ class SubCategoryChoiceModal extends React.Component {
                         </div>
                         <div className="title active">
                           <span className="name b2">Mgmt</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content active">
                           <li>
                             <div className="ui base checkbox">
-                              <input type="checkbox" className="hidden" tabIndex={0}/>
+                              <input type="checkbox" className="hidden" tabIndex={0} />
                               <label>AI 공통</label>
                             </div>
                           </li>

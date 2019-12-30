@@ -107,7 +107,7 @@ class LectureCardPage extends Component<Props, State> {
 
     return {
       // Sub info
-      required: false,  // Todo
+      required: personalCube.required,
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
       participantCount: '0',  // Todo
@@ -341,9 +341,19 @@ class LectureCardPage extends Component<Props, State> {
             <div className="between-section">
               <div className="cont-inner" style={{ height: '480px' }}>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video width="854" height="480" id="video1">
-                  <source src={typeViewObject.videoUrl} type="video/mp4" />
-                </video>
+                <iframe
+                  title={typeViewObject.videoUrl}
+                  src={typeViewObject.videoUrl}
+                  width="854"
+                  height="480"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+                {/*<video width="854" height="480" id="video1">*/}
+                {/*  <source src={typeViewObject.videoUrl} type="video/mp4" />*/}
+                {/*</video>*/}
                 {/*<img src={typeViewObject.videoUrl} />*/}
               </div>
             </div>

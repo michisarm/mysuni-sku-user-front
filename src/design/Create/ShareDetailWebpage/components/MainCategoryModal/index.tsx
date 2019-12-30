@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Button, Form,
   Icon,
@@ -39,7 +39,7 @@ class MainCategoryModal extends React.Component {
                         {/* .channel */}
                         <div className="title">
                           <span className="name purple">AI</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -77,7 +77,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name violet">DT</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -115,7 +115,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name yellow">행복</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -153,7 +153,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name orange">SV</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -191,7 +191,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name red">혁신디자인</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -229,7 +229,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name green">Global</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -267,7 +267,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name blue">Leadership</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
@@ -306,7 +306,7 @@ class MainCategoryModal extends React.Component {
                         </div>
                         <div className="title">
                           <span className="name teal">Management</span>
-                          <Icon/>
+                          <Icon />
                         </div>
                         <div className="content">
                           <ul>
