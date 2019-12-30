@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
@@ -16,6 +17,7 @@ import LectureServiceType from '../../../shared/model/LectureServiceType';
 interface Props extends RouteComponentProps {
   lectureService?: LectureService,
   reviewService?: ReviewService,
+  inMyLectureService?: InMyLectureService,
   channel: ChannelModel
   onViewAll: (e: any, data: any) => void
 }
@@ -25,7 +27,11 @@ interface State {
   totalCount: number
 }
 
-@inject(mobxHelper.injectFrom('lecture.lectureService', 'shared.reviewService'))
+@inject(mobxHelper.injectFrom(
+  'lecture.lectureService',
+  'shared.reviewService',
+  'myTraining.inMyLectureService'
+))
 @reactAutobind
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
@@ -51,8 +57,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   async findLectures() {
     //
-    const { lectureService, reviewService, channel } = this.props;
+    const { lectureService, reviewService, inMyLectureService, channel } = this.props;
     const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0);
+    //TODO
+    inMyLectureService!.findAllInMyLectures(0, 10000);
 
     this.setState(({
       lectures,
@@ -62,8 +70,34 @@ class ChannelLecturesContainer extends Component<Props, State> {
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
   }
 
-  onActionLecture() {
+  onActionLecture(lecture: LectureModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+    if (lecture instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(this.findLectures);
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: lecture.serviceId,
+        serviceType: lecture.serviceType,
+        category: lecture.category,
+        name: lecture.name,
+        description: lecture.description,
+        cubeType: lecture.cubeType,
+        learningTime: lecture.learningTime,
+        stampCount: lecture.stampCount,
+        coursePlanId: lecture.coursePlanId,
 
+        requiredSubsidiaries: lecture.requiredSubsidiaries,
+        cubeId: lecture.cubeId,
+        courseSetJson: lecture.courseSetJson,
+        courseLectureUsids: lecture.courseLectureUsids,
+        lectureCardUsids: lecture.lectureCardUsids,
+
+        reviewId: lecture.reviewId,
+      }));
+    }
   }
 
   onViewDetail(e: any, data: any) {
@@ -90,9 +124,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, reviewService } = this.props;
+    const { channel, reviewService, inMyLectureService } = this.props;
     const { lectures, totalCount } =  this.state;
     const { ratingMap } =  reviewService as ReviewService;
+    const { inMyLectureMap } =  inMyLectureService as InMyLectureService;
 
     return (
       <>
@@ -112,14 +147,15 @@ class ChannelLecturesContainer extends Component<Props, State> {
               {
                 lectures.map((lecture: LectureModel, index: number) => {
                   const rating = ratingMap.get(lecture.reviewId) || 0;
+                  const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
                   return (
                     <Lecture
                       key={`lecture-${index}`}
                       model={lecture}
                       rating={rating}
                       // thumbnailImage="http://placehold.it/60x60"
-                      action={Lecture.ActionType.Add}
-                      onAction={this.onActionLecture}
+                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                      onAction={() => this.onActionLecture(inMyLecture || lecture)}
                       onViewDetail={this.onViewDetail}
                     />
                   );

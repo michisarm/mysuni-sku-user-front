@@ -19,3 +19,4 @@ export {
 /** Model */
 export { CoursePlanModel } from './model/CoursePlanModel';
 export { CourseSetType } from './model/CourseSetType';
+export { CourseSetModel } from './model/CourseSetModel';

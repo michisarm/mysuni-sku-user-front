@@ -7,11 +7,12 @@ class InMyLectureRdoModel {
   //
   limit: number = 0;
   offset: number = 0;
+  serviceId?: string;
+  serviceType?: string;
   denizenKey?: {
     keyString: string,
     patronType: PatronType
   };
-
 
   constructor(inMyLectureRdo?: InMyLectureRdoModel) {
     //
@@ -31,12 +32,28 @@ class InMyLectureRdoModel {
       },
     });
   }
+
+  static newWithSingle(serviceId: string, serviceType: string) {
+    //
+    return new InMyLectureRdoModel({
+      limit: 0,
+      offset: 0,
+      denizenKey: {
+        keyString: tenantInfo.getTenantId(),
+        patronType: PatronType.Audience,
+      },
+      serviceId,
+      serviceType,
+    });
+  }
 }
 
 decorate(InMyLectureRdoModel, {
   limit: observable,
   offset: observable,
   denizenKey: observable,
+  serviceId: observable,
+  serviceType: observable,
 });
 
 export default InMyLectureRdoModel;

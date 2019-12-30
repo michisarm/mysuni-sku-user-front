@@ -3,10 +3,10 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
-import { CubeType } from 'personalcube/personalcube';
+import { InMyLectureService, InMyLectureCdoModel } from 'mytraining';
 
 import { ReviewService } from '@nara.drama/feedback';
 import routePaths from '../../../routePaths';
@@ -26,6 +26,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
   reviewService: ReviewService,
+  inMyLectureService?: InMyLectureService,
 }
 
 interface State {
@@ -47,6 +48,7 @@ interface RouteParams {
   'lecture.programLectureService',
   'lecture.lectureService',
   'shared.reviewService',
+  'myTraining.inMyLectureService',
 ))
 @reactAutobind
 @observer
@@ -72,6 +74,7 @@ class CoursePage extends Component<Props, State> {
     //
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
+    this.findInMyLecture();
   }
 
   async findBaseInfo() {
@@ -128,6 +131,12 @@ class CoursePage extends Component<Props, State> {
         await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCardUsids);
       }
     });
+  }
+
+  async findInMyLecture() {
+    const { inMyLectureService, match } = this.props;
+    const { params } = match;
+    return inMyLectureService!.findInMyLecture(params.serviceId, params.serviceType);
   }
 
 
@@ -195,6 +204,31 @@ class CoursePage extends Component<Props, State> {
     };
   }
 
+  getInMyLectureCdo(viewObject: any): InMyLectureCdoModel {
+    const {
+      coursePlanService, programLectureService,
+    } = this.props;
+    const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { programLecture } = programLectureService!;
+    return new InMyLectureCdoModel({
+      serviceType: this.props.match.params.serviceType,
+      serviceId: this.props.match.params.serviceId,
+      category: coursePlan.category,
+      name: coursePlan.name,
+      description: coursePlanContents.description,
+      cubeType: CubeType.None,
+      learningTime: viewObject.learningTime,
+      stampCount: coursePlan.stamp.stampCount,
+      coursePlanId: coursePlan.coursePlanId,
+      requiredSubsidiaries: coursePlan.courseOpen.requiredSubsidiaries,
+      cubeId: '',
+      courseSetJson: coursePlanContents.courseSet,
+      courseLectureUsids: programLecture.courseLectureUsids,
+      lectureCardUsids: programLecture.lectureCardUsids,
+      reviewId: programLecture.reviewId,
+    });
+  }
+
   getMenus() {
     //
     const menus: typeof ContentMenu.Menu[] = [
@@ -249,11 +283,13 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, reviewService } = this.props;
+    const { collegeService, reviewService, inMyLectureService } = this.props;
     const { college } = collegeService;
     const { reviewSummary } = reviewService;
+    const { inMyLecture } = inMyLectureService!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
+    const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
 
     return (
       <ContentLayout
@@ -275,6 +311,8 @@ class CoursePage extends Component<Props, State> {
           onSelectMenu={(type) => this.setState({ type })}
         />
         <LectureCardContainer
+          inMyLecture={inMyLecture}
+          inMyLectureCdo={inMyLectureCdo}
           cubeType={CubeType.None}
           viewObject={viewObject}
           typeViewObject={typeViewObject}

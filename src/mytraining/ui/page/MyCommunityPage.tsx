@@ -33,8 +33,8 @@ interface State {
 }
 
 enum Type {
-  MY_COMMUNITY= 'MyCommunity',
-  MY_CREATED_COMMUNITY= 'MyCreatedCommunity',
+  MY_COMMUNITY= 'My Community',
+  MY_CREATED_COMMUNITY= 'My Created Community',
 }
 
 @inject(mobxHelper.injectFrom(
@@ -111,9 +111,9 @@ class MyCommunityPage extends Component<Props, State> {
     //
     const menus: typeof ContentMenu.Menu[] = [];
     menus.push(
-      { name: 'My Community', type: 'MyCommunity' },
-      { name: 'My Created Community', type: 'MyCreatedCommunity' },
-      { name: 'My Feed', type: 'MyFeed' },
+      { name: 'My Community', type: 'My Community' },
+      { name: 'My Created Community', type: 'My Created Community' },
+      { name: 'My Feed', type: 'My Feed' },
     );
 
     return menus;
@@ -156,10 +156,10 @@ class MyCommunityPage extends Component<Props, State> {
     let list: (MyTrainingModel | LectureModel)[] = [];
 
     switch (type) {
-      case 'MyCommunity':
+      case Type.MY_COMMUNITY:
         list = myTrainingService!.myTrainings;
         break;
-      case 'MyCreatedCommunity':
+      case Type.MY_CREATED_COMMUNITY:
         list = lectureService!.lectures;
         break;
     }
@@ -223,6 +223,7 @@ class MyCommunityPage extends Component<Props, State> {
     const { skProfile } = skProfileService as SkProfileService;
 
     const { member } = skProfile as SkProfileModel;
+    const { type } = this.state;
 
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCommunity`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCreatedCommunity`);
@@ -231,7 +232,8 @@ class MyCommunityPage extends Component<Props, State> {
       <ContentLayout
         className = "community"
         breadcrumb={[
-          { text: 'Community', path: '/community' },
+          { text: 'Community' },
+          { text: type },
         ]}
       >
         <ContentHeader className="content-division">
@@ -253,7 +255,7 @@ class MyCommunityPage extends Component<Props, State> {
         </ContentHeader>
         <ContentMenu
           menus={this.getMenus()}
-          type={this.state.type}
+          type={type}
           onSelectMenu={this.onSelectMenu}
         />
         {this.renderList()}
