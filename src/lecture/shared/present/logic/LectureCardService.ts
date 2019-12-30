@@ -33,7 +33,7 @@ class LectureCardService {
   @action
   async findAllLectureCards(offset: number, limit: number, college?: string, channel?: string) {
     //
-    const lectureCards = await this.lectureCardApi.findAllLectureCards(offset, limit, college, channel);
+    await this.lectureCardApi.findAllLectureCards(offset, limit, college, channel);
   }
 
   // LectureCard -------------------------------------------------------------------------------------------------------

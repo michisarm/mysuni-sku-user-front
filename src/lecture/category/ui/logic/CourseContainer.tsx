@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import queryString from 'query-string';
 import { Segment } from 'semantic-ui-react';
 import { mobxHelper } from 'shared';
 import { CoursePlanService } from 'course';
@@ -10,8 +11,8 @@ import {
   CourseLectureService,
   LectureService,
   LectureServiceType,
-  ProgramLectureService,
   LectureViewModel,
+  ProgramLectureService,
 } from '../../../shared';
 import Lecture from '../../../shared/Lecture';
 import routePaths from '../../../routePaths';
@@ -67,14 +68,32 @@ class CourseContainer extends Component<Props> {
   onViewDetail(lecture: LectureViewModel) {
     //
     const { cubeId, coursePlanId, serviceId, serviceType } = lecture;
-    const { match, history } = this.props;
+    const { match, history, location } = this.props;
     const { params } = match;
+    const { search } = location;
 
-    if (serviceType === LectureServiceType.Program || serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId));
+    // Program -> Course
+    if (serviceType === LectureServiceType.Course) {
+      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId, {
+        programLectureId: params.serviceId,
+      }));
     }
     else if (serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardInCourseOverview(params.collegeId, params.coursePlanId, cubeId, serviceId));
+      // Program -> Card
+      if (params.serviceType === LectureServiceType.Program) {
+        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
+          programLectureId: params.serviceId,
+        }));
+      }
+      // Course -> Card
+      else {
+        const queryParam = queryString.parse(search);
+
+        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
+          programLectureId: queryParam.programLectureId as string,
+          courseLectureId: params.serviceId,
+        }));
+      }
     }
   }
 
