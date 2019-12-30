@@ -6,7 +6,6 @@ import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
 
 
-
 class InMyLectureModel extends DramaEntityObservableModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;

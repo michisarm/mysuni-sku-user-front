@@ -6,7 +6,7 @@ import { CourseSetModel } from '../../course/model/CourseSetModel';
 
 
 
-class InMyLectureCdoModel{
+class InMyLectureCdoModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';

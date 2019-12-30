@@ -228,6 +228,7 @@ class LectureCardPage extends Component<Props, State> {
     }
 
     return {
+      mediaType: media.mediaType,
       url,
       videoUrl,
       learningPeriod: media.learningPeriod,

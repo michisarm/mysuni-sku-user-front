@@ -5,10 +5,10 @@ import { inject, observer } from 'mobx-react';
 import depot from '@nara.drama/depot';
 import { mobxHelper } from 'shared';
 import { CubeType } from 'personalcube/personalcube';
+import { MediaType } from 'personalcube/media';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mytraining';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
-
 
 
 interface Props {
@@ -50,7 +50,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url) {
-      window.open(typeViewObject.url, '_blank');
+      window.open(`https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
@@ -94,7 +94,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getMainAction() {
-    const { cubeType } = this.props;
+    const { cubeType, typeViewObject } = this.props;
+
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
         return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
@@ -102,7 +103,12 @@ class LectureCardContainer extends Component<Props, State> {
         return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
       case CubeType.Audio:
       case CubeType.Video:
-        return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
+        if (typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
+        }
+        else {
+          return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
+        }
       case CubeType.WebPage:
       case CubeType.Experiential:
         return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
