@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
-import { DatePeriod, reactAutobind } from '@nara.platform/accent';
+import { reactAutobind } from '@nara.platform/accent';
 
+import moment from 'moment';
 import { CubeType } from 'personalcube/personalcube';
 import { Label, Icon, LabelProps } from 'semantic-ui-react';
-import { CategoryModel } from 'shared';
+import { CategoryModel, DatePeriod } from 'shared';
 import CubeIconType from '../../../Lecture/model/CubeIconType';
 
 
@@ -48,7 +49,7 @@ class TitleCell extends Component<Props> {
               { creationTime ?
                 <>
                   <Icon className="date" />
-                  <span>Creation date : {new Date(creationTime).toLocaleDateString()}</span>
+                  <span>Creation date : {moment(creationTime).format('YYYY.MM.DD')}</span>
                 </>
                 : null
               }

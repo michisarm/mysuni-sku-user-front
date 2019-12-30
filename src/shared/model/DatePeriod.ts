@@ -1,5 +1,7 @@
 import { DatePeriod as AccentDatePeriod } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import moment from 'moment';
+
 
 export class DatePeriod implements AccentDatePeriod {
   //
@@ -7,11 +9,13 @@ export class DatePeriod implements AccentDatePeriod {
   endDateSub: Date = new Date();
 
   zoneId: string = '';
+
   startDate: string = this.startDateSub
     .toLocaleDateString()
     .replace('. ', '-')
     .replace('. ', '-')
     .replace('.', '');
+
 
   endDate: string = this.endDateSub
     .toLocaleDateString()
@@ -25,6 +29,10 @@ export class DatePeriod implements AccentDatePeriod {
   constructor(datePeriod?: DatePeriod) {
     if ( datePeriod ) {
       Object.assign(this, { ...datePeriod });
+
+      this.startDate = moment(datePeriod.startDate).format('YYYY.MM.DD');
+      this.endDate = moment(datePeriod.endDate).format('YYYY.MM.DD');
+
       this.startDateSub = datePeriod.startDate && new Date(datePeriod.startDate) || new Date();
       this.endDateSub = datePeriod.endDate && new Date(datePeriod.endDate) || new Date();
     }
