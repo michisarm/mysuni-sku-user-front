@@ -29,8 +29,8 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
                 {
                   personalCube && personalCube.subsidiaries && personalCube.subsidiaries.length
                   && personalCube.subsidiaries.map((subsidiary, index) => {
-                    if (index === 0) return <div key={index}>{subsidiary.name}</div>;
-                    else return <div key={index}>, {subsidiary.name}</div>;
+                    if (index === 0) return <span key={index}>{subsidiary.name}</span>;
+                    else return <span key={index}>, {subsidiary.name}</span>;
                   })
                 }
               </Table.Cell>
@@ -41,9 +41,9 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
                 {
                   personalCube && personalCube.tags && personalCube.tags.length
                   && personalCube.tags.map((tag, index) => {
-                    if (index === 0) return <div key={index}>{tag}</div>;
-                    else return <div key={index}>, {tag}</div>;
-                  }) || <div>-</div>
+                    if (index === 0) return <span key={index}>{tag}</span>;
+                    else return <span key={index}>, {tag}</span>;
+                  }) || <span>-</span>
                 }
               </Table.Cell>
             </Table.Row>
