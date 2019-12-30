@@ -134,17 +134,27 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService,
+      coursePlanService, lectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { getSubLectureViews } = lectureService!;
     // const { cubeIntro } = cubeIntroService!;
+
+    let learningTime = 0;
+    const lectures = getSubLectureViews(coursePlan.coursePlanId);
+    lectures.forEach((lecture: LectureViewModel) => {
+      getSubLectureViews(lecture.id).forEach((subLecture :LectureViewModel) => {
+        learningTime += subLecture.learningTime;
+      });
+      learningTime += lecture.learningTime;
+    });
 
     return {
       // Sub info
-      required: false,  // Todo
+      required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
-      learningTime: 0,
-      participantCount: '1,250',  // Todo
+      learningTime,
+      participantCount: '0',  // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,

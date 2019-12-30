@@ -66,7 +66,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     const name : 'areaGroup' | 'goalGroup' = targetProps.name;
     const value = targetProps.value;
     const state = { ...this.state };
-    console.log(state[name]);
     if (targetProps.checked) {
       state[name].push(value);
     } else {

@@ -13,9 +13,9 @@ export default {
 };
 
 
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <Segment className="full">
       <OverviewField.Wrapper>
         <OverviewField.Description
@@ -38,11 +38,9 @@ export const Basic = () => {
       </OverviewField.Wrapper>
     </Segment>
   );
-};
-
-export const BasicWithHeader = () => {
+export const BasicWithHeader = () =>
   //
-  return (
+  (
     <Segment className="full">
       <OverviewField.Wrapper>
         <OverviewField.List
@@ -61,12 +59,9 @@ export const BasicWithHeader = () => {
       </OverviewField.Wrapper>
     </Segment>
   );
-};
-
-
-export const IconFields = () => {
+export const IconFields = () =>
   //
-  return (
+  (
     <Segment className="full">
       <OverviewField.Wrapper>
         <OverviewField.List icon className="period-area">
@@ -91,9 +86,6 @@ export const IconFields = () => {
       </OverviewField.Wrapper>
     </Segment>
   );
-};
-
-
 export const Table = () => {
   //
   const mockClassroom = new ClassroomModel();

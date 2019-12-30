@@ -66,7 +66,7 @@ export const WithMainAction = () =>
   //
   (
     <LectureSubInfo
-      mainAction={object('mainAction', { type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment)})}
+      mainAction={object('mainAction', { type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment) })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
@@ -92,7 +92,7 @@ export const WithSubActions = () =>
   //
   (
     <LectureSubInfo
-      subActions={object('subActions', [{ type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment)}])}
+      subActions={object('subActions', [{ type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment) }])}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}

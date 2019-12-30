@@ -118,7 +118,6 @@ export default class PostService {
   changePostProps(name: string, value: string | {}) {
     //
     this.post = { ...this.post, [name]: value } as PostModel;
-    console.log(this.post);
   }
 
   @action

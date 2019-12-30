@@ -18,7 +18,6 @@ interface States {
   activeItem : string
 }
 
-console.log(mobxHelper);
 @inject(mobxHelper.injectFrom('personalCube.personalCubeService'))
 @observer
 @reactAutobind

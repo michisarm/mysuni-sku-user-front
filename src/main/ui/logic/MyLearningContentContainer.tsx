@@ -24,6 +24,13 @@ interface State {
   type: string
 }
 
+enum Type {
+  InMyList= 'InMyList',
+  Required= 'Required',
+  InProgress= 'InProgress',
+  Enrolled= 'Enrolled',
+}
+
 @inject(mobxHelper.injectFrom(
   'shared.reviewService',
   'myTraining.myTrainingService',
@@ -34,7 +41,7 @@ interface State {
 class MyLearningContentContainer extends Component<Props, State> {
   //
   state= {
-    type: 'Required',
+    type: Type.Required,
   };
 
   componentDidMount(): void {
@@ -70,16 +77,19 @@ class MyLearningContentContainer extends Component<Props, State> {
     let feedbackIds: string[] = [];
 
     switch (type) {
-      case 'InMyList':
+      case Type.InMyList:
         offsetList = await inMyLectureService!.findAllInMyLectures(5, 0);
         feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
         await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
         break;
-      case 'Required':
-        offsetList = await myTrainingService!.findAllMyTrainings(5, 0);
+      case Type.Required:
+        offsetList = await myTrainingService!.findAllMyTrainingsWithRequired(5, 0);
         break;
-      default:
-        offsetList = await myTrainingService!.findAllMyTrainings(5, 0);
+      case Type.InProgress:
+        offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, 5, 0);
+        break;
+      case Type.Enrolled:
+        offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, 5, 0);
         break;
     }
   }

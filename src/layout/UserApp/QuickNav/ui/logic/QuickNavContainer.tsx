@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, WorkSpace } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 //import { tenantInfo } from '@nara.platform/dock';
@@ -43,7 +43,6 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   deactive() {
-    console.log('deactive');
     this.setState({ active: false });
   }
 
@@ -98,6 +97,15 @@ class QuickNavContainer extends Component<Props, State> {
   render() {
     //
     const { active } = this.state;
+    let roles: string[] = [];
+    if (sessionStorage.workspaces) {
+      const cineroomWorkspaces: WorkSpace[] = JSON.parse(sessionStorage.workspaces).cineroomWorkspaces;
+      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
+      if (filteredWorkspaces.length) {
+        roles = filteredWorkspaces[0].roles;
+      }
+    }
+
 
     return (
       <QuickNavWrapperView
@@ -118,9 +126,11 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickSiteMap} />
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
               <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />
-              {/*{ this.userRoles.includes('Admin') && (
-                <BottomMenuItemView iconName="admin" text="SK University Admin Site" onClick={this.onClickAdminSite} />
-              )}*/}
+              {
+                (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
+                  <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
+                )
+              }
             </>
           }
         />

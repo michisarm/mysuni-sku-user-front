@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, { Component, createRef } from 'react';
 import {
   List,
   Form,
@@ -19,7 +19,7 @@ interface States {
 
 class CommentsSort extends React.Component<Props, States> {
 
-  handleChange(e: any, {value}: any) {
+  handleChange(e: any, { value }: any) {
     this.setState({ value });
   }
 

@@ -65,7 +65,6 @@ export default class PersonalCubeService {
   async findPersonalCube(personalCubeId: string) {
     //
     const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
-    console.log('service', personalCube);
     if (personalCube) return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
     return null;
   }
@@ -87,9 +86,7 @@ export default class PersonalCubeService {
   @action
   changeCubeProps(name: string, value: string | {} | string[]) {
     //
-    console.log(name, value);
     this.personalCube = _.set(this.personalCube, name, value);
-    console.log(this.personalCube);
   }
 
   @action
@@ -112,7 +109,6 @@ export default class PersonalCubeService {
   async findAllApprovalContents() {
     //
     const approvalContents = await this.personalCubeApi.findAllApprovalContents(CubeQueryModel.asApprovalContentsRdo(this.personalCubeQuery));
-    console.log(approvalContents);
     return runInAction(() => this.approvalContents = approvalContents);
   }
 

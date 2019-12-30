@@ -90,7 +90,7 @@ class MyCommunityPage extends Component<Props, State> {
     // offsetList = await lectureService!.findPagingCollegeLectures('CLG00001', page!.limit, page!.nextOffset);
     offsetList = await lectureService!.findPagingCommunityLectures(page!.limit, page!.nextOffset);
     pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`, offsetList.totalCount, page!.pageNo + 1);
-    offsetList = await myTrainingService!.findAllMyTrainings(createdPage!.limit, createdPage!.nextOffset);
+    offsetList = await myTrainingService!.findAllMyCommunityTrainings(createdPage!.limit, createdPage!.nextOffset);
     pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`, offsetList.totalCount, page!.pageNo + 1);
   }
 

@@ -1,7 +1,6 @@
-
-import { observable, action, computed, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
-import { OffsetElementList } from 'shared';
+import { CubeType, OffsetElementList } from 'shared';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
@@ -31,9 +30,37 @@ class MyTrainingService {
   // My Trainings ----------------------------------------------------------------------------------------------------------
 
   @action
-  async findAllMyTrainings(limit: number, offset: number) {
+  async findAllMyTrainingsWithState(state: string, limit: number, offset: number) {
     //
-    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.new(limit, offset));
+    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithState(state, limit, offset));
+    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+
+    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
+
+    return runInAction(() => {
+      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
+      return trainingOffsetElementList;
+    });
+  }
+
+  @action
+  async findAllMyTrainingsWithRequired(limit: number, offset: number) {
+    //
+    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithRequired(limit, offset));
+    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+
+    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
+
+    return runInAction(() => {
+      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
+      return trainingOffsetElementList;
+    });
+  }
+
+  @action
+  async findAllMyCommunityTrainings(limit: number, offset: number) {
+    //
+    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithCubeType(CubeType.Community, limit, offset));
     const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
 
     trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));

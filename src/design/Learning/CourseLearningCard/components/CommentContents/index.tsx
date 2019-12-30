@@ -216,7 +216,7 @@ class CommentContents extends React.Component<Props, States> {
             </Comment.Group>
             <Comment.Group>
               <Comment>
-                <span className="avatar"><Icon className="avatar56" /><span className="blind" >avatar</span>
+                <span className="avatar"><Icon className="avatar56" /><span className="blind">avatar</span>
                 </span>
                 <Comment.Content>
                   <span className="empty h56">삭제된 댓글입니다.</span>
@@ -266,7 +266,7 @@ class CommentContents extends React.Component<Props, States> {
                 <div className="outline">
                   <Form.TextArea placeholder="Writing...">본인 댓글 수정</Form.TextArea>
                   <div className="more">
-                    <div className="count"><span className="now">0</span>/<span className="max" >500</span>
+                    <div className="count"><span className="now">0</span>/<span className="max">500</span>
                     </div>
                     <Button cancel>Cancel</Button>
                     <Button submit>Submit</Button>
@@ -413,7 +413,7 @@ class CommentContents extends React.Component<Props, States> {
                         </Button>
                       </div>
                       <div className="more">
-                        <div className="count"><span className="now">0</span>/<span className="max" >500</span>
+                        <div className="count"><span className="now">0</span>/<span className="max">500</span>
                         </div>
                         <Button cancel>Cancel</Button>
                         <Button submit>Submit</Button>

@@ -25,7 +25,7 @@ export default class SkProfileService {
   skProfileQuery: SkProfileQueryModel = new SkProfileQueryModel();
 
   @observable
-  studySummary : StudySummary = new StudySummary();
+  studySummary: StudySummary = new StudySummary();
 
   constructor(skProfileApi: SkProfileApi) {
     this.skProfileApi = skProfileApi;
@@ -121,7 +121,6 @@ export default class SkProfileService {
 
   @action
   setFavoriteJobGroupProp(name:string, value:any) {
-    console.log('setting jobgroup', name, value);
     this.skProfile.member.favoriteJobGroup = _.set(this.skProfile.member.favoriteJobGroup, name, value);
   }
 

@@ -34,7 +34,6 @@ class Routes extends React.PureComponent {
             <Route exact path="/lecture/college/:collegeId/channels" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={withSplitting(() => import('./lecture').then(({ CoursePage }) => CoursePage))} />
-            <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/cube/:cubeId/lecture-card/:lectureCardId" component={withSplitting(() => import('./lecture').then(({ LectureCardPage }) => LectureCardPage))} />
             <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={withSplitting(() => import('./lecture').then(({ LectureCardPage }) => LectureCardPage))} />
 
             {/* community  */}

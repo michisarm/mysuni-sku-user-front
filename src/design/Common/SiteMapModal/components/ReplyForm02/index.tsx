@@ -25,7 +25,7 @@ class ReplyForm02 extends React.Component<Props, States> {
         <div className="outline">
           <Form.TextArea placeholder="Writing..." />
           <div className="more">
-            <div className="count"><span className="now">0</span>/<span className="max" >500</span>
+            <div className="count"><span className="now">0</span>/<span className="max">500</span>
             </div>
             <Button cancel>Cancel</Button>
             <Button submit>Submit</Button>

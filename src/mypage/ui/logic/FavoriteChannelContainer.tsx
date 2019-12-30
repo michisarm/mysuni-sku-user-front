@@ -3,9 +3,9 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
-import { SkProfileService, StudySummary } from '../../../profile';
-import { ChannelModel, CollegeService } from '../../../college';
-import FavoriteChannelChangeModalContainer from '../../../shared-component/FavoriteChannelChangeModalContainer';
+import { SkProfileService, StudySummary } from 'profile';
+import { ChannelModel, CollegeService } from 'college';
+import { FavoriteChannelChangeModal } from 'shared-component';
 
 
 interface Props{
@@ -58,7 +58,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
             <div className="cell vtop">
               <div className="tit-set">관심 channel({channels.length || 0})
 
-                <FavoriteChannelChangeModalContainer
+                <FavoriteChannelChangeModal
                   // handleConfirm={this.onConfirmModal}
                   favorites={channels}
                   onConfirmCallback={this.init}
