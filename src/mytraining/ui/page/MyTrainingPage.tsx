@@ -207,7 +207,7 @@ class MyTrainingPage extends Component<Props, State> {
           { text: `Learning` },
         ]}
       >
-        <ContentHeader className="content-division">
+        <ContentHeader>
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
               image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
