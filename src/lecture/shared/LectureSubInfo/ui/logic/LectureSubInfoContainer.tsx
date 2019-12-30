@@ -37,7 +37,7 @@ interface Props {
   /** 취소버튼 액션 */
   onCancel?: () => void
   /** 북마크 액션 */
-  onBookmark: () => void
+  onBookmark?: () => void
   /** 공유 액션 */
   onShare: () => void
   /** 삭제 액션 */

@@ -13,10 +13,47 @@ interface Props {
   college: CollegeModel,
 }
 
+
 @reactAutobind
 @observer
 class CategoryLecturesHeaderView extends Component<Props> {
   //
+  static thumbnailIcon = {
+    Default: 'college-ai86',
+    AI: 'college-ai86',
+    DT: 'college-dt86',
+    Global: 'college-global86',
+    Leadership: 'college-leadership86',
+    Management: 'college-management86',
+    SV: 'college-sv86',
+    Happiness: 'college-happy86',
+    InnovationDesign: 'college-design86',
+  };
+
+  getThumbnailIcon(collegeName: string) {
+    //
+    switch (collegeName) {
+      case 'AI':
+        return CategoryLecturesHeaderView.thumbnailIcon.AI;
+      case 'DT':
+        return CategoryLecturesHeaderView.thumbnailIcon.DT;
+      case 'Global':
+        return CategoryLecturesHeaderView.thumbnailIcon.Global;
+      case 'Leadership':
+        return CategoryLecturesHeaderView.thumbnailIcon.Leadership;
+      case 'Management':
+        return CategoryLecturesHeaderView.thumbnailIcon.Management;
+      case 'SV':
+        return CategoryLecturesHeaderView.thumbnailIcon.SV;
+      case '행복':
+        return CategoryLecturesHeaderView.thumbnailIcon.Happiness;
+      case '혁신디자인':
+        return CategoryLecturesHeaderView.thumbnailIcon.InnovationDesign;
+      default:
+        return CategoryLecturesHeaderView.thumbnailIcon.Default;
+    }
+  }
+
   render() {
     //
     const { college } = this.props;
@@ -24,7 +61,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     return (
       <ContentHeader>
         <ContentHeader.Cell className="thumb">
-          <ThumbnailView image={`${process.env.PUBLIC_URL}/images/all/thumb-college-86-px.jpg`} />
+          <ThumbnailView icon={this.getThumbnailIcon(college.name)} />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="title">
           <TitleView

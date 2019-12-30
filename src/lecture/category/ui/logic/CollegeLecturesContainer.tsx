@@ -7,6 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
 import LectureCountService from '../../present/logic/LectureCountService';
 import routePaths from '../../../routePaths';
 
@@ -26,6 +27,7 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
   lectureService?: LectureService,
   lectureCountService?: LectureCountService,
   reviewService?: ReviewService,
+  inMyLectureService?: InMyLectureService,
 }
 
 interface State {
@@ -34,7 +36,12 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
-  'shared.pageService', 'collegeService', 'lecture.lectureService', 'lecture.lectureCountService', 'shared.reviewService',
+  'shared.pageService',
+  'collegeService',
+  'lecture.lectureService',
+  'lecture.lectureCountService',
+  'shared.reviewService',
+  'myTraining.inMyLectureService',
 ))
 @reactAutobind
 @observer
@@ -131,8 +138,35 @@ class CollegeLecturesContainer extends Component<Props, State> {
     });
   }
 
-  onActionLecture() {
 
+  onActionLecture(lecture: LectureModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+    if (lecture instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(this.findPagingCollegeLectures);
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: lecture.serviceId,
+        serviceType: lecture.serviceType,
+        category: lecture.category,
+        name: lecture.name,
+        description: lecture.description,
+        cubeType: lecture.cubeType,
+        learningTime: lecture.learningTime,
+        stampCount: lecture.stampCount,
+        coursePlanId: lecture.coursePlanId,
+
+        requiredSubsidiaries: lecture.requiredSubsidiaries,
+        cubeId: lecture.cubeId,
+        courseSetJson: lecture.courseSetJson,
+        courseLectureUsids: lecture.courseLectureUsids,
+        lectureCardUsids: lecture.lectureCardUsids,
+
+        reviewId: lecture.reviewId,
+      }));
+    }
   }
 
   onViewDetail(e: any, { model }: any) {
@@ -163,11 +197,12 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   renderCollegeLectures() {
     //
-    const { pageService, collegeService, reviewService } = this.props;
+    const { pageService, collegeService, reviewService, inMyLectureService } = this.props;
     const { lectures, sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
+    const { inMyLectureMap } =  inMyLectureService!;
 
     return (
       <CategoryLecturesWrapperView
@@ -189,14 +224,15 @@ class CollegeLecturesContainer extends Component<Props, State> {
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
                 const rating = ratingMap.get(lecture.reviewId) || 0;
+                const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
                 return (
                   <Lecture
                     key={`lecture-${index}`}
                     model={lecture}
                     rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"
-                    action={Lecture.ActionType.Add}
-                    onAction={this.onActionLecture}
+                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                    onAction={() => this.onActionLecture(inMyLecture || lecture)}
                     onViewDetail={this.onViewDetail}
                   />
                 );
