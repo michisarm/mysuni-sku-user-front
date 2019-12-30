@@ -1,6 +1,7 @@
 import { Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { PersonalCubeModel } from 'personalcube/personalcube';
+import EnumUtil, { CubeStateView } from '../../../shared/ui/logic/getEumValue';
 
 interface Props {
   personalCube: PersonalCubeModel
@@ -76,7 +77,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>승인정보</Table.HeaderCell>
                   <Table.Cell>
-                    <div>2019.10.07<span className="dash" />{personalCube.cubeState}</div>
+                    <div>2019.10.07<span className="dash" />{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}</div>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
