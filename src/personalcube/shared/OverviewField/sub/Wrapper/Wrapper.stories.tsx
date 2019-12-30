@@ -14,13 +14,13 @@ export default {
 /**
  * Basic Story
  */
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <Segment className="full">
       <OverviewField.Wrapper>
         Overview.List area
       </OverviewField.Wrapper>
     </Segment>
   );
-};
+

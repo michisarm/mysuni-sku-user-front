@@ -1,4 +1,5 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 import { decorate, observable } from 'mobx';
 import { IdName, NameValueList, CategoryModel, CreatorModel, IconBox } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
@@ -7,6 +8,7 @@ import { StampModel } from './StampModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { OpenRequestModel } from './OpenRequestModel';
 import { CoursePlanCdoModel } from './CoursePlanCdoModel';
+
 
 export class CoursePlanModel implements DramaEntity {
   //
@@ -29,6 +31,9 @@ export class CoursePlanModel implements DramaEntity {
   time: number = 0;
   openRequests: OpenRequestModel[] = [];
 
+  //UI
+  required: boolean = false;
+
   constructor(coursePlan?: CoursePlanModel) {
     if (coursePlan) {
       const category = coursePlan.category && new CategoryModel(coursePlan.category) || this.category;
@@ -40,6 +45,11 @@ export class CoursePlanModel implements DramaEntity {
       const creator = coursePlan.creator && new CreatorModel(coursePlan.creator) || this.creator;
 
       Object.assign(this, { ...coursePlan, category, courseOperator, iconBox, courseOpen, reportFileBox, stamp, creator });
+
+      // UI Model
+      const cineroom = tenantInfo.getCineroom() as any;
+      this.required = cineroom && coursePlan.courseOpen && coursePlan.courseOpen.requiredSubsidiaries
+        && coursePlan.courseOpen.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
     }
   }
 
@@ -181,4 +191,5 @@ decorate(CoursePlanModel, {
   creator: observable,
   time: observable,
   openRequests: observable,
+  required: observable,
 });

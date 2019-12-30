@@ -22,9 +22,9 @@ const profileItem = (
 );
 
 
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
@@ -35,12 +35,9 @@ export const Basic = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
-
-export const ProfileItem = () => {
+export const ProfileItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
@@ -54,16 +51,14 @@ export const ProfileItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 ProfileItem.story = {
   name: 'ContentHeader.ProfileItem',
 };
 
 
-export const TotalTimeItem = () => {
+export const TotalTimeItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -75,15 +70,13 @@ export const TotalTimeItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 TotalTimeItem.story = {
   name: 'ContentHeader.TotalTimeItem',
 };
 
-export const WaitingItem = () => {
+export const WaitingItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -95,16 +88,14 @@ export const WaitingItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 WaitingItem.story = {
   name: 'ContentHeader.WaitingItem',
 };
 
 
-export const ChartItem = () => {
+export const ChartItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -117,16 +108,14 @@ export const ChartItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 ChartItem.story = {
   name: 'ContentHeader.ChartItem',
 };
 
 
-export const CommunityItem = () => {
+export const CommunityItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -139,16 +128,14 @@ export const CommunityItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 CommunityItem.story = {
   name: 'ContentHeader.CommunityItem',
 };
 
 
-export const StampItem = () => {
+export const StampItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -165,16 +152,14 @@ export const StampItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 StampItem.story = {
   name: '(Todo) ContentHeader.StampItem',
 };
 
 
-export const Bottom = () => {
+export const Bottom = () =>
   //
-  return (
+  (
     <ContentHeader
       bottom={(
         <div className="channel-of-interest">
@@ -187,12 +172,9 @@ export const Bottom = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
-
-export const CategoryExample = () => {
+export const CategoryExample = () =>
   //
-  return (
+  (
     <ContentLayout className="channel">
       <ContentHeader>
         <ContentHeader.Cell className="thumb">
@@ -216,12 +198,9 @@ export const CategoryExample = () => {
       </ContentHeader>
     </ContentLayout>
   );
-};
-
-
-export const RecommendItem = () => {
+export const RecommendItem = () =>
   //
-  return (
+  (
     <ContentHeader>
       <ContentHeader.Cell inner>
         {profileItem}
@@ -234,8 +213,6 @@ export const RecommendItem = () => {
       </ContentHeader.Cell>
     </ContentHeader>
   );
-};
-
 RecommendItem.story = {
   name: 'ContentHeader.RecommendItem',
 };

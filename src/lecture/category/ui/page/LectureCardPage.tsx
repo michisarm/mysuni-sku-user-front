@@ -107,7 +107,7 @@ class LectureCardPage extends Component<Props, State> {
 
     return {
       // Sub info
-      required: false,  // Todo
+      required: personalCube.required,
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
       participantCount: '0',  // Todo
@@ -346,7 +346,7 @@ class LectureCardPage extends Component<Props, State> {
                   src={typeViewObject.videoUrl}
                   width="854"
                   height="480"
-                  style={{padding: '0px', border: '0px'}}
+                  style={{ padding: '0px', border: '0px' }}
                   frameBorder="0"
                   allowFullScreen
                   allow="autoplay"

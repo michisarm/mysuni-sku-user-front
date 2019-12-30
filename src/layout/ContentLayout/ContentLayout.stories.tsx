@@ -18,9 +18,9 @@ const Base = (storyFn: any) => (
 );
 
 
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <ContentLayout
       className="learning"
       breadcrumb={[
@@ -31,8 +31,6 @@ export const Basic = () => {
       <h2>Content</h2>
     </ContentLayout>
   );
-};
-
 Basic.story = {
   decorators: [Base],
 };

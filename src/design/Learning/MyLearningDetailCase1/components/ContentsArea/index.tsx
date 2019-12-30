@@ -29,7 +29,7 @@ class ContentsArea extends Component<Props, States> {
   }
 
   handleItemClick(e:any, { name }:any) {
-    this.setState({activeItem : name});
+    this.setState({ activeItem: name });
   }
 
   render() {

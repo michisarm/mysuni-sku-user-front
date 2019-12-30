@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {reactAutobind, WorkSpace} from '@nara.platform/accent';
+import { reactAutobind, WorkSpace } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 //import { tenantInfo } from '@nara.platform/dock';
@@ -127,7 +127,7 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
               <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />
               {
-                (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) &&(
+                (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
                   <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
                 )
               }

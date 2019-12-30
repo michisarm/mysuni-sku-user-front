@@ -1,9 +1,11 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 import { decorate, observable } from 'mobx';
 import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
+
 
 export class PersonalCubeModel implements DramaEntity {
   //
@@ -30,6 +32,9 @@ export class PersonalCubeModel implements DramaEntity {
   openRequests: OpenRequest[] = [];
 
 
+  //UI
+  required: boolean = false;
+
   constructor(personalCube?: PersonalCubeModel) {
     if (personalCube) {
       const creator = personalCube.creator && new CreatorModel(personalCube.creator) || this.creator;
@@ -39,6 +44,11 @@ export class PersonalCubeModel implements DramaEntity {
       const iconBox = personalCube.iconBox && new IconBox(personalCube.iconBox) || this.iconBox;
 
       Object.assign(this, { ...personalCube, creator, contents, cubeIntro, category, iconBox });
+
+      // UI Model
+      const cineroom = tenantInfo.getCineroom() as any;
+      this.required = cineroom && personalCube.requiredSubsidiaries
+        && personalCube.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
     }
   }
 
@@ -171,5 +181,6 @@ decorate(PersonalCubeModel, {
   requiredSubsidiaries: observable,
   time: observable,
   openRequests: observable,
+  required: observable,
 });
 

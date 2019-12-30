@@ -14,9 +14,9 @@ export default {
 /**
  * Basic Story
  */
-export const Basic = () => {
+export const Basic = () =>
   //
-  return (
+  (
     <Segment className="full">
       <OverviewField.Wrapper>
         <OverviewField.List>
@@ -28,4 +28,4 @@ export const Basic = () => {
       </OverviewField.Wrapper>
     </Segment>
   );
-};
+
