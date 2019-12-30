@@ -41,8 +41,8 @@ class LectureTotalTimeView extends Component<Props> {
                 <Icon className="total-time" /><span>총 학습시간</span> {/* MyTraining service 구현후 적용*/}
               </Label>
               <div className="value2">
-                <strong>{hour}</strong><span>h</span>
-                <strong className="min">{minute}</strong><span>m</span>
+                <strong>{hour || '00'}</strong><span>h</span>
+                <strong className="min">{minute || '00'}</strong><span>m</span>
               </div>
             </Button>
           </div>
@@ -55,11 +55,11 @@ class LectureTotalTimeView extends Component<Props> {
             <div className="ui list">
               <dl className="item sk">
                 <dt>SUNI</dt>
-                <dd>{suniHour}h {suniMinute}m</dd>
+                <dd>{suniHour || '00'}h {suniMinute || '00'}m</dd>
               </dl>
               <dl className="item my">
                 <dt>My company</dt>
-                <dd>{compHour}h {compMinute}m</dd>
+                <dd>{compHour || '00'}h {compMinute || '00'}m</dd>
               </dl>
             </div>
           </div>
