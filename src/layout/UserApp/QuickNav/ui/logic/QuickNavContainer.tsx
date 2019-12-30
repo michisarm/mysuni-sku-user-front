@@ -118,7 +118,7 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
               <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />
               {/*{ this.userRoles.includes('Admin') && (
-                <BottomMenuItemView iconName="admin" text="SK University Admin Site" onClick={this.onClickAdminSite} />
+                <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
               )}*/}
             </>
           }

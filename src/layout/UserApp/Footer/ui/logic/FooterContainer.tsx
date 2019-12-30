@@ -15,9 +15,9 @@ class FooterContainer extends Component {
     return (
       <>
         <NavLink to="" className="item">Introduction</NavLink>
-        <NavLink to="/board/support/Notice" className="item">공지사항</NavLink>
+        <NavLink to="/board/support/Notice" className="item">Notice</NavLink>
         <NavLink to="/board/support/FAQ" className="item">FAQ</NavLink>
-        <NavLink to="/board/support/Q&A" className="item">문의하기</NavLink>
+        <NavLink to="/board/support/Q&A" className="item">Q&A</NavLink>
         <PrivacyPolicyModalView
           trigger={<a className="item">개인정보 처리방침</a>}
         />
