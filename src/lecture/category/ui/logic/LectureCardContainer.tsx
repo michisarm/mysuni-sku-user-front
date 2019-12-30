@@ -65,14 +65,16 @@ class LectureCardContainer extends Component<Props, State> {
   onClickBookmark() {
     const { inMyLecture, inMyLectureCdo, inMyLectureService } = this.props;
     if (!inMyLecture || !inMyLecture.id) {
-      inMyLectureService!.addInMyLecture(inMyLectureCdo);
+      inMyLectureService!.addInMyLecture(inMyLectureCdo)
+        .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }
   }
 
   onRemove() {
-    const { inMyLecture, inMyLectureService } = this.props;
+    const { inMyLecture, inMyLectureService, inMyLectureCdo } = this.props;
     if (inMyLecture && inMyLecture.id) {
-      inMyLectureService!.removeInMyLecture(inMyLecture.id);
+      inMyLectureService!.removeInMyLecture(inMyLecture.id)
+        .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }
   }
 

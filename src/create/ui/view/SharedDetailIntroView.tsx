@@ -3,7 +3,6 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { CubeIntroModel } from '../../../personalcube/cubeintro';
-//import BoardCubeService from '../../../personalcube/board/present/logic/BoardCubeService';
 import { BoardService } from '../../../personalcube';
 import { mobxHelper } from '../../../shared';
 
@@ -97,8 +96,8 @@ class SharedDetailIntroView extends React.Component<Props> {
                   <Table.HeaderCell>교육기관 / 출처</Table.HeaderCell>
                   <Table.Cell>
                     <div>
-                      {cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-                    && JSON.stringify(cubeIntro.operation.organizer)}
+                      {cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.name}
+                       : {cubeIntro.operation && cubeIntro.operation.etcCp}
                     </div>
                   </Table.Cell>
                 </Table.Row>

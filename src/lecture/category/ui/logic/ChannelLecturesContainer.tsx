@@ -80,9 +80,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   async findPagingChannelLectures() {
     //
-    const { match, pageService, lectureService, reviewService } = this.props;
+    const { match, pageService, lectureService, reviewService, inMyLectureService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
+    inMyLectureService!.findInMyLecturesAll();
     const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
@@ -131,7 +132,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
-      }));
+      })).then(this.findPagingChannelLectures);
     }
   }
 

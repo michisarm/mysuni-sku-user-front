@@ -2,6 +2,7 @@ import { Button, Icon, Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
+import EnumUtil, { CubeStateView } from '../../../shared/ui/logic/getEumValue';
 
 
 interface Props {
@@ -32,17 +33,20 @@ class CreateListView extends React.Component <Props> {
             </Table.Header>
             <Table.Body>
               {
-              result && result.length && result.map((cube, index) => (
-                <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
-                  <Table.Cell textAlign="center" className="no">{index + 1}</Table.Cell>
-                  <Table.Cell className="title">{cube.name && cube.name}</Table.Cell>
-                  <Table.Cell className="type">{cube.contents && cube.contents.type}</Table.Cell>
-                  <Table.Cell className="status">{cube.cubeState}</Table.Cell>
-                  <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
-                  <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
-                  <Table.Cell className="date">{cube.time && new Date(cube.time).toLocaleDateString()}</Table.Cell>
-                </Table.Row>
-              ))
+              result && result.length && result.map((cube, index) => {
+                const newCube = new PersonalCubeModel(cube);
+                return (
+                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
+                    <Table.Cell textAlign="center" className="no">{index + 1}</Table.Cell>
+                    <Table.Cell className="title">{cube.name && cube.name}</Table.Cell>
+                    <Table.Cell className="type">{cube.contents && cube.contents.type}</Table.Cell>
+                    <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
+                    <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
+                    <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
+                    <Table.Cell className="date">{cube.time && new Date(cube.time).toLocaleDateString()}</Table.Cell>
+                  </Table.Row>
+                );
+              })
             }
             </Table.Body>
           </Table>
