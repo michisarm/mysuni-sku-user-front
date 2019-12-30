@@ -35,8 +35,8 @@ interface State {
 }
 
 enum Type {
-  InProgress= 'InProgress',
-  InMyList= 'InMyList',
+  InProgress= 'In Progress',
+  InMyList= 'In My List',
   Enrolled= 'Enrolled',
   Required= 'Required',
   Completed= 'Completed',
@@ -141,10 +141,10 @@ class MyTrainingPage extends Component<Props, State> {
     let list: (MyTrainingModel | InMyLectureModel)[] = [];
 
     switch (type) {
-      case 'InMyList':
+      case Type.InMyList:
         list = inMyLectureService!.inMyLectures;
         break;
-      case 'Completed':
+      case Type.Completed:
         cardType = Lecture.GroupType.List;
         list = myTrainingService!.myTrainings;
         break;
@@ -195,6 +195,7 @@ class MyTrainingPage extends Component<Props, State> {
   render() {
     //
     const { skProfileService, myLearningSummaryService } = this.props;
+    const { type } = this.state;
     const { skProfile } = skProfileService as SkProfileService;
     const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
@@ -205,6 +206,7 @@ class MyTrainingPage extends Component<Props, State> {
         className="mylearning"
         breadcrumb={[
           { text: `Learning` },
+          { text: `${type}` },
         ]}
       >
         <ContentHeader>
@@ -239,11 +241,11 @@ class MyTrainingPage extends Component<Props, State> {
           menus={[
             {
               name: 'In Progress',
-              type: 'InProgress',
+              type: 'In Progress',
             },
             {
               name: 'In my list',
-              type: 'InMyList',
+              type: 'In My List',
             },
             {
               name: 'Enrolled',

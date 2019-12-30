@@ -22,7 +22,7 @@
     "@nara.platform/accent": "^0.0.2",
     "@nara.drama/depot": "^0.0.12",
     "@nara.drama/feedback": "^0.0.9",
-    "@sku/personalcube": "0.0.11",
+    "@sku/personalcube": "0.0.12",
     "@types/react-datepicker": "^2.9.5",
     "autobind-decorator": "2.4.0",
     "axios": "^0.19.0",
