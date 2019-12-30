@@ -115,8 +115,9 @@ class ExpertContainer extends React.Component<Props> {
     const { instructor } = this.props.instructorService || {} as InstructorService;
     const result = instructor.result;
 
-    const { pageService, lectureService, reviewService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { lectureService, reviewService } = this.props;
+    // const { pageService, lectureService, reviewService } = this.props;
+    // const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
 

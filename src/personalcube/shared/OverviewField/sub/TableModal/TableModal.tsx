@@ -62,8 +62,8 @@ class TableModal extends Component<Props, States> {
 
               <Table.Body>
                 {
-                  classrooms.sort(this.compare).map(cineroom => (
-                    <Table.Row>
+                  classrooms.sort(this.compare).map((cineroom, index) => (
+                    <Table.Row key={`overview-table-row-${index}`}>
                       <Table.Cell>{cineroom.round}</Table.Cell>
                       <Table.Cell>{cineroom.instructor.name}</Table.Cell>
                       <Table.Cell>
