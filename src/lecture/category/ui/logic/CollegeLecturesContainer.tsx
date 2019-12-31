@@ -121,18 +121,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
     //
     const { newPageService } = this.props;
     const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
-    console.log('initial page', JSON.stringify(page));
 
     this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
-
-    // const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.nextOffset);
-    // const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
-    // if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    //
-    // this.setState((prevState) => ({
-    //   lectures: [ ...prevState.lectures, ...lectureOffsetList.results],
-    // }));
-    // pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
   async addFindPagingCollegeLectures() {
@@ -147,7 +137,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     //
     const { match, newPageService, lectureService, reviewService } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
-    // const page = newPageService!.pageMap.get(this.PAGE_KEY);
+
 
     const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, limit, offset);
 
@@ -158,7 +148,6 @@ class CollegeLecturesContainer extends Component<Props, State> {
       lectures: [ ...prevState.lectures, ...lectureOffsetList.results],
     }));
     newPageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, pageNo);
-    // newPageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
   }
 
   isContentMore() {
