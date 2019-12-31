@@ -23,8 +23,6 @@ interface TitleProps {
 export const TitleView: React.FC<TitleProps> = ({ title, subtitle, description }) => (
   <>
     <h2 className="college-name">{title}</h2>
-    <p>
-      <p dangerouslySetInnerHTML={{ __html: subtitle || '' }} />
-    </p>
+    <p dangerouslySetInnerHTML={{ __html: subtitle || '' }} />
   </>
 );
