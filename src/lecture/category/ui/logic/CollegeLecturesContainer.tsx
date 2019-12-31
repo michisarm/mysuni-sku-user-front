@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
+import { mobxHelper, NoSuchContentPanel, NewPageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
@@ -21,8 +21,8 @@ import ChannelLecturesContainer from '../../../recommend/ui/logic/ChannelLecture
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
-interface Props extends RouteComponentProps<{ collegeId: string }> {
-  pageService?: PageService,
+interface Props extends RouteComponentProps<RouteParams> {
+  newPageService?: NewPageService,
   collegeService?: CollegeService,
   lectureService?: LectureService,
   lectureCountService?: LectureCountService,
@@ -35,8 +35,13 @@ interface State {
   sorting: string,
 }
 
+interface RouteParams {
+  collegeId: string
+  pageNo: string,
+}
+
 @inject(mobxHelper.injectFrom(
-  'shared.pageService',
+  'shared.newPageService',
   'collegeService',
   'lecture.lectureService',
   'lecture.lectureCountService',
@@ -65,55 +70,39 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    this.findPagingCollegeLectures();
+    this.initialFindPagingCollegeLectures();
     this.findChannels();
     this.findInMyLectures();
   }
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.collegeId !== this.props.match.params.collegeId) {
-      this.reInit();
-      this.findPagingCollegeLectures();
+    const { params: prevParams } = prevProps.match;
+    const { params } = this.props.match;
+
+    if (prevParams.collegeId !== params.collegeId) {
+      this.clearAndInit();
+      this.initialFindPagingCollegeLectures();
       this.findInMyLectures();
+    }
+    if (prevParams.pageNo !== params.pageNo) {
+      this.addFindPagingCollegeLectures();
     }
   }
 
   init() {
     //
-    const { pageService, lectureService } = this.props;
+    const { match, newPageService, lectureService } = this.props;
+    const pageNo = parseInt(match.params.pageNo, 10);
 
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
     lectureService!.clear();
   }
 
-  reInit() {
+  clearAndInit() {
     //
-    const { pageService, lectureService } = this.props;
-
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    this.init();
     this.setState({ lectures: []});
-  }
-
-  findInMyLectures() {
-    const { inMyLectureService } = this.props;
-    inMyLectureService!.findInMyLecturesAll();
-  }
-
-  async findPagingCollegeLectures() {
-    //
-    const { match, pageService, lectureService, reviewService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
-
-    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.nextOffset);
-    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
-    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-
-    this.setState((prevState) => ({
-      lectures: [ ...prevState.lectures, ...lectureOffsetList.results],
-    }));
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
   findChannels() {
@@ -123,12 +112,62 @@ class CollegeLecturesContainer extends Component<Props, State> {
     lectureCountService!.findLectureCountByCollegeId(match.params.collegeId, collegeService!.channels);
   }
 
+  findInMyLectures() {
+    const { inMyLectureService } = this.props;
+    inMyLectureService!.findInMyLecturesAll();
+  }
+
+  async initialFindPagingCollegeLectures() {
+    //
+    const { newPageService } = this.props;
+    const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
+    console.log('initial page', JSON.stringify(page));
+
+    this.findPagingCollegeLectures(page.limit * page.pageNo, 0);
+
+    // const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, page!.limit, page!.nextOffset);
+    // const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
+    // if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    //
+    // this.setState((prevState) => ({
+    //   lectures: [ ...prevState.lectures, ...lectureOffsetList.results],
+    // }));
+    // pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+  }
+
+  async addFindPagingCollegeLectures() {
+    //
+    const { newPageService } = this.props;
+    const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
+
+    this.findPagingCollegeLectures(page.limit, page.nextOffset);
+  }
+
+  async findPagingCollegeLectures(limit: number, offset: number) {
+    //
+    const { match, newPageService, lectureService, reviewService } = this.props;
+    const pageNo = parseInt(match.params.pageNo, 10);
+    // const page = newPageService!.pageMap.get(this.PAGE_KEY);
+
+    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, limit, offset);
+
+    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
+    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+
+    this.setState((prevState) => ({
+      lectures: [ ...prevState.lectures, ...lectureOffsetList.results],
+    }));
+    newPageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, pageNo);
+    // newPageService!.setTotalCount(this.PAGE_KEY, lectureOffsetList.totalCount);
+  }
+
   isContentMore() {
     //
-    const { pageService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { match, newPageService } = this.props;
+    const pageNo = parseInt(match.params.pageNo, 10);
+    const page = newPageService!.pageMap.get(this.PAGE_KEY)!;
 
-    return page!.pageNo < page!.totalPages;
+    return pageNo < page.totalPages;
   }
 
   onSelectChannel(e: any, { index, channel }: any) {
@@ -149,9 +188,10 @@ class CollegeLecturesContainer extends Component<Props, State> {
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
+
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(this.findPagingCollegeLectures)
+        .then(this.addFindPagingCollegeLectures)
         .then(this.findInMyLectures);
     }
     else {
@@ -174,7 +214,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
       }))
-        .then(this.findPagingCollegeLectures)
+        .then(this.addFindPagingCollegeLectures)
         .then(this.findInMyLectures);
     }
   }
@@ -194,7 +234,10 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    this.findPagingCollegeLectures();
+    const { match, history } = this.props;
+    const pageNo = parseInt(match.params.pageNo, 10);
+    // this.findPagingCollegeLectures();
+    history.replace(routePaths.collegeLecturesPage(pageNo + 1));
   }
 
   onViewChannelAll(e: string, data: any) {
@@ -207,9 +250,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   renderCollegeLectures() {
     //
-    const { pageService, collegeService, reviewService, inMyLectureService } = this.props;
+    const { newPageService, collegeService, reviewService, inMyLectureService } = this.props;
     const { lectures, sorting } = this.state;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const page = newPageService!.pageMap.get(this.PAGE_KEY);
     const { college } = collegeService!;
     const { ratingMap } = reviewService!;
     const { inMyLectureMap } =  inMyLectureService!;
