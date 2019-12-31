@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import * as shared from 'shared';
 
 import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
@@ -31,7 +31,9 @@ class Routes extends React.PureComponent {
             <Route exact path="/personalcube/shared-detail/:personalCubeId/:cubeType/:cubeState" component={withSplitting(() => import('./create').then(({ SharedDetailContainer }) => SharedDetailContainer))} />
 
             {/* lecture  */}
-            <Route exact path="/lecture/college/:collegeId/channels" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />
+            <Redirect exact from="/lecture/college/:collegeId/channels" to="/lecture/college/:collegeId/channels/pages/1" />
+            <Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />
+
             <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
             <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={withSplitting(() => import('./lecture').then(({ CoursePage }) => CoursePage))} />
             <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={withSplitting(() => import('./lecture').then(({ LectureCardPage }) => LectureCardPage))} />

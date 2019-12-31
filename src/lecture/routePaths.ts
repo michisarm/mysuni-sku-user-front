@@ -20,6 +20,9 @@ export default {
   collegeLectures: (collegeId: string) =>
     `/lecture/college/${collegeId}/channels`,
 
+  collegeLecturesPage: (pageNo: number) =>
+    `./${pageNo}`,
+
   channelLectures: (collegeId: string, channelId: string) =>
     `/lecture/college/${collegeId}/channel/${channelId}`,
 
