@@ -110,7 +110,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
         const hourValidation = reg.test(hour);
         const minuteValidation = reg.test(minute);
         if (hourValidation === false) {
-          this.setState({ hour: ''});
+          this.setState({ hour: '' });
         }
         if (minuteValidation === false) {
           this.setState({ minute: '' });
