@@ -50,6 +50,15 @@ class LectureRdoModel {
       offset,
     });
   }
+
+  static newShared(limit: number, offset: number) {
+    return new LectureRdoModel({
+      college: '',
+      channel: '',
+      limit,
+      offset,
+    });
+  }
 }
 
 decorate(LectureRdoModel, {

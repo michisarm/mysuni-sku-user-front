@@ -69,8 +69,14 @@ class LectureApi {
   findAllLecturesByInstructorId(instructorRdo: InstructorRdoModel) {
     //
     const params = instructorRdo;
-    console.log(params);
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/byInstructorId', { params })
+      .then(response => response && response.data);
+  }
+
+  findAllSharedLectures(lectureRdo: LectureRdoModel) {
+    //
+    const params = lectureRdo;
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/shared', { params })
       .then(response => response && response.data);
   }
 }

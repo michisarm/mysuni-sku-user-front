@@ -38,7 +38,7 @@ class CreateListView extends React.Component <Props> {
                 return (
                   <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
                     <Table.Cell textAlign="center" className="no">{index + 1}</Table.Cell>
-                    <Table.Cell className="title">{cube.name && cube.name}</Table.Cell>
+                    <Table.Cell className="title"><span className="ellipsis">{cube.name && cube.name}</span></Table.Cell>
                     <Table.Cell className="type">{cube.contents && cube.contents.type}</Table.Cell>
                     <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
                     <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>

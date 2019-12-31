@@ -1,5 +1,4 @@
-
-import { observable, action, computed, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import autobind from 'autobind-decorator';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
@@ -122,8 +121,22 @@ class LectureService {
   @action
   async findAllLecturesByInstructorId(instructorId: string, limit: number, offset: number) {
     //
-    instructorId = 'adfs';
     const response = await this.lectureApi.findAllLecturesByInstructorId(InstructorRdoModel.new(instructorId, limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    return runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      return lectureOffsetElementList;
+    });
+
+  }
+
+  @action
+  async findPagingSharedLectures(limit: number, offset: number) {
+    //
+    const response = await this.lectureApi.findAllSharedLectures(LectureRdoModel.newShared(limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
