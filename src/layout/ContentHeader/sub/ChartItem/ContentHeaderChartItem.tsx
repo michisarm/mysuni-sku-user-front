@@ -48,11 +48,11 @@ class ContentHeaderChartItem extends Component<Props> {
         <div className="ui list">
           <dl className="item sk">
             <dt>SK University</dt>
-            <dd>{universityHourAndMinute.hour}h {universityHourAndMinute.minute}m</dd>
+            <dd>{universityHourAndMinute.hour || '00'}h {universityHourAndMinute.minute || '00'}m</dd>
           </dl>
           <dl className="item my">
             <dt>My company</dt>
-            <dd>{myCompanyHourAndMinute.hour}h {myCompanyHourAndMinute.minute}m</dd>
+            <dd>{myCompanyHourAndMinute.hour || '00'}h {myCompanyHourAndMinute.minute || '00'}m</dd>
           </dl>
         </div>
       </div>

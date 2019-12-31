@@ -1,17 +1,13 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import classNames from 'classnames';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import classNames from 'classnames';
 import { Context } from 'layout/UserApp';
 
 
-interface Breadcrumb {
-  text: string,
-  path?: string,
-}
-
-interface Props {
+interface Props extends RouteComponentProps {
 
   children: React.ReactNode,
 
@@ -25,6 +21,11 @@ interface Props {
   context?: any,
 }
 
+interface Breadcrumb {
+  text: string,
+  path?: string,
+}
+
 
 @reactAutobind
 class ContentLayoutContainer extends Component<Props> {
@@ -34,6 +35,7 @@ class ContentLayoutContainer extends Component<Props> {
 
   componentDidMount() {
     //
+    this.initScrollTop();
     this.setBreadcrumb(this.props.breadcrumb);
   }
 
@@ -42,6 +44,11 @@ class ContentLayoutContainer extends Component<Props> {
     if (prevProps.breadcrumb !== this.props.breadcrumb) {
       this.setBreadcrumb(this.props.breadcrumb);
     }
+  }
+
+  initScrollTop() {
+    //
+    window.scrollTo(0, 0);
   }
 
   setBreadcrumb(breadcrumb?: Breadcrumb[]) {
@@ -64,4 +71,4 @@ class ContentLayoutContainer extends Component<Props> {
   }
 }
 
-export default ContentLayoutContainer;
+export default withRouter(ContentLayoutContainer);

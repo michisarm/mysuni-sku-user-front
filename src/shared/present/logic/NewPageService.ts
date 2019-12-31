@@ -2,16 +2,16 @@
 import { observable, action } from 'mobx';
 import autobind from 'autobind-decorator';
 
-import { PageModel } from 'shared';
+import { NewPageModel } from 'shared';
 
 
 @autobind
-class PageService {
+class NewPageService {
 
-  static instance: PageService;
+  static instance: NewPageService;
 
   @observable
-  pageMap: Map<string, PageModel> = new Map();
+  pageMap: Map<string, NewPageModel> = new Map();
 
 
   @action
@@ -25,16 +25,15 @@ class PageService {
   }
 
   @action
-  initPageMap(key: string, offset: number, limit: number) {
+  initPageMap(key: string, limit: number,  pageNo: number) {
     //
-    console.log(key, offset, limit);
-    this.pageMap.set(key, new PageModel(offset, limit));
+    this.pageMap.set(key, new NewPageModel(limit, pageNo));
   }
 
   @action
   setTotalCount(key: string, totalCount: number) {
     //
-    const pageSet = { ...this.pageMap.get(key) } as PageModel;
+    const pageSet = { ...this.pageMap.get(key) } as NewPageModel;
 
     if (!pageSet) {
       return;
@@ -48,7 +47,7 @@ class PageService {
   @action
   setPageNo(key: string, pageNo: number) {
     //
-    const pageSet = { ...this.pageMap.get(key) } as PageModel;
+    const pageSet = { ...this.pageMap.get(key) } as NewPageModel;
 
     if (!pageSet) {
       return;
@@ -62,14 +61,13 @@ class PageService {
   @action
   setTotalCountAndPageNo(key: string, totalCount: number, pageNo: number) {
     //
-    const pageSet = { ...this.pageMap.get(key) } as PageModel;
+    const pageSet = { ...this.pageMap.get(key) } as NewPageModel;
 
     if (!pageSet) {
       return;
     }
     pageSet.totalCount = totalCount;
     pageSet.totalPages = Math.ceil(totalCount / pageSet.limit);
-    // pageSet.offset = (pageNo - 1) * pageSet.limit;
     pageSet.nextOffset = pageNo * pageSet.limit;
     pageSet.pageNo = pageNo;
 
@@ -77,6 +75,6 @@ class PageService {
   }
 }
 
-PageService.instance = new PageService();
+NewPageService.instance = new NewPageService();
 
-export default PageService;
+export default NewPageService;

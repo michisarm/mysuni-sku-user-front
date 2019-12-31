@@ -119,7 +119,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     return (
 
       <Modal
-        size="large"
         open={open}
         onOpen={this.onOpenModal}
         onClose={this.onCloseModal}

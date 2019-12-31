@@ -25,8 +25,8 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
 }
 
 interface States{
-  hour: number
-  minute: number
+  hour: string
+  minute: string
 
   alertWinOpen: boolean
   alertIcon: string
@@ -46,7 +46,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { hour: 0, minute: 0, alertWinOpen: false,
+    this.state = { hour: '', minute: '', alertWinOpen: false,
       alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
       confirmWinOpen: false };
   }
@@ -97,14 +97,27 @@ class CreateIntroContainer extends React.Component<Props, States> {
     if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
   }
 
-  setHourAndMinute(name: string, value: number) {
+  setHourAndMinute(name: string, value: string) {
     //
     Promise.resolve()
       .then(() => {
         if (name === 'hour') this.setState({ hour: value });
         if (name === 'minute') this.setState({ minute: value });
       })
-      .then(() => this.setLearningTime());
+      .then(() => {
+        const { hour, minute } = this.state;
+        const reg = /^[0-9]+$/;
+        const hourValidation = reg.test(hour);
+        const minuteValidation = reg.test(minute);
+        if (hourValidation === false) {
+          this.setState({ hour: '' });
+        }
+        if (minuteValidation === false) {
+          this.setState({ minute: '' });
+        }
+
+        this.setLearningTime();
+      });
   }
 
   setLearningTime() {
@@ -133,10 +146,10 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   routeToBasicList(personalCubeId?: string, cubeType?: string) {
     //
-    if (personalCubeId) {
-      this.props.history.push(`/personalcube/create-detail/${personalCubeId}/${cubeType}`);
-    } else {
+    if (personalCubeId === 'undefined') {
       this.props.history.push(`/personalcube/create-detail`);
+    } else {
+      this.props.history.push(`/personalcube/create-detail/${personalCubeId}/${cubeType}`);
     }
   }
 

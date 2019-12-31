@@ -3,18 +3,21 @@
 /** Service */
 import ModalService from './present/logic/ModalService';
 import PageService from './present/logic/PageService';
+import NewPageService from './present/logic/NewPageService';
 
 
 export const sharedStores = {
   shared: {
     modalService: ModalService.instance,
     pageService: PageService.instance,
+    newPageService: NewPageService.instance,
   },
 };
 
 export {
   ModalService,
   PageService,
+  NewPageService,
 };
 
 
@@ -42,6 +45,7 @@ export { LearningState } from './model/LearningState';
 export { DatePeriod } from './model/DatePeriod';
 export { TimePeriod } from './model/TimePeriod';
 export { default as PageModel } from './model/PageModel';
+export { default as NewPageModel } from './model/NewPageModel';
 
 
 

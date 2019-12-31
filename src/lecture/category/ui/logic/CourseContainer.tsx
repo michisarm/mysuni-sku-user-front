@@ -10,11 +10,11 @@ import { CoursePlanService } from 'course';
 import {
   CourseLectureService,
   LectureService,
+  ProgramLectureService,
   LectureServiceType,
   LectureViewModel,
-  ProgramLectureService,
+  Lecture,
 } from '../../../shared';
-import Lecture from '../../../shared/Lecture';
 import routePaths from '../../../routePaths';
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
@@ -20,6 +21,8 @@ interface Props {
 interface States {
   firstCategoryModalOpen: boolean
   secondCategoryModalOpen: boolean
+  focus: boolean
+  write: string
 }
 
 @inject('collegeService')
@@ -32,6 +35,8 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
     this.state = {
       firstCategoryModalOpen: false,
       secondCategoryModalOpen: false,
+      focus: false,
+      write: '',
     };
   }
 
@@ -94,14 +99,24 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
         </div>
         <Form.Field>
           <label className="necessary">강좌명</label>
-          <div className="ui right-top-count input">{/* .error class 추가시 error ui 활성 */}
+          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
             <span className="count"><span className="now">0</span>/<span className="max">100</span></span>
             <input type="text"
               placeholder="제목을 입력해주세요."
               value={personalCube && personalCube.name || ''}
-              onChange={(e: any) => onChangePersonalCubeProps('name', e.target.value)}
+              onClick={() => this.setState({ focus: true })}
+              onBlur={() => this.setState({ focus: false })}
+              onChange={(e: any) => {
+                this.setState({ write: e.target.value });
+                onChangePersonalCubeProps('name', e.target.value);
+              } }
             />
-            <Icon className="clear link" />
+            <Icon className="clear link"
+              onClick={(e:any) => {
+                this.setState({ write: '' });
+                onChangePersonalCubeProps('name', e.target.value);
+              }}
+            />
             <span className="validation">You can enter up to 100 characters.</span>
           </div>
         </Form.Field>
@@ -110,8 +125,6 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
           <div>
             <div className="table-css type5">
               <div className="row">
-                {/*<div className="cell v-middle">
-                  <span className="text1">대표 카테고리</span>*/}
                 <FirstCategoryModal
                   onChangePersonalCubeProps={onChangePersonalCubeProps}
                   personalCube={personalCube}
@@ -120,16 +133,10 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
                   handleChangeOpen={this.onChangeFirstCategoryModalOpen}
                   selectedMainCollege={selectedMainCollege}
                 />
-                {/*</div>
-                <div className="cell v-middle">
-                  <span className="text1">대표  카테고리를 선택해주세요.</span>
-                </div>*/}
               </div>
             </div>
             <div className="table-css type5">
               <div className="row">
-                {/* <div className="cell v-middle">
-                  <span className="text1">서브 카테고리</span>*/}
                 <SecondCategoryModal
                   personalCube={personalCube}
                   open={secondCategoryModalOpen}
@@ -138,10 +145,6 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
                   colleges={colleges}
                   selectedSubCollege={selectedSubCollege}
                 />
-                {/*</div>
-                <div className="cell v-middle">
-                  <span className="text1">서브 카테고리를 선택해주세요.</span>
-                </div>*/}
               </div>
             </div>
           </div>

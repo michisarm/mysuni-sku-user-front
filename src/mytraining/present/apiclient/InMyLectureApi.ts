@@ -26,10 +26,8 @@ class InMyLectureApi {
     //
     const params = inMyLectureRdo;
 
-    return Promise.resolve(new InMyLectureModel());
-
-    // return axiosApi.get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
-    //   .then(response => response && response.data);
+    return axiosApi.get<InMyLectureModel>(this.baseUrl + '/myLecture', { params })
+      .then(response => response && response.data);
   }
 
   findAllInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
@@ -37,6 +35,11 @@ class InMyLectureApi {
     const params = inMyLectureRdo;
 
     return axiosApi.get<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures', { params })
+      .then(response => response && response.data);
+  }
+
+  findInMyLecturesAll() {
+    return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
       .then(response => response && response.data);
   }
 }

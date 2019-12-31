@@ -75,7 +75,6 @@ class MyCommunityPage extends Component<Props, State> {
   onSelectMenu(type: string) {
     //
     const { pageService, lectureService, myTrainingService } = this.props;
-
     pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
     lectureService!.clear();
     myTrainingService!.clear();
@@ -87,10 +86,12 @@ class MyCommunityPage extends Component<Props, State> {
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`);
     let offsetList: any = null;
+
     // offsetList = await lectureService!.findPagingCollegeLectures('CLG00001', page!.limit, page!.nextOffset);
-    offsetList = await lectureService!.findPagingCommunityLectures(page!.limit, page!.nextOffset);
-    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`, offsetList.totalCount, page!.pageNo + 1);
-    offsetList = await myTrainingService!.findAllMyCommunityTrainings(createdPage!.limit, createdPage!.nextOffset);
+    offsetList = await lectureService!.findPagingCommunityLectures(createdPage!.limit, createdPage!.nextOffset);
+    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`, offsetList.totalCount, createdPage!.pageNo + 1);
+
+    offsetList = await myTrainingService!.findAllMyCommunityTrainings(page!.limit, page!.nextOffset);
     pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`, offsetList.totalCount, page!.pageNo + 1);
   }
 

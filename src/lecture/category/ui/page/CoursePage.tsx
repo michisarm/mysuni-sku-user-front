@@ -146,13 +146,12 @@ class CoursePage extends Component<Props, State> {
       coursePlanService, lectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
-    const { getSubLectureViews } = lectureService!;
-    // const { cubeIntro } = cubeIntroService!;
+    const { lectureViews, getSubLectureViews } = lectureService!;
 
     let learningTime = 0;
-    const lectures = getSubLectureViews(coursePlan.coursePlanId);
-    lectures.forEach((lecture: LectureViewModel) => {
-      getSubLectureViews(lecture.id).forEach((subLecture :LectureViewModel) => {
+
+    lectureViews.map((lecture: LectureViewModel) => {
+      getSubLectureViews(lecture.id).map((subLecture :LectureViewModel) => {
         learningTime += subLecture.learningTime;
       });
       learningTime += lecture.learningTime;
