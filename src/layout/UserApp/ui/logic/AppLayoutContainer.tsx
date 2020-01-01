@@ -1,7 +1,11 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, WorkSpace, getCookie } from '@nara.platform/accent';
-import ResponsiveContainer from './ResponsiveContainerUser';
+
+import Header from '../../Header';
+import Footer from '../../Footer';
+import QuickNav from '../../QuickNav';
+import ResponsiveWrapper from './ResponsiveWrapper';
 
 
 interface Props {
@@ -25,9 +29,12 @@ class AppLayoutContainer extends Component<Props> {
     const { children } = this.props;
 
     return (
-      <ResponsiveContainer>
+      <ResponsiveWrapper>
+        <Header />
         {children}
-      </ResponsiveContainer>
+        <QuickNav />
+        <Footer />
+      </ResponsiveWrapper>
     );
   }
 }
