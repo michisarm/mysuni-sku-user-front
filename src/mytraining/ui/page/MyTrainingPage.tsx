@@ -19,6 +19,7 @@ import LineHeaderView from '../view/LineHeaderView';
 
 import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
+import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 
 
 interface Props extends RouteComponentProps {
@@ -97,6 +98,7 @@ class MyTrainingPage extends Component<Props, State> {
     let offsetList: any = null;
     let feedbackIds: string[] = [];
 
+    inMyLectureService!.findInMyLecturesAll();
     if (type === Type.InMyList) {
       offsetList = await inMyLectureService!.findAllInMyLectures(page!.limit, page!.nextOffset);
       feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
@@ -112,8 +114,34 @@ class MyTrainingPage extends Component<Props, State> {
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
   }
 
-  onActionLecture() {
+  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+    if (training instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(training.id)
+        .then(this.findPagingList);
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: training.serviceId,
+        serviceType: training.serviceType,
+        category: training.category,
+        name: training.name,
+        description: training.description,
+        cubeType: training.cubeType,
+        learningTime: training.learningTime,
+        stampCount: training.stampCount,
+        coursePlanId: training.coursePlanId,
 
+        requiredSubsidiaries: training.requiredSubsidiaries,
+        cubeId: training.cubeId,
+        courseSetJson: training.courseSetJson,
+        courseLectureUsids: training.courseLectureUsids,
+        lectureCardUsids: training.lectureCardUsids,
+
+        reviewId: training.reviewId,
+      })).then(this.findPagingList);
+    }
   }
 
   onViewDetail(e: any, data: any) {
@@ -142,6 +170,7 @@ class MyTrainingPage extends Component<Props, State> {
     const { inMyLectureService, myTrainingService, reviewService, pageService } = this.props;
     const { ratingMap } =  reviewService as ReviewService;
     const { type } = this.state;
+    const { inMyLectureMap } =  inMyLectureService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
     let list: (MyTrainingModel | InMyLectureModel)[] = [];
@@ -170,6 +199,7 @@ class MyTrainingPage extends Component<Props, State> {
                 if (value instanceof InMyLectureModel) {
                   rating = ratingMap.get(value.reviewId);
                 }
+                const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;
                 return (
                   <Lecture
                     key={`training-${index}`}
@@ -177,7 +207,7 @@ class MyTrainingPage extends Component<Props, State> {
                     rating={rating || undefined}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={Lecture.ActionType.Add}
-                    onAction={this.onActionLecture}
+                    onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}
                   />
                 );

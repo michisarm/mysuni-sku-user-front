@@ -3,7 +3,6 @@ import { axiosApi } from '@nara.platform/accent';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
-import { NameValueList } from '../../../../shared';
 
 
 class StudentApi {

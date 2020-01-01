@@ -69,11 +69,10 @@ class StudentService {
   async findIsJsonStudent(lectureCardId: string) {
     //
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
-    // console.log(studentJoinRdos);
-    // return runInAction(() => {
-    //   this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
-    //   return studentJoinRdos;
-    // });
+    return runInAction(() => {
+      this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
+      return studentJoinRdos;
+    });
   }
 
   @action
