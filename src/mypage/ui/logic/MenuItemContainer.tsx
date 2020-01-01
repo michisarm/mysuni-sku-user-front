@@ -52,31 +52,30 @@ class MenuItemContainer extends Component<Props, States> {
 
   componentDidMount(): void {
     //
-    const { pageService, myTrainingService } = this.props;
     const { params } = this.props.match;
     this.changeItem(params.tab);
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    myTrainingService!.clear();
-    this.findPagingList();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService, myTrainingService } = this.props;
+
     const currentTab = this.props.match.params.tab;
 
     if (prevProps.match.params.tab !== this.props.match.params.tab) {
       this.changeItem(currentTab);
-      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      myTrainingService!.clear();
-      this.findPagingList();
     }
   }
 
   changeItem(tab: string) {
+    const { pageService, myTrainingService } = this.props;
     this.setState({
       activeItem: tab,
+    }, () => {
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      myTrainingService!.clear();
+      this.findPagingList();
     });
+
   }
 
   onChangeItem(event:any, item:any) {
@@ -95,7 +94,7 @@ class MenuItemContainer extends Component<Props, States> {
       offsetList = await myTrainingService!.findAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
     }
     else {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAllMyTrainingsWithStamp(page!.limit, page!.nextOffset);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);

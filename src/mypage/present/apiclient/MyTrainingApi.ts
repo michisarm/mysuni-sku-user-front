@@ -20,9 +20,11 @@ class MyTrainingApi {
       .then(response => response && response.data);
   }
 
-  findAllMyTrainingsWithStamp() {
+  findAllMyTrainingsWithStamp(myTrainingRdo: MyTrainingRdoModel) {
     //
-    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/stamps')
+    const params = myTrainingRdo;
+
+    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/stamps', { params })
       .then(response => response && response.data);
   }
 }
