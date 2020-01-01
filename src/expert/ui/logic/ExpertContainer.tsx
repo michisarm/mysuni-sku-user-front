@@ -16,7 +16,7 @@ import routePaths from '../../../lecture/routePaths';
 import { CollegeService } from '../../../college';
 import { PersonalCubeService } from '../../../personalcube/personalcube';
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps<{ instructorId : string }> {
   instructorService :InstructorService
   pageService?: PageService,
   collegeService?: CollegeService,
@@ -27,19 +27,23 @@ interface Props extends RouteComponentProps {
 }
 
 
-@inject(mobxHelper.injectFrom('shared.pageService', 'lecture.lectureService', 'lecture.lectureCardService', 'shared.reviewService', 'instructorService'))
+@inject(mobxHelper.injectFrom(
+  'shared.pageService',
+  'lecture.lectureService',
+  'lecture.lectureCardService',
+  'shared.reviewService',
+  'instructorService'))
 @reactAutobind
 @observer
 @observer
 @reactAutobind
 class ExpertContainer extends React.Component<Props> {
-  state = { activeItem: 'Introduce', InstructorId: 'IS-0001',  InstructorName: 'adfs' };
   //
+  state = { activeItem: 'Introduce' };
+
   PAGE_KEY = 'lecture.instructor';
 
   PAGE_SIZE = 8;
-
-
 
   constructor(props: Props) {
     //
@@ -50,8 +54,9 @@ class ExpertContainer extends React.Component<Props> {
   componentDidMount() {
     //
     const { instructorService } = this.props;
-    const { InstructorId } = this.state;
-    if (instructorService) instructorService.findInstructor(InstructorId);
+    const { instructorId } = this.props.match.params;
+
+    if (instructorService) instructorService.findInstructor(instructorId)
     this.findPagingInstructorLectures();
   }
 
@@ -71,9 +76,9 @@ class ExpertContainer extends React.Component<Props> {
     //
     const { pageService, lectureService, reviewService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { InstructorName } = this.state;
+    const { instructorId } = this.props.match.params;
 
-    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(InstructorName, page!.limit, page!.nextOffset);
+    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(instructorId, page!.limit, page!.nextOffset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 

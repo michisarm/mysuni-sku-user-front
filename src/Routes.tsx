@@ -74,7 +74,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/mypage/:tab" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
 
             {/*  expert */}
-            <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
+            <Route exact path="/expert/instructor/:instructorId" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
 
             <Route component={NotFoundPage} />
           </Switch>

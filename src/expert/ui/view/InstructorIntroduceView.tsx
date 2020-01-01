@@ -14,10 +14,10 @@ class InstructorIntroduceView extends React.Component<Props> {
       <Segment className="full">
         <div className="expert-cont">
           <div className="text-info">
-            <div className="text02">{result.career}</div>
+            <div className="text02">{result && result.career}</div>
             <div className="dash" />
             <div className="text01">강사소개</div>
-            <div className="text02">{result.memberSummary.introduction}</div>
+            <div className="text02">{result && result.memberSummary && result.memberSummary.introduction}</div>
           </div>
         </div>
       </Segment>
