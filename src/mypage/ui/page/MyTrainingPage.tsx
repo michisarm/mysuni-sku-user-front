@@ -277,7 +277,7 @@ class MyTrainingPage extends Component<Props, State> {
               minute={myLearningSummary.totalLearningTime}
             />
             {
-              myLearningSummary.suniLearningTime > 0 && myLearningSummary.myCompanyLearningTime > 0 && (
+              (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0) && (
                 <ContentHeader.ChartItem
                   universityTime={myLearningSummary.suniLearningTime}
                   myCompanyTime={myLearningSummary.myCompanyLearningTime}
