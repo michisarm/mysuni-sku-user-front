@@ -1,12 +1,7 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import * as shared from 'shared';
-
-import MyLearningDetailDesign from './design/Learning/MyLearningDetailInProgress';
-
-const UserApp = shared.UserApp;
-const withSplitting = shared.withSplitting;
+import { UserApp, withSplitting } from './shared';
 
 
 class Routes extends React.PureComponent {
@@ -20,11 +15,9 @@ class Routes extends React.PureComponent {
             {/* main */}
             <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
 
-            {/* course  */}
-
-            {/*create*/}
-
-            <Route exact path="/personalcube/create" component={withSplitting(() => import('./create').then(({ CreateContainer }) => CreateContainer))} />
+            {/* create */}
+            <Redirect exact from="/personalcube/create" to="/personalcube/create/Create" />
+            <Route exact path="/personalcube/create/:tab" component={withSplitting(() => import('./create').then(({ CreateContainer }) => CreateContainer))} />
             <Route exact path="/personalcube/create-detail" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
             <Route exact path="/personalcube/create-detail/:personalCubeId/:cubeType" component={withSplitting(() => import('./create').then(({ CreateDetailContainer }) => CreateDetailContainer))} />
             <Route exact path="/personalcube/create-intro/:personalCubeId/:cubeType" component={withSplitting(() => import('./create').then(({ CreateIntroContainer }) => CreateIntroContainer))} />
@@ -53,7 +46,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/profile/interest/learningType" component={withSplitting(() => import('./profile').then(({ FavoriteLearningTypeContainer }) => FavoriteLearningTypeContainer))} />
             <Route exact path="/profile/interest/loading" component={withSplitting(() => import('./profile').then(({ LoadingPage }) => LoadingPage))} />
 
-            {/*board*/}
+            {/* board */}
             /* eslint-disable-next-line max-len */
             {/*<Route exact path="/board/support" component={withSplitting(() => import('./board').then(({ BookMainContainer }) => BookMainContainer))} />*/}
             <Route exact path="/board/support/:boardId" component={withSplitting(() => import('./board').then(({ BookMainContainer }) => BookMainContainer))} />
@@ -64,21 +57,23 @@ class Routes extends React.PureComponent {
             <Route exact path="/board/support/answered-detail/:postId" component={withSplitting(() => import('./board').then(({ AnsweredDetailContainer }) => AnsweredDetailContainer))} />
 
 
-            {/*recommend*/}
+            {/* recommend */}
             <Route exact path="/recommend" component={withSplitting(() => import('./lecture').then(({ ChannelsLecturesPage }) => ChannelsLecturesPage))} />
             <Route exact path="/channel/:channelId/recommend" component={withSplitting(() => import('./lecture').then(({ RecommendChannelLecturesPage }) => RecommendChannelLecturesPage))} />
 
-            {/*mypage*/}
-            <Route exact path="/my-training" component={withSplitting(() => import('./mytraining').then(({ MyTrainingPage }) => MyTrainingPage))} />
-            <Route exact path="/mypage" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
-            <Route exact path="/community" component={withSplitting(() => import('./mytraining').then(({ MyCommunityPage }) => MyCommunityPage))} />
+            {/* mypage */}
+            <Redirect exact from="/my-training" to="/my-training/InProgress" />
+            <Route exact path="/my-training/:tab" component={withSplitting(() => import('./mytraining').then(({ MyTrainingPage }) => MyTrainingPage))} />
+
+            <Redirect exact from="/community" to="/community/MyCommunity" />
+            <Route exact path="/community/:tab" component={withSplitting(() => import('./mytraining').then(({ MyCommunityPage }) => MyCommunityPage))} />
+
+            <Redirect exact from="/mypage" to="/mypage/CompletedList" />
+            <Route exact path="/mypage/:tab" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />
 
             {/*  expert */}
-            {/*<Route path="/expert/instructor" component={ExpertContainer} />*/}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
 
-            {/* design  */}
-            <Route exact path="/design/learning/my-learning" component={MyLearningDetailDesign} />
           </Switch>
         </UserApp>
       </BrowserRouter>

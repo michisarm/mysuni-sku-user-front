@@ -4,6 +4,7 @@ import { reactAutobind, WorkSpace } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 //import { tenantInfo } from '@nara.platform/dock';
+import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
@@ -46,6 +47,12 @@ class QuickNavContainer extends Component<Props, State> {
     this.setState({ active: false });
   }
 
+  routeNav(path: string) {
+    //
+    this.props.history.push(path);
+    this.onClickToggle();
+  }
+
   onClickToggle() {
     //
     this.setState((prevState) => ({
@@ -54,25 +61,22 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   onClickLearning() {
-
+    //
+    this.routeNav('/my-training');
   }
 
   onClickCommunity() {
-
+    //
+    this.routeNav('/community');
   }
 
   onClickSupport() {
     //
-    this.props.history.push('/board/support/Notice');
-    this.onClickToggle();
+    this.routeNav('/board/support/Notice');
   }
 
   onClickIntroduction() {
     //
-  }
-
-  onClickSiteMap() {
-
   }
 
   onClickSearch() {
@@ -89,8 +93,8 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   onClickInstructor() {
-    this.props.history.push('/expert/instructor');
-    this.onClickToggle();
+    //
+    this.routeNav('/expert/instructor');
   }
 
 
@@ -123,9 +127,12 @@ class QuickNavContainer extends Component<Props, State> {
           bottomButtons={
             <>
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
-              <BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickSiteMap} />
+              <SiteMapModalContainer
+                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" />}
+              />
+
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
-              <BottomMenuItemView iconName="" text="Instructor" onClick={this.onClickInstructor} />
+              <BottomMenuItemView iconName="search" text="Instructor" onClick={this.onClickInstructor} />
               {
                 (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
                   <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />

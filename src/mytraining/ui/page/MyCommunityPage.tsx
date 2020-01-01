@@ -12,13 +12,14 @@ import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
 import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
-import routePaths from '../../../lecture/routePaths';
+import lectureRoutePaths from '../../../lecture/routePaths';
+import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import LineHeaderView from '../view/LineHeaderView';
 import LectureModel from '../../../lecture/shared/model/LectureModel';
 
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   skProfileService?: SkProfileService
   lectureService?: LectureService
@@ -33,8 +34,9 @@ interface State {
 }
 
 enum Type {
-  MY_COMMUNITY= 'My Community',
-  MY_CREATED_COMMUNITY= 'My Created Community',
+  MyCommunity = 'MyCommunity',
+  MyCreatedCommunity = 'MyCreatedCommunity',
+  MyFeed = 'MyFeed',
 }
 
 @inject(mobxHelper.injectFrom(
@@ -53,7 +55,7 @@ class MyCommunityPage extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state = {
-    type: Type.MY_COMMUNITY,
+    type: Type.MyCommunity,
     boardIdMap: new Map(),
     boardOpenMap: new Map(),
   };
@@ -62,17 +64,28 @@ class MyCommunityPage extends Component<Props, State> {
     this.init();
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const currentTab = this.props.match.params.tab;
+
+    if (prevProps.match.params.tab !== currentTab) {
+      this.selectMenu(currentTab);
+    }
+  }
+
   init() {
-    const { skProfileService, pageService } = this.props;
+    const { match, pageService, skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
-    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`, 0, this.PAGE_SIZE);
-    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`, 0, this.PAGE_SIZE);
-    this.findPagingList();
+
+    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCommunity}`, 0, this.PAGE_SIZE);
+    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, 0, this.PAGE_SIZE);
+    this.selectMenu(match.params.tab);
+    // this.findPagingList();
   }
 
-  onSelectMenu(type: string) {
+  selectMenu(type: string) {
     //
     const { pageService, lectureService, myTrainingService } = this.props;
     pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
@@ -81,18 +94,23 @@ class MyCommunityPage extends Component<Props, State> {
     this.setState({ type }, this.findPagingList);
   }
 
+  onSelectMenu(type: string) {
+    //
+    this.props.history.push(routePaths.community(type));
+  }
+
   async findPagingList() {
     const { myTrainingService, pageService, lectureService } = this.props;
-    const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`);
-    const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`);
+    const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCommunity}`);
+    const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`);
     let offsetList: any = null;
 
     // offsetList = await lectureService!.findPagingCollegeLectures('CLG00001', page!.limit, page!.nextOffset);
     offsetList = await lectureService!.findPagingCommunityLectures(createdPage!.limit, createdPage!.nextOffset);
-    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_CREATED_COMMUNITY}`, offsetList.totalCount, createdPage!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, offsetList.totalCount, createdPage!.pageNo + 1);
 
     offsetList = await myTrainingService!.findAllMyCommunityTrainings(page!.limit, page!.nextOffset);
-    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MY_COMMUNITY}`, offsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCommunity}`, offsetList.totalCount, page!.pageNo + 1);
   }
 
   onViewDetail(e: any, data: any) {
@@ -101,10 +119,10 @@ class MyCommunityPage extends Component<Props, State> {
     const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 
@@ -112,9 +130,9 @@ class MyCommunityPage extends Component<Props, State> {
     //
     const menus: typeof ContentMenu.Menu[] = [];
     menus.push(
-      { name: 'My Community', type: 'My Community' },
-      { name: 'My Created Community', type: 'My Created Community' },
-      { name: 'My Feed', type: 'My Feed' },
+      { name: 'My Community', type: Type.MyCommunity },
+      { name: 'My Created Community', type: Type.MyCreatedCommunity },
+      { name: 'My Feed', type: Type.MyFeed },
     );
 
     return menus;
@@ -157,10 +175,10 @@ class MyCommunityPage extends Component<Props, State> {
     let list: (MyTrainingModel | LectureModel)[] = [];
 
     switch (type) {
-      case Type.MY_COMMUNITY:
+      case Type.MyCommunity:
         list = myTrainingService!.myTrainings;
         break;
-      case Type.MY_CREATED_COMMUNITY:
+      case Type.MyCreatedCommunity:
         list = lectureService!.lectures;
         break;
     }

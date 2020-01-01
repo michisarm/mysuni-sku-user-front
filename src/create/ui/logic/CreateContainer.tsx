@@ -16,11 +16,12 @@ import { LectureCardService, LectureModel, LectureService } from '../../../lectu
 import { SeeMoreButton } from '../../../lecture/shared';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../mytraining';
 import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
-import routePaths from '../../../lecture/routePaths';
+import lectureRoutePaths from '../../../lecture/routePaths';
+import routePaths from '../../routePaths';
 import { SkProfileModel, SkProfileService } from '../../../profile';
 
 
-interface Props extends RouteComponentProps{
+interface Props extends RouteComponentProps<{ tab: string }> {
   personalCubeService: PersonalCubeService
   pageService?: PageService,
   lectureService?: LectureService,
@@ -64,33 +65,42 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   componentDidMount() {
-    const { skProfileService, personalCubeService } = this.props;
+    const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile();
     this.init();
-    if (personalCubeService) {
-      this.setState({ activeItem: 'Create' });
-      this.findAllCubes(20);
+  }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const currentTab = this.props.match.params.tab;
+
+    if (prevProps.match.params.tab !== currentTab) {
+      this.setTab(currentTab);
     }
   }
 
   init() {
     //
-    const { pageService, lectureService } = this.props;
+    const { match, pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     lectureService!.clear();
+    this.setTab(match.params.tab);
   }
 
-  handleItemClick(e: any, { name }:any) {
-    this.setState( { activeItem: name });
+  setTab(tab: string) {
+    this.setState( { activeItem: tab });
 
-    if (name === 'Create') {
+    if (tab === 'Create') {
       this.findAllCubes(20);
     } else {
       this.findPagingSharedLectures();
     }
+  }
+
+  handleItemClick(e: any, { name }: any) {
+    this.props.history.push(routePaths.create(name));
   }
 
   routeToCreateDetail() {
@@ -187,10 +197,10 @@ class CreateContainer extends React.Component<Props, States> {
     const collegeId = model.category.college.id;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 
@@ -316,13 +326,15 @@ class CreateContainer extends React.Component<Props, States> {
                   name="Create"
                   active={activeItem === 'Create'}
                   onClick={this.handleItemClick}
-                >Create
+                >
+                  Create
                 </Menu.Item>
                 <Menu.Item
                   name="Shared"
                   active={activeItem === 'Shared'}
                   onClick={this.handleItemClick}
-                >Shared<span className="count">{lectures.length}</span>
+                >
+                  Shared<span className="count">{lectures.length}</span>
                 </Menu.Item>
               </Menu>
             </div>

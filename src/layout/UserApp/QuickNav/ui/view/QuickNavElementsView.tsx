@@ -61,7 +61,7 @@ export class TopMenuItemView extends Component<TopMenuItemViewProps> {
 interface BottomMenuItemViewProps {
   iconName: string,
   text: string,
-  onClick: () => void,
+  onClick?: () => void,
 }
 
 export class BottomMenuItemView extends Component<BottomMenuItemViewProps> {

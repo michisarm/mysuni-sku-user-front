@@ -10,7 +10,8 @@ import { ContentHeader, ContentLayout, ContentMenu, mobxHelper, NoSuchContentPan
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
 import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
-import routePaths from 'lecture/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
+import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
@@ -21,7 +22,7 @@ import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
   skProfileService?: SkProfileService
@@ -35,8 +36,8 @@ interface State {
 }
 
 enum Type {
-  InProgress= 'In Progress',
-  InMyList= 'In My List',
+  InProgress= 'InProgress',
+  InMyList= 'InMyList',
   Enrolled= 'Enrolled',
   Required= 'Required',
   Completed= 'Completed',
@@ -67,16 +68,25 @@ class MyTrainingPage extends Component<Props, State> {
     this.init();
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const currentTab = this.props.match.params.tab;
+
+    if (prevProps.match.params.tab !== currentTab) {
+      this.selectMenu(currentTab);
+    }
+  }
+
   init() {
-    const { skProfileService, myLearningSummaryService, pageService } = this.props;
+    const { match, skProfileService, myLearningSummaryService } = this.props;
 
     skProfileService!.findSkProfile();
     myLearningSummaryService!.findMyLearningSummary();
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    this.findPagingList();
+
+    this.selectMenu(match.params.tab);
   }
 
-  onSelectMenu(type: string) {
+  selectMenu(type: string) {
     //
     const { pageService, inMyLectureService, myTrainingService } = this.props;
 
@@ -84,10 +94,15 @@ class MyTrainingPage extends Component<Props, State> {
       inMyLectureService!.clear();
     }
     else {
-       myTrainingService!.clear();
+      myTrainingService!.clear();
     }
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     this.setState({ type }, this.findPagingList);
+  }
+
+  onSelectMenu(type: string) {
+    //
+    this.props.history.push(routePaths.learning(type));
   }
 
   async findPagingList() {
@@ -122,10 +137,10 @@ class MyTrainingPage extends Component<Props, State> {
     const { history } = this.props;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 
@@ -247,27 +262,27 @@ class MyTrainingPage extends Component<Props, State> {
           menus={[
             {
               name: 'In Progress',
-              type: 'In Progress',
+              type: Type.InProgress,
             },
             {
               name: 'In my list',
-              type: 'In My List',
+              type: Type.InMyList,
             },
             {
               name: 'Enrolled',
-              type: 'Enrolled',
+              type: Type.Enrolled,
             },
             {
               name: 'Required',
-              type: 'Required',
+              type: Type.Required,
             },
             {
               name: 'Completed',
-              type: 'Completed',
+              type: Type.Completed,
             },
             {
               name: 'Retry',
-              type: 'Retry',
+              type: Type.Retry,
             },
           ]}
           type={this.state.type}

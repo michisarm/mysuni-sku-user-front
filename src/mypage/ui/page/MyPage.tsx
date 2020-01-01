@@ -17,7 +17,7 @@ class MyPage extends Component {
       <ContentLayout
         className = "MyPage"
         breadcrumb={[
-          { text: 'MyPage', path: '/mypage' },
+          { text: 'MyPage' },
         ]}
       >
         <div className="main-info-area">

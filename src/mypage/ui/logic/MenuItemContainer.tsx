@@ -1,13 +1,13 @@
 import React, { Component, createRef } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Menu, Sticky } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
+import routePaths from '../../routePaths';
 import CompletedListView from '../view/CompletedListView';
 import EarnedStampListView from '../view/EarnedStampListView';
 
 
-interface Props{
-
+interface Props extends RouteComponentProps<{ tab: string }> {
 }
 
 interface States {
@@ -27,14 +27,28 @@ class MenuItemContainer extends Component<Props, States> {
   }
 
   componentDidMount(): void {
-
+    //
+    const { params } = this.props.match;
+    this.changeItem(params.tab);
   }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const currentTab = this.props.match.params.tab;
+
+    if (prevProps.match.params.tab !== this.props.match.params.tab) {
+      this.changeItem(currentTab);
+    }
+  }
+
+  changeItem(tab: string) {
+    this.setState({
+      activeItem: tab,
+    });
+  }
 
   onChangeItem(event:any, item:any) {
-    this.setState({
-      activeItem: item.name,
-    });
+    this.props.history.push(routePaths.myPage(item.name));
     event.preventDefault();
   }
 
@@ -76,4 +90,4 @@ class MenuItemContainer extends Component<Props, States> {
   }
 }
 
-export default MenuItemContainer;
+export default withRouter(MenuItemContainer);
