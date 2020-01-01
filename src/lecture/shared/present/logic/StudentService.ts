@@ -58,6 +58,10 @@ class StudentService {
     return this.studentApi.studentMarkComplete(rollBookId);
   }
 
+  removeStudent(rollBookId: string) {
+    return this.studentApi.removeStudent(rollBookId);
+  }
+
   @action
   async findStudentCount(rollBookId: string) {
     //

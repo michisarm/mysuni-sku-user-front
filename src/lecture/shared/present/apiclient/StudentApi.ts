@@ -37,6 +37,10 @@ class StudentApi {
   studentMarkComplete(rollBookId: string) {
     return axiosApi.put<void>(this.baseUrl + `/flow/markComplete`, { rollBookId });
   }
+
+  removeStudent(rollBookId: string) {
+    return axiosApi.delete(this.baseUrl + `/flow/markComplete`, { params: { rollBookId }});
+  }
 }
 
 StudentApi.instance = new StudentApi();
