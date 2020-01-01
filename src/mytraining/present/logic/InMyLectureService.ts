@@ -19,6 +19,9 @@ class InMyLectureService {
   _inMyLectures: InMyLectureModel[] = [];
 
   @observable
+  _inMyLectureAll: InMyLectureModel[] = [];
+
+  @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
   constructor(inMyLectureApi: InMyLectureApi) {
@@ -29,6 +32,13 @@ class InMyLectureService {
   get inMyLectures() {
     //
     const inMyLectures = this._inMyLectures as any;
+    return inMyLectures.peek();
+  }
+
+  @computed
+  get inMyLectureAll() {
+    //
+    const inMyLectures = this._inMyLectureAll as any;
     return inMyLectures.peek();
   }
 
@@ -70,7 +80,7 @@ class InMyLectureService {
     const inMyLectures = await this.inMyLectureApi.findInMyLecturesAll();
 
     return runInAction(() => {
-      this._inMyLectures = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture));
+      this._inMyLectureAll = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture));
       return inMyLectures;
     });
   }
@@ -84,7 +94,7 @@ class InMyLectureService {
   get inMyLectureMap() {
     const map = new Map<string, InMyLectureModel>();
 
-    this._inMyLectures.forEach(inMyLecture => {
+    this._inMyLectureAll.forEach(inMyLecture => {
       map.set(inMyLecture.serviceId, inMyLecture);
     });
 
