@@ -1,6 +1,6 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import { Menu, Segment } from 'semantic-ui-react';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
@@ -62,7 +62,7 @@ class MenuItemContainer extends Component<Props, States> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService,myTrainingService } = this.props;
+    const { pageService, myTrainingService } = this.props;
     const currentTab = this.props.match.params.tab;
 
     if (prevProps.match.params.tab !== this.props.match.params.tab) {

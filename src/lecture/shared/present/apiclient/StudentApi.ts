@@ -39,7 +39,7 @@ class StudentApi {
   }
 
   removeStudent(rollBookId: string) {
-    return axiosApi.delete(this.baseUrl + `/flow/markComplete`, { params: { rollBookId } });
+    return axiosApi.delete(this.baseUrl + `/flow/markComplete`, { params: { rollBookId }});
   }
 }
 

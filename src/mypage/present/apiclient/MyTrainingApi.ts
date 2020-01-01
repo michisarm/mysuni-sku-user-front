@@ -19,6 +19,12 @@ class MyTrainingApi {
     return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState', { params })
       .then(response => response && response.data);
   }
+
+  findAllMyTrainingsWithStamp() {
+    //
+    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/stamps')
+      .then(response => response && response.data);
+  }
 }
 
 MyTrainingApi.instance = new MyTrainingApi();
