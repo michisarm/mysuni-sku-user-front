@@ -16,13 +16,13 @@ export default class ChannelApi {
   findAllChannel() {
     //
     return axios.get<ChannelModel[]>(this.URL)
-      .then(response => response && response.data || null);
+      .then(response => response && response.data || []);
   }
 
   findChannelByName(name : string) {
     //이름으로 채널 검색
     return axios.get<ChannelModel[]>(this.URL + `/byName?name=${name}`)
-      .then(response => response && response.data || null);
+      .then(response => response && response.data || []);
   }
 }
 

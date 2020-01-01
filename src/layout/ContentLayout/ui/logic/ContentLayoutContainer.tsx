@@ -35,6 +35,7 @@ class ContentLayoutContainer extends Component<Props> {
 
   componentDidMount() {
     //
+    this.initScrollTop();
     this.setBreadcrumb(this.props.breadcrumb);
   }
 
@@ -43,14 +44,11 @@ class ContentLayoutContainer extends Component<Props> {
     if (prevProps.breadcrumb !== this.props.breadcrumb) {
       this.setBreadcrumb(this.props.breadcrumb);
     }
-    this.initScrollTopOnRoute(prevProps);
   }
 
-  initScrollTopOnRoute(prevProps: Props) {
+  initScrollTop() {
     //
-    if (prevProps.match.path !== this.props.match.path) {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
   }
 
   setBreadcrumb(breadcrumb?: Breadcrumb[]) {

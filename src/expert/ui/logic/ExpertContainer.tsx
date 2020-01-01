@@ -33,11 +33,13 @@ interface Props extends RouteComponentProps {
 @observer
 @reactAutobind
 class ExpertContainer extends React.Component<Props> {
-  state = { activeItem: 'Introduce' };
+  state = { activeItem: 'Introduce', InstructorId: 'IS-0001',  InstructorName: 'adfs' };
   //
   PAGE_KEY = 'lecture.instructor';
 
   PAGE_SIZE = 8;
+
+
 
   constructor(props: Props) {
     //
@@ -48,7 +50,8 @@ class ExpertContainer extends React.Component<Props> {
   componentDidMount() {
     //
     const { instructorService } = this.props;
-    if (instructorService) instructorService.findInstructor();
+    const { InstructorId } = this.state;
+    if (instructorService) instructorService.findInstructor(InstructorId);
     this.findPagingInstructorLectures();
   }
 
@@ -67,11 +70,10 @@ class ExpertContainer extends React.Component<Props> {
   async findPagingInstructorLectures() {
     //
     const { pageService, lectureService, reviewService } = this.props;
-    const { instructor } = this.props.instructorService || {} as InstructorService;
-    const instructorId = instructor.result.id;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { InstructorName } = this.state;
 
-    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(instructorId, page!.limit, page!.nextOffset);
+    const lectureOffsetList = await lectureService!.findAllLecturesByInstructorId(InstructorName, page!.limit, page!.nextOffset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
@@ -149,7 +151,7 @@ class ExpertContainer extends React.Component<Props> {
                   onClick={this.handleItemClick}
                   //as={Link} to=""
                 >
-                  Lecture<span className="count">+24</span>
+                  Lecture<span className="count">{lectures.length}</span>
                 </Menu.Item>
               </Menu>
             </div>
