@@ -48,6 +48,7 @@ interface RouteParams {
 
 @inject(mobxHelper.injectFrom(
   'collegeService',
+  'skProfileService',
   'course.coursePlanService',
   'lecture.courseLectureService',
   'lecture.programLectureService',
