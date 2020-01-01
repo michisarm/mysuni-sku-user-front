@@ -59,20 +59,30 @@ export default class SkProfileService {
   @action
   async findAllSkProfilesBySearchKey() {
     const skProfiles = await this.skProfileApi.findAllSkProfilesBySearchKey(SkProfileQueryModel.asSkProfileRdo(this.skProfileQuery));
-    return runInAction(() => this.skProfiles = skProfiles);
+    if (skProfiles) {
+      skProfiles.results = skProfiles!.results.map(skProfile => new SkProfileModel(skProfile));
+      return runInAction(() => this.skProfiles = skProfiles);
+    }
+    return '';
   }
 
   @action
   async  findAllSkProfile(offset:number, limit : number) {
     const skProfiles = await  this.skProfileApi.findAllSkProfile(offset, limit);
-    return runInAction(() => this.skProfiles = skProfiles);
+    if (skProfiles) {
+      skProfiles!.results = skProfiles!.results.map(skProfile => new SkProfileModel(skProfile));
+      return runInAction(() => this.skProfiles = skProfiles);
+    }
+    return '';
   }
 
   modfifySkProfileByProfileId(profileId:string, skProfileUdo : SkProfileUdo) {
+    console.log('modify skprofile ===>', skProfileUdo);
     this.skProfileApi.modifySkProfileByProfileId(profileId, skProfileUdo);
   }
 
   modifySkProfile(skProfileUdo : SkProfileUdo) {
+    console.log('modify skprofile ===>', skProfileUdo);
     this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 

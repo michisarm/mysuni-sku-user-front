@@ -1,30 +1,80 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, reactAlert } from '@nara.platform/accent';
 
 import { ContentLayout } from 'shared';
-import { Button, Icon, Radio } from 'semantic-ui-react';
+import { Button, Checkbox, Icon } from 'semantic-ui-react';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router-dom';
+import SkProfileService from '../../present/logic/SkProfileService';
+import { SkProfileUdo } from '../../model/SkProfileUdo';
+import { PisAgreementModel } from '../../model/PisAgreementModel';
 
+interface Props extends RouteComponentProps{
+  skProfileService? : SkProfileService
+}
 
+@inject( 'skProfileService', 'collegeService')
+@observer
 @reactAutobind
-class PisAgreementContainer extends Component {
+class PisAgreementContainer extends Component<Props> {
+
   state = {
-    value: 'noAgreement',
-    globalValue: 'noGrobalAgreement',
+    all: false,
+    mySuni: false,
+    domestic: false,
+    international: false,
   };
 
-  handleChange(e:any, checkProp:any) {
-    if ( e.target.name === 'agreement') this.setState({ value: checkProp.value });
-    if ( e.target.name === 'globalAgreement') this.setState({ globalValue: checkProp.value });
+  handleChange(e:any, checkProps:any) {
+    const name = e.target.id;
+    this.setState({
+      [name]: checkProps.checked,
+    });
+    if ( name === 'all' ) {
+      this.setState({
+        mySuni: checkProps.checked,
+        domestic: checkProps.checked,
+        international: checkProps.checked,
+      });
+    }
 
-    console.log(this.state.value, this.state.globalValue);
+  }
+
+  onOk() {
+    const { skProfileService } = this.props;
+    const { skProfile } = skProfileService as SkProfileService;
+    const { studySummary } = skProfileService as SkProfileService;
+
+    const { all, mySuni, domestic, international } = this.state;
+
+    if ( all || (mySuni && domestic && international)) {
+      if (skProfileService) {
+        skProfileService.findSkProfile();
+        skProfileService.findStudySummary();
+
+        if (skProfile ) {
+          skProfile.pisAgreement.signed = true;
+          skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
+          //  skProfileService.modifySkProfile(new SkProfileUdo(new PisAgreementModel(skProfile.pisAgreement)));
+          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty  && studySummary.favoriteChannels && studySummary.favoriteChannels.idNames.length < 4 && studySummary.favoriteLearningType ) {
+            this.props.history.push('/');
+          } else {
+            this.props.history.push('/profile/interest/');
+          }
+        }
+      }
+    }
+    else reactAlert({ title: '알림', message: '개인정보 처리방침을 확인하시고 동의해주세요' });
+
   }
 
   render() {
+    const { all, mySuni, domestic, international } = this.state;
     return (
 
       <ContentLayout breadcrumb={[
         { text: '개인정보', path: '/profile' },
-        { text: '개인정보사용동의' },
+        { text: '개인정보 처리방침 동의' },
       ]}
         className="content bg-white privacy-agree"
       >
@@ -34,6 +84,15 @@ class PisAgreementContainer extends Component {
               <Icon className="sk-university-login" /><span className="blind">SUNI</span>
             </div>
             <h2 className="title1">mySUNI 개인정보 처리방침에 동의해주세요.</h2>
+            <div className="check-area">
+              {/*<Checkbox label='전체동의' className='base'/>*/}
+              <Checkbox className="black base" label="전체동의" onChange={this.handleChange} id="all" checked={all} />
+            </div>
+            <div className="check-area">
+              <Checkbox label="mySUNI 개인정보 처리방침 동의(필수)" className="base" id="mySuni" checked={mySuni} onChange={this.handleChange} />
+              <Checkbox label="제3자 정보제공에 대한 동의(필수)" className="base" id="domestic" checked={domestic} onChange={this.handleChange} />
+              <Checkbox label="국외 제3자 정보제공에 대해 동의(필수)" className="base" id="international" checked={international} onChange={this.handleChange} />
+            </div>
             <h3 className="title2">mySUNI 개인정보 처리방침 동의 (필수)</h3>
             <div className="terms-text-wrap">
               <div className="privacy">
@@ -267,14 +326,12 @@ class PisAgreementContainer extends Component {
                   <div className="text5">성명 : 이규석</div>
                   <div className="text5">소속 : IT전략지원실</div>
                   <div className="text5">직책 : 실장</div>
-                  <div className="text5">연락처 : 010-5301-9592 / <a href="mailto:ski.ia01784@partner.sk.com">ski.ia01784@partner.sk.com</a>
-                  </div>
+                  <div className="text5">연락처 : 010-5301-9592 / <a href="mailto:ski.ia01784@partner.sk.com">ski.ia01784@partner.sk.com</a></div>
                   <div className="text3">▶ 개인정보 보호담당자</div>
                   <div className="text5">성명 : 이의연</div>
                   <div className="text5">소속 : LMS실</div>
                   <div className="text5">직책 : 매니저</div>
-                  <div className="text5">연락처 : 010-9246-1785 / <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>
-                  </div>
+                  <div className="text5">연락처 : 010-9246-1785 / <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a></div>
                   <div className="text3">② 구성원은 회사에 근무 중 또는 퇴직 이후 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한
                     사항을 개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 회사는 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.
                   </div>
@@ -282,9 +339,9 @@ class PisAgreementContainer extends Component {
                   </div>
                   <div className="text3">[추후 사이트에서 쿠키나 유사 접속정보파일을 자동으로 수집하는 장치 운영 시 수정 및 삽입]</div>
                   <div className="text3">① 회사는 이용자에게 특화된 맞춤서비스를 제공하기 위해서 이용자들의 정보를 수시로 저장하고 찾아내는
-                    &quot;쿠키(cookie)&quot;, &quot;로그기록&quot; 등을 수집하고 활용합니다.
+                    &quot;쿠키(cookie)&quot;, ”로그기록” 등을 수집하고 활용합니다.
                   </div>
-                  <div className="text3">② &quot;쿠키&quot; 및 &quot;로그기록&quot;은 [이용자가 방문한 각 서비스(교육 프로그램)에 대한 이용형태, 검색어, 보안접속 여부,
+                  <div className="text3">② “쿠키” 및 “로그기록”은 [이용자가 방문한 각 서비스(교육 프로그램)에 대한 이용형태, 검색어, 보안접속 여부,
                     등을 파악하여 이용자에게 최적화된 정보 제공] 목적으로 이용됩니다.
                   </div>
                   <div className="text3">③ 이용자는 쿠키 설치에 대한 선택권을 가지고 있습니다. 따라서, 이용자는 웹브라우저에서 옵션을 설정함으로써 쿠키를
@@ -296,69 +353,16 @@ class PisAgreementContainer extends Component {
                     변경사항의 시행 30일 전부터 공지사항을 통하여 고지할 것입니다.
                   </div>
                   <div className="text2">11. 개인정보 열람청구</div>
-                  <div className="text3">구성원은 개인정보보호법 제35조에 따른 개인정보의 열람청구를 &apos;8. 개인정보 보호책임자에 관한 사항’의 ‘개인정보
-                    보호 담당부서&apos;에 할 수 있습니다.
+                  <div className="text3">구성원은 개인정보보호법 제35조에 따른 개인정보의 열람청구를 ‘8. 개인정보 보호책임자에 관한 사항’의 ‘개인정보
+                    보호 담당부서’에 할 수 있습니다.
                   </div>
                 </div>
               </div>
             </div>
             <div className="guide">약관 동의 후 mySUNI를 이용할 수 있습니다.</div>
-            <div className="agree-box">
-              <ul>
-                <li>
-                  <div className="tit">
-                    1) 제3자제공에 대해 동의하십니까?
-                  </div>
-                  <div className="description">
-                    <Radio
-                      className="base"
-                      label="예"
-                      name="agreement"
-                      value="yesAgreement"
-                      checked={this.state.value === 'agreement'}
-                      onChange={(e, checkProps) => this.handleChange(e, checkProps)}
-                      defaultChecked
-                    />
-                    <Radio
-                      className="base"
-                      label="아니오"
-                      name="agreement"
-                      value="noAgreement"
-                      checked={this.state.value === 'noAgreement'}
-                      onChange={(e, checkProps) => this.handleChange(e, checkProps)}
-                    />
-                  </div>
-                </li>
-                <li>
-                  <div className="tit">
-                    2) 국외 제3자 제공에 대해 동의하십니까?
-                  </div>
-                  <div className="description">
-                    <Radio
-                      className="base"
-                      label="예"
-                      name="globalAgreement"
-                      value="yesGlobalAgreement"
-                      checked={this.state.globalValue === 'globalAgreement'}
-                      onChange={(e, checkProps) => this.handleChange(e, checkProps)}
-                      defaultChecked
-                    />
-                    <Radio
-                      className="base"
-                      label="아니오"
-                      name="globalAgreement"
-                      value="noGlobalAgreement"
-                      checked={this.state.globalValue === 'noGlobalAgreement'}
-                      onChange={(e, checkProps) => this.handleChange(e, checkProps)}
-                    />
-                  </div>
-                </li>
-              </ul>
-            </div>
             <div className="button-area">
               <Button className="fix line">Cancel</Button>
-              <Button className="fix bg">Agree
-              </Button>
+              <Button className="fix bg" onClick={this.onOk}>OK</Button>
             </div>
           </div>
         </section>

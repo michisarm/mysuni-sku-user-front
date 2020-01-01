@@ -24,6 +24,7 @@ interface States{
   goalGroup : string []
   focus:boolean
   write:string
+  goalCheckedCount : number
 }
 
 const type : string [] = ['오프라인', '온라인', '상관없음'];
@@ -45,6 +46,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
       focus: false,
       write: '',
+      goalCheckedCount: 1,
     };
   }
 
@@ -66,11 +68,24 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     const name : 'areaGroup' | 'goalGroup' = targetProps.name;
     const value = targetProps.value;
     const state = { ...this.state };
+
     if (targetProps.checked) {
       state[name].push(value);
+      state.goalCheckedCount++;
+      console.log(state.goalCheckedCount);
     } else {
       state[name] = state[name].filter(data =>  data !== value);
+      if ( state.goalCheckedCount > 0 ) {
+        state.goalCheckedCount--;
+        console.log(state.goalCheckedCount);
+      }
     }
+
+    if (targetProps.name === 'goalGroup' &&  state.goalCheckedCount > 3) {
+      console.log(targetProps.name);
+      // event.currentTaget.setProperty('readOnly', true);
+    }
+
 
     this.setState(state);
   }
