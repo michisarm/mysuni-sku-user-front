@@ -87,8 +87,7 @@ class SharedTypeDetailView extends React.Component<Props> {
   }
 
   render() {
-    const { personalCube, filesMap, cubeType } = this.props;
-    const { media } = this.props.mediaService || {} as MediaService;
+    const { personalCube, cubeType } = this.props;
     console.log(personalCube);
     return (
       <>
