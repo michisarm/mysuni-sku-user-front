@@ -38,17 +38,18 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
         <Modal.Content>
           <div className="privacy">
             <div className="scrolling-80vh">
-              <div className="text1">SK 이노베이션 주식회사(이하 &#34;회사&#34;)는 SUNI Learning Management System 운영과 관련하여
-                개인정보보호법 제30조에 따라 구성원의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이
-                개인정보처리방침을 수립ㆍ공개합니다.
+              <div className="text1">SK 이노베이션 주식회사 (이하 &quot;회사&quot;)는 mySUNI Learning Management System 운영과
+                관련하여 개인정보보호법 제30조에 따라 구성원의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이
+                개인정보처리방침을
+                수립ㆍ공개합니다.
               </div>
               <div className="text1">회사는 개인정보처리방침을 개정하는 경우 공지사항(또는 개별공지)을 통하여 공지할 것입니다.</div>
-              <div className="text1">○ 본 방침은 2020년 1월 2일부터 시행됩니다.</div>
+              <div className="text1">○ 본 방침은 2020년 1월 17일부터 시행됩니다.</div>
               <div className="text2">1. 개인정보의 처리 목적</div>
               <div className="text3">회사는 구성원의 개인정보를 다음의 목적을 위하여 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는
                 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
               </div>
-              <div className="text4">① SUNI Learning Management System (이하 ‘시스템명’)가입 및 관리</div>
+              <div className="text4">① mySUNI Learning Management System (이하 ‘mySUNI’)가입 및 관리</div>
               <div className="text5">구성원 서비스 제공에 따른 본인 식별/인증, 구성원 회원 자격 유지/관리, 각종 고지/통지, 고충처리 등의 목적으로
                 개인정보를 처리합니다.
               </div>
@@ -98,21 +99,75 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
                     <tr>
                       <td>SK 그룹 계열회사 (자세한 내역은 <a href="http://sk.co.kr" target="_blank">http://sk.co.kr</a> 에서 확인 가능)
                       </td>
-                      <td>구성원의 교육 신청, 이수 현황 등 ‘시스템명’ 사용 이력</td>
+                      <td>구성원의 교육 신청, 이수 현황 등 사용 이력</td>
                       <td>교육 이수 현황 등</td>
                       <td>해당 구성원 퇴직시까지</td>
                     </tr>
                     <tr>
                       <td>Linked In</td>
-                      <td>임직원 정보 연동을 통한 Linked In 서비스 제공</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
                       <td>소속, 성명, 이메일</td>
                       <td>해당 구성원 퇴직시까지</td>
                     </tr>
                     <tr>
-                      <td>관련 CP사 모두 입력 필요</td>
-                      <td />
-                      <td />
-                      <td />
+                      <td>Carrot Global</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Culturetree</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Coursera</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Elice</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>휴레드 컨설팅</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>11번가 도서</td>
+                      <td>구성원 정보 연동을 통한 도서구매 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>SK M&amp;Service</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Panopto</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Globe Smart(APERIAN Global)</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
+                    </tr>
+                    <tr>
+                      <td>Leadership College</td>
+                      <td>구성원 정보 연동을 통한 교육 서비스 제공</td>
+                      <td>소속, 성명, 이메일</td>
+                      <td>해당 구성원 퇴직시까지</td>
                     </tr>
                   </tbody>
                 </table>
@@ -130,19 +185,21 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
                   <tbody>
                     <tr>
                       <td>SK 주식회사</td>
-                      <td>‘시스템명’ 운영 위탁</td>
+                      <td>‘mySUNI’ LMS 운영/개발 위탁</td>
                     </tr>
                     <tr>
-                      <td>SK M&Service</td>
-                      <td>서비스 운영을 위한 메일 안내 및 교육 운영/관리</td>
+                      <td>SK M&amp;Service</td>
+                      <td>서비스 운영을 위한 메일 안내 및 교육 운영/관리, 결과 Data정리</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
+
               <div className="text3">회사는 위탁계약 체결시 개인정보 보호법 제25조에 따라 위탁업무 수행목적 외 개인정보 처리금지, 기술적/관리적
-                보호조치, 재위탁 제한, 수탁자에 대한 관리/감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게
-                처리하는지를 감독하고 있습니다.
-                위탁업무의 내용이나 수탁자가 변경될 경우에는 지체없이 본 개인정보 처리방침을 통하여 공개하도록 하겠습니다.
+                보호조치, 재위탁 제한,
+                수탁자에 대한 관리/감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게 처리하는지를 감독하고
+                있습니다.<br />위탁업무의
+                내용이나 수탁자가 변경될 경우에는 지체없이 본 개인정보 처리방침을 통하여 공개하도록 하겠습니다.
               </div>
               <div className="text2">5. 정보주체의 권리, 의무 및 그 행사방법</div>
               <div className="text3">① 구성원은 회사에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.</div>
@@ -151,12 +208,14 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
               <div className="text4">3. 삭제요구</div>
               <div className="text4">4. 처리정지 요구</div>
               <div className="text3">② 제1항에 따른 권리 행사는 개인정보 보호법 시행규칙 별지 제8호 서식 또는 각 구성원 소속사
-                사규(개인정보보호규칙)에 따라 서면, 전자우편, 모사전송(FAX) 등을 통하여 하실 수 있습니다. 다만, 구성원 개인정보의 오류로 인하여 불이익이
-                발생할 수 있으니 상세한 사항은 인사부서에 문의하여 주시기 바랍니다.
+                사규(개인정보보호규칙)에 따라 서면,
+                전자우편, 모사전송(FAX) 등을 통하여 하실 수 있습니다. 다만, 구성원 개인정보의 오류로 인하여 불이익이 발생할 수 있으니 상세한 사항은 인사부서에
+                문의하여 주시기 바랍니다.
               </div>
               <div className="text3">③ 제1항에 따른 권리 행사는 정보주체의 법정대리인이나 위임을 받은 자 등 대리인을 통하여 하실 수 있습니다. 이
                 경우 개인정보 보호법 시행규칙 별지 제11호 서식 또는 회사 사규(개인정보보호규칙)에 따른 위임장을 제출하셔야 합니다.
               </div>
+
               <div className="text2">6. 개인정보의 파기</div>
               <div className="text3">회사는 원칙적으로 개인정보 보유기간의 경과, 개인정보 처리목적이 달성된 경우에는 지체없이 해당 개인정보를 파기합니다.
                 파기의 절차, 기한 및 방법은 다음과 같습니다.
@@ -165,10 +224,13 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
               <div className="text5">회사는 파기 사유가 발생한 개인정보를 선정하고, 회사의 개인정보 보호책임자의 승인을 받아 개인정보를 파기합니다.
               </div>
               <div className="text4">- 파기기한</div>
-              <div className="text5">정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리 목적이 달성되었음에도불구하고 다른 법령에 따라 개인정보를
-                계속 보존하여야 하는 경우에는 해당 개인정보는 별도의 데이터베이스(DB)로 옮기거나 보관장소를 달리하여 보관합니다.
-                이용자의 개인정보는 개인정보의 보유기간이 경과된 경우에는 보유기간의 종료일로부터 3일 이내에, 개인정보의 처리 목적 달성, 해당 서비스의 폐지, 사업의
-                종료 등 그 개인정보가 불필요하게 되었을 때에는 개인정보의 처리가 불필요한 것으로 인정되는 날로부터 3일 이내에 그 개인정보를 파기합니다.
+              <div className="text5">정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리 목적이 달성되었음에도 불구하고 다른 법령에 따라
+                개인정보를 계속 보존하여야
+                하는 경우에는 해당 개인정보는 별도의 데이터베이스(DB)로 옮기거나 보관장소를 달리하여 보관합니다.<br/>이용자의 개인정보는 개인정보의 보유기간이
+                경과된 경우에는
+                보유기간의 종료일로부터 3일 이내에, 개인정보의 처리 목적 달성, 해당 서비스의 폐지, 사업의 종료 등 그 개인정보가 불필요하게 되었을 때에는
+                개인정보의 처리가
+                불필요한 것으로 인정되는 날로부터 3일 이내에 그 개인정보를 파기합니다.
               </div>
               <div className="text4">- 파기방법</div>
               <div className="text5">전자적 파일 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용합니다.</div>
@@ -205,24 +267,46 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
               <div className="text4">개인정보를 보관하고 있는 물리적 보관 장소를 별도로 두고 이에 대해 출입통제 절차를 수립, 운영하고 있습니다.
               </div>
               <div className="text2">8. 개인정보 보호책임자</div>
-              <div className="text3">회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을
-                위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
+              <div className="text3">① 회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제
+                등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
               </div>
               <div className="text3">▶ 개인정보 보호책임자</div>
-              <div className="text5">성명 : 홍길동</div>
-              <div className="text5">직책 : //</div>
-              <div className="text5">직급 : //</div>
-              <div className="text5">연락처 : 02-0000-0000, ///@sk.com</div>
-              <div className="text2">9.인터넷 접속정보파일의 수집 등 개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항</div>
-              <div className="text3">[추후 사이트에서 쿠키나 유사 접속정보파일을 자동으로 수집하는 장치 운영 시 수정 및 삽입]</div>
-              <div className="text3">① 회사는 이용자에게 특화된 맞춤서비스를 제공하기 위해서 이용자들의 정보를 수시로 저장하고 찾아내는 &#34;쿠키(cookie)&#34;, &#34;로그기록&#34; 등을 수집하고 활용합니다
+              <div className="text5">성명 : 이규석</div>
+              <div className="text5">소속 : IT전략지원실</div>
+              <div className="text5">직책 : 실장</div>
+              <div className="text5">연락처 : 010-5301-9592 / <a href="mailto:ski.ia01784@partner.sk.com">ski.ia01784@partner.sk.com</a>
               </div>
-              <div className="text3">② &#34;쿠키&#34; 및 &#34;로그기록&#34;은 [이용자가 방문한 각 서비스(교육 프로그램)에 대한 이용형태, 검색어, 보안접속 여부,
-                등을 파악하여 이용자에게 최적화된 정보 제공] 목적으로 이용됩니다.
+              <div className="text3">▶ 개인정보 보호담당자</div>
+              <div className="text5">성명 : 이의연</div>
+              <div className="text5">소속 : LMS실</div>
+              <div className="text5">직책 : 매니저</div>
+              <div className="text5">연락처 : 010-9246-1785 / <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>
+              </div>
+              <div className="text3">② 구성원은 회사에 근무 중 또는 퇴직 이후 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한
+                사항을 개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 회사는 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.
+              </div>
+              <div className="text2">9.인터넷 접속정보파일의 수집 등 등 개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항
+              </div>
+              <div className="text3">[추후 사이트에서 쿠키나 유사 접속정보파일을 자동으로 수집하는 장치 운영 시 수정 및 삽입]</div>
+              <div className="text3">① 회사는 이용자에게 특화된 맞춤서비스를 제공하기 위해서 이용자들의 정보를 수시로 저장하고 찾아내는
+                &quot;쿠키(cookie)&quot;, ”로그기록” 등을 수집하고 활용합니다.
+              </div>
+              <div className="text3">② “쿠키” 및 “로그기록”은 [이용자가 방문한 각 서비스(교육 프로그램)에 대한 이용형태, 검색어, 보안접속 여부,
+                등을 파악하여
+                이용자에게 최적화된 정보 제공] 목적으로 이용됩니다.
               </div>
               <div className="text3">③ 이용자는 쿠키 설치에 대한 선택권을 가지고 있습니다. 따라서, 이용자는 웹브라우저에서 옵션을 설정함으로써 쿠키를
-                허용하거나, 쿠키가 저장될 때마다 확인을 거치거나, 쿠키의 저장을 거부할 수도 있습니다. 다만, 쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이
-                발생할 수 있습니다.
+                허용하거나, 쿠키가
+                저장될 때마다 확인을 거치거나, 쿠키의 저장을 거부할 수도 있습니다. 다만, 쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이 발생할 수
+                있습니다.
+              </div>
+              <div className="text2">10. 개인정보 처리방침 변경</div>
+              <div className="text3">개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는
+                변경사항의 시행 30일 전부터 공지사항을 통하여 고지할 것입니다.
+              </div>
+              <div className="text2">11. 개인정보 열람청구</div>
+              <div className="text3">구성원은 개인정보보호법 제35조에 따른 개인정보의 열람청구를 ‘8. 개인정보 보호책임자에 관한 사항’의 ‘개인정보
+                보호 담당부서’에 할 수 있습니다.
               </div>
             </div>
           </div>
