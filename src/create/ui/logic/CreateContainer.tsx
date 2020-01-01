@@ -119,6 +119,8 @@ class CreateContainer extends React.Component<Props, States> {
     if (personalCubeService && !nameSub) {
       personalCubeService.changePersonalCubeQueryProps(name, value);
     }
+
+    this.findAllCubes(20);
   }
 
   findAllCubes(limit?: number) {
