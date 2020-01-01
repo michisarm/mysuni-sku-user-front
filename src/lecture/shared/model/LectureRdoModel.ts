@@ -60,6 +60,7 @@ class LectureRdoModel {
     return new LectureRdoModel({
       college: '',
       channel: '',
+      orderBy: OrderByType.Time,
       limit,
       offset,
     });
