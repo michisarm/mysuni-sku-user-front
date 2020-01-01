@@ -50,7 +50,7 @@ class HeaderContainer extends Component<Props, State> {
     const { searchValue } = this.state;
 
     if (searchValue) {
-      window.location.href = `/search?query=${searchValue}`;
+      window.location.href = encodeURI(`/search?query=${searchValue}`);
     }
   }
 
