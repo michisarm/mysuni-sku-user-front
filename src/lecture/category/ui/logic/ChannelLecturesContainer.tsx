@@ -9,7 +9,7 @@ import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
-import { CardSorting, SeeMoreButton } from '../../../shared';
+import { CardSorting, SeeMoreButton, OrderByType } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
@@ -46,7 +46,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state = {
-    sorting: 'latest',
+    sorting: OrderByType.Time,
   };
 
 
@@ -81,10 +81,12 @@ class ChannelLecturesContainer extends Component<Props, State> {
   async findPagingChannelLectures() {
     //
     const { match, pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     inMyLectureService!.findInMyLecturesAll();
-    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset);
+
+    const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
 
@@ -103,6 +105,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     this.setState({
       sorting: data.value,
+    }, () => {
+      this.init();
+      this.findPagingChannelLectures();
     });
   }
 

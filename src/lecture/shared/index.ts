@@ -13,6 +13,7 @@ export { default as CourseLectureModel } from './model/CourseLectureModel';
 export { default as LectureServiceType } from './model/LectureServiceType';
 export { default as LectureViewModel } from './model/LectureViewModel';
 export { default as ChannelCountRdo } from './model/ChannelCountRdo';
+export { default as OrderByType } from './model/OrderByType';
 export { default as StudentCdoModel } from './model/StudentCdoModel';
 export { default as StudentJoinRdoModel } from './model/StudentJoinRdoModel';
 export { default as StudentCountRdoModel } from './model/StudentCountRdoModel';
