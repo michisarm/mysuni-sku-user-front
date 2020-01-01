@@ -152,7 +152,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       } else {
         skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup);
         console.log('skProfileUdo====>', skProfileUdo);
-        skProfileService.modifySkProfile( skProfileUdo);
+        skProfileService.modifySkProfile(skProfileUdo);
       }
     }
     this.props.history.push('/profile/interest/learningType');

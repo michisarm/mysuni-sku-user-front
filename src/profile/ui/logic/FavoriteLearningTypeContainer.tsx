@@ -101,7 +101,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
       skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
       skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
-      console.log(StudySummary.asNameValues(skProfileService.studySummary));
+      // console.log(StudySummary.asNameValues(skProfileService.studySummary));
     }
 
     this.props.history.push('/');
