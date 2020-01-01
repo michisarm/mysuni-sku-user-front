@@ -1,5 +1,4 @@
-import {DramaEntity, getCookie, PatronKey} from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { DramaEntity, getCookie, PatronKey } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
