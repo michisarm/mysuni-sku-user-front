@@ -79,7 +79,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url, '_blank');
+      window.open(typeViewObject.url.findIndex('http') !== -1 ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
@@ -91,7 +91,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url, '_blank');
+      window.open(typeViewObject.url.findIndex('http') !== -1 ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');

@@ -128,7 +128,6 @@ class MenuItemContainer extends Component<Props, States> {
     const { myTrainings } =  myTrainingService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    console.log(myTrainings && myTrainings.length );
     return (
       <Segment className="full">
         <div className="ui tab active">

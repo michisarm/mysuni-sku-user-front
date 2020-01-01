@@ -15,6 +15,12 @@ class MyLearningSummaryApi {
     return axiosApi.get<MyLearningSummaryModel>(this.baseUrl)
       .then(response => response && response.data);
   }
+
+  findMyLearningSummaryYear(year: number) {
+    //
+    return axiosApi.get<MyLearningSummaryModel>(this.baseUrl + `/${year}`)
+      .then(response => response && response.data);
+  }
 }
 
 MyLearningSummaryApi.instance = new MyLearningSummaryApi();

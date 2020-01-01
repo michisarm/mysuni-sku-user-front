@@ -31,6 +31,17 @@ class MyLearningSummaryService {
       return myLearningSummary;
     });
   }
+
+  @action
+  async findMyLearningSummaryYear(year: number) {
+    //
+    const myLearningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+
+    return runInAction(() => {
+      this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
+      return myLearningSummary;
+    });
+  }
 }
 
 MyLearningSummaryService.instance = new MyLearningSummaryService(MyLearningSummaryApi.instance);
