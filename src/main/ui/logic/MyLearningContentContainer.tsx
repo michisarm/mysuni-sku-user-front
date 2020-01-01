@@ -54,7 +54,12 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onSelectMenu(type: string) {
     //
-    this.setState({ type }, this.findPagingList);
+    const { myTrainingService, inMyLectureService } = this.props;
+    this.setState({ type }, () => {
+      myTrainingService!.clear();
+      inMyLectureService!.clear();
+      this.findPagingList();
+    });
   }
 
   onViewDetail(e: any, data: any) {
