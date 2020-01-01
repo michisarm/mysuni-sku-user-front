@@ -262,7 +262,7 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.linkMediaUrl;
         break;
       case MediaType.InternalMedia:
-        videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].thumbUrl : '';
+        videoUrl = media.mediaContents.internalMedias.length ? `https://sku.ap.panopto.com${media.mediaContents.internalMedias[0].thumbUrl}` : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         break;
     }
