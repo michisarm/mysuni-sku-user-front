@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college';
+import ChannelCountRdo from '../../../model/ChannelCountRdo';
 
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
   colleges: CollegeModel[],
   activeCollege?: CollegeModel,
   channels?: ChannelModel[],
+  collegeCount?: number,
+  channelCounts?: ChannelCountRdo[],
   onClick: (e: any) => void,
   onActiveCollege: (e: any, college: CollegeModel) => void,
   onClickChannel: (e: any, channel?: ChannelModel) => void,
@@ -22,10 +25,14 @@ interface Props {
 @observer
 class CategoryView extends Component<Props> {
   //
+  static defaultProps = {
+    collegeCount: 0,
+  };
+
   render() {
     //
     const {
-      open, colleges, activeCollege, channels,
+      open, colleges, activeCollege, channels, collegeCount, channelCounts,
       onClick, onActiveCollege, onClickChannel, onModalOpen,
     } = this.props;
 
@@ -68,10 +75,19 @@ class CategoryView extends Component<Props> {
                     <div className="scrolling">
                       { activeCollege && (
                         <>
-                          <button onClick={(e) => onClickChannel(e)}>{activeCollege.name} 전체보기</button>
+                          <button onClick={(e) => onClickChannel(e)}>
+                            {activeCollege.name} 전체보기
+                            <span>({collegeCount})</span>
+                          </button>
+
                           { Array.isArray(channels) && (
-                            channels.map((channel) => (
-                              <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>{channel.name}</button>
+                            channels.map((channel, index) => (
+                              <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>
+                                {channel.name}
+                                <span>
+                                  ({channelCounts && channelCounts.length > 0 && channelCounts[index] && channelCounts[index].lectureCount})
+                                </span>
+                              </button>
                             ))
                           )}
                         </>
