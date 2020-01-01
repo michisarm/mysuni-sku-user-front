@@ -206,7 +206,7 @@ class MyTrainingPage extends Component<Props, State> {
                     model={value}
                     rating={rating || undefined}
                     // thumbnailImage="http://placehold.it/60x60"
-                    action={Lecture.ActionType.Add}
+                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}
                   />
