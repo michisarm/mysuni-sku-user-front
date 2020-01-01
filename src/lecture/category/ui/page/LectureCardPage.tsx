@@ -5,25 +5,34 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, mobxHelper } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper, ProposalState, LearningState } from 'shared';
+import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { ContentsServiceType, CubeTypeNameType, PersonalCubeService, CubeType } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
-import { LectureCardService, LectureServiceType } from 'lecture';
-import { LearningCardService, CourseSetModel } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'mytraining';
+import {
+  LectureCardService,
+  LectureServiceType,
+  RollBookService,
+  StudentCdoModel,
+  StudentCountRdoModel,
+  StudentService,
+} from 'lecture';
+import { CourseSetModel, LearningCardService } from 'course';
+import { InMyLectureCdoModel, InMyLectureService } from 'mytraining';
 import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
-
+import { State as SubState } from '../../../shared/LectureSubInfo';
 
 interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string }> {
+  skProfileService: SkProfileService,
   collegeService: CollegeService,
   personalCubeService: PersonalCubeService,
   cubeIntroService: CubeIntroService,
@@ -32,6 +41,8 @@ interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: 
   officeWebService: OfficeWebService,
   boardService: BoardService,
   lectureCardService: LectureCardService,
+  rollBookService: RollBookService,
+  studentService: StudentService,
   learningCardService: LearningCardService,
   reviewService: ReviewService,
   inMyLectureService?: InMyLectureService,
@@ -42,6 +53,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'skProfileService',
   'collegeService',
   'personalCube.personalCubeService',
   'personalCube.cubeIntroService',
@@ -50,6 +62,8 @@ interface State {
   'personalCube.officeWebService',
   'personalCube.boardService',
   'lecture.lectureCardService',
+  'lecture.rollBookService',
+  'lecture.studentService',
   'course.learningCardService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
@@ -69,13 +83,18 @@ class LectureCardPage extends Component<Props, State> {
 
   async init() {
     const {
-      match, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService,
-      mediaService, officeWebService, boardService, lectureCardService, learningCardService, inMyLectureService,
+      match, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
+      rollBookService, mediaService, officeWebService, boardService, lectureCardService, learningCardService, inMyLectureService,
     } = this.props;
     const { params } = match;
 
-
+    skProfileService.findSkProfile();
+    studentService.findIsJsonStudent(params.lectureCardId);
     collegeService.findCollege(params.collegeId);
+    rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId)
+      .then(rollBooks => {
+        rollBooks.map(rollBook => studentService!.findStudentCount(rollBook.id));
+      });
     const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
     reviewService.findReviewSummary(lectureCard!.reviewId);
     inMyLectureService!.findInMyLecture(lectureCard!.usid, LectureServiceType.Card);
@@ -106,22 +125,42 @@ class LectureCardPage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService,
+      personalCubeService, cubeIntroService, studentService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
+    const { studentCounts, studentJoins }: StudentService = studentService!;
+
+    let participantCount = 0;
+    studentCounts!.forEach((studentCount: StudentCountRdoModel) => {
+      participantCount += studentCount.approvedCount;
+    });
+
+    let state: SubState | undefined;
+    if (studentJoins.length && studentJoins[0]) {
+      const studentJoin = studentJoins[0];
+      if (studentJoin.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
+      if (studentJoin.proposalState === ProposalState.Approved) {
+        if (studentJoin.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (studentJoin.learningState === LearningState.Passed) state = SubState.Completed;
+        if (studentJoin.learningState === LearningState.Missed) state = SubState.Missed;
+        if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
+      }
+    }
 
     return {
       // Sub info
       required: personalCube.required,
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
-      participantCount: '0',  // Todo
+      participantCount,
 
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
       operatorCompany: cubeIntro.operation.operator.company,
       operatorEmail: cubeIntro.operation.operator.email,
+
+      state: state || undefined,
 
       // Fields
       subCategories: personalCube.subCategories,
@@ -280,6 +319,26 @@ class LectureCardPage extends Component<Props, State> {
     });
   }
 
+  getStudentCdo(): StudentCdoModel {
+    const {
+      skProfileService, rollBookService, boardService,
+    } = this.props;
+    const { skProfile } = skProfileService!;
+    const { rollBooks } = rollBookService!;
+    const { member } = skProfile;
+    return new StudentCdoModel({
+      rollBookId: rollBooks.length ? rollBooks[0].id : '',
+      name: member.name,
+      email: member.email,
+      company: member.company,
+      department: member.department,
+      proposalState: ProposalState.Submitted,
+      programLectureUsid: '',
+      courseLectureUsid: '',
+      enClosed: boardService!.board!.boardConfig!.enClosed,
+    });
+  }
+
   getMenus() {
     //
     const { personalCube } = this.props.personalCubeService;
@@ -348,14 +407,17 @@ class LectureCardPage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, personalCubeService, reviewService, inMyLectureService } = this.props;
+    const { collegeService, personalCubeService, reviewService, inMyLectureService, studentService } = this.props;
     const { college } = collegeService;
     const { personalCube } = personalCubeService;
     const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
+    const { studentJoins } = studentService!;
+    const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
+    const studentCdo = this.getStudentCdo();
 
     return (
       <ContentLayout
@@ -404,6 +466,9 @@ class LectureCardPage extends Component<Props, State> {
         <LectureCardContainer
           inMyLecture={inMyLecture}
           inMyLectureCdo={inMyLectureCdo}
+          studentCdo={studentCdo}
+          studentJoins={studentJoins}
+          lectureCardId={lectureCardId}
           cubeType={personalCube.contents.type}
           viewObject={viewObject}
           typeViewObject={typeViewObject}

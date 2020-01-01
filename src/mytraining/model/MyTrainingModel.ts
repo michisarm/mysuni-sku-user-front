@@ -29,6 +29,8 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   time: number = 0;
 
+  reviewId: string = '';
+
 
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
@@ -110,6 +112,7 @@ decorate(MyTrainingModel, {
   time: observable,
   required: observable,
   cubeTypeName: observable,
+  reviewId: observable,
 });
 
 export default MyTrainingModel;

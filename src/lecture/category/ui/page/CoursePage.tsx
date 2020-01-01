@@ -3,12 +3,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, mobxHelper, CubeType } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'mytraining';
 
 import { ReviewService } from '@nara.drama/feedback';
+import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
 import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
@@ -17,14 +18,18 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import LectureViewModel from '../../../shared/model/LectureViewModel';
+import StudentCdoModel from '../../../shared/model/StudentCdoModel';
+import RollBookService from '../../../shared/present/logic/RollBookService';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  skProfileService: SkProfileService,
   collegeService: CollegeService,
   coursePlanService: CoursePlanService,
   courseLectureService: CourseLectureService,
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
+  rollBookService: RollBookService,
   reviewService: ReviewService,
   inMyLectureService?: InMyLectureService,
 }
@@ -43,10 +48,12 @@ interface RouteParams {
 
 @inject(mobxHelper.injectFrom(
   'collegeService',
+  'skProfileService',
   'course.coursePlanService',
   'lecture.courseLectureService',
   'lecture.programLectureService',
   'lecture.lectureService',
+  'lecture.rollBookService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
 ))
@@ -228,6 +235,25 @@ class CoursePage extends Component<Props, State> {
     });
   }
 
+  getStudentCdo(): StudentCdoModel {
+    const {
+      skProfileService, rollBookService, programLectureService, courseLectureService,
+    } = this.props;
+    const { skProfile } = skProfileService!;
+    const { rollBook } = rollBookService!;
+    const { member } = skProfile;
+    return new StudentCdoModel({
+      rollBookId: rollBook.id,
+      name: member.name,
+      email: member.email,
+      company: member.company,
+      department: member.department,
+      proposalState: ProposalState.Submitted,
+      programLectureUsid: programLectureService!.programLecture!.usid,
+      courseLectureUsid: courseLectureService!.courseLecture!.usid,
+    });
+  }
+
   getMenus() {
     //
     const menus: typeof ContentMenu.Menu[] = [
@@ -286,9 +312,11 @@ class CoursePage extends Component<Props, State> {
     const { college } = collegeService;
     const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
+    const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
+    const studentCdo = this.getStudentCdo();
 
     return (
       <ContentLayout
@@ -312,6 +340,9 @@ class CoursePage extends Component<Props, State> {
         <LectureCardContainer
           inMyLecture={inMyLecture}
           inMyLectureCdo={inMyLectureCdo}
+          studentCdo={studentCdo}
+          studentJoins={[]}
+          lectureCardId={lectureCardId}
           cubeType={CubeType.None}
           viewObject={viewObject}
           typeViewObject={typeViewObject}
