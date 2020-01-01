@@ -2,6 +2,7 @@ import { Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
+import ReactQuill from 'react-quill';
 import { CubeIntroModel } from '../../../personalcube/cubeintro';
 import { BoardService } from '../../../personalcube';
 import { mobxHelper } from '../../../shared';
@@ -46,19 +47,29 @@ class SharedDetailIntroView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>교육내용</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{ cubeIntro.description && cubeIntro.description.description }</div>
+                    <ReactQuill
+                      theme="bubble"
+                      value={ cubeIntro.description && cubeIntro.description.description }
+                      readOnly
+                    />
+                    {/*<div>{ cubeIntro.description && cubeIntro.description.description }</div>*/}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.HeaderCell>이수조건</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{ cubeIntro.description && cubeIntro.description.completionTerms}</div>
+                    <div>{cubeIntro.description && cubeIntro.description.completionTerms}</div>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.HeaderCell>기타안내</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{cubeIntro.description && cubeIntro.description.guide}</div>
+                    <ReactQuill
+                      theme="bubble"
+                      value={cubeIntro.description && cubeIntro.description.guide}
+                      readOnly
+                    />
+                    {/*<div>{cubeIntro.description && cubeIntro.description.guide}</div>*/}
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

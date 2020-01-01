@@ -4,6 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ReactQuill from 'react-quill';
+import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
+import depot from '@nara.drama/depot';
 import { AnswerService, CategoryService, PostService } from '../../index';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -12,11 +14,23 @@ interface Props extends RouteComponentProps<{ postId: string }> {
   answerService?: AnswerService
 }
 
+interface States {
+  filesMap: Map<string, any>
+}
+
 @inject('postService', 'categoryService', 'answerService')
 @observer
 @reactAutobind
-class AnsweredDetailContainer extends React.Component<Props> {
+class AnsweredDetailContainer extends React.Component<Props, States> {
   //
+  constructor(props: Props) {
+    //
+    super(props);
+    this.state = {
+      filesMap: new Map<string, any>(),
+    };
+  }
+
   componentDidMount() {
     //
     const { postId } = this.props.match.params;
@@ -27,9 +41,33 @@ class AnsweredDetailContainer extends React.Component<Props> {
         .then(() => postService.findPostByPostId(postId))
         .then(() => {
           if (!postService.post.answer.id) answerService.clearAnswer();
-          else answerService.findAnswerByPostId(postId);
+          else {
+            answerService.findAnswerByPostId(postId)
+              .then(() => this.getFileIds());
+          }
         });
     }
+  }
+
+  getFileIds() {
+    //
+    const { answer } = this.props.answerService || {} as AnswerService;
+    const referenceFileBoxId = answer && answer.contents && answer.contents.depotId;
+
+    Promise.resolve()
+      .then(() => {
+        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
+      });
+  }
+
+  findFiles(type: string, fileBoxId: string) {
+    const { filesMap } = this.state;
+    depot.getDepotFiles(fileBoxId)
+      .then(files => {
+        filesMap.set(type, files);
+        const newMap = new Map(filesMap.set(type, files));
+        this.setState({ filesMap: newMap });
+      });
   }
 
   onClose(boardId: string) {
@@ -40,6 +78,7 @@ class AnsweredDetailContainer extends React.Component<Props> {
     //
     const { post } = this.props.postService || {} as PostService;
     const { answer } = this.props.answerService || {} as AnswerService;
+    const { filesMap } = this.state;
 
     return (
       <section className="content support">
@@ -53,7 +92,7 @@ class AnsweredDetailContainer extends React.Component<Props> {
                   </div>
                   <div className="user-info">
                     <span className="category">{post.category.name}</span>
-                    <span className="date">{answer.writtenTime && new Date(answer.writtenTime).toLocaleString()}</span>
+                    <span className="date">{answer.writtenTime && new Date(answer.writtenTime).toLocaleDateString()}</span>
                   </div>
                   <div className="actions">
                     <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
@@ -73,7 +112,17 @@ class AnsweredDetailContainer extends React.Component<Props> {
                     />
                   </div>
                   <div className="file">
-                    <span>첨부파일 :</span> <a href="#" className="link"><span className="ellipsis">다운로드 Width값 700px 이후로는 말줌임 표시 부탁드립니다. Mobile_App_UI_UX_GUI_Design_Tutorials.pptx</span></a>
+                    <span>첨부파일 :</span>
+                    {
+                      filesMap && filesMap.get('reference')
+                      && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                        <a href="#" className="link" key={index}>
+                          <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                            {foundedFile.name}
+                          </span>
+                        </a>
+                      )) || ''
+                    }
                   </div>
                 </div>
               )

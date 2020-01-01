@@ -4,6 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
+import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
+import depot from '@nara.drama/depot';
 import { CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
@@ -14,6 +16,7 @@ interface Props extends RouteComponentProps<{ postId: string }> {
 
 interface States {
   confirmWinOpen: boolean
+  filesMap: Map<string, any>
 }
 
 @inject('postService', 'categoryService')
@@ -26,6 +29,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
     super(props);
     this.state = {
       confirmWinOpen: false,
+      filesMap: new Map<string, any>(),
     };
   }
 
@@ -39,8 +43,30 @@ class QnaDetailContainer extends React.Component<Props, States> {
         .then(() => postService.findPostByPostId(postId))
         .then(() => {
           if (postService.post.category.id) categoryService.findCategoryByCategoryId(postService.post.category.id);
-        });
+        })
+        .then(() => this.getFileIds());
     }
+  }
+
+  getFileIds() {
+    //
+    const { post } = this.props.postService || {} as PostService;
+    const referenceFileBoxId = post && post.contents && post.contents.depotId;
+
+    Promise.resolve()
+      .then(() => {
+        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
+      });
+  }
+
+  findFiles(type: string, fileBoxId: string) {
+    const { filesMap } = this.state;
+    depot.getDepotFiles(fileBoxId)
+      .then(files => {
+        filesMap.set(type, files);
+        const newMap = new Map(filesMap.set(type, files));
+        this.setState({ filesMap: newMap });
+      });
   }
 
   handleCloseConfirmWin() {
@@ -79,6 +105,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
     const { confirmWinOpen } = this.state;
     const { post } = this.props.postService || {} as PostService;
     const { category } = this.props.categoryService || {} as CategoryService;
+    const { filesMap } = this.state;
 
     return (
       <section className="content support">
@@ -96,7 +123,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                     <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
                   </div>
                   <div className="actions">
-                    <Button icon className="left postset delete"><Icon name="delete" onClick={() => this.deleteQnaDetail()} />Delete</Button>
+                    <Button icon className="left postset delete" onClick={() => this.deleteQnaDetail()}><Icon name="delete" />Delete</Button>
                     <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
                   </div>
                 </div>
@@ -113,7 +140,17 @@ class QnaDetailContainer extends React.Component<Props, States> {
                     readOnly
                   />
                   <div className="file">
-                    <span>첨부파일 :</span> <a href="#" className="link"><span className="ellipsis">다운로드 Width값 700px 이후로는 말줌임 표시 부탁드립니다. Mobile_App_UI_UX_GUI_Design_Tutorials.pptx</span></a>
+                    <span>첨부파일 :</span>
+                    {
+                      filesMap && filesMap.get('reference')
+                      && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                        <a href="#" className="link" key={index}>
+                          <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                            {foundedFile.name}
+                          </span>
+                        </a>
+                      )) || '-'
+                    }
                   </div>
                 </div>
               </div>

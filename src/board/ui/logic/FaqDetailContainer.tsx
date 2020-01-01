@@ -48,7 +48,7 @@ class FaqDetailContainer extends React.Component<Props> {
                   <div className="title-inner">
                     <div className="title"> {post.title}</div>
                     <div className="user-info">
-                      <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
+                      <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
                     </div>
                     <div className="actions">
                       <Button icon className="left postset commu-list16" onClick={() => this.onClose('FAQ')}><Icon

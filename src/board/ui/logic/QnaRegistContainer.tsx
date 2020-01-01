@@ -5,6 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import 'react-quill/dist/quill.snow.css';
 import { ContentLayout } from 'shared';
+import { FileBox, PatronType } from '@nara.drama/depot';
 import { BoardService, CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
@@ -78,6 +79,7 @@ class QnaRegistContainer extends React.Component<Props, States> {
     const { postService } = this.props;
     const { post } = this.props.postService || {} as PostService;
 
+    console.log(post);
     if (postService) postService.registerPost(post);
     this.onClose('Q&A');
     if (PostModel.isBlank(post) === 'success') {
@@ -111,6 +113,13 @@ class QnaRegistContainer extends React.Component<Props, States> {
         alertWinOpen: true,
       });
     }
+  }
+
+  getFileBoxIdForReference(fileBoxId: string) {
+    //
+    const { postService } = this.props;
+    const { post } = postService || {} as PostService;
+    if (postService && post.contents) postService.onChangerContentsProps('contents.depotId', fileBoxId);
   }
 
   render() {
@@ -187,11 +196,22 @@ class QnaRegistContainer extends React.Component<Props, States> {
               <Form.Field>
                 <label>첨부파일</label>
                 <Form>
-                  <div className="ui input file">
-                    <input type="text" readOnly />
-                    <Icon className="clear link" />
-                    <label htmlFor="hidden-new-file" className="ui button">파일찾기</label>
-                    <input type="file" id="hidden-new-file" />
+                  <div className="lg-attach">
+                    <div className="attach-inner">
+                      <FileBox
+                        patronType={PatronType.Audience}
+                        patronKeyString="sampleAudience"
+                        onChange={this.getFileBoxIdForReference}
+                        pavilionId="samplePavilion"
+                        id={post && post.contents && post.contents.depotId || ''}
+                      />
+                      <div className="bottom">
+                        <span className="text1"><Icon className="info16" />
+                          <span className="blind">information</span>
+                          문서 및 이미지 파일을 업로드 가능합니다.
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </Form>
               </Form.Field>
