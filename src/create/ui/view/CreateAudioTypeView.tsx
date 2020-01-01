@@ -95,7 +95,7 @@ class CreateAudioTypeView extends React.Component<Props> {
           />
           <Radio
             className="base"
-            label="오디오 파일 링크"
+            label="오디오 링크"
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
