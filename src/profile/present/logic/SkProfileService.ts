@@ -40,6 +40,7 @@ export default class SkProfileService {
   async findSkProfile() {
     //
     const skProfile = await this.skProfileApi.findSkProfile();
+    console.log('skProfile', skProfile);
     return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 

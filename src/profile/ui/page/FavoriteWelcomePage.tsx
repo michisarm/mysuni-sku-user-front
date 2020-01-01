@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import { Button, Image } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router-dom';
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { SkProfileModel } from '../..';
 
@@ -28,7 +28,7 @@ class FavoriteWelcomePage extends Component<Props> {
   }
 
   render() {
-    const {skProfileService} = this.props;
+    const { skProfileService } = this.props;
 
     const { skProfile } = skProfileService as SkProfileService;
     const { member } = skProfile as SkProfileModel;

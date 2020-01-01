@@ -1,3 +1,4 @@
+import PisAgreementPage from './ui/page/PisAgreementPage';
 import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
 import FavoriteCollegeContainer from './ui/logic/FavoriteCollegeContainer';
 import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
@@ -11,6 +12,7 @@ import { StudySummary } from './model/StudySummary';
 
 export {
   SkProfileModel, EmployeeModel, CodeNameModel, StudySummary,
+  PisAgreementPage,
   FavoriteWelcomePage,
   LoadingPage,
   FavoriteCollegeContainer,
