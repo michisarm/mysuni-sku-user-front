@@ -79,7 +79,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.findIndex('http') !== -1 ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
@@ -91,7 +91,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.findIndex('http') !== -1 ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
@@ -220,13 +220,13 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getOnCancel() {
-    const { cubeType, studentJoins } = this.props;
+    const { cubeType, studentJoins, studentService, studentCdo } = this.props;
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
         if (studentJoins.length) {
-          return this.onClickEnrollment;
+          return () => studentService!.removeStudent(studentCdo.rollBookId);
         }
         return undefined;
       case CubeType.Audio:

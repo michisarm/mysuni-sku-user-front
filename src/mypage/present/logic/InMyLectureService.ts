@@ -54,6 +54,7 @@ class InMyLectureService {
   @action
   async findInMyLecture(serviceId: string, serviceType: string) {
     const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+    console.log(inMyLecture);
     runInAction(() => {
       this.inMyLecture = new InMyLectureModel(inMyLecture);
       return inMyLecture;
