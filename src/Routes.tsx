@@ -13,6 +13,7 @@ class Routes extends React.PureComponent {
   //
   render() {
     //
+    // @ts-ignore
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <UserApp>
@@ -47,6 +48,7 @@ class Routes extends React.PureComponent {
             <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit" component={withSplitting(() => import('./personalcube').then(({ ReplyFormPage }) => ReplyFormPage))} />
 
             {/* profile */}
+            <Route exact path="/profile/agreement" component={withSplitting(() => import('./profile').then(({ PisAgreementContainer }) => PisAgreementContainer))} />
             <Route exact path="/profile/interest" component={withSplitting(() => import('./profile').then(({ FavoriteWelcomePage }) => FavoriteWelcomePage))} />
             <Route exact path="/profile/interest/college" component={withSplitting(() => import('./profile').then(({ FavoriteCollegeContainer }) => FavoriteCollegeContainer))} />
             <Route exact path="/profile/interest/job" component={withSplitting(() => import('./profile').then(({ FavoriteJobContainer }) => FavoriteJobContainer))} />

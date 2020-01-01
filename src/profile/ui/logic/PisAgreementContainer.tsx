@@ -6,7 +6,7 @@ import { Button, Icon, Radio } from 'semantic-ui-react';
 
 
 @reactAutobind
-class PisAgreementPage extends Component {
+class PisAgreementContainer extends Component {
   state = {
     value: 'noAgreement',
     globalValue: 'noGrobalAgreement',
@@ -26,7 +26,7 @@ class PisAgreementPage extends Component {
         { text: '개인정보', path: '/profile' },
         { text: '개인정보사용동의' },
       ]}
-        className="content-half bg-white"
+        className="content bg-white privacy-agree"
       >
         <section className="content bg-white privacy-agree">
           <div className="terms-content">
@@ -367,4 +367,4 @@ class PisAgreementPage extends Component {
   }
 }
 
-export default PisAgreementPage;
+export default PisAgreementContainer;
