@@ -13,7 +13,7 @@ class SearchBarContainer extends Component {
   onSearch(value: string) {
     //
     if (value) {
-      window.location.href = `/search?query=${value}`;
+      window.location.href = encodeURI(`/search?query=${value}`);
     }
   }
 
