@@ -1,4 +1,4 @@
-import { Table } from 'semantic-ui-react';
+import { Form, Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { mobxHelper, SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
@@ -7,98 +7,106 @@ import { reactAutobind } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import { MediaService, MediaType } from '../../../personalcube/media';
+import { OfficeWebService } from '../../../personalcube/officeweb';
 
 interface Props {
   personalCube: PersonalCubeModel
   cubeType: string
   mediaService?: MediaService
   filesMap?: Map<string, any>
+  goToVideo: (url: string) => void
+  officeWebService ?: OfficeWebService
 }
 
-@inject(mobxHelper.injectFrom('personalCube.mediaService'))
+@inject(mobxHelper.injectFrom('personalCube.mediaService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind
 class SharedTypeDetailView extends React.Component<Props> {
-  render() {
-    const { personalCube, filesMap } = this.props;
-    const { media } = this.props.mediaService || {} as MediaService;
 
+  renderVideo() {
+    const { media } = this.props.mediaService || {} as MediaService;
+    const { filesMap, goToVideo } = this.props;
+    console.log(filesMap);
+    return (
+      <>
+        <Table.Row>
+          <Table.HeaderCell>교육자료</Table.HeaderCell>
+          <Table.Cell>
+            {
+              media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length
+              && media.mediaContents.internalMedias.map(internalMedia => (
+                <Form.Field>
+                  <p><a onClick={() => goToVideo(internalMedia.viewUrl)}>{internalMedia.folderName} | {internalMedia.name} </a></p>
+                </Form.Field>
+              )) || null
+            }
+            {
+              media && media.mediaType === MediaType.LinkMedia ? (
+                <div className="text2">
+                  <a href="#">
+                    {media && media.mediaContents && media.mediaContents.linkMediaUrl || ''}
+                  </a>
+                </div>
+              ) : ''
+            }
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.HeaderCell>참고자료</Table.HeaderCell>
+          <Table.Cell>
+            {
+              filesMap && filesMap.get('reference')
+              && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
+              )) || '-'
+            }
+          </Table.Cell>
+        </Table.Row>
+      </>
+    );
+  }
+
+  renderWebPage() {
+    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+    return (
+      <>
+        <Table.Row>
+          <Table.HeaderCell>교육자료</Table.HeaderCell>
+          <Table.Cell>
+            {officeWeb && officeWeb.fileBoxId}
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.HeaderCell>참고자료</Table.HeaderCell>
+          <Table.Cell>
+            {officeWeb && officeWeb.webPageUrl}
+          </Table.Cell>
+        </Table.Row>
+      </>
+    );
+  }
+
+  render() {
+    const { personalCube, filesMap, cubeType } = this.props;
+    const { media } = this.props.mediaService || {} as MediaService;
+    console.log(personalCube);
     return (
       <>
         <div className="section-tit">
           <span className="text1">부가정보</span>
         </div>
-
-
         <Table className="create">
           <Table.Body>
-            <Table.Row>
-              <Table.HeaderCell>교육자료</Table.HeaderCell>
-              <Table.Cell>
-                {
-                  media && media.mediaType === MediaType.InternalMedia ? (
-                    <Table.Cell>
-                      <Table celled>
-                        <colgroup>
-                          <col width="100%" />
-                        </colgroup>
-                        <Table.Header>
-                          <Table.Row>
-                            <Table.HeaderCell textAlign="center">파일명</Table.HeaderCell>
-                          </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                          <Table.Row>
-                            <Table.Cell>SK_university_ADMIN_MMI.ppt  +++</Table.Cell>
-                          </Table.Row>
-                        </Table.Body>
-                      </Table>
-                    </Table.Cell>
-                  ) : ''
-                }
-                {
-                  media && media.mediaType === MediaType.LinkMedia ? (
-                    <div className="text2">
-                      <a href="#">
-                        {media && media.mediaContents && media.mediaContents.linkMediaUrl || ''}
-                      </a>
-                    </div>
-                  ) : ''
-                }
-                {
-                  media && media.mediaType === MediaType.InternalMediaUpload ? (
-                    <>
-                      <div className="text2">
-                        <a href="#">
-                          {
-                          media && media.mediaContents && media.mediaContents.contentsProvider
-                          && media.mediaContents.contentsProvider && media.mediaContents.contentsProvider.contentsProviderType
-                          && media.mediaContents.contentsProvider.contentsProviderType.name || ''
-                        }
-                        </a>
-                      </div>
-                      <div className="text2">
-                        <a href="#">
-                          {media && media.mediaContents && media.mediaContents.contentsProvider && media.mediaContents.contentsProvider.url || ''}
-                        </a>
-                      </div>
-                    </>
-                  ) : ''
-                }
-                {/*<div className="text2"><a href="#">Education UX/UI class_1.avi</a></div>*/}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.HeaderCell>참고자료</Table.HeaderCell>
-              <Table.Cell>
-                {
-                  filesMap && filesMap.get('reference')
-                  && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                    <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
-                  )) || '-'
-                }
-              </Table.Cell>
-            </Table.Row>
+            {
+              cubeType === 'Video' || cubeType === 'Audio' ? (
+                this.renderVideo()
+              ) : ''
+            }
+            {
+              cubeType === 'WebPage' || cubeType === 'Documents' ? (
+                this.renderWebPage()
+              ) : ''
+            }
             <Table.Row>
               <Table.HeaderCell>학습카드 공개여부</Table.HeaderCell>
               <Table.Cell>

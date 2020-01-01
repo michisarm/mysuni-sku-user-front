@@ -7,6 +7,7 @@ import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
+import OrderByType from '../../model/OrderByType';
 
 
 @autobind
@@ -48,9 +49,9 @@ class LectureService {
   // Lectures ----------------------------------------------------------------------------------------------------------
 
   @action
-  async findPagingCollegeLectures(collegeId: string, limit: number, offset: number) {
+  async findPagingCollegeLectures(collegeId: string, limit: number, offset: number, orderBy: OrderByType) {
     //
-    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset));
+    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
@@ -62,9 +63,9 @@ class LectureService {
   }
 
   @action
-  async findPagingChannelLectures(channelId: string, limit: number, offset: number) {
+  async findPagingChannelLectures(channelId: string, limit: number, offset: number, orderBy: OrderByType) {
     //
-    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset));
+    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));

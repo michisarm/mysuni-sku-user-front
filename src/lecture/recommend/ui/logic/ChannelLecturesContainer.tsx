@@ -12,6 +12,7 @@ import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
+import OrderByType from '../../../shared/model/OrderByType';
 
 
 interface Props extends RouteComponentProps {
@@ -58,7 +59,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
   async findLectures() {
     //
     const { lectureService, reviewService, inMyLectureService, channel } = this.props;
-    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0);
+    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0, OrderByType.Time);
     inMyLectureService!.findInMyLecturesAll();
 
     this.setState(({

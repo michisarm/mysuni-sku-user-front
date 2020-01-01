@@ -8,8 +8,7 @@ import { PersonalCubeModel } from 'personalcube/personalcube';
 import { OfficeWebModel } from 'personalcube/officeweb';
 
 interface Props {
-  handleChangeSearchFilter:(e: any, data: any) => void
-  searchFilter: string
+  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   officeWeb: OfficeWebModel
   onChangeOfficeWebProps: (name: string, value: string | Date, nameSub?: string) => void
   getFileBoxIdForReference: (fileBoxId: string) => void
@@ -21,7 +20,7 @@ interface Props {
 class CreateWebPageTypeView extends React.Component<Props> {
   render() {
 
-    const { handleChangeSearchFilter, searchFilter, officeWeb, onChangeOfficeWebProps, getFileBoxIdForReference, personalCube } = this.props;
+    const { onChangePersonalCubeProps, officeWeb, onChangeOfficeWebProps, getFileBoxIdForReference, personalCube } = this.props;
 
     return (
       <>
@@ -49,13 +48,23 @@ class CreateWebPageTypeView extends React.Component<Props> {
 
         <Form.Field>
           <label>참고자료</label>
-          <FileBox
-            patronType={PatronType.Audience}
-            patronKeyString="sampleAudience"
-            onChange={getFileBoxIdForReference}
-            pavilionId="samplePavilion"
-            id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
-          />
+          <div className="lg-attach">
+            <div className="attach-inner">
+              <FileBox
+                patronType={PatronType.Audience}
+                patronKeyString="sampleAudience"
+                onChange={getFileBoxIdForReference}
+                pavilionId="samplePavilion"
+                id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
+              />
+              <div className="bottom">
+                <span className="text1"><Icon className="info16" />
+                  <span className="blind">information</span>
+                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 000 Byte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
+                </span>
+              </div>
+            </div>
+          </div>
         </Form.Field>
 
         <Form.Field>
@@ -65,16 +74,16 @@ class CreateWebPageTypeView extends React.Component<Props> {
             label="공개"
             name="radioGroup"
             value={SearchFilter.SearchOn}
-            onChange={handleChangeSearchFilter}
-            checked = {searchFilter === SearchFilter.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
             value={SearchFilter.SearchOff}
-            onChange={handleChangeSearchFilter}
-            checked = {searchFilter === SearchFilter.SearchOff}
+            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
+            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
         </Form.Field>
       </>
