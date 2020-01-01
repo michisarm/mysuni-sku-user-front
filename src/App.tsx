@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { axiosApi, reactAlert } from '@nara.platform/accent';
+// import { axiosApi, reactAlert } from '@nara.platform/accent';
+import { axiosApi } from '@nara.platform/accent';
 
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';

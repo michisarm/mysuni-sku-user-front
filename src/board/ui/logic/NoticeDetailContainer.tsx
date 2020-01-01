@@ -5,6 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
 import { PostService } from '../../index';
+import { ContentLayout } from '../../../shared';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
@@ -31,7 +32,13 @@ class NoticeDetailContainer extends React.Component<Props> {
     const { post } = this.props.postService || {} as PostService;
 
     return (
-      <section className="content support">
+      <ContentLayout
+        className="support"
+        breadcrumb={[
+          { text: 'Support' },
+          { text: 'Notice' },
+        ]}
+      >
         <div className="post-view-wrap">
           <div className="post-view">
             {
@@ -40,7 +47,7 @@ class NoticeDetailContainer extends React.Component<Props> {
             <div className="title-inner">
               <div className="title">{post.title}</div>
               <div className="user-info">
-                <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
+                <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
               </div>
               <div className="actions">
                 <Button icon className="left postset commu-list16" onClick={() => this.onClose('Notice')}><Icon className="commu-list16" />List</Button>
@@ -71,7 +78,7 @@ class NoticeDetailContainer extends React.Component<Props> {
             </div>
           </Segment>
         </div>
-      </section>
+      </ContentLayout>
     );
   }
 }

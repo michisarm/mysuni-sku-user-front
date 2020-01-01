@@ -31,7 +31,7 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 
-interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string }> {
+interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
   skProfileService: SkProfileService,
   collegeService: CollegeService,
   personalCubeService: PersonalCubeService,
@@ -95,11 +95,15 @@ class LectureCardPage extends Component<Props, State> {
       .then(rollBooks => {
         rollBooks.map(rollBook => studentService!.findStudentCount(rollBook.id));
       });
-    const lectureCard = await lectureCardService.findLectureCard(params.lectureCardId);
-    reviewService.findReviewSummary(lectureCard!.reviewId);
-    inMyLectureService!.findInMyLecture(lectureCard!.usid, LectureServiceType.Card);
-    const learningCard = await learningCardService.findLearningCard(lectureCard!.learningCard.id);
-    const personalCube = await personalCubeService.findPersonalCube(learningCard.personalCube.id);
+
+    lectureCardService.findLectureCard(params.lectureCardId)
+      .then((lectureCard) => {
+        reviewService.findReviewSummary(lectureCard!.reviewId);
+        inMyLectureService!.findInMyLecture(lectureCard!.usid, LectureServiceType.Card);
+      });
+
+    const personalCube = await personalCubeService.findPersonalCube(params.cubeId);
+
     if (personalCube) {
       const { service, contents } = personalCube.contents;
 
@@ -118,7 +122,6 @@ class LectureCardPage extends Component<Props, State> {
         this.setState({ type: 'Posts' });
       }
     }
-    // lectureCardService.findLectureCard(params.lectureCardId);
   }
 
 
@@ -262,7 +265,7 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.linkMediaUrl;
         break;
       case MediaType.InternalMedia:
-        videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].thumbUrl : '';
+        videoUrl = media.mediaContents.internalMedias.length ? `https://sku.ap.panopto.com${media.mediaContents.internalMedias[0].thumbUrl}` : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         break;
     }

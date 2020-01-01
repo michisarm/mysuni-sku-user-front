@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+
 import { UserApp, withSplitting } from './shared';
+import NotFoundPage from './layout/NotFoundPage';
 
 
 class Routes extends React.PureComponent {
@@ -76,6 +78,7 @@ class Routes extends React.PureComponent {
             {/*  expert */}
             <Route exact path="/expert/instructor" component={withSplitting(() => import('./expert').then(({ ExpertContainer }) => ExpertContainer))} />
 
+            <Route component={NotFoundPage} />
           </Switch>
         </UserApp>
       </BrowserRouter>

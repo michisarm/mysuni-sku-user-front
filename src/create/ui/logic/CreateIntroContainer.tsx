@@ -81,7 +81,6 @@ class CreateIntroContainer extends React.Component<Props, States> {
     } = this.props;
     if (personalCubeService && cubeIntroService
       && mediaService && boardService && officeWebService) {
-      personalCubeService.clearPersonalCube();
       personalCubeService.clearFileName();
       cubeIntroService.clearCubeIntro();
       mediaService.clearMedia();

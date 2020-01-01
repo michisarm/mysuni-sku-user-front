@@ -88,7 +88,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
           <Radio
             className="base"
-            label="영상 가져오기"
+            label="영상파일 업로드"
             value={MediaType.InternalMedia}
             checked={media && media.mediaType === 'InternalMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}

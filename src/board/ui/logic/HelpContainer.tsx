@@ -1,4 +1,4 @@
-import { Label, Icon } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
@@ -23,21 +23,17 @@ class HelpContainer extends React.Component<Props> {
         <Label className="onlytext">
           <Icon className="tip16" /><span>유용한 도움말</span>
         </Label>
-        {
+        <div className="q-list">
+          {
           faqPosts && faqPosts.totalCount && faqPosts.results.map((faqPost, index) => (
-            <div className="q-list">
-              <a target="_blank" key = {index}>
-                <span className="ellipsis" onClick={() => routeToFaqDetail(faqPost.postId)}>
-                  {faqPost.title}
-                </span>
-              </a>
-            </div>
-          )) || (
-            <div className="q-list">
-              등록된 도움말이 없습니다.
-            </div>
-          )
+            <a target="_blank" key = {index}>
+              <span className="ellipsis" onClick={() => routeToFaqDetail(faqPost.postId)}>
+                {faqPost.title}
+              </span>
+            </a>
+          )) || '등록된 도움말이 없습니다.'
         }
+        </div>
       </div>
     );
   }

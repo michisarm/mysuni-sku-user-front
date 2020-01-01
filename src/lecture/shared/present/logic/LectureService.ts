@@ -91,18 +91,18 @@ class LectureService {
   }
 
   @action
-  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  async findLectureViews(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(lectureCardUsids, courseLectureUsids);
+    const lectureViews = await this.lectureApi.findLectureViews(coursePlanId, lectureCardUsids, courseLectureUsids);
 
     runInAction(() => this._lectureViews = lectureViews);
     return lectureViews;
   }
 
   @action
-  async findSubLectureViews(courseId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
+  async findSubLectureViews(courseId: string, coursePlanId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(lectureCardIds, courseLectureIds);
+    const lectureViews = await this.lectureApi.findLectureViews(coursePlanId, lectureCardIds, courseLectureIds);
 
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
     return lectureViews;

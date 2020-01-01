@@ -45,7 +45,7 @@ class LectureApi {
       .then(response => response && response.data || []);
   }
 
-  findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  findLectureViews(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
     if ((!lectureCardUsids || lectureCardUsids.length < 1) && (!courseLectureUsids || courseLectureUsids.length < 1 )) {
       return Promise.resolve([]);
@@ -60,7 +60,7 @@ class LectureApi {
     if (courseLectureUsids && courseLectureUsids.length > 0) {
       courseLectureIdsParam = courseLectureUsids.map((courseLectureUsid) => `courseLectureIds=${courseLectureUsid}`).join('&');
     }
-    const queryParams = `${lectureCardIdsParam}&${courseLectureIdsParam}`;
+    const queryParams = `coursePlanId=${coursePlanId}&${lectureCardIdsParam}&${courseLectureIdsParam}`;
 
     return axiosApi.get<LectureViewModel[]>(this.baseUrl + `/view?${queryParams}`)
       .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);

@@ -36,8 +36,8 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
           <label>교육목표</label>
           <div className="ui form">
             <div className="ui right-top-count input">
-              {/* .error // */}
-              <span className="count"><span className="now">0</span>/
+              <span className="count">
+                <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.goal && cubeIntro.description.goal.length || 0}</span>/
                 <span className="max">500</span>
               </span>
               <textarea
@@ -53,8 +53,8 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
           <label>교육대상</label>
           <div className="ui form">
             <div className="ui right-top-count input">
-              {/* .error // */}
-              <span className="count"><span className="now">0</span>/
+              <span className="count">
+                <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.applicants && cubeIntro.description.applicants.length || 0}</span>/
                 <span className="max">500</span>
               </span>
               <textarea

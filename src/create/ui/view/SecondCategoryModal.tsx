@@ -247,49 +247,41 @@ class SecondCategoryModal extends React.Component<Props, States> {
                         <div className="select-area">
                           <div className="scrolling-60vh">
                             {
-                            colleges && colleges.length && colleges.map((college, index) => {
-                              const keyValue = String(index).concat('-', String(index));
-                              return (
-                                <Accordion className="channel" key={keyValue}>
-                                  <Accordion.Title
-                                    active={activeIndex === index}
-                                    index={index}
-                                    onClick={this.handleClick}
-                                    key={keyValue}
-                                    value={college}
-                                  >
-                                    <span className={`name ${color[index]}`}>{college.name}</span>
-                                    <Icon onClick={() => this.selectCollegeButton(college)} />
-                                  </Accordion.Title>
-                                  <Accordion.Content active={activeIndex === index}>
-                                    <ul>
-                                      {
+                            colleges && colleges.length && colleges.map((college, index) => (
+                              <Accordion className="channel" key={`college-${index}`}>
+                                <Accordion.Title
+                                  active={activeIndex === index}
+                                  index={index}
+                                  onClick={this.handleClick}
+                                  value={college}
+                                >
+                                  <span className={`name ${color[index]}`}>{college.name}</span>
+                                  <Icon onClick={() => this.selectCollegeButton(college)} />
+                                </Accordion.Title>
+                                <Accordion.Content active={activeIndex === index}>
+                                  <ul>
+                                    {
                                         activeIndex === index && selectedSubCollege
                                         && selectedSubCollege.channels && selectedSubCollege.channels.length
-                                        && selectedSubCollege.channels.map((channel, idx) => {
-                                          const keySubValue = keyValue.concat('-', String(idx));
-                                          return (
-                                            <li key={keySubValue}>
-                                              <Checkbox
-                                                className="base"
-                                                key={keySubValue}
-                                                checked={!!channelListMap.get(`${channel.id}`)}
-                                                disabled={
+                                        && selectedSubCollege.channels.map((channel, idx) => (
+                                          <li key={`channel-${idx}`}>
+                                            <Checkbox
+                                              className="base"
+                                              checked={!!channelListMap.get(`${channel.id}`)}
+                                              disabled={
                                                   personalCube && personalCube.category && personalCube.category.channel
                                                   && personalCube.category.channel.id === channel.id
                                                 }
-                                                label={channel.name}
-                                                onChange={() => this.selectChannelButton(channel)}
-                                              />
-                                            </li>
-                                          );
-                                        }) || null
+                                              label={channel.name}
+                                              onChange={() => this.selectChannelButton(channel)}
+                                            />
+                                          </li>
+                                        )) || null
                                       }
-                                    </ul>
-                                  </Accordion.Content>
-                                </Accordion>
-                              );
-                            })
+                                  </ul>
+                                </Accordion.Content>
+                              </Accordion>
+                            ))
                           }
 
                           </div>

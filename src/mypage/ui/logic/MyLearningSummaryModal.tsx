@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { mobxHelper } from 'shared';
 import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
+import moment from 'moment';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 interface Props {
@@ -44,6 +45,18 @@ class MyLearningSummaryModal extends Component<Props> {
     });
   }
 
+  getChartValue() {
+    //
+    const { myLearningSummaryService } = this.props;
+    const { suniLearningTime, myCompanyLearningTime } = myLearningSummaryService!.myLearningSummary;
+
+
+    if (!(suniLearningTime + myCompanyLearningTime)) {
+      return 0;
+    }
+    return  Math.floor(suniLearningTime / (suniLearningTime + myCompanyLearningTime) * 360);
+  }
+
   render() {
     const { open } = this.state;
     const { trigger, myLearningSummaryService  } = this.props;
@@ -60,6 +73,8 @@ class MyLearningSummaryModal extends Component<Props> {
     const { hour: leadershipHour, minute: leadershipMinute } = timeToHourMinute(myLearningSummary.leadershipCollegeTime);
     const { hour: managementHour, minute: managementMinute } = timeToHourMinute(myLearningSummary.managementCollegeTime);
 
+    const today = moment(new Date()).format('YYYY.MM.DD');
+
     return (
       <Modal
         open={open}
@@ -71,7 +86,7 @@ class MyLearningSummaryModal extends Component<Props> {
 
         <Modal.Header className="res">
           학습 이수 시간
-          <span className="sub f12">SK University에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을 구분하여 확인하실 수 있습니다.</span>
+          <span className="sub f12">mySUNI에서 이수한 학습 시간과 자사에서 인정 받은 학습 시간을 구분하여 확인하실 수 있습니다.</span>
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-80vh">
@@ -80,7 +95,7 @@ class MyLearningSummaryModal extends Component<Props> {
                 <div className="row head">
                   <div className="cell v-middle">
                     <Icon className="total-time16" /><span className="blind">total time</span>
-                    <span className="text01">{myLearningSummary.year}</span>
+                    <span className="text01">{myLearningSummary.year}.01.01 ~ {today}</span>
                     <span className="text02">총 학습시간</span>
                   </div>
                   <div className="cell v-middle"><span className="text01">College 별 학습 시간</span>
@@ -94,7 +109,7 @@ class MyLearningSummaryModal extends Component<Props> {
                       <span>{minute || '00'}</span><span className="u">m</span>
                     </div>
                     <div className="chart">
-                      <div className="ui pie w200" data-value="30">
+                      <div className="ui pie w200" data-value={this.getChartValue()}>
                         <span className="left" />
                         <span className="right" />
                       </div>

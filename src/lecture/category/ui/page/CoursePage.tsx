@@ -122,20 +122,20 @@ class CoursePage extends Component<Props, State> {
 
   async findReviewFeedbackAndLectureViews(reviewId: string, lectureCardUsids: string[], courseLectureUsids?: string[], ) {
     //
-    const { lectureService, reviewService } = this.props;
+    const { match, lectureService, reviewService } = this.props;
 
     reviewService.findReviewSummary(reviewId);
-    return lectureService.findLectureViews(lectureCardUsids, courseLectureUsids);
+    return lectureService.findLectureViews(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
   }
 
   async findSubLectureViews(lectureViews: LectureViewModel[]) {
     //
-    const { lectureService } = this.props;
+    const { match, lectureService } = this.props;
 
     lectureViews.map(async (lectureView) => {
       if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
         && lectureView.lectureCardUsids && lectureView.lectureCardUsids.length > 0) {
-        await lectureService.findSubLectureViews(lectureView.id, lectureView.lectureCardUsids);
+        await lectureService.findSubLectureViews(lectureView.id, match.params.coursePlanId, lectureView.lectureCardUsids);
       }
     });
   }

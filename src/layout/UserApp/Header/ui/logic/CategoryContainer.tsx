@@ -9,6 +9,7 @@ import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
 import { SkProfileService, StudySummary } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
+import LectureCountService from '../../../present/logic/LectureCountService';
 import CategoryView from '../view/CategoryView';
 
 
@@ -16,6 +17,7 @@ import CategoryView from '../view/CategoryView';
 interface Props extends RouteComponentProps {
   collegeService?: CollegeService,
   skProfileService?: SkProfileService,
+  lectureCountService?: LectureCountService,
 }
 
 interface State {
@@ -23,7 +25,7 @@ interface State {
   activeCollege?: CollegeModel,
 }
 
-@inject(mobxHelper.injectFrom('shared.collegeService', 'skProfileService'))
+@inject(mobxHelper.injectFrom('shared.collegeService', 'layout.lectureCountService', 'skProfileService'))
 @reactAutobind
 @observer
 class CategoryContainer extends Component<Props, State> {
@@ -62,7 +64,10 @@ class CategoryContainer extends Component<Props, State> {
 
   onActiveCollege(e: any, college: CollegeModel) {
     //
-    const { collegeService } = this.props;
+    const { collegeService, lectureCountService } = this.props;
+
+    lectureCountService!.clear();
+    lectureCountService!.findLectureCountByCollegeId(college.collegeId, college.channels);
 
     this.setState({
       activeCollege: college,
@@ -94,9 +99,8 @@ class CategoryContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService } = this.props;
+    const { collegeService, skProfileService, lectureCountService } = this.props;
     const { categoryOpen, activeCollege } = this.state;
-    const { skProfileService } = this.props;
 
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
@@ -111,6 +115,8 @@ class CategoryContainer extends Component<Props, State> {
           colleges={collegeService!.colleges}
           activeCollege={activeCollege}
           channels={collegeService!.channels}
+          collegeCount={lectureCountService!.collegeLectureCount}
+          channelCounts={lectureCountService!.channels}
           onClick={this.onClickCategory}
           onActiveCollege={this.onActiveCollege}
           onClickChannel={this.onClickChannel}
