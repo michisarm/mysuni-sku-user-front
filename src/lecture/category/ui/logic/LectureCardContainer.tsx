@@ -8,7 +8,7 @@ import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
-import LectureSubInfo from '../../../shared/LectureSubInfo';
+import LectureSubInfo, {State as SubState} from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 
@@ -142,6 +142,14 @@ class LectureCardContainer extends Component<Props, State> {
     depot.downloadDepot(fileBoxId);
   }
 
+  onMarkComplete() {
+    const { studentCdo, studentService, lectureCardId } = this.props;
+    studentService!.studentMarkComplete(studentCdo.rollBookId)
+      .then(() => {
+        studentService!.findIsJsonStudent(lectureCardId);
+      });
+  }
+
   getMainAction() {
     const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
@@ -182,7 +190,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getSubActions() {
-    const { cubeType, typeViewObject, studentJoins } = this.props;
+    const { cubeType, typeViewObject, viewObject, studentJoins } = this.props;
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
@@ -194,15 +202,15 @@ class LectureCardContainer extends Component<Props, State> {
         return undefined;
       case CubeType.Audio:
       case CubeType.Video:
-        if (typeViewObject.mediaType === MediaType.LinkMedia) {
-          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onClickChangeSeries }];
+        if (studentJoins.length && typeViewObject.mediaType === MediaType.LinkMedia && viewObject.state !== SubState.Completed) {
+          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete }];
         }
         return undefined;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
-        if (studentJoins.length) {
-          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onClickChangeSeries }];
+        if (studentJoins.length && viewObject.state !== SubState.Completed) {
+          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete }];
         }
         return undefined;
       case CubeType.Community:

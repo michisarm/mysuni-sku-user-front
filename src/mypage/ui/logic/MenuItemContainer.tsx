@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileService } from 'profile';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
@@ -15,7 +15,6 @@ import lectureRoutePaths from '../../../lecture/routePaths';
 import LineHeaderView from '../view/LineHeaderView';
 
 interface States {
-  contextRef : any,
   activeItem : string
 }
 
@@ -37,31 +36,40 @@ enum Type {
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
 ))
+@observer
 @reactAutobind
 class MenuItemContainer extends Component<Props, States> {
   //
   PAGE_KEY = 'my-page';
+  PAGE_SIZE = 8;
 
   constructor(props : Props) {
     super(props);
     this.state = {
-      contextRef: createRef(),
       activeItem: 'CompletedList',
     };
   }
 
   componentDidMount(): void {
     //
+    const { pageService, myTrainingService } = this.props;
     const { params } = this.props.match;
     this.changeItem(params.tab);
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    myTrainingService!.clear();
+    this.findPagingList();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
+    const { pageService,myTrainingService } = this.props;
     const currentTab = this.props.match.params.tab;
 
     if (prevProps.match.params.tab !== this.props.match.params.tab) {
       this.changeItem(currentTab);
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      myTrainingService!.clear();
+      this.findPagingList();
     }
   }
 
@@ -87,7 +95,7 @@ class MenuItemContainer extends Component<Props, States> {
       offsetList = await myTrainingService!.findAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
     }
     else {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithState('', page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
@@ -117,49 +125,48 @@ class MenuItemContainer extends Component<Props, States> {
 
   renderList() {
     const { myTrainingService, pageService } = this.props;
-    const { activeItem } = this.state;
     const { myTrainings } =  myTrainingService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    let cardType = Lecture.GroupType.List;
 
-    if (activeItem === Type.EarnedStampList) cardType = Lecture.GroupType.ListStamp;
-
+    console.log(myTrainings && myTrainings.length );
     return (
       <Segment className="full">
-        <LineHeaderView count={page && page.totalCount || 0} />
-        {
-          myTrainings && myTrainings.length && (
-            <Lecture.Group type={cardType}>
-              {myTrainings.map((myTraining: MyTrainingModel, index: number) => (
-                <Lecture
-                  key={`training-${index}`}
-                  model={myTraining}
-                  // thumbnailImage="http://placehold.it/60x60"
-                  onViewDetail={this.onViewDetail}
-                />
-              )
-              )}
-            </Lecture.Group>
-          ) || (
-            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
-          )
-        }
+        <div className="ui tab active">
+          <LineHeaderView count={page && page.totalCount || 0} />
+          {
+            myTrainings && myTrainings.length && (
+              <Lecture.Group type={Lecture.GroupType.ListStamp}>
+                {myTrainings.map((myTraining: MyTrainingModel, index: number) => (
+                  <Lecture
+                    key={`training-${index}`}
+                    model={myTraining}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    onViewDetail={this.onViewDetail}
+                  />
+                )
+                )}
+              </Lecture.Group>
+            ) || (
+              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+            )
+          }
 
-        { this.isContentMore() && (
-          <SeeMoreButton
-            onClick={this.findPagingList}
-          />
-        )}
+          { this.isContentMore() && (
+            <SeeMoreButton
+              onClick={this.findPagingList}
+            />
+          )}
+        </div>
       </Segment>
     );
   }
 
 
   render() {
-    const { contextRef, activeItem } = this.state;
+    const { activeItem } = this.state;
     return (
-      <div ref={contextRef}>
-        <Sticky context={contextRef} className="tab-menu offset0">
+      <>
+        <div className="ui tab-menu offset0 sticky">
           <div className="cont-inner">
             <Menu className="sku">
               <Menu.Item
@@ -184,9 +191,9 @@ class MenuItemContainer extends Component<Props, States> {
               </Menu.Item>
             </Menu>
           </div>
-        </Sticky>
+        </div>
         {this.renderList()}
-      </div>
+      </>
     );
   }
 }

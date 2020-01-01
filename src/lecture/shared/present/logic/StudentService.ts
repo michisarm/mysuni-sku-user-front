@@ -54,6 +54,10 @@ class StudentService {
     return this.studentApi.joinCommunity(studentCdo);
   }
 
+  studentMarkComplete(rollBookId: string) {
+    return this.studentApi.studentMarkComplete(rollBookId);
+  }
+
   @action
   async findStudentCount(rollBookId: string) {
     //

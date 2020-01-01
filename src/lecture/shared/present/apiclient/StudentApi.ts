@@ -34,6 +34,9 @@ class StudentApi {
       .then(response => response && response.data);
   }
 
+  studentMarkComplete(rollBookId: string) {
+    return axiosApi.put<void>(this.baseUrl + `/flow/markComplete`, { rollBookId });
+  }
 }
 
 StudentApi.instance = new StudentApi();

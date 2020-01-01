@@ -14,6 +14,7 @@ import Action from '../../model/Action';
 import { ActionType } from '../../model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
+import ListStampCardView from '../view/ListStampCardView';
 import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
 import CommunityLectureContainer from '../../sub/Community/CommunityLectureContainer';
 
@@ -194,7 +195,7 @@ class LectureContainer extends Component<Props, States> {
     } = this.props;
 
     return (
-      <ListCardView
+      <ListStampCardView
         model={model}
         thumbnailImage={thumbnailImage}
         action={{ iconName: 'play2', text: 'View Details' }}

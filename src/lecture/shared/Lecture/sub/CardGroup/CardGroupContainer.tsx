@@ -53,6 +53,13 @@ class CardGroup extends Component<Props> {
         </Card.Group>
       );
     }
+    else if (type === GroupType.ListStamp) {
+      elements = (
+        <Card.Group className="list-cards">
+          {children}
+        </Card.Group>
+      );
+    }
     else if (type === GroupType.Line) {
       elements = (
         <div className="scrolling">

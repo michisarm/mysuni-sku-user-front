@@ -39,6 +39,7 @@ class ListCardView extends Component<Props> {
       model, thumbnailImage, action,
       onAction,
     } = this.props;
+    const { hour, minute } = dateTimeHelper.timeToHourMinute(model.learningTime);
 
     return (
       <Card>
@@ -66,12 +67,24 @@ class ListCardView extends Component<Props> {
           </Buttons>
 
           <div className="time-area">
+            <div className="time">
+              <strong>&nbsp;</strong>
+              { hour > 0 && (
+                <>
+                  <strong>{hour}</strong><span>h</span>
+                </>
+              )}
+              { (hour > 0 || minute > 0) && (
+                <>
+                  <strong className="ml9">{minute}</strong><span>m</span>
+                </>
+              )}
+            </div>
             <div className="location">
-              <span className="location-name">{model.name}</span>
               { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
-            <div className="stamp">Stamp<strong>x{model.stampCount}</strong></div>
           </div>
+
         </div>
       </Card>
     );
