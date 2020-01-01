@@ -14,7 +14,7 @@ class StudentApi {
 
   registerStudent(studentCdo: StudentCdoModel) {
     //
-    return axiosApi.post<string>(this.baseUrl, studentCdo)
+    return axiosApi.post<string>(this.baseUrl + '/flow', studentCdo)
       .then(response => response && response.data);
   }
 
