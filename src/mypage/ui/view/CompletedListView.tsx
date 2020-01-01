@@ -21,17 +21,17 @@ class CompletedListView extends Component {
         </div>
         {/* card list */(
           <Card.Group className="list-cards">
-            <CardValuePlay />
-            <CardValueLearningStart />
-            <CardValueDownload />
-            <CardValueJoin />
-            <CardValueDefault />
-            <CardValueStamp />
+            <CardValuePlay/>
+            <CardValueLearningStart/>
+            <CardValueDownload/>
+            <CardValueJoin/>
+            <CardValueDefault/>
+            <CardValueStamp/>
           </Card.Group>
+        ) || (
+          <NoSuchContentPanel message="Completed List에 해당하는 학습 과정이 없습니다."/>
         )
-        } || (
-        <NoSuchContentPanel message ="Completed List에 해당하는 학습 과정이 없습니다." />
-        )
+        }
         <div className="more-comments">
           <Button icon className="left moreview"><Icon className="moreview" /> list more</Button>
         </div>

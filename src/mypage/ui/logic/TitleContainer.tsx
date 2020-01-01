@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { MyLearningSummaryService } from 'mytraining';
+import { MyLearningSummaryService } from 'mypage/index';
 import { SkProfileService } from 'profile';
 import { mobxHelper } from 'shared';
 import ProfileView from '../view/title/ProfileView';

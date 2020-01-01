@@ -23,7 +23,7 @@ import {
   StudentService,
 } from 'lecture';
 import { CourseSetModel, LearningCardService } from 'course';
-import { InMyLectureCdoModel, InMyLectureService } from 'mytraining';
+import { InMyLectureCdoModel, InMyLectureService } from 'mypage';
 import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';

@@ -8,7 +8,7 @@ import { mobxHelper, PageService } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
 import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';

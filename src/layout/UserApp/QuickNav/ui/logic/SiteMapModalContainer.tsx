@@ -6,7 +6,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutePaths from 'mytraining/routePaths';
 import createRoutePaths from 'create/routePaths';
 import myPageRoutePaths from 'mypage/routePaths';
 import SiteMapView from '../view/SiteMapView';
@@ -41,12 +40,12 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Learning',
       items: [
-        { name: 'In progress', path: myTrainingRoutePaths.learningInProgress() },
-        { name: 'In My List', path: myTrainingRoutePaths.learningInMyList() },
-        { name: 'Enrolled', path: myTrainingRoutePaths.learningEnrolled() },
-        { name: 'Required', path: myTrainingRoutePaths.learningRequired() },
-        { name: 'Completed List', path: myTrainingRoutePaths.learningCompleted() },
-        { name: 'Retry', path: myTrainingRoutePaths.learningRetry() },
+        { name: 'In progress', path: myPageRoutePaths.learningInProgress() },
+        { name: 'In My List', path: myPageRoutePaths.learningInMyList() },
+        { name: 'Enrolled', path: myPageRoutePaths.learningEnrolled() },
+        { name: 'Required', path: myPageRoutePaths.learningRequired() },
+        { name: 'Completed List', path: myPageRoutePaths.learningCompleted() },
+        { name: 'Retry', path: myPageRoutePaths.learningRetry() },
       ],
     },
     {
@@ -58,9 +57,9 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Community',
       items: [
-        { name: 'My Community', path: myTrainingRoutePaths.communityMyCommunity() },
-        { name: 'My Created Community', path: myTrainingRoutePaths.communityMyCreatedCommunity() },
-        { name: 'My Feed', path: myTrainingRoutePaths.communityMyFeed() },
+        { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
+        { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
+        { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
       ],
     },
   ];
