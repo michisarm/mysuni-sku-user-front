@@ -8,7 +8,7 @@ import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
-import LectureSubInfo, {State as SubState} from '../../../shared/LectureSubInfo';
+import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 

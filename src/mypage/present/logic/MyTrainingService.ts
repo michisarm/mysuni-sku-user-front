@@ -72,6 +72,20 @@ class MyTrainingService {
   }
 
   @action
+  async findAllMyTrainingsWithStamp(limit: number, offset: number) {
+    //
+    const response = await this.myTrainingApi.findAllMyTrainingsWithStamp(MyTrainingRdoModel.new(limit, offset));
+    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+
+    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
+
+    return runInAction(() => {
+      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
+      return trainingOffsetElementList;
+    });
+  }
+
+  @action
   clear() {
     this._myTrainings = [];
   }
