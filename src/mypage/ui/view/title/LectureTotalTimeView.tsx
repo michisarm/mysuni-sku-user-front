@@ -3,6 +3,7 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
+import MyLearningSummaryModal from '../../../ui/logic/MyLearningSummaryModal';
 
 interface Props {
   totalLearningTime: number
@@ -35,16 +36,23 @@ class LectureTotalTimeView extends Component<Props> {
     return (
       <div className="cell">
         <div className="cell-inner">
+
           <div className="ui statistic total-time">
-            <Button className="btn-total-time">
-              <Label className="onlytext">
-                <Icon className="total-time" /><span>총 학습시간</span> {/* MyTraining service 구현후 적용*/}
-              </Label>
-              <div className="value2">
-                <strong>{hour || '00'}</strong><span>h</span>
-                <strong className="min">{minute || '00'}</strong><span>m</span>
-              </div>
-            </Button>
+            {
+              <MyLearningSummaryModal
+                trigger={(
+                  <Button className="btn-total-time">
+                    <Label className="onlytext">
+                      <Icon className="total-time" /><span>총 학습시간</span>
+                    </Label>
+                    <div className="value2">
+                      <strong>{hour || '00'}</strong><span>h</span>
+                      <strong className="min">{minute || '00'}</strong><span>m</span>
+                    </div>
+                  </Button>
+                )}
+              />
+            }
           </div>
 
           <div className="chart-wrap">
