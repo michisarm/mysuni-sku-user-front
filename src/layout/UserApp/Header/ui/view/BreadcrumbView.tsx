@@ -1,6 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
-import { reactAutobind, axiosApi } from '@nara.platform/accent';
+import { reactAutobind, axiosApi, setCookie } from '@nara.platform/accent';
 import { Link } from 'react-router-dom';
 import { BreadcrumbValue } from '../../../index';
 
@@ -47,13 +47,13 @@ class BreadcrumbView extends Component<Props, State> {
         if (data.access_token) {
           const accessToken = data.access_token;
 
-          window.sessionStorage.setItem('token', accessToken);
-          window.sessionStorage.setItem('workspaces', JSON.stringify(data.workspaces));
-          window.sessionStorage.setItem('displayName', data.displayName);
-          window.sessionStorage.setItem('email', this.state.id);
-          window.sessionStorage.setItem('cineroomId', data.workspaces.cineroomWorkspaces[data.workspaces.cineroomWorkspaces.length - 1].id);
+          setCookie('token', accessToken);
+          setCookie('workspaces', JSON.stringify(data.workspaces));
+          setCookie('displayName', data.displayName);
+          setCookie('email', this.state.id);
+          setCookie('cineroomId', data.workspaces.cineroomWorkspaces[data.workspaces.cineroomWorkspaces.length - 1].id);
           if (data.additionalInformation && data.additionalInformation.companyCode) {
-            window.sessionStorage.setItem('companyCode', data.additionalInformation.companyCode);
+            setCookie('companyCode', data.additionalInformation.companyCode);
           }
           window.location.href = window.location.href;
         }
@@ -123,6 +123,7 @@ class BreadcrumbView extends Component<Props, State> {
               <span>Support</span>
               <i className="arrow8 black-jump icon" />
             </Link>
+            <div className="help-desk"><i aria-hidden="true" className="icon help-tel" />Help Desk : 02-6323-9002</div>
           </div>
         </div>
       </div>

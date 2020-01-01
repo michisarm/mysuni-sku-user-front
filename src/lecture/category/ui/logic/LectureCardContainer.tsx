@@ -3,18 +3,25 @@ import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { mobxHelper } from 'shared';
-import { CubeType } from 'personalcube/personalcube';
+import { CubeType, mobxHelper, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
+import { ClassroomModel } from 'personalcube/classroom';
+import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mytraining';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
+import ClassroomModalView from '../view/ClassroomModalView';
 
 
 interface Props {
+  studentService?: StudentService
+  rollBookService?: RollBookService
   inMyLectureService?: InMyLectureService
   inMyLectureCdo: InMyLectureCdoModel
+  studentCdo: StudentCdoModel
+  studentJoins: StudentJoinRdoModel[]
   inMyLecture: InMyLectureModel
+  lectureCardId: string
   cubeType: CubeType
   viewObject: any
   typeViewObject: any
@@ -25,20 +32,47 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'lecture.rollBookService',
+  'lecture.studentService',
   'myTraining.inMyLectureService',
 ))
 @reactAutobind
 @observer
 class LectureCardContainer extends Component<Props, State> {
   //
+  classroomModal: any = null;
+
+  async onSelectClassroom(classroom: ClassroomModel) {
+    const { rollBookService, lectureCardId, studentJoins, studentService, studentCdo } = this.props;
+    const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
+    if (!studentJoins.length) {
+      studentService!.registerStudent({ ...studentCdo, rollBookId: rollBook.id })
+        .then(() => studentService!.findIsJsonStudent(lectureCardId));
+    }
+  }
+
+  onRegisterStudent(proposalState?: ProposalState) {
+    const { studentCdo, studentService, lectureCardId, studentJoins } = this.props;
+    if (!studentJoins.length) {
+      studentService!.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState })
+        .then(() => studentService!.findIsJsonStudent(lectureCardId));
+    }
+  }
+
   onClickEnrollment() {
-    console.log('enrollment');
+    //
+    this.onRegisterStudent();
+  }
+
+  onClickChangeSeries() {
+    this.classroomModal.show();
   }
 
   onClickPlay() {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url) {
+      this.onRegisterStudent(ProposalState.Approved);
       window.open(typeViewObject.url, '_blank');
     }
     else {
@@ -50,6 +84,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url) {
+      this.onRegisterStudent(ProposalState.Approved);
       window.open(`https://${typeViewObject.url}`, '_blank');
     }
     else {
@@ -59,6 +94,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onDownload() {
     const { typeViewObject } = this.props;
+    this.onRegisterStudent(ProposalState.Approved);
     depot.downloadDepot(typeViewObject.fileBoxId);
   }
 
@@ -87,7 +123,9 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onJoin() {
-    console.log('join');
+    const { studentCdo, studentService, lectureCardId } = this.props;
+    studentService!.joinCommunity({ ...studentCdo })
+      .then(() => studentService!.findIsJsonStudent(lectureCardId));
   }
 
   onClickDownloadReport(fileBoxId: string) {
@@ -96,12 +134,21 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getMainAction() {
-    const { cubeType, typeViewObject } = this.props;
+    const { cubeType, typeViewObject, studentJoins } = this.props;
+    const applyingPeriod = typeViewObject!.applyingPeriod;
+    const today = new Date();
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
-        return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
       case CubeType.ELearning:
+        if (studentJoins.length) return undefined;
+        if (!applyingPeriod) return undefined;
+        if (applyingPeriod!.startDateSub >= new Date(today.toLocaleDateString()) || applyingPeriod!.endDateSub <= new Date(today.toLocaleDateString())){
+          return undefined;
+        }
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length) {
+          return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
+        }
         return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
       case CubeType.Audio:
       case CubeType.Video:
@@ -117,7 +164,59 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
+        if (studentJoins.length) return undefined;
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
+      default:
+        return undefined;
+    }
+  }
+
+  getSubActions() {
+    const { cubeType, typeViewObject, studentJoins } = this.props;
+
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+      case CubeType.ELearning:
+        if (studentJoins.length && studentJoins[0].proposalState === ProposalState.Submitted
+          && typeViewObject.classrooms && typeViewObject.classrooms.length) {
+          return [{ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries }];
+        }
+        return undefined;
+      case CubeType.Audio:
+      case CubeType.Video:
+        if (typeViewObject.mediaType === MediaType.LinkMedia) {
+          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onClickChangeSeries }];
+        }
+        return undefined;
+      case CubeType.WebPage:
+      case CubeType.Experiential:
+      case CubeType.Documents:
+        if (studentJoins.length) {
+          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onClickChangeSeries }];
+        }
+        return undefined;
+      case CubeType.Community:
+      default:
+        return undefined;
+    }
+  }
+
+  getOnCancel() {
+    const { cubeType, studentJoins } = this.props;
+
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+      case CubeType.ELearning:
+        if (studentJoins.length) {
+          return this.onClickEnrollment;
+        }
+        return undefined;
+      case CubeType.Audio:
+      case CubeType.Video:
+      case CubeType.WebPage:
+      case CubeType.Experiential:
+      case CubeType.Documents:
+      case CubeType.Community:
       default:
         return undefined;
     }
@@ -125,7 +224,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, typeViewObject, children } = this.props;
+    const { inMyLecture, viewObject, cubeType, typeViewObject, children } = this.props;
 
     return (
       <LectureCardContentWrapperView>
@@ -135,6 +234,7 @@ class LectureCardContainer extends Component<Props, State> {
           clazz={{
             learningTime: viewObject.learningTime,
             capacity: typeViewObject ? typeViewObject.capacity : 0,
+            cubeType,
             participantCount: viewObject.participantCount,
           }}
           operator={{
@@ -144,7 +244,9 @@ class LectureCardContainer extends Component<Props, State> {
             email: viewObject.operatorEmail,
           }}
           mainAction={this.getMainAction()}
+          subActions={this.getSubActions()}
           onShare={this.onClickShare}
+          onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
@@ -153,7 +255,11 @@ class LectureCardContainer extends Component<Props, State> {
               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
           }
         />
-
+        <ClassroomModalView
+          ref={classroomModal => this.classroomModal = classroomModal}
+          classrooms={typeViewObject.classrooms}
+          onOk={this.onSelectClassroom}
+        />
         {children}
       </LectureCardContentWrapperView>
     );

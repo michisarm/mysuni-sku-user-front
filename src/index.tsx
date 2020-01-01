@@ -3,8 +3,8 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 
 import 'semantic-ui-less/semantic.less';
-import './style/css/main.5b5eb9a8.chunk.css';
-import './style/css/2.3e0050f6.chunk.css';
+import './style/css/main.d4eb384f.chunk.css';
+import './style/css/2.be3b9724.chunk.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

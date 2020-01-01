@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, WorkSpace } from '@nara.platform/accent';
+import { reactAutobind, WorkSpace, getCookie } from '@nara.platform/accent';
 import ResponsiveContainer from './ResponsiveContainerUser';
 
 
@@ -13,8 +13,8 @@ class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount(): void {
     if (process.env.NODE_ENV !== 'development') {
-      if (!sessionStorage.token || !sessionStorage.cineroomId || !sessionStorage.workspaces) window.location.href = '/login';
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(sessionStorage.workspaces).cineroomWorkspaces;
+      if (!getCookie('token') || !getCookie('cineroomId') || !getCookie('workspaces')) window.location.href = '/login';
+      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
       const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
       if (!filteredWorkspaces.length) window.location.href = '/mysuni';
     }

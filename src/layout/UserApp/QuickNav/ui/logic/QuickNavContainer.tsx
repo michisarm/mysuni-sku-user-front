@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, WorkSpace } from '@nara.platform/accent';
+import { reactAutobind, WorkSpace, getCookie } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 //import { tenantInfo } from '@nara.platform/dock';
@@ -98,8 +98,8 @@ class QuickNavContainer extends Component<Props, State> {
     //
     const { active } = this.state;
     let roles: string[] = [];
-    if (sessionStorage.workspaces) {
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(sessionStorage.workspaces).cineroomWorkspaces;
+    if (getCookie('workspaces')) {
+      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
       const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
       if (filteredWorkspaces.length) {
         roles = filteredWorkspaces[0].roles;

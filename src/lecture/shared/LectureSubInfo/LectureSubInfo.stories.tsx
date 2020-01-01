@@ -1,8 +1,7 @@
-
 import React from 'react';
-import { select, object, boolean } from '@storybook/addon-knobs';
+import { boolean, object, select } from '@storybook/addon-knobs';
 import { Segment } from 'semantic-ui-react';
-import { storybookHelper } from 'shared';
+import { CubeType, storybookHelper } from 'shared';
 import LectureSubInfo from '../LectureSubInfo';
 
 
@@ -17,7 +16,7 @@ export const Basic = () =>
     <LectureSubInfo
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 0, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 0, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -43,7 +42,7 @@ export const WithState = () =>
       state={select('state', storybookHelper.enumValues(LectureSubInfo.State), LectureSubInfo.State.Joined)}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -69,7 +68,7 @@ export const WithMainAction = () =>
       mainAction={object('mainAction', { type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment) })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -95,7 +94,7 @@ export const WithSubActions = () =>
       subActions={object('subActions', [{ type: LectureSubInfo.ActionType.Enrollment, onAction: () => alert(LectureSubInfo.ActionType.Enrollment) }])}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -121,7 +120,7 @@ export const WithCancel = () =>
       onCancel={() => alert('cancel')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -144,7 +143,7 @@ export const WithClassCapacity = () =>
   //
   (
     <LectureSubInfo
-      clazz={object('clazz', { learningTime: 750, capacity: 240, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, capacity: 240, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
@@ -172,7 +171,7 @@ export const WithOperationInstructor = () =>
       operator={object('operator', { instructor: '서현진', email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
     />
@@ -197,7 +196,7 @@ export const WithRemove = () =>
       onRemove={() => alert('remove')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
@@ -223,7 +222,7 @@ export const WithSurvey = () =>
       onSurvey={() => alert('survey')}
       required={boolean('required', false)}
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
-      clazz={object('clazz', { learningTime: 750, participantCount: '1,250' })}
+      clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
       onShare={() => alert('share')}
