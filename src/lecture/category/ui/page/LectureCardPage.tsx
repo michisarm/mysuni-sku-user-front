@@ -365,7 +365,11 @@ class LectureCardPage extends Component<Props, State> {
     const { type } = this.state;
     const { personalCube } = this.props.personalCubeService;
     const { lectureCard } = this.props.lectureCardService;
+    const { studentJoins } = this.props.studentService;
     const { collegeId, lectureCardId } = this.props.match.params;
+
+    const studentJoin = studentJoins.length && studentJoins[0] || undefined;
+
     switch (type) {
       case 'Overview':
         return (
@@ -387,7 +391,9 @@ class LectureCardPage extends Component<Props, State> {
             boardId={personalCube.contents.contents.id}
             emptyMessage="작성된 글이 없습니다."
             linkedUrl={`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
-            routeToPost={() => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`)}
+            routeToPost={
+              studentJoin ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
+            }
             type={PostList.ListType.Basic}
           />
         );
@@ -397,7 +403,9 @@ class LectureCardPage extends Component<Props, State> {
             boardId={personalCube.contents.contents.id}
             linkedUrl={`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
             emptyMessage="내가 작성한 글이 없습니다."
-            routeToPost={() => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`)}
+            routeToPost={
+              studentJoin ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
+            }
           />
         );
       default:

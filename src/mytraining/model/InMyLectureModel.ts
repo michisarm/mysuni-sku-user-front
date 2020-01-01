@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
+import { getCookie } from '@nara.platform/accent';
 import { CategoryModel, DramaEntityObservableModel, IdName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
@@ -44,9 +44,9 @@ class InMyLectureModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
-      const cineroom = tenantInfo.getCineroom() as any;
-      this.required = cineroom && inMyLecture.requiredSubsidiaries
-        && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.name === cineroom.name);
+      const companyCode = getCookie('companyCode');
+      this.required = inMyLecture.requiredSubsidiaries
+        && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 
       this.cubeTypeName = InMyLectureModel.getCubeTypeName(inMyLecture.cubeType, this.serviceType);
     }

@@ -42,7 +42,6 @@ class LectureCardService {
   async findLectureCard(lectureCardId: string) {
     //
     const lectureCard = await this.lectureCardApi.findLectureCard(lectureCardId);
-    console.log('!!!', lectureCard);
     if (!lectureCard) {
       return null;
     }
