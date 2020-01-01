@@ -8,11 +8,11 @@ import classNames from 'classnames';
 import { ReviewService } from '@nara.drama/feedback';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
-import { InMyLectureModel, InMyLectureService, MyTrainingService } from 'mytraining';
+import { InMyLectureModel, InMyLectureService, MyTrainingService } from 'mypage';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
-import MyTrainingModel from '../../../mytraining/model/MyTrainingModel';
+import MyTrainingModel from '../../../mypage/model/MyTrainingModel';
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService,

@@ -7,11 +7,11 @@ import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, NoSuchContentPanel, NewPageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
 import LectureCountService from '../../present/logic/LectureCountService';
 import routePaths from '../../../routePaths';
 
-import { CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
+import { CardSorting, ChannelsPanel, SeeMoreButton, OrderByType } from '../../../shared';
 import Lecture from '../../../shared/Lecture';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
@@ -58,7 +58,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   state = {
     lectures: [],
-    sorting: 'latest',
+    sorting: OrderByType.Time,
   };
 
 
@@ -136,10 +136,11 @@ class CollegeLecturesContainer extends Component<Props, State> {
   async findPagingCollegeLectures(limit: number, offset: number) {
     //
     const { match, newPageService, lectureService, reviewService } = this.props;
+    const { sorting } = this.state;
     const pageNo = parseInt(match.params.pageNo, 10);
 
 
-    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, limit, offset);
+    const lectureOffsetList = await lectureService!.findPagingCollegeLectures(match.params.collegeId, limit, offset, sorting);
 
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
@@ -170,6 +171,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
     //
     this.setState({
       sorting: data.value,
+    }, () => {
+      this.clearAndInit();
+      this.initialFindPagingCollegeLectures();
     });
   }
 

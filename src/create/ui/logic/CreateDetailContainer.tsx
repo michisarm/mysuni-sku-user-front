@@ -237,7 +237,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     <Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>
-                    <Button type="button" className="fix bg" onClick={() => this.routeToCreateIntro(personalCubeId)}>Next</Button>
+                    <Button type="button" className="fix bg" onClick={this.handleSave}>Next</Button>
                   </div>
               }
               <AlertWin

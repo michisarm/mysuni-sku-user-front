@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { LectureModel, LectureViewModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'mytraining';
+import { MyTrainingModel, InMyLectureModel } from 'mypage';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';
@@ -14,6 +14,7 @@ import Action from '../../model/Action';
 import { ActionType } from '../../model';
 import BoxCardView from '../view/BoxCardView';
 import ListCardView from '../view/ListCardView';
+import ListStampCardView from '../view/ListStampCardView';
 import CourseLectureContainer from '../../sub/Course/CourseLectureContainer';
 import CommunityLectureContainer from '../../sub/Community/CommunityLectureContainer';
 
@@ -186,6 +187,23 @@ class LectureContainer extends Component<Props, States> {
     );
   }
 
+  renderListStampCard() {
+    //
+    const {
+      model, thumbnailImage,
+      // onAction,
+    } = this.props;
+
+    return (
+      <ListStampCardView
+        model={model}
+        thumbnailImage={thumbnailImage}
+        action={{ iconName: 'play2', text: 'View Details' }}
+        onAction={this.onViewDetail}
+      />
+    );
+  }
+
   renderLineCard() {
     //
     const {
@@ -268,6 +286,9 @@ class LectureContainer extends Component<Props, States> {
     }
     else if (groupType === GroupType.List) {
       return this.renderListCard();
+    }
+    else if (groupType === GroupType.ListStamp) {
+      return this.renderListStampCard();
     }
     else if (groupType === GroupType.Line) {
       return this.renderLineCard();

@@ -13,6 +13,7 @@ import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
 import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
 
 interface Props extends RouteComponentProps {
+  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   mediaService?: MediaService
   officeWebService?: OfficeWebService
   cubeIntroService?: CubeIntroService
@@ -20,20 +21,10 @@ interface Props extends RouteComponentProps {
   cubeType: string
 }
 
-interface States {
-  searchFilter: string
-}
-
 @inject('mediaService', 'cubeIntroService', 'officeWebService', 'personalCubeService')
 @observer
 @reactAutobind
-class CreateMediaContainer extends React.Component<Props, States> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = { searchFilter: 'SearchOff' };
-  }
-
+class CreateMediaContainer extends React.Component<Props> {
   // Cube 관리 > create > Audio
   // 교육정보
   onChangeMediaProps(name: string, value: string | Date, nameSub?: string) {
@@ -66,10 +57,6 @@ class CreateMediaContainer extends React.Component<Props, States> {
     if (officeWebService) officeWebService.changeOfficeWebProps(name, value);
   }
 
-  handleChangeSearchFilter(e:any, data: any) {
-    this.setState({ searchFilter: data.value });
-  }
-
   getFileBoxIdForReference(fileBoxId: string) {
     //
     const { personalCubeService } = this.props;
@@ -81,17 +68,15 @@ class CreateMediaContainer extends React.Component<Props, States> {
     const { media } = this.props.mediaService || {} as MediaService;
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { searchFilter } = this.state;
-    const { cubeType } = this.props;
+    const { cubeType, onChangePersonalCubeProps } = this.props;
     return (
       <>
         {
           cubeType === 'Video' ?
             <CreateVideoTypeView
               media={media}
-              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangePersonalCubeProps={onChangePersonalCubeProps}
               onChangeMediaProps={this.onChangeMediaProps}
-              searchFilter={searchFilter}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
             />
@@ -101,9 +86,8 @@ class CreateMediaContainer extends React.Component<Props, States> {
           cubeType === 'Audio' ?
             <CreateAudioTypeView
               media={media}
-              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangePersonalCubeProps={onChangePersonalCubeProps}
               onChangeMediaProps={this.onChangeMediaProps}
-              searchFilter={searchFilter}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
             />
@@ -114,8 +98,7 @@ class CreateMediaContainer extends React.Component<Props, States> {
             <CreateWebPageTypeView
               onChangeOfficeWebProps={this.onChangeOfficeWebProps}
               officeWeb={officeWeb}
-              handleChangeSearchFilter={this.handleChangeSearchFilter}
-              searchFilter={searchFilter}
+              onChangePersonalCubeProps={onChangePersonalCubeProps}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
             />
@@ -124,10 +107,9 @@ class CreateMediaContainer extends React.Component<Props, States> {
         {
           cubeType === 'Documents' ?
             <CreateDocumentTypeView
-              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangePersonalCubeProps={onChangePersonalCubeProps}
               onChangeOfficeWebProps={this.onChangeOfficeWebProps}
               officeWeb={officeWeb}
-              searchFilter={searchFilter}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
             />
@@ -136,9 +118,9 @@ class CreateMediaContainer extends React.Component<Props, States> {
         {
           cubeType === 'Community' ?
             <CreateCommunityTypeView
-              handleChangeSearchFilter={this.handleChangeSearchFilter}
+              onChangePersonalCubeProps={onChangePersonalCubeProps}
               onChangeMediaProps={this.onChangeMediaProps}
-              searchFilter={searchFilter}
+              personalCube={personalCube}
             />
             : null
         }

@@ -4,7 +4,9 @@ import LectureCardService from './shared/present/logic/LectureCardService';
 import LectureService from './shared/present/logic/LectureService';
 import ProgramLectureService from './shared/present/logic/ProgramLectureService';
 import CourseLectureService from './shared/present/logic/CourseLectureService';
+import RollBookService from './shared/present/logic/RollBookService';
 import LectureCountService from './category/present/logic/LectureCountService';
+import StudentService from './shared/present/logic/StudentService';
 
 
 export const lectureCardStores = {
@@ -14,6 +16,8 @@ export const lectureCardStores = {
     programLectureService: ProgramLectureService.instance,
     courseLectureService: CourseLectureService.instance,
     lectureCountService: LectureCountService.instance,
+    rollBookService: RollBookService.instance,
+    studentService: StudentService.instance,
   },
 };
 
@@ -22,6 +26,8 @@ export {
   LectureService,
   ProgramLectureService,
   CourseLectureService,
+  RollBookService,
+  StudentService,
 };
 
 /** Model */
@@ -31,6 +37,10 @@ export { default as LectureServiceType } from './shared/model/LectureServiceType
 export { default as ProgramLectureModel } from './shared/model/ProgramLectureModel';
 export { default as CourseLectureModel } from './shared/model/CourseLectureModel';
 export { default as LectureViewModel } from './shared/model/LectureViewModel';
+export { default as RollBookModel } from './shared/model/RollBookModel';
+export { default as StudentCdoModel } from './shared/model/StudentCdoModel';
+export { default as StudentJoinRdoModel } from './shared/model/StudentJoinRdoModel';
+export { default as StudentCountRdoModel } from './shared/model/StudentCountRdoModel';
 
 /** Component */
 export { default as CollegeLecturesPage } from './category/ui/page/CollegeLecturesPage';

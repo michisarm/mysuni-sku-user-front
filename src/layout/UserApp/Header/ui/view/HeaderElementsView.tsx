@@ -36,20 +36,19 @@ export const MenuView: React.FC<MenuViewProps> = () => (
 interface SearchBarViewProps {
   value: string,
   focused?: boolean,
+  onSearch: () => void,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) =>  void,
   onClick?: (e: React.MouseEvent<HTMLInputElement>) => void,
   onBlur?: (e: React.FormEvent<HTMLInputElement>) => void,
   onClear?: () => void,
 }
 
-export const SearchBarView: React.FC<SearchBarViewProps> = ({ value, focused, onChange, onBlur, onClick, onClear }) => (
+export const SearchBarView: React.FC<SearchBarViewProps> = ({ value, focused, onSearch, onChange, onBlur, onClick, onClear }) => (
   <div className="g-search">
-
     <div className={classNames('ui h38 search input', { focus: focused, write: value })} style={{ display: 'block' }}>
-      <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
+      <input type="text" placeholder="Search" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} onKeyPress={(e) => e.key === 'Enter' && onSearch()} />
       <i aria-hidden="true" className="clear link icon" onClick={onClear} />
-      <i aria-hidden="true" className="search link icon" />
+      <i aria-hidden="true" className="search link icon" onClick={onSearch} />
     </div>
-
   </div>
 );

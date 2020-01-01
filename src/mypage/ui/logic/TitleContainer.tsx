@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { MyLearningSummaryService } from 'mytraining';
+import { MyLearningSummaryService } from 'mypage/index';
 import { SkProfileService } from 'profile';
 import { mobxHelper } from 'shared';
 import ProfileView from '../view/title/ProfileView';
@@ -28,6 +28,10 @@ interface States{
 @reactAutobind
 class TitleContainer extends Component<Props, States> {
   //
+  state = {
+    year: Number(new Date().getFullYear()),
+  };
+
   componentDidMount(): void {
     this.init();
   }
@@ -45,14 +49,23 @@ class TitleContainer extends Component<Props, States> {
     //logout session 소멸
   }
 
-  onFavoriteChannelChange() {
-    //modal open
+  onChangeYear(year: number) {
+    const { myLearningSummaryService } = this.props;
+    myLearningSummaryService!.findMyLearningSummaryYear(year);
+    this.setState({ year });
   }
 
   render() {
     const { skProfileService, myLearningSummaryService } = this.props;
+    const { year } = this.state;
     const { skProfile } = skProfileService as SkProfileService;
     const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
+
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let i = 0; i < 5; i++) {
+      years.push(Number(currentYear) - i);
+    }
 
     return (
       <div className="progress-info-wrap">
@@ -67,6 +80,9 @@ class TitleContainer extends Component<Props, States> {
         />
         <StampInfoView
           stampCount={myLearningSummary.acheiveStampCount}
+          year={year}
+          years={years}
+          onChangeYear={this.onChangeYear}
         />
       </div>
     );

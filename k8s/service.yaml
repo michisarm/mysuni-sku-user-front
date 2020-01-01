@@ -24,8 +24,8 @@ spec:
     - match:
         - uri:
             exact: /
-      rewrite:
-        uri: /suni-main
+#      rewrite:
+#        uri: /suni-main
       route:
         - destination:
             host: user-service

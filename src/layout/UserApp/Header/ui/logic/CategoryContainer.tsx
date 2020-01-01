@@ -35,12 +35,16 @@ class CategoryContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     //
     const { collegeService } = this.props;
 
-    collegeService!.findAllColleges();
     this.findStudySummary();
+    const colleges = await collegeService!.findAllColleges();
+
+    if (colleges.length > 0) {
+      this.onActiveCollege({}, colleges[0]);
+    }
   }
 
   findStudySummary() {

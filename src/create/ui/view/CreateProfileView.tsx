@@ -3,9 +3,11 @@ import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';
 import CreateMovieDetailModal from '../view/CreateMovieDetailModal';
+import { EmployeeModel } from '../../../profile';
 
 interface Props {
   routeToCreateDetail:() => void
+  member: EmployeeModel
 }
 
 interface States {
@@ -27,7 +29,7 @@ class CreateProfileView extends React.Component<Props, States> {
   }
 
   render() {
-    const { routeToCreateDetail } = this.props;
+    const { routeToCreateDetail, member } = this.props;
     const { CreateMovieDetailModalOpen } = this.state;
     return (
       <div className="main-info-area">
@@ -37,18 +39,18 @@ class CreateProfileView extends React.Component<Props, States> {
               <div className="profile">
                 <div className="pic">
                   <ContentHeader.ProfileItem
-                    image={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
-                    name="김유니"
-                    teams={['SK C&C', '플랫폼 개발 1팀']}
+                    image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+                    name={member.name}
+                    teams={[member.company || '', member.department || '']}
                   />
                 </div>
               </div>
               <div className="text-info">
                 <div className="name">
-                  김유니 <Button className="orange-arrow2">My page</Button>
+                  {member.name} <Button className="orange-arrow2">My page</Button>
                 </div>
                 <div className="part">
-                  <span>SK C&C</span><span>플랫폼 개발 1팀</span>
+                  <span>{member.company}</span><span>{member.department }</span>
                 </div>
               </div>
             </div>

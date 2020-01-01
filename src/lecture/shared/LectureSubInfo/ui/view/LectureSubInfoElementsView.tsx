@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Label, Button, Step, List, Icon } from 'semantic-ui-react';
-import { dateTimeHelper } from 'shared';
+import { dateTimeHelper, CubeType } from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
 import Operator from '../../model/Operator';
@@ -120,7 +120,7 @@ export const ClassView = ({ clazz }: ClassProp) => {
       }
       <List.Item>
         <div className="ui">
-          <div className="label">참여 인원</div>
+          <div className="label">{clazz.cubeType === CubeType.Community ? '참여' : '이수'} 인원</div>
           <div className="value">{clazz.participantCount}</div>
         </div>
       </List.Item>
@@ -223,7 +223,7 @@ export const Report = ({ onDownloadReport }: ReportProps) => {
   if (!onDownloadReport) return null;
   return (
     <Button className="surv" onClick={onDownloadReport}>
-      <span>Join Survey</span>
+      <span>Report Download</span>
       <Icon className="download3" />
     </Button>
   );

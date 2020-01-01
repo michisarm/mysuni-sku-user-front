@@ -20,6 +20,7 @@ class SharedDetailIntroView extends React.Component<Props> {
   render() {
     const { cubeIntro, cubeType } = this.props;
     const { board } = this.props.boardService || {} as BoardService;
+
     return (
       <>
         <div className="section-tit">
@@ -78,14 +79,14 @@ class SharedDetailIntroView extends React.Component<Props> {
                       <Table.Row>
                         <Table.HeaderCell>커뮤니티 구분</Table.HeaderCell>
                         <Table.Cell>
-                          <div>{board && board.config && board.config.enClosed}</div>
+                          <div>{board && board.config && board.config.enClosed ? '폐쇄형' : '오픈형'}</div>
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>기간</Table.HeaderCell>
                         <Table.Cell>
-                          <div>{board && board.learningPeriod && board.learningPeriod.startDateSub}
-                          ~ {board && board.learningPeriod && board.learningPeriod.endDateSub}
+                          <div>{board && board.learningPeriod && board.learningPeriod.startDate}
+                          ~ {board && board.learningPeriod && board.learningPeriod.endDate}
                           </div>
                         </Table.Cell>
                       </Table.Row>

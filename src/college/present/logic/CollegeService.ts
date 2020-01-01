@@ -44,6 +44,12 @@ export default class CollegeService {
   @observable
   channel: ChannelModel = new ChannelModel();
 
+  @observable
+  collegesForPanopto: CollegeModel[] = [];
+
+  @observable
+  collegeForPanopto: CollegeModel = new CollegeModel();
+
 
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
@@ -130,6 +136,19 @@ export default class CollegeService {
     // this.College = {} as CollegeModel;
   }
 
+  // Panopto ----------------------------------------------------------------------------------------------------------
+
+  @action
+  clearCollegeForPanopto() {
+    //
+    this.collegeForPanopto = new CollegeModel();
+  }
+
+  @action
+  setCollegeForPanopto(selectedCollege: CollegeModel) {
+    //
+    this.collegeForPanopto = selectedCollege;
+  }
 
   // Channels ----------------------------------------------------------------------------------------------------------
 

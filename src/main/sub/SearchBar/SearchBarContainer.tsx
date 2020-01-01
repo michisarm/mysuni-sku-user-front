@@ -10,6 +10,13 @@ import { InputWrapper } from 'shared';
 @reactAutobind
 class SearchBarContainer extends Component {
   //
+  onSearch(value: string) {
+    //
+    if (value) {
+      window.location.pathname = `/search?query=${value}`;
+    }
+  }
+
   render() {
     //
     return (
@@ -19,9 +26,9 @@ class SearchBarContainer extends Component {
             {({ value, focused, onChange, onClick, onBlur, onClear }) => (
               <div className={classNames('ui main search input', { focus: focused, write: value })}>
                 <span className="placeholder">SUNI에서 다양한 컨텐츠를 탐색해 보세요.</span>
-                <input type="text" placeholder="" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} />
+                <input type="text" placeholder="" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} onKeyPress={(e) => e.key === 'Enter' && this.onSearch(value)} />
                 <Icon className="clear link" onClick={onClear} />
-                <Icon className="search link" />
+                <Icon className="search link" onClick={() => this.onSearch(value)} />
               </div>
             )}
           </InputWrapper>

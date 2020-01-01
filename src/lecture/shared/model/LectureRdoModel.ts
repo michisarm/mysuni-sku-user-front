@@ -1,12 +1,14 @@
 import { decorate, observable } from 'mobx';
 import { tenantInfo } from '@nara.platform/dock';
 import { CubeType } from 'shared';
+import OrderByType from './OrderByType';
 
 
 class LectureRdoModel {
   //
   college: string = '';
   channel: string = '';
+  orderBy: OrderByType = OrderByType.Time;
   limit: number = 0;
   offset: number = 0;
   cubeType?: CubeType;
@@ -20,21 +22,23 @@ class LectureRdoModel {
     }
   }
 
-  static newWithCollege(collegeId: string, limit: number, offset: number) {
+  static newWithCollege(collegeId: string, limit: number, offset: number, orderBy: OrderByType) {
     //
     return new LectureRdoModel({
       college: collegeId,
       channel: '',
+      orderBy,
       limit,
       offset,
     });
   }
 
-  static newWithChannel(channelId: string, limit: number, offset: number) {
+  static newWithChannel(channelId: string, limit: number, offset: number, orderBy: OrderByType) {
     //
     return new LectureRdoModel({
       college: '',
       channel: channelId,
+      orderBy,
       limit,
       offset,
     });
@@ -44,8 +48,18 @@ class LectureRdoModel {
     return new LectureRdoModel({
       college: '',
       channel: '',
+      orderBy: OrderByType.Time,
       creatorId: tenantInfo.getTenantId(),
       cubeType: CubeType.Community,
+      limit,
+      offset,
+    });
+  }
+
+  static newShared(limit: number, offset: number) {
+    return new LectureRdoModel({
+      college: '',
+      channel: '',
       limit,
       offset,
     });

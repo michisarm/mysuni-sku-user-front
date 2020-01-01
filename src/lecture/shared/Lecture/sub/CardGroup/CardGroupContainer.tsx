@@ -10,6 +10,7 @@ export enum GroupType {
   Line = 'Line',
   Course = 'Course',
   List = 'List',
+  ListStamp = 'ListStamp',
   Community = 'Community',
 }
 
@@ -46,6 +47,13 @@ class CardGroup extends Component<Props> {
       );
     }
     else if (type === GroupType.List) {
+      elements = (
+        <Card.Group className="list-cards">
+          {children}
+        </Card.Group>
+      );
+    }
+    else if (type === GroupType.ListStamp) {
       elements = (
         <Card.Group className="list-cards">
           {children}

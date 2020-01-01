@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactAutobind, WorkSpace, WorkSpaceList } from '@nara.platform/accent';
+import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
 import AppLayoutContainer from './AppLayoutContainer';
@@ -30,8 +30,8 @@ class UserAppContainer extends Component<Props, State> {
 
   checkAndRedirectAuth() {
     //
-    const cineroomId = sessionStorage.getItem('cineroomId') || '';
-    const workSpaces: WorkSpaceList = JSON.parse(`${sessionStorage.getItem('workspaces')}`);
+    const cineroomId = getCookie('cineroomId') || '';
+    const workSpaces: WorkSpaceList = JSON.parse(`${getCookie('workspaces')}`);
     const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || [])
       .filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
 

@@ -41,6 +41,9 @@ export default class PersonalCubeService {
   @observable
   channelsMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
 
+  @observable
+  fileName: string = '';
+
   constructor(personalCubeApi: PersonalCubeApi) {
     this.personalCubeApi = personalCubeApi;
   }
@@ -94,6 +97,12 @@ export default class PersonalCubeService {
     //
     this.personalCube = new PersonalCubeModel();
     // this.cube = {} as PersonalCubeModel;
+  }
+
+  @action
+  clearFileName() {
+    //
+    this.fileName = '';
   }
 
   @action

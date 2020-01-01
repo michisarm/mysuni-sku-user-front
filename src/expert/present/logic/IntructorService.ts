@@ -23,10 +23,9 @@ export default class InstructorService {
   }
 
   @action
-  async findInstructor() {
+  async findInstructor(instructorId: string) {
     //
-    const id = 'IS-0001';
-    const instructor = await this.instructorApi.findInstructor(id);
+    const instructor = await this.instructorApi.findInstructor(instructorId);
     if (instructor) {
       return runInAction(() => this.instructor = instructor);
     }

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'mytraining';
+import { MyTrainingModel, InMyLectureModel } from 'mypage';
 import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail,
@@ -81,10 +81,10 @@ class ListCardView extends Component<Props> {
               )}
             </div>
             <div className="location">
-              <span className="location-name">{model.name}</span>
               { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
           </div>
+
         </div>
       </Card>
     );

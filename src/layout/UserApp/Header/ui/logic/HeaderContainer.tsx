@@ -45,6 +45,15 @@ class HeaderContainer extends Component<Props, State> {
     this.setState({ searchValue: '' });
   }
 
+  onSearch() {
+    //
+    const { searchValue } = this.state;
+
+    if (searchValue) {
+      window.location.pathname = `/search?query=${searchValue}`;
+    }
+  }
+
   onChangeSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ searchValue: e.target.value });
   }
@@ -86,6 +95,7 @@ class HeaderContainer extends Component<Props, State> {
           <SearchBarView
             value={searchValue}
             focused={focused}
+            onSearch={this.onSearch}
             onBlur={this.onBlurSearchInput}
             onClick={this.onClickSearchInput}
             onChange={this.onChangeSearchInput}

@@ -78,8 +78,14 @@ class PanoptoListModal extends React.Component<Props, States> {
   handleOK() {
     const { mediaService } = this.props;
     const { selectedPanoptos } = this.props.mediaService || {} as MediaService;
-    if (mediaService) mediaService.changeMediaProps('mediaContents.internalMedias', selectedPanoptos);
-    this.show(false);
+    if (mediaService) {
+      const newInternalMedias: InternalMediaConnectionModel[] = [ ...mediaService.media.mediaContents.internalMedias ];
+      if (mediaService) {
+        mediaService.setSeletedPanoptos(selectedPanoptos);
+        mediaService.changeMediaProps('mediaContents.internalMedias', selectedPanoptos.concat(newInternalMedias));
+      }
+      this.show(false);
+    }
   }
 
   handleCancel() {
@@ -129,7 +135,7 @@ class PanoptoListModal extends React.Component<Props, States> {
             <p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>
           )) || null
         }*/}
-        <Modal size="large" open={open} onClose={() => this.show(false)}>
+        <Modal size="large" open={open} onClose={() => this.show(false)} className="base w700">
           <Modal.Header>
             동영상 선택
           </Modal.Header>
