@@ -5,25 +5,31 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, mobxHelper, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, mobxHelper, ProposalState, LearningState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { ContentsServiceType, CubeTypeNameType, PersonalCubeService, CubeType } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
-import { LectureCardService, LectureServiceType, RollBookService, StudentCdoModel, StudentService, StudentCountRdoModel } from 'lecture';
-import { LearningCardService, CourseSetModel } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'mytraining';
+import {
+  LectureCardService,
+  LectureServiceType,
+  RollBookService,
+  StudentCdoModel,
+  StudentCountRdoModel,
+  StudentService,
+} from 'lecture';
+import { CourseSetModel, LearningCardService } from 'course';
+import { InMyLectureCdoModel, InMyLectureService } from 'mytraining';
 import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
-
-
+import { State as SubState } from '../../../shared/LectureSubInfo';
 
 interface Props extends RouteComponentProps<{ collegeId: string, lectureCardId: string }> {
   skProfileService: SkProfileService,
@@ -123,11 +129,24 @@ class LectureCardPage extends Component<Props, State> {
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
+    const { studentCounts, studentJoins }: StudentService = studentService!;
 
     let participantCount = 0;
-    studentService!.studentCounts!.forEach((studentCount: StudentCountRdoModel) => {
+    studentCounts!.forEach((studentCount: StudentCountRdoModel) => {
       participantCount += studentCount.approvedCount;
     });
+
+    let state: SubState | undefined;
+    if (studentJoins.length && studentJoins[0]) {
+      const studentJoin = studentJoins[0];
+      if (studentJoin.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
+      if (studentJoin.proposalState === ProposalState.Approved) {
+        if (studentJoin.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (studentJoin.learningState === LearningState.Passed) state = SubState.Completed;
+        if (studentJoin.learningState === LearningState.Missed) state = SubState.Missed;
+        if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
+      }
+    }
 
     return {
       // Sub info
@@ -140,6 +159,8 @@ class LectureCardPage extends Component<Props, State> {
       operatorName: cubeIntro.operation.operator.name,
       operatorCompany: cubeIntro.operation.operator.company,
       operatorEmail: cubeIntro.operation.operator.email,
+
+      state: state || undefined,
 
       // Fields
       subCategories: personalCube.subCategories,

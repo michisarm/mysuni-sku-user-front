@@ -143,7 +143,8 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.ELearning:
         if (studentJoins.length) return undefined;
         if (!applyingPeriod) return undefined;
-        if (applyingPeriod!.startDateSub >= new Date(today.toLocaleDateString()) || applyingPeriod!.endDateSub <= new Date(today.toLocaleDateString())){
+        if (applyingPeriod!.startDateSub >= new Date(today.toLocaleDateString())
+          || applyingPeriod!.endDateSub <= new Date(today.toLocaleDateString())) {
           return undefined;
         }
         if (typeViewObject.classrooms && typeViewObject.classrooms.length) {
@@ -243,6 +244,7 @@ class LectureCardContainer extends Component<Props, State> {
             company: viewObject.operatorCompany,
             email: viewObject.operatorEmail,
           }}
+          state={viewObject.state}
           mainAction={this.getMainAction()}
           subActions={this.getSubActions()}
           onShare={this.onClickShare}

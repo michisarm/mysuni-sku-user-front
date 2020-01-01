@@ -33,10 +33,10 @@ class StudentService {
   }
 
   @computed
-  get studentJoins() {
+  get studentJoins(): StudentJoinRdoModel[] {
     //
     const studentJoins = this._studentJoins as any;
-    return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join);
+    return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
   }
 
   compare(studentJoin1: StudentJoinRdoModel, studentJoin2: StudentJoinRdoModel) {

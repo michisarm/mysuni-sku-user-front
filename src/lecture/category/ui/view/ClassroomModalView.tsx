@@ -62,7 +62,7 @@ class ClassroomModalView extends Component<Props, States> {
             <Table className="head-fix ml-05-p01">
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell/>
+                  <Table.HeaderCell />
                   <Table.HeaderCell>차수</Table.HeaderCell>
                   <Table.HeaderCell>강사</Table.HeaderCell>
                   <Table.HeaderCell>담당자 정보 및 이메일</Table.HeaderCell>
@@ -83,7 +83,8 @@ class ClassroomModalView extends Component<Props, States> {
                           name="class-radioGroup"
                           disabled={
                             (joinRounds && joinRounds.includes(classroom.round))
-                            || classroom.enrolling.applyingPeriod.startDateSub > new Date() || classroom.enrolling.applyingPeriod.endDateSub < new Date()
+                            || classroom.enrolling.applyingPeriod.startDateSub > new Date()
+                            || classroom.enrolling.applyingPeriod.endDateSub < new Date()
                           }
                           checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
                           onChange={() => this.setState({ selectedClassroom: classroom })}

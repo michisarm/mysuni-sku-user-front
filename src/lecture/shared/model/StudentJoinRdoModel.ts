@@ -18,7 +18,6 @@ class StudentJoinRdoModel {
       Object.assign(this, { ...studentJoinRdo });
     }
   }
-
 }
 
 decorate(StudentJoinRdoModel, {

@@ -1,14 +1,10 @@
 
 enum State {
-  Created= 'Created',
-  OpenApproval= 'Open Approval',
-  Opened= 'Opened',
-  Closed= 'Closed',
-  Rejected= 'Rejected',
-  Joined= 'Joined',
-  Progress= 'Progress',
+  WaitingForApproval= 'Waiting for approval',
+  InProgress= 'In progress',
   Missed= 'Missed',
-  Passed= 'Passed',
+  Completed= 'Completed',
+  Joined= 'Joined',
 }
 
 export default State;
