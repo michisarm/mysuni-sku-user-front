@@ -10,6 +10,7 @@ export enum GroupType {
   Line = 'Line',
   Course = 'Course',
   List = 'List',
+  ListStamp = 'ListStamp',
   Community = 'Community',
 }
 

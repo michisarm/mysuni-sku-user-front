@@ -186,6 +186,23 @@ class LectureContainer extends Component<Props, States> {
     );
   }
 
+  renderListStampCard() {
+    //
+    const {
+      model, thumbnailImage,
+      // onAction,
+    } = this.props;
+
+    return (
+      <ListCardView
+        model={model}
+        thumbnailImage={thumbnailImage}
+        action={{ iconName: 'play2', text: 'View Details' }}
+        onAction={this.onViewDetail}
+      />
+    );
+  }
+
   renderLineCard() {
     //
     const {
@@ -268,6 +285,9 @@ class LectureContainer extends Component<Props, States> {
     }
     else if (groupType === GroupType.List) {
       return this.renderListCard();
+    }
+    else if (groupType === GroupType.ListStamp) {
+      return this.renderListStampCard();
     }
     else if (groupType === GroupType.Line) {
       return this.renderLineCard();

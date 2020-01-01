@@ -15,7 +15,7 @@ class StudentService {
   private studentApi: StudentApi;
 
   @observable
-  _studentCounts: StudentCountRdoModel[] = [];
+  studentCountMap: Map<string, StudentCountRdoModel> = new Map();
 
   @observable
   _studentJoins: StudentJoinRdoModel[] = [];
@@ -27,9 +27,9 @@ class StudentService {
 
   @computed
   get studentCounts() {
-    //
-    const studentCounts = this._studentCounts as any;
-    return studentCounts.peek();
+    const studentCounts: StudentCountRdoModel[] = [];
+    this.studentCountMap.forEach(value => studentCounts.push(value));
+    return studentCounts;
   }
 
   @computed
@@ -60,7 +60,7 @@ class StudentService {
     const studentCountRdo = await this.studentApi.findStudentCount(rollBookId);
 
     return runInAction(() => {
-      this._studentCounts.push(new StudentCountRdoModel(studentCountRdo));
+      this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo));
       return studentCountRdo;
     });
   }
@@ -73,11 +73,6 @@ class StudentService {
       this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
       return studentJoinRdos;
     });
-  }
-
-  @action
-  clearCounts() {
-    this._studentCounts = [];
   }
 }
 

@@ -91,7 +91,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(`https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url, '_blank');
     }
     else {
       console.log('[UserFront] Url is empty.');
