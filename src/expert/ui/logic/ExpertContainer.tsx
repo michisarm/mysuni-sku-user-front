@@ -56,7 +56,7 @@ class ExpertContainer extends React.Component<Props> {
     const { instructorService } = this.props;
     const { instructorId } = this.props.match.params;
 
-    if (instructorService) instructorService.findInstructor(instructorId)
+    if (instructorService) instructorService.findInstructor(instructorId);
     this.findPagingInstructorLectures();
   }
 
