@@ -100,7 +100,10 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
         <Form.Field>
           <label className="necessary">강좌명</label>
           <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
-            <span className="count"><span className="now">0</span>/<span className="max">100</span></span>
+            <span className="count">
+              <span className="now">{personalCube && personalCube.name && personalCube.name.length}</span>/
+              <span className="max">100</span>
+            </span>
             <input type="text"
               placeholder="제목을 입력해주세요."
               value={personalCube && personalCube.name || ''}

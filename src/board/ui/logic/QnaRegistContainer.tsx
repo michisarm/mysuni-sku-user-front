@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import 'react-quill/dist/quill.snow.css';
 import { ContentLayout } from 'shared';
 import { FileBox, PatronType } from '@nara.drama/depot';
+import classNames from 'classnames';
 import { BoardService, CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
@@ -22,6 +23,8 @@ interface States {
   alertWinOpen: boolean
   confirmWinOpen: boolean
   isBlankTarget: string
+  focus: boolean
+  write: string
 }
 
 @inject('boardService', 'categoryService', 'postService')
@@ -36,6 +39,8 @@ class QnaRegistContainer extends React.Component<Props, States> {
       alertWinOpen: false,
       confirmWinOpen: false,
       isBlankTarget: '',
+      focus: false,
+      write: '',
     };
   }
 
@@ -151,15 +156,27 @@ class QnaRegistContainer extends React.Component<Props, States> {
             <Form>
               <Form.Field>
                 <label>제목</label>
-                <div className="ui right-top-count input">{/* .error */}
-                  <span className="count"><span className="now">0</span>/<span className="max">100</span></span>
+                <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>
+                  <span className="count">
+                    <span className="now">{post && post.title && post.title.length || 0}</span>/
+                    <span className="max">100</span>
+                  </span>
                   <input type="text"
                     placeholder="제목을 입력해주세요."
+                    onClick={() => this.setState({ focus: true })}
+                    onBlur={() => this.setState({ focus: false })}
                     value={post && post.title || ''}
-                    onChange={(e: any) => this.onChangePostProps('title', e.target.value)}
+                    onChange={(e: any) => {
+                      this.setState({ write: e.target.value });
+                      this.onChangePostProps('title', e.target.value);
+                    }}
                   />
-                  {/* 입력값이 있을경우 아이콘 활성화 됨. */}
-                  <Icon className="clear link" />
+                  <Icon className="clear link"
+                    onClick={(e:any) => {
+                      this.setState({ write: '' });
+                      this.onChangePostProps('title', e.target.value);
+                    }}
+                  />
                   <span className="validation">You can enter up to 100 characters.</span>
                 </div>
               </Form.Field>
