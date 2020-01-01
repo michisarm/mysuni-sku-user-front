@@ -167,7 +167,7 @@ class CreateIntroView extends React.Component<Props, States> {
                 <Icon className="clear link"
                   onClick={() => {
                     this.setState({ write: '' });
-                    setHourAndMinute('minute','');
+                    setHourAndMinute('minute', '');
                   }}
                 />
               </div>

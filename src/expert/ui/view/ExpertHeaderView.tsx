@@ -21,11 +21,11 @@ class ExpertHeaderView extends React.Component<Props> {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {result.memberSummary.name}
+                  {result && result.memberSummary && result.memberSummary.name}
                 </div>
                 <div className="part">
-                  <span>{result.memberSummary.department}</span>
-                  <span>{result.internal ? '사내강사' : '사외강사'}</span>
+                  <span>{result && result.memberSummary && result.memberSummary.department}</span>
+                  <span>{result && result.internal ? '사내강사' : '사외강사'}</span>
                 </div>
               </div>
             </div>
@@ -33,15 +33,19 @@ class ExpertHeaderView extends React.Component<Props> {
           <div className="cell">
             <div className="cell-inner">
 
-              {(result.channel.college.name || result.channel.channel.name || result.memberSummary.email) && (
+              {(result && result.channel && result.channel.college && result.channel.college.name
+                || result && result.channel && result.channel.channel && result.channel.channel.name
+                || result && result.memberSummary && result.memberSummary.email) && (
                 <div className="expert-info">
                   <Label className="onlytext">
                     <Icon className="college16" /><span>전문분야</span>
                   </Label>
 
                   <span className="value1">
-                    <span>{result.channel.college.name}/ {result.channel.channel.name}</span>
-                    <a href="#">{result.memberSummary.email}</a>
+                    <span>{result && result.channel && result.channel.college && result.channel.college.name}/
+                      {result && result.channel && result.channel.channel && result.channel.channel.name}
+                    </span>
+                    <a href="#">{result && result.memberSummary && result.memberSummary.email}</a>
                   </span>
                 </div>
               )}
@@ -51,7 +55,7 @@ class ExpertHeaderView extends React.Component<Props> {
                   <Icon className="class16" /><span>참여한 강의</span>
                 </Label>
                 <span className="value2">
-                  <strong>{result.lectureCount}</strong><span>개</span>
+                  <strong>{result && result.lectureCount}</strong><span>개</span>
                 </span>
               </div>
               <div className="expert-info">
@@ -59,7 +63,7 @@ class ExpertHeaderView extends React.Component<Props> {
                   <Icon className="total-time" /><span>총 강의시간</span>
                 </Label>
                 <span className="value3">
-                  <strong>{result.lectureHour}</strong><span>h</span>
+                  <strong>{result && result.lectureHour}</strong><span>h</span>
                   <strong className="min">00</strong><span>m</span>
                 </span>
               </div>

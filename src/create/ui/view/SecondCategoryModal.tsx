@@ -261,29 +261,28 @@ class SecondCategoryModal extends React.Component<Props, States> {
                                 <Accordion.Content active={activeIndex === index}>
                                   <ul>
                                     {
-                                        activeIndex === index && selectedSubCollege
-                                        && selectedSubCollege.channels && selectedSubCollege.channels.length
-                                        && selectedSubCollege.channels.map((channel, idx) => (
-                                          <li key={`channel-${idx}`}>
-                                            <Checkbox
-                                              className="base"
-                                              checked={!!channelListMap.get(`${channel.id}`)}
-                                              disabled={
-                                                  personalCube && personalCube.category && personalCube.category.channel
-                                                  && personalCube.category.channel.id === channel.id
-                                                }
-                                              label={channel.name}
-                                              onChange={() => this.selectChannelButton(channel)}
-                                            />
-                                          </li>
-                                        )) || null
-                                      }
+                                      activeIndex === index && selectedSubCollege
+                                      && selectedSubCollege.channels && selectedSubCollege.channels.length
+                                      && selectedSubCollege.channels.map((channel, idx) => (
+                                        <li key={`channel-${idx}`}>
+                                          <Checkbox
+                                            className="base"
+                                            checked={!!channelListMap.get(`${channel.id}`)}
+                                            disabled={
+                                                personalCube && personalCube.category && personalCube.category.channel
+                                                && personalCube.category.channel.id === channel.id
+                                              }
+                                            label={channel.name}
+                                            onChange={() => this.selectChannelButton(channel)}
+                                          />
+                                        </li>
+                                      )) || null
+                                    }
                                   </ul>
                                 </Accordion.Content>
                               </Accordion>
                             ))
                           }
-
                           </div>
                         </div>
                       </div>

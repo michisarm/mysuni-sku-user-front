@@ -16,9 +16,6 @@ export default class InstructorApi {
       });
   }
 
-  //findAllLecturesByInstructorId(instructorRdo: instructorRdo){
-
-
 }
 
 Object.defineProperty(InstructorApi, 'instance', {
