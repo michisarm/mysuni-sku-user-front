@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind, WorkSpace, getCookie } from '@nara.platform/accent';
 
+// import Spinner from '../../../Spinner';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
@@ -31,8 +32,11 @@ class AppLayoutContainer extends Component<Props> {
     return (
       <ResponsiveWrapper>
         <Header />
+
+        {/*<Spinner />*/}
         {children}
         <QuickNav />
+
         <Footer />
       </ResponsiveWrapper>
     );

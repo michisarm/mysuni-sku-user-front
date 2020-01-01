@@ -8,7 +8,7 @@ class SpinnerContainer extends Component {
   //
   render() {
     return (
-      <div className="loading-wrap" style={{display: 'block'}}>
+      <div className="loading-wrap select-none" style={{ display: 'block' }}>
         <div className="loading-box">
           LOADING
         </div>
