@@ -15,6 +15,8 @@ export class CollegeModel implements DramaEntity {
   name: string = '';
   description: string = '';
   iconFileBoxId: string = '';
+  panoptoFolderId: string = '';
+
   channels: ChannelModel[] = [];
 
   creator: CreatorModel = new CreatorModel();
@@ -41,6 +43,7 @@ decorate(CollegeModel, {
   name: observable,
   description: observable,
   iconFileBoxId: observable,
+  panoptoFolderId: observable,
   channels: observable,
   creator: observable,
 });

@@ -60,7 +60,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
     if (personalCubeService && cubeIntroService ) {
       if (!cubeIntroId) {
-        cubeIntroService.clearCubeIntro();
+        this.clearAll();
       } else if (personalCubeId && cubeIntroId) {
         cubeIntroService.findCubeIntro(cubeIntroId)
           .then(() => {
@@ -71,6 +71,23 @@ class CreateIntroContainer extends React.Component<Props, States> {
             if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
           });
       } }
+  }
+
+  clearAll() {
+    //
+    const {
+      personalCubeService, cubeIntroService,
+      mediaService, boardService, officeWebService,
+    } = this.props;
+    if (personalCubeService && cubeIntroService
+      && mediaService && boardService && officeWebService) {
+      personalCubeService.clearPersonalCube();
+      personalCubeService.clearFileName();
+      cubeIntroService.clearCubeIntro();
+      mediaService.clearMedia();
+      boardService.clearBoard();
+      officeWebService.clearOfficeWeb();
+    }
   }
 
   setOfficeWeb(contentsId: string) {
@@ -372,6 +389,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
               />
               <CreateMediaContainer
                 cubeType={cubeType}
+                onChangePersonalCubeProps={this.onChangePersonalCubeProps}
               />
               {
                 personalCubeId ?

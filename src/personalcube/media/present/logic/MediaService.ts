@@ -40,6 +40,9 @@ export default class MediaService {
   @observable
   selectedPanoptoIds: string[] = [];
 
+  @observable
+  uploadedPaonoptos: InternalMediaConnectionModel[] = [];
+
   constructor(mediaApi: MediaApi, mediaFlowApi: MediaFlowApi) {
     this.mediaApi = mediaApi;
     this.mediaFlowApi = mediaFlowApi;
@@ -98,6 +101,12 @@ export default class MediaService {
   setSeletedPanoptos(panoptoList: InternalMediaConnectionModel[]) {
     //
     this.selectedPanoptos = panoptoList;
+  }
+
+  @action
+  setUploadedPanoptos(panoptoList: InternalMediaConnectionModel[]) {
+    //
+    this.uploadedPaonoptos = panoptoList;
   }
 
   @action

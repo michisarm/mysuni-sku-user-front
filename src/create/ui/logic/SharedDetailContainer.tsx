@@ -211,6 +211,11 @@ class SharedDetailContainer extends React.Component<Props, States> {
     this.props.history.push(`/personalcube/create`);
   }
 
+  goToVideo(url: string) {
+    //
+    window.open(url);
+  }
+
   render() {
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
@@ -256,37 +261,17 @@ class SharedDetailContainer extends React.Component<Props, States> {
                   cubeIntro={cubeIntro}
                 />
             }
-
               <SharedTypeDetailView
                 personalCube={personalCube}
                 cubeType={cubeType}
                 filesMap={filesMap}
+                goToVideo={this.goToVideo}
               />
               {
                 cubeState === 'OpenApproval' ?
-                  <>
-                    {/* List 영역에서 저장 상태인 항목 view page 진입 시 */}
-                    {/* <div className="buttons editor">
-                  <Button className="fix line">Delete</Button>
-                  <Button className="fix line">List</Button>
-                  <Button className="fix line">Modify</Button>
-                  <Button className="fix bg">Shared</Button>
-                </div>
-                */}
-                    <br />
-                    {/* // List 영역에서 저장 상태인 항목 view page 진입 시 */}
-                    {/* List 영역에서 승인 대기상태인 항목 view page 진입 시 */}
-                    <div className="buttons editor">
-                      <Button className="fix bg" onClick={this.routeToCreateList}>List</Button>
-                    </div>
-                    <br />
-                    {/* // List 영역에서 승인 대기상태인 항목 view page 진입 시 */}
-                    {/* List 영역에서 승인 완료 상태 항목 view page 진입 시 */}
-                    {/*<div className="buttons editor">
-                  <Button className="fix line">List</Button>
-                  <Button className="fix bg">Modify</Button>
-                </div>*/}
-                  </>
+                  <div className="buttons editor">
+                    <Button className="fix bg" onClick={this.routeToCreateList}>List</Button>
+                  </div>
                   :
                   <div className="buttons">
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>

@@ -23,7 +23,7 @@ export default {
   ],
 
   cubeType: [
-    { key: '0', text: '전체', value: 'None' },
+    { key: '0', text: 'Select', value: 'None' },
     { key: '1', text: 'Video', value: 'Video' },
     { key: '2', text: 'Audio', value: 'Audio' },
     { key: '3', text: 'Community', value: 'Community' },
