@@ -8,6 +8,7 @@ import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileVi
 import depot from '@nara.drama/depot';
 import { CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
+import { ContentLayout } from '../../../shared';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
@@ -108,7 +109,13 @@ class QnaDetailContainer extends React.Component<Props, States> {
     const { filesMap } = this.state;
 
     return (
-      <section className="content support">
+      <ContentLayout
+        className="support"
+        breadcrumb={[
+          { text: 'Support' },
+          { text: 'Q&A' },
+        ]}
+      >
         <div className="post-view-wrap">
           <div className="post-view qna">
             {
@@ -180,7 +187,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
           </Segment>
 
         </div>
-      </section>
+      </ContentLayout>
     );
   }
 }

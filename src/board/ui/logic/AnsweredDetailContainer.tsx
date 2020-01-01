@@ -7,6 +7,7 @@ import ReactQuill from 'react-quill';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
 import { AnswerService, CategoryService, PostService } from '../../index';
+import { ContentLayout } from '../../../shared';
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
@@ -81,7 +82,14 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
     const { filesMap } = this.state;
 
     return (
-      <section className="content support">
+      <ContentLayout
+        className="support"
+        breadcrumb={[
+          { text: 'Support' },
+          { text: 'Q&A' },
+          { text: 'Answered' },
+        ]}
+      >
         <div className="post-view-wrap">
           <div className="post-view qna">
             {
@@ -136,7 +144,7 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
             </div>
           </Segment>
         </div>
-      </section>
+      </ContentLayout>
     );
   }
 }
