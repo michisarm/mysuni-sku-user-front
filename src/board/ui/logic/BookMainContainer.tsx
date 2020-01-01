@@ -48,6 +48,8 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
+    const { postService } = this.props;
+    if(postService) postService.findFaqPinnedPosts();
     this.init();
   }
 
