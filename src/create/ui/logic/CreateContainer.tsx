@@ -14,7 +14,7 @@ import NoSuchContentPanel from '../../../shared/components/NoSuchContentPanel';
 import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
 import { LectureCardService, LectureModel, LectureService } from '../../../lecture';
 import { SeeMoreButton } from '../../../lecture/shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../mytraining';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../mypage';
 import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';

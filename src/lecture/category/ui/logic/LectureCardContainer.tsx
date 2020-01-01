@@ -7,7 +7,7 @@ import { CubeType, mobxHelper, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mytraining';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -47,7 +47,10 @@ class LectureCardContainer extends Component<Props, State> {
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
     if (!studentJoins.length) {
       studentService!.registerStudent({ ...studentCdo, rollBookId: rollBook.id })
-        .then(() => studentService!.findIsJsonStudent(lectureCardId));
+        .then(() => {
+          studentService!.findIsJsonStudent(lectureCardId);
+          studentService!.findStudentCount(rollBook.id);
+        });
     }
   }
 
@@ -55,7 +58,10 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentCdo, studentService, lectureCardId, studentJoins } = this.props;
     if (!studentJoins.length) {
       studentService!.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState })
-        .then(() => studentService!.findIsJsonStudent(lectureCardId));
+        .then(() => {
+          studentService!.findIsJsonStudent(lectureCardId);
+          studentService!.findStudentCount(studentCdo.rollBookId);
+        });
     }
   }
 
@@ -125,7 +131,10 @@ class LectureCardContainer extends Component<Props, State> {
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
-      .then(() => studentService!.findIsJsonStudent(lectureCardId));
+      .then(() => {
+        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findStudentCount(studentCdo.rollBookId);
+      });
   }
 
   onClickDownloadReport(fileBoxId: string) {

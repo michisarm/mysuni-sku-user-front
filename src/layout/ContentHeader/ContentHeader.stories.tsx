@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 
 import { Button, Image } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout } from 'shared';
-import { ContentHeaderTotalTimeItem } from 'mytraining/shared';
+import { ContentHeaderTotalTimeItem } from 'mypage/shared';
 
 
 export default {

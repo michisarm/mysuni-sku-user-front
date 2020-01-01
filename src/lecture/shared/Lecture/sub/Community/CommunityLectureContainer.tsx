@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Icon, Button, Accordion } from 'semantic-ui-react';
-import { MyTrainingModel, InMyLectureModel } from 'mytraining';
+import { MyTrainingModel, InMyLectureModel } from 'mypage';
 import Action from '../../model/Action';
 import { CourseSectionContext } from '../CourseSection';
 import {

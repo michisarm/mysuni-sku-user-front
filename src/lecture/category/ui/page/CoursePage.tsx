@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentLayout, ContentMenu, mobxHelper, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'mytraining';
+import { InMyLectureService, InMyLectureCdoModel } from 'mypage';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { SkProfileService } from 'profile';

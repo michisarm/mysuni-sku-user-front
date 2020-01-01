@@ -7,7 +7,7 @@ import { lectureCardStores } from 'lecture';
 import { InstructorService } from 'expert';
 import { SkProfileService } from 'profile';
 import { AnswerService, BoardService, CategoryService, PostService } from 'board';
-import { myTrainingStores } from 'mytraining';
+import { myTrainingStores } from 'mypage';
 import SharedService from './shared/present/logic/SharedService';
 
 

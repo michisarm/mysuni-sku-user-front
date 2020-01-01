@@ -63,10 +63,10 @@ class Routes extends React.PureComponent {
 
             {/* mypage */}
             <Redirect exact from="/my-training" to="/my-training/InProgress" />
-            <Route exact path="/my-training/:tab" component={withSplitting(() => import('./mytraining').then(({ MyTrainingPage }) => MyTrainingPage))} />
+            <Route exact path="/my-training/:tab" component={withSplitting(() => import('./mypage').then(({ MyTrainingPage }) => MyTrainingPage))} />
 
             <Redirect exact from="/community" to="/community/MyCommunity" />
-            <Route exact path="/community/:tab" component={withSplitting(() => import('./mytraining').then(({ MyCommunityPage }) => MyCommunityPage))} />
+            <Route exact path="/community/:tab" component={withSplitting(() => import('./mypage').then(({ MyCommunityPage }) => MyCommunityPage))} />
 
             <Redirect exact from="/mypage" to="/mypage/CompletedList" />
             <Route exact path="/mypage/:tab" component={withSplitting(() => import('./mypage').then(({ MyPage }) => MyPage))} />

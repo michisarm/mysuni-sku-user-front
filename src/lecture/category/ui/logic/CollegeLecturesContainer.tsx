@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { mobxHelper, NoSuchContentPanel, NewPageService } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mytraining';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
 import LectureCountService from '../../present/logic/LectureCountService';
 import routePaths from '../../../routePaths';
 

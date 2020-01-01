@@ -5,7 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { MyLearningSummaryModal, MyLearningSummaryService } from 'mytraining';
+import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
 import { ContentHeader, mobxHelper } from 'shared';
 
 interface Props extends RouteComponentProps{

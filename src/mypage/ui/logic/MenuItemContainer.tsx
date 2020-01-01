@@ -2,7 +2,7 @@ import React, { Component, createRef } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Menu, Sticky } from 'semantic-ui-react';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
-import routePaths from '../../routePaths';
+import routePaths from '../../../mypage/routePaths';
 import CompletedListView from '../view/CompletedListView';
 import EarnedStampListView from '../view/EarnedStampListView';
 

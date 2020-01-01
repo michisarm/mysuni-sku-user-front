@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'mytraining';
+import { MyTrainingModel, InMyLectureModel } from 'mypage';
 import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail,

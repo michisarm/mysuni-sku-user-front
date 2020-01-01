@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { ContentHeader, ContentLayout, mobxHelper, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
-import { MyTrainingService } from 'mytraining/index';
+import { MyTrainingService } from 'mypage/index';
 import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
