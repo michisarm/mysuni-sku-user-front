@@ -19,11 +19,9 @@ interface Props {
 }
 
 interface States {
-  focusHour:boolean
-  focusMin: boolean
   write: string
+  type: string
 }
-
 
 @observer
 @reactAutobind
@@ -32,9 +30,7 @@ class CreateIntroView extends React.Component<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      focusHour: false,
-      focusMin: false,
-      write: '',
+      write: '', type: '',
     };
   }
 
@@ -69,9 +65,8 @@ class CreateIntroView extends React.Component<Props, States> {
           <label className="necessary">교육목표</label>
           <div className="ui form">
             <div className="ui right-top-count input">
-              {/* .error // */}
               <span className="count">
-                <span className="now">0</span>/
+                <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.goal && cubeIntro.description.goal.length || 0}</span>/
                 <span className="max">500</span>
               </span>
               <textarea placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
@@ -85,8 +80,9 @@ class CreateIntroView extends React.Component<Props, States> {
         <Form.Field>
           <label className="necessary">교육대상</label>
           <div className="ui right-top-count input">
-            {/* .error // */}
-            <span className="count"><span className="now">0</span>/
+            <span className="count">
+              <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.applicants && cubeIntro.description.applicants.length || 0}</span>/
+              <span className="max">500</span>
             </span>
             <textarea placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
               value={cubeIntro && cubeIntro.description && cubeIntro.description.applicants || ''}
@@ -111,9 +107,8 @@ class CreateIntroView extends React.Component<Props, States> {
         <Form.Field>
           <label>이수조건</label>
           <div className="ui right-top-count input">
-            {/* .error // */}
             <span className="count">
-              <span className="now">0</span>/
+              <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.completionTerms.length}</span>/
               <span className="max">1000</span>
             </span>
             <textarea
@@ -140,11 +135,11 @@ class CreateIntroView extends React.Component<Props, States> {
           <div className="ui grid create">
             <div className="column">
               <label className="necessary">교육시간</label>
-              <div className={classNames('ui h48 input time', { focusHour: this.state.focusHour, write: this.state.write })}>
+              <div className={classNames('ui h48 input time', { focus: this.state.type === 'hour', write: this.state.write })}>
                 <input
                   type="text"
-                  onClick={() => this.setState({ focusHour: true })}
-                  onBlur={() => this.setState({ focusHour: false })}
+                  onClick={() => this.setState({ type: hour })}
+                  onBlur={() => this.setState({ type: '' })}
                   value={parseInt(String(cubeIntro.learningTime / 60), 10) || hour}
                   onChange={(e: any) => {
                     this.setState({ write: e.target.value });
@@ -158,11 +153,11 @@ class CreateIntroView extends React.Component<Props, States> {
                   }}
                 />
               </div>
-              <div className={classNames('ui h48 input time', { focusMin: this.state.focusMin, write: this.state.write })}>
+              <div className={classNames('ui h48 input time',  { focus: this.state.type === 'minute', write: this.state.write })}>
                 <input
                   type="text"
-                  onClick={() => this.setState({ focusMin: true })}
-                  onBlur={() => this.setState({ focusMin: false })}
+                  onClick={() => this.setState({ type: minute })}
+                  onBlur={() => this.setState({ type: '' })}
                   value={parseInt(String(cubeIntro.learningTime % 60), 10) || minute}
                   onChange={(e: any) => {
                     this.setState({ write: e.target.value });
@@ -172,18 +167,19 @@ class CreateIntroView extends React.Component<Props, States> {
                 <Icon className="clear link"
                   onClick={() => {
                     this.setState({ write: '' });
-                    setHourAndMinute('minute', '');
+                    setHourAndMinute('minute','');
                   }}
                 />
               </div>
             </div>
             <div className="column">
               <label>난이도</label>
-              <Select placeholder="선택해주세요"
+              <Select
+                placeholder="선택해주세요"
                 className="dropdown"
                 options={SelectType.difficulty}
-                value={cubeIntro && cubeIntro.difficultyLevel || ''}
                 onChange={(e: any, data: any) => onChangeCubeIntroProps('difficultyLevel', data.value)}
+                value={cubeIntro && cubeIntro.difficultyLevel || ''}
               />
             </div>
           </div>
