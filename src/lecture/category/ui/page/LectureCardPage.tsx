@@ -84,7 +84,7 @@ class LectureCardPage extends Component<Props, State> {
   async init() {
     const {
       match, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
-      rollBookService, mediaService, officeWebService, boardService, lectureCardService, learningCardService, inMyLectureService,
+      rollBookService, mediaService, officeWebService, boardService, lectureCardService, inMyLectureService,
     } = this.props;
     const { params } = match;
 
