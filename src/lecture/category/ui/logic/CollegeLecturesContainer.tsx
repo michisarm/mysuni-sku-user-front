@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, NoSuchContentPanel, NewPageService } from 'shared';
+import { mobxHelper, NoSuchContentPanel, NewPageService, CubeType } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
@@ -184,7 +184,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(this.addFindPagingCollegeLectures)
+        .then(this.clearAndInit)
+        .then(this.initialFindPagingCollegeLectures)
         .then(this.findInMyLectures);
     }
     else {
@@ -207,7 +208,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
       }))
-        .then(this.addFindPagingCollegeLectures)
+        .then(this.clearAndInit)
+        .then(this.initialFindPagingCollegeLectures)
         .then(this.findInMyLectures);
     }
   }
@@ -269,8 +271,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
-                const rating = ratingMap.get(lecture.reviewId) || 0;
+                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
                 const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                if (lecture.cubeType === CubeType.Community) rating = undefined;
                 return (
                   <Lecture
                     key={`lecture-${index}`}
