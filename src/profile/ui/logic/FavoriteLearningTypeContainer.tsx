@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, reactAlert } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { ContentLayout, IdNameList } from '../../../shared';
@@ -72,24 +72,24 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     if (targetProps.checked) {
       state[name].push(value);
       state.goalCheckedCount++;
-      console.log(state.goalCheckedCount);
     } else {
       state[name] = state[name].filter(data =>  data !== value);
       if ( state.goalCheckedCount > 0 ) {
         state.goalCheckedCount--;
-        console.log(state.goalCheckedCount);
       }
     }
 
-    if (targetProps.name === 'goalGroup' &&  state.goalCheckedCount > 3) {
-      console.log(targetProps.name);
-      // event.currentTaget.setProperty('readOnly', true);
+    if (targetProps.name === 'goalGroup' &&  state.goalCheckedCount > 2) {
+      reactAlert({ title: '교육목적', message: '중복 3개까지 선택 가능합니다.', onClose: () => targetProps.checked = false });
     }
 
 
     this.setState(state);
   }
 
+  onClose() {
+
+  }
 
   onSKIntroClick() {
 

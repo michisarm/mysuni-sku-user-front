@@ -6,8 +6,8 @@ import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { SkProfileUdo } from '../../model/SkProfileUdo';
-import { PisAgreementModel } from '../../model/PisAgreementModel';
+// import { SkProfileUdo } from '../../model/SkProfileUdo';
+// import { PisAgreementModel } from '../../model/PisAgreementModel';
 
 interface Props extends RouteComponentProps{
   skProfileService? : SkProfileService
@@ -56,7 +56,10 @@ class PisAgreementContainer extends Component<Props> {
           skProfile.pisAgreement.signed = true;
           skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
           //  skProfileService.modifySkProfile(new SkProfileUdo(new PisAgreementModel(skProfile.pisAgreement)));
-          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty  && studySummary.favoriteChannels && studySummary.favoriteChannels.idNames.length < 4 && studySummary.favoriteLearningType ) {
+          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
+            &&  studySummary.favoriteChannels
+            && studySummary.favoriteChannels.idNames.length < 4
+            && studySummary.favoriteLearningType ) {
             this.props.history.push('/');
           } else {
             this.props.history.push('/profile/interest/');
