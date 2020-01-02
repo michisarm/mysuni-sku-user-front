@@ -4,6 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
+import ResponsiveWrapper from './ResponsiveWrapper';
 
 
 interface Props extends RouteComponentProps {
@@ -25,6 +26,17 @@ class UserAppContainer extends Component<Props, State> {
   componentDidMount(): void {
     //
     // this.checkAndRedirectAuth();
+    this.setLocalAuth();
+  }
+
+  setLocalAuth() {
+    //
+    if (process.env.NODE_ENV !== 'development') {
+      if (!getCookie('token') || !getCookie('cineroomId') || !getCookie('workspaces')) window.location.href = '/login';
+      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
+      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
+      if (!filteredWorkspaces.length) window.location.href = '/mysuni';
+    }
   }
 
   checkAndRedirectAuth() {
@@ -65,7 +77,9 @@ class UserAppContainer extends Component<Props, State> {
       <AppContext.Provider
         value={this.getContext()}
       >
-        {children}
+        <ResponsiveWrapper>
+          {children}
+        </ResponsiveWrapper>
       </AppContext.Provider>
     );
   }
