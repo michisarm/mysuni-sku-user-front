@@ -126,8 +126,8 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
     return (
       <ContentLayout breadcrumb={[
-        { text: 'd1', path: '/depth1-path' },
-        { text: 'd2' },
+        { text: '관심사 설정', path: '/depth1-path' },
+        { text: '관심분야' },
       ]}
         className="bg-white"
       >
