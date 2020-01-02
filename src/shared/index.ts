@@ -58,6 +58,7 @@ export { default as actionHandler } from './present/logic/actionHandler';
 
 /** Component */
 export { default as UserApp } from '../layout/UserApp';
+export { default as AppLayout } from '../layout/UserApp/ui/logic/AppLayoutContainer';
 export { default as ContentLayout } from '../layout/ContentLayout';
 export { default as ContentHeader } from '../layout/ContentHeader';
 export { default as ContentMenu } from '../layout/ContentMenu';
