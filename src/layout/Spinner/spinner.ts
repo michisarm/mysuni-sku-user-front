@@ -1,29 +1,31 @@
 
-import axios from 'axios';
+import axiosApi from 'axios';
 
 
 const spinner = {
   //
   requestInterceptor: null,
   responseInterceptor: null,
+
   open: () => console.warn('SpinnerContainer가 존재하지 않습니다.'),
-  closeOne: () => console.warn('SpinnerContainer가 존재하지 않습니다.'),
   close: () => console.warn('SpinnerContainer가 존재하지 않습니다.'),
-  without: axios.create(),
+  closeAll: () => console.warn('SpinnerContainer가 존재하지 않습니다.'),
+  without: axiosApi.create(),
 
   init() {
-    if (this.requestInterceptor !== null && this.responseInterceptor !== null) {
-      return;
-    }
-
+    //
+    // if (this.requestInterceptor !== null && this.responseInterceptor !== null) {
+    //   return;
+    // }
+    //
     // this.requestInterceptor = axios.interceptors.request.use(
-    //   config => {
+    //   (config: any) => {
     //     if (config.spinner !== false) {
     //       this.open();
     //     }
     //     return config;
     //   },
-    //   error => {
+    //   (error: any) => {
     //     this.close();
     //     // 오류 공통처리
     //     return Promise.reject(error);

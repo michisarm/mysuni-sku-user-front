@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 
+import Spinner from '../../../Spinner/SpinnerViewer';
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
 
@@ -78,6 +79,7 @@ class UserAppContainer extends Component<Props, State> {
         value={this.getContext()}
       >
         <ResponsiveWrapper>
+          <Spinner />
           {children}
         </ResponsiveWrapper>
       </AppContext.Provider>

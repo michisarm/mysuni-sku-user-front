@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-// import Spinner from '../../../Spinner';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
@@ -23,10 +22,9 @@ class AppLayoutContainer extends Component<Props> {
       <>
         <Header />
 
-        {/*<Spinner />*/}
         {children}
-        <QuickNav />
 
+        <QuickNav />
         <Footer />
       </>
     );

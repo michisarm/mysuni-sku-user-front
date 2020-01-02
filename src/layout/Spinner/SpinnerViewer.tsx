@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { Dimmer, Loader } from 'semantic-ui-react';
 import spinner from './spinner';
 
 
@@ -18,17 +17,19 @@ interface State {
 class SpinnerViewer extends PureComponent<Props, State> {
   //
   static defaultProps = {
-    text: 'Loading',
+    text: 'LOADING',
   };
 
   state = {
     active: 0,
   };
 
+
   componentDidMount() {
+    //
     spinner.open = this.addDimmer;
-    spinner.closeOne = this.removeDimmer;
-    spinner.close = this.removeAllDimmer;
+    spinner.close = this.removeDimmer;
+    spinner.closeAll = this.removeAllDimmer;
     spinner.init();
   }
 
@@ -37,26 +38,35 @@ class SpinnerViewer extends PureComponent<Props, State> {
   }
 
   removeDimmer() {
-    this.setState(state => (state.active - 1 < 0 ? { active: 0 } : { active: state.active - 1 }));
+    //
+    this.setState(state => (
+      state.active - 1 < 0 ?
+        { active: 0 }
+        :
+        { active: state.active - 1 }
+    ));
   }
 
   removeAllDimmer() {
+    //
     this.setState({ active: 0 });
   }
 
   render() {
+    //
     const { text } = this.props;
+    const { active } = this.state;
 
-    return (
-      <Dimmer
-        active={Boolean(this.state.active)}
-        // onClickOutside={this.removeDimmer}
-        inverted
-        page
-      >
-        <Loader>{text}</Loader>
-      </Dimmer>
-    );
+    if (active > 0) {
+      return (
+        <div className="loading-wrap select-none" style={{ display: 'block' }}>
+          <div className="loading-box">{text}</div>
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 
