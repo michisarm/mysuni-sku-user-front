@@ -102,7 +102,7 @@ class MyLearningSummaryContainer extends Component<Props> {
               </ItemWrapper>
 
               <ItemWrapper>
-                <Button className="btn-complex48">
+                <Button className="btn-complex48" onClick={() => this.props.history.push('/mypage/CompletedList')}>
                   <span className="i">
                     <Icon className="complete48" />
                     <span className="blind">complete edu</span>
@@ -117,7 +117,7 @@ class MyLearningSummaryContainer extends Component<Props> {
               </ItemWrapper>
 
               <ItemWrapper>
-                <Button className="btn-complex48">
+                <Button className="btn-complex48" onClick={() => this.props.history.push('/mypage/EarnedStampList')}>
                   <span className="i">
                     <Icon className="stamp48"><span className="blind">stamp</span></Icon>
                   </span>

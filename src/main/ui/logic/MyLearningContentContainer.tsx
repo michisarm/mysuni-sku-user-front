@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { ReviewService } from '@nara.drama/feedback';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, NoSuchContentPanel } from 'shared';
-import { InMyLectureModel, InMyLectureService, MyTrainingService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService, MyTrainingService } from 'mypage';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -46,6 +46,8 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     this.init();
+    const { inMyLectureService } = this.props;
+    inMyLectureService!.findInMyLecturesAll();
   }
 
   init() {
@@ -58,6 +60,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     this.setState({ type }, () => {
       myTrainingService!.clear();
       inMyLectureService!.clear();
+      inMyLectureService!.findInMyLecturesAll();
       this.findPagingList();
     });
   }
@@ -99,8 +102,41 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
+
+  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+    const { type } = this.state;
+    if (training instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(training.id)
+        .then(() => this.onSelectMenu(type));
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: training.serviceId,
+        serviceType: training.serviceType,
+        category: training.category,
+        name: training.name,
+        description: training.description,
+        cubeType: training.cubeType,
+        learningTime: training.learningTime,
+        stampCount: training.stampCount,
+        coursePlanId: training.coursePlanId,
+
+        requiredSubsidiaries: training.requiredSubsidiaries,
+        cubeId: training.cubeId,
+        courseSetJson: training.courseSetJson,
+        courseLectureUsids: training.courseLectureUsids,
+        lectureCardUsids: training.lectureCardUsids,
+
+        reviewId: training.reviewId,
+      })).then(() => this.onSelectMenu(type));
+    }
+  }
+
   renderList() {
     const { inMyLectureService, myTrainingService, reviewService } = this.props;
+    const { inMyLectureMap } =  inMyLectureService!;
     const { ratingMap } =  reviewService as ReviewService;
     const { type } = this.state;
     let list: (MyTrainingModel | InMyLectureModel)[] = [];
@@ -125,14 +161,15 @@ class MyLearningContentContainer extends Component<Props, State> {
                   if (value instanceof InMyLectureModel) {
                     rating = ratingMap.get(value.reviewId);
                   }
+                  const inMyLecture = inMyLectureMap.get(value.serviceId);
                   return (
                     <Lecture
                       key={`training-${index}`}
                       model={value}
                       rating={rating || undefined}
                       // thumbnailImage="http://placehold.it/60x60"
-                      action={Lecture.ActionType.Add}
-                      onAction={() => {}}
+                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                      onAction={() => this.onActionLecture(inMyLecture || value)}
                       onViewDetail={this.onViewDetail}
                     />
                   );
