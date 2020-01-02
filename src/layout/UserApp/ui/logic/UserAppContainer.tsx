@@ -4,7 +4,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
-import AppLayoutContainer from './AppLayoutContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -66,9 +65,7 @@ class UserAppContainer extends Component<Props, State> {
       <AppContext.Provider
         value={this.getContext()}
       >
-        <AppLayoutContainer>
-          {children}
-        </AppLayoutContainer>
+        {children}
       </AppContext.Provider>
     );
   }
