@@ -220,13 +220,19 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getOnCancel() {
-    const { cubeType, studentJoins, studentService, studentCdo } = this.props;
+    const { cubeType, studentJoins, studentService, studentCdo, lectureCardId } = this.props;
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
         if (studentJoins.length) {
-          return () => studentService!.removeStudent(studentCdo.rollBookId);
+          return () => {
+            studentService!.removeStudent(studentCdo.rollBookId)
+              .then(() => {
+                studentService!.findIsJsonStudent(lectureCardId);
+                studentService!.findStudentCount(studentCdo.rollBookId);
+              });
+          };
         }
         return undefined;
       case CubeType.Audio:
