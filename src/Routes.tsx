@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { withSplitting, UserApp, AppLayout } from './shared';
 import NotFoundPage from './layout/NotFoundPage';
+import { CollegeLecturesPage } from './lecture';
 
 
 class Routes extends React.PureComponent {
@@ -50,7 +51,8 @@ class Routes extends React.PureComponent {
 
                     {/* lecture  */}
                     <Redirect exact from="/lecture/college/:collegeId/channels" to="/lecture/college/:collegeId/channels/pages/1" />
-                    <Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />
+                    {/*<Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />*/}
+                    <Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={CollegeLecturesPage} />
 
                     <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
                     <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={withSplitting(() => import('./lecture').then(({ CoursePage }) => CoursePage))} />
