@@ -36,9 +36,10 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
     const cineroomId = sessionStorage.getItem('cineroomId');
 
-    if (cineroomId === 'ne1-m2-c2') window.localStorage.setItem('externalId', collegeForPanopto.panoptoFolderId);
-    else window.localStorage.setItem('externalId', collegesForPanopto[0].panoptoFolderId);
-
+    if (collegeForPanopto.panoptoFolderId) {
+      if (cineroomId === 'ne1-m2-c2') window.localStorage.setItem('externalId', collegeForPanopto.panoptoFolderId);
+      else window.localStorage.setItem('externalId', collegesForPanopto[0].panoptoFolderId);
+    }
   }
 
   setData(e: any) {

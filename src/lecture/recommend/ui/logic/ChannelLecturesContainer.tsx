@@ -4,7 +4,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { mobxHelper, NoSuchContentPanel } from 'shared';
+import { CubeType, mobxHelper, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
@@ -72,9 +72,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { inMyLectureService, lectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(lectureService!.clear)
         .then(this.findLectures);
     }
     else {
@@ -96,7 +97,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
-      })).then(this.findLectures);
+      }))
+        .then(lectureService!.clear)
+        .then(this.findLectures);
     }
   }
 
@@ -146,8 +149,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
             <Lecture.Group type={Lecture.GroupType.Line}>
               {
                 lectures.map((lecture: LectureModel, index: number) => {
-                  const rating = ratingMap.get(lecture.reviewId) || 0;
+                  let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
                   const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                  if (lecture.cubeType === CubeType.Community) rating = undefined;
                   return (
                     <Lecture
                       key={`lecture-${index}`}

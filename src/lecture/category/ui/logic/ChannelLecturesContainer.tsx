@@ -4,12 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, PageService } from 'shared';
+import { mobxHelper, PageService, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
-import { CardSorting, SeeMoreButton, OrderByType } from '../../../shared';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
+import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
@@ -116,6 +116,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { inMyLectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(this.init)
         .then(this.findPagingChannelLectures);
     }
     else {
@@ -137,7 +138,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
-      })).then(this.findPagingChannelLectures);
+      }))
+        .then(this.init)
+        .then(this.findPagingChannelLectures);
     }
   }
 
@@ -182,8 +185,9 @@ class ChannelLecturesContainer extends Component<Props, State> {
           <div className="section">
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {
-                const rating = ratingMap.get(lecture.reviewId) || 0;
+                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
                 const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                if (lecture.cubeType === CubeType.Community) rating = undefined;
                 return (
                   <Lecture
                     key={`lecture-${index}`}
