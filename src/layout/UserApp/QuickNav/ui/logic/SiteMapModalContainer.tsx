@@ -51,7 +51,7 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Recommend',
       items: [
-        { name: 'Recommend', path: '/recommend' },
+        { name: 'Recommend', path: lectureRoutePaths.recommend() },
       ],
     },
     {

@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
+import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
 
@@ -38,7 +39,7 @@ class ChannelLecturesPage extends Component<Props> {
   }
 
   onSelectChannel(channel: ChannelModel) {
-    this.props.history.push(`/channel/${channel.id}/recommend`);
+    this.props.history.push(routePaths.recommendChannelLectures(channel.id));
   }
 
   render() {
@@ -50,8 +51,8 @@ class ChannelLecturesPage extends Component<Props> {
       <ContentLayout
         className="mylearning"
         breadcrumb={[
-          { text: `Recommend`, path: `/recommend` },
-          { text: `${channel.name}`, path: `/channel/${channel.id}/recommend` },
+          { text: `Recommend`, path: routePaths.recommend() },
+          { text: `${channel.name}` },
         ]}
       >
         <ChannelLecturesHeaderView

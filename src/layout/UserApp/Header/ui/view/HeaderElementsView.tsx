@@ -3,8 +3,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
-
-// import profileImage from 'style/images/all/profile-38-px.png';
+import lectureRoutePaths from 'lecture/routePaths';
 
 
 export const LogoView: React.FC = () => (
@@ -26,7 +25,7 @@ export const MenuView: React.FC<MenuViewProps> = () => (
     <div className="nav">
       <NavLink to="/my-training" className="item">Learning</NavLink>
       <NavLink to="/community" className="item">Community</NavLink>
-      <NavLink to="/recommend" className="item">Recommend</NavLink>
+      <NavLink to={lectureRoutePaths.recommend()} className="item">Recommend</NavLink>
       <NavLink to="/personalcube/create" className="item">Create</NavLink>
     </div>
   </div>

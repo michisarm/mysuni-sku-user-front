@@ -16,7 +16,7 @@ function getQueryParams(optionalParams: OptionalParams = {}) {
 }
 
 export default {
-
+  // Category
   collegeLectures: (collegeId: string) =>
     `/lecture/college/${collegeId}/channels`,
 
@@ -36,4 +36,10 @@ export default {
     { programLectureId, courseLectureId }: OptionalParams = {}
   ) => `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams({ programLectureId, courseLectureId })}`,
 
+  // Recommend
+  recommend: () =>
+    `/lecture/recommend`,
+
+  recommendChannelLectures: (channelId: string) =>
+    `/lecture/recommend/channel/${channelId}`,
 };

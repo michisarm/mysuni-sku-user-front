@@ -38,7 +38,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
     super(props);
     this.state = {
       channelListMap: new Map<string, IdName>(),
-      selectedCollegeState: { id: '', name: '' },
+      selectedCollegeState: { id: '', name: '', active: false },
       channelListMapForViewState: new Map<IdName, IdName[]>(),
       activeIndex: -1,
     };
@@ -107,13 +107,13 @@ class SecondCategoryModal extends React.Component<Props, States> {
       if (personalCube.subsidiaries && personalCube.subsidiaries.length) {
         this.setState({
           channelListMapForViewState: PersonalCubeModel.makeChannelsIdNameMap(personalCube.subCategories),
-          selectedCollegeState: { id: selectedSubCollege.collegeId, name: selectedSubCollege.name },
+          selectedCollegeState: { id: selectedSubCollege.collegeId, name: selectedSubCollege.name, active: false },
           channelListMap: new Map<string, IdName>(),
         });
       } else {
         this.setState({
           channelListMapForViewState: channelListMap,
-          selectedCollegeState: { id: selectedSubCollege.collegeId, name: selectedSubCollege.name },
+          selectedCollegeState: { id: selectedSubCollege.collegeId, name: selectedSubCollege.name, active: false },
           channelListMap: new Map<string, IdName>(),
         });
       }
