@@ -21,9 +21,8 @@ interface States {
   faqCategoryId: string,
   faqTabIndex: number,
   accordIndex: number,
-  qnaTabIndex: number,
   disabled: boolean,
-  answered: boolean,
+  answered: any,
   end: number,
 }
 
@@ -39,7 +38,6 @@ export class BookMainContainer extends React.Component<Props, States> {
       faqCategoryId: '',
       faqTabIndex: 0,
       accordIndex: 0,
-      qnaTabIndex: 0,
       disabled: false,
       answered: false,
       end: 0,
@@ -73,8 +71,9 @@ export class BookMainContainer extends React.Component<Props, States> {
       this.findFaqCategoris();
     } else if (boardId === 'Q&A') {
 
-      this.setState({ tabIndex: 2, activeItem: boardId });
-      this.findQnaCategories();
+      this.setState({ tabIndex: 2, activeItem: boardId, answered: 'all' });
+      //this.findQnaCategories();
+      this.findQnaPosts('', 10);
     }
   }
 
@@ -91,7 +90,8 @@ export class BookMainContainer extends React.Component<Props, States> {
     } else if (name === 'FAQ') {
       this.findFaqCategoris();
     } else if (name === 'Q&A') {
-      this.findQnaCategories();
+      //this.findQnaCategories();
+      this.findQnaPosts('', 10);
     }
   }
 
@@ -111,7 +111,7 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  findQnaCategories() {
+  /*findQnaCategories() {
     const { categoryService, postService } = this.props;
 
     if (categoryService && postService) {
@@ -126,6 +126,45 @@ export class BookMainContainer extends React.Component<Props, States> {
         });
     }
   }
+
+  findQnaPosts(answered: any, categoryId: string, end: number) {
+    //
+    const { postService } = this.props;
+    this.setState({ answered, disabled: true });
+    if (postService ) {
+
+      if (answered === 'all' || !String(answered).length) {
+        postService.findPostsByCategoryIdAndDeleted(categoryId, false, 0, end)
+          .then(() => {
+            if (end >= postService.posts.totalCount) this.setState({ disabled: true });
+            else this.setState({ end: end + 10, disabled: false });
+          });
+      } else {
+        Promise.resolve()
+          .then(() => postService.clearPosts())
+          .then(() => {
+            postService.findQnaPostsByCategoryIdAndAnswered(categoryId, answered, 0, end)
+              .then(() => {
+                if (end >= postService.posts.totalCount) this.setState({ disabled: true });
+                else this.setState({ end: end + 10, disabled: false });
+              });
+          });
+      }
+    }
+  }
+
+  handleQnaCategoryTabChange(e: any, { answered, index }: any) {
+    //
+    const { postService } = this.props;
+    this.setState({ qnaTabIndex: index, disabled: false });
+
+    if (postService) {
+      Promise.resolve()
+        .then(() => postService.clearPosts())
+        .then(() => this.findQnaPosts(answered, 10));
+    }
+  }
+  */
 
   findNoticePinnedPosts() {
     const { postService } = this.props;
@@ -172,14 +211,13 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  findQnaPosts(answered: any, categoryId: string, end: number) {
-    //
+  findQnaPosts(answered: any, end:number) {
     const { postService } = this.props;
     this.setState({ answered, disabled: true });
     if (postService ) {
 
       if (answered === 'all' || !String(answered).length) {
-        postService.findPostsByCategoryIdAndDeleted(categoryId, false, 0, end)
+        postService.findQnaPosts(0, end)
           .then(() => {
             if (end >= postService.posts.totalCount) this.setState({ disabled: true });
             else this.setState({ end: end + 10, disabled: false });
@@ -188,7 +226,7 @@ export class BookMainContainer extends React.Component<Props, States> {
         Promise.resolve()
           .then(() => postService.clearPosts())
           .then(() => {
-            postService.findQnaPostsByCategoryIdAndAnswered(categoryId, answered, 0, end)
+            postService.findQnaPostsByAnswered( answered, 0, end)
               .then(() => {
                 if (end >= postService.posts.totalCount) this.setState({ disabled: true });
                 else this.setState({ end: end + 10, disabled: false });
@@ -216,18 +254,6 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  handleQnaCategoryTabChange(e: any, { answered, index, value }: any) {
-    //
-    const { postService } = this.props;
-    this.setState({ qnaTabIndex: index, disabled: false });
-
-    if (postService) {
-      Promise.resolve()
-        .then(() => postService.clearPosts())
-        .then(() => this.findQnaPosts(answered, value, 10));
-    }
-  }
-
   routeToQnaRegist() {
     this.props.history.push('/board/support-qna');
   }
@@ -250,7 +276,7 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   render() {
     //
-    const { activeItem, faqCategoryId, faqTabIndex, accordIndex, qnaTabIndex, disabled, end, answered } = this.state;
+    const { activeItem, faqCategoryId, faqTabIndex, accordIndex, disabled, end, answered } = this.state;
     const { postService, categoryService } = this.props;
 
     return (
@@ -336,11 +362,9 @@ export class BookMainContainer extends React.Component<Props, States> {
                 routeToQnaRegist={this.routeToQnaRegist}
                 findQnaPosts={this.findQnaPosts}
                 categoryService={categoryService}
-                handleQnaCategoryTabChange={this.handleQnaCategoryTabChange}
                 disabled={disabled}
                 end={end}
                 answered={answered}
-                qnaTabIndex={qnaTabIndex}
                 routeToQnaDetail={this.routeToQnaDetail}
                 routeToAnsweredDetail={this.routeToAnsweredDetail}
               />

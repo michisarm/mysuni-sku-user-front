@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Radio, Segment, Select } from 'semantic-ui-react';
+import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { CategoryService, PostService } from '../../index';
@@ -8,21 +8,14 @@ interface Props {
   postService?: PostService
   categoryService?: CategoryService
   routeToQnaRegist: () => void
-  findQnaPosts: (answered: any, categoryId: string, end: number) => void
-  handleQnaCategoryTabChange: (e: any, { answered, index, categorys }: any) => void
+  //findQnaPosts: (answered: any, categoryId: string, end: number) => void
+  findQnaPosts: (answered: any, end: number) => void
   disabled: boolean
   end: number
   answered: any
-  qnaTabIndex: number
   routeToQnaDetail: (postId: string) => void
   routeToAnsweredDetail:(postId : string) => void
 }
-
-const selectOptions01 = [
-  { key: '1', value: 'all', text: '모두보기' },
-  { key: '2', value: true, text: '답변 완료' },
-  { key: '3', value: false, text: '답변 대기' },
-];
 
 @inject('postService', 'categoryService')
 @observer
@@ -34,15 +27,12 @@ class QnaTabContainer extends React.Component<Props> {
     const {
       routeToQnaRegist,
       findQnaPosts,
-      handleQnaCategoryTabChange,
       end,
       disabled,
       answered,
-      qnaTabIndex,
       routeToQnaDetail,
       routeToAnsweredDetail,
     } = this.props;
-    const { categorys } = this.props.categoryService || {} as CategoryService;
     const { posts } = this.props.postService || {} as PostService;
     const result = posts.results;
 
@@ -50,7 +40,42 @@ class QnaTabContainer extends React.Component<Props> {
       <Segment className="full">
         <div className="support-list-wrap">
           <div className="list-top">
+            <Button icon className="left post ask" onClick={routeToQnaRegist}>
+              <Icon className="ask24" />Ask a Question
+            </Button>
             <div className="radio-wrap">
+              <Radio
+                className="base"
+                label="모두 보기"
+                name="radioGroup"
+                value="all"
+                checked={answered === 'all'}
+                onChange={(e: any, data: any) => {
+                  findQnaPosts(data.value, 10 );
+                }}
+              />
+              <Radio
+                className="base"
+                label="답변 완료"
+                name="radioGroup"
+                value="true"
+                checked={answered === 'true'}
+                onChange={(e: any, data: any) => {
+                  findQnaPosts(data.value, 10 );
+                }}
+              />
+              <Radio
+                className="base"
+                label="답변 대기"
+                name="radioGroup"
+                value="false"
+                checked={answered === 'false'}
+                onChange={(e: any, data: any) => {
+                  findQnaPosts(data.value, 10 );
+                }}
+              />
+            </div>
+            {/*<div className="radio-wrap">
               {
                 categorys && categorys.length > 0 && categorys.map((category, index) => (
                   <Radio
@@ -66,8 +91,8 @@ class QnaTabContainer extends React.Component<Props> {
                   />
                 ))
               }
-            </div>
-            <div className="option-list">
+            </div>*/}
+            {/*<div className="option-list">
               <div className="select-box">
                 <Select placeholder="분류를 선택해주세요"
                   className="dropdown selection"
@@ -82,7 +107,7 @@ class QnaTabContainer extends React.Component<Props> {
               <Button icon className="left post ask" onClick={routeToQnaRegist}>
                 <Icon className="ask24" />Ask a Question
               </Button>
-            </div>
+            </div>*/}
           </div>
           <div className="su-list qna">
             {
@@ -140,7 +165,7 @@ class QnaTabContainer extends React.Component<Props> {
           }
           {
             result && result.length > 0 && (
-              <div className="more-comments" onClick={() => findQnaPosts(answered, categorys[qnaTabIndex].categoryId, end)}>
+              <div className="more-comments" onClick={() => findQnaPosts(answered, end)}>
                 <Button icon
                   className="left moreview"
                   disabled={disabled}

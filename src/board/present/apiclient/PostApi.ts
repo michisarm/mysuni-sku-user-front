@@ -65,6 +65,18 @@ export default class PostApi {
       .then((response: any) => response && response.data || null);
   }
 
+  findQnaPosts(offset : number = 0, limit : number = 10) {
+    //
+    return axios.get<OffsetElementList<PostModel>>(this.URL + '/qna', { params: { offset, limit }})
+      .then((response: any) => response && response.data || null);
+  }
+
+  findQnaPostsByAnswered(answered : boolean, offset : number = 0, limit : number = 10) {
+    //
+    return axios.get<OffsetElementList<PostModel>>(this.URL + '/qna-answered', { params: { answered, offset, limit }})
+      .then((response: any) => response && response.data || null);
+  }
+
   findQnaPostsByCategoryIdAndAnswered(categoryId: string, answered: boolean,  offset: number = 0, limit: number = 10) {
     //
     return axios.get<OffsetElementList<PostModel>>(this.URL + '/qna-posts', { params: { categoryId, answered,  offset, limit }})

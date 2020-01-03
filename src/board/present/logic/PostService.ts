@@ -102,6 +102,20 @@ export default class PostService {
   }
 
   @action
+  async findQnaPosts(offset: number, limit: number) {
+    //
+    const posts = await this.postApi.findQnaPosts(offset, limit);
+    return runInAction(() => this.posts = posts);
+  }
+
+  @action
+  async findQnaPostsByAnswered(answered: boolean, offset: number, limit: number) {
+    //
+    const posts = await this.postApi.findQnaPostsByAnswered(answered, offset, limit);
+    return runInAction(() => this.posts = posts);
+  }
+
+  @action
   async findQnaPostsByCategoryIdAndAnswered(categoryId: string, answered: boolean, offset: number, limit: number) {
     //
     const posts = await this.postApi.findQnaPostsByCategoryIdAndAnswered(categoryId, answered, offset, limit);
