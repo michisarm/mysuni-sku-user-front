@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router';
+
 import { BoardService } from '../../../personalcube/board';
-import { mobxHelper } from '../../../shared';
 import AdditionalInfoForCommunityView from '../view/AdditionalInfoForCommunityView';
 
 interface Props extends RouteComponentProps {

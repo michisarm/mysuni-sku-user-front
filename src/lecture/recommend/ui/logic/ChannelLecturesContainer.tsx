@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { ReviewService } from '@nara.drama/feedback';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { CubeType, mobxHelper, NoSuchContentPanel } from 'shared';
+import { ReviewService } from '@nara.drama/feedback';
+import { CubeType, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture';
 import { ChannelModel } from 'college';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';

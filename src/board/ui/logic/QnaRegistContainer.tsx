@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
+
+import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import 'react-quill/dist/quill.snow.css';
-import { ContentLayout, mobxHelper } from 'shared';
+import { ContentLayout } from 'shared';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import classNames from 'classnames';
 import { BoardService, CategoryService, PostService } from '../../index';

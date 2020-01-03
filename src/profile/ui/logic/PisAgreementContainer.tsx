@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind, reactAlert } from '@nara.platform/accent';
-
-import { ContentLayout, mobxHelper } from 'shared';
-import { Button, Checkbox, Icon } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
+
+import { ContentLayout } from 'shared';
+import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import SkProfileService from '../../present/logic/SkProfileService';
 // import { SkProfileUdo } from '../../model/SkProfileUdo';
 // import { PisAgreementModel } from '../../model/PisAgreementModel';

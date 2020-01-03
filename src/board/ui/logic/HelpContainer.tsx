@@ -1,8 +1,7 @@
-import { Icon, Label } from 'semantic-ui-react';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { mobxHelper } from 'shared';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { Icon, Label } from 'semantic-ui-react';
 import { PostService } from '../../index';
 
 interface Props {

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { ContentLayout, mobxHelper } from 'shared';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
+
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import { PostService } from '../../index';
 

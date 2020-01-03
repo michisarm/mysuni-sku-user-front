@@ -1,12 +1,11 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { Segment } from 'semantic-ui-react';
 import { SkProfileService, StudySummary } from 'profile';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { RecommendChannelLecturesContainer } from 'lecture';
 import RecommendHeaderContainer from './RecommendHeaderContainer';

@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { FileBox, PatronType } from '@nara.drama/depot';
-import { mobxHelper, SearchFilter } from 'shared';
+import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from '../../../personalcube/media';
 import { PersonalCubeModel } from '../../../personalcube/personalcube';

@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
+import React from 'react';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, reactAlert } from '@nara.platform/accent';
+import { RouteComponentProps } from 'react-router-dom';
 
+import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { ContentLayout, IdNameList, mobxHelper } from '../../../shared';
+import { ContentLayout, IdNameList } from '../../../shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';

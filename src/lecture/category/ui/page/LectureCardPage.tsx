@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, mobxHelper, ProposalState, LearningState } from 'shared';
+import { ContentLayout, ContentMenu, ProposalState, LearningState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeTypeNameType, PersonalCubeService, CubeType } from 'personalcube/personalcube';

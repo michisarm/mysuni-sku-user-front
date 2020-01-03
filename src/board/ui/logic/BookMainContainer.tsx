@@ -1,9 +1,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Icon, Menu, Sticky } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
-import { ContentLayout, mobxHelper } from 'shared';
+
+import { Icon, Menu, Sticky } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';

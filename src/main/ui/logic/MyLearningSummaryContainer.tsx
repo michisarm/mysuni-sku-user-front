@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Segment, Button, Icon } from 'semantic-ui-react';
 import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
-import { ContentHeader, mobxHelper } from 'shared';
+import { ContentHeader } from 'shared';
 
 
 interface Props extends RouteComponentProps {

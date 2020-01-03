@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Container, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
+
+import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout, mobxHelper } from 'shared';
+import { ContentLayout } from 'shared';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
 import { CategoryService, PostService } from '../../index';

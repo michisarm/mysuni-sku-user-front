@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { mobxHelper } from 'shared';
+import { RouteComponentProps, withRouter } from 'react-router';
+
 import { MediaService, CubeIntroService, OfficeWebService, PersonalCubeService } from 'personalcube';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';

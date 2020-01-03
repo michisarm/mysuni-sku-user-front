@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { RouteComponentProps } from 'react-router';
+
+import { ContentLayout } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
-import { ContentLayout, mobxHelper } from 'shared';
 import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';

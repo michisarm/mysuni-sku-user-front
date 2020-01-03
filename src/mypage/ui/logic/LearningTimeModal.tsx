@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper } from 'shared';
+
+import { Button, Icon, Modal } from 'semantic-ui-react';
+
 
 interface Props {
   size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen'

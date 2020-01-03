@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Menu, Segment } from 'semantic-ui-react';
-import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, NoSuchContentPanel, PageService } from 'shared';
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
+
+import { Menu, Segment } from 'semantic-ui-react';
+import { NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileService } from 'profile';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import { Lecture } from 'lecture';

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { ContentLayout, CubeType, mobxHelper } from 'shared';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import depot from '@nara.drama/depot';
 import { RouteComponentProps } from 'react-router';
+
+import { ContentLayout, CubeType } from 'shared';
+import depot from '@nara.drama/depot';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { PersonalCubeService } from '../../../personalcube/personalcube';
 import { CubeIntroModel, CubeIntroService } from '../../../personalcube/cubeintro';

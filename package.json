@@ -19,7 +19,7 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "0.0.3-test3",
+    "@nara.platform/accent": "0.0.4-test2",
     "@nara.drama/depot": "^0.0.12",
     "@nara.drama/feedback": "^0.0.12",
     "@sku/personalcube": "0.0.14",

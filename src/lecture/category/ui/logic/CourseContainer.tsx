@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import queryString from 'query-string';
 import { Segment } from 'semantic-ui-react';
-import { mobxHelper } from 'shared';
 import { CoursePlanService } from 'course';
 import {
   CourseLectureService,

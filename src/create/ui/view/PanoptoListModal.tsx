@@ -1,8 +1,9 @@
-import * as React from 'react';
-import { Button, Checkbox, Form, Icon, Input, Modal, Pagination, Table } from 'semantic-ui-react';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { mobxHelper, SharedService } from 'shared';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+
+import { Button, Checkbox, Form, Icon, Input, Modal, Pagination, Table } from 'semantic-ui-react';
+import { SharedService } from 'shared';
 import { MediaService } from 'personalcube/media';
 import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
 

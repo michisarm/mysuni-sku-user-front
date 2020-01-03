@@ -1,9 +1,9 @@
 import React from 'react';
-import classNames from 'classnames';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+
+import classNames from 'classnames';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
-import { mobxHelper } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import { CollegeService } from 'college';
 import SelectType from '../../../shared/model/SelectType';

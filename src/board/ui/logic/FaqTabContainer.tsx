@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper } from 'shared';
-import { reactAutobind } from '@nara.platform/accent';
+
+import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { CategoryService, PostService } from '../../index';
 
 

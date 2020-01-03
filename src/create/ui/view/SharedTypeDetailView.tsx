@@ -1,9 +1,10 @@
-import { Form, Table } from 'semantic-ui-react';
-import * as React from 'react';
-import { mobxHelper, SearchFilter } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+
+import { Form, Table } from 'semantic-ui-react';
+import { SearchFilter } from 'shared';
+import { PersonalCubeModel } from 'personalcube/personalcube';
 import depot from '@nara.drama/depot';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import { MediaService, MediaType } from '../../../personalcube/media';

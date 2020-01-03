@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, mobxHelper } from 'shared';
+import { ContentLayout } from 'shared';
 import { CollegeService } from 'college';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';

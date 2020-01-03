@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { mobxHelper } from 'shared';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
 import { SkProfileService, StudySummary } from 'profile';

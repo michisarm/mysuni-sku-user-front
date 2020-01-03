@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, mobxHelper, CubeType, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'mypage';

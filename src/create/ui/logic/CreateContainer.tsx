@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { reactAutobind } from '@nara.platform/accent';
-import { ContentLayout, CubeState, mobxHelper, PageService } from 'shared';
+
+import { ContentLayout, CubeState, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';

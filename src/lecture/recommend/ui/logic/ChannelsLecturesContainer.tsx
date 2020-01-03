@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
-import { mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesContainer from './ChannelLecturesContainer';
