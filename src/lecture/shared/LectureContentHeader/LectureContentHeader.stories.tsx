@@ -17,7 +17,7 @@ export const Basic = () => {
   const mockCategory = new CategoryModel();
   const category = new CategoryModel({
     ...mockCategory,
-    college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+    college: new IdName({ id: 'Leadership', name: 'Leadership', active: false }),
   });
 
   return (
@@ -48,8 +48,8 @@ export const CategoryAndLabel = () => {
   const mockCategory = new CategoryModel();
   const category = new CategoryModel({
     ...mockCategory,
-    college: new IdName({ id: 'Leadership', name: 'Leadership' }),
-    channel: new IdName({ id: 'Leadership Specialist', name: 'Leadership Specialist' }),
+    college: new IdName({ id: 'Leadership', name: 'Leadership', active: false }),
+    channel: new IdName({ id: 'Leadership Specialist', name: 'Leadership Specialist', active: false }),
   });
 
   const label = { color: 'purple', text: 'AI' } as any;

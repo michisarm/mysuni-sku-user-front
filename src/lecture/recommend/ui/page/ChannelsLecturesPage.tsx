@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentLayout, ContentHeader } from 'shared';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
+import routePaths from '../../../routePaths';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
 
@@ -34,7 +35,7 @@ class ChannelLecturesPage extends Component<Props> {
     //
     const { channel } = data;
 
-    this.props.history.push(`/channel/${channel.id}/recommend`);
+    this.props.history.push(routePaths.recommendChannelLectures(channel.id));
   }
 
   render() {
@@ -53,7 +54,7 @@ class ChannelLecturesPage extends Component<Props> {
       <ContentLayout
         className="mylearning"
         breadcrumb={[
-          { text: `Recommend`, path: `/recommend` },
+          { text: `Recommend` },
         ]}
       >
         <ContentHeader className="content-division">

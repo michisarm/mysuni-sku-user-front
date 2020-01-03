@@ -1,7 +1,6 @@
 import { action, configure, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { OffsetElementList } from '@nara.platform/accent';
 import PostApi from '../apiclient/PostApi';
 import { PostModel } from '../../model/PostModel';
 import { PostContentsModel } from '../../model/PostContentsModel';

@@ -1,6 +1,6 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';

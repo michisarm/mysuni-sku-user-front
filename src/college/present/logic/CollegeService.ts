@@ -1,5 +1,5 @@
 import { observable, action, runInAction, computed } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
@@ -231,7 +231,7 @@ export default class CollegeService {
   get favoriteChannelIdNames() : IdNameList {
     const list : IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.id, name: channel.name });
+      list.idNames.push({ id: channel.id, name: channel.name, active: false });
     });
     return list;
   }

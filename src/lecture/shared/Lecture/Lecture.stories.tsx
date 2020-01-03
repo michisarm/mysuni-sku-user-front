@@ -25,7 +25,7 @@ export const Basic = () => {
     ...mockLecture,
     category: new CategoryModel({
       ...mockCategory,
-      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+      college: new IdName({ id: 'Leadership', name: 'Leadership', active: false }),
     }),
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
@@ -89,7 +89,7 @@ export const Required = () => {
   const lecture = new LectureModel({
     ...mockLecture,
     requiredSubsidiaries: [
-      new IdName({ id: 'SK-University', name: 'SK-University' }),
+      new IdName({ id: 'SK-University', name: 'SK-University', active: false }),
     ],
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
@@ -119,7 +119,7 @@ export const Line = () => {
     ...mockLecture,
     category: new CategoryModel({
       ...mockCategory,
-      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
+      college: new IdName({ id: 'Leadership', name: 'Leadership', active: false }),
     }),
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
@@ -184,8 +184,8 @@ export const Course = () => {
     ...mockLecture,
     category: new CategoryModel({
       ...mockCategory,
-      college: new IdName({ id: 'Leadership', name: 'Leadership' }),
-      channel: new IdName({ id: 'Leadership Clinic', name: 'Leadership Clinic' }),
+      college: new IdName({ id: 'Leadership', name: 'Leadership', active: false }),
+      channel: new IdName({ id: 'Leadership Clinic', name: 'Leadership Clinic', active: false }),
     }),
     name: 'Machine learning Complete Guide for Calculus - Deep',
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',

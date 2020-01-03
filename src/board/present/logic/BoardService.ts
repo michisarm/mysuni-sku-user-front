@@ -1,5 +1,5 @@
 import { observable, action, configure, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import BoardApi from '../apiclient/BoardApi';
 import { BoardModel } from '../../model/BoardModel';

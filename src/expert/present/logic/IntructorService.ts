@@ -1,5 +1,5 @@
 import { action, configure, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import InstructorApi from '../apiclient/InstructorApi';
 import { InstructorModel } from '../../model/InstructorModel';
 import { OffsetElement } from '../../model/OffsetElement';

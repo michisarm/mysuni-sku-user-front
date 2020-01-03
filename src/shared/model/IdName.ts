@@ -5,6 +5,7 @@ class IdName implements AccentIdName {
   //
   id: string = '';
   name: string = '';
+  active: boolean = false;
 
   constructor(idName?: IdName) {
     if ( idName ) {
@@ -13,13 +14,14 @@ class IdName implements AccentIdName {
   }
 
   static new(id: string, name: string) {
-    return new IdName({ id, name });
+    return new IdName({ id, name, active: false });
   }
 }
 
 decorate(IdName, {
   id: observable,
   name: observable,
+  active: observable,
 });
 
 export default IdName;

@@ -10,8 +10,8 @@ import { Segment } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
-import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
+import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
 import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
@@ -285,7 +285,7 @@ class MyTrainingPage extends Component<Props, State> {
                 />
               ) || (
                 <ContentHeader.WaitingItem
-                  onClick={() => this.props.history.push('/recommend')}
+                  onClick={() => this.props.history.push(lectureRoutePaths.recommend())}
                 />
               )
             }

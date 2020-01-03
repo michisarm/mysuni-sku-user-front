@@ -1,5 +1,7 @@
-import { IdName, IdNameList as AccentIdNameList } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { IdNameList as AccentIdNameList } from '@nara.platform/accent';
+import IdName from './IdName';
+
 
 class IdNameList implements AccentIdNameList {
   //

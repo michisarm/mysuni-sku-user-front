@@ -1,7 +1,6 @@
 import { action, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { OffsetElementList } from '@nara.platform/accent';
 import MediaApi from '../apiclient/MediaApi';
 import MediaFlowApi from '../apiclient/MediaFlowApi';
 import { MediaModel } from '../../model/MediaModel';

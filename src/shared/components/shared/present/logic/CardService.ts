@@ -1,6 +1,6 @@
 
 import { observable, action } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 
 import CardModel from '../model/CardModel';

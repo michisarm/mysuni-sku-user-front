@@ -1,5 +1,5 @@
 import { action, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import { CubeIntroModel } from '../../../cubeintro';
 import OfficeApi from '../apiclient/OfficeApi';

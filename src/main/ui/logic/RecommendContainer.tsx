@@ -5,12 +5,14 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Segment } from 'semantic-ui-react';
-import { SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
-import { RecommendChannelLecturesContainer } from 'lecture';
+import lectureRoutePaths from 'lecture/routePaths';
+import { ChannelLecturesPanel } from 'lecture';
 import RecommendHeaderContainer from './RecommendHeaderContainer';
 
-interface Props extends RouteComponentProps{
+
+interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
   collegeService?: CollegeService
 }
@@ -25,48 +27,59 @@ class RecommendContainer extends Component<Props> {
   }
 
   init() {
+    //
     const { skProfileService } = this.props;
-
-    skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
   }
 
   routeTo(e: any, data: any) {
-    this.props.history.push(`/channel/${data.channel.id}/recommend`);
+    this.props.history.push(lectureRoutePaths.recommendChannelLectures(data.channel.id));
+  }
+
+  onFindStudySummary() {
+    //
+    const { skProfileService } = this.props;
+    skProfileService!.findStudySummary();
   }
 
   render() {
+    //
     const { skProfileService } = this.props;
 
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
+      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    );
 
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id, checked: true })) || [];
-
-    // channels.push(new ChannelModel({ id: 'CHN0000v', channelId: 'CHN0000v', name: '행복의 이해', checked: true }));
-    // channels.push(new ChannelModel({ id: 'CHN0000q', channelId: 'CHN0000q', name: '마케팅', checked: true }));
     return (
-      <div className="recommend-area" id="recommend">
-        <Segment className="full">
-          <RecommendHeaderContainer />
-          {
-            channels && channels.length
-            && channels.map((channel: ChannelModel, index: number) => {
-              if (!channel.checked) return null;
-              return (
-                <RecommendChannelLecturesContainer
-                  channel={channel}
-                  key={`channel_cont_${index}`}
-                  onViewAll={this.routeTo}
-                />
-              );
-            }) || null
-          }
-        </Segment>
-      </div>
+      <RecommendWrapper>
+        <RecommendHeaderContainer
+          favoriteChannels={favoriteChannels}
+          onFindStudySummary={this.onFindStudySummary}
+        />
+
+        {
+          favoriteChannels.map((channel: ChannelModel, index: number) => (
+            channel.checked && (
+              <ChannelLecturesPanel
+                key={`channel_cont_${index}`}
+                channel={channel}
+                onViewAll={this.routeTo}
+              />
+            )
+          ))
+        }
+      </RecommendWrapper>
     );
   }
 }
+
+const RecommendWrapper: React.FunctionComponent = ({ children }) => (
+  <div className="recommend-area" id="recommend">
+    <Segment className="full">
+      {children}
+    </Segment>
+  </div>
+);
 
 export default withRouter(RecommendContainer);

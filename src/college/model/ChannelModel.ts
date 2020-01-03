@@ -9,10 +9,12 @@ export class ChannelModel implements IdName {
   name: string = '';
 
   channelId : string = '';
-  checked?: boolean;
   iconfileBoxId : string = '';
   description : string = '';
-  time : number =0;
+  time : number = 0;
+
+  checked?: boolean;
+  active: boolean = false;
 
   constructor(channel? : ChannelModel | any) {
     if (channel) {
@@ -28,10 +30,11 @@ decorate(ChannelModel, {
   id: observable,
   name: observable,
   channelId: observable,
-  checked: observable,
   iconfileBoxId: observable,
   description: observable,
   time: observable,
+  checked: observable,
+  active: observable,
 });
 
 

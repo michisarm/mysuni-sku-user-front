@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 
 import PageModel from '../../model/PageModel';
 

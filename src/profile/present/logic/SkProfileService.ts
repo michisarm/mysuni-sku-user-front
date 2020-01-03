@@ -1,12 +1,14 @@
-import { observable, action, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
-import { NameValueList, OffsetElementList } from '@nara.platform/accent';
+
+import { observable, action, runInAction, computed } from 'mobx';
+import { autobind, NameValueList, OffsetElementList } from '@nara.platform/accent';
+
 import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
 import { StudySummary } from '../../model/StudySummary';
 import { SkProfileUdo } from '../../model/SkProfileUdo';
+
 
 @autobind
 export default class SkProfileService {
@@ -27,8 +29,21 @@ export default class SkProfileService {
   @observable
   studySummary: StudySummary = new StudySummary();
 
+
   constructor(skProfileApi: SkProfileApi) {
     this.skProfileApi = skProfileApi;
+  }
+
+  @computed
+  get studySummaryFavoriteChannels() {
+    //
+    const { favoriteChannels } = this.studySummary;
+    console.log('favirotieChannels', favoriteChannels);
+
+    return favoriteChannels.idNames;
+    // return favoriteChannels.idNames.map(channel =>
+    //   new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    // );
   }
 
   registerSkProfile(skProfile: SkProfileModel) {
