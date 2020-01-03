@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+
 import { Accordion, Button, Icon, Modal, Radio } from 'semantic-ui-react';
-import { CategoryModel, IdName, mobxHelper } from 'shared';
+import { CategoryModel, IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeModel, CollegeService } from 'college';
 
@@ -23,7 +24,7 @@ interface States {
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
-@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
+@inject(mobxHelper.injectFrom('college.collegeService', 'personalCube.personalCubeService'))
 @observer
 @reactAutobind
 class FirstCategoryModal extends React.Component<Props, States> {

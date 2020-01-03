@@ -1,18 +1,23 @@
 import React from 'react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
+
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
+import { ContentLayout } from 'shared';
 import { CategoryService, PostService } from '../../index';
-import { ContentLayout } from '../../../shared';
+
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
   categoryService?: CategoryService
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 class FaqDetailContainer extends React.Component<Props> {

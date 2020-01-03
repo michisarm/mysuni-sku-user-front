@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Button, Icon, Modal, Accordion, Checkbox } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
+
+import { Button, Icon, Modal, Accordion, Checkbox } from 'semantic-ui-react';
 import { SkProfileService, StudySummary } from 'profile';
 import { CollegeModel, ChannelModel, CollegeService } from 'college';
+
 
 interface Props {
   skProfileService? : SkProfileService
@@ -23,7 +25,7 @@ interface State{
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
-@inject('skProfileService', 'collegeService')
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'college.collegeService'))
 @observer
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {

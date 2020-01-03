@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, channelId: stri
   collegeService: CollegeService,
 }
 
-@inject('collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService'))
 @reactAutobind
 @observer
 class ChannelLecturesPage extends Component<Props> {

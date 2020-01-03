@@ -1,13 +1,15 @@
 import React from 'react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
+
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
 import { AnswerService, CategoryService, PostService } from '../../index';
-import { ContentLayout } from '../../../shared';
+
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
@@ -19,7 +21,11 @@ interface States {
   filesMap: Map<string, any>
 }
 
-@inject('postService', 'categoryService', 'answerService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.postService',
+  'board.answerService',
+))
 @observer
 @reactAutobind
 class AnsweredDetailContainer extends React.Component<Props, States> {

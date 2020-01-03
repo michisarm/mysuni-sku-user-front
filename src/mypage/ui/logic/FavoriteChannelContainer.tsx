@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Icon, Label } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+
+import { Button, Icon, Label } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { SkProfileService, StudySummary } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
@@ -17,7 +18,7 @@ interface States {
   open: boolean
 }
 
-@inject('skProfileService', 'collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteChannelContainer extends Component<Props, States> {

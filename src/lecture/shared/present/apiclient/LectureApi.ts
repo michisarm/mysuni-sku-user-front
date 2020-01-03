@@ -5,6 +5,7 @@ import { ChannelModel } from 'college';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
+import LectureViewRdoModel from '../../model/LectureViewRdoModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
@@ -51,18 +52,24 @@ class LectureApi {
       return Promise.resolve([]);
     }
 
-    let lectureCardIdsParam = 'lectureCardIds=';
-    let courseLectureIdsParam = 'courseLectureIds=';
+    // let lectureCardIdsParam = 'lectureCardIds=';
+    // let courseLectureIdsParam = 'courseLectureIds=';
+    //
+    // if (lectureCardUsids && lectureCardUsids.length > 0) {
+    //   lectureCardIdsParam = lectureCardUsids.map((lectureCardUsid) => `lectureCardIds=${lectureCardUsid}`).join('&');
+    // }
+    // if (courseLectureUsids && courseLectureUsids.length > 0) {
+    //   courseLectureIdsParam = courseLectureUsids.map((courseLectureUsid) => `courseLectureIds=${courseLectureUsid}`).join('&');
+    // }
+    // const queryParams = `coursePlanId=${coursePlanId}&${lectureCardIdsParam}&${courseLectureIdsParam}`;
 
-    if (lectureCardUsids && lectureCardUsids.length > 0) {
-      lectureCardIdsParam = lectureCardUsids.map((lectureCardUsid) => `lectureCardIds=${lectureCardUsid}`).join('&');
-    }
-    if (courseLectureUsids && courseLectureUsids.length > 0) {
-      courseLectureIdsParam = courseLectureUsids.map((courseLectureUsid) => `courseLectureIds=${courseLectureUsid}`).join('&');
-    }
-    const queryParams = `coursePlanId=${coursePlanId}&${lectureCardIdsParam}&${courseLectureIdsParam}`;
+    const params = new LectureViewRdoModel({
+      coursePlanId,
+      lectureCardIds: lectureCardUsids,
+      courseLectureIds: courseLectureUsids || [],
+    });
 
-    return axiosApi.get<LectureViewModel[]>(this.baseUrl + `/view?${queryParams}`)
+    return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/view`, params)
       .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
   }
 

@@ -1,20 +1,20 @@
 
 import React, { Component } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactAutobind } from '@nara.platform/accent';
+
 import { Button, Icon } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared-component';
-import { inject, observer } from 'mobx-react';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
-import { mobxHelper } from 'shared';
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
 @observer
 class RecommendHeaderContainer extends Component<Props> {

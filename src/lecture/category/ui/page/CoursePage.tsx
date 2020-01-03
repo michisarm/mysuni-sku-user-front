@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentMenu, mobxHelper, CubeType, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'mypage';
@@ -47,8 +47,8 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
-  'collegeService',
-  'skProfileService',
+  'college.collegeService',
+  'profile.skProfileService',
   'course.coursePlanService',
   'lecture.courseLectureService',
   'lecture.programLectureService',
@@ -64,6 +64,14 @@ class CoursePage extends Component<Props, State> {
   state= {
     type: 'List',
   };
+
+  constructor(props: Props) {
+    //
+    super(props);
+    props.coursePlanService.clearCoursePlan();
+    props.coursePlanService.clearCoursePlanContents();
+    props.lectureService.clearLectureViews();
+  }
 
   componentDidMount() {
     //

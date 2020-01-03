@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { Button, Image } from 'semantic-ui-react';
-import { RouteComponentProps } from 'react-router-dom';
-import { inject, observer } from 'mobx-react';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { SkProfileModel } from '../..';
 
@@ -12,7 +12,7 @@ interface Props extends RouteComponentProps {
   skProfileService : SkProfileService,
 }
 
-@inject( 'skProfileService')
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteWelcomePage extends Component<Props> {

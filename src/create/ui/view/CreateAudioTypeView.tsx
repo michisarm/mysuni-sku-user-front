@@ -1,6 +1,7 @@
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import * as React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
@@ -19,7 +20,7 @@ interface Props {
   collegeService?: CollegeService
 }
 
-@inject( 'mediaService', 'collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'personalCube.mediaService'))
 @observer
 @reactAutobind
 class CreateAudioTypeView extends React.Component<Props> {
@@ -47,7 +48,6 @@ class CreateAudioTypeView extends React.Component<Props> {
     if (mediaService && e.data && e.data.boolResult && e.data.obj && e.data.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(e.data.obj.list)) {
-        console.log(e.data.obj.list);
         Promise.resolve()
           .then(() => {
             e.data.obj.list.map((list: any) => {

@@ -1,11 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { mobxHelper } from 'shared';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { ChannelModel } from 'college';
 import { SkProfileService } from 'profile';
@@ -28,7 +27,7 @@ interface States {
   open: boolean
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {

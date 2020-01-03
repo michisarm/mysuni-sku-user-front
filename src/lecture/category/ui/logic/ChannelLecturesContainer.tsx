@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, PageService, CubeType } from 'shared';
+import { PageService, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
@@ -75,7 +75,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   async findPagingChannelLectures() {

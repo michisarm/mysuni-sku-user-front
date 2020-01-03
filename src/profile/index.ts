@@ -10,6 +10,13 @@ import { EmployeeModel } from './model/EmployeeModel';
 import { CodeNameModel } from './model/CodeNameModel';
 import { StudySummary } from './model/StudySummary';
 
+export const profileStores = {
+  profile: {
+    skProfileService: SkProfileService.instance,
+  },
+};
+
+
 export {
   SkProfileModel, EmployeeModel, CodeNameModel, StudySummary,
   PisAgreementContainer,

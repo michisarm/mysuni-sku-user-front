@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, mobxHelper, ProposalState } from 'shared';
+import { CubeType, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';

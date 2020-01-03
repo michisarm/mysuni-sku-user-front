@@ -1,7 +1,7 @@
-import { Icon, Label } from 'semantic-ui-react';
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { Icon, Label } from 'semantic-ui-react';
 import { PostService } from '../../index';
 
 interface Props {
@@ -9,7 +9,9 @@ interface Props {
   routeToFaqDetail:(postId: string) => void
 }
 
-@inject('postService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+))
 @observer
 @reactAutobind
 class HelpContainer extends React.Component<Props> {

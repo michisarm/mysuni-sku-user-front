@@ -1,12 +1,15 @@
-import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { CubeIntroService } from '../../../personalcube/cubeintro';
-import { ContentsProviderService } from '../../../college';
+import { RouteComponentProps, withRouter } from 'react-router';
+
+import { CubeIntroService } from 'personalcube/cubeintro';
+import { MediaService } from 'personalcube/media';
+import { ContentsProviderService } from 'college';
 import ContentsProviderSelectForCubeIntroView from '../view/ContentsProviderSelectForCubeIntroView';
 import ContentsProviderSelectForMediaView from '../view/ContentsProviderSelectForMediaView';
-import { MediaService } from '../../../personalcube/media';
+
+
 
 interface Props extends RouteComponentProps {
   cubeIntroService?: CubeIntroService
@@ -17,7 +20,11 @@ interface Props extends RouteComponentProps {
   type: string
 }
 
-@inject('cubeIntroService', 'contentsProviderService', 'mediaService')
+@inject(mobxHelper.injectFrom(
+  'personalCube.cubeIntroService',
+  'college.contentsProviderService',
+  'personalCube.mediaService',
+))
 @observer
 @reactAutobind
 class ContentsProviderSelectContainer extends React.Component<Props> {

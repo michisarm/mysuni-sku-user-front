@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+
+import { Button, Icon, Segment } from 'semantic-ui-react';
 import { PostService } from '../../index';
+
 
 interface Props {
   postService?: PostService
@@ -12,7 +14,9 @@ interface Props {
   routeToNoticeDetail: (postId: string) => void
 }
 
-@inject('postService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+))
 @observer
 @reactAutobind
 class NoticeTabContainer extends React.Component<Props> {

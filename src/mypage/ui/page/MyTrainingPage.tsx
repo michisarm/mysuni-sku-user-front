@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { ReviewService } from '@nara.drama/feedback';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+
+import { ReviewService } from '@nara.drama/feedback';
 import { Segment } from 'semantic-ui-react';
 
-import { ContentHeader, ContentLayout, ContentMenu, mobxHelper, NoSuchContentPanel, PageService } from 'shared';
+import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
 import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
@@ -48,7 +49,7 @@ enum Type {
 @inject(mobxHelper.injectFrom(
   'shared.pageService',
   'shared.reviewService',
-  'skProfileService',
+  'profile.skProfileService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.myLearningSummaryService',

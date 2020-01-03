@@ -49,6 +49,12 @@ class LectureService {
   // Lectures ----------------------------------------------------------------------------------------------------------
 
   @action
+  clearLectures() {
+    //
+    return runInAction(() => this._lectures = []);
+  }
+
+  @action
   async findPagingCollegeLectures(collegeId: string, limit: number, offset: number, orderBy: OrderByType) {
     //
     const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy));
@@ -90,6 +96,14 @@ class LectureService {
     });
   }
 
+  // LectureViews ------------------------------------------------------------------------------------------------------
+
+  @action
+  clearLectureViews() {
+    //
+    return runInAction(() => this._lectureViews = []);
+  }
+
   @action
   async findLectureViews(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
     //
@@ -99,6 +113,8 @@ class LectureService {
     return lectureViews;
   }
 
+  // SubLectureViewMap -------------------------------------------------------------------------------------------------
+
   @action
   async findSubLectureViews(courseId: string, coursePlanId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
     //
@@ -106,12 +122,6 @@ class LectureService {
 
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
     return lectureViews;
-  }
-
-  @action
-  clear() {
-    //
-    return runInAction(() => this._lectures = []);
   }
 
   getSubLectureViews(courseId: string) {

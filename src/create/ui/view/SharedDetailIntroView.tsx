@@ -1,11 +1,12 @@
-import { Table } from 'semantic-ui-react';
-import * as React from 'react';
+
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+
+import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { CubeIntroModel } from '../../../personalcube/cubeintro';
 import { BoardService } from '../../../personalcube';
-import { mobxHelper } from '../../../shared';
 
 interface Props {
   cubeIntro: CubeIntroModel

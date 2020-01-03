@@ -1,12 +1,11 @@
-import * as React from 'react';
+import React from 'react';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import {  Form, Button, Icon, Select } from 'semantic-ui-react';
-import { inject, observer } from 'mobx-react';
-import { reactAlert, reactAutobind } from '@nara.platform/accent';
-
+import { Form, Button, Icon, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { ContentLayout } from '../../../shared';
+import { ContentLayout } from 'shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
@@ -27,7 +26,7 @@ interface States{
 
 }
 
-@inject('collegeService', 'skProfileService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteJobContainer extends React.Component<Props, States> {
@@ -48,7 +47,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (collegeService && skProfileService) {
       collegeService.findAllJobGroups();
       skProfileService.findSkProfile();
-      console.log('member init : ', skProfileService.skProfile.member);
     }
   }
 
@@ -151,7 +149,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
       } else {
         skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup);
-        console.log('skProfileUdo====>', skProfileUdo);
         skProfileService.modifySkProfile(skProfileUdo);
       }
     }

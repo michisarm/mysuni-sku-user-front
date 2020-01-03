@@ -4,6 +4,7 @@
 import ModalService from './present/logic/ModalService';
 import PageService from './present/logic/PageService';
 import NewPageService from './present/logic/NewPageService';
+import SharedService from './present/logic/SharedService';
 
 
 export const sharedStores = {
@@ -11,6 +12,7 @@ export const sharedStores = {
     modalService: ModalService.instance,
     pageService: PageService.instance,
     newPageService: NewPageService.instance,
+    sharedService: SharedService.instance,
   },
 };
 
@@ -18,6 +20,7 @@ export {
   ModalService,
   PageService,
   NewPageService,
+  SharedService,
 };
 
 
@@ -52,7 +55,6 @@ export { default as NewPageModel } from './model/NewPageModel';
 /** Helper */
 export { default as storybookHelper } from './helper/storybookHelper';
 export { default as withSplitting } from './helper/withSplitting';
-export { default as mobxHelper } from './helper/mobxHelper';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
 

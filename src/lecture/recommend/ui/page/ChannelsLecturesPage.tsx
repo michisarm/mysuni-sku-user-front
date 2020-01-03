@@ -1,10 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentHeader, mobxHelper } from 'shared';
+import { ContentLayout, ContentHeader } from 'shared';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ChannelLecturesPage extends Component<Props> {

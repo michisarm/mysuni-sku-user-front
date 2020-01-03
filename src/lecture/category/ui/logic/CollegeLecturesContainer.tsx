@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { mobxHelper, NoSuchContentPanel, NewPageService, CubeType } from 'shared';
+import { NoSuchContentPanel, NewPageService, CubeType } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
@@ -42,7 +42,7 @@ interface RouteParams {
 
 @inject(mobxHelper.injectFrom(
   'shared.newPageService',
-  'collegeService',
+  'college.collegeService',
   'lecture.lectureService',
   'lecture.lectureCountService',
   'shared.reviewService',
@@ -96,7 +96,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     const pageNo = parseInt(match.params.pageNo, 10);
 
     newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   clearAndInit() {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, mobxHelper, ProposalState, LearningState } from 'shared';
+import { ContentLayout, ContentMenu, ProposalState, LearningState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeTypeNameType, PersonalCubeService, CubeType } from 'personalcube/personalcube';
@@ -53,8 +53,8 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
-  'skProfileService',
-  'collegeService',
+  'profile.skProfileService',
+  'college.collegeService',
   'personalCube.personalCubeService',
   'personalCube.cubeIntroService',
   'personalCube.classroomService',
@@ -75,6 +75,12 @@ class LectureCardPage extends Component<Props, State> {
   state= {
     type: 'Overview',
   };
+
+  constructor(props: Props) {
+    super(props);
+    props.personalCubeService.clearPersonalCube();
+  }
+
 
   componentDidMount() {
     //

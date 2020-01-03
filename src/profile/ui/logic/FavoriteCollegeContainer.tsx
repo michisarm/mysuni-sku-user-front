@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
-import { inject, observer } from 'mobx-react';
-import { reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import { ChannelModel } from 'college';
 import CollegeService from '../../../college/present/logic/CollegeService';
@@ -31,7 +31,7 @@ const style = {
   left: '1.25rem',
 };
 
-@inject('collegeService', 'skProfileService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, States> {
@@ -112,7 +112,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       if (collegeService && skProfileService) {
         collegeService.favoriteChannels = [...favorites];
         skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
-        console.log(StudySummary.asNameValues(skProfileService.studySummary));
         skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
       }
       this.props.history.push('/profile/interest/job');

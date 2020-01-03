@@ -1,11 +1,12 @@
 
 import React from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+
 import { ReplyForm } from '@sku/personalcube';
 import { CollegeService } from 'college';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { ContentLayout, mobxHelper } from 'shared';
-import { inject, observer } from 'mobx-react';
+import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
 
 
@@ -14,7 +15,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 }
 
 @inject(mobxHelper.injectFrom(
-  'collegeService',
+  'college.collegeService',
 ))
 @reactAutobind
 @observer

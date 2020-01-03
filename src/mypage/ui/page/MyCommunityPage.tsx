@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { PostList } from '@sku/personalcube';
-
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { ContentHeader, ContentLayout, mobxHelper, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
+
+import { PostList } from '@sku/personalcube';
+import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { MyTrainingService } from 'mypage/index';
 import { Lecture, LectureService } from 'lecture';
@@ -40,7 +40,7 @@ enum Type {
 }
 
 @inject(mobxHelper.injectFrom(
-  'skProfileService',
+  'profile.skProfileService',
   'shared.pageService',
   'lecture.lectureService',
   'myTraining.myTrainingService',
@@ -89,7 +89,7 @@ class MyCommunityPage extends Component<Props, State> {
     //
     const { pageService, lectureService, myTrainingService } = this.props;
     pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
     myTrainingService!.clear();
     this.setState({ type }, this.findPagingList);
   }

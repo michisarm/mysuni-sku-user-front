@@ -6,9 +6,11 @@ import ContentsProviderService from './present/logic/ContentsProviderService';
 
 
 export const collegeStores = {
-  collegeService: CollegeService.instance,
-  subsidiaryService: SubsidiaryService.instance,
-  contentsProviderService: ContentsProviderService.instance,
+  college: {
+    collegeService: CollegeService.instance,
+    subsidiaryService: SubsidiaryService.instance,
+    contentsProviderService: ContentsProviderService.instance,
+  },
 };
 
 export {

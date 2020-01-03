@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { Button, Checkbox, Form, Icon, Input, Modal, Pagination, Table } from 'semantic-ui-react';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import SharedService from '../../../shared/present/logic/SharedService';
-import { MediaService } from '../../../personalcube/media';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+
+import { Button, Checkbox, Form, Icon, Input, Modal, Pagination, Table } from 'semantic-ui-react';
+import { SharedService } from 'shared';
+import { MediaService } from 'personalcube/media';
 import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
+
 
 interface Props {
   mediaService?: MediaService
@@ -15,7 +17,10 @@ interface States {
   open: boolean
 }
 
-@inject('mediaService', 'sharedService')
+@inject(mobxHelper.injectFrom(
+  'personalCube.mediaService',
+  'shared.sharedService',
+))
 @observer
 @reactAutobind
 class PanoptoListModal extends React.Component<Props, States> {

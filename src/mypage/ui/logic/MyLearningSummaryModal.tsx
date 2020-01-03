@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { mobxHelper } from 'shared';
-import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+
 import moment from 'moment';
+import { Modal, Button, Icon } from 'semantic-ui-react';
+import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 interface Props {

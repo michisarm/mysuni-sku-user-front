@@ -1,17 +1,21 @@
 import React from 'react';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
+
+import { Button, Icon, Segment } from 'semantic-ui-react';
+import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import { PostService } from '../../index';
-import { ContentLayout } from '../../../shared';
+
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
 }
 
-@inject('postService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+))
 @observer
 @reactAutobind
 class NoticeDetailContainer extends React.Component<Props> {

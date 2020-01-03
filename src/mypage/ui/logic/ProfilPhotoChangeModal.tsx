@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { Button, Modal } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
+import { Button, Modal } from 'semantic-ui-react';
+
 
 interface Props {
   size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen'
@@ -10,7 +11,7 @@ interface States {
   open : boolean
 }
 
-@inject('skProfileService')
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ProfilPhotoChangeModal extends Component<Props, States> {

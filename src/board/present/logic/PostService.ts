@@ -138,7 +138,6 @@ export default class PostService {
   onChangerContentsProps(name: string, value: string | {}) {
     //
     this.post = _.set(this.post, name, value);
-    console.log(this.post);
   }
 
   @action

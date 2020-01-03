@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router-dom';
+
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
-import { ContentLayout, mobxHelper, PageService } from 'shared';
+import { ContentLayout, PageService } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import { InstructorService } from '../../index';
 import ExpertHeaderView from '../view/ExpertHeaderView';
@@ -32,7 +33,7 @@ interface Props extends RouteComponentProps<{ instructorId : string }> {
   'lecture.lectureService',
   'lecture.lectureCardService',
   'shared.reviewService',
-  'instructorService'))
+  'expert.instructorService'))
 @reactAutobind
 @observer
 @observer
@@ -69,7 +70,7 @@ class ExpertContainer extends React.Component<Props> {
     const { pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   async findPagingInstructorLectures() {
