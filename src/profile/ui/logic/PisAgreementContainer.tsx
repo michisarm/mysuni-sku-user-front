@@ -12,7 +12,7 @@ import SkProfileService from '../../present/logic/SkProfileService';
 interface Props extends RouteComponentProps{
   skProfileService? : SkProfileService
 }
-console.log('pis', mobxHelper);
+
 @inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind

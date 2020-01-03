@@ -1,10 +1,7 @@
-/* eslint-disable */
+
 import React from 'react';
 // import { axiosApi, reactAlert } from '@nara.platform/accent';
 import { axiosApi } from '@nara.platform/accent';
-
-import * as sharedHelper from 'shared/helper';
-console.log('sharedHelper', sharedHelper);
 
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';
