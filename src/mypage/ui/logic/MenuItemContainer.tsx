@@ -32,7 +32,7 @@ enum Type {
 @inject(mobxHelper.injectFrom(
   'shared.pageService',
   'shared.reviewService',
-  'skProfileService',
+  'profile.skProfileService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
 ))

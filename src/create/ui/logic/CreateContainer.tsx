@@ -44,7 +44,7 @@ interface States {
   'lecture.lectureCardService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
-  'skProfileService',
+  'profile.skProfileService',
 ))
 @observer
 @reactAutobind

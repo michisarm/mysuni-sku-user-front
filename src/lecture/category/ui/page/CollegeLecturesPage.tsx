@@ -16,7 +16,7 @@ interface Props extends RouteComponentProps<{ collegeId: string }> {
   lectureCountService: LectureCountService,
 }
 
-@inject(mobxHelper.injectFrom('collegeService', 'lecture.lectureCountService'))
+@inject(mobxHelper.injectFrom('college.collegeService', 'lecture.lectureCountService'))
 @reactAutobind
 @observer
 class CollegeLecturesPage extends Component<Props> {

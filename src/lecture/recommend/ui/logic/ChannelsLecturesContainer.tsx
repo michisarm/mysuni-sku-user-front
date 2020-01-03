@@ -19,7 +19,7 @@ interface Props {
 interface State {
 }
 
-@inject(mobxHelper.injectFrom('collegeService'))
+@inject(mobxHelper.injectFrom('college.collegeService'))
 @reactAutobind
 @observer
 class ChannelsLecturesContainer extends Component<Props, State> {

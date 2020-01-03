@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ChannelLecturesPage extends Component<Props> {

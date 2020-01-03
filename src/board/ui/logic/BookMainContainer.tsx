@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
 import { RouteComponentProps } from 'react-router';
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
@@ -27,7 +27,10 @@ interface States {
   end: number,
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 export class BookMainContainer extends React.Component<Props, States> {

@@ -26,7 +26,6 @@ class SharedTypeDetailView extends React.Component<Props> {
   renderVideo() {
     const { media } = this.props.mediaService || {} as MediaService;
     const { filesMap, goToVideo } = this.props;
-    console.log(filesMap);
     return (
       <>
         <Table.Row>
@@ -88,7 +87,6 @@ class SharedTypeDetailView extends React.Component<Props> {
 
   render() {
     const { personalCube, cubeType } = this.props;
-    console.log(personalCube);
     return (
       <>
         <div className="section-tit">

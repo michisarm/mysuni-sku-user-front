@@ -28,7 +28,7 @@ interface States {
   open: boolean
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {

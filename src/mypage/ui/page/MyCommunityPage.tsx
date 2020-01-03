@@ -40,7 +40,7 @@ enum Type {
 }
 
 @inject(mobxHelper.injectFrom(
-  'skProfileService',
+  'profile.skProfileService',
   'shared.pageService',
   'lecture.lectureService',
   'myTraining.myTrainingService',

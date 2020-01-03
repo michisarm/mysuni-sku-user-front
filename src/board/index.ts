@@ -9,6 +9,16 @@ import CategoryService from './present/logic/CategoryService';
 import PostService from './present/logic/PostService';
 import AnswerService from './present/logic/AnswerService';
 
+export const boardStores = {
+  board: {
+    boardService: BoardService.instance,
+    categoryService: CategoryService.instance,
+    postService: PostService.instance,
+    answerService: AnswerService.instance,
+  },
+};
+
+
 export {
   BookMainContainer,
   NoticeDetailContainer,

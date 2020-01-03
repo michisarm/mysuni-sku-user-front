@@ -42,7 +42,7 @@ interface RouteParams {
 
 @inject(mobxHelper.injectFrom(
   'shared.newPageService',
-  'collegeService',
+  'college.collegeService',
   'lecture.lectureService',
   'lecture.lectureCountService',
   'shared.reviewService',

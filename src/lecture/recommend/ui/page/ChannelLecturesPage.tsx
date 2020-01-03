@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService,
 }
 
-@inject('collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService'))
 @reactAutobind
 @observer
 class ChannelLecturesPage extends Component<Props> {

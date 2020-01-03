@@ -28,7 +28,7 @@ interface States {
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
 
-@inject(mobxHelper.injectFrom('collegeService', 'personalCube.personalCubeService'))
+@inject(mobxHelper.injectFrom('college.collegeService', 'personalCube.personalCubeService'))
 @observer
 @reactAutobind
 class SecondCategoryModal extends React.Component<Props, States> {

@@ -25,7 +25,7 @@ interface State {
   activeCollege?: CollegeModel,
 }
 
-@inject(mobxHelper.injectFrom('shared.collegeService', 'layout.lectureCountService', 'skProfileService'))
+@inject(mobxHelper.injectFrom('college.collegeService', 'layout.lectureCountService', 'profile.skProfileService'))
 @reactAutobind
 @observer
 class CategoryContainer extends Component<Props, State> {

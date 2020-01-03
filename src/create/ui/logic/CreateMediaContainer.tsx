@@ -2,10 +2,8 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { MediaService } from '../../../personalcube/media';
-import { CubeIntroService } from '../../../personalcube/cubeintro';
-import { OfficeWebService } from '../../../personalcube/officeweb';
-import { PersonalCubeService } from '../../../personalcube/personalcube';
+import { mobxHelper } from 'shared';
+import { MediaService, CubeIntroService, OfficeWebService, PersonalCubeService } from 'personalcube';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
@@ -21,7 +19,12 @@ interface Props extends RouteComponentProps {
   cubeType: string
 }
 
-@inject('mediaService', 'cubeIntroService', 'officeWebService', 'personalCubeService')
+@inject(mobxHelper.injectFrom(
+  'personalCube.mediaService',
+  'personalCube.cubeIntroService',
+  'personalCube.officeWebService',
+  'personalCube.personalCubeService',
+))
 @observer
 @reactAutobind
 class CreateMediaContainer extends React.Component<Props> {
