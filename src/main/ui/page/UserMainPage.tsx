@@ -9,20 +9,15 @@ import MainCarouselContainer from '../logic/MainCarouselContainer';
 import SearchBar from '../../sub/SearchBar';
 import MyLearningAreaContainer from '../logic/MyLearningAreaContainer';
 import RecommendContainer from '../logic/RecommendContainer';
-import spinner from '../../../layout/Spinner/spinner';
 
 
-interface Props extends RouteComponentProps{
+interface Props extends RouteComponentProps {
 }
 
 @reactAutobind
 @observer
 class UserMainPage extends Component<Props> {
   //
-  componentDidMount(): void {
-    // spinner.open();
-  }
-
   render() {
     //
     return (
