@@ -1,5 +1,5 @@
 
-
+console.log('mobxHelper');
 export function injectFrom( ...serviceNames: string[] ) {
   //
   return (stores: any) => {
