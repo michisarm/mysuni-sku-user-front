@@ -52,17 +52,6 @@ class LectureApi {
       return Promise.resolve([]);
     }
 
-    // let lectureCardIdsParam = 'lectureCardIds=';
-    // let courseLectureIdsParam = 'courseLectureIds=';
-    //
-    // if (lectureCardUsids && lectureCardUsids.length > 0) {
-    //   lectureCardIdsParam = lectureCardUsids.map((lectureCardUsid) => `lectureCardIds=${lectureCardUsid}`).join('&');
-    // }
-    // if (courseLectureUsids && courseLectureUsids.length > 0) {
-    //   courseLectureIdsParam = courseLectureUsids.map((courseLectureUsid) => `courseLectureIds=${courseLectureUsid}`).join('&');
-    // }
-    // const queryParams = `coursePlanId=${coursePlanId}&${lectureCardIdsParam}&${courseLectureIdsParam}`;
-
     const params = new LectureViewRdoModel({
       coursePlanId,
       lectureCardIds: lectureCardUsids,
