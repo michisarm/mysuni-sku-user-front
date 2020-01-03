@@ -1,9 +1,9 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { PostService } from '../../index';
+import { PostService } from '../../../board';
 
 
 interface Props {

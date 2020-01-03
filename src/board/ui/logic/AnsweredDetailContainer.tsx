@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -8,7 +8,7 @@ import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
-import { AnswerService, CategoryService, PostService } from '../../index';
+import { AnswerService, CategoryService, PostService } from '../../../board';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

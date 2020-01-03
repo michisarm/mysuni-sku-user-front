@@ -1,9 +1,9 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
-import { CategoryService, PostService } from '../../index';
+import { CategoryService, PostService } from '../../../board';
 
 
 interface Props {
@@ -32,6 +32,7 @@ class FaqTabContainer extends React.Component<Props> {
     const { categorys } = this.props.categoryService || {} as CategoryService;
     const { handleFaqCategoryTabChange, findFaqPosts, faqTabIndex, disabled, end, routeToFaqDetail } = this.props;
     const { posts } = this.props.postService || {} as PostService;
+    console.log('faq posts', posts);
     const result = posts.results;
 
     return (

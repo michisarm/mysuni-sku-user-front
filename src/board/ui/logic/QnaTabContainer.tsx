@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
-import { CategoryService, PostService } from '../../index';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { CategoryService, PostService } from '../../../board';
 
 interface Props {
   postService?: PostService
@@ -17,7 +17,10 @@ interface Props {
   routeToAnsweredDetail:(postId : string) => void
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.categoryService',
+  'board.postService',
+))
 @observer
 @reactAutobind
 class QnaTabContainer extends React.Component<Props> {
@@ -34,7 +37,8 @@ class QnaTabContainer extends React.Component<Props> {
       routeToAnsweredDetail,
     } = this.props;
     const { posts } = this.props.postService || {} as PostService;
-    const result = posts.results;
+    console.log('qna', posts);
+    // const result = posts.results;
 
     return (
       <Segment className="full">
@@ -111,7 +115,7 @@ class QnaTabContainer extends React.Component<Props> {
           </div>
           <div className="su-list qna">
             {
-              result && result.length > 0 && result.map((post, index) => {
+              posts.results && posts.results.length > 0 && posts.results.map((post, index) => {
                 if (post.answered) {
                   return (
                     <>
@@ -154,7 +158,7 @@ class QnaTabContainer extends React.Component<Props> {
               }
           </div>
           {
-            result && result.length === 0 && (
+            posts.results && posts.results.length === 0 && (
               <Segment className="full">
                 <div className="no-cont-wrap">
                   <i className="icon no-contents80"><span className="blind">콘텐츠 없음</span></i>
@@ -164,7 +168,7 @@ class QnaTabContainer extends React.Component<Props> {
             )
           }
           {
-            result && result.length > 0 && (
+            posts.results && posts.results.length > 0 && (
               <div className="more-comments" onClick={() => findQnaPosts(answered, end)}>
                 <Button icon
                   className="left moreview"

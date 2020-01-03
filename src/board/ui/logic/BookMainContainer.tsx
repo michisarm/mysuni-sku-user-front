@@ -1,15 +1,15 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
+import { CategoryService, PostService } from '../../../board';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
 import HelpContainer from './HelpContainer';
-import { CategoryService, PostService } from '../../index';
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   postService?: PostService

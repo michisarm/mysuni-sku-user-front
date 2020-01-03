@@ -1,12 +1,12 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { ContentLayout } from 'shared';
-import { CategoryService, PostService } from '../../index';
+import { CategoryService, PostService } from '../../../board';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

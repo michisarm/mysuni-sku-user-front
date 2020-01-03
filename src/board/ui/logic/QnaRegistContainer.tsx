@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import { ContentLayout } from 'shared';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import classNames from 'classnames';
-import { BoardService, CategoryService, PostService } from '../../index';
+import { BoardService, CategoryService, PostService } from '../../../board';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import { PostModel } from '../../model/PostModel';

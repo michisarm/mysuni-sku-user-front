@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
@@ -8,7 +8,7 @@ import ReactQuill from 'react-quill';
 import { ContentLayout } from 'shared';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
-import { CategoryService, PostService } from '../../index';
+import { CategoryService, PostService } from '../../../board';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
 
