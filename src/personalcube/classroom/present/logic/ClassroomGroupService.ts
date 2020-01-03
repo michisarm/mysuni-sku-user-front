@@ -1,5 +1,5 @@
 import { observable, action, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import ClassroomGroupApi from '../apiclient/ClassroomGroupApi';
 import ClassroomGroupFlowApi from '../apiclient/ClassroomGroupFlowApi';
 import { ClassroomGroupModel } from '../../model/ClassroomGroupModel';

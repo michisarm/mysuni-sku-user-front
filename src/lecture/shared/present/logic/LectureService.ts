@@ -1,5 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureModel from '../../model/LectureModel';

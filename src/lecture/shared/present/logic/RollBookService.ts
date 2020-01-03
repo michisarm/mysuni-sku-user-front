@@ -1,6 +1,6 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import RollBookApi from '../apiclient/RollBookApi';
 import RollBookModel from '../../model/RollBookModel';
 

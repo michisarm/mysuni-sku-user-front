@@ -1,7 +1,6 @@
 import { observable, action, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { OffsetElementList } from '@nara.platform/accent';
 import LearningCardApi from '../apiclient/LearningCardApi';
 import { LearningCardModel } from '../../model/LearningCardModel';
 import { LearningCardQueryModel } from '../../model/LearningCardQueryModel';

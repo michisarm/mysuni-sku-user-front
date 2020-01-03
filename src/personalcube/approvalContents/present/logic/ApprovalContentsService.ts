@@ -1,6 +1,5 @@
 import { observable, action, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
-import { OffsetElementList } from '@nara.platform/accent';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 import ApprovalContentsApi from '../apiclient/ApprovalContentsApi';
 import { ApprovalContentsModel } from '../../model/ApprovalContentsModel';
 import { ApprovalContentsRdoModel } from '../../model/ApprovalContentsRdoModel';

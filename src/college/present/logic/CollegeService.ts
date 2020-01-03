@@ -1,5 +1,5 @@
 import { observable, action, runInAction, computed } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';

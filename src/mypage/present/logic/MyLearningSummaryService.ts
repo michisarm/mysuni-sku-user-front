@@ -1,6 +1,6 @@
 
 import { observable, action, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 

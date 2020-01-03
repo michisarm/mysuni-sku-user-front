@@ -1,5 +1,5 @@
 import { action, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
+import { autobind } from '@nara.platform/accent';
 import { NameValueList } from '../../../shared/model/NameValueList';
 import { SubsidiaryModel } from '../../model/SubsidiaryModel';
 import SubsidiaryApi from '../apiclient/SubsidiaryApi';

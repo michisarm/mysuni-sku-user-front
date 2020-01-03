@@ -1,6 +1,5 @@
 import { action, observable, runInAction } from 'mobx';
-import autobind from 'autobind-decorator';
-import { OffsetElementList } from '@nara.platform/accent';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
 import { IdName } from 'shared';
 import CoursePlanApi from '../apiclient/CoursePlanApi';
