@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import 'react-quill/dist/quill.snow.css';
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import classNames from 'classnames';
 import { BoardService, CategoryService, PostService } from '../../index';
@@ -27,7 +27,11 @@ interface States {
   write: string
 }
 
-@inject('boardService', 'categoryService', 'postService')
+@inject(mobxHelper.injectFrom(
+  'board.boardService',
+  'board.categoryService',
+  'board.postService',
+))
 @observer
 @reactAutobind
 class QnaRegistContainer extends React.Component<Props, States> {
@@ -84,7 +88,6 @@ class QnaRegistContainer extends React.Component<Props, States> {
     const { postService } = this.props;
     const { post } = this.props.postService || {} as PostService;
 
-    console.log(post);
     if (postService) postService.registerPost(post);
     this.onClose('Q&A');
     if (PostModel.isBlank(post) === 'success') {

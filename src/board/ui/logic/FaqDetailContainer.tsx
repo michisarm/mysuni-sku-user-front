@@ -4,15 +4,19 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
+import { ContentLayout, mobxHelper } from 'shared';
 import { CategoryService, PostService } from '../../index';
-import { ContentLayout } from '../../../shared';
+
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
   categoryService?: CategoryService
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 class FaqDetailContainer extends React.Component<Props> {

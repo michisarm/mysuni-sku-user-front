@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, reactAlert } from '@nara.platform/accent';
 
 import classNames from 'classnames';
-import { ContentLayout, IdNameList } from '../../../shared';
+import { ContentLayout, IdNameList, mobxHelper } from '../../../shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
@@ -32,7 +32,8 @@ const area  : string [] = ['서울 - 강북', '서울 - 강남', '이천', '대�
 const time : string []  = ['오전', '오후',  '상관없음'];
 const goal  : string [] = ['새로운 지식과 트렌드를 배우기 위해', '현재 직무의 역량 강화를 위해', '직무 전환을 위한 역량 습득을 위해', '리더로 성장하기 위한 체계적 준비를 위해'];
 
-@inject('collegeService', 'skProfileService')
+
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteLearningTypeContainer extends React.Component<Props, States> {

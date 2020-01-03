@@ -111,7 +111,6 @@ export default class PersonalCubeService {
     if (typeof value === 'object' && nameSub) {
       this.personalCubeQuery = _.set(this.personalCubeQuery, nameSub, valueSub);
     }
-    console.log(this.personalCubeQuery);
   }
 
   @action

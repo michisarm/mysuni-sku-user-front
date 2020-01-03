@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Icon, Radio, Segment, Select } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
+import { mobxHelper } from 'shared';
 import { reactAutobind } from '@nara.platform/accent';
 import { CategoryService, PostService } from '../../index';
+
 
 interface Props {
   postService?: PostService
@@ -24,7 +26,10 @@ const selectOptions01 = [
   { key: '3', value: false, text: '답변 대기' },
 ];
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 class QnaTabContainer extends React.Component<Props> {

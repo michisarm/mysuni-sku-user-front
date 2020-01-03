@@ -16,7 +16,7 @@ interface Props extends RouteComponentProps{
   collegeService?: CollegeService
 }
 
-@inject(mobxHelper.injectFrom('skProfileService', 'collegeService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'college.collegeService'))
 @observer
 @reactAutobind
 class RecommendContainer extends Component<Props> {

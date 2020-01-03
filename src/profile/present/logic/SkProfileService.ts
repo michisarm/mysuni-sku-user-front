@@ -40,7 +40,6 @@ export default class SkProfileService {
   async findSkProfile() {
     //
     const skProfile = await this.skProfileApi.findSkProfile();
-    console.log('skProfile', skProfile);
     return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 
@@ -77,12 +76,10 @@ export default class SkProfileService {
   }
 
   modfifySkProfileByProfileId(profileId:string, skProfileUdo : SkProfileUdo) {
-    console.log('modify skprofile ===>', skProfileUdo);
     this.skProfileApi.modifySkProfileByProfileId(profileId, skProfileUdo);
   }
 
   modifySkProfile(skProfileUdo : SkProfileUdo) {
-    console.log('modify skprofile ===>', skProfileUdo);
     this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 

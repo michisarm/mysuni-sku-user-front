@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { SkProfileService, StudySummary } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
 import { FavoriteChannelChangeModal } from 'shared-component';
+import { mobxHelper } from 'shared';
 
 
 interface Props{
@@ -17,7 +18,7 @@ interface States {
   open: boolean
 }
 
-@inject('skProfileService', 'collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteChannelContainer extends Component<Props, States> {

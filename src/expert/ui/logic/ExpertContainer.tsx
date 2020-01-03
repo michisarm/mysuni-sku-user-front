@@ -32,7 +32,7 @@ interface Props extends RouteComponentProps<{ instructorId : string }> {
   'lecture.lectureService',
   'lecture.lectureCardService',
   'shared.reviewService',
-  'instructorService'))
+  'expert.instructorService'))
 @reactAutobind
 @observer
 @observer

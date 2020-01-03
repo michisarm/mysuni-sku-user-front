@@ -53,8 +53,8 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
-  'skProfileService',
-  'collegeService',
+  'profile.skProfileService',
+  'college.collegeService',
   'personalCube.personalCubeService',
   'personalCube.cubeIntroService',
   'personalCube.classroomService',

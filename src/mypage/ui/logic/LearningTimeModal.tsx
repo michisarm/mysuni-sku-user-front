@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
+import { mobxHelper } from 'shared';
 
 interface Props {
   size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen'
@@ -10,7 +11,7 @@ interface States {
   open : boolean
 }
 
-@inject('skProfileService')
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
 class LearningTimeModal extends Component<Props, States> {

@@ -38,7 +38,7 @@ interface States{
 }
 
 @inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'contentsProviderService',
+  'personalCube.cubeIntroService', 'college.contentsProviderService',
   'personalCube.mediaService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind

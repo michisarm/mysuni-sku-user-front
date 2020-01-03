@@ -3,7 +3,7 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { FileBox, PatronType } from '@nara.drama/depot';
-import { SearchFilter } from 'shared';
+import { mobxHelper, SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from '../../../personalcube/media';
 import { PersonalCubeModel } from '../../../personalcube/personalcube';
@@ -20,7 +20,7 @@ interface Props {
   collegeService?: CollegeService
 }
 
-@inject( 'mediaService', 'collegeService')
+@inject(mobxHelper.injectFrom('personalCube.mediaService', 'college.collegeService'))
 @observer
 @reactAutobind
 class CreateVideoTypeView  extends React.Component<Props> {
@@ -48,7 +48,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
     if (mediaService && e.data && e.data.boolResult && e.data.obj && e.data.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(e.data.obj.list)) {
-        console.log(e.data.obj.list);
         Promise.resolve()
           .then(() => {
             e.data.obj.list.map((list: any) => {

@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 }
 
 @inject(mobxHelper.injectFrom(
-  'collegeService',
+  'college.collegeService',
 ))
 @reactAutobind
 @observer

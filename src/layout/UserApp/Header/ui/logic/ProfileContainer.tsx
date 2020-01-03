@@ -17,7 +17,7 @@ interface Props extends RouteComponentProps {
 interface State {
 }
 
-@inject(mobxHelper.injectFrom('skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {

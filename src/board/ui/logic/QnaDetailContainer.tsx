@@ -4,11 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps } from 'react-router';
 import ReactQuill from 'react-quill';
+import { ContentLayout, mobxHelper } from 'shared';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
 import { CategoryService, PostService } from '../../index';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
-import { ContentLayout } from '../../../shared';
+
 
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService
@@ -20,7 +21,10 @@ interface States {
   filesMap: Map<string, any>
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 class QnaDetailContainer extends React.Component<Props, States> {

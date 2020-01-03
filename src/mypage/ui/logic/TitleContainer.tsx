@@ -21,7 +21,7 @@ interface States{
 }
 
 @inject(mobxHelper.injectFrom(
-  'skProfileService',
+  'profile.skProfileService',
   'myTraining.myLearningSummaryService'
 ))
 @observer

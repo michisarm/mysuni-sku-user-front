@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reactAutobind, reactAlert } from '@nara.platform/accent';
 
-import { ContentLayout } from 'shared';
+import { ContentLayout, mobxHelper } from 'shared';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps{
   skProfileService? : SkProfileService
 }
 
-@inject( 'skProfileService', 'collegeService')
+@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class PisAgreementContainer extends Component<Props> {

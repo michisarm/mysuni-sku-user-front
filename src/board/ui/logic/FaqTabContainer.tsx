@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
+import { mobxHelper } from 'shared';
 import { reactAutobind } from '@nara.platform/accent';
 import { CategoryService, PostService } from '../../index';
+
 
 interface Props {
   postService?: PostService
@@ -17,7 +19,10 @@ interface Props {
   routeToFaqDetail:(postId: string) => void
 }
 
-@inject('postService', 'categoryService')
+@inject(mobxHelper.injectFrom(
+  'board.postService',
+  'board.categoryService',
+))
 @observer
 @reactAutobind
 class FaqTabContainer extends React.Component<Props> {

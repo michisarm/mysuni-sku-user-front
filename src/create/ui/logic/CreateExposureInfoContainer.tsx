@@ -22,7 +22,11 @@ interface States {
   write: string
 }
 
-@inject(mobxHelper.injectFrom('personalCube.personalCubeService', 'subsidiaryService', 'collegeService'))
+@inject(mobxHelper.injectFrom(
+  'personalCube.personalCubeService',
+  'college.subsidiaryService',
+  'college.collegeService'
+))
 @observer
 @reactAutobind
 class CreateExposureInfoContainer extends React.Component<Props, States> {
