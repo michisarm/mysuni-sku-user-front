@@ -65,6 +65,14 @@ class CoursePage extends Component<Props, State> {
     type: 'List',
   };
 
+  constructor(props: Props) {
+    //
+    super(props);
+    props.coursePlanService.clearCoursePlan();
+    props.coursePlanService.clearCoursePlanContents();
+    props.lectureService.clearLectureViews();
+  }
+
   componentDidMount() {
     //
     this.init();

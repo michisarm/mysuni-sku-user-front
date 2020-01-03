@@ -96,7 +96,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
     const pageNo = parseInt(match.params.pageNo, 10);
 
     newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   clearAndInit() {

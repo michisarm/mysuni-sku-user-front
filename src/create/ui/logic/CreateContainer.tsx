@@ -85,7 +85,7 @@ class CreateContainer extends React.Component<Props, States> {
     const { match, pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
     this.setTab(match.params.tab);
   }
 

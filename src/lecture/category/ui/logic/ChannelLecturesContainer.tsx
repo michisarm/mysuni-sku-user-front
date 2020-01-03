@@ -75,7 +75,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   async findPagingChannelLectures() {

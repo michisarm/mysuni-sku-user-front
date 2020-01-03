@@ -76,6 +76,12 @@ class LectureCardPage extends Component<Props, State> {
     type: 'Overview',
   };
 
+  constructor(props: Props) {
+    super(props);
+    props.personalCubeService.clearPersonalCube();
+  }
+
+
   componentDidMount() {
     //
     this.init();

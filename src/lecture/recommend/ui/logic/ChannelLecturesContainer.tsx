@@ -75,7 +75,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { inMyLectureService, lectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(lectureService!.clear)
+        .then(lectureService!.clearLectures)
         .then(this.findLectures);
     }
     else {
@@ -98,7 +98,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
       }))
-        .then(lectureService!.clear)
+        .then(lectureService!.clearLectures)
         .then(this.findLectures);
     }
   }

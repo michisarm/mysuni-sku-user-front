@@ -69,7 +69,7 @@ class ExpertContainer extends React.Component<Props> {
     const { pageService, lectureService } = this.props;
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
   }
 
   async findPagingInstructorLectures() {

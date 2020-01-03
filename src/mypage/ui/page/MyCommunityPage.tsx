@@ -89,7 +89,7 @@ class MyCommunityPage extends Component<Props, State> {
     //
     const { pageService, lectureService, myTrainingService } = this.props;
     pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
-    lectureService!.clear();
+    lectureService!.clearLectures();
     myTrainingService!.clear();
     this.setState({ type }, this.findPagingList);
   }

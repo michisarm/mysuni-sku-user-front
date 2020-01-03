@@ -22,11 +22,12 @@ export default class CoursePlanService {
   coursePlanApi: CoursePlanApi;
   coursePlanFlowApi: CoursePlanFlowApi;
 
-  @observable
-  coursePlan: CoursePlanModel = new CoursePlanModel();
 
   @observable
   coursePlans: OffsetElementList<CoursePlanModel> = { results: [], totalCount: 0 };
+
+  @observable
+  coursePlan: CoursePlanModel = new CoursePlanModel();
 
   @observable
   coursePlanContents: CoursePlanContentsModel = new CoursePlanContentsModel();
@@ -61,6 +62,7 @@ export default class CoursePlanService {
   @observable
   channelsMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
 
+
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
     this.coursePlanFlowApi = coursePlanFlowApi;
@@ -71,15 +73,7 @@ export default class CoursePlanService {
     return this.coursePlanApi.registerCoursePlan(coursePlan);
   }
 
-  @action
-  async findCoursePlan(coursePlanId: string) {
-    //
-    const coursePlan = await this.coursePlanApi.findCoursePlan(coursePlanId);
-    return runInAction(() => {
-      this.coursePlan = new CoursePlanModel(coursePlan);
-      return coursePlan;
-    });
-  }
+  // CoursePlans -------------------------------------------------------------------------------------------------------
 
   @action
   async findAllCoursePlan() {
@@ -95,6 +89,24 @@ export default class CoursePlanService {
     return runInAction(() => this.coursePlans = coursePlans);
   }
 
+  // CoursePlan --------------------------------------------------------------------------------------------------------
+
+  @action
+  clearCoursePlan() {
+    //
+    this.coursePlan = new CoursePlanModel();
+  }
+
+  @action
+  async findCoursePlan(coursePlanId: string) {
+    //
+    const coursePlan = await this.coursePlanApi.findCoursePlan(coursePlanId);
+    return runInAction(() => {
+      this.coursePlan = new CoursePlanModel(coursePlan);
+      return coursePlan;
+    });
+  }
+
   modifyCoursePlan(coursePlanId: string, coursePlan: CoursePlanModel) {
     //
     this.coursePlanApi.modifyCoursePlan(coursePlanId, CoursePlanModel.asNameValues(coursePlan));
@@ -106,30 +118,13 @@ export default class CoursePlanService {
     this.coursePlan = _.set(this.coursePlan, name, value);
   }
 
-  @action
-  cleanCoursePlan() {
-    //
-    this.coursePlan = new CoursePlanModel();
-  }
+
+  // CoursePlanContents ------------------------------------------------------------------------------------------------
 
   @action
-  changeCourseRequestProps(name: string, value: string) {
+  clearCoursePlanContents() {
     //
-    this.courseRequestCdo = _.set(this.courseRequestCdo, name, value);
-  }
-
-  @action
-  courseRequestOpen() {
-    //
-    this.courseRequestCdo = _.set(this.courseRequestCdo, 'courseState', CourseState.Opened);
-    return this.coursePlanFlowApi.coursePlanRequestOpen(this.courseRequestCdo);
-  }
-
-  @action
-  courseRequestReject() {
-    //
-    this.courseRequestCdo = _.set(this.courseRequestCdo, 'courseState', CourseState.Rejected);
-    return this.coursePlanFlowApi.coursePlanRequestReject(this.courseRequestCdo);
+    return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel());
   }
 
   registerCoursePlanContents(coursePlanContents: CoursePlanContentsModel) {
@@ -161,6 +156,28 @@ export default class CoursePlanService {
     //
     this.coursePlanContents = new CoursePlanContentsModel();
   }
+
+
+  @action
+  changeCourseRequestProps(name: string, value: string) {
+    //
+    this.courseRequestCdo = _.set(this.courseRequestCdo, name, value);
+  }
+
+  @action
+  courseRequestOpen() {
+    //
+    this.courseRequestCdo = _.set(this.courseRequestCdo, 'courseState', CourseState.Opened);
+    return this.coursePlanFlowApi.coursePlanRequestOpen(this.courseRequestCdo);
+  }
+
+  @action
+  courseRequestReject() {
+    //
+    this.courseRequestCdo = _.set(this.courseRequestCdo, 'courseState', CourseState.Rejected);
+    return this.coursePlanFlowApi.coursePlanRequestReject(this.courseRequestCdo);
+  }
+
 
   makeCoursePlan(coursePlan: CoursePlanModel, coursePlanContents: CoursePlanContentsModel) {
     //
