@@ -4,7 +4,7 @@ def label = "jenkins-${UUID.randomUUID().toString()}"
 def ZCP_USERID='yswon'
 def DOCKER_IMAGE='sk-university/user-front'
 def K8S_NAMESPACE='gdi-skuniv-app-dev'
-
+def REPLICAS=1
 timestamps {
     podTemplate(label:label,
         serviceAccount: "zcp-system-sa-${ZCP_USERID}",
@@ -40,7 +40,7 @@ timestamps {
                 container('kubectl') {
                     kubeCmd.apply file: 'k8s/service.yaml', namespace: K8S_NAMESPACE
                     yaml.update file: 'k8s/deploy.yaml', update: ['.spec.template.spec.containers[0].image': "${HARBOR_REGISTRY}/${DOCKER_IMAGE}:${BUILD_NUMBER}"]
-                    yaml.update file: 'k8s/deploy.yaml', update: ['.spec.replicas': 1]
+                    yaml.update file: 'k8s/deploy.yaml', update: ['.spec.replicas': "${REPLICAS}"]
                     kubeCmd.apply file: 'k8s/deploy.yaml', wait: 300, recoverOnFail: false, namespace: K8S_NAMESPACE
                 }
             }
