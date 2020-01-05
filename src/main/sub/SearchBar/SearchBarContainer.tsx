@@ -25,7 +25,7 @@ class SearchBarContainer extends Component {
           <InputWrapper>
             {({ value, focused, onChange, onClick, onBlur, onClear }) => (
               <div className={classNames('ui main search input', { focus: focused, write: value })}>
-                <span className="placeholder">SUNI에서 다양한 컨텐츠를 탐색해 보세요.</span>
+                <span className="placeholder">mySUNI에서 다양한 컨텐츠를 탐색해 보세요.</span>
                 <input type="text" placeholder="" value={value} onChange={onChange} onClick={onClick} onBlur={onBlur} onKeyPress={(e) => e.key === 'Enter' && this.onSearch(value)} />
                 <Icon className="clear link" onClick={onClear} />
                 <Icon className="search link" onClick={() => this.onSearch(value)} />

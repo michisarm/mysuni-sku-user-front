@@ -10,7 +10,7 @@ export const LogoView: React.FC = () => (
   <div className="g-logo">
     <Link to="/">
       <i className="sk-university icon">
-        <span className="blind">SUNI</span>
+        <span className="blind">mySUNI</span>
       </i>
     </Link>
   </div>
