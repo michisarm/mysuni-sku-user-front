@@ -98,7 +98,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickInstructor() {
     //
-    this.routeNav('/expert/instructor/:instructorId');
+    this.routeNav('/expert/instructor/IS-0001');
   }
 
 
