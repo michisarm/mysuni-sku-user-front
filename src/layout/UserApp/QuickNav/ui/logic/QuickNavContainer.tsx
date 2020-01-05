@@ -81,6 +81,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickIntroduction() {
     //
+    this.routeNav('/introduction');
   }
 
   onClickSearch() {
@@ -137,7 +138,7 @@ class QuickNavContainer extends Component<Props, State> {
               />
 
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
-              <BottomMenuItemView iconName="search" text="Instructor" onClick={this.onClickInstructor} />
+              {/*<BottomMenuItemView iconName="search" text="Instructor" onClick={this.onClickInstructor} />*/}
               {
                 (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
                   <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />

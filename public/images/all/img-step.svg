@@ -1,42 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="272" viewBox="0 0 1200 272">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="271" viewBox="0 0 1200 271">
     <g fill="none" fill-rule="evenodd">
-        <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M1069 270c60.751 0 110-49.249 110-110s-49.249-110-110-110-110 49.249-110 110 49.249 110 110 110z"/>
-        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(959 50)">
-            <tspan x="36.064" y="169">Certification</tspan>
+        <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M1069 269c60.751 0 110-49.249 110-110s-49.249-110-110-110-110 49.249-110 110 49.249 110 110 110z"/>
+        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(959 49)">
+            <tspan x="47.944" y="169">Certificate</tspan>
         </text>
-        <path fill="#EFF3FB" stroke="#222" d="M1009.5 95.5h119v86h-119z"/>
-        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" transform="translate(1009 95)">
-            <tspan x="12.985" y="20">Certification</tspan>
+        <path fill="#EFF3FB" stroke="#222" d="M1009.5 94.5h119v86h-119z"/>
+        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" transform="translate(1009 94)">
+            <tspan x="17.935" y="20">Certificate</tspan>
         </text>
-        <path fill="#222" d="M1020 134h50v1h-50zM1020 145h50v1h-50zM1020 156h50v1h-50zM1020 167h24v1h-24z"/>
-        <path fill="#222" stroke="#222" d="M1091.5 144.5v29.617l9.508-5.7 9.492 5.7V144.5h-19z"/>
-        <path fill="#FFE4DF" stroke="#222" d="M1101 122c-9.925 0-18 8.075-18 18 0 9.926 8.075 18 18 18s18-8.074 18-18c0-9.925-8.075-18-18-18"/>
-        <path fill="#FFF" stroke="#222" d="M1101 130c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10"/>
-        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(959 1)">
+        <path fill="#222" d="M1020 133h50v1h-50zM1020 144h50v1h-50zM1020 155h50v1h-50zM1020 166h24v1h-24z"/>
+        <path fill="#222" stroke="#222" d="M1091.5 143.5v29.617l9.508-5.7 9.492 5.7V143.5h-19z"/>
+        <path fill="#FFE4DF" stroke="#222" d="M1101 121c-9.925 0-18 8.075-18 18 0 9.926 8.075 18 18 18s18-8.074 18-18c0-9.925-8.075-18-18-18"/>
+        <path fill="#FFF" stroke="#222" d="M1101 129c-5.514 0-10 4.486-10 10s4.486 10 10 10 10-4.486 10-10-4.486-10-10-10"/>
+        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(959)">
             <tspan x="86" y="23">3단계</tspan>
         </text>
         <g>
-            <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M708.916 155.666C706.64 96.924 658.3 50 599 50c-60.751 0-110 49.249-110 110s49.249 110 110 110c59.494 0 107.957-47.232 109.937-106.244"/>
-            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(489 50)">
+            <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M708.916 154.666C706.64 95.924 658.3 49 599 49c-60.751 0-110 49.249-110 110s49.249 110 110 110c59.494 0 107.957-47.232 109.937-106.244"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(489 49)">
                 <tspan x="73.372" y="169">Badge</tspan>
             </text>
-            <path fill="#FFF" stroke="#222" d="M580.5 95.5h39v55h-39z"/>
-            <path fill="#FFF" stroke="#222" d="M590.5 95.5h19v55h-19z"/>
-            <path fill="#FFF" stroke="#222" d="M600 117c-18.747 0-34 15.253-34 34 0 18.75 15.253 34 34 34s34-15.25 34-34c0-18.747-15.253-34-34-34"/>
-            <path fill="#EFF3FB" stroke="#222" d="M600 125c-14.336 0-26 11.664-26 26 0 14.338 11.664 26 26 26s26-11.662 26-26c0-14.336-11.664-26-26-26"/>
-            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" letter-spacing="-.6" transform="translate(566 95)">
+            <path fill="#FFF" stroke="#222" d="M580.5 94.5h39v55h-39z"/>
+            <path fill="#FFF" stroke="#222" d="M590.5 94.5h19v55h-19z"/>
+            <path fill="#FFF" stroke="#222" d="M600 116c-18.747 0-34 15.253-34 34 0 18.75 15.253 34 34 34s34-15.25 34-34c0-18.747-15.253-34-34-34"/>
+            <path fill="#EFF3FB" stroke="#222" d="M600 124c-14.336 0-26 11.664-26 26 0 14.338 11.664 26 26 26s26-11.662 26-26c0-14.336-11.664-26-26-26"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" letter-spacing="-.6" transform="translate(566 94)">
                 <tspan x="26" y="64">B</tspan>
             </text>
-            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(489 1)">
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(489)">
                 <tspan x="85" y="23">2단계</tspan>
             </text>
         </g>
         <g>
-            <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M238.914 155.598C236.603 96.888 188.277 50 129 50 68.249 50 19 99.249 19 160s49.249 110 110 110c59.513 0 107.988-47.262 109.939-106.301"/>
-            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(19 50)">
+            <path fill="#FFF" stroke="#222" stroke-dasharray="4" d="M238.914 154.598C236.603 95.888 188.277 49 129 49 68.249 49 19 98.249 19 159s49.249 110 110 110c59.513 0 107.988-47.262 109.939-106.301"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="24" font-weight="bold" transform="translate(19 49)">
                 <tspan x="71.084" y="169">Stamp</tspan>
             </text>
-            <g transform="translate(88 95)">
+            <g transform="translate(88 94)">
                 <path fill="#FFF" fill-rule="nonzero" stroke="#222" d="M.462 13.333L24.288 0l22.174 37.467C37.01 38.032 28.053 41.755 21.12 48L.462 13.333z"/>
                 <path fill="#FFF" fill-rule="nonzero" stroke="#222" d="M81.462 13.333L57.635 0 35.462 37.467c9.451.565 18.408 4.288 25.34 10.533l20.66-34.667z"/>
                 <path fill="#FFF" fill-rule="nonzero" stroke="#222" d="M41.962 90c-15.188 0-27.5-12.312-27.5-27.5S26.774 35 41.962 35c15.187 0 27.5 12.312 27.5 27.5S57.149 90 41.962 90z"/>
@@ -45,10 +45,10 @@
                     <tspan x="36.462" y="69">s</tspan>
                 </text>
             </g>
-            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(19 1)">
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="20" font-weight="bold" transform="translate(19)">
                 <tspan x="85" y="23">1단계</tspan>
             </text>
         </g>
-        <path fill="#222" fill-rule="nonzero" d="M239 155a4.5 4.5 0 0 1 4.473 4h4.027v1h-4.028a4.5 4.5 0 1 1-4.472-5zm224 0l9 4.5-9 4.5v-4h-4.5v-1h4.5v-4zm-207.5 4v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zM709.25 157a4.5 4.5 0 0 1 4.473 4h4.027v1h-4.028a4.5 4.5 0 1 1-4.472-5zm224 0l9 4.5-9 4.5v-4h-4.5v-1h4.5v-4zm-207.5 4v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5z"/>
+        <path fill="#222" fill-rule="nonzero" d="M239 154a4.5 4.5 0 0 1 4.473 4h4.027v1h-4.028a4.5 4.5 0 1 1-4.472-5zm224 0l9 4.5-9 4.5v-4h-4.5v-1h4.5v-4zm-207.5 4v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zM709.25 156a4.5 4.5 0 0 1 4.473 4h4.027v1h-4.028a4.5 4.5 0 1 1-4.472-5zm224 0l9 4.5-9 4.5v-4h-4.5v-1h4.5v-4zm-207.5 4v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5zm8 0v1h-5v-1h5z"/>
     </g>
 </svg>
