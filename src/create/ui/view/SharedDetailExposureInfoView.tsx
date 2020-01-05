@@ -20,7 +20,7 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
             <Table.Row>
               <Table.HeaderCell>아이콘</Table.HeaderCell>
               <Table.Cell>
-                <div><Image src="/images/all/thumb-card-60-px.jpg" /></div>
+                <div><Image src={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`} /></div>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
