@@ -184,9 +184,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(this.clearAndInit)
-        .then(this.initialFindPagingCollegeLectures)
-        .then(this.findInMyLectures);
+        .then(() => inMyLectureService!.findAllInMyLectures());
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -208,9 +206,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
       }))
-        .then(this.clearAndInit)
-        .then(this.initialFindPagingCollegeLectures)
-        .then(this.findInMyLectures);
+        .then(() => inMyLectureService!.findAllInMyLectures());
     }
   }
 
