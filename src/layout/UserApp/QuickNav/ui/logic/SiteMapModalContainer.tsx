@@ -68,7 +68,7 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Introduction',
       items: [
-        { name: 'SUNI 소개', path: '/introduction' },
+        { name: 'mySUNI 소개', path: '/introduction' },
         { name: 'College 소개', path: '/introduction' },
       ],
     },
