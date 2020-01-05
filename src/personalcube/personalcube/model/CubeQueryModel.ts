@@ -1,5 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { DatePeriod } from 'shared';
+import { tenantInfo } from '@nara.platform/dock';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 
@@ -23,6 +24,7 @@ export class CubeQueryModel {
   channel: string = '';
   searchPart: string = '';
   searchWord: string = '';
+  creatorId: string  ='';
 
   offset: number = 0;
   limit: number = 20;
@@ -70,6 +72,27 @@ export class CubeQueryModel {
       }
     );
   }
+
+  static asCreateRdo(cubeQuery: CubeQueryModel) : PersonalCubeRdoModel {
+
+    return (
+      {
+        startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
+        endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
+        cubeType: '',
+        channel: '',
+        college: '',
+        cubeState: cubeQuery && cubeQuery.cubeState,
+        searchFilter: '',
+        name: '',
+        creatorName: '',
+        creatorId: tenantInfo.getTenantId(),
+        offset: cubeQuery && cubeQuery.offset,
+        limit: cubeQuery && cubeQuery.limit,
+      }
+    );
+  }
+
 }
 
 decorate(CubeQueryModel, {
@@ -77,6 +100,7 @@ decorate(CubeQueryModel, {
   cubeState: observable,
   searchFilter: observable,
 
+  creatorId:observable,
   learnerType: observable,
   serviceType: observable,
 });
