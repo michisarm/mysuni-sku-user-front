@@ -8,8 +8,8 @@ import CarouselItemView from './CarouselItemView';
 
 
 const mock = [
-  { title: '구성원을 위한 자기주도학습\n플랫폼 ‘mySUNI’에 오신 여러분\n환영합니다.', content: '안녕하세요! “mySUNI”입니다. 친근하게 애칭처럼 “써니”라고 불러주세요!\n매 주 4시간만 저와 함께 하시면,여러분에게 놀라운 변화가 생길겁니다.', imageName: 'main_banner_Rolling01.jpg' },
-  { title: '\'mySUNI\' 여러분과 함께\n성장하는플랫폼입니다!', content: '여러분께서 소중한 의견을 주시면, 더 큰 도움이 됩니다!\n향후 컨텐츠는 순차적으로 업데이트 될 예정이며,\n집합교육은 2월 중순부터 신청이 가능합니다.\n또한, 모바일 학습은 2월 말 제공되니 기대하세요^^', imageName: 'main_banner_Rolling02.jpg' },
+  { title: '구성원을 위한 자기주도학습\n플랫폼 ‘mySUNI’에 오신 여러분\n환영합니다.', content: '안녕하세요! “mySUNI”입니다. 친근하게 애칭처럼 “써니”라고 불러주세요! \n매 주 4시간만 저와 함께 하시면, 여러분에게 놀라운 변화가 생길겁니다.', imageName: 'main_banner_Rolling01.jpg' },
+  { title: '\'mySUNI\' 여러분과 함께\n성장하는 플랫폼입니다!', content: '여러분께서 소중한 의견을 주시면, 더 큰 도움이 됩니다!\n향후 컨텐츠는 순차적으로 업데이트 될 예정이며, \n집합교육은 2월 중순부터 신청이 가능합니다.\n또한, 모바일 학습은 2월 말 제공되니 기대하세요^^', imageName: 'main_banner_Rolling02.jpg' },
   // { title: 'Mock title', content: 'Mock content' },
 ];
 
