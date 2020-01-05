@@ -72,11 +72,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService, lectureService } = this.props;
+    const { inMyLectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(lectureService!.clearLectures)
-        .then(this.findLectures);
+        .then(() => inMyLectureService!.findInMyLecturesAll());
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -98,8 +97,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
       }))
-        .then(lectureService!.clearLectures)
-        .then(this.findLectures);
+        .then(() => inMyLectureService!.findInMyLecturesAll());
     }
   }
 
