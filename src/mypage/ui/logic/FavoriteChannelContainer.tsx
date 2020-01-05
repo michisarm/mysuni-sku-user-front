@@ -9,9 +9,9 @@ import { ChannelModel, CollegeService } from 'college';
 import { FavoriteChannelChangeModal } from 'shared-component';
 
 
-interface Props{
-  skProfileService? : SkProfileService
-  collegeService? : CollegeService
+interface Props {
+  skProfileService?: SkProfileService
+  collegeService?: CollegeService
 }
 
 interface States {
