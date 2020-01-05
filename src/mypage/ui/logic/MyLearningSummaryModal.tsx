@@ -116,7 +116,7 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                     <ul className="bullet-list1">
                       <li>
-                        <span className="name b1">SUNI</span><span className="time">{suniHour || '00'}h {suniMinute || '00'}m</span>
+                        <span className="name b1">mySUNI</span><span className="time">{suniHour || '00'}h {suniMinute || '00'}m</span>
                       </li>
                       <li>
                         <span className="name b2">My company</span><span className="time">{compHour || '00'}h {compMinute || '00'}m</span>

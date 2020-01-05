@@ -62,7 +62,7 @@ class LectureTotalTimeView extends Component<Props> {
             </div>
             <div className="ui list">
               <dl className="item sk">
-                <dt>SUNI</dt>
+                <dt>mySUNI</dt>
                 <dd>{suniHour || '00'}h {suniMinute || '00'}m</dd>
               </dl>
               <dl className="item my">
