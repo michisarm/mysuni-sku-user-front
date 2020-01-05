@@ -46,7 +46,14 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     const { collegeService, skProfileService } = this.props;
     if (collegeService && skProfileService) {
       collegeService.findAllJobGroups();
-      skProfileService.findSkProfile();
+      skProfileService.findSkProfile()
+        .then(() => {
+          this.setState({
+            isSelectedJobGroup: skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup ? true : false,
+            isSelectedDutyGroup: skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobDuty ? true : false,
+          });
+        });
+
     }
   }
 
@@ -156,6 +163,9 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty =  this.setJobDuties();
     const {  isSelectedJobGroup,  isEtc } = this.state;
+    const {  skProfileService } = this.props;
+    const {  skProfile } = skProfileService!;
+    const {  member } = skProfile!;
 
     return (
       <ContentLayout breadcrumb={[
@@ -171,8 +181,10 @@ class FavoriteJobContainer extends React.Component<Props, States> {
             <div className="select-cont-wrap">
               <div className="select-box">
                 <div className="select-title">관심 있는 직군을 선택해주세요.</div>
-                <Select placeholder="선택해주세요"
+                <Select
+                  placeholder="선택해주세요"
                   options={selectOptionJobGroup}
+                  value={member && member.favoriteJobGroup && member.favoriteJobGroup.favoriteJobGroup && member.favoriteJobGroup.favoriteJobGroup.id}
                   onChange={(event:any, data:any) => this.selectJobGroup(event, data)}
                 />
               </div>
@@ -180,8 +192,13 @@ class FavoriteJobContainer extends React.Component<Props, States> {
                 isSelectedJobGroup && !isEtc ? (
                   <div className="select-box">
                     <div className="select-title">관심 있는 직무를 선택해주세요.</div>
-                    <Select placeholder="선택해주세요"
+                    <Select
+                      placeholder="선택해주세요"
                       options={selectOptionJobDuty}
+                      value={
+                        member && member.favoriteJobGroup && member.favoriteJobGroup.favoriteJobDuty
+                        && member.favoriteJobGroup.favoriteJobDuty.id
+                      }
                       onChange={(event:any, data:any) => this.selectJobDuty(event, data)}
                     />
                   </div>

@@ -8,8 +8,12 @@ export class SkProfileUdo {
     pisAgreement : PisAgreementModel = new PisAgreementModel();
 
     constructor(favoriteJobGroupModel? : FavoriteJobGroupModel, pisAgreement? : PisAgreementModel) {
-      if (favoriteJobGroupModel) Object.assign(this, { ...favoriteJobGroupModel });
-      if (pisAgreement) Object.assign((this, { ...pisAgreement }));
+      if (favoriteJobGroupModel) {
+        this.favoriteJobGroup = favoriteJobGroupModel;
+      }
+      if (pisAgreement) {
+        this.pisAgreement = pisAgreement;
+      }
     }
 }
 
