@@ -148,7 +148,7 @@ class LectureOverviewView extends Component<Props, State> {
                   <OverviewField.Item
                     titleIcon="goal"
                     title="Goal"
-                    contentHtml={viewObject.goal}
+                    content={viewObject.goal}
                   />
                 ) || null
               }
@@ -157,7 +157,7 @@ class LectureOverviewView extends Component<Props, State> {
                   <OverviewField.Item
                     titleIcon="target"
                     title="Target"
-                    contentHtml={viewObject.applicants}
+                    content={viewObject.applicants}
                   />
                 ) || null
               }
@@ -185,7 +185,7 @@ class LectureOverviewView extends Component<Props, State> {
               )}
               <OverviewField.Item
                 title="Requirements"
-                contentHtml={viewObject.completionTerms}
+                content={viewObject.completionTerms}
               />
               <OverviewField.Item
                 title="Other Guides"
