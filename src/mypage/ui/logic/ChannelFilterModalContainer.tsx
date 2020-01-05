@@ -94,7 +94,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ selectedCollege: null, channels: this.props.channels || []});
+    this.setState({ selectedCollege: null, channels: []});
   }
 
   handleClick(college: CollegeModel) {
