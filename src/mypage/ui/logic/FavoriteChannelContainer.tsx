@@ -57,7 +57,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
         <div className="table-css type2">
           <div className="row">
             <div className="cell vtop">
-              <div className="tit-set">관심 channel({channels.length || 0})
+              <div className="tit-set">관심 Channel({channels.length || 0})
 
                 <FavoriteChannelChangeModal
                   // handleConfirm={this.onConfirmModal}

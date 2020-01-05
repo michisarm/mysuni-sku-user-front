@@ -1,13 +1,14 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
 import { SkProfileService } from 'profile';
 import { Image } from 'semantic-ui-react';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService,
 }
 
@@ -35,7 +36,7 @@ class ProfileContainer extends Component<Props, State> {
 
     return (
       <div className="g-info">
-        <button className="ui user image label">
+        <button className="ui user image label" onClick={() => this.props.history.push('/mypage')} >
           <span className="name">{member.name}</span>
           <span className="affiliation">{member.company}  {member.department}</span>
           <Image src={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`} alt="profile" />
@@ -45,4 +46,4 @@ class ProfileContainer extends Component<Props, State> {
   }
 }
 
-export default ProfileContainer;
+export default withRouter(ProfileContainer);
