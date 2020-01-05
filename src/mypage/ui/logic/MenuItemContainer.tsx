@@ -91,14 +91,15 @@ class MenuItemContainer extends Component<Props, States> {
   async findPagingList() {
     const { myTrainingService, pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { activeItem } = this.state;
+    const { activeItem, channels } = this.state;
+    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
     let offsetList: any = null;
 
     if (activeItem === Type.CompletedList) {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset, channelIds);
     }
     else {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
