@@ -9,7 +9,7 @@ import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
-import RecommendHeaderView from '../view/RecommendHeaderView';
+import HeaderView from './HeaderView';
 
 
 interface Props extends RouteComponentProps {
@@ -21,7 +21,7 @@ interface Props extends RouteComponentProps {
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
 @observer
-class RecommendHeaderContainer extends Component<Props> {
+class HeaderContainer extends Component<Props> {
   //
   componentDidMount(): void {
     //
@@ -45,7 +45,7 @@ class RecommendHeaderContainer extends Component<Props> {
     const { skProfile } = skProfileService!;
 
     return (
-      <RecommendHeaderView
+      <HeaderView
         memberName={skProfile.member.name}
         onViewAll={this.onViewAll}
       >
@@ -59,9 +59,9 @@ class RecommendHeaderContainer extends Component<Props> {
           favorites={favoriteChannels}
           onConfirmCallback={onFindStudySummary}
         />
-      </RecommendHeaderView>
+      </HeaderView>
     );
   }
 }
 
-export default withRouter(RecommendHeaderContainer);
+export default withRouter(HeaderContainer);

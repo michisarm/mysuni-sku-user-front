@@ -4,43 +4,38 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { Segment } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
-import { ChannelModel, CollegeService } from 'college';
+import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { ChannelLecturesPanel } from 'lecture';
-import RecommendHeaderContainer from './RecommendHeaderContainer';
+import HeaderContainer from './HeaderContainer';
+import { Wrapper } from './RecommendElementsView';
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
-  collegeService?: CollegeService
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'college.collegeService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @observer
 @reactAutobind
-class RecommendContainer extends Component<Props> {
+class RecommendChannelsContainer extends Component<Props> {
   //
   componentDidMount(): void {
-    this.init();
+    this.findStudySummary();
   }
 
-  init() {
+  findStudySummary() {
     //
     const { skProfileService } = this.props;
     skProfileService!.findStudySummary();
   }
 
   routeTo(e: any, data: any) {
+    //
     this.props.history.push(lectureRoutePaths.recommendChannelLectures(data.channel.id));
   }
 
-  onFindStudySummary() {
-    //
-    const { skProfileService } = this.props;
-    skProfileService!.findStudySummary();
-  }
 
   render() {
     //
@@ -52,10 +47,10 @@ class RecommendContainer extends Component<Props> {
     );
 
     return (
-      <RecommendWrapper>
-        <RecommendHeaderContainer
+      <Wrapper>
+        <HeaderContainer
           favoriteChannels={favoriteChannels}
-          onFindStudySummary={this.onFindStudySummary}
+          onFindStudySummary={this.findStudySummary}
         />
 
         {
@@ -69,17 +64,9 @@ class RecommendContainer extends Component<Props> {
             )
           ))
         }
-      </RecommendWrapper>
+      </Wrapper>
     );
   }
 }
 
-const RecommendWrapper: React.FunctionComponent = ({ children }) => (
-  <div className="recommend-area" id="recommend">
-    <Segment className="full">
-      {children}
-    </Segment>
-  </div>
-);
-
-export default withRouter(RecommendContainer);
+export default withRouter(RecommendChannelsContainer);
