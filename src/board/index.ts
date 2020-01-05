@@ -1,6 +1,6 @@
 import BookMainContainer from './ui/logic/BookMainContainer';
 import NoticeDetailContainer from './ui/logic/NoticeDetailContainer';
-import QnaRegistContainer from './ui/logic/QnaRegistContainer';
+import QnaRegisterContainer from './ui/logic/QnaRegisterContainer';
 import QnaDetailContainer from './ui/logic/QnaDetailContainer';
 import FaqDetailContainer from './ui/logic/FaqDetailContainer';
 import AnsweredDetailContainer from './ui/logic/AnsweredDetailContainer';
@@ -22,7 +22,7 @@ export const boardStores = {
 export {
   BookMainContainer,
   NoticeDetailContainer,
-  QnaRegistContainer,
+  QnaRegisterContainer,
   QnaDetailContainer,
   FaqDetailContainer,
   AnsweredDetailContainer,

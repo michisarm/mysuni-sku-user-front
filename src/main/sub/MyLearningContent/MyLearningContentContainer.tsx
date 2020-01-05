@@ -9,7 +9,7 @@ import { NoSuchContentPanel } from 'shared';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
-import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel,  } from 'mypage';
+import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
 import MyTrainingModel from '../../../mypage/model/MyTrainingModel';
 import MyLearningTabContainer from './MyLearningTabContainer';
 import { Wrapper } from './MyLearningContentElementsView';
