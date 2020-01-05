@@ -23,7 +23,7 @@ class ProfileView extends Component<Props> {
         <div className="cell-inner">
           <div className="profile">
             <div className="pic">
-              <Image src="/images/all/profile-56-px.png" alt={member.name} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
+              <Image src="/images/all/img-profile-56-px.png" alt={member.name} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
             </div>
             <Button icon className="img-icon" onClick={onChangePhoto} id="image_photo"><Icon className="photo-edit" /></Button>
           </div>

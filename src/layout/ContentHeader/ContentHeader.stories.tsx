@@ -15,7 +15,7 @@ export default {
 
 const profileItem = (
   <ContentHeader.ProfileItem
-    image={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+    image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
     name="김유니"
     teams={['SK C&C', '플랫폼 개발 1팀']}
   />
@@ -30,7 +30,7 @@ export const Basic = () =>
         <ContentHeader.ProfileItem
           name="김유니"
           teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
         />
       </ContentHeader.Cell>
     </ContentHeader>
@@ -43,7 +43,7 @@ export const ProfileItem = () =>
         <ContentHeader.ProfileItem
           name="김유니"
           teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
           imageEditable
           myPageActive
           onEditImage={action('editImage')}

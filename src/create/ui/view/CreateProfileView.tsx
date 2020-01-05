@@ -39,7 +39,7 @@ class CreateProfileView extends React.Component<Props, States> {
               <div className="profile">
                 <div className="pic">
                   <ContentHeader.ProfileItem
-                    image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+                    image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
                     name={member.name}
                     teams={[member.company || '', member.department || '']}
                   />

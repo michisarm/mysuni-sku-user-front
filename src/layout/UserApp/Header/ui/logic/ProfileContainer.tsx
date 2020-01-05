@@ -39,7 +39,7 @@ class ProfileContainer extends Component<Props, State> {
         <button className="ui user image label" onClick={() => this.props.history.push('/mypage')}>
           <span className="name">{member.name}</span>
           <span className="affiliation">{member.company}  {member.department}</span>
-          <Image src={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`} alt="profile" />
+          <Image src={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`} alt="profile" />
         </button>
       </div>
     );

@@ -16,7 +16,7 @@ class ExpertHeaderView extends React.Component<Props> {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/profile-56-px.png`} alt="기본 프로필사진" />
+                  <Image src={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`} alt="기본 프로필사진" />
                 </div>
               </div>
               <div className="text-info">

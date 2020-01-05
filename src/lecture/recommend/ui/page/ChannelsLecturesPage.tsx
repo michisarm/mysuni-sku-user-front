@@ -60,7 +60,7 @@ class ChannelLecturesPage extends Component<Props> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}
