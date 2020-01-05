@@ -51,7 +51,6 @@ class Routes extends React.PureComponent {
 
                     {/* lecture  */}
                     <Redirect exact from="/lecture/college/:collegeId/channels" to="/lecture/college/:collegeId/channels/pages/1" />
-                    {/*<Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={withSplitting(() => import('./lecture').then(({ CollegeLecturesPage }) => CollegeLecturesPage))} />*/}
                     <Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={CollegeLecturesPage} />
 
                     <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ ChannelLecturesPage }) => ChannelLecturesPage))} />
@@ -74,7 +73,7 @@ class Routes extends React.PureComponent {
                     <Route exact path="/board/support/:boardId" component={withSplitting(() => import('./board').then(({ BookMainContainer }) => BookMainContainer))} />
                     <Route exact path="/board/support/notice-detail/:postId" component={withSplitting(() => import('./board').then(({ NoticeDetailContainer }) => NoticeDetailContainer))} />
                     <Route exact path="/board/support/faq-detail/:postId" component={withSplitting(() => import('./board').then(({ FaqDetailContainer }) => FaqDetailContainer))} />
-                    <Route exact path="/board/support-qna" component={withSplitting(() => import('./board').then(({ QnaRegistContainer }) => QnaRegistContainer))} />
+                    <Route exact path="/board/support-qna" component={withSplitting(() => import('./board').then(({ QnaRegisterContainer }) => QnaRegisterContainer))} />
                     <Route exact path="/board/support/qna-detail/:postId" component={withSplitting(() => import('./board').then(({ QnaDetailContainer }) => QnaDetailContainer))} />
                     <Route exact path="/board/support/answered-detail/:postId" component={withSplitting(() => import('./board').then(({ AnsweredDetailContainer }) => AnsweredDetailContainer))} />
 

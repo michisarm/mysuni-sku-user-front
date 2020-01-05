@@ -43,7 +43,7 @@ export class BookMainContainer extends React.Component<Props, States> {
       faqTabIndex: 0,
       accordIndex: 0,
       disabled: false,
-      answered: false,
+      answered: '',
       end: 0,
     };
   }
@@ -74,10 +74,9 @@ export class BookMainContainer extends React.Component<Props, States> {
       this.setState({ tabIndex: 1, activeItem: boardId  });
       this.findFaqCategoris();
     } else if (boardId === 'Q&A') {
-
-      this.setState({ tabIndex: 2, activeItem: boardId, answered: 'all' });
+      this.setState({ tabIndex: 2, activeItem: boardId });
       //this.findQnaCategories();
-      this.findQnaPosts('', 10);
+      this.findQnaPosts('all', 10);
     }
   }
 
@@ -95,7 +94,7 @@ export class BookMainContainer extends React.Component<Props, States> {
       this.findFaqCategoris();
     } else if (name === 'Q&A') {
       //this.findQnaCategories();
-      this.findQnaPosts('', 10);
+      this.findQnaPosts('all', 10);
     }
   }
 

@@ -2,14 +2,12 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { SkProfileModel, SkProfileService } from 'profile';
+import { SkProfileService } from 'profile';
 import { Image } from 'semantic-ui-react';
 
 
-
-interface Props extends RouteComponentProps {
+interface Props {
   skProfileService?: SkProfileService,
 }
 
@@ -32,8 +30,8 @@ class ProfileContainer extends Component<Props, State> {
     //
     const { skProfileService } = this.props;
 
-    const { skProfile } = skProfileService as SkProfileService;
-    const { member } = skProfile as SkProfileModel;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
 
     return (
       <div className="g-info">
@@ -47,4 +45,4 @@ class ProfileContainer extends Component<Props, State> {
   }
 }
 
-export default withRouter(ProfileContainer);
+export default ProfileContainer;

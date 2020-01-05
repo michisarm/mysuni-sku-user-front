@@ -35,7 +35,7 @@ interface States {
 ))
 @observer
 @reactAutobind
-class QnaRegistContainer extends React.Component<Props, States> {
+class QnaRegisterContainer extends React.Component<Props, States> {
   //
   constructor(props: Props) {
     //
@@ -262,4 +262,4 @@ class QnaRegistContainer extends React.Component<Props, States> {
   }
 }
 
-export default QnaRegistContainer;
+export default QnaRegisterContainer;

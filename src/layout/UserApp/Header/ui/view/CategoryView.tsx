@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button, Icon, Popup } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college';
 import ChannelCountRdo from '../../../model/ChannelCountRdo';
 
@@ -37,79 +37,66 @@ class CategoryView extends Component<Props> {
     } = this.props;
 
     return (
-      <div className="g-menu-detail">
-        <Popup
-          trigger={<Button className="ui detail-open">Category</Button>}
-          on="click"
-          className="g-menu-detail"
-          basic
-          open={open}
-          onClose={onClick}
-          onOpen={onClick}
-        >
-
-          <div className="layer" style={{ display: open ? 'block' : 'none' }}>
-            <div className="table-css">
-              <div className="row head">
-                <div className="cell v-middle">College</div>
-                <div className="cell v-middle">Channel</div>
-              </div>
-              <div className="row body">
-                <div className="cell vtop">
-                  <div className="select-area">
-                    <div className="scrolling">
-                      { colleges.map((college) => (
-                        <button
-                          key={`category_${college.collegeId}`}
-                          className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
-                          onClick={(e) => onActiveCollege(e, college)}
-                        >
-                          {college.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="cell vtop">
-                  <div className="select-area">
-                    <div className="scrolling">
-                      { activeCollege && (
-                        <>
-                          <button onClick={(e) => onClickChannel(e)}>
-                            {activeCollege.name} 전체보기
-                            <span>({collegeCount})</span>
-                          </button>
-
-                          { Array.isArray(channels) && (
-                            channels.map((channel, index) => (
-                              <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>
-                                {channel.name}
-                                <span>
-                                  ({channelCounts && channelCounts.length > 0 && channelCounts[index] && channelCounts[index].lectureCount})
-                                </span>
-                              </button>
-                            ))
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
+      <div className="layer" style={{ display: open ? 'block' : 'none' }}>
+        <div className="table-css">
+          <div className="row head">
+            <div className="cell v-middle">College</div>
+            <div className="cell v-middle">Channel</div>
+          </div>
+          <div className="row body">
+            <div className="cell vtop">
+              <div className="select-area">
+                <div className="scrolling">
+                  { colleges.map((college) => (
+                    <button
+                      key={`category_${college.collegeId}`}
+                      className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
+                      onClick={(e) => onActiveCollege(e, college)}
+                    >
+                      {college.name}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
+            <div className="cell vtop">
+              <div className="select-area">
+                <div className="scrolling">
+                  { activeCollege && (
+                    <>
+                      <button onClick={(e) => onClickChannel(e)}>
+                        {activeCollege.name} 전체보기
+                        <span>({collegeCount})</span>
+                      </button>
 
-            <Button
-              icon
-              className="img-icon change-channel-of-interest"
-              onClick={onModalOpen}
-            >
-              <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
-            </Button>
-            <Button className="close" onClick={onClick}>
-              <i className="new16x17 icon"><span className="blind">close</span></i>
-            </Button>
+                      { Array.isArray(channels) && (
+                        channels.map((channel, index) => (
+                          <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>
+                            {channel.name}
+                            <span>
+                              ({channelCounts && channelCounts.length > 0 && channelCounts[index] && channelCounts[index].lectureCount})
+                            </span>
+                          </button>
+                        ))
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        </Popup>
+        </div>
+
+        <Button
+          icon
+          className="img-icon change-channel-of-interest"
+          onClick={onModalOpen}
+        >
+          <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
+        </Button>
+        <Button className="close" onClick={onClick}>
+          <i className="new16x17 icon"><span className="blind">close</span></i>
+        </Button>
       </div>
     );
   }

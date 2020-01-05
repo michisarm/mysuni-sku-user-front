@@ -4,13 +4,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { Button, Popup } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
 import { SkProfileService, StudySummary } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
 import LectureCountService from '../../../present/logic/LectureCountService';
 import CategoryView from '../view/CategoryView';
-
 
 
 interface Props extends RouteComponentProps {
@@ -109,18 +109,30 @@ class CategoryContainer extends Component<Props, State> {
 
     return (
       <>
-        <CategoryView
-          open={categoryOpen}
-          colleges={collegeService!.colleges}
-          activeCollege={activeCollege}
-          channels={collegeService!.channels}
-          collegeCount={lectureCountService!.collegeLectureCount}
-          channelCounts={lectureCountService!.channels}
-          onClick={this.onClickCategory}
-          onActiveCollege={this.onActiveCollege}
-          onClickChannel={this.onClickChannel}
-          onModalOpen={this.onModalOpen}
-        />
+        <div className="g-menu-detail">
+          <Popup
+            trigger={<Button className="ui detail-open">Category</Button>}
+            on="click"
+            className="g-menu-detail"
+            basic
+            open={categoryOpen}
+            onOpen={this.onClickCategory}
+            onClose={this.onClickCategory}
+          >
+            <CategoryView
+              open={categoryOpen}
+              colleges={collegeService!.colleges}
+              activeCollege={activeCollege}
+              channels={collegeService!.channels}
+              collegeCount={lectureCountService!.collegeLectureCount}
+              channelCounts={lectureCountService!.channels}
+              onClick={this.onClickCategory}
+              onActiveCollege={this.onActiveCollege}
+              onClickChannel={this.onClickChannel}
+              onModalOpen={this.onModalOpen}
+            />
+          </Popup>
+        </div>
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={channels}
