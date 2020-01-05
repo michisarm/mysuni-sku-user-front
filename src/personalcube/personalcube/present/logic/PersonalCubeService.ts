@@ -105,6 +105,11 @@ export default class PersonalCubeService {
   }
 
   @action
+  changeFileName(name: string) {
+    this.fileName = name;
+  }
+
+  @action
   changePersonalCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: number | string) {
     this.personalCubeQuery = _.set(this.personalCubeQuery, name, value);
     if (typeof value === 'object' && nameSub) {

@@ -3,7 +3,7 @@ import { InstructorModel } from '../../model/InstructorModel';
 import { OffsetElement } from '../../model/OffsetElement';
 
 export default class InstructorApi {
-  URL = '/api/lp/expert';
+  URL = '/api/expert/v1/instructors';
 
   static instance: InstructorApi;
 
