@@ -30,7 +30,7 @@ class InMyLectureApi {
       .then(response => response && response.data);
   }
 
-  findAllInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
+  findInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
     //
     const params = inMyLectureRdo;
 
@@ -38,7 +38,7 @@ class InMyLectureApi {
       .then(response => response && response.data);
   }
 
-  findInMyLecturesAll() {
+  findAllInMyLectures() {
     return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
       .then(response => response && response.data);
   }

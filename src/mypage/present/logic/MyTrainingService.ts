@@ -1,6 +1,6 @@
 import { action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { CubeType, OffsetElementList } from 'shared';
+import { CubeType } from 'shared';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
@@ -16,6 +16,7 @@ class MyTrainingService {
   @observable
   _myTrainings: MyTrainingModel[] = [];
 
+
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
   }
@@ -30,64 +31,68 @@ class MyTrainingService {
   // My Trainings ----------------------------------------------------------------------------------------------------------
 
   @action
+  clear() {
+    this._myTrainings = [];
+  }
+
+  @action
   async findAllMyTrainingsWithState(state: string, limit: number, offset: number) {
     //
-    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithState(state, limit, offset));
-    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset);
+    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
+    runInAction(() => this._myTrainings = offsetList.results);
+    return offsetList;
+  }
 
-    return runInAction(() => {
-      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
-      return trainingOffsetElementList;
-    });
+  @action
+  async findAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number) {
+    //
+    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset);
+    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
+
+    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    return offsetList;
   }
 
   @action
   async findAllMyTrainingsWithRequired(limit: number, offset: number) {
     //
-    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithRequired(limit, offset));
-    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset);
+    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
-
-    return runInAction(() => {
-      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
-      return trainingOffsetElementList;
-    });
+    runInAction(() => this._myTrainings = offsetList.results);
+    return offsetList;
   }
 
   @action
-  async findAllMyCommunityTrainings(limit: number, offset: number) {
+  async findAndAddAllMyTrainingsWithRequired(limit: number, offset: number) {
     //
-    const response = await this.myTrainingApi.findAllMyTrainings(MyTrainingRdoModel.newWithCubeType(CubeType.Community, limit, offset));
-    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset);
+    const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
-
-    return runInAction(() => {
-      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
-      return trainingOffsetElementList;
-    });
+    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    return offsetList;
   }
 
   @action
-  async findAllMyTrainingsWithStamp(limit: number, offset: number) {
+  async findAndAddAllMyCommunityTrainings(limit: number, offset: number) {
     //
-    const response = await this.myTrainingApi.findAllMyTrainingsWithStamp(MyTrainingRdoModel.new(limit, offset));
-    const trainingOffsetElementList = new OffsetElementList<MyTrainingModel>(response);
+    const rdo = MyTrainingRdoModel.newWithCubeType(CubeType.Community, limit, offset);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    trainingOffsetElementList.results = trainingOffsetElementList.results.map((training) => new MyTrainingModel(training));
-
-    return runInAction(() => {
-      this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results);
-      return trainingOffsetElementList;
-    });
+    runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+    return trainingOffsetElementList;
   }
 
   @action
-  clear() {
-    this._myTrainings = [];
+  async findAndAddAllMyTrainingsWithStamp(limit: number, offset: number) {
+    //
+    const rdo = MyTrainingRdoModel.new(limit, offset);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+
+    runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+    return trainingOffsetElementList;
   }
 }
 

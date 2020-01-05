@@ -155,7 +155,7 @@ class CreateContainer extends React.Component<Props, States> {
     const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    inMyLectureService!.findInMyLecturesAll();
+    inMyLectureService!.findAllInMyLectures();
     const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
     if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
