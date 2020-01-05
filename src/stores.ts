@@ -1,7 +1,7 @@
 import { ReviewService } from '@nara.drama/feedback';
 import { sharedStores } from 'shared';
 import layoutStores from 'layout/stores';
-import { collegeStores } from 'college';
+import { collegeStores, CollegeService } from 'college';
 import { courseStores } from 'course';
 import { personalCubeStores } from 'personalcube';
 import { lectureCardStores } from 'lecture';
@@ -14,6 +14,7 @@ import { myTrainingStores } from 'mypage';
 const stores = {
   shared: {
     ...sharedStores.shared,
+    collegeService: new CollegeService(),
     reviewService: ReviewService.instance,
   },
   ...layoutStores,
