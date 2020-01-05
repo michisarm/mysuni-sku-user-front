@@ -81,7 +81,7 @@ export default class PersonalCubeService {
   @action
   async findAllPersonalCubesByQuery() {
     //
-    const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCubeRdo(this.personalCubeQuery));
+    const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCreateRdo(this.personalCubeQuery));
     return runInAction(() => this.personalCubes = personalCubes);
   }
 
