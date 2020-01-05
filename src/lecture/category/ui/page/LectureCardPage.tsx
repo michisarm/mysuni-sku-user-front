@@ -399,7 +399,7 @@ class LectureCardPage extends Component<Props, State> {
           <PostList
             boardId={personalCube.contents.contents.id}
             emptyMessage="작성된 글이 없습니다."
-            linkedUrl={`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
+            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
             routeToPost={
               studentJoin ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
             }
@@ -410,7 +410,7 @@ class LectureCardPage extends Component<Props, State> {
         return (
           <PostListByWriter
             boardId={personalCube.contents.contents.id}
-            linkedUrl={`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
+            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
             emptyMessage="내가 작성한 글이 없습니다."
             routeToPost={
               studentJoin ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
