@@ -90,10 +90,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
 
   }
 
-  onSKIntroClick() {
-    /* SK University 소개 */
-  }
-
   onReset() {
     this.setState({ favorites: []});
   }
@@ -131,7 +127,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
         className="bg-white"
       >
         <div className="interest-content step1">
-          <TitleView step={1} onSKIntroClick={this.onSKIntroClick} />
+          <TitleView step={1} />
           <Form>
             <h3 className="title-filter">관심분야 선택</h3>
             <div className="filter-wrap">

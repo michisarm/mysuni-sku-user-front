@@ -135,9 +135,7 @@ class MyTrainingPage extends Component<Props, State> {
     const { inMyLectureService } = this.props;
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
-        .then(() => {
-          this.init();
-        });
+        .then(() => inMyLectureService!.findAllInMyLectures());
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -158,7 +156,7 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
-      })).then(this.findPagingList);
+      })).then(() => inMyLectureService!.findAllInMyLectures());
     }
   }
 

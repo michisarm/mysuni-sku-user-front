@@ -92,10 +92,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
 
   }
 
-  onSKIntroClick() {
-
-  }
-
   onPreviousClick() {
     this.props.history.push('/profile/interest/job');
   }
@@ -135,7 +131,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
         className="bg-white"
       >
         <div className="interest-content step3">
-          <TitleView step={3} onSKIntroClick={this.onSKIntroClick} />
+          <TitleView step={3} />
           <Form>
             <div className="type-check-wrap">
               <div className="type-check-box type">
