@@ -53,6 +53,10 @@ class QuickNavContainer extends Component<Props, State> {
     this.onClickToggle();
   }
 
+  onClickTop() {
+    window.scrollTo(0, 0);
+  }
+
   onClickToggle() {
     //
     this.setState((prevState) => ({
@@ -114,7 +118,8 @@ class QuickNavContainer extends Component<Props, State> {
     return (
       <QuickNavWrapperView
         active={active}
-        onClick={this.onClickToggle}
+        onTop={this.onClickTop}
+        onToggle={this.onClickToggle}
       >
         <MenuWrapperView
           topButtons={
