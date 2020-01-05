@@ -132,10 +132,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     }
   }
 
-  onSKIntroClick() {
-    //SKUniversity 소개
-  }
-
   onPreviousClick() {
     this.props.history.push('/profile/interest/college');
   }
@@ -169,7 +165,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
         className="bg-white"
       >
         <div className="interest-content step2">
-          <TitleView step={2} onSKIntroClick={this.onSKIntroClick} />
+          <TitleView step={2} />
           <Form>
             <h3 className="title-filter">관심직무 선택</h3>
             <div className="select-cont-wrap">
