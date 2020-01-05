@@ -69,9 +69,9 @@ class InMyLectureService {
   }
 
   @action
-  async findInMyLectures(limit: number, offset: number) {
+  async findInMyLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const response = await this.inMyLectureApi.findInMyLectures(InMyLectureRdoModel.new(limit, offset));
+    const response = await this.inMyLectureApi.findInMyLectures(InMyLectureRdoModel.new(limit, offset, channelIds));
     const lecturesOffsetElementList = new OffsetElementList<InMyLectureModel>(response);
 
     lecturesOffsetElementList.results = lecturesOffsetElementList.results.map((lecture) => new InMyLectureModel(lecture));

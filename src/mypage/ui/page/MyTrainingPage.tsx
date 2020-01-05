@@ -10,6 +10,7 @@ import { Segment } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
+import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
 import routePaths from '../../routePaths';
@@ -17,7 +18,7 @@ import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import InMyLectureService from '../../present/logic/InMyLectureService';
-import LineHeaderView from '../view/LineHeaderView';
+import LineHeaderContainer from '../logic/LineHeaderContainer';
 
 import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
@@ -35,6 +36,7 @@ interface Props extends RouteComponentProps<{ tab: string }> {
 
 interface State {
   type: string
+  channels: ChannelModel[]
 }
 
 enum Type {
@@ -64,6 +66,7 @@ class MyTrainingPage extends Component<Props, State> {
 
   state= {
     type: Type.InProgress,
+    channels: [],
   };
 
   componentDidMount(): void {
@@ -109,6 +112,8 @@ class MyTrainingPage extends Component<Props, State> {
 
   async findPagingList() {
     const { inMyLectureService, myTrainingService, pageService, reviewService } = this.props;
+    const { channels } = this.state;
+    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { type } = this.state;
     let offsetList: any = null;
@@ -116,15 +121,15 @@ class MyTrainingPage extends Component<Props, State> {
 
     inMyLectureService!.findAllInMyLectures();
     if (type === Type.InMyList) {
-      offsetList = await inMyLectureService!.findInMyLectures(page!.limit, page!.nextOffset);
+      offsetList = await inMyLectureService!.findInMyLectures(page!.limit, page!.nextOffset, channelIds);
       feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
     else if (type === Type.Required) {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithRequired(page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithRequired(page!.limit, page!.nextOffset, channelIds);
     }
     else {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
@@ -182,10 +187,17 @@ class MyTrainingPage extends Component<Props, State> {
     return page!.pageNo < page!.totalPages;
   }
 
+  onFilter(channels: ChannelModel[]) {
+    const { type } = this.state;
+    this.setState({ channels }, () => {
+      this.selectMenu(type);
+    });
+  }
+
   renderList() {
     const { inMyLectureService, myTrainingService, reviewService, pageService } = this.props;
     const { ratingMap } =  reviewService as ReviewService;
-    const { type } = this.state;
+    const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
@@ -206,7 +218,7 @@ class MyTrainingPage extends Component<Props, State> {
 
     return (
       <Segment className="full">
-        <LineHeaderView count={page && page.totalCount || 0} />
+        <LineHeaderContainer count={page && page.totalCount || 0} channels={channels} onFilter={this.onFilter} />
         {
           list && list.length && (
             <Lecture.Group type={cardType}>

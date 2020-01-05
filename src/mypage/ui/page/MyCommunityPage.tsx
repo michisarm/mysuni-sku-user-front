@@ -15,7 +15,7 @@ import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import LineHeaderView from '../view/LineHeaderView';
+import LineHeaderContainer from '../logic/LineHeaderContainer';
 import LectureModel from '../../../lecture/shared/model/LectureModel';
 
 
@@ -188,7 +188,7 @@ class MyCommunityPage extends Component<Props, State> {
     return (
       <Segment className="full">
         <div className="ui tab active">
-          <LineHeaderView count={page && page.totalCount || 0} />
+          <LineHeaderContainer count={page && page.totalCount || 0} />
           {
             list && list.length && (
               <Lecture.Group type={Lecture.GroupType.Community}>

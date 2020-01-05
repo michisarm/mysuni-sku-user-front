@@ -11,6 +11,7 @@ class MyTrainingRdoModel {
   cubeType?: CubeType;
   state?: string;
   required?: boolean;
+  channelIds?: string[];
 
 
   constructor(myTrainingRdo?: MyTrainingRdoModel) {
@@ -20,12 +21,13 @@ class MyTrainingRdoModel {
     }
   }
 
-  static new(limit: number, offset: number) {
+  static new(limit: number, offset: number, channelIds: string[]) {
     //
     return new MyTrainingRdoModel({
       limit,
       offset,
       denizenKey: tenantInfo.getTenantId(),
+      channelIds,
     });
   }
 
@@ -39,23 +41,25 @@ class MyTrainingRdoModel {
     });
   }
 
-  static newWithState(state: string, limit: number, offset: number) {
+  static newWithState(state: string, limit: number, offset: number, channelIds: string[]) {
     //
     return new MyTrainingRdoModel({
       limit,
       offset,
       denizenKey: tenantInfo.getTenantId(),
       state,
+      channelIds,
     });
   }
 
-  static newWithRequired(limit: number, offset: number) {
+  static newWithRequired(limit: number, offset: number, channelIds: string[]) {
     //
     return new MyTrainingRdoModel({
       limit,
       offset,
       denizenKey: tenantInfo.getTenantId(),
       required: true,
+      channelIds,
     });
   }
 }
@@ -67,6 +71,7 @@ decorate(MyTrainingRdoModel, {
   state: observable,
   required: observable,
   cubeType: observable,
+  channelIds: observable,
 });
 
 export default MyTrainingRdoModel;

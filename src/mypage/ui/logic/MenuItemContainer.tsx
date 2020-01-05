@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import { Menu, Segment } from 'semantic-ui-react';
 import { NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import { Lecture } from 'lecture';
 import routePaths from '../../../mypage/routePaths';
@@ -13,12 +14,13 @@ import routePaths from '../../../mypage/routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import lectureRoutePaths from '../../../lecture/routePaths';
-import LineHeaderView from '../view/LineHeaderView';
+import LineHeaderContainer from './LineHeaderContainer';
 
 interface States {
   activeItem : string
-}
+  channels: ChannelModel[]
 
+}
 interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   skProfileService?: SkProfileService
@@ -48,6 +50,7 @@ class MenuItemContainer extends Component<Props, States> {
     super(props);
     this.state = {
       activeItem: 'CompletedList',
+      channels: [],
     };
   }
 
@@ -123,15 +126,23 @@ class MenuItemContainer extends Component<Props, States> {
     return page!.pageNo < page!.totalPages;
   }
 
+  onFilter(channels: ChannelModel[]) {
+    const { activeItem } = this.state;
+    this.setState({ channels }, () => {
+      this.changeItem(activeItem);
+    });
+  }
+
   renderList() {
     const { myTrainingService, pageService } = this.props;
     const { myTrainings } =  myTrainingService!;
+    const { channels } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     return (
       <Segment className="full">
         <div className="ui tab active">
-          <LineHeaderView count={page && page.totalCount || 0} />
+          <LineHeaderContainer count={page && page.totalCount || 0} channels={channels} onFilter={this.onFilter} />
           {
             myTrainings && myTrainings.length && (
               <Lecture.Group type={Lecture.GroupType.ListStamp}>
