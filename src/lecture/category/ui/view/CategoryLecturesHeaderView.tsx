@@ -11,6 +11,7 @@ import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 
 interface Props {
   college: CollegeModel,
+  onClickMySuni: () => void,
 }
 
 
@@ -56,7 +57,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
 
   render() {
     //
-    const { college } = this.props;
+    const { college, onClickMySuni } = this.props;
 
     return (
       <ContentHeader>
@@ -70,7 +71,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
-          <Button className="personal line">
+          <Button className="personal line" onClick={onClickMySuni}>
             <span>mySUNI 전체 커리큘럼 보기</span>
           </Button>
         </ContentHeader.Cell>
