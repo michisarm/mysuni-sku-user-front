@@ -14,7 +14,7 @@ class FooterContainer extends Component {
     //
     return (
       <>
-        <NavLink to="" className="item">Introduction</NavLink>
+        <NavLink to="/introduction" className="item">Introduction</NavLink>
         <NavLink to="/board/support/Notice" className="item">Notice</NavLink>
         <NavLink to="/board/support/FAQ" className="item">FAQ</NavLink>
         <NavLink to="/board/support/Q&A" className="item">Q&A</NavLink>

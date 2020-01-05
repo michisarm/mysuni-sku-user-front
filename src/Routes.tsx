@@ -40,6 +40,7 @@ class Routes extends React.PureComponent {
                   <Switch>
                     {/* main */}
                     <Route exact path="/" component={withSplitting(() => import('./main').then(({ UserMainPage }) => UserMainPage))} />
+                    <Route exact path="/introduction" component={withSplitting(() => import('./main').then(({ IntroductionPage }) => IntroductionPage))} />
 
                     {/* create */}
                     <Redirect exact from="/personalcube/create" to="/personalcube/create/Create" />

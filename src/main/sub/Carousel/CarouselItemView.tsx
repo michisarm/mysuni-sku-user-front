@@ -9,6 +9,7 @@ import { Image } from 'semantic-ui-react';
 interface Props {
   title: string,
   content: string,
+  image: string
 }
 
 @reactAutobind
@@ -16,7 +17,7 @@ class CarouselWrapperView extends Component<Props> {
   //
   render() {
     //
-    const { title, content } = this.props;
+    const { title, content, image } = this.props;
 
     return (
       <div className="swiper-slide">
@@ -26,7 +27,7 @@ class CarouselWrapperView extends Component<Props> {
             <div className="sub-text">{content}</div>
           </div>
           <div className="visual">
-            <Image src={`${process.env.PUBLIC_URL}/images/all/img-main.png`} alt="Main carousel" />
+            <Image src={`${process.env.PUBLIC_URL}/images/all/${image}`} alt="Main carousel" />
           </div>
         </div>
       </div>
