@@ -304,27 +304,27 @@ class MyTrainingPage extends Component<Props, State> {
         <ContentMenu
           menus={[
             {
-              name: 'In Progress',
+              name: '학습중인 과정',
               type: Type.InProgress,
             },
             {
-              name: 'In my list',
+              name: '관심목록',
               type: Type.InMyList,
             },
             {
-              name: 'Enrolled',
+              name: '수강확정 과정',
               type: Type.Enrolled,
             },
             {
-              name: 'Required',
+              name: '권장과정',
               type: Type.Required,
             },
             {
-              name: 'Completed',
+              name: '학습완료',
               type: Type.Completed,
             },
             {
-              name: 'Retry',
+              name: '취소/미이수',
               type: Type.Retry,
             },
           ]}

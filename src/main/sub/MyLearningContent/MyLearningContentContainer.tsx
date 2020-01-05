@@ -42,10 +42,10 @@ enum ContentType {
 class MyLearningContentContainer extends Component<Props, State> {
   //
   tabs = [
-    { name: ContentType.Required, text: 'Required' },
-    { name: ContentType.InMyList, text: 'In My List' },
-    { name: ContentType.InProgress, text: 'In Progress' },
-    { name: ContentType.Enrolled, text: 'Enrolled' },
+    { name: ContentType.Required, text: '권장과정' },
+    { name: ContentType.InMyList, text: '관심목록' },
+    { name: ContentType.InProgress, text: '학습중인 과정' },
+    { name: ContentType.Enrolled, text: '수강확정 과정' },
   ];
 
   PAGE_SIZE = 8;
