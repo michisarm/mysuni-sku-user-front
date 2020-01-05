@@ -93,8 +93,8 @@ class FavoriteChannelContainer extends Component<Props, States> {
                   <Icon
                     className={classNames({
                       s26: true,
-                      'arrow-down': open,
-                      'arrow-up': !open,
+                      'arrow-down': !open,
+                      'arrow-up': open,
                     })}
                   />
                   <span className="blind">open</span>
