@@ -38,12 +38,8 @@ export default class SkProfileService {
   get studySummaryFavoriteChannels() {
     //
     const { favoriteChannels } = this.studySummary;
-    console.log('favirotieChannels', favoriteChannels);
 
     return favoriteChannels.idNames;
-    // return favoriteChannels.idNames.map(channel =>
-    //   new ChannelModel({ ...channel, channelId: channel.id, checked: true })
-    // );
   }
 
   registerSkProfile(skProfile: SkProfileModel) {
