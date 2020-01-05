@@ -4,16 +4,15 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Segment } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService, MyTrainingService } from 'mypage';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
-import MyLearningTabContainer from './MyLearningTabContainer';
+import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel,  } from 'mypage';
 import MyTrainingModel from '../../../mypage/model/MyTrainingModel';
-import { Wrapper } from '../view/MyLearningContentElementsView';
+import MyLearningTabContainer from './MyLearningTabContainer';
+import { Wrapper } from './MyLearningContentElementsView';
 
 
 interface Props extends RouteComponentProps {

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import CarouselWrapperView from '../view/CarouselWrapperView';
-import CarouselItemView from '../view/CarouselItemView';
+import CarouselWrapperView from './CarouselWrapperView';
+import CarouselItemView from './CarouselItemView';
 
 
 const mock = [
@@ -21,7 +21,7 @@ interface State {
 
 @reactAutobind
 @observer
-class MainCarouselContainer extends Component<Props, State> {
+class CarouselContainer extends Component<Props, State> {
   //
   state = {
     activeIndex: 0,
@@ -73,4 +73,4 @@ class MainCarouselContainer extends Component<Props, State> {
 }
 
 
-export default MainCarouselContainer;
+export default CarouselContainer;

@@ -2,19 +2,18 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 
 
-interface Props extends RouteComponentProps {
+interface Props {
   memberName: string;
   onViewAll: () => void,
 }
 
 @reactAutobind
 @observer
-class RecommendHeaderContainer extends Component<Props> {
+class HeaderView extends Component<Props> {
   //
   render() {
     //
@@ -34,4 +33,4 @@ class RecommendHeaderContainer extends Component<Props> {
   }
 }
 
-export default withRouter(RecommendHeaderContainer);
+export default HeaderView;

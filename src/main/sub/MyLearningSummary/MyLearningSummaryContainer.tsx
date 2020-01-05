@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
-import { HeaderWrapperView, ItemWrapper, LearningTimeView, HeaderItemView } from '../view/MyLearningSummaryElementsView';
+import { HeaderWrapperView, ItemWrapper, LearningTimeView, HeaderItemView } from './MyLearningSummaryElementsView';
 
 
 interface Props extends RouteComponentProps {
