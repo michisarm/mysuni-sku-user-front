@@ -60,7 +60,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     //
     const { lectureService, reviewService, inMyLectureService, channel } = this.props;
     const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0, OrderByType.Time);
-    inMyLectureService!.findInMyLecturesAll();
+    inMyLectureService!.findAllInMyLectures();
 
     this.setState(({
       lectures,

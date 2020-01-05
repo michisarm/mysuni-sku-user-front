@@ -4,9 +4,10 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { Segment, Button, Icon } from 'semantic-ui-react';
-import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
+import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
+import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
+import { HeaderWrapperView, ItemWrapper, LearningTimeView, HeaderItemView } from '../view/MyLearningSummaryElementsView';
 
 
 interface Props extends RouteComponentProps {
@@ -21,16 +22,18 @@ interface Props extends RouteComponentProps {
 class MyLearningSummaryContainer extends Component<Props> {
   //
   componentDidMount(): void {
+    //
     this.init();
   }
 
   init() {
+    //
     const { myLearningSummaryService } = this.props;
 
     myLearningSummaryService!.findMyLearningSummary();
   }
 
-  timeToHourMinute(minuteTime: number) {
+  getHourMinute(minuteTime: number) {
     //
     let hour = 0;
     let minute = minuteTime;
@@ -42,116 +45,76 @@ class MyLearningSummaryContainer extends Component<Props> {
     return { hour, minute };
   }
 
+  onClickComplete() {
+    //
+    this.props.history.push('/mypage/CompletedList');
+  }
+
+  onClickStamp() {
+    //
+    this.props.history.push('/mypage/EarnedStampList');
+  }
+
   render() {
     //
     const { myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
-
-    const minute = myLearningSummary.totalLearningTime;
-    let hour = 0;
-    let onlyMinute = minute;
-
-    if (minute) {
-      hour = Math.floor(minute / 60);
-      onlyMinute = minute % 60;
-    }
+    const { hour, minute } = this.getHourMinute(myLearningSummary.totalLearningTime);
 
     return (
-      <div className="my-learning-area">
-        <Segment className="full">
-          <div className="table-css type1">{/* .type1, .type2 //*/}
-            <div className="row">
-              <div className="cell v-middle">
-                <div className="cell-inner">
-                  <span className="text01">My Learning</span>
-                  <Button
-                    icon
-                    className="right btn-black"
-                    onClick={() => this.props.history.push('/my-training')}
-                  >
-                    View all
-                    <Icon className="morelink" />
-                  </Button>
-                </div>
-              </div>
+      <HeaderWrapperView>
 
-              <ItemWrapper>
-                <MyLearningSummaryModal
-                  trigger={(
-                    <Button className="btn-complex48">
-                      <span className="i">
-                        <Icon className="time48" />
-                        <span className="blind">total time</span>
-                      </span>
-                      <span className="t">
-                        <span className="underline">총 학습시간</span>
-                        <span className="div">
-                          <span className="t1">{hour || '00'}</span><span className="t2">h</span>
-                          <span className="t1">{onlyMinute || '00'}</span><span className="t2">m</span>
-                        </span>
-                      </span>
-                    </Button>
-                  )}
-                />
-              </ItemWrapper>
+        <ItemWrapper>
+          <span className="text01">My Learning</span>
+          <Button
+            icon
+            className="right btn-black"
+            onClick={() => this.props.history.push('/my-training')}
+          >
+            View all
+            <Icon className="morelink" />
+          </Button>
+        </ItemWrapper>
 
-              <ItemWrapper>
-                <ContentHeader.ChartItem
-                  universityTime={myLearningSummary.suniLearningTime || 0}
-                  myCompanyTime={myLearningSummary.myCompanyLearningTime || 0}
-                />
-              </ItemWrapper>
+        <ItemWrapper>
+          <MyLearningSummaryModal
+            trigger={(
+              <LearningTimeView
+                icon="time"
+                label="총 학습시간"
+                hour={hour}
+                minute={minute}
+              />
+            )}
+          />
+        </ItemWrapper>
 
-              <ItemWrapper>
-                <Button className="btn-complex48" onClick={() => this.props.history.push('/mypage/CompletedList')}>
-                  <span className="i">
-                    <Icon className="complete48" />
-                    <span className="blind">complete edu</span>
-                  </span>
-                  <span className="t">
-                    <span className="underline">완료한 학습</span>
-                    <span className="div">
-                      <span className="t1">{myLearningSummary.completeLectureCount || 0}</span><span className="t3">개</span>
-                    </span>
-                  </span>
-                </Button>
-              </ItemWrapper>
+        <ItemWrapper>
+          <ContentHeader.ChartItem
+            universityTime={myLearningSummary.suniLearningTime || 0}
+            myCompanyTime={myLearningSummary.myCompanyLearningTime || 0}
+          />
+        </ItemWrapper>
 
-              <ItemWrapper>
-                <Button className="btn-complex48" onClick={() => this.props.history.push('/mypage/EarnedStampList')}>
-                  <span className="i">
-                    <Icon className="stamp48"><span className="blind">stamp</span></Icon>
-                  </span>
-                  <span className="t">
-                    <span className="underline">획득 Stamp</span>
-                    <span className="div">
-                      <span className="t1">{myLearningSummary.acheiveStampCount || 0}</span><span className="t3">개</span>
-                    </span>
-                  </span>
-                </Button>
-              </ItemWrapper>
+        <ItemWrapper>
+          <HeaderItemView
+            icon="complete"
+            label="완료된 학습"
+            count={myLearningSummary.completeLectureCount}
+            onClick={this.onClickComplete}
+          />
+        </ItemWrapper>
 
-            </div>
-          </div>
-        </Segment>
-      </div>
-    );
-  }
-}
+        <ItemWrapper>
+          <HeaderItemView
+            icon="stamp"
+            label="획득 Stamp"
+            count={myLearningSummary.acheiveStampCount}
+            onClick={this.onClickStamp}
+          />
+        </ItemWrapper>
 
-
-class ItemWrapper extends Component {
-  //
-  render() {
-    //
-    const { children } = this.props;
-
-    return (
-      <div className="cell v-middle">
-        <div className="cell-inner">
-          {children}
-        </div>
-      </div>
+      </HeaderWrapperView>
     );
   }
 }

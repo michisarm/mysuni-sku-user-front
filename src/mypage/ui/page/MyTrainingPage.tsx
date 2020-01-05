@@ -114,17 +114,17 @@ class MyTrainingPage extends Component<Props, State> {
     let offsetList: any = null;
     let feedbackIds: string[] = [];
 
-    inMyLectureService!.findInMyLecturesAll();
+    inMyLectureService!.findAllInMyLectures();
     if (type === Type.InMyList) {
-      offsetList = await inMyLectureService!.findAllInMyLectures(page!.limit, page!.nextOffset);
+      offsetList = await inMyLectureService!.findInMyLectures(page!.limit, page!.nextOffset);
       feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
     else if (type === Type.Required) {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithRequired(page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithRequired(page!.limit, page!.nextOffset);
     }
     else {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);

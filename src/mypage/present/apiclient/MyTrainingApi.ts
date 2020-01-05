@@ -12,12 +12,20 @@ class MyTrainingApi {
   baseUrl = '/api/mytraining/mytraining/mytrainings';
 
 
+  getOffsetElementList(response: any) {
+    //
+    const offsetElementList = new OffsetElementList<MyTrainingModel>(response && response.data);
+
+    offsetElementList.results = offsetElementList.results.map((training) => new MyTrainingModel(training));
+    return offsetElementList;
+  }
+
   findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
     const params = myTrainingRdo;
 
     return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState', { params })
-      .then(response => response && response.data);
+      .then(this.getOffsetElementList);
   }
 
   findAllMyTrainingsWithStamp(myTrainingRdo: MyTrainingRdoModel) {
@@ -25,7 +33,7 @@ class MyTrainingApi {
     const params = myTrainingRdo;
 
     return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/stamps', { params })
-      .then(response => response && response.data);
+      .then(this.getOffsetElementList);
   }
 }
 

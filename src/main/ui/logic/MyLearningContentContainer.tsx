@@ -5,14 +5,16 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Segment } from 'semantic-ui-react';
-import classNames from 'classnames';
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService, MyTrainingService } from 'mypage';
 import { Lecture } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
+import MyLearningTabContainer from './MyLearningTabContainer';
 import MyTrainingModel from '../../../mypage/model/MyTrainingModel';
+import { Wrapper } from '../view/MyLearningContentElementsView';
+
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService,
@@ -24,7 +26,7 @@ interface State {
   type: string
 }
 
-enum Type {
+enum ContentType {
   InMyList= 'InMyList',
   Required= 'Required',
   InProgress= 'InProgress',
@@ -40,29 +42,57 @@ enum Type {
 @reactAutobind
 class MyLearningContentContainer extends Component<Props, State> {
   //
+  tabs = [
+    { name: ContentType.Required, text: 'Required' },
+    { name: ContentType.InMyList, text: 'In My List' },
+    { name: ContentType.InProgress, text: 'In Progress' },
+    { name: ContentType.Enrolled, text: 'Enrolled' },
+  ];
+
+  PAGE_SIZE = 8;
+
   state= {
-    type: Type.Required,
+    type: ContentType.Required,
   };
 
   componentDidMount(): void {
-    this.init();
-    const { inMyLectureService } = this.props;
-    inMyLectureService!.findInMyLecturesAll();
-  }
-
-  init() {
-    this.findPagingList();
-  }
-
-  onSelectMenu(type: string) {
     //
-    const { myTrainingService, inMyLectureService } = this.props;
-    this.setState({ type }, () => {
-      myTrainingService!.clear();
-      inMyLectureService!.clear();
-      inMyLectureService!.findInMyLecturesAll();
-      this.findPagingList();
-    });
+    this.findMyContent();
+  }
+
+  async findMyContent() {
+    //
+    const { inMyLectureService, myTrainingService, reviewService } = this.props;
+    const { type } = this.state;
+
+    inMyLectureService!.findAllInMyLectures();
+
+    switch (type) {
+      case ContentType.InMyList: {
+        const offsetList = await inMyLectureService!.findInMyLectures(this.PAGE_SIZE, 0);
+        const feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
+
+        reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+        break;
+      }
+      case ContentType.Required:
+        myTrainingService!.findAllMyTrainingsWithRequired(this.PAGE_SIZE, 0);
+        break;
+      case ContentType.InProgress:
+        myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
+        break;
+      case ContentType.Enrolled:
+        myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
+        break;
+    }
+  }
+
+  onSelectTab({ name }: any) {
+    //
+    this.setState(
+      { type: name },
+      this.findMyContent,
+    );
   }
 
   onViewDetail(e: any, data: any) {
@@ -78,38 +108,13 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
-  async findPagingList() {
-    const { inMyLectureService, myTrainingService, reviewService } = this.props;
-    const { type } = this.state;
-    let offsetList: any = null;
-    let feedbackIds: string[] = [];
-
-    switch (type) {
-      case Type.InMyList:
-        offsetList = await inMyLectureService!.findAllInMyLectures(5, 0);
-        feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
-        await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-        break;
-      case Type.Required:
-        offsetList = await myTrainingService!.findAllMyTrainingsWithRequired(5, 0);
-        break;
-      case Type.InProgress:
-        offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, 5, 0);
-        break;
-      case Type.Enrolled:
-        offsetList = await myTrainingService!.findAllMyTrainingsWithState(type, 5, 0);
-        break;
-    }
-  }
-
-
   onActionLecture(training: MyTrainingModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
-    const { type } = this.state;
+
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
-        .then(() => this.onSelectMenu(type));
+        .then(this.findMyContent);
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -130,103 +135,68 @@ class MyLearningContentContainer extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
-      })).then(() => this.onSelectMenu(type));
+      })).then(this.findMyContent);
     }
   }
 
   renderList() {
+    //
     const { inMyLectureService, myTrainingService, reviewService } = this.props;
-    const { inMyLectureMap } =  inMyLectureService!;
-    const { ratingMap } =  reviewService as ReviewService;
     const { type } = this.state;
+    const { inMyLectureMap, inMyLectures } =  inMyLectureService!;
+    const { ratingMap } =  reviewService!;
     let list: (MyTrainingModel | InMyLectureModel)[] = [];
 
-    switch (type) {
-      case 'InMyList':
-        list = inMyLectureService!.inMyLectures;
-        break;
-      default:
-        list = myTrainingService!.myTrainings;
-        break;
+    if (type === ContentType.InMyList) {
+      list = inMyLectures;
+    }
+    else {
+      list = myTrainingService!.myTrainings;
     }
 
     return (
-      <Segment className="full">
-        <div className="ui active tab">
-          {
-            list && list.length && (
-              <Lecture.Group type={Lecture.GroupType.Line}>
-                {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
-                  let rating: number | undefined = 0;
-                  if (value instanceof InMyLectureModel) {
-                    rating = ratingMap.get(value.reviewId);
-                  }
-                  const inMyLecture = inMyLectureMap.get(value.serviceId);
-                  return (
-                    <Lecture
-                      key={`training-${index}`}
-                      model={value}
-                      rating={rating || undefined}
-                      // thumbnailImage="http://placehold.it/60x60"
-                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                      onAction={() => this.onActionLecture(inMyLecture || value)}
-                      onViewDetail={this.onViewDetail}
-                    />
-                  );
-                })}
-              </Lecture.Group>
-            ) || (
-              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
-            )
-          }
-        </div>
-      </Segment>
+      <Wrapper>
+        {
+          list && list.length && (
+            <Lecture.Group type={Lecture.GroupType.Line}>
+              {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
+                let rating: number | undefined = 0;
+                if (value instanceof InMyLectureModel) {
+                  rating = ratingMap.get(value.reviewId);
+                }
+                const inMyLecture = inMyLectureMap.get(value.serviceId);
+                return (
+                  <Lecture
+                    key={`training-${index}`}
+                    model={value}
+                    rating={rating || undefined}
+                    // thumbnailImage="http://placehold.it/60x60"
+                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                    onAction={() => this.onActionLecture(inMyLecture || value)}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
+          ) || (
+            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+          )
+        }
+      </Wrapper>
     );
   }
 
   render() {
     //
-    const { type } = this.state;
-    return (
-      <div className="my-learning-area-tab">
-        <Segment className="full">
-          <div className="ui tab-menu">
-            <div className="cont-inner">
-              <div className="ui sku menu">
-                <a
-                  className={classNames('item', { active: type === 'Required' })}
-                  onClick={() => this.onSelectMenu('Required')}
-                >
-                  Required
-                  {/*<span className="count">+5</span>*/}
-                </a>
-                <a
-                  className={classNames('item', { active: type === 'InMyList' })}
-                  onClick={() => this.onSelectMenu('InMyList')}
-                >
-                  In My List
-                </a>
-                <a
-                  className={classNames('item', { active: type === 'InProgress' })}
-                  onClick={() => this.onSelectMenu('InProgress')}
-                >
-                  In Progress
-                </a>
-                <a
-                  className={classNames('item', { active: type === 'Enrolled' })}
-                  onClick={() => this.onSelectMenu('Enrolled')}
-                >
-                  Enrolled
-                  {/*<span className="count">+3</span>*/}
-                </a>
-              </div>
-            </div>
-          </div>
-        </Segment>
+    const { tabs } = this;
 
-        <hr className="dash" />
+    return (
+      <MyLearningTabContainer
+        tabs={tabs}
+        onClickTab={this.onSelectTab}
+      >
         {this.renderList()}
-      </div>
+      </MyLearningTabContainer>
     );
   }
 }

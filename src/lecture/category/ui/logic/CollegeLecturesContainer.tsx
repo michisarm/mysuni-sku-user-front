@@ -114,7 +114,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   findInMyLectures() {
     const { inMyLectureService } = this.props;
-    inMyLectureService!.findInMyLecturesAll();
+    inMyLectureService!.findAllInMyLectures();
   }
 
   async initialFindPagingCollegeLectures() {

@@ -109,7 +109,7 @@ class MyCommunityPage extends Component<Props, State> {
         pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, offsetList.totalCount, createdPage!.pageNo + 1);
       });
 
-    myTrainingService!.findAllMyCommunityTrainings(page!.limit, page!.nextOffset)
+    myTrainingService!.findAndAddAllMyCommunityTrainings(page!.limit, page!.nextOffset)
       .then((offsetList) => {
         pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCommunity}`, offsetList.totalCount, page!.pageNo + 1);
       });

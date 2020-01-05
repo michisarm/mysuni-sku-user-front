@@ -92,10 +92,10 @@ class MenuItemContainer extends Component<Props, States> {
     let offsetList: any = null;
 
     if (activeItem === Type.CompletedList) {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset);
     }
     else {
-      offsetList = await myTrainingService!.findAllMyTrainingsWithStamp(page!.limit, page!.nextOffset);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);

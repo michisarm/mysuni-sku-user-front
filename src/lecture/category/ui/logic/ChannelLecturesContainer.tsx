@@ -84,7 +84,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
     const { sorting } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    inMyLectureService!.findInMyLecturesAll();
+    inMyLectureService!.findAllInMyLectures();
 
     const lectureOffsetList = await lectureService!.findPagingChannelLectures(match.params.channelId, page!.limit, page!.nextOffset, sorting);
     const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);

@@ -38,56 +38,8 @@ class InMyLectureService {
   @computed
   get inMyLectureAll() {
     //
-    const inMyLectures = this._inMyLectureAll as any;
-    return inMyLectures.peek();
-  }
-
-  // In My Lectures ----------------------------------------------------------------------------------------------------------
-  addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
-    return this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
-  }
-
-  removeInMyLecture(inMyLectureId: string) {
-    return this.inMyLectureApi.removeInMyLecture(inMyLectureId);
-  }
-
-  @action
-  async findInMyLecture(serviceId: string, serviceType: string) {
-    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
-    runInAction(() => {
-      this.inMyLecture = new InMyLectureModel(inMyLecture);
-      return inMyLecture;
-    });
-  }
-
-  @action
-  async findAllInMyLectures(limit: number, offset: number) {
-    //
-    const response = await this.inMyLectureApi.findAllInMyLectures(InMyLectureRdoModel.new(limit, offset));
-    const lecturesOffsetElementList = new OffsetElementList<InMyLectureModel>(response);
-
-    lecturesOffsetElementList.results = lecturesOffsetElementList.results.map((lecture) => new InMyLectureModel(lecture));
-
-    return runInAction(() => {
-      this._inMyLectures = this._inMyLectures.concat(lecturesOffsetElementList.results);
-      return lecturesOffsetElementList;
-    });
-  }
-
-  @action
-  async findInMyLecturesAll() {
-    //
-    const inMyLectures = await this.inMyLectureApi.findInMyLecturesAll();
-
-    return runInAction(() => {
-      this._inMyLectureAll = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture));
-      return inMyLectures;
-    });
-  }
-
-  @action
-  clear() {
-    this._inMyLectures = [];
+    const inMyLecturesAll = this._inMyLectureAll as any;
+    return inMyLecturesAll.peek();
   }
 
   @computed
@@ -100,6 +52,54 @@ class InMyLectureService {
 
     return map;
   }
+
+  // In My Lectures ----------------------------------------------------------------------------------------------------
+
+  @action
+  clear() {
+    this._inMyLectures = [];
+  }
+
+  addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
+    return this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
+  }
+
+  removeInMyLecture(inMyLectureId: string) {
+    return this.inMyLectureApi.removeInMyLecture(inMyLectureId);
+  }
+
+  @action
+  async findInMyLectures(limit: number, offset: number) {
+    //
+    const response = await this.inMyLectureApi.findInMyLectures(InMyLectureRdoModel.new(limit, offset));
+    const lecturesOffsetElementList = new OffsetElementList<InMyLectureModel>(response);
+
+    lecturesOffsetElementList.results = lecturesOffsetElementList.results.map((lecture) => new InMyLectureModel(lecture));
+
+    runInAction(() => this._inMyLectures = this._inMyLectures.concat(lecturesOffsetElementList.results));
+    return lecturesOffsetElementList;
+  }
+
+  @action
+  async findAllInMyLectures() {
+    //
+    const inMyLectures = await this.inMyLectureApi.findAllInMyLectures();
+
+    runInAction(() => this._inMyLectureAll = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture)));
+    return inMyLectures;
+  }
+
+  // In My Lecture -----------------------------------------------------------------------------------------------------
+
+  @action
+  async findInMyLecture(serviceId: string, serviceType: string) {
+    //
+    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+
+    runInAction(() => this.inMyLecture = new InMyLectureModel(inMyLecture));
+    return inMyLecture;
+  }
+
 }
 
 InMyLectureService.instance = new InMyLectureService(InMyLectureApi.instance);
