@@ -31,13 +31,13 @@ class SelectView extends React.Component <Props> {
             </div>
             :
             <div className="right-wrap">
-              <Select
+              {/*<Select
                 placeholder="전체"
                 className="ui small-border dropdown"
                 defaultValue={fieldOption[0].value}
                 options={fieldOption}
                 onChange={(e: any) => onChangeCubeQueryProps(`${queryFieldName}`, e.target.value)}
-              />
+              />*/}
               <Button icon className="left post">
                 <Icon className="filter2" />Filter
               </Button>

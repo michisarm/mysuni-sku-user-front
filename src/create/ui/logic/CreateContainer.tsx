@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
@@ -106,6 +106,10 @@ class CreateContainer extends React.Component<Props, States> {
 
   routeToCreateDetail() {
     this.props.history.push('/personalcube/create-detail');
+  }
+
+  routeToMyPage() {
+    this.props.history.push('/mypage/CompletedList');
   }
 
   handleClickCubeRow(personalCubeId: string) {
@@ -320,6 +324,7 @@ class CreateContainer extends React.Component<Props, States> {
         <CreateProfileView
           routeToCreateDetail={this.routeToCreateDetail}
           member={member}
+          routeToMyPage={this.routeToMyPage}
         />
         <div>
           <Sticky className="tab-menu offset0">

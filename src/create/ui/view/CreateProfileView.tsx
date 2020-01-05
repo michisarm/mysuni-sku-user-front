@@ -8,6 +8,7 @@ import { EmployeeModel } from '../../../profile';
 interface Props {
   routeToCreateDetail:() => void
   member: EmployeeModel
+  routeToMyPage:() => void
 }
 
 interface States {
@@ -29,7 +30,7 @@ class CreateProfileView extends React.Component<Props, States> {
   }
 
   render() {
-    const { routeToCreateDetail, member } = this.props;
+    const { routeToCreateDetail, member, routeToMyPage } = this.props;
     const { CreateMovieDetailModalOpen } = this.state;
     return (
       <div className="main-info-area">
@@ -47,7 +48,7 @@ class CreateProfileView extends React.Component<Props, States> {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {member.name} <Button className="orange-arrow2">My page</Button>
+                  {member.name} <Button className="orange-arrow2" onClick={routeToMyPage}>My page</Button>
                 </div>
                 <div className="part">
                   <span>{member.company}</span><span>{member.department }</span>
