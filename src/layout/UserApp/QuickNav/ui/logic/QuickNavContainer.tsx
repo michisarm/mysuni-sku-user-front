@@ -203,8 +203,6 @@ class QuickNavContainer extends Component<Props, State> {
                 onConfirmCallback={() => {}}
               />
 
-              <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />
-              <BottomMenuItemView iconName="search" text="Instructor" onClick={this.onClickInstructor} />
               {
                 (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
                   <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
