@@ -74,9 +74,9 @@ class QuickNavContainer extends Component<Props, State> {
         this.setState( { feedType: feedEvent.feedType } );
       }
 
-      console.log('COOKIE: ' + cookieCitizenKey);
-      console.log('CITIZENID: ' + feedEvent.citizenId);
-      console.log('FEEDTYPE: ' + feedEvent.feedType);
+      // console.log('COOKIE: ' + cookieCitizenKey);
+      // console.log('CITIZENID: ' + feedEvent.citizenId);
+      // console.log('FEEDTYPE: ' + feedEvent.feedType);
       //this.setState({feed: true});
     };
 
