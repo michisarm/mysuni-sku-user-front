@@ -151,8 +151,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
                   <span className="text01">Selected</span>
                   <span className="count">
                     <span className="text01 add">{favoriteChannels.length}</span>
-                    <span className="text02"> / 80
-                    </span>
+                    <span className="text02" />
                   </span>
                   <div className="right">
                     <button className="clear" onClick={this.onReset}>
