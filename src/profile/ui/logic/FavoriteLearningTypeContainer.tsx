@@ -24,7 +24,6 @@ interface States{
   goalGroup : string []
   focus:boolean
   write:string
-  goalCheckedCount : number
 }
 
 const type : string [] = ['오프라인', '온라인', '상관없음'];
@@ -47,7 +46,6 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
       focus: false,
       write: '',
-      goalCheckedCount: 1,
     };
   }
 
@@ -70,20 +68,16 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     const value = targetProps.value;
     const state = { ...this.state };
 
+    if (targetProps.checked && targetProps.name === 'goalGroup' &&  state.goalGroup.length === 3) {
+      reactAlert({ title: '교육목적', message: '중복 3개까지 선택 가능합니다.', onClose: () => targetProps.checked = false });
+      return;
+    }
+
     if (targetProps.checked) {
       state[name].push(value);
-      state.goalCheckedCount++;
     } else {
       state[name] = state[name].filter(data =>  data !== value);
-      if ( state.goalCheckedCount > 0 ) {
-        state.goalCheckedCount--;
-      }
     }
-
-    if (targetProps.name === 'goalGroup' &&  state.goalCheckedCount > 2) {
-      reactAlert({ title: '교육목적', message: '중복 3개까지 선택 가능합니다.', onClose: () => targetProps.checked = false });
-    }
-
 
     this.setState(state);
   }
@@ -121,7 +115,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { typeGroup, timeGroup } = this.state;
+    const { typeGroup, timeGroup, goalGroup } = this.state;
 
     return (
       <ContentLayout breadcrumb={[
@@ -183,12 +177,13 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
                 <div className="check-area">
                   {
                     goal && goal.map((label, index) => (
-                      <Checkbox name="goalGroup"
+                      <Checkbox
+                        name="goalGroup"
                         label={label}
                         value={label}
                         className="base"
-                        defaultChecked={index === 0}
                         key={index}
+                        checked={goalGroup.includes(label)}
                         onChange={(event:any, props:any) => this.handleCheckBox(event, props)}
                       />
                     ))
