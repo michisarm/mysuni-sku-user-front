@@ -98,11 +98,11 @@ class QuickNavContainer extends Component<Props, State> {
     //
     let tenantId = '';
 
-    if(workSpaceList.cineroomWorkspaces !== null && workSpaceList.cineroomWorkspaces){
+    if (workSpaceList.cineroomWorkspaces !== null && workSpaceList.cineroomWorkspaces) {
       //
       tenantId = workSpaceList.cineroomWorkspaces[0].tenantId;
 
-    } else if(workSpaceList.pavilionWorkspaces !== null && workSpaceList.pavilionWorkspaces){
+    } else if (workSpaceList.pavilionWorkspaces !== null && workSpaceList.pavilionWorkspaces) {
       //
       tenantId = workSpaceList.pavilionWorkspaces[0].tenantId;
     }
