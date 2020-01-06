@@ -104,6 +104,7 @@ class SiteMapModalContainer extends Component<Props, State> {
   onClickHome() {
     //
     this.props.history.push('/');
+    this.onClose();
   }
 
   onOpen() {
