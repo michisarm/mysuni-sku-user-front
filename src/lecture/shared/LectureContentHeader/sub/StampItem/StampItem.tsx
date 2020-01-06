@@ -16,8 +16,6 @@ class StampItem extends Component<Props> {
     //
     const { value } = this.props;
 
-    if (!value) return null;
-
     return (
       <div className="ui stamp2 label">
         <div>
