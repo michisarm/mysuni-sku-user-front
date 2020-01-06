@@ -38,7 +38,7 @@ class QuickNavContainer extends Component<Props, State> {
     feedType: '',
   };
 
-  baseUrl = 'http://pigeon:8092/api/pigeon';
+  baseUrl = '/api/pigeon';
   // baseUrl = 'http://pigeon/api/pigeon';
 
   // transport = ['xdr-streaming',
