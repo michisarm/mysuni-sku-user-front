@@ -9,13 +9,12 @@ import ChannelCountRdo from '../../../model/ChannelCountRdo';
 
 
 interface Props {
-  open: boolean,
   colleges: CollegeModel[],
   activeCollege?: CollegeModel,
   channels?: ChannelModel[],
   collegeCount?: number,
   channelCounts?: ChannelCountRdo[],
-  onClick: (e: any) => void,
+  onClose: (e: any) => void,
   onActiveCollege: (e: any, college: CollegeModel) => void,
   onClickChannel: (e: any, channel?: ChannelModel) => void,
   onModalOpen: () => void,
@@ -32,12 +31,12 @@ class CategoryView extends Component<Props> {
   render() {
     //
     const {
-      open, colleges, activeCollege, channels, collegeCount, channelCounts,
-      onClick, onActiveCollege, onClickChannel, onModalOpen,
+      colleges, activeCollege, channels, collegeCount, channelCounts,
+      onClose, onActiveCollege, onClickChannel, onModalOpen,
     } = this.props;
 
     return (
-      <div className="layer" style={{ display: open ? 'block' : 'none' }}>
+      <div className="layer">
         <div className="table-css">
           <div className="row head">
             <div className="cell v-middle">College</div>
@@ -94,7 +93,7 @@ class CategoryView extends Component<Props> {
         >
           <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
         </Button>
-        <Button className="close" onClick={onClick}>
+        <Button className="close" onClick={onClose}>
           <i className="new16x17 icon"><span className="blind">close</span></i>
         </Button>
       </div>

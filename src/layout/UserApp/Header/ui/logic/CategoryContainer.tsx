@@ -120,13 +120,12 @@ class CategoryContainer extends Component<Props, State> {
             onClose={this.onClickCategory}
           >
             <CategoryView
-              open={categoryOpen}
               colleges={collegeService!.colleges}
               activeCollege={activeCollege}
               channels={collegeService!.channels}
               collegeCount={lectureCountService!.collegeLectureCount}
               channelCounts={lectureCountService!.channels}
-              onClick={this.onClickCategory}
+              onClose={this.onClickCategory}
               onActiveCollege={this.onActiveCollege}
               onClickChannel={this.onClickChannel}
               onModalOpen={this.onModalOpen}
