@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import moment from 'moment';
 import { LectureModel, LectureViewModel } from 'lecture/index';
 import { MyTrainingModel, InMyLectureModel } from 'mypage';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
@@ -150,7 +151,7 @@ class LectureContainer extends Component<Props, States> {
     let date = '';
     if (model instanceof MyTrainingModel) {
       state = model.state;
-      date = new Date(model.time).toLocaleDateString();
+      date = moment(model.time).format('YYYY.MM.DD');
     }
 
     return (
