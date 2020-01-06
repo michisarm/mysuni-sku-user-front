@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
+import moment from 'moment';
 
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { LectureModel } from 'lecture/index';
@@ -49,7 +50,7 @@ class ListCardView extends Component<Props> {
 
           <Title title={model.name} category={model.category}>
             <Fields>
-              <Field icon="date" text={`Completed date : ${new Date(model.time).toLocaleDateString()}`} />
+              <Field icon="date" text={`Completed date : ${moment(model.time).format('YYYY.MM.DD')}`} />
             </Fields>
           </Title>
 

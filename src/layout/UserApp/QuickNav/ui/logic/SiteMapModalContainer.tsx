@@ -68,8 +68,8 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Introduction',
       items: [
-        { name: 'SUNI 소개', path: '/' },
-        { name: 'College 소개', path: '/' },
+        { name: 'mySUNI 소개', path: '/introduction' },
+        { name: 'College 소개', path: '/introduction' },
       ],
     },
     {
@@ -104,6 +104,7 @@ class SiteMapModalContainer extends Component<Props, State> {
   onClickHome() {
     //
     this.props.history.push('/');
+    this.onClose();
   }
 
   onOpen() {
@@ -131,7 +132,7 @@ class SiteMapModalContainer extends Component<Props, State> {
     return (
       <Modal className="base w1000" trigger={trigger} open={open} onOpen={this.onOpen} onClose={this.onClose}>
         <Modal.Header>
-          SUNI Site Map
+          mySUNI Site Map
           <div className="right-btn">
             <Button icon className="btn-blue2" onClick={this.onClickHome}>
               <Icon className="homelink" />Home

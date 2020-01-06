@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
-import { HeaderWrapperView, ItemWrapper, LearningTimeView, HeaderItemView } from './MyLearningSummaryElementsView';
+import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSummaryElementsView';
 
 
 interface Props extends RouteComponentProps {
@@ -79,12 +79,19 @@ class MyLearningSummaryContainer extends Component<Props> {
         <ItemWrapper>
           <MyLearningSummaryModal
             trigger={(
-              <LearningTimeView
-                icon="time"
-                label="총 학습시간"
-                hour={hour}
-                minute={minute}
-              />
+              <Button className="btn-complex48">
+                <span className="i">
+                  <Icon className="time48" />
+                  <span className="blind">total time</span>
+                </span>
+                <span className="t">
+                  <span className="underline">총 학습시간</span>
+                  <span className="div">
+                    <span className="t1">{hour || '00'}</span><span className="t2">h</span>
+                    <span className="t1">{minute || '00'}</span><span className="t2">m</span>
+                  </span>
+                </span>
+              </Button>
             )}
           />
         </ItemWrapper>

@@ -37,7 +37,6 @@ class QnaTabContainer extends React.Component<Props> {
       routeToAnsweredDetail,
     } = this.props;
     const { posts } = this.props.postService || {} as PostService;
-    console.log('qna', posts);
     // const result = posts.results;
 
     return (

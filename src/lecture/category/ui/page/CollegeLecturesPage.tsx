@@ -49,6 +49,10 @@ class CollegeLecturesPage extends Component<Props> {
     // collegeService.setChannels(college.channels);
   }
 
+  onClickMySuni() {
+    this.props.history.push('/introduction');
+  }
+
 
   render() {
     //
@@ -64,6 +68,7 @@ class CollegeLecturesPage extends Component<Props> {
       >
         <CategoryLecturesHeaderView
           college={college}
+          onClickMySuni={this.onClickMySuni}
         />
         <CategoryLecturesContainer />
       </ContentLayout>

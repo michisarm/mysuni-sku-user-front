@@ -15,7 +15,7 @@ import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import LineHeaderView from '../view/LineHeaderView';
+import LineHeaderContainer from '../logic/LineHeaderContainer';
 import LectureModel from '../../../lecture/shared/model/LectureModel';
 
 
@@ -188,7 +188,7 @@ class MyCommunityPage extends Component<Props, State> {
     return (
       <Segment className="full">
         <div className="ui tab active">
-          <LineHeaderView count={page && page.totalCount || 0} />
+          <LineHeaderContainer count={page && page.totalCount || 0} />
           {
             list && list.length && (
               <Lecture.Group type={Lecture.GroupType.Community}>
@@ -260,7 +260,7 @@ class MyCommunityPage extends Component<Props, State> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/profile-56-px.png`}
+              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}

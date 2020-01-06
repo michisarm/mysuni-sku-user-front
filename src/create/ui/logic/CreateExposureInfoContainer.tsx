@@ -131,11 +131,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
           <Radio
             className="base"
             name="radioGroup"
-            label="SK University Icon Set"
+            label="mySUNI Icon Set"
             value={IconType.SKUniversity}
             checked={personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('iconBox.iconType', data.value)}
-
           />
           <Radio
             className="base"
@@ -150,7 +149,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             && (
             <div className="round-wrap">
               <div className="filter">
-                <Select placeholder="분류를 선택해주세요"
+                <Select placeholder="전체"
                   className="ui small-border dropdown"
                   options={collegeList}
                   onChange={(e: any, data: any) => onChangePersonalCubeProps('college', {
@@ -162,18 +161,18 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               <div className="h220">
                 <ul>
                   <li>
-                    <Radio
+                    {/* <Radio
                       className="v-icon"
                       label={
                         <label>
-                          {/*  <Image src="/images/all/thumb-card-60-px.jpg" />*/}
+                            <Image src="/images/all/thumb-card-60-px.jpg" />
                         </label>
                     }
                       name="icons"
                       value="value01"
                     //onChange={this.handleChange}
                       defaultChecked
-                    />
+                    />*/}
                   </li>
 
                 </ul>

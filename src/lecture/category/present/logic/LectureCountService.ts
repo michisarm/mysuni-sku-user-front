@@ -3,6 +3,7 @@ import { observable, action, computed, runInAction } from 'mobx';
 import _ from 'lodash';
 import { ChannelModel } from 'college';
 import { LectureApi } from '../../../shared';
+import ChannelCountRdo from '../../../../layout/UserApp/model/ChannelCountRdo';
 
 
 class LectureCountService {
@@ -13,6 +14,9 @@ class LectureCountService {
 
   @observable
   _channels: ChannelModel[] = [];
+
+  @observable
+  _channelLectureCounts: ChannelCountRdo[] = [];
 
 
   constructor(lectureApi: LectureApi = LectureApi.instance) {
@@ -31,6 +35,13 @@ class LectureCountService {
     return this._channels.every((channel) => channel.checked);
   }
 
+  @computed
+  get channelLectureCounts() {
+    //
+    const channelLectureCounts = this._channelLectureCounts as any;
+    return channelLectureCounts.peek();
+  }
+
   @action
   async findLectureCountByCollegeId(collegeId: string, channels: ChannelModel[]) {
     //
@@ -45,8 +56,13 @@ class LectureCountService {
         checked: true,
       }));
 
-    runInAction(() => this._channels = filteredChannels);
-    return channels;
+    runInAction(() => {
+      this._channels = filteredChannels;
+      this._channelLectureCounts = lectureCountList
+        .map((lectureCount) => new ChannelCountRdo(lectureCount));
+      return channels;
+    });
+
   }
 
   @action

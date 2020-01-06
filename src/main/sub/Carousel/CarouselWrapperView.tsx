@@ -7,6 +7,7 @@ import { Segment } from 'semantic-ui-react';
 interface Props {
   children: React.ReactNode,
   actions: React.ReactNode,
+  pages: React.ReactNode,
 }
 
 @reactAutobind
@@ -14,7 +15,7 @@ class CarouselWrapperView extends Component<Props> {
   //
   render() {
     //
-    const { actions, children } = this.props;
+    const { actions, children, pages } = this.props;
 
     return (
       <div className="top-swiper">
@@ -29,6 +30,7 @@ class CarouselWrapperView extends Component<Props> {
 
               {/* Add Arrows */}
               {actions}
+              {pages}
 
               {/* Add Pagination */}
               <div className="swiper-pagination" />

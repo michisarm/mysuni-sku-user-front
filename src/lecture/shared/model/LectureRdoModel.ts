@@ -61,6 +61,7 @@ class LectureRdoModel {
       college: '',
       channel: '',
       orderBy: OrderByType.Time,
+      creatorId: tenantInfo.getTenantId(),
       limit,
       offset,
     });

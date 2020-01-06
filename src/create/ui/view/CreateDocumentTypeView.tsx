@@ -43,7 +43,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
           </div>
           <div className="info-text">
             <Icon className="info16" /><span className="blind">infomation</span>
-            DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 000 Byte 용량의 파일을 등록하실 수 있습니다.
+            DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다.
           </div>
         </Form.Field>
 
@@ -61,7 +61,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
               <div className="bottom">
                 <span className="text1"><Icon className="info16" />
                   <span className="blind">information</span>
-                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 000 Byte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
+                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
                 </span>
               </div>
             </div>

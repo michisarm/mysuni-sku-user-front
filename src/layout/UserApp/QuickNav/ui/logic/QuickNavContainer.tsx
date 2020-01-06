@@ -1,18 +1,24 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, WorkSpace, getCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import SockJs from 'sockjs-client';
 
 //import { tenantInfo } from '@nara.platform/dock';
+import { FavoriteChannelChangeModal } from 'shared-component';
+import { SkProfileService } from 'profile';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
 } from '../view/QuickNavElementsView';
+import { ChannelModel } from '../../../../../college';
+
 import FeedEventRdo from '../model/FeedEventRdo';
 
 interface Props extends RouteComponentProps {
+  skProfileService?: SkProfileService
 }
 
 interface State {
@@ -20,8 +26,9 @@ interface State {
   feedType: string
 }
 
-
+@inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
+@observer
 class QuickNavContainer extends Component<Props, State> {
   //
   //userRoles = tenantInfo.getTenantRoles();
@@ -72,6 +79,7 @@ class QuickNavContainer extends Component<Props, State> {
     };
 
     window.addEventListener('click', this.deactive);
+    this.props.skProfileService!.findStudySummary();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -134,10 +142,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickIntroduction() {
     //
-  }
-
-  onClickSearch() {
-
+    this.routeNav('/introduction');
   }
 
   onClickAdminSite() {
@@ -149,16 +154,14 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
-  onClickInstructor() {
-    //
-    this.routeNav('/expert/instructor/:instructorId');
-  }
-
-
   render() {
     //
+    const { skProfileService } = this.props;
     const { active } = this.state;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+
     let roles: string[] = [];
+
     if (getCookie('workspaces')) {
       const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
       const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
@@ -167,6 +170,9 @@ class QuickNavContainer extends Component<Props, State> {
       }
     }
 
+    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
+      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    );
 
     return (
       <QuickNavWrapperView
@@ -186,7 +192,14 @@ class QuickNavContainer extends Component<Props, State> {
             <>
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
               <SiteMapModalContainer
-                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" />}
+                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickToggle} />}
+              />
+              <FavoriteChannelChangeModal
+                trigger={(
+                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClickToggle} />
+                )}
+                favorites={favoriteChannels}
+                onConfirmCallback={() => {}}
               />
 
               <BottomMenuItemView iconName="search" text="Search" onClick={this.onClickSearch} />

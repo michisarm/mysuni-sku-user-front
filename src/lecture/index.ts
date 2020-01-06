@@ -24,6 +24,7 @@ export const lectureCardStores = {
 export {
   LectureCardService,
   LectureService,
+  LectureCountService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,

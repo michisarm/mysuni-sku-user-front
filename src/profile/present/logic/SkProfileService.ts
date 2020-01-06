@@ -39,7 +39,7 @@ export default class SkProfileService {
     //
     const { favoriteChannels } = this.studySummary;
 
-    return favoriteChannels.idNames;
+    return favoriteChannels && favoriteChannels.idNames || [];
   }
 
   registerSkProfile(skProfile: SkProfileModel) {

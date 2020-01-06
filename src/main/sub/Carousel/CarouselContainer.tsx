@@ -8,9 +8,11 @@ import CarouselItemView from './CarouselItemView';
 
 
 const mock = [
-  { title: 'What is SUNI ? SUNI Learning Port', content: 'SUNI에서는 모든 사용자들이 특정 분야 최고의 전문가들을 육성해내기 위해 양질의 학습 콘텐츠는 물론 다양한 세미나를 개최하고 참가할 수 있도록 도와주는 차세대 Learning Portal Platform입니다.' },
+  { title: '구성원을 위한 자기주도학습\n플랫폼 ‘mySUNI’에 오신 여러분\n환영합니다.', content: '안녕하세요! “mySUNI”입니다. 친근하게 애칭처럼 “써니”라고 불러주세요! \n매 주 4시간만 저와 함께 하시면, 여러분에게 놀라운 변화가 생길겁니다.', imageName: 'main_banner_Rolling01.jpg' },
+  { title: '\'mySUNI\' 여러분과 함께\n성장하는 플랫폼입니다!', content: '여러분께서 소중한 의견을 주시면, 더 큰 도움이 됩니다!\n향후 컨텐츠는 순차적으로 업데이트 될 예정이며, \n집합교육은 2월 중순부터 신청이 가능합니다.\n또한, 모바일 학습은 2월 말 제공되니 기대하세요^^', imageName: 'main_banner_Rolling02.jpg' },
   // { title: 'Mock title', content: 'Mock content' },
 ];
+
 
 interface Props {
 }
@@ -42,6 +44,10 @@ class CarouselContainer extends Component<Props, State> {
     }));
   }
 
+  onClickPage(activeIndex: number) {
+    this.setState({ activeIndex });
+  }
+
   render() {
     //
     const { activeIndex } = this.state;
@@ -57,6 +63,22 @@ class CarouselContainer extends Component<Props, State> {
             <button className={`swiper-button-next ${isLast ? 'swiper-button-disabled' : ''}`} disabled={isLast} onClick={this.onClickNext} />
           </>
         }
+        pages={
+          (
+            <div className="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+              <button
+                className={`swiper-pagination-bullet ${activeIndex === 0 && 'swiper-pagination-bullet-active'}`}
+                aria-label="Go to slide 1"
+                onClick={() => this.onClickPage(0)}
+              />
+              <button
+                className={`swiper-pagination-bullet ${activeIndex === 1 && 'swiper-pagination-bullet-active'}`}
+                aria-label="Go to slide 2"
+                onClick={() => this.onClickPage(1)}
+              />
+            </div>
+          )
+        }
       >
         {items.map((item, index) => (
           index === activeIndex && (
@@ -64,6 +86,7 @@ class CarouselContainer extends Component<Props, State> {
               key={`carousel_item_${index}`}
               title={item.title}
               content={item.content}
+              image={item.imageName}
             />
           )
         ))}

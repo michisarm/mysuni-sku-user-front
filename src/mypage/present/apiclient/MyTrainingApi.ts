@@ -22,9 +22,7 @@ class MyTrainingApi {
 
   findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
-    const params = myTrainingRdo;
-
-    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState', { params })
+    return axiosApi.post<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState/filter', myTrainingRdo)
       .then(this.getOffsetElementList);
   }
 

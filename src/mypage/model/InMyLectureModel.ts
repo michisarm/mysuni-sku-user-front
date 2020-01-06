@@ -40,7 +40,6 @@ class InMyLectureModel extends DramaEntityObservableModel {
     if (inMyLecture) {
       Object.assign(this, { ...inMyLecture });
 
-      this.serviceType = InMyLectureModel.getServiceType(inMyLecture);
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model

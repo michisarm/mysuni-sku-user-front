@@ -32,9 +32,7 @@ class InMyLectureApi {
 
   findInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
     //
-    const params = inMyLectureRdo;
-
-    return axiosApi.get<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures', { params })
+    return axiosApi.post<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures/filter', inMyLectureRdo)
       .then(response => response && response.data);
   }
 

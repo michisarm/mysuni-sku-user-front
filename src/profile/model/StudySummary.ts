@@ -21,10 +21,14 @@ export class StudySummary implements DramaEntity {
 
   constructor(studySummary?: StudySummary) {
     if (studySummary) {
+      const favoriteChannels = studySummary.favoriteChannels && new IdNameList(studySummary.favoriteChannels) || this.favoriteChannels;
+      const favoriteColleges = studySummary.favoriteColleges && new IdNameList(studySummary.favoriteColleges) || this.favoriteColleges;
+      const favoriteLearningType = studySummary.favoriteLearningType
+        && new IdNameList(studySummary.favoriteLearningType) || this.favoriteLearningType;
       // const learningTime = studySummary.learningTime && new LearningTimeModel(studySummary.learningTime) || '';
       // const lectureSummary = studySummary.lectureSummary && new LectureSummary((studySummary.lectureSummary)) || '';
 
-      Object.assign(this, { ...studySummary });
+      Object.assign(this, { ...studySummary, favoriteChannels, favoriteColleges, favoriteLearningType });
     }
   }
 

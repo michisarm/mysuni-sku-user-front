@@ -36,9 +36,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsWithState(state: string, limit: number, offset: number) {
+  async findAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
     //
-    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset);
+    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = offsetList.results);
@@ -46,9 +46,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number) {
+  async findAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
     //
-    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset);
+    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
@@ -56,9 +56,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsWithRequired(limit: number, offset: number) {
+  async findAllMyTrainingsWithRequired(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset);
+    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = offsetList.results);
@@ -66,9 +66,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAndAddAllMyTrainingsWithRequired(limit: number, offset: number) {
+  async findAndAddAllMyTrainingsWithRequired(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset);
+    const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
@@ -86,9 +86,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAndAddAllMyTrainingsWithStamp(limit: number, offset: number) {
+  async findAndAddAllMyTrainingsWithStamp(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const rdo = MyTrainingRdoModel.new(limit, offset);
+    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));

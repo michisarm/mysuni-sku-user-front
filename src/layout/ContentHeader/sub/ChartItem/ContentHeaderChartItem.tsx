@@ -47,7 +47,7 @@ class ContentHeaderChartItem extends Component<Props> {
         </div>
         <div className="ui list">
           <dl className="item sk">
-            <dt>SK University</dt>
+            <dt>mySUNI</dt>
             <dd>{universityHourAndMinute.hour || '00'}h {universityHourAndMinute.minute || '00'}m</dd>
           </dl>
           <dl className="item my">

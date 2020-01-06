@@ -8,6 +8,7 @@ export class PersonalCubeRdoModel {
   searchFilter: string = '';
   name: string = '';
   creatorName: string = '';
+  creatorId?: string ='';
   limit: number = 0;
   offset: number = 0;
 }

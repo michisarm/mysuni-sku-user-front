@@ -9,6 +9,7 @@ class InMyLectureRdoModel {
   offset: number = 0;
   serviceId?: string;
   serviceType?: string;
+  channelIds?: string[];
   denizenKey?: {
     keyString: string,
     patronType: PatronType
@@ -21,7 +22,7 @@ class InMyLectureRdoModel {
     }
   }
 
-  static new(limit: number, offset: number) {
+  static new(limit: number, offset: number, channelIds: string[]) {
     //
     return new InMyLectureRdoModel({
       limit,
@@ -30,6 +31,7 @@ class InMyLectureRdoModel {
         keyString: tenantInfo.getTenantId(),
         patronType: PatronType.Audience,
       },
+      channelIds,
     });
   }
 
@@ -54,6 +56,7 @@ decorate(InMyLectureRdoModel, {
   denizenKey: observable,
   serviceId: observable,
   serviceType: observable,
+  channelIds: observable,
 });
 
 export default InMyLectureRdoModel;
