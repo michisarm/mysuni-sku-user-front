@@ -109,6 +109,7 @@ class MenuItemContainer extends Component<Props, States> {
     //
     const { model } = data;
     const { history } = this.props;
+    console.log(data, model);
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
       history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
