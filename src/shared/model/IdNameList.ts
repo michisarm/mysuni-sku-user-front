@@ -9,7 +9,8 @@ class IdNameList implements AccentIdNameList {
 
   constructor(idNameList?: IdNameList) {
     if (idNameList) {
-      Object.assign(this);
+      const idNames = idNameList.idNames && idNameList.idNames.map(idName => new IdName(idName)) || this.idNames;
+      Object.assign(this, { ...idNameList, idNames });
     }
   }
 }
