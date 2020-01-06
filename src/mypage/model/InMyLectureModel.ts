@@ -40,7 +40,6 @@ class InMyLectureModel extends DramaEntityObservableModel {
     if (inMyLecture) {
       Object.assign(this, { ...inMyLecture });
 
-      this.serviceType = InMyLectureModel.getServiceType(inMyLecture);
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
@@ -69,6 +68,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
+    console.log(serviceType);
     if (serviceType === LectureServiceType.Program) {
       return CubeTypeNameType.Program;
     }
