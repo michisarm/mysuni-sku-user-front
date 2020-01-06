@@ -43,7 +43,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     if (myTraining) {
       Object.assign(this, { ...myTraining });
 
-      this.serviceType = MyTrainingModel.getServiceType(myTraining);
+      // this.serviceType = MyTrainingModel.getServiceType(myTraining);
       this.category = new CategoryModel(myTraining.category);
 
       // UI Model
