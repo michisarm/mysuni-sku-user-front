@@ -80,8 +80,8 @@ class QuickNavContainer extends Component<Props, State> {
       //this.setState({feed: true});
     };
 
-    window.addEventListener('click', this.deactive);
     this.props.skProfileService!.findStudySummary();
+    window.addEventListener('click', this.deactive);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -89,9 +89,6 @@ class QuickNavContainer extends Component<Props, State> {
     if (prevProps.location.key !== this.props.location.key) {
       this.deactive();
     }
-    // if (prevState.active !== this.state.active && this.state.active) {
-    //   window.addEventListener('click', this.deactive);
-    // }
   }
 
   genCitizenKey(workSpaceList:WorkSpaceList) {

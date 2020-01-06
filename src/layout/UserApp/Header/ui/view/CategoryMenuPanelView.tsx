@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button, Icon } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college';
 import ChannelCountRdo from '../../../model/ChannelCountRdo';
 
@@ -14,15 +13,14 @@ interface Props {
   channels?: ChannelModel[],
   collegeCount?: number,
   channelCounts?: ChannelCountRdo[],
-  onClose: (e: any) => void,
+  actions: React.ReactNode,
   onActiveCollege: (e: any, college: CollegeModel) => void,
-  onClickChannel: (e: any, channel?: ChannelModel) => void,
-  onModalOpen: () => void,
+  onRouteChannel: (e: any, channel?: ChannelModel) => void,
 }
 
 @reactAutobind
 @observer
-class CategoryView extends Component<Props> {
+class CategoryMenuPanelView extends Component<Props> {
   //
   static defaultProps = {
     collegeCount: 0,
@@ -31,8 +29,8 @@ class CategoryView extends Component<Props> {
   render() {
     //
     const {
-      colleges, activeCollege, channels, collegeCount, channelCounts,
-      onClose, onActiveCollege, onClickChannel, onModalOpen,
+      colleges, activeCollege, channels, collegeCount, channelCounts, actions,
+      onActiveCollege, onRouteChannel,
     } = this.props;
 
     return (
@@ -63,14 +61,14 @@ class CategoryView extends Component<Props> {
                 <div className="scrolling">
                   { activeCollege && (
                     <>
-                      <button onClick={(e) => onClickChannel(e)}>
+                      <button onClick={(e) => onRouteChannel(e)}>
                         {activeCollege.name} 전체보기
                         <span>({collegeCount})</span>
                       </button>
 
                       { Array.isArray(channels) && (
                         channels.map((channel, index) => (
-                          <button key={`sub-category-${channel.id}`} onClick={(e) => onClickChannel(e, channel)}>
+                          <button key={`sub-category-${channel.id}`} onClick={(e) => onRouteChannel(e, channel)}>
                             {channel.name}
                             <span>
                               ({channelCounts && channelCounts.length > 0 && channelCounts[index] && channelCounts[index].lectureCount})
@@ -86,19 +84,10 @@ class CategoryView extends Component<Props> {
           </div>
         </div>
 
-        <Button
-          icon
-          className="img-icon change-channel-of-interest"
-          onClick={onModalOpen}
-        >
-          <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
-        </Button>
-        <Button className="close" onClick={onClose}>
-          <i className="new16x17 icon"><span className="blind">close</span></i>
-        </Button>
+        { actions }
       </div>
     );
   }
 }
 
-export default CategoryView;
+export default CategoryMenuPanelView;
