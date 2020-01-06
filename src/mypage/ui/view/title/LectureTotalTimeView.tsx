@@ -56,7 +56,7 @@ class LectureTotalTimeView extends Component<Props> {
           </div>
 
           <div className="chart-wrap">
-            <div className="ui pie w56" data-value={this.getChartValue}>
+            <div className="ui pie w56" data-value={this.getChartValue()}>
               <span className="left" />
               <span className="right" />
             </div>
