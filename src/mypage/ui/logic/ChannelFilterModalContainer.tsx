@@ -182,7 +182,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
               </div>
             </div>
             <div className="column">
-              <div className="f-tit">Selected <span className="counter"><span className="now">{channels.length}</span> / 80</span>
+              <div className="f-tit">Selected <span className="counter"><span className="now">{channels.length}</span></span>
               </div>
               <div className="f-list">
                 <div className="scrolling">
