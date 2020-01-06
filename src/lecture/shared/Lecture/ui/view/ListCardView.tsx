@@ -14,8 +14,6 @@ import {
 } from '../../../ui/view/LectureElementsView';
 
 
-
-
 interface Props {
   model: LectureModel | MyTrainingModel | InMyLectureModel,
   thumbnailImage?: string,
