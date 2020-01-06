@@ -110,7 +110,8 @@ class QuickNavContainer extends Component<Props, State> {
 
     if (getCookie('workspaces')) {
       const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
-      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
+      const cineroomId: string = getCookie('cineroomId');
+      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === cineroomId);
       if (filteredWorkspaces.length) {
         roles = filteredWorkspaces[0].roles;
       }
