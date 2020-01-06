@@ -21,8 +21,8 @@
   "dependencies": {
     "@nara.platform/accent": "^0.0.5",
     "@nara.drama/depot": "^0.0.12",
-    "@nara.drama/feedback": "^0.0.12",
-    "@sku/personalcube": "0.0.14",
+    "@nara.drama/feedback": "^0.0.13",
+    "@sku/personalcube": "0.0.15",
     "@types/react-datepicker": "^2.9.5",
     "autobind-decorator": "2.4.0",
     "axios": "^0.19.0",
