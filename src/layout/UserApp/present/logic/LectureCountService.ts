@@ -1,9 +1,10 @@
 
 import { observable, action, computed, runInAction } from 'mobx';
 import _ from 'lodash';
-import { ChannelModel } from 'college';
+import { CollegeModel, ChannelModel } from 'college';
 import LectureApi from '../apiclient/LectureApi';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
+import CollegeCountModel from '../../model/CollegeCountModel';
 
 
 class LectureCountService {
@@ -14,6 +15,9 @@ class LectureCountService {
 
   @observable
   _channels: ChannelCountRdo[] = [];
+
+  @observable
+  _collegeCountList: CollegeCountModel[] = [];
 
 
   constructor(lectureApi: LectureApi = LectureApi.instance) {
@@ -38,6 +42,14 @@ class LectureCountService {
     }
   }
 
+  @computed
+  get collegeCountList() {
+    //
+    const collegeCountList = this._collegeCountList as any;
+    return collegeCountList.peek();
+  }
+
+
   @action
   clear() {
     //
@@ -59,6 +71,38 @@ class LectureCountService {
   @action
   setChannelsProp(index: number, name: string, value: any) {
     this._channels[index] = _.set(this._channels[index], name, value);
+  }
+
+
+  @action
+  async findCollegesCount(colleges: CollegeModel[]) {
+    //
+    const promises = colleges.map((college) =>
+      this.lectureApi.findLectureCountByChannels(college.collegeId, college.channels)
+    );
+    const responseCollegeCountList = await Promise.all(promises);
+
+    const collegeCountList = responseCollegeCountList.map((channelCountList, index) => (
+      new CollegeCountModel({
+        collegeId: colleges[index].collegeId,
+        name: colleges[index].name,
+        lectureCount: channelCountList.reduce((prev, channelCount) => prev + channelCount.lectureCount, 0),
+        channelCountList,
+      })
+    ));
+
+    runInAction(() => this._collegeCountList = collegeCountList);
+    return collegeCountList;
+  }
+
+  getCollegeCount(collegeId: string) {
+    //
+    const collegeCount = this._collegeCountList.find((collegeCount) => collegeCount.collegeId === collegeId);
+
+    if (!collegeCount) {
+      return 0;
+    }
+    return collegeCount.lectureCount;
   }
 }
 

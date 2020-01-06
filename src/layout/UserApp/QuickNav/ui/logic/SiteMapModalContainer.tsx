@@ -1,42 +1,51 @@
 
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
+import { CollegeService } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'create/routePaths';
 import myPageRoutePaths from 'mypage/routePaths';
-import SiteMapView from '../view/SiteMapView';
+import LectureCountService from '../../../present/logic/LectureCountService';
+import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode,
+  collegeService?: CollegeService,
+  lectureCountService?: LectureCountService,
 }
 
 interface State {
   open: boolean,
+  topSiteMaps: SiteMap[]
+  bottomSiteMaps: SiteMap[]
 }
 
+@inject(mobxHelper.injectFrom('college.collegeService', 'layout.lectureCountService'))
 @reactAutobind
 @observer
 class SiteMapModalContainer extends Component<Props, State> {
   //
-  static defaultTopSiteMaps = [
-    {
-      name: 'Category',
-      items: [
-        { name: 'AI', path: lectureRoutePaths.collegeLectures('CLG00001') },
-        { name: 'DT', path: lectureRoutePaths.collegeLectures('CLG00002') },
-        { name: '행복', path: lectureRoutePaths.collegeLectures('CLG00003') },
-        { name: 'SV', path: lectureRoutePaths.collegeLectures('CLG00004') },
-        { name: '혁신디자인', path: lectureRoutePaths.collegeLectures('CLG00005') },
-        { name: 'Global', path: lectureRoutePaths.collegeLectures('CLG00006') },
-        { name: 'Leadership', path: lectureRoutePaths.collegeLectures('CLG00007') },
-        { name: 'Management', path: lectureRoutePaths.collegeLectures('CLG00008') },
-      ],
-    },
+  baseCategoryItems = {
+    name: 'Category',
+    countable: true,
+    items: [
+      { name: 'AI', path: lectureRoutePaths.collegeLectures('CLG00001') },
+      { name: 'DT', path: lectureRoutePaths.collegeLectures('CLG00002') },
+      { name: '행복', path: lectureRoutePaths.collegeLectures('CLG00003') },
+      { name: 'SV', path: lectureRoutePaths.collegeLectures('CLG00004') },
+      { name: '혁신디자인', path: lectureRoutePaths.collegeLectures('CLG00005') },
+      { name: 'Global', path: lectureRoutePaths.collegeLectures('CLG00006') },
+      { name: 'Leadership', path: lectureRoutePaths.collegeLectures('CLG00007') },
+      { name: 'Management', path: lectureRoutePaths.collegeLectures('CLG00008') },
+    ],
+  };
+
+  baseTopSiteMaps = [
     {
       name: 'Learning',
       items: [
@@ -64,7 +73,7 @@ class SiteMapModalContainer extends Component<Props, State> {
     },
   ];
 
-  static defaultBottomSiteMaps = [
+  baseBottomSiteMaps = [
     {
       name: 'Introduction',
       items: [
@@ -98,8 +107,44 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   state = {
     open: false,
+    topSiteMaps: [],
+    bottomSiteMaps: [],
   };
 
+
+  componentDidMount() {
+    //
+    this.setSiteMapWithCount();
+  }
+
+  async setSiteMapWithCount() {
+    //
+    const { collegeService, lectureCountService } = this.props;
+    const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
+
+    const colleges = await collegeService!.findAllColleges();
+    const targetColleges = colleges.filter((college) =>
+      baseCategoryItems.items.some((item) => college.name === item.name)
+    );
+
+    const collegeCountList = await lectureCountService!.findCollegesCount(targetColleges);
+
+    const categorySiteMap = {
+      ...baseCategoryItems,
+      items: baseCategoryItems.items.map((item) => ({
+        ...item,
+        count: collegeCountList.find((collegeCount) => collegeCount.name === item.name)!.lectureCount,
+      })),
+    };
+
+    const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];
+    const bottomSiteMaps = [ ...baseBottomSiteMaps ];
+
+    this.setState({
+      topSiteMaps,
+      bottomSiteMaps,
+    });
+  }
 
   onClickHome() {
     //
@@ -125,9 +170,8 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   render() {
     //
-    const { defaultTopSiteMaps, defaultBottomSiteMaps } = SiteMapModalContainer;
     const { trigger } = this.props;
-    const { open } = this.state;
+    const { open, topSiteMaps, bottomSiteMaps } = this.state;
 
     return (
       <Modal className="base w1000" trigger={trigger} open={open} onOpen={this.onOpen} onClose={this.onClose}>
@@ -141,8 +185,8 @@ class SiteMapModalContainer extends Component<Props, State> {
         </Modal.Header>
         <Modal.Content>
           <SiteMapView
-            topSiteMaps={defaultTopSiteMaps}
-            bottomSiteMaps={defaultBottomSiteMaps}
+            topSiteMaps={topSiteMaps}
+            bottomSiteMaps={bottomSiteMaps}
             onClickItem={this.onClickItem}
           />
         </Modal.Content>

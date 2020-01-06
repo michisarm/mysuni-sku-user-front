@@ -20,7 +20,10 @@ class LectureApi {
     const queryParams = `collegeId=${collegeId}&${channels.map((channel) => `channels=${channel.id}`).join('&')}`;
 
     return axiosApi.get<ChannelCountRdo[]>(this.baseUrl + `/count/byChannels?${queryParams}`)
-      .then(response => response && response.data || []);
+      .then(response =>
+        response && Array.isArray(response.data)
+          && response.data.map((channelCount) => new ChannelCountRdo(channelCount)) || []
+      );
   }
 
 }
