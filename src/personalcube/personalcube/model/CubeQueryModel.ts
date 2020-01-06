@@ -99,8 +99,7 @@ decorate(CubeQueryModel, {
   cubeType: observable,
   cubeState: observable,
   searchFilter: observable,
-
-  creatorId:observable,
+  creatorId: observable,
   learnerType: observable,
   serviceType: observable,
 });

@@ -49,8 +49,8 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       skProfileService.findSkProfile()
         .then(() => {
           this.setState({
-            isSelectedJobGroup: skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup ? true : false,
-            isSelectedDutyGroup: skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobDuty ? true : false,
+            isSelectedJobGroup: !!skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup,
+            isSelectedDutyGroup: !!skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobDuty,
           });
           if (skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup) {
             collegeService.findJobGroupById(skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup.id);
