@@ -19,11 +19,12 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "^0.0.5",
+    "@nara.platform/accent": "^0.0.6",
     "@nara.drama/depot": "^0.0.12",
     "@nara.drama/feedback": "^0.0.13",
     "@sku/personalcube": "0.0.15",
     "@types/react-datepicker": "^2.9.5",
+    "@types/sockjs-client": "^1.1.1",
     "autobind-decorator": "2.4.0",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
@@ -41,6 +42,7 @@
     "react-router-dom": "^5.0.1",
     "semantic-ui-less": "2.4.1",
     "semantic-ui-react": "^0.87.1",
+    "sockjs-client": "^1.4.0",
     "typescript": "3.7.3",
     "moment": "^2.24.0",
     "@babel/polyfill": "7.0.0",

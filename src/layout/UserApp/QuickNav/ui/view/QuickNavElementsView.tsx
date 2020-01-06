@@ -37,6 +37,7 @@ interface TopMenuItemViewProps {
   iconName: string,
   text: string,
   onClick: () => void,
+  feedType: string
 }
 
 export class TopMenuItemView extends Component<TopMenuItemViewProps> {
@@ -44,13 +45,15 @@ export class TopMenuItemView extends Component<TopMenuItemViewProps> {
   render() {
     //
     const {
-      iconName, text, onClick,
+      iconName, text, onClick, feedType,
     } = this.props;
 
     return (
       <Button icon onClick={onClick}>
         <Icon className={iconName} />
-        <Icon className="new16" />
+        {
+          (feedType === text) && <Icon className="new16" />
+        }
         <span className="blind">new</span>{text}
       </Button>
     );
