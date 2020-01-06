@@ -68,7 +68,6 @@ class InMyLectureModel extends DramaEntityObservableModel {
 
   static getCubeTypeName(cubeType: CubeType, serviceType: LectureServiceType) {
     //
-    console.log(serviceType);
     if (serviceType === LectureServiceType.Program) {
       return CubeTypeNameType.Program;
     }
