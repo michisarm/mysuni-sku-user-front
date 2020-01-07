@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
-// import numeral from 'numeral';
+import numeral from 'numeral';
 import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
@@ -89,7 +89,7 @@ class BoxCardView extends Component<Props, States> {
       onHoverIn, onHoverOut, onAction, onViewDetail,
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(model!.learningTime);
-    const  hourAndMinute = `${hour > 0 ? `${hour}h ` : '00h'}${minute > 0 ? `${minute}m` : '00m'}`;
+    const  hourAndMinute = `${hour > 0 ? `${hour}h ` : '00h '}${minute > 0 ? `${minute}m` : '00m'}`;
 
     return (
       <Card
@@ -126,7 +126,10 @@ class BoxCardView extends Component<Props, States> {
 
             </div>
             {/* Todo: 이수 */}
-            {/*<Field icon="complete" text={`이수 ${numeral(lecture!.countOfComplete).format('0,0')}명`} />*/}
+            { model instanceof LectureModel && (
+              <Field icon="complete" text={`이수 ${numeral(model.studentCount).format('0,0')}명`} />
+            )}
+
             {/*<Field icon="complete" text="이수 (?)명" />*/}
           </Fields>
 

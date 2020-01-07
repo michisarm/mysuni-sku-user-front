@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Context } from '../../../index';
-import CategoryContainer from './CategoryContainer';
+import CategoryMenuContainer from './CategoryMenuContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
   LogoView, MenuView, SearchBarView,
@@ -90,7 +90,7 @@ class HeaderContainer extends Component<Props, State> {
         <>
           <LogoView />
           <MenuView />
-          <CategoryContainer />
+          <CategoryMenuContainer />
 
           <SearchBarView
             value={searchValue}

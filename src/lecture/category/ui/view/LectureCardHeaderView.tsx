@@ -39,7 +39,9 @@ class LectureCardHeaderView extends Component<Props> {
           learningPeriod={typeViewObject.learningPeriod}
         />
         <LectureContentHeader.RightCell>
-          <LectureContentHeader.StampItem value={viewObject.stamp} />
+          { viewObject.cubeType === 'Course' && (
+            <LectureContentHeader.StampItem value={viewObject.stamp} />
+          )}
           {
             viewObject.cubeType !== CubeType.Community && (
               <LectureContentHeader.StarRatingItem

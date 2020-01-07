@@ -31,7 +31,7 @@
    * uploadResult : 업로드 완료 후 받는 결과 값
    */
   var folderId = "";
-  var externalId = "truefree@sk.com";
+  var externalId = window.opener.sessionStorage.email; // 사용자 email
   var uploadUrl = "https://panopto.mysuni.sk.com/pt/s3_upload_once";
   // var cookie = getCookie(".ASPXAUTH");
   var cookie = "";

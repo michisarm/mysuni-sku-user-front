@@ -192,7 +192,7 @@ export const CategoryExample = () =>
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
           <Button className="personal line">
-            <span>SK University 전체 커리큘럼 보기</span>
+            <span>mySUNI 전체 커리큘럼 보기</span>
           </Button>
         </ContentHeader.Cell>
       </ContentHeader>

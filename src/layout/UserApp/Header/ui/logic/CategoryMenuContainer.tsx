@@ -4,13 +4,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { Button, Popup } from 'semantic-ui-react';
+import { Button, Icon, Popup } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { CollegeService, CollegeModel, ChannelModel } from 'college';
-import { SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
 import LectureCountService from '../../../present/logic/LectureCountService';
-import CategoryView from '../view/CategoryView';
+import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
 
 interface Props extends RouteComponentProps {
@@ -27,7 +27,7 @@ interface State {
 @inject(mobxHelper.injectFrom('shared.collegeService', 'layout.lectureCountService', 'profile.skProfileService'))
 @reactAutobind
 @observer
-class CategoryContainer extends Component<Props, State> {
+class CategoryMenuContainer extends Component<Props, State> {
   //
   modal: any = React.createRef();
 
@@ -54,11 +54,14 @@ class CategoryContainer extends Component<Props, State> {
     skProfileService!.findStudySummary();
   }
 
-  onClickCategory() {
+  onOpen() {
     //
-    this.setState((state) => ({
-      categoryOpen: !state.categoryOpen,
-    }));
+    this.setState({ categoryOpen: true });
+  }
+
+  onClose() {
+    //
+    this.setState({ categoryOpen: false });
   }
 
   onActiveCollege(e: any, college: CollegeModel) {
@@ -91,9 +94,27 @@ class CategoryContainer extends Component<Props, State> {
     });
   }
 
-  onModalOpen() {
+  onOpenFavorite() {
     this.modal.onOpenModal();
-    this.onClickCategory();
+    this.onClose();
+  }
+
+  renderMenuActions() {
+    //
+    return (
+      <>
+        <Button
+          icon
+          className="img-icon change-channel-of-interest"
+          onClick={this.onOpenFavorite}
+        >
+          <span className="underline">관심 Channel 변경 <Icon className="setting17" /></span>
+        </Button>
+        <Button className="close" onClick={this.onClose}>
+          <i className="new16x17 icon"><span className="blind">close</span></i>
+        </Button>
+      </>
+    );
   }
 
   render() {
@@ -101,38 +122,34 @@ class CategoryContainer extends Component<Props, State> {
     const { collegeService, skProfileService, lectureCountService } = this.props;
     const { categoryOpen, activeCollege } = this.state;
 
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <>
         <div className="g-menu-detail">
           <Popup
-            trigger={<Button className="ui detail-open">Category</Button>}
+            trigger={<Button className="detail-open">Category</Button>}
             on="click"
             className="g-menu-detail"
             basic
             open={categoryOpen}
-            onOpen={this.onClickCategory}
-            onClose={this.onClickCategory}
+            onOpen={this.onOpen}
+            onClose={this.onClose}
           >
-            <CategoryView
-              open={categoryOpen}
+            <CategoryMenuPanelView
               colleges={collegeService!.colleges}
               activeCollege={activeCollege}
               channels={collegeService!.channels}
               collegeCount={lectureCountService!.collegeLectureCount}
               channelCounts={lectureCountService!.channels}
-              onClick={this.onClickCategory}
+              actions={this.renderMenuActions()}
               onActiveCollege={this.onActiveCollege}
-              onClickChannel={this.onClickChannel}
-              onModalOpen={this.onModalOpen}
+              onRouteChannel={this.onClickChannel}
             />
           </Popup>
         </div>
+
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={channels}
@@ -143,4 +160,4 @@ class CategoryContainer extends Component<Props, State> {
   }
 }
 
-export default withRouter(CategoryContainer);
+export default withRouter(CategoryMenuContainer);

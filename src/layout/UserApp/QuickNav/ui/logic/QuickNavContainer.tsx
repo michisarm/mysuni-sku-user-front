@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import SockJs from 'sockjs-client';
@@ -38,7 +38,7 @@ class QuickNavContainer extends Component<Props, State> {
     feedType: '',
   };
 
-  baseUrl = 'http://pigeon:8092/api/pigeon';
+  baseUrl = '/api/pigeon';
   // baseUrl = 'http://pigeon/api/pigeon';
 
   // transport = ['xdr-streaming',
@@ -66,20 +66,22 @@ class QuickNavContainer extends Component<Props, State> {
       //
       const feedEvent:FeedEventRdo = JSON.parse(event.data);
 
-      const cookieCitizenKey:string = this.genCitizenKey(getCookie('audienceId'));
+      const workSpaceList:WorkSpaceList = JSON.parse(getCookie('workspaces'));
+
+      const cookieCitizenKey = this.genCitizenKey(workSpaceList);
 
       if (cookieCitizenKey === feedEvent.citizenId) {
         this.setState( { feedType: feedEvent.feedType } );
       }
 
-      console.log('COOKIE: ' + cookieCitizenKey);
-      console.log('CITIZENID: ' + feedEvent.citizenId);
-      console.log('FEEDTYPE: ' + feedEvent.feedType);
+      // console.log('COOKIE: ' + cookieCitizenKey);
+      // console.log('CITIZENID: ' + feedEvent.citizenId);
+      // console.log('FEEDTYPE: ' + feedEvent.feedType);
       //this.setState({feed: true});
     };
 
-    window.addEventListener('click', this.deactive);
     this.props.skProfileService!.findStudySummary();
+    window.addEventListener('click', this.deactive);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -87,13 +89,21 @@ class QuickNavContainer extends Component<Props, State> {
     if (prevProps.location.key !== this.props.location.key) {
       this.deactive();
     }
-    // if (prevState.active !== this.state.active && this.state.active) {
-    //   window.addEventListener('click', this.deactive);
-    // }
   }
 
-  genCitizenKey(tenantId:string) {
+  genCitizenKey(workSpaceList:WorkSpaceList) {
     //
+    let tenantId = '';
+
+    if (workSpaceList.cineroomWorkspaces !== null && workSpaceList.cineroomWorkspaces) {
+      //
+      tenantId = workSpaceList.cineroomWorkspaces[0].tenantId;
+
+    } else if (workSpaceList.pavilionWorkspaces !== null && workSpaceList.pavilionWorkspaces) {
+      //
+      tenantId = workSpaceList.pavilionWorkspaces[0].tenantId;
+    }
+
     const splitWholeId:string[] = tenantId.split('@');
     const pavilions:string[] = splitWholeId[0].split('-');
     const cinerooms:string[] = splitWholeId[1].split('-');

@@ -1,7 +1,7 @@
 {
   "name": "@sku/user-channel",
   "version": "0.0.1",
-  "description": "SK University user channel front",
+  "description": "mySUNI user channel front",
   "author": "Nextree",
   "main": "./lib/snap.js",
   "files": [
