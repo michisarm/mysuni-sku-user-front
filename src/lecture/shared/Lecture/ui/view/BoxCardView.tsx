@@ -111,17 +111,27 @@ class BoxCardView extends Component<Props, States> {
             { model.cubeTypeName && (
               <Field icon={CubeIconType[model.cubeType] || CubeIconType[model.serviceType]} text={model.cubeTypeName} bold />
             )}
-            <div className="li">
-              <SubField
-                icon="time2"
-                bold
-                text={hourMinuteFormat}
-              />
-              { (model.cubeTypeName === CubeTypeNameType.Program) && (
-                <SubField className="card-stamp" bold icon="stamp" text={`Stamp x${model.stampCount}`} />
-              )}
 
-            </div>
+            {
+              (model!.learningTime || (model.cubeTypeName === CubeTypeNameType.Program && model.stampCount)) && (
+                <div className="li">
+                  {
+                    model!.learningTime && (
+                      <SubField
+                        icon="time2"
+                        bold
+                        text={hourMinuteFormat}
+                      />
+                    ) || null
+                  }
+                  {
+                    (model.cubeTypeName === CubeTypeNameType.Program && model.stampCount) && (
+                      <SubField className={model!.learningTime && 'card-stamp' || ''} bold icon="stamp" text={`Stamp x${model.stampCount}`} />
+                    ) || null
+                  }
+                </div>
+              ) || null
+            }
             <Field icon="complete" text={`이수 ${numeral(model.studentCount).format('0,0')}명`} />
           </Fields>
 

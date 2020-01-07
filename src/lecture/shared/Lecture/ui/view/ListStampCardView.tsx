@@ -69,7 +69,12 @@ class ListCardView extends Component<Props> {
             <div className="location">
               { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
-            <div className="stamp">Stamp<strong>x{model.stampCount}</strong></div>
+            {
+              model.stampCount && (
+                <div className="stamp">Stamp<strong>x{model.stampCount}</strong></div>
+              ) || null
+            }
+
           </div>
         </div>
       </Card>

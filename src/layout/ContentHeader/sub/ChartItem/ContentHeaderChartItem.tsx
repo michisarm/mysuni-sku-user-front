@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 
 interface Props {
   universityTime: number;
@@ -34,11 +34,11 @@ class ContentHeaderChartItem extends Component<Props> {
         <div className="ui list">
           <dl className="item sk">
             <dt>mySUNI</dt>
-            <dd>{timeToHourMinuteFormat(universityTime)}</dd>
+            <dd>{timeToHourMinutePaddingFormat(universityTime)}</dd>
           </dl>
           <dl className="item my">
             <dt>My company</dt>
-            <dd>{timeToHourMinuteFormat(myCompanyTime)}</dd>
+            <dd>{timeToHourMinutePaddingFormat(myCompanyTime)}</dd>
           </dl>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { timeToHourMinute, timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinute, timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryModal from '../../../ui/logic/MyLearningSummaryModal';
 
 interface Props {
@@ -90,11 +90,11 @@ class LectureTotalTimeView extends Component<Props> {
             <div className="ui list">
               <dl className="item sk">
                 <dt>mySUNI</dt>
-                <dd>{timeToHourMinuteFormat(suniLearningTime)}</dd>
+                <dd>{timeToHourMinutePaddingFormat(suniLearningTime)}</dd>
               </dl>
               <dl className="item my">
                 <dt>My company</dt>
-                <dd>{timeToHourMinuteFormat(myCompanyLearningTime)}</dd>
+                <dd>{timeToHourMinutePaddingFormat(myCompanyLearningTime)}</dd>
               </dl>
             </div>
           </div>

@@ -103,12 +103,16 @@ export const ClassView = ({ clazz }: ClassProp) => {
   const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(clazz.learningTime);
   return (
     <List className="class-info1">
-      <List.Item>
-        <div className="ui">
-          <div className="label">Time</div>
-          <div className="value">{hourMinuteFormat}</div>
-        </div>
-      </List.Item>
+      {
+        clazz.learningTime && (
+          <List.Item>
+            <div className="ui">
+              <div className="label">Time</div>
+              <div className="value">{hourMinuteFormat}</div>
+            </div>
+          </List.Item>
+        ) || null
+      }
       {
         clazz.capacity && (
           <List.Item>

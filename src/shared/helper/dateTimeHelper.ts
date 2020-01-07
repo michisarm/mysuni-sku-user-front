@@ -27,6 +27,25 @@ export function timeToHourMinuteFormat(time: number) {
   }
 }
 
+export function timeToHourMinutePaddingFormat(time: number) {
+  //
+  const hour = Math.floor(time / 60) || 0;
+  const minute = time % 60 || 0;
+
+  if (hour < 1 && minute < 1) {
+    return '0h 0m';
+  }
+  else if (hour < 1) {
+    return `0h ${minute}m`;
+  }
+  else if (minute < 1) {
+    return `${hour}h 0m`;
+  }
+  else {
+    return `${hour}h ${minute}m`;
+  }
+}
+
 export default {
   timeToHourMinute,
   timeToHourMinuteFormat,
