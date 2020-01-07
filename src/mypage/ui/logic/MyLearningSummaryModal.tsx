@@ -95,7 +95,7 @@ class MyLearningSummaryModal extends Component<Props> {
                 <div className="row head">
                   <div className="cell v-middle">
                     <Icon className="total-time16" /><span className="blind">total time</span>
-                    <span className="text01">{myLearningSummary.year}.01.01 ~ {today}</span>
+                    <span className="text01">{myLearningSummary.year || new Date().getFullYear()}.01.01 ~ {today}</span>
                     <span className="text02">총 학습시간</span>
                   </div>
                   <div className="cell v-middle"><span className="text01">College 별 학습 시간</span>
