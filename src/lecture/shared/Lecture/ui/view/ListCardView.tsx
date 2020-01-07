@@ -33,6 +33,40 @@ class ListCardView extends Component<Props> {
     onViewDetail: () => {},
   };
 
+  getHourMinuteFormat(hour: number, minute: number) {
+    //
+    if (hour < 1 && minute < 1) {
+      return (
+        <>
+          <strong>00</strong><span>h</span>
+          <strong className="ml9">00</strong><span>m</span>
+        </>
+      );
+    }
+    else if (hour < 1) {
+      return (
+        <>
+          <strong className="ml9">{minute}</strong><span>m</span>
+        </>
+      );
+    }
+    else if (minute < 1) {
+      return (
+        <>
+          <strong>{hour}</strong><span>h</span>
+        </>
+      );
+    }
+    else {
+      return (
+        <>
+          <strong>{hour}</strong><span>h</span>
+          <strong className="ml9">{minute}</strong><span>m</span>
+        </>
+      );
+    }
+  }
+
   render() {
     //
     const {
@@ -69,16 +103,7 @@ class ListCardView extends Component<Props> {
           <div className="time-area">
             <div className="time">
               <strong>&nbsp;</strong>
-              { hour > 0 && (
-                <>
-                  <strong>{hour}</strong><span>h</span>
-                </>
-              )}
-              { (hour > 0 || minute > 0) && (
-                <>
-                  <strong className="ml9">{minute}</strong><span>m</span>
-                </>
-              )}
+              {this.getHourMinuteFormat(hour, minute)}
             </div>
             <div className="location">
               { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}

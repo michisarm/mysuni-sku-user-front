@@ -100,13 +100,13 @@ interface ClassProp {
 
 export const ClassView = ({ clazz }: ClassProp) => {
   if (!clazz) return null;
-  const { hour, minute } = dateTimeHelper.timeToHourMinute(clazz.learningTime);
+  const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(clazz.learningTime);
   return (
     <List className="class-info1">
       <List.Item>
         <div className="ui">
           <div className="label">Time</div>
-          <div className="value">{hour ? `${hour}h ` : ''}{minute}m</div>
+          <div className="value">{hourMinuteFormat}</div>
         </div>
       </List.Item>
       {
