@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
@@ -107,20 +107,20 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
               <span className="max">100</span>
             </span>
             <input type="text"
-                   placeholder="제목을 입력해주세요."
-                   value={personalCube && personalCube.name || ''}
-                   onClick={() => this.setState({ focus: true })}
-                   onBlur={() => this.setState({ focus: false })}
-                   onChange={(e: any) => {
-                     this.setState({ write: e.target.value });
-                     onChangePersonalCubeProps('name', e.target.value);
-                   } }
+              placeholder="제목을 입력해주세요."
+              value={personalCube && personalCube.name || ''}
+              onClick={() => this.setState({ focus: true })}
+              onBlur={() => this.setState({ focus: false })}
+              onChange={(e: any) => {
+                this.setState({ write: e.target.value });
+                onChangePersonalCubeProps('name', e.target.value);
+              } }
             />
             <Icon className="clear link"
-                  onClick={(e:any) => {
-                    this.setState({ write: '' });
-                    onChangePersonalCubeProps('name', e.target.value);
-                  }}
+              onClick={(e:any) => {
+                this.setState({ write: '' });
+                onChangePersonalCubeProps('name', e.target.value);
+              }}
             />
             <span className="validation">You can enter up to 100 characters.</span>
           </div>
