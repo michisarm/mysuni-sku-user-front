@@ -214,6 +214,7 @@ class MyCommunityPage extends Component<Props, State> {
                               <PostList
                                 type={PostList.ListType.Simple}
                                 boardId={boardId}
+                                linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${value.category.college.id}/cube/${value.cubeId}/lecture-card/${value.serviceId}/posts`}
                               />
                             </Accordion.Content>
                           )
