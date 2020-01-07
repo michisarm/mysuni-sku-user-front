@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import {ContentLayout, DatePeriod} from 'shared';
+import { ContentLayout, DatePeriod } from 'shared';
 import { CategoryService, PostService } from '../../../board';
 
 

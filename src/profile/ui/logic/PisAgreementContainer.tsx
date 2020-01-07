@@ -176,7 +176,7 @@ class PisAgreementContainer extends Component<Props> {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>SK 그룹 계열회사 (자세한 내역은 <a href="http://sk.co.kr" target="_blank" >http://sk.co.kr</a> 에서 확인 가능)</td>
+                        <td>SK 그룹 계열회사 (자세한 내역은 <a href="http://sk.co.kr" target="_blank">http://sk.co.kr</a> 에서 확인 가능)</td>
                         <td>구성원의 교육 신청, 이수 현황 등 사용 이력</td>
                         <td>교육 이수 현황 등</td>
                         <td>해당 구성원 퇴직시까지</td>
@@ -332,7 +332,7 @@ class PisAgreementContainer extends Component<Props> {
                   구성원께서 그 계약의 해지 의사를 명확하게 밝히지 아니한 경우
                 </div>
                 <div className="text3">※ 로그인이 불가능하신 고객께서는 ‘개인정보 처리 요구서 다운로드 하기’를 이용하여 신청서를 작성하신 후 개인정보 담당자에게
-                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com" >kite.lee@sk.com</a>) <br /><a href="#none">개인정보처리 요구서 다운로드 하기</a>
+                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="#none">개인정보처리 요구서 다운로드 하기</a>
                 </div>
 
                 <div className="text2">6. 개인정보의 파기</div>
@@ -425,12 +425,12 @@ class PisAgreementContainer extends Component<Props> {
                 <div className="text5">성명 : 이규석</div>
                 <div className="text5">소속 : IT전략지원실</div>
                 <div className="text5">직책 : 실장</div>
-                <div className="text5">연락처 : 02-6323-9002 / <a href="mailto:kite.lee@sk.com" >kite.lee@sk.com</a></div>
+                <div className="text5">연락처 : 02-6323-9002 / <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a></div>
                 <div className="text3">▶ 개인정보 보호담당자</div>
                 <div className="text5">성명 : 이의연</div>
                 <div className="text5">소속 : LMS실</div>
                 <div className="text5">직책 : 매니저</div>
-                <div className="text5">연락처 : 010-9246-1785 / <a href="mailto:kite.lee@sk.com" >kite.lee@sk.com</a></div>
+                <div className="text5">연락처 : 010-9246-1785 / <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a></div>
                 <div className="text2">9.인터넷 접속정보파일의 수집 등 등 개인정보를 자동으로 수집하는 장치의 설치·운영 및 그 거부에 관한 사항</div>
                 <div className="text3">① 회사는 이용자에게 특화된 맞춤서비스를 제공하기 위해서 이용자들의 정보를 수시로 저장하고 찾아내는 &quot;쿠키(cookie)&quot;,
                   ”로그기록” 등을 수집하고 활용합니다.
@@ -449,7 +449,7 @@ class PisAgreementContainer extends Component<Props> {
                 <div className="text3">② 또한 개인정보 침해에 대한 신고, 상담이 필요하신 경우에는 한국인터넷진흥원(KISA) 개인정보 침해신고센터로 문의하시기
                   바랍니다. SK 구성원이 개인정보침해를 통한 금전적, 정신적 피해를 입으신 경우에는 개인정보분쟁조정위원회에 피해구제를 신청하실 수 있습니다.
                 </div>
-                <div className="text3">▶ 개인정보 침해신고센터 : (국번없이)118, <a href="mailto:privacy.kisa.or.kr" >privacy.kisa.or.kr</a></div>
+                <div className="text3">▶ 개인정보 침해신고센터 : (국번없이)118, <a href="mailto:privacy.kisa.or.kr">privacy.kisa.or.kr</a></div>
                 <div className="text3">▶ 개인정보 분쟁조정위원회 : 1833-6972, <a href="mailto:kopico.go.kr">kopico.go.kr</a></div>
                 <div className="text3">▶ 대검찰청 사이버수사과 : (국번없이)1301, <a href="mailto:cid@spo.go.kr">cid@spo.go.kr</a> , <a href="http://www.spo.go.kr" target="_blank">spo.go.kr</a></div>
                 <div className="text3">▶ 경찰청 사이버안전국 : (국번없이)182, <a href="mailto:cyberbureau.police.go.kr">cyberbureau.police.go.kr</a></div>

@@ -138,7 +138,7 @@ class CoursePage extends Component<Props, State> {
 
   async findSubLectureViews(lectureViews: LectureViewModel[]) {
     //
-    const { match, lectureService } = this.props;
+    const { lectureService } = this.props;
 
     lectureViews.map(async (lectureView) => {
       if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course

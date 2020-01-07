@@ -77,7 +77,7 @@ export class DatePeriod implements AccentDatePeriod {
     const HH = date.getHours().toString();
     const MM = date.getMinutes().toString();
     const SS = date.getSeconds().toString();
-    return yyyy + '.' + (mm[1] ? mm : '0' + mm[0]) + '.' + (dd[1] ? dd : '0' + dd[0]) + '  ' + HH + ':'+ MM + ':' + SS;
+    return yyyy + '.' + (mm[1] ? mm : '0' + mm[0]) + '.' + (dd[1] ? dd : '0' + dd[0]) + '  ' + HH + ':' + MM + ':' + SS;
   }
 }
 
