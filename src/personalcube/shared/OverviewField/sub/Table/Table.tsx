@@ -57,8 +57,8 @@ class Table extends Component<Props> {
                 <SemanticTable.Cell className="num">{classroom.round}</SemanticTable.Cell>
                 <SemanticTable.Cell className="teacher"><span>{classroom.instructor.name}</span></SemanticTable.Cell>
                 <SemanticTable.Cell className="location"><span>{classroom.operation.location}</span></SemanticTable.Cell>
-                <SemanticTable.Cell className="center">{classroom.enrolling.applyingPeriod.startDateSub.toLocaleDateString()} ~ {classroom.enrolling.applyingPeriod.endDateSub.toLocaleDateString()}</SemanticTable.Cell>
-                <SemanticTable.Cell className="center">{classroom.enrolling.learningPeriod.startDateSub.toLocaleDateString()} ~ {classroom.enrolling.learningPeriod.endDateSub.toLocaleDateString()}</SemanticTable.Cell>
+                <SemanticTable.Cell className="center">{classroom.enrolling.applyingPeriod.startDate} ~ {classroom.enrolling.applyingPeriod.endDate}</SemanticTable.Cell>
+                <SemanticTable.Cell className="center">{classroom.enrolling.learningPeriod.startDate} ~ {classroom.enrolling.learningPeriod.endDate}</SemanticTable.Cell>
               </SemanticTable.Row>
             ))}
           </SemanticTable.Body>
