@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 
 import moment from 'moment';
 import { Modal, Button, Icon } from 'semantic-ui-react';
-import { timeToHourMinute, timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinute, timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 interface Props {
@@ -141,10 +141,10 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                     <ul className="bullet-list1">
                       <li>
-                        <span className="name b1">mySUNI</span><span className="time">{timeToHourMinuteFormat(myLearningSummary.suniLearningTime)}</span>
+                        <span className="name b1">mySUNI</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.suniLearningTime)}</span>
                       </li>
                       <li>
-                        <span className="name b2">My company</span><span className="time">{timeToHourMinuteFormat(myLearningSummary.myCompanyLearningTime)}</span>
+                        <span className="name b2">My company</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.myCompanyLearningTime)}</span>
                       </li>
                     </ul>
                   </div>
@@ -152,35 +152,35 @@ class MyLearningSummaryModal extends Component<Props> {
                     <ul className="bullet-list2">
                       <li>
                         <span className="name b1">AI</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.aiCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.aiCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b2">DT</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.dtCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.dtCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b3">행복</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.happyCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.happyCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b4">SV</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.svCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.svCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b5">혁신디자인</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.designCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.designCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b6">Global</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.globalCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.globalCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b7">Leadership</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.leadershipCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.leadershipCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b8">Management</span>
-                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.managementCollegeTime)}</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.managementCollegeTime)}</span>
                       </li>
                     </ul>
                   </div>
