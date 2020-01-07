@@ -22,7 +22,7 @@ class UserMainPage extends Component<Props> {
   render() {
     //
     return (
-      <ContentLayout>
+      <ContentLayout className="main">
         <div className="main-wrap">
           <Carousel />
           <SearchBar />
