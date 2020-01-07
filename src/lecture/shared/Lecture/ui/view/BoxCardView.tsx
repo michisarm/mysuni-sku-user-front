@@ -88,8 +88,7 @@ class BoxCardView extends Component<Props, States> {
       model, hovered, thumbnailImage, action,
       onHoverIn, onHoverOut, onAction, onViewDetail,
     } = this.props;
-    const { hour, minute } = dateTimeHelper.timeToHourMinute(model!.learningTime);
-    const  hourAndMinute = `${hour > 0 ? `${hour}h ` : '00h '}${minute > 0 ? `${minute}m` : '00m'}`;
+    const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(model!.learningTime);
 
     return (
       <Card
@@ -113,24 +112,19 @@ class BoxCardView extends Component<Props, States> {
               <Field icon={CubeIconType[model.cubeType] || CubeIconType[model.serviceType]} text={model.cubeTypeName} bold />
             )}
             <div className="li">
-              { hourAndMinute && (
-                <SubField
-                  icon="time2"
-                  bold
-                  text={hourAndMinute}
-                />
-              )}
+              <SubField
+                icon="time2"
+                bold
+                text={hourMinuteFormat}
+              />
               { (model.cubeTypeName === CubeTypeNameType.Program) && (
-                <SubField className={hourAndMinute ? 'card-stamp' : ''} bold icon="stamp" text={`Stamp x${model.stampCount}`} />
+                <SubField className="card-stamp" bold icon="stamp" text={`Stamp x${model.stampCount}`} />
               )}
 
             </div>
-            {/* Todo: 이수 */}
             { model instanceof LectureModel && (
               <Field icon="complete" text={`이수 ${numeral(model.studentCount).format('0,0')}명`} />
             )}
-
-            {/*<Field icon="complete" text="이수 (?)명" />*/}
           </Fields>
 
           {this.renderBottom()}
