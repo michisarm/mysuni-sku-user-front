@@ -1,6 +1,6 @@
 
-// import React, { PureComponent } from 'react';
-import   { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+// import   { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import spinner from './spinner';
@@ -55,21 +55,21 @@ class SpinnerViewer extends PureComponent<Props, State> {
 
   render() {
     //
-    return null;
+    // return null;
 
-    // const { text } = this.props;
-    // const { active } = this.state;
-    //
-    // if (active > 0) {
-    //   return (
-    //     <div className="loading-wrap select-none" style={{ display: 'block' }}>
-    //       <div className="loading-box">{text}</div>
-    //     </div>
-    //   );
-    // }
-    // else {
-    //   return null;
-    // }
+    const { text } = this.props;
+    const { active } = this.state;
+
+    if (active > 0) {
+      return (
+        <div className="loading-wrap select-none" style={{ display: 'block' }}>
+          <div className="loading-box">{text}</div>
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 
