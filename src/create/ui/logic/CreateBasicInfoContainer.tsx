@@ -1,14 +1,15 @@
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { PersonalCubeModel } from 'personalcube/personalcube';
-import { ChannelModel, CollegeService } from 'college';
+import { CollegeService } from 'college';
 import SelectType from '../../../shared/model/SelectType';
 import FirstCategoryModal from '../view/FirstCategoryModal';
-import SubCategoryContainer from '../view/SubCategoryContainer';
+import SecondCategoryModal from '../view/SecondCategoryModal';
+
 
 
 interface Props {
@@ -24,8 +25,6 @@ interface States {
   secondCategoryModalOpen: boolean
   focus: boolean
   write: string
-  error: boolean
-  channels: ChannelModel[]
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService'))
@@ -40,8 +39,6 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
       secondCategoryModalOpen: false,
       focus: false,
       write: '',
-      error: false,
-      channels: [],
     };
   }
 
@@ -74,15 +71,11 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
     this.setState({ secondCategoryModalOpen });
   }
 
-  onSubCategory(channels: ChannelModel[]) {
-    this.setState({ channels });
-  }
-
   render() {
     const {
       personalCubeId, onChangePersonalCubeProps, personalCube,
     } = this.props;
-    const { firstCategoryModalOpen, secondCategoryModalOpen, channels } = this.state;
+    const { firstCategoryModalOpen, secondCategoryModalOpen } = this.state;
     const { colleges, mainCollege: selectedMainCollege, subCollege: selectedSubCollege } = this.props.collegeService || {} as CollegeService;
 
     return (
@@ -108,28 +101,26 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
         </div>
         <Form.Field>
           <label className="necessary">강좌명</label>
-          <div className={classNames('ui right-top-count input', { error: this.state.error, focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
+          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
             <span className="count">
               <span className="now">{personalCube && personalCube.name && personalCube.name.length}</span>/
               <span className="max">100</span>
             </span>
             <input type="text"
-              placeholder="제목을 입력해주세요."
-              value={personalCube && personalCube.name || ''}
-              onClick={() => this.setState({ focus: true })}
-              onBlur={() => this.setState({ focus: false })}
-              onChange={(e: any) => {
-                if (e.target.value.length > 100) this.setState({ error: true });
-                else this.setState({ error: false });
-                this.setState({ write: e.target.value });
-                onChangePersonalCubeProps('name', e.target.value);
-              } }
+                   placeholder="제목을 입력해주세요."
+                   value={personalCube && personalCube.name || ''}
+                   onClick={() => this.setState({ focus: true })}
+                   onBlur={() => this.setState({ focus: false })}
+                   onChange={(e: any) => {
+                     this.setState({ write: e.target.value });
+                     onChangePersonalCubeProps('name', e.target.value);
+                   } }
             />
             <Icon className="clear link"
-              onClick={(e:any) => {
-                this.setState({ write: '' });
-                onChangePersonalCubeProps('name', e.target.value);
-              }}
+                  onClick={(e:any) => {
+                    this.setState({ write: '' });
+                    onChangePersonalCubeProps('name', e.target.value);
+                  }}
             />
             <span className="validation">You can enter up to 100 characters.</span>
           </div>
@@ -151,20 +142,13 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
             </div>
             <div className="table-css type5">
               <div className="row">
-                {/*<SubCategoryContainer
+                <SecondCategoryModal
                   personalCube={personalCube}
                   open={secondCategoryModalOpen}
                   handleChangeOpen={this.onChangeSecondCategoryModalOpen}
                   onChangePersonalCubeProps={onChangePersonalCubeProps}
                   colleges={colleges}
                   selectedSubCollege={selectedSubCollege}
-                />*/}
-                <SubCategoryContainer
-                  //count={page && page.totalCount || 0}
-                  colleges={personalCube.subCategories}
-                  channels={channels}
-                  onSubCategory={this.onSubCategory}
-                  //selectedChannels={colleges}
                 />
               </div>
             </div>
