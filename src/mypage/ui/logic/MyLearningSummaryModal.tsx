@@ -69,8 +69,7 @@ class MyLearningSummaryModal extends Component<Props> {
     if (hour < 1 && minute < 1) {
       total = (
         <div className="total">
-          <span>00</span><span className="u">h</span>
-          <span>00</span><span className="u">m</span>
+          <span>00</span><span className="u">h</span> <span>00</span><span className="u">m</span>
         </div>
       );
     }
@@ -91,8 +90,7 @@ class MyLearningSummaryModal extends Component<Props> {
     else {
       total = (
         <div className="total">
-          <span>{hour}</span><span className="u">h</span>
-          <span>{minute}</span><span className="u">m</span>
+          <span>{hour}</span><span className="u">h</span> <span>{minute}</span><span className="u">m</span>
         </div>
       );
     }

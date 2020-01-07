@@ -33,8 +33,7 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
     if (hour < 1 && onlyMinute! < 1) {
       total = (
         <div className="value2">
-          <strong>00</strong><span>h</span>
-          <strong>00</strong><span>m</span>
+          <strong>00</strong><span>h</span> <strong>00</strong><span>m</span>
         </div>
       );
     }
@@ -55,8 +54,7 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
     else {
       total = (
         <div className="value2">
-          <strong>{hour}</strong><span>h</span>
-          <strong>{onlyMinute}</strong><span>m</span>
+          <strong>{hour}</strong><span>h</span> <strong>{onlyMinute}</strong><span>m</span>
         </div>
       );
     }
