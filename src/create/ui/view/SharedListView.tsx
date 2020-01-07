@@ -65,7 +65,7 @@ class SharedListView extends React.Component {
                 <Icon className="add-list icon" />
                 <span className="blind">Go to my learning</span>
               </Button>
-              <Button className="fix bg">View Details</Button>
+              <Button className="fix bg">상세보기</Button>
             </div>
           </div>
         </Card>

@@ -344,19 +344,20 @@ class CoursePage extends Component<Props, State> {
           menus={this.getMenus()}
           type={this.state.type}
           onSelectMenu={(type) => this.setState({ type })}
-        />
-        <LectureCardContainer
-          inMyLecture={inMyLecture}
-          inMyLectureCdo={inMyLectureCdo}
-          studentCdo={studentCdo}
-          studentJoins={[]}
-          lectureCardId={lectureCardId}
-          cubeType={CubeType.None}
-          viewObject={viewObject}
-          typeViewObject={typeViewObject}
         >
-          { this.renderChildren(viewObject, typeViewObject) }
-        </LectureCardContainer>
+          <LectureCardContainer
+            inMyLecture={inMyLecture}
+            inMyLectureCdo={inMyLectureCdo}
+            studentCdo={studentCdo}
+            studentJoins={[]}
+            lectureCardId={lectureCardId}
+            cubeType={CubeType.None}
+            viewObject={viewObject}
+            typeViewObject={typeViewObject}
+          >
+            { this.renderChildren(viewObject, typeViewObject) }
+          </LectureCardContainer>
+        </ContentMenu>
       </ContentLayout>
     );
   }

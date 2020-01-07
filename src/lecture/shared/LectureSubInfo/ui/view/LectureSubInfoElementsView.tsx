@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Label, Button, Step, List, Icon } from 'semantic-ui-react';
+import classNames from 'classnames';
 import { dateTimeHelper, CubeType } from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
@@ -66,7 +67,17 @@ export const LevelView = ({ level }: LevelProp) => {
   if (!level) return null;
   return (
     <div className="level-wrap">
-      <span className="level-txt">{level}</span>
+      <span
+        className={classNames({
+          'level-txt': true,
+          step1: level === Level.Basic,
+          step2: level === Level.Intermediate,
+          step3: level === Level.Advanced,
+          step4: level === Level.Expert,
+        })}
+      >
+        {level}
+      </span>
       <Step.Group unstackable className="level">
         {
           Object.keys(Level).map((levelKey: string, index: number) => (
@@ -89,13 +100,13 @@ interface ClassProp {
 
 export const ClassView = ({ clazz }: ClassProp) => {
   if (!clazz) return null;
-  const { hour, minute } = dateTimeHelper.timeToHourMinute(clazz.learningTime);
+  const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(clazz.learningTime);
   return (
     <List className="class-info1">
       <List.Item>
         <div className="ui">
           <div className="label">Time</div>
-          <div className="value">{hour ? `${hour}h ` : ''}{minute}m</div>
+          <div className="value">{hourMinuteFormat}</div>
         </div>
       </List.Item>
       {

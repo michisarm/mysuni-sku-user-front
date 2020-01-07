@@ -38,10 +38,9 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
         <Modal.Content>
           <div className="privacy">
             <div className="scrolling-80vh">
-              <div className="text1">SK 이노베이션 주식회사 (이하 &quot;회사&quot;)는 mySUNI Learning Management System 운영과
-                관련하여 개인정보보호법 제30조에 따라 구성원의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이
-                개인정보처리방침을
-                수립ㆍ공개합니다.
+              <div className="text1">SK 이노베이션 주식회사 (이하 &quot;회사&quot;)는 mySUNI Learning Management System 운영과 관련하여 정보통신망 이용촉진 및
+                정보보호 등에 관한 법률(이하 ‘정보통신망법’), 개인정보보호법에 따라 구성원의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이
+                개인정보처리방침을 수립ㆍ공개합니다.
               </div>
               <div className="text1">회사는 개인정보처리방침을 개정하는 경우 공지사항(또는 개별공지)을 통하여 공지할 것입니다.</div>
               <div className="text1">○ 본 방침은 2020년 1월 17일부터 시행됩니다.</div>

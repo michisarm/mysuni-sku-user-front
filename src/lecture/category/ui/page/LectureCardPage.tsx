@@ -478,20 +478,20 @@ class LectureCardPage extends Component<Props, State> {
           menus={this.getMenus()}
           type={this.state.type}
           onSelectMenu={(type) => this.setState({ type })}
-        />
-
-        <LectureCardContainer
-          inMyLecture={inMyLecture}
-          inMyLectureCdo={inMyLectureCdo}
-          studentCdo={studentCdo}
-          studentJoins={studentJoins}
-          lectureCardId={lectureCardId}
-          cubeType={personalCube.contents.type}
-          viewObject={viewObject}
-          typeViewObject={typeViewObject}
         >
-          { this.renderChildren(viewObject, typeViewObject) }
-        </LectureCardContainer>
+          <LectureCardContainer
+            inMyLecture={inMyLecture}
+            inMyLectureCdo={inMyLectureCdo}
+            studentCdo={studentCdo}
+            studentJoins={studentJoins}
+            lectureCardId={lectureCardId}
+            cubeType={personalCube.contents.type}
+            viewObject={viewObject}
+            typeViewObject={typeViewObject}
+          >
+            { this.renderChildren(viewObject, typeViewObject) }
+          </LectureCardContainer>
+        </ContentMenu>
       </ContentLayout>
     );
   }

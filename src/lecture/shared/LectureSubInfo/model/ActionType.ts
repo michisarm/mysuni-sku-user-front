@@ -3,9 +3,9 @@ enum ActionType {
   Enrollment= 'Enrollment',
   Report= 'Report',
   ChangeSeries= 'Change Series',
-  LearningStart= 'Learning Start',
+  LearningStart= '학습하기',
   Download= 'Download',
-  Play= 'Play',
+  Play= '학습하기',
   MarkComplete= 'Mark Complete',
   Join= 'Join',
 }

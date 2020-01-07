@@ -182,7 +182,7 @@ class LectureContainer extends Component<Props, States> {
       <ListCardView
         model={model}
         thumbnailImage={thumbnailImage}
-        action={{ iconName: 'play2', text: 'View Details' }}
+        action={{ iconName: 'play2', text: '상세보기' }}
         onAction={this.onViewDetail}
       />
     );
@@ -199,7 +199,7 @@ class LectureContainer extends Component<Props, States> {
       <ListStampCardView
         model={model}
         thumbnailImage={thumbnailImage}
-        action={{ iconName: 'play2', text: 'View Details' }}
+        action={{ iconName: 'play2', text: '상세보기' }}
         onAction={this.onViewDetail}
       />
     );

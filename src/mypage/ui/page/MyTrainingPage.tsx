@@ -330,8 +330,9 @@ class MyTrainingPage extends Component<Props, State> {
           ]}
           type={this.state.type}
           onSelectMenu={this.onSelectMenu}
-        />
-        { this.renderList() }
+        >
+          { this.renderList() }
+        </ContentMenu>
       </ContentLayout>
     );
   }

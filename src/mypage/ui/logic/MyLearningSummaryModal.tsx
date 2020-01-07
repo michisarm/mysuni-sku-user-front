@@ -4,12 +4,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 
 import moment from 'moment';
 import { Modal, Button, Icon } from 'semantic-ui-react';
-import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinute, timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 interface Props {
   myLearningSummaryService?: MyLearningSummaryService
   trigger: React.ReactNode
+  year?: number
 }
 
 @inject(mobxHelper.injectFrom(
@@ -62,18 +63,45 @@ class MyLearningSummaryModal extends Component<Props> {
     const { trigger, myLearningSummaryService  } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { hour, minute } = timeToHourMinute(myLearningSummary.totalLearningTime);
-    const { hour: suniHour, minute: suniMinute } = timeToHourMinute(myLearningSummary.suniLearningTime);
-    const { hour: compHour, minute: compMinute } = timeToHourMinute(myLearningSummary.myCompanyLearningTime);
-    const { hour: aiHour, minute: aiMinute } = timeToHourMinute(myLearningSummary.aiCollegeTime);
-    const { hour: dtHour, minute: dtMinute } = timeToHourMinute(myLearningSummary.dtCollegeTime);
-    const { hour: happyHour, minute: happyMinute } = timeToHourMinute(myLearningSummary.happyCollegeTime);
-    const { hour: svHour, minute: svMinute } = timeToHourMinute(myLearningSummary.svCollegeTime);
-    const { hour: designHour, minute: designMinute } = timeToHourMinute(myLearningSummary.designCollegeTime);
-    const { hour: globalHour, minute: globalMinute } = timeToHourMinute(myLearningSummary.globalCollegeTime);
-    const { hour: leadershipHour, minute: leadershipMinute } = timeToHourMinute(myLearningSummary.leadershipCollegeTime);
-    const { hour: managementHour, minute: managementMinute } = timeToHourMinute(myLearningSummary.managementCollegeTime);
 
-    const today = moment(new Date()).format('YYYY.MM.DD');
+    let total:any = null;
+
+    if (hour < 1 && minute < 1) {
+      total = (
+        <div className="total">
+          <span>00</span><span className="u">h</span> <span>00</span><span className="u">m</span>
+        </div>
+      );
+    }
+    else if (hour < 1) {
+      total = (
+        <div className="total">
+          <span>{minute}</span><span className="u">m</span>
+        </div>
+      );
+    }
+    else if (minute < 1) {
+      total = (
+        <div className="total">
+          <span>{hour}</span><span className="u">h</span>
+        </div>
+      );
+    }
+    else {
+      total = (
+        <div className="total">
+          <span>{hour}</span><span className="u">h</span> <span>{minute}</span><span className="u">m</span>
+        </div>
+      );
+    }
+
+    let today = moment(new Date()).format('YYYY.MM.DD');
+    let year: number = new Date().getFullYear();
+
+    if (this.props.year && year !== this.props.year) {
+      year = this.props.year;
+      today = `${this.props.year}.12.31`;
+    }
 
     return (
       <Modal
@@ -95,7 +123,7 @@ class MyLearningSummaryModal extends Component<Props> {
                 <div className="row head">
                   <div className="cell v-middle">
                     <Icon className="total-time16" /><span className="blind">total time</span>
-                    <span className="text01">{myLearningSummary.year}.01.01 ~ {today}</span>
+                    <span className="text01">{year}.01.01 ~ {today}</span>
                     <span className="text02">총 학습시간</span>
                   </div>
                   <div className="cell v-middle"><span className="text01">College 별 학습 시간</span>
@@ -104,10 +132,7 @@ class MyLearningSummaryModal extends Component<Props> {
                 <div className="row">
                   <div className="cell vtop">
                     <div className="legend">(단위 : 시간)</div>
-                    <div className="total">
-                      <span>{hour || '00'}</span><span className="u">h</span>
-                      <span>{minute || '00'}</span><span className="u">m</span>
-                    </div>
+                    {total}
                     <div className="chart">
                       <div className="ui pie w200" data-value={this.getChartValue()}>
                         <span className="left" />
@@ -116,10 +141,10 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                     <ul className="bullet-list1">
                       <li>
-                        <span className="name b1">mySUNI</span><span className="time">{suniHour || '00'}h {suniMinute || '00'}m</span>
+                        <span className="name b1">mySUNI</span><span className="time">{timeToHourMinuteFormat(myLearningSummary.suniLearningTime)}</span>
                       </li>
                       <li>
-                        <span className="name b2">My company</span><span className="time">{compHour || '00'}h {compMinute || '00'}m</span>
+                        <span className="name b2">My company</span><span className="time">{timeToHourMinuteFormat(myLearningSummary.myCompanyLearningTime)}</span>
                       </li>
                     </ul>
                   </div>
@@ -127,35 +152,35 @@ class MyLearningSummaryModal extends Component<Props> {
                     <ul className="bullet-list2">
                       <li>
                         <span className="name b1">AI</span>
-                        <span className="time">{aiHour || '00'}h {aiMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.aiCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b2">DT</span>
-                        <span className="time">{dtHour || '00'}h {dtMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.dtCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b3">행복</span>
-                        <span className="time">{happyHour || '00'}h {happyMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.happyCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b4">SV</span>
-                        <span className="time">{svHour || '00'}h {svMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.svCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b5">혁신디자인</span>
-                        <span className="time">{designHour || '00'}h {designMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.designCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b6">Global</span>
-                        <span className="time">{globalHour || '00'}h {globalMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.globalCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b7">Leadership</span>
-                        <span className="time">{leadershipHour || '00'}h {leadershipMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.leadershipCollegeTime)}</span>
                       </li>
                       <li>
                         <span className="name b8">Management</span>
-                        <span className="time">{managementHour || '00'}h {managementMinute || '00'}m</span>
+                        <span className="time">{timeToHourMinuteFormat(myLearningSummary.managementCollegeTime)}</span>
                       </li>
                     </ul>
                   </div>

@@ -87,12 +87,12 @@ class CommunityLectureContainer extends Component<Props, State> {
             </Title>
 
             <Buttons>
-              <Button className="fix line" onClick={onViewDetail}>View Details</Button>
+              <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
             </Buttons>
 
             { toggle && (
-              <div className="icon-area" onClick={this.onToggle}>
-                <Icon className="dropdown icon" />
+              <div className="icon-area">
+                <Icon className="dropdown icon" onClick={this.onToggle} />
               </div>
             )}
           </div>
