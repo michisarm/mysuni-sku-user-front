@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-
+import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 
 interface Props {
   universityTime: number;
@@ -11,18 +11,6 @@ interface Props {
 @reactAutobind
 class ContentHeaderChartItem extends Component<Props> {
   //
-  timeToHourMinute(minuteTime: number) {
-    //
-    let hour = 0;
-    let minute = minuteTime;
-
-    if (minuteTime) {
-      hour = Math.floor(minuteTime / 60);
-      minute = minuteTime % 60;
-    }
-    return { hour, minute };
-  }
-
   getChartValue() {
     //
     const { universityTime, myCompanyTime } = this.props;
@@ -36,8 +24,6 @@ class ContentHeaderChartItem extends Component<Props> {
   render() {
     //
     const { universityTime, myCompanyTime } = this.props;
-    const universityHourAndMinute = this.timeToHourMinute(universityTime);
-    const myCompanyHourAndMinute = this.timeToHourMinute(myCompanyTime);
 
     return (
       <div className="chart-wrap">
@@ -48,11 +34,11 @@ class ContentHeaderChartItem extends Component<Props> {
         <div className="ui list">
           <dl className="item sk">
             <dt>mySUNI</dt>
-            <dd>{universityHourAndMinute.hour || '00'}h {universityHourAndMinute.minute || '00'}m</dd>
+            <dd>{timeToHourMinuteFormat(universityTime)}</dd>
           </dl>
           <dl className="item my">
             <dt>My company</dt>
-            <dd>{myCompanyHourAndMinute.hour || '00'}h {myCompanyHourAndMinute.minute || '00'}m</dd>
+            <dd>{timeToHourMinuteFormat(myCompanyTime)}</dd>
           </dl>
         </div>
       </div>

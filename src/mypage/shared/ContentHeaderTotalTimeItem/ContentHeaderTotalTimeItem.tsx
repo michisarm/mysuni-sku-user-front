@@ -28,6 +28,39 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
       onlyMinute = minute % 60;
     }
 
+    let total:any = null;
+
+    if (hour < 1 && onlyMinute! < 1) {
+      total = (
+        <div className="value2">
+          <strong>00</strong><span>h</span>
+          <strong>00</strong><span>m</span>
+        </div>
+      );
+    }
+    else if (hour < 1) {
+      total = (
+        <div className="value2">
+          <strong>{onlyMinute}</strong><span>m</span>
+        </div>
+      );
+    }
+    else if (onlyMinute! < 1) {
+      total = (
+        <div className="value2">
+          <strong>{hour}</strong><span>h</span>
+        </div>
+      );
+    }
+    else {
+      total = (
+        <div className="value2">
+          <strong>{hour}</strong><span>h</span>
+          <strong>{onlyMinute}</strong><span>m</span>
+        </div>
+      );
+    }
+
     return (
       <div className="ui statistic total-time">
         {
@@ -37,10 +70,7 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
                 <Label className="onlytext">
                   <Icon className="total-time" /><span>총 학습시간</span>
                 </Label>
-                <div className="value2">
-                  <strong>{hour || '00'}</strong><span>h</span>
-                  <strong className="min">{onlyMinute || '00'}</strong><span>m</span>
-                </div>
+                {total}
               </Button>
             )}
           />
