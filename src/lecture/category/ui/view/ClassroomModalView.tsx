@@ -108,7 +108,7 @@ class ClassroomModalView extends Component<Props, States> {
                               className="ui custom red"
                               position="bottom right"
                               trigger={
-                                <Button icon className="img-icon custom" content="Button">
+                                <Button icon className="img-icon custom">
                                   <Icon className="noti32" /><span className="blind">취소 패널티</span>
                                 </Button>
                               }
