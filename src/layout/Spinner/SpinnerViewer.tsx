@@ -1,6 +1,6 @@
 
-// import React, { PureComponent } from 'react';
-import   { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
+// import   { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import spinner from './spinner';
@@ -11,7 +11,8 @@ interface Props {
 }
 
 interface State {
-  active: number;
+  count: number;
+  active: boolean;
 }
 
 @reactAutobind
@@ -22,7 +23,8 @@ class SpinnerViewer extends PureComponent<Props, State> {
   };
 
   state = {
-    active: 0,
+    count: 0,
+    active: false,
   };
 
 
@@ -34,42 +36,57 @@ class SpinnerViewer extends PureComponent<Props, State> {
     spinner.init();
   }
 
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    //
+    if (prevState.count === 0 && this.state.count === 1) {
+      setTimeout(this.activate, 200);
+    }
+  }
+
   addDimmer() {
-    this.setState(state => ({ active: state.active + 1 }));
+    this.setState(state => ({ count: state.count + 1 }));
   }
 
   removeDimmer() {
     //
     this.setState(state => (
-      state.active - 1 < 0 ?
-        { active: 0 }
+      state.count - 1 < 1 ?
+        { count: 0, active: false }
         :
-        { active: state.active - 1 }
+        { count: state.count - 1, active: state.active }
     ));
   }
 
   removeAllDimmer() {
     //
-    this.setState({ active: 0 });
+    this.setState({ count: 0, active: false });
   }
+
+  activate() {
+    //
+    if (this.state.count > 0) {
+      this.setState({ active: true });
+    }
+  }
+
 
   render() {
     //
-    return null;
+    // return null;
 
-    // const { text } = this.props;
-    // const { active } = this.state;
-    //
-    // if (active > 0) {
-    //   return (
-    //     <div className="loading-wrap select-none" style={{ display: 'block' }}>
-    //       <div className="loading-box">{text}</div>
-    //     </div>
-    //   );
-    // }
-    // else {
-    //   return null;
-    // }
+    const { text } = this.props;
+    const { active } = this.state;
+
+    if (active) {
+      return (
+        <div className="loading-wrap select-none" style={{ display: 'block' }}>
+          <div className="loading-box">{text}</div>
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
   }
 }
 

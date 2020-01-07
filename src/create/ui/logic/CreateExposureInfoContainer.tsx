@@ -144,7 +144,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   render() {
     const { onChangePersonalCubeProps, personalCube } = this.props;
     const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
-    const { fileName, tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
+    const { tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
     const { colleges } = this.props.collegeService || {} as CollegeService;
     const { subsidiariesAll } = this.state;
     const subsidiaryIdList: string[] = [];
