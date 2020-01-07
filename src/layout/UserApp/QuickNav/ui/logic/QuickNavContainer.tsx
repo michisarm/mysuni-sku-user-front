@@ -202,15 +202,15 @@ class QuickNavContainer extends Component<Props, State> {
           bottomButtons={
             <>
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
-              <SiteMapModalContainer
-                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickToggle} />}
-              />
               <FavoriteChannelChangeModal
                 trigger={(
                   <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClickToggle} />
                 )}
                 favorites={favoriteChannels}
                 onConfirmCallback={() => {}}
+              />
+              <SiteMapModalContainer
+                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickToggle} />}
               />
 
               {

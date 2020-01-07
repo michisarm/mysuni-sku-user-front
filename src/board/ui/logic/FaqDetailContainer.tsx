@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout } from 'shared';
+import {ContentLayout, DatePeriod} from 'shared';
 import { CategoryService, PostService } from '../../../board';
 
 
@@ -60,7 +60,7 @@ class FaqDetailContainer extends React.Component<Props> {
                   <div className="title-inner">
                     <div className="title"> {post.title}</div>
                     <div className="user-info">
-                      <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                      <span className="date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                     </div>
                     <div className="actions">
                       <Button icon className="left postset commu-list16" onClick={() => this.onClose('FAQ')}><Icon

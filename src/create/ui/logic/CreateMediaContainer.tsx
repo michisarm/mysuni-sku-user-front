@@ -1,9 +1,10 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { CubeIntroService, MediaService, OfficeWebService, PersonalCubeService } from 'personalcube';
+import { DatePeriod } from 'shared';
 
-import { MediaService, CubeIntroService, OfficeWebService, PersonalCubeService } from 'personalcube';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
@@ -35,11 +36,16 @@ class CreateMediaContainer extends React.Component<Props> {
     const { mediaService } = this.props;
     if (mediaService) mediaService.changeMediaProps(name, value);
     if (mediaService && typeof value === 'object' && nameSub) {
-      const stringDate = value.toLocaleDateString().replace('. ', '-').replace('. ', '-').replace('.', '');
+      const stringDate = DatePeriod.changeDateToString(value);
       mediaService.changeMediaProps(name, value, nameSub, stringDate);
       if (name.indexOf('startDateSub') !== -1) {
         const newName = name.replace('startDateSub', 'endDateSub');
-        mediaService.changeMediaProps(newName, value, nameSub, stringDate);
+        const startYear = value.getFullYear();
+        const newDate = new Date(startYear, 11, 31, 0, 0, 0);
+        const newStringDate = DatePeriod.changeDateToString(newDate);
+
+        const newNameSub = nameSub.replace('startDate', 'endDate');
+        mediaService.changeMediaProps(newName, newDate, newNameSub, newStringDate);
       }
     }
     if (mediaService) {

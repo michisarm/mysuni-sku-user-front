@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
+import { ContentLayout, DatePeriod } from 'shared';
 import ReactQuill from 'react-quill';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
@@ -106,7 +106,7 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
                   </div>
                   <div className="user-info">
                     <span className="category">{post.category.name}</span>
-                    <span className="date">{answer.writtenTime && new Date(answer.writtenTime).toLocaleDateString()}</span>
+                    <span className="date">{answer.writtenTime && DatePeriod.changeDateToStringSupportQna(new Date(answer.writtenTime))}</span>
                   </div>
                   <div className="actions">
                     <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>

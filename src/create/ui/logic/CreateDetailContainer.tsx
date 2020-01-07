@@ -90,12 +90,14 @@ class CreateDetailContainer extends React.Component<Props, States> {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
+    let personalCubeMessage = '';
+    if (personalCubeObject === '태그') personalCubeMessage =  '"' + personalCubeObject + '" 는 10개까지 입력 가능합니다.';
 
     if (personalCubeObject === 'success') {
       this.setState({ confirmWinOpen: true });
       return;
     }
-    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
+    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeMessage);
   }
 
   confirmBlank(message: string) {
