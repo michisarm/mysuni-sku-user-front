@@ -39,7 +39,7 @@ class SpinnerViewer extends PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     //
     if (prevState.count === 0 && this.state.count === 1) {
-      setTimeout(this.activate, 500);
+      setTimeout(this.activate, 200);
     }
   }
 
