@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { CategoryService, PostService } from '../../../board';
+import { DatePeriod } from '../../../shared';
 
 interface Props {
   postService?: PostService
@@ -126,7 +127,7 @@ class QnaTabContainer extends React.Component<Props> {
                         </span>
                         <span className="cell category">{post.category.name}</span>
                         <span className="cell status">답변완료</span>
-                        <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                        <span className="cell date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                       </a>
                       <a target="_blank" className="row reply" onClick={() => routeToAnsweredDetail(post.postId)}>
                         <span className="cell title">
@@ -135,7 +136,7 @@ class QnaTabContainer extends React.Component<Props> {
                         </span>
                         <span className="cell category" />
                         <span className="cell status" />
-                        <span className="cell date">{post.answeredAt && new Date(post.answeredAt).toLocaleDateString()}</span>
+                        <span className="cell date">{post.answeredAt && DatePeriod.changeDateToStringSupport(new Date(post.answeredAt))}</span>
                       </a>
                     </>
                   );
@@ -149,7 +150,7 @@ class QnaTabContainer extends React.Component<Props> {
                       </span>
                       <span className="cell category">{post.category.name}</span>
                       <span className="cell status waiting">답변대기</span>
-                      <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                      <span className="cell date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                     </a>
                   );
                 }

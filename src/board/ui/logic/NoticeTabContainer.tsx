@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { PostService } from '../../../board';
-
+import { DatePeriod } from '../../../shared';
 
 interface Props {
   postService?: PostService
@@ -44,7 +44,7 @@ class NoticeTabContainer extends React.Component<Props> {
                         </span>
                       </span>
                       <span className="cell view">{pinnedPost.readCount}명 읽음</span>
-                      <span className="cell date">{pinnedPost.time && new Date(pinnedPost.time).toLocaleDateString()}</span>
+                      <span className="cell date">{pinnedPost.time && DatePeriod.changeDateToStringSupport(new Date(pinnedPost.time))}</span>
                     </a>
                   );
                 } else {
@@ -57,7 +57,7 @@ class NoticeTabContainer extends React.Component<Props> {
                         </span>
                       </span>
                       <span className="cell view">{pinnedPost.readCount}명 읽음</span>
-                      <span className="cell date">{pinnedPost.time && new Date(pinnedPost.time).toLocaleDateString()}</span>
+                      <span className="cell date">{pinnedPost.time && DatePeriod.changeDateToStringSupport(new Date(pinnedPost.time))}</span>
                     </a>
                   );
                 }
@@ -74,7 +74,7 @@ class NoticeTabContainer extends React.Component<Props> {
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
-                    <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                    <span className="cell date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                   </a>
                 );
               } else if (post.time && new Date(post.time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000))) {
@@ -86,7 +86,7 @@ class NoticeTabContainer extends React.Component<Props> {
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
-                    <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                    <span className="cell date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                   </a>
                 );
               } else {
@@ -98,7 +98,7 @@ class NoticeTabContainer extends React.Component<Props> {
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
-                    <span className="cell date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                    <span className="cell date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
                   </a>
                 );
               }

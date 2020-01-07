@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
+import { ContentLayout, DatePeriod } from 'shared';
 import ReactQuill from 'react-quill';
 import { PostService } from '../../../board';
 
@@ -51,7 +51,7 @@ class NoticeDetailContainer extends React.Component<Props> {
             <div className="title-inner">
               <div className="title">{post.title}</div>
               <div className="user-info">
-                <span className="date">{post.time && new Date(post.time).toLocaleDateString()}</span>
+                <span className="date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
               </div>
               <div className="actions">
                 <Button icon className="left postset commu-list16" onClick={() => this.onClose('Notice')}><Icon className="commu-list16" />List</Button>

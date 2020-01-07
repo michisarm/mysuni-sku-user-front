@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout } from 'shared';
+import { ContentLayout, DatePeriod } from 'shared';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
 import { CategoryService, PostService } from '../../../board';
@@ -132,7 +132,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                   </div>
                   <div className="user-info">
                     <span className="category">{category.name}</span>
-                    <span className="date">{post.time && new Date(post.time).toLocaleString()}</span>
+                    <span className="date">{post.time && DatePeriod.changeDateToStringSupportQna(new Date(post.time))}</span>
                   </div>
                   <div className="actions">
                     <Button icon className="left postset delete" onClick={() => this.deleteQnaDetail()}><Icon name="delete" />Delete</Button>
