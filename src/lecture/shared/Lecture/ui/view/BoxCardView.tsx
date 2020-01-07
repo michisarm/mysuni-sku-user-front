@@ -142,7 +142,7 @@ class BoxCardView extends Component<Props, States> {
                 <Icon className={action.iconName} />
               </Button>
             )}
-            <Button className="fix bg" onClick={onViewDetail}>View Details</Button>
+            <Button className="fix bg" onClick={onViewDetail}>상세보기</Button>
           </Buttons>
         </div>
       </Card>

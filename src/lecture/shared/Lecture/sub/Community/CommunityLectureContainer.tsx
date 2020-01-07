@@ -87,7 +87,7 @@ class CommunityLectureContainer extends Component<Props, State> {
             </Title>
 
             <Buttons>
-              <Button className="fix line" onClick={onViewDetail}>View Details</Button>
+              <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
             </Buttons>
 
             { toggle && (
