@@ -137,10 +137,14 @@ class MyTrainingPage extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | InMyLectureModel) {
     //
+    const { type } = this.state;
     const { inMyLectureService } = this.props;
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => {
+          if (type === Type.InMyList) this.init();
+          else inMyLectureService!.findAllInMyLectures();
+        });
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -161,7 +165,11 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
-      })).then(() => inMyLectureService!.findAllInMyLectures());
+      }))
+        .then(() => {
+          if (type === Type.InMyList) this.findPagingList();
+          else inMyLectureService!.findAllInMyLectures();
+        });
     }
   }
 
