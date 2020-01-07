@@ -5,9 +5,10 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout, DatePeriod } from 'shared';
+import { ContentLayout } from 'shared';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
 import depot from '@nara.drama/depot';
+import moment from 'moment';
 import { CategoryService, PostService } from '../../../board';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
@@ -132,7 +133,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                   </div>
                   <div className="user-info">
                     <span className="category">{category.name}</span>
-                    <span className="date">{post.time && DatePeriod.changeDateToStringSupportQna(new Date(post.time))}</span>
+                    <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD HH:mm:ss')}</span>
                   </div>
                   <div className="actions">
                     <Button icon className="left postset delete" onClick={() => this.deleteQnaDetail()}><Icon name="delete" />Delete</Button>

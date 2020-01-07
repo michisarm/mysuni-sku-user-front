@@ -43,6 +43,9 @@ export default class PersonalCubeService {
   @observable
   fileName: string = '';
 
+  @observable
+  tinyAlbumId: string = '';
+
   constructor(personalCubeApi: PersonalCubeApi) {
     this.personalCubeApi = personalCubeApi;
   }
@@ -89,6 +92,18 @@ export default class PersonalCubeService {
   changeCubeProps(name: string, value: string | {} | string[]) {
     //
     this.personalCube = _.set(this.personalCube, name, value);
+  }
+
+  @action
+  changeTinyAlbumId(tinyAlbumId: string) {
+    //
+    this.tinyAlbumId = tinyAlbumId;
+  }
+
+  @action
+  clearTinyAlbumId() {
+    //
+    this.tinyAlbumId = '';
   }
 
   @action

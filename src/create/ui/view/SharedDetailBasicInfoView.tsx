@@ -1,6 +1,7 @@
 import { Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { PersonalCubeModel } from 'personalcube/personalcube';
+import moment from 'moment';
 import EnumUtil, { CubeStateView } from '../../../shared/ui/logic/getEumValue';
 
 interface Props {
@@ -69,7 +70,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>생성정보</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{new Date(personalCube.time).toLocaleDateString()}
+                    <div>{moment(personalCube.time).format('YYYY.MM.DD')}
                       <span className="dash" />{personalCube.creator && personalCube.creator.name}
                     </div>
                   </Table.Cell>

@@ -43,6 +43,17 @@ export default {
     { key: '3', text: '100개씩 보기', value: 100 },
   ],
 
+  colleges: [
+    { key: '0', text: 'AI', value: '55' },
+    { key: '1', text: 'DT', value: '56' },
+    { key: '2', text: '행복', value: '57' },
+    { key: '3', text: 'SV', value: '58' },
+    { key: '4', text: 'Design', value: '59' },
+    { key: '5', text: 'Global', value: '5a' },
+    { key: '6', text: 'Leadership', value: '5b' },
+    { key: '7', text: 'Management', value: '5c' },
+  ],
+
   difficulty: [
     { key: '1', text: 'Basic', value: 'Basic' },
     { key: '2', text: 'Intermediate', value: 'Intermediate' },
