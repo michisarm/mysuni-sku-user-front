@@ -60,6 +60,38 @@ class MyLearningSummaryContainer extends Component<Props> {
     const { myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
     const { hour, minute } = this.getHourMinute(myLearningSummary.totalLearningTime);
+    let total:any = null;
+
+    if (hour < 1 && minute < 1) {
+      total = (
+        <span className="div">
+          <span className="t1">00</span><span className="t2">h</span>
+          <span className="t1">00</span><span className="t2">m</span>
+        </span>
+      );
+    }
+    else if (hour < 1) {
+      total = (
+        <span className="div">
+          <span className="t1">{minute}</span><span className="t2">m</span>
+        </span>
+      );
+    }
+    else if (minute < 1) {
+      total = (
+        <span className="div">
+          <span className="t1">{hour}</span><span className="t2">h</span>
+        </span>
+      );
+    }
+    else {
+      total = (
+        <span className="div">
+          <span className="t1">{hour}</span><span className="t2">h</span>
+          <span className="t1">{minute}</span><span className="t2">m</span>
+        </span>
+      );
+    }
 
     return (
       <HeaderWrapperView>
@@ -86,10 +118,7 @@ class MyLearningSummaryContainer extends Component<Props> {
                 </span>
                 <span className="t">
                   <span className="underline">총 학습시간</span>
-                  <span className="div">
-                    <span className="t1">{hour || '00'}</span><span className="t2">h</span>
-                    <span className="t1">{minute || '00'}</span><span className="t2">m</span>
-                  </span>
+                  {total}
                 </span>
               </Button>
             )}
