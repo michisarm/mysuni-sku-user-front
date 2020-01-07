@@ -278,8 +278,9 @@ class MyCommunityPage extends Component<Props, State> {
           menus={this.getMenus()}
           type={type}
           onSelectMenu={this.onSelectMenu}
-        />
-        {this.renderList()}
+        >
+          {this.renderList()}
+        </ContentMenu>
       </ContentLayout>
     );
   }

@@ -91,8 +91,8 @@ class CommunityLectureContainer extends Component<Props, State> {
             </Buttons>
 
             { toggle && (
-              <div className="icon-area" onClick={this.onToggle}>
-                <Icon className="dropdown icon" />
+              <div className="icon-area">
+                <Icon className="dropdown icon" onClick={this.onToggle} />
               </div>
             )}
           </div>
