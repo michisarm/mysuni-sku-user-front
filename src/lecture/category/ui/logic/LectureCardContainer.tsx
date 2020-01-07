@@ -82,7 +82,7 @@ class LectureCardContainer extends Component<Props, State> {
       window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
-      console.log('[UserFront] Url is empty.');
+      console.warn('[UserFront] Url is empty.');
     }
   }
 
@@ -94,7 +94,7 @@ class LectureCardContainer extends Component<Props, State> {
       window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
     }
     else {
-      console.log('[UserFront] Url is empty.');
+      console.warn('[UserFront] Url is empty.');
     }
   }
 
