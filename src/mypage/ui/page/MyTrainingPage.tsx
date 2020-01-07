@@ -1,18 +1,17 @@
-
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { Segment } from 'semantic-ui-react';
 
-import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService } from 'shared';
+import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService, CubeType } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { Lecture } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
-import { SeeMoreButton, LectureServiceType } from 'lecture/shared';
+import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
@@ -137,10 +136,14 @@ class MyTrainingPage extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | InMyLectureModel) {
     //
+    const { type } = this.state;
     const { inMyLectureService } = this.props;
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => {
+          if (type === Type.InMyList) this.init();
+          else inMyLectureService!.findAllInMyLectures();
+        });
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -161,7 +164,11 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
-      })).then(() => inMyLectureService!.findAllInMyLectures());
+      }))
+        .then(() => {
+          if (type === Type.InMyList) this.findPagingList();
+          else inMyLectureService!.findAllInMyLectures();
+        });
     }
   }
 
@@ -223,16 +230,16 @@ class MyTrainingPage extends Component<Props, State> {
           list && list.length && (
             <Lecture.Group type={cardType}>
               {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
-                let rating: number | undefined = 0;
-                if (value instanceof InMyLectureModel) {
-                  rating = ratingMap.get(value.reviewId);
+                let rating: number | undefined;
+                if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
+                  rating = ratingMap.get(value.reviewId) || 0;
                 }
                 const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;
                 return (
                   <Lecture
                     key={`training-${index}`}
                     model={value}
-                    rating={rating || undefined}
+                    rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}

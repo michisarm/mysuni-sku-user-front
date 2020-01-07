@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
+import numeral from 'numeral';
 
 import { Icon, Button, Accordion } from 'semantic-ui-react';
 import { MyTrainingModel, InMyLectureModel } from 'mypage';
@@ -82,7 +83,7 @@ class CommunityLectureContainer extends Component<Props, State> {
             <Title title={<a>{model.name}</a>} category={model.category}>
               <div className="deatil">
                 {/*<span>새로운 글: 5</span>*/}
-                {/*<span>멤버 : 1,427</span>*/}
+                <span>멤버 : {numeral(model.studentCount).format('0,0') || 0}</span>
               </div>
             </Title>
 

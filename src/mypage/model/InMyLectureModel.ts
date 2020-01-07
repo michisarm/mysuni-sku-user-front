@@ -26,6 +26,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
 
   reviewId: string = '';
   time: number = 0;
+  studentCount: number = 0;
 
 
   // UI only
@@ -99,6 +100,7 @@ decorate(InMyLectureModel, {
   required: observable,
   cubeTypeName: observable,
   reviewId: observable,
+  studentCount: observable,
 });
 
 export default InMyLectureModel;
