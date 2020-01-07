@@ -31,7 +31,7 @@ class StudentApi {
 
   findIsJsonStudent(lectureCardId: string) {
     return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJson`, { params: { lectureCardId }})
-      .then(response => response && response.data);
+      .then(response => response && response.data || []);
   }
 
   studentMarkComplete(rollBookId: string) {
