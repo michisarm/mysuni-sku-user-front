@@ -1,12 +1,15 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
-import { Button, Checkbox, Form, Icon, Radio, Select } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
+import { PatronType, TinyAlbumForSK } from '@nara.drama/depot';
+import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
 import classNames from 'classnames';
+import SelectType from '../../../shared/model/SelectType';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
@@ -31,6 +34,9 @@ interface States {
 @observer
 @reactAutobind
 class CreateExposureInfoContainer extends React.Component<Props, States> {
+
+  private fileInputRef = React.createRef<HTMLInputElement>();
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -101,9 +107,44 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     return oldList.slice(0, index).concat(oldList.slice(index + 1));
   }
 
+  public uploadFile(file: File) {
+    //
+    const { personalCubeService } = this.props;
+
+    if (personalCubeService) {
+      personalCubeService.changeFileName(file.name);
+      const fileReader = new FileReader();
+
+      fileReader.onload = (e: any) => {     //event = on_file_select
+        const data = e.target.result;
+        personalCubeService.changeCubeProps('iconBox.iconUrl', data);
+      };
+      fileReader.readAsDataURL(file);
+    }
+  }
+
+  public deleteFile() {
+    const { personalCubeService } = this.props;
+
+    if (personalCubeService) {
+      personalCubeService.changeCubeProps('iconBox.iconUrl', '');
+    }
+  }
+
+  @boundMethod
+  handleSKIconSelect(tinyAlbumId: string, selectedImageId: string, tinyImage: string) {
+    //
+    const { personalCubeService } = this.props;
+    if (personalCubeService) {
+      personalCubeService.changeCubeProps('iconBox.baseUrl', 'data:image/png;base64,' + tinyImage);
+      personalCubeService.changeCubeProps('iconBox.iconUrl', selectedImageId);
+    }
+  }
+
   render() {
     const { onChangePersonalCubeProps, personalCube } = this.props;
     const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
+    const { fileName, tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
     const { colleges } = this.props.collegeService || {} as CollegeService;
     const { subsidiariesAll } = this.state;
     const subsidiaryIdList: string[] = [];
@@ -147,56 +188,83 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
           {
             personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity
             && (
-            <div className="round-wrap">
-              <div className="filter">
-                <Select placeholder="전체"
-                  className="ui small-border dropdown"
-                  options={collegeList}
-                  onChange={(e: any, data: any) => onChangePersonalCubeProps('college', {
+              <div className="round-wrap filebox-icon">
+                <div className="filter">
+                  <Select
+                    placeholder="전체"
+                    className="ui small-border dropdown"
+                    options={SelectType.colleges}
+                  /*onChange={(e: any, data: any) => onChangePersonalCubeProps('college', {
                     id: data.value,
                     name: e.target.innerText,
-                  })}
-                />
-              </div>
-              <div className="h220">
-                <ul>
-                  <li>
-                    {/* <Radio
-                      className="v-icon"
-                      label={
-                        <label>
-                            <Image src="/images/all/thumb-card-60-px.jpg" />
-                        </label>
-                    }
-                      name="icons"
-                      value="value01"
-                    //onChange={this.handleChange}
-                      defaultChecked
-                    />*/}
-                  </li>
-
-                </ul>
-              </div>
-            </div>
-            ) || null
-          }
-          {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal
-            && (
-              <Button>파일찾기</Button>
-            ) || null
-          }
-          {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal
-            && (
-              <>
-                {/*<Image src={imageSample} size="tiny" />*/}
-                <div>
-                  <p>- JPG, PNG 파일을 등록하실 수 있습니다.</p>
-                  <p>- 최대 ??? Byte 용량의 파일을 등록하실 수 있습니다.</p>
-                  <p>- Icon의 경우 ???x???의 사이즈를 추천합니다.</p>
+                  })}*/
+                    value={tinyAlbumId || ''}
+                    onChange={(e: any, data: any) => {
+                      changeTinyAlbumId(data.value);
+                    }}
+                  />
                 </div>
-              </>
+                <div className="h220">
+                  {
+                  tinyAlbumId ?
+                    <TinyAlbumForSK
+                      tinyAlbumKey="1" // 한 페이지에 두개 이상 TinyAlbum을 사용했을 때 서로 다른 키값을 부여한다.
+                      id={tinyAlbumId}
+                      patronType={PatronType.Denizen}
+                      patronKeyString="sampleDenizen3"
+                      pavilionId="samplePavilion3"
+                      options={{ title: 'SK Icon', subTitle: '등록된 Icon' }}
+                      onSelect={this.handleSKIconSelect}
+                    /> : null
+                }
+                </div>
+              </div>
+            ) || null
+          }
+          {
+            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal
+            && (
+              <div className="round-wrap2">
+                <div className="top img">
+                  {/* 직접등록후, 등록전에는 비어있으면됨 */}
+                  {
+                    personalCube && personalCube.iconBox.iconType === IconType.Personal
+                      && <Image src={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl} />
+                  }
+                  {
+                    personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl
+                    && <Button onClick={this.deleteFile}><Icon className="clear" /><span className="blind">delete</span></Button>
+                  }
+                  {/* // 직접등록후, 등록전에는 비어있으면됨 */}
+                </div>
+                <div className="bottom">
+                  <span className="text1">
+                    <Icon className="info16" />
+                    <span className="blind">infomation</span>
+                    JPG, PNG 파일을 등록하실 수 있습니다. / 최대 10MByte 용량의 파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를 추천합니다.
+                  </span>
+                  <div className="right-btn">
+                    <div className="ui input file2">
+                      <label
+                       // htmlFor="hidden-new-file2"
+                        className="ui button"
+                        //content={fileName}
+                        onClick={() => {
+                          if (this.fileInputRef && this.fileInputRef.current) {
+                            this.fileInputRef.current.click();
+                          }
+                        }}
+                      >파일찾기
+                      </label>
+                      <input type="file"
+                        id="hidden-new-file2"
+                        ref={this.fileInputRef}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => e.target.files && this.uploadFile(e.target.files[0])}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             ) || ''
           }
         </Form.Field>

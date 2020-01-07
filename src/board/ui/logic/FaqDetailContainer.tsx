@@ -5,7 +5,8 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import {ContentLayout, DatePeriod} from 'shared';
+import { ContentLayout } from 'shared';
+import moment from 'moment';
 import { CategoryService, PostService } from '../../../board';
 
 
@@ -60,7 +61,7 @@ class FaqDetailContainer extends React.Component<Props> {
                   <div className="title-inner">
                     <div className="title"> {post.title}</div>
                     <div className="user-info">
-                      <span className="date">{post.time && DatePeriod.changeDateToStringSupport(new Date(post.time))}</span>
+                      <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
                     </div>
                     <div className="actions">
                       <Button icon className="left postset commu-list16" onClick={() => this.onClose('FAQ')}><Icon

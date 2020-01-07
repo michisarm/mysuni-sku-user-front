@@ -2,6 +2,7 @@ import { Button, Icon, Table } from 'semantic-ui-react';
 import * as React from 'react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
+import moment from 'moment';
 import EnumUtil, { CubeStateView } from '../../../shared/ui/logic/getEumValue';
 
 
@@ -43,7 +44,7 @@ class CreateListView extends React.Component <Props> {
                     <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
                     <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
                     <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
-                    <Table.Cell className="date">{cube.time && new Date(cube.time).toLocaleDateString()}</Table.Cell>
+                    <Table.Cell className="date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
                   </Table.Row>
                 );
               })
