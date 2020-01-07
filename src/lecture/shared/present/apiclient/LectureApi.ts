@@ -9,6 +9,7 @@ import LectureViewRdoModel from '../../model/LectureViewRdoModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
+import RecommendLectureRdo from '../../model/RecommendLectureRdo';
 
 
 class LectureApi {
@@ -73,6 +74,13 @@ class LectureApi {
     //
     const params = lectureRdo;
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/shared', { params })
+      .then(response => response && response.data);
+  }
+
+  findAllRecommendLectures(lectureRdo: LectureRdoModel) {
+    //
+    const params = lectureRdo;
+    return axiosApi.get<RecommendLectureRdo[]>(this.baseUrl + '/flow/recommend', { params })
       .then(response => response && response.data);
   }
 }

@@ -42,4 +42,7 @@ export default {
 
   recommendChannelLectures: (channelId: string) =>
     `/lecture/recommend/channel/${channelId}`,
+
+  recommendLecturesPage: (pageNo: number) =>
+    `./${pageNo}`,
 };

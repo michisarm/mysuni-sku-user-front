@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import { withSplitting, UserApp, AppLayout } from './shared';
 import NotFoundPage from './layout/NotFoundPage';
-import { CollegeLecturesPage } from './lecture';
+import { CollegeLecturesPage, RecommendChannelLecturesPage } from './lecture';
 
 
 class Routes extends React.PureComponent {
@@ -60,7 +60,8 @@ class Routes extends React.PureComponent {
 
                     {/* lecture - recommend */}
                     <Route exact path="/lecture/recommend" component={withSplitting(() => import('./lecture').then(({ ChannelsLecturesPage }) => ChannelsLecturesPage))} />
-                    <Route exact path="/lecture/recommend/channel/:channelId" component={withSplitting(() => import('./lecture').then(({ RecommendChannelLecturesPage }) => RecommendChannelLecturesPage))} />
+                    <Redirect exact from="/lecture/recommend/channel/:channelId" to="/lecture/recommend/channel/:channelId/pages/1" />
+                    <Route exact path="/lecture/recommend/channel/:channelId/pages/:pageNo" component={RecommendChannelLecturesPage} />
 
                     {/* community  */}
                     <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new" component={withSplitting(() => import('./personalcube').then(({ PostFormPage }) => PostFormPage))} />

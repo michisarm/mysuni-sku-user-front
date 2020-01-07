@@ -8,34 +8,25 @@ import { ContentLayout } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
-import ChannelLecturesContainer from '../../../category/ui/logic/ChannelLecturesContainer';
+import LecturesByChannelContainer from '../logic/LecturesByChannelContainer';
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService,
 }
 
-@inject(mobxHelper.injectFrom('college.collegeService'))
+@inject(mobxHelper.injectFrom(
+  'college.collegeService',
+))
 @reactAutobind
 @observer
 class ChannelLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { match, collegeService } = this.props;
-    const { params } = match;
+    const { collegeService } = this.props;
 
     collegeService.findAllChannel();
-    collegeService.findChannelById(params.channelId);
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    //
-    const { match, collegeService } = this.props;
-
-    if (prevProps.match.params.channelId !== match.params.channelId) {
-      collegeService.findChannelById(match.params.channelId);
-    }
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -60,7 +51,7 @@ class ChannelLecturesPage extends Component<Props> {
           channels={channels}
           onSelectChannel={this.onSelectChannel}
         />
-        <ChannelLecturesContainer />
+        <LecturesByChannelContainer />
       </ContentLayout>
     );
   }

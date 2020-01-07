@@ -17,7 +17,7 @@ import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentW
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
-import ChannelLecturesContainer from '../../../recommend/ui/logic/ChannelLecturesContainer';
+import LecturesByChannelContainer from '../../../category/ui/logic/LecturesByChannelContainer';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
@@ -307,7 +307,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
         { channels && channels.length
           && channels.map((channel: ChannelModel) => (
             channel.checked && (
-              <ChannelLecturesContainer
+              <LecturesByChannelContainer
                 channel={channel}
                 onViewAll={this.onViewChannelAll}
                 key={`channel_cont_${channel.id}`}

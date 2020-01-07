@@ -42,6 +42,7 @@ export { default as RollBookModel } from './shared/model/RollBookModel';
 export { default as StudentCdoModel } from './shared/model/StudentCdoModel';
 export { default as StudentJoinRdoModel } from './shared/model/StudentJoinRdoModel';
 export { default as StudentCountRdoModel } from './shared/model/StudentCountRdoModel';
+export { default as RecommendLectureRdo } from './shared/model/RecommendLectureRdo';
 
 /** Component */
 export { default as CollegeLecturesPage } from './category/ui/page/CollegeLecturesPage';

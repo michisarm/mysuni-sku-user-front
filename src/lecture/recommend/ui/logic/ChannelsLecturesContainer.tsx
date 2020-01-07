@@ -3,13 +3,17 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
+import { ReviewService } from '@nara.drama/feedback';
 import { ChannelModel, CollegeService } from 'college';
+import { LectureService, RecommendLectureRdo } from 'lecture';
 import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesContainer from './ChannelLecturesContainer';
 
 
 interface Props {
   collegeService?: CollegeService
+  lectureService?: LectureService
+  reviewService?: ReviewService
 
   channels: ChannelModel[]
   onViewAll:(e: any, data: any) => void
@@ -18,15 +22,31 @@ interface Props {
 interface State {
 }
 
-@inject(mobxHelper.injectFrom('college.collegeService'))
+@inject(mobxHelper.injectFrom(
+  'college.collegeService',
+  'lecture.lectureService',
+  'shared.reviewService',
+))
 @reactAutobind
 @observer
 class ChannelsLecturesContainer extends Component<Props, State> {
   //
   componentDidMount(): void {
-    const { collegeService, channels } = this.props;
+    const { collegeService, lectureService, reviewService, channels } = this.props;
 
     collegeService!.setChannels(channels && channels.length && channels.map(chanel => ({ ...chanel, checked: true })) || []);
+    lectureService!.findPagingRecommendLectures(8, 0)
+      .then((recommendLectures) => {
+        let feedbackIds: string[] = [];
+        if (recommendLectures && recommendLectures.length) {
+          recommendLectures.forEach(recommendLecture => {
+            if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length) {
+              feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
+            }
+          });
+          reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+        }
+      });
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
@@ -51,8 +71,10 @@ class ChannelsLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, onViewAll } = this.props;
+    const { collegeService, lectureService, onViewAll } = this.props;
     const { channels } = collegeService as CollegeService;
+    const { recommendLectures } = lectureService as LectureService;
+    const channelIds = channels.filter((channel: ChannelModel) => channel.checked).map((channel: ChannelModel) => channel.id);
 
     return (
       <ChannelLecturesContentWrapperContainer
@@ -61,12 +83,13 @@ class ChannelsLecturesContainer extends Component<Props, State> {
       >
         <div className="recommend-area">
           {
-            channels && channels.length
-            && channels.map((channel: ChannelModel, index: number) => {
-              if (!channel.checked) return null;
+            recommendLectures && recommendLectures.length
+            && recommendLectures.map((lecture: RecommendLectureRdo, index: number) => {
+              if (!channelIds.includes(lecture.channel.id)) return null;
               return (
                 <ChannelLecturesContainer
-                  channel={channel}
+                  channel={new ChannelModel(lecture.channel)}
+                  lectures={lecture.lectures}
                   onViewAll={onViewAll}
                   key={`channel_cont_${index}`}
                 />
