@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
+import { timeToHourMinute, timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryModal from '../../../ui/logic/MyLearningSummaryModal';
 
 interface Props {
+  year: number
   totalLearningTime: number
   suniLearningTime: number
   myCompanyLearningTime: number
@@ -28,10 +29,38 @@ class LectureTotalTimeView extends Component<Props> {
 
   render() {
     //
-    const { totalLearningTime, suniLearningTime, myCompanyLearningTime } = this.props;
+    const { year, totalLearningTime, suniLearningTime, myCompanyLearningTime } = this.props;
     const { hour, minute } = timeToHourMinute(totalLearningTime);
-    const { hour: suniHour, minute: suniMinute } = timeToHourMinute(suniLearningTime);
-    const { hour: compHour, minute: compMinute } = timeToHourMinute(myCompanyLearningTime);
+    let total:any = null;
+
+    if (hour < 1 && minute < 1) {
+      total = (
+        <div className="value2">
+          <strong>00</strong><span>h</span> <strong>00</strong><span>m</span>
+        </div>
+      );
+    }
+    else if (hour < 1) {
+      total = (
+        <div className="value2">
+          <strong>{minute}</strong><span>m</span>
+        </div>
+      );
+    }
+    else if (minute < 1) {
+      total = (
+        <div className="value2">
+          <strong>{hour}</strong><span>h</span>
+        </div>
+      );
+    }
+    else {
+      total = (
+        <div className="value2">
+          <strong>{hour}</strong><span>h</span> <strong>{minute}</strong><span>m</span>
+        </div>
+      );
+    }
 
     return (
       <div className="cell">
@@ -45,12 +74,10 @@ class LectureTotalTimeView extends Component<Props> {
                     <Label className="onlytext">
                       <Icon className="total-time" /><span>총 학습시간</span>
                     </Label>
-                    <div className="value2">
-                      <strong>{hour || '00'}</strong><span>h</span>
-                      <strong className="min">{minute || '00'}</strong><span>m</span>
-                    </div>
+                    {total}
                   </Button>
                 )}
+                year={year}
               />
             }
           </div>
@@ -63,11 +90,11 @@ class LectureTotalTimeView extends Component<Props> {
             <div className="ui list">
               <dl className="item sk">
                 <dt>mySUNI</dt>
-                <dd>{suniHour || '00'}h {suniMinute || '00'}m</dd>
+                <dd>{timeToHourMinuteFormat(suniLearningTime)}</dd>
               </dl>
               <dl className="item my">
                 <dt>My company</dt>
-                <dd>{compHour || '00'}h {compMinute || '00'}m</dd>
+                <dd>{timeToHourMinuteFormat(myCompanyLearningTime)}</dd>
               </dl>
             </div>
           </div>

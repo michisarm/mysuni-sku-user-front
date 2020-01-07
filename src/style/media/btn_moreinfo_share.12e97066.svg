@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>btn / moreinfo / share</title>
+    <desc>Created with Sketch.</desc>
+    <g id="btn-/-moreinfo-/-share" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="btn_moreinfo_delete">
+            <circle id="Oval" stroke="#5B6477" cx="19" cy="19" r="18.5"></circle>
+            <path d="M28.5233436,16.471 L19.4893436,10 L19.4893436,13.076 C19.4893436,13.076 8.73734362,15.82 10.1233436,26.988 C10.1233436,26.988 11.8833436,19.56 19.4893436,19.812 L19.4893436,22.942 L28.5233436,16.471 Z" id="Fill-1" fill="#5B6477"></path>
+        </g>
+    </g>
+</svg>
