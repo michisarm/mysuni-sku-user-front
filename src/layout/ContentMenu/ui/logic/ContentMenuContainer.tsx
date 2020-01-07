@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Menu as SemanticMenu } from 'semantic-ui-react';
+import { Menu as SemanticMenu, Sticky } from 'semantic-ui-react';
 
 interface Menu {
   name: string,
@@ -12,6 +12,7 @@ interface Menu {
 interface Props {
   menus: Menu[]
   type: string
+  children?: React.ReactNode
   onSelectMenu:(type: string) => void
 }
 
@@ -20,31 +21,36 @@ class ContentMenuContainer extends Component<Props> {
   //
   static Menu: Menu;
 
+  contextRef: any = React.createRef();
+
   render() {
     //
-    const { menus, type, onSelectMenu } = this.props;
+    const { menus, type, children, onSelectMenu } = this.props;
 
     if (!menus || !menus.length) return null;
 
     return (
-      <div className="tab-menu offset0">
-        <div className="cont-inner">
-          <SemanticMenu className="sku">
-            {
-              menus.map((menu: Menu) => (
-                <SemanticMenu.Item
-                  name={menu.name}
-                  active={menu.type === type}
-                  key={`menu_${menu.name}`}
-                  onClick={() => onSelectMenu(menu.type)}
-                >
-                  {menu.name}
-                  { menu.count && <span className="count">+{menu.count}</span> || null }
-                </SemanticMenu.Item>
-              )) || null
-            }
-          </SemanticMenu>
-        </div>
+      <div ref={this.contextRef}>
+        <Sticky context={this.contextRef} className="tab-menu2 offset0">
+          <div className="cont-inner">
+            <SemanticMenu className="sku">
+              {
+                menus.map((menu: Menu) => (
+                  <SemanticMenu.Item
+                    name={menu.name}
+                    active={menu.type === type}
+                    key={`menu_${menu.name}`}
+                    onClick={() => onSelectMenu(menu.type)}
+                  >
+                    {menu.name}
+                    { menu.count && <span className="count">+{menu.count}</span> || null }
+                  </SemanticMenu.Item>
+                )) || null
+              }
+            </SemanticMenu>
+          </div>
+        </Sticky>
+        {children}
       </div>
     );
   }
