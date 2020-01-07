@@ -143,7 +143,7 @@ class CreateAudioTypeView extends React.Component<Props> {
               }
             <div className="info-text"><Icon className="info16" />
               <span className="blind">infomation</span>
-              교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다.
+              교육자료로 제공될 파일을 등록하실 수 있습니다. / 최대 1Gbyte 용량의 파일을 등록하실 수 있습니다.
             </div>
           </div>
         </Form.Field>

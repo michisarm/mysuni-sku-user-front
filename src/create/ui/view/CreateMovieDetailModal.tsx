@@ -14,6 +14,25 @@ class CreateMovieDetailModal extends React.Component<Props> {
     handleChangeOpen(false);
   }
 
+  handleClick() {
+    window.open('https://sku.ap.panopto.com/Panopto/Pages/Recorder/LaunchRecorder.aspx');
+  }
+
+  handleClickDownload() {
+    const userAgent = window.navigator.userAgent;
+
+    if (userAgent.indexOf('Mac')) {
+      window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/Panopto%20Recorder.pkg?arch=None&useCustomBinary=True');
+    }
+    if (userAgent.indexOf('Windows')) {
+      if (userAgent.indexOf('x64')) {
+        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=Amd64&useCustomBinary=True');
+      } else if (userAgent.indexOf('x86')) {
+        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=X86&useCustomBinary=True');
+      }
+    }
+  }
+
   render() {
     const { open, handleChangeOpen } = this.props;
     return (
@@ -33,7 +52,7 @@ class CreateMovieDetailModal extends React.Component<Props> {
                     <div className="cell">
                       <span className="text1">Panopto가 열리지 않은 경우 아래 최신 버전의 Panoto를 다운로드하여 설치여부를 확인하십시오.</span>
                       <span className="text5">
-                        <Button icon className="left icon-big-line2">
+                        <Button icon className="left icon-big-line2" onClick={this.handleClick}>
                           <Icon className="open" /><span>Panopto 열기</span>
                         </Button>
                       </span>
@@ -44,7 +63,7 @@ class CreateMovieDetailModal extends React.Component<Props> {
                     <div className="cell">
                       <span className="text1">PanoptoPoint, 비디오 및 오디오 프리젠테이션을 레코딩 합니다. 레코딩 결과를 Panopto 사이트에 업로드하여 학생 및 동료들과 공유하십시오.</span>
                       <span className="text5">
-                        <Button icon className="left icon-big-line2">
+                        <Button icon className="left icon-big-line2" onClick={this.handleClickDownload}>
                           <Icon className="download2" /><span>Panopto 다운로드</span>
                         </Button>
                         <span className="desc">macOS 10.13 이상 버전용</span>
