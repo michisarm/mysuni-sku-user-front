@@ -41,7 +41,7 @@ class CreateCommunityTypeView extends React.Component<Props> {
             label="비공개"
             name="radioGroup"
             value={SearchFilter.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
         </Form.Field>

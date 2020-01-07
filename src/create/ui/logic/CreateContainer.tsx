@@ -275,7 +275,7 @@ class CreateContainer extends React.Component<Props, States> {
         {
           lectures && lectures.length && (
             <div className="section">
-              <Lecture.Group type={Lecture.GroupType.Line}>
+              <Lecture.Group type={Lecture.GroupType.Box}>
                 {lectures.map((lecture: LectureModel, index: number) => {
                   const rating = ratingMap.get(lecture.reviewId) || 0;
                   const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
