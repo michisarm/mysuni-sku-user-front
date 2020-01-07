@@ -6,6 +6,7 @@ import { timeToHourMinute } from 'shared/helper/dateTimeHelper';
 import MyLearningSummaryModal from '../../../ui/logic/MyLearningSummaryModal';
 
 interface Props {
+  year: number
   totalLearningTime: number
   suniLearningTime: number
   myCompanyLearningTime: number
@@ -28,7 +29,7 @@ class LectureTotalTimeView extends Component<Props> {
 
   render() {
     //
-    const { totalLearningTime, suniLearningTime, myCompanyLearningTime } = this.props;
+    const { year, totalLearningTime, suniLearningTime, myCompanyLearningTime } = this.props;
     const { hour, minute } = timeToHourMinute(totalLearningTime);
     const { hour: suniHour, minute: suniMinute } = timeToHourMinute(suniLearningTime);
     const { hour: compHour, minute: compMinute } = timeToHourMinute(myCompanyLearningTime);
@@ -51,6 +52,7 @@ class LectureTotalTimeView extends Component<Props> {
                     </div>
                   </Button>
                 )}
+                year={year}
               />
             }
           </div>

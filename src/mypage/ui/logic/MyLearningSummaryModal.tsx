@@ -10,6 +10,7 @@ import MyLearningSummaryService from '../../present/logic/MyLearningSummaryServi
 interface Props {
   myLearningSummaryService?: MyLearningSummaryService
   trigger: React.ReactNode
+  year?: number
 }
 
 @inject(mobxHelper.injectFrom(
@@ -73,7 +74,13 @@ class MyLearningSummaryModal extends Component<Props> {
     const { hour: leadershipHour, minute: leadershipMinute } = timeToHourMinute(myLearningSummary.leadershipCollegeTime);
     const { hour: managementHour, minute: managementMinute } = timeToHourMinute(myLearningSummary.managementCollegeTime);
 
-    const today = moment(new Date()).format('YYYY.MM.DD');
+    let today = moment(new Date()).format('YYYY.MM.DD');
+    let year: number = new Date().getFullYear();
+
+    if (this.props.year && year !== this.props.year) {
+      year = this.props.year;
+      today = `${this.props.year}.12.31`;
+    }
 
     return (
       <Modal
@@ -95,7 +102,7 @@ class MyLearningSummaryModal extends Component<Props> {
                 <div className="row head">
                   <div className="cell v-middle">
                     <Icon className="total-time16" /><span className="blind">total time</span>
-                    <span className="text01">{myLearningSummary.year || new Date().getFullYear()}.01.01 ~ {today}</span>
+                    <span className="text01">{year}.01.01 ~ {today}</span>
                     <span className="text02">총 학습시간</span>
                   </div>
                   <div className="cell v-middle"><span className="text01">College 별 학습 시간</span>

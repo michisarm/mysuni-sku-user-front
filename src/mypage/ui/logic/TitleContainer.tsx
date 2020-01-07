@@ -64,7 +64,8 @@ class TitleContainer extends Component<Props, States> {
     const currentYear = new Date().getFullYear();
     const years = [];
     for (let i = 0; i < 5; i++) {
-      years.push(Number(currentYear) - i);
+      const year = Number(currentYear) - i;
+      years.push({ key: `${year}`, text: `${year}`, value: year });
     }
 
     return (
@@ -74,6 +75,7 @@ class TitleContainer extends Component<Props, States> {
           onChangePhoto={this.onChangePhoto}
         />
         <LectureTotalTimeView
+          year={year}
           totalLearningTime={myLearningSummary.totalLearningTime}
           suniLearningTime={myLearningSummary.suniLearningTime}
           myCompanyLearningTime={myLearningSummary.myCompanyLearningTime}

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 interface Props {
   stampCount: number
   year: number
-  years: number[]
+  years: any[]
   onChangeYear:(year: number) => void
 }
 
@@ -27,15 +27,7 @@ class StampInfoView extends Component<Props> {
           </Label>
 
           <div className="year">
-            <div className="ui inline dropdown tight">
-              <Dropdown text={`${year}`}>
-                <Dropdown.Menu>
-                  {
-                    years.map(y => (<Dropdown.Item onClick={() => onChangeYear(y)}>{y}</Dropdown.Item>))
-                  }
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
+            <Dropdown value={year} options={years} className="inline tight" onChange={(e, data) => onChangeYear(Number(data.value))} />
           </div>
         </div>
       </div>
