@@ -39,7 +39,7 @@ export default class PostService {
   }
 
   registerPost(post: PostModel) {
-    post = _.set(post, 'audienceKey', 'r2p8-r@nea-m5-c5');
+    // post = _.set(post, 'audienceKey', 'r2p8-r@nea-m5-c5');
     return this.postApi.registerPost(PostModel.asCdo(post));
   }
 

@@ -13,7 +13,8 @@ export class PostModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
-  audienceKey: string = 'r2p8-r@nea-m5-c5';
+  //audienceKey: string = 'r2p8-r@nea-m5-c5';
+  audienceKey: string = '';
 
   postId: string = '';
   title: string = '';
