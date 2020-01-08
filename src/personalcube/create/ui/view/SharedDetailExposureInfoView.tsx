@@ -1,6 +1,6 @@
 import { Image, Table } from 'semantic-ui-react';
 import * as React from 'react';
-import { PersonalCubeModel } from '../../../personalcube/personalcube';
+import { PersonalCubeModel } from '../../../personalcube';
 
 interface Props {
   personalCube: PersonalCubeModel

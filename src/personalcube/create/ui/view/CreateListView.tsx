@@ -1,9 +1,10 @@
+import React from 'react';
 import { Button, Icon, Table } from 'semantic-ui-react';
-import * as React from 'react';
-import { SearchFilter } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+
 import moment from 'moment';
-import EnumUtil, { CubeStateView } from '../../../shared/ui/logic/getEumValue';
+import { SearchFilter } from 'shared';
+import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
+import { PersonalCubeModel } from 'personalcube/personalcube';
 
 
 interface Props {

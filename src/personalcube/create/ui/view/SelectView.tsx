@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Icon, Select } from 'semantic-ui-react';
-import { CubeQueryModel } from '../../../personalcube/personalcube/model/CubeQueryModel';
+import { CubeQueryModel } from '../../../personalcube/model/CubeQueryModel';
 
 interface Props{
   totalCount: number

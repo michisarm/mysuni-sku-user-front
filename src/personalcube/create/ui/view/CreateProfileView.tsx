@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';
-import CreateMovieDetailModal from '../view/CreateMovieDetailModal';
-import { EmployeeModel } from '../../../profile';
+import CreateMovieDetailModal from './CreateMovieDetailModal';
+import { EmployeeModel } from '../../../../profile';
 
 interface Props {
   routeToCreateDetail:() => void

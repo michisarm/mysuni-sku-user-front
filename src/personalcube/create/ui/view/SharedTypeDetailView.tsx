@@ -7,8 +7,8 @@ import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import depot from '@nara.drama/depot';
 import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
-import { MediaService, MediaType } from '../../../personalcube/media';
-import { OfficeWebService } from '../../../personalcube/officeweb';
+import { MediaService, MediaType } from '../../../media';
+import { OfficeWebService } from '../../../officeweb';
 
 interface Props {
   personalCube: PersonalCubeModel

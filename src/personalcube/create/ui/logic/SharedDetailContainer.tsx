@@ -3,21 +3,20 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
-import { ContentLayout, CubeType } from 'shared';
 import depot from '@nara.drama/depot';
+import { ContentLayout, CubeType, AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
-import { PersonalCubeService } from '../../../personalcube/personalcube';
-import { CubeIntroModel, CubeIntroService } from '../../../personalcube/cubeintro';
-import { MediaService } from '../../../personalcube/media';
-import { OfficeWebService } from '../../../personalcube/officeweb';
-import { BoardService } from '../../../personalcube/board';
+import { PersonalCubeService } from '../../../personalcube';
+import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
+import { MediaService } from '../../../media';
+import { OfficeWebService } from '../../../officeweb';
+import { BoardService } from '../../../board';
 import SharedDetailBasicInfoView from '../view/SharedDetailBasicInfoView';
 import SharedDetailExposureInfoView from '../view/SharedDetailExposureInfoView';
 import SharedDetailIntroView from '../view/SharedDetailIntroView';
 import SharedTypeDetailView from '../view/SharedTypeDetailView';
 import SharedDetailIntroEditContainer from './SharedDetailIntroEditContainer';
-import AlertWin from '../../../shared/ui/logic/AlertWin';
-import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
+
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string, cubeState: string }> {
   personalCubeService?: PersonalCubeService

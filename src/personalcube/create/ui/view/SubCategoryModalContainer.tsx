@@ -2,8 +2,8 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Accordion, Button, Checkbox, Icon, Modal } from 'semantic-ui-react';
-import { ChannelModel, CollegeModel, CollegeService } from '../../../college';
-import { CategoryModel } from '../../../shared';
+import { ChannelModel, CollegeModel, CollegeService } from '../../../../college';
+import { CategoryModel } from '../../../../shared';
 
 interface Props {
   collegeService? : CollegeService

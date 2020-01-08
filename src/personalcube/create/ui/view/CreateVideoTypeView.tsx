@@ -6,10 +6,10 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
-import { MediaModel, MediaService, MediaType } from '../../../personalcube/media';
-import { PersonalCubeModel } from '../../../personalcube/personalcube';
+import { MediaModel, MediaService, MediaType } from '../../../media';
+import { PersonalCubeModel } from '../../../personalcube';
 import PanoptoListModal from './PanoptoListModal';
-import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
+import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

@@ -9,7 +9,7 @@ import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
 import classNames from 'classnames';
-import SelectType from '../../../shared/model/SelectType';
+import SelectType from '../../../../shared/model/SelectType';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void

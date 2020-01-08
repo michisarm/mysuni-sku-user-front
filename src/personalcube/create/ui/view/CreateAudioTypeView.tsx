@@ -7,8 +7,8 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { MediaModel, MediaService, MediaType } from 'personalcube/media';
 import { PersonalCubeModel } from 'personalcube/personalcube';
-import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
-import { CollegeService } from '../../../college';
+import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
+import { CollegeService } from '../../../../college';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

@@ -4,8 +4,8 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 
 import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { CubeIntroModel, CubeIntroService } from '../../../personalcube/cubeintro';
-import SelectType from '../../../shared/model/SelectType';
+import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
+import SelectType from '../../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from './ContentsProviderSelectContainer';
 
 interface Props {

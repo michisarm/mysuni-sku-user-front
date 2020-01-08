@@ -5,8 +5,9 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 
 import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { CubeIntroModel } from '../../../personalcube/cubeintro';
-import { BoardService } from '../../../personalcube';
+import { CubeIntroModel } from '../../../cubeintro';
+import { BoardService } from '../../../board';
+
 
 interface Props {
   cubeIntro: CubeIntroModel

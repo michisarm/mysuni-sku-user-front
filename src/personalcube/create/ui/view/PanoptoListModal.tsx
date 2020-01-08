@@ -5,7 +5,7 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
 import { MediaService } from 'personalcube/media';
-import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
+import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
 
 interface Props {

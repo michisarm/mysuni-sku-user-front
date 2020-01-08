@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { BoardService } from '../../../personalcube/board';
+import { BoardService } from '../../../board';
 import AdditionalInfoForCommunityView from '../view/AdditionalInfoForCommunityView';
 
 interface Props extends RouteComponentProps {
