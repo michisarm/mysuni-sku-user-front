@@ -198,7 +198,7 @@ class CreateIntroView extends React.Component<Props, States> {
             type="cubeInfo"
             defaultValue={
               cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-              && JSON.stringify(cubeIntro.operation.organizer)
+              && JSON.stringify({ id: cubeIntro.operation.organizer.id, name: cubeIntro.operation.organizer.name })
             }
           />
         </Form.Field>
