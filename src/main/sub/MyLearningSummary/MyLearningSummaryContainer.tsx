@@ -5,8 +5,9 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentHeader } from 'shared';
-import { MyLearningSummaryModal, MyLearningSummaryService } from 'mypage';
+import { MyLearningSummaryModal, MyLearningSummaryService } from 'myTraining';
 import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSummaryElementsView';
 
 
@@ -47,12 +48,12 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   onClickComplete() {
     //
-    this.props.history.push('/mypage/CompletedList');
+    this.props.history.push(myTrainingRoutePaths.myPageCompletedList());
   }
 
   onClickStamp() {
     //
-    this.props.history.push('/mypage/EarnedStampList');
+    this.props.history.push(myTrainingRoutePaths.myPageEarnedStampList());
   }
 
   render() {
@@ -99,7 +100,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <Button
             icon
             className="right btn-black"
-            onClick={() => this.props.history.push('/my-training')}
+            onClick={() => this.props.history.push(myTrainingRoutePaths.learning())}
           >
             View all
             <Icon className="morelink" />

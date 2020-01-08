@@ -4,6 +4,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
 import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 
 
 export const LogoView: React.FC = () => (
@@ -23,8 +24,8 @@ interface MenuViewProps {
 export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
-      <NavLink to="/my-training" className="item">Learning</NavLink>
-      <NavLink to="/community" className="item">Community</NavLink>
+      <NavLink to={myTrainingRoutePaths.learning()} className="item">Learning</NavLink>
+      <NavLink to={myTrainingRoutePaths.community()} className="item">Community</NavLink>
       <NavLink to={lectureRoutePaths.recommend()} className="item">Recommend</NavLink>
       <NavLink to="/personalcube/create" className="item">Create</NavLink>
     </div>

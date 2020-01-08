@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
-import { MyLearningSummaryService } from 'mypage/index';
+import { MyLearningSummaryService } from 'myTraining/index';
 import { SkProfileService } from 'profile';
 import ProfileView from '../view/title/ProfileView';
 import LectureTotalTimeView from '../view/title/LectureTotalTimeView';

@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import SockJs from 'sockjs-client';
 
 //import { tenantInfo } from '@nara.platform/dock';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
@@ -16,6 +17,7 @@ import {
 import { ChannelModel } from '../../../../../college';
 
 import FeedEventRdo from '../model/FeedEventRdo';
+
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
@@ -135,13 +137,13 @@ class QuickNavContainer extends Component<Props, State> {
   onClickLearning() {
     //
     this.setState( { feedType: '' } );
-    this.routeNav('/my-training');
+    this.routeNav(myTrainingRoutePaths.learning());
   }
 
   onClickCommunity() {
     //
     this.setState( { feedType: '' } );
-    this.routeNav('/community');
+    this.routeNav(myTrainingRoutePaths.community());
   }
 
   onClickSupport() {

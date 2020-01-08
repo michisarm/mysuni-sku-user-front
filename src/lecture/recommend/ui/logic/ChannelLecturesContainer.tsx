@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NoSuchContentPanel, OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';

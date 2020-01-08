@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NoSuchContentPanel } from 'shared';
 import { LectureService } from 'lecture/index';
 import { ChannelModel } from 'college';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';

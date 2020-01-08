@@ -7,7 +7,7 @@ import { Label } from 'semantic-ui-react';
 import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'mypage';
+import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { SkProfileService } from 'profile';

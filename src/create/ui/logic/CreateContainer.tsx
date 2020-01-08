@@ -7,6 +7,8 @@ import { ContentLayout, CubeState, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
+import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
 import SelectType from '../../../shared/model/SelectType';
@@ -15,9 +17,8 @@ import NoSuchContentPanel from '../../../shared/components/NoSuchContentPanel';
 import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
 import { LectureCardService, LectureModel, LectureService } from '../../../lecture';
 import { SeeMoreButton } from '../../../lecture/shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../myTraining';
 import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
-import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
 import { SkProfileModel, SkProfileService } from '../../../profile';
 
@@ -109,7 +110,7 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   routeToMyPage() {
-    this.props.history.push('/mypage/CompletedList');
+    this.props.history.push(myTrainingRoutePaths.myPage());
   }
 
   handleClickCubeRow(personalCubeId: string) {

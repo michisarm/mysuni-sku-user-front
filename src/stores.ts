@@ -8,7 +8,7 @@ import { lectureCardStores } from 'lecture';
 import { expertStores } from 'expert';
 import { profileStores } from 'profile';
 import { boardStores } from 'board';
-import { myTrainingStores } from 'mypage';
+import { myTrainingStores } from 'myTraining';
 
 
 const stores = {

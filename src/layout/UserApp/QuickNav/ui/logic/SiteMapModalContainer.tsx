@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Modal, Icon, Button } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'create/routePaths';
-import myPageRoutePaths from 'mypage/routePaths';
+import myPageRoutePaths from 'myTraining/routePaths';
 import { CollegeLectureCountService } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 

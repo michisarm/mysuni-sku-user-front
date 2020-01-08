@@ -8,7 +8,7 @@ import { PageService, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';

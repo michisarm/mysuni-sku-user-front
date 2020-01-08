@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button, Label, Icon } from 'semantic-ui-react';
-import { MyLearningSummaryModal } from 'mypage/index';
+import { MyLearningSummaryModal } from 'myTraining/index';
 
 
 interface Props {

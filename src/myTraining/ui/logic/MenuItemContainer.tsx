@@ -9,7 +9,7 @@ import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import { Lecture } from 'lecture';
-import routePaths from '../../../mypage/routePaths';
+import routePaths from '../../routePaths';
 
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';

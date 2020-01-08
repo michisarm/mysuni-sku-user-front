@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NewPageService } from 'shared';
 import { CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';

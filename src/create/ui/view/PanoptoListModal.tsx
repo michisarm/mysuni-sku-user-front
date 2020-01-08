@@ -79,7 +79,7 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   render() {
-    const { panoptos, media, panoptoCdo, panopto: selectedPanopto, changePanoptoCdoProps } = this.props.mediaService || {} as MediaService;
+    const { panoptos, media, panopto: selectedPanopto } = this.props.mediaService || {} as MediaService;
     const { pageMap } = this.props.sharedService || {} as SharedService;
     const { open } = this.state;
     const results = panoptos && panoptos.results;

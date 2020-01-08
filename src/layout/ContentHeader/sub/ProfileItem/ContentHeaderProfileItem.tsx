@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button, Icon, Image } from 'semantic-ui-react';
-// import profileImage from 'style/images/all/profile-56-px.png';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 
 
 interface Props {
@@ -25,7 +25,7 @@ class ContentHeaderProfileItem extends Component<Props> {
   };
 
   onClickMyPage() {
-    window.location.href = `${process.env.PUBLIC_URL}/mypage`;
+    window.location.href = `${process.env.PUBLIC_URL}${myTrainingRoutePaths.myPage()}`;
   }
 
   render() {

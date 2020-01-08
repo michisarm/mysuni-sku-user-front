@@ -7,7 +7,7 @@ import { CubeType, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
