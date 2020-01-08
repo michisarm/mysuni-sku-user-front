@@ -1,7 +1,8 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
+import LectureFlowApi from '../apiclient/LectureFlowApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
@@ -17,6 +18,9 @@ class LectureService {
   static instance: LectureService;
 
   private lectureApi: LectureApi;
+
+  private lectureFlowApi: LectureFlowApi;
+
 
   @observable
   _lectures: LectureModel[] = [];
@@ -34,28 +38,29 @@ class LectureService {
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
-  constructor(lectureApi: LectureApi) {
+  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi) {
     this.lectureApi = lectureApi;
+    this.lectureFlowApi = lectureFlowApi;
   }
 
   @computed
   get lectures() {
     //
-    const lectures = this._lectures as any;
+    const lectures = this._lectures as IObservableArray;
     return lectures.peek();
   }
 
   @computed
   get recommendLectures() {
     //
-    const recommendLectures = this._recommendLectures as any;
+    const recommendLectures = this._recommendLectures as IObservableArray;
     return recommendLectures.peek();
   }
 
   @computed
   get lectureViews() {
     //
-    const lectureViews = this._lectureViews as any;
+    const lectureViews = this._lectureViews as IObservableArray;
     return lectureViews.peek();
   }
 
@@ -176,7 +181,7 @@ class LectureService {
   @action
   async findPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
     //
-    const recommendLectures = await this.lectureApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
 
     return runInAction(() => {
       this._recommendLectures = recommendLectures.map(recommendLecture => new RecommendLectureRdo(recommendLecture));
@@ -187,7 +192,7 @@ class LectureService {
   @action
   async addPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
     //
-    const recommendLectures = await this.lectureApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
 
     return runInAction(() => {
       if (recommendLectures && recommendLectures.length && recommendLectures.length === 1) {
@@ -201,6 +206,6 @@ class LectureService {
   }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance);
+LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);
 
 export default LectureService;

@@ -1,4 +1,4 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { CubeType } from 'shared';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
@@ -24,7 +24,7 @@ class MyTrainingService {
   @computed
   get myTrainings() {
     //
-    const myTrainings = this._myTrainings as any;
+    const myTrainings = this._myTrainings as IObservableArray;
     return myTrainings.peek();
   }
 

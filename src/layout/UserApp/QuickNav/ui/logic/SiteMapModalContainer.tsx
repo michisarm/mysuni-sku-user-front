@@ -5,18 +5,16 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
-import { CollegeService } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'create/routePaths';
 import myPageRoutePaths from 'mypage/routePaths';
-import LectureCountService from '../../../present/logic/LectureCountService';
+import { CollegeLectureCountService } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
 
 interface Props extends RouteComponentProps {
   trigger: React.ReactNode,
-  collegeService?: CollegeService,
-  lectureCountService?: LectureCountService,
+  collegeLectureCountService?: CollegeLectureCountService,
 }
 
 interface State {
@@ -25,7 +23,7 @@ interface State {
   bottomSiteMaps: SiteMap[]
 }
 
-@inject(mobxHelper.injectFrom('college.collegeService', 'layout.lectureCountService'))
+@inject(mobxHelper.injectFrom('lecture.collegeLectureCountService'))
 @reactAutobind
 @observer
 class SiteMapModalContainer extends Component<Props, State> {
@@ -119,21 +117,16 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   async setSiteMapWithCount() {
     //
-    const { collegeService, lectureCountService } = this.props;
+    const { collegeLectureCountService } = this.props;
     const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
 
-    const colleges = await collegeService!.findAllColleges();
-    const targetColleges = colleges.filter((college) =>
-      baseCategoryItems.items.some((item) => college.name === item.name)
-    );
-
-    const collegeCountList = await lectureCountService!.findCollegesCount(targetColleges);
+    const colleges = await collegeLectureCountService!.findCollegeLectureCounts();
 
     const categorySiteMap = {
       ...baseCategoryItems,
       items: baseCategoryItems.items.map((item) => ({
         ...item,
-        count: collegeCountList.find((collegeCount) => collegeCount.name === item.name)!.lectureCount,
+        count: colleges.find(college => college.name === item.name)!.collegeCount,
       })),
     };
 

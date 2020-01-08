@@ -60,7 +60,7 @@ class LectureRdoModel {
     return new LectureRdoModel({
       college: '',
       channel: channel || '',
-      orderBy: orderBy ? orderBy : OrderByType.Time,
+      orderBy: orderBy || OrderByType.Time,
       limit,
       offset,
     });

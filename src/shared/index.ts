@@ -27,6 +27,7 @@ export {
 /** Model */
 export { default as DramaEntityObservableModel } from './model/DramaEntityObservableModel';
 export { default as IdName } from './model/IdName';
+export { default as IdNameCount } from './model/IdNameCount';
 export { default as IdNameList } from './model/IdNameList';
 export { NameValueList } from './model/NameValueList';
 export { default as OffsetElementList } from './model/OffsetElementList';
