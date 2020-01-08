@@ -158,10 +158,11 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
+
         if (studentJoins.length) return undefined;
         if (!applyingPeriod) return undefined;
-        if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString())
-          || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString())) {
+        if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
+          || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
           return undefined;
         }
         if (typeViewObject.classrooms && typeViewObject.classrooms.length) {

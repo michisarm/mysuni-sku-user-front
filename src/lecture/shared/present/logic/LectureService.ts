@@ -10,6 +10,7 @@ import RecommendLectureRdo from '../../model/RecommendLectureRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
+import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 
 
 @autobind
@@ -105,6 +106,20 @@ class LectureService {
   async findPagingCommunityLectures(limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllCommunityLectures(CommunityLectureRdoModel.new(limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    return runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      return lectureOffsetElementList;
+    });
+  }
+
+  @action
+  async findPagingRequiredLectures(limit: number, offset: number) {
+    //
+    const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));

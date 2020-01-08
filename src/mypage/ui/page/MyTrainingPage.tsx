@@ -8,7 +8,7 @@ import { Segment } from 'semantic-ui-react';
 
 import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService, CubeType } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
-import { Lecture } from 'lecture';
+import { Lecture, LectureService, LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
@@ -28,6 +28,7 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
   skProfileService?: SkProfileService
+  lectureService?: LectureService
   myTrainingService?: MyTrainingService
   inMyLectureService?: InMyLectureService
   myLearningSummaryService?: MyLearningSummaryService
@@ -51,6 +52,7 @@ enum Type {
   'shared.pageService',
   'shared.reviewService',
   'profile.skProfileService',
+  'lecture.lectureService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.myLearningSummaryService',
@@ -92,10 +94,13 @@ class MyTrainingPage extends Component<Props, State> {
 
   selectMenu(type: string) {
     //
-    const { pageService, inMyLectureService, myTrainingService } = this.props;
+    const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
 
     if (type === Type.InMyList) {
       inMyLectureService!.clear();
+    }
+    if (type === Type.Required) {
+      lectureService!.clearLectures();
     }
     else {
       myTrainingService!.clear();
@@ -110,7 +115,7 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   async findPagingList() {
-    const { inMyLectureService, myTrainingService, pageService, reviewService } = this.props;
+    const { inMyLectureService, myTrainingService, lectureService, pageService, reviewService } = this.props;
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
     const page = pageService!.pageMap.get(this.PAGE_KEY);
@@ -125,7 +130,7 @@ class MyTrainingPage extends Component<Props, State> {
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
     else if (type === Type.Required) {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithRequired(page!.limit, page!.nextOffset, channelIds);
+      offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
     }
     else {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
@@ -202,17 +207,20 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   renderList() {
-    const { inMyLectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
     const { ratingMap } =  reviewService as ReviewService;
     const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
-    let list: (MyTrainingModel | InMyLectureModel)[] = [];
+    let list: (MyTrainingModel | LectureModel | InMyLectureModel)[] = [];
 
     switch (type) {
       case Type.InMyList:
         list = inMyLectureService!.inMyLectures;
+        break;
+      case Type.Required:
+        list = lectureService!.lectures;
         break;
       case Type.Completed:
         cardType = Lecture.GroupType.List;
@@ -229,9 +237,9 @@ class MyTrainingPage extends Component<Props, State> {
         {
           list && list.length && (
             <Lecture.Group type={cardType}>
-              {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
+              {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
                 let rating: number | undefined;
-                if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
+                if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
                   rating = ratingMap.get(value.reviewId) || 0;
                 }
                 const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;

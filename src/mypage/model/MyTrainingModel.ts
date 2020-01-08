@@ -85,6 +85,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       if (this.learningState === LearningState.Progress) return 'In Progress';
       if (this.learningState === LearningState.Passed) return 'Completed';
       if (this.learningState === LearningState.Missed) return 'Missed';
+      if (this.cubeType === CubeType.Community) return 'Joined';
       else return 'Enrolled';
     }
     else return this.proposalState.toString();
