@@ -12,6 +12,7 @@ interface Menu {
 interface Props {
   menus: Menu[]
   type: string
+  lectureHeader?: React.ReactNode
   children?: React.ReactNode
   onSelectMenu:(type: string) => void
 }
@@ -25,13 +26,14 @@ class ContentMenuContainer extends Component<Props> {
 
   render() {
     //
-    const { menus, type, children, onSelectMenu } = this.props;
+    const { menus, type, lectureHeader, children, onSelectMenu } = this.props;
 
     if (!menus || !menus.length) return null;
 
     return (
       <div ref={this.contextRef}>
         <Sticky context={this.contextRef} className="tab-menu2 offset0">
+          {lectureHeader}
           <div className="cont-inner">
             <SemanticMenu className="sku">
               {
