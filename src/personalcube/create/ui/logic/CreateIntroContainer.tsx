@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
+import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';
 import CreateIntroView from '../view/CreateIntroView';
 import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
@@ -164,15 +165,15 @@ class CreateIntroContainer extends React.Component<Props, States> {
   routeToBasicList(personalCubeId?: string, cubeType?: string) {
     //
     if (personalCubeId === 'undefined') {
-      this.props.history.push(`/personalcube/create-detail`);
+      this.props.history.push(routePaths.createNew());
     } else {
-      this.props.history.push(`/personalcube/create-detail/${personalCubeId}/${cubeType}`);
+      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
     }
   }
 
   routeToCreateList() {
     //
-    this.props.history.push(`/personalcube/create`);
+    this.props.history.push(routePaths.create());
   }
 
   handleSave() {
@@ -351,7 +352,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
           if (cubeType === 'Community') boardService.removeBoard(personalCubeId);
           if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService.removeOfficeWeb(personalCubeId);
         })
-        .then(() => this.props.history.push(`/personalcube/create`));
+        .then(() => this.props.history.push(routePaths.create()));
     }
   }
 

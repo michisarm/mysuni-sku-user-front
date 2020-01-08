@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import depot from '@nara.drama/depot';
 import { ContentLayout, CubeType, AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
+import routePaths from '../../../routePaths';
 import { PersonalCubeService } from '../../../personalcube';
 import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
 import { MediaService } from '../../../media';
@@ -208,7 +209,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
   routeToCreateList() {
     //
-    this.props.history.push(`/personalcube/create`);
+    this.props.history.push(routePaths.create());
   }
 
   goToVideo(url: string) {

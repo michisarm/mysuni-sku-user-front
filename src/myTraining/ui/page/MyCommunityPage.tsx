@@ -100,7 +100,7 @@ class MyCommunityPage extends Component<Props, State> {
 
   onSelectMenu(type: string) {
     //
-    this.props.history.push(routePaths.community(type));
+    this.props.history.push(routePaths.communityTab(type));
   }
 
   async findPagingList() {

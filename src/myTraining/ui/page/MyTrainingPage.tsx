@@ -114,7 +114,7 @@ class MyTrainingPage extends Component<Props, State> {
 
   onSelectMenu(type: string) {
     //
-    this.props.history.push(routePaths.learning(type));
+    this.props.history.push(routePaths.learningTab(type));
   }
 
   async findPagingList() {

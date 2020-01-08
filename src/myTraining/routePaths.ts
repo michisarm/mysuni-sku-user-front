@@ -2,22 +2,25 @@
 
 const routePaths = {
 
-  learning: (tab: string = 'InProgress') => `/my-training/${tab}`,
-  learningInProgress: () => routePaths.learning('InProgress'),
-  learningInMyList: () => routePaths.learning('InMyList'),
-  learningEnrolled: () => routePaths.learning('Enrolled'),
-  learningRequired: () => routePaths.learning('Required'),
-  learningCompleted: () => routePaths.learning('Completed'),
-  learningRetry: () => routePaths.learning('Retry'),
+  learning: () => '/my-training/learning',
+  learningTab: (tab: string = 'InProgress') => `/my-training/learning/${tab}`,
+  learningInProgress: () => routePaths.learningTab('InProgress'),
+  learningInMyList: () => routePaths.learningTab('InMyList'),
+  learningEnrolled: () => routePaths.learningTab('Enrolled'),
+  learningRequired: () => routePaths.learningTab('Required'),
+  learningCompleted: () => routePaths.learningTab('Completed'),
+  learningRetry: () => routePaths.learningTab('Retry'),
 
-  myPage: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}`,
-  myPageCompletedList: () => routePaths.myPage('CompletedList'),
-  myPageEarnedStampList: () => routePaths.myPage('EarnedStampList'),
+  myPage: () => '/my-training/my-page',
+  myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}`,
+  myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
+  myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
 
-  community: (tab: string = 'MyCommunity') => `/my-training/community/${tab}`,
-  communityMyCommunity: () => routePaths.community('MyCommunity'),
-  communityMyCreatedCommunity: () => routePaths.community('MyCreatedCommunity'),
-  communityMyFeed: () => routePaths.community('MyFeed'),
+  community: () => '/my-training/community',
+  communityTab: (tab: string = 'MyCommunity') => `/my-training/community/${tab}`,
+  communityMyCommunity: () => routePaths.communityTab('MyCommunity'),
+  communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
+  communityMyFeed: () => routePaths.communityTab('MyFeed'),
 };
 
 export default routePaths;

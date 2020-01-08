@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { ContentLayout, AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
+import routePaths from '../../../routePaths';
 import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';
 import { BoardService } from '../../../board';
@@ -71,7 +72,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
   routeToCreateList() {
     //
-    this.props.history.push(`/personalcube/create`);
+    this.props.history.push(routePaths.create());
   }
 
   onChangePersonalCubeProps(name: string, value: string | {}) {
@@ -163,7 +164,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
       if (!cubeIntroId) {
         Promise.resolve()
           .then(() => personalCubeService.removePersonalCube(personalCubeId))
-          .then(() => this.props.history.push(`/personalcube/create`));
+          .then(() => this.props.history.push(routePaths.create()));
       } else {
         Promise.resolve()
           .then(() => {
@@ -171,8 +172,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
             if (cubeType === 'Community') boardService.removeBoard(personalCubeId);
             if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService.removeOfficeWeb(personalCubeId);
           })
-          .then(() => this.props.history.push(`/personalcube/create`));
-
+          .then(() => this.props.history.push(routePaths.create()));
       }
     }
   }
@@ -183,7 +183,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
     const personalCubeObject = PersonalCubeModel.typeIsBlank(personalCube);
     if (personalCubeObject === 'success') {
-      this.props.history.push(`/personalcube/create-intro/${personalCubeId}/${personalCube.contents.type}`);
+      this.props.history.push(routePaths.createIntro(personalCubeId || '', personalCube.contents.type));
     }
     if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
 

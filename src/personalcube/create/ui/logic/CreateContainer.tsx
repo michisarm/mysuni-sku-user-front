@@ -19,7 +19,7 @@ import { LectureCardService, LectureModel, LectureService } from '../../../../le
 import { SeeMoreButton } from '../../../../lecture/shared';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../../myTraining';
 import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
-import routePaths from '../../routePaths';
+import routePaths from '../../../routePaths';
 import { SkProfileModel, SkProfileService } from '../../../../profile';
 
 
@@ -102,11 +102,11 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   handleItemClick(e: any, { name }: any) {
-    this.props.history.push(routePaths.create(name));
+    this.props.history.push(routePaths.createTab(name));
   }
 
   routeToCreateDetail() {
-    this.props.history.push('/personalcube/create-detail');
+    this.props.history.push(routePaths.createNew());
   }
 
   routeToMyPage() {
@@ -121,8 +121,8 @@ class CreateContainer extends React.Component<Props, States> {
         .then(() => {
           const cubeType = personalCubeService.personalCube.contents.type;
           const cubeState = personalCubeService.personalCube.cubeState;
-          if (cubeState === CubeState.Created) this.props.history.push(`/personalcube/create-detail/${personalCubeId}/${cubeType}`);
-          else  this.props.history.push(`/personalcube/shared-detail/${personalCubeId}/${cubeType}/${cubeState}`);
+          if (cubeState === CubeState.Created) this.props.history.push(routePaths.createDetail(personalCubeId, cubeType));
+          else  this.props.history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
         });
     }
   }

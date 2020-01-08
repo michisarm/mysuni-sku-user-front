@@ -4,17 +4,19 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 
 import { Menu, Segment } from 'semantic-ui-react';
+import lectureRoutePaths from 'lecture/routePaths';
 import { NoSuchContentPanel, PageService } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import { Lecture } from 'lecture';
+
 import routePaths from '../../routePaths';
 
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import lectureRoutePaths from '../../../lecture/routePaths';
 import LineHeaderContainer from './LineHeaderContainer';
+
 
 interface States {
   activeItem : string
@@ -83,7 +85,7 @@ class MenuItemContainer extends Component<Props, States> {
   }
 
   onChangeItem(event:any, item:any) {
-    this.props.history.push(routePaths.myPage(item.name));
+    this.props.history.push(routePaths.myPageTab(item.name));
     event.preventDefault();
   }
 
