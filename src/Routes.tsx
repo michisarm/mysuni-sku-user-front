@@ -24,7 +24,7 @@ class Routes extends PureComponent {
           <Suspense fallback="">
             <Switch>
               <Route path="/profile" component={ProfileRoutes} />
-              
+
               <Route
                 path="/"
                 render={() => (

@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import * as React from 'react';
 import { Form, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
-import { PersonalCubeModel } from '../../../personalcube/personalcube';
+import { PersonalCubeModel } from '../../../personalcube';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

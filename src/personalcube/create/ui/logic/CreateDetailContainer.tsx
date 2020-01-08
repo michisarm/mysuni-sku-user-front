@@ -3,16 +3,15 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
-import { ContentLayout } from 'shared';
+import { ContentLayout, AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
-import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
+import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
+import { MediaService } from '../../../media';
+import { BoardService } from '../../../board';
+import { OfficeWebService } from '../../../officeweb';
 import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
-import AlertWin from '../../../shared/ui/logic/AlertWin';
-import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
-import { MediaService } from '../../../personalcube/media';
-import { BoardService } from '../../../personalcube/board';
-import { OfficeWebService } from '../../../personalcube/officeweb';
+
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   personalCubeService?: PersonalCubeService

@@ -6,15 +6,15 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
-import { OfficeWebService, PersonalCubeService } from '../../../personalcube';
+import { OfficeWebService, PersonalCubeService } from '../../../index';
 import CreateIntroView from '../view/CreateIntroView';
-import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../personalcube/cubeintro';
-import { ContentsProviderService } from '../../../college';
+import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
+import { ContentsProviderService } from '../../../../college';
 import CreateMediaContainer from './CreateMediaContainer';
-import AlertWin from '../../../shared/ui/logic/AlertWin';
-import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
-import { MediaModel, MediaService } from '../../../personalcube/media';
-import { PersonalCubeModel } from '../../../personalcube/personalcube';
+import AlertWin from '../../../../shared/ui/logic/AlertWin';
+import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
+import { MediaModel, MediaService } from '../../../media';
+import { PersonalCubeModel } from '../../../personalcube';
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   personalCubeService?: PersonalCubeService

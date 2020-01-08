@@ -11,16 +11,16 @@ import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
-import SelectType from '../../../shared/model/SelectType';
+import SelectType from '../../../../shared/model/SelectType';
 import CreateListView from '../view/CreateListView';
-import NoSuchContentPanel from '../../../shared/components/NoSuchContentPanel';
-import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
-import { LectureCardService, LectureModel, LectureService } from '../../../lecture';
-import { SeeMoreButton } from '../../../lecture/shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../myTraining';
-import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
+import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
+import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
+import { LectureCardService, LectureModel, LectureService } from '../../../../lecture';
+import { SeeMoreButton } from '../../../../lecture/shared';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../../myTraining';
+import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
 import routePaths from '../../routePaths';
-import { SkProfileModel, SkProfileService } from '../../../profile';
+import { SkProfileModel, SkProfileService } from '../../../../profile';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {

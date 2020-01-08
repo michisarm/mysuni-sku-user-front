@@ -4,8 +4,8 @@ import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
-import { CubeIntroModel } from '../../../personalcube/cubeintro';
-import SelectType from '../../../shared/model/SelectType';
+import { CubeIntroModel } from '../../../cubeintro';
+import SelectType from '../../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CreateBoardContainer from '../logic/CreateBoardContainer';
 

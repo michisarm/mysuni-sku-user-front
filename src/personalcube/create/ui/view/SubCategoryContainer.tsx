@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Button } from 'semantic-ui-react';
 import { ChannelModel } from 'college';
 import SubCategoryModalContainer from './SubCategoryModalContainer';
-import { CategoryModel } from '../../../shared';
+import { CategoryModel } from '../../../../shared';
 
 
 interface Props {
