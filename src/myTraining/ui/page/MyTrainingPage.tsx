@@ -130,7 +130,7 @@ class MyTrainingPage extends Component<Props, State> {
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
     else if (type === Type.Required) {
-      offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
+      offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);

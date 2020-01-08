@@ -20,12 +20,13 @@ class LectureFilterRdoModel {
     }
   }
 
-  static new(limit: number, offset: number, orderBy?: OrderByType) {
+  static new(limit: number, offset: number, channelIds?: string[]) {
     //
     return new LectureFilterRdoModel({
-      orderBy: orderBy || OrderByType.Time,
+      orderBy: OrderByType.Time,
       limit,
       offset,
+      channelIds,
     });
   }
 }
