@@ -48,7 +48,7 @@ class PostFormPage extends React.Component<Props> {
 
   routeTo() {
     const { collegeId, cubeId, lectureCardId, postId } = this.props.match.params;
-    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `/posts/${postId}` : ''}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `posts/${postId}` : ''}`);
   }
 
   render() {

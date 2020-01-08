@@ -55,7 +55,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
               const internalMedia = new InternalMediaConnectionModel();
               internalMedia.panoptoSessionId = list.id;
               internalMedia.viewUrl = list.viewerUrl.replace('Viewer', 'Embed');
-              internalMedia.thumbUrl = list.thumbUrl;
+              internalMedia.thumbUrl = list.viewerUrl.replace('Viewer', 'Embed');
               internalMedia.name = list.name;
               internalMedia.startTime = list.startTime;
               internalMedia.folderName = list.folderName;

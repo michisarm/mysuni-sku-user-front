@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -13,7 +13,7 @@ import { ContentsProviderService } from '../../../college';
 import CreateMediaContainer from './CreateMediaContainer';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
-import { MediaService } from '../../../personalcube/media';
+import { MediaModel, MediaService } from '../../../personalcube/media';
 import { PersonalCubeModel } from '../../../personalcube/personalcube';
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
@@ -176,15 +176,19 @@ class CreateIntroContainer extends React.Component<Props, States> {
   }
 
   handleSave() {
-
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { media } = this.props.mediaService || {} as MediaService;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
+    const mediaObject = MediaModel.isBlank(media);
+
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
-    if ( cubeIntroObject === 'success') {
+    const mediaMessage = mediaObject;
+    if ( cubeIntroObject === 'success' && mediaObject === 'success') {
       this.setState({ confirmWinOpen: true });
       return;
     }
     if (cubeIntroObject !== 'success') this.confirmBlank(cubeIntroMessage);
+    if (mediaMessage !== 'success') this.confirmBlank(mediaMessage);
   }
 
   confirmBlank(message: string) {
@@ -306,7 +310,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   onDeleteCube() {
     //
-    const message = '등록된 Cube 정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.';
+    const message = '등록된 Cube 정보를 삭제하시겠습니까?  삭제하신 정보는 복구하실 수 없습니다.';
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
@@ -424,8 +428,8 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 handleClose={this.handleCloseConfirmWin}
                 handleOk={this.handleOKConfirmWin}
                 title="저장 안내"
-                buttonYesName="저장"
-                buttonNoName="취소"
+                buttonYesName="OK"
+                buttonNoName="Cancel"
               />
             </Form>
           </div>

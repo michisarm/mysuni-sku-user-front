@@ -254,8 +254,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
           handleClose={this.handleCloseConfirmWin}
           handleOk={this.handleOKConfirmWin}
           title="저장안내"
-          buttonYesName="저장"
-          buttonNoName="취소"
+          buttonYesName="OK"
+          buttonNoName="Cancel"
         />
       </ContentLayout>
     );

@@ -90,14 +90,12 @@ class CreateDetailContainer extends React.Component<Props, States> {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
-    let personalCubeMessage = '';
-    if (personalCubeObject === '태그') personalCubeMessage =  '"' + personalCubeObject + '" 는 10개까지 입력 가능합니다.';
 
     if (personalCubeObject === 'success') {
       this.setState({ confirmWinOpen: true });
       return;
     }
-    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeMessage);
+    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
   }
 
   confirmBlank(message: string) {
@@ -239,7 +237,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
                   :
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>
+                    {/*<Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>*/}
                     <Button type="button" className="fix bg" onClick={this.handleSave}>Next</Button>
                   </div>
               }
@@ -260,8 +258,8 @@ class CreateDetailContainer extends React.Component<Props, States> {
                 handleOk={this.handleOKConfirmWin}
                 //handleSaveAndApprove={this.handleSaveAndApprove}
                 title="저장 안내"
-                buttonYesName="저장"
-                buttonNoName="취소"
+                buttonYesName="OK"
+                buttonNoName="Cancel"
               />
             </Form>
           </div>
