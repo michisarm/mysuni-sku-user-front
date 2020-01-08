@@ -86,6 +86,10 @@ export class PersonalCubeModel implements DramaEntity {
           value: JSON.stringify(cube.contents),
         },
         {
+          name: 'iconBox',
+          value: JSON.stringify(cube.iconBox),
+        },
+        {
           name: 'tags',
           value: JSON.stringify(cube.tags),
         },
