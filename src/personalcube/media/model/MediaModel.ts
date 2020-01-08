@@ -68,6 +68,13 @@ export class MediaModel implements DramaEntity {
     );
   }
 
+  static isBlank(media: MediaModel) : string {
+    if (media.mediaContents && media.mediaType === MediaType.InternalMedia && !media.mediaContents.internalMedias.length) return '내부 영상을 선택해주세요';
+    if (media.mediaContents && media.mediaContents.linkMediaUrl && media.mediaContents.linkMediaUrl.includes('sku.ap.panopto.com')) return 'sku.ap.panopto.com 동영상은 “교육자료” 항목에서 “내부 영상”을 선택하여 “동영상 선택” 버튼을 통해 등록해주시기 바랍니다.';
+    if (media.mediaContents && media.mediaContents.contentsProvider && media.mediaContents.contentsProvider.url.includes('sku.ap.panopto.com')) return 'sku.ap.panopto.com 동영상은 “교육자료” 항목에서 “내부 영상”을 선택하여 “동영상 선택” 버튼을 통해 등록해주시기 바랍니다.';
+    return 'success';
+  }
+
 }
 
 decorate(MediaModel, {
