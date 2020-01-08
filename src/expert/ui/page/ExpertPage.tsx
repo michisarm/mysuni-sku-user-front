@@ -38,7 +38,7 @@ interface Props extends RouteComponentProps<{ instructorId : string }> {
 @observer
 @observer
 @reactAutobind
-class ExpertContainer extends React.Component<Props> {
+class ExpertPage extends React.Component<Props> {
   //
   state = { activeItem: 'Introduce' };
 
@@ -202,4 +202,4 @@ class ExpertContainer extends React.Component<Props> {
 
 }
 
-export default ExpertContainer;
+export default ExpertPage;

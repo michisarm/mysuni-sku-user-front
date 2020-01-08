@@ -6,8 +6,6 @@ import { MediaService } from './media';
 import { OfficeWebService } from './officeweb';
 import { BoardService } from './board';
 
-export { PostFormPage, PostDetailPage, ReplyFormPage, ReplyDetailPage } from '../lecture/community';
-
 export const personalCubeStores = {
   personalCube: {
     personalCubeService: PersonalCubeService.instance,
