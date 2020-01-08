@@ -1,8 +1,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
-import { Button, Checkbox, Form, Icon, Input, Modal, Pagination, Table } from 'semantic-ui-react';
+import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
 import { MediaService } from 'personalcube/media';
 import { InternalMediaConnectionModel } from '../../../personalcube/media/model/InternalMediaConnectionModel';
@@ -31,6 +31,7 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   componentDidMount() {
+    this.findAllPanoptos(1);
   }
 
   findAllPanoptos(page?: number) {
@@ -53,42 +54,16 @@ class PanoptoListModal extends React.Component<Props, States> {
     this.setState({ open });
   }
 
-  addPanopto(panopto: InternalMediaConnectionModel) {
-    const { selectedPanoptos, setSeletedPanoptos, setSeletedPanoptoIds } = this.props.mediaService || {} as MediaService;
-    const panoptoList: InternalMediaConnectionModel[] = [];
-    const panoptoIdList: string[] = [];
-    if (selectedPanoptos.length) {
-      selectedPanoptos.map(panopto => {
-        panoptoList.push(panopto);
-        panoptoIdList.push(panopto.panoptoSessionId);
-      });
-    }
-
-    if (panoptoIdList.indexOf(panopto.panoptoSessionId) !== -1) {
-      const index = panoptoIdList.indexOf(panopto.panoptoSessionId);
-      const newCardList = panoptoList.slice(0, index).concat(panoptoList.slice(index + 1));
-      const newCardIdList = panoptoIdList.slice(0, index).concat(panoptoIdList.slice(index + 1));
-      setSeletedPanoptos(newCardList);
-      setSeletedPanoptoIds(newCardIdList);
-    } else {
-      const viewerToEmbedViewURL = panopto.viewUrl.replace('Viewer', 'Embed');
-      panopto.viewUrl = viewerToEmbedViewURL;
-      panoptoList.push(panopto);
-      panoptoIdList.push(panopto.panoptoSessionId);
-      setSeletedPanoptos(panoptoList);
-      setSeletedPanoptoIds(panoptoIdList);
-    }
+  selectPanopto(panopto: InternalMediaConnectionModel) {
+    const { mediaService } = this.props;
+    if (mediaService) mediaService.setPanoptoProps(panopto);
   }
 
   handleOK() {
     const { mediaService } = this.props;
-    const { selectedPanoptos } = this.props.mediaService || {} as MediaService;
+    const { panopto } = this.props.mediaService || {} as MediaService;
     if (mediaService) {
-      const newInternalMedias: InternalMediaConnectionModel[] = [ ...mediaService.media.mediaContents.internalMedias ];
-      if (mediaService) {
-        mediaService.setSeletedPanoptos(selectedPanoptos);
-        mediaService.changeMediaProps('mediaContents.internalMedias', selectedPanoptos.concat(newInternalMedias));
-      }
+      mediaService.changeMediaProps('mediaContents.internalMedias', [panopto]);
       this.show(false);
     }
   }
@@ -104,7 +79,7 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   render() {
-    const { panoptos, selectedPanoptoIds, media, panoptoCdo, changePanoptoCdoProps } = this.props.mediaService || {} as MediaService;
+    const { panoptos, media, panoptoCdo, panopto: selectedPanopto, changePanoptoCdoProps } = this.props.mediaService || {} as MediaService;
     const { pageMap } = this.props.sharedService || {} as SharedService;
     const { open } = this.state;
     const results = panoptos && panoptos.results;
@@ -115,7 +90,6 @@ class PanoptoListModal extends React.Component<Props, States> {
           {
             media.getInternalMedias.length
              && media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-               /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
                <input
                  type="text"
                  key={index}
@@ -134,36 +108,18 @@ class PanoptoListModal extends React.Component<Props, States> {
           <Icon className="clear link" />
           <label htmlFor="hidden-new-file" className="ui button" onClick={() => this.show(true)}>파일찾기</label>
         </div>
-        {/*{
-          media.getInternalMedias.length
-          && media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-            <p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>
-          )) || null
-        }*/}
-        <Modal size="large" open={open} onClose={() => this.show(false)} className="base w700">
-          <Modal.Header>
-            동영상 선택
+        <Modal className="base w700" open={open} onClose={() => this.show(false)}>
+          <Modal.Header className="res">
+            File Upload
+            <span className="sub f12">업로드 하실 항목을 선택해 주세요.</span>
           </Modal.Header>
           <Modal.Content>
-            <Form>
-              <Form.Field
-                control={Input}
-                width={10}
-                placeholder="검색어를 입력해주세요."
-                value={panoptoCdo && panoptoCdo.searchQuery || ''}
-                onChange={(e: any) => changePanoptoCdoProps('searchQuery', e.target.value)}
-              />
-              <Form.Field className="center" width={6}>
-                <Button primary onClick={() => this.findAllPanoptos()}>Search</Button>
-              </Form.Field>
-              <Table celled>
+            <div className="scrolling-60vh">
+              <Table className="head-fix cr-03-p01">
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell textAlign="center">Select</Table.HeaderCell>
-                    <Table.HeaderCell>제목</Table.HeaderCell>
-                    <Table.HeaderCell>재생시간</Table.HeaderCell>
-                    <Table.HeaderCell>폴더명</Table.HeaderCell>
-                    <Table.HeaderCell>재생</Table.HeaderCell>
+                    <Table.HeaderCell scope="col" />
+                    <Table.HeaderCell scope="col">File Name</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
@@ -174,17 +130,17 @@ class PanoptoListModal extends React.Component<Props, States> {
                       <Table.Row key={index}>
                         <Table.Cell textAlign="center">
                           <Form.Field
-                            control={Checkbox}
-                            onChange={() => this.addPanopto(panopto)}
-                            checked={selectedPanoptoIds && selectedPanoptoIds.includes(panopto.panoptoSessionId)}
+                            control={Radio}
+                            onChange={() => this.selectPanopto(panopto)}
+                            checked={selectedPanopto && selectedPanopto.panoptoSessionId === panopto.panoptoSessionId}
                           />
                         </Table.Cell>
                         <Table.Cell>{panopto.name}</Table.Cell>
-                        <Table.Cell>{panopto.duration}</Table.Cell>
+                        {/* <Table.Cell>{panopto.duration}</Table.Cell>
                         <Table.Cell>{panopto.folderName}</Table.Cell>
                         <Table.Cell>
                           <Button onClick={() => this.goToVieo(panopto.viewUrl)}>Play</Button>
-                        </Table.Cell>
+                        </Table.Cell>*/}
                       </Table.Row>
                     )) || null
                   }
@@ -201,11 +157,18 @@ class PanoptoListModal extends React.Component<Props, States> {
                     />
                   </div>
               }
-            </Form>
+            </div>
+            {/* <div className="right-filter">
+              <select className="ui small-border dropdown">
+                <option value="All">내 폴더</option>
+                <option value="a">내 컬리지 폴더</option>
+                <option value="b">내 회사 컬리지 폴더</option>
+              </select>
+            </div>*/}
           </Modal.Content>
-          <Modal.Actions>
-            <Button onClick={() => this.handleCancel()} type="button">Cancel</Button>
-            <Button primary onClick={() => this.handleOK()} type="button">OK</Button>
+          <Modal.Actions className="actions2">
+            <Button className="pop2 d" onClick={() => this.handleCancel()} type="button">Cancel</Button>
+            <Button className="pop2 p" primary onClick={() => this.handleOK()} type="button">OK</Button>
           </Modal.Actions>
         </Modal>
       </>

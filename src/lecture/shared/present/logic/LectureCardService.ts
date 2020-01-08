@@ -1,5 +1,5 @@
 
-import { observable, action, computed, runInAction } from 'mobx';
+import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import LectureCardModel from '../../model/LectureCardModel';
 import LectureCardApi from '../apiclient/LectureCardApi';
 
@@ -24,7 +24,7 @@ class LectureCardService {
   @computed
   get lectureCards() {
     //
-    const lectureCards = this._lectureCards as any;
+    const lectureCards = this._lectureCards as IObservableArray;
     return lectureCards.peek();
   }
 

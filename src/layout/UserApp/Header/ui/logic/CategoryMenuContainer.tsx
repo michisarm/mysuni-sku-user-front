@@ -6,25 +6,25 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared-component';
-import { CollegeService, CollegeModel, ChannelModel } from 'college';
+import { IdNameCount } from 'shared';
 import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college';
+import { CollegeLectureCountService, CollegeLectureCountRdo }  from 'lecture';
 import lectureRoutePaths from 'lecture/routePaths';
-import LectureCountService from '../../../present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
 
 interface Props extends RouteComponentProps {
-  collegeService?: CollegeService,
   skProfileService?: SkProfileService,
-  lectureCountService?: LectureCountService,
+  collegeLectureCountService?: CollegeLectureCountService,
 }
 
 interface State {
   categoryOpen: boolean,
-  activeCollege?: CollegeModel,
+  activeCollege?: CollegeLectureCountRdo,
 }
 
-@inject(mobxHelper.injectFrom('shared.collegeService', 'layout.lectureCountService', 'profile.skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'lecture.collegeLectureCountService'))
 @reactAutobind
 @observer
 class CategoryMenuContainer extends Component<Props, State> {
@@ -38,13 +38,13 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   async componentDidMount() {
     //
-    const { collegeService } = this.props;
+    const { collegeLectureCountService } = this.props;
 
     this.findStudySummary();
-    const colleges = await collegeService!.findAllColleges();
+    const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
 
-    if (colleges.length > 0) {
-      this.onActiveCollege({}, colleges[0]);
+    if (collegeLectureCounts.length > 0) {
+      this.onActiveCollege({}, collegeLectureCounts[0]);
     }
   }
 
@@ -64,24 +64,21 @@ class CategoryMenuContainer extends Component<Props, State> {
     this.setState({ categoryOpen: false });
   }
 
-  onActiveCollege(e: any, college: CollegeModel) {
+  onActiveCollege(e: any, college: CollegeLectureCountRdo) {
     //
-    const { collegeService, lectureCountService } = this.props;
-
-    lectureCountService!.clear();
-    lectureCountService!.findLectureCountByCollegeId(college.collegeId, college.channels);
+    const { collegeLectureCountService } = this.props;
 
     this.setState({
       activeCollege: college,
     });
-    collegeService!.setChannels(college.channels);
+    collegeLectureCountService!.setChannelCounts(college.channelCounts);
   }
 
-  onClickChannel(e: any, channel?: ChannelModel) {
+  onClickChannel(e: any, channel?: IdNameCount) {
     //
     const { activeCollege } = this.state;
     const { history } = this.props;
-    const active: CollegeModel = activeCollege as any;
+    const active: CollegeLectureCountRdo = activeCollege as any;
 
     if (!channel) {
       history.push(lectureRoutePaths.collegeLectures(active.collegeId));
@@ -119,7 +116,7 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, skProfileService, lectureCountService } = this.props;
+    const { skProfileService, collegeLectureCountService } = this.props;
     const { categoryOpen, activeCollege } = this.state;
 
     const { studySummaryFavoriteChannels } = skProfileService!;
@@ -138,11 +135,9 @@ class CategoryMenuContainer extends Component<Props, State> {
             onClose={this.onClose}
           >
             <CategoryMenuPanelView
-              colleges={collegeService!.colleges}
+              colleges={collegeLectureCountService!.collegeLectureCounts}
               activeCollege={activeCollege}
-              channels={collegeService!.channels}
-              collegeCount={lectureCountService!.collegeLectureCount}
-              channelCounts={lectureCountService!.channels}
+              channels={collegeLectureCountService!.channelCounts}
               actions={this.renderMenuActions()}
               onActiveCollege={this.onActiveCollege}
               onRouteChannel={this.onClickChannel}

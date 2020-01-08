@@ -1,5 +1,5 @@
 
-import { observable, action, computed, runInAction } from 'mobx';
+import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../model/StudentCdoModel';
@@ -35,7 +35,7 @@ class StudentService {
   @computed
   get studentJoins(): StudentJoinRdoModel[] {
     //
-    const studentJoins = this._studentJoins as any;
+    const studentJoins = this._studentJoins as IObservableArray;
     return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
   }
 

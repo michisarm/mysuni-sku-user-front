@@ -1,5 +1,5 @@
 
-import { observable, action, computed, runInAction } from 'mobx';
+import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import InMyLectureApi from '../apiclient/InMyLectureApi';
@@ -31,14 +31,14 @@ class InMyLectureService {
   @computed
   get inMyLectures() {
     //
-    const inMyLectures = this._inMyLectures as any;
+    const inMyLectures = this._inMyLectures as IObservableArray;
     return inMyLectures.peek();
   }
 
   @computed
   get inMyLectureAll() {
     //
-    const inMyLecturesAll = this._inMyLectureAll as any;
+    const inMyLecturesAll = this._inMyLectureAll as IObservableArray;
     return inMyLecturesAll.peek();
   }
 

@@ -1,5 +1,5 @@
 
-import { observable, action, computed, runInAction } from 'mobx';
+import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import _ from 'lodash';
 import { ChannelModel } from 'college';
 import { LectureApi } from '../../../shared';
@@ -26,7 +26,7 @@ class LectureCountService {
   @computed
   get channels() {
     //
-    const channels = this._channels as any;
+    const channels = this._channels as IObservableArray;
     return channels.peek();
   }
 
@@ -38,7 +38,7 @@ class LectureCountService {
   @computed
   get channelLectureCounts() {
     //
-    const channelLectureCounts = this._channelLectureCounts as any;
+    const channelLectureCounts = this._channelLectureCounts as IObservableArray;
     return channelLectureCounts.peek();
   }
 

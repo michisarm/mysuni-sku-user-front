@@ -1,4 +1,4 @@
-import { observable, action, runInAction, computed } from 'mobx';
+import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import { IdNameList } from 'shared';
@@ -59,7 +59,7 @@ export default class CollegeService {
   @computed
   get channels() {
     //
-    const channels = this._channels as any;
+    const channels = this._channels as IObservableArray;
     return channels ? channels.peek() : [];
   }
 

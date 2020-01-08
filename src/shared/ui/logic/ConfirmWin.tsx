@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
+import { Button, Image, Modal } from 'semantic-ui-react';
 
 
 interface Props {
@@ -21,42 +21,29 @@ interface Props {
 class ConfirmWin extends React.Component<Props> {
   //
   render() {
-    const { handleClose, open, message, title, handleOk, buttonYesName, buttonNoName, handleSaveAndApprove, id } = this.props;
+    const { handleClose, open, message, title, handleOk, buttonYesName, buttonNoName, id } = this.props;
     return (
       <>
-        <Modal size="tiny" open={open} onClose={handleClose}>
-          <Modal.Header>
-            확인
-          </Modal.Header>
-          <Modal.Content>
-            <Header as="h3" icon textAlign="center">
-              <Icon name="exclamation circle" size="tiny" color="orange" />
-              <Header.Content>{title}</Header.Content>
-            </Header>
-            {message}
-          </Modal.Content>
-          <Modal.Actions>
-            <Button basic onClick={handleClose}>{buttonNoName}</Button>
+        <Modal className="size-mini" open={open} onClose={handleClose}>
+          <div className="main">
+            <Modal.Header>
+              Confirm
+            </Modal.Header>
+            <Modal.Content>
+              <Modal.Description>
+                <Image wrapped className="modal-img" size="medium" src="/images/all/confirm.png" />
+                <div className="title">{title}</div>
+                <p>{message}</p>
+              </Modal.Description>
+            </Modal.Content>
+          </div>
+          <Modal.Actions className="normal twin">
+            <Button secondary onClick={handleClose}>{buttonNoName}</Button>
             {
               id ?
-                <>
-                  <Button primary onClick={() => handleOk('modify')}>{buttonYesName}</Button>
-                  {
-                    handleSaveAndApprove
-                    && <Button primary onClick={() => handleSaveAndApprove('modify')}>저장 및 승인요청</Button>
-                    || ''
-                  }
-                </>
+                <Button primary onClick={() => handleOk('modify')}>{buttonYesName}</Button>
                 :
-                <>
-                  <Button primary onClick={() => handleOk()}>{buttonYesName}</Button>
-                  {
-                    handleSaveAndApprove
-                    && <Button primary onClick={() => handleSaveAndApprove()}>저장 및 승인요청11</Button>
-                    || ''
-                  }
-                </>
-
+                <Button primary onClick={() => handleOk()}>{buttonYesName}</Button>
             }
           </Modal.Actions>
         </Modal>
