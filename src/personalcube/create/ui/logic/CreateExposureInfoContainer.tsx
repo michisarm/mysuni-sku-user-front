@@ -111,13 +111,13 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     //
     const { personalCubeService } = this.props;
 
-    if (personalCubeService) {
+    if (personalCubeService && file) {
       personalCubeService.changeFileName(file.name);
       const fileReader = new FileReader();
 
       fileReader.onload = (e: any) => {     //event = on_file_select
         const data = e.target.result;
-        personalCubeService.changeCubeProps('iconBox.iconUrl', data);
+        personalCubeService.changeCubeProps('iconBox.baseUrl', data);
       };
       fileReader.readAsDataURL(file);
     }
@@ -127,7 +127,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const { personalCubeService } = this.props;
 
     if (personalCubeService) {
-      personalCubeService.changeCubeProps('iconBox.iconUrl', '');
+      personalCubeService.changeCubeProps('iconBox.baseUrl', '');
     }
   }
 
@@ -215,6 +215,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                       pavilionId="samplePavilion3"
                       options={{ title: 'SK Icon', subTitle: '등록된 Icon' }}
                       onSelect={this.handleSKIconSelect}
+                      selectedVaultFileId={personalCube.iconBox.iconUrl || ''}
                     /> : null
                 }
                 </div>
@@ -227,13 +228,15 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               <div className="round-wrap2">
                 <div className="top img">
                   {/* 직접등록후, 등록전에는 비어있으면됨 */}
+                  <Image src={personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl} />
                   {
-                    personalCube && personalCube.iconBox.iconType === IconType.Personal
-                      && <Image src={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl} />
-                  }
-                  {
-                    personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl
-                    && <Button onClick={this.deleteFile}><Icon className="clear" /><span className="blind">delete</span></Button>
+                    personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl
+                    && (
+                    <Button onClick={this.deleteFile}>
+                      <Icon className="clear" />
+                      <span className="blind">delete</span>
+                    </Button>
+                    )
                   }
                   {/* // 직접등록후, 등록전에는 비어있으면됨 */}
                 </div>
@@ -241,14 +244,13 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   <span className="text1">
                     <Icon className="info16" />
                     <span className="blind">infomation</span>
-                    JPG, PNG 파일을 등록하실 수 있습니다. / 최대 10MByte 용량의 파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를 추천합니다.
+                    JPG, PNG 파일을 등록하실 수 있습니다. / 최대 500Kbyte 용량의 파일을 등록하실 수 있습니다. / Icon의 경우 60x60px의 사이즈를 추천합니다.
                   </span>
                   <div className="right-btn">
                     <div className="ui input file2">
                       <label
                        // htmlFor="hidden-new-file2"
                         className="ui button"
-                        //content={fileName}
                         onClick={() => {
                           if (this.fileInputRef && this.fileInputRef.current) {
                             this.fileInputRef.current.click();
@@ -256,7 +258,9 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         }}
                       >파일찾기
                       </label>
-                      <input type="file"
+                      <input
+                        type="file"
+                        //name={fileName}
                         id="hidden-new-file2"
                         ref={this.fileInputRef}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => e.target.files && this.uploadFile(e.target.files[0])}
