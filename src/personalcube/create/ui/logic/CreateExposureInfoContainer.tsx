@@ -215,7 +215,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                       pavilionId="samplePavilion3"
                       options={{ title: 'SK Icon', subTitle: '등록된 Icon' }}
                       onSelect={this.handleSKIconSelect}
-                      selectedVaultFileId={personalCube.iconBox.iconUrl || ''}
+                      // selectedVaultFileId={personalCube.iconBox.iconUrl || ''}
                     /> : null
                 }
                 </div>
