@@ -65,7 +65,11 @@ class TitleContainer extends Component<Props, States> {
     const years = [];
     for (let i = 0; i < 5; i++) {
       const year = Number(currentYear) - i;
-      years.push({ key: `${year}`, text: `${year}`, value: year });
+
+      //TODO:: 우선 2020이후로만
+      if (year >= 2020) {
+        years.push({ key: `${year}`, text: `${year}`, value: year });
+      }
     }
 
     return (
