@@ -94,19 +94,22 @@ class MyTrainingPage extends Component<Props, State> {
 
   selectMenu(type: string) {
     //
-    const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
+    const { type: prevType } = this.state;
 
-    if (type === Type.InMyList) {
-      inMyLectureService!.clear();
+    if (type !== prevType) {
+      const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
+
+      if (type === Type.InMyList) {
+        inMyLectureService!.clear();
+      }
+      if (type === Type.Required) {
+        lectureService!.clearLectures();
+      } else {
+        myTrainingService!.clear();
+      }
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.setState({ type }, this.findPagingList);
     }
-    if (type === Type.Required) {
-      lectureService!.clearLectures();
-    }
-    else {
-      myTrainingService!.clear();
-    }
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    this.setState({ type }, this.findPagingList);
   }
 
   onSelectMenu(type: string) {
@@ -200,9 +203,18 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   onFilter(channels: ChannelModel[]) {
+    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const { type } = this.state;
     this.setState({ channels }, () => {
-      this.selectMenu(type);
+      if (type === Type.InMyList) {
+        inMyLectureService!.clear();
+      } else if (type === Type.Required) {
+        lectureService!.clearLectures();
+      } else {
+        myTrainingService!.clear();
+      }
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findPagingList();
     });
   }
 

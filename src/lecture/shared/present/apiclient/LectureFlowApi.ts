@@ -32,8 +32,9 @@ class LectureFlowApi {
 
   findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/required', { params: lectureFilterRdo })
+    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
       .then(response => response && response.data);
+
   }
 }
 

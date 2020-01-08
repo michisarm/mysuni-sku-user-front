@@ -20,7 +20,7 @@ class LectureFilterRdoModel {
     }
   }
 
-  static new(limit: number, offset: number, channelIds?: string[]) {
+  static new(limit: number, offset: number, channelIds: string[]) {
     //
     return new LectureFilterRdoModel({
       orderBy: OrderByType.Time,

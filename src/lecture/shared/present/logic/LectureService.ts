@@ -117,7 +117,7 @@ class LectureService {
   }
 
   @action
-  async findPagingRequiredLectures(limit: number, offset: number, channelIds?: string[]) {
+  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
     const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);

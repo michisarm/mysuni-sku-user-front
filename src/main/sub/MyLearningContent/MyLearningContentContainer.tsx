@@ -91,10 +91,25 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onSelectTab({ name }: any) {
     //
-    this.setState(
-      { type: name },
-      this.findMyContent,
-    );
+    const { type } = this.state;
+
+    if (type !== name) {
+      const { lectureService, inMyLectureService, myTrainingService } = this.props;
+
+      if (name === ContentType.InMyList) {
+        inMyLectureService!.clear();
+      }
+      if (name === ContentType.Required) {
+        lectureService!.clearLectures();
+      } else {
+        myTrainingService!.clear();
+      }
+
+      this.setState(
+        { type: name },
+        this.findMyContent,
+      );
+    }
   }
 
   onViewDetail(e: any, data: any) {
