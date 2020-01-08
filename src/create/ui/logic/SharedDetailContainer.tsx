@@ -296,8 +296,8 @@ class SharedDetailContainer extends React.Component<Props, States> {
                 handleOk={this.handleOKConfirmWin}
                 //handleSaveAndApprove={this.handleSaveAndApprove}
                 title="저장 안내"
-                buttonYesName="저장"
-                buttonNoName="취소"
+                buttonYesName="OK"
+                buttonNoName="Cancel"
               />
             </Form>
           </div>

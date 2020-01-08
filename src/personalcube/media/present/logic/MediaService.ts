@@ -139,6 +139,12 @@ export default class MediaService {
   }
 
   @action
+  setPanoptoProps(selectedPanopto: InternalMediaConnectionModel) {
+    //
+    this.panopto = selectedPanopto;
+  }
+
+  @action
   clearPanopto() {
     //
     this.panopto = new InternalMediaConnectionModel();

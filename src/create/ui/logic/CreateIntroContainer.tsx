@@ -306,7 +306,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   onDeleteCube() {
     //
-    const message = '등록된 Cube 정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.';
+    const message = '등록된 Cube 정보를 삭제하시겠습니까?  삭제하신 정보는 복구하실 수 없습니다.';
     this.setState({
       alertMessage: message,
       alertWinOpen: true,
@@ -424,8 +424,8 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 handleClose={this.handleCloseConfirmWin}
                 handleOk={this.handleOKConfirmWin}
                 title="저장 안내"
-                buttonYesName="저장"
-                buttonNoName="취소"
+                buttonYesName="OK"
+                buttonNoName="Cancel"
               />
             </Form>
           </div>
