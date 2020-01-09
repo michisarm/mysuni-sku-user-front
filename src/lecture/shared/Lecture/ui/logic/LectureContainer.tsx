@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import { LectureModel, LectureViewModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'mypage';
+import { MyTrainingModel, InMyLectureModel } from 'myTraining';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';

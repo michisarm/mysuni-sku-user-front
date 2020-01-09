@@ -1,13 +1,16 @@
-import { action, computed, observable, runInAction } from 'mobx';
+import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
+import LectureFlowApi from '../apiclient/LectureFlowApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
+import RecommendLectureRdo from '../../model/RecommendLectureRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
+import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 
 
 @autobind
@@ -17,8 +20,17 @@ class LectureService {
 
   private lectureApi: LectureApi;
 
+  private lectureFlowApi: LectureFlowApi;
+
+
   @observable
   _lectures: LectureModel[] = [];
+
+  @observable
+  _recommendLectures: RecommendLectureRdo[] = [];
+
+  @observable
+  recommendLecture: RecommendLectureRdo = new RecommendLectureRdo();
 
   @observable
   _lectureViews: LectureViewModel[] = [];
@@ -27,21 +39,29 @@ class LectureService {
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
-  constructor(lectureApi: LectureApi) {
+  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi) {
     this.lectureApi = lectureApi;
+    this.lectureFlowApi = lectureFlowApi;
   }
 
   @computed
   get lectures() {
     //
-    const lectures = this._lectures as any;
+    const lectures = this._lectures as IObservableArray;
     return lectures.peek();
+  }
+
+  @computed
+  get recommendLectures() {
+    //
+    const recommendLectures = this._recommendLectures as IObservableArray;
+    return recommendLectures.peek();
   }
 
   @computed
   get lectureViews() {
     //
-    const lectureViews = this._lectureViews as any;
+    const lectureViews = this._lectureViews as IObservableArray;
     return lectureViews.peek();
   }
 
@@ -86,6 +106,20 @@ class LectureService {
   async findPagingCommunityLectures(limit: number, offset: number) {
     //
     const response = await this.lectureApi.findAllCommunityLectures(CommunityLectureRdoModel.new(limit, offset));
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    return runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      return lectureOffsetElementList;
+    });
+  }
+
+  @action
+  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = []) {
+    //
+    const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
@@ -158,8 +192,35 @@ class LectureService {
     });
 
   }
+
+  @action
+  async findPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+    //
+    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+
+    return runInAction(() => {
+      this._recommendLectures = recommendLectures.map(recommendLecture => new RecommendLectureRdo(recommendLecture));
+      return recommendLectures;
+    });
+  }
+
+  @action
+  async addPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+    //
+    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+
+    return runInAction(() => {
+      if (recommendLectures && recommendLectures.length && recommendLectures.length === 1) {
+        const recommendLecture = recommendLectures[0];
+        recommendLecture.lectures.results = recommendLecture.lectures.results.map(result => new LectureModel(result));
+        this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results);
+        return recommendLecture.lectures;
+      }
+      return null;
+    });
+  }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance);
+LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);
 
 export default LectureService;

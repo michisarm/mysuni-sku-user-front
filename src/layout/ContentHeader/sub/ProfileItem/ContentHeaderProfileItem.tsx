@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Icon, Image } from 'semantic-ui-react';
-// import profileImage from 'style/images/all/profile-56-px.png';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   image: string,
   name: string,
   teams: string[],
@@ -25,7 +26,7 @@ class ContentHeaderProfileItem extends Component<Props> {
   };
 
   onClickMyPage() {
-    window.location.href = `${process.env.PUBLIC_URL}/mypage`;
+    this.props.history.push(myTrainingRoutePaths.myPage());
   }
 
   render() {
@@ -65,4 +66,4 @@ class ContentHeaderProfileItem extends Component<Props> {
   }
 }
 
-export default ContentHeaderProfileItem;
+export default withRouter(ContentHeaderProfileItem);

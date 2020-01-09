@@ -22,3 +22,4 @@ export {
 /** Model */
 export { CollegeModel } from './model/CollegeModel';
 export { default as ChannelModel } from './model/ChannelModel';
+export { CollegeType } from './model/CollegeType';

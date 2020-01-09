@@ -7,7 +7,7 @@ import { CubeType, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -158,10 +158,11 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
+
         if (studentJoins.length) return undefined;
         if (!applyingPeriod) return undefined;
-        if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString())
-          || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString())) {
+        if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
+          || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
           return undefined;
         }
         if (typeViewObject.classrooms && typeViewObject.classrooms.length) {

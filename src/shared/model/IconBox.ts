@@ -5,6 +5,7 @@ export class IconBox {
   //
   iconType: IconType = IconType.SKUniversity;
   iconUrl: string = '';
+  baseUrl: string = '';
 
   constructor(iconBox?: IconBox) {
     //
@@ -18,4 +19,5 @@ export class IconBox {
 decorate(IconBox, {
   iconType: observable,
   iconUrl: observable,
+  baseUrl: observable,
 });

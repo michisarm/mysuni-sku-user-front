@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel, NewPageService, CubeType } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import LectureCountService from '../../present/logic/LectureCountService';
 import routePaths from '../../../routePaths';
 
@@ -17,7 +17,7 @@ import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentW
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
-import ChannelLecturesContainer from '../../../recommend/ui/logic/ChannelLecturesContainer';
+import LecturesByChannelContainer from '../../../category/ui/logic/LecturesByChannelContainer';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
@@ -291,7 +291,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
             )}
           </>
           :
-          <NoSuchContentPanel message="수강중인 학습 과정이 없습니다." />
+          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
         }
       </CategoryLecturesWrapperView>
     );
@@ -307,7 +307,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
         { channels && channels.length
           && channels.map((channel: ChannelModel) => (
             channel.checked && (
-              <ChannelLecturesContainer
+              <LecturesByChannelContainer
                 channel={channel}
                 onViewAll={this.onViewChannelAll}
                 key={`channel_cont_${channel.id}`}

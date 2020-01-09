@@ -27,6 +27,7 @@ export {
 /** Model */
 export { default as DramaEntityObservableModel } from './model/DramaEntityObservableModel';
 export { default as IdName } from './model/IdName';
+export { default as IdNameCount } from './model/IdNameCount';
 export { default as IdNameList } from './model/IdNameList';
 export { NameValueList } from './model/NameValueList';
 export { default as OffsetElementList } from './model/OffsetElementList';
@@ -54,6 +55,7 @@ export { default as NewPageModel } from './model/NewPageModel';
 
 /** Helper */
 export { default as storybookHelper } from './helper/storybookHelper';
+export { default as DynamicImport } from './helper/DynamicImport';
 export { default as withSplitting } from './helper/withSplitting';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
@@ -66,3 +68,5 @@ export { default as ContentHeader } from '../layout/ContentHeader';
 export { default as ContentMenu } from '../layout/ContentMenu';
 export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';
 export { default as InputWrapper } from './components/InputWrapper';
+export { default as AlertWin } from './ui/logic/AlertWin';
+export { default as ConfirmWin } from './ui/logic/ConfirmWin';

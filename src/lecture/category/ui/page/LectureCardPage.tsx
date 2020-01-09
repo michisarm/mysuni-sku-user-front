@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Label } from 'semantic-ui-react';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
@@ -23,7 +24,7 @@ import {
   StudentService,
 } from 'lecture';
 import { CourseSetModel, LearningCardService } from 'course';
-import { InMyLectureCdoModel, InMyLectureService } from 'mypage';
+import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -478,6 +479,12 @@ class LectureCardPage extends Component<Props, State> {
           menus={this.getMenus()}
           type={this.state.type}
           onSelectMenu={(type) => this.setState({ type })}
+          lectureHeader={
+            <div className="cont-inner summary">
+              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
+              <span className="detail-tit">{viewObject.name}</span>
+            </div>
+          }
         >
           <LectureCardContainer
             inMyLecture={inMyLecture}

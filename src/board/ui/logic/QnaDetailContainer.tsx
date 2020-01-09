@@ -186,8 +186,8 @@ class QnaDetailContainer extends React.Component<Props, States> {
                 handleClose={this.handleCloseConfirmWin}
                 handleOk={this.handleOKConfirmWin}
                 title="삭제안내"
-                buttonYesName="저장"
-                buttonNoName="취소"
+                buttonYesName="OK"
+                buttonNoName="Cancel"
               />
             </Container>
           </Segment>

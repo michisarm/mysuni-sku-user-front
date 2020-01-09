@@ -1,4 +1,4 @@
-import ExpertContainer from './ui/logic/ExpertContainer';
+import ExpertPage from './ui/page/ExpertPage';
 import InstructorService from './present/logic/IntructorService';
 
 export const expertStores = {
@@ -9,6 +9,6 @@ export const expertStores = {
 
 
 export {
-  ExpertContainer,
+  ExpertPage,
   InstructorService,
 };

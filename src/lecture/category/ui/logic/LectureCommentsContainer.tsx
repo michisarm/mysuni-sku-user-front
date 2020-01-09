@@ -27,6 +27,7 @@ class LectureCommentsContainer extends Component<Props, State> {
         />
         <CommentList
           feedbackId={commentFeedbackId}
+          hideCamera
         />
       </div>
     );

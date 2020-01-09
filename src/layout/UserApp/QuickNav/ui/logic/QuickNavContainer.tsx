@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import SockJs from 'sockjs-client';
 
 //import { tenantInfo } from '@nara.platform/dock';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
@@ -16,6 +17,7 @@ import {
 import { ChannelModel } from '../../../../../college';
 
 import FeedEventRdo from '../model/FeedEventRdo';
+
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
@@ -55,30 +57,29 @@ class QuickNavContainer extends Component<Props, State> {
   componentDidMount() {
     //
     // const sockjs = new SockJs('http://127.0.0.1:8092/api/pigeon/pigeon', null, { transports: this.transport });
-    const sockjs = new SockJs(this.baseUrl + '/pigeon');
+    //const sockjs = new SockJs(this.baseUrl + '/pigeon');
     //const sockjs = new SockJs('http://pigeon:8080/api/pigeon/pigeon');
 
-    sockjs.onopen = () => {
-      sockjs.send('Attempt to connect socket..');
-    };
-
-    sockjs.onmessage = (event: any) => {
-      //
-      const feedEvent:FeedEventRdo = JSON.parse(event.data);
-
-      const workSpaceList:WorkSpaceList = JSON.parse(getCookie('workspaces'));
-
-      const cookieCitizenKey = this.genCitizenKey(workSpaceList);
-
-      if (cookieCitizenKey === feedEvent.citizenId) {
-        this.setState( { feedType: feedEvent.feedType } );
-      }
-
-      // console.log('COOKIE: ' + cookieCitizenKey);
-      // console.log('CITIZENID: ' + feedEvent.citizenId);
-      // console.log('FEEDTYPE: ' + feedEvent.feedType);
-      //this.setState({feed: true});
-    };
+    // sockjs.onopen = () => {
+    //   sockjs.send('Attempt to connect socket..');
+    // };
+    //
+    // sockjs.onmessage = (event: any) => {
+    //   //
+    //   const feedEvent:FeedEventRdo = JSON.parse(event.data);
+    //
+    //   const workSpaceList:WorkSpaceList = JSON.parse(getCookie('workspaces'));
+    //
+    //   const cookieCitizenKey = this.genCitizenKey(workSpaceList);
+    //
+    //   if (cookieCitizenKey === feedEvent.citizenId) {
+    //     this.setState( { feedType: feedEvent.feedType } );
+    //   }
+    //
+    //   // console.log('COOKIE: ' + cookieCitizenKey);
+    //   // console.log('CITIZENID: ' + feedEvent.citizenId);
+    //   // console.log('FEEDTYPE: ' + feedEvent.feedType);
+    // };
 
     this.props.skProfileService!.findStudySummary();
     window.addEventListener('click', this.deactive);
@@ -135,13 +136,13 @@ class QuickNavContainer extends Component<Props, State> {
   onClickLearning() {
     //
     this.setState( { feedType: '' } );
-    this.routeNav('/my-training');
+    this.routeNav(myTrainingRoutePaths.learning());
   }
 
   onClickCommunity() {
     //
     this.setState( { feedType: '' } );
-    this.routeNav('/community');
+    this.routeNav(myTrainingRoutePaths.community());
   }
 
   onClickSupport() {

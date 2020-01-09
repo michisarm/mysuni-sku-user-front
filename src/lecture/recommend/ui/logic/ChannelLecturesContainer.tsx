@@ -4,32 +4,27 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType, NoSuchContentPanel } from 'shared';
-import { LectureService } from 'lecture';
+import { CubeType, NoSuchContentPanel, OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
+import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';
 import LectureServiceType from '../../../shared/model/LectureServiceType';
-import OrderByType from '../../../shared/model/OrderByType';
 
 
 interface Props extends RouteComponentProps {
-  lectureService?: LectureService,
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
+  lectures: OffsetElementList<LectureModel>
   channel: ChannelModel
   onViewAll: (e: any, data: any) => void
 }
 
 interface State {
-  lectures: LectureModel[]
-  totalCount: number
 }
 
 @inject(mobxHelper.injectFrom(
-  'lecture.lectureService',
   'shared.reviewService',
   'myTraining.inMyLectureService'
 ))
@@ -37,39 +32,6 @@ interface State {
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
   //
-  PAGE_SIZE = 8;
-
-  state = {
-    lectures: [],
-    totalCount: 0,
-  };
-
-  componentDidMount() {
-    //
-    this.findLectures();
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    const { channel } = this.props;
-    const { channel: prevChannel } = prevProps;
-
-    if (channel && channel.id !== prevChannel.id) this.findLectures();
-  }
-
-  async findLectures() {
-    //
-    const { lectureService, reviewService, inMyLectureService, channel } = this.props;
-    const { results: lectures, totalCount } = await lectureService!.findPagingChannelLectures(channel.id, this.PAGE_SIZE, 0, OrderByType.Time);
-    inMyLectureService!.findAllInMyLectures();
-
-    this.setState(({
-      lectures,
-      totalCount,
-    }));
-    const feedbackIds = (lectures || []).map((lecture: LectureModel) => lecture.reviewId);
-    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-  }
-
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
@@ -125,8 +87,8 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   render() {
     //
-    const { channel, reviewService, inMyLectureService } = this.props;
-    const { lectures, totalCount } =  this.state;
+    const { channel, lectures, reviewService, inMyLectureService } = this.props;
+    const { results, totalCount } =  lectures;
     const { ratingMap } =  reviewService as ReviewService;
     const { inMyLectureMap } =  inMyLectureService as InMyLectureService;
 
@@ -142,11 +104,11 @@ class ChannelLecturesContainer extends Component<Props, State> {
           onViewAll={this.onViewAll}
         />
         {
-          lectures && lectures.length
+          results && results.length
           && (
             <Lecture.Group type={Lecture.GroupType.Line}>
               {
-                lectures.map((lecture: LectureModel, index: number) => {
+                results.map((lecture: LectureModel, index: number) => {
                   let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
                   const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
                   if (lecture.cubeType === CubeType.Community) rating = undefined;

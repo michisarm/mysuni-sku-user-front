@@ -1,5 +1,5 @@
 
-import { observable, action, computed, runInAction } from 'mobx';
+import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import RollBookApi from '../apiclient/RollBookApi';
 import RollBookModel from '../../model/RollBookModel';
@@ -26,7 +26,7 @@ class RollBookService {
   @computed
   get rollBooks() {
     //
-    const rollBooks = this._rollBooks as any;
+    const rollBooks = this._rollBooks as IObservableArray;
     return rollBooks.peek();
   }
 

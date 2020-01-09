@@ -8,7 +8,7 @@ import { ChannelModel } from 'college';
 interface Props {
   channel: ChannelModel
   title?: React.ReactNode,
-  onViewAll: (e: any, data: any) => void
+  onViewAll?: (e: any, data: any) => void
 }
 
 @reactAutobind
@@ -21,11 +21,15 @@ class LineHeaderView extends Component<Props> {
     return (
       <div className="section-head">
         <span className="channel">{channel.name}</span> {title}
-        <div className="right">
-          <Button icon className="right btn-blue" onClick={onViewAll}>View all
-            <Icon className="morelink" />
-          </Button>
-        </div>
+        {
+          onViewAll && (
+            <div className="right">
+              <Button icon className="right btn-blue" onClick={onViewAll}>View all
+                <Icon className="morelink" />
+              </Button>
+            </div>
+          ) || null
+        }
       </div>
     );
   }

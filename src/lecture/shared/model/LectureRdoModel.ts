@@ -56,6 +56,16 @@ class LectureRdoModel {
     });
   }
 
+  static newRecommend(limit: number, offset: number, channel?: string, orderBy?: OrderByType) {
+    return new LectureRdoModel({
+      college: '',
+      channel: channel || '',
+      orderBy: orderBy || OrderByType.Time,
+      limit,
+      offset,
+    });
+  }
+
   static newShared(limit: number, offset: number) {
     return new LectureRdoModel({
       college: '',

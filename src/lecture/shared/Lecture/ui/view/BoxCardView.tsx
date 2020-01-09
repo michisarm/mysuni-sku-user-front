@@ -7,7 +7,7 @@ import numeral from 'numeral';
 import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
 import { LectureModel } from 'lecture/index';
-import { InMyLectureModel, MyTrainingModel } from 'mypage';
+import { InMyLectureModel, MyTrainingModel } from 'myTraining';
 import { CubeTypeNameType } from 'personalcube/personalcube';
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';

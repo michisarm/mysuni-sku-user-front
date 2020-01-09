@@ -5,8 +5,10 @@ import LectureService from './shared/present/logic/LectureService';
 import ProgramLectureService from './shared/present/logic/ProgramLectureService';
 import CourseLectureService from './shared/present/logic/CourseLectureService';
 import RollBookService from './shared/present/logic/RollBookService';
-import LectureCountService from './category/present/logic/LectureCountService';
 import StudentService from './shared/present/logic/StudentService';
+import CollegeLectureCountService from './shared/present/logic/CollegeLectureCountService';
+
+import LectureCountService from './category/present/logic/LectureCountService';
 
 
 export const lectureCardStores = {
@@ -15,20 +17,22 @@ export const lectureCardStores = {
     lectureService: LectureService.instance,
     programLectureService: ProgramLectureService.instance,
     courseLectureService: CourseLectureService.instance,
-    lectureCountService: LectureCountService.instance,
     rollBookService: RollBookService.instance,
     studentService: StudentService.instance,
+    collegeLectureCountService: CollegeLectureCountService.instance,
+    lectureCountService: LectureCountService.instance,
   },
 };
 
 export {
   LectureCardService,
   LectureService,
-  LectureCountService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,
   StudentService,
+  CollegeLectureCountService,
+  LectureCountService,
 };
 
 /** Model */
@@ -42,6 +46,8 @@ export { default as RollBookModel } from './shared/model/RollBookModel';
 export { default as StudentCdoModel } from './shared/model/StudentCdoModel';
 export { default as StudentJoinRdoModel } from './shared/model/StudentJoinRdoModel';
 export { default as StudentCountRdoModel } from './shared/model/StudentCountRdoModel';
+export { default as RecommendLectureRdo } from './shared/model/RecommendLectureRdo';
+export { default as CollegeLectureCountRdo } from './shared/model/CollegeLectureCountRdo';
 
 /** Component */
 export { default as CollegeLecturesPage } from './category/ui/page/CollegeLecturesPage';

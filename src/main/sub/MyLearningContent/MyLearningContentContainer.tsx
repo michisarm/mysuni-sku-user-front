@@ -6,18 +6,20 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
-import { Lecture } from 'lecture';
+import { Lecture, LectureService } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
-import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'mypage';
-import MyTrainingModel from '../../../mypage/model/MyTrainingModel';
+import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
+import MyTrainingModel from '../../../myTraining/model/MyTrainingModel';
 import MyLearningTabContainer from './MyLearningTabContainer';
 import { Wrapper } from './MyLearningContentElementsView';
+import LectureModel from '../../../lecture/shared/model/LectureModel';
 
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService,
   myTrainingService?: MyTrainingService
+  lectureService?: LectureService
   inMyLectureService?: InMyLectureService
 }
 
@@ -35,6 +37,7 @@ enum ContentType {
 @inject(mobxHelper.injectFrom(
   'shared.reviewService',
   'myTraining.myTrainingService',
+  'lecture.lectureService',
   'myTraining.inMyLectureService',
 ))
 @observer
@@ -61,7 +64,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   async findMyContent() {
     //
-    const { inMyLectureService, myTrainingService, reviewService } = this.props;
+    const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
     const { type } = this.state;
 
     inMyLectureService!.findAllInMyLectures();
@@ -75,7 +78,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         break;
       }
       case ContentType.Required:
-        myTrainingService!.findAllMyTrainingsWithRequired(this.PAGE_SIZE, 0);
+        lectureService!.findPagingRequiredLectures(this.PAGE_SIZE, 0);
         break;
       case ContentType.InProgress:
         myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
@@ -88,10 +91,25 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onSelectTab({ name }: any) {
     //
-    this.setState(
-      { type: name },
-      this.findMyContent,
-    );
+    const { type } = this.state;
+
+    if (type !== name) {
+      const { lectureService, inMyLectureService, myTrainingService } = this.props;
+
+      if (name === ContentType.InMyList) {
+        inMyLectureService!.clear();
+      }
+      if (name === ContentType.Required) {
+        lectureService!.clearLectures();
+      } else {
+        myTrainingService!.clear();
+      }
+
+      this.setState(
+        { type: name },
+        this.findMyContent,
+      );
+    }
   }
 
   onViewDetail(e: any, data: any) {
@@ -140,14 +158,17 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   renderList() {
     //
-    const { inMyLectureService, myTrainingService, reviewService } = this.props;
+    const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
     const { type } = this.state;
     const { inMyLectureMap, inMyLectures } =  inMyLectureService!;
     const { ratingMap } =  reviewService!;
-    let list: (MyTrainingModel | InMyLectureModel)[] = [];
+    let list: (MyTrainingModel | LectureModel | InMyLectureModel)[] = [];
 
     if (type === ContentType.InMyList) {
       list = inMyLectures;
+    }
+    else if (type === ContentType.Required) {
+      list = lectureService!.lectures;
     }
     else {
       list = myTrainingService!.myTrainings;
@@ -158,7 +179,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         {
           list && list.length && (
             <Lecture.Group type={Lecture.GroupType.Line}>
-              {list.map((value: MyTrainingModel | InMyLectureModel, index: number) => {
+              {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
                 let rating: number | undefined = 0;
                 if (value instanceof InMyLectureModel) {
                   rating = ratingMap.get(value.reviewId);
