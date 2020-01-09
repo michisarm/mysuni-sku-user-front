@@ -12,6 +12,7 @@ import { Lecture, LectureService, LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
@@ -329,7 +330,7 @@ class MyTrainingPage extends Component<Props, State> {
         <ContentHeader>
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member && member.base64Photo || profileImg}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}
