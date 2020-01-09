@@ -165,7 +165,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
               }
             </Lecture.Group>
           ) || (
-            <NoSuchContentPanel message="선택하신 채널에 해당하는 추천 학습과정이 없습니다." />
+            <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
           )
         }
       </>
