@@ -8,7 +8,7 @@ import { Modal, Icon, Button } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
-import { CollegeLectureCountService } from 'lecture';
+import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
 
@@ -126,7 +126,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       ...baseCategoryItems,
       items: baseCategoryItems.items.map((item) => ({
         ...item,
-        count: colleges.find(college => college.name === item.name)!.collegeCount,
+        count: colleges.find((college: CollegeLectureCountRdo) => college.name === item.name)!.collegeCount,
       })),
     };
 

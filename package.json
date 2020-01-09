@@ -48,7 +48,9 @@
     "moment": "^2.24.0",
     "query-string": "^6.9.0",
     "webpack-bundle-analyzer": "^3.6.0",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.3",
+    "@babel/polyfill": "7.0.0",
+    "babel-polyfill": "6.26.0"
   },
   "devDependencies": {
     "@storybook/react": "^5.2.8",

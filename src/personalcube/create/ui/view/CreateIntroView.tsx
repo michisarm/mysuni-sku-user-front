@@ -1,5 +1,4 @@
 import * as React from 'react';
-import classNames from 'classnames';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
@@ -12,33 +11,23 @@ import CreateBoardContainer from '../logic/CreateBoardContainer';
 interface Props {
   cubeIntro: CubeIntroModel
   onChangeCubeIntroProps: (name: string, value: string | number | {}) => void
-  setHourAndMinute: (name: string, value: string) => void
-  hour: string
-  minute: string
+  setHourAndMinute: (name: string, value: number) => void
+  hour: number
+  minute: number
   cubeType?: string
-}
-
-interface States {
-  write: string
-  type: string
 }
 
 @observer
 @reactAutobind
-class CreateIntroView extends React.Component<Props, States> {
+class CreateIntroView extends React.Component<Props> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      write: '', type: '',
-    };
-  }
-
   render() {
 
     const {
       cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute, cubeType,
     } = this.props;
+
+    console.log(cubeIntro);
     return (
       <>
         <div className="section-tit">
@@ -135,41 +124,21 @@ class CreateIntroView extends React.Component<Props, States> {
           <div className="ui grid create">
             <div className="column">
               <label className="necessary">교육시간</label>
-              <div className={classNames('ui h48 input time', { focus: this.state.type === 'hour', write: this.state.write })}>
+              <div className="ui h48 input time">
                 <input
                   type="text"
-                  onClick={() => this.setState({ type: hour })}
-                  onBlur={() => this.setState({ type: '' })}
-                  value={parseInt(String(cubeIntro.learningTime / 60), 10) || hour}
-                  onChange={(e: any) => {
-                    this.setState({ write: e.target.value });
-                    setHourAndMinute('hour', e.target.value);
-                  }}
+                  value={parseInt(String(cubeIntro.learningTime / 60))}
+                  onChange={(e: any) => setHourAndMinute('hour', e.target.value)}
                 /><label>h</label>
-                <Icon className="clear link"
-                  onClick={() => {
-                    this.setState({ write: '' });
-                    setHourAndMinute('hour', '');
-                  }}
-                />
+                <Icon className="clear link" />
               </div>
-              <div className={classNames('ui h48 input time',  { focus: this.state.type === 'minute', write: this.state.write })}>
+              <div className="ui h48 input time">
                 <input
                   type="text"
-                  onClick={() => this.setState({ type: minute })}
-                  onBlur={() => this.setState({ type: '' })}
-                  value={parseInt(String(cubeIntro.learningTime % 60), 10) || minute}
-                  onChange={(e: any) => {
-                    this.setState({ write: e.target.value });
-                    setHourAndMinute('minute', e.target.value);
-                  }}
+                  value={parseInt(String(cubeIntro.learningTime % 60))}
+                  onChange={(e: any) => setHourAndMinute('minute', e.target.value)}
                 /><label>m</label>
-                <Icon className="clear link"
-                  onClick={() => {
-                    this.setState({ write: '' });
-                    setHourAndMinute('minute', '');
-                  }}
-                />
+                <Icon className="clear link" />
               </div>
             </div>
             <div className="column">

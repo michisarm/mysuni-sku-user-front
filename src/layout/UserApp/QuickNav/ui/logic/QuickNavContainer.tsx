@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import SockJs from 'sockjs-client';
+// import SockJs from 'sockjs-client';
 
 //import { tenantInfo } from '@nara.platform/dock';
 import myTrainingRoutePaths from 'myTraining/routePaths';
@@ -16,7 +16,7 @@ import {
 } from '../view/QuickNavElementsView';
 import { ChannelModel } from '../../../../../college';
 
-import FeedEventRdo from '../model/FeedEventRdo';
+// import FeedEventRdo from '../model/FeedEventRdo';
 
 
 interface Props extends RouteComponentProps {
