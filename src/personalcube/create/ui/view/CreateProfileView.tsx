@@ -2,8 +2,10 @@ import * as React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import CreateMovieDetailModal from './CreateMovieDetailModal';
 import { EmployeeModel } from '../../../../profile';
+
 
 interface Props {
   routeToCreateDetail:() => void
@@ -40,7 +42,7 @@ class CreateProfileView extends React.Component<Props, States> {
               <div className="profile">
                 <div className="pic">
                   <ContentHeader.ProfileItem
-                    image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+                    image={member && member.base64Photo || profileImg}
                     name={member.name}
                     teams={[member.company || '', member.department || '']}
                   />

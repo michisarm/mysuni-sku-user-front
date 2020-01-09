@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Icon, Image, Label } from 'semantic-ui-react';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
 
 interface Props {
@@ -16,7 +17,7 @@ class ExpertHeaderView extends React.Component<Props> {
             <div className="cell-inner">
               <div className="profile">
                 <div className="pic">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`} alt="기본 프로필사진" />
+                  <Image src={profileImg} alt="기본 프로필사진" />
                 </div>
               </div>
               <div className="text-info">
