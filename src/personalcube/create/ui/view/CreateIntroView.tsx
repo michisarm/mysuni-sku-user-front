@@ -3,6 +3,7 @@ import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
+import classNames from 'classnames';
 import { CubeIntroModel } from '../../../cubeintro';
 import SelectType from '../../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
@@ -17,10 +18,21 @@ interface Props {
   cubeType?: string
 }
 
+interface States {
+  fieldName : string
+}
+
 @observer
 @reactAutobind
-class CreateIntroView extends React.Component<Props> {
+class CreateIntroView extends React.Component<Props, States> {
   //
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      fieldName: '',
+    };
+  }
+
   render() {
 
     const {
@@ -52,14 +64,23 @@ class CreateIntroView extends React.Component<Props> {
         <Form.Field>
           <label className="necessary">교육목표</label>
           <div className="ui form">
-            <div className="ui right-top-count input">
+            <div className={classNames('ui right-top-count input', { error: this.state.fieldName === 'description.goal' })}>
               <span className="count">
-                <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.goal && cubeIntro.description.goal.length || 0}</span>/
+                <span className="now">
+                  {cubeIntro && cubeIntro.description && cubeIntro.description.goal && cubeIntro.description.goal.length || 0}
+                </span>/
                 <span className="max">500</span>
               </span>
               <textarea placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
                 value={cubeIntro && cubeIntro.description && cubeIntro.description.goal || ''}
-                onChange={(e: any) => onChangeCubeIntroProps('description.goal', e.target.value)}
+                onChange={(e:any) => {
+                  if (e.target.value.length > 500 ) {
+                    this.setState({ fieldName: 'description.goal' });
+                  } else {
+                    this.setState({ fieldName: '' });
+                    onChangeCubeIntroProps('description.goal', e.target.value); }
+                }
+                }
               />
               <span className="validation">You can enter up to 500 characters.</span>
             </div>
@@ -67,14 +88,21 @@ class CreateIntroView extends React.Component<Props> {
         </Form.Field>
         <Form.Field>
           <label className="necessary">교육대상</label>
-          <div className="ui right-top-count input">
+          <div className={classNames('ui right-top-count input', { error: this.state.fieldName === 'description.applicants' })}>
             <span className="count">
               <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.applicants && cubeIntro.description.applicants.length || 0}</span>/
               <span className="max">500</span>
             </span>
             <textarea placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
               value={cubeIntro && cubeIntro.description && cubeIntro.description.applicants || ''}
-              onChange={(e: any) => onChangeCubeIntroProps('description.applicants', e.target.value) }
+              onChange={(e:any) => {
+                if (e.target.value.length > 500 ) {
+                  this.setState({ fieldName: 'description.applicants' });
+                } else {
+                  this.setState({ fieldName: '' });
+                  onChangeCubeIntroProps('description.applicants', e.target.value); }
+              }
+              }
             />
             <span className="validation">You can enter up to 500 characters.</span>
           </div>
@@ -94,15 +122,23 @@ class CreateIntroView extends React.Component<Props> {
 
         <Form.Field>
           <label>이수조건</label>
-          <div className="ui right-top-count input">
+          <div className={classNames('ui right-top-count input', { error: this.state.fieldName === 'description.completionTerms' })}>
             <span className="count">
-              <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.completionTerms.length}</span>/
+              <span className="now">{cubeIntro && cubeIntro.description && cubeIntro.description.completionTerms.length || 0}
+              </span>/
               <span className="max">1000</span>
             </span>
             <textarea
               placeholder="이수조건을 입력해주세요."
               value={cubeIntro && cubeIntro.description && cubeIntro.description.completionTerms || ''}
-              onChange={(e:any) => onChangeCubeIntroProps('description.completionTerms', e.target.value)}
+              onChange={(e:any) => {
+                if (e.target.value.length > 1000 ) {
+                  this.setState({ fieldName: 'description.completionTerms' });
+                } else {
+                  this.setState({ fieldName: '' });
+                  onChangeCubeIntroProps('description.completionTerms', e.target.value); }
+              }
+              }
             />
             <span className="validation">You can enter up to 1000 characters.</span>
           </div>
