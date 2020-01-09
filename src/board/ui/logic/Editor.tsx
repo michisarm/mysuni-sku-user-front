@@ -38,7 +38,11 @@ class Editor extends React.Component<Props, States> {
       <ReactQuill theme="snow"
         modules={this.modules}
         formats={this.formats}
-        onChange={html => onChangeContentsProps('contents.contents', html)}
+        onChange={html => {
+          if (html.length < 1001) {
+            onChangeContentsProps('contents.contents', html);
+          }
+        }}
         value={post && post.contents && post.contents.contents || ''}
       />
     );
