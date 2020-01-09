@@ -213,6 +213,13 @@ class LectureContainer extends Component<Props, States> {
     } = this.props;
     const { hovered } = this.state;
 
+    let state = '';
+    let date = '';
+    if (model instanceof MyTrainingModel) {
+      state = model.state;
+      date = moment(model.time).format('YYYY.MM.DD');
+    }
+
     return (
       <li>
         <CardGroup type={GroupType.Box}>
@@ -220,6 +227,8 @@ class LectureContainer extends Component<Props, States> {
             model={model}
             hovered={hovered}
             rating={rating}
+            state={state || undefined}
+            date={date || undefined}
             thumbnailImage={thumbnailImage}
             action={this.getAction()}
             onAction={onAction}
