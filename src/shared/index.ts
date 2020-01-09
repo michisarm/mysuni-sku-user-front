@@ -59,8 +59,6 @@ export { default as withSplitting } from './helper/withSplitting';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
 
-export { default as CachingFetch } from './components/CachingFetch';
-
 /** Component */
 export { default as UserApp } from '../layout/UserApp';
 export { default as AppLayout } from '../layout/UserApp/ui/logic/AppLayoutContainer';

@@ -1,9 +1,9 @@
 
 import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { IdNameList, CachingFetch } from 'shared';
+import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';

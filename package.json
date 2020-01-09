@@ -19,10 +19,11 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "^0.0.7",
-    "@nara.drama/depot": "^0.0.15",
-    "@nara.drama/feedback": "^0.0.16",
-    "@sku/personalcube": "0.0.21",
+    "@nara.platform/accent": "0.0.9",
+    "@nara.drama/depot": "0.0.17",
+    "@nara.drama/feedback": "0.0.18",
+    "@nara.platform/dock": "0.0.7-sk",
+    "@sku/personalcube": "0.0.22",
     "@types/react-datepicker": "^2.9.5",
     "@types/sockjs-client": "^1.1.1",
     "autobind-decorator": "2.4.0",
@@ -69,8 +70,7 @@
     "@types/numeral": "^0.0.26",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
-    "@types/react-router-dom": "^4.3.3",
-    "@nara.platform/dock": "0.0.6-sk"
+    "@types/react-router-dom": "^4.3.3"
   },
   "eslintConfig": {
     "extends": "nara"

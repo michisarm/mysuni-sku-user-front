@@ -1,8 +1,7 @@
 
 import { observable, action, runInAction } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, CachingFetch } from '@nara.platform/accent';
 
-import { CachingFetch } from 'shared';
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 

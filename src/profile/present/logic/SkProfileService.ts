@@ -1,9 +1,8 @@
 
 import { observable, action, runInAction, computed } from 'mobx';
-import { autobind, NameValueList, OffsetElementList } from '@nara.platform/accent';
+import { autobind, NameValueList, OffsetElementList, CachingFetch } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { CachingFetch } from 'shared';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
