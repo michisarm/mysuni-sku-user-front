@@ -27,8 +27,8 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
 }
 
 interface States{
-  hour: string
-  minute: string
+  hour: number
+  minute: number
 
   alertWinOpen: boolean
   alertIcon: string
@@ -48,7 +48,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { hour: '', minute: '', alertWinOpen: false,
+    this.state = { hour: 0, minute: 0, alertWinOpen: false,
       alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
       confirmWinOpen: false };
   }
@@ -112,30 +112,34 @@ class CreateIntroContainer extends React.Component<Props, States> {
   onChangeCubeIntroProps(name: string, value: string | number | {}) {
     //
     const { cubeIntroService } = this.props;
+    if (value < 0) value = 0;
     if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
   }
 
-  setHourAndMinute(name: string, value: string) {
+  setHourAndMinute(name: string, value: number) {
     //
     Promise.resolve()
       .then(() => {
         if (name === 'hour') this.setState({ hour: value });
-        if (name === 'minute') this.setState({ minute: value });
+        if (name === 'minute') {
+          if (value >= 60) value = 59;
+          this.setState({ minute: value });
+        }
       })
       .then(() => {
         const { hour, minute } = this.state;
         const reg = /^[0-9]+$/;
-        const hourValidation = reg.test(hour);
-        const minuteValidation = reg.test(minute);
+        const hourValidation = reg.test(String(hour));
+        const minuteValidation = reg.test(String(minute));
         if (hourValidation === false) {
-          this.setState({ hour: '' });
+          this.setState({ hour: 0 });
         }
         if (minuteValidation === false) {
-          this.setState({ minute: '' });
+          this.setState({ minute: 0 });
         }
 
-        this.setLearningTime();
-      });
+      })
+      .then(() => this.setLearningTime());
   }
 
   setLearningTime() {
