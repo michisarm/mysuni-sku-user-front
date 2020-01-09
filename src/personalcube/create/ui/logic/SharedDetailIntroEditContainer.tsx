@@ -1,9 +1,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
+import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
 import SelectType from '../../../../shared/model/SelectType';
 import ContentsProviderSelectContainer from './ContentsProviderSelectContainer';
@@ -103,7 +104,8 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
             <div className="column"><label>교육시간</label></div>
             <div className="column">
               <div className="text1">
-                {parseInt(String(cubeIntro.learningTime / 60), 10)}  h {cubeIntro.learningTime % 60} m
+                {timeToHourMinuteFormat(cubeIntro.learningTime)}
+                {/* {parseInt(String(cubeIntro.learningTime / 60), 10)}  h {cubeIntro.learningTime % 60} m*/}
               </div>
             </div>
           </div>
