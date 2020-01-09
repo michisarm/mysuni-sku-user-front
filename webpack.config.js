@@ -271,6 +271,14 @@ module.exports = function(webpackEnv) {
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         maxSize: 1000000,
+        cacheGroups: {
+          common: {
+            name: 'common',
+            chunks: 'all',
+            minChunks: 2,
+            enforce: true,
+          },
+        },
         chunks: 'all',
         name: false,
       },
