@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ReviewService } from '@nara.drama/feedback';
-import {CubeType, NoSuchContentPanel} from 'shared';
+import { CubeType, NoSuchContentPanel } from 'shared';
 import { Lecture, LectureService } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
