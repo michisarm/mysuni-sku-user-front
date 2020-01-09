@@ -1,4 +1,4 @@
-₩import React from 'react';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
