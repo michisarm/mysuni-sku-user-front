@@ -25,6 +25,7 @@ timestamps {
             stage('BUILD') {
                 container('node') {
                     sh 'npm install'
+                    sh 'ls -al'
                     sh 'npm run build-app'
                 }
             }
