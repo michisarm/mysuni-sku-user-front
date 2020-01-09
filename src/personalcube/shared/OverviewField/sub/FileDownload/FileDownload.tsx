@@ -35,7 +35,7 @@ class FileDownload extends Component<Props, State> {
         boxIds.map(fileBoxId => depot.getDepotFiles(fileBoxId))
       ).then(filesArr => {
         if (filesArr.length) {
-          filesArr.forEach(fileList => {
+          filesArr.map(fileList => {
             if (Array.isArray(fileList)) files = files.concat(fileList);
             else files.push(fileList);
           });
