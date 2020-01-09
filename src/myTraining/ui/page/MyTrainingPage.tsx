@@ -226,20 +226,33 @@ class MyTrainingPage extends Component<Props, State> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
     let list: (MyTrainingModel | LectureModel | InMyLectureModel)[] = [];
+    let noSuchContentPanel = '';
 
     switch (type) {
       case Type.InMyList:
         list = inMyLectureService!.inMyLectures;
+        noSuchContentPanel = '관심목록에 추가한 학습 과정이 없습니다.';
         break;
       case Type.Required:
         list = lectureService!.lectures;
+        noSuchContentPanel = '권장과정에 해당하는 학습 과정이 없습니다.';
         break;
       case Type.Completed:
         cardType = Lecture.GroupType.List;
         list = myTrainingService!.myTrainings;
+        noSuchContentPanel = '학습완료에 해당하는 학습 과정이 없습니다.';
         break;
-      default:
+      case Type.Enrolled:
+        noSuchContentPanel = '수강 대기중인 학습 과정이 없습니다.';
         list = myTrainingService!.myTrainings;
+        break;
+      case Type.InProgress:
+        noSuchContentPanel = '수강중인 학습 과정이 없습니다.';
+        list = myTrainingService!.myTrainings;
+        break;
+      case Type.Retry:
+        list = myTrainingService!.myTrainings;
+        noSuchContentPanel = '취소/미이수에 해당하는 학습 과정이 없습니다.';
         break;
     }
 
@@ -269,7 +282,7 @@ class MyTrainingPage extends Component<Props, State> {
               })}
             </Lecture.Group>
           ) || (
-            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+            <NoSuchContentPanel message={noSuchContentPanel} />
           )
         }
 
