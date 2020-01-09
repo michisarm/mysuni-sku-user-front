@@ -138,7 +138,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.forEach((data, index) => {
+    categorys.map((data, index) => {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     }
     );

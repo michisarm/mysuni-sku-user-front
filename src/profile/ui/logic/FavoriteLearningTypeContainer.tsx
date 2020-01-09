@@ -100,8 +100,8 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
     if (skProfileService && collegeService )  {
       learningTyps.idNames.push({ id: 'type', name: typeGroup, active: false });
       learningTyps.idNames.push({ id: 'time', name: timeGroup, active: false });
-      areaGroup.forEach((area) => learningTyps.idNames.push({ id: 'area', name: area, active: false }) );
-      goalGroup.forEach((goal) => learningTyps.idNames.push({ id: 'goal', name: goal, active: false }) );
+      areaGroup.map((area) => learningTyps.idNames.push({ id: 'area', name: area, active: false }) );
+      goalGroup.map((goal) => learningTyps.idNames.push({ id: 'goal', name: goal, active: false }) );
       learningTyps.idNames.push({ id: 'etc', name: write, active: false });
 
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);

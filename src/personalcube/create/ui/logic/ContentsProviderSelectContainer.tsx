@@ -66,7 +66,7 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
   setContentsProvider() {
     const selectContentsProviderType: any = [];
     const { contentsProviders } = this.props.contentsProviderService || {} as ContentsProviderService;
-    contentsProviders.forEach((contentsProvider, index) => {
+    contentsProviders.map((contentsProvider) => {
       selectContentsProviderType.push(
         {
           key: contentsProvider.contentsProvider.id,
