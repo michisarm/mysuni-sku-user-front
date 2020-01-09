@@ -24,10 +24,9 @@ class CreateIntroView extends React.Component<Props> {
   render() {
 
     const {
-      cubeIntro, onChangeCubeIntroProps, setHourAndMinute, hour, minute, cubeType,
+      cubeIntro, onChangeCubeIntroProps, setHourAndMinute, cubeType,
     } = this.props;
 
-    console.log(cubeIntro);
     return (
       <>
         <div className="section-tit">
@@ -127,7 +126,7 @@ class CreateIntroView extends React.Component<Props> {
               <div className="ui h48 input time">
                 <input
                   type="text"
-                  value={parseInt(String(cubeIntro.learningTime / 60))}
+                  value={parseInt(String(cubeIntro.learningTime / 60), 10)}
                   onChange={(e: any) => setHourAndMinute('hour', e.target.value)}
                 /><label>h</label>
                 <Icon className="clear link" />
@@ -135,7 +134,7 @@ class CreateIntroView extends React.Component<Props> {
               <div className="ui h48 input time">
                 <input
                   type="text"
-                  value={parseInt(String(cubeIntro.learningTime % 60))}
+                  value={parseInt(String(cubeIntro.learningTime % 60), 10)}
                   onChange={(e: any) => setHourAndMinute('minute', e.target.value)}
                 /><label>m</label>
                 <Icon className="clear link" />
