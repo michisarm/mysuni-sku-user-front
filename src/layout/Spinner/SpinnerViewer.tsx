@@ -82,15 +82,13 @@ class SpinnerViewer extends PureComponent<Props, State> {
 
   render() {
     //
-    // return null;
-
-    // const { text } = this.props;
+    const { text } = this.props;
     const { active } = this.state;
 
     if (active) {
       return (
         <div className="loading-wrap select-none" style={{ display: 'block' }}>
-          <div className="loading-box">LOADING</div>
+          <div className="loading-box">{text}</div>
         </div>
       );
     }
