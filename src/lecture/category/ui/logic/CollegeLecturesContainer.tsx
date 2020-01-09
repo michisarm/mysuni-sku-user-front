@@ -291,7 +291,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
             )}
           </>
           :
-          <NoSuchContentPanel message="수강중인 학습 과정이 없습니다." />
+          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
         }
       </CategoryLecturesWrapperView>
     );

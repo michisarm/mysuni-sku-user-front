@@ -13,7 +13,7 @@ class InMyLectureCdoModel {
   category: CategoryModel = new CategoryModel();
   name: string = '';
   description: string = '';
-  cubeType: CubeType = CubeType.None;
+  cubeType: CubeType | null = CubeType.None;
   learningTime: number = 0;
   stampCount: number = 0;
   coursePlanId: string = '';

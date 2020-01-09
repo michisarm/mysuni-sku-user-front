@@ -71,6 +71,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     switch (type) {
       case ContentType.InMyList: {
+        inMyLectureService!.clear();
         const offsetList = await inMyLectureService!.findInMyLectures(this.PAGE_SIZE, 0);
         const feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
 
@@ -78,12 +79,15 @@ class MyLearningContentContainer extends Component<Props, State> {
         break;
       }
       case ContentType.Required:
+        lectureService!.clearLectures();
         lectureService!.findPagingRequiredLectures(this.PAGE_SIZE, 0);
         break;
       case ContentType.InProgress:
+        myTrainingService!.clear();
         myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
         break;
       case ContentType.Enrolled:
+        myTrainingService!.clear();
         myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
         break;
     }

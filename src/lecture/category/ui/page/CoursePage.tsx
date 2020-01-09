@@ -221,26 +221,27 @@ class CoursePage extends Component<Props, State> {
 
   getInMyLectureCdo(viewObject: any): InMyLectureCdoModel {
     const {
-      coursePlanService, programLectureService,
+      coursePlanService, programLectureService, courseLectureService, match,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { programLecture } = programLectureService!;
+    const { courseLecture } = courseLectureService!;
     return new InMyLectureCdoModel({
       serviceType: this.props.match.params.serviceType,
       serviceId: this.props.match.params.serviceId,
       category: coursePlan.category,
       name: coursePlan.name,
       description: coursePlanContents.description,
-      cubeType: CubeType.None,
+      cubeType: null,
       learningTime: viewObject.learningTime,
       stampCount: coursePlan.stamp.stampCount,
       coursePlanId: coursePlan.coursePlanId,
       requiredSubsidiaries: coursePlan.courseOpen.requiredSubsidiaries,
       cubeId: '',
       courseSetJson: coursePlanContents.courseSet,
-      courseLectureUsids: programLecture.courseLectureUsids,
-      lectureCardUsids: programLecture.lectureCardUsids,
-      reviewId: programLecture.reviewId,
+      courseLectureUsids: match.params.serviceType === 'Program' ? programLecture.courseLectureUsids : [],
+      lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids : courseLecture.lectureCardUsids,
+      reviewId: match.params.serviceType === 'Program' ? programLecture.reviewId : courseLecture.reviewId,
     });
   }
 
