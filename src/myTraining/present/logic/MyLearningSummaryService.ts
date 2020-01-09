@@ -1,6 +1,8 @@
 
 import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
+
+import { CachingFetch } from 'shared';
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
 import MyLearningSummaryModel from '../../model/MyLearningSummaryModel';
 
@@ -15,6 +17,9 @@ class MyLearningSummaryService {
   @observable
   myLearningSummary: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
+  myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
+
+
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
   }
@@ -24,12 +29,12 @@ class MyLearningSummaryService {
   @action
   async findMyLearningSummary() {
     //
-    const myLearningSummary = await this.myLearningSummaryApi.findMyLearningSummary();
+    const fetched = this.myLearningSummaryCachingFetch.fetch(
+      () => this.myLearningSummaryApi.findMyLearningSummary(),
+      (myLearningSummary) => runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary)),
+    );
 
-    return runInAction(() => {
-      this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
-      return myLearningSummary;
-    });
+    return fetched ? this.myLearningSummaryCachingFetch.inProgressFetching : this.myLearningSummary;
   }
 
   @action

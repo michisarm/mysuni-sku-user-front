@@ -1,7 +1,9 @@
+
 import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
 import { autobind } from '@nara.platform/accent';
+
 import _ from 'lodash';
-import { IdNameList } from 'shared';
+import { IdNameList, CachingFetch } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';
@@ -21,7 +23,9 @@ export default class CollegeService {
   college: CollegeModel = new CollegeModel();
 
   @observable
-  colleges: CollegeModel[] = [];
+  _colleges: CollegeModel[] = [];
+
+  collegesCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
   mainCollege: CollegeModel = new CollegeModel();
@@ -57,6 +61,13 @@ export default class CollegeService {
   }
 
   @computed
+  get colleges() {
+    //
+    const colleges = this._colleges as IObservableArray;
+    return colleges ? colleges.peek() : [];
+  }
+
+  @computed
   get channels() {
     //
     const channels = this._channels as IObservableArray;
@@ -79,13 +90,17 @@ export default class CollegeService {
   @action
   async findAllColleges() {
     //
-    const colleges = await this.collegeApi.findAllColleges();
-    return runInAction(() => this.colleges = colleges);
+    const fetched = this.collegesCachingFetch.fetch(
+      () => this.collegeApi.findAllColleges(),
+      (colleges) => runInAction(() => this._colleges = colleges),
+    );
+
+    return fetched ? this.collegesCachingFetch.inProgressFetching : this.colleges;
   }
 
   @action
-  setCollege(colege: CollegeModel) {
-    this.college = colege;
+  setCollege(college: CollegeModel) {
+    this.college = college;
   }
 
   @action

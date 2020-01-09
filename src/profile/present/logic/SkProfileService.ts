@@ -3,6 +3,7 @@ import { observable, action, runInAction, computed } from 'mobx';
 import { autobind, NameValueList, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
+import { CachingFetch } from 'shared';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
@@ -20,6 +21,8 @@ export default class SkProfileService {
   @observable
   skProfile: SkProfileModel = new SkProfileModel();
 
+  skProfileCachingFetch: CachingFetch = new CachingFetch();
+
   @observable
   skProfiles: OffsetElementList<SkProfileModel> ={ results: [], totalCount: 0 };
 
@@ -28,6 +31,8 @@ export default class SkProfileService {
 
   @observable
   studySummary: StudySummary = new StudySummary();
+
+  studySummaryCachingFetch: CachingFetch = new CachingFetch();
 
 
   constructor(skProfileApi: SkProfileApi) {
@@ -50,8 +55,12 @@ export default class SkProfileService {
   @action
   async findSkProfile() {
     //
-    const skProfile = await this.skProfileApi.findSkProfile();
-    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
+    const fetched = this.skProfileCachingFetch.fetch(
+      () => this.skProfileApi.findSkProfile(),
+      (skProfile) => runInAction(() => this.skProfile = new SkProfileModel(skProfile)),
+    );
+
+    return fetched ? this.skProfileCachingFetch.inProgressFetching : this.skProfile;
   }
 
   @action
@@ -100,8 +109,13 @@ export default class SkProfileService {
 
   @action
   async  findStudySummary() {
-    const studySummary = await this.skProfileApi.findStudySummary();
-    return runInAction(() => this.studySummary = new StudySummary(studySummary));
+    //
+    const fetched = this.studySummaryCachingFetch.fetch(
+      () => this.skProfileApi.findStudySummary(),
+      (studySummary) => runInAction(() => this.studySummary = new StudySummary(studySummary)),
+    );
+
+    return fetched ? this.studySummaryCachingFetch.inProgressFetching : this.studySummary;
   }
 
   @action

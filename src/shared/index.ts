@@ -52,13 +52,14 @@ export { default as PageModel } from './model/PageModel';
 export { default as NewPageModel } from './model/NewPageModel';
 
 
-
 /** Helper */
 export { default as storybookHelper } from './helper/storybookHelper';
 export { default as DynamicImport } from './helper/DynamicImport';
 export { default as withSplitting } from './helper/withSplitting';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
+
+export { default as CachingFetch } from './components/CachingFetch';
 
 /** Component */
 export { default as UserApp } from '../layout/UserApp';
