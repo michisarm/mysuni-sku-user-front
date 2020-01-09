@@ -64,7 +64,7 @@ class SpinnerViewer extends PureComponent<Props, State> {
 
   removeAllDimmer() {
     //
-    this.setState({ count: 0, active: false });
+    this.setState({ count: 0 });
   }
 
   activate() {
