@@ -219,7 +219,9 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   renderList() {
-    const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { skProfileService, inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { skProfile } = skProfileService as SkProfileService;
+    const { member } = skProfile as SkProfileModel;
     const { ratingMap } =  reviewService as ReviewService;
     const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
@@ -282,7 +284,18 @@ class MyTrainingPage extends Component<Props, State> {
               })}
             </Lecture.Group>
           ) || (
-            <NoSuchContentPanel message={noSuchContentPanel} />
+            <NoSuchContentPanel message={(
+              <>
+                <div className="text">{noSuchContentPanel}</div>
+                <a
+                  className="ui icon right button btn-blue2"
+                  onClick={() => this.props.history.push('/lecture/recommend')}
+                >
+                  {member.name}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
+                </a>
+              </>
+              )}
+            />
           )
         }
 
