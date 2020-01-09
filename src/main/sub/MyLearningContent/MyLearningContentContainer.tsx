@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { NoSuchContentPanel } from 'shared';
+import {CubeType, NoSuchContentPanel} from 'shared';
 import { Lecture, LectureService } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -184,16 +184,16 @@ class MyLearningContentContainer extends Component<Props, State> {
           list && list.length && (
             <Lecture.Group type={Lecture.GroupType.Line}>
               {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
-                let rating: number | undefined = 0;
-                if (value instanceof InMyLectureModel) {
-                  rating = ratingMap.get(value.reviewId);
+                let rating: number | undefined;
+                if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
+                  rating = ratingMap.get(value.reviewId) || 0;
                 }
                 const inMyLecture = inMyLectureMap.get(value.serviceId);
                 return (
                   <Lecture
                     key={`training-${index}`}
                     model={value}
-                    rating={rating || undefined}
+                    rating={rating}
                     // thumbnailImage="http://placehold.it/60x60"
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
