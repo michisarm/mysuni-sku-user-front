@@ -161,7 +161,7 @@ class QuickNavContainer extends Component<Props, State> {
     const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
 
     if (adminSiteUrl) {
-      window.location.href = adminSiteUrl;
+      window.open(adminSiteUrl);
     }
   }
 
