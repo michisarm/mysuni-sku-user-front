@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Card, Icon} from 'semantic-ui-react';
-import {reactAutobind} from '@nara.platform/accent';
-import {observer} from 'mobx-react';
+import { Button, Card, Icon } from 'semantic-ui-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import MyFeedModel from '../../model/MyFeedModel';
 
@@ -15,15 +15,15 @@ interface Props {
 @observer
 class MyFeedView extends React.Component<Props> {
   //
-  handleNotieLink(){
-    const{ onBackLink, onRead, model } = this.props;
+  handleNotieLink() {
+    const { onBackLink, onRead, model } = this.props;
     onBackLink(model.backLink);
     onRead(model.id);
   }
 
   handleNotieRead() {
     //
-    const{ onRead, model } = this.props;
+    const { onRead, model } = this.props;
     onRead(model.id);
   }
 
@@ -31,17 +31,17 @@ class MyFeedView extends React.Component<Props> {
     const { model } = this.props;
 
     const date = new Date(model.sentTime);
-    const dateFormat = date.getFullYear() + '.' + date.getMonth()+1 + '.' + date.getDay();
+    const dateFormat = date.getFullYear() + '.' + date.getMonth() + 1 + '.' + date.getDay();
 
 
-    return(
+    return (
       <Card className="community-item">
         <div className="title">
           <div className="commu-list-item">
             {/*썸네일*/}
             <div className="thumbnail">
               <div>
-                <Icon className="thumb60-1"/>
+                <Icon className="thumb60-1" />
               </div>
             </div>
             {/*//썸네일*/}
@@ -67,7 +67,7 @@ class MyFeedView extends React.Component<Props> {
             </div>
             <div className="icon-area">
               <Button onClick={this.handleNotieRead}>
-                <Icon className="card-delete32"/>
+                <Icon className="card-delete32" />
               </Button>
             </div>
           </div>

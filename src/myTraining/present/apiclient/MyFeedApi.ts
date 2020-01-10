@@ -25,7 +25,7 @@ class MyFeedApi {
     //
     const params = myfeedRdo;
 
-    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/feed/all', {params})
+    return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/feed/all', { params })
       .then(this.getOffsetElementList);
   }
 

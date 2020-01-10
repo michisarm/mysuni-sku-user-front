@@ -1,8 +1,6 @@
-import { computed, decorate, observable } from 'mobx';
-import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, ProposalState } from 'shared';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
-import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
-import { CourseSetModel } from '../../course/model/CourseSetModel';
+import { decorate, observable } from 'mobx';
+import { DramaEntityObservableModel, IdName } from 'shared';
+import { CubeTypeNameType } from 'personalcube/personalcube';
 
 export enum NotieType {
   Email='Email',

@@ -252,7 +252,7 @@ class MyCommunityPage extends Component<Props, State> {
               <MyFeed.Group type={Lecture.GroupType.Community}>
                 {
                   feedList.map((value: MyFeedModel, index: number) => {
-                    return(
+                    return (
                       <MyFeed key={`feed-${index}`}
                         model={value}
                         index={index}

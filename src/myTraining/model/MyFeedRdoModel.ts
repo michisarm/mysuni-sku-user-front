@@ -1,7 +1,4 @@
 import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
-import { CubeType } from 'shared';
-
 
 class MyFeedRdoModel {
   //
@@ -22,7 +19,7 @@ class MyFeedRdoModel {
     return new MyFeedRdoModel({
       limit,
       offset,
-      read
+      read,
     });
   }
 
@@ -32,7 +29,7 @@ class MyFeedRdoModel {
     return new MyFeedRdoModel({
       limit,
       offset,
-      read
+      read,
     });
   }
 
@@ -42,7 +39,7 @@ class MyFeedRdoModel {
 decorate(MyFeedRdoModel, {
   limit: observable,
   offset: observable,
-  read: observable
+  read: observable,
 });
 
 export default MyFeedRdoModel;
