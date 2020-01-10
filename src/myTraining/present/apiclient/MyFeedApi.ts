@@ -3,7 +3,7 @@ import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyFeedRdoModel from '../../model/MyFeedRdoModel';
-import { MyFeedModel } from '../../../mypage';
+import { MyFeedModel } from '../../../myTraining';
 
 
 class MyFeedApi {
@@ -27,6 +27,11 @@ class MyFeedApi {
 
     return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/feed/all', {params})
       .then(this.getOffsetElementList);
+  }
+
+  onReadNotieFeed(notieId: string) {
+    //
+    return axiosApi.put(this.baseUrl + '/onread/' + notieId);
   }
 
 }

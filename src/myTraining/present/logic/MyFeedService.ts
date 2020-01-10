@@ -30,6 +30,19 @@ class MyFeedService {
   // My Feed ----------------------------------------------------------------------------------------------------------
 
   @action
+  clearOnce(index: number){
+    const myFeeds = new Array<MyFeedModel>();
+
+    this._myFeeds.map((value: MyFeedModel, innerIndex: number) => {
+      if(index !== innerIndex) {
+        myFeeds.push(value);
+      }
+    });
+
+    this._myFeeds = myFeeds;
+  }
+
+  @action
   clear() {
     this._myFeeds = [];
   }
@@ -52,6 +65,12 @@ class MyFeedService {
 
     runInAction(() => this._myFeeds = offsetList.results);
     return offsetList;
+  }
+
+  @action
+  async onReadNotie(notieId: string) {
+    //
+    await this.myFeedApi.onReadNotieFeed(notieId);
   }
 }
 

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
 
 import CardGroup, { LearningCardContext, GroupType } from '../../../lecture/shared/Lecture/sub/CardGroup';
 import LineHeader from '../../../lecture/shared/Lecture/sub/LineHeader';
@@ -12,11 +12,16 @@ import Action from '../../../lecture/shared/Lecture/model/Action';
 import { ActionType } from '../../../lecture/shared/Lecture/model';
 import MyFeedView from '../view/MyFeedView';
 import MyFeedModel from '../../model/MyFeedModel';
+import {MyFeedService} from '../../index';
+
 
 
 interface Props {
   model: MyFeedModel,
   thumbnailImage?: string,
+  index: number,
+
+  myFeedService?: MyFeedService,
 }
 
 interface ActionWith extends Action {
@@ -24,9 +29,11 @@ interface ActionWith extends Action {
 }
 
 /**
- * 러닝카드 컴포넌트입니다.
+ * My Feed 컴포넌트입니다.
  */
-// @inject(({ learning }) => ({ cardService: learning.cardService }))
+@inject(mobxHelper.injectFrom(
+  'myTraining.myFeedService',
+))
 @reactAutobind
 @observer
 class LectureContainer extends Component<Props> {
@@ -49,12 +56,17 @@ class LectureContainer extends Component<Props> {
     thumbnailImage: null,
   };
 
-  onBackLink() {
-
+  //Feed를 등록한 컨텐츠 URL
+  onBackLink(backLink: string) {
+    const { myFeedService, index } = this.props;
+    window.location.href = backLink;
+    myFeedService!.clearOnce(index);
   }
 
-  onRead() {
-
+  onRead(notieId: string) {
+    const { myFeedService, index } = this.props;
+    myFeedService!.onReadNotie(notieId);
+    myFeedService!.clearOnce(index);
   }
 
   renderFeedCard() {

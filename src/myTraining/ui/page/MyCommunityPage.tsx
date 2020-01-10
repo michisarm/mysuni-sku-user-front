@@ -8,10 +8,10 @@ import { PostList } from '@sku/personalcube';
 import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
 import { SkProfileModel, SkProfileService } from 'profile';
 import { MyTrainingService } from 'myTraining/index';
-import { MyFeed, MyFeedModel } from 'mypage/index';
 import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
+import { MyFeed, MyFeedModel } from '../../../myTraining';
 import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
@@ -85,6 +85,7 @@ class MyCommunityPage extends Component<Props, State> {
 
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCommunity}`, 0, this.PAGE_SIZE);
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, 0, this.PAGE_SIZE);
+    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyFeed}`, 0, this.PAGE_SIZE);
     this.selectMenu(match.params.tab);
     // this.findPagingList();
   }
@@ -112,6 +113,7 @@ class MyCommunityPage extends Component<Props, State> {
     const { myTrainingService, pageService, lectureService, myFeedService } = this.props;
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCommunity}`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`);
+    const feedPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyFeed}`);
 
     lectureService!.findPagingCommunityLectures(createdPage!.limit, createdPage!.nextOffset)
       .then((offsetList) => {
@@ -123,9 +125,9 @@ class MyCommunityPage extends Component<Props, State> {
         pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCommunity}`, offsetList.totalCount, page!.pageNo + 1);
       });
 
-    myFeedService!.findAndAddAllMyFeeds(page!.limit, page!.nextOffset)
+    myFeedService!.findAndAddAllMyFeeds(feedPage!.limit, feedPage!.nextOffset)
       .then((offsetList) => {
-        pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyFeed}`, offsetList.totalCount, page!.pageNo + 1);
+        pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyFeed}`, offsetList.totalCount, feedPage!.pageNo + 1);
       });
   }
 
@@ -253,6 +255,7 @@ class MyCommunityPage extends Component<Props, State> {
                     return(
                       <MyFeed key={`feed-${index}`}
                         model={value}
+                        index={index}
                       />
                     );
                   })
@@ -283,6 +286,7 @@ class MyCommunityPage extends Component<Props, State> {
 
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCommunity`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCreatedCommunity`);
+    //const feedPage = pageService!.pageMap.get(`${this.PAGE_KEY}_MyFeed`);
 
     return (
       <ContentLayout
