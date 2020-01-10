@@ -3,7 +3,7 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Button, Form, Segment } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
 import routePaths from '../../../routePaths';

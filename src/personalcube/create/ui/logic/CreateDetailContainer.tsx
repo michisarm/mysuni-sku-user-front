@@ -135,7 +135,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
     const { personalCubeService } = this.props;
 
     if (personalCubeService && !personalCubeId && !mode) {
-      personalCubeService.registerCube({ ...personalCube, creator: { company, email, name } })
+      personalCubeService.registerCube({ ...personalCube, creator: { company, email, name }})
         .then((personalCubeId) => this.routeToCreateIntro(personalCubeId || ''));
     }
 
