@@ -1,4 +1,4 @@
-import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
@@ -11,6 +11,7 @@ import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
+import SharedRdoModel from '../../model/SharedRdoModel';
 
 
 @autobind
@@ -179,9 +180,9 @@ class LectureService {
   }
 
   @action
-  async findPagingSharedLectures(limit: number, offset: number) {
+  async findPagingSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const response = await this.lectureApi.findAllSharedLectures(LectureRdoModel.newShared(limit, offset));
+    const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
