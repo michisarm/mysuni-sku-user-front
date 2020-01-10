@@ -387,7 +387,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
         <Segment className="full">
           <div className="apl-form-wrap create">
-            <Form>
+            <div className="ui form">
               <CreateIntroView
                 cubeIntro={cubeIntro}
                 onChangeCubeIntroProps={this.onChangeCubeIntroProps}
@@ -436,7 +436,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 buttonYesName="OK"
                 buttonNoName="Cancel"
               />
-            </Form>
+            </div>
           </div>
         </Segment>
       </section>

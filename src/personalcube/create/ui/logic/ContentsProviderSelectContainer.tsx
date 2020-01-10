@@ -40,7 +40,7 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
   onSetCubeIntroPropsByJSON(name: string, value: string) {
     //
     const { cubeIntroService } = this.props;
-    const newValue = JSON.parse(value);
+    const newValue = value ? JSON.parse(value) : value;
     if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, newValue);
   }
 
@@ -66,6 +66,12 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
   setContentsProvider() {
     const selectContentsProviderType: any = [];
     const { contentsProviders } = this.props.contentsProviderService || {} as ContentsProviderService;
+
+    selectContentsProviderType.push({
+      key: '',
+      text: '선택해주세요',
+      value: '',
+    });
     contentsProviders.map((contentsProvider) => {
       selectContentsProviderType.push(
         {
@@ -75,12 +81,6 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
         });
     });
     return selectContentsProviderType;
-  }
-
-  onChangeMediaProps(name: string, value: string) {
-    //
-    const { mediaService } = this.props;
-    if (mediaService) mediaService.changeMediaProps(name, value);
   }
 
   renderForCubeIntro() {
