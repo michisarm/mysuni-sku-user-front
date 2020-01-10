@@ -24,6 +24,7 @@ interface States {
   subsidiariesAll: string
   focus: boolean
   write: string
+  fieldName: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -43,6 +44,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
       subsidiariesAll: 'No',
       focus: false,
       write: '',
+      fieldName: '',
     };
   }
 
@@ -310,15 +312,24 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
         </Form.Field>
         <Form.Field>
           <label>Tag 정보 </label>
-          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
+          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write, error: this.state.fieldName === 'tags' })}>{/* .error class 추가시 error ui 활성 */}
             <input
               type="text"
               value={personalCube && personalCube.tags || ''}
               onClick={() => this.setState({ focus: true })}
               onBlur={() => this.setState({ focus: false })}
               onChange={(e: any) => {
-                this.setState({ write: e.target.value });
-                onChangePersonalCubeProps('tags', e.target.value);
+                if (personalCube.tags.length > 10 ) {
+                  this.setState({ fieldName: 'tags' });
+                } else {
+                  this.setState({ write: e.target.value, fieldName: '' });
+                  onChangePersonalCubeProps('tags', e.target.value);
+                }
+              }}
+              onKeyDownCapture={(e: any) => {
+                if (personalCube.tags.length > 10 && e.key === 'Backspace') {
+                  onChangePersonalCubeProps('tags', e.target.value.toString().slice(0, e.target.value.lastIndexOf(',')));
+                }
               }}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />
@@ -328,6 +339,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                 onChangePersonalCubeProps('tags', '');
               }}
             />
+            <span className="validation">You can enter up to 10 tags.</span>
           </div>
         </Form.Field>
 

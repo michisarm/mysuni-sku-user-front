@@ -1,4 +1,4 @@
-import { DatePeriod } from '../../../shared/model/DatePeriod';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class OfficeWebCdoModel {
   //
@@ -6,5 +6,5 @@ export class OfficeWebCdoModel {
   name: string = '';
   fileBoxId: string = '';
   webPageUrl: string = '';
-  learningPeriod: DatePeriod = new DatePeriod();
+  learningPeriod: NewDatePeriod = new NewDatePeriod();
 }

@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { ContentLayout, AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
+import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
 import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';
@@ -14,7 +15,9 @@ import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
 
 
+
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
+  skProfileService?: SkProfileService
   personalCubeService?: PersonalCubeService
   mediaService?: MediaService
   boardService?:BoardService
@@ -32,8 +35,13 @@ interface States {
   confirmWinOpen: boolean
 }
 
-@inject(mobxHelper.injectFrom('personalCube.personalCubeService',
-  'personalCube.mediaService', 'personalCube.boardService', 'personalCube.officeWebService'))
+@inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'personalCube.personalCubeService',
+  'personalCube.mediaService',
+  'personalCube.boardService',
+  'personalCube.officeWebService'
+))
 @observer
 @reactAutobind
 class CreateDetailContainer extends React.Component<Props, States> {
@@ -119,12 +127,15 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
   handleOKConfirmWin(mode?: string) {
     //
+    const { skProfile } = this.props.skProfileService!;
+    const { member } = skProfile!;
+    const { name, company, email } = member!;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { personalCubeId } = this.props.match.params;
     const { personalCubeService } = this.props;
 
     if (personalCubeService && !personalCubeId && !mode) {
-      personalCubeService.registerCube(personalCube)
+      personalCubeService.registerCube({ ...personalCube, creator: { company, email, name }})
         .then((personalCubeId) => this.routeToCreateIntro(personalCubeId || ''));
     }
 

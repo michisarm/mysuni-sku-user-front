@@ -3,7 +3,7 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Button, Form, Segment } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
 import routePaths from '../../../routePaths';
@@ -387,7 +387,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
         <Segment className="full">
           <div className="apl-form-wrap create">
-            <Form>
+            <div className="ui form">
               <CreateIntroView
                 cubeIntro={cubeIntro}
                 onChangeCubeIntroProps={this.onChangeCubeIntroProps}
@@ -436,7 +436,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
                 buttonYesName="OK"
                 buttonNoName="Cancel"
               />
-            </Form>
+            </div>
           </div>
         </Segment>
       </section>

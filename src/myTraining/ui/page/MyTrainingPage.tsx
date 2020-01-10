@@ -67,7 +67,7 @@ class MyTrainingPage extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state= {
-    type: Type.InProgress,
+    type: '',
     channels: [],
   };
 

@@ -6,9 +6,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import spinner from './spinner';
 
 
-interface Props {
-  text: string;
-}
+interface Props {}
 
 interface State {
   count: number;
@@ -18,9 +16,7 @@ interface State {
 @reactAutobind
 class SpinnerViewer extends PureComponent<Props, State> {
   //
-  static defaultProps = {
-    text: 'LOADING',
-  };
+  static defaultProps = {};
 
   state = {
     count: 0,
@@ -79,16 +75,14 @@ class SpinnerViewer extends PureComponent<Props, State> {
     this.setState({ active: false });
   }
 
-
   render() {
     //
-    const { text } = this.props;
     const { active } = this.state;
 
     if (active) {
       return (
         <div className="loading-wrap select-none" style={{ display: 'block' }}>
-          <div className="loading-box">{text}</div>
+          <div className="loading-box" />
         </div>
       );
     }

@@ -399,7 +399,7 @@ class LectureCardPage extends Component<Props, State> {
         return (
           <PostList
             boardId={personalCube.contents.contents.id}
-            emptyMessage="작성된 글이 없습니다."
+            emptyMessage="Community에 등록된 글이 없습니다."
             linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
             routeToPost={
               studentJoin ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
