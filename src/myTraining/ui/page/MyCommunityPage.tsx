@@ -86,23 +86,18 @@ class MyCommunityPage extends Component<Props, State> {
 
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCommunity}`, 0, this.PAGE_SIZE);
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, 0, this.PAGE_SIZE);
-    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyFeed}`, 0, this.PAGE_SIZE);
     this.selectMenu(match.params.tab);
     // this.findPagingList();
   }
 
   selectMenu(type: string) {
     //
-    const { type: prevType } = this.state;
-
-    if (type !== prevType) {
-      const { pageService, lectureService, myTrainingService, myFeedService } = this.props;
-      pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
-      lectureService!.clearLectures();
-      myTrainingService!.clear();
-      myFeedService!.clear();
-      this.setState({ type }, this.findPagingList);
-    }
+    const { pageService, lectureService, myTrainingService, myFeedService } = this.props;
+    pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
+    lectureService!.clearLectures();
+    myTrainingService!.clear();
+    myFeedService!.clear();
+    this.setState({ type }, this.findPagingList);
   }
 
   onSelectMenu(type: string) {
