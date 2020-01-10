@@ -96,7 +96,7 @@ class MyCommunityPage extends Component<Props, State> {
     const { type: prevType } = this.state;
 
     if (type !== prevType) {
-      const { pageService, lectureService, myTrainingService } = this.props;
+      const { pageService, lectureService, myTrainingService, myFeedService } = this.props;
       pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
       lectureService!.clearLectures();
       myTrainingService!.clear();

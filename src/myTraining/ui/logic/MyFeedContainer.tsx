@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
 import CardGroup, { LearningCardContext, GroupType } from '../../../lecture/shared/Lecture/sub/CardGroup';
 import LineHeader from '../../../lecture/shared/Lecture/sub/LineHeader';
@@ -12,7 +12,7 @@ import Action from '../../../lecture/shared/Lecture/model/Action';
 import { ActionType } from '../../../lecture/shared/Lecture/model';
 import MyFeedView from '../view/MyFeedView';
 import MyFeedModel from '../../model/MyFeedModel';
-import {MyFeedService} from '../../index';
+import { MyFeedService } from '../../index';
 
 
 
@@ -74,8 +74,8 @@ class LectureContainer extends Component<Props> {
       model, thumbnailImage,
     } = this.props;
 
-    return(
-      <MyFeedView model={model} onBackLink={this.onBackLink} onRead={this.onRead}/>
+    return (
+      <MyFeedView model={model} onBackLink={this.onBackLink} onRead={this.onRead} />
     );
   }
 
