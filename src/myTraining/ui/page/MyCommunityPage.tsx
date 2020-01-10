@@ -56,7 +56,7 @@ class MyCommunityPage extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state = {
-    type: Type.MyCommunity,
+    type: '',
     boardIdMap: new Map(),
     boardOpenMap: new Map(),
   };
@@ -88,11 +88,15 @@ class MyCommunityPage extends Component<Props, State> {
 
   selectMenu(type: string) {
     //
-    const { pageService, lectureService, myTrainingService } = this.props;
-    pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
-    lectureService!.clearLectures();
-    myTrainingService!.clear();
-    this.setState({ type }, this.findPagingList);
+    const { type: prevType } = this.state;
+
+    if (type !== prevType) {
+      const { pageService, lectureService, myTrainingService } = this.props;
+      pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
+      lectureService!.clearLectures();
+      myTrainingService!.clear();
+      this.setState({ type }, this.findPagingList);
+    }
   }
 
   onSelectMenu(type: string) {
