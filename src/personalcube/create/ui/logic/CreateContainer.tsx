@@ -6,7 +6,6 @@ import { RouteComponentProps } from 'react-router';
 import { ContentLayout, CubeState, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
-import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import CreateProfileView from '../view/CreateProfileView';
@@ -17,10 +16,11 @@ import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel
 import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
 import { LectureCardService, LectureModel, LectureService } from '../../../../lecture';
 import { SeeMoreButton } from '../../../../lecture/shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from '../../../../myTraining';
 import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
 import routePaths from '../../../routePaths';
 import { SkProfileModel, SkProfileService } from '../../../../profile';
+import LineHeaderContainer from '../../../../myTraining/ui/logic/LineHeaderContainer';
+import { ChannelModel } from '../../../../college';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
@@ -28,8 +28,6 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
-  reviewService?: ReviewService,
-  inMyLectureService?: InMyLectureService,
   skProfileService?: SkProfileService
 }
 
@@ -37,6 +35,7 @@ interface States {
   activeItem : string
   disabled: boolean
   limit: number
+  channels: ChannelModel[]
 }
 
 @inject(mobxHelper.injectFrom(
@@ -44,7 +43,6 @@ interface States {
   'shared.pageService',
   'lecture.lectureService',
   'lecture.lectureCardService',
-  'shared.reviewService',
   'myTraining.inMyLectureService',
   'profile.skProfileService',
 ))
@@ -57,7 +55,10 @@ class CreateContainer extends React.Component<Props, States> {
   PAGE_SIZE = 8;
 
   state = {
-    activeItem: '',  disabled: false, limit: 0,
+    activeItem: '',
+    disabled: false,
+    limit: 0,
+    channels: [],
   };
 
   constructor(props: Props) {
@@ -157,18 +158,17 @@ class CreateContainer extends React.Component<Props, States> {
 
   async findPagingSharedLectures() {
     //
-    const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const { pageService, lectureService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { channels } = this.state;
+    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
 
-    inMyLectureService!.findAllInMyLectures();
-    const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset);
-    const feedbackIds = (lectureService!.lectures || []).map((lecture: LectureModel) => lecture.reviewId);
-    if (feedbackIds && feedbackIds.length) reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
+  /*onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
     if (lecture instanceof InMyLectureModel) {
@@ -196,7 +196,7 @@ class CreateContainer extends React.Component<Props, States> {
         reviewId: lecture.reviewId,
       })).then(this.findPagingSharedLectures);
     }
-  }
+  }*/
 
   onViewDetail(e: any, data: any) {
     //
@@ -223,6 +223,17 @@ class CreateContainer extends React.Component<Props, States> {
   onClickSeeMore() {
     //
     this.findPagingSharedLectures();
+  }
+
+  onFilter(channels: ChannelModel[]) {
+    //const { activeItem } = this.state;
+    const { pageService, lectureService  } = this.props;
+    this.setState({ channels }, () => {
+
+      lectureService!.clearLectures();
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findPagingSharedLectures();
+    });
   }
 
   renderCreate() {
@@ -259,39 +270,33 @@ class CreateContainer extends React.Component<Props, States> {
 
   renderSharedLecture() {
     const { personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { lectureService, reviewService, inMyLectureService } = this.props;
+    const { lectureService } = this.props;
     const { lectures } = lectureService!;
-    const { ratingMap } = reviewService!;
-    const { inMyLectureMap } =  inMyLectureService!;
+    const { channels } = this.state;
 
     return (
       <Segment className="full">
-        <SelectView
+        {/*<SelectView
           totalCount={lectures.length}
           personalCubeQuery={personalCubeQuery}
           fieldOption={SelectType.openType}
           onChangeCubeQueryProps={this.onChangeCubeQueryProps}
           queryFieldName="searchFilter"
-        />
+        />*/}
+        <LineHeaderContainer count={lectures && lectures.length || 0} channels={channels} onFilter={this.onFilter} />
         {
           lectures && lectures.length && (
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel, index: number) => {
-                  const rating = ratingMap.get(lecture.reviewId) || 0;
-                  const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                  return (
-                    <Lecture
-                      key={`lecture-${index}`}
-                      model={lecture}
-                      rating={rating}
+                {lectures.map((lecture: LectureModel, index: number) => (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
                       // thumbnailImage="http://placehold.it/60x60"
-                      action={Lecture.ActionType.Add}
-                      onAction={() => this.onActionLecture(inMyLecture || lecture)}
-                      onViewDetail={this.onViewDetail}
-                    />
-                  );
-                })}
+                    action={Lecture.ActionType.Add}
+                    onViewDetail={this.onViewDetail}
+                  />
+                ))}
               </Lecture.Group>
 
               { this.isContentMore() && (
