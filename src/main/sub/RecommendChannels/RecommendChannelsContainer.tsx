@@ -46,7 +46,7 @@ class RecommendChannelsContainer extends Component<Props> {
       .then((recommendLectures) => {
         let feedbackIds: string[] = [];
         if (recommendLectures && recommendLectures.length) {
-          recommendLectures.forEach(recommendLecture => {
+          recommendLectures.map(recommendLecture => {
             if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length) {
               feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
             }

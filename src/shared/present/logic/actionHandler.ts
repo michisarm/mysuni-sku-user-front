@@ -20,7 +20,7 @@ const actionHandler: ActionHandler = {
 
   containerMounted: () => {
     actionHandler.isContainerMounted = true;
-    actionHandler.actionQueue.forEach(({ actionType, args }) => {
+    actionHandler.actionQueue.map(({ actionType, args }) => {
       const action = actionHandler.actionMap.get(actionType);
       if (action) {
         action(...args);

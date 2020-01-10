@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { Button, Image } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout } from 'shared';
 import { ContentHeaderTotalTimeItem } from 'myTraining/shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
 export default {
@@ -15,7 +16,7 @@ export default {
 
 const profileItem = (
   <ContentHeader.ProfileItem
-    image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+    image={profileImg}
     name="김유니"
     teams={['SK C&C', '플랫폼 개발 1팀']}
   />
@@ -30,7 +31,7 @@ export const Basic = () =>
         <ContentHeader.ProfileItem
           name="김유니"
           teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+          image={profileImg}
         />
       </ContentHeader.Cell>
     </ContentHeader>
@@ -43,7 +44,7 @@ export const ProfileItem = () =>
         <ContentHeader.ProfileItem
           name="김유니"
           teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+          image={profileImg}
           imageEditable
           myPageActive
           onEditImage={action('editImage')}

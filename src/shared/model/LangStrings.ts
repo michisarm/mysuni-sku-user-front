@@ -22,7 +22,7 @@ decorate(LangStrings, {
 // export function makeMapByLangStrings(langStrings: LangStrings) {
 //   const map = new Map();
 //   if (langStrings && langStrings.langStrings && langStrings.langStrings.length) {
-//     langStrings.langStrings.forEach((langString: LangString) => {
+//     langStrings.langStrings.map((langString: LangString) => {
 //       map.set(langString.lang, langString.string);
 //     });
 //   }

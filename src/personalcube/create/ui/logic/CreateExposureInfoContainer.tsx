@@ -91,7 +91,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
       }
 
     } else {
-      subsidiaries.forEach(subsidiary => {
+      subsidiaries.map(subsidiary => {
         allList.push(subsidiary.subsidiary);
       });
       onChangePersonalCubeProps(name, allList);
@@ -151,7 +151,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const requiredSubsidiaryIdList: string[] = [];
     const collegeList: any = [];
 
-    colleges.forEach((data, index) => {
+    colleges.map((data, index) => {
       collegeList.push({ key: index, value: data.collegeId, text: data.name });
     }
     );

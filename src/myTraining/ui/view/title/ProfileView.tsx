@@ -3,6 +3,8 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Image, Button, Icon } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { SkProfileModel } from 'profile';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+
 
 interface Props {
   skProfile : SkProfileModel
@@ -23,7 +25,7 @@ class ProfileView extends Component<Props> {
         <div className="cell-inner">
           <div className="profile">
             <div className="pic">
-              <Image src={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`} alt={member.name} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
+              <Image src={profileImg} alt={member.name} htmlFor="image_photo" /> {/* Image src= depot으로 upload되는 폴더의 skProfile.member.base64Photo*/}
             </div>
             <Button icon className="img-icon" onClick={onChangePhoto} id="image_photo"><Icon className="photo-edit" /></Button>
           </div>

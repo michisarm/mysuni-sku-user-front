@@ -11,6 +11,7 @@ import { MyTrainingService } from 'myTraining/index';
 import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
@@ -265,7 +266,7 @@ class MyCommunityPage extends Component<Props, State> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member && member.base64Photo || profileImg}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}
