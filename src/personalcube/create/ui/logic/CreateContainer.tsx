@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { ContentLayout, CubeState, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import {Button, Icon, Menu, Segment, Sticky} from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
@@ -244,15 +244,18 @@ class CreateContainer extends React.Component<Props, States> {
           result && result.length && (
             <CreateListView
               result={result}
+              totalCount={totalCount}
               handleClickCubeRow={this.handleClickCubeRow}
-              disabled={disabled}
-              findAllCubes ={this.findAllCubes}
-              limit={limit}
             />
           ) || (
             <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
           )
         }
+        { totalCount > result.length && (
+          <SeeMoreButton
+            onClick={() => this.findAllCubes(limit)}
+          />
+        )}
       </Segment>
     );
   }
