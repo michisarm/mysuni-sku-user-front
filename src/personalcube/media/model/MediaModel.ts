@@ -1,9 +1,10 @@
 import { computed, decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { DatePeriod, NameValueList } from 'shared';
+import { NameValueList } from 'shared';
 import { MediaType } from './MediaType';
 import { MediaContentsModel } from './MediaContentsModel';
 import { MediaCdoModel } from './MediaCdoModel';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class MediaModel implements DramaEntity {
 
@@ -14,13 +15,13 @@ export class MediaModel implements DramaEntity {
   mediaType: MediaType = MediaType.LinkMedia;
   name: string = '';
   mediaContents: MediaContentsModel = new MediaContentsModel();
-  learningPeriod: DatePeriod = new DatePeriod();          // 학습시작일 - 학습종료일
+  learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
   time: number = 0;
 
   constructor(media?: MediaModel) {
     if (media) {
       const mediaContents = media.mediaContents && new MediaContentsModel(media.mediaContents) || this.mediaContents;
-      const learningPeriod = media.learningPeriod && new DatePeriod(media.learningPeriod) || this.learningPeriod;
+      const learningPeriod = media.learningPeriod && new NewDatePeriod(media.learningPeriod) || this.learningPeriod;
       Object.assign(this, { ...media, mediaContents, learningPeriod });
     }
   }
