@@ -86,6 +86,7 @@ class MyCommunityPage extends Component<Props, State> {
 
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCommunity}`, 0, this.PAGE_SIZE);
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, 0, this.PAGE_SIZE);
+    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyFeed}`, 0, this.PAGE_SIZE);
     this.selectMenu(match.params.tab);
     // this.findPagingList();
   }

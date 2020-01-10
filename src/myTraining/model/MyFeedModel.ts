@@ -21,6 +21,7 @@ class MyFeedModel extends DramaEntityObservableModel {
   sender: IdName = new IdName();
   backLink: string = '';
   sentTime: number = 0;
+  feedType: string = '';
 
   read: boolean = false;
   readTime: number = 0;
@@ -66,6 +67,7 @@ decorate(MyFeedModel, {
   sentTime: observable,
   read: observable,
   readTime: observable,
+  feedType: observable,
 });
 
 export default MyFeedModel;

@@ -34,4 +34,4 @@ export { default as MyFeedModel } from './model/MyFeedModel';
 
 /** Component */
 export { default as MyLearningSummaryModal } from './ui/logic/MyLearningSummaryModal';
-export { default as MyFeed} from './ui/logic/MyFeedContainer';
+export { default as MyFeed } from './ui/logic/MyFeedContainer';

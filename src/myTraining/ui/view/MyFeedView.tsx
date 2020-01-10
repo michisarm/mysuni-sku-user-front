@@ -47,9 +47,19 @@ class MyFeedView extends React.Component<Props> {
             {/*//썸네일*/}
             <div className="title-area">
               <div className="learning">“{model.title}”</div>
-              <div className="header ellipsis" onClick={this.handleNotieLink}>
-                학습에서 회원님이 남긴 댓글에 <em>{model.readTime}</em>개의 댓글이 달렸습니다.
-              </div>
+              {
+                model.feedType === 'Feedback' && (
+                  <div className="header ellipsis" onClick={this.handleNotieLink}>
+                      학습에서 회원님이 남긴 댓글에 <em>{model.readTime}</em>개의 댓글이 달렸습니다.
+                  </div>
+                )
+              }
+              {
+                model.feedType === 'PostFeedback' && (
+                  <div className="header ellipsis">게시글에 <em>응답글</em>이 등록되었습니다.</div>
+                )
+              }
+
               <div className="deatil">
                 <span>{dateFormat}</span>
                 <span>{model.sender.name}</span>

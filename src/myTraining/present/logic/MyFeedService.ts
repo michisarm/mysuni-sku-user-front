@@ -30,11 +30,11 @@ class MyFeedService {
   // My Feed ----------------------------------------------------------------------------------------------------------
 
   @action
-  clearOnce(index: number){
+  clearOnce(index: number) {
     const myFeeds = new Array<MyFeedModel>();
 
     this._myFeeds.map((value: MyFeedModel, innerIndex: number) => {
-      if(index !== innerIndex) {
+      if (index !== innerIndex) {
         myFeeds.push(value);
       }
     });
