@@ -20,6 +20,7 @@ interface Props {
 
 interface States {
   activeIndex: number
+  selectedChannel: IdName
 }
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
@@ -31,7 +32,22 @@ class FirstCategoryModal extends React.Component<Props, States> {
   //
   constructor(props: Props) {
     super(props);
-    this.state = { activeIndex: -1 };
+    this.state = { activeIndex: -1, selectedChannel: new IdName() };
+  }
+
+  componentDidMount(): void {
+    const { personalCube } = this.props;
+    this.setState({ selectedChannel: personalCube.category.channel || new IdName() });
+  }
+
+  componentDidUpdate(prevProps: Props): void {
+    const { personalCube } = this.props;
+    const { personalCube: prevCube } = prevProps;
+
+    if (personalCube.category.channel.id !== prevCube.category.channel.id) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ selectedChannel: personalCube.category.channel || new IdName() });
+    }
   }
 
   handleClick = (e: any, titleProps: any) => {
@@ -44,8 +60,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
 
   selectChannelButton(selectedChannel: IdName) {
     //
-    const { onChangePersonalCubeProps } = this.props;
-    onChangePersonalCubeProps('category.channel', selectedChannel);
+    this.setState({ selectedChannel });
   }
 
   selectCollegeButton(selectedMainCollege: CollegeModel) {
@@ -59,24 +74,31 @@ class FirstCategoryModal extends React.Component<Props, States> {
 
   handleCancel() {
     //
-    const { onChangePersonalCubeProps, handleChangeOpen } = this.props;
-    onChangePersonalCubeProps('category', new CategoryModel());
+    const { handleChangeOpen } = this.props;
     handleChangeOpen(false);
   }
 
   handleOk() {
     //
     const { handleChangeOpen, onChangePersonalCubeProps, personalCube } = this.props;
+    const beforeCategoryId = personalCube.category && personalCube.category.channel && personalCube.category.channel.id;
     const { changeChannelsMapProps } = this.props.personalCubeService || {} as PersonalCubeService;
     const channelList: any = [];
     const channelListMapForView: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
+
+    onChangePersonalCubeProps('category.channel', this.state.selectedChannel);
     channelListMapForView.set(personalCube.category.college, [personalCube.category.channel]);
     channelListMapForView.forEach((value, key) => {
       value.map(channel => {
         channelList.push({ college: key, channel });
       });
     });
-    onChangePersonalCubeProps('subCategories', channelList);
+
+    personalCube.subCategories.filter(category => {
+      return category.channel.id !== beforeCategoryId;
+    }).concat(channelList);
+
+    onChangePersonalCubeProps('subCategories', personalCube.subCategories.filter(category => category.channel.id !== beforeCategoryId).concat(channelList));
     changeChannelsMapProps(channelListMapForView);
     handleChangeOpen(false);
   }
@@ -132,8 +154,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
                                             className="base"
                                             label={channel.name}
                                             checked = {
-                                              personalCube && personalCube.category && personalCube.category.channel
-                                              && personalCube.category.channel.id === channel.id
+                                              this.state.selectedChannel.id === channel.id
                                             }
                                             onChange={() => this.selectChannelButton(channel)}
                                           />
