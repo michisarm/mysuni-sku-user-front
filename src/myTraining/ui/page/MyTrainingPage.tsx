@@ -12,6 +12,7 @@ import { Lecture, LectureService, LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
@@ -219,7 +220,9 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   renderList() {
-    const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { skProfileService, inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { skProfile } = skProfileService as SkProfileService;
+    const { member } = skProfile as SkProfileModel;
     const { ratingMap } =  reviewService as ReviewService;
     const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
@@ -282,7 +285,18 @@ class MyTrainingPage extends Component<Props, State> {
               })}
             </Lecture.Group>
           ) || (
-            <NoSuchContentPanel message={noSuchContentPanel} />
+            <NoSuchContentPanel message={(
+              <>
+                <div className="text">{noSuchContentPanel}</div>
+                <a
+                  className="ui icon right button btn-blue2"
+                  onClick={() => this.props.history.push('/lecture/recommend')}
+                >
+                  {member.name}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
+                </a>
+              </>
+              )}
+            />
           )
         }
 
@@ -316,7 +330,7 @@ class MyTrainingPage extends Component<Props, State> {
         <ContentHeader>
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member && member.base64Photo || profileImg}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}

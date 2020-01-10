@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
+import { reaction } from 'mobx';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
@@ -9,6 +10,7 @@ import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
 import { CollegeLectureCountService } from 'lecture';
+// import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
 
@@ -110,9 +112,37 @@ class SiteMapModalContainer extends Component<Props, State> {
   };
 
 
+
   componentDidMount() {
     //
-    this.setSiteMapWithCount();
+    reaction(
+      () => this.props.collegeLectureCountService!.collegeLectureCounts,
+      this.setSiteMapWithCount,
+    );
+
+    // this.setSiteMapWithCount();
+  }
+
+  async setSiteMapWithCount2(colleges: any) {
+    //
+    const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
+    console.log('colleges', colleges);
+
+    const categorySiteMap = {
+      ...baseCategoryItems,
+      items: baseCategoryItems.items.map((item) => ({
+        ...item,
+        count: colleges.find((college: any) => college.name === item.name)!.collegeCount,
+      })),
+    };
+
+    const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];
+    const bottomSiteMaps = [ ...baseBottomSiteMaps ];
+
+    this.setState({
+      topSiteMaps,
+      bottomSiteMaps,
+    });
   }
 
   async setSiteMapWithCount() {
@@ -126,7 +156,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       ...baseCategoryItems,
       items: baseCategoryItems.items.map((item) => ({
         ...item,
-        count: colleges.find(college => college.name === item.name)!.collegeCount,
+        count: colleges.find((college: any) => college.name === item.name)!.collegeCount,
       })),
     };
 

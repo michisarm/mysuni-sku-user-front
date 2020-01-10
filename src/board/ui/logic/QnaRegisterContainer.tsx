@@ -26,6 +26,8 @@ interface States {
   isBlankTarget: string
   focus: boolean
   write: string
+  fieldName: string
+  length: number
 }
 
 @inject(mobxHelper.injectFrom(
@@ -46,6 +48,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       isBlankTarget: '',
       focus: false,
       write: '',
+      fieldName: '',
+      length: 0,
     };
   }
 
@@ -67,7 +71,13 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   onChangerContentsProps(name: string, value: string) {
     //
     const { postService } = this.props;
-    if (postService) postService.onChangerContentsProps(name, value);
+
+    if (name === 'contents.contents' && value.length > 1000) {
+      this.setState({ fieldName: 'contents.contents' });
+    } else {
+      if (postService) postService.onChangerContentsProps(name, value);
+      this.setState({ length: value.length, fieldName: '' });
+    }
   }
 
   handleCloseAlertWin() {
@@ -138,7 +148,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
-    categorys.forEach((data, index) => {
+    categorys.map((data, index) => {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     }
     );
@@ -160,7 +170,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
             <Form>
               <Form.Field>
                 <label>제목</label>
-                <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>
+                <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write, error: this.state.fieldName === 'title' })}>
                   <span className="count">
                     <span className="now">{post && post.title && post.title.length || 0}</span>/
                     <span className="max">100</span>
@@ -171,8 +181,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                     onBlur={() => this.setState({ focus: false })}
                     value={post && post.title || ''}
                     onChange={(e: any) => {
-                      this.setState({ write: e.target.value });
-                      this.onChangePostProps('title', e.target.value);
+                      if (e.target.value.length > 100 ) {
+                        this.setState({ fieldName: 'title' });
+                      } else {
+                        this.setState({ write: e.target.value, fieldName: '' });
+                        this.onChangePostProps('title', e.target.value);
+                      }
                     }}
                   />
                   <Icon className="clear link"
@@ -201,9 +215,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 <label>내용</label>
                 <div className="ui editor-wrap">
                   <div className="ui form">
-                    <div className="ui right-top-count input">
+                    <div className={classNames('ui right-top-count input', { error: this.state.fieldName === 'contents.contents' })}>{/* .error class 추가시 error ui 활성 */}
                       <span className="count">
-                        <span className="now">0</span>/<span className="max">1000</span>
+                        <span className="now">{this.state.length}</span>/<span className="max">1000</span>
                       </span>
                       <Editor
                         post={post}

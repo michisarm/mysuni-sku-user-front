@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ContentLayout, ContentHeader } from 'shared';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
 import { ChannelModel } from 'college';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
@@ -60,7 +61,7 @@ class ChannelLecturesPage extends Component<Props> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member && member.base64Photo || profileImg}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}

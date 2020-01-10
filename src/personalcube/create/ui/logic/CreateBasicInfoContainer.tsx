@@ -11,7 +11,6 @@ import FirstCategoryModal from '../view/FirstCategoryModal';
 import SecondCategoryModal from '../view/SecondCategoryModal';
 
 
-
 interface Props {
   personalCubeId: string
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
@@ -25,6 +24,7 @@ interface States {
   secondCategoryModalOpen: boolean
   focus: boolean
   write: string
+  fieldName: string
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService'))
@@ -39,6 +39,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
       secondCategoryModalOpen: false,
       focus: false,
       write: '',
+      fieldName: '',
     };
   }
 
@@ -101,9 +102,9 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
         </div>
         <Form.Field>
           <label className="necessary">강좌명</label>
-          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
+          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write, error: this.state.fieldName === 'name' })}>{/* .error class 추가시 error ui 활성 */}
             <span className="count">
-              <span className="now">{personalCube && personalCube.name && personalCube.name.length}</span>/
+              <span className="now">{personalCube && personalCube.name && personalCube.name.length || 0}</span>/
               <span className="max">100</span>
             </span>
             <input type="text"
@@ -112,8 +113,12 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
               onClick={() => this.setState({ focus: true })}
               onBlur={() => this.setState({ focus: false })}
               onChange={(e: any) => {
-                this.setState({ write: e.target.value });
-                onChangePersonalCubeProps('name', e.target.value);
+                if (e.target.value.length > 100 ) {
+                  this.setState({ fieldName: 'name' });
+                } else {
+                  this.setState({ write: e.target.value, fieldName: '' });
+                  onChangePersonalCubeProps('name', e.target.value);
+                }
               } }
             />
             <Icon className="clear link"

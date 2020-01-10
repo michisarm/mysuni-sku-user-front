@@ -11,6 +11,7 @@ import { MyTrainingService } from 'myTraining/index';
 import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { MyFeed, MyFeedModel } from '../../../myTraining';
 import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
@@ -95,7 +96,7 @@ class MyCommunityPage extends Component<Props, State> {
     const { type: prevType } = this.state;
 
     if (type !== prevType) {
-      const { pageService, lectureService, myTrainingService, myFeedService } = this.props;
+      const { pageService, lectureService, myTrainingService } = this.props;
       pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
       lectureService!.clearLectures();
       myTrainingService!.clear();
@@ -192,13 +193,16 @@ class MyCommunityPage extends Component<Props, State> {
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${type}`);
     let list: (MyTrainingModel | LectureModel)[] = [];
     let feedList: (MyFeedModel)[] = [];
+    let noSuchContentPanel = '';
 
     switch (type) {
       case Type.MyCommunity:
         list = myTrainingService!.myTrainings;
+        noSuchContentPanel = '가입한 Community 학습 과정이 없습니다.';
         break;
       case Type.MyCreatedCommunity:
         list = lectureService!.lectures;
+        noSuchContentPanel = '내가 만든 Community 학습 과정이 없습니다.';
         break;
       case Type.MyFeed:
         feedList = myFeedService!.myFeeds;
@@ -244,7 +248,7 @@ class MyCommunityPage extends Component<Props, State> {
                 }
               </Lecture.Group>
             ) || type !== Type.MyFeed && (
-              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+              <NoSuchContentPanel message={noSuchContentPanel} />
             )
           }
           {
@@ -286,7 +290,6 @@ class MyCommunityPage extends Component<Props, State> {
 
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCommunity`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_MyCreatedCommunity`);
-    //const feedPage = pageService!.pageMap.get(`${this.PAGE_KEY}_MyFeed`);
 
     return (
       <ContentLayout
@@ -299,7 +302,7 @@ class MyCommunityPage extends Component<Props, State> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member && member.base64Photo || profileImg}
               name={member.name}
               teams={[member.company || '', member.department || '']}
               imageEditable={false}

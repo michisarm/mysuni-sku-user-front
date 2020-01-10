@@ -142,7 +142,7 @@ class LectureCardPage extends Component<Props, State> {
     const { studentCounts, studentJoins }: StudentService = studentService!;
 
     let participantCount = 0;
-    studentCounts!.forEach((studentCount: StudentCountRdoModel) => {
+    studentCounts!.map((studentCount: StudentCountRdoModel) => {
       participantCount += studentCount.approvedCount;
     });
 

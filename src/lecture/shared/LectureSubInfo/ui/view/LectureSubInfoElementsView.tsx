@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Label, Button, Step, List, Icon } from 'semantic-ui-react';
+import { Label, Button, Step, List, Icon, Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
+import { reactAutobind } from '@nara.platform/accent';
 import { dateTimeHelper, CubeType } from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
@@ -181,38 +182,69 @@ export const OperatorView = ({ operator }: OperatorProp) => {
 
 interface FootButtonsProp {
   onBookmark?: () => void
-  onShare: () => void
   onRemove?: () => void
 }
 
-export const FootButtons = ({ onBookmark, onShare, onRemove }: FootButtonsProp) => {
+@reactAutobind
+export class FootButtons extends React.Component<FootButtonsProp> {
   //
-  if (!onShare && onRemove) return null;
-  return (
-    <div className="foot-buttons">
-      {
-        onBookmark && (
-          <Button icon className="img-icon" onClick={onBookmark}>
-            <Icon className="bookmark2" />
-            <span className="blind">북마크</span>
-          </Button>
-        ) || null
-      }
-      {
-        onRemove && (
-          <Button icon className="img-icon" onClick={onRemove}>
-            <Icon className="remove3" />
-            <span className="blind">제거</span>
-          </Button>
-        ) || null
-      }
-      <Button icon className="img-icon" onClick={onShare}>
-        <Icon className="share2" />
-        <span className="blind">공유</span>
-      </Button>
-    </div>
-  );
-};
+  URL_INFO: any = React.createRef();
+
+  render() {
+    const { onBookmark, onRemove } = this.props;
+    return (
+      <div className="foot-buttons">
+        {
+          onBookmark && (
+            <Popup
+              content="관심목록에 추가"
+              trigger={
+                <Button icon className="img-icon" onClick={onBookmark}>
+                  <Icon className="bookmark2" />
+                  <span className="blind">북마크</span>
+                </Button>
+              }
+            />
+          ) || null
+        }
+        {
+          onRemove && (
+            <Popup
+              content="관심목록에서 삭제"
+              trigger={
+                <Button icon className="img-icon" onClick={onRemove}>
+                  <Icon className="remove3" />
+                  <span className="blind">제거</span>
+                </Button>
+              }
+            />
+          ) || null
+        }
+        <Popup
+          content="URL 복사"
+          trigger={
+            <Button
+              icon
+              className="img-icon"
+              onClick={() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = window.location.href;
+                document.body.appendChild(textarea);
+                textarea.select();
+                textarea.setSelectionRange(0, 9999);
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+              }}
+            >
+              <Icon className="share2" />
+              <span className="blind">공유</span>
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
+}
 
 interface SurveyProp {
   onSurvey?: () => void

@@ -1,6 +1,6 @@
 
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import { IdNameCount } from 'shared';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
@@ -17,6 +17,8 @@ class CollegeLectureCountService {
 
   @observable
   _collegeLectureCounts: CollegeLectureCountRdo[] = [];
+
+  collegeLectureCountsCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
   _channelCounts: IdNameCount[] = [];
@@ -52,12 +54,12 @@ class CollegeLectureCountService {
   @action
   async findCollegeLectureCounts() {
     //
-    const collegeLectureCounts  = await this.lectureFlowApi.findCollegeLectureCount();
+    const fetched = this.collegeLectureCountsCachingFetch.fetch(
+      () => this.lectureFlowApi.findCollegeLectureCount(),
+      (collegeLectureCounts) => runInAction(() => this._collegeLectureCounts = collegeLectureCounts),
+    );
 
-    runInAction(() => {
-      this._collegeLectureCounts = collegeLectureCounts;
-    });
-    return collegeLectureCounts;
+    return fetched ? this.collegeLectureCountsCachingFetch.inProgressFetching : this.collegeLectureCounts;
   }
 
   // ChannelCounts -----------------------------------------------------------------------------------------------------

@@ -100,7 +100,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ selectedCollegeIds: [], favoriteChannels: [ ...this.props.favorites ]});
+    this.setState({ selectedCollegeIds: [], favoriteChannels: []});
   }
 
   handleClick(college: CollegeModel) {

@@ -78,7 +78,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>승인정보</Table.HeaderCell>
                   <Table.Cell>
-                    <div>2019.10.07<span className="dash" />{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}</div>
+                    <div>{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}</div>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>

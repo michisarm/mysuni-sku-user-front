@@ -120,10 +120,6 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
-  onClickShare() {
-    console.log('share');
-  }
-
   onClickSurvey() {
     console.log('survey');
   }
@@ -271,7 +267,6 @@ class LectureCardContainer extends Component<Props, State> {
           state={viewObject.state}
           mainAction={this.getMainAction()}
           subActions={this.getSubActions()}
-          onShare={this.onClickShare}
           onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}

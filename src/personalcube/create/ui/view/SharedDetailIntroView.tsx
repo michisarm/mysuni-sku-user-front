@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { CubeIntroModel } from '../../../cubeintro';
 import { BoardService } from '../../../board';
+import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 
 interface Props {
@@ -77,7 +77,7 @@ class SharedDetailIntroView extends React.Component<Props> {
                 <Table.Row>
                   <Table.HeaderCell>교육시간</Table.HeaderCell>
                   <Table.Cell>
-                    <div>{parseInt(String(cubeIntro.learningTime / 60), 10)} h {cubeIntro.learningTime % 60} m</div>
+                    <div>{timeToHourMinuteFormat(cubeIntro.learningTime)}</div>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

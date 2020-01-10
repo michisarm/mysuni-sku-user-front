@@ -19,7 +19,6 @@ export const Basic = () =>
       clazz={object('clazz', { learningTime: 0, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -45,7 +44,6 @@ export const WithState = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -71,7 +69,6 @@ export const WithMainAction = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -97,7 +94,6 @@ export const WithSubActions = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -123,7 +119,6 @@ export const WithCancel = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -148,7 +143,6 @@ export const WithClassCapacity = () =>
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -173,7 +167,6 @@ export const WithOperationInstructor = () =>
       level={select('level', storybookHelper.enumValues(LectureSubInfo.Level), LectureSubInfo.Level.Basic)}
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -199,7 +192,6 @@ export const WithRemove = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
@@ -225,7 +217,6 @@ export const WithSurvey = () =>
       clazz={object('clazz', { learningTime: 750, participantCount: '1,250', cubeType: CubeType.ClassRoomLecture })}
       operator={object('operator', { email: 'univ@sk.com', name: '김수현', company: 'SK Telecom' })}
       onBookmark={() => alert('bookmark')}
-      onShare={() => alert('share')}
     />
   );
 
