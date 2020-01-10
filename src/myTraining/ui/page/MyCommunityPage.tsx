@@ -180,13 +180,16 @@ class MyCommunityPage extends Component<Props, State> {
     const { type, boardIdMap, boardOpenMap } = this.state;
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${type}`);
     let list: (MyTrainingModel | LectureModel)[] = [];
+    let noSuchContentPanel = '';
 
     switch (type) {
       case Type.MyCommunity:
         list = myTrainingService!.myTrainings;
+        noSuchContentPanel = '가입한 Community 학습 과정이 없습니다.';
         break;
       case Type.MyCreatedCommunity:
         list = lectureService!.lectures;
+        noSuchContentPanel = '내가 만든 Community 학습 과정이 없습니다.';
         break;
     }
 
@@ -230,7 +233,7 @@ class MyCommunityPage extends Component<Props, State> {
                 }
               </Lecture.Group>
             ) || (
-              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+              <NoSuchContentPanel message={noSuchContentPanel} />
             )
           }
 
