@@ -1,5 +1,5 @@
 import { MediaContentsModel } from './MediaContentsModel';
-import { DatePeriod } from '../../../shared/model/DatePeriod';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class MediaCdoModel {
   //
@@ -7,5 +7,5 @@ export class MediaCdoModel {
   mediaType: string = '';
   name: string = '';
   mediaContents: MediaContentsModel = new MediaContentsModel();
-  learningPeriod: DatePeriod = new DatePeriod();
+  learningPeriod: NewDatePeriod = new NewDatePeriod();
 }

@@ -98,8 +98,8 @@ class SharedDetailIntroView extends React.Component<Props> {
                       <Table.Row>
                         <Table.HeaderCell>기간</Table.HeaderCell>
                         <Table.Cell>
-                          <div>{board && board.learningPeriod && board.learningPeriod.startDate}
-                          ~ {board && board.learningPeriod && board.learningPeriod.endDate}
+                          <div>{board && board.learningPeriod && board.learningPeriod.startDateDot}
+                          ~ {board && board.learningPeriod && board.learningPeriod.endDateDot}
                           </div>
                         </Table.Cell>
                       </Table.Row>
