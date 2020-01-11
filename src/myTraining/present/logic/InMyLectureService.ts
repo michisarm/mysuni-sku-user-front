@@ -21,7 +21,7 @@ class InMyLectureService {
   @observable
   _inMyLectureAll: InMyLectureModel[] = [];
 
-  inMyLectureAllCachingFetch: CachingFetch = new CachingFetch();
+  inMyLectureAllCachingFetch: CachingFetch = new CachingFetch(2000);
 
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
