@@ -58,7 +58,9 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { cubeIntroService, personalCubeService } = this.props;
     const { cubeType, personalCubeId } = this.props.match.params;
 
-    await personalCubeService!.findPersonalCube(personalCubeId);
+    if (personalCubeId) {
+      await personalCubeService!.findPersonalCube(personalCubeId);
+    }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
 
@@ -173,7 +175,9 @@ class CreateIntroContainer extends React.Component<Props, States> {
     if (personalCubeId === 'undefined') {
       this.props.history.push(routePaths.createNew());
     } else {
-      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      Promise.resolve()
+        .then(() => this.handleOKConfirmWin())
+        .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
     }
   }
 
@@ -222,12 +226,13 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { personalCubeId, cubeType } = this.props.match.params;
-    const { personalCubeService } = this.props;
+    const { personalCubeService, cubeIntroService } = this.props;
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
     if (personalCubeService && personalCubeId) {
-      personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+      return personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+        .then(() => cubeIntroService!.modifyCubeIntro(cubeIntroId, cubeIntro))
         .then(() => {
           if (cubeType === CubeType.Video
             || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
@@ -236,6 +241,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
             || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
         });
     }
+    return null;
   }
 
   makeMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {

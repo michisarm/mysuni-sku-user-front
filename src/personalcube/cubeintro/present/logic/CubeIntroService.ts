@@ -35,6 +35,10 @@ export default class CubeIntroService {
     return runInAction(() => this.cubeIntro = new CubeIntroModel(cubeIntro));
   }
 
+  modifyCubeIntro(cubeIntroId: string, cubeIntro: CubeIntroModel)  {
+    return this.cubeIntroApi.modifyCubeIntro(cubeIntroId, CubeIntroModel.asNameValues(cubeIntro));
+  }
+
   @action
   changeCubeIntroProps(name: string, value: string | number | {}) {
     //
