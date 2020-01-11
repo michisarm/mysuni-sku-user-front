@@ -31,7 +31,7 @@ class ConfirmWin extends React.Component<Props> {
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <Image wrapped className="modal-img" size="medium" src="/images/all/confirm.png" />
+                <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/all/confirm.png`} />
                 <div className="title">{title}</div>
                 <p>{message}</p>
               </Modal.Description>
