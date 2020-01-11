@@ -1,6 +1,6 @@
 
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, CachingFetch } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
@@ -20,6 +20,8 @@ class InMyLectureService {
 
   @observable
   _inMyLectureAll: InMyLectureModel[] = [];
+
+  inMyLectureAllCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
@@ -83,10 +85,14 @@ class InMyLectureService {
   @action
   async findAllInMyLectures() {
     //
-    const inMyLectures = await this.inMyLectureApi.findAllInMyLectures();
+    const fetched = this.inMyLectureAllCachingFetch.fetch(
+      () => this.inMyLectureApi.findAllInMyLectures(),
+      (inMyLectures) => runInAction(() =>
+        this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))
+      ),
+    );
 
-    runInAction(() => this._inMyLectureAll = inMyLectures.map(inMyLecture => new InMyLectureModel(inMyLecture)));
-    return inMyLectures;
+    return fetched ? this.inMyLectureAllCachingFetch.inProgressFetching : this.inMyLectureAll;
   }
 
   // In My Lecture -----------------------------------------------------------------------------------------------------
