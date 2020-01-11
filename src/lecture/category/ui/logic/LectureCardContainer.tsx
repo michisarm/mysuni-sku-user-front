@@ -154,17 +154,20 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-
-        if (studentJoins.length) return undefined;
-        if (!applyingPeriod) return undefined;
-        if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
-          || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
-          return undefined;
-        }
         if (typeViewObject.classrooms && typeViewObject.classrooms.length) {
-          return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
+          const type = studentJoins.length ? LectureSubInfo.ActionType.ChangeSeries : LectureSubInfo.ActionType.Enrollment;
+          return { type, onAction: this.onClickChangeSeries };
         }
-        return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
+        else {
+          if (studentJoins.length) return undefined;
+          if (!applyingPeriod) return undefined;
+          if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
+            || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
+            return undefined;
+          }
+          return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
+        }
+
       case CubeType.Audio:
       case CubeType.Video:
         if (typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {

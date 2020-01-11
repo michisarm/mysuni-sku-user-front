@@ -53,10 +53,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
       confirmWinOpen: false };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //
     const { cubeIntroService, personalCubeService } = this.props;
     const { cubeType, personalCubeId } = this.props.match.params;
+
+    if (personalCubeId) {
+      await personalCubeService!.findPersonalCube(personalCubeId);
+    }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
 
@@ -171,7 +175,9 @@ class CreateIntroContainer extends React.Component<Props, States> {
     if (personalCubeId === 'undefined') {
       this.props.history.push(routePaths.createNew());
     } else {
-      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      Promise.resolve()
+        .then(() => this.handleOKConfirmWin())
+        .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
     }
   }
 
@@ -220,12 +226,16 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { personalCubeId, cubeType } = this.props.match.params;
-    const { personalCubeService } = this.props;
+    const { personalCubeService, cubeIntroService } = this.props;
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
     if (personalCubeService && personalCubeId) {
-      personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+      return personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+        .then(() => {
+          if (cubeIntroId) return cubeIntroService!.modifyCubeIntro(cubeIntroId, cubeIntro);
+          return null;
+        })
         .then(() => {
           if (cubeType === CubeType.Video
             || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
@@ -234,6 +244,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
             || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
         });
     }
+    return null;
   }
 
   makeMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, contentId: string, cubeIntroId : string, mode?: string  ) {
@@ -302,15 +313,27 @@ class CreateIntroContainer extends React.Component<Props, States> {
   handleApprovalRequest() {
     //
     const message = '학습 강좌에 대해 승인 요청하시겠습니까?';
-    Promise.resolve()
-      .then(() => this.onChangePersonalCubeProps('cubeState', CubeState.OpenApproval))
-      .then(() => this.setState({
-        alertMessage: message,
-        alertWinOpen: true,
-        alertTitle: '승인 요청 안내',
-        alertIcon: 'circle',
-        alertType: 'approvalRequest',
-      }));
+    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { media } = this.props.mediaService || {} as MediaService;
+    const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
+    const mediaObject = MediaModel.isBlank(media);
+
+    const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
+    const mediaMessage = mediaObject;
+    if ( cubeIntroObject === 'success' && mediaObject === 'success') {
+      Promise.resolve()
+        .then(() => this.onChangePersonalCubeProps('cubeState', CubeState.OpenApproval))
+        .then(() => this.setState({
+          alertMessage: message,
+          alertWinOpen: true,
+          alertTitle: '승인 요청 안내',
+          alertIcon: 'circle',
+          alertType: 'approvalRequest',
+        }));
+    }
+    if (cubeIntroObject !== 'success') this.confirmBlank(cubeIntroMessage);
+    if (mediaMessage !== 'success') this.confirmBlank(mediaMessage);
+
   }
 
   onDeleteCube() {
@@ -374,6 +397,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
         <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
       </>
     );
+
     return (
       <section className="content bg-white">
         <div className="add-personal-learning support">

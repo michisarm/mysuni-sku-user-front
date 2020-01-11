@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
-import { PatronType, TinyAlbumForSK } from '@nara.drama/depot';
+import { ImageBox } from '@nara.drama/depot';
 import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
@@ -134,7 +134,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   }
 
   @boundMethod
-  handleSKIconSelect(tinyAlbumId: string, selectedImageId: string, tinyImage: string) {
+  handleSKIconSelect(tinyAlbumId: string, selectedImageId: string, tinyImage?: string) {
     //
     const { personalCubeService } = this.props;
     if (personalCubeService) {
@@ -209,15 +209,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                 <div className="h220">
                   {
                   tinyAlbumId ?
-                    <TinyAlbumForSK
-                      tinyAlbumKey="1" // 한 페이지에 두개 이상 TinyAlbum을 사용했을 때 서로 다른 키값을 부여한다.
-                      id={tinyAlbumId}
-                      patronType={PatronType.Denizen}
-                      patronKeyString="sampleDenizen3"
-                      pavilionId="samplePavilion3"
-                      options={{ title: 'SK Icon', subTitle: '등록된 Icon' }}
+                    <ImageBox
+                      id={tinyAlbumId || ''}
+                      options={{ title: 'sk Icon', needTinyImage: true, width: '100px', height: '100px', selectable: true }}
                       onSelect={this.handleSKIconSelect}
-                      // selectedVaultFileId={personalCube.iconBox.iconUrl || ''}
                     /> : null
                 }
                 </div>

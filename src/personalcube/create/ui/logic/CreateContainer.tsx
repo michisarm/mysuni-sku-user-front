@@ -3,11 +3,13 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
-import { ContentLayout, CubeState, PageService } from 'shared';
+import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
+import {InMyLectureCdoModel, InMyLectureModel, InMyLectureService} from 'myTraining';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
+import { ReviewService } from '@nara.drama/feedback';
 import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
 import SelectType from '../../../../shared/model/SelectType';
@@ -28,7 +30,9 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
+  inMyLectureService?: InMyLectureService,
   skProfileService?: SkProfileService
+  reviewService?: ReviewService
 }
 
 interface States {
@@ -41,6 +45,7 @@ interface States {
 @inject(mobxHelper.injectFrom(
   'personalCube.personalCubeService',
   'shared.pageService',
+  'shared.reviewService',
   'lecture.lectureService',
   'lecture.lectureCardService',
   'myTraining.inMyLectureService',
@@ -68,10 +73,11 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   componentDidMount() {
-    const { skProfileService } = this.props;
+    const { skProfileService, inMyLectureService } = this.props;
 
     skProfileService!.findSkProfile();
     this.init();
+    inMyLectureService!.findAllInMyLectures();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
@@ -158,13 +164,17 @@ class CreateContainer extends React.Component<Props, States> {
 
   async findPagingSharedLectures() {
     //
-    const { pageService, lectureService } = this.props;
+    const { pageService, lectureService, reviewService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
 
     const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
-
+    let feedbackIds: string[] = [];
+    if (lectureOffsetList && lectureOffsetList.results && lectureOffsetList.results.length) {
+      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
@@ -206,6 +216,37 @@ class CreateContainer extends React.Component<Props, States> {
     });
   }
 
+  onActionLecture(lecture: LectureModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+    if (lecture instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(() => inMyLectureService!.findAllInMyLectures());
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: lecture.serviceId,
+        serviceType: lecture.serviceType,
+        category: lecture.category,
+        name: lecture.name,
+        description: lecture.description,
+        cubeType: lecture.cubeType,
+        learningTime: lecture.learningTime,
+        stampCount: lecture.stampCount,
+        coursePlanId: lecture.coursePlanId,
+
+        requiredSubsidiaries: lecture.requiredSubsidiaries,
+        cubeId: lecture.cubeId,
+        courseSetJson: lecture.courseSetJson,
+        courseLectureUsids: lecture.courseLectureUsids,
+        lectureCardUsids: lecture.lectureCardUsids,
+
+        reviewId: lecture.reviewId,
+      }))
+        .then(() => inMyLectureService!.findAllInMyLectures());
+    }
+  }
+
   renderCreate() {
     const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
     const totalCount = personalCubes.totalCount;
@@ -242,8 +283,10 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   renderSharedLecture() {
-    const { lectureService } = this.props;
+    const { lectureService, reviewService, inMyLectureService } = this.props;
     const { lectures } = lectureService!;
+    const { ratingMap } = reviewService!;
+    const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
 
     return (
@@ -253,15 +296,24 @@ class CreateContainer extends React.Component<Props, States> {
           lectures && lectures.length && (
             <div className="section">
               <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel, index: number) => (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                      // thumbnailImage="http://placehold.it/60x60"
-                    action={Lecture.ActionType.Add}
-                    onViewDetail={this.onViewDetail}
-                  />
-                ))}
+                {
+                  lectures.map((lecture: LectureModel, index: number) => {
+                    let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+                    const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                    if (lecture.cubeType === CubeType.Community) rating = undefined;
+                    return (
+                      <Lecture
+                        key={`lecture-${index}`}
+                        model={lecture}
+                        rating={rating}
+                        // thumbnailImage="http://placehold.it/60x60"
+                        action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                        onAction={() => this.onActionLecture(inMyLecture || lecture)}
+                        onViewDetail={this.onViewDetail}
+                      />
+                    );
+                  })
+                }
               </Lecture.Group>
 
               { this.isContentMore() && (

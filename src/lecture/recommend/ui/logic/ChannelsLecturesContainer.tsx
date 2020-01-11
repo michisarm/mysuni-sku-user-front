@@ -32,21 +32,10 @@ interface State {
 class ChannelsLecturesContainer extends Component<Props, State> {
   //
   componentDidMount(): void {
-    const { collegeService, lectureService, reviewService, channels } = this.props;
+    const { collegeService, channels } = this.props;
 
     collegeService!.setChannels(channels && channels.length && channels.map(chanel => ({ ...chanel, checked: true })) || []);
-    lectureService!.findPagingRecommendLectures(8, 0)
-      .then((recommendLectures) => {
-        let feedbackIds: string[] = [];
-        if (recommendLectures && recommendLectures.length) {
-          recommendLectures.map(recommendLecture => {
-            if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length) {
-              feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
-            }
-          });
-          reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-        }
-      });
+    this.findPagingRecommendLectures();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
@@ -59,6 +48,23 @@ class ChannelsLecturesContainer extends Component<Props, State> {
         checked: true,
       })) || []);
     }
+  }
+
+  findPagingRecommendLectures() {
+    const { lectureService, reviewService } = this.props;
+
+    lectureService!.findPagingRecommendLectures(8, 0)
+      .then((recommendLectures) => {
+        let feedbackIds: string[] = [];
+        if (recommendLectures && recommendLectures.length) {
+          recommendLectures.map(recommendLecture => {
+            if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length) {
+              feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
+            }
+          });
+          reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+        }
+      });
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -80,6 +86,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
       <ChannelLecturesContentWrapperContainer
         channels={channels}
         onSelectChannel={this.onSelectChannel}
+        onConfirmCallback={this.findPagingRecommendLectures}
       >
         <div className="recommend-area">
           {

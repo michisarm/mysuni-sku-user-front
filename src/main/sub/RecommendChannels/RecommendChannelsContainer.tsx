@@ -76,7 +76,10 @@ class RecommendChannelsContainer extends Component<Props> {
       <Wrapper>
         <HeaderContainer
           favoriteChannels={favoriteChannels}
-          onFindStudySummary={this.findStudySummary}
+          onFindStudySummary={() => {
+            this.findStudySummary();
+            this.findPagingRecommendLectures();
+          }}
         />
 
         {
@@ -88,7 +91,7 @@ class RecommendChannelsContainer extends Component<Props> {
               lectures={recommendLecture.lectures}
               onViewAll={this.routeTo}
             />
-          ))
+          )) || null
         }
       </Wrapper>
     );

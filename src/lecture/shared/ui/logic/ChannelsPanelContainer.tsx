@@ -21,6 +21,7 @@ interface Props {
   configurable?: boolean,
   channels: ChannelModel[]
   onSelectChannel: (e: any, data: OnSelectChannelData) => void
+  onConfirmCallback?: () => void
 }
 
 interface States {
@@ -89,7 +90,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
 
   render() {
     //
-    const { channels, title, configurable } = this.props;
+    const { channels, title, configurable, onConfirmCallback } = this.props;
     const { multiple, open } = this.state;
 
     return (
@@ -107,7 +108,10 @@ class ChannelsPanelContainer extends Component<Props, States> {
                       </Button>
                     )}
                     favorites={channels}
-                    onConfirmCallback={this.findStudySummary}
+                    onConfirmCallback={() => {
+                      this.findStudySummary();
+                      if (onConfirmCallback) onConfirmCallback();
+                    }}
                   />
                 )}
               </div>

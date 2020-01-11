@@ -32,6 +32,11 @@ interface State {
 @observer
 class ChannelLecturesContainer extends Component<Props, State> {
   //
+  componentDidMount() {
+    //
+    this.props.inMyLectureService!.findAllInMyLectures();
+  }
+
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;

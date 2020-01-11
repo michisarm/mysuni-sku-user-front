@@ -97,6 +97,7 @@ export default class PersonalCubeService {
   @action
   changeTinyAlbumId(tinyAlbumId: string) {
     //
+    console.log(tinyAlbumId);
     this.tinyAlbumId = tinyAlbumId;
   }
 
