@@ -20,13 +20,20 @@ class Item extends Component<Props> {
     titleIcon: '',
   };
 
+  panelRef = React.createRef<HTMLDivElement>();
+
+
+  getPanelRef() {
+    return this.panelRef.current;
+  }
+
   render() {
     //
     const { title, className, titleIcon, content, contentHtml } = this.props;
 
     return (
       <List.Item>
-        <div className="title">
+        <div className="title" ref={this.panelRef}>
           {!titleIcon ?
             title
             :

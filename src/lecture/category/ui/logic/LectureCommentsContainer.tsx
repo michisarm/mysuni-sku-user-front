@@ -4,11 +4,11 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Review, CommentList } from '@nara.drama/feedback';
 import { observer } from 'mobx-react';
 
+
 interface Props {
   reviewFeedbackId: string
   commentFeedbackId: string
 }
-
 
 interface State {
 }

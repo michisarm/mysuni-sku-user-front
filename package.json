@@ -21,7 +21,7 @@
   "dependencies": {
     "@nara.platform/accent": "0.0.9",
     "@nara.drama/depot": "0.0.17",
-    "@nara.drama/feedback": "0.0.19",
+    "@nara.drama/feedback": "0.0.20",
     "@nara.platform/dock": "0.0.7-sk",
     "@sku/personalcube": "0.0.23",
     "@types/react-datepicker": "^2.9.5",

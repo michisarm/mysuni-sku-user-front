@@ -42,7 +42,6 @@ class CategoryMenuContainer extends Component<Props, State> {
 
     this.findStudySummary();
     const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
-    console.log('count', collegeLectureCounts);
 
     if (collegeLectureCounts.length > 0) {
       this.onActiveCollege({}, collegeLectureCounts[0]);
