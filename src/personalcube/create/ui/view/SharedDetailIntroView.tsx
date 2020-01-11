@@ -111,7 +111,7 @@ class SharedDetailIntroView extends React.Component<Props> {
                   <Table.Cell>
                     <div>
                       {cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.name}
-                       : {cubeIntro.operation && cubeIntro.operation.etcCp}
+                      {cubeIntro.operation && cubeIntro.operation.etcCp ? `: ${cubeIntro.operation.etcCp}` : ''}
                     </div>
                   </Table.Cell>
                 </Table.Row>

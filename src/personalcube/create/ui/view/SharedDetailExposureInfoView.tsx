@@ -31,7 +31,7 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
                   && personalCube.subsidiaries.map((subsidiary, index) => {
                     if (index === 0) return <span key={index}>{subsidiary.name}</span>;
                     else return <span key={index}>, {subsidiary.name}</span>;
-                  })
+                  }) || null
                 }
               </Table.Cell>
             </Table.Row>
