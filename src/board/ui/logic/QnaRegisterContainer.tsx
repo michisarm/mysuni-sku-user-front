@@ -1,5 +1,6 @@
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
@@ -234,7 +235,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
-                        patronKey={{ keyString: '', patronType: PatronType.Audience }}
+                        vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                        patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                         onChange={this.getFileBoxIdForReference}
                         id={post && post.contents && post.contents.depotId || ''}
                       />

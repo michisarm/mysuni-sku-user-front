@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { SearchFilter } from 'shared';
 import { Form, Icon, Radio } from 'semantic-ui-react';
@@ -52,7 +53,8 @@ class CreateDocumentTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronKey={{ keyString: 'sampleAudience', patronType: PatronType.Audience }}
+                vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />

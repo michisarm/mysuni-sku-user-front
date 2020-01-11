@@ -1,5 +1,6 @@
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 import { inject, observer } from 'mobx-react';
 
 import { Form, Icon, Radio } from 'semantic-ui-react';
@@ -167,7 +168,8 @@ class CreateVideoTypeView  extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronKey={{ keyString: 'sampleAudience', patronType: PatronType.Audience }}
+                vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
