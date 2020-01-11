@@ -83,15 +83,15 @@ class RecommendChannelsContainer extends Component<Props> {
         />
 
         {
-          recommendLectures && recommendLectures.length
-          && recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
-            <ChannelLecturesPanel
-              key={`channel_cont_${index}`}
-              channel={new ChannelModel(recommendLecture.channel)}
-              lectures={recommendLecture.lectures}
-              onViewAll={this.routeTo}
-            />
-          )) || null
+          recommendLectures && recommendLectures.length > 0
+            && recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
+              <ChannelLecturesPanel
+                key={`channel_cont_${index}`}
+                channel={new ChannelModel(recommendLecture.channel)}
+                lectures={recommendLecture.lectures}
+                onViewAll={this.routeTo}
+              />
+            ))
         }
       </Wrapper>
     );
