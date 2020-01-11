@@ -17,6 +17,7 @@ interface Props {
 
 
 interface State {
+  multiple: boolean,
   categoryOpen: boolean,
 }
 
@@ -25,8 +26,42 @@ interface State {
 class LectureOverviewView extends Component<Props, State> {
   //
   state = {
+    multiple: false,
     categoryOpen: false,
   };
+
+  panelRef = React.createRef<any>();
+  itemRefs: any[] = [];
+
+
+  componentDidMount() {
+    //
+    this.setMultiple();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.viewObject !== this.props.viewObject && prevProps.viewObject.subCategories !== this.props.viewObject.subCategories) {
+      this.setMultiple();
+    }
+  }
+
+  setItemsRef(element: any, index: number) {
+    this.itemRefs[index] = element;
+  }
+
+  setMultiple() {
+    //
+    const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
+
+    const categoriesHeight = this.itemRefs
+      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+      .reduce((prev, current) => prev + current, 0);
+
+    if (categoriesHeight > panelHeight) {
+      this.setState({ multiple: true });
+    }
+  }
 
   onToggleCategory() {
     //
@@ -62,6 +97,7 @@ class LectureOverviewView extends Component<Props, State> {
     return Object.entries(subCategoriesPerMain).map(([categoryName, subCategories]: any[], index: number) => (
       <OverviewField.Item
         key={`sub-category-${index}`}
+        ref={(element) => this.setItemsRef(element, index)}
         title={categoryName}
         content={subCategories.join(' / ')}
       />
@@ -76,7 +112,7 @@ class LectureOverviewView extends Component<Props, State> {
       return null;
     }
 
-    const { categoryOpen } = this.state;
+    const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
     return (
@@ -88,6 +124,7 @@ class LectureOverviewView extends Component<Props, State> {
           fileBoxIds={[ viewObject.fileBoxId, typeViewObject.fileBoxId ]}
         />
         <OverviewField.List
+          ref={this.panelRef}
           className={classNames('sub-category fn-parents', { open: categoryOpen })}
           header={(
             <OverviewField.Title
@@ -97,13 +134,15 @@ class LectureOverviewView extends Component<Props, State> {
           )}
         >
           {this.renderSubCategories()}
-          <Button
-            icon
-            className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
-            onClick={this.onToggleCategory}
-          >
-            {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
-          </Button>
+          { multiple && (
+            <Button
+              icon
+              className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
+              onClick={this.onToggleCategory}
+            >
+              {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
+            </Button>
+          )}
         </OverviewField.List>
 
         { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (

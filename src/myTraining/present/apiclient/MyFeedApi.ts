@@ -34,6 +34,11 @@ class MyFeedApi {
     return axiosApi.put(this.baseUrl + '/onread/' + notieId);
   }
 
+  onReadNotieFeedWithType(notieId: string, feedType: string) {
+    //
+    return axiosApi.put(this.baseUrl + '/onread/' + notieId + '/' + feedType);
+  }
+
 }
 
 MyFeedApi.instance = new MyFeedApi();

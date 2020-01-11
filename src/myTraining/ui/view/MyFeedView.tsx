@@ -24,7 +24,7 @@ class MyFeedView extends React.Component<Props> {
   handleNotieRead() {
     //
     const { onRead, model } = this.props;
-    onRead(model.id);
+    onRead(model.id, model.feedType);
   }
 
   render() {

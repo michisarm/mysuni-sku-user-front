@@ -10,7 +10,7 @@ import { ChannelModel } from 'college';
 import { SkProfileService } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderContainer from './HeaderContainer';
-import { Wrapper } from './RecommendElementsView';
+import { Wrapper, EmptyContents } from './RecommendElementsView';
 
 
 interface Props extends RouteComponentProps {
@@ -83,15 +83,17 @@ class RecommendChannelsContainer extends Component<Props> {
         />
 
         {
-          recommendLectures && recommendLectures.length
-          && recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
-            <ChannelLecturesPanel
-              key={`channel_cont_${index}`}
-              channel={new ChannelModel(recommendLecture.channel)}
-              lectures={recommendLecture.lectures}
-              onViewAll={this.routeTo}
-            />
-          )) || null
+          recommendLectures && recommendLectures.length > 0 ?
+            recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
+              <ChannelLecturesPanel
+                key={`channel_cont_${index}`}
+                channel={new ChannelModel(recommendLecture.channel)}
+                lectures={recommendLecture.lectures}
+                onViewAll={this.routeTo}
+              />
+            ))
+            :
+            <EmptyContents />
         }
       </Wrapper>
     );
