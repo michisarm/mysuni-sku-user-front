@@ -6,8 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
-import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
-import depot from '@nara.drama/depot';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { AnswerService, CategoryService, PostService } from '../../../board';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType } from '@nara.drama/depot';
@@ -167,10 +167,8 @@ class CreateVideoTypeView  extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronType={PatronType.Audience}
-                patronKeyString="sampleAudience"
+                patronKey={{ keyString: 'sampleAudience', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
-                pavilionId="samplePavilion"
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
               <div className="bottom">

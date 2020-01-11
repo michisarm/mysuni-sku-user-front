@@ -5,8 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Form, Table } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
-import depot from '@nara.drama/depot';
-import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { MediaService, MediaType } from '../../../media';
 import { OfficeWebService } from '../../../officeweb';
 

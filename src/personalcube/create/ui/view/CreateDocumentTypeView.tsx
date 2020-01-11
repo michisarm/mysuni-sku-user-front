@@ -52,10 +52,8 @@ class CreateDocumentTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronType={PatronType.Audience}
-                patronKeyString="sampleAudience"
+                patronKey={{ keyString: 'sampleAudience', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
-                pavilionId="samplePavilion"
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
               <div className="bottom">

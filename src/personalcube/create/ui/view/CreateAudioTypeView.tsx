@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { Form, Icon, Radio } from 'semantic-ui-react';
@@ -153,10 +153,8 @@ class CreateAudioTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronType={PatronType.Audience}
-                patronKeyString="sampleAudience"
+                patronKey={{ keyString: 'sampleAudience', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
-                pavilionId="samplePavilion"
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
               <div className="bottom">
