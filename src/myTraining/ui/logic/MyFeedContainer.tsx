@@ -71,7 +71,7 @@ class LectureContainer extends Component<Props> {
 
   onRead(notieId: string, feedType: string) {
     const { myFeedService, index } = this.props;
-    myFeedService!.onReadNotie(notieId, feedType);
+    myFeedService!.onReadNotieWithType(notieId, feedType);
     myFeedService!.clearOnce(index);
   }
 
