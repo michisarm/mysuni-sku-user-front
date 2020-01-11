@@ -72,6 +72,12 @@ class MyFeedService {
     //
     await this.myFeedApi.onReadNotieFeed(notieId);
   }
+
+  @action
+  async onReadNotieWithType(notieId: string, feedType: string) {
+    //
+    await this.myFeedApi.onReadNotieFeedWithType(notieId, feedType);
+  }
 }
 
 MyFeedService.instance = new MyFeedService(MyFeedApi.instance);
