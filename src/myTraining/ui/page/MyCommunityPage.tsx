@@ -12,12 +12,14 @@ import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+import { MyFeed, MyFeedModel } from '../../../myTraining';
 import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import LineHeaderContainer from '../logic/LineHeaderContainer';
 import LectureModel from '../../../lecture/shared/model/LectureModel';
+import MyFeedService from '../../present/logic/MyFeedService';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
@@ -26,6 +28,7 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   lectureService?: LectureService
   myTrainingService?: MyTrainingService
   personalCubeService?: PersonalCubeService
+  myFeedService?: MyFeedService
 }
 
 interface State {
@@ -46,6 +49,7 @@ enum Type {
   'lecture.lectureService',
   'myTraining.myTrainingService',
   'personalCube.personalCubeService',
+  'myTraining.myFeedService',
 ))
 @observer
 @reactAutobind
@@ -82,6 +86,7 @@ class MyCommunityPage extends Component<Props, State> {
 
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCommunity}`, 0, this.PAGE_SIZE);
     pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`, 0, this.PAGE_SIZE);
+    pageService!.initPageMap(`${this.PAGE_KEY}_${Type.MyFeed}`, 0, this.PAGE_SIZE);
     this.selectMenu(match.params.tab);
     // this.findPagingList();
   }
@@ -91,10 +96,11 @@ class MyCommunityPage extends Component<Props, State> {
     const { type: prevType } = this.state;
 
     if (type !== prevType) {
-      const { pageService, lectureService, myTrainingService } = this.props;
+      const { pageService, lectureService, myTrainingService, myFeedService } = this.props;
       pageService!.initPageMap(`${this.PAGE_KEY}_${type}`, 0, this.PAGE_SIZE);
       lectureService!.clearLectures();
       myTrainingService!.clear();
+      myFeedService!.clear();
       this.setState({ type }, this.findPagingList);
     }
   }
@@ -105,9 +111,10 @@ class MyCommunityPage extends Component<Props, State> {
   }
 
   async findPagingList() {
-    const { myTrainingService, pageService, lectureService } = this.props;
+    const { myTrainingService, pageService, lectureService, myFeedService } = this.props;
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCommunity}`);
     const createdPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyCreatedCommunity}`);
+    const feedPage = pageService!.pageMap.get(`${this.PAGE_KEY}_${Type.MyFeed}`);
 
     lectureService!.findPagingCommunityLectures(createdPage!.limit, createdPage!.nextOffset)
       .then((offsetList) => {
@@ -117,6 +124,11 @@ class MyCommunityPage extends Component<Props, State> {
     myTrainingService!.findAndAddAllMyCommunityTrainings(page!.limit, page!.nextOffset)
       .then((offsetList) => {
         pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyCommunity}`, offsetList.totalCount, page!.pageNo + 1);
+      });
+
+    myFeedService!.findAndAddAllMyFeeds(feedPage!.limit, feedPage!.nextOffset)
+      .then((offsetList) => {
+        pageService!.setTotalCountAndPageNo(`${this.PAGE_KEY}_${Type.MyFeed}`, offsetList.totalCount, feedPage!.pageNo + 1);
       });
   }
 
@@ -176,10 +188,11 @@ class MyCommunityPage extends Component<Props, State> {
   }
 
   renderList() {
-    const { myTrainingService, lectureService, pageService } = this.props;
+    const { myTrainingService, lectureService, pageService, myFeedService } = this.props;
     const { type, boardIdMap, boardOpenMap } = this.state;
     const page = pageService!.pageMap.get(`${this.PAGE_KEY}_${type}`);
     let list: (MyTrainingModel | LectureModel)[] = [];
+    let feedList: (MyFeedModel)[] = [];
     let noSuchContentPanel = '';
 
     switch (type) {
@@ -191,6 +204,8 @@ class MyCommunityPage extends Component<Props, State> {
         list = lectureService!.lectures;
         noSuchContentPanel = '내가 만든 Community 학습 과정이 없습니다.';
         break;
+      case Type.MyFeed:
+        feedList = myFeedService!.myFeeds;
     }
 
     return (
@@ -198,7 +213,7 @@ class MyCommunityPage extends Component<Props, State> {
         <div className="ui tab active">
           <LineHeaderContainer count={page && page.totalCount || 0} />
           {
-            list && list.length && (
+            list && list.length && type !== Type.MyFeed && (
               <Lecture.Group type={Lecture.GroupType.Community}>
                 {
                   list.map((value: MyTrainingModel | LectureModel, index: number) => {
@@ -232,8 +247,26 @@ class MyCommunityPage extends Component<Props, State> {
                   })
                 }
               </Lecture.Group>
-            ) || (
+            ) || type !== Type.MyFeed && (
               <NoSuchContentPanel message={noSuchContentPanel} />
+            )
+          }
+          {
+            feedList && feedList.length && type === Type.MyFeed && (
+              <MyFeed.Group type={Lecture.GroupType.Community}>
+                {
+                  feedList.map((value: MyFeedModel, index: number) => {
+                    return (
+                      <MyFeed key={`feed-${index}`}
+                        model={value}
+                        index={index}
+                      />
+                    );
+                  })
+                }
+              </MyFeed.Group>
+            ) || type === Type.MyFeed && (
+              <NoSuchContentPanel message="새로운 알림이 없습니다." />
             )
           }
 
