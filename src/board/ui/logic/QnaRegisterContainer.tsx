@@ -234,10 +234,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
-                        patronType={PatronType.Audience}
-                        patronKeyString="sampleAudience"
+                        patronKey={{ keyString: '', patronType: PatronType.Audience }}
                         onChange={this.getFileBoxIdForReference}
-                        pavilionId="samplePavilion"
                         id={post && post.contents && post.contents.depotId || ''}
                       />
                       <div className="bottom">

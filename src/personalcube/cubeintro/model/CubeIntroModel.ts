@@ -66,7 +66,6 @@ export class CubeIntroModel implements DramaEntity {
   static asCdo(cubeIntro: CubeIntroModel): CubeIntroCdoModel {
     //
     const operation = cubeIntro.operation && new OperationModel(cubeIntro.operation);
-    if (operation.etcCp) operation.organizer.name = operation.etcCp;
     return (
       {
         audienceKey: 'r2p8-r@nea-m5-c5',

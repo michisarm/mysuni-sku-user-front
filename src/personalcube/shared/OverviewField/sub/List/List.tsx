@@ -22,16 +22,27 @@ class List extends Component<Props> {
     header: undefined,
   };
 
+  panelRef = React.createRef<HTMLDivElement>();
+
+
+  getPanelRef() {
+    return this.panelRef.current;
+  }
+
   render() {
     //
     const { icon, className, header, children } = this.props;
 
     return (
-      <div className={classNames('ov-paragraph', className)}>
+      <div
+        className={classNames('ov-paragraph', className)}
+      >
         {header}
-        <SemanticList bulleted={!icon}>
-          {children}
-        </SemanticList>
+        <div ref={this.panelRef}>
+          <SemanticList bulleted={!icon}>
+            {children}
+          </SemanticList>
+        </div>
       </div>
     );
   }
