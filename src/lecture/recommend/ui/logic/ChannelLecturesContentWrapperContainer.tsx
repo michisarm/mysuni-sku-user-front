@@ -10,13 +10,14 @@ interface Props {
   channels: ChannelModel[]
   children: React.ReactNode
   onSelectChannel: (channel: ChannelModel) => void
+  onConfirmCallback: () => void
 }
 
 class ChannelLecturesContentWrapperContainer extends Component<Props> {
   //
   render() {
     //
-    const { channels, children, onSelectChannel } = this.props;
+    const { channels, children, onSelectChannel, onConfirmCallback } = this.props;
 
     return (
       <Segment className="full">
@@ -26,6 +27,7 @@ class ChannelLecturesContentWrapperContainer extends Component<Props> {
             title="관심 Channel 보기"
             configurable
             onSelectChannel={(e, { channel }) => onSelectChannel(channel)}
+            onConfirmCallback={onConfirmCallback}
           />
           {children}
         </div>

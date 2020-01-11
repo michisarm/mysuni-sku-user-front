@@ -255,14 +255,12 @@ class MyCommunityPage extends Component<Props, State> {
             feedList && feedList.length && type === Type.MyFeed && (
               <MyFeed.Group type={Lecture.GroupType.Community}>
                 {
-                  feedList.map((value: MyFeedModel, index: number) => {
-                    return (
-                      <MyFeed key={`feed-${index}`}
-                        model={value}
-                        index={index}
-                      />
-                    );
-                  })
+                  feedList.map((value: MyFeedModel, index: number) => (
+                    <MyFeed key={`feed-${index}`}
+                      model={value}
+                      index={index}
+                    />
+                  ))
                 }
               </MyFeed.Group>
             ) || type === Type.MyFeed && (

@@ -51,7 +51,7 @@ class ContentsProviderSelectForCubeIntroView extends React.Component<Props, Stat
               value={defaultValue && defaultValue}
             />
           </Grid.Column>
-          { organizer && organizer.id === 'PVD00017' ?
+          { organizer && organizer.name === '기타' ?
             <Grid.Column>
               <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write })}>{/* .error class 추가시 error ui 활성 */}
                 <input type="text"
