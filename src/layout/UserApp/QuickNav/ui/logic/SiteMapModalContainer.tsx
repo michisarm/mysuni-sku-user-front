@@ -126,7 +126,6 @@ class SiteMapModalContainer extends Component<Props, State> {
   async setSiteMapWithCount2(colleges: any) {
     //
     const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
-    console.log('colleges', colleges);
 
     const categorySiteMap = {
       ...baseCategoryItems,

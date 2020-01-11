@@ -20,8 +20,6 @@ class SubCategoryContainer extends Component<Props> {
   render() {
     //
     const { channels, onSubCategory, colleges } = this.props;
-    console.log(channels);
-    console.log(colleges);
     return (
       <div className="table-css type5">
         <div className="row">

@@ -71,7 +71,6 @@ class SubCategoryModalContainer extends React.Component<Props, State> {
 
   onSelectChannel(channel: ChannelModel, college?: CollegeModel ) {
     //
-    console.log(college);
     let { channels }: State = this.state;
     const { colleges }: State = this.state;
     if (channels.map(ch => ch.id).includes(channel.id)) {

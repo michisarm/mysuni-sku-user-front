@@ -53,10 +53,12 @@ class CreateIntroContainer extends React.Component<Props, States> {
       confirmWinOpen: false };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     //
     const { cubeIntroService, personalCubeService } = this.props;
     const { cubeType, personalCubeId } = this.props.match.params;
+
+    await personalCubeService!.findPersonalCube(personalCubeId);
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
 

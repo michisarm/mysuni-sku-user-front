@@ -32,7 +32,6 @@ class FaqTabContainer extends React.Component<Props> {
     const { categorys } = this.props.categoryService || {} as CategoryService;
     const { handleFaqCategoryTabChange, findFaqPosts, faqTabIndex, disabled, end, routeToFaqDetail } = this.props;
     const { posts } = this.props.postService || {} as PostService;
-    console.log('faq posts', posts);
     const result = posts.results;
 
     return (

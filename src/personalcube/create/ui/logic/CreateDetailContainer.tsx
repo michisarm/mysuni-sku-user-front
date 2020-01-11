@@ -31,7 +31,7 @@ interface States {
   alertTitle: string
   alertType: string
   alertMessage: string
-
+  isNext: boolean
   confirmWinOpen: boolean
 }
 
@@ -51,6 +51,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
     this.state = {
       tags: '', alertWinOpen: false,
       alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
+      isNext: false,
       confirmWinOpen: false,
     };
   }
@@ -94,13 +95,13 @@ class CreateDetailContainer extends React.Component<Props, States> {
     if (personalCubeService && name !== 'tags') personalCubeService.changeCubeProps(name, value);
   }
 
-  handleSave() {
+  handleSave(isNext: boolean) {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
 
     if (personalCubeObject === 'success') {
-      this.setState({ confirmWinOpen: true });
+      this.setState({ confirmWinOpen: true, isNext });
       return;
     }
     if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
@@ -128,6 +129,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
   handleOKConfirmWin(mode?: string) {
     //
     const { skProfile } = this.props.skProfileService!;
+    const { isNext } = this.state;
     const { member } = skProfile!;
     const { name, company, email } = member!;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
@@ -136,12 +138,18 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
     if (personalCubeService && !personalCubeId && !mode) {
       personalCubeService.registerCube({ ...personalCube, creator: { company, email, name }})
-        .then((personalCubeId) => this.routeToCreateIntro(personalCubeId || ''));
+        .then((personalCubeId) => {
+          if (isNext) this.routeToCreateIntro(personalCubeId || '');
+          else this.props.history.push(`../${personalCubeId}`);
+        });
     }
 
     if (personalCubeService && personalCubeId && mode) {
       personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
-        .then(() => this.routeToCreateIntro(personalCubeId || ''));
+        .then(() => {
+          if (isNext) this.routeToCreateIntro(personalCubeId || '');
+          else this.setState({ confirmWinOpen: false });
+        });
     }
   }
 
@@ -241,14 +249,14 @@ class CreateDetailContainer extends React.Component<Props, States> {
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>
-                    <Button type="button" className="fix bg" onClick={() => this.routeToCreateIntro(personalCubeId)}>Next</Button>
+                    <Button type="button" className="fix line" onClick={() => this.handleSave(false)}>Save</Button>
+                    <Button type="button" className="fix bg" onClick={() => this.handleSave(true)}>Next</Button>
                   </div>
                   :
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
                     {/*<Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>*/}
-                    <Button type="button" className="fix bg" onClick={this.handleSave}>Next</Button>
+                    <Button type="button" className="fix bg" onClick={() => this.handleSave(true)}>Next</Button>
                   </div>
               }
               <AlertWin

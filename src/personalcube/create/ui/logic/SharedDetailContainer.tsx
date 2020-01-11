@@ -89,8 +89,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
         if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
         if (reportFileBoxId) this.findFiles('report', reportFileBoxId);
         if (officeWebFileBoxId) this.findFiles('officeweb', officeWebFileBoxId);
-      })
-      .then(() => console.log(this.state.filesMap));
+      });
   }
 
   findFiles(type: string, fileBoxId: string) {

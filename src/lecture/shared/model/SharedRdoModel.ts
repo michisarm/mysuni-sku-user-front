@@ -18,7 +18,6 @@ class SharedRdoModel {
   }
 
   static newShared(limit: number, offset: number, channelIds?:string[]) {
-    console.log(channelIds);
     return new SharedRdoModel({
       college: '',
       channelIds,
