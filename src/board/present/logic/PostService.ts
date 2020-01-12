@@ -124,7 +124,7 @@ export default class PostService {
   @action
   modifyPost(postId: string, post: PostModel) {
     //
-    this.postApi.modifyPost(postId, PostModel.asNameValueList(post));
+    return this.postApi.modifyPost(postId, PostModel.asNameValueList(post));
   }
 
   @action

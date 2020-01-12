@@ -34,6 +34,8 @@ export class PostModel implements DomainEntity {
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
 
+  commentFeedbackId: string = '';
+
   constructor(post?: PostModel) {
     if (post) {
       const writer = post.writer && new WriterModel(post.writer) || this.writer;
@@ -104,5 +106,6 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
+  commentFeedbackId: observable,
 
 });
