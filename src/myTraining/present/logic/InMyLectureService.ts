@@ -26,6 +26,7 @@ class InMyLectureService {
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
+
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
   }
