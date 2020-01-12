@@ -334,13 +334,14 @@ class CreateContainer extends React.Component<Props, States> {
     const { activeItem } = this.state;
     const { lectureService, skProfileService } = this.props;
     const { lectures } = lectureService!;
-    const { skProfile } = skProfileService as SkProfileService;
-    const { member } = skProfile as SkProfileModel;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
 
     return (
       <ContentLayout
         className="create"
         breadcrumb={[
+          { text: 'Create' },
           { text: `${activeItem}` },
         ]}
       >
