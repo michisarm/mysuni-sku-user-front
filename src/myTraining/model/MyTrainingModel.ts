@@ -82,11 +82,11 @@ class MyTrainingModel extends DramaEntityObservableModel {
   @computed
   get state() {
     if (this.proposalState === ProposalState.Approved) {
-      if (this.learningState === LearningState.Progress) return 'In Progress';
-      if (this.learningState === LearningState.Passed) return 'Completed';
-      if (this.learningState === LearningState.Missed) return 'Missed';
-      if (this.cubeType === CubeType.Community) return 'Joined';
-      else return 'Enrolled';
+      if (this.learningState === LearningState.Progress) return '학습중';
+      if (this.learningState === LearningState.Passed) return '학습완료';
+      if (this.learningState === LearningState.Missed) return '미이수ß';
+      if (this.cubeType === CubeType.Community) return '가입완료';
+      else return '수강확정 과정';
     }
     else return this.proposalState.toString();
   }

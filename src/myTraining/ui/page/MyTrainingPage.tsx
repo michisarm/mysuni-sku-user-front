@@ -358,7 +358,7 @@ class MyTrainingPage extends Component<Props, State> {
         <ContentMenu
           menus={[
             {
-              name: '학습중인 과정',
+              name: '학습중',
               type: Type.InProgress,
             },
             {
@@ -366,12 +366,12 @@ class MyTrainingPage extends Component<Props, State> {
               type: Type.InMyList,
             },
             {
-              name: '수강확정 과정',
-              type: Type.Enrolled,
-            },
-            {
               name: '권장과정',
               type: Type.Required,
+            },
+            {
+              name: '학습예정',
+              type: Type.Enrolled,
             },
             {
               name: '학습완료',
