@@ -58,7 +58,7 @@ class PisAgreementContainer extends Component<Props> {
           skProfileService.modifySkProfile(new SkProfileUdo(undefined, new PisAgreementModel(skProfile.pisAgreement)));
 
           if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
-            &&  studySummary.favoriteChannels
+            && studySummary.favoriteChannels
             && studySummary.favoriteChannels.idNames.length < 4
             && studySummary.favoriteLearningType ) {
             this.props.history.push('/');
