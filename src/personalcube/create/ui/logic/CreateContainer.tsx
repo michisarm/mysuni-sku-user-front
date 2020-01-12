@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import { Menu, Segment, Sticky, Button, Icon } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ReviewService } from '@nara.drama/feedback';
@@ -247,6 +247,10 @@ class CreateContainer extends React.Component<Props, States> {
     }
   }
 
+  onRouteToCreate() {
+    this.props.history.push(routePaths.createNew());
+  }
+
   renderCreate() {
     const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
     const totalCount = personalCubes.totalCount;
@@ -270,7 +274,10 @@ class CreateContainer extends React.Component<Props, States> {
               handleClickCubeRow={this.handleClickCubeRow}
             />
           ) || (
-            <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
+            <NoSuchContentPanel
+              message="아직 생성한 학습이 없습니다."
+              link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
+            />
           )
         }
         { totalCount > result.length && (
