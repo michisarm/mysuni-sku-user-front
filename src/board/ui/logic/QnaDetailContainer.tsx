@@ -54,6 +54,11 @@ class QnaDetailContainer extends React.Component<Props, States> {
     }
   }
 
+  componentWillUnmount(): void {
+    const { postService } = this.props;
+    postService!.clearPost();
+  }
+
   getFileIds() {
     //
     const { post } = this.props.postService || {} as PostService;

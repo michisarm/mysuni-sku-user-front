@@ -143,12 +143,19 @@ class LectureContainer extends Component<Props, States> {
   renderBoxCard() {
     //
     const {
-      model, rating, thumbnailImage,
+      model, thumbnailImage,
       onAction,
     } = this.props;
+    let { rating } = this.props;
     const { hovered } = this.state;
-    let state = '';
-    let date = '';
+
+    let state;
+    let date;
+    if (model.required) {
+      state = '권장과정';
+      rating = undefined;
+      date = moment(model.time).format('YYYY.MM.DD');
+    }
     if (model instanceof MyTrainingModel) {
       state = model.state;
       date = moment(model.time).format('YYYY.MM.DD');
@@ -159,8 +166,8 @@ class LectureContainer extends Component<Props, States> {
         model={model}
         hovered={hovered}
         rating={rating}
-        state={state || undefined}
-        date={date || undefined}
+        state={state}
+        date={date}
         thumbnailImage={thumbnailImage}
         action={this.getAction()}
         onAction={onAction}
@@ -208,13 +215,19 @@ class LectureContainer extends Component<Props, States> {
   renderLineCard() {
     //
     const {
-      model, rating, thumbnailImage,
+      model, thumbnailImage,
       onAction,
     } = this.props;
+    let { rating } = this.props;
     const { hovered } = this.state;
 
-    let state = '';
-    let date = '';
+    let state;
+    let date;
+    if (model.required) {
+      state = '권장과정';
+      rating = undefined;
+      date = moment(model.time).format('YYYY.MM.DD');
+    }
     if (model instanceof MyTrainingModel) {
       state = model.state;
       date = moment(model.time).format('YYYY.MM.DD');
@@ -227,8 +240,8 @@ class LectureContainer extends Component<Props, States> {
             model={model}
             hovered={hovered}
             rating={rating}
-            state={state || undefined}
-            date={date || undefined}
+            state={state}
+            date={date}
             thumbnailImage={thumbnailImage}
             action={this.getAction()}
             onAction={onAction}
