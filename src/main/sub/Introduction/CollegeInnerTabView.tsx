@@ -1,7 +1,13 @@
 // Publishing 파일 그대로 가져오기 때문에 eslint 비활성화
 /* eslint-disable */
-import React from 'react';
+import React, { Component } from 'react';
+import { reactAutobind } from '@nara.platform/accent';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
+import queryString from 'query-string';
 import { Image, Tab } from 'semantic-ui-react';
+import routePaths from '../../routePaths';
+
 
 const panes = [
   {
@@ -25,8 +31,8 @@ const panes = [
               <div className="label">AI College</div>
               <div className="strong">AI 아싸(Outsider)에서 AI 핵인싸(Insider)로!</div>
               <div className="normal">AI College는 SK 구성원 누구나 알아야 할 기본 지식을 바탕으로,<br />
-                                각 산업과 직무에서 AI를 활용하는 실무역량을 배양하고 AI기술 전문가로<br />
-                                성장할 수 있는 기회를 제공합니다.
+                각 산업과 직무에서 AI를 활용하는 실무역량을 배양하고 AI기술 전문가로<br />
+                성장할 수 있는 기회를 제공합니다.
               </div>
             </div>
           </div>
@@ -96,9 +102,9 @@ const panes = [
               <div className="label">DT College</div>
               <div className="strong">'그룹의 Deep Change는 우리 손으로!’</div>
               <div className="normal">Digital Skill을 장착하고 고객과 업을 이해하여,<br />
-                                SK Deep Change를 맨 앞에서 이끌어 나가실
-                                구성원들을 위한 과정들이,<br />
-                                여기 DT College에 마련되어 있습니다.
+                SK Deep Change를 맨 앞에서 이끌어 나가실
+                구성원들을 위한 과정들이,<br />
+                여기 DT College에 마련되어 있습니다.
               </div>
             </div>
           </div>
@@ -146,8 +152,8 @@ const panes = [
               <div className="label">행복 College</div>
               <div className="strong">SK 구성원 전체의 행복을 위하여!</div>
               <div className="normal">행복에 대한 기본 개념과 SK경영철학의 이해를 기반으로 직장을 포함한 삶 전반에서<br />행복을 증진할 수 있는 역량을
-                                배양하고 실천함으로써,
-                                SK 구성원 전체의 행복 추구에<br />실질적으로 기여하는 것을 목표로 합니다.
+                배양하고 실천함으로써,
+                SK 구성원 전체의 행복 추구에<br />실질적으로 기여하는 것을 목표로 합니다.
               </div>
             </div>
           </div>
@@ -160,10 +166,10 @@ const panes = [
               </div>
               <div className="label">SK만의 컨텐츠를 새롭게 만들어가고 있습니다.</div>
               <div className="normal">2020년 1월 행복학개론, SK의 행복경영, 마음 근력 키우기, 긍정 습관 만들기 등 총 4개 과정이
-                                개설되었습니다.<br />현재 운영 중인
-                                4개의 과정에 추가하여 <strong>2020년 말</strong>까지 행복 실천을 위한 <strong>나머지 공통 과정, SK 행복 리더십 과정, 전문가
-                                    과정
-                                </strong>을<br />순차적으로 개설할 예정입니다.
+                개설되었습니다.<br />현재 운영 중인
+                4개의 과정에 추가하여 <strong>2020년 말</strong>까지 행복 실천을 위한 <strong>나머지 공통 과정, SK 행복 리더십 과정, 전문가
+                  과정
+                </strong>을<br />순차적으로 개설할 예정입니다.
               </div>
             </div>
           </div>
@@ -191,8 +197,8 @@ const panes = [
               <div className="label">SV College</div>
               <div className="strong">사회와 기업의 지속가능성을 위해!</div>
               <div className="normal">사회와 고객의 문제를 해결하기 위한 치열한 학습과 실행으로<br />BM 혁신과 이해관계자의 행복을 추구하여​<br />사회와
-                                기업의 지속가능성을
-                                높이고자 합니다.
+                기업의 지속가능성을
+                높이고자 합니다.
               </div>
             </div>
           </div>
@@ -228,10 +234,10 @@ const panes = [
               <div className="label">혁신디자인 College</div>
               <div className="strong">Deep Change 필요한 “디자인 역량”을 키우는 곳!</div>
               <div className="normal">SK 구성원, 디자인 씽킹 전문가, 혁신 Biz. 리더 등 고객 중심 BM혁신을<br />고민하는 다양한 사람들이 각자의
-                                고민과 의견을 나누며
-                                Deep Change에 필요한<br />Biz. 디자인 역량을 함께 만들어가는 곳 입니다.<br />여러분의 디자인 사고, 디자인 역량을 높이는데 도움이 될
-                                다양한 강의와
-                                워크샵,<br />프로젝트에 도전해보세요!
+                고민과 의견을 나누며
+                Deep Change에 필요한<br />Biz. 디자인 역량을 함께 만들어가는 곳 입니다.<br />여러분의 디자인 사고, 디자인 역량을 높이는데 도움이 될
+                다양한 강의와
+                워크샵,<br />프로젝트에 도전해보세요!
               </div>
               <ul className="tag-wrap">
                 <li># Deep Change & Design</li>
@@ -254,7 +260,7 @@ const panes = [
                     className="blind"
                   >1
                   </span>
-                                               </i>Deep Change & Design
+                  </i>Deep Change & Design
                   </div>
                   <div className="normal">Deep Change에 필요한 디자인 역량의 의미, 고객 중심 디자인의 기초 개념을 학습합니다.</div>
                   <ul className="tag-wrap">
@@ -268,7 +274,7 @@ const panes = [
                     className="blind"
                   >2
                                                                           </span>
-                                               </i>고객중심의 디자인 방법론
+                  </i>고객중심의 디자인 방법론
                   </div>
                   <div className="normal">고객을 제대로 이해하는 법, 창의적 솔루션을 찾아내는 법 등을 학습합니다.</div>
                   <ul className="tag-wrap">
@@ -282,7 +288,7 @@ const panes = [
                     className="blind"
                   >3
                                                                           </span>
-                                               </i>일하는 방식의 혁신
+                  </i>일하는 방식의 혁신
                   </div>
                   <div className="normal">고객 중심으로 애자일하게 일하는 법, 협업을 잘하는 방법 등을 학습합니다.</div>
                   <ul className="tag-wrap">
@@ -331,8 +337,8 @@ const panes = [
               <div className="label">Global College</div>
               <div className="strong">Globalization을 위한 새로운 시작</div>
               <div className="normal">글로벌 비즈니스의 판을 읽는 'Global Perspective'를 키우고 환경이 바뀌어도<br />성과를 만들어 낼 수
-                                있는 ‘Global
-                                Manager’를 키우는 것을 목표로 합니다.<br />이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을 길러내고자 합니다.
+                있는 ‘Global
+                Manager’를 키우는 것을 목표로 합니다.<br />이를 통해 SK그룹의 Globalization에 필요한 Human Capital들을 길러내고자 합니다.
               </div>
               <ul className="tag-wrap">
                 <li># Geopolitics & Biz</li>
@@ -375,9 +381,9 @@ const panes = [
               <div className="label">Leadership College</div>
               <div className="strong">Deep Change Leader로 성장!</div>
               <div className="normal">개인별 리더십 진단과 맞춤형 역량 개발 가이드를 지원하고<br />최신 컨텐츠와 효과적인 학습 환경을 제공하여, 모든
-                                구성원이 스스로를
-                                성장시키고,<br />
-                                다른 사람의 변화를 촉진하며, 회사(BM,조직)를 혁신하는<br />Deep Change Leader로 성장하도록 돕습니다.
+                구성원이 스스로를
+                성장시키고,<br />
+                다른 사람의 변화를 촉진하며, 회사(BM,조직)를 혁신하는<br />Deep Change Leader로 성장하도록 돕습니다.
               </div>
               <ul className="tag-wrap">
                 <li># Leading Myself</li>
@@ -420,8 +426,8 @@ const panes = [
               <div className="label">Management College</div>
               <div className="strong">“신입사원부터 리더까지 SK인이 꼭 알아야 할 경영지식!”</div>
               <div className="normal">Mgmt. College는 전략/재무/마케팅/HR 등 공통 직무 Domain別 전문역량과 Deep Change를 위한
-                                실행역량 향상을 위한 학습
-                                Program을 제공합니다.
+                실행역량 향상을 위한 학습
+                Program을 제공합니다.
               </div>
               <ul className="tag-wrap">
                 <li># 전략</li>
@@ -458,7 +464,65 @@ const panes = [
   },
 ];
 
+interface Props extends RouteComponentProps {
+}
 
-const TabMenuInner = () => <Tab panes={panes} className="tab-menu-inner" />;
+interface State {
+  activeIndex: number
+}
 
-export default TabMenuInner;
+@reactAutobind
+class CollegeInnerTabView extends Component<Props, State> {
+  //
+  state = {
+    activeIndex: 0,
+  };
+
+  componentDidMount() {
+    //
+    this.setActiveTab();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.location.key !== this.props.location.key) {
+      this.setActiveTab();
+    }
+  }
+
+  setActiveTab() {
+    //
+    const queryParams = queryString.parse(this.props.location.search);
+    const subTab = queryParams.subTab as string;
+
+    if (subTab) {
+      const activeIndex = panes.findIndex((pane) => pane.menuItem === subTab);
+
+      if (activeIndex >= 0) {
+        this.setState({ activeIndex });
+      }
+    }
+  }
+
+
+  onTabChange(e: any, { activeIndex }: any) {
+    //
+    this.props.history.push(routePaths.introductionCollege(panes[activeIndex].menuItem));
+  }
+
+  render() {
+    //
+    const { activeIndex } = this.state;
+
+    return (
+      <Tab
+        className="tab-menu-inner"
+        panes={panes}
+        activeIndex={activeIndex}
+        onTabChange={this.onTabChange}
+      />
+    );
+  }
+}
+
+export default withRouter(CollegeInnerTabView);
