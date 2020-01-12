@@ -9,7 +9,7 @@ import Carousel from '../../sub/Carousel';
 import SearchBar from '../../sub/SearchBar';
 import MyLearningSummary from '../../sub/MyLearningSummary';
 import MyLearningContent from '../../sub/MyLearningContent';
-import Banner from '../../sub/Banner';
+// import Banner from '../../sub/Banner';
 import RecommendChannels from '../../sub/RecommendChannels';
 // import TutorialModal from '../../sub/TutorialModal';
 
