@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
+import mainRoutePaths from 'main/routePaths';
 import { CollegeService } from 'college';
 import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
@@ -50,7 +51,11 @@ class CollegeLecturesPage extends Component<Props> {
   }
 
   onClickMySuni() {
-    this.props.history.push('/introduction');
+    //
+    const { collegeService } = this.props;
+    const { college } = collegeService;
+
+    this.props.history.push(mainRoutePaths.introductionCollege(college.name));
   }
 
 

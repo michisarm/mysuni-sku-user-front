@@ -12,7 +12,7 @@ import { BoardService, CategoryService, PostService } from '../../../board';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import { PostModel } from '../../model/PostModel';
-import Editor from './Editor';
+// import Editor from './Editor';
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   boardService?: BoardService,
