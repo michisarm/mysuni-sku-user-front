@@ -68,12 +68,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     }
   }
 
-  onChangerContentsProps(name: string, value: string) {
-    //
+  componentWillUnmount(): void {
     const { postService } = this.props;
-
-    console.log(value);
-
+    postService!.clearPost();
   }
 
   handleCloseAlertWin() {
@@ -95,7 +92,10 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const { postService } = this.props;
     const { post } = this.props.postService || {} as PostService;
 
-    if (postService) postService.registerPost(post);
+    if (postService) {
+      postService.registerPost(post)
+        .then((postId) => this.props.history.push(`/board/support/qna-detail/${postId}`));
+    }
     this.onClose('Q&A');
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
@@ -148,6 +148,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     }
     );
+
+    console.log(post && post.contents && post.contents.depotId);
 
     return (
       <ContentLayout className="bg-white">
