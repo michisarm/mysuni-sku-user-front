@@ -67,7 +67,12 @@ class BreadcrumbView extends Component<Props, State> {
     const isLast = values && index === values.length - 1;
 
     if (isLast) {
-      return <div className="section active">{value.text}</div>;
+      if (value.path) {
+        return <Link to={value.path} className="section active">{value.text}</Link>;
+      }
+      else {
+        return <div className="section active">{value.text}</div>;
+      }
     }
     else if (value.path) {
       return <Link to={value.path} className="section">{value.text}</Link>;

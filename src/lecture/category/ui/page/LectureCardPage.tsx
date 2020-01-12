@@ -436,13 +436,13 @@ class LectureCardPage extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
     const studentCdo = this.getStudentCdo();
-
+    console.log('college', college);
     return (
       <ContentLayout
         className="channel"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture` },
+          { text: `${personalCube.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, personalCube.category.channel.id) },
         ]}
       >
         <LectureCardHeaderView
