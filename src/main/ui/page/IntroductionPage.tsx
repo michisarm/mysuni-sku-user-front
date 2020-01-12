@@ -19,7 +19,7 @@ class UserMainPage extends Component<Props> {
     //
     return (
       <ContentLayout
-        className="bg-white content introduction"
+        className="bg-white introduction"
         breadcrumb={[
           { text: 'Introduction' },
         ]}
