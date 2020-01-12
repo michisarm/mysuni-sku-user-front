@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import moment from 'moment';
 import { SearchFilter } from 'shared';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/personalcube';
 
 
 interface Props {
@@ -14,6 +14,12 @@ interface Props {
 }
 
 class CreateListView extends React.Component <Props> {
+  //
+  getCubeType(personalCube: PersonalCubeModel) {
+    //
+    return CubeTypeNameType[CubeType[personalCube.contents.type]];
+  }
+
   render() {
     const { result, totalCount, handleClickCubeRow } = this.props;
     return (
@@ -38,7 +44,7 @@ class CreateListView extends React.Component <Props> {
                 <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
                   <Table.Cell className="no">{totalCount - index}</Table.Cell>
                   <Table.Cell className="title"><a href="#"><span className="ellipsis">{cube.name && cube.name}</span></a></Table.Cell>
-                  <Table.Cell className="type">{cube.contents && cube.contents.type}</Table.Cell>
+                  <Table.Cell className="type">{this.getCubeType(cube)}</Table.Cell>
                   <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
                   <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
