@@ -189,7 +189,7 @@ class MenuItemContainer extends Component<Props, States> {
                 as={Link}
                 to=""
               >
-                Completed List
+                학습완료
                 {/*<span className="count">+5</span>*/}
               </Menu.Item>
               <Menu.Item
@@ -199,7 +199,7 @@ class MenuItemContainer extends Component<Props, States> {
                 as={Link}
                 to=""
               >
-                Earned Stamp List
+                보유스탬프
                 {/*<span className="count">+24</span>*/}
               </Menu.Item>
             </Menu>

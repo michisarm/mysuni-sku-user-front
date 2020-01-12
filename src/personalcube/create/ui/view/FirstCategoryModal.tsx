@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Accordion, Button, Icon, Modal, Radio } from 'semantic-ui-react';
-import { CategoryModel, IdName } from 'shared';
+import { IdName } from 'shared';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeModel, CollegeService } from 'college';
 
@@ -94,9 +94,9 @@ class FirstCategoryModal extends React.Component<Props, States> {
       });
     });
 
-    personalCube.subCategories.filter(category => {
-      return category.channel.id !== beforeCategoryId;
-    }).concat(channelList);
+    personalCube.subCategories.filter(category =>
+      category.channel.id !== beforeCategoryId
+    ).concat(channelList);
 
     onChangePersonalCubeProps('subCategories', personalCube.subCategories.filter(category => category.channel.id !== beforeCategoryId).concat(channelList));
     changeChannelsMapProps(channelListMapForView);

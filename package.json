@@ -49,7 +49,9 @@
     "@babel/polyfill": "7.0.0",
     "babel-polyfill": "6.26.0",
     "query-string": "^6.9.0",
-    "webpack-bundle-analyzer": "^3.6.0"
+    "webpack-bundle-analyzer": "^3.6.0",
+    "react-id-swiper": "^2.4.0",
+    "swiper": "^5.2.1"
   },
   "devDependencies": {
     "@storybook/react": "^5.2.8",

@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
-import {InMyLectureCdoModel, InMyLectureModel, InMyLectureService} from 'myTraining';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';

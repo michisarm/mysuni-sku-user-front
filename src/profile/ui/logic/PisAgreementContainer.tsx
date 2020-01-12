@@ -55,7 +55,7 @@ class PisAgreementContainer extends Component<Props> {
         if (skProfile ) {
           skProfile.pisAgreement.signed = true;
           skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
-          skProfileService.modifySkProfile(new SkProfileUdo(undefined, new PisAgreementModel(skProfile.pisAgreement)));
+          skProfileService.modifySkProfile(new SkProfileUdo({} as any, new PisAgreementModel(skProfile.pisAgreement)));
 
           if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
             && studySummary.favoriteChannels

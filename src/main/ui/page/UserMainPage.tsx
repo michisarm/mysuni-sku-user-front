@@ -10,6 +10,7 @@ import SearchBar from '../../sub/SearchBar';
 import MyLearningSummary from '../../sub/MyLearningSummary';
 import MyLearningContentContainer from '../../sub/MyLearningContent/MyLearningContentContainer';
 import RecommendChannels from '../../sub/RecommendChannels';
+// import TutorialModal from '../../sub/TutorialModal';
 
 
 interface Props extends RouteComponentProps {
@@ -29,6 +30,7 @@ class UserMainPage extends Component<Props> {
           <MyLearningSummary />
           <MyLearningContentContainer />
           <RecommendChannels />
+          {/*<TutorialModal />*/}
         </div>
       </ContentLayout>
     );
