@@ -30,7 +30,7 @@ class UserMainPage extends Component<Props> {
           <SearchBar />
           <MyLearningSummary />
           <MyLearningContent />
-          <Banner />
+          {/*<Banner />*/}
           <RecommendChannels />
           {/*<TutorialModal />*/}
         </div>

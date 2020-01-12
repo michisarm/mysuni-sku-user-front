@@ -51,7 +51,7 @@ class RecommendChannelsContainer extends Component<Props> {
               feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
             }
           });
-          reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+          reviewService!.findReviewSummariesByFeedbackIds(feedbackIds, false);
         }
       });
   }
