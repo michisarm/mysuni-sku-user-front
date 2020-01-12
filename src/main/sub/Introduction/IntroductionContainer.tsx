@@ -21,7 +21,7 @@ interface RouteParams {
 }
 
 enum TabType {
-  mySuni = 'MySuni',
+  MySuni = 'MySuni',
   College = 'College',
   Certification = 'Certification'
 }
@@ -31,7 +31,7 @@ class IntroductionContainer extends Component<Props, State> {
   contextRef: any = createRef();
 
   state = {
-    activeTab: TabType.mySuni,
+    activeTab: TabType.MySuni,
   };
 
   componentDidMount() {
@@ -57,7 +57,7 @@ class IntroductionContainer extends Component<Props, State> {
     //
     const { activeTab } = this.state;
 
-    if (activeTab === TabType.mySuni) {
+    if (activeTab === TabType.MySuni) {
       return <MySuniView />;
     }
     else if (activeTab === TabType.College) {
@@ -80,8 +80,8 @@ class IntroductionContainer extends Component<Props, State> {
           <div className="cont-inner">
             <Menu className="sku2">
               <Menu.Item
-                name={TabType.mySuni}
-                active={activeTab === TabType.mySuni}
+                name={TabType.MySuni}
+                active={activeTab === TabType.MySuni}
                 as={Link}
                 to={routePaths.introductionMySuni()}
               >
