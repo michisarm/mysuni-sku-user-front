@@ -436,7 +436,7 @@ class LectureCardPage extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
     const studentCdo = this.getStudentCdo();
-    console.log('college', college);
+
     return (
       <ContentLayout
         className="channel"
