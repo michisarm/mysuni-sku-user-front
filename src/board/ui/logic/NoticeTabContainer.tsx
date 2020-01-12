@@ -8,6 +8,7 @@ import { PostService } from '../../../board';
 
 interface Props {
   postService?: PostService
+  commentCountMap: Map<string, number>
   disabled: boolean
   end: number
   findNoticePosts: (end: number) => void
@@ -24,7 +25,7 @@ class NoticeTabContainer extends React.Component<Props> {
   render() {
     //
     const { posts, pinnedPosts } = this.props.postService || {} as PostService;
-    const { findNoticePosts, disabled, end, routeToNoticeDetail } = this.props;
+    const { findNoticePosts, commentCountMap, disabled, end, routeToNoticeDetail } = this.props;
     const result = posts.results;
     const pinnedResult = pinnedPosts.results;
 
@@ -35,12 +36,18 @@ class NoticeTabContainer extends React.Component<Props> {
             <>
               {
               pinnedResult && pinnedResult.length && pinnedResult.map((pinnedPost, index) => {
+                const count = commentCountMap.get(pinnedPost.commentFeedbackId) || 0;
                 if (pinnedPost.time && new Date(pinnedPost.time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000))) {
                   return (
                     <a target="_blank" className="row important new" key={index} onClick={() => routeToNoticeDetail(pinnedPost.postId)}>
                       <span className="cell title">
                         <span className="inner">
                           <span className="ellipsis">{pinnedPost.title}</span>
+                          {
+                            count && (
+                              <span className="rep-num">[<strong>{count}</strong>]</span>
+                            ) || null
+                          }
                         </span>
                       </span>
                       <span className="cell view">{pinnedPost.readCount}명 읽음</span>
@@ -54,6 +61,11 @@ class NoticeTabContainer extends React.Component<Props> {
                         <span className="inner">
                           <span className="ellipsis">{pinnedPost.title}</span>
                           {/*<Link to={`/books/notice-detail/${pinnedPost.postId}`}>{pinnedPost.title}</Link>*/}
+                          {
+                            count && (
+                              <span className="rep-num">[<strong>{count}</strong>]</span>
+                            ) || null
+                          }
                         </span>
                       </span>
                       <span className="cell view">{pinnedPost.readCount}명 읽음</span>
@@ -65,12 +77,18 @@ class NoticeTabContainer extends React.Component<Props> {
             }
               {
             result && result.length && result.map((post, index) => {
+              const count = commentCountMap.get(post.commentFeedbackId) || 0;
               if (post && post.pinned === true) {
                 return (
                   <a target="_blank" className="row important" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
                     <span className="cell title">
                       <span className="inner">
                         <span className="ellipsis">{post.title}</span>
+                        {
+                          count && (
+                            <span className="rep-num">[<strong>{count}</strong>]</span>
+                          ) || null
+                        }
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
@@ -83,6 +101,11 @@ class NoticeTabContainer extends React.Component<Props> {
                     <span className="cell title">
                       <span className="inner">
                         <span className="ellipsis">{post.title}</span>
+                        {
+                          count && (
+                            <span className="rep-num">[<strong>{count}</strong>]</span>
+                          ) || null
+                        }
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>
@@ -95,6 +118,11 @@ class NoticeTabContainer extends React.Component<Props> {
                     <span className="cell title">
                       <span className="inner">
                         <span className="ellipsis">{post.title}</span>
+                        {
+                          count && (
+                            <span className="rep-num">[<strong>{count}</strong>]</span>
+                          ) || null
+                        }
                       </span>
                     </span>
                     <span className="cell view">{post.readCount}명 읽음</span>

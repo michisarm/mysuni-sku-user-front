@@ -1,6 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { CommentService } from '@nara.drama/feedback';
 import { RouteComponentProps } from 'react-router';
 
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
@@ -10,10 +11,12 @@ import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
 import HelpContainer from './HelpContainer';
+import { PostModel } from '../../model/PostModel';
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   postService?: PostService
   categoryService?: CategoryService
+  commentService?: CommentService
 }
 
 interface States {
@@ -30,6 +33,7 @@ interface States {
 @inject(mobxHelper.injectFrom(
   'board.postService',
   'board.categoryService',
+  'shared.commentService',
 ))
 @observer
 @reactAutobind
@@ -114,61 +118,6 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  /*findQnaCategories() {
-    const { categoryService, postService } = this.props;
-
-    if (categoryService && postService) {
-      Promise.resolve()
-        .then(() => postService.clearPosts())
-        .then(() => categoryService.findCategoriesByBoardId('QNA'))
-        .then(() => {
-          const { categorys } = this.props.categoryService || {} as CategoryService;
-          if (categorys && categorys.length > 0) {
-            this.findQnaPosts('', categorys[0].categoryId, 10);
-          }
-        });
-    }
-  }
-
-  findQnaPosts(answered: any, categoryId: string, end: number) {
-    //
-    const { postService } = this.props;
-    this.setState({ answered, disabled: true });
-    if (postService ) {
-
-      if (answered === 'all' || !String(answered).length) {
-        postService.findPostsByCategoryIdAndDeleted(categoryId, false, 0, end)
-          .then(() => {
-            if (end >= postService.posts.totalCount) this.setState({ disabled: true });
-            else this.setState({ end: end + 10, disabled: false });
-          });
-      } else {
-        Promise.resolve()
-          .then(() => postService.clearPosts())
-          .then(() => {
-            postService.findQnaPostsByCategoryIdAndAnswered(categoryId, answered, 0, end)
-              .then(() => {
-                if (end >= postService.posts.totalCount) this.setState({ disabled: true });
-                else this.setState({ end: end + 10, disabled: false });
-              });
-          });
-      }
-    }
-  }
-
-  handleQnaCategoryTabChange(e: any, { answered, index }: any) {
-    //
-    const { postService } = this.props;
-    this.setState({ qnaTabIndex: index, disabled: false });
-
-    if (postService) {
-      Promise.resolve()
-        .then(() => postService.clearPosts())
-        .then(() => this.findQnaPosts(answered, 10));
-    }
-  }
-  */
-
   findNoticePinnedPosts() {
     const { postService } = this.props;
 
@@ -184,16 +133,16 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  findNoticePosts(end: number) {
-    const { postService } = this.props;
+  async findNoticePosts(end: number) {
+    const { postService, commentService } = this.props;
     this.setState({ disabled: true });
 
     if (postService) {
-      postService.findNoticePosts(0, end)
-        .then(() => {
-          if (end >= postService.posts.totalCount) this.setState({ disabled: true });
-          else this.setState({ end: end + 10, disabled: false });
-        });
+      const posts = await postService.findNoticePosts(0, end);
+      if (end >= posts.totalCount) this.setState({ disabled: true });
+      else this.setState({ end: end + 10, disabled: false });
+      const feedbackIds = posts.results.map((post: PostModel) => post.commentFeedbackId);
+      commentService!.countByFeedbackIds(feedbackIds);
     }
   }
 
@@ -280,7 +229,8 @@ export class BookMainContainer extends React.Component<Props, States> {
   render() {
     //
     const { activeItem, faqCategoryId, faqTabIndex, accordIndex, disabled, end, answered } = this.state;
-    const { postService, categoryService } = this.props;
+    const { postService, categoryService, commentService } = this.props;
+    const { commentCountMap } = commentService!;
 
     return (
       <ContentLayout
@@ -338,6 +288,7 @@ export class BookMainContainer extends React.Component<Props, States> {
           {
             activeItem === 'Notice' ?
               <NoticeTabContainer
+                commentCountMap={commentCountMap}
                 findNoticePosts={this.findNoticePosts}
                 routeToNoticeDetail ={this.routeToNoticeDetail}
                 disabled={disabled}
