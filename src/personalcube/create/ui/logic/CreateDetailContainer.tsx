@@ -217,12 +217,17 @@ class CreateDetailContainer extends React.Component<Props, States> {
     const { personalCubeId } = this.props.match.params;
 
     const message = (
-      <>
-        <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
-      </>
+      <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
     );
+
     return (
-      <ContentLayout className="bg-white">
+      <ContentLayout
+        className="bg-white"
+        breadcrumb={[
+          { text: 'Create' },
+          { text: 'Create', path: routePaths.createCreate() },
+        ]}
+      >
         <div className="add-personal-learning support">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">Create</div>

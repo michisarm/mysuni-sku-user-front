@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Icon } from 'semantic-ui-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Button, Icon } from 'semantic-ui-react';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   message: React.ReactNode,
+  link?: { text: string, path: string },
 }
 
 /**
@@ -25,9 +27,18 @@ interface Props {
 @observer
 class NoSuchContentPanel extends Component<Props> {
   //
+  onClickLink() {
+    //
+    const { history, link } = this.props;
+
+    if (link) {
+      history.push(link.path);
+    }
+  }
+
   render() {
     //
-    const { message } = this.props;
+    const { message, link, children } = this.props;
 
     return (
       <div className="no-cont-wrap">
@@ -37,9 +48,17 @@ class NoSuchContentPanel extends Component<Props> {
           :
           message
         }
+
+        { link && (
+          <Button icon className="right btn-blue2" onClick={this.onClickLink}>
+            Create 바로가기 <Icon className="morelink" />
+          </Button>
+        )}
+
+        {children}
       </div>
     );
   }
 }
 
-export default NoSuchContentPanel;
+export default withRouter(NoSuchContentPanel);

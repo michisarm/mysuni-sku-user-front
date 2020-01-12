@@ -4,14 +4,14 @@ const routePaths = {
   introduction: () =>
     '/introduction',
 
-  introductionTab: (tab: string) =>
-    `/introduction/${tab}`,
+  introductionTab: (tab: string, queryParams?: string) =>
+    `/introduction/${tab}${queryParams || ''}`,
 
   introductionMySuni: () =>
     routePaths.introductionTab('MySuni'),
 
-  introductionCollege: () =>
-    routePaths.introductionTab('College'),
+  introductionCollege: (subTab?: string) =>
+    routePaths.introductionTab('College', subTab ? `?subTab=${subTab}` : ''),
 
   introductionCertification: () =>
     routePaths.introductionTab('Certification'),

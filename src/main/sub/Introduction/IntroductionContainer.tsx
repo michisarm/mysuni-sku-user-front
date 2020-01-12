@@ -1,5 +1,6 @@
 
 import React, { Component, createRef } from 'react';
+import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 
 import { Sticky, Menu } from 'semantic-ui-react';
@@ -26,6 +27,7 @@ enum TabType {
   Certification = 'Certification'
 }
 
+@reactAutobind
 class IntroductionContainer extends Component<Props, State> {
   //
   contextRef: any = createRef();
