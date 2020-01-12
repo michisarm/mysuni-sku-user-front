@@ -77,6 +77,10 @@ export class PostModel implements DomainEntity {
           name: 'deleted',
           value: String(post.deleted),
         },
+        {
+          name: 'commentFeedbackId',
+          value: post.commentFeedbackId,
+        },
       ],
     };
     return asNameValues;
