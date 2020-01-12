@@ -130,19 +130,13 @@ export default class PostService {
   @action
   changePostProps(name: string, value: string | {}) {
     //
-    this.post = { ...this.post, [name]: value } as PostModel;
-  }
-
-  @action
-  onChangerContentsProps(name: string, value: string | {}) {
-    //
     this.post = _.set(this.post, name, value);
   }
 
   @action
   clearPost() {
     //
-    this.post = {} as PostModel;
+    this.post = new PostModel();
   }
 
   @action

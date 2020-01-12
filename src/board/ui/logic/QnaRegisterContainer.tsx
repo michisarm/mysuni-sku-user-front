@@ -73,12 +73,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     //
     const { postService } = this.props;
 
-    if (name === 'contents.contents' && value.length > 1000) {
-      this.setState({ fieldName: 'contents.contents' });
-    } else {
-      if (postService) postService.onChangerContentsProps(name, value);
-      this.setState({ length: value.length, fieldName: '' });
-    }
+    console.log(value);
+
   }
 
   handleCloseAlertWin() {
@@ -139,7 +135,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     //
     const { postService } = this.props;
     const { post } = postService || {} as PostService;
-    if (postService && post.contents) postService.onChangerContentsProps('contents.depotId', fileBoxId);
+    if (postService && post.contents) postService.changePostProps('contents.depotId', fileBoxId);
   }
 
   render() {
@@ -220,10 +216,23 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       <span className="count">
                         <span className="now">{this.state.length}</span>/<span className="max">1000</span>
                       </span>
-                      <Editor
-                        post={post}
-                        onChangeContentsProps={this.onChangerContentsProps}
+                      {/*<Editor*/}
+                      {/*  post={post}*/}
+                      {/*  onChangeContentsProps={this.onChangerContentsProps}*/}
+                      {/*/>*/}
+                      <textarea
+                        value={post && post.contents && post.contents.contents || ''}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (value.length > 1000) {
+                            this.setState({ fieldName: 'contents.contents' });
+                          } else {
+                            this.onChangePostProps('contents.contents', value);
+                            this.setState({ length: value.length, fieldName: '' });
+                          }
+                        }}
                       />
+
                       <span className="validation">You can enter up to 1000 characters.</span>
                     </div>
                   </div>
@@ -235,8 +244,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="lg-attach">
                     <div className="attach-inner">
                       <FileBox
-                        vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                        patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                        vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
+                        patronKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
                         onChange={this.getFileBoxIdForReference}
                         id={post && post.contents && post.contents.depotId || ''}
                       />
