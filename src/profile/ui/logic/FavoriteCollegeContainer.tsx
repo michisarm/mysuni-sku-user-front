@@ -58,7 +58,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
       skProfileService.findStudySummary();
 
       if (favoriteChannels) {
-        const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
+        const channels = favoriteChannels && favoriteChannels.idNames
           && favoriteChannels.idNames.map(channel =>
             new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
           ) || [];

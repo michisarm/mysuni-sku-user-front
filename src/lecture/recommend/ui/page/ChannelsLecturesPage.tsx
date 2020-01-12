@@ -48,7 +48,7 @@ class ChannelLecturesPage extends Component<Props> {
     const { studySummary } = skProfileService as SkProfileService;
     const { favoriteChannels } = studySummary as StudySummary;
 
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
+    const channels = favoriteChannels && favoriteChannels.idNames
       && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
