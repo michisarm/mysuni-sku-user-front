@@ -302,7 +302,8 @@ class MyCommunityPage extends Component<Props, State> {
             <ContentHeader.ProfileItem
               image={member && member.base64Photo || profileImg}
               name={member.name}
-              teams={[member.company || '', member.department || '']}
+              company={member.company}
+              department={member.department}
               imageEditable={false}
               myPageActive
             />

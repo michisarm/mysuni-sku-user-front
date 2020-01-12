@@ -101,12 +101,12 @@ class ListCardView extends Component<Props> {
           </Buttons>
 
           <div className="time-area">
+            <div className="location">
+              { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
+            </div>
             <div className="time">
               <strong>&nbsp;</strong>
               {this.getHourMinuteFormat(hour, minute)}
-            </div>
-            <div className="location">
-              { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
           </div>
 

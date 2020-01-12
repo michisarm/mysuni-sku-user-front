@@ -18,7 +18,8 @@ const profileItem = (
   <ContentHeader.ProfileItem
     image={profileImg}
     name="김유니"
-    teams={['SK C&C', '플랫폼 개발 1팀']}
+    company="SK C&C"
+    department="플랫폼 개발 1팀"
   />
 );
 
@@ -30,7 +31,8 @@ export const Basic = () =>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
           name="김유니"
-          teams={['SK C&C', '플랫폼 개발 1팀']}
+          company="SK C&C"
+          department="플랫폼 개발 1팀"
           image={profileImg}
         />
       </ContentHeader.Cell>
@@ -43,7 +45,8 @@ export const ProfileItem = () =>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
           name="김유니"
-          teams={['SK C&C', '플랫폼 개발 1팀']}
+          company="SK C&C"
+          department="플랫폼 개발 1팀"
           image={profileImg}
           imageEditable
           myPageActive

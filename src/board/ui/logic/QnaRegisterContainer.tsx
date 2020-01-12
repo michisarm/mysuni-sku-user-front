@@ -1,6 +1,5 @@
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 

@@ -77,7 +77,7 @@ class LectureContainer extends Component<Props> {
 
   renderFeedCard() {
     const {
-      model, thumbnailImage,
+      model,
     } = this.props;
 
     return (
@@ -88,8 +88,6 @@ class LectureContainer extends Component<Props> {
 
   render() {
     //
-    const { groupType } = this.context;
-
     return this.renderFeedCard();
   }
 }

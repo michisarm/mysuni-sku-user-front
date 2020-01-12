@@ -442,7 +442,7 @@ class LectureCardPage extends Component<Props, State> {
         className="channel"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture` },
+          { text: `${personalCube.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, personalCube.category.channel.id) },
         ]}
       >
         <LectureCardHeaderView

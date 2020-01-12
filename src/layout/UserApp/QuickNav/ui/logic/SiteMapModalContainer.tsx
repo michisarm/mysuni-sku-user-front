@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { reaction } from 'mobx';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
+import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
@@ -77,8 +77,8 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Introduction',
       items: [
-        { name: 'mySUNI 소개', path: '/introduction' },
-        { name: 'College 소개', path: '/introduction' },
+        { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
+        { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
       ],
     },
     {
@@ -115,33 +115,7 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    reaction(
-      () => this.props.collegeLectureCountService!.collegeLectureCounts,
-      this.setSiteMapWithCount,
-    );
-
-    // this.setSiteMapWithCount();
-  }
-
-  async setSiteMapWithCount2(colleges: any) {
-    //
-    const { baseCategoryItems, baseTopSiteMaps, baseBottomSiteMaps } = this;
-
-    const categorySiteMap = {
-      ...baseCategoryItems,
-      items: baseCategoryItems.items.map((item) => ({
-        ...item,
-        count: colleges.find((college: any) => college.name === item.name)!.collegeCount,
-      })),
-    };
-
-    const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];
-    const bottomSiteMaps = [ ...baseBottomSiteMaps ];
-
-    this.setState({
-      topSiteMaps,
-      bottomSiteMaps,
-    });
+    this.setSiteMapWithCount();
   }
 
   async setSiteMapWithCount() {
@@ -153,10 +127,16 @@ class SiteMapModalContainer extends Component<Props, State> {
 
     const categorySiteMap = {
       ...baseCategoryItems,
-      items: baseCategoryItems.items.map((item) => ({
-        ...item,
-        count: colleges.find((college: any) => college.name === item.name)!.collegeCount,
-      })),
+      items: baseCategoryItems.items.map((item) => {
+        //
+        const college = colleges.find((college: any) => college.name === item.name);
+
+        return {
+          ...item,
+          path: lectureRoutePaths.collegeLectures(college.collegeId),
+          count: college && college.collegeCount || 0,
+        };
+      }),
     };
 
     const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];

@@ -1,7 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { SearchFilter } from 'shared';
 import { Form, Icon, Radio } from 'semantic-ui-react';

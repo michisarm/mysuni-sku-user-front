@@ -8,6 +8,7 @@ import { Icon, Button } from 'semantic-ui-react';
 
 interface Props {
   nav: React.ReactNode,
+  buttons?: React.ReactNode,
 }
 
 @reactAutobind
@@ -15,7 +16,7 @@ class FooterView extends Component<Props> {
   //
   render() {
     //
-    const { nav } = this.props;
+    const { nav, buttons } = this.props;
 
     return (
       <section className="footer">
@@ -31,10 +32,11 @@ class FooterView extends Component<Props> {
             {nav}
           </div>
 
-          <Button.Group className="country">
-            <Button className="active">KR</Button>
-            <Button>EN</Button>
-          </Button.Group>
+          { buttons && (
+            <Button.Group className="country">
+              {buttons}
+            </Button.Group>
+          )}
         </div>
       </section>
     );

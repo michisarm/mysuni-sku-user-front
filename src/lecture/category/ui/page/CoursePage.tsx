@@ -318,8 +318,9 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, reviewService, inMyLectureService } = this.props;
+    const { collegeService, coursePlanService, reviewService, inMyLectureService } = this.props;
     const { college } = collegeService;
+    const { coursePlan } = coursePlanService;
     const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
     const { lectureCardId } = this.props.match.params!;
@@ -333,7 +334,7 @@ class CoursePage extends Component<Props, State> {
         className="channel"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Course` },
+          { text: `${coursePlan.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, coursePlan.category.channel.id) },
         ]}
       >
         <LectureCardHeaderView

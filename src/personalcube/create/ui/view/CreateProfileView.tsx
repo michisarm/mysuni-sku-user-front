@@ -44,7 +44,8 @@ class CreateProfileView extends React.Component<Props, States> {
                   <ContentHeader.ProfileItem
                     image={member && member.base64Photo || profileImg}
                     name={member.name}
-                    teams={[member.company || '', member.department || '']}
+                    company={member.company}
+                    department={member.department}
                   />
                 </div>
               </div>

@@ -10,7 +10,8 @@ import myTrainingRoutePaths from 'myTraining/routePaths';
 interface Props extends RouteComponentProps {
   image: string,
   name: string,
-  teams: string[],
+  company: string,
+  department: string,
   imageEditable?: boolean,
   myPageActive?: boolean,
   onEditImage?: () => void,
@@ -32,7 +33,7 @@ class ContentHeaderProfileItem extends Component<Props> {
   render() {
     //
     const {
-      image, imageEditable, name, myPageActive, teams,
+      image, imageEditable, name, myPageActive, company, department,
       onEditImage,
     } = this.props;
 
@@ -42,6 +43,12 @@ class ContentHeaderProfileItem extends Component<Props> {
           <div className="pic">
             <Image src={image} alt="Profile" />
           </div>
+          { myPageActive && (
+            <button onClick={this.onClickMyPage}>
+              <Icon className="my20" />
+              <span className="blind">my</span>
+            </button>
+          )}
           { imageEditable && (
             <Button icon className="img-icon" onClick={onEditImage}>
               <Icon className="photo-edit" />
@@ -51,14 +58,9 @@ class ContentHeaderProfileItem extends Component<Props> {
         <div className="text-info">
           <div className="name">
             {name}
-            { myPageActive && (
-              <Button className="orange-arrow2" onClick={this.onClickMyPage}>My page</Button>
-            )}
           </div>
           <div className="part">
-            {teams.map((team, index) => (
-              <span key={`profile_team_${index}`}>{team}</span>
-            ))}
+            <span>{company}</span><br /><span>{department}</span>
           </div>
         </div>
       </>
