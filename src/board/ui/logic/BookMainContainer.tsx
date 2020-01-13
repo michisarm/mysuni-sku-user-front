@@ -156,7 +156,7 @@ export class BookMainContainer extends React.Component<Props, States> {
           const { posts } = this.props.postService || {} as PostService;
           const totalCount = posts.totalCount;
 
-          if (end < totalCount) this.setState({ end: end + 10});
+          if (end < totalCount) this.setState({ end: end + 10 });
         });
     }
   }
@@ -168,7 +168,7 @@ export class BookMainContainer extends React.Component<Props, States> {
       if (answered === 'all' || !String(answered).length) {
         postService.findQnaPosts(0, end)
           .then(() => {
-            this.setState({ answered, end: end + 10});
+            this.setState({ answered, end: end + 10 });
           });
       } else {
         Promise.resolve()
@@ -176,7 +176,7 @@ export class BookMainContainer extends React.Component<Props, States> {
           .then(() => {
             postService.findQnaPostsByAnswered( answered, 0, end)
               .then(() => {
-                this.setState({ answered, end: end + 10});
+                this.setState({ answered, end: end + 10 });
               });
           });
       }
