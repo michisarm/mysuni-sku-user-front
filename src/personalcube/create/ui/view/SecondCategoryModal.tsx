@@ -211,7 +211,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
       return (
         <>
           <div className="cell v-middle">
-            <span className="text1">서브 카테고리</span>
+            <span className="text1">서브채널</span>
 
             <Button icon className="left post delete" type = "button" onClick={() => handleChangeOpen(true)}>채널선택</Button>
 
