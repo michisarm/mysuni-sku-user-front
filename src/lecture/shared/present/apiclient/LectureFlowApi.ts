@@ -19,7 +19,7 @@ class LectureFlowApi {
     //
     const params = lectureRdo;
     return axiosApi.get<RecommendLectureRdo[]>(this.baseUrl + '/recommend', { params })
-      .then(response => response && response.data);
+      .then(response => response && response.data || []);
   }
 
   findCollegeLectureCount() {

@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-// import SockJs from 'sockjs-client';
 
-//import { tenantInfo } from '@nara.platform/dock';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
@@ -15,8 +13,6 @@ import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
 } from '../view/QuickNavElementsView';
 import { ChannelModel } from '../../../../../college';
-
-// import FeedEventRdo from '../model/FeedEventRdo';
 
 
 interface Props extends RouteComponentProps {
@@ -33,8 +29,6 @@ interface State {
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  //userRoles = tenantInfo.getTenantRoles();
-
   state = {
     active: false,
     feedType: '',

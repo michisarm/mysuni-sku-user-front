@@ -8,13 +8,13 @@ import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
 export default class PersonalCubeApi {
+  //
+  static instance: PersonalCubeApi;
 
   URL = '/api/personalCube/personalcubes';
   flowURL = '/api/personalCube/cubes/flow';
   approvalURL = '/api/personalCube/approval';
 
-
-  static instance: PersonalCubeApi;
 
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
