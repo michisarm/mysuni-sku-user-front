@@ -154,9 +154,8 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length) {
-          const type = studentJoins.length ? LectureSubInfo.ActionType.ChangeSeries : LectureSubInfo.ActionType.Enrollment;
-          return { type, onAction: this.onClickChangeSeries };
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length && !studentJoins.length) {
+          return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
           if (studentJoins.length) return undefined;
