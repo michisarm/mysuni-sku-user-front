@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, ProposalState, LearningState } from 'shared';
+import { ContentLayout, ContentMenu, CubeType, LearningState, ProposalState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeTypeNameType, PersonalCubeService, CubeType } from 'personalcube/personalcube';
+import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
@@ -147,12 +147,16 @@ class LectureCardPage extends Component<Props, State> {
     });
 
     let state: SubState | undefined;
+    let examId: string = '';
     if (studentJoins.length && studentJoins[0]) {
       const studentJoin = studentJoins[0];
       if (studentJoin.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (studentJoin.proposalState === ProposalState.Approved) {
         if (studentJoin.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (studentJoin.learningState === LearningState.Passed) state = SubState.Completed;
+        if (studentJoin.learningState === LearningState.Passed) {
+          state = SubState.Completed;
+          examId = personalCube.contents.examId || '';
+        }
         if (studentJoin.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
@@ -171,6 +175,7 @@ class LectureCardPage extends Component<Props, State> {
       operatorEmail: cubeIntro.operation.operator.email,
 
       state: state || undefined,
+      examId,
 
       // Fields
       subCategories: personalCube.subCategories,
@@ -261,6 +266,7 @@ class LectureCardPage extends Component<Props, State> {
   getMediaViewObject() {
     //
     const { media } = this.props.mediaService!;
+    const { personalCube } = this.props.personalCubeService!;
     let url = '';
     let videoUrl = '';
 
@@ -274,6 +280,15 @@ class LectureCardPage extends Component<Props, State> {
       case MediaType.InternalMedia:
         videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
+
+        if (personalCube.contents.type === CubeType.Video) {
+          videoUrl += '&offerviewer=false';
+          url += '&offerviewer=false';
+        }
+        else {
+          videoUrl += '&offerviewer=false&interactivity=none';
+          url += '&offerviewer=false&interactivity=none';
+        }
         break;
     }
 
@@ -457,7 +472,7 @@ class LectureCardPage extends Component<Props, State> {
         {
           typeViewObject.videoUrl && (
             <div className="between-section">
-              <div className="cont-inner" style={{ height: '480px' }}>
+              <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <iframe
                   title={typeViewObject.videoUrl}
