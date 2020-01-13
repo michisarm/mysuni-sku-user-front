@@ -146,11 +146,15 @@ class MyTrainingPage extends Component<Props, State> {
   onActionLecture(training: MyTrainingModel | InMyLectureModel) {
     //
     const { type } = this.state;
-    const { inMyLectureService } = this.props;
+    const { inMyLectureService, pageService } = this.props;
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
-          if (type === Type.InMyList) this.init();
+          if (type === Type.InMyList) {
+            inMyLectureService!.clear();
+            pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+            this.findPagingList();
+          }
           else inMyLectureService!.findAllInMyLectures();
         });
     }
@@ -175,7 +179,11 @@ class MyTrainingPage extends Component<Props, State> {
         reviewId: training.reviewId,
       }))
         .then(() => {
-          if (type === Type.InMyList) this.findPagingList();
+          if (type === Type.InMyList) {
+            inMyLectureService!.clear();
+            pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+            this.findPagingList();
+          }
           else inMyLectureService!.findAllInMyLectures();
         });
     }
