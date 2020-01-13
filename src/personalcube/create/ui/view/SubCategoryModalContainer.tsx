@@ -106,8 +106,8 @@ class SubCategoryModalContainer extends React.Component<Props, State> {
         trigger={trigger}
       >
         <Modal.Header className="res">
-          Sub Category Choice
-          <span className="sub f12">Please select a category</span>
+          서브채널 선택
+          <span className="sub f12">서브채널을 선택해주세요.</span>
         </Modal.Header>
         <Modal.Content>
           <div className="channel-change">

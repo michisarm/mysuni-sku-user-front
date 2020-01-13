@@ -43,11 +43,8 @@ class NoSuchContentPanel extends Component<Props> {
     return (
       <div className="no-cont-wrap">
         <Icon className="no-contents80" /><span className="blind">콘텐츠 없음</span>
-        { typeof message === 'string' ?
-          <div className="text">{message}</div>
-          :
-          message
-        }
+
+        <div className="text">{message}</div>
 
         { link && (
           <Button icon className="right btn-blue2" onClick={this.onClickLink}>

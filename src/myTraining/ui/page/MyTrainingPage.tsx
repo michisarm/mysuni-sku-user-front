@@ -246,7 +246,7 @@ class MyTrainingPage extends Component<Props, State> {
         break;
       case Type.Required:
         list = lectureService!.lectures;
-        noSuchContentPanel = '권장과정에 해당하는 학습 과정이 없습니다.';
+        noSuchContentPanel = '필수과정에 해당하는 학습 과정이 없습니다.';
         break;
       case Type.Completed:
         cardType = Lecture.GroupType.List;
@@ -374,7 +374,7 @@ class MyTrainingPage extends Component<Props, State> {
               type: Type.InMyList,
             },
             {
-              name: '권장과정',
+              name: '필수과정',
               type: Type.Required,
             },
             {

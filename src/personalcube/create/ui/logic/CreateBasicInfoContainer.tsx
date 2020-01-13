@@ -131,7 +131,7 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
           </div>
         </Form.Field>
         <Form.Field>
-          <label className="necessary">카테고리 선택</label>
+          <label className="necessary">채널선택</label>
           <div>
             <div className="table-css type5">
               <div className="row">

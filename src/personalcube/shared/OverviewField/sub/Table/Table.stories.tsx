@@ -41,7 +41,7 @@ export const Basic = () => {
           header={(
             <OverviewField.Table
               titleIcon="series"
-              titleText="Class Series"
+              titleText="차수정보"
               classrooms={classrooms}
             />
           )}

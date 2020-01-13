@@ -41,8 +41,8 @@ class TableModal extends Component<Props, States> {
       <Modal open={this.state.open} onClose={this.close} className="base w1000 inner-scroll" trigger={trigger} onOpen={this.show}>
 
         <Modal.Header className="res">
-          Class Series Detail
-          <span className="sub f12">Please check it.</span>
+          차수세부내용
+          <span className="sub f12">차수를 확인해주세요.</span>
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-60vh">

@@ -115,11 +115,11 @@ class FirstCategoryModal extends React.Component<Props, States> {
         <div className="cell v-middle">
           <span className="text1">대표 카테고리</span>
           {/* 카테고리 선택 후 활성화 */}
-          <Button icon className="left post delete" type="button" onClick={() => handleChangeOpen(true)}>카테고리 선택</Button>
+          <Button icon className="left post delete" type="button" onClick={() => handleChangeOpen(true)}>채널선택</Button>
           <Modal className="base w560" open={open} onClose={() => handleChangeOpen(false)}>
             <Modal.Header className="res">
-              Main Category Choice
-              <span className="sub f12">Please select a category</span>
+              메인채널 선택
+              <span className="sub f12">메인채널을 선택해주세요.</span>
             </Modal.Header>
             <Modal.Content>
               <div className="channel-change">
@@ -184,7 +184,7 @@ class FirstCategoryModal extends React.Component<Props, States> {
             isSelectedCollegeAndChannel ?
               <span>{personalCube.category.college.name} &gt; {personalCube.category.channel.name}</span>
               :
-              <span className="text1">대표 카테고리를 선택해주세요.</span>
+              <span className="text1">메인채널을 선택해주세요.</span>
           }
 
         </div>

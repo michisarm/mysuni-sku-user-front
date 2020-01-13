@@ -1,7 +1,7 @@
 
 enum State {
-  WaitingForApproval= 'Waiting for approval',
-  InProgress= 'In progress',
+  WaitingForApproval= 'WaitingForApproval',
+  InProgress= 'InProgress',
   Missed= 'Missed',
   Completed= 'Completed',
   Joined= 'Joined',

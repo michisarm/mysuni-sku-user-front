@@ -296,7 +296,10 @@ class LectureCardPage extends Component<Props, State> {
       mediaType: media.mediaType,
       url,
       videoUrl,
-      learningPeriod: media.learningPeriod,
+      learningPeriod: {
+        startDate: media.learningPeriod.startDateDot,
+        endDate: media.learningPeriod.endDateDot,
+      },
     };
   }
 
@@ -305,7 +308,10 @@ class LectureCardPage extends Component<Props, State> {
     const { officeWeb } = this.props.officeWebService;
     return {
       fileBoxId: officeWeb.fileBoxId,
-      learningPeriod: officeWeb.learningPeriod,
+      learningPeriod: {
+        startDate: officeWeb.learningPeriod.startDateDot,
+        endDate: officeWeb.learningPeriod.endDateDot,
+      },
       url: officeWeb.webPageUrl,
     };
   }
