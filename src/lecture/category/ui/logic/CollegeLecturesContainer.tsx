@@ -251,16 +251,18 @@ class CollegeLecturesContainer extends Component<Props, State> {
     return (
       <CategoryLecturesWrapperView
         header={
-          <>
-            <DescriptionView
-              name={`${college.name} College`}
-              count={page!.totalCount}
-            />
-            <CardSorting
-              value={sorting}
-              onChange={this.onChangeSorting}
-            />
-          </>
+          lectures && lectures.length > 0 && (
+            <>
+              <DescriptionView
+                name={`${college.name} College`}
+                count={page!.totalCount}
+              />
+              <CardSorting
+                value={sorting}
+                onChange={this.onChangeSorting}
+              />
+            </>
+          )
         }
       >
         {lectures && lectures.length > 0 ?
