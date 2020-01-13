@@ -63,14 +63,28 @@ export default class PostService {
   async findPostsByCategoryIdAndDeleted(categoryId: string, deleted: boolean, offset: number, limit: number) {
     //
     const posts = await this.postApi.findPostsByCategoryIdAndDeleted(categoryId, deleted, offset, limit);
-    return runInAction(() => this.posts = posts);
+    return runInAction(() => {
+      this.posts = new OffsetElementList<PostModel>({
+        results: posts.results.map((post: PostModel) => new PostModel(post)),
+        totalCount: posts.totalCount,
+        empty: !!posts.totalCount,
+      });
+      return posts;
+    });
   }
 
   @action
   async findPostsByBoardIdAndPinned(boardId: string, offset: number, limit: number) {
     //
     const pinnedPosts = await this.postApi.findPostsByBoardIdAndPinned(boardId, offset, limit);
-    return runInAction(() => this.pinnedPosts = pinnedPosts);
+    return runInAction(() => {
+      this.pinnedPosts = new OffsetElementList<PostModel>({
+        results: pinnedPosts.results.map((post: PostModel) => new PostModel(post)),
+        totalCount: pinnedPosts.totalCount,
+        empty: !!pinnedPosts.totalCount,
+      });
+      return pinnedPosts;
+    });
   }
 
   @action
@@ -81,7 +95,7 @@ export default class PostService {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
-        empty: posts.totalCount ? true : false,
+        empty: !!posts.totalCount,
       });
       return posts;
     });
@@ -102,7 +116,7 @@ export default class PostService {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
-        empty: posts.totalCount ? true : false,
+        empty: !!posts.totalCount,
       });
       return posts;
     });
@@ -116,7 +130,7 @@ export default class PostService {
       this.faqPosts = new OffsetElementList<PostModel>({
         results: faqPosts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: faqPosts.totalCount,
-        empty: faqPosts.totalCount ? true : false,
+        empty: !!faqPosts.totalCount,
       });
       return faqPosts;
     });
@@ -130,7 +144,7 @@ export default class PostService {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
-        empty: posts.totalCount ? true : false,
+        empty: !!posts.totalCount,
       });
       return posts;
     });
@@ -144,7 +158,7 @@ export default class PostService {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
-        empty: posts.totalCount ? true : false,
+        empty: !!posts.totalCount,
       });
       return posts;
     });
@@ -158,7 +172,7 @@ export default class PostService {
       this.posts = new OffsetElementList<PostModel>({
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
-        empty: posts.totalCount ? true : false,
+        empty: !!posts.totalCount,
       });
       return posts;
     });

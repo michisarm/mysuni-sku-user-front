@@ -29,6 +29,7 @@ class NoticeTabContainer extends React.Component<Props> {
     const result = posts.results;
     const pinnedResult = pinnedPosts.results;
 
+    console.log(commentCountMap);
     return (
       <Segment className="full">
         <div className="support-list-wrap">

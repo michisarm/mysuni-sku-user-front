@@ -28,6 +28,7 @@ interface States {
   disabled: boolean,
   answered: any,
   end: number,
+  feedbackIds: string[]
 }
 
 @inject(mobxHelper.injectFrom(
@@ -49,6 +50,7 @@ export class BookMainContainer extends React.Component<Props, States> {
       disabled: false,
       answered: '',
       end: 0,
+      feedbackIds: [],
     };
   }
 
@@ -118,18 +120,18 @@ export class BookMainContainer extends React.Component<Props, States> {
     }
   }
 
-  findNoticePinnedPosts() {
+  async findNoticePinnedPosts() {
     const { postService } = this.props;
 
     if (postService) {
-      Promise.resolve()
-        .then(() => postService.clearPosts())
-        .then(() => postService.findPostsByBoardIdAndPinned('NTC', 0, 5))
-        .then(() => {
-          let count = postService.pinnedPosts.totalCount;
-          if (count > 5) count = 5;
-          this.findNoticePosts(10 - count);
-        });
+      postService.clearPosts();
+      const pinnedPosts = await postService.findPostsByBoardIdAndPinned('NTC', 0, 5);
+      const feedbackIds = pinnedPosts.results.map((post: PostModel) => post.commentFeedbackId);
+      this.setState({ feedbackIds }, () => {
+        let count = pinnedPosts.totalCount;
+        if (count > 5) count = 5;
+        this.findNoticePosts(10 - count);
+      });
     }
   }
 
@@ -141,7 +143,8 @@ export class BookMainContainer extends React.Component<Props, States> {
       const posts = await postService.findNoticePosts(0, end);
       if (end >= posts.totalCount) this.setState({ disabled: true });
       else this.setState({ end: end + 10, disabled: false });
-      const feedbackIds = posts.results.map((post: PostModel) => post.commentFeedbackId);
+      let feedbackIds = [ ...this.state.feedbackIds ];
+      feedbackIds = feedbackIds.concat(posts.results.map((post: PostModel) => post.commentFeedbackId));
       commentService!.countByFeedbackIds(feedbackIds);
     }
   }

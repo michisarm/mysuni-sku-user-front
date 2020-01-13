@@ -2,27 +2,28 @@ import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { ReviewService } from '@nara.drama/feedback';
+import { Menu, Segment, Sticky } from 'semantic-ui-react';
 
 import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { Menu, Segment, Sticky, Button, Icon } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import { ReviewService } from '@nara.drama/feedback';
+import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college';
+import { LectureCardService, LectureModel, LectureService } from 'lecture';
+import { SeeMoreButton } from 'lecture/shared';
+
 import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
 import SelectType from '../../../../shared/model/SelectType';
 import CreateListView from '../view/CreateListView';
 import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
 import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
-import { LectureCardService, LectureModel, LectureService } from '../../../../lecture';
-import { SeeMoreButton } from '../../../../lecture/shared';
 import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
 import routePaths from '../../../routePaths';
-import { SkProfileModel, SkProfileService } from '../../../../profile';
 import LineHeaderContainer from '../../../../myTraining/ui/logic/LineHeaderContainer';
-import { ChannelModel } from '../../../../college';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
