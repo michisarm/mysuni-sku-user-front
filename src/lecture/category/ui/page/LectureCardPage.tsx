@@ -299,7 +299,10 @@ class LectureCardPage extends Component<Props, State> {
     //
     const { board } = this.props.boardService;
     return {
-      learningPeriod: board.learningPeriod,
+      learningPeriod: {
+        startDate: board.learningPeriod.startDateDot,
+        endDate: board.learningPeriod.startDateDot,
+      },
     };
   }
 
