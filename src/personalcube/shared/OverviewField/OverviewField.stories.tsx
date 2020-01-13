@@ -45,7 +45,7 @@ export const BasicWithHeader = () =>
       <OverviewField.Wrapper>
         <OverviewField.List
           className="sub-category fn-parents open"
-          header={<OverviewField.Title icon="category" text="Sub Category" />}
+          header={<OverviewField.Title icon="category" text="서브채널" />}
         >
           <OverviewField.Item
             title="AI"
@@ -67,12 +67,12 @@ export const IconFields = () =>
         <OverviewField.List icon className="period-area">
           <OverviewField.Item
             titleIcon="period"
-            title="Registration Period"
+            title="수강신청기간"
             content="2020.01.01 ~ 2020.02.01"
           />
           <OverviewField.Item
             titleIcon="cancellation"
-            title="Cancellation Period"
+            title="취소가능기간"
             content={(
               <>
                 2020.01.01 ~ 2020.02.01
@@ -111,7 +111,7 @@ export const Table = () => {
           header={(
             <OverviewField.Table
               titleIcon="series"
-              titleText="Class Series"
+              titleText="차수정보"
               classrooms={classrooms}
             />
           )}

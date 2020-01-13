@@ -1,13 +1,13 @@
 
 enum ActionType {
-  Enrollment= 'Enrollment',
-  Report= 'Report',
-  ChangeSeries= 'Change Series',
-  LearningStart= '학습하기',
-  Download= 'Download',
-  Play= '학습하기',
-  MarkComplete= 'Mark Complete',
-  Join= 'Join',
+  Enrollment = '신청하기',
+  Report = '과제제출',
+  ChangeSeries = '차수변경',
+  LearningStart = '학습하기',
+  Download = '다운로드',
+  Play = '학습하기',
+  MarkComplete = '학습완료',
+  Join = '가입하기',
 }
 
 export default ActionType;

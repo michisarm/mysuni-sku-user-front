@@ -45,7 +45,7 @@ enum ContentType {
 class MyLearningContentContainer extends Component<Props, State> {
   //
   tabs = [
-    { name: ContentType.Required, text: '권장과정' },
+    { name: ContentType.Required, text: '필수과정' },
     { name: ContentType.InMyList, text: '관심목록' },
     { name: ContentType.InProgress, text: '학습중' },
     { name: ContentType.Enrolled, text: '학습예정' },

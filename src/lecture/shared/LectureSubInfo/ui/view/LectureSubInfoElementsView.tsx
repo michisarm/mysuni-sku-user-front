@@ -7,7 +7,7 @@ import { dateTimeHelper, CubeType } from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
 import Operator from '../../model/Operator';
-import { State, Level }  from '../../model';
+import { State, StateNameType, Level }  from '../../model';
 
 
 interface RequiredProp {
@@ -34,13 +34,14 @@ export const Buttons = ({ mainAction, subActions, onCancel }: ButtonsProp) => {
   return (
     <div className="btn-area">
       { mainAction && <Button className="fix bg" onClick={mainAction.onAction}>{mainAction.type}</Button> }
+
       {
-        subActions && subActions.length
-        && subActions.map(subAction => (
-          <Button className="fix bg blue" onClick={subAction.onAction} key={subAction.type}>{subAction.type}</Button>
-        )) || null
+        subActions && subActions.length > 0
+          && subActions.map(subAction => (
+            <Button key={subAction.type} className="fix bg blue" onClick={subAction.onAction}>{subAction.type}</Button>
+          ))
       }
-      { onCancel && <Button className="fix line" onClick={onCancel}>Cancel</Button> }
+      { onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button> }
     </div>
   );
 };
@@ -54,7 +55,7 @@ export const StateView = ({ state }: StateProp) => {
   if (!state) return null;
   return (
     <div className="state-txt">
-      <div>{state}</div>
+      <div>{StateNameType[State[state]]}</div>
     </div>
   );
 };
@@ -255,7 +256,7 @@ export const Survey = ({ onSurvey }: SurveyProp) => {
   if (!onSurvey) return null;
   return (
     <Button className="surv" onClick={onSurvey}>
-      <span>Join Survey</span>
+      <span>설문하기</span>
       <Icon className="ar-survay" />
     </Button>
   );

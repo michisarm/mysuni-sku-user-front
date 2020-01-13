@@ -31,13 +31,13 @@ class SubCategoryContainer extends Component<Props> {
                   channels={channels}
                   onSubCategory={onSubCategory}
                   colleges={colleges}
-                  trigger={<Button icon className="left post delete">카테고리 선택</Button>}
+                  trigger={<Button icon className="left post delete">채널선택</Button>}
                 />
               )
             }
           </div>
           <div className="cell v-middle">
-            <span className="text1">서브 카테고리를 선택해주세요.</span>
+            <span className="text1">서브채널을 선택해주세요.</span>
             {
               channels && channels.length
               && channels.map((channel) => (

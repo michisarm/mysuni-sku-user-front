@@ -78,10 +78,10 @@ class CourseLectureContainer extends Component<Props> {
               </Field>
             )}
             <Field>
-              <SubField icon="date" text={`Creation date: ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
+              <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
                 {lectureView.learningPeriod && (
                   <span className="ml17">
-                    Study start date, end date :
+                    학습기간 :
                     {lectureView.learningPeriod && lectureView.learningPeriod.startDate}
                      ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
                   </span>

@@ -170,7 +170,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
         const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
         if (channelListMap.size === 0) {
           selectedChannels.push(
-            <span key="select-sub-category" className="text1">서브 카테고리를 선택해주세요.</span>
+            <span key="select-sub-category" className="text1">서브채널을 선택해주세요.</span>
           );
         } else {
           channelListMap.forEach((value, key, map) => {
@@ -213,12 +213,12 @@ class SecondCategoryModal extends React.Component<Props, States> {
           <div className="cell v-middle">
             <span className="text1">서브 카테고리</span>
 
-            <Button icon className="left post delete" type = "button" onClick={() => handleChangeOpen(true)}>카테고리 선택</Button>
+            <Button icon className="left post delete" type = "button" onClick={() => handleChangeOpen(true)}>채널선택</Button>
 
             <Modal className="base w1000" open={open} onClose={() => handleChangeOpen(false)}>
               <Modal.Header className="res">
-              Sub Category Choice
-                <span className="sub f12">Please select a category</span>
+                서브채널 선택
+                <span className="sub f12">서브채널을 선택해주세요.</span>
               </Modal.Header>
               <Modal.Content>
                 <div className="channel-change">

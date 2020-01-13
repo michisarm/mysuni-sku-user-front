@@ -49,13 +49,13 @@ class TitleCell extends Component<Props> {
               { creationTime ?
                 <>
                   <Icon className="date" />
-                  <span>Creation date : {moment(creationTime).format('YYYY.MM.DD')}</span>
+                  <span>등록일 : {moment(creationTime).format('YYYY.MM.DD')}</span>
                 </>
                 : null
               }
               {
                 learningPeriod && (
-                  <span className="ml17">Study start date, end date : {learningPeriod.startDate} ~ {learningPeriod.endDate}</span>
+                  <span className="ml17">학습기간 : {learningPeriod.startDate} ~ {learningPeriod.endDate}</span>
                 ) || null
               }
             </Label>

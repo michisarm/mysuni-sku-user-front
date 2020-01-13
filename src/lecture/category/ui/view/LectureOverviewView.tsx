@@ -129,7 +129,7 @@ class LectureOverviewView extends Component<Props, State> {
           header={(
             <OverviewField.Title
               icon="category"
-              text="Sub Category"
+              text="서브채널"
             />
           )}
         >
@@ -149,18 +149,18 @@ class LectureOverviewView extends Component<Props, State> {
           <OverviewField.List icon className="period-area">
             <OverviewField.Item
               titleIcon="period"
-              title="Registration Period"
+              title="수강신청기간"
               content={this.getPeriodDate(typeViewObject.applyingPeriod)}
             />
             <OverviewField.Item
               titleIcon="cancellation"
-              title="Cancellation Period"
+              title="취소가능기간"
               content={(
                 <>
                   {this.getPeriodDate(typeViewObject.cancellablePeriod)}
                   { typeViewObject.cancellationPenalty && (
                     <div className="info">
-                      Cancellation penalty : {typeViewObject.cancellationPenalty}
+                      No Show Penalty : {typeViewObject.cancellationPenalty}
                     </div>
                   )}
                 </>
@@ -177,7 +177,7 @@ class LectureOverviewView extends Component<Props, State> {
               header={ typeViewObject.classrooms ? (
                 <OverviewField.Table
                   titleIcon="series"
-                  titleText="Class Series"
+                  titleText="차수정보"
                   classrooms={typeViewObject.classrooms}
                 />
               ) : null }
@@ -186,7 +186,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.goal && (
                   <OverviewField.Item
                     titleIcon="goal"
-                    title="Goal"
+                    title="학습목표"
                     content={viewObject.goal}
                   />
                 ) || null
@@ -195,7 +195,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.applicants && (
                   <OverviewField.Item
                     titleIcon="target"
-                    title="Target"
+                    title="대상"
                     content={viewObject.applicants}
                   />
                 ) || null
@@ -204,7 +204,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.organizerName && (
                   <OverviewField.Item
                     titleIcon="host"
-                    title="Host"
+                    title="교육기관 출처"
                     content={viewObject.organizerName}
                   />
                 )
@@ -218,16 +218,16 @@ class LectureOverviewView extends Component<Props, State> {
             <OverviewField.List className="info-box2">
               { cubeType === CubeType.ClassRoomLecture && (
                 <OverviewField.Item
-                  title="Place"
+                  title="장소"
                   content={typeViewObject.location}
                 />
               )}
               <OverviewField.Item
-                title="Requirements"
+                title="이수조건"
                 content={viewObject.completionTerms}
               />
               <OverviewField.Item
-                title="Other Guides"
+                title="기타안내"
                 className="quill-des"
                 contentHtml={viewObject.guide}
               />
@@ -237,7 +237,7 @@ class LectureOverviewView extends Component<Props, State> {
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
-            title="Tag"
+            title="태그"
             content={viewObject.tags.map((tag: string, index: number) => (
               tag && <Button key={`tag-${index}`} className="tag">{tag}</Button>
             ))}
