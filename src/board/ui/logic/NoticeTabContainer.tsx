@@ -9,7 +9,6 @@ import { PostService } from '../../../board';
 interface Props {
   postService?: PostService
   commentCountMap: Map<string, number>
-  disabled: boolean
   end: number
   findNoticePosts: (end: number) => void
   routeToNoticeDetail: (postId: string) => void
@@ -25,11 +24,11 @@ class NoticeTabContainer extends React.Component<Props> {
   render() {
     //
     const { posts, pinnedPosts } = this.props.postService || {} as PostService;
-    const { findNoticePosts, commentCountMap, disabled, end, routeToNoticeDetail } = this.props;
+    const { findNoticePosts, commentCountMap, end, routeToNoticeDetail } = this.props;
     const result = posts.results;
+    const totalCount = posts.totalCount;
     const pinnedResult = pinnedPosts.results;
 
-    console.log(commentCountMap);
     return (
       <Segment className="full">
         <div className="support-list-wrap">
@@ -146,11 +145,10 @@ class NoticeTabContainer extends React.Component<Props> {
             )
           }
           {
-            ( pinnedResult && pinnedResult.length || result && result.length ) && (
+            (( pinnedResult && pinnedResult.length || result && result.length ) && result.length < totalCount) && (
               <div className="more-comments" onClick={() => findNoticePosts(end)}>
                 <Button icon
                   className="left moreview"
-                  disabled={disabled}
                 >
                   <Icon className="moreview" />list more
                 </Button>

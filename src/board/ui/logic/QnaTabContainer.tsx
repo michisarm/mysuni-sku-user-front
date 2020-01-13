@@ -11,7 +11,6 @@ interface Props {
   routeToQnaRegist: () => void
   //findQnaPosts: (answered: any, categoryId: string, end: number) => void
   findQnaPosts: (answered: any, end: number) => void
-  disabled: boolean
   end: number
   answered: any
   routeToQnaDetail: (postId: string) => void
@@ -32,7 +31,6 @@ class QnaTabContainer extends React.Component<Props> {
       routeToQnaRegist,
       findQnaPosts,
       end,
-      disabled,
       answered,
       routeToQnaDetail,
       routeToAnsweredDetail,
@@ -168,11 +166,10 @@ class QnaTabContainer extends React.Component<Props> {
             )
           }
           {
-            posts.results && posts.results.length > 0 && (
+            posts.results && posts.results.length && posts.results.length < posts.totalCount && (
               <div className="more-comments" onClick={() => findQnaPosts(answered, end)}>
                 <Button icon
                   className="left moreview"
-                  disabled={disabled}
                 >
                   <Icon className="moreview" />list more
                 </Button>

@@ -25,7 +25,6 @@ interface States {
   faqCategoryId: string,
   faqTabIndex: number,
   accordIndex: number,
-  disabled: boolean,
   answered: any,
   end: number,
   feedbackIds: string[]
@@ -47,7 +46,6 @@ export class BookMainContainer extends React.Component<Props, States> {
       faqCategoryId: '',
       faqTabIndex: 0,
       accordIndex: 0,
-      disabled: false,
       answered: '',
       end: 0,
       feedbackIds: [],
@@ -137,12 +135,10 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   async findNoticePosts(end: number) {
     const { postService, commentService } = this.props;
-    this.setState({ disabled: true });
 
     if (postService) {
       const posts = await postService.findNoticePosts(0, end);
-      if (end >= posts.totalCount) this.setState({ disabled: true });
-      else this.setState({ end: end + 10, disabled: false });
+      this.setState({ end: end + 10 });
       let feedbackIds = [ ...this.state.feedbackIds ];
       feedbackIds = feedbackIds.concat(posts.results.map((post: PostModel) => post.commentFeedbackId));
       commentService!.countByFeedbackIds(feedbackIds);
@@ -160,22 +156,19 @@ export class BookMainContainer extends React.Component<Props, States> {
           const { posts } = this.props.postService || {} as PostService;
           const totalCount = posts.totalCount;
 
-          if (end >= totalCount) this.setState({ disabled: true });
-          else if (end < totalCount) this.setState({ end: end + 10, disabled: false });
+          if (end < totalCount) this.setState({ end: end + 10});
         });
     }
   }
 
   findQnaPosts(answered: any, end:number) {
     const { postService } = this.props;
-    this.setState({ answered, disabled: true });
     if (postService ) {
 
       if (answered === 'all' || !String(answered).length) {
         postService.findQnaPosts(0, end)
           .then(() => {
-            if (end >= postService.posts.totalCount) this.setState({ disabled: true });
-            else this.setState({ end: end + 10, disabled: false });
+            this.setState({ answered, end: end + 10});
           });
       } else {
         Promise.resolve()
@@ -183,8 +176,7 @@ export class BookMainContainer extends React.Component<Props, States> {
           .then(() => {
             postService.findQnaPostsByAnswered( answered, 0, end)
               .then(() => {
-                if (end >= postService.posts.totalCount) this.setState({ disabled: true });
-                else this.setState({ end: end + 10, disabled: false });
+                this.setState({ answered, end: end + 10});
               });
           });
       }
@@ -197,7 +189,6 @@ export class BookMainContainer extends React.Component<Props, States> {
     if (postService) {
       this.setState({
         faqTabIndex: index,
-        disabled: false,
         faqCategoryId: value,
       });
     }
@@ -231,7 +222,7 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   render() {
     //
-    const { activeItem, faqCategoryId, faqTabIndex, accordIndex, disabled, end, answered } = this.state;
+    const { activeItem, faqCategoryId, faqTabIndex, accordIndex, end, answered } = this.state;
     const { postService, categoryService, commentService } = this.props;
     const { commentCountMap } = commentService!;
 
@@ -294,7 +285,6 @@ export class BookMainContainer extends React.Component<Props, States> {
                 commentCountMap={commentCountMap}
                 findNoticePosts={this.findNoticePosts}
                 routeToNoticeDetail ={this.routeToNoticeDetail}
-                disabled={disabled}
                 end={end}
               />
               : ''
@@ -305,7 +295,6 @@ export class BookMainContainer extends React.Component<Props, States> {
                 faqCategoryId={faqCategoryId}
                 handleFaqCategoryTabChange={this.handleFaqCategoryTabChange}
                 findFaqPosts={this.findFaqPosts}
-                disabled={disabled}
                 faqTabIndex={faqTabIndex}
                 accordIndex={accordIndex}
                 end={end}
@@ -319,7 +308,6 @@ export class BookMainContainer extends React.Component<Props, States> {
                 routeToQnaRegist={this.routeToQnaRegist}
                 findQnaPosts={this.findQnaPosts}
                 categoryService={categoryService}
-                disabled={disabled}
                 end={end}
                 answered={answered}
                 routeToQnaDetail={this.routeToQnaDetail}

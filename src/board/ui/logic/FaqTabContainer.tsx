@@ -14,7 +14,6 @@ interface Props {
   handleFaqCategoryTabChange: (e: any, { index, value }: any) => void
   faqTabIndex: number
   accordIndex: number
-  disabled: boolean
   end: number
   routeToFaqDetail:(postId: string) => void
 }
@@ -30,9 +29,10 @@ class FaqTabContainer extends React.Component<Props> {
   render() {
     //
     const { categorys } = this.props.categoryService || {} as CategoryService;
-    const { handleFaqCategoryTabChange, findFaqPosts, faqTabIndex, disabled, end, routeToFaqDetail } = this.props;
+    const { handleFaqCategoryTabChange, findFaqPosts, faqTabIndex, end, routeToFaqDetail } = this.props;
     const { posts } = this.props.postService || {} as PostService;
     const result = posts.results;
+    const totalCount = posts.totalCount;
 
     return (
       <Segment className="full">
@@ -93,11 +93,10 @@ class FaqTabContainer extends React.Component<Props> {
             ) || ''
           }
           {
-            result && result.length > 0 && (
+            result && result.length && result.length < totalCount && (
               <div className="more-comments" onClick={() => findFaqPosts(categorys[faqTabIndex].categoryId, end)}>
                 <Button icon
                   className="left moreview"
-                  disabled={disabled}
                 >
                   <Icon className="moreview" />list more
                 </Button>
