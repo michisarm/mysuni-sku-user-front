@@ -84,7 +84,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
     if (this.proposalState === ProposalState.Approved) {
       if (this.learningState === LearningState.Progress) return '학습중';
       if (this.learningState === LearningState.Passed) return '학습완료';
-      if (this.learningState === LearningState.Missed) return '미이수ß';
+      if (this.learningState === LearningState.Missed) return '미이수';
       if (this.cubeType === CubeType.Community) return '가입완료';
       else return '수강확정 과정';
     }
