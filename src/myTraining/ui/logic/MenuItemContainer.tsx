@@ -30,8 +30,8 @@ interface Props extends RouteComponentProps<{ tab: string }> {
 }
 
 enum Type {
-  CompletedList= 'CompletedList',
-  EarnedStampList= 'EarnedStampList',
+  CompletedList = 'CompletedList',
+  EarnedStampList = 'EarnedStampList',
 }
 
 @inject(mobxHelper.injectFrom(
@@ -48,13 +48,10 @@ class MenuItemContainer extends Component<Props, States> {
   PAGE_KEY = 'my-page';
   PAGE_SIZE = 8;
 
-  constructor(props : Props) {
-    super(props);
-    this.state = {
-      activeItem: 'CompletedList',
-      channels: [],
-    };
-  }
+  state = {
+    activeItem: Type.CompletedList,
+    channels: [],
+  };
 
   componentDidMount(): void {
     //
@@ -64,7 +61,6 @@ class MenuItemContainer extends Component<Props, States> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-
     const currentTab = this.props.match.params.tab;
 
     if (prevProps.match.params.tab !== this.props.match.params.tab) {
@@ -73,7 +69,9 @@ class MenuItemContainer extends Component<Props, States> {
   }
 
   changeItem(tab: string) {
+    //
     const { pageService, myTrainingService } = this.props;
+
     this.setState({
       activeItem: tab,
     }, () => {
@@ -139,7 +137,7 @@ class MenuItemContainer extends Component<Props, States> {
   renderList() {
     const { myTrainingService, pageService } = this.props;
     const { myTrainings } =  myTrainingService!;
-    const { channels } = this.state;
+    const { activeItem, channels } = this.state;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     return (
@@ -160,7 +158,13 @@ class MenuItemContainer extends Component<Props, States> {
                 )}
               </Lecture.Group>
             ) || (
-              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+              <NoSuchContentPanel
+                message={activeItem === Type.CompletedList ?
+                  <>학습완료에 해당하는<br />학습 과정이 없습니다.</>
+                  :
+                  '획득한 스탬프가 없습니다.'
+                }
+              />
             )
           }
 

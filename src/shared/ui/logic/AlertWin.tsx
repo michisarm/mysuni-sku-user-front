@@ -33,7 +33,7 @@ class AlertWin extends React.Component<Props> {
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/all/alert.png`} />
+                <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/alert.png`} />
                 {
                   title ?
                     <div className="title">{title}</div>
