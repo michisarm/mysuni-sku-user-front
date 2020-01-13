@@ -10,7 +10,6 @@ import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutePaths from 'myTraining/routePaths';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
