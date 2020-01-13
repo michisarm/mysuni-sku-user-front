@@ -190,32 +190,33 @@ class LectureCardContainer extends Component<Props, State> {
 
   getSubActions() {
     const { cubeType, typeViewObject, viewObject, studentJoins } = this.props;
+    const subActions = [];
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
         if (studentJoins.length && studentJoins[0].proposalState === ProposalState.Submitted
           && typeViewObject.classrooms && typeViewObject.classrooms.length) {
-          return [{ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries }];
+          subActions.push({ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries });
         }
-        return undefined;
+        break;
       case CubeType.Audio:
       case CubeType.Video:
         if (studentJoins.length && typeViewObject.mediaType === MediaType.LinkMedia && viewObject.state !== SubState.Completed) {
-          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete }];
+          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
-        return undefined;
+        break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
         if (studentJoins.length && viewObject.state !== SubState.Completed) {
-          return [{ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete }];
+          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
-        return undefined;
+        break;
       case CubeType.Community:
-      default:
-        return undefined;
+        break;
     }
+    return subActions.length ? subActions : undefined;
   }
 
   getOnCancel() {
