@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {Label} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Label } from 'semantic-ui-react';
 
-import {ReviewService} from '@nara.drama/feedback';
-import {PostList, PostListByWriter} from '@sku/personalcube';
-import {ContentLayout, ContentMenu, CubeType, LearningState, ProposalState} from 'shared';
-import {SkProfileService} from 'profile';
-import {CollegeService} from 'college';
-import {ContentsServiceType, CubeTypeNameType, PersonalCubeService} from 'personalcube/personalcube';
-import {BoardService} from 'personalcube/board';
-import {CubeIntroService} from 'personalcube/cubeintro';
-import {ClassroomService} from 'personalcube/classroom';
-import {MediaService, MediaType} from 'personalcube/media';
-import {OfficeWebService} from 'personalcube/officeweb';
+import { ReviewService } from '@nara.drama/feedback';
+import { PostList, PostListByWriter } from '@sku/personalcube';
+import { ContentLayout, ContentMenu, CubeType, LearningState, ProposalState } from 'shared';
+import { SkProfileService } from 'profile';
+import { CollegeService } from 'college';
+import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { BoardService } from 'personalcube/board';
+import { CubeIntroService } from 'personalcube/cubeintro';
+import { ClassroomService } from 'personalcube/classroom';
+import { MediaService, MediaType } from 'personalcube/media';
+import { OfficeWebService } from 'personalcube/officeweb';
 import {
   LectureCardService,
   LectureServiceType,
@@ -23,14 +23,14 @@ import {
   StudentCountRdoModel,
   StudentService,
 } from 'lecture';
-import {CourseSetModel, LearningCardService} from 'course';
-import {InMyLectureCdoModel, InMyLectureService} from 'myTraining';
+import { CourseSetModel, LearningCardService } from 'course';
+import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import routePaths from '../../../routePaths';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
-import {State as SubState} from '../../../shared/LectureSubInfo';
+import { State as SubState } from '../../../shared/LectureSubInfo';
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
   skProfileService: SkProfileService,
