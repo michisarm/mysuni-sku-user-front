@@ -8,6 +8,7 @@ import { ChannelModel, CollegeService } from 'college';
 import { LectureService, RecommendLectureRdo } from 'lecture';
 import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesContainer from './ChannelLecturesContainer';
+import { NoSuchContentPanel } from '../../../../shared';
 
 
 interface Props {
@@ -90,18 +91,20 @@ class ChannelsLecturesContainer extends Component<Props, State> {
       >
         <div className="recommend-area">
           {
-            recommendLectures && recommendLectures.length
-            && recommendLectures.map((lecture: RecommendLectureRdo, index: number) => {
-              if (!channelIds.includes(lecture.channel.id)) return null;
-              return (
-                <ChannelLecturesContainer
-                  channel={new ChannelModel(lecture.channel)}
-                  lectures={lecture.lectures}
-                  onViewAll={onViewAll}
-                  key={`channel_cont_${index}`}
-                />
-              );
-            }) || null
+            (!recommendLectures || recommendLectures.length < 1) ?
+              <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
+              :
+              recommendLectures.map((lecture: RecommendLectureRdo, index: number) => {
+                if (!channelIds.includes(lecture.channel.id)) return null;
+                return (
+                  <ChannelLecturesContainer
+                    channel={new ChannelModel(lecture.channel)}
+                    lectures={lecture.lectures}
+                    onViewAll={onViewAll}
+                    key={`channel_cont_${index}`}
+                  />
+                );
+              })
           }
         </div>
       </ChannelLecturesContentWrapperContainer>

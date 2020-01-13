@@ -74,9 +74,8 @@ class TitleContainer extends Component<Props, States> {
 
     return (
       <div className="progress-info-wrap">
-        <ProfileView skProfile={skProfile}
-          onSignOut={this.onSignOut}
-          onChangePhoto={this.onChangePhoto}
+        <ProfileView
+          skProfile={skProfile}
         />
         <LectureTotalTimeView
           year={year}

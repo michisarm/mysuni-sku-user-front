@@ -133,7 +133,7 @@ class SiteMapModalContainer extends Component<Props, State> {
 
         return {
           ...item,
-          path: lectureRoutePaths.collegeLectures(college && college.collegeId || ''),
+          path: college && lectureRoutePaths.collegeLectures(college.collegeId),
           count: college && college.collegeCount || 0,
         };
       }),

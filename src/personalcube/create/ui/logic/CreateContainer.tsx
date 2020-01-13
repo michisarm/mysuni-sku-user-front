@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -9,7 +10,6 @@ import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutePaths from 'myTraining/routePaths';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
@@ -115,10 +115,6 @@ class CreateContainer extends React.Component<Props, States> {
 
   routeToCreateDetail() {
     this.props.history.push(routePaths.createNew());
-  }
-
-  routeToMyPage() {
-    this.props.history.push(myTrainingRoutePaths.myPage());
   }
 
   handleClickCubeRow(personalCubeId: string) {
@@ -356,7 +352,6 @@ class CreateContainer extends React.Component<Props, States> {
         <CreateProfileView
           routeToCreateDetail={this.routeToCreateDetail}
           member={member}
-          routeToMyPage={this.routeToMyPage}
         />
         <div>
           <Sticky className="tab-menu offset0">
