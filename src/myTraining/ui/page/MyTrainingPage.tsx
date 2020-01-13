@@ -334,7 +334,6 @@ class MyTrainingPage extends Component<Props, State> {
               name={member.name}
               company={member.company}
               department={member.department}
-              imageEditable={false}
               myPageActive
             />
           </ContentHeader.Cell>

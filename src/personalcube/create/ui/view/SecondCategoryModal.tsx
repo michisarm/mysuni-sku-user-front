@@ -165,11 +165,12 @@ class SecondCategoryModal extends React.Component<Props, States> {
       // const { channelListMap, selectedCollegeState, activeIndex } = this.state;
       const { channelListMap, activeIndex } = this.state;
       const selectedChannels: any = [];
+
       if (personalCube && personalCube.subCategories) {
         const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
         if (channelListMap.size === 0) {
           selectedChannels.push(
-            <span className="text1">서브 카테고리를 선택해주세요.</span>
+            <span key="select-sub-category" className="text1">서브 카테고리를 선택해주세요.</span>
           );
         } else {
           channelListMap.forEach((value, key, map) => {
@@ -184,6 +185,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
           });
         }
       }
+
       const selectedChannelsInModal: any = [];
       if (personalCube && personalCube.subCategories) {
         const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
