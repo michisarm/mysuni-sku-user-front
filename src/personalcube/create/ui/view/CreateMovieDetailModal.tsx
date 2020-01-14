@@ -50,7 +50,7 @@ class CreateMovieDetailModal extends React.Component<Props> {
                   <div className="row">
                     <div className="cell th"><span className="dot">Panopto 설치 확인</span></div>
                     <div className="cell">
-                      <span className="text1">Panopto가 열리지 않은 경우 아래 최신 버전의 Panoto를 다운로드하여 설치여부를 확인하십시오.</span>
+                      <span className="text1">Panopto가 열리지 않은 경우 아래 최신 버전의 Panopto를 다운로드하여 설치여부를 확인하십시오.</span>
                       <span className="text5">
                         <Button icon className="left icon-big-line2" onClick={this.handleClick}>
                           <Icon className="open" /><span>Panopto 열기</span>
