@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
-import { ImageBox } from '@nara.drama/depot';
+import { ImageBox, PatronType } from '@nara.drama/depot';
 import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
@@ -215,6 +215,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                       defaultSelectId={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl || ''}
                       customSelector={(selectedId: string, imageId: string) => (<Radio checked={selectedId === imageId} />)}
                       onSelect={this.handleSKIconSelect}
+                      vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
+                      patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
                     /> : null
                 }
                 </div>
