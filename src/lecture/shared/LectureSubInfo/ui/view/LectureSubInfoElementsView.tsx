@@ -18,7 +18,7 @@ export const Required = ({ required }: RequiredProp) => {
   //
   if (!required) return null;
   return (
-    <Label className="ribbon2">Required</Label>
+    <Label className="ribbon2">필수과정</Label>
   );
 };
 
