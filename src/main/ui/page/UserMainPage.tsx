@@ -11,7 +11,7 @@ import MyLearningSummary from '../../sub/MyLearningSummary';
 import MyLearningContent from '../../sub/MyLearningContent';
 // import Banner from '../../sub/Banner';
 import RecommendChannels from '../../sub/RecommendChannels';
-// import TutorialModal from '../../sub/TutorialModal';
+import WelcomeAndTutorialModal from '../../sub/WelcomAndTutorialModal';
 
 
 interface Props extends RouteComponentProps {
@@ -32,7 +32,7 @@ class UserMainPage extends Component<Props> {
           <MyLearningContent />
           {/*<Banner />*/}
           <RecommendChannels />
-          {/*<TutorialModal />*/}
+          <WelcomeAndTutorialModal />
         </div>
       </ContentLayout>
     );
