@@ -36,11 +36,23 @@ class CategoryMenuContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  async componentDidMount() {
+  // componentDidMount() {
+  //   //
+  //   this.findCollegeLectureCount();
+  // }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
+    //
+    if (prevState.categoryOpen !== this.state.categoryOpen && this.state.categoryOpen) {
+      this.findCollegeLectureCount();
+      this.findStudySummary();
+    }
+  }
+
+  async findCollegeLectureCount() {
     //
     const { collegeLectureCountService } = this.props;
 
-    this.findStudySummary();
     const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
 
     if (collegeLectureCounts.length > 0) {

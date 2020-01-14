@@ -14,7 +14,6 @@ import SecondCategoryModal from '../view/SecondCategoryModal';
 interface Props {
   personalCubeId: string
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
-  //changePersonalCubeProps: (name: string, value: string | {}) => void
   collegeService?: CollegeService
   personalCube: PersonalCubeModel
 }
@@ -52,16 +51,15 @@ class CreateBasicInfoContainer extends React.Component<Props, States> {
   findAllColleges() {
     //
     const { collegeService } = this.props;
-    if (collegeService) collegeService.findAllColleges();
+    collegeService!.findAllColleges();
   }
 
   clearColleges() {
     //
     const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.clearMainCollege();
-      collegeService.clearSubCollege();
-    }
+
+    collegeService!.clearMainCollege();
+    collegeService!.clearSubCollege();
   }
 
   onChangeFirstCategoryModalOpen(firstCategoryModalOpen: boolean) {

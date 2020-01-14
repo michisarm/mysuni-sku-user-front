@@ -1,5 +1,7 @@
+
 import { decorate, observable } from 'mobx';
 import { getCookie } from '@nara.platform/accent';
+import { ReviewSummaryModel } from '@nara.drama/feedback';
 import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
@@ -31,6 +33,8 @@ class LectureModel extends DramaEntityObservableModel {
   studentCount: number = 0;
   time: number = 0;
 
+  reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
+
 
   // UI only
   required: boolean = false;
@@ -53,6 +57,8 @@ class LectureModel extends DramaEntityObservableModel {
         && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 
       this.cubeTypeName = LectureModel.getCubeTypeName(lecture.cubeType, this.serviceType);
+
+      this.reviewSummary = lecture.reviewSummary;
     }
   }
 
@@ -105,6 +111,7 @@ decorate(LectureModel, {
   stampCount: observable,
   studentCount: observable,
   time: observable,
+  reviewSummary: observable,
   required: observable,
   cubeTypeName: observable,
 });

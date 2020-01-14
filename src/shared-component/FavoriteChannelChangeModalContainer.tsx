@@ -8,19 +8,19 @@ import { CollegeModel, ChannelModel, CollegeService } from 'college';
 
 
 interface Props {
-  skProfileService? : SkProfileService
-  collegeService? : CollegeService
+  skProfileService?: SkProfileService
+  collegeService?: CollegeService
 
   trigger?: React.ReactNode
-  favorites : ChannelModel[]
-  onConfirmCallback:() => void
+  favorites: ChannelModel[]
+  onConfirmCallback: () => void
 }
 
-interface State{
+interface State {
   open: boolean
-  searchKey : string
+  searchKey: string
   selectedCollegeIds: string[]
-  favoriteChannels : ChannelModel [];
+  favoriteChannels: ChannelModel [];
 }
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
@@ -30,18 +30,17 @@ const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   //
-  state={
+  state = {
     open: false,
     searchKey: '',
     selectedCollegeIds: [],
     favoriteChannels: [],
   };
 
-  componentDidMount(): void {
-    const { collegeService } = this.props;
-
-    if (collegeService) {
-      collegeService.findAllColleges();
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    //
+    if (prevState.open !== this.state.open && this.state.open) {
+      this.props.collegeService!.findAllColleges();
     }
   }
 
@@ -62,24 +61,29 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onConfirm() {
     //favoriteChannel 변경사항 저장하기
-    const { skProfileService, collegeService, onConfirmCallback } = this.props;
-    if (skProfileService && collegeService) {
-      skProfileService.setStudySummaryProp('favoriteChannels', { idNames: this.state.favoriteChannels });
-      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary))
-        .then(() => {
-          if (onConfirmCallback && typeof onConfirmCallback === 'function') onConfirmCallback();
-          this.onCloseModal();
-        });
-    }
+    const { skProfileService, onConfirmCallback } = this.props;
+    const { favoriteChannels } = this.state;
+
+    skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: favoriteChannels });
+    skProfileService!.modifyStudySummary(StudySummary.asNameValues(skProfileService!.studySummary))
+      .then(() => {
+        if (typeof onConfirmCallback === 'function') {
+          onConfirmCallback();
+        }
+        this.onCloseModal();
+      });
   }
 
   onSelectChannel(channel: ChannelModel) {
     //
     let { favoriteChannels }: State = this.state;
+
     if (favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
       favoriteChannels = favoriteChannels.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
-    else favoriteChannels.push(new ChannelModel(channel));
+    else {
+      favoriteChannels.push(new ChannelModel(channel));
+    }
     this.setState({ favoriteChannels });
   }
 
@@ -92,11 +96,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onSearch() {
     const { collegeService } = this.props;
-    if (collegeService) {
-      collegeService.findChannelByName(this.state.searchKey);
-      //화면기획 불명확
-    }
-    //
+
+    collegeService!.findChannelByName(this.state.searchKey);
   }
 
   onReset() {
@@ -106,20 +107,22 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   handleClick(college: CollegeModel) {
     //
     let { selectedCollegeIds }: State = this.state;
+
     if (selectedCollegeIds.includes(college.collegeId)) {
       selectedCollegeIds = selectedCollegeIds.filter(collegeId => collegeId !== college.collegeId);
     }
-    else selectedCollegeIds.push(college.collegeId);
+    else {
+      selectedCollegeIds.push(college.collegeId);
+    }
     this.setState({ selectedCollegeIds });
   }
 
   render() {
     const { collegeService, trigger } = this.props;
     const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
-    const { colleges } = collegeService as CollegeService;
+    const { colleges } = collegeService!;
 
     return (
-
       <Modal
         open={open}
         onOpen={this.onOpenModal}
@@ -127,7 +130,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         className="base w1000"
         trigger={trigger}
       >
-
         <Modal.Header className="res">
           관심 Channel 변경
           <span className="sub f12">맞춤형 학습카드 추천을 위한 관심 채널을 3개 이상 선택해주세요.</span>

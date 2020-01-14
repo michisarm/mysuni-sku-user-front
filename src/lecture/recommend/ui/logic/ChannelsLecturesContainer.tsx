@@ -7,7 +7,7 @@ import { ReviewService } from '@nara.drama/feedback';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureService, RecommendLectureRdo } from 'lecture';
 import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
-import ChannelLecturesContainer from './ChannelLecturesContainer';
+import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
 import { NoSuchContentPanel } from '../../../../shared';
 
 
@@ -97,7 +97,7 @@ class ChannelsLecturesContainer extends Component<Props, State> {
               recommendLectures.map((lecture: RecommendLectureRdo, index: number) => {
                 if (!channelIds.includes(lecture.channel.id)) return null;
                 return (
-                  <ChannelLecturesContainer
+                  <ChannelLecturesLineContainer
                     channel={new ChannelModel(lecture.channel)}
                     lectures={lecture.lectures}
                     onViewAll={onViewAll}

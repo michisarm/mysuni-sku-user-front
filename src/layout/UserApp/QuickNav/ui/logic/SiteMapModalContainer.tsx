@@ -114,10 +114,16 @@ class SiteMapModalContainer extends Component<Props, State> {
   };
 
 
+  // componentDidMount() {
+  //   //
+  //   this.setSiteMapWithCount();
+  // }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
     //
-    this.setSiteMapWithCount();
+    if (prevState.open !== this.state.open && this.state.open) {
+      this.setSiteMapWithCount();
+    }
   }
 
   async setSiteMapWithCount() {

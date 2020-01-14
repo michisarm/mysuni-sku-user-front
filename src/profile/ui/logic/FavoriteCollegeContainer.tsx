@@ -48,36 +48,31 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   init() {
+    //
     const { collegeService, skProfileService } = this.props;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
+    const { studySummaryFavoriteChannels } = skProfileService;
 
-    if (collegeService && skProfileService) {
-      collegeService.findAllColleges();
-      skProfileService.findSkProfile();
-      skProfileService.findStudySummary();
+    collegeService!.findAllColleges();
+    skProfileService!.findSkProfile();
+    skProfileService!.findStudySummary();
 
-      if (favoriteChannels) {
-        const channels = favoriteChannels && favoriteChannels.idNames
-          && favoriteChannels.idNames.map(channel =>
-            new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
-          ) || [];
+    const channels = studySummaryFavoriteChannels.map(channel =>
+      new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+    );
 
-        this.setState({ favorites: [...channels]});
-      }
-    }
+    this.setState({ favorites: [...channels]});
   }
 
 
   onSelectCollege( collegeId : string) {
+    //
     const { collegeService } = this.props;
 
-    if (collegeService) {
-      collegeService.findCollege(collegeId);
-    }
+    collegeService!.findCollege(collegeId);
   }
 
   onSelectChannel(channel : ChannelModel) {
+    //
     let { favorites }: States = this.state;
 
     if (favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
@@ -95,6 +90,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   onNextClick() {
+    //
     const { collegeService, skProfileService } = this.props;
     const { favorites } = this.state;
 
@@ -104,12 +100,12 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
         message: '관심 분야는 3개이상 선택해 주세요.</br> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
         onCancel: () => this.props.history.push('/profile/interest/job'),
       });
-    } else {
-      if (collegeService && skProfileService) {
-        collegeService.favoriteChannels = [...favorites];
-        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
-        skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
-      }
+    }
+    else {
+      collegeService.favoriteChannels = [...favorites];
+      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
+
       this.props.history.push('/profile/interest/job');
     }
   }
@@ -117,7 +113,6 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   render() {
     const { colleges, college } = this.props.collegeService;
     const { favorites } = this.state;
-
 
     return (
       <ContentLayout breadcrumb={[

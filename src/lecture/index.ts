@@ -60,5 +60,5 @@ export { default as LectureSubInfo } from './shared/LectureSubInfo';
 export { default as Lecture } from './shared/Lecture';
 export { default as ChannelsLecturesPage } from './recommend/ui/page/ChannelsLecturesPage';
 export { default as RecommendChannelLecturesPage } from './recommend/ui/page/ChannelLecturesPage';
-export { default as ChannelLecturesPanel } from './recommend/ui/logic/ChannelLecturesContainer';
+export { default as ChannelLecturesLine } from './recommend/ui/logic/ChannelLecturesLineContainer';
 
