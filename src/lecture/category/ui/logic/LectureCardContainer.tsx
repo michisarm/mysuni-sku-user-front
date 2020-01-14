@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
@@ -80,11 +80,13 @@ class LectureCardContainer extends Component<Props, State> {
   onClickPlay() {
     const { typeViewObject } = this.props;
 
-    if (typeViewObject.url) {
+    if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url, '_blank');
     }
     else {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.'});
       console.warn('[UserFront] Url is empty.');
     }
   }
@@ -94,9 +96,11 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url, '_blank');
     }
     else {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.'});
       console.warn('[UserFront] Url is empty.');
     }
   }
