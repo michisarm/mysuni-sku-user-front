@@ -20,7 +20,9 @@ export default class AnswerSheetApi {
 
   findAnswerSheet(examId : string, examineeId: string) {
     return axios.get<AnswerSheetResultModel>(this.URL, { noAuth: true, params: { examId, examineeId }})
-      .then((response: any) => response && response.data && response.data.result && new AnswerSheetModel(response.data.result) || new AnswerSheetModel());
+      .then((response: any) =>
+        response && response.data && response.data.result && new AnswerSheetModel(response.data.result) || new AnswerSheetModel()
+      );
   }
 }
 

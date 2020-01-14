@@ -3,6 +3,7 @@ import { IdName } from 'shared';
 import ContentsProviderType from './ContentsProviderType';
 
 export class ContentsProviderModel {
+  //
   contentsProviderType: IdName = new IdName();  //cp사
   url: string = '';                             //CP사 미디어 url
 

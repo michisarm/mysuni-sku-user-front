@@ -504,7 +504,11 @@ class LectureCardPage extends Component<Props, State> {
         {
           typeViewObject.videoUrl && (
             <>
-              <div className="ml17" style={{ padding: '10px 0px 0px 360px' }}>※ 동영상 학습 시간은 익일 혹은 컨텐츠 재방문시 반영됩니다.</div>
+              <div className="cont-inner">
+                <div className="ml17">
+                  ※ 동영상 학습 시간은 익일 혹은 컨텐츠 재방문시 반영됩니다.
+                </div>
+              </div>
               <div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
