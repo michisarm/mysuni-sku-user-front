@@ -1,5 +1,6 @@
-import { decorate, observable } from 'mobx';
+import { decorate, observable, computed } from 'mobx';
 import { IdName } from 'shared';
+import ContentsProviderType from './ContentsProviderType';
 
 export class ContentsProviderModel {
   contentsProviderType: IdName = new IdName();  //cp사
@@ -11,6 +12,12 @@ export class ContentsProviderModel {
         || this.contentsProviderType;
       Object.assign(this, { ...contentsProvider, contentsProviderType });
     }
+  }
+
+  @computed
+  get isLinkedInType() {
+    //
+    return this.contentsProviderType.name === ContentsProviderType.LinkedIn;
   }
 }
 
