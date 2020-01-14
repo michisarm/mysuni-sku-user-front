@@ -39,7 +39,7 @@ class BannerContainer extends Component {
                     color: '#fff',
                   }}
                 >
-                  <Image src="/images/all/img-promotion.jpg" alt="Promotion" />
+                  <Image src={`${process.env.PUBLIC_URL}/images/all/img-promotion.jpg`} alt="Promotion" />
                 </div>
               </div>
             </Swiper>

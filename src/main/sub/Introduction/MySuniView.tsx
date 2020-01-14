@@ -5,6 +5,8 @@ import { Segment, Image } from 'semantic-ui-react';
 
 class MySuniView extends Component {
   //
+  PUBLIC_URL = process.env.PUBLIC_URL;
+
   render() {
     //
     return (
@@ -27,7 +29,7 @@ class MySuniView extends Component {
               </div>
             </div>
             <div className="direction">
-              <Image src={`${process.env.PUBLIC_URL}/images/all/direction.png`} alt="" />
+              <Image src={`${this.PUBLIC_URL}/images/all/direction.png`} alt="" />
             </div>
             <div className="cont-text-box solution">
               <div className="title">Solution</div>
@@ -40,21 +42,21 @@ class MySuniView extends Component {
             <ul className="solution-route">
               <li>
                 <div>
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/introduction-self-dircted-learning.png`} alt="Self-directed Learning" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/introduction-self-dircted-learning.png`} alt="Self-directed Learning" />
                 </div>
                 <h3>Self-directed Learning</h3>
                 <div className="text">개인 관심/수준에 따라 학습자가 <br />직접 디자인하는 학습 경로</div>
               </li>
               <li>
                 <div>
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/introduction-adaptive-learning.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/introduction-adaptive-learning.png`} alt="" />
                 </div>
                 <h3>Adaptive Learning</h3>
                 <div className="text">Machine Learning 기반 개인화된 <br />Contents Curation</div>
               </li>
               <li>
                 <div>
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/introduction-social-learning.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/introduction-social-learning.png`} alt="" />
                 </div>
                 <h3>Social Learning</h3>
                 <div className="text">직무별 전문가와 학습 컨텐츠를 <br />연결한 커뮤니티</div>
@@ -69,92 +71,92 @@ class MySuniView extends Component {
             <ul>
               <li>
                 <a href="https://www.ideou.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/ideo.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/ideo.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.linkedin.com/learning/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/linked-in.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/linked-in.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://coursera.org/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/coursera.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/coursera.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://dbr.donga.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/dbr.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/dbr.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://www.hbrkorea.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/hbr.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/hbr.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.fastcampus.co.kr/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/fastcampus.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/fastcampus.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.sericeo.org/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/sericeo.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/sericeo.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://www.learningmate.co.kr" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/learning-mate.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/learning-mate.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.masocampus.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/maso.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/maso.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.multicampus.com" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/multicampus.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/multicampus.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://www.samiledu.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/samil.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/samil.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.sebasi.co.kr/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/time15.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/time15.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://academy.elice.io/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/elice.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/elice.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://www.ohmyschool.org/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/ohmyschool.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/ohmyschool.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://intelik.com/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/intelik.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/intelik.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="https://www.imooc.co.kr/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/carrot.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/carrot.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://hrd.creativetv.co.kr/" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/hyundai.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/hyundai.png`} alt="" />
                 </a>
               </li>
               <li>
                 <a href="http://www.hunet.co.kr" target="_blank">
-                  <Image src={`${process.env.PUBLIC_URL}/images/all/hunet.png`} alt="" />
+                  <Image src={`${this.PUBLIC_URL}/images/all/hunet.png`} alt="" />
                 </a>
               </li>
             </ul>

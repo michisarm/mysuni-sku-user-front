@@ -21,7 +21,7 @@ class CertificationView extends Component {
         <div className="ui full segment">
           <div className="certification">
             <div className="step-picture">
-              <Image src="/images/all/img-step.svg" alt="" />
+              <Image src={`${process.env.PUBLIC_URL}/images/all/img-step.svg`} alt="" />
               <ol className="blind">
                 <li>1단계 Stamp</li>
                 <li>2단계 Badge</li>
