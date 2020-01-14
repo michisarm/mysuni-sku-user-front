@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { autobind } from '@nara.platform/accent';
 import AnswerSheetApi from '../apiclient/AnswerSheetApi';
 import { AnswerSheetModel } from '../../model/AnswerSheetModel';
+import { ItemAnswerModel } from '../../model/ItemAnswerModel';
 
 configure({
   enforceActions: 'observed',
@@ -33,6 +34,10 @@ export default class AnswerSheetService {
     return map;
   }
 
+  registerAnswerSheet(answerSheet: AnswerSheetModel) {
+    return this.answerSheetApi.registerAnswerSheet(answerSheet);
+  }
+
   modifyAnswerSheet(answerSheet: AnswerSheetModel) {
     return this.answerSheetApi.modifyAnswerSheet(answerSheet.id, answerSheet);
   }
@@ -47,12 +52,21 @@ export default class AnswerSheetService {
   }
 
   @action
-  setAnswer(questionNo: string, answer: string) {
-    if (this.answerSheet && this.answerSheet.answers && this.answerSheet.answers.length) {
-      const answers = this.answerSheet.answers;
-      const index = answers.map(answer => answer.questionNo).findIndex(no => questionNo === no);
-
-      if (index) this.answerSheet = _.set(this.answerSheet, `answers[${index}]`, answer);
+  setAnswer(questionNo: string, answer: string, questionsNos: string[]) {
+    console.log(';;');
+    console.log(this.answerSheet);
+    if (this.answerSheet && this.answerSheet.answers) {
+      let answers = [ ...this.answerSheet.answers ];
+      if (!answers.length) {
+        answers = questionsNos.map((questionNo) => new ItemAnswerModel({ questionNo, answer: ''}));
+      }
+      console.log(answers);
+      const index = answers.map(answer => answer.questionNo).findIndex(qno => qno === questionNo);
+      if (index >= 0) {
+        answers[index].answer = answer;
+        console.log(answers);
+        this.answerSheet = _.set(this.answerSheet, `answers`, answers);
+      }
     }
   }
 

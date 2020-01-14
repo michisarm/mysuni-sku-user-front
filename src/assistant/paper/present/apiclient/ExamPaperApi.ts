@@ -4,12 +4,12 @@ import { ExamPaperModel } from '../../model/ExamPaperModel';
 
 export default class ExamPaperApi {
 
-  URL = '/lp/adm/exam/exampapers';
+  URL = '/lp/adm/exam/exampaper';
 
   static instance: ExamPaperApi;
 
   findExamPaper(paperId : string) {
-    return axios.get<ExamPaperResultModel>(this.URL + `/${paperId}`, { noAuth: true })
+    return axios.get<ExamPaperResultModel>(this.URL + `/${paperId}/findExamPaperForm`, { noAuth: true })
       .then((response: any) => response && response.data && response.data.result && new ExamPaperModel(response.data.result) || null);
   }
 }

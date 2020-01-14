@@ -72,20 +72,42 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
   onSetAnswer(questionNo: string, answer: string) {
     //
-    const { answerSheetService } = this.props;
-    answerSheetService!.setAnswer(questionNo, answer);
+    const { answerSheetService, examPaperService } = this.props;
+    const { examPaper } = examPaperService!;
+    const { questions } = examPaper!;
+    answerSheetService!.setAnswer(questionNo, answer, questions.map(question => question.questionNo));
   }
 
   onSaveAnswerSheet(finished: boolean) {
-    const { answerSheetService, onSaveCallback } = this.props;
-    answerSheetService!.setAnswerSheetProp('finished', finished);
-    answerSheetService!.modifyAnswerSheet(answerSheetService!.answerSheet)
-      .then(() => {
-        if (finished) {
-          this.onCloseModal();
-          if (onSaveCallback) onSaveCallback();
-        }
-      });
+    const { answerSheetService, onSaveCallback, examId } = this.props;
+    const { answerSheet } = answerSheetService!;
+
+    if (answerSheet.id) {
+      answerSheetService!.setAnswerSheetProp('finished', finished);
+      answerSheetService!.modifyAnswerSheet(answerSheet)
+        .then(() => {
+          if (finished) {
+            this.onCloseModal();
+            if (onSaveCallback) onSaveCallback();
+          }
+        });
+    }
+    else {
+      answerSheetService!.setAnswerSheetProp('examineeId', tenantInfo.getTenantId());
+      answerSheetService!.setAnswerSheetProp('examId', examId);
+      answerSheetService!.setAnswerSheetProp('finished', finished);
+      answerSheetService!.registerAnswerSheet(answerSheet)
+        .then((answerSheetId: any) => {
+          answerSheetService!.setAnswerSheetProp('id', answerSheetId.result);
+          answerSheetService!.modifyAnswerSheet(answerSheet)
+            .then(() => {
+              if (finished) {
+                this.onCloseModal();
+                if (onSaveCallback) onSaveCallback();
+              }
+            });
+        });
+    }
   }
 
   render() {
