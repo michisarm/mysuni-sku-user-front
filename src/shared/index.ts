@@ -45,8 +45,10 @@ export { CubeType } from './model/CubeType';
 export { CubeState } from './model/CubeState';
 export { CourseOpenModel } from './model/CourseOpenModel';
 export { CourseState } from './model/CourseState';
-export { ProposalState } from './model/ProposalState';
-export { LearningState } from './model/LearningState';
+export { default as ProposalState } from './model/ProposalState';
+export { default as ProposalStateName } from './model/ProposalStateName';
+export { default as LearningState } from './model/LearningState';
+export { default as LearningStateName } from './model/LearningStateName';
 
 export { DatePeriod } from './model/DatePeriod';
 export { TimePeriod } from './model/TimePeriod';

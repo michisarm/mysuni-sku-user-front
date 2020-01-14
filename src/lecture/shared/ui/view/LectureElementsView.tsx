@@ -84,7 +84,7 @@ interface RibbonProps {
 
 export const Ribbon = ({ required, stampReady }: RibbonProps) => (
   <div className="card-ribbon-wrap">
-    { required && <Label className="ribbon2">Required</Label>}
+    { required && <Label className="ribbon2">필수과정</Label>}
     { stampReady && <Label className="ribbon2">Stamp</Label>}
   </div>
 );

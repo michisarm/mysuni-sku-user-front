@@ -1,5 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, ProposalState } from 'shared';
+import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, LearningStateName, ProposalState, ProposalStateName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
@@ -82,13 +82,13 @@ class MyTrainingModel extends DramaEntityObservableModel {
   @computed
   get state() {
     if (this.proposalState === ProposalState.Approved) {
-      if (this.learningState === LearningState.Progress) return '학습중';
-      if (this.learningState === LearningState.Passed) return '학습완료';
-      if (this.learningState === LearningState.Missed) return '미이수';
       if (this.cubeType === CubeType.Community) return '가입완료';
-      else return '수강확정 과정';
+      if (this.learningState) return LearningStateName[LearningState[this.learningState]];
+      return '수강확정 과정';
     }
-    else return this.proposalState.toString();
+    else {
+      return ProposalStateName[ProposalState[this.proposalState]];
+    }
   }
 }
 
