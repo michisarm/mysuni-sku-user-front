@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
 
 import MyTrainingPage from './ui/page/MyTrainingPage';
-import MyCommunityPage from './ui/page/MyCommunityPage';
+// import MyCommunityPage from './ui/page/MyCommunityPage';
 import MyPage from './ui/page/MyPage';
 
 
