@@ -26,7 +26,7 @@ export const MenuView: React.FC<MenuViewProps> = () => (
   <div className="g-menu">
     <div className="nav">
       <NavLink to={myTrainingPaths.learning()} className="item">Learning</NavLink>
-      <NavLink to={myTrainingPaths.community()} className="item">Community</NavLink>
+      {/*<NavLink to={myTrainingPaths.community()} className="item">Community</NavLink>*/}
       <NavLink to={lecturePaths.recommend()} className="item">Recommend</NavLink>
       <NavLink to={personalCubePaths.create()} className="item">Create</NavLink>
     </div>

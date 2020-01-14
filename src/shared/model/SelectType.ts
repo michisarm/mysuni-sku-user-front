@@ -26,7 +26,7 @@ export default {
     { key: '0', text: '선택해주세요', value: 'None' },
     { key: '1', text: 'Video', value: 'Video' },
     { key: '2', text: 'Audio', value: 'Audio' },
-    { key: '3', text: 'Community', value: 'Community' },
+    // { key: '3', text: 'Community', value: 'Community' },
     { key: '4', text: 'Web Page', value: 'WebPage' },
     { key: '5', text: 'Documents', value: 'Documents' },
   ],
