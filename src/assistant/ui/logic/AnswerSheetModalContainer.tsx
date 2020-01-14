@@ -20,6 +20,7 @@ interface Props {
 
   examId: string
   trigger?: React.ReactNode
+  onSaveCallback?:() => void
 }
 
 interface States {
@@ -76,9 +77,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSaveAnswerSheet(finished: boolean) {
-    const { answerSheetService } = this.props;
+    const { answerSheetService, onSaveCallback } = this.props;
     answerSheetService!.setAnswerSheetProp('finished', finished);
-    answerSheetService!.modifyAnswerSheet(answerSheetService!.answerSheet);
+    answerSheetService!.modifyAnswerSheet(answerSheetService!.answerSheet)
+      .then(() => {
+        if (finished) {
+          this.onCloseModal();
+          if (onSaveCallback) onSaveCallback();
+        }
+      });
   }
 
   render() {

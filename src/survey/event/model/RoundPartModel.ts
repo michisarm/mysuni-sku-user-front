@@ -5,7 +5,7 @@ import { SurveyProgress } from './SurveyProgress';
 import OperatorModel from './OperatorModel';
 import SurveyEventModel from './SurveyEventModel';
 
-export default class RoundPartModel extends DramaEntityObservableModel{
+export default class RoundPartModel extends DramaEntityObservableModel {
   //
   round: number = 1;
   descriptions: LangStrings = new LangStrings();

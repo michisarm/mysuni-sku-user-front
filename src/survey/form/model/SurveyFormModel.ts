@@ -1,6 +1,6 @@
-import { DramaEntity } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
-import { PatronKey, LangStrings } from 'shared';
+import { LangStrings, DramaEntityObservableModel } from 'shared';
+import moment from 'moment';
 import { FormDesignerModel } from './FormDesignerModel';
 import { DesignState } from './DesignState';
 import { QuestionPathModel } from './QuestionPathModel';
@@ -9,11 +9,8 @@ import { QuestionGroupModel } from './QuestionGroupModel';
 import { QuestionModel } from './QuestionModel';
 import { SuggestionModel } from './SuggestionModel';
 
-export class SurveyFormModel implements DramaEntity {
-  id: string = '';
-  entityVersion: number = 0;
-  patronKey: PatronKey = new PatronKey();
-
+export class SurveyFormModel extends DramaEntityObservableModel {
+  //
   titles: LangStrings = new LangStrings();
   managementNumber: string = '';
   formDesigner: FormDesignerModel = new FormDesignerModel();
@@ -30,6 +27,7 @@ export class SurveyFormModel implements DramaEntity {
 
   constructor(surveyForm?: SurveyFormModel) {
     //
+    super();
     if (surveyForm) {
       const titles = surveyForm.titles && new LangStrings(surveyForm.titles) || this.titles;
       const formDesigner = surveyForm.formDesigner && new FormDesignerModel(surveyForm.formDesigner) || this.formDesigner;
@@ -39,18 +37,18 @@ export class SurveyFormModel implements DramaEntity {
   }
 
   @computed
-  get getTitles(): string {
+  get title(): string {
     return this.titles && this.titles.langStringMap && this.titles.langStringMap.get(this.titles.defaultLanguage) || '';
   }
 
   @computed
-  get getFormDesignerName(): string {
+  get formDesignerName(): string {
     return this.formDesigner && this.formDesigner.names && this.formDesigner.names.langStringMap.get(this.formDesigner.names.defaultLanguage) || '';
   }
 
   @computed
-  get getStringTime() : string {
-    return this.time && new Date(this.time).toLocaleDateString() || '';
+  get timeStr() : string {
+    return this.time && moment(this.time).format('YYYY.MM.DD') || '';
   }
 }
 

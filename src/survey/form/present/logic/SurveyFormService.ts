@@ -26,7 +26,7 @@ export default class SurveyFormService {
   }
 
   @action
-  clearSurveyForm() {
+  clear() {
     //
     this.surveyForm = new SurveyFormModel();
   }

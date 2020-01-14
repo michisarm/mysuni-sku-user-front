@@ -1,4 +1,4 @@
-import { decorate, observable } from 'mobx';
+import {computed, decorate, observable} from 'mobx';
 import { PatronKey, LangStrings, DramaEntityObservableModel } from 'shared';
 import { SequenceModel } from './SequenceModel';
 import { QuestionItemType } from './QuestionItemType';
@@ -36,6 +36,14 @@ export class QuestionModel extends DramaEntityObservableModel {
           this.answerItems = new EssayQuestionItems(question.answerItems);
       }
     }
+  }
+
+  @computed
+  get sentence() {
+    if (this.sentences && this.sentences.langStringMap) {
+      return this.sentences.langStringMap.get(this.sentences.defaultLanguage) || '';
+    }
+    return '';
   }
 }
 

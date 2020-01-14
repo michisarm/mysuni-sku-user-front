@@ -10,6 +10,7 @@ import { profileStores } from 'profile';
 import { boardStores } from 'board';
 import { myTrainingStores } from 'myTraining';
 import { assistantStores } from 'assistant';
+import { surveyStores } from 'survey';
 
 
 const stores = {
@@ -29,6 +30,7 @@ const stores = {
   ...expertStores,
   ...profileStores,
   ...assistantStores,
+  ...surveyStores,
 };
 
 export default stores;

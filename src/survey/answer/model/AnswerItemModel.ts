@@ -11,8 +11,10 @@ export class AnswerItemModel {
   constructor(answerItem?: AnswerItemModel) {
     if (answerItem) {
       Object.assign(this, answerItem);
-      if (answerItem.answerItemType === AnswerItemType.Criterion) {
-        this.criteriaItem = new CriteriaItemModel(answerItem.criteriaItem);
+      switch (answerItem.answerItemType) {
+        case 'Criterion':
+          this.criteriaItem = new CriteriaItemModel(answerItem.criteriaItem);
+          break;
       }
     }
   }

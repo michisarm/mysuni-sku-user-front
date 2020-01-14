@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
@@ -8,6 +8,7 @@ import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import { AnswerSheetModalContainer } from 'assistant';
 import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -26,6 +27,7 @@ interface Props {
   viewObject: any
   typeViewObject: any
   children: React.ReactNode
+  init?:() => void
 }
 
 interface State {
@@ -41,6 +43,7 @@ interface State {
 class LectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
+  examModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
     const { rollBookService, lectureCardId, studentJoins, studentService, studentCdo } = this.props;
@@ -77,11 +80,13 @@ class LectureCardContainer extends Component<Props, State> {
   onClickPlay() {
     const { typeViewObject } = this.props;
 
-    if (typeViewObject.url) {
+    if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url, '_blank');
     }
     else {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
@@ -89,11 +94,13 @@ class LectureCardContainer extends Component<Props, State> {
   onLearningStart() {
     const { typeViewObject } = this.props;
 
-    if (typeViewObject.url) {
+    if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
+      window.open(typeViewObject.url, '_blank');
     }
     else {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
@@ -144,6 +151,10 @@ class LectureCardContainer extends Component<Props, State> {
       .then(() => {
         studentService!.findIsJsonStudent(lectureCardId);
       });
+  }
+
+  onTest() {
+    this.examModal.onOpenModal();
   }
 
   getMainAction() {
@@ -216,6 +227,8 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Community:
         break;
     }
+
+    if (viewObject.examId) subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     return subActions.length ? subActions : undefined;
   }
 
@@ -284,6 +297,15 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
+        {
+          viewObject && viewObject.examId && (
+            <AnswerSheetModalContainer
+              examId={viewObject.examId}
+              ref={examModal => this.examModal = examModal}
+              onSaveCallback={this.props.init}
+            />
+          )
+        }
         {children}
       </LectureCardContentWrapperView>
     );

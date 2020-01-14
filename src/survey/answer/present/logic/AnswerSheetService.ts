@@ -1,5 +1,5 @@
 import autobind from 'autobind-decorator';
-import { action, observable, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import _ from 'lodash';
 import AnswerSheetApi from '../apiclient/AnswerSheetApi';
 import ResponseApi from '../apiclient/ResponseApi';
@@ -8,6 +8,7 @@ import AnswerModel from '../../model/AnswerModel';
 import EvaluationSheetModel from '../../model/EvaluationSheetModel';
 import { QuestionModel } from '../../../form/model/QuestionModel';
 import { QuestionItemType } from '../../../form/model/QuestionItemType';
+import { AnswerItemModel } from '../../model/AnswerItemModel';
 
 @autobind
 export default class AnswerSheetService {
@@ -29,6 +30,18 @@ export default class AnswerSheetService {
     this.responseApi = responseApi;
     this.answerSheetApi = answerSheetApi;
   }
+
+  @computed
+  get answerMap() {
+    const map = new Map<string, AnswerItemModel>();
+    if (this.evaluationSheet && this.evaluationSheet.answers && this.evaluationSheet.answers.length) {
+      this.evaluationSheet.answers.map(answer => {
+        map.set(answer.questionNumber, answer.answerItem);
+      });
+    }
+    return map;
+  }
+
 
   @action
   openAnswerSheet(surveyCaseId: string, round: number) {
@@ -111,6 +124,11 @@ export default class AnswerSheetService {
     this.evaluationSheet.answers = [...this.evaluationSheet.answers];
   }
 
+  @action
+  clear() {
+    this.answerSheet = new AnswerSheetModel();
+    this.evaluationSheet = new EvaluationSheetModel();
+  }
 }
 
 Object.defineProperty(AnswerSheetService, 'instance', {
