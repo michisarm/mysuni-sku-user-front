@@ -32,6 +32,8 @@ export { default as IdNameList } from './model/IdNameList';
 export { NameValueList } from './model/NameValueList';
 export { default as OffsetElementList } from './model/OffsetElementList';
 export { PatronKey } from './model/PatronKey';
+export { LangStrings } from './model/LangStrings';
+export { OrderedOffset } from './model/OrderedOffset';
 
 export { CategoryModel } from './model/CategoryModel';
 export { SearchFilter } from './model/SearchFilter';

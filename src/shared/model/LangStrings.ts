@@ -18,13 +18,3 @@ export class LangStrings implements AccentLangStrings {
 decorate(LangStrings, {
   langStringMap: observable,
 });
-
-// export function makeMapByLangStrings(langStrings: LangStrings) {
-//   const map = new Map();
-//   if (langStrings && langStrings.langStrings && langStrings.langStrings.length) {
-//     langStrings.langStrings.map((langString: LangString) => {
-//       map.set(langString.lang, langString.string);
-//     });
-//   }
-//   return map;
-// }
