@@ -177,7 +177,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getMainAction() {
-    const { cubeType, typeViewObject, studentJoins, student } = this.props;
+    const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
     const today = new Date();
 
