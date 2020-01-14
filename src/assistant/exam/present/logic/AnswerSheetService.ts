@@ -58,7 +58,7 @@ export default class AnswerSheetService {
     if (this.answerSheet && this.answerSheet.answers) {
       let answers = [ ...this.answerSheet.answers ];
       if (!answers.length) {
-        answers = questionsNos.map((questionNo) => new ItemAnswerModel({ questionNo, answer: ''}));
+        answers = questionsNos.map((questionNo) => new ItemAnswerModel({ questionNo, answer: '' }));
       }
       console.log(answers);
       const index = answers.map(answer => answer.questionNo).findIndex(qno => qno === questionNo);
