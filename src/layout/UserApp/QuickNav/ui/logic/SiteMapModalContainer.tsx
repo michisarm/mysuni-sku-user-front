@@ -80,6 +80,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       items: [
         { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
         { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
+        { name: '인증제도 소개', path: mainRoutePaths.introductionCertification() },
       ],
     },
     {
