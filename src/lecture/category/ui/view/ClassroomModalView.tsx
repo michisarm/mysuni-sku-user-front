@@ -65,7 +65,6 @@ class ClassroomModalView extends Component<Props, States> {
                   <Table.HeaderCell />
                   <Table.HeaderCell>차수</Table.HeaderCell>
                   <Table.HeaderCell>강사</Table.HeaderCell>
-                  <Table.HeaderCell>담당자 정보 및 이메일</Table.HeaderCell>
                   <Table.HeaderCell>장소</Table.HeaderCell>
                   <Table.HeaderCell>정원정보</Table.HeaderCell>
                   <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
@@ -92,10 +91,6 @@ class ClassroomModalView extends Component<Props, States> {
                       </Table.Cell>
                       <Table.Cell>{classroom.round}</Table.Cell>
                       <Table.Cell>{classroom.instructor.name}</Table.Cell>
-                      <Table.Cell>
-                        {classroom.operation.operator.name}
-                        <span className="dash" />{classroom.operation.operator.company}<br />{classroom.operation.operator.email}
-                      </Table.Cell>
                       <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
                       <Table.Cell>{classroom.capacity}</Table.Cell>
                       <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>

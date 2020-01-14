@@ -32,6 +32,8 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
+import LinkedInModalContainer from '../logic/LinkedInModalContainer';
+
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
   skProfileService: SkProfileService,
@@ -52,6 +54,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 
 interface State {
   type: string
+  linkedInOpen: boolean
 }
 
 @inject(mobxHelper.injectFrom(
@@ -76,9 +79,11 @@ class LectureCardPage extends Component<Props, State> {
   //
   state= {
     type: 'Overview',
+    linkedInOpen: false,
   };
 
   constructor(props: Props) {
+    //
     super(props);
     props.personalCubeService.clearPersonalCube();
   }
@@ -121,7 +126,11 @@ class LectureCardPage extends Component<Props, State> {
         await classroomService.findClassrooms(personalCube.personalCubeId);
       }
       else if (service.type === ContentsServiceType.Media) {
-        mediaService.findMedia(contents.id);
+        mediaService.findMedia(contents.id).then((media) => {
+          if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
+            this.setState({ linkedInOpen: true });
+          }
+        });
       }
       else if (service.type === ContentsServiceType.OfficeWeb) {
         officeWebService.findOfficeWeb(contents.id);
@@ -498,6 +507,7 @@ class LectureCardPage extends Component<Props, State> {
   render() {
     //
     const { collegeService, personalCubeService, reviewService, inMyLectureService, studentService } = this.props;
+    const { linkedInOpen } = this.state;
     const { college } = collegeService;
     const { personalCube } = personalCubeService;
     const { reviewSummary } = reviewService;
@@ -523,10 +533,15 @@ class LectureCardPage extends Component<Props, State> {
           maxRating={reviewSummary.maxStarCount}
           rating={reviewSummary.average}
         />
+
         {
           typeViewObject.videoUrl && (
             <>
-              <div className="ml17" style={{ padding: '10px 0px 0px 360px' }}>※ 동영상 학습 시간은 익일 혹은 컨텐츠 재방문시 반영됩니다.</div>
+              <div className="cont-inner">
+                <div className="ml17">
+                  ※ 동영상 학습 시간은 익일 혹은 컨텐츠 재방문시 반영됩니다.
+                </div>
+              </div>
               <div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -576,6 +591,10 @@ class LectureCardPage extends Component<Props, State> {
             { this.renderChildren(viewObject, typeViewObject) }
           </LectureCardContainer>
         </ContentMenu>
+
+        <LinkedInModalContainer
+          enabled={linkedInOpen}
+        />
       </ContentLayout>
     );
   }

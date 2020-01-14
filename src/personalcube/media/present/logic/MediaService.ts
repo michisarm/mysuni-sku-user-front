@@ -49,8 +49,11 @@ export default class MediaService {
 
   @action
   async findMedia(mediaId: string) {
+    //
     const media = await this.mediaApi.findMedia(mediaId);
-    runInAction(() => this.media = new MediaModel(media));
+
+    runInAction(() => this.media = media);
+    return media;
   }
 
   makeMedia(personalCubeModel: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {

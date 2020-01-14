@@ -3,6 +3,7 @@ import { CollegeModel } from '../../model/CollegeModel';
 import { JobGroupModel } from '../../model/JobGroupModel';
 
 export default class CollegeApi {
+
   URLCollege = '/api/college/colleges';
   URLJob = '/api/college/jobGroups';
 
@@ -24,7 +25,7 @@ export default class CollegeApi {
 
   findAllColleges() {
     //
-    return axios.get<CollegeModel[]>(this.URLCollege)
+    return axios.get<CollegeModel[]>(this.URLCollege + '/available')
       .then(response => response && response.data || []);
   }
 
