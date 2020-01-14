@@ -6,7 +6,7 @@ import { Label } from 'semantic-ui-react';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, CubeType, LearningState, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, LearningState, ProposalState, CubeType } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
@@ -31,6 +31,7 @@ import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
+import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
   skProfileService: SkProfileService,
@@ -131,15 +132,20 @@ class LectureCardPage extends Component<Props, State> {
     }
   }
 
+  compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
+    if (join1.updateTime < join2.updateTime) return 1;
+    return -1;
+  }
 
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, studentService,
+      personalCubeService, cubeIntroService, studentService, classroomService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { studentCounts, studentJoins }: StudentService = studentService!;
+    const { classrooms } = classroomService!;
 
     let participantCount = 0;
     studentCounts!.map((studentCount: StudentCountRdoModel) => {
@@ -148,19 +154,28 @@ class LectureCardPage extends Component<Props, State> {
 
     let state: SubState | undefined;
     let examId: string = '';
-    if (studentJoins.length && studentJoins[0]) {
+    if (studentJoins.length) {
+      studentJoins.sort(this.compare);
       const studentJoin = studentJoins[0];
       if (studentJoin.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (studentJoin.proposalState === ProposalState.Approved) {
         if (studentJoin.learningState === LearningState.Progress) state = SubState.InProgress;
         if (studentJoin.learningState === LearningState.Passed) {
           state = SubState.Completed;
-          examId = personalCube.contents.examId || '';
+          if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
+            const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
+            examId = classrooms[index].roundExamId;
+          }
+          else {
+            examId = personalCube.contents.examId || '';
+          }
         }
         if (studentJoin.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
     }
+
+    // examId = 'CUBE-1ri';
 
     return {
       // Sub info
@@ -281,11 +296,11 @@ class LectureCardPage extends Component<Props, State> {
         videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
-        if (personalCube.contents.type === CubeType.Video) {
+        if (personalCube.contents.type === CubeType.Video && videoUrl && url) {
           videoUrl += '&offerviewer=false';
           url += '&offerviewer=false';
         }
-        else {
+        else if (personalCube.contents.type === CubeType.Audio && videoUrl && url) {
           videoUrl += '&offerviewer=false&interactivity=none';
           url += '&offerviewer=false&interactivity=none';
         }
@@ -519,6 +534,7 @@ class LectureCardPage extends Component<Props, State> {
             cubeType={personalCube.contents.type}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
+            init={this.init}
           >
             { this.renderChildren(viewObject, typeViewObject) }
           </LectureCardContainer>

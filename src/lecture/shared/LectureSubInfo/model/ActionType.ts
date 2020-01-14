@@ -8,6 +8,7 @@ enum ActionType {
   Play = '학습하기',
   MarkComplete = '학습완료',
   Join = '가입하기',
+  Test = '시험보기',
 }
 
 export default ActionType;

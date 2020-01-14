@@ -1,4 +1,5 @@
 import { LangStrings } from 'shared';
+import { computed, decorate, observable } from 'mobx';
 
 export class NumberValue {
 
@@ -12,4 +13,15 @@ export class NumberValue {
     }
   }
 
+  @computed
+  get value() {
+    if (this.values && this.values.langStringMap) {
+      return this.values.langStringMap.get(this.values.defaultLanguage) || '';
+    }
+    return '';
+  }
 }
+decorate(NumberValue, {
+  number: observable,
+  values: observable,
+});

@@ -25,10 +25,17 @@ export default class SurveyCaseService {
   @action
   async findSurveyCase(surveyCaseId: string) {
     const surveyCase = await this.surveyCaseApi.findSurveyCase(surveyCaseId);
-    runInAction(() => {
+    return runInAction(() => {
       this.surveyCase = surveyCase;
       this.roundPart = surveyCase.roundPart;
+      return surveyCase;
     });
+  }
+
+  @action
+  clear() {
+    this.surveyCase = new SurveyCaseModel();
+    this.roundPart = new RoundPartModel();
   }
 }
 

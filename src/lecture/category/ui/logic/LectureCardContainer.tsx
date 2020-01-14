@@ -8,6 +8,7 @@ import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import { AnswerSheetModalContainer } from 'assistant';
 import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -26,6 +27,7 @@ interface Props {
   viewObject: any
   typeViewObject: any
   children: React.ReactNode
+  init?:() => void
 }
 
 interface State {
@@ -41,6 +43,7 @@ interface State {
 class LectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
+  examModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
     const { rollBookService, lectureCardId, studentJoins, studentService, studentCdo } = this.props;
@@ -146,6 +149,10 @@ class LectureCardContainer extends Component<Props, State> {
       });
   }
 
+  onTest() {
+    this.examModal.onOpenModal();
+  }
+
   getMainAction() {
     const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
@@ -216,6 +223,8 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Community:
         break;
     }
+
+    if (viewObject.examId) subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     return subActions.length ? subActions : undefined;
   }
 
@@ -284,6 +293,15 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
+        {
+          viewObject && viewObject.examId && (
+            <AnswerSheetModalContainer
+              examId={viewObject.examId}
+              ref={examModal => this.examModal = examModal}
+              onSaveCallback={this.props.init}
+            />
+          )
+        }
         {children}
       </LectureCardContentWrapperView>
     );
