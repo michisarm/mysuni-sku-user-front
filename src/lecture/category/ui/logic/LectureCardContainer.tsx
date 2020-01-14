@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
@@ -256,7 +256,9 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    if (viewObject.examId) subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    if (viewObject.examId && student && student.learningState === LearningState.Progress) {
+      subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    }
     return subActions.length ? subActions : undefined;
   }
 
