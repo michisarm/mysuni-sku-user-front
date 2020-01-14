@@ -211,7 +211,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   tinyAlbumId ?
                     <ImageBox
                       id={tinyAlbumId || ''}
-                      options={{ title: 'sk Icon', needTinyImage: true, width: '100px', height: '100px', selectable: true }}
+                      options={{ title: 'sk Icon', needTinyImage: true, width: '60px', height: '60px', selectable: true }}
                       defaultSelectId={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl || ''}
                       customSelector={(selectedId: string, imageId: string) => (<Radio checked={selectedId === imageId} />)}
                       onSelect={this.handleSKIconSelect}

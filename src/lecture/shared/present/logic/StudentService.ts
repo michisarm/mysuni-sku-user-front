@@ -1,10 +1,12 @@
 
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
+import { LearningState } from 'shared';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
+import StudentModel from '../../model/StudentModel';
 
 
 @autobind
@@ -19,6 +21,9 @@ class StudentService {
 
   @observable
   _studentJoins: StudentJoinRdoModel[] = [];
+
+  @observable
+  student: StudentModel = new StudentModel();
 
 
   constructor(studentApi: StudentApi) {
@@ -60,6 +65,21 @@ class StudentService {
 
   removeStudent(rollBookId: string) {
     return this.studentApi.removeStudent(rollBookId);
+  }
+
+  modifyLearningState(studentId: string, learningState: LearningState) {
+    return this.studentApi.modifyLearningState(studentId, learningState);
+  }
+
+  @action
+  async findStudent(rollBookId: string, round?: number) {
+    //
+    const student = await this.studentApi.findStudent(rollBookId);
+    return runInAction(() => {
+      this.student = new StudentModel(student);
+      if (round) this.student.round = round;
+      return student;
+    });
   }
 
   @action
