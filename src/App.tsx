@@ -2,7 +2,7 @@
 import React from 'react';
 import { axiosApi, setCustomDialog } from '@nara.platform/accent';
 
-import Dialog from 'shared/components/Dialog';
+import Dialog from './shared/components/Dialog';
 import StoreProvider from './StoreProvider';
 import Routes from './Routes';
 
