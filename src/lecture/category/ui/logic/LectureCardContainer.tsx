@@ -86,7 +86,7 @@ class LectureCardContainer extends Component<Props, State> {
       window.open(typeViewObject.url, '_blank');
     }
     else {
-      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.'});
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
@@ -94,13 +94,13 @@ class LectureCardContainer extends Component<Props, State> {
   onLearningStart() {
     const { typeViewObject } = this.props;
 
-    if (typeViewObject.url) {
+    if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
       // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
       window.open(typeViewObject.url, '_blank');
     }
     else {
-      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.'});
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
