@@ -13,3 +13,4 @@ import App from './App';
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
+console.log('test2');
