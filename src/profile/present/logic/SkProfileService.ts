@@ -128,6 +128,10 @@ export default class SkProfileService {
     return this.skProfileApi.modifyStudySummary(nameValues);
   }
 
+  modifyStudySummaryFirstTime(nameValues: NameValueList) {
+    return this.skProfileApi.modifyStudySummaryFirstTime(nameValues);
+  }
+
   modifyStudySummaryByProfileId(profileId:string, nameValues : NameValueList) {
     this.skProfileApi.modifyStudySummaryByProfileId(profileId, nameValues);
   }
