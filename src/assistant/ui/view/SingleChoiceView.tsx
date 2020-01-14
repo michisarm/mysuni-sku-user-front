@@ -33,7 +33,7 @@ class SingleChoiceView extends React.Component<Props, State> {
                 name="radioGroup"
                 value={item.itemNo}
                 checked={answer === item.itemNo}
-                onChange={(e: any) => onSetAnswer(e.target.value)}
+                onChange={(e: any, data: any) => onSetAnswer(data.value)}
               />
             </List.Item>
           )) || null

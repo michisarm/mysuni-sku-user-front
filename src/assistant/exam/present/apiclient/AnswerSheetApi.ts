@@ -4,9 +4,14 @@ import { AnswerSheetModel } from '../../model/AnswerSheetModel';
 
 export default class AnswerSheetApi {
 
-  URL = '/lp/adm/exam/answersheets';
+  URL = '/api/assistant/v1/answersheets';
 
   static instance: AnswerSheetApi;
+
+  registerAnswerSheet(answerSheet: AnswerSheetModel) {
+    return axios.post<string>(this.URL, answerSheet, { noAuth: true })
+      .then(response => response && response.data || '');
+  }
 
   modifyAnswerSheet(sheetId: string, answerSheet: AnswerSheetModel) {
     return axios.put<string>(this.URL + `/${sheetId}`, answerSheet, { noAuth: true })
@@ -15,7 +20,7 @@ export default class AnswerSheetApi {
 
   findAnswerSheet(examId : string, examineeId: string) {
     return axios.get<AnswerSheetResultModel>(this.URL, { noAuth: true, params: { examId, examineeId }})
-      .then((response: any) => response && response.data && response.data.result && new AnswerSheetModel(response.data.result) || null);
+      .then((response: any) => response && response.data && response.data.result && new AnswerSheetModel(response.data.result) || new AnswerSheetModel());
   }
 }
 

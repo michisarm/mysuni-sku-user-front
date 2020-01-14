@@ -15,7 +15,7 @@ export class AnswerSheetModel {
   constructor(answerSheet?: AnswerSheetModel) {
     if (answerSheet) {
       const answers = answerSheet.answers && answerSheet.answers.length
-        && answerSheet.answers.map(answer => new ItemAnswerModel(answer));
+        && answerSheet.answers.map(answer => new ItemAnswerModel(answer)) || this.answers;
       Object.assign(this, { ...answerSheet, answers });
     }
   }
