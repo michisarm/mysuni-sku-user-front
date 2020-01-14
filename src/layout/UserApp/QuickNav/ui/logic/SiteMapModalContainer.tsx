@@ -64,12 +64,13 @@ class SiteMapModalContainer extends Component<Props, State> {
       ],
     },
     {
-      name: 'Community',
-      items: [
-        { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
-        { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
-        { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
-      ],
+      name: 'Community(서비스 예정)',
+      items: [],
+      // items: [
+      //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
+      //   { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
+      //   { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
+      // ],
     },
   ];
 
