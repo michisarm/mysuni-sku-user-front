@@ -113,9 +113,10 @@ class FirstCategoryModal extends React.Component<Props, States> {
     return (
       <>
         <div className="cell v-middle">
-          <span className="text1">대표 카테고리</span>
+          <span className="text1">메인채널</span>
           {/* 카테고리 선택 후 활성화 */}
           <Button icon className="left post delete" type="button" onClick={() => handleChangeOpen(true)}>채널선택</Button>
+
           <Modal className="base w560" open={open} onClose={() => handleChangeOpen(false)}>
             <Modal.Header className="res">
               메인채널 선택

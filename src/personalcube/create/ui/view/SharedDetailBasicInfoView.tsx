@@ -46,7 +46,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.HeaderCell>대표 카테고리</Table.HeaderCell>
+                  <Table.HeaderCell>메인채널</Table.HeaderCell>
                   <Table.Cell>
                     {personalCube.category && personalCube.category.college && personalCube.category.college.name}
                     <span className="dash" />
@@ -54,7 +54,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.HeaderCell>서브 카테고리</Table.HeaderCell>
+                  <Table.HeaderCell>서브채널</Table.HeaderCell>
                   <Table.Cell>
                     {
                       selectedChannels && selectedChannels

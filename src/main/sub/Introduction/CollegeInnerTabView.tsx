@@ -9,6 +9,8 @@ import { Image, Tab } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 
 
+const PUBLIC_URL = process.env.PUBLIC_URL;
+
 const panes = [
   {
     menuItem: 'AI', render: () =>
@@ -74,7 +76,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co1.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co1.png`} alt="" />
               </div>
             </div>
           </div>
@@ -136,7 +138,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co2.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co2.png`} alt="" />
               </div>
             </div>
           </div>
@@ -162,7 +164,7 @@ const panes = [
             <div className="belt">
               <div className="label">이렇게 학습하면 더욱 효과적입니다.</div>
               <div className="img">
-                <Image src="/images/all/img-co3-1.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co3-1.png`} alt="" />
               </div>
               <div className="label">SK만의 컨텐츠를 새롭게 만들어가고 있습니다.</div>
               <div className="normal">2020년 1월 행복학개론, SK의 행복경영, 마음 근력 키우기, 긍정 습관 만들기 등 총 4개 과정이
@@ -178,7 +180,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co3.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co3.png`} alt="" />
               </div>
             </div>
           </div>
@@ -192,7 +194,7 @@ const panes = [
           <div className="college-cont-title sv">
             <div className="belt">
               <div className="img">
-                <Image src="/images/all/img-sv.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-sv.png`} alt="" />
               </div>
               <div className="label">SV College</div>
               <div className="strong">사회와 기업의 지속가능성을 위해!</div>
@@ -206,7 +208,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co4.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co4.png`} alt="" />
               </div>
             </div>
           </div>
@@ -252,7 +254,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co5.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co5.png`} alt="" />
               </div>
               <ol className="list">
                 <li>
@@ -353,7 +355,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co6.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co6.png`} alt="" />
               </div>
             </div>
           </div>
@@ -398,7 +400,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co7.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co7.png`} alt="" />
               </div>
             </div>
           </div>
@@ -447,7 +449,7 @@ const panes = [
           <div className="college-free3">
             <div className="belt">
               <div className="img">
-                <Image src="/images/all/img-co8-1.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co8-1.png`} alt="" />
               </div>
             </div>
           </div>
@@ -455,7 +457,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src="/images/all/img-co8.png" alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co8.png`} alt="" />
               </div>
             </div>
           </div>

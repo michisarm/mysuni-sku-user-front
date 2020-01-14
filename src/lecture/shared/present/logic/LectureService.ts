@@ -48,22 +48,19 @@ class LectureService {
   @computed
   get lectures() {
     //
-    const lectures = this._lectures as IObservableArray;
-    return lectures.peek();
+    return (this._lectures as IObservableArray).peek();
   }
 
   @computed
   get recommendLectures() {
     //
-    const recommendLectures = this._recommendLectures as IObservableArray;
-    return recommendLectures.peek();
+    return (this._recommendLectures as IObservableArray).peek();
   }
 
   @computed
   get lectureViews() {
     //
-    const lectureViews = this._lectureViews as IObservableArray;
-    return lectureViews.peek();
+    return (this._lectureViews as IObservableArray).peek();
   }
 
 
@@ -83,10 +80,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -97,10 +92,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -111,10 +104,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -125,10 +116,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   // LectureViews ------------------------------------------------------------------------------------------------------
@@ -172,11 +161,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
-
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -187,11 +173,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
-
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -199,10 +182,8 @@ class LectureService {
     //
     const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
 
-    return runInAction(() => {
-      this._recommendLectures = recommendLectures.map(recommendLecture => new RecommendLectureRdo(recommendLecture));
-      return recommendLectures;
-    });
+    runInAction(() => this._recommendLectures = recommendLectures.map(recommendLecture => new RecommendLectureRdo(recommendLecture)));
+    return recommendLectures;
   }
 
   @action

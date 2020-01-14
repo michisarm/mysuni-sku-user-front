@@ -1,9 +1,10 @@
+
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
-import { ContentLayout, AlertWin, ConfirmWin } from 'shared';
+import { ContentLayout } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
@@ -15,24 +16,17 @@ import CreateBasicInfoContainer from './CreateBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
 
 
-
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   skProfileService?: SkProfileService
   personalCubeService?: PersonalCubeService
   mediaService?: MediaService
-  boardService?:BoardService
+  boardService?: BoardService
   officeWebService?: OfficeWebService
 }
 
 interface States {
   tags: string
-  alertWinOpen: boolean
-  alertIcon: string
-  alertTitle: string
-  alertType: string
-  alertMessage: string
   isNext: boolean
-  confirmWinOpen: boolean
 }
 
 @inject(mobxHelper.injectFrom(
@@ -46,26 +40,20 @@ interface States {
 @reactAutobind
 class CreateDetailContainer extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      tags: '', alertWinOpen: false,
-      alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
-      isNext: false,
-      confirmWinOpen: false,
-    };
-  }
+  state = {
+    tags: '',
+    isNext: false,
+  };
 
   componentDidMount(): void {
     //
-    const { personalCubeService } = this.props;
-    const { personalCubeId } = this.props.match.params;
-    if (personalCubeService ) {
-      if (!personalCubeId) {
-        this.clearAll();
-      } else {
-        personalCubeService.findPersonalCube(personalCubeId);
-      }
+    const { personalCubeService, match } = this.props;
+    const { personalCubeId } = match.params;
+
+    if (!personalCubeId) {
+      this.clearAll();
+    } else {
+      personalCubeService!.findPersonalCube(personalCubeId);
     }
   }
 
@@ -74,9 +62,8 @@ class CreateDetailContainer extends React.Component<Props, States> {
     const {
       personalCubeService,
     } = this.props;
-    if (personalCubeService) {
-      personalCubeService.clearPersonalCube();
-    }
+
+    personalCubeService!.clearPersonalCube();
   }
 
   routeToCreateList() {
@@ -88,137 +75,117 @@ class CreateDetailContainer extends React.Component<Props, States> {
     //
     const { personalCubeService } = this.props;
     let getTagList = [];
-    if (personalCubeService && name === 'tags' && typeof value === 'string') {
+
+    if (name === 'tags' && typeof value === 'string') {
       getTagList = value.split(',');
-      personalCubeService.changeCubeProps('tags', getTagList);
+      personalCubeService!.changeCubeProps('tags', getTagList);
     }
-    if (personalCubeService && name !== 'tags') personalCubeService.changeCubeProps(name, value);
+    if (name !== 'tags') personalCubeService!.changeCubeProps(name, value);
   }
 
   handleSave(isNext: boolean) {
     //
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const personalCubeObject = PersonalCubeModel.isBlank(personalCube);
+    const personalCubeObject = PersonalCubeModel.getBlankRequiredField(personalCube);
 
-    if (personalCubeObject === 'success') {
-      this.setState({ confirmWinOpen: true, isNext });
-      return;
+    if (personalCubeObject !== 'success') {
+      this.alertRequiredField(personalCubeObject);
     }
-    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
+    else {
+      reactConfirm({
+        title: '저장 안내',
+        message: '입력하신 강좌를 저장 하시겠습니까?',
+        onOk: this.handleOKConfirmWin,
+      });
+
+      this.setState({ isNext });
+    }
   }
 
-  confirmBlank(message: string) {
+  alertRequiredField(message: string) {
     //
-    this.setState({ alertMessage: message, alertWinOpen: true, alertTitle: '필수 정보 입력 안내', alertIcon: 'triangle' });
+    reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
   }
 
-  handleCloseAlertWin() {
+  handleOKConfirmWin() {
     //
-    this.setState({
-      alertWinOpen: false,
-    });
-  }
-
-  handleCloseConfirmWin() {
-    //
-    this.setState({
-      confirmWinOpen: false,
-    });
-  }
-
-  handleOKConfirmWin(mode?: string) {
-    //
-    const { skProfile } = this.props.skProfileService!;
+    const { skProfileService, personalCubeService, match } = this.props;
     const { isNext } = this.state;
-    const { member } = skProfile!;
-    const { name, company, email } = member!;
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { personalCubeId } = this.props.match.params;
-    const { personalCubeService } = this.props;
 
-    if (personalCubeService && !personalCubeId && !mode) {
-      personalCubeService.registerCube({ ...personalCube, creator: { company, email, name }})
+    const { name, company, email } = skProfileService!.skProfile.member;
+    const { personalCube } = personalCubeService!;
+    const { personalCubeId } = match.params;
+
+    if (!personalCubeId) {
+      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name }})
         .then((personalCubeId) => {
-          if (isNext) this.routeToCreateIntro(personalCubeId || '');
-          else this.props.history.push(`../${personalCubeId}`);
+          if (personalCubeId) {
+            this.routeToCreateIntro(personalCubeId);
+          }
+          else {
+            reactAlert({ title: '저장 실패', message: '저장을 실패했습니다. 잠시 후 다시 시도해주세요.' });
+          }
         });
     }
-
-    if (personalCubeService && personalCubeId && mode) {
-      personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+    else {
+      personalCubeService!.modifyPersonalCube(personalCubeId, personalCube)
         .then(() => {
-          if (isNext) this.routeToCreateIntro(personalCubeId || '');
-          else this.setState({ confirmWinOpen: false });
+          if (isNext) {
+            this.routeToCreateIntro(personalCubeId || '');
+          }
         });
     }
-  }
-
-  handleAlertOk(type: string) {
-    //
-    const { personalCubeId } = this.props.match.params;
-    if (type === 'approvalRequest') this.handleOKConfirmWin('modify');
-    if (type === 'justOk') this.handleCloseAlertWin();
-    if (type === 'remove') this.handleDeleteCube(personalCubeId);
   }
 
   onDeleteCube() {
     //
-    const message = '등록된 Cube 정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.';
-    this.setState({
-      alertMessage: message,
-      alertWinOpen: true,
-      alertTitle: 'Create 삭제',
-      alertIcon: 'circle',
-      alertType: 'remove',
+    const { params } = this.props.match;
+
+    reactConfirm({
+      title: '강좌 삭제',
+      message: '등록된 강좌정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.',
+      warning: true,
+      onOk: () => this.handleDeleteCube(params.personalCubeId),
     });
   }
 
   handleDeleteCube(personalCubeId: string) {
     //
-    const { cubeType } = this.props.match.params;
-    const { personalCubeService, mediaService, boardService, officeWebService } = this.props;
+    const { personalCubeService, mediaService, boardService, officeWebService, match, history } = this.props;
+    const { cubeType } = match.params;
 
-    if (personalCubeService && mediaService && boardService && officeWebService) {
-      const cubeIntroId = personalCubeService.personalCube.cubeIntro.id;
-      if (!cubeIntroId) {
-        Promise.resolve()
-          .then(() => personalCubeService.removePersonalCube(personalCubeId))
-          .then(() => this.props.history.push(routePaths.create()));
-      } else {
-        Promise.resolve()
-          .then(() => {
-            if (cubeType === 'Video' || cubeType === 'Audio') mediaService.removeMedia(personalCubeId);
-            if (cubeType === 'Community') boardService.removeBoard(personalCubeId);
-            if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService.removeOfficeWeb(personalCubeId);
-          })
-          .then(() => this.props.history.push(routePaths.create()));
-      }
+    const cubeIntroId = personalCubeService!.personalCube.cubeIntro.id;
+
+    if (!cubeIntroId) {
+      Promise.resolve()
+        .then(() => personalCubeService!.removePersonalCube(personalCubeId))
+        .then(() => history.push(routePaths.create()));
+    }
+    else {
+      Promise.resolve()
+        .then(() => {
+          if (cubeType === 'Video' || cubeType === 'Audio') mediaService!.removeMedia(personalCubeId);
+          if (cubeType === 'Community') boardService!.removeBoard(personalCubeId);
+          if (cubeType === 'Documents' || cubeType === 'WebPage') officeWebService!.removeOfficeWeb(personalCubeId);
+        })
+        .then(() => history.push(routePaths.create()));
     }
   }
 
-  routeToCreateIntro(personalCubeId?: string) {
+  routeToCreateIntro(personalCubeId: string) {
     //
-    const { personalCube } = this.props.personalCubeService ||  {} as PersonalCubeService;
+    const { history,  personalCubeService } = this.props;
+    const { personalCube } = personalCubeService!;
 
-    const personalCubeObject = PersonalCubeModel.typeIsBlank(personalCube);
-    if (personalCubeObject === 'success') {
-      this.props.history.push(routePaths.createIntro(personalCubeId || '', personalCube.contents.type));
-    }
-    if (personalCubeObject !== 'success') this.confirmBlank(personalCubeObject);
-
-
+    history.push(routePaths.createIntro(personalCubeId, personalCube.contents.type));
   }
 
   render() {
-    const {
-      tags, alertWinOpen, confirmWinOpen, alertMessage, alertIcon, alertTitle, alertType,
-    } = this.state;
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { personalCubeId } = this.props.match.params;
-
-    const message = (
-      <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
-    );
+    //
+    const { personalCubeService, match } = this.props;
+    const { tags } = this.state;
+    const { personalCube } = personalCubeService!;
+    const { params } = match;
 
     return (
       <ContentLayout
@@ -240,7 +207,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
           <div className="apl-form-wrap create">
             <Form>
               <CreateBasicInfoContainer
-                personalCubeId={personalCubeId}
+                personalCubeId={params.personalCubeId}
                 personalCube={personalCube}
                 onChangePersonalCubeProps={this.onChangePersonalCubeProps}
               />
@@ -250,7 +217,7 @@ class CreateDetailContainer extends React.Component<Props, States> {
                 tags={tags}
               />
               {
-                personalCubeId ?
+                params.personalCubeId ?
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
@@ -260,30 +227,9 @@ class CreateDetailContainer extends React.Component<Props, States> {
                   :
                   <div className="buttons">
                     <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    {/*<Button type="button" className="fix line" onClick={this.handleSave}>Save</Button>*/}
                     <Button type="button" className="fix bg" onClick={() => this.handleSave(true)}>Next</Button>
                   </div>
               }
-              <AlertWin
-                message={alertMessage}
-                handleClose={this.handleCloseAlertWin}
-                open={alertWinOpen}
-                alertIcon={alertIcon}
-                title={alertTitle}
-                type={alertType}
-                handleOk={this.handleAlertOk}
-              />
-              <ConfirmWin
-                id={personalCubeId}
-                message={message}
-                open={confirmWinOpen}
-                handleClose={this.handleCloseConfirmWin}
-                handleOk={this.handleOKConfirmWin}
-                //handleSaveAndApprove={this.handleSaveAndApprove}
-                title="저장 안내"
-                buttonYesName="OK"
-                buttonNoName="Cancel"
-              />
             </Form>
           </div>
         </Segment>
