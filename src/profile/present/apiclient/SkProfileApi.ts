@@ -82,6 +82,10 @@ export default class SkProfileApi {
     return axios.put<void>(this.URL + `/summary`, nameValues);
   }
 
+  modifyStudySummaryFirstTime(nameValues : NameValueList) {
+    return axios.put<void>(this.URL + `/summary/firsttime`, nameValues);
+  }
+
   //Manager, SuperAdmin{
   modifyStudySummaryByProfileId(profileId:string, nameValues:NameValueList) {
     return axios.put<void>(this.URL + `/summary/${profileId}`, nameValues);

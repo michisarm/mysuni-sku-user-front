@@ -43,24 +43,29 @@ class PisAgreementContainer extends Component<Props> {
   onOk() {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
-    const { studySummary } = skProfileService as SkProfileService;
+    // const { studySummary } = skProfileService as SkProfileService;
 
     const { all, mySuni, domestic, international } = this.state;
 
     if ( all || (mySuni && domestic && international)) {
       if (skProfileService) {
         skProfileService.findSkProfile();
-        skProfileService.findStudySummary();
+        // skProfileService.findStudySummary();
 
         if (skProfile ) {
           skProfile.pisAgreement.signed = true;
           skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
           skProfileService.modifySkProfile(new SkProfileUdo({} as any, new PisAgreementModel(skProfile.pisAgreement)));
 
-          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
-            && studySummary.favoriteChannels
-            && studySummary.favoriteChannels.idNames.length < 4
-            && studySummary.favoriteLearningType ) {
+          // if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
+          //   && studySummary.favoriteChannels
+          //   && studySummary.favoriteChannels.idNames.length < 4
+          //   && studySummary.favoriteLearningType ) {
+          //   this.props.history.push('/');
+          // } else {
+          //   this.props.history.push('/profile/interest/');
+          // }
+          if ( skProfile.studySummaryConfigured ) {
             this.props.history.push('/');
           } else {
             this.props.history.push('/profile/interest/');

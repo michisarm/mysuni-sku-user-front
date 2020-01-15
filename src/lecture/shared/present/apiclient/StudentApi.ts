@@ -28,7 +28,7 @@ class StudentApi {
 
   findStudent(rollBookId: string) {
     return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 
   findStudentCount(rollBookId: string) {

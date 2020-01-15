@@ -1,5 +1,5 @@
-import {computed, decorate, observable} from 'mobx';
-import { PatronKey, LangStrings, DramaEntityObservableModel } from 'shared';
+import { computed, decorate, observable } from 'mobx';
+import { LangStrings, DramaEntityObservableModel } from 'shared';
 import { SequenceModel } from './SequenceModel';
 import { QuestionItemType } from './QuestionItemType';
 import QuestionItems from './QuestionItems';

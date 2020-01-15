@@ -20,6 +20,7 @@ export class SkProfileModel implements DramaEntity {
   pisAgreement: PisAgreementModel = new PisAgreementModel();
   signedDate : string = '';
   passwordAuthenticated : boolean = false;
+  studySummaryConfigured: boolean = false;
 
   constructor(skProfile?: SkProfileModel) {
     //
@@ -88,4 +89,5 @@ decorate(SkProfileModel, {
   pisAgreement: observable,
   signedDate: observable,
   passwordAuthenticated: observable,
+  studySummaryConfigured: observable,
 });

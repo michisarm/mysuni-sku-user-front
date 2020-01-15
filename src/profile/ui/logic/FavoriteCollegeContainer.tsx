@@ -97,7 +97,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     if (favorites.length < 3 ) {
       reactConfirm({
         title: '알림',
-        message: '관심 분야는 3개이상 선택해 주세요.</br> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
+        message: '관심 분야는 3개이상 선택해 주세요.<br/> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
         onCancel: () => this.props.history.push('/profile/interest/job'),
       });
     }
