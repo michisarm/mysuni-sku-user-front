@@ -111,12 +111,11 @@ class ChannelLecturesLineContainer extends Component<Props> {
                 results.map((lecture: LectureModel, index: number) => {
                   const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
 
-                  // rating={lecture.reviewSummary.average}
                   return (
                     <Lecture
                       key={`lecture-${index}`}
                       model={lecture}
-                      rating={3}
+                      rating={lecture.rating}
                       thumbnailImage={lecture.baseUrl || undefined}
                       action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                       onAction={() => this.onActionLecture(inMyLecture || lecture)}

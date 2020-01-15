@@ -32,6 +32,7 @@ export const Basic = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    rating: 0,
   });
 
   const lectureProps = {
@@ -97,6 +98,7 @@ export const Required = () => {
     cubeType: CubeType.Documents,
     learningTime: 40,
     state: undefined,
+    rating: 0,
   });
 
   return (
@@ -128,6 +130,7 @@ export const Line = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    rating: 0,
   });
 
   const lectureProps = {
@@ -195,6 +198,7 @@ export const Course = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    rating: 0,
   });
 
   const lectureProps = {

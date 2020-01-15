@@ -116,6 +116,11 @@ class LectureModel extends DramaEntityObservableModel {
     }
     return undefined;
   }
+
+  @computed
+  get rating() {
+    return this.reviewSummary && this.reviewSummary.average || 0;
+  }
 }
 
 decorate(LectureModel, {

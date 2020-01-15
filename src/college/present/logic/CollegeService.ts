@@ -250,6 +250,13 @@ export default class CollegeService {
     });
     return list;
   }
+
+  @computed
+  get channelMap() {
+    const map = new Map<string, ChannelModel>();
+    this._channels.map(channel => map.set(channel.channelId, channel));
+    return map;
+  }
 }
 
 Object.defineProperty(CollegeService, 'instance', {
