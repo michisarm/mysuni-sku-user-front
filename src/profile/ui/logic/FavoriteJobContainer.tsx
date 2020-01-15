@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Button, Icon, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { ContentLayout } from 'shared';
+import { ContentLayout, IdName } from 'shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
@@ -66,6 +66,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (collegeService && skProfileService ) {
       collegeService.findJobGroupById(data.value);
       skProfileService.setFavoriteJobGroupProp('favoriteJobGroup', { id: data.value, name: event.target.innerText });
+      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
     }
 
   }
@@ -122,13 +123,13 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     if (skProfileService ) {
       if (!favoriteJobGroup.favoriteJobGroup || !favoriteJobGroup.favoriteJobGroup!.id
         || !favoriteJobGroup.favoriteJobDuty || !favoriteJobGroup.favoriteJobDuty!.id ) {
-        reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
+        reactAlert({ title: '알림', message: '관심 직군과 관심 직무를 선택해주세요.' });
       } else {
         skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup, skProfileService.skProfile.pisAgreement);
         skProfileService.modifySkProfile(skProfileUdo);
+        this.props.history.push('/profile/interest/learningType');
       }
     }
-    this.props.history.push('/profile/interest/learningType');
   }
 
   render() {

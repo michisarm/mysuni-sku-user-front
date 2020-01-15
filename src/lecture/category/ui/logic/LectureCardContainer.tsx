@@ -287,12 +287,11 @@ class LectureCardContainer extends Component<Props, State> {
 
   getOnCancel() {
     const { cubeType, student, studentService, lectureCardId } = this.props;
-    console.log(student);
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled)) {
+        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
           return () => {
             studentService!.removeStudent(student.rollBookId)
               .then(() => {
