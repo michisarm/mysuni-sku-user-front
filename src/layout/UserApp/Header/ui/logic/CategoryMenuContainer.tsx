@@ -98,6 +98,17 @@ class CategoryMenuContainer extends Component<Props, State> {
     this.onClose();
   }
 
+  onConfirmFavorite() {
+    //
+    const { match, history } = this.props;
+
+    this.findStudySummary();
+
+    if (match.path === '/') {
+      history.replace('/');
+    }
+  }
+
   renderMenuActions() {
     //
     return (
@@ -150,7 +161,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={channels}
-          onConfirmCallback={this.findStudySummary}
+          onConfirmCallback={this.onConfirmFavorite}
         />
       </>
     );

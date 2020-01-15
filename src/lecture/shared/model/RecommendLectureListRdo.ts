@@ -27,6 +27,7 @@ class RecommendLectureListRdo {
 decorate(RecommendLectureListRdo, {
   recommandLectureRdos: observable,
   recommendLectureRdos: observable,
+  totalCount: observable,
 });
 
 export default RecommendLectureListRdo;

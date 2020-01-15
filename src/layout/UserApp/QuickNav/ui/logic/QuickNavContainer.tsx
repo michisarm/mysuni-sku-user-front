@@ -4,6 +4,7 @@ import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import mainRoutePaths from 'main/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
@@ -112,6 +113,15 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
+  onConfirmFavorite() {
+    //
+    const { match, history } = this.props;
+
+    if (match.path === '/') {
+      history.replace('/');
+    }
+  }
+
   render() {
     //
     const { skProfileService } = this.props;
@@ -155,7 +165,7 @@ class QuickNavContainer extends Component<Props, State> {
                   <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClose} />
                 )}
                 favorites={favoriteChannels}
-                onConfirmCallback={() => {}}
+                onConfirmCallback={this.onConfirmFavorite}
               />
               <SiteMapModalContainer
                 trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClose} />}
