@@ -65,15 +65,15 @@ export default class SkProfileApi {
     return axios.delete(this.URL + `/${profileId}`);
   }
 
-  //Manager, SuperManager 조회
-  findStudySummaryByProfileId(profileId : string) {
-    return axios.get<StudySummary>(this.URL + `/summary/${profileId}`)
-      .then((response) => response && response.data || null);
-  }
-
   //본인 StudySummary조회
   findStudySummary() {
     return axios.get<StudySummary>(this.URL + '/summary')
+      .then((response) => response && response.data || null);
+  }
+
+  //Manager, SuperManager 조회
+  findStudySummaryByProfileId(profileId : string) {
+    return axios.get<StudySummary>(this.URL + `/summary/${profileId}`)
       .then((response) => response && response.data || null);
   }
 
