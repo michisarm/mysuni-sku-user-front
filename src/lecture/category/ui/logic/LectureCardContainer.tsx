@@ -53,7 +53,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { rollBookService, lectureCardId, student, studentService, studentCdo } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
     if (student && student.id) {
-      studentService!.removeStudent(rollBook.id)
+      studentService!.removeStudent(student.rollBookId)
         .then(() => this.registerStudent({ ...studentCdo, rollBookId: rollBook.id }));
     }
     else this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
