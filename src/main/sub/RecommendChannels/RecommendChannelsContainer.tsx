@@ -19,11 +19,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureService?: LectureService
 }
 
-interface State {
-  offset: number
-  totalCount: number
-}
-
 interface RouteParams {
   pageNo: string
 }
@@ -34,15 +29,10 @@ interface RouteParams {
 ))
 @observer
 @reactAutobind
-class RecommendChannelsContainer extends Component<Props, State> {
+class RecommendChannelsContainer extends Component<Props> {
   //
   CHANNELS_SIZE = 5;
   LECTURES_SIZE = 8;
-
-  state = {
-    offset: 0,
-    totalCount: 0,
-  };
 
 
   componentDidMount(): void {
@@ -69,36 +59,25 @@ class RecommendChannelsContainer extends Component<Props, State> {
 
   async findPagingRecommendLectures() {
     //
-    const { lectureService } = this.props;
+    const { match, lectureService } = this.props;
+    const pageNo = parseInt(match.params.pageNo, 10);
 
-    const rdo = await lectureService!.findPagingRecommendLectures(this.CHANNELS_SIZE, this.LECTURES_SIZE);
-    this.setState({
-      totalCount: rdo.totalCount,
-      // offset: rdo.recommendLectureRdos.length,
-      // offset:
-    });
+    lectureService!.findPagingRecommendLectures(pageNo * this.CHANNELS_SIZE, this.LECTURES_SIZE);
   }
 
   async addPagingRecommendLectures() {
     //
     const { lectureService } = this.props;
-    const { offset } = this.state;
 
-    const rdo = await lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, parseInt(this.props.match.params.pageNo, 10) - 1, this.LECTURES_SIZE, 0);
-
-    this.setState({
-      totalCount: rdo.totalCount,
-      offset: rdo.recommendLectureRdos.length,
-    });
+    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, parseInt(this.props.match.params.pageNo, 10) - 1, this.LECTURES_SIZE, 0);
   }
 
   isContentMore() {
     //
     const { lectureService } = this.props;
-    const { recommendLectures } = lectureService!;
-    const { offset, totalCount } = this.state;
+    const { recommendLectures, recommendLecturesCount } = lectureService!;
 
-    return recommendLectures.length < totalCount;
+    return recommendLectures.length < recommendLecturesCount;
   }
 
   routeTo(e: any, data: any) {
@@ -118,11 +97,12 @@ class RecommendChannelsContainer extends Component<Props, State> {
     //
     const { skProfileService, lectureService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
-    const { recommendLectures } = lectureService!;
+    const { _recommendLectureListRdo } = lectureService!;
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
+
 
     return (
       <Wrapper>
@@ -135,8 +115,8 @@ class RecommendChannelsContainer extends Component<Props, State> {
         />
 
         {
-          recommendLectures && recommendLectures.length > 0 ?
-            recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
+          _recommendLectureListRdo.recommendLectureRdos && _recommendLectureListRdo.recommendLectureRdos.length > 0 ?
+            _recommendLectureListRdo.recommendLectureRdos.map((recommendLecture: RecommendLectureRdo, index: number) => (
               <ChannelLecturesLine
                 key={`channel_cont_${index}`}
                 channel={new ChannelModel(recommendLecture.channel)}
@@ -147,9 +127,9 @@ class RecommendChannelsContainer extends Component<Props, State> {
             :
             <EmptyContents />
         }
-        {/*{ this.isContentMore() && (*/}
-        {/*  <SeeMoreButtonView onClick={this.onClickSeeMore} />*/}
-        {/*)}*/}
+        { this.isContentMore() && (
+          <SeeMoreButtonView onClick={this.onClickSeeMore} />
+        )}
 
       </Wrapper>
     );

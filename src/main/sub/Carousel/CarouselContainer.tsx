@@ -102,7 +102,7 @@ class CarouselContainer extends Component<Props, State> {
   async onDownloadManual() {
     //
     const depotFile: any = await depot.getDepotFiles('dn-3', true);
-
+    console.log('depotFile', depotFile);
     if (depotFile) {
       depot.downloadDepotFile(depotFile.id);
     }
