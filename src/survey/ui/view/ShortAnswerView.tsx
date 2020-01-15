@@ -8,6 +8,7 @@ import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 
 interface Props {
   answer: AnswerItemModel
+  disabled?: boolean
   onSetAnswer:(answer: string) => void
 }
 
@@ -27,7 +28,7 @@ class ShortAnswerView extends React.Component<Props, State> {
 
   render() {
     const { focus, error } = this.state;
-    const { answer, onSetAnswer } = this.props;
+    const { answer, disabled, onSetAnswer } = this.props;
     const { sentence } = answer;
 
     return (
@@ -37,6 +38,7 @@ class ShortAnswerView extends React.Component<Props, State> {
           type="text"
           placeholder="답변을 입력해주세요. (최대 100자 입력 가능)"
           value={sentence}
+          disabled={disabled}
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
           onChange={(e) => {

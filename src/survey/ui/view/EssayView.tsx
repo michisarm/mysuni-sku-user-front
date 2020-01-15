@@ -7,6 +7,7 @@ import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 
 interface Props {
   answer: AnswerItemModel
+  disabled?: boolean
   onSetAnswer:(answer: string) => void
 }
 
@@ -26,7 +27,7 @@ class EssayView extends React.Component<Props, State> {
 
   render() {
     const { focus, error } = this.state;
-    const { answer, onSetAnswer } = this.props;
+    const { answer, disabled, onSetAnswer } = this.props;
     const { sentence } = answer;
 
     return (
@@ -35,6 +36,7 @@ class EssayView extends React.Component<Props, State> {
         <span className="count"><span className="now">{sentence.length}</span>/<span className="max">1000</span></span>
         <textarea
           placeholder="답변을 입력해주세요."
+          disabled={disabled}
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
           onChange={(e) => {
