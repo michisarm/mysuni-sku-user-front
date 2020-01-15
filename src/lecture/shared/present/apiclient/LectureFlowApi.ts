@@ -2,7 +2,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureRdoModel from '../../model/LectureRdoModel';
-import RecommendLectureRdo from '../../model/RecommendLectureRdo';
 import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
 import LectureModel from '../../model/LectureModel';
