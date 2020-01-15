@@ -33,8 +33,8 @@ class MultiChoiceView extends React.Component<Props, State> {
                 label={item.value}
                 value={item.number}
                 checked={answer.itemNumbers.includes(item.number)}
-                onChange={(e: any) => {
-                  const value = e.target.value;
+                onChange={(e: any, data: any) => {
+                  const value = data.value;
                   let newItemNumbers: string[] = [];
                   if (answer.itemNumbers.includes(value)) {
                     newItemNumbers = answer.itemNumbers.filter(number => number !== value);

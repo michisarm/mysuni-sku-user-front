@@ -5,8 +5,10 @@ import { observer } from 'mobx-react';
 
 import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 import { NumberValue } from '../../form/model/NumberValue';
+import { QuestionModel } from '../../form/model/QuestionModel';
 
 interface Props {
+  question: QuestionModel
   answer: AnswerItemModel
   items: NumberValue[]
   onSetAnswer:(answer: string[]) => void
@@ -20,7 +22,7 @@ interface State {
 class SingleChoiceView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, items, onSetAnswer } = this.props;
+    const { answer, question, items, onSetAnswer } = this.props;
 
     return (
       <List>
@@ -31,7 +33,7 @@ class SingleChoiceView extends React.Component<Props, State> {
               <Radio
                 className="base"
                 label={item.value}
-                name="radioGroup"
+                name={`survey_radio_${question.sequence.toSequenceString()}`}
                 value={item.number}
                 checked={answer.itemNumbers.includes(item.number)}
                 onChange={(e: any, data: any) => {
