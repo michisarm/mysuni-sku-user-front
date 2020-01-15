@@ -21,13 +21,13 @@ class CreateMovieDetailModal extends React.Component<Props> {
   handleClickDownload() {
     const userAgent = window.navigator.userAgent;
 
-    if (userAgent.indexOf('Mac')) {
+    if (userAgent.includes('Mac')) {
       window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/Panopto%20Recorder.pkg?arch=None&useCustomBinary=True');
     }
-    if (userAgent.indexOf('Windows')) {
-      if (userAgent.indexOf('x64')) {
+    else if (userAgent.includes('Windows')) {
+      if (userAgent.includes('x64')) {
         window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=Amd64&useCustomBinary=True');
-      } else if (userAgent.indexOf('x86')) {
+      } else if (userAgent.includes('x86')) {
         window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=X86&useCustomBinary=True');
       }
     }
