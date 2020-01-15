@@ -50,19 +50,33 @@ class LectureCardContainer extends Component<Props, State> {
   surveyModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    const { rollBookService, lectureCardId, student, studentService, studentCdo } = this.props;
+    const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
+
     if (student && student.id) {
       studentService!.removeStudent(student.rollBookId)
         .then(() => this.registerStudent({ ...studentCdo, rollBookId: rollBook.id }));
     }
-    else this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+    else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
+      this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+    }
+
+    if (!classroom.enrolling.enrollingAvailable) {
+      if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
+        window.open(typeViewObject.siteUrl, '_blank');
+      }
+      else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+    }
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
-    const { studentCdo, student } = this.props;
+    const { studentCdo, student, studentService } = this.props;
     if (!student || !student.id) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
+    }
+    else if (student.proposalState === ProposalState.Canceled) {
+      //TODO
+      // studentService!.modifyLearningState()
     }
   }
 
@@ -195,7 +209,7 @@ class LectureCardContainer extends Component<Props, State> {
             },
           };
         }
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
           && (!studentJoins || !studentJoins.length || !studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length)) {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
@@ -269,11 +283,12 @@ class LectureCardContainer extends Component<Props, State> {
 
   getOnCancel() {
     const { cubeType, student, studentService, lectureCardId } = this.props;
+    console.log(student);
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && !student.learningState) {
+        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled)) {
           return () => {
             studentService!.removeStudent(student.rollBookId)
               .then(() => {

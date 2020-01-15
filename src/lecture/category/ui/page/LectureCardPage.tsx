@@ -294,14 +294,17 @@ class LectureCardPage extends Component<Props, State> {
     let siteUrl = '';
 
     if (classrooms.length) {
-      if (classrooms.length === 1) classroom = classrooms[0];
+      if (classrooms.length === 1) {
+        classroom = classrooms[0];
+        if (!classroom.enrolling.enrollingAvailable) siteUrl = classroom.operation.siteUrl;
+      }
       else {
         //TODO 가장 가까운날짜
         classroom = classrooms[classrooms.length - 1];
       }
     }
     if (studentJoin && studentJoin.learningState === LearningState.Progress) {
-      const index = classrooms.map(cineroom => cineroom.round).findIndex(round => round === studentJoin.round);
+      const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
       if (index >= 0) {
         siteUrl = classrooms[index].operation.siteUrl;
       }
