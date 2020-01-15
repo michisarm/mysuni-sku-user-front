@@ -10,6 +10,7 @@ import { QuestionModel } from '../../form/model/QuestionModel';
 interface Props {
   question: QuestionModel
   answer: AnswerItemModel
+  disabled?: boolean
   items: NumberValue[]
   onSetAnswer:(answer: string[]) => void
 }
@@ -22,7 +23,7 @@ interface State {
 class SingleChoiceView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, question, items, onSetAnswer } = this.props;
+    const { answer, disabled, question, items, onSetAnswer } = this.props;
 
     return (
       <List>
@@ -35,6 +36,7 @@ class SingleChoiceView extends React.Component<Props, State> {
                 label={item.value}
                 name={`survey_radio_${question.sequence.toSequenceString()}`}
                 value={item.number}
+                disabled={disabled}
                 checked={answer.itemNumbers.includes(item.number)}
                 onChange={(e: any, data: any) => {
                   const newItemNumbers = [ data.value ];

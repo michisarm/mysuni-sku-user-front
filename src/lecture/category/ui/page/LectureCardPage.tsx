@@ -340,6 +340,7 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.linkMediaUrl;
         break;
       case MediaType.InternalMedia:
+      case MediaType.InternalMediaUpload:
         videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
