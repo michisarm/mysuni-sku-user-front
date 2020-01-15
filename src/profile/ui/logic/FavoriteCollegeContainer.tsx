@@ -55,6 +55,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     collegeService!.findAllColleges();
     skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
+    collegeService!.findAllChannel();
 
     const channels = studySummaryFavoriteChannels.map(channel =>
       new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
@@ -111,8 +112,10 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { colleges, college } = this.props.collegeService;
+    const { colleges, college, channelMap } = this.props.collegeService;
     const { favorites } = this.state;
+
+    console.log(channelMap);
 
     return (
       <ContentLayout breadcrumb={[
@@ -156,29 +159,34 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                     <div className="channel">
                       <ul>
                         {
-                          college && college.channels.map((channel, index) => (
-                            <li key={index}>
-                              <div className="ui base checkbox popup-wrap">
-                                <input type="checkbox"
-                                  id={`checkbox_${index}`}
-                                  className="hidden"
-                                  tabIndex={index}
-                                  checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
-                                  onChange={() => this.onSelectChannel(channel)}
-                                />
-                                <Popup className="custom-black"
-                                  content={channel.description /*channel.description*/}
-                                  inverted
-                                  style={style}
-                                  trigger={
-                                    <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
-                                      {channel.name} <span>{/*channel contents 수*/}</span>
-                                    </label>
-                                       }
-                                />
-                              </div>
-                            </li>
-                          )) || ''
+                          college && college.channels.map((channel, index) => {
+                            const ch = channelMap.get(channel.id) || new ChannelModel();
+                            return (
+                              <li key={index}>
+                                <div className="ui base checkbox popup-wrap">
+                                  <input
+                                    type="checkbox"
+                                    id={`checkbox_${index}`}
+                                    className="hidden"
+                                    tabIndex={index}
+                                    checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                    onChange={() => this.onSelectChannel(channel)}
+                                  />
+                                  <Popup
+                                    className="custom-black"
+                                    content={ch.description}
+                                    inverted
+                                    style={style}
+                                    trigger={
+                                      <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
+                                        {channel.name} <span>{/*channel contents 수*/}</span>
+                                      </label>
+                                    }
+                                  />
+                                </div>
+                              </li>
+                            );
+                          }) || ''
                         }
                       </ul>
                     </div>
