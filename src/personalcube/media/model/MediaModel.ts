@@ -70,16 +70,36 @@ export class MediaModel implements DramaEntity {
   }
 
   static isBlank(media: MediaModel) : string {
-    if (media.mediaContents && media.mediaType === MediaType.InternalMedia && !media.mediaContents.internalMedias.length) {
+    //
+    if (!media.mediaContents) {
+      return 'success';
+    }
+
+    if (!media.mediaType) return '교육자료를 입력해주세요';
+
+    if (media.mediaType === MediaType.LinkMedia) {
+      if (!media.mediaContents.linkMediaUrl) {
+        return '외부 영상 url을 입력해주세요';
+      }
+      else if (!media.mediaContents.linkMediaUrl.includes('http://') && !media.mediaContents.linkMediaUrl.includes('https://')) {
+        return '정확한 url을 입력해주세요';
+      }
+    }
+    if (media.mediaType === MediaType.ContentsProviderMedia) {
+      if (!media.mediaContents.contentsProvider.url) {
+        return 'cp 영상 url을 입력해주세요';
+      }
+      else if (!media.mediaContents.contentsProvider.url.includes('http://') && !media.mediaContents.contentsProvider.url.includes('https://')) {
+        return '정확한 url을 입력해주세요';
+      }
+    }
+    if (media.mediaType === MediaType.InternalMedia && !media.mediaContents.internalMedias.length) {
       return '내부 영상을 선택해주세요';
     }
-    if (media.mediaContents && media.mediaType === MediaType.LinkMedia && !media.mediaContents.linkMediaUrl) {
-      return '영상 URL을 입력해 주세요.';
-    }
-    if (media.mediaContents && media.mediaContents.linkMediaUrl && media.mediaContents.linkMediaUrl.includes('sku.ap.panopto.com')) {
+    if (media.mediaContents.linkMediaUrl && media.mediaContents.linkMediaUrl.indexOf('sku.ap.panopto.com') !== -1) {
       return 'sku.ap.panopto.com 동영상은 “교육자료” 항목에서 “내부 영상”을 선택하여 “동영상 선택” 버튼을 통해 등록해주시기 바랍니다.';
     }
-    if (media.mediaContents && media.mediaContents.contentsProvider && media.mediaContents.contentsProvider.url.includes('sku.ap.panopto.com')) {
+    if (media.mediaContents.contentsProvider && media.mediaContents.contentsProvider.url.indexOf('sku.ap.panopto.com') !== -1) {
       return 'sku.ap.panopto.com 동영상은 “교육자료” 항목에서 “내부 영상”을 선택하여 “동영상 선택” 버튼을 통해 등록해주시기 바랍니다.';
     }
     return 'success';
