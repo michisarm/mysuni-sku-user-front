@@ -4,7 +4,6 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { LectureService, RecommendLectureRdo, ChannelLecturesLine } from 'lecture';
 import { ChannelModel } from 'college';
 import { SkProfileService } from 'profile';
@@ -14,21 +13,23 @@ import { Wrapper, EmptyContents } from './RecommendElementsView';
 
 
 interface Props extends RouteComponentProps {
-  lectureService?: LectureService
-  reviewService?: ReviewService
   skProfileService?: SkProfileService
+  lectureService?: LectureService
 }
 
 @inject(mobxHelper.injectFrom(
-  'lecture.lectureService',
-  'shared.reviewService',
   'profile.skProfileService',
+  'lecture.lectureService',
 ))
 @observer
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props> {
   //
+  LECTURES_SIZE = 8;
+
+
   componentDidMount(): void {
+    //
     this.findPagingRecommendLectures();
     this.findStudySummary();
   }
@@ -43,19 +44,7 @@ class RecommendChannelsContainer extends Component<Props> {
     //
     const { lectureService } = this.props;
 
-    lectureService!.findPagingRecommendLectures(8, 0);
-    // .then((recommendLectures) => {
-    //   let feedbackIds: string[] = [];
-    //
-    //   if (recommendLectures && recommendLectures.length > 0) {
-    //     recommendLectures.map(recommendLecture => {
-    //       if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length > 0) {
-    //         feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
-    //       }
-    //     });
-    //     reviewService!.findReviewSummariesByFeedbackIds(feedbackIds, false);
-    //   }
-    // });
+    lectureService!.findPagingRecommendLectures(this.LECTURES_SIZE, 0);
   }
 
   routeTo(e: any, data: any) {
@@ -67,9 +56,9 @@ class RecommendChannelsContainer extends Component<Props> {
   render() {
     //
     const { skProfileService, lectureService } = this.props;
-
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { recommendLectures } = lectureService!;
+
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );

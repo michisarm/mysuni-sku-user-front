@@ -37,14 +37,10 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     favoriteChannels: [],
   };
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    //
-    if (prevState.open !== this.state.open && this.state.open) {
-      this.props.collegeService!.findAllColleges();
-    }
-  }
 
   onOpenModal() {
+    //
+    this.props.collegeService!.findAllColleges();
     this.setState({
       open: true,
       favoriteChannels: [ ...this.props.favorites ],

@@ -119,13 +119,6 @@ class SiteMapModalContainer extends Component<Props, State> {
   //   this.setSiteMapWithCount();
   // }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-    //
-    if (prevState.open !== this.state.open && this.state.open) {
-      this.setSiteMapWithCount();
-    }
-  }
-
   async setSiteMapWithCount() {
     //
     const { collegeLectureCountService } = this.props;
@@ -164,6 +157,7 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.setSiteMapWithCount();
     this.setState({ open: true });
   }
 
