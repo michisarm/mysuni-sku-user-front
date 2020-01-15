@@ -41,6 +41,8 @@ class LecturesByChannelContainer extends Component<Props, State> {
   //
   PAGE_KEY = 'recommendLecture.channel';
 
+  CHANNEL_SIZE = 5;
+
   PAGE_SIZE = 8;
 
   state = {
@@ -121,7 +123,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
     inMyLectureService!.findAllInMyLectures();
 
-    const lectures = await lectureService!.addPagingRecommendLectures(limit, offset, params.channelId, sorting);
+    const lectures = await lectureService!.addPagingRecommendLectures(this.CHANNEL_SIZE, 0, limit, offset, params.channelId, sorting);
     let feedbackIds: string[] = [];
     if (lectures && lectures.results && lectures.results.length) {
       feedbackIds = feedbackIds.concat(lectures.results.map(lecture => lecture.reviewId));

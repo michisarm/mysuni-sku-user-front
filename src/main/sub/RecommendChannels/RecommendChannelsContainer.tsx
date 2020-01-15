@@ -25,7 +25,8 @@ interface Props extends RouteComponentProps {
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props> {
   //
-  LECTURES_SIZE = 4;
+  CHANNELS_SIZE = 5;
+  LECTURES_SIZE = 8;
 
 
   componentDidMount(): void {
@@ -44,7 +45,7 @@ class RecommendChannelsContainer extends Component<Props> {
     //
     const { lectureService } = this.props;
 
-    lectureService!.findPagingRecommendLectures(this.LECTURES_SIZE, 0);
+    lectureService!.findPagingRecommendLectures(this.CHANNELS_SIZE, 0, this.LECTURES_SIZE, 0);
   }
 
   routeTo(e: any, data: any) {
