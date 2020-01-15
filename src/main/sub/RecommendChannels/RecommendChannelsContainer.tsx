@@ -36,7 +36,7 @@ interface RouteParams {
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props, State> {
   //
-  CHANNELS_SIZE = 50;
+  CHANNELS_SIZE = 5;
   LECTURES_SIZE = 8;
 
   state = {
