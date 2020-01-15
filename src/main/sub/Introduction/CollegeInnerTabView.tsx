@@ -224,7 +224,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPages%2FEmbed.aspx%3Fid=8bb85f35-4a73-413d-b1f6-ab3300a5eca7&offerviewer=false"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -416,7 +416,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPages%2FEmbed.aspx%3Fid=8bb85f35-4a73-413d-b1f6-ab3300a5eca7&offerviewer=false"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
