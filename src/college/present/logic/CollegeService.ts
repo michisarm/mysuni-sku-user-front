@@ -257,6 +257,15 @@ export default class CollegeService {
     this._channels.map(channel => map.set(channel.channelId, channel));
     return map;
   }
+
+  @computed
+  get totalChannelCount() {
+    let total = 0;
+    this._colleges.map(college => {
+      total += college.channels.length;
+    });
+    return total;
+  }
 }
 
 Object.defineProperty(CollegeService, 'instance', {
