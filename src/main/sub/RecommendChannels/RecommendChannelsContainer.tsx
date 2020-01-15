@@ -97,12 +97,11 @@ class RecommendChannelsContainer extends Component<Props> {
     //
     const { skProfileService, lectureService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
-    const { _recommendLectureListRdo } = lectureService!;
+    const { recommendLectures } = lectureService!;
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-
 
     return (
       <Wrapper>
@@ -115,8 +114,8 @@ class RecommendChannelsContainer extends Component<Props> {
         />
 
         {
-          _recommendLectureListRdo.recommendLectureRdos && _recommendLectureListRdo.recommendLectureRdos.length > 0 ?
-            _recommendLectureListRdo.recommendLectureRdos.map((recommendLecture: RecommendLectureRdo, index: number) => (
+          recommendLectures && recommendLectures.length > 0 ?
+            recommendLectures.map((recommendLecture: RecommendLectureRdo, index: number) => (
               <ChannelLecturesLine
                 key={`channel_cont_${index}`}
                 channel={new ChannelModel(recommendLecture.channel)}
