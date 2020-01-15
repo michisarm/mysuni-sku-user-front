@@ -36,11 +36,11 @@ class CategoryMenuContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  async componentDidMount() {
+
+  async findCollegeLectureCount() {
     //
     const { collegeLectureCountService } = this.props;
 
-    this.findStudySummary();
     const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
 
     if (collegeLectureCounts.length > 0) {
@@ -56,6 +56,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.findCollegeLectureCount();
+    this.findStudySummary();
     this.setState({ categoryOpen: true });
   }
 

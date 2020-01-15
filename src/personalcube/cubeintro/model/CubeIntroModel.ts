@@ -85,6 +85,7 @@ export class CubeIntroModel implements DramaEntity {
     if (!cubeIntro.description.description) return '교육내용';
     if (!cubeIntro.learningTime) return '교육시간';
     if (!cubeIntro.difficultyLevel) return '난이도';
+    if (!cubeIntro.operation.organizer.id) return '교육기관/출처';
     // 주관사(출처) 확인
     return 'success';
   }

@@ -5,7 +5,7 @@ import './theme.css';
 /** Style for app */
 import 'semantic-ui-css/semantic.css';
 import '../src/style/css/main.b6db522c.chunk.css';
-import '../src/style/css/2.e4064420.chunk.css';
+import '../src/style/css/2.0c8990f1.chunk.css';
 
 import React from 'react';
 import { configure, addParameters, addDecorator } from '@storybook/react';

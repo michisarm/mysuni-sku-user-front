@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState } from 'shared';
+import { CubeType, LearningState, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer } from 'assistant';
-import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
+import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
+import StudentModel from '../../../shared/model/StudentModel';
 
 
 interface Props {
@@ -20,7 +22,8 @@ interface Props {
   inMyLectureService?: InMyLectureService
   inMyLectureCdo: InMyLectureCdoModel
   studentCdo: StudentCdoModel
-  studentJoins: StudentJoinRdoModel[]
+  studentJoins?: StudentJoinRdoModel[]
+  student?: StudentModel
   inMyLecture: InMyLectureModel
   lectureCardId: string
   cubeType: CubeType
@@ -44,26 +47,56 @@ class LectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
   examModal: any = null;
+  surveyModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    const { rollBookService, lectureCardId, studentJoins, studentService, studentCdo } = this.props;
+    const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
-    if (!studentJoins.length) {
-      studentService!.registerStudent({ ...studentCdo, rollBookId: rollBook.id })
-        .then(() => {
-          studentService!.findIsJsonStudent(lectureCardId);
-          studentService!.findStudentCount(rollBook.id);
-        });
+
+    if (student && student.id) {
+      studentService!.removeStudent(student.rollBookId)
+        .then(() => this.registerStudent({ ...studentCdo, rollBookId: rollBook.id }));
+    }
+    else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
+      this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+    }
+
+    if (!classroom.enrolling.enrollingAvailable) {
+      if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
+        window.open(typeViewObject.siteUrl, '_blank');
+      }
+      else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
     }
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
-    const { studentCdo, studentService, lectureCardId, studentJoins } = this.props;
-    if (!studentJoins.length) {
-      studentService!.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState })
+    const { studentCdo, student } = this.props;
+    if (!student || !student.id) {
+      this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
+    }
+    else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
+      this.registerStudent({ ...studentCdo, proposalState: student.proposalState });
+    }
+  }
+
+  registerStudent(studentCdo: StudentCdoModel) {
+    const { studentService, lectureCardId } = this.props;
+    return studentService!.registerStudent(studentCdo)
+      .then(() => {
+        studentService!.findStudent(studentCdo.rollBookId);
+        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findStudentCount(studentCdo.rollBookId);
+      });
+  }
+
+  testCallback() {
+    const { studentService, student, init } = this.props;
+    const { id: studentId } = student!;
+
+    if (studentId) {
+      studentService!.modifyLearningState(studentId, LearningState.Waiting)
         .then(() => {
-          studentService!.findIsJsonStudent(lectureCardId);
-          studentService!.findStudentCount(studentCdo.rollBookId);
+          if (init) init();
         });
     }
   }
@@ -128,13 +161,14 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickSurvey() {
-    console.log('survey');
+    this.surveyModal.onOpenModal();
   }
 
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
       .then(() => {
+        studentService!.findStudent(studentCdo.rollBookId);
         studentService!.findIsJsonStudent(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
@@ -165,11 +199,25 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length && !studentJoins.length) {
+        if (typeViewObject.siteUrl) {
+          return {
+            type: LectureSubInfo.ActionType.LearningStart,
+            onAction: () => {
+              if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
+              else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+            },
+          };
+        }
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
+          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
-          if (studentJoins.length) return undefined;
+          if (studentJoins && studentJoins.length
+            && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+            return undefined;
+          }
           if (!applyingPeriod) return undefined;
           if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
             || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
@@ -192,7 +240,10 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
-        if (studentJoins.length) return undefined;
+        if (studentJoins && studentJoins.length
+          && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+          return undefined;
+        }
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
@@ -200,27 +251,27 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getSubActions() {
-    const { cubeType, typeViewObject, viewObject, studentJoins } = this.props;
+    const { cubeType, typeViewObject, viewObject, student } = this.props;
     const subActions = [];
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (studentJoins.length && studentJoins[0].proposalState === ProposalState.Submitted
+        if (student && student.id && student.proposalState === ProposalState.Submitted
           && typeViewObject.classrooms && typeViewObject.classrooms.length) {
           subActions.push({ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries });
         }
         break;
       case CubeType.Audio:
       case CubeType.Video:
-        if (studentJoins.length && typeViewObject.mediaType === MediaType.LinkMedia && viewObject.state !== SubState.Completed) {
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
-        if (studentJoins.length && viewObject.state !== SubState.Completed) {
+        if (student && student.id && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
@@ -228,22 +279,26 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    if (viewObject.examId) subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    if (viewObject.examId && student && student.learningState === LearningState.Progress) {
+      subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    }
     return subActions.length ? subActions : undefined;
   }
 
   getOnCancel() {
-    const { cubeType, studentJoins, studentService, studentCdo, lectureCardId } = this.props;
+    const { cubeType, student, studentService, lectureCardId } = this.props;
+    console.log(student);
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (studentJoins.length) {
+        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled)) {
           return () => {
-            studentService!.removeStudent(studentCdo.rollBookId)
+            studentService!.removeStudent(student.rollBookId)
               .then(() => {
+                studentService!.findStudent(student.rollBookId);
                 studentService!.findIsJsonStudent(lectureCardId);
-                studentService!.findStudentCount(studentCdo.rollBookId);
+                studentService!.findStudentCount(student.rollBookId);
               });
           };
         }
@@ -302,7 +357,16 @@ class LectureCardContainer extends Component<Props, State> {
             <AnswerSheetModalContainer
               examId={viewObject.examId}
               ref={examModal => this.examModal = examModal}
-              onSaveCallback={this.props.init}
+              onSaveCallback={this.testCallback}
+            />
+          )
+        }
+        {
+          viewObject && viewObject.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={viewObject.surveyId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
             />
           )
         }

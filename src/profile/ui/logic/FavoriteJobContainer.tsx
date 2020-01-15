@@ -120,10 +120,11 @@ class FavoriteJobContainer extends React.Component<Props, States> {
 
     let skProfileUdo : SkProfileUdo;
     if (skProfileService ) {
-      if ( !favoriteJobGroup.favoriteJobGroup!.id || !favoriteJobGroup.favoriteJobDuty!.id ) {
+      if (!favoriteJobGroup.favoriteJobGroup || !favoriteJobGroup.favoriteJobGroup!.id
+        || !favoriteJobGroup.favoriteJobDuty || !favoriteJobGroup.favoriteJobDuty!.id ) {
         reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
       } else {
-        skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup);
+        skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup, skProfileService.skProfile.pisAgreement);
         skProfileService.modifySkProfile(skProfileUdo);
       }
     }

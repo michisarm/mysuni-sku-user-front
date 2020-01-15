@@ -5,9 +5,12 @@ import { observer } from 'mobx-react';
 
 import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 import { NumberValue } from '../../form/model/NumberValue';
+import { QuestionModel } from '../../form/model/QuestionModel';
 
 interface Props {
+  question: QuestionModel
   answer: AnswerItemModel
+  disabled?: boolean
   items: NumberValue[]
   onSetAnswer:(answer: string[]) => void
 }
@@ -20,28 +23,28 @@ interface State {
 class SingleChoiceView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, items, onSetAnswer } = this.props;
+    const { answer, disabled, question, items, onSetAnswer } = this.props;
+
     return (
       <List>
         {
           items && items.length
-          && items.map(item => {
-            return (
-              <List.Item key={item.number + '_item'}>
-                <Radio
-                  className="base"
-                  label={item.value}
-                  name="radioGroup"
-                  value={item.number}
-                  checked={answer.itemNumbers.includes(item.number)}
-                  onChange={(e: any) => {
-                    const newItemNumbers = [ e.target.value ];
-                    onSetAnswer(newItemNumbers);
-                  }}
-                />
-              </List.Item>
-            );
-          }) || null
+          && items.map(item => (
+            <List.Item key={item.number + '_item'}>
+              <Radio
+                className="base"
+                label={item.value}
+                name={`survey_radio_${question.sequence.toSequenceString()}`}
+                value={item.number}
+                disabled={disabled}
+                checked={answer.itemNumbers.includes(item.number)}
+                onChange={(e: any, data: any) => {
+                  const newItemNumbers = [ data.value ];
+                  onSetAnswer(newItemNumbers);
+                }}
+              />
+            </List.Item>
+          )) || null
         }
       </List>
     );

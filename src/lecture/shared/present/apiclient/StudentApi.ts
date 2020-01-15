@@ -1,8 +1,10 @@
 
 import { axiosApi } from '@nara.platform/accent';
+import { LearningState } from 'shared';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
+import StudentModel from '../../model/StudentModel';
 
 
 class StudentApi {
@@ -24,6 +26,11 @@ class StudentApi {
       .then(response => response && response.data);
   }
 
+  findStudent(rollBookId: string) {
+    return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
+      .then(response => response && response.data || null);
+  }
+
   findStudentCount(rollBookId: string) {
     return axiosApi.get<StudentCountRdoModel>(this.baseUrl + `/flow/count/byRollBookId`, { params: { rollBookId }})
       .then(response => response && response.data);
@@ -40,6 +47,10 @@ class StudentApi {
 
   removeStudent(rollBookId: string) {
     return axiosApi.delete(this.baseUrl + `/flow/byRollBookId`, { params: { rollBookId }});
+  }
+
+  modifyLearningState(studentId: string, learningState: LearningState) {
+    return axiosApi.put(this.baseUrl + `/flow/learningState`, { studentIds: [studentId], learningState });
   }
 }
 

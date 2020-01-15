@@ -49,12 +49,12 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Learning',
       items: [
-        { name: 'In progress', path: myPageRoutePaths.learningInProgress() },
-        { name: 'In My List', path: myPageRoutePaths.learningInMyList() },
-        { name: 'Enrolled', path: myPageRoutePaths.learningEnrolled() },
-        { name: 'Required', path: myPageRoutePaths.learningRequired() },
-        { name: 'Completed List', path: myPageRoutePaths.learningCompleted() },
-        { name: 'Retry', path: myPageRoutePaths.learningRetry() },
+        { name: '학습중', path: myPageRoutePaths.learningInProgress() },
+        { name: '관심목록', path: myPageRoutePaths.learningInMyList() },
+        { name: '학습예정', path: myPageRoutePaths.learningEnrolled() },
+        { name: '필수과정', path: myPageRoutePaths.learningRequired() },
+        { name: '학습완료', path: myPageRoutePaths.learningCompleted() },
+        { name: '취소/미이수', path: myPageRoutePaths.learningRetry() },
       ],
     },
     {
@@ -80,6 +80,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       items: [
         { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
         { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
+        { name: '인증제도 소개', path: mainRoutePaths.introductionCertification() },
       ],
     },
     {
@@ -113,11 +114,10 @@ class SiteMapModalContainer extends Component<Props, State> {
   };
 
 
-
-  componentDidMount() {
-    //
-    this.setSiteMapWithCount();
-  }
+  // componentDidMount() {
+  //   //
+  //   this.setSiteMapWithCount();
+  // }
 
   async setSiteMapWithCount() {
     //
@@ -157,6 +157,7 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.setSiteMapWithCount();
     this.setState({ open: true });
   }
 

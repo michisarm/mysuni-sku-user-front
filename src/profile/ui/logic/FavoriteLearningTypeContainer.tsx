@@ -106,7 +106,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
 
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
       skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
-      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
+      skProfileService.modifyStudySummaryFirstTime(StudySummary.asNameValues(skProfileService.studySummary));
     }
 
     this.props.history.push('/');
@@ -206,10 +206,10 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
                 </div>
               </div>
             </div>
-            <div className="select-error">
-              <Icon className="error16" /><span className="blind">error</span>
-              <span>학습 유형을 선택해주세요.</span>
-            </div>
+            {/*<div className="select-error">*/}
+            {/*  <Icon className="error16" /><span className="blind">error</span>*/}
+            {/*  <span>학습 유형을 선택해주세요.</span>*/}
+            {/*</div>*/}
             <div className="button-area">
               <Button className="fix line" onClick={this.onPreviousClick}>Previous</Button>
               <Button className="fix bg" onClick={this.onSubmmit}>Submit</Button>

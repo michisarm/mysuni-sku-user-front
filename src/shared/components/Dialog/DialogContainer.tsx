@@ -36,7 +36,7 @@ class DialogContainer extends Component<Props> {
             <Modal.Description>
               <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/${image}`} />
               <div className="title">{title}</div>
-              <p className="center">{message}</p>
+              <div className="center" dangerouslySetInnerHTML={{ __html: message }} />
               {/*<div dangerouslySetInnerHTML={{ __html: message }} />*/}
             </Modal.Description>
           </Modal.Content>

@@ -34,6 +34,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
     open: false,
   };
 
+
   componentDidMount(): void {
     this.init();
     this.reactionMultiple();

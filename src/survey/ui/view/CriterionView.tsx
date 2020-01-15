@@ -5,9 +5,10 @@ import { observer } from 'mobx-react';
 
 import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 import { CriteriaItemModel } from '../../form/model/CriteriaItemModel';
-import { NumberValue } from '../../form/model/NumberValue';
+import { QuestionModel } from '../../form/model/QuestionModel';
 
 interface Props {
+  question: QuestionModel
   answer: AnswerItemModel
   items: CriteriaItemModel[]
   onSetAnswer:(answer: CriteriaItemModel) => void
@@ -21,7 +22,7 @@ interface State {
 class CriterionView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, items, onSetAnswer } = this.props;
+    const { answer, question, items, onSetAnswer } = this.props;
     return (
       <List>
         {
@@ -31,11 +32,14 @@ class CriterionView extends React.Component<Props, State> {
               <Radio
                 className="base"
                 label={item.name}
-                name="radioGroup"
+                name={`survey_criterion_${question.sequence.toSequenceString()}`}
                 value={item.value}
-                item={answer.criteriaItem}
+                item={item}
                 checked={answer.criteriaItem.value === item.value}
-                onChange={(e: any, prop: any) => onSetAnswer(prop.item)}
+                onChange={(e: any, prop: any) => {
+                  console.log(prop);
+                  onSetAnswer(prop.item);
+                }}
               />
             </List.Item>
           )) || null

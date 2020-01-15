@@ -358,7 +358,6 @@ class CoursePage extends Component<Props, State> {
             inMyLecture={inMyLecture}
             inMyLectureCdo={inMyLectureCdo}
             studentCdo={studentCdo}
-            studentJoins={[]}
             lectureCardId={lectureCardId}
             cubeType={CubeType.None}
             viewObject={viewObject}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -36,8 +35,9 @@ class EssayView extends React.Component<Props, State> {
           placeholder="답변을 입력해주세요."
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
+          value={answer}
           onChange={(e) => {
-            if (e.target.value.length > 100 ) {
+            if (e.target.value.length > 1000 ) {
               this.setState({ error: true });
             } else {
               this.setState({ error: false });

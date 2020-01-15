@@ -143,7 +143,7 @@ class MyTrainingPage extends Component<Props, State> {
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
   }
 
-  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+  onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { type } = this.state;
     const { inMyLectureService, pageService } = this.props;
@@ -284,7 +284,7 @@ class MyTrainingPage extends Component<Props, State> {
                     key={`training-${index}`}
                     model={value}
                     rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={value.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}

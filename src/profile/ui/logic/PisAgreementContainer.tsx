@@ -19,7 +19,6 @@ interface Props extends RouteComponentProps{
 class PisAgreementContainer extends Component<Props> {
 
   state = {
-    all: false,
     mySuni: false,
     domestic: false,
     international: false,
@@ -27,14 +26,17 @@ class PisAgreementContainer extends Component<Props> {
 
   handleChange(e:any, checkProps:any) {
     const name = e.target.id;
-    this.setState({
-      [name]: checkProps.checked,
-    });
+
     if ( name === 'all' ) {
       this.setState({
         mySuni: checkProps.checked,
         domestic: checkProps.checked,
         international: checkProps.checked,
+      });
+    }
+    else {
+      this.setState({
+        [name]: checkProps.checked,
       });
     }
 
@@ -43,24 +45,29 @@ class PisAgreementContainer extends Component<Props> {
   onOk() {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
-    const { studySummary } = skProfileService as SkProfileService;
+    // const { studySummary } = skProfileService as SkProfileService;
 
-    const { all, mySuni, domestic, international } = this.state;
+    const { mySuni, domestic, international } = this.state;
 
-    if ( all || (mySuni && domestic && international)) {
+    if ((mySuni && domestic && international)) {
       if (skProfileService) {
         skProfileService.findSkProfile();
-        skProfileService.findStudySummary();
+        // skProfileService.findStudySummary();
 
         if (skProfile ) {
           skProfile.pisAgreement.signed = true;
           skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
           skProfileService.modifySkProfile(new SkProfileUdo({} as any, new PisAgreementModel(skProfile.pisAgreement)));
 
-          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
-            && studySummary.favoriteChannels
-            && studySummary.favoriteChannels.idNames.length < 4
-            && studySummary.favoriteLearningType ) {
+          // if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
+          //   && studySummary.favoriteChannels
+          //   && studySummary.favoriteChannels.idNames.length < 4
+          //   && studySummary.favoriteLearningType ) {
+          //   this.props.history.push('/');
+          // } else {
+          //   this.props.history.push('/profile/interest/');
+          // }
+          if ( skProfile.studySummaryConfigured ) {
             this.props.history.push('/');
           } else {
             this.props.history.push('/profile/interest/');
@@ -73,7 +80,7 @@ class PisAgreementContainer extends Component<Props> {
   }
 
   render() {
-    const { all, mySuni, domestic, international } = this.state;
+    const { mySuni, domestic, international } = this.state;
     return (
 
       <ContentLayout
@@ -90,7 +97,7 @@ class PisAgreementContainer extends Component<Props> {
           <h2 className="title1">mySUNI 개인정보 처리방침에 동의해주세요.</h2>
           <div className="check-area">
             {/*<Checkbox label='전체동의' className='base'/>*/}
-            <Checkbox className="black base" label="전체동의" onChange={this.handleChange} id="all" checked={all} />
+            <Checkbox className="black base" label="전체동의" onChange={this.handleChange} id="all" checked={mySuni && domestic && international} />
           </div>
           <div className="check-area">
             <Checkbox label="mySUNI 개인정보 처리방침 동의(필수)" className="base" id="mySuni" checked={mySuni} onChange={this.handleChange} />
@@ -471,7 +478,7 @@ class PisAgreementContainer extends Component<Props> {
           </div>
           <div className="guide">약관 동의 후 mySUNI를 이용할 수 있습니다.</div>
           <div className="button-area">
-            <Button className="fix line">Cancel</Button>
+            <Button className="fix line" onClick={() => window.location.href = '/login'}>Cancel</Button>
             <Button className="fix bg" onClick={this.onOk}>OK</Button>
           </div>
         </div>

@@ -9,7 +9,7 @@ export default class ExaminationApi {
   static instance: ExaminationApi;
 
   findExamination(examinationId : string) {
-    return axios.get<ExaminationResultModel>(this.URL + `/${examinationId}`, { noAuth: true })
+    return axios.get<ExaminationResultModel>(this.URL + `/${examinationId}/findExamination`, { noAuth: true })
       .then((response: any) => response && response.data && response.data.result && new ExaminationModel(response.data.result) || null);
   }
 }

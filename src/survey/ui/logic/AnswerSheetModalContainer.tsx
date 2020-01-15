@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
-import { Modal, List, Button } from 'semantic-ui-react';
+import { Button, List, Modal } from 'semantic-ui-react';
 import SurveyCaseService from '../../event/present/logic/SurveyCaseService';
 import SurveyFormService from '../../form/present/logic/SurveyFormService';
 import AnswerSheetService from '../../answer/present/logic/AnswerSheetService';
@@ -19,6 +19,7 @@ import { EssayQuestionItems } from '../../form/model/EssayQuestionItems';
 import { CriterionQuestionItems } from '../../form/model/CriterionQuestionItems';
 import { ChoiceQuestionItems } from '../../form/model/ChoiceQuestionItems';
 import CriterionView from '../view/CriterionView';
+import { AnswerProgress } from '../../answer/model/AnswerProgress';
 
 interface Props {
   surveyCaseService?: SurveyCaseService
@@ -90,6 +91,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       if (answerSheet.id && answerSheet.id.length) {
         answerSheetService!.saveAnswerSheet();
       } else {
+        answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
           .then(() => answerSheetService!.saveAnswerSheet())
           .then(this.onCloseModal);
@@ -99,6 +101,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       if (answerSheet.id && answerSheet.id.length) {
         answerSheetService!.submitAnswerSheet(answerSheet.id);
       } else {
+        answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
           .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
           .then(this.onCloseModal);
@@ -109,12 +112,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   render() {
     //
     const { open } = this.state;
-    const { surveyCaseService, surveyFormService, answerSheetService, trigger } = this.props;
-    const { surveyCase } = surveyCaseService!;
+    const { surveyFormService, answerSheetService, trigger } = this.props;
     const { surveyForm } = surveyFormService!;
-    const { answerMap, evaluationSheet } = answerSheetService!;
+    const { answerMap, answerSheet } = answerSheetService!;
     const { questions, criterionList } = surveyForm!;
-
+    const disabled = answerSheet.progress === AnswerProgress.Complete;
 
     return (
       <Modal
@@ -143,12 +145,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                         if (answerItems instanceof EssayQuestionItems) {
                           if (answerItems.maxLength <= 100) {
                             answerArea = (
-                              <ShortAnswerView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question, value)} />
+                              <ShortAnswerView answer={answer} disabled={disabled} onSetAnswer={(value) => this.onSetAnswer(question, value)} />
                             );
                           }
                           else {
                             answerArea = (
-                              <EssayView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question, value)} />
+                              <EssayView answer={answer} disabled={disabled} onSetAnswer={(value) => this.onSetAnswer(question, value)} />
                             );
                           }
                         }
@@ -160,6 +162,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                             answerArea = (
                               <MultiChoiceView
                                 answer={answer}
+                                disabled={disabled}
                                 items={answerItems.items || []}
                                 onSetAnswer={(value) => this.onSetAnswer(question, value)}
                               />
@@ -168,7 +171,9 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           else {
                             answerArea = (
                               <SingleChoiceView
+                                question={question}
                                 answer={answer}
+                                disabled={disabled}
                                 items={answerItems.items || []}
                                 onSetAnswer={(value) => this.onSetAnswer(question, value)}
                               />
@@ -183,6 +188,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           const criterion = index >= 0 ? criterionList[index] : new CriterionModel();
                           answerArea = (
                             <CriterionView
+                              question={question}
                               answer={answer}
                               items={criterion.criteriaItems || []}
                               onSetAnswer={(value) => this.onSetAnswer(question, value)}

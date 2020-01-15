@@ -4,13 +4,17 @@ import { NameValueList } from '@nara.platform/accent';
 import { DramaEntityObservableModel } from 'shared';
 import SuggestionSheetModel from './SuggestionSheetModel';
 import RespondentModel from './RespondentModel';
+import { AnswerProgress } from './AnswerProgress';
 
 export default class AnswerSheetModel extends DramaEntityObservableModel {
   //
   surveyCaseId: string = '';
   round: number = 1;
+  managementNumber: string = '';
+  progress: AnswerProgress = AnswerProgress.Open;
   respondent: RespondentModel = new RespondentModel();
   suggestionSheet: SuggestionSheetModel = new SuggestionSheetModel();
+  completeTime: number = 0;
 
   constructor(answerSheet?: AnswerSheetModel) {
     super();
@@ -33,4 +37,7 @@ export default class AnswerSheetModel extends DramaEntityObservableModel {
 decorate(AnswerSheetModel, {
   respondent: observable,
   suggestionSheet: observable,
+  managementNumber: observable,
+  progress: observable,
+  completeTime: observable,
 });

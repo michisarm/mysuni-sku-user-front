@@ -230,18 +230,24 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
-    if (personalCubeService && personalCubeId) {
-      return personalCubeService.modifyPersonalCube(personalCubeId, personalCube)
+    if (personalCubeId) {
+      return personalCubeService!.modifyPersonalCube(personalCubeId, personalCube)
         .then(() => {
-          if (cubeIntroId) return cubeIntroService!.modifyCubeIntro(cubeIntroId, cubeIntro);
+          if (cubeIntroId) {
+            return cubeIntroService!.modifyCubeIntro(cubeIntroId, cubeIntro);
+          }
           return null;
         })
         .then(() => {
-          if (cubeType === CubeType.Video
-            || cubeType === CubeType.Audio) this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
-          if (cubeType === CubeType.Community) this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
-          if (cubeType === CubeType.Documents
-            || cubeType === CubeType.WebPage) this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+          if (cubeType === CubeType.Video || cubeType === CubeType.Audio) {
+            this.makeMedia(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+          }
+          else if (cubeType === CubeType.Community) {
+            this.makeCommunity(personalCubeId, personalCube, cubeIntro,  contentId, cubeIntroId, mode && mode);
+          }
+          else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
+            this.makeOfficeWeb(personalCubeId, personalCube, cubeIntro, contentId, cubeIntroId, mode && mode);
+          }
         });
     }
     return null;

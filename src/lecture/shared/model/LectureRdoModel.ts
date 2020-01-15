@@ -11,6 +11,9 @@ class LectureRdoModel {
   orderBy: OrderByType = OrderByType.Time;
   limit: number = 0;
   offset: number = 0;
+  channelLimit: number = 0;
+  channelOffset: number = 0;
+
   cubeType?: CubeType;
   creatorId?: string;
 
@@ -30,6 +33,8 @@ class LectureRdoModel {
       orderBy,
       limit,
       offset,
+      channelLimit: 0,
+      channelOffset: 0,
     });
   }
 
@@ -41,6 +46,8 @@ class LectureRdoModel {
       orderBy,
       limit,
       offset,
+      channelLimit: 0,
+      channelOffset: 0,
     });
   }
 
@@ -53,14 +60,18 @@ class LectureRdoModel {
       cubeType: CubeType.Community,
       limit,
       offset,
+      channelLimit: 0,
+      channelOffset: 0,
     });
   }
 
-  static newRecommend(limit: number, offset: number, channel?: string, orderBy?: OrderByType) {
+  static newRecommend(channelLimit: number, channelOffset: number, limit: number, offset: number, channel?: string, orderBy?: OrderByType) {
     return new LectureRdoModel({
       college: '',
       channel: channel || '',
       orderBy: orderBy || OrderByType.Time,
+      channelLimit,
+      channelOffset,
       limit,
       offset,
     });
@@ -74,6 +85,8 @@ class LectureRdoModel {
       creatorId: tenantInfo.getTenantId(),
       limit,
       offset,
+      channelLimit: 0,
+      channelOffset: 0,
     });
   }
 }
