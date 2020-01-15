@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { observer } from 'mobx-react';
 
+import depot from '@nara.drama/depot';
 import CarouselWrapperView from './CarouselWrapperView';
 import CarouselItemView from './CarouselItemView';
 
