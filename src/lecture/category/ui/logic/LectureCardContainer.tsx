@@ -3,14 +3,14 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState, LearningState } from 'shared';
+import { CubeType, LearningState, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
-import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../shared/model/StudentModel';
@@ -195,11 +195,12 @@ class LectureCardContainer extends Component<Props, State> {
             },
           };
         }
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length && (!studentJoins || !studentJoins.length)) {
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length
+          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length)) {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
-          if (studentJoins && studentJoins.length) return undefined;
+          if (studentJoins && studentJoins.length && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
           if (!applyingPeriod) return undefined;
           if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
             || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
@@ -222,7 +223,7 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
-        if (studentJoins && studentJoins.length) return undefined;
+        if (studentJoins && studentJoins.length && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
@@ -243,14 +244,14 @@ class LectureCardContainer extends Component<Props, State> {
         break;
       case CubeType.Audio:
       case CubeType.Video:
-        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && viewObject.state !== SubState.Completed) {
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
-        if (student && student.id && viewObject.state !== SubState.Completed) {
+        if (student && student.id && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
