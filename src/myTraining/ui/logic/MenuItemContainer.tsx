@@ -151,7 +151,7 @@ class MenuItemContainer extends Component<Props, States> {
                   <Lecture
                     key={`training-${index}`}
                     model={myTraining}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={myTraining.baseUrl || undefined}
                     onViewDetail={this.onViewDetail}
                   />
                 )

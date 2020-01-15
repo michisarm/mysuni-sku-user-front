@@ -224,7 +224,7 @@ class MyCommunityPage extends Component<Props, State> {
                       <Lecture
                         key={`training-${index}`}
                         model={value}
-                        // thumbnailImage="http://placehold.it/60x60"
+                        thumbnailImage={value.baseUrl || undefined}
                         toggle
                         action={Lecture.ActionType.Add}
                         onAction={this.onActionLecture}

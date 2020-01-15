@@ -129,7 +129,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
-  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+  onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
 
@@ -194,7 +194,7 @@ class MyLearningContentContainer extends Component<Props, State> {
                     key={`training-${index}`}
                     model={value}
                     rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={value.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}

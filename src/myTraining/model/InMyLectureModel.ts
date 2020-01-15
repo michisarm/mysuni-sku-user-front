@@ -1,6 +1,14 @@
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { getCookie } from '@nara.platform/accent';
-import { CategoryModel, DramaEntityObservableModel, IdName } from 'shared';
+import {
+  CategoryModel,
+  DramaEntityObservableModel,
+  IdName,
+  LearningState,
+  LearningStateName,
+  ProposalState,
+  ProposalStateName,
+} from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
@@ -28,6 +36,9 @@ class InMyLectureModel extends DramaEntityObservableModel {
   time: number = 0;
   studentCount: number = 0;
 
+  baseUrl: string = '';
+  proposalState: ProposalState = ProposalState.Submitted;
+  learningState: LearningState = LearningState.Progress;
 
   // UI only
   required: boolean = false;
@@ -79,6 +90,18 @@ class InMyLectureModel extends DramaEntityObservableModel {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
+
+  @computed
+  get state() {
+    if (this.proposalState === ProposalState.Approved) {
+      if (this.learningState) return LearningStateName[LearningState[this.learningState]];
+      if (this.cubeType === CubeType.Community) return '가입완료';
+      return '학습예정';
+    }
+    else {
+      return ProposalStateName[ProposalState[this.proposalState]];
+    }
+  }
 }
 
 decorate(InMyLectureModel, {
@@ -101,6 +124,7 @@ decorate(InMyLectureModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  baseUrl: observable,
 });
 
 export default InMyLectureModel;

@@ -31,6 +31,7 @@ export const Basic = () => {
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
+    state: undefined,
   });
 
   const lectureProps = {
@@ -95,6 +96,7 @@ export const Required = () => {
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
     cubeType: CubeType.Documents,
     learningTime: 40,
+    state: undefined,
   });
 
   return (
@@ -125,6 +127,7 @@ export const Line = () => {
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
+    state: undefined,
   });
 
   const lectureProps = {
@@ -191,6 +194,7 @@ export const Course = () => {
     description: 'This is a template for a simple marketing or informational website. It includes a large callout called a jumbo Tron and three',
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
+    state: undefined,
   });
 
   const lectureProps = {
