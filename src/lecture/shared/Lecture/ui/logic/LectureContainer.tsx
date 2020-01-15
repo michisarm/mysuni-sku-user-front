@@ -151,15 +151,18 @@ class LectureContainer extends Component<Props, States> {
 
     let state;
     let date;
+    state = model.state;
+
+    if (state) {
+      rating = undefined;
+      date = moment(model.time).format('YYYY.MM.DD');
+    }
     if (model.required) {
       state = '필수과정';
       rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }
-    if (model instanceof MyTrainingModel) {
-      state = model.state;
-      date = moment(model.time).format('YYYY.MM.DD');
-    }
+
 
     return (
       <BoxCardView
@@ -223,13 +226,15 @@ class LectureContainer extends Component<Props, States> {
 
     let state;
     let date;
-    if (model.required) {
-      state = '필수과정';
+    state = model.state;
+
+    if (state) {
       rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }
-    if (model instanceof MyTrainingModel) {
-      state = model.state;
+    if (model.required) {
+      state = '필수과정';
+      rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }
 
