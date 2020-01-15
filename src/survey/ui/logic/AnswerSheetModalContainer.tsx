@@ -109,10 +109,9 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   render() {
     //
     const { open } = this.state;
-    const { surveyCaseService, surveyFormService, answerSheetService, trigger } = this.props;
-    const { surveyCase } = surveyCaseService!;
+    const { surveyFormService, answerSheetService, trigger } = this.props;
     const { surveyForm } = surveyFormService!;
-    const { answerMap, evaluationSheet } = answerSheetService!;
+    const { answerMap } = answerSheetService!;
     const { questions, criterionList } = surveyForm!;
 
 

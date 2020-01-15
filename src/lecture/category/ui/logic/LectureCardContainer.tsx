@@ -9,6 +9,7 @@ import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer } from 'assistant';
+import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -46,6 +47,7 @@ class LectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
   examModal: any = null;
+  surveyModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
     const { rollBookService, lectureCardId, student, studentService, studentCdo } = this.props;
@@ -146,7 +148,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickSurvey() {
-    console.log('survey');
+    this.surveyModal.onOpenModal();
   }
 
   onJoin() {
@@ -334,6 +336,15 @@ class LectureCardContainer extends Component<Props, State> {
               examId={viewObject.examId}
               ref={examModal => this.examModal = examModal}
               onSaveCallback={this.testCallback}
+            />
+          )
+        }
+        {
+          viewObject && viewObject.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={viewObject.surveyId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
             />
           )
         }

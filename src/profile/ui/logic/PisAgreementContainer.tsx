@@ -43,7 +43,7 @@ class PisAgreementContainer extends Component<Props> {
   onOk() {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
-    const { studySummary } = skProfileService as SkProfileService;
+    // const { studySummary } = skProfileService as SkProfileService;
 
     const { all, mySuni, domestic, international } = this.state;
 

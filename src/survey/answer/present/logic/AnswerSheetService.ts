@@ -109,6 +109,7 @@ export default class AnswerSheetService {
     const answer = this.findAnswer(question.sequence.toSequenceString());
     if (!answer) return;
 
+    console.log(answer, answerValue);
     switch (question.questionItemType) {
       case QuestionItemType.Choice:
         answer.answerItem.itemNumbers = answerValue;

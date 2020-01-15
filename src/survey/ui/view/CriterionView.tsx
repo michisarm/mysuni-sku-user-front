@@ -5,7 +5,6 @@ import { observer } from 'mobx-react';
 
 import { AnswerItemModel } from '../../answer/model/AnswerItemModel';
 import { CriteriaItemModel } from '../../form/model/CriteriaItemModel';
-import { NumberValue } from '../../form/model/NumberValue';
 
 interface Props {
   answer: AnswerItemModel

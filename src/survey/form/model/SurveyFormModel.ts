@@ -33,6 +33,14 @@ export class SurveyFormModel extends DramaEntityObservableModel {
       const formDesigner = surveyForm.formDesigner && new FormDesignerModel(surveyForm.formDesigner) || this.formDesigner;
       const questionPath = surveyForm.questionPath && new QuestionPathModel(surveyForm.questionPath) || this.questionPath;
       Object.assign(this, { ...surveyForm, titles, formDesigner, questionPath });
+      this.questions = surveyForm.questions && surveyForm.questions.length
+        && surveyForm.questions.map(question => new QuestionModel(question)) || this.questions;
+      this.criterionList = surveyForm.criterionList && surveyForm.criterionList.length
+        && surveyForm.criterionList.map(criterion => new CriterionModel(criterion)) || this.criterionList;
+      this.questionGroups = surveyForm.questionGroups && surveyForm.questionGroups.length
+        && surveyForm.questionGroups.map(questionGroup => new QuestionGroupModel(questionGroup)) || this.questionGroups;
+      this.suggestions = surveyForm.suggestions && surveyForm.suggestions.length
+        && surveyForm.suggestions.map(suggestion => new SuggestionModel(suggestion)) || this.suggestions;
     }
   }
 
