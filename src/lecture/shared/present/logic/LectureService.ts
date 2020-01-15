@@ -188,7 +188,9 @@ class LectureService {
   }
 
   @action
-  async findPagingRecommendLectures(channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+  async findPagingRecommendLectures(
+    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+  ) {
     //
     const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
     const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
@@ -198,7 +200,9 @@ class LectureService {
   }
 
   @action
-  async addPagingRecommendLectures(channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+  async addPagingRecommendLectures(
+    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+  ) {
     //
     const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
     const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
