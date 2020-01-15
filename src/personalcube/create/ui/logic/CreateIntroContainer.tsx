@@ -187,10 +187,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
   }
 
   handleSave() {
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { media } = this.props.mediaService || {} as MediaService;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
-    const mediaObject = MediaModel.isBlank(media);
+    let mediaObject = 'success';
+    if (personalCube.contents.type === CubeType.Video || personalCube.contents.type === CubeType.Audio) {
+      mediaObject = MediaModel.isBlank(media);
+    }
 
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
     const mediaMessage = mediaObject;
@@ -319,10 +323,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
   handleApprovalRequest() {
     //
     const message = '학습 강좌에 대해 승인 요청하시겠습니까?';
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { media } = this.props.mediaService || {} as MediaService;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
-    const mediaObject = MediaModel.isBlank(media);
+    let mediaObject = 'success';
+    if (personalCube.contents.type === CubeType.Video || personalCube.contents.type === CubeType.Audio) {
+      mediaObject = MediaModel.isBlank(media);
+    }
 
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
     const mediaMessage = mediaObject;

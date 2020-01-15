@@ -13,6 +13,7 @@ interface Props {
   onChangeOfficeWebProps: (name: string, value: string | Date, nameSub?: string) => void
   getFileBoxIdForReference: (fileBoxId: string) => void
   personalCube: PersonalCubeModel
+  getFileBoxIdForEducation: (fileBoxId: string) => void
 }
 
 @observer
@@ -21,7 +22,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
   //
   render() {
 
-    const { onChangePersonalCubeProps, officeWeb, onChangeOfficeWebProps, getFileBoxIdForReference, personalCube } = this.props;
+    const { onChangePersonalCubeProps, officeWeb, getFileBoxIdForEducation, getFileBoxIdForReference, personalCube } = this.props;
 
     return (
       <>
@@ -32,18 +33,19 @@ class CreateDocumentTypeView extends React.Component<Props> {
         </div>
         <Form.Field>
           <label className="necessary">교육자료</label>
-          <div className="ui input h48">
-            <input
-              type="text"
-              name=""
-              placeholder="http://"
-              value={officeWeb && officeWeb.webPageUrl || ''}
-              onChange={(e: any) => onChangeOfficeWebProps('webPageUrl', e.target.value)}
-            />
-          </div>
-          <div className="info-text">
-            <Icon className="info16" /><span className="blind">infomation</span>
-            DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다.
+          <div className="line-attach">
+            <div className="attach-inner">
+              <FileBox
+                id={officeWeb && officeWeb.fileBoxId || ''}
+                vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
+                patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                onChange={getFileBoxIdForEducation}
+              />
+              <div className="info-text"><Icon className="info16" />
+                <span className="blind">infomation</span>
+                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다.
+              </div>
+            </div>
           </div>
         </Form.Field>
 
@@ -52,8 +54,8 @@ class CreateDocumentTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
+                patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />

@@ -1,7 +1,8 @@
-import ExamPaperService  from './paper/present/logic/ExamPaperService';
-import ExaminationService  from './exam/present/logic/ExaminationService';
-import AnswerSheetService  from './exam/present/logic/AnswerSheetService';
+import ExamPaperService from './paper/present/logic/ExamPaperService';
+import ExaminationService from './exam/present/logic/ExaminationService';
+import AnswerSheetService from './exam/present/logic/AnswerSheetService';
 import AnswerSheetModalContainer from './ui/logic/AnswerSheetModalContainer';
+import CubeReportModalContainer from './ui/logic/CubeReportModalContainer';
 
 export const assistantStores = {
   assistant: {
@@ -17,4 +18,5 @@ export {
   ExaminationService,
   AnswerSheetService,
   AnswerSheetModalContainer,
+  CubeReportModalContainer,
 };
