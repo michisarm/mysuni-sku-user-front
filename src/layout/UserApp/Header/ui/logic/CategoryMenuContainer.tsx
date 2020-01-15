@@ -36,18 +36,6 @@ class CategoryMenuContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  // componentDidMount() {
-  //   //
-  //   this.findCollegeLectureCount();
-  // }
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-    //
-    if (prevState.categoryOpen !== this.state.categoryOpen && this.state.categoryOpen) {
-      this.findCollegeLectureCount();
-      this.findStudySummary();
-    }
-  }
 
   async findCollegeLectureCount() {
     //
@@ -68,6 +56,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.findCollegeLectureCount();
+    this.findStudySummary();
     this.setState({ categoryOpen: true });
   }
 
