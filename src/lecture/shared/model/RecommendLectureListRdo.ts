@@ -5,6 +5,8 @@ import RecommendLectureRdo from './RecommendLectureRdo';
 
 class RecommendLectureListRdo {
   //
+  // 서버에서 recommand 오타 나있음
+  recommandLectureRdos: RecommendLectureRdo[] = [];
   recommendLectureRdos: RecommendLectureRdo[] = [];
 
   totalCount: number = 0;
@@ -14,11 +16,14 @@ class RecommendLectureListRdo {
     //
     if (recommendLectureListRdo) {
       Object.assign(this, { ...recommendLectureListRdo });
+
+      this.recommendLectureRdos = recommendLectureListRdo.recommandLectureRdos.map((rdo) => new RecommendLectureRdo(rdo));
     }
   }
 }
 
 decorate(RecommendLectureListRdo, {
+  recommandLectureRdos: observable,
   recommendLectureRdos: observable,
 });
 
