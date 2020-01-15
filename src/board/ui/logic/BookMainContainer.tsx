@@ -112,7 +112,18 @@ export class BookMainContainer extends React.Component<Props, States> {
         .then(() => {
           const { categorys } = this.props.categoryService || {} as CategoryService;
           if (categorys && categorys.length > 0) {
-            this.findFaqPosts(categorys[0].categoryId, 10);
+            const { post } = this.props.postService || {} as PostService;
+
+            categorys.map((category, index) => {
+              if (category.categoryId === post.category.id) {
+                this.setState({ faqTabIndex: index });
+              }
+            });
+            if (post.category.id) {
+              this.handleFaqCategoryTabChange('', { index: this.state.faqTabIndex, value: post.category.id });
+            } else {
+              this.findFaqPosts(categorys[0].categoryId, 10);
+            }
           }
         });
     }
