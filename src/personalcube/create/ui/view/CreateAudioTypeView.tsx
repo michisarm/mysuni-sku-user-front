@@ -25,6 +25,30 @@ interface Props {
 @reactAutobind
 class CreateAudioTypeView extends React.Component<Props> {
   //
+
+  isSingleUpload = true;
+  // folderId: string = getCookie('folderId');
+  folderId: string = '1b950b59-1f4f-409a-80ef-ab19008a4231';
+  // folderId = window.opener.localStorage.getItem('folderId');
+  externalId: string = '';
+  uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
+  cookie: string = '';
+  uploadResult: any[] = [];
+
+  uploadFiles: any[] = [];
+  sessionNames: any[] = [];
+  ing: boolean = false;
+  value: string = '';
+
+  $drop: any = null;
+
+  $progressBar: any = null;
+
+  uploadStatus: any = {
+    total: 0,
+    count: 0,
+  };
+
   componentDidMount(): void {
     this.init();
     window.onmessage = this.setData;

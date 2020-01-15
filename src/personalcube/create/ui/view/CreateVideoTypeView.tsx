@@ -319,19 +319,20 @@ class CreateVideoTypeView  extends React.Component<Props> {
                     )
                   }
                   <Icon className="clear link" />
-                  <div className="file-drop" id="drop">
-                    <p>
-                      <Icon className="upload" />
-                      여기로 파일을 올려주세요.
-                    </p>
-                    <div className="thumbnails" id="thumbnails">
-                      <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />
-                    </div>
-                    <div className="bottom">
-                      <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />
-                    </div>
-                  </div> : null
-                  {/*<label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>*/}
+                  {/*<div className="file-drop" id="drop">*/}
+                  {/*  <p>*/}
+                  {/*    <Icon className="upload" />*/}
+                  {/*    여기로 파일을 올려주세요.*/}
+                  {/*  </p>*/}
+                  {/*  <div className="thumbnails" id="thumbnails">*/}
+                  {/*    <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />*/}
+                  {/*  </div>*/}
+                  {/*  <div className="bottom">*/}
+                  {/*    <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />*/}
+                  {/*  </div>*/}
+                  {/*</div> : null*/}
+                  <label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>
+                  {/*<label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
                   <input type="file" id="hidden-new-file" />
                 </div>
               )
