@@ -200,7 +200,8 @@ class LectureCardContainer extends Component<Props, State> {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
-          if (studentJoins && studentJoins.length && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
+          if (studentJoins && studentJoins.length
+            && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
           if (!applyingPeriod) return undefined;
           if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
             || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
@@ -223,7 +224,8 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
-        if (studentJoins && studentJoins.length && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
+        if (studentJoins && studentJoins.length
+          && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
