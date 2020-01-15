@@ -112,10 +112,8 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { colleges, college, channelMap } = this.props.collegeService;
+    const { colleges, college, channelMap, totalChannelCount } = this.props.collegeService;
     const { favorites } = this.state;
-
-    console.log(channelMap);
 
     return (
       <ContentLayout breadcrumb={[
@@ -194,7 +192,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                 </div>
               </div>
               <div className="column">
-                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / 80</span>
+                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / {totalChannelCount}</span>
                 </div>
                 <div className="f-list">
                   <div className="scrolling">
