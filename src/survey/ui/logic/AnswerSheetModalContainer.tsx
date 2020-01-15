@@ -90,6 +90,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       if (answerSheet.id && answerSheet.id.length) {
         answerSheetService!.saveAnswerSheet();
       } else {
+        answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
           .then(() => answerSheetService!.saveAnswerSheet())
           .then(this.onCloseModal);
@@ -99,6 +100,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       if (answerSheet.id && answerSheet.id.length) {
         answerSheetService!.submitAnswerSheet(answerSheet.id);
       } else {
+        answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
           .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
           .then(this.onCloseModal);
@@ -167,6 +169,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           else {
                             answerArea = (
                               <SingleChoiceView
+                                question={question}
                                 answer={answer}
                                 items={answerItems.items || []}
                                 onSetAnswer={(value) => this.onSetAnswer(question, value)}
@@ -182,6 +185,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           const criterion = index >= 0 ? criterionList[index] : new CriterionModel();
                           answerArea = (
                             <CriterionView
+                              question={question}
                               answer={answer}
                               items={criterion.criteriaItems || []}
                               onSetAnswer={(value) => this.onSetAnswer(question, value)}

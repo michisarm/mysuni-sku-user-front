@@ -70,13 +70,12 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
-    const { studentCdo, student, studentService } = this.props;
+    const { studentCdo, student } = this.props;
     if (!student || !student.id) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
-    else if (student.proposalState === ProposalState.Canceled) {
-      //TODO
-      // studentService!.modifyLearningState()
+    else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
+      this.registerStudent({ ...studentCdo, proposalState: student.proposalState });
     }
   }
 
