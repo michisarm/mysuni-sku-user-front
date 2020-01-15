@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { observer } from 'mobx-react';
 
 import CarouselWrapperView from './CarouselWrapperView';
@@ -55,7 +56,7 @@ class CarouselContainer extends Component<Props, State> {
           On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
           2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
           써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
-          <a href="https://mysuni.sk.com/api/depot/depotFile/flow/download/dn-1"> 메뉴얼 다운로드</a>
+          <a onClick={this.onDownloadManual}> 메뉴얼 다운로드</a>
         </>
       ),
       imageName: '/images/all/img_banner_02.png',
@@ -96,6 +97,18 @@ class CarouselContainer extends Component<Props, State> {
 
   onClickPage(activeIndex: number) {
     this.setState({ activeIndex });
+  }
+
+  async onDownloadManual() {
+    //
+    const depotFile: any = await depot.getDepotFiles('dn-3', true);
+
+    if (depotFile) {
+      depot.downloadDepotFile(depotFile.id);
+    }
+    else {
+      console.warn('[mySUNI] 매뉴얼 파일이 없습니다.');
+    }
   }
 
   render() {
