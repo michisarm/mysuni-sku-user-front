@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -96,10 +96,9 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { favorites } = this.state;
 
     if (favorites.length < 3 ) {
-      reactConfirm({
+      reactAlert({
         title: '알림',
-        message: '관심 분야는 3개이상 선택해 주세요.<br/> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
-        onCancel: () => this.props.history.push('/profile/interest/job'),
+        message: '관심 분야는 3개이상 선택해 주세요.',
       });
     }
     else {

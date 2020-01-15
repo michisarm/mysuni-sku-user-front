@@ -196,6 +196,7 @@ class LectureCardPage extends Component<Props, State> {
     if (studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
+        if (!student.learningState) state = SubState.Enrolled;
         if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) {
           state = SubState.Completed;
