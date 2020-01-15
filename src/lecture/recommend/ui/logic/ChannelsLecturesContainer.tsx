@@ -54,11 +54,11 @@ class ChannelsLecturesContainer extends Component<Props, State> {
   findPagingRecommendLectures() {
     const { lectureService, reviewService } = this.props;
 
-    lectureService!.findPagingRecommendLectures(8, 0)
-      .then((recommendLectures) => {
+    lectureService!.findPagingRecommendLectures(5, 0, 8, 0)
+      .then((recommendLectureListRdo) => {
         let feedbackIds: string[] = [];
-        if (recommendLectures && recommendLectures.length) {
-          recommendLectures.map(recommendLecture => {
+        if (recommendLectureListRdo.recommendLectureRdos && recommendLectureListRdo.recommendLectureRdos.length) {
+          recommendLectureListRdo.recommendLectureRdos.map(recommendLecture => {
             if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length) {
               feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
             }
