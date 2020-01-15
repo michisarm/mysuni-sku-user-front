@@ -1,10 +1,9 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import moment from 'moment';
 import { CubeType } from 'personalcube/personalcube';
-import { Label, Icon, LabelProps } from 'semantic-ui-react';
+import { Icon, Label, LabelProps } from 'semantic-ui-react';
 import { CategoryModel, DatePeriod } from 'shared';
 import CubeIconType from '../../../Lecture/model/CubeIconType';
 
@@ -54,7 +53,7 @@ class TitleCell extends Component<Props> {
                 : null
               }
               {
-                learningPeriod && (
+                learningPeriod && (type === CubeType.ClassRoomLecture || type === CubeType.ELearning) && (
                   <span className="ml17">학습기간 : {learningPeriod.startDate} ~ {learningPeriod.endDate}</span>
                 ) || null
               }
