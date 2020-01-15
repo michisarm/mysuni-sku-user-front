@@ -175,9 +175,11 @@ class CreateIntroContainer extends React.Component<Props, States> {
     if (personalCubeId === 'undefined') {
       this.props.history.push(routePaths.createNew());
     } else {
-      Promise.resolve()
-        .then(() => this.handleOKConfirmWin())
-        .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
+      this.handleOKConfirmWin();
+      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      // Promise.resolve()
+      //   .then(() => this.handleOKConfirmWin())
+      //   .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
     }
   }
 
