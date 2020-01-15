@@ -110,7 +110,7 @@ class LectureModel extends DramaEntityObservableModel {
           return '학습완료';
         case 'Progress':
           return '학습중';
-        case 'Submitted':
+        case 'Approved':
           return '학습예정';
       }
     }
