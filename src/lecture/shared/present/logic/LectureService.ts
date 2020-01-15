@@ -189,13 +189,28 @@ class LectureService {
 
   @action
   async findPagingRecommendLectures(
+    channelLimit: number, limit: number, channelId?: string, orderBy?: OrderByType
+  ) {
+    //
+    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, 0, limit, 0, channelId, orderBy);
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
+
+    runInAction(() => this._recommendLectureListRdo = recommendLectureListRdo);
+    return recommendLectureListRdo;
+  }
+
+  @action
+  async addFindPagingRecommendLectures(
     channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
   ) {
     //
     const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
     const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
-    runInAction(() => this._recommendLectureListRdo = recommendLectureListRdo);
+    runInAction(() => {
+      this._recommendLectureListRdo.totalCount = recommendLectureListRdo.totalCount;
+      this._recommendLectureListRdo.recommendLectureRdos.concat(recommendLectureListRdo.recommendLectureRdos);
+    });
     return recommendLectureListRdo;
   }
 
@@ -211,6 +226,7 @@ class LectureService {
       if (recommendLectureListRdo && recommendLectureListRdo.recommendLectureRdos
         && recommendLectureListRdo.recommendLectureRdos.length && recommendLectureListRdo.recommendLectureRdos.length === 1) {
         const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
+
         recommendLecture.lectures.results = recommendLecture.lectures.results.map(result => new LectureModel(result));
         this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results);
         return recommendLecture.lectures;

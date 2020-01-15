@@ -1,6 +1,10 @@
 
 
 const routePaths = {
+
+  main: (pageNo: number) =>
+    `/pages/${pageNo}`,
+
   introduction: () =>
     '/introduction',
 

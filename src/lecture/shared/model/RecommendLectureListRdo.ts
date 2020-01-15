@@ -17,7 +17,9 @@ class RecommendLectureListRdo {
     if (recommendLectureListRdo) {
       Object.assign(this, { ...recommendLectureListRdo });
 
-      this.recommendLectureRdos = recommendLectureListRdo.recommandLectureRdos.map((rdo) => new RecommendLectureRdo(rdo));
+      if (recommendLectureListRdo.recommandLectureRdos) {
+        this.recommendLectureRdos = recommendLectureListRdo.recommandLectureRdos.map((rdo) => new RecommendLectureRdo(rdo));
+      }
     }
   }
 }
