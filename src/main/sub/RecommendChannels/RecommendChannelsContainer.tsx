@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps {
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props> {
   //
-  LECTURES_SIZE = 8;
+  LECTURES_SIZE = 4;
 
 
   componentDidMount(): void {
