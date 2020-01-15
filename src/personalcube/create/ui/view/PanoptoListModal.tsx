@@ -56,6 +56,7 @@ class PanoptoListModal extends React.Component<Props, States> {
 
   selectPanopto(panopto: InternalMediaConnectionModel) {
     const { mediaService } = this.props;
+    panopto.viewUrl = panopto.viewUrl.replace('Viewer', 'Embed');
     if (mediaService) mediaService.setPanoptoProps(panopto);
   }
 
