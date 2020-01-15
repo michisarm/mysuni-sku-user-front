@@ -251,6 +251,7 @@ class LectureCardPage extends Component<Props, State> {
       name: personalCube.name,
       time: personalCube.time,
       classroom: undefined,
+      thumbnailImage: personalCube.iconBox.baseUrl || '',
     };
   }
 

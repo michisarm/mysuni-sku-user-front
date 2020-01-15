@@ -478,7 +478,14 @@ class PisAgreementContainer extends Component<Props> {
           </div>
           <div className="guide">약관 동의 후 mySUNI를 이용할 수 있습니다.</div>
           <div className="button-area">
-            <Button className="fix line" onClick={() => window.location.href = '/login'}>Cancel</Button>
+            <Button
+              className="fix line"
+              onClick={() => {
+                reactAlert({ title: '알림', message: '<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>' });
+              }}
+            >
+              Cancel
+            </Button>
             <Button className="fix bg" onClick={this.onOk}>OK</Button>
           </div>
         </div>
