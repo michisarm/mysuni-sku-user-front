@@ -210,12 +210,15 @@ class LectureCardContainer extends Component<Props, State> {
           };
         }
         if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
-          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length)) {
+          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
           if (studentJoins && studentJoins.length
-            && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
+            && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+            return undefined;
+          }
           if (!applyingPeriod) return undefined;
           if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
             || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
@@ -239,7 +242,9 @@ class LectureCardContainer extends Component<Props, State> {
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
         if (studentJoins && studentJoins.length
-          && studentJoins.filter(join => join.proposalState !== ProposalState.Canceled).length) return undefined;
+          && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+          return undefined;
+        }
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
