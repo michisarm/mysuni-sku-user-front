@@ -185,8 +185,11 @@ class MyLearningContentContainer extends Component<Props, State> {
             <Lecture.Group type={Lecture.GroupType.Line}>
               {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
                 let rating: number | undefined;
-                if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
+                if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
                   rating = ratingMap.get(value.reviewId) || 0;
+                }
+                else if (value instanceof LectureModel && value.cubeType !== CubeType.Community) {
+                  rating = value.rating;
                 }
                 const inMyLecture = inMyLectureMap.get(value.serviceId);
                 return (
