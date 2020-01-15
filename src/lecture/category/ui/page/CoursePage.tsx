@@ -203,6 +203,7 @@ class CoursePage extends Component<Props, State> {
       time: coursePlan.time,
 
       classroom: undefined,
+      thumbnailImage: coursePlan.iconBox.baseUrl || '',
     };
   }
 
