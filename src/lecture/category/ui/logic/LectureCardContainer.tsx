@@ -11,6 +11,7 @@ import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService }
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
+import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -92,11 +93,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   testCallback() {
-    const { studentService, student, init } = this.props;
+    const { studentService, student, init, viewObject } = this.props;
     const { id: studentId } = student!;
 
     if (studentId) {
-      studentService!.modifyStudentForExam(studentId)
+      studentService!.modifyStudentForExam(studentId, viewObject.examId)
         .then(() => {
           if (init) init();
         });
@@ -231,11 +232,11 @@ class LectureCardContainer extends Component<Props, State> {
             && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
             return undefined;
           }
-          if (!applyingPeriod) return undefined;
-          console.log(applyingPeriod!.startDateSub.getTime() > new Date(today.toLocaleDateString() + '23:59:59').getTime());
-          console.log(applyingPeriod!.endDateSub.getTime() < new Date(today.toLocaleDateString() + '00:00:00').getTime());
-          if (applyingPeriod!.startDateSub.getTime() > new Date(today.toLocaleDateString() + '23:59:59').getTime()
-            || applyingPeriod!.endDateSub.getTime() < new Date(today.toLocaleDateString() + '00:00:00').getTime()) {
+          if (!applyingPeriod) return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
+          const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(applyingPeriod!.startDateSub)!;
+          const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(applyingPeriod!.endDateSub)!;
+          if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
+            || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()) {
             return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
           }
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
@@ -311,21 +312,42 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getOnCancel() {
-    const { cubeType, student, studentService, lectureCardId } = this.props;
+    const { cubeType, student, studentService, lectureCardId, typeViewObject } = this.props;
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && (!student.learningState
-          && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
-          return () => {
-            studentService!.removeStudent(student.rollBookId)
-              .then(() => {
-                studentService!.findStudent(student.rollBookId);
-                studentService!.findIsJsonStudent(lectureCardId);
-                studentService!.findStudentCount(student.rollBookId);
-              });
-          };
+        const today = new Date();
+        const cancellablePeriod = typeViewObject.cancellablePeriod;
+
+        if (student && student.id) {
+          if (!cancellablePeriod && (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved)) {
+            return () => {
+              studentService!.removeStudent(student!.rollBookId)
+                .then(() => {
+                  studentService!.findStudent(student!.rollBookId);
+                  studentService!.findIsJsonStudent(lectureCardId);
+                  studentService!.findStudentCount(student!.rollBookId);
+                });
+            };
+          }
+          else if (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved) {
+            const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.startDateSub)!;
+            const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.endDateSub)!;
+            if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <= today.getTime()
+              && new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >= today.getTime()) {
+              return () => {
+                studentService!.removeStudent(student!.rollBookId)
+                  .then(() => {
+                    studentService!.findStudent(student!.rollBookId);
+                    studentService!.findIsJsonStudent(lectureCardId);
+                    studentService!.findStudentCount(student!.rollBookId);
+                  });
+              };
+            }
+          }
         }
         return undefined;
       case CubeType.Audio:
