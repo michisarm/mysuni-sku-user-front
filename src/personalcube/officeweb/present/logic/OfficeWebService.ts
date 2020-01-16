@@ -50,7 +50,7 @@ export default class OfficeWebService {
   }
 
   modifyOfficeWebByUser(personalCubeId: string, cubeIntro : CubeIntroModel, officeWeb: OfficeWebModel) {
-    this.officeWebFlowApi.modifyOfficeWebByUser(personalCubeId, new OfficeWebFlowUserUdoModel(cubeIntro, officeWeb));
+    return this.officeWebFlowApi.modifyOfficeWebByUser(personalCubeId, new OfficeWebFlowUserUdoModel(cubeIntro, officeWeb));
   }
 
   @action
@@ -68,12 +68,12 @@ export default class OfficeWebService {
 
   modifyOfficeWeb(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, officeWeb: OfficeWebModel) {
     //
-    this.officeWebFlowApi.modifyOfficeWeb(personalCubeId, new OfficeWebFlowUdoModel(cube, cubeIntro, officeWeb));
+    return this.officeWebFlowApi.modifyOfficeWeb(personalCubeId, new OfficeWebFlowUdoModel(cube, cubeIntro, officeWeb));
   }
 
   removeOfficeWeb(personalCubeId: string) {
     //
-    this.officeWebFlowApi.removeOfficeWeb(personalCubeId);
+    return this.officeWebFlowApi.removeOfficeWeb(personalCubeId);
   }
 
   @action

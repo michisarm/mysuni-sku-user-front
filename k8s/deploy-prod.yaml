@@ -29,7 +29,7 @@ spec:
             memory: "5Gi"
         volumeMounts:
           - name: user-front-persistent-storage
-            mountPath: /usr/share/nginx/html
+            mountPath: /usr/share/nginx/html/profile
           - mountPath: /etc/localtime
             name: timezone-config
       volumes:

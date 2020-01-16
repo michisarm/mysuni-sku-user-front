@@ -43,8 +43,7 @@ export const Buttons = ({ mainAction, subActions, onCancel, state }: ButtonsProp
           ))
       }
       {
-        State.Rejected === state ||
-        onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button>
+        State.Rejected === state || onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button>
       }
     </div>
   );

@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
+import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
 import ChannelLecturesHeaderView from '../view/ChannelLecturesHeaderView';
 import LecturesByChannelContainer from '../logic/LecturesByChannelContainer';
@@ -13,10 +14,12 @@ import LecturesByChannelContainer from '../logic/LecturesByChannelContainer';
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
   collegeService: CollegeService,
+  skProfileService: SkProfileService,
 }
 
 @inject(mobxHelper.injectFrom(
   'college.collegeService',
+  'profile.skProfileService',
 ))
 @reactAutobind
 @observer
@@ -24,9 +27,9 @@ class ChannelLecturesPage extends Component<Props> {
   //
   componentDidMount() {
     //
-    const { collegeService } = this.props;
+    const { skProfileService } = this.props;
 
-    collegeService.findAllChannel();
+    skProfileService.findStudySummary();
   }
 
   onSelectChannel(channel: ChannelModel) {
@@ -35,8 +38,9 @@ class ChannelLecturesPage extends Component<Props> {
 
   render() {
     //
-    const { collegeService } = this.props;
-    const { channel, channels } = collegeService;
+    const { skProfileService, collegeService } = this.props;
+    const { studySummaryFavoriteChannels } = skProfileService;
+    const { channel } = collegeService;
 
     return (
       <ContentLayout
@@ -48,7 +52,7 @@ class ChannelLecturesPage extends Component<Props> {
       >
         <ChannelLecturesHeaderView
           channel={channel}
-          channels={channels}
+          channels={studySummaryFavoriteChannels.map((channel) => new ChannelModel(channel))}
           onSelectChannel={this.onSelectChannel}
         />
         <LecturesByChannelContainer />
