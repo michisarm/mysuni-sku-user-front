@@ -4,9 +4,11 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { QuestionItemModel } from '../../paper/model/QuestionItemModel';
+import { ExamQuestionModel } from '../../paper/model/ExamQuestionModel';
 
 interface Props {
   answer: string
+  question: ExamQuestionModel
   items: QuestionItemModel[]
   onSetAnswer:(answer: string) => void
 }
@@ -19,7 +21,7 @@ interface State {
 class SingleChoiceView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, items, onSetAnswer } = this.props;
+    const { answer, question, items, onSetAnswer } = this.props;
 
     return (
       <List>
@@ -30,7 +32,7 @@ class SingleChoiceView extends React.Component<Props, State> {
               <Radio
                 className="base"
                 label={item.itemText}
-                name="radioGroup"
+                name={`test_${question.questionNo}`}
                 value={item.itemNo}
                 checked={answer === item.itemNo}
                 onChange={(e: any, data: any) => onSetAnswer(data.value)}

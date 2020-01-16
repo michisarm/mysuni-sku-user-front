@@ -5,6 +5,7 @@ enum State {
   InProgress= 'InProgress',
   Missed= 'Missed',
   Completed= 'Completed',
+  Waiting= 'Waiting',
   Joined= 'Joined',
   Rejected= 'Rejected',
 }

@@ -208,9 +208,11 @@ class LectureCardPage extends Component<Props, State> {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;
-        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (student.learningState === LearningState.Passed) {
-          state = SubState.Completed;
+        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting) {
+          if (student.learningState === LearningState.Waiting) {
+            state = SubState.Waiting;
+          }
+          else state = SubState.InProgress;
           if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
             const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
             if (index) examId = classrooms[index].roundExamId;
@@ -219,6 +221,7 @@ class LectureCardPage extends Component<Props, State> {
             examId = personalCube.contents.examId || '';
           }
         }
+        if (student.learningState === LearningState.Passed) state = SubState.Completed;
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
