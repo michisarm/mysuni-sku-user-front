@@ -122,8 +122,10 @@ class LectureCardPage extends Component<Props, State> {
 
     lectureCardService.findLectureCard(params.lectureCardId)
       .then((lectureCard) => {
-        reviewService.findReviewSummary(lectureCard!.reviewId);
-        inMyLectureService!.findInMyLecture(lectureCard!.usid, LectureServiceType.Card);
+        if (lectureCard) {
+          reviewService.findReviewSummary(lectureCard.reviewId);
+          inMyLectureService!.findInMyLecture(lectureCard.usid, LectureServiceType.Card);
+        }
       });
 
     const personalCube = await personalCubeService.findPersonalCube(params.cubeId);

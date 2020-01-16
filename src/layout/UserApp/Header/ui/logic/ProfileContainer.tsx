@@ -34,7 +34,7 @@ class ProfileContainer extends Component<Props, State> {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
-    console.log(member.photoFilePath);
+
     return (
       <div className="g-info">
         <button className="ui user image label" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>

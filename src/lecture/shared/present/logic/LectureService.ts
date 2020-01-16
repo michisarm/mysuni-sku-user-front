@@ -223,17 +223,13 @@ class LectureService {
     const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
     const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
-    return runInAction(() => {
-      if (recommendLectureListRdo && recommendLectureListRdo.recommendLectureRdos
-        && recommendLectureListRdo.recommendLectureRdos.length && recommendLectureListRdo.recommendLectureRdos.length === 1) {
-        const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
+    if (recommendLectureListRdo.recommendLectureRdos && recommendLectureListRdo.recommendLectureRdos.length === 1) {
+      const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
 
-        recommendLecture.lectures.results = recommendLecture.lectures.results.map(result => new LectureModel(result));
-        this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results);
-        return recommendLecture.lectures;
-      }
-      return null;
-    });
+      runInAction(() => this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results));
+      return recommendLecture.lectures;
+    }
+    return null;
   }
 
   async confirmUsageStatisticsByCardId(lectureCardUsid: string) {
