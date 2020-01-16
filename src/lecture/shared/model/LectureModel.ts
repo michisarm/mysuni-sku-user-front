@@ -105,10 +105,12 @@ class LectureModel extends DramaEntityObservableModel {
       switch (this.viewState) {
         case 'Canceled':
         case 'Rejected':
+        case 'NoShow':
           return '취소/미이수';
         case 'Passed':
           return '학습완료';
         case 'Progress':
+        case 'Waiting':
           return '학습중';
         case 'Approved':
           return '학습예정';
