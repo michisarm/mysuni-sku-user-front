@@ -34,13 +34,13 @@ class ProfileContainer extends Component<Props, State> {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
-
+    console.log(member.photoFilePath);
     return (
       <div className="g-info">
         <button className="ui user image label" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
           <span className="name">{member.name}</span>
           <span className="affiliation">{member.company}  {member.department}</span>
-          <Image src={member && member.base64Photo || profileImg} alt="profile" />
+          <Image src={member.photoFilePath || profileImg} alt="profile" />
         </button>
       </div>
     );
