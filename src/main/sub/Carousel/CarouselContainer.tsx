@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import depot from '@nara.drama/depot';
 import { Icon } from 'semantic-ui-react';
 import CarouselWrapperView from './CarouselWrapperView';
 import CarouselItemView from './CarouselItemView';
@@ -36,17 +35,14 @@ class CarouselContainer extends Component<Props, State> {
           <div className="panopto">
             <iframe
               title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=61add621-ef7f-4348-82ff-ab43004266f6&offerviewer=false&showtitle=false&interactivity=none&showbrand=false"
+              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D61add621-ef7f-4348-82ff-ab43004266f6%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
               width="600"
               height="420"
               style={{ padding: '0px', border: '0px' }}
               frameBorder="0"
               allowFullScreen
-              // offerviewer={false}
-              // allow="autoplay"
             />
           </div>
-          {/*<Image src='/images/all/main_banner_Rolling01.jpg' alt=''/>*/}
         </a>
       ),
     },
