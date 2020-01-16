@@ -71,8 +71,8 @@ class StudentService {
     return this.studentApi.modifyLearningState(studentId, learningState);
   }
 
-  modifyStudent(studentId: string, student: StudentModel) {
-    return this.studentApi.modifyStudent(studentId, StudentModel.asNameValues(student));
+  modifyStudent(studentId: string, fileBoxId: string) {
+    return this.studentApi.modifyStudent(studentId, fileBoxId);
   }
 
   @action

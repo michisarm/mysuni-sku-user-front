@@ -41,20 +41,6 @@ class StudentModel extends DramaEntityObservableModel {
         && student.joinRequests.map(request => new JoinRequestModel(request)) || this.joinRequests;
     }
   }
-
-  static  asNameValues(student: StudentModel): NameValueList {
-    const asNameValues = {
-      nameValues: [
-        {
-          name: 'homeworkFileBoxId',
-          value: student.homeworkFileBoxId,
-        },
-      ],
-    };
-
-    return asNameValues;
-  }
-
 }
 
 decorate(StudentModel, {
