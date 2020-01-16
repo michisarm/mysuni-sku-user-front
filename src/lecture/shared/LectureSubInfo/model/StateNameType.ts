@@ -8,6 +8,7 @@ enum StateNameType {
   Completed = '학습완료',
   Missed = '미이수',
   Rejected = '반려됨',
+  NoShow = '불참',
 }
 
 export default StateNameType;
