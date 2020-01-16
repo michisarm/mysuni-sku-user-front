@@ -347,12 +347,12 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
         if (personalCube.contents.type === CubeType.Video && videoUrl && url) {
-          videoUrl += '&offerviewer=false';
-          url += '&offerviewer=false';
+          videoUrl += '&offerviewer=false&showtitle=false';
+          url += '&offerviewer=false&showtitle=false';
         }
         else if (personalCube.contents.type === CubeType.Audio && videoUrl && url) {
-          videoUrl += '&offerviewer=false&interactivity=none';
-          url += '&offerviewer=false&interactivity=none';
+          videoUrl += '&offerviewer=false&interactivity=none&showtitle=false';
+          url += '&offerviewer=false&interactivity=none&showtitle=false';
         }
         break;
     }
