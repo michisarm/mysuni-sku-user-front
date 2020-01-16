@@ -149,9 +149,8 @@ class LectureContainer extends Component<Props, States> {
     let { rating } = this.props;
     const { hovered } = this.state;
 
-    let state;
+    let state = model.state;
     let date;
-    state = model.state;
 
     if (state) {
       rating = undefined;
