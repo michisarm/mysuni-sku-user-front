@@ -96,7 +96,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { id: studentId } = student!;
 
     if (studentId) {
-      studentService!.modifyLearningState(studentId, LearningState.Waiting)
+      studentService!.modifyStudentForExam(studentId)
         .then(() => {
           if (init) init();
         });
@@ -264,7 +264,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getSubActions() {
-    const { cubeType, typeViewObject, viewObject, student } = this.props;
+    const {cubeType, typeViewObject, viewObject, student} = this.props;
     const subActions = [];
 
     switch (cubeType) {
@@ -272,29 +272,33 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.ELearning:
         if (student && student.id && student.proposalState === ProposalState.Submitted
           && typeViewObject.classrooms && typeViewObject.classrooms.length) {
-          subActions.push({ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries });
+          subActions.push({type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries});
         }
         break;
       case CubeType.Audio:
       case CubeType.Video:
         if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia
           && student.learningState === LearningState.Progress && !viewObject.examId) {
-          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
+          subActions.push({type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete});
         }
         break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
         if (student && student.id && student.learningState === LearningState.Progress && !viewObject.examId) {
-          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
+          subActions.push({type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete});
         }
         break;
       case CubeType.Community:
         break;
     }
 
-    if (viewObject.examId && student && student.learningState === LearningState.Progress) {
-      subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    if (viewObject.examId && student) {
+      if (student.learningState === LearningState.Progress) {
+        subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+      } else if (student.learningState === LearningState.Missed && student.numberOfTrials < 3) {
+        subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+      }
     }
 
     if (((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId))

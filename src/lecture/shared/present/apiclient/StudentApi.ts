@@ -55,6 +55,10 @@ class StudentApi {
   modifyStudent(studentId: string, fileBoxId: string) {
     return axiosApi.put(this.baseUrl + `/flow/courseworkProcess/${studentId}/${fileBoxId}`);
   }
+
+  modifyStudentForExam(studentId: string) {
+    return axiosApi.put(this.baseUrl + `/flow/examProcess/${studentId}`);
+  }
 }
 
 StudentApi.instance = new StudentApi();
