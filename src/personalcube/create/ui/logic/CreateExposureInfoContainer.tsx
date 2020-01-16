@@ -193,7 +193,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               <div className="round-wrap filebox-icon">
                 <div className="filter">
                   <Select
-                    placeholder="전체"
+                    placeholder="선택하세요"
                     className="ui small-border dropdown"
                     options={SelectType.colleges}
                   /*onChange={(e: any, data: any) => onChangePersonalCubeProps('college', {
