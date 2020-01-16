@@ -29,7 +29,7 @@ class AppLayoutContainer extends Component<Props> {
       skProfileService!.findSkProfile().then(() => {
         const { skProfile } = skProfileService!;
         if (!skProfile.pisAgreement.signed) {
-          window.location.href = '/login';
+          window.location.href = process.env.PUBLIC_URL + '/profile/agreement';
         }
       });
       skProfileService!.findStudySummary().then(() => {
@@ -37,7 +37,7 @@ class AppLayoutContainer extends Component<Props> {
         if (!studySummary.favoriteLearningType || !studySummary.favoriteLearningType.idNames
         || !studySummary.favoriteLearningType.idNames.length
         || !studySummary.favoriteLearningType.idNames.filter(idName => idName.id !== 'etc').filter(idName => idName.name).length) {
-          window.location.href = '/login';
+          window.location.href = process.env.PUBLIC_URL + '/profile/interest';
         }
       });
 
