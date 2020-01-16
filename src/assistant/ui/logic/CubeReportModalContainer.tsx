@@ -12,6 +12,7 @@ interface Props {
   rollBookId: string
 
   trigger?: React.ReactNode
+  onSaveCallback?:() => void
 }
 
 interface States {
@@ -49,12 +50,13 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   }
 
   onSaveModal() {
-    const { studentService } = this.props;
+    const { studentService, onSaveCallback } = this.props;
     const { student } = this.props.studentService || {} as StudentService;
     const { id: studentId } = student!;
     if (studentId && student) {
-      studentService!.modifyStudent(studentId, student)
+      studentService!.modifyStudent(studentId, student.homeworkFileBoxId)
         .then(() => this.onCloseModal());
+      if (onSaveCallback) onSaveCallback();
     }
   }
 
