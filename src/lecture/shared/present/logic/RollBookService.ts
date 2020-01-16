@@ -26,8 +26,13 @@ class RollBookService {
   @computed
   get rollBooks() {
     //
-    const rollBooks = this._rollBooks as IObservableArray;
-    return rollBooks.peek();
+    return (this._rollBooks as IObservableArray).peek();
+  }
+
+  @computed
+  get rollBooksPassedStudentCount() {
+    //
+    return this._rollBooks.reduce((prev: number, current: RollBookModel) => prev + current.passedStudentCount, 0);
   }
 
   @computed
@@ -43,10 +48,8 @@ class RollBookService {
     //
     const rollBook = await this.rollBookApi.findRollBookByLectureCardIdAndRound(lectureCardId, round);
 
-    return runInAction(() => {
-      this.rollBook = new RollBookModel(rollBook);
-      return rollBook;
-    });
+    runInAction(() => this.rollBook = new RollBookModel(rollBook));
+    return rollBook;
   }
 
   @action
@@ -54,10 +57,8 @@ class RollBookService {
     //
     const rollBooks = await this.rollBookApi.findAllLecturesByLectureCardId(lectureCardId);
 
-    return runInAction(() => {
-      this._rollBooks = rollBooks.map(rollBook => new RollBookModel(rollBook));
-      return rollBooks;
-    });
+    runInAction(() => this._rollBooks = rollBooks.map(rollBook => new RollBookModel(rollBook)));
+    return rollBooks;
   }
 
 }

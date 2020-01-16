@@ -8,6 +8,8 @@ class RollBookModel extends DramaEntityObservableModel {
   //
   round: number = 0;
   name: string = '';
+  studentCount: number = 0;
+  passedStudentCount: number = 0;
   lectureCardId: string = '';
 
   constructor(rollBook?: RollBookModel) {
@@ -21,6 +23,8 @@ class RollBookModel extends DramaEntityObservableModel {
 decorate(RollBookModel, {
   round: observable,
   name: observable,
+  studentCount: observable,
+  passedStudentCount: observable,
   lectureCardId: observable,
 });
 

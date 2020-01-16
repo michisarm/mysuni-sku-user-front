@@ -21,7 +21,6 @@ import {
   LectureServiceType,
   RollBookService,
   StudentCdoModel,
-  StudentCountRdoModel,
   StudentService,
 } from 'lecture';
 import { CourseSetModel, LearningCardService } from 'course';
@@ -115,10 +114,8 @@ class LectureCardPage extends Component<Props, State> {
 
 
     collegeService.findCollege(params.collegeId);
-    rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId)
-      .then(rollBooks => {
-        rollBooks.map(rollBook => studentService!.findStudentCount(rollBook.id));
-      });
+    rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId);
+
 
     lectureCardService.findLectureCard(params.lectureCardId)
       .then((lectureCard) => {
@@ -191,18 +188,15 @@ class LectureCardPage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, studentService, classroomService,
+      personalCubeService, cubeIntroService, studentService, classroomService, rollBookService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
-    const { studentCounts, student }: StudentService = studentService!;
+    const { student }: StudentService = studentService!;
     const { classrooms } = classroomService!;
+    const { rollBooksPassedStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
-    let participantCount = 0;
-    studentCounts!.map((studentCount: StudentCountRdoModel) => {
-      participantCount += studentCount.approvedCount;
-    });
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -235,7 +229,7 @@ class LectureCardPage extends Component<Props, State> {
       required: personalCube.required,
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
-      participantCount,
+      rollBooksPassedStudentCount,
 
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
