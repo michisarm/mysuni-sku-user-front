@@ -24,8 +24,7 @@ class LectureCardService {
   @computed
   get lectureCards() {
     //
-    const lectureCards = this._lectureCards as IObservableArray;
-    return lectureCards.peek();
+    return (this._lectureCards as IObservableArray).peek();
   }
 
   // LectureCards ------------------------------------------------------------------------------------------------------
@@ -42,13 +41,12 @@ class LectureCardService {
   async findLectureCard(lectureCardId: string) {
     //
     const lectureCard = await this.lectureCardApi.findLectureCard(lectureCardId);
+
     if (!lectureCard) {
       return null;
     }
-    return runInAction(() => {
-      this.lectureCard = new LectureCardModel(lectureCard);
-      return lectureCard;
-    });
+    runInAction(() => this.lectureCard = new LectureCardModel(lectureCard));
+    return lectureCard;
   }
 }
 

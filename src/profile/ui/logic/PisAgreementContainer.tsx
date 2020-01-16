@@ -340,7 +340,7 @@ class PisAgreementContainer extends Component<Props> {
                   구성원께서 그 계약의 해지 의사를 명확하게 밝히지 아니한 경우
                 </div>
                 <div className="text3">※ 로그인이 불가능하신 고객께서는 ‘개인정보 처리 요구서 다운로드 하기’를 이용하여 신청서를 작성하신 후 개인정보 담당자에게
-                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="https://mysuni.sk.com/station/images/mySUNI_Privacy_Handling_Request.docx">개인정보처리 요구서 다운로드 하기</a>
+                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="https://mysuni.sk.com/profile/commondocs/mySUNI_Privacy_Handling_Request.docx">개인정보처리 요구서 다운로드 하기</a>
                 </div>
 
                 <div className="text2">6. 개인정보의 파기</div>
