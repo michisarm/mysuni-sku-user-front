@@ -1,5 +1,5 @@
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -187,7 +187,21 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   routeToCreateList() {
     //
-    this.props.history.push(routePaths.create());
+    this.setState({
+      confirmWinOpen: false,
+    }, () => {
+      reactConfirm({
+        title: '저장완료',
+        message: '저장되었습니다. 목록 페이지로 이동하시겠습니까?',
+        onOk: () => this.props.history.push(routePaths.create()),
+        onCancel: () => {
+          const { params } = this.props.match;
+
+          this.props.history.replace('/empty');
+          setTimeout(() => this.props.history.replace(routePaths.createIntro(params.personalCubeId, params.cubeType)), 0);
+        },
+      });
+    });
   }
 
   handleSave() {
@@ -447,9 +461,15 @@ class CreateIntroContainer extends React.Component<Props, States> {
                   <div className="buttons">
                     <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
                     <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button className="fix line" onClick={this.handleSave}>Save</Button>
                     <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
-                    <Button className="fix bg" onClick={() => this.handleApprovalRequest()}>Shared</Button>
+                    { cubeIntroId ?
+                      <>
+                        <Button className="fix line" onClick={this.handleSave}>Save</Button>
+                        <Button className="fix bg" onClick={() => this.handleApprovalRequest()}>Shared</Button>
+                      </>
+                      :
+                      <Button className="fix bg" onClick={this.handleSave}>Save</Button>
+                    }
                   </div>
                   :
                   <div className="buttons">
