@@ -156,6 +156,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
+        baseUrl: training.baseUrl,
       })).then(this.findMyContent);
     }
   }

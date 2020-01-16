@@ -177,6 +177,7 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
+        baseUrl: training.baseUrl,
       }))
         .then(() => {
           if (type === Type.InMyList) {

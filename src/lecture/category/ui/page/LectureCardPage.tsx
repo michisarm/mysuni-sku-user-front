@@ -437,6 +437,7 @@ class LectureCardPage extends Component<Props, State> {
       courseLectureUsids: [],
       lectureCardUsids: [],
       reviewId: lectureCard.reviewId,
+      baseUrl: personalCube.iconBox.baseUrl,
     });
   }
 
