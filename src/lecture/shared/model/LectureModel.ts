@@ -35,6 +35,7 @@ class LectureModel extends DramaEntityObservableModel {
   description: string = '';
 
   stampCount: number = 0;
+  passedStudentCount: number = 0;
   studentCount: number = 0;
   time: number = 0;
 
@@ -144,6 +145,7 @@ decorate(LectureModel, {
   description: observable,
   stampCount: observable,
   studentCount: observable,
+  passedStudentCount: observable,
   time: observable,
   reviewSummary: observable,
   required: observable,

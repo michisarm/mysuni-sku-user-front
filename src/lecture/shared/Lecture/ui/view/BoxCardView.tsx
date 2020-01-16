@@ -131,7 +131,7 @@ class BoxCardView extends Component<Props, States> {
                 </div>
               ) || null
             }
-            <Field icon="complete" text={`이수 ${numeral(model.studentCount).format('0,0')}명`} />
+            <Field icon="complete" text={`이수 ${numeral(model.passedStudentCount).format('0,0')}명`} />
           </Fields>
 
           {this.renderBottom()}
