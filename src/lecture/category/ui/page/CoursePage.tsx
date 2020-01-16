@@ -243,6 +243,7 @@ class CoursePage extends Component<Props, State> {
       courseLectureUsids: match.params.serviceType === 'Program' ? programLecture.courseLectureUsids : [],
       lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids || [] : courseLecture!.lectureCardUsids || [],
       reviewId: match.params.serviceType === 'Program' ? programLecture!.reviewId || '' : courseLecture!.reviewId || '',
+      baseUrl: coursePlan.iconBox.baseUrl,
     });
   }
 

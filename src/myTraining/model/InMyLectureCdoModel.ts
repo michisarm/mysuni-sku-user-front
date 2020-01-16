@@ -25,6 +25,7 @@ class InMyLectureCdoModel {
   lectureCardUsids: string[] = [];
 
   reviewId: string = '';
+  baseUrl: string = '';
 
 
   constructor(inMyLecture?: InMyLectureCdoModel) {
@@ -52,6 +53,7 @@ decorate(InMyLectureCdoModel, {
   courseLectureUsids: observable,
   lectureCardUsids: observable,
   reviewId: observable,
+  baseUrl: observable,
 });
 
 export default InMyLectureCdoModel;
