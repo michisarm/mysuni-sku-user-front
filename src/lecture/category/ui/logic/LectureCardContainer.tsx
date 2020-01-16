@@ -232,6 +232,8 @@ class LectureCardContainer extends Component<Props, State> {
             return undefined;
           }
           if (!applyingPeriod) return undefined;
+          console.log(moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days'));
+          console.log(moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days'));
           if (moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days') > 0
             || moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days') < 0) {
             return undefined;
