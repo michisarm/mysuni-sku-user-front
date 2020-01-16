@@ -6,6 +6,7 @@ import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
 import LectureModel from '../../model/LectureModel';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
+import StudentCdoModel from '../../model/StudentCdoModel';
 
 
 class LectureFlowApi {
@@ -36,9 +37,9 @@ class LectureFlowApi {
       .then(response => response && response.data);
   }
 
-  confirmUsageStatisticsByCardId(lectureCardUsid: string) {
+  confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
-    return axiosApi.post<boolean>(this.baseUrl + `/confirm/usagestatistics?lectureCardUsid=${lectureCardUsid}`)
+    return axiosApi.post<boolean>(this.baseUrl + `/confirm/usagestatistics`, studentCdo)
       .then(response => response && response.data);
   }
 }
