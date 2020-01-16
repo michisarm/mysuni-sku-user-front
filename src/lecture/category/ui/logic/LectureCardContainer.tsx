@@ -277,7 +277,8 @@ class LectureCardContainer extends Component<Props, State> {
         break;
       case CubeType.Audio:
       case CubeType.Video:
-        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress && !viewObject.examId) {
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia
+          && student.learningState === LearningState.Progress && !viewObject.examId) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
