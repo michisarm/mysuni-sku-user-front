@@ -73,7 +73,7 @@ class SharedTypeDetailView extends React.Component<Props> {
         <Table.Row>
           <Table.HeaderCell>교육자료</Table.HeaderCell>
           <Table.Cell>
-            {officeWeb && officeWeb.fileBoxId}
+            {officeWeb && officeWeb.webPageUrl}
           </Table.Cell>
         </Table.Row>
         <Table.Row>

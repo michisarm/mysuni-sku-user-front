@@ -57,39 +57,48 @@ class SharedDetailContainer extends React.Component<Props, States> {
     const { personalCubeId, cubeType } = this.props.match.params;
 
     if (personalCubeService && cubeIntroService) {
+      this.clearAll();
       personalCubeService.findPersonalCube(personalCubeId)
+        .then(() => {
+          const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
+          const referenceFileBoxId = personalCube && personalCube.contents && personalCube.contents.fileBoxId;
+          this.findFiles('reference', referenceFileBoxId);
+        })
         .then(() => {
           const cubeIntroId = personalCubeService.personalCube
             && personalCubeService.personalCube.cubeIntro && personalCubeService.personalCube.cubeIntro.id;
-          cubeIntroService.findCubeIntro(cubeIntroId);
-        })
-        .then(() => {
+          cubeIntroService.findCubeIntro(cubeIntroId)
+            .then(() => {
+              const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+              const reportFileBoxId = cubeIntro && cubeIntro.reportFileBox && cubeIntro.reportFileBox.fileBoxId;
+              this.findFiles('report', reportFileBoxId);
+            });
+
           const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
             && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
+
           if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
           if (cubeType === 'Community') this.setCommunity(contentsId);
           if (cubeType === 'Documents' || cubeType === 'WebPage') this.setOfficeWeb(contentsId);
-        })
-        .then(() => this.getFileIds());
+        });
     }
   }
 
-  getFileIds() {
+  clearAll() {
     //
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
-    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
-
-    const referenceFileBoxId = personalCube && personalCube.contents && personalCube.contents.fileBoxId;
-    const reportFileBoxId = cubeIntro && cubeIntro.reportFileBox && cubeIntro.reportFileBox.fileBoxId;
-    const officeWebFileBoxId = officeWeb.fileBoxId;
-
-    Promise.resolve()
-      .then(() => {
-        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
-        if (reportFileBoxId) this.findFiles('report', reportFileBoxId);
-        if (officeWebFileBoxId) this.findFiles('officeweb', officeWebFileBoxId);
-      });
+    const {
+      personalCubeService, cubeIntroService,
+      mediaService, boardService, officeWebService,
+    } = this.props;
+    if (personalCubeService && cubeIntroService
+      && mediaService && boardService && officeWebService) {
+      personalCubeService.clearPersonalCube();
+      personalCubeService.clearFileName();
+      cubeIntroService.clearCubeIntro();
+      mediaService.clearMedia();
+      boardService.clearBoard();
+      officeWebService.clearOfficeWeb();
+    }
   }
 
   findFiles(type: string, fileBoxId: string) {
@@ -105,7 +114,15 @@ class SharedDetailContainer extends React.Component<Props, States> {
   setOfficeWeb(contentsId: string) {
     //
     const { officeWebService } = this.props;
-    if (officeWebService) officeWebService.findOfficeWeb(contentsId);
+
+    if (officeWebService) {
+      officeWebService.findOfficeWeb(contentsId)
+        .then(() => {
+          const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+          const officeWebFileBoxId = officeWeb.fileBoxId;
+          if (officeWebFileBoxId) this.findFiles('officeweb', officeWebFileBoxId);
+        });
+    }
   }
 
   setMedia(contentsId: string) {
