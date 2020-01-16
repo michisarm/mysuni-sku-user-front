@@ -103,19 +103,54 @@ class LectureCardPage extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    skProfileService.findSkProfile();
-    lectureService.confirmUsageStatisticsByCardId(params.lectureCardId)
-      .then((confirmed) => {
-        if (confirmed) {
-          history.replace('/empty');
-          setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
-        }
-      });
+    const promises = Promise.all([
+      personalCubeService.findPersonalCube(params.cubeId),
+      skProfileService.findSkProfile(),
+      rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId),
+    ]);
 
+    promises.then(async ([personalCube, skProfile, rollbooks]) => {
+      //
+      if (personalCube) {
+        const { service, contents } = personalCube.contents;
+
+        await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
+
+        if (service.type === ContentsServiceType.Classroom) {
+          await classroomService.findClassrooms(personalCube.personalCubeId);
+        }
+        else if (service.type === ContentsServiceType.Media) {
+          mediaService.findMedia(contents.id).then((media) => {
+            if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
+              this.setState({ linkedInOpen: true });
+            }
+            if (media.mediaType === MediaType.InternalMedia) {
+              const studentCdo = {
+                ...this.getStudentCdo(),
+                proposalState: ProposalState.Approved,
+              };
+
+              lectureService.confirmUsageStatisticsByCardId(studentCdo)
+                .then((confirmed) => {
+                  if (confirmed) {
+                    history.replace('/empty');
+                    setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+                  }
+                });
+            }
+          });
+        }
+        else if (service.type === ContentsServiceType.OfficeWeb) {
+          officeWebService.findOfficeWeb(contents.id);
+        }
+        else if (service.type === ContentsServiceType.Community) {
+          boardService.findBoard(contents.id);
+          this.setState({ type: 'Posts' });
+        }
+      }
+    });
 
     collegeService.findCollege(params.collegeId);
-    rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId);
-
 
     lectureCardService.findLectureCard(params.lectureCardId)
       .then((lectureCard) => {
@@ -125,31 +160,7 @@ class LectureCardPage extends Component<Props, State> {
         }
       });
 
-    const personalCube = await personalCubeService.findPersonalCube(params.cubeId);
     await studentService.findIsJsonStudent(params.lectureCardId);
-
-    if (personalCube) {
-      const { service, contents } = personalCube.contents;
-
-      await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
-      if (service.type === ContentsServiceType.Classroom) {
-        await classroomService.findClassrooms(personalCube.personalCubeId);
-      }
-      else if (service.type === ContentsServiceType.Media) {
-        mediaService.findMedia(contents.id).then((media) => {
-          if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
-            this.setState({ linkedInOpen: true });
-          }
-        });
-      }
-      else if (service.type === ContentsServiceType.OfficeWeb) {
-        officeWebService.findOfficeWeb(contents.id);
-      }
-      else if (service.type === ContentsServiceType.Community) {
-        boardService.findBoard(contents.id);
-        this.setState({ type: 'Posts' });
-      }
-    }
     this.findStudent();
   }
 

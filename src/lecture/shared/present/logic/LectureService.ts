@@ -13,6 +13,7 @@ import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../model/SharedRdoModel';
+import StudentCdoModel from '../../model/StudentCdoModel';
 
 
 @autobind
@@ -232,9 +233,9 @@ class LectureService {
     return null;
   }
 
-  async confirmUsageStatisticsByCardId(lectureCardUsid: string) {
+  async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
-    return this.lectureFlowApi.confirmUsageStatisticsByCardId(lectureCardUsid);
+    return this.lectureFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 }
 
