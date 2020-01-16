@@ -23,6 +23,10 @@ interface Props {
 @reactAutobind
 class SharedTypeDetailView extends React.Component<Props> {
 
+  goToUrl(url: string) {
+    window.open(url);
+  }
+
   renderVideo() {
     const { media } = this.props.mediaService || {} as MediaService;
     const { filesMap, goToVideo } = this.props;
@@ -42,7 +46,7 @@ class SharedTypeDetailView extends React.Component<Props> {
             {
               media && media.mediaType === MediaType.LinkMedia ? (
                 <div className="text2">
-                  <a href="#">
+                  <a href="#" onClick={() => this.goToUrl(media.mediaContents.linkMediaUrl)}>
                     {media && media.mediaContents && media.mediaContents.linkMediaUrl || ''}
                   </a>
                 </div>
@@ -73,7 +77,11 @@ class SharedTypeDetailView extends React.Component<Props> {
         <Table.Row>
           <Table.HeaderCell>교육자료</Table.HeaderCell>
           <Table.Cell>
-            {officeWeb && officeWeb.webPageUrl}
+            <div className="text2">
+              <a href="#" onClick={() => this.goToUrl(officeWeb.webPageUrl)}>
+                {officeWeb && officeWeb.webPageUrl || ''}
+              </a>
+            </div>
           </Table.Cell>
         </Table.Row>
         <Table.Row>
