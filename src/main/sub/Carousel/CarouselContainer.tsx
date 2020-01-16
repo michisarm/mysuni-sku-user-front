@@ -36,7 +36,7 @@ class CarouselContainer extends Component<Props, State> {
           <div className="panopto">
             <iframe
               title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D61add621-ef7f-4348-82ff-ab43004266f6"
+              src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=61add621-ef7f-4348-82ff-ab43004266f6&offerviewer=false&showtitle=false&interactivity=none&showbrand=false"
               width="600"
               height="420"
               style={{ padding: '0px', border: '0px' }}
