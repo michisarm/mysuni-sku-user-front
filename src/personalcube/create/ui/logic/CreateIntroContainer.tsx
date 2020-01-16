@@ -6,11 +6,11 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
+import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';
 import CreateIntroView from '../view/CreateIntroView';
 import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
-import { ContentsProviderService } from '../../../../college';
 import CreateMediaContainer from './CreateMediaContainer';
 import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
@@ -21,6 +21,7 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   personalCubeService?: PersonalCubeService
   cubeIntroService?: CubeIntroService
   contentsProviderService?: ContentsProviderService
+  collegeService?: CollegeService
   mediaService ?: MediaService
   boardService?: BoardService
   officeWebService ?: OfficeWebService
@@ -40,7 +41,7 @@ interface States{
 }
 
 @inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'college.contentsProviderService',
+  'personalCube.cubeIntroService', 'college.contentsProviderService', 'college.collegeService',
   'personalCube.mediaService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind
@@ -55,9 +56,10 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   async componentDidMount() {
     //
-    const { cubeIntroService, personalCubeService } = this.props;
+    const { cubeIntroService, personalCubeService, collegeService } = this.props;
     const { cubeType, personalCubeId } = this.props.match.params;
 
+    if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
       await personalCubeService!.findPersonalCube(personalCubeId);
     }

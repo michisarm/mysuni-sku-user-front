@@ -4,7 +4,7 @@ import 'react-app-polyfill/stable';
 
 import 'semantic-ui-less/semantic.less';
 import './style/css/main.b6db522c.chunk.css';
-import './style/css/2.cdac905c.chunk.css';
+import './style/css/2.4fad8f4d.chunk.css';
 import './style/app.css';
 
 import React from 'react';

@@ -4,7 +4,7 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import $ from 'jquery';
-import { Form, Icon, Radio } from 'semantic-ui-react';
+import { Form, Icon, Radio, Select } from 'semantic-ui-react';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
@@ -23,16 +23,20 @@ interface Props {
   collegeService?: CollegeService
 }
 
+interface State {
+  folderId: string
+}
+
 @inject(mobxHelper.injectFrom('personalCube.mediaService', 'college.collegeService'))
 @observer
 @reactAutobind
-class CreateVideoTypeView  extends React.Component<Props> {
+class CreateVideoTypeView  extends React.Component<Props, State> {
   //
+  state = {
+    folderId: '',
+  };
 
   isSingleUpload = true;
-  // folderId: string = getCookie('folderId');
-  folderId: string = '1b950b59-1f4f-409a-80ef-ab19008a4231';
-  // folderId = window.opener.localStorage.getItem('folderId');
   externalId: string = '';
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
@@ -52,11 +56,14 @@ class CreateVideoTypeView  extends React.Component<Props> {
     count: 0,
   };
 
-
   componentDidMount(): void {
     this.init();
+  }
+
+  componentDidUpdate(): void {
+
     // window.onmessage = this.setData;
-    const {media} = this.props.mediaService!;
+    const { media } = this.props.mediaService!;
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
       this.$progressBar = $('#progressBar');
@@ -99,7 +106,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
             }
           });
           if (nextStep) {
-            const ing = true;
             this.value = '파일을 올리고 있습니다.';
 
             $.each(this.uploadFiles, (i: any, file: any) => {
@@ -118,20 +124,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
         $target.parent().remove();
       });
     }
-  }
-
-  getCookie(name: string) {
-    name += '=';
-    const cookieData = document.cookie;
-    let start = cookieData.indexOf(name);
-    let cookieValue = '';
-    if (start !== -1) {
-      start += name.length;
-      let end = cookieData.indexOf(';', start);
-      if (end === -1) end = cookieData.length;
-      cookieValue = cookieData.substring(start, end);
-    }
-    return unescape(cookieValue);
   }
 
   eachUpload() {
@@ -168,7 +160,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
     const formData = new FormData();
     formData.append('uploadfile', file, file.name);
     formData.append('sessionNames', sessionName);
-    formData.append('folderId', this.folderId);
+    formData.append('folderId', this.state.folderId);
     formData.append('externalId', this.externalId);
     formData.append('cookie', this.cookie);
     const $selfProgress = file.target.find('progress'); //File 객체에 저장해둔 프리뷰 DOM의 progress 요소를 찾는다.
@@ -213,6 +205,18 @@ class CreateVideoTypeView  extends React.Component<Props> {
     })(file, idx);
     reader.readAsDataURL(file);
   }
+
+  makeCollegeOption() {
+    const { collegeService } = this.props;
+    const { collegesForPanopto } = collegeService || {} as CollegeService;
+    const collegeOption: any[] = [];
+    collegesForPanopto.map((college, index) => {
+      collegeOption.push({ key: index, text: college.name, value: college.panoptoFolderId });
+    });
+
+    return collegeOption;
+  }
+
 
   setProgress(per: any) {
     this.$progressBar.val(per);
@@ -263,7 +267,8 @@ class CreateVideoTypeView  extends React.Component<Props> {
   render() {
     const { onChangePersonalCubeProps, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
     const { uploadedPaonoptos } = this.props.mediaService || {} as MediaService;
-    const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
+    // const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
+
     return (
       <>
         <hr className="dividing" />
@@ -298,43 +303,71 @@ class CreateVideoTypeView  extends React.Component<Props> {
           <div className="ui form">
             {
               media && media.mediaType === MediaType.InternalMedia && (
-                <div className="ui input file">
+                <>
                   {
                     uploadedPaonoptos && uploadedPaonoptos.length
-                    && uploadedPaonoptos.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-                      /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
-                      <input
-                        type="text"
-                        key={index}
-                        value ={internalMedia.name}
-                        readOnly
-                      />
-                    ))
+                    && (
+                      <div className="ui input file">
+                        {
+                          uploadedPaonoptos.map((internalMedia: InternalMediaConnectionModel, index: number) => (
+                            /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
+                            <input
+                              type="text"
+                              key={index}
+                              value={internalMedia.name}
+                              readOnly
+                            />
+                          )) || null
+                        }
+                        <Icon className="clear link" />
+                        {/*<label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>*/}
+                        {/*<label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
+                        <input type="file" id="hidden-new-file" />
+                      </div>
+                    )
                     || (
-                      <input
-                        type="text"
-                        placeholder="영상을 업로드해주세요."
-                        readOnly
-                      />
+                      <div className="round-wrap file-drop-wrap">
+                        {/*<input*/}
+                        {/*  type="text"*/}
+                        {/*  placeholder="영상을 업로드해주세요."*/}
+                        {/*  readOnly*/}
+                        {/*/>*/}
+                        <div className="filter">
+                          폴더:
+                          <Select
+                            placeholder="분류를 선택해주세요"
+                            className="ui small-border dropdown"
+                            options={this.makeCollegeOption()}
+                            value={media && media.mediaContents && media.mediaContents.internalMedias
+                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
+                            && media.mediaContents.internalMedias[0].folderId || this.state.folderId || ''}
+                            onChange={(e: any, data: any) => {
+                              this.setState({ folderId: data.value });
+                            }}
+                          />
+                        </div>
+                        {
+                          ( (media && media.mediaContents && media.mediaContents.internalMedias
+                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
+                            && media.mediaContents.internalMedias[0].folderId) ||  this.state.folderId) && (
+                            <div className="file-drop" id="drop">
+                              <p>
+                                <Icon className="upload" />
+                                여기로 파일을 올려주세요.
+                              </p>
+                              <div className="thumbnails" id="thumbnails">
+                                <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />
+                              </div>
+                              <div className="bottom">
+                                <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />
+                              </div>
+                            </div>
+                          )
+                        }
+                      </div>
                     )
                   }
-                  <Icon className="clear link" />
-                  {/*<div className="file-drop" id="drop">*/}
-                  {/*  <p>*/}
-                  {/*    <Icon className="upload" />*/}
-                  {/*    여기로 파일을 올려주세요.*/}
-                  {/*  </p>*/}
-                  {/*  <div className="thumbnails" id="thumbnails">*/}
-                  {/*    <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />*/}
-                  {/*  </div>*/}
-                  {/*  <div className="bottom">*/}
-                  {/*    <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />*/}
-                  {/*  </div>*/}
-                  {/*</div> : null*/}
-                  <label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>
-                  {/*<label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
-                  <input type="file" id="hidden-new-file" />
-                </div>
+                </>
               )
             }
             {

@@ -209,7 +209,8 @@ class LectureService {
 
     runInAction(() => {
       this._recommendLectureListRdo.totalCount = recommendLectureListRdo.totalCount;
-      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos.concat(recommendLectureListRdo.recommendLectureRdos);
+      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos
+        .concat(recommendLectureListRdo.recommendLectureRdos);
     });
     return recommendLectureListRdo;
   }

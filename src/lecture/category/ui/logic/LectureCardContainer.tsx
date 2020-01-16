@@ -300,7 +300,8 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
+        if (student && student.id && (!student.learningState
+          && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
           return () => {
             studentService!.removeStudent(student.rollBookId)
               .then(() => {
@@ -324,7 +325,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, cubeType, typeViewObject, student, studentCdo, children } = this.props;
+    const { inMyLecture, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
 
     return (
       <LectureCardContentWrapperView>

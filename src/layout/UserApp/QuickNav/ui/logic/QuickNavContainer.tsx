@@ -4,7 +4,6 @@ import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import mainRoutePaths from 'main/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
