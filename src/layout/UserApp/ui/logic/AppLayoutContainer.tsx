@@ -26,8 +26,21 @@ class AppLayoutContainer extends Component<Props> {
   async findProfile() {
     if (process.env.NODE_ENV !== 'development') {
       const { skProfileService } = this.props;
-      await skProfileService!.findSkProfile();
-      if (!skProfileService!.skProfile.pisAgreement.signed) window.location.href = '/login';
+      skProfileService!.findSkProfile().then(() => {
+        const { skProfile } = skProfileService!;
+        if (!skProfile.pisAgreement.signed) {
+          window.location.href = '/login';
+        }
+      });
+      skProfileService!.findStudySummary().then(() => {
+        const { studySummary } = skProfileService!;
+        if (!studySummary.favoriteLearningType || !studySummary.favoriteLearningType.idNames
+        || !studySummary.favoriteLearningType.idNames.length
+          || !studySummary.favoriteLearningType.idNames.filter(idName => idName.id !== 'etc').filter(idName => !idName.name).length) {
+          window.location.href = '/login';
+        }
+      });
+
     }
   }
 
