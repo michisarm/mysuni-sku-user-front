@@ -61,7 +61,7 @@ class CreateMovieDetailModal extends React.Component<Props> {
                   <div className="row">
                     <div className="cell"><span className="dot">Panopto 다운로드</span></div>
                     <div className="cell">
-                      <span className="text1">PanoptoPoint, 비디오 및 오디오 프리젠테이션을 레코딩 합니다. 레코딩 결과를 Panopto 사이트에 업로드하여 학생 및 동료들과 공유하십시오.</span>
+                      <span className="text1">PowerPoint, 비디오 및 오디오 프리젠테이션을 레코딩 합니다. 레코딩 결과를 Panopto 사이트에 업로드하여 학생 및 동료들과 공유하십시오.</span>
                       <span className="text5">
                         <Button icon className="left icon-big-line2" onClick={this.handleClickDownload}>
                           <Icon className="download2" /><span>Panopto 다운로드</span>
