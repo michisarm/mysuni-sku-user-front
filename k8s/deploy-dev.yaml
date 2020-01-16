@@ -28,9 +28,14 @@ spec:
 #            cpu: "2.5"
 #            memory: "5Gi"
         volumeMounts:
+          - name: user-front-persistent-storage
+            mountPath: /usr/share/nginx/html
           - mountPath: /etc/localtime
             name: timezone-config
       volumes:
+        - name: user-front-persistent-storage
+          persistentVolumeClaim:
+            claimName: nara-pvc-1
         - hostPath:
             path: /usr/share/zoneinfo/Asia/Seoul
           name: timezone-config
