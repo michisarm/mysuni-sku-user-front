@@ -8,6 +8,7 @@ enum State {
   Waiting= 'Waiting',
   Joined= 'Joined',
   Rejected= 'Rejected',
+  NoShow= 'NoShow',
 }
 
 export default State;
