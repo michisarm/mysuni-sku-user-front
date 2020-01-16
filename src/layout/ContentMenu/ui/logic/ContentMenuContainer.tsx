@@ -5,8 +5,9 @@ import { Menu as SemanticMenu, Sticky } from 'semantic-ui-react';
 
 interface Menu {
   name: string,
-  count?: number
   type: string,
+  count?: number
+  className?: string
 }
 
 interface Props {
@@ -40,6 +41,7 @@ class ContentMenuContainer extends Component<Props> {
                 menus.map((menu: Menu) => (
                   <SemanticMenu.Item
                     name={menu.name}
+                    className={menu.className}
                     active={menu.type === type}
                     key={`menu_${menu.name}`}
                     onClick={() => onSelectMenu(menu.type)}
