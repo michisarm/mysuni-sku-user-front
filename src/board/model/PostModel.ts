@@ -53,7 +53,7 @@ export class PostModel implements DomainEntity {
 
   static isBlank(post: PostModel) : string {
     if (!post.title) return '제목';
-    if (!post.category) return '문의유형';
+    if (!post.category.id) return '문의유형';
     if (!post.contents || !post.contents.contents) return '내용';
     return 'success';
   }
