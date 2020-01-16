@@ -107,6 +107,7 @@ class LectureModel extends DramaEntityObservableModel {
         case 'Canceled':
         case 'Rejected':
         case 'NoShow':
+        case 'Missed':
           return '취소/미이수';
         case 'Passed':
           return '학습완료';
