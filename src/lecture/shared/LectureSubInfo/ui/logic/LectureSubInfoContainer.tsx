@@ -76,6 +76,7 @@ class LectureSubInfoContainer extends Component<Props> {
               mainAction={mainAction}
               subActions={subActions}
               onCancel={onCancel}
+              state={state}
             />
             <StateView state={state} />
             <LevelView level={level} />

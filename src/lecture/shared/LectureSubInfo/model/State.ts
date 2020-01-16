@@ -6,6 +6,7 @@ enum State {
   Missed= 'Missed',
   Completed= 'Completed',
   Joined= 'Joined',
+  Rejected= 'Rejected',
 }
 
 export default State;

@@ -25,10 +25,11 @@ export const Required = ({ required }: RequiredProp) => {
 interface ButtonsProp {
   mainAction?: Action,
   subActions?: Action[],
-  onCancel?: () => void
+  onCancel?: () => void,
+  state?: State,
 }
 
-export const Buttons = ({ mainAction, subActions, onCancel }: ButtonsProp) => {
+export const Buttons = ({ mainAction, subActions, onCancel, state }: ButtonsProp) => {
   //
   if (!mainAction && !subActions && !onCancel) return null;
   return (
@@ -41,7 +42,10 @@ export const Buttons = ({ mainAction, subActions, onCancel }: ButtonsProp) => {
             <Button key={subAction.type} className="fix bg blue" onClick={subAction.onAction}>{subAction.type}</Button>
           ))
       }
-      { onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button> }
+      {
+        State.Rejected === state ||
+        onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button>
+      }
     </div>
   );
 };

@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@nara.platform/accent": "0.0.10",
-    "@nara.drama/depot": "1.2.0",
+    "@nara.drama/depot": "1.2.1",
     "@nara.drama/feedback": "0.0.22",
     "@nara.platform/dock": "0.0.7-sk",
     "@sku/personalcube": "0.0.23",
