@@ -175,6 +175,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                         answerArea = (
                           <SingleChoiceView
                             answer={answer}
+                            question={question}
                             items={question.items}
                             onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)}
                           />

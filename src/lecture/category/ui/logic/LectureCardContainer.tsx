@@ -277,14 +277,14 @@ class LectureCardContainer extends Component<Props, State> {
         break;
       case CubeType.Audio:
       case CubeType.Video:
-        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress) {
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress && !viewObject.examId) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
-        if (student && student.id && student.learningState === LearningState.Progress) {
+        if (student && student.id && student.learningState === LearningState.Progress && !viewObject.examId) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
@@ -292,12 +292,12 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    console.log(viewObject, student);
     if (viewObject.examId && student && student.learningState === LearningState.Progress) {
       subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     }
 
-    if (viewObject && viewObject.reportFileBoxId || (typeViewObject && typeViewObject.reportFileBoxId)) {
+    if (((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId))
+      && (student && (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting))) {
       subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
