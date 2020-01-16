@@ -4,6 +4,8 @@ import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import mainRoutePaths from 'main/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
@@ -114,10 +116,14 @@ class QuickNavContainer extends Component<Props, State> {
 
   onConfirmFavorite() {
     //
-    const { match, history } = this.props;
+    const { location, history } = this.props;
+    const { pathname } = location;
 
-    if (match.path === '/') {
-      history.replace('/');
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
     }
   }
 
