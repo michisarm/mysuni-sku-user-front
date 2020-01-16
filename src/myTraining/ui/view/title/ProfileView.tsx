@@ -26,7 +26,6 @@ class ProfileView extends Component<Props> {
           name={member.name}
           company={member.company}
           department={member.department}
-          imageEditable
         />
       </ContentHeader.Cell>
     );
