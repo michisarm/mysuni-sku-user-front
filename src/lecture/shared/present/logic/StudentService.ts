@@ -95,20 +95,17 @@ class StudentService {
     //
     const studentCountRdo = await this.studentApi.findStudentCount(rollBookId);
 
-    return runInAction(() => {
-      this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo));
-      return studentCountRdo;
-    });
+    runInAction(() => this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo)));
+    return studentCountRdo;
   }
 
   @action
   async findIsJsonStudent(lectureCardId: string) {
     //
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
-    return runInAction(() => {
-      this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
-      return studentJoinRdos;
-    });
+
+    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    return studentJoinRdos;
   }
 
   @action
