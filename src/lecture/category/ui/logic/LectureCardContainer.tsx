@@ -72,7 +72,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onRegisterStudent(proposalState?: ProposalState) {
     const { studentCdo, student } = this.props;
-    if (!student || !student.id) {
+    if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
     else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
@@ -208,6 +208,10 @@ class LectureCardContainer extends Component<Props, State> {
           return {
             type: LectureSubInfo.ActionType.LearningStart,
             onAction: () => {
+              if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+                (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+                this.onRegisterStudent(ProposalState.Approved);
+              }
               if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
               else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
             },
