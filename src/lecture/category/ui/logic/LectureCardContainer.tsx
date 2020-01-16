@@ -232,6 +232,8 @@ class LectureCardContainer extends Component<Props, State> {
             return undefined;
           }
           if (!applyingPeriod) return undefined;
+          console.log(applyingPeriod!.startDateSub.getTime() > new Date(today.toLocaleDateString() + '23:59:59').getTime());
+          console.log(applyingPeriod!.endDateSub.getTime() < new Date(today.toLocaleDateString() + '00:00:00').getTime());
           if (applyingPeriod!.startDateSub.getTime() > new Date(today.toLocaleDateString() + '23:59:59').getTime()
             || applyingPeriod!.endDateSub.getTime() < new Date(today.toLocaleDateString() + '00:00:00').getTime()) {
             return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };

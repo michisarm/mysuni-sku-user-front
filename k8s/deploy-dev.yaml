@@ -27,25 +27,25 @@ spec:
 #          limits:
 #            cpu: "2.5"
 #            memory: "5Gi"
-#        livenessProbe:
-#          failureThreshold: 20
-#          httpGet:
-#            path: /healthCheck
-#            port: 8080
-#            scheme: HTTP
-#          initialDelaySeconds: 30
-#          periodSeconds: 10
-#          successThreshold: 1
-#          timeoutSeconds: 3
-#        readinessProbe:
-#          failureThreshold: 20
-#          httpGet:
-#            path: /healthCheck
-#            port: 8080
-#          initialDelaySeconds: 30
-#          periodSeconds: 10
-#          successThreshold: 1
-#          timeoutSeconds: 3
+        livenessProbe:
+          failureThreshold: 20
+          httpGet:
+            path: /healthCheck
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        readinessProbe:
+          failureThreshold: 20
+          httpGet:
+            path: /healthCheck
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
         volumeMounts:
           - name: user-front-persistent-storage
             mountPath: /usr/share/nginx/html/profile
