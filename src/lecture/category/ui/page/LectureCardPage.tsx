@@ -362,12 +362,12 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
         if (personalCube.contents.type === CubeType.Video && videoUrl && url) {
-          videoUrl += '%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse';
-          url += '%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse';
+          videoUrl += '&offerviewer=false&showtitle=false&showbrand=false';
+          url += '&offerviewer=false&showtitle=false&showbrand=false';
         }
         else if (personalCube.contents.type === CubeType.Audio && videoUrl && url) {
-          videoUrl += '%26offerviewer%3Dfalse%26interactivity%3Dnone%26showtitle%3Dfalse%26showbrand%3Dfalse';
-          url += '%26offerviewer%3Dfalse%26interactivity%3Dnone%26showtitle%3Dfalse%26showbrand%3Dfalse';
+          videoUrl += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
+          url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
         break;
     }
