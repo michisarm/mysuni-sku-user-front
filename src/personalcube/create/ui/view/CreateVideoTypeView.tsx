@@ -1,10 +1,9 @@
-
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import $ from 'jquery';
-import { Form, Icon, Radio, Select } from 'semantic-ui-react';
+import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
@@ -16,28 +15,23 @@ import { InternalMediaConnectionModel } from '../../../media/model/InternalMedia
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   media: MediaModel
-  onChangeMediaProps: (name: string, value: string | Date, nameSub?: string) => void
+  onChangeMediaProps: (name: string, value: string | Date | [], nameSub?: string) => void
   getFileBoxIdForReference: (fileBoxId: string) => void
   personalCube: PersonalCubeModel
   mediaService?: MediaService
   collegeService?: CollegeService
 }
 
-interface State {
-  folderId: string
-}
 
 @inject(mobxHelper.injectFrom('personalCube.mediaService', 'college.collegeService'))
 @observer
 @reactAutobind
-class CreateVideoTypeView  extends React.Component<Props, State> {
+class CreateVideoTypeView  extends React.Component<Props> {
   //
-  state = {
-    folderId: '',
-  };
 
   isSingleUpload = true;
-  externalId: string = '';
+  // externalId: string = 'SKCC.HUG03@sk.com';
+  externalId: string = getCookie('email');
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];
@@ -56,13 +50,12 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
     count: 0,
   };
 
-  componentDidMount(): void {
-    this.init();
-  }
-
   componentDidUpdate(): void {
 
     // window.onmessage = this.setData;
+    const { collegeService } = this.props;
+    const { collegesForPanopto } = collegeService || {} as CollegeService;
+    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
     const { media } = this.props.mediaService!;
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
@@ -160,7 +153,7 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
     const formData = new FormData();
     formData.append('uploadfile', file, file.name);
     formData.append('sessionNames', sessionName);
-    formData.append('folderId', this.state.folderId);
+    //formData.append('folderId', getCookie('email'));
     formData.append('externalId', this.externalId);
     formData.append('cookie', this.cookie);
     const $selfProgress = file.target.find('progress'); //File 객체에 저장해둔 프리뷰 DOM의 progress 요소를 찾는다.
@@ -223,26 +216,27 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
   }
 
   init() {
-    const { collegeService } = this.props;
+    window.localStorage.setItem('externalId', getCookie('email'));
+    /* const { collegeService } = this.props;
     const { collegeForPanopto, collegesForPanopto } = collegeService || {} as CollegeService;
 
     const cineroomId = sessionStorage.getItem('cineroomId');
 
     if (collegeForPanopto.panoptoFolderId) {
       if (cineroomId === 'ne1-m2-c2') window.localStorage.setItem('externalId', collegeForPanopto.panoptoFolderId);
-      else window.localStorage.setItem('externalId', collegesForPanopto[0].panoptoFolderId);
-    }
+      else window.localStorage.setItem('externalId', getCookie('email'));
+    }*/
   }
 
-  setData(e: any) {
+  setData(ret: any) {
     const { mediaService } = this.props;
 
-    if (mediaService && e.data && e.data.boolResult && e.data.obj && e.data.obj.list) {
+    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
-      if (Array.isArray(e.data.obj.list)) {
+      if (Array.isArray(ret.obj.list)) {
         Promise.resolve()
           .then(() => {
-            e.data.obj.list.map((list: any) => {
+            ret.obj.list.map((list: any) => {
               const internalMedia = new InternalMediaConnectionModel();
               internalMedia.panoptoSessionId = list.id;
               internalMedia.viewUrl = list.viewerUrl.replace('Viewer', 'Embed');
@@ -251,6 +245,7 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
               internalMedia.startTime = list.startTime;
               internalMedia.folderName = list.folderName;
               internalMedia.duration = list.duration;
+              internalMedia.folderId = list.folderId;
               internalMediaList.push(internalMedia);
             });
           })
@@ -266,8 +261,6 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
 
   render() {
     const { onChangePersonalCubeProps, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
-    const { uploadedPaonoptos } = this.props.mediaService || {} as MediaService;
-    // const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
 
     return (
       <>
@@ -284,14 +277,20 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
             label="영상파일 업로드"
             value={MediaType.InternalMedia}
             checked={media && media.mediaType === 'InternalMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+            }}
           />
           <Radio
             className="base"
             label="제작영상 가져오기"
             value={MediaType.InternalMediaUpload}
             checked={media && media.mediaType === 'InternalMediaUpload'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+            }}
           />
           <Radio
             className="base"
@@ -305,11 +304,11 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
               media && media.mediaType === MediaType.InternalMedia && (
                 <>
                   {
-                    uploadedPaonoptos && uploadedPaonoptos.length
+                    media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length
                     && (
-                      <div className="ui input file">
+                      <div className="ui input h48 file">
                         {
-                          uploadedPaonoptos.map((internalMedia: InternalMediaConnectionModel, index: number) => (
+                          media.mediaContents.internalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
                             /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
                             <input
                               type="text"
@@ -332,7 +331,7 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
                         {/*  placeholder="영상을 업로드해주세요."*/}
                         {/*  readOnly*/}
                         {/*/>*/}
-                        <div className="filter">
+                        {/* <div className="filter">
                           폴더:
                           <Select
                             placeholder="분류를 선택해주세요"
@@ -345,24 +344,22 @@ class CreateVideoTypeView  extends React.Component<Props, State> {
                               this.setState({ folderId: data.value });
                             }}
                           />
-                        </div>
+                        </div>*/}
                         {
-                          ( (media && media.mediaContents && media.mediaContents.internalMedias
-                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
-                            && media.mediaContents.internalMedias[0].folderId) ||  this.state.folderId) && (
-                            <div className="file-drop" id="drop">
-                              <p>
-                                <Icon className="upload" />
+                          media && media.mediaContents && media.mediaContents.internalMedias && (
+                          <div className="file-drop" id="drop">
+                            <p>
+                              <Icon className="upload" />
                                 여기로 파일을 올려주세요.
-                              </p>
-                              <div className="thumbnails" id="thumbnails">
-                                <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />
-                              </div>
-                              <div className="bottom">
-                                <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />
-                              </div>
+                            </p>
+                            <div className="thumbnails" id="thumbnails">
+                              <progress id="progressBar" value="0" max="100" style={{ width: '100%' }} />
                             </div>
-                          )
+                            <div className="bottom">
+                              <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />
+                            </div>
+                          </div>
+                          ) || null
                         }
                       </div>
                     )
