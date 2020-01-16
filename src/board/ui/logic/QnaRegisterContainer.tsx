@@ -56,6 +56,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   componentDidMount(): void {
     //
     const { categoryService, postService } = this.props;
+    const name = sessionStorage.getItem('displayName') || '';
+    const email = sessionStorage.getItem('email') || '';
     if (postService && categoryService) {
       Promise.resolve()
         .then(() => {
@@ -64,7 +66,9 @@ class QnaRegisterContainer extends React.Component<Props, States> {
         .then(() => {
           if (categoryService) categoryService.findCategoriesByBoardId('QNA');
         })
-        .then(() => postService.changePostProps('boardId', 'QNA'));
+        .then(() => postService.changePostProps('boardId', 'QNA'))
+        .then(() => postService.changePostProps('writer.name', name))
+        .then(() => postService.changePostProps('writer.email', email));
     }
   }
 

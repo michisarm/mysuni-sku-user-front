@@ -29,18 +29,12 @@ class AppLayoutContainer extends Component<Props> {
       skProfileService!.findSkProfile().then(() => {
         const { skProfile } = skProfileService!;
         if (!skProfile.pisAgreement.signed) {
-          window.location.href = '/login';
+          window.location.href = process.env.PUBLIC_URL + '/profile/agreement';
+        }
+        else if (!skProfile.studySummaryConfigured) {
+          window.location.href = process.env.PUBLIC_URL + '/profile/interest';
         }
       });
-      skProfileService!.findStudySummary().then(() => {
-        const { studySummary } = skProfileService!;
-        if (!studySummary.favoriteLearningType || !studySummary.favoriteLearningType.idNames
-        || !studySummary.favoriteLearningType.idNames.length
-        || !studySummary.favoriteLearningType.idNames.filter(idName => idName.id !== 'etc').filter(idName => idName.name).length) {
-          window.location.href = '/login';
-        }
-      });
-
     }
   }
 
