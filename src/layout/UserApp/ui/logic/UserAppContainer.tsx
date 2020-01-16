@@ -33,9 +33,6 @@ class UserAppContainer extends Component<Props, State> {
     //
     if (process.env.NODE_ENV !== 'development') {
       if (!getCookie('token') || !getCookie('cineroomId') || !getCookie('workspaces')) window.location.href = '/login';
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
-      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
-      if (!filteredWorkspaces.length) window.location.href = '/mysuni';
     }
   }
 
