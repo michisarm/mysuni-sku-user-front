@@ -39,3 +39,11 @@ spec:
             host: user-service
             port:
               number: 80
+    - match:
+        - uri:
+            prefix: /profile
+      route:
+        - destination:
+            host: user-service
+            port:
+              number: 80

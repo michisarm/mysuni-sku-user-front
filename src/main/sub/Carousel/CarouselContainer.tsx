@@ -36,7 +36,7 @@ class CarouselContainer extends Component<Props, State> {
           <div className="panopto">
             <iframe
               title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D61add621-ef7f-4348-82ff-ab43004266f6"
+              src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=61add621-ef7f-4348-82ff-ab43004266f6&offerviewer=false&showtitle=false&interactivity=none&showbrand=false"
               width="600"
               height="420"
               style={{ padding: '0px', border: '0px' }}
@@ -57,7 +57,7 @@ class CarouselContainer extends Component<Props, State> {
           On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
           2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
           써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
-          <a className="link-tag" href="https://mysuni.sk.com/api/depot/public/depotFile/flow/download/dn-3" onClick={this.onDownloadManual}>
+          <a className="link-tag" href="https://mysuni.sk.com/api/depot/public/depotFile/flow/download/dn-3">
             <Icon className="arrow right" />매뉴얼 다운로드
           </a>
         </>
@@ -100,18 +100,6 @@ class CarouselContainer extends Component<Props, State> {
 
   onClickPage(activeIndex: number) {
     this.setState({ activeIndex });
-  }
-
-  async onDownloadManual() {
-    //
-    const depotFile: any = await depot.getDepotFiles('dn-3', true);
-
-    if (depotFile) {
-      depot.downloadDepotFile(depotFile.id);
-    }
-    else {
-      console.warn('[mySUNI] 매뉴얼 파일이 없습니다.');
-    }
   }
 
   render() {
