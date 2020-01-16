@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
+import moment from 'moment';
 
 import depot from '@nara.drama/depot';
 import { CubeType, LearningState, ProposalState } from 'shared';
@@ -228,8 +229,8 @@ class LectureCardContainer extends Component<Props, State> {
             return undefined;
           }
           if (!applyingPeriod) return undefined;
-          if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
-            || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
+          if (moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days') > 0
+            || moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days') < 0) {
             return undefined;
           }
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
