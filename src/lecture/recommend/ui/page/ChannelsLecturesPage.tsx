@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { computed } from 'mobx';
 
 import { ContentLayout, ContentHeader } from 'shared';
-import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
