@@ -31,16 +31,10 @@ class AppLayoutContainer extends Component<Props> {
         if (!skProfile.pisAgreement.signed) {
           window.location.href = process.env.PUBLIC_URL + '/profile/agreement';
         }
-      });
-      skProfileService!.findStudySummary().then(() => {
-        const { studySummary } = skProfileService!;
-        if (!studySummary.favoriteLearningType || !studySummary.favoriteLearningType.idNames
-        || !studySummary.favoriteLearningType.idNames.length
-        || !studySummary.favoriteLearningType.idNames.filter(idName => idName.id !== 'etc').filter(idName => idName.name).length) {
+        else if (!skProfile.studySummaryConfigured) {
           window.location.href = process.env.PUBLIC_URL + '/profile/interest';
         }
       });
-
     }
   }
 
