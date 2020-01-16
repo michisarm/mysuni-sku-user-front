@@ -10,7 +10,7 @@ export default class OfficeApi {
   findOfficeWeb(officeWebId: string) {
     //
     return axios.get<OfficeWebModel>(this.URL + `/${officeWebId}`)
-      .then(response => response && response.data || null);
+      .then(response => response && response.data && new OfficeWebModel(response.data) || null);
   }
 }
 
