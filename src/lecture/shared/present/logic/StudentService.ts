@@ -75,8 +75,8 @@ class StudentService {
     return this.studentApi.modifyStudent(studentId, fileBoxId);
   }
 
-  modifyStudentForExam(studentId: string) {
-    return this.studentApi.modifyStudentForExam(studentId);
+  modifyStudentForExam(studentId: string, examId: string) {
+    return this.studentApi.modifyStudentForExam(studentId, examId);
   }
 
   @action

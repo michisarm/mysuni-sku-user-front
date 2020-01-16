@@ -93,11 +93,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   testCallback() {
-    const { studentService, student, init } = this.props;
+    const { studentService, student, init, viewObject } = this.props;
     const { id: studentId } = student!;
 
     if (studentId) {
-      studentService!.modifyStudentForExam(studentId)
+      studentService!.modifyStudentForExam(studentId, viewObject.examId)
         .then(() => {
           if (init) init();
         });
@@ -321,7 +321,8 @@ class LectureCardContainer extends Component<Props, State> {
         const cancellablePeriod = typeViewObject.cancellablePeriod;
 
         if (student && student.id) {
-          if (!cancellablePeriod && (!student.learningState && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
+          if (!cancellablePeriod && (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved)) {
             return () => {
               studentService!.removeStudent(student!.rollBookId)
                 .then(() => {
@@ -331,7 +332,8 @@ class LectureCardContainer extends Component<Props, State> {
                 });
             };
           }
-          else if (!student.learningState && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved) {
+          else if (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved) {
             const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.startDateSub)!;
             const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.endDateSub)!;
             if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <= today.getTime()
