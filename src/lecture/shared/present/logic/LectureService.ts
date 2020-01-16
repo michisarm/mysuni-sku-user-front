@@ -3,6 +3,7 @@ import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
+import StudentFlowApi from '../apiclient/StudentFlowApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
@@ -25,6 +26,8 @@ class LectureService {
 
   private lectureFlowApi: LectureFlowApi;
 
+  private studentFlowApi: StudentFlowApi;
+
 
   @observable
   _lectures: LectureModel[] = [];
@@ -46,9 +49,10 @@ class LectureService {
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
-  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi) {
+  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
+    this.studentFlowApi = studentFlowApi;
   }
 
   @computed
@@ -235,10 +239,10 @@ class LectureService {
 
   async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
-    return this.lectureFlowApi.confirmUsageStatisticsByCardId(studentCdo);
+    return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);
+LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance, StudentFlowApi.instance);
 
 export default LectureService;

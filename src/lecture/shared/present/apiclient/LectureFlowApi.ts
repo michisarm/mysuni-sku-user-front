@@ -6,7 +6,6 @@ import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
 import LectureModel from '../../model/LectureModel';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
-import StudentCdoModel from '../../model/StudentCdoModel';
 
 
 class LectureFlowApi {
@@ -34,12 +33,6 @@ class LectureFlowApi {
   findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
     return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
-      .then(response => response && response.data);
-  }
-
-  confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
-    //
-    return axiosApi.post<boolean>(this.baseUrl + `/confirm/usagestatistics`, studentCdo)
       .then(response => response && response.data);
   }
 }
