@@ -182,11 +182,14 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onMarkComplete() {
-    const { studentCdo, studentService, lectureCardId } = this.props;
-    studentService!.studentMarkComplete(studentCdo.rollBookId)
-      .then(() => {
-        studentService!.findIsJsonStudent(lectureCardId);
-      });
+    const { student, studentService, lectureCardId } = this.props;
+    if (student && student.id) {
+      studentService!.studentMarkComplete(student.rollBookId)
+        .then(() => {
+          studentService!.findIsJsonStudent(lectureCardId);
+          studentService!.findStudent(student.rollBookId);
+        });
+    }
   }
 
   onTest() {
@@ -289,6 +292,7 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+    console.log(viewObject, student);
     if (viewObject.examId && student && student.learningState === LearningState.Progress) {
       subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     }

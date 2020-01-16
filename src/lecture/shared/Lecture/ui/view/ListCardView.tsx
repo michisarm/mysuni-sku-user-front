@@ -83,7 +83,7 @@ class ListCardView extends Component<Props> {
 
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={model.name} category={model.category}>
+          <Title title={<a>model.name</a>} category={model.category}>
             <Fields>
               <Field icon="date" text={`Completed date : ${moment(model.time).format('YYYY.MM.DD')}`} />
             </Fields>
