@@ -18,6 +18,7 @@ class MainRoutes extends React.Component {
         <Route exact path="/pages/:pageNo" component={UserMainPage} />
         <Redirect exact from="/introduction" to="/introduction/MySuni" />
         <Route exact path="/introduction/:tab" component={IntroductionPage} />
+        <Route exact path="/empty" render={() => <div style={{ minHeight: 1000 }} />} />
 
         <Route component={NotFoundPage} />
       </Switch>

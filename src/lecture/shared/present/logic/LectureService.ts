@@ -235,6 +235,11 @@ class LectureService {
       return null;
     });
   }
+
+  async confirmUsageStatisticsByCardId(lectureCardUsid: string) {
+    //
+    return this.lectureFlowApi.confirmUsageStatisticsByCardId(lectureCardUsid);
+  }
 }
 
 LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);

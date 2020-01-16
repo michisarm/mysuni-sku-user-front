@@ -17,6 +17,7 @@ import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
 import {
   LectureCardService,
+  LectureService,
   LectureServiceType,
   RollBookService,
   StudentCdoModel,
@@ -45,6 +46,7 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
   officeWebService: OfficeWebService,
   boardService: BoardService,
   lectureCardService: LectureCardService,
+  lectureService: LectureService,
   rollBookService: RollBookService,
   studentService: StudentService,
   learningCardService: LearningCardService,
@@ -67,6 +69,7 @@ interface State {
   'personalCube.officeWebService',
   'personalCube.boardService',
   'lecture.lectureCardService',
+  'lecture.lectureService',
   'lecture.rollBookService',
   'lecture.studentService',
   'course.learningCardService',
@@ -96,12 +99,20 @@ class LectureCardPage extends Component<Props, State> {
 
   async init() {
     const {
-      match, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
-      rollBookService, mediaService, officeWebService, boardService, lectureCardService, inMyLectureService,
+      match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
+      rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService, inMyLectureService,
     } = this.props;
     const { params } = match;
 
     skProfileService.findSkProfile();
+    lectureService.confirmUsageStatisticsByCardId(params.lectureCardId)
+      .then((confirmed) => {
+        if (confirmed) {
+          history.replace('/empty');
+          setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+        }
+      });
+
 
     collegeService.findCollege(params.collegeId);
     rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId)
