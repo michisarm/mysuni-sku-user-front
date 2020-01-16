@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, ContentHeader } from 'shared';
-import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
@@ -42,14 +42,9 @@ class ChannelLecturesPage extends Component<Props> {
   render() {
     //
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService as SkProfileService;
-
-    const { member } = skProfile as SkProfileModel;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-
-    const channels = favoriteChannels && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+    const { member } = skProfileService!.skProfile;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <ContentLayout

@@ -1,8 +1,13 @@
 
-import { decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { getCookie } from '@nara.platform/accent';
 import { ReviewSummaryModel } from '@nara.drama/feedback';
-import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
+import {
+  CategoryModel,
+  CourseOpenModel,
+  DramaEntityObservableModel,
+  IdName,
+} from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import LectureServiceType from './LectureServiceType';
@@ -32,6 +37,10 @@ class LectureModel extends DramaEntityObservableModel {
   stampCount: number = 0;
   studentCount: number = 0;
   time: number = 0;
+
+  baseUrl: string = '';
+  creationTime: string = '';
+  viewState: string = '';
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
@@ -89,6 +98,29 @@ class LectureModel extends DramaEntityObservableModel {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
+
+  @computed
+  get state() {
+    if (this.viewState) {
+      switch (this.viewState) {
+        case 'Canceled':
+        case 'Rejected':
+          return '취소/미이수';
+        case 'Passed':
+          return '학습완료';
+        case 'Progress':
+          return '학습중';
+        case 'Approved':
+          return '학습예정';
+      }
+    }
+    return undefined;
+  }
+
+  @computed
+  get rating() {
+    return this.reviewSummary && this.reviewSummary.average || 0;
+  }
 }
 
 decorate(LectureModel, {
@@ -114,6 +146,9 @@ decorate(LectureModel, {
   reviewSummary: observable,
   required: observable,
   cubeTypeName: observable,
+  baseUrl: observable,
+  creationTime: observable,
+  viewState: observable,
 });
 
 export default LectureModel;

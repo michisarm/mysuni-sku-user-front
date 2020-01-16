@@ -129,7 +129,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
-  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+  onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
 
@@ -185,8 +185,11 @@ class MyLearningContentContainer extends Component<Props, State> {
             <Lecture.Group type={Lecture.GroupType.Line}>
               {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
                 let rating: number | undefined;
-                if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
+                if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
                   rating = ratingMap.get(value.reviewId) || 0;
+                }
+                else if (value instanceof LectureModel && value.cubeType !== CubeType.Community) {
+                  rating = value.rating;
                 }
                 const inMyLecture = inMyLectureMap.get(value.serviceId);
                 return (
@@ -194,7 +197,7 @@ class MyLearningContentContainer extends Component<Props, State> {
                     key={`training-${index}`}
                     model={value}
                     rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={value.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}

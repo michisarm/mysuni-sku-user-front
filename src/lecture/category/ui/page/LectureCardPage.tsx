@@ -196,6 +196,7 @@ class LectureCardPage extends Component<Props, State> {
     if (studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
+        if (!student.learningState) state = SubState.Enrolled;
         if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) {
           state = SubState.Completed;
@@ -251,6 +252,7 @@ class LectureCardPage extends Component<Props, State> {
       name: personalCube.name,
       time: personalCube.time,
       classroom: undefined,
+      thumbnailImage: personalCube.iconBox.baseUrl || '',
     };
   }
 
@@ -294,14 +296,17 @@ class LectureCardPage extends Component<Props, State> {
     let siteUrl = '';
 
     if (classrooms.length) {
-      if (classrooms.length === 1) classroom = classrooms[0];
+      if (classrooms.length === 1) {
+        classroom = classrooms[0];
+        if (!classroom.enrolling.enrollingAvailable) siteUrl = classroom.operation.siteUrl;
+      }
       else {
         //TODO 가장 가까운날짜
         classroom = classrooms[classrooms.length - 1];
       }
     }
     if (studentJoin && studentJoin.learningState === LearningState.Progress) {
-      const index = classrooms.map(cineroom => cineroom.round).findIndex(round => round === studentJoin.round);
+      const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
       if (index >= 0) {
         siteUrl = classrooms[index].operation.siteUrl;
       }
@@ -337,16 +342,17 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.linkMediaUrl;
         break;
       case MediaType.InternalMedia:
+      case MediaType.InternalMediaUpload:
         videoUrl = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
         if (personalCube.contents.type === CubeType.Video && videoUrl && url) {
-          videoUrl += '&offerviewer=false';
-          url += '&offerviewer=false';
+          videoUrl += '&offerviewer=false&showtitle=false';
+          url += '&offerviewer=false&showtitle=false';
         }
         else if (personalCube.contents.type === CubeType.Audio && videoUrl && url) {
-          videoUrl += '&offerviewer=false&interactivity=none';
-          url += '&offerviewer=false&interactivity=none';
+          videoUrl += '&offerviewer=false&interactivity=none&showtitle=false';
+          url += '&offerviewer=false&interactivity=none&showtitle=false';
         }
         break;
     }

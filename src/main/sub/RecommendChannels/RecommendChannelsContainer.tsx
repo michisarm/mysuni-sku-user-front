@@ -4,33 +4,51 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { LectureService, RecommendLectureRdo, ChannelLecturesLine } from 'lecture';
 import { ChannelModel } from 'college';
 import { SkProfileService } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderContainer from './HeaderContainer';
 import { Wrapper, EmptyContents } from './RecommendElementsView';
+import SeeMoreButtonView from './SeeMoreButtonView';
+import routePaths from '../../routePaths';
 
 
-interface Props extends RouteComponentProps {
-  lectureService?: LectureService
-  reviewService?: ReviewService
+interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService
+  lectureService?: LectureService
+}
+
+interface RouteParams {
+  pageNo: string
 }
 
 @inject(mobxHelper.injectFrom(
-  'lecture.lectureService',
-  'shared.reviewService',
   'profile.skProfileService',
+  'lecture.lectureService',
 ))
 @observer
 @reactAutobind
 class RecommendChannelsContainer extends Component<Props> {
   //
+  CHANNELS_SIZE = 5;
+  LECTURES_SIZE = 8;
+
+
   componentDidMount(): void {
+    //
     this.findPagingRecommendLectures();
     this.findStudySummary();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const { params: prevParams } = prevProps.match;
+    const { params } = this.props.match;
+
+    if (prevParams.pageNo !== params.pageNo) {
+      this.addPagingRecommendLectures();
+    }
   }
 
   findStudySummary() {
@@ -39,23 +57,34 @@ class RecommendChannelsContainer extends Component<Props> {
     skProfileService!.findStudySummary();
   }
 
-  findPagingRecommendLectures() {
+  async findPagingRecommendLectures() {
+    //
+    const { lectureService } = this.props;
+    const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
+
+    lectureService!.findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE);
+  }
+
+  async addPagingRecommendLectures() {
     //
     const { lectureService } = this.props;
 
-    lectureService!.findPagingRecommendLectures(8, 0);
-    // .then((recommendLectures) => {
-    //   let feedbackIds: string[] = [];
+    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, this.getPageNo() - 1, this.LECTURES_SIZE, 0);
+  }
+
+  getPageNo() {
     //
-    //   if (recommendLectures && recommendLectures.length > 0) {
-    //     recommendLectures.map(recommendLecture => {
-    //       if (recommendLecture && recommendLecture.lectures && recommendLecture.lectures.results && recommendLecture.lectures.results.length > 0) {
-    //         feedbackIds = feedbackIds.concat(recommendLecture.lectures.results.map(lecture => lecture.reviewId));
-    //       }
-    //     });
-    //     reviewService!.findReviewSummariesByFeedbackIds(feedbackIds, false);
-    //   }
-    // });
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
+  }
+
+  isContentMore() {
+    //
+    const { lectureService } = this.props;
+    const { recommendLectures, recommendLecturesCount } = lectureService!;
+
+    return recommendLectures.length < recommendLecturesCount;
   }
 
   routeTo(e: any, data: any) {
@@ -63,13 +92,19 @@ class RecommendChannelsContainer extends Component<Props> {
     this.props.history.push(lectureRoutePaths.recommendChannelLectures(data.channel.id));
   }
 
+  onClickSeeMore() {
+    //
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
+  }
 
   render() {
     //
     const { skProfileService, lectureService } = this.props;
-
     const { studySummaryFavoriteChannels } = skProfileService!;
     const { recommendLectures } = lectureService!;
+
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
@@ -97,6 +132,10 @@ class RecommendChannelsContainer extends Component<Props> {
             :
             <EmptyContents />
         }
+        { this.isContentMore() && (
+          <SeeMoreButtonView onClick={this.onClickSeeMore} />
+        )}
+
       </Wrapper>
     );
   }

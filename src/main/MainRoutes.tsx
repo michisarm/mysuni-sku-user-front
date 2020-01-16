@@ -14,7 +14,8 @@ class MainRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="/" component={UserMainPage} />
+        <Redirect exact from="/" to="/pages/1" />
+        <Route exact path="/pages/:pageNo" component={UserMainPage} />
         <Redirect exact from="/introduction" to="/introduction/MySuni" />
         <Route exact path="/introduction/:tab" component={IntroductionPage} />
 

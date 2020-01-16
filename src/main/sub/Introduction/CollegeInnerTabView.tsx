@@ -21,7 +21,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=7f027217-af12-4ce2-8216-ab42002e5be2"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7f027217-af12-4ce2-8216-ab42002e5be2"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -92,7 +92,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=47d87f43-03b6-4559-97eb-ab420078ff59"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D47d87f43-03b6-4559-97eb-ab420078ff59"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -224,7 +224,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPages%2FEmbed.aspx%3Fid=8bb85f35-4a73-413d-b1f6-ab3300a5eca7&offerviewer=false"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D7658f240-2fd6-4f09-97fe-ab43006f0655"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -327,7 +327,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D80b7b6d1-c2e6-41c0-9d93-ab42005d5dbf"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -371,7 +371,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=0b02b5c8-a5b7-438f-9366-ab4200a3bd77"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D0b02b5c8-a5b7-438f-9366-ab4200a3bd77"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}
@@ -416,7 +416,7 @@ const panes = [
               <div className="panopto">
                 <iframe
                   title="audio type"
-                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPages%2FEmbed.aspx%3Fid=8bb85f35-4a73-413d-b1f6-ab3300a5eca7&offerviewer=false"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Db1ebc675-879d-4a0c-a336-ab43009f4752"
                   width="436"
                   height="245"
                   style={{ padding: '0px', border: '0px' }}

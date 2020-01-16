@@ -99,6 +99,14 @@ export default class CollegeService {
   }
 
   @action
+  async findAllCollegesForPanopto() {
+    //
+    console.log('???');
+    const colleges = await this.collegeApi.findAllColleges();
+    return runInAction(() => this.collegesForPanopto = colleges);
+  }
+
+  @action
   setCollege(college: CollegeModel) {
     this.college = college;
   }
@@ -170,7 +178,7 @@ export default class CollegeService {
   @action
   setChannels(channels?: ChannelModel[]) {
     //
-    if (channels && channels.length > 0) {
+    if (channels) {
       this._channels = channels.map((channel) => new ChannelModel(channel));
     }
   }
@@ -249,6 +257,22 @@ export default class CollegeService {
       list.idNames.push({ id: channel.id, name: channel.name, active: false });
     });
     return list;
+  }
+
+  @computed
+  get channelMap() {
+    const map = new Map<string, ChannelModel>();
+    this._channels.map(channel => map.set(channel.channelId, channel));
+    return map;
+  }
+
+  @computed
+  get totalChannelCount() {
+    let total = 0;
+    this._colleges.map(college => {
+      total += college.channels.length;
+    });
+    return total;
   }
 }
 

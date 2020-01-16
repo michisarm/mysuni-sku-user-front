@@ -8,6 +8,7 @@ import { NumberValue } from '../../form/model/NumberValue';
 
 interface Props {
   answer: AnswerItemModel
+  disabled?: boolean
   items: NumberValue[]
   onSetAnswer:(answer: string[]) => void
 }
@@ -20,7 +21,7 @@ interface State {
 class MultiChoiceView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, items, onSetAnswer } = this.props;
+    const { answer, disabled, items, onSetAnswer } = this.props;
 
     return (
       <List>
@@ -32,9 +33,10 @@ class MultiChoiceView extends React.Component<Props, State> {
                 className="base"
                 label={item.value}
                 value={item.number}
+                disabled={disabled}
                 checked={answer.itemNumbers.includes(item.number)}
-                onChange={(e: any) => {
-                  const value = e.target.value;
+                onChange={(e: any, data: any) => {
+                  const value = data.value;
                   let newItemNumbers: string[] = [];
                   if (answer.itemNumbers.includes(value)) {
                     newItemNumbers = answer.itemNumbers.filter(number => number !== value);

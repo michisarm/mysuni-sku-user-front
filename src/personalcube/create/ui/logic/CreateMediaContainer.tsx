@@ -67,6 +67,15 @@ class CreateMediaContainer extends React.Component<Props> {
     if (personalCubeService && personalCube.contents) personalCubeService.changeCubeProps('contents.fileBoxId', fileBoxId);
   }
 
+  getFileBoxIdForEducation(fileBoxId: string) {
+    //
+    const { officeWebService } = this.props;
+    // todo 파일 삭제했을때 로직
+    if (officeWebService) {
+      officeWebService.changeOfficeWebProps('fileBoxId', fileBoxId);
+    }
+  }
+
   render() {
     const { media } = this.props.mediaService || {} as MediaService;
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
@@ -115,6 +124,7 @@ class CreateMediaContainer extends React.Component<Props> {
               officeWeb={officeWeb}
               getFileBoxIdForReference ={this.getFileBoxIdForReference}
               personalCube={personalCube}
+              getFileBoxIdForEducation={this.getFileBoxIdForEducation}
             />
             : null
         }

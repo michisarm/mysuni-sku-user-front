@@ -7,7 +7,9 @@ import { EmployeeModel } from './EmployeeModel';
 import { PisAgreementModel } from './PisAgreementModel';
 import { SkProfileCdoModel } from './SkProfileCdoModel';
 
+
 export class SkProfileModel implements DramaEntity {
+
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;

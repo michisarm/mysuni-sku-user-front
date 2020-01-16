@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Form, Table } from 'semantic-ui-react';
@@ -67,6 +67,7 @@ class SharedTypeDetailView extends React.Component<Props> {
 
   renderWebPage() {
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+    const { filesMap } = this.props;
     return (
       <>
         <Table.Row>
@@ -78,7 +79,42 @@ class SharedTypeDetailView extends React.Component<Props> {
         <Table.Row>
           <Table.HeaderCell>참고자료</Table.HeaderCell>
           <Table.Cell>
-            {officeWeb && officeWeb.webPageUrl}
+            {
+              filesMap && filesMap.get('reference')
+              && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
+              )) || '-'
+            }
+          </Table.Cell>
+        </Table.Row>
+      </>
+    );
+  }
+
+  renderDocuments() {
+    const { filesMap } = this.props;
+    return (
+      <>
+        <Table.Row>
+          <Table.HeaderCell>교육자료</Table.HeaderCell>
+          <Table.Cell>
+            {
+              filesMap && filesMap.get('officeweb')
+              && filesMap.get('officeweb').map((foundedFile: DepotFileViewModel, index: number) => (
+                <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
+              )) || '-'
+            }
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.HeaderCell>참고자료</Table.HeaderCell>
+          <Table.Cell>
+            {
+              filesMap && filesMap.get('reference')
+              && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                <p key={index}><a onClick={() => depot.downloadDepotFile(foundedFile.id)}>{foundedFile.name}</a></p>
+              )) || '-'
+            }
           </Table.Cell>
         </Table.Row>
       </>
@@ -100,7 +136,12 @@ class SharedTypeDetailView extends React.Component<Props> {
               ) : ''
             }
             {
-              cubeType === 'WebPage' || cubeType === 'Documents' ? (
+              cubeType === 'Documents' ? (
+                this.renderDocuments()
+              ) : ''
+            }
+            {
+              cubeType === 'WebPage' ? (
                 this.renderWebPage()
               ) : ''
             }

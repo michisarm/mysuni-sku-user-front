@@ -3,13 +3,14 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState, LearningState } from 'shared';
+import { CubeType, LearningState, ProposalState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { AnswerSheetModalContainer } from 'assistant';
-import LectureSubInfo, { State as SubState } from '../../../shared/LectureSubInfo';
+import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
+import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../shared/model/StudentModel';
@@ -46,21 +47,36 @@ class LectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
   examModal: any = null;
+  surveyModal: any = null;
+  reportModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    const { rollBookService, lectureCardId, student, studentService, studentCdo } = this.props;
+    const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
+
     if (student && student.id) {
-      studentService!.removeStudent(rollBook.id)
+      studentService!.removeStudent(student.rollBookId)
         .then(() => this.registerStudent({ ...studentCdo, rollBookId: rollBook.id }));
     }
-    else this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+    else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
+      this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+    }
+
+    if (!classroom.enrolling.enrollingAvailable) {
+      if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
+        window.open(typeViewObject.siteUrl, '_blank');
+      }
+      else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+    }
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
     const { studentCdo, student } = this.props;
-    if (!student || !student.id) {
+    if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
+    }
+    else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
+      this.registerStudent({ ...studentCdo, proposalState: student.proposalState });
     }
   }
 
@@ -146,7 +162,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickSurvey() {
-    console.log('survey');
+    this.surveyModal.onOpenModal();
   }
 
   onJoin() {
@@ -176,6 +192,10 @@ class LectureCardContainer extends Component<Props, State> {
     this.examModal.onOpenModal();
   }
 
+  onReport() {
+    this.reportModal.onOpenModal();
+  }
+
   getMainAction() {
     const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
@@ -188,16 +208,25 @@ class LectureCardContainer extends Component<Props, State> {
           return {
             type: LectureSubInfo.ActionType.LearningStart,
             onAction: () => {
+              if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+                (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+                this.onRegisterStudent(ProposalState.Approved);
+              }
               if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
               else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
             },
           };
         }
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length && (!studentJoins || !studentJoins.length)) {
+        if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
+          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
-          if (studentJoins && studentJoins.length) return undefined;
+          if (studentJoins && studentJoins.length
+            && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+            return undefined;
+          }
           if (!applyingPeriod) return undefined;
           if (applyingPeriod!.startDateSub > new Date(today.toLocaleDateString() + '23:59:59')
             || applyingPeriod!.endDateSub < new Date(today.toLocaleDateString() + '00:00:00')) {
@@ -220,7 +249,10 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
-        if (studentJoins && studentJoins.length) return undefined;
+        if (studentJoins && studentJoins.length
+          && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+          return undefined;
+        }
         return { type: LectureSubInfo.ActionType.Join, onAction: this.onJoin };
       default:
         return undefined;
@@ -241,14 +273,14 @@ class LectureCardContainer extends Component<Props, State> {
         break;
       case CubeType.Audio:
       case CubeType.Video:
-        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && viewObject.state !== SubState.Completed) {
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
       case CubeType.WebPage:
       case CubeType.Experiential:
       case CubeType.Documents:
-        if (student && student.id && viewObject.state !== SubState.Completed) {
+        if (student && student.id && student.learningState === LearningState.Progress) {
           subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
         }
         break;
@@ -259,6 +291,10 @@ class LectureCardContainer extends Component<Props, State> {
     if (viewObject.examId && student && student.learningState === LearningState.Progress) {
       subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     }
+
+    if (viewObject && viewObject.reportFileBoxId || (typeViewObject && typeViewObject.reportFileBoxId)) {
+      subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+    }
     return subActions.length ? subActions : undefined;
   }
 
@@ -268,7 +304,8 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && !student.learningState) {
+        if (student && student.id && (!student.learningState
+          && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
           return () => {
             studentService!.removeStudent(student.rollBookId)
               .then(() => {
@@ -292,7 +329,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, cubeType, typeViewObject, children } = this.props;
+    const { inMyLecture, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
 
     return (
       <LectureCardContentWrapperView>
@@ -318,10 +355,10 @@ class LectureCardContainer extends Component<Props, State> {
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
-          onDownloadReport={
-            ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
-              () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
-          }
+          /* onDownloadReport={
+             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+           }*/
         />
         <ClassroomModalView
           ref={classroomModal => this.classroomModal = classroomModal}
@@ -337,6 +374,21 @@ class LectureCardContainer extends Component<Props, State> {
             />
           )
         }
+        {
+          viewObject && viewObject.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={viewObject.surveyId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
+            />
+          )
+        }
+        <CubeReportModalContainer
+          downloadFileBoxId ={viewObject.reportFileBoxId || typeViewObject.reportFileBoxId}
+          ref={reportModal => this.reportModal = reportModal}
+          downloadReport = {this.onClickDownloadReport}
+          rollBookId={studentCdo.rollBookId}
+        />
         {children}
       </LectureCardContentWrapperView>
     );

@@ -6,11 +6,11 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Segment } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
+import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';
 import CreateIntroView from '../view/CreateIntroView';
 import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
-import { ContentsProviderService } from '../../../../college';
 import CreateMediaContainer from './CreateMediaContainer';
 import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
@@ -21,6 +21,7 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   personalCubeService?: PersonalCubeService
   cubeIntroService?: CubeIntroService
   contentsProviderService?: ContentsProviderService
+  collegeService?: CollegeService
   mediaService ?: MediaService
   boardService?: BoardService
   officeWebService ?: OfficeWebService
@@ -40,7 +41,7 @@ interface States{
 }
 
 @inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'college.contentsProviderService',
+  'personalCube.cubeIntroService', 'college.contentsProviderService', 'college.collegeService',
   'personalCube.mediaService', 'personalCube.officeWebService'))
 @observer
 @reactAutobind
@@ -55,9 +56,10 @@ class CreateIntroContainer extends React.Component<Props, States> {
 
   async componentDidMount() {
     //
-    const { cubeIntroService, personalCubeService } = this.props;
+    const { cubeIntroService, personalCubeService, collegeService } = this.props;
     const { cubeType, personalCubeId } = this.props.match.params;
 
+    if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
       await personalCubeService!.findPersonalCube(personalCubeId);
     }
@@ -175,9 +177,11 @@ class CreateIntroContainer extends React.Component<Props, States> {
     if (personalCubeId === 'undefined') {
       this.props.history.push(routePaths.createNew());
     } else {
-      Promise.resolve()
-        .then(() => this.handleOKConfirmWin())
-        .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
+      this.handleOKConfirmWin();
+      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      // Promise.resolve()
+      //   .then(() => this.handleOKConfirmWin())
+      //   .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
     }
   }
 
@@ -187,10 +191,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
   }
 
   handleSave() {
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { media } = this.props.mediaService || {} as MediaService;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
-    const mediaObject = MediaModel.isBlank(media);
+    let mediaObject = 'success';
+    if (personalCube.contents.type === CubeType.Video || personalCube.contents.type === CubeType.Audio) {
+      mediaObject = MediaModel.isBlank(media);
+    }
 
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
     const mediaMessage = mediaObject;
@@ -319,10 +327,14 @@ class CreateIntroContainer extends React.Component<Props, States> {
   handleApprovalRequest() {
     //
     const message = '학습 강좌에 대해 승인 요청하시겠습니까?';
+    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { media } = this.props.mediaService || {} as MediaService;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
-    const mediaObject = MediaModel.isBlank(media);
+    let mediaObject = 'success';
+    if (personalCube.contents.type === CubeType.Video || personalCube.contents.type === CubeType.Audio) {
+      mediaObject = MediaModel.isBlank(media);
+    }
 
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
     const mediaMessage = mediaObject;

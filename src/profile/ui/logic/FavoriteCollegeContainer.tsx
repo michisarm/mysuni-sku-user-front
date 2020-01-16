@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -55,6 +55,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     collegeService!.findAllColleges();
     skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
+    collegeService!.findAllChannel();
 
     const channels = studySummaryFavoriteChannels.map(channel =>
       new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
@@ -95,10 +96,9 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
     const { favorites } = this.state;
 
     if (favorites.length < 3 ) {
-      reactConfirm({
+      reactAlert({
         title: '알림',
-        message: '관심 분야는 3개이상 선택해 주세요.<br/> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
-        onCancel: () => this.props.history.push('/profile/interest/job'),
+        message: '관심 분야는 3개이상 선택해 주세요.',
       });
     }
     else {
@@ -111,7 +111,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { colleges, college } = this.props.collegeService;
+    const { colleges, college, channelMap, totalChannelCount } = this.props.collegeService;
     const { favorites } = this.state;
 
     return (
@@ -156,29 +156,34 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                     <div className="channel">
                       <ul>
                         {
-                          college && college.channels.map((channel, index) => (
-                            <li key={index}>
-                              <div className="ui base checkbox popup-wrap">
-                                <input type="checkbox"
-                                  id={`checkbox_${index}`}
-                                  className="hidden"
-                                  tabIndex={index}
-                                  checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
-                                  onChange={() => this.onSelectChannel(channel)}
-                                />
-                                <Popup className="custom-black"
-                                  content={channel.description /*channel.description*/}
-                                  inverted
-                                  style={style}
-                                  trigger={
-                                    <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
-                                      {channel.name} <span>{/*channel contents 수*/}</span>
-                                    </label>
-                                       }
-                                />
-                              </div>
-                            </li>
-                          )) || ''
+                          college && college.channels.map((channel, index) => {
+                            const ch = channelMap.get(channel.id) || new ChannelModel();
+                            return (
+                              <li key={index}>
+                                <div className="ui base checkbox popup-wrap">
+                                  <input
+                                    type="checkbox"
+                                    id={`checkbox_${index}`}
+                                    className="hidden"
+                                    tabIndex={index}
+                                    checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                    onChange={() => this.onSelectChannel(channel)}
+                                  />
+                                  <Popup
+                                    className="custom-black"
+                                    content={ch.description}
+                                    inverted
+                                    style={style}
+                                    trigger={
+                                      <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
+                                        {channel.name} <span>{/*channel contents 수*/}</span>
+                                      </label>
+                                    }
+                                  />
+                                </div>
+                              </li>
+                            );
+                          }) || ''
                         }
                       </ul>
                     </div>
@@ -186,7 +191,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                 </div>
               </div>
               <div className="column">
-                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / 80</span>
+                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / {totalChannelCount}</span>
                 </div>
                 <div className="f-list">
                   <div className="scrolling">

@@ -39,9 +39,20 @@ class HeaderContainer extends Component<Props> {
     this.props.history.push(lectureRoutePaths.recommend());
   }
 
+  onConfirmFavorite() {
+    //
+    const { match, history, onFindStudySummary } = this.props;
+
+    onFindStudySummary();
+
+    if (match.path === '/') {
+      history.replace('/');
+    }
+  }
+
   render() {
     //
-    const { skProfileService, favoriteChannels, onFindStudySummary } = this.props;
+    const { skProfileService, favoriteChannels } = this.props;
     const { skProfile } = skProfileService!;
 
     return (
@@ -57,7 +68,7 @@ class HeaderContainer extends Component<Props> {
             </Button>
           )}
           favorites={favoriteChannels}
-          onConfirmCallback={onFindStudySummary}
+          onConfirmCallback={this.onConfirmFavorite}
         />
       </HeaderView>
     );

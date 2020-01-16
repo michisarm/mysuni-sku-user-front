@@ -32,6 +32,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   reviewId: string = '';
   studentCount: number = 0;
 
+  baseUrl: string = '';
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
@@ -83,8 +84,8 @@ class MyTrainingModel extends DramaEntityObservableModel {
   get state() {
     if (this.proposalState === ProposalState.Approved) {
       if (this.learningState) return LearningStateName[LearningState[this.learningState]];
-      if (this.cubeType === CubeType.Community) return '학습중';
-      return '수강확정 과정';
+      if (this.cubeType === CubeType.Community) return '가입완료';
+      return '학습예정';
     }
     else {
       return ProposalStateName[ProposalState[this.proposalState]];
@@ -115,6 +116,7 @@ decorate(MyTrainingModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  baseUrl: observable,
 });
 
 export default MyTrainingModel;

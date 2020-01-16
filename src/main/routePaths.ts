@@ -1,6 +1,10 @@
 
 
 const routePaths = {
+
+  main: () =>
+    '/',
+
   introduction: () =>
     '/introduction',
 
@@ -15,6 +19,9 @@ const routePaths = {
 
   introductionCertification: () =>
     routePaths.introductionTab('Certification'),
+
+  currentPage: (pageNo: number) =>
+    `./${pageNo}`,
 };
 
 export default routePaths;

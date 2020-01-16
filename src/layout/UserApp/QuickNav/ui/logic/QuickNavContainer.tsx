@@ -1,9 +1,11 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import mainRoutePaths from 'main/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'shared-component';
 import { SkProfileService } from 'profile';
@@ -34,9 +36,9 @@ class QuickNavContainer extends Component<Props, State> {
     feedType: '',
   };
 
+
   componentDidMount() {
     //
-    this.props.skProfileService!.findStudySummary();
     window.addEventListener('click', this.deactive);
   }
 
@@ -45,26 +47,6 @@ class QuickNavContainer extends Component<Props, State> {
     if (prevProps.location.key !== this.props.location.key) {
       this.deactive();
     }
-  }
-
-  genCitizenKey(workSpaceList:WorkSpaceList) {
-    //
-    let tenantId = '';
-
-    if (workSpaceList.cineroomWorkspaces !== null && workSpaceList.cineroomWorkspaces) {
-      //
-      tenantId = workSpaceList.cineroomWorkspaces[0].tenantId;
-
-    } else if (workSpaceList.pavilionWorkspaces !== null && workSpaceList.pavilionWorkspaces) {
-      //
-      tenantId = workSpaceList.pavilionWorkspaces[0].tenantId;
-    }
-
-    const splitWholeId:string[] = tenantId.split('@');
-    const pavilions:string[] = splitWholeId[0].split('-');
-    const cinerooms:string[] = splitWholeId[1].split('-');
-
-    return pavilions[0] + '@' + cinerooms[0] + '-' + cinerooms[1];
   }
 
   deactive() {
@@ -83,9 +65,21 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickToggle() {
     //
-    this.setState((prevState) => ({
-      active: !prevState.active,
-    }));
+    this.setState((prevState) => {
+      //
+      const nextActive = !prevState.active;
+
+      if (nextActive) {
+        this.props.skProfileService!.findStudySummary();
+      }
+      return { active: nextActive };
+    });
+  }
+
+  onClose() {
+    //
+    this.props.skProfileService!.findStudySummary();
+    this.setState({ active: false });
   }
 
   onClickLearning() {
@@ -117,6 +111,19 @@ class QuickNavContainer extends Component<Props, State> {
 
     if (adminSiteUrl) {
       window.open(adminSiteUrl);
+    }
+  }
+
+  onConfirmFavorite() {
+    //
+    const { location, history } = this.props;
+    const { pathname } = location;
+
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
     }
   }
 
@@ -160,13 +167,13 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
               <FavoriteChannelChangeModal
                 trigger={(
-                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClickToggle} />
+                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClose} />
                 )}
                 favorites={favoriteChannels}
-                onConfirmCallback={() => {}}
+                onConfirmCallback={this.onConfirmFavorite}
               />
               <SiteMapModalContainer
-                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickToggle} />}
+                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClose} />}
               />
 
               {

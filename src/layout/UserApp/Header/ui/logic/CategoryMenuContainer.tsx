@@ -10,6 +10,7 @@ import { IdNameCount } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { CollegeLectureCountService, CollegeLectureCountRdo }  from 'lecture';
+import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
@@ -36,18 +37,6 @@ class CategoryMenuContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  // componentDidMount() {
-  //   //
-  //   this.findCollegeLectureCount();
-  // }
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-    //
-    if (prevState.categoryOpen !== this.state.categoryOpen && this.state.categoryOpen) {
-      this.findCollegeLectureCount();
-      this.findStudySummary();
-    }
-  }
 
   async findCollegeLectureCount() {
     //
@@ -68,6 +57,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.findCollegeLectureCount();
+    this.findStudySummary();
     this.setState({ categoryOpen: true });
   }
 
@@ -106,6 +97,21 @@ class CategoryMenuContainer extends Component<Props, State> {
   onOpenFavorite() {
     this.modal.onOpenModal();
     this.onClose();
+  }
+
+  onConfirmFavorite() {
+    //
+    const { location, history } = this.props;
+    const { pathname } = location;
+
+    this.findStudySummary();
+
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
+    }
   }
 
   renderMenuActions() {
@@ -160,7 +166,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={channels}
-          onConfirmCallback={this.findStudySummary}
+          onConfirmCallback={this.onConfirmFavorite}
         />
       </>
     );

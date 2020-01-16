@@ -1,7 +1,7 @@
-
-import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { LearningState } from 'shared';
+import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
@@ -71,6 +71,10 @@ class StudentService {
     return this.studentApi.modifyLearningState(studentId, learningState);
   }
 
+  modifyStudent(studentId: string, student: StudentModel) {
+    return this.studentApi.modifyStudent(studentId, StudentModel.asNameValues(student));
+  }
+
   @action
   async findStudent(rollBookId: string, round?: number) {
     //
@@ -101,6 +105,11 @@ class StudentService {
       this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
       return studentJoinRdos;
     });
+  }
+
+  @action
+  setStudentProp(name: string, value: any) {
+    this.student = _.set(this.student, name, value);
   }
 }
 

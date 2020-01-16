@@ -121,7 +121,7 @@ class LectureOverviewView extends Component<Props, State> {
           description={viewObject.description}
         />
         <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId, typeViewObject.fileBoxId ]}
+          fileBoxIds={[ viewObject.fileBoxId ]}
         />
         <OverviewField.List
           ref={this.panelRef}

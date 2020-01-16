@@ -1,6 +1,5 @@
-
 import { axiosApi } from '@nara.platform/accent';
-import { LearningState } from 'shared';
+import { LearningState, NameValueList } from 'shared';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
@@ -28,7 +27,7 @@ class StudentApi {
 
   findStudent(rollBookId: string) {
     return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 
   findStudentCount(rollBookId: string) {
@@ -51,6 +50,10 @@ class StudentApi {
 
   modifyLearningState(studentId: string, learningState: LearningState) {
     return axiosApi.put(this.baseUrl + `/flow/learningState`, { studentIds: [studentId], learningState });
+  }
+
+  modifyStudent(studentId: string, nameValues: NameValueList) {
+    return axiosApi.put(this.baseUrl + `/${studentId}`, nameValues);
   }
 }
 

@@ -2,7 +2,7 @@
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureRdoModel from '../../model/LectureRdoModel';
-import RecommendLectureRdo from '../../model/RecommendLectureRdo';
+import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
 import LectureModel from '../../model/LectureModel';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
@@ -18,8 +18,8 @@ class LectureFlowApi {
   findAllRecommendLectures(lectureRdo: LectureRdoModel) {
     //
     const params = lectureRdo;
-    return axiosApi.get<RecommendLectureRdo[]>(this.baseUrl + '/recommend', { params })
-      .then(response => response && response.data || []);
+    return axiosApi.get<RecommendLectureListRdo>(this.baseUrl + '/recommend', { params })
+      .then(response => response && new RecommendLectureListRdo(response.data) || new RecommendLectureListRdo());
   }
 
   findCollegeLectureCount() {

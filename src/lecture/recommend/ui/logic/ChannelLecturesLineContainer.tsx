@@ -115,8 +115,8 @@ class ChannelLecturesLineContainer extends Component<Props> {
                     <Lecture
                       key={`lecture-${index}`}
                       model={lecture}
-                      rating={lecture.reviewSummary.average}
-                      // thumbnailImage="http://placehold.it/60x60"
+                      rating={lecture.rating}
+                      thumbnailImage={lecture.baseUrl || undefined}
                       action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                       onAction={() => this.onActionLecture(inMyLecture || lecture)}
                       onViewDetail={this.onViewDetail}
