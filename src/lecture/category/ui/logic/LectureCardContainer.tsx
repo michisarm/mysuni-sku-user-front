@@ -232,10 +232,12 @@ class LectureCardContainer extends Component<Props, State> {
             return undefined;
           }
           if (!applyingPeriod) return undefined;
-          console.log(moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days'));
-          console.log(moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days'));
-          if (moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days') > 0
-            || moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days') < 0) {
+          console.log(applyingPeriod!.startDateSub.getTime() > new Date(today.toLocaleDateString() + '23:59:59').getTime());
+          console.log(applyingPeriod!.endDateSub.getTime() < new Date(today.toLocaleDateString() + '00:00:00').getTime());
+          console.log(moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'seconds'));
+          console.log(moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'seconds'));
+          if (moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'seconds') > 0
+            || moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'seconds') < 0) {
             return undefined;
           }
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
