@@ -222,7 +222,7 @@ class LectureCardPage extends Component<Props, State> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
-      if(student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+      if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
     }
 
     return {

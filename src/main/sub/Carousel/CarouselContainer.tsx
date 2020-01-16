@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
+import { Icon } from 'semantic-ui-react';
 import CarouselWrapperView from './CarouselWrapperView';
 import CarouselItemView from './CarouselItemView';
 
@@ -56,7 +57,9 @@ class CarouselContainer extends Component<Props, State> {
           On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
           2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
           써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
-          <a onClick={this.onDownloadManual}> 메뉴얼 다운로드</a>
+          <a className="link-tag" href="https://mysuni.sk.com/api/depot/public/depotFile/flow/download/dn-3" onClick={this.onDownloadManual}>
+            <Icon className="arrow right" />매뉴얼 다운로드
+          </a>
         </>
       ),
       imageName: '/images/all/img_banner_02.png',
@@ -65,10 +68,10 @@ class CarouselContainer extends Component<Props, State> {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
         <>
-          AI, DT 등 Future Tech 학습 과정 32시간,<br />
-          SK행복경영을 더 깊이 이해 할 수 있는 과정 16시간,<br />
-          BM혁신을 도와주는 과정 12시간, 총 14개 Course로<br />
-          제일 먼저 SUNI Stamp에 도전해보세요~!!(메인페이지 필수과정에서 확인)
+          AI, DT 등 Future Tech 학습 과정 33시간,<br />
+          SK행복경영을 더 깊이 이해 할 수 있는 학습 과정 12시간,<br />
+          BM혁신을 도와주는 학습 과정 12시간, 약 60시간!<br />
+          총 20개 Course 부터! SUNI Stamp에 도전해보세요~!!!
         </>
       ),
       imageName: '/images/all/img_banner_03_a.png',
@@ -102,7 +105,7 @@ class CarouselContainer extends Component<Props, State> {
   async onDownloadManual() {
     //
     const depotFile: any = await depot.getDepotFiles('dn-3', true);
-    console.log('depotFile', depotFile);
+
     if (depotFile) {
       depot.downloadDepotFile(depotFile.id);
     }
