@@ -35,6 +35,8 @@ class InMyLectureModel extends DramaEntityObservableModel {
   reviewId: string = '';
   time: number = 0;
   studentCount: number = 0;
+  // TODO: 서버에서 넣어줘야함..
+  passedStudentCount: number = 0;
 
   baseUrl: string = '';
   proposalState: ProposalState = ProposalState.Submitted;
@@ -60,6 +62,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
         && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 
       this.cubeTypeName = InMyLectureModel.getCubeTypeName(inMyLecture.cubeType, this.serviceType);
+      this.passedStudentCount = inMyLecture.studentCount;
     }
   }
 
@@ -124,6 +127,7 @@ decorate(InMyLectureModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  passedStudentCount: observable,
   baseUrl: observable,
 });
 

@@ -31,6 +31,8 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   reviewId: string = '';
   studentCount: number = 0;
+  // TODO: 서버에서 넣어줘야 함.
+  passedStudentCount: number = 0;
 
   baseUrl: string = '';
   // UI only
@@ -49,6 +51,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
       // UI Model
       this.cubeTypeName = MyTrainingModel.getCubeTypeName(myTraining.cubeType, this.serviceType);
+      this.passedStudentCount = myTraining.studentCount;
     }
   }
 
@@ -116,6 +119,7 @@ decorate(MyTrainingModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  passedStudentCount: observable,
   baseUrl: observable,
 });
 
