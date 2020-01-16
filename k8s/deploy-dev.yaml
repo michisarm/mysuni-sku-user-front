@@ -30,7 +30,7 @@ spec:
         livenessProbe:
           failureThreshold: 20
           httpGet:
-            path: /envoy/healthCheck
+            path: /healthCheck
             port: 8080
             scheme: HTTP
           initialDelaySeconds: 30
@@ -40,7 +40,7 @@ spec:
         readinessProbe:
           failureThreshold: 20
           httpGet:
-            path: /envoy/healthCheck
+            path: /healthCheck
             port: 8080
           initialDelaySeconds: 30
           periodSeconds: 10
