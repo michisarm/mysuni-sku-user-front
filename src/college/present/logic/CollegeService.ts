@@ -101,8 +101,7 @@ export default class CollegeService {
   @action
   async findAllCollegesForPanopto() {
     //
-    console.log('???');
-    const colleges = await this.collegeApi.findAllColleges();
+    const colleges = await this.collegeApi.findAllCollegesForCreate();
     return runInAction(() => this.collegesForPanopto = colleges);
   }
 
