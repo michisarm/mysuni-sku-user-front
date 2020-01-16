@@ -52,11 +52,20 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }, this.clear);
   }
 
+  getCitizenId() {
+    const tenantId = tenantInfo.getTenantId();
+    const pavilionId = tenantInfo.getPavilionId();
+    const citizenSequencePart = tenantId.substring(0, tenantId.indexOf('-'));
+    const citizenId = citizenSequencePart + '@' + pavilionId;
+
+    return citizenId;
+  }
+
   async init() {
     const { examinationService, examPaperService, answerSheetService, examId } = this.props;
 
     if (examId) {
-      answerSheetService!.findAnswerSheet(examId, tenantInfo.getTenantId());
+      answerSheetService!.findAnswerSheet(examId, this.getCitizenId());
       const examination = await examinationService!.findExamination(examId);
       examPaperService!.findExamPaper(examination.paperId);
     }
@@ -93,7 +102,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         });
     }
     else {
-      answerSheetService!.setAnswerSheetProp('examineeId', tenantInfo.getTenantId());
+      answerSheetService!.setAnswerSheetProp('examineeId', this.getCitizenId());
       answerSheetService!.setAnswerSheetProp('examId', examId);
       answerSheetService!.setAnswerSheetProp('finished', finished);
       answerSheetService!.registerAnswerSheet(answerSheet)

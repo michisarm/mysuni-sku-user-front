@@ -46,6 +46,18 @@ export function timeToHourMinutePaddingFormat(time: number) {
   }
 }
 
+export function getYearMonthDateHourMinuteSecond(date: Date) {
+  if (!date) return null;
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    date: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: date.getSeconds(),
+  };
+}
+
 export default {
   timeToHourMinute,
   timeToHourMinuteFormat,

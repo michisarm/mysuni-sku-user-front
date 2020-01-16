@@ -59,7 +59,7 @@ class CarouselContainer extends Component<Props, State> {
         </>
       ),
       imageName: '/images/all/img_banner_02.png',
-      linkAnchor: 'https://mysuni.sk.com/station/images/mySUNI_User_Manual_v1_2020115.pdf',
+      linkAnchor: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
