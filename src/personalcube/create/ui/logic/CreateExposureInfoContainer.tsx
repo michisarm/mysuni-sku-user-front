@@ -146,7 +146,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   render() {
     const { onChangePersonalCubeProps, personalCube } = this.props;
     const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
-    const { tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
+    //const { tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
     const { colleges } = this.props.collegeService || {} as CollegeService;
     const { subsidiariesAll } = this.state;
     const subsidiaryIdList: string[] = [];
@@ -196,28 +196,24 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                     placeholder="선택하세요"
                     className="ui small-border dropdown"
                     options={SelectType.colleges}
-                  /*onChange={(e: any, data: any) => onChangePersonalCubeProps('college', {
-                    id: data.value,
-                    name: e.target.innerText,
-                  })}*/
-                    value={tinyAlbumId || ''}
+                    value={personalCube.iconBox.iconUrl.substring(0, 2) || ''}
                     onChange={(e: any, data: any) => {
-                      changeTinyAlbumId(data.value);
+                      onChangePersonalCubeProps('iconBox.iconUrl', data.value);
                     }}
                   />
                 </div>
                 <div className="h220">
                   {
-                  tinyAlbumId ?
-                    <ImageBox
-                      id={tinyAlbumId || ''}
-                      options={{ title: 'sk Icon', needTinyImage: true, width: '60px', height: '60px', selectable: true }}
-                      defaultSelectId={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl || ''}
-                      customSelector={(selectedId: string, imageId: string) => (<Radio checked={selectedId === imageId} />)}
-                      onSelect={this.handleSKIconSelect}
-                      vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
-                      patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
-                    /> : null
+                    personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl  ?
+                      <ImageBox
+                        id={personalCube.iconBox.iconUrl.substring(0, 2) || ''}
+                        options={{ title: 'sk Icon', needTinyImage: true, width: '60px', height: '60px', selectable: true }}
+                        defaultSelectId={personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl || ''}
+                        customSelector={(selectedId: string, imageId: string) => (<Radio checked={selectedId === imageId} />)}
+                        onSelect={this.handleSKIconSelect}
+                        vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
+                        patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                      /> : null
                 }
                 </div>
               </div>
