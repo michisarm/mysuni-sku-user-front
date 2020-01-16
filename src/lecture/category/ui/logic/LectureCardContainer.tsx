@@ -96,7 +96,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { id: studentId } = student!;
 
     if (studentId) {
-      studentService!.modifyLearningState(studentId, LearningState.Waiting)
+      studentService!.modifyStudentForExam(studentId)
         .then(() => {
           if (init) init();
         });
