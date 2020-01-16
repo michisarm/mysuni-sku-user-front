@@ -59,17 +59,24 @@ class RecommendChannelsContainer extends Component<Props> {
 
   async findPagingRecommendLectures() {
     //
-    const { match, lectureService } = this.props;
-    const pageNo = parseInt(match.params.pageNo, 10);
+    const { lectureService } = this.props;
+    const initialLimit = this.getPageNo() * this.CHANNELS_SIZE;
 
-    lectureService!.findPagingRecommendLectures(pageNo * this.CHANNELS_SIZE, this.LECTURES_SIZE);
+    lectureService!.findPagingRecommendLectures(initialLimit, this.LECTURES_SIZE);
   }
 
   async addPagingRecommendLectures() {
     //
     const { lectureService } = this.props;
 
-    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, parseInt(this.props.match.params.pageNo, 10) - 1, this.LECTURES_SIZE, 0);
+    lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, this.getPageNo() - 1, this.LECTURES_SIZE, 0);
+  }
+
+  getPageNo() {
+    //
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
   }
 
   isContentMore() {
@@ -87,10 +94,9 @@ class RecommendChannelsContainer extends Component<Props> {
 
   onClickSeeMore() {
     //
-    const { match, history } = this.props;
-    const pageNo = parseInt(match.params.pageNo, 10);
+    const { history } = this.props;
 
-    history.replace(routePaths.main(pageNo + 1));
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   render() {

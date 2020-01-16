@@ -10,6 +10,7 @@ import { IdNameCount } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { CollegeLectureCountService, CollegeLectureCountRdo }  from 'lecture';
+import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
@@ -100,12 +101,16 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onConfirmFavorite() {
     //
-    const { match, history } = this.props;
+    const { location, history } = this.props;
+    const { pathname } = location;
 
     this.findStudySummary();
 
-    if (match.path === '/') {
-      history.replace('/');
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
     }
   }
 

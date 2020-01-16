@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { computed } from 'mobx';
 
 import { ContentLayout, ContentHeader } from 'shared';
 import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
@@ -42,14 +43,9 @@ class ChannelLecturesPage extends Component<Props> {
   render() {
     //
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService as SkProfileService;
-
-    const { member } = skProfile as SkProfileModel;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-
-    const channels = favoriteChannels && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+    const { member } = skProfileService!.skProfile;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <ContentLayout

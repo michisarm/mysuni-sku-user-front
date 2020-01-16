@@ -170,7 +170,7 @@ export default class CollegeService {
   @action
   setChannels(channels?: ChannelModel[]) {
     //
-    if (channels && channels.length > 0) {
+    if (channels) {
       this._channels = channels.map((channel) => new ChannelModel(channel));
     }
   }

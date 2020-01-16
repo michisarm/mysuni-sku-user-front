@@ -204,7 +204,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
     //
     const { match, history } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
-    history.replace(routePaths.recommendLecturesPage(pageNo + 1));
+    history.replace(routePaths.currentPage(pageNo + 1));
   }
 
   render() {
