@@ -8,7 +8,7 @@ import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { AnswerSheetModalContainer } from 'assistant';
+import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
@@ -48,6 +48,7 @@ class LectureCardContainer extends Component<Props, State> {
   classroomModal: any = null;
   examModal: any = null;
   surveyModal: any = null;
+  reportModal: any = null;
 
   async onSelectClassroom(classroom: ClassroomModel) {
     const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
@@ -71,7 +72,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onRegisterStudent(proposalState?: ProposalState) {
     const { studentCdo, student } = this.props;
-    if (!student || !student.id) {
+    if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
     else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
@@ -191,6 +192,10 @@ class LectureCardContainer extends Component<Props, State> {
     this.examModal.onOpenModal();
   }
 
+  onReport() {
+    this.reportModal.onOpenModal();
+  }
+
   getMainAction() {
     const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
@@ -203,6 +208,10 @@ class LectureCardContainer extends Component<Props, State> {
           return {
             type: LectureSubInfo.ActionType.LearningStart,
             onAction: () => {
+              if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+                (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+                this.onRegisterStudent(ProposalState.Approved);
+              }
               if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
               else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
             },
@@ -282,6 +291,10 @@ class LectureCardContainer extends Component<Props, State> {
     if (viewObject.examId && student && student.learningState === LearningState.Progress) {
       subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
     }
+
+    if (viewObject && viewObject.reportFileBoxId || (typeViewObject && typeViewObject.reportFileBoxId)) {
+      subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+    }
     return subActions.length ? subActions : undefined;
   }
 
@@ -291,7 +304,8 @@ class LectureCardContainer extends Component<Props, State> {
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && (!student.learningState && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
+        if (student && student.id && (!student.learningState
+          && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
           return () => {
             studentService!.removeStudent(student.rollBookId)
               .then(() => {
@@ -315,7 +329,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, cubeType, typeViewObject, children } = this.props;
+    const { inMyLecture, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
 
     return (
       <LectureCardContentWrapperView>
@@ -341,10 +355,10 @@ class LectureCardContainer extends Component<Props, State> {
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
-          onDownloadReport={
-            ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
-              () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
-          }
+          /* onDownloadReport={
+             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+           }*/
         />
         <ClassroomModalView
           ref={classroomModal => this.classroomModal = classroomModal}
@@ -369,6 +383,12 @@ class LectureCardContainer extends Component<Props, State> {
             />
           )
         }
+        <CubeReportModalContainer
+          downloadFileBoxId ={viewObject.reportFileBoxId || typeViewObject.reportFileBoxId}
+          ref={reportModal => this.reportModal = reportModal}
+          downloadReport = {this.onClickDownloadReport}
+          rollBookId={studentCdo.rollBookId}
+        />
         {children}
       </LectureCardContentWrapperView>
     );

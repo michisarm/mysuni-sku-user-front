@@ -99,6 +99,14 @@ export default class CollegeService {
   }
 
   @action
+  async findAllCollegesForPanopto() {
+    //
+    console.log('???');
+    const colleges = await this.collegeApi.findAllColleges();
+    return runInAction(() => this.collegesForPanopto = colleges);
+  }
+
+  @action
   setCollege(college: CollegeModel) {
     this.college = college;
   }
