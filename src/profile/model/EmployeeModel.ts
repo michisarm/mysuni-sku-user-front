@@ -15,6 +15,8 @@ export class EmployeeModel extends MemberModel {
   jobDuty : string ='';         //직책 duty
   base64Photo: string = '';     //base64 image 크기
   photoFileUrl:string ='';      //SK IM Photo URL
+  photoFilename: string = '';
+
   // team: TeamModel = new TeamModel();
 
   companyCode : string ='';
@@ -60,9 +62,20 @@ export class EmployeeModel extends MemberModel {
     }
     return '';
   }
+
+  @computed
+  get photoFilePath() {
+    //
+    if (!this.photoFilename || !this.companyCode) {
+      return undefined;
+    }
+    else {
+      return `/profile/photo/${this.companyCode.toLowerCase()}/${this.photoFilename}`;
+    }
+  }
 }
 
-decorate( EmployeeModel, {
+decorate(EmployeeModel, {
   employeeId: observable,
   names: observable,
   email: observable,
@@ -73,6 +86,7 @@ decorate( EmployeeModel, {
   jobDuty: observable,
   base64Photo: observable,
   photoFileUrl: observable,
+  photoFilename: observable,
   companyCode: observable,
   companyNames: observable,
   departmentCode: observable,
