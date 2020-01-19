@@ -394,7 +394,7 @@ class MyTrainingPage extends Component<Props, State> {
               type: Type.InMyList,
             },
             {
-              name: '필수과정',
+              name: '권장과정',
               type: Type.Required,
               className: 'division',
             },
