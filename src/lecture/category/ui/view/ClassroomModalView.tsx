@@ -67,7 +67,7 @@ class ClassroomModalView extends Component<Props, States> {
                   <Table.HeaderCell />
                   <Table.HeaderCell>차수</Table.HeaderCell>
                   <Table.HeaderCell>강사</Table.HeaderCell>
-                  <Table.HeaderCell>장소/웹사이트</Table.HeaderCell>
+                  <Table.HeaderCell>교육장소/웹사이트</Table.HeaderCell>
                   <Table.HeaderCell>정원정보</Table.HeaderCell>
                   <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
                   <Table.HeaderCell>시작일 및 종료일</Table.HeaderCell>
