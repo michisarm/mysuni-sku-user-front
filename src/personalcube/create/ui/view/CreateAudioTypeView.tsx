@@ -1,15 +1,16 @@
 import React from 'react';
+import { reactAutobind, getCookie, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
+import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from 'personalcube/media';
 import { PersonalCubeModel } from 'personalcube/personalcube';
-import $ from 'jquery';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
+
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
@@ -48,12 +49,14 @@ class CreateAudioTypeView extends React.Component<Props> {
   };
 
   componentDidUpdate(): void {
-
-    // window.onmessage = this.setData;
+    //
     const { collegeService } = this.props;
     const { collegesForPanopto } = collegeService || {} as CollegeService;
+
     if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+
     const { media } = this.props.mediaService!;
+
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
       this.$progressBar = $('#progressBar');
@@ -257,7 +260,7 @@ class CreateAudioTypeView extends React.Component<Props> {
   render() {
 
     const { onChangePersonalCubeProps, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
-    // const { uploadedPaonoptos } = this.props.mediaService || {} as MediaService;
+    // const { uploadedPaonoptos } = this.props.mediaService!;
     // const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
 
     return (

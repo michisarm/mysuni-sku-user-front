@@ -118,7 +118,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
       window.open(typeViewObject.url, '_blank');
     }
     else {
@@ -132,7 +131,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      // window.open(typeViewObject.url.includes('http') ? typeViewObject.url : `https://${typeViewObject.url}`, '_blank');
       window.open(typeViewObject.url, '_blank');
     }
     else {
@@ -316,7 +314,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
-      case CubeType.ELearning:
+      case CubeType.ELearning: {
         const today = new Date();
         const cancellablePeriod = typeViewObject.cancellablePeriod;
 
@@ -350,6 +348,7 @@ class LectureCardContainer extends Component<Props, State> {
           }
         }
         return undefined;
+      }
       case CubeType.Audio:
       case CubeType.Video:
       case CubeType.WebPage:
