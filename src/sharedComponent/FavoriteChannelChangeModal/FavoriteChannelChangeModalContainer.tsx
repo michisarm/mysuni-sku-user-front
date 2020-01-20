@@ -1,18 +1,22 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import { Button, Modal } from 'semantic-ui-react';
+import { IdNameCount } from 'shared';
 import { SkProfileService, StudySummary } from 'profile';
-import { CollegeService, CollegeModel, ChannelModel } from 'college';
-import { ContentWrapper, Header } from './FavoriteChannelChangeElementsView';
+import { CollegeService, ChannelModel } from 'college';
+import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
+import HeaderContainer from './HeaderContainer';
+import { ContentWrapper } from './FavoriteChannelChangeElementsView';
 import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 
 
 interface Props {
   skProfileService?: SkProfileService
   collegeService?: CollegeService
+  collegeLectureCountService?: CollegeLectureCountService
 
   trigger?: React.ReactNode
   favorites: ChannelModel[]
@@ -21,19 +25,21 @@ interface Props {
 
 interface State {
   open: boolean
-  searchKey: string
   selectedCollegeIds: string[]
   favoriteChannels: ChannelModel [];
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'college.collegeService'))
+@inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'college.collegeService',
+  'lecture.collegeLectureCountService',
+))
 @observer
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   //
   state = {
     open: false,
-    searchKey: '',
     selectedCollegeIds: [],
     favoriteChannels: [],
   };
@@ -41,7 +47,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onOpenModal() {
     //
-    this.props.collegeService!.findAllColleges();
+    this.props.collegeService!.findChannelByName('');
+    this.props.collegeLectureCountService!.findCollegeLectureCounts();
     this.setState({
       open: true,
       favoriteChannels: [ ...this.props.favorites ],
@@ -72,25 +79,18 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       });
   }
 
-  onChangeSearchKey(event : any) {
-    //
-    this.setState({
-      searchKey: event.target.value,
-    });
-  }
-
-  onSearch() {
+  onSearch(e: any, searchKey: string) {
     //
     const { collegeService } = this.props;
 
-    collegeService!.findChannelByName(this.state.searchKey);
+    collegeService!.findChannelByName(searchKey);
   }
 
   onReset() {
     this.setState({ selectedCollegeIds: [], favoriteChannels: []});
   }
 
-  onToggleCollege(college: CollegeModel) {
+  onToggleCollege(college: CollegeLectureCountRdo) {
     //
     let { selectedCollegeIds }: State = this.state;
 
@@ -103,7 +103,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     this.setState({ selectedCollegeIds: [...selectedCollegeIds]});
   }
 
-  onToggleChannel(channel: ChannelModel) {
+  onToggleChannel(channel: IdNameCount | ChannelModel) {
     //
     let { favoriteChannels }: State = this.state;
 
@@ -118,9 +118,10 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, trigger } = this.props;
+    const { collegeService, collegeLectureCountService, trigger } = this.props;
     const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
-    const { colleges } = collegeService!;
+    const { channelIds } = collegeService!;
+    const { collegeLectureCounts, totalChannelCount } = collegeLectureCountService!;
 
     return (
       <Modal
@@ -136,15 +137,16 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
         </Modal.Header>
         <Modal.Content>
           <ContentWrapper>
-            <Header
+            <HeaderContainer
+              totalChannelCount={totalChannelCount}
               favoriteChannels={favoriteChannels}
-              onChangeSearchKey={this.onChangeSearchKey}
               onSearch={this.onSearch}
               onResetSelected={this.onReset}
             />
 
             <FavoriteChannelChangeView
-              colleges={colleges}
+              colleges={collegeLectureCounts}
+              channelIds={channelIds}
               favoriteChannels={favoriteChannels}
               selectedCollegeIds={selectedCollegeIds}
               onToggleCollege={this.onToggleCollege}

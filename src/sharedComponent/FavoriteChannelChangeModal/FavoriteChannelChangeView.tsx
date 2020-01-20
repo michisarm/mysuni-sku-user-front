@@ -4,15 +4,18 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Button, Icon, Accordion, Checkbox } from 'semantic-ui-react';
-import { CollegeModel, ChannelModel } from 'college';
+import { IdNameCount } from 'shared';
+import { ChannelModel } from 'college';
+import { CollegeLectureCountRdo } from 'lecture';
 
 
 interface Props {
-  colleges: CollegeModel[]
+  colleges: CollegeLectureCountRdo[]
+  channelIds: string[]
   selectedCollegeIds: string[]
   favoriteChannels: ChannelModel[]
-  onToggleCollege: (college: CollegeModel) => void,
-  onToggleChannel: (channel: ChannelModel) => void,
+  onToggleCollege: (college: CollegeLectureCountRdo) => void,
+  onToggleChannel: (channel: IdNameCount | ChannelModel) => void,
 }
 
 @observer
@@ -23,7 +26,7 @@ class FavoriteChannelChangeView extends Component<Props> {
 
   render() {
     //
-    const { colleges, selectedCollegeIds, favoriteChannels, onToggleCollege, onToggleChannel } = this.props;
+    const { colleges, channelIds, selectedCollegeIds, favoriteChannels, onToggleCollege, onToggleChannel } = this.props;
 
     return (
       <div className="row">
@@ -38,7 +41,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                 :
                 <Accordion className="channel">
                   {
-                    colleges.map((college: CollegeModel, index:number) => (
+                    colleges.map((college: CollegeLectureCountRdo, index: number) => (
                       <div key={`college-${index}`}>
                         <Accordion.Title
                           active={selectedCollegeIds.includes(college.collegeId)}
@@ -50,17 +53,19 @@ class FavoriteChannelChangeView extends Component<Props> {
                         <Accordion.Content active={selectedCollegeIds.includes(college.collegeId)}>
                           <ul>
                             {
-                              college.channels && college.channels.length > 0 && college.channels.map((channel, index) => (
-                                <li key={`channel-${index}`}>
-                                  <Checkbox
-                                    label={channel.name}
-                                    name={channel.name}
-                                    className="base"
-                                    checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
-                                    onChange={() => onToggleChannel(channel)}
-                                  />
-                                </li>
-                              ))
+                              college.channelCounts && college.channelCounts.length > 0
+                                && college.channelCounts.filter(channel => channelIds.includes(channel.id))
+                                  .map((channel, index) => (
+                                    <li key={`channel-${index}`}>
+                                      <Checkbox
+                                        label={<label>{channel.name} <span>({channel.count})</span></label>}
+                                        name={channel.name}
+                                        className="base"
+                                        checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                        onChange={() => onToggleChannel(channel)}
+                                      />
+                                    </li>
+                                  ))
                             }
                           </ul>
                         </Accordion.Content>
