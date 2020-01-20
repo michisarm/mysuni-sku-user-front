@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { Button, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -9,6 +10,7 @@ import { CubeType, NoSuchContentPanel } from 'shared';
 import { Lecture, LectureService } from 'lecture';
 import { LectureServiceType } from 'lecture/shared';
 import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutes from 'myTraining/routePaths';
 import { MyTrainingService, InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import MyTrainingModel from '../../../myTraining/model/MyTrainingModel';
 import MyLearningTabContainer from './MyLearningTabContainer';
@@ -161,6 +163,13 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
+  onViewAll() {
+    const { history } = this.props;
+    const { type } = this.state;
+
+    history.push(myTrainingRoutes.learningTab(type));
+  }
+
   renderList() {
     //
     const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
@@ -181,35 +190,43 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     return (
       <Wrapper>
-        {
-          list && list.length && (
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
-                let rating: number | undefined;
-                if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
-                  rating = ratingMap.get(value.reviewId) || 0;
-                }
-                else if (value instanceof LectureModel && value.cubeType !== CubeType.Community) {
-                  rating = value.rating;
-                }
-                const inMyLecture = inMyLectureMap.get(value.serviceId);
-                return (
-                  <Lecture
-                    key={`training-${index}`}
-                    model={value}
-                    rating={rating}
-                    thumbnailImage={value.baseUrl || undefined}
-                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onActionLecture(inMyLecture || value)}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
-          ) || (
-            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
-          )
-        }
+        <>
+          <div className="right">
+            <Button icon className="right btn-blue" onClick={this.onViewAll}>
+              View all
+              <Icon className="morelink" />
+            </Button>
+          </div>
+          {
+            list && list.length && (
+              <Lecture.Group type={Lecture.GroupType.Line}>
+                {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
+                  let rating: number | undefined;
+                  if (value instanceof InMyLectureModel && value.cubeType !== CubeType.Community) {
+                    rating = ratingMap.get(value.reviewId) || 0;
+                  }
+                  else if (value instanceof LectureModel && value.cubeType !== CubeType.Community) {
+                    rating = value.rating;
+                  }
+                  const inMyLecture = inMyLectureMap.get(value.serviceId);
+                  return (
+                    <Lecture
+                      key={`training-${index}`}
+                      model={value}
+                      rating={rating}
+                      thumbnailImage={value.baseUrl || undefined}
+                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                      onAction={() => this.onActionLecture(inMyLecture || value)}
+                      onViewDetail={this.onViewDetail}
+                    />
+                  );
+                })}
+              </Lecture.Group>
+            ) || (
+              <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+            )
+          }
+        </>
       </Wrapper>
     );
   }
