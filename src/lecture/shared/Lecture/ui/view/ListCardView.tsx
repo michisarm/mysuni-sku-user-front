@@ -85,7 +85,7 @@ class ListCardView extends Component<Props> {
 
           <Title title={<a>{model.name}</a>} category={model.category}>
             <Fields>
-              <Field icon="date" text={`Completed date : ${moment(model.time).format('YYYY.MM.DD')}`} />
+              <Field icon="date" text={`학습완료일 : ${moment(model.time).format('YYYY.MM.DD')}`} />
             </Fields>
           </Title>
 

@@ -3,7 +3,7 @@
 const routePaths = {
 
   learning: () => '/my-training/learning',
-  learningTab: (tab: string = 'InProgress') => `/my-training/learning/${tab}`,
+  learningTab: (tab: string = 'InProgress') => `/my-training/learning/${tab}/pages/1`,
   learningInProgress: () => routePaths.learningTab('InProgress'),
   learningInMyList: () => routePaths.learningTab('InMyList'),
   learningEnrolled: () => routePaths.learningTab('Enrolled'),
@@ -21,6 +21,9 @@ const routePaths = {
   communityMyCommunity: () => routePaths.communityTab('MyCommunity'),
   communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
   communityMyFeed: () => routePaths.communityTab('MyFeed'),
+
+  currentPage: (pageNo: number) =>
+    `./${pageNo}`,
 };
 
 export default routePaths;
