@@ -27,6 +27,7 @@ export class CoursePlanModel implements DramaEntity {
   reportFileBox: ReportFileBoxModel = new ReportFileBoxModel();
   stamp: StampModel = new StampModel();
   creator: CreatorModel = new CreatorModel();
+  learningTime: number = 0;
   time: number = 0;
   openRequests: OpenRequestModel[] = [];
 

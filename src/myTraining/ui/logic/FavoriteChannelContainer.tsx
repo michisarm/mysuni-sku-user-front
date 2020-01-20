@@ -7,7 +7,7 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { SkProfileService } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 
 
 interface Props {

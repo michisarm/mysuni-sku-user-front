@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { SkProfileService } from 'profile';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';

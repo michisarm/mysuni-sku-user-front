@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { IdNameCount } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
