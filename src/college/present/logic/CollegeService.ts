@@ -75,6 +75,12 @@ export default class CollegeService {
   }
 
   @computed
+  get channelIds() {
+    //
+    return this.channels.map(channel => channel.channelId);
+  }
+
+  @computed
   get favoriteChannelIdNames() : IdNameList {
     const list : IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
