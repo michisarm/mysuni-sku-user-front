@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';

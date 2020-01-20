@@ -43,9 +43,7 @@ class SubCategoryModalContainer extends React.Component<Props, State> {
   componentDidMount(): void {
     const { collegeService } = this.props;
 
-    if (collegeService) {
-      collegeService.findAllColleges();
-    }
+    collegeService!.findAllColleges();
   }
 
   onOpenModal() {

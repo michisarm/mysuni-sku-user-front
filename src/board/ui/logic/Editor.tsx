@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
 import { PostModel } from '../../model/PostModel';

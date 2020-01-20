@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';

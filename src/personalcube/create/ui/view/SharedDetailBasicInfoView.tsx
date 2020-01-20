@@ -1,5 +1,7 @@
+
+import React from 'react';
+
 import { Table } from 'semantic-ui-react';
-import * as React from 'react';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import moment from 'moment';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';

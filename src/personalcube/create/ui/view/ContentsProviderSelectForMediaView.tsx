@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
