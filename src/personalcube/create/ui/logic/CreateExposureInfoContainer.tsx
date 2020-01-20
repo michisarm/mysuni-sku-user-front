@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
-import {fileUtil, ImageBox, PatronType, ValidationType} from '@nara.drama/depot';
+import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
