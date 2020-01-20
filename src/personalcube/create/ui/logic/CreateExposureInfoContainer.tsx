@@ -177,10 +177,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const requiredSubsidiaryIdList: string[] = [];
     const collegeList: any = [];
 
-    colleges.map((data, index) => {
-        collegeList.push({ key: index, value: data.collegeId, text: data.name });
-      }
-    );
+    colleges.map((data, index) => collegeList.push({ key: index, value: data.collegeId, text: data.name }));
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
     if (personalCube && personalCube.requiredSubsidiaries) {
       personalCube.requiredSubsidiaries.map(requiredSubsidiary =>
@@ -352,11 +349,12 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               }}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />
-            <Icon className="clear link"
-                  onClick={(e: any) => {
-                    this.setState({ write: '' });
-                    onChangePersonalCubeProps('tags', '');
-                  }}
+            <Icon
+              className="clear link"
+              onClick={() => {
+                this.setState({ write: '' });
+                onChangePersonalCubeProps('tags', '');
+              }}
             />
             <span className="validation">You can enter up to 10 tags.</span>
           </div>
