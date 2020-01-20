@@ -25,7 +25,7 @@ import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
 
 
-interface Props extends RouteComponentProps<{ tab: string }> {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
   skProfileService?: SkProfileService
@@ -77,10 +77,18 @@ class MyTrainingPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
+    const { pageService } = this.props;
     const currentTab = this.props.match.params.tab;
+    const currentPageNo = this.props.match.params.pageNo;
 
     if (prevProps.match.params.tab !== currentTab) {
       this.selectMenu(currentTab);
+    }
+    if (prevProps.match.params.pageNo !== currentPageNo) {
+      const page = pageService!.pageMap.get(this.PAGE_KEY);
+      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      this.findPagingList(this.getPageNo() - 1);
     }
   }
 
@@ -108,7 +116,9 @@ class MyTrainingPage extends Component<Props, State> {
       } else {
         myTrainingService!.clear();
       }
-      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+
+      const initialLimit = this.getPageNo() * this.PAGE_SIZE;
+      pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
       this.setState({ type }, this.findPagingList);
     }
   }
@@ -118,7 +128,7 @@ class MyTrainingPage extends Component<Props, State> {
     this.props.history.push(routePaths.learningTab(type));
   }
 
-  async findPagingList() {
+  async findPagingList(pageNo?: number) {
     const { inMyLectureService, myTrainingService, lectureService, pageService, reviewService } = this.props;
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
@@ -137,10 +147,10 @@ class MyTrainingPage extends Component<Props, State> {
       offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, 0, channelIds);
     }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo ? pageNo + 1 : page!.pageNo + 1);
   }
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
@@ -201,6 +211,20 @@ class MyTrainingPage extends Component<Props, State> {
     else if (model.serviceType === LectureServiceType.Card) {
       history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
+  }
+
+  getPageNo() {
+    //
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
+  }
+
+  onClickSeeMore() {
+    //
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   isContentMore() {
@@ -331,7 +355,7 @@ class MyTrainingPage extends Component<Props, State> {
 
         { this.isContentMore() && (
           <SeeMoreButton
-            onClick={this.findPagingList}
+            onClick={this.onClickSeeMore}
           />
         )}
       </Segment>
