@@ -257,7 +257,7 @@ class CreateAudioTypeView extends React.Component<Props> {
   render() {
 
     const { onChangePersonalCubeProps, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
-    const { uploadedPaonoptos } = this.props.mediaService || {} as MediaService;
+    // const { uploadedPaonoptos } = this.props.mediaService || {} as MediaService;
     // const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
 
     return (

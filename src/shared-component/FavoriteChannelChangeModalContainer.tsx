@@ -3,13 +3,19 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Modal, Accordion, Checkbox } from 'semantic-ui-react';
+import { IdNameCount } from 'shared';
 import { SkProfileService, StudySummary } from 'profile';
-import { CollegeModel, ChannelModel, CollegeService } from 'college';
+import { ChannelModel, CollegeService } from 'college';
+import { CollegeLectureCountService } from 'lecture';
+import classNames from 'classnames';
+import CollegeLectureCountRdo from '../lecture/shared/model/CollegeLectureCountRdo';
+
 
 
 interface Props {
   skProfileService?: SkProfileService
   collegeService?: CollegeService
+  collegeLectureCountService?: CollegeLectureCountService
 
   trigger?: React.ReactNode
   favorites: ChannelModel[]
@@ -18,6 +24,7 @@ interface Props {
 
 interface State {
   open: boolean
+  focus: boolean
   searchKey: string
   selectedCollegeIds: string[]
   favoriteChannels: ChannelModel [];
@@ -25,13 +32,18 @@ interface State {
 
 const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'college.collegeService'))
+@inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'lecture.collegeLectureCountService',
+  'college.collegeService',
+))
 @observer
 @reactAutobind
 class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   //
   state = {
     open: false,
+    focus: false,
     searchKey: '',
     selectedCollegeIds: [],
     favoriteChannels: [],
@@ -40,7 +52,8 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onOpenModal() {
     //
-    this.props.collegeService!.findAllColleges();
+    this.props.collegeService!.findChannelByName(this.state.searchKey);
+    this.props.collegeLectureCountService!.findCollegeLectureCounts();
     this.setState({
       open: true,
       favoriteChannels: [ ...this.props.favorites ],
@@ -70,7 +83,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
       });
   }
 
-  onSelectChannel(channel: ChannelModel) {
+  onSelectChannel(channel: IdNameCount | ChannelModel) {
     //
     let { favoriteChannels }: State = this.state;
 
@@ -89,7 +102,6 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     });
   }
 
-
   onSearch() {
     const { collegeService } = this.props;
 
@@ -100,7 +112,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     this.setState({ selectedCollegeIds: [], favoriteChannels: []});
   }
 
-  handleClick(college: CollegeModel) {
+  handleClick(college: CollegeLectureCountRdo) {
     //
     let { selectedCollegeIds }: State = this.state;
 
@@ -114,9 +126,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
   }
 
   render() {
-    const { collegeService, trigger } = this.props;
+    const { collegeService, collegeLectureCountService, trigger } = this.props;
     const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
-    const { colleges } = collegeService!;
+    const { channels } = collegeService!;
+    const { collegeLectureCounts } = collegeLectureCountService!;
+    const channelIds = channels.map(channel => channel.channelId);
 
     return (
       <Modal
@@ -138,9 +152,19 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
                 <div className="cell v-middle">
                   <span className="text01">Channel list</span>
                   <div className="right">
-                    <div className="ui h30 search input">
-                      <input type="text" placeholder="Search" onChange={this.searchKey}  />
-                      <Icon className="clear link" />
+                    <div className={classNames('ui h30 search input', { focus: this.state.focus, write: this.state.searchKey })}>
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        value={this.state.searchKey}
+                        onChange={this.searchKey}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') this.onSearch();
+                        }}
+                        onClick={() => this.setState({ focus: true })}
+                        onBlur={() => this.setState({ focus: false })}
+                      />
+                      <Icon className="clear link" onClick={() => this.setState({ searchKey: '' }, this.onSearch)} />
                       <Icon className="search link" onClick={this.onSearch} />
                     </div>
                   </div>
@@ -165,11 +189,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
                   <div className="select-area">
                     <div className="scrolling-60vh">
                       {
-                        colleges && colleges.length
+                        collegeLectureCounts && collegeLectureCounts.length
                         && (
                           <Accordion className="channel">
                             {
-                              colleges.map((college: CollegeModel, index:number) => (
+                              collegeLectureCounts.map((college: CollegeLectureCountRdo, index:number) => (
                                 <div key={`college-${index}`}>
                                   <Accordion.Title
                                     active={selectedCollegeIds.includes(college.collegeId)}
@@ -181,10 +205,11 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
                                   <Accordion.Content active={selectedCollegeIds.includes(college.collegeId)}>
                                     <ul>
                                       {
-                                        college.channels && college.channels.length && college.channels.map((channel, index) => (
+                                        college.channelCounts && college.channelCounts.length
+                                        && college.channelCounts.filter(channel => channelIds.includes(channel.id)).map((channel, index) => (
                                           <li key={`channel-${index}`}>
                                             <Checkbox
-                                              label={channel.name}
+                                              label={`${channel.name}(${channel.count})`}
                                               name={channel.name}
                                               className="base"
                                               checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}

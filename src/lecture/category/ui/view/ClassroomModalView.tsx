@@ -78,8 +78,12 @@ class ClassroomModalView extends Component<Props, States> {
               <Table.Body>
                 {
                   classrooms.sort(this.compare).map((classroom: ClassroomModel, index) => {
-                    const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.startDateSub)!;
-                    const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.endDateSub)!;
+                    const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(
+                      classroom.enrolling.applyingPeriod!.startDateSub
+                    )!;
+                    const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(
+                      classroom.enrolling.applyingPeriod!.endDateSub
+                    )!;
                     return (
                       <Table.Row key={`overview-table-row-${index}`}>
                         <Table.Cell>
