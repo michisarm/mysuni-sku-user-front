@@ -1,5 +1,5 @@
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind, getCookie } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
@@ -52,12 +52,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       length: 0,
     };
   }
-
+  
   componentDidMount(): void {
     //
     const { categoryService, postService } = this.props;
-    const name = sessionStorage.getItem('displayName') || '';
-    const email = sessionStorage.getItem('email') || '';
+    const name = getCookie('displayName') || '';
+    const email = getCookie('email') || '';
     if (postService && categoryService) {
       Promise.resolve()
         .then(() => {
