@@ -222,7 +222,7 @@ class LectureCardPage extends Component<Props, State> {
           else state = SubState.InProgress;
           if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
             const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-            if (index && classrooms) examId = classrooms[index].roundExamId;
+            if (index >= 0 && classrooms) examId = classrooms[index].roundExamId;
           }
           else {
             examId = personalCube.contents.examId || '';
