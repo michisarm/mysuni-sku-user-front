@@ -1,5 +1,8 @@
-import { DramaEntity, getCookie, PatronKey } from '@nara.platform/accent';
+
 import { decorate, observable } from 'mobx';
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
+
 import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
@@ -45,7 +48,8 @@ export class PersonalCubeModel implements DramaEntity {
       Object.assign(this, { ...personalCube, creator, contents, cubeIntro, category, iconBox });
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = tenantInfo.getTenantCompanyCode();
+
       this.required = personalCube.requiredSubsidiaries
         && personalCube.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
     }

@@ -1,6 +1,7 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
@@ -36,20 +37,24 @@ class PanoptoListModal extends React.Component<Props, States> {
 
   findAllPanoptos(page?: number) {
     const { sharedService, mediaService } = this.props;
-    const { panoptoCdo } = this.props.mediaService || {} as MediaService;
-    if (sharedService && mediaService) {
-      mediaService.changePanoptoCdoProps('folderOwnerId', getCookie('email'));
-      if (page) {
-        sharedService.setPage('panopto', page);
-        mediaService.changePanoptoCdoProps('currentPage', page);
-      } else sharedService.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
-      mediaService.findPanoptoList()
-        .then(() => {
-          if (mediaService && mediaService.panoptos && mediaService.panoptos.totalCount) {
-            sharedService.setCount('panopto', mediaService.panoptos.totalCount);
-          }
-        });
+    const { panoptoCdo } = this.props.mediaService!;
+    const tenantEmail = tenantInfo.getTenantEmail();
+
+    mediaService!.changePanoptoCdoProps('folderOwnerId', tenantEmail);
+
+    if (page) {
+      sharedService!.setPage('panopto', page);
+      mediaService!.changePanoptoCdoProps('currentPage', page);
+    } else {
+      sharedService!.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
     }
+
+    mediaService!.findPanoptoList()
+      .then(() => {
+        if (mediaService!.panoptos && mediaService!.panoptos.totalCount) {
+          sharedService!.setCount('panopto', mediaService!.panoptos.totalCount);
+        }
+      });
   }
 
   show(open: boolean) {
@@ -83,8 +88,8 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   render() {
-    const { panoptos, media, panopto: selectedPanopto } = this.props.mediaService || {} as MediaService;
-    const { pageMap } = this.props.sharedService || {} as SharedService;
+    const { panoptos, media, panopto: selectedPanopto } = this.props.mediaService!;
+    const { pageMap } = this.props.sharedService!;
     const { open } = this.state;
     const results = panoptos && panoptos.results;
     const totalCount = panoptos && panoptos.totalCount;

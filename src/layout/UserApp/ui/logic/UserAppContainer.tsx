@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
+import { reactAutobind } from '@nara.platform/accent';
+import { tenantInfo } from '@nara.platform/dock';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
@@ -25,27 +26,13 @@ class UserAppContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
-    // this.checkAndRedirectAuth();
     this.setLocalAuth();
   }
 
   setLocalAuth() {
     //
-    if (process.env.NODE_ENV !== 'development') {
-      if (!getCookie('token') || !getCookie('cineroomId') || !getCookie('workspaces')) window.location.href = '/login';
-    }
-  }
-
-  checkAndRedirectAuth() {
-    //
-    const cineroomId = getCookie('cineroomId') || '';
-    const workSpaces: WorkSpaceList = JSON.parse(`${getCookie('workspaces')}`);
-    const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || [])
-      .filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
-
-    if (!cineroomSpaces.length) {
-      // alert('로그인 필요');
-      // window.location.href= window.location.origin + '/login';
+    if (process.env.NODE_ENV !== 'development' && !tenantInfo.isLogin()) {
+      window.location.href = '/login';
     }
   }
 

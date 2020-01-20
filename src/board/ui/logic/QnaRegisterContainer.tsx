@@ -1,7 +1,9 @@
+
 import React from 'react';
-import { mobxHelper, reactAutobind, getCookie } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { tenantInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import 'react-quill/dist/quill.snow.css';
@@ -52,24 +54,23 @@ class QnaRegisterContainer extends React.Component<Props, States> {
       length: 0,
     };
   }
-  
+
   componentDidMount(): void {
     //
     const { categoryService, postService } = this.props;
-    const name = getCookie('displayName') || '';
-    const email = getCookie('email') || '';
-    if (postService && categoryService) {
-      Promise.resolve()
-        .then(() => {
-          if (postService) postService.clearPost();
-        })
-        .then(() => {
-          if (categoryService) categoryService.findCategoriesByBoardId('QNA');
-        })
-        .then(() => postService.changePostProps('boardId', 'QNA'))
-        .then(() => postService.changePostProps('writer.name', name))
-        .then(() => postService.changePostProps('writer.email', email));
-    }
+    const name = tenantInfo.getTenantName() || '';
+    const email = tenantInfo.getTenantEmail() || '';
+
+    Promise.resolve()
+      .then(() => {
+        if (postService) postService.clearPost();
+      })
+      .then(() => {
+        if (categoryService) categoryService.findCategoriesByBoardId('QNA');
+      })
+      .then(() => postService!.changePostProps('boardId', 'QNA'))
+      .then(() => postService!.changePostProps('writer.name', name))
+      .then(() => postService!.changePostProps('writer.email', email));
   }
 
   componentWillUnmount(): void {
@@ -94,13 +95,13 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   handleOKConfirmWin() {
     //
     const { postService } = this.props;
-    const { post } = this.props.postService || {} as PostService;
+    const { post } = postService!;
 
-    if (postService) {
-      postService.registerPost(post)
-        .then((postId) => this.props.history.push(`/board/support/qna-detail/${postId}`));
-    }
+    postService!.registerPost(post)
+      .then((postId) => this.props.history.push(`/board/support/qna-detail/${postId}`));
+
     this.onClose('Q&A');
+
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {
@@ -114,7 +115,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   onChangePostProps(name: string, value: string | {}) {
     //
     const { postService } = this.props;
-    if (postService) postService.changePostProps(name, value);
+    postService!.changePostProps(name, value);
   }
 
   onClose(boardId: string) {
@@ -138,22 +139,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     //
     const { postService } = this.props;
     const { post } = postService || {} as PostService;
-    if (postService && post.contents) postService.changePostProps('contents.depotId', fileBoxId);
+
+    if (post.contents) postService!.changePostProps('contents.depotId', fileBoxId);
   }
 
   render() {
     //
-    const { categorys } = this.props.categoryService || {} as CategoryService;
-    const { post } = this.props.postService || {} as PostService;
+    const { categorys } = this.props.categoryService!;
+    const { post } = this.props.postService!;
     const { alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
     categorys.map((data, index) => {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
-    }
-    );
-
-    console.log(post && post.contents && post.contents.depotId);
+    });
 
     return (
       <ContentLayout className="bg-white">

@@ -1,6 +1,7 @@
 import React from 'react';
-import { reactAutobind, getCookie, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { tenantInfo } from '@nara.platform/dock';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
 import $ from 'jquery';
@@ -29,7 +30,7 @@ class CreateAudioTypeView extends React.Component<Props> {
   //
 
   isSingleUpload = true;
-  externalId: string = getCookie('email');
+  externalId: string = tenantInfo.getTenantEmail();
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];
