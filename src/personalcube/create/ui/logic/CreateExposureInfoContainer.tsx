@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
-import { ImageBox, PatronType } from '@nara.drama/depot';
+import {fileUtil, ImageBox, PatronType, ValidationType} from '@nara.drama/depot';
 import { boundMethod } from 'autobind-decorator';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
@@ -26,6 +26,10 @@ interface States {
   write: string
   fieldName: string
 }
+
+const EXTENSION = {
+  IMAGE: 'jpg|png|jpeg',
+};
 
 @inject(mobxHelper.injectFrom(
   'personalCube.personalCubeService',
@@ -111,6 +115,9 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
   public uploadFile(file: File) {
     //
+    if (!file || (file instanceof File && !this.validatedAll(file))) {
+      return;
+    }
     const { personalCubeService } = this.props;
 
     if (personalCubeService && file) {
@@ -133,6 +140,23 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     }
   }
 
+  validatedAll(file: File) {
+    const validations = [{ type: 'Extension', validValue: EXTENSION.IMAGE }, { type: ValidationType.MaxSize }] as any[];
+    const hasNonPass = validations.some(validation => {
+      if (validation.validator && typeof validation.validator === 'function') {
+        return !validation.validator(file);
+      } else {
+        if (!validation.type || !validation.validValue) {
+          return false;
+        }
+        return !fileUtil.validate(file, validation.type, validation.validValue);
+      }
+    });
+
+    return !hasNonPass;
+  }
+
+
   @boundMethod
   handleSKIconSelect(tinyAlbumId: string, selectedImageId: string, tinyImage?: string) {
     //
@@ -154,8 +178,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const collegeList: any = [];
 
     colleges.map((data, index) => {
-      collegeList.push({ key: index, value: data.collegeId, text: data.name });
-    }
+        collegeList.push({ key: index, value: data.collegeId, text: data.name });
+      }
     );
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
     if (personalCube && personalCube.requiredSubsidiaries) {
@@ -214,7 +238,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                         patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
                       /> : null
-                }
+                  }
                 </div>
               </div>
             ) || null
@@ -229,10 +253,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   {
                     personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl
                     && (
-                    <Button onClick={this.deleteFile}>
-                      <Icon className="clear" />
-                      <span className="blind">delete</span>
-                    </Button>
+                      <Button onClick={this.deleteFile}>
+                        <Icon className="clear" />
+                        <span className="blind">delete</span>
+                      </Button>
                     )
                   }
                   {/* // 직접등록후, 등록전에는 비어있으면됨 */}
@@ -246,7 +270,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   <div className="right-btn">
                     <div className="ui input file2">
                       <label
-                       // htmlFor="hidden-new-file2"
+                        // htmlFor="hidden-new-file2"
                         className="ui button"
                         onClick={() => {
                           if (this.fileInputRef && this.fileInputRef.current) {
@@ -329,10 +353,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />
             <Icon className="clear link"
-              onClick={(e: any) => {
-                this.setState({ write: '' });
-                onChangePersonalCubeProps('tags', '');
-              }}
+                  onClick={(e: any) => {
+                    this.setState({ write: '' });
+                    onChangePersonalCubeProps('tags', '');
+                  }}
             />
             <span className="validation">You can enter up to 10 tags.</span>
           </div>
