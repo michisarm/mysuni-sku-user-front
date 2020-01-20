@@ -6,7 +6,7 @@ import { Label } from 'semantic-ui-react';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, CubeType, ProposalState, LearningState } from 'shared';
+import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
@@ -33,6 +33,7 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
+import CubeType from '../../../../personalcube/personalcube/model/CubeType';
 
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
@@ -355,6 +356,9 @@ class LectureCardPage extends Component<Props, State> {
     const { personalCube } = this.props.personalCubeService!;
     let url = '';
     let videoUrl = '';
+    const width = personalCube.contents.type === CubeType.Video ? 800 : 400;
+    const height = personalCube.contents.type === CubeType.Video ? 450 : 225;
+
 
     switch (media.mediaType) {
       case MediaType.ContentsProviderMedia:
@@ -387,6 +391,8 @@ class LectureCardPage extends Component<Props, State> {
         startDate: media.learningPeriod.startDateDot,
         endDate: media.learningPeriod.endDateDot,
       },
+      width,
+      height,
     };
   }
 
@@ -577,8 +583,8 @@ class LectureCardPage extends Component<Props, State> {
                   <iframe
                     title={typeViewObject.videoUrl}
                     src={typeViewObject.videoUrl}
-                    width="854"
-                    height="480"
+                    width={typeViewObject.width}
+                    height={typeViewObject.height}
                     style={{ padding: '0px', border: '0px' }}
                     frameBorder="0"
                     allowFullScreen

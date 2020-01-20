@@ -122,7 +122,7 @@ class CourseContainer extends Component<Props> {
                   key={`sub-lecture-${index}`}
                   className="included"
                   lectureView={subLecture}
-                  thumbnailImage={lecture.baseUrl || undefined}
+                  thumbnailImage={subLecture.baseUrl || undefined}
                   onViewDetail={() => this.onViewDetail(subLecture)}
                 />
               )}
