@@ -99,7 +99,6 @@ export default class CollegeService {
     return total;
   }
 
-
   @action
   async findCollege(collegeId: string) {
     //

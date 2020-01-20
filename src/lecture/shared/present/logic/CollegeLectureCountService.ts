@@ -39,6 +39,14 @@ class CollegeLectureCountService {
     return (this._channelCounts as IObservableArray).peek();
   }
 
+  @computed
+  get totalChannelCount() {
+    let total = 0;
+    this._collegeLectureCounts.map(college => {
+      total += college.channelCounts.length;
+    });
+    return total;
+  }
 
   @action
   clearAll() {

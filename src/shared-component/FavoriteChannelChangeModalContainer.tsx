@@ -129,7 +129,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     const { collegeService, collegeLectureCountService, trigger } = this.props;
     const { open, favoriteChannels, selectedCollegeIds }: State = this.state;
     const { channels } = collegeService!;
-    const { collegeLectureCounts } = collegeLectureCountService!;
+    const { collegeLectureCounts, totalChannelCount } = collegeLectureCountService!;
     const channelIds = channels.map(channel => channel.channelId);
 
     return (
@@ -173,7 +173,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
                   <span className="text01">Selected</span>
                   <span className="count">
                     <span className="text01 add">{favoriteChannels.length}</span>
-                    <span className="text02" />
+                    <span className="text02">/{totalChannelCount}</span>
                   </span>
                   <div className="right">
                     <button className="clear" onClick={this.onReset}>
