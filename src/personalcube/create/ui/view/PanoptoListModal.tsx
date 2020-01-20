@@ -26,10 +26,7 @@ interface States {
 @reactAutobind
 class PanoptoListModal extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = { open: false };
-  }
+  state = { open: false };
 
   componentDidMount() {
     this.findAllPanoptos(1);
@@ -63,18 +60,20 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   selectPanopto(panopto: InternalMediaConnectionModel) {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
+
     panopto.viewUrl = panopto.viewUrl.replace('Viewer', 'Embed');
-    if (mediaService) mediaService.setPanoptoProps(panopto);
+    mediaService.setPanoptoProps(panopto);
   }
 
   handleOK() {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
     const { panopto } = this.props.mediaService || {} as MediaService;
-    if (mediaService) {
-      mediaService.changeMediaProps('mediaContents.internalMedias', [panopto]);
-      this.show(false);
-    }
+
+    mediaService.changeMediaProps('mediaContents.internalMedias', [panopto]);
+    this.show(false);
   }
 
   handleCancel() {

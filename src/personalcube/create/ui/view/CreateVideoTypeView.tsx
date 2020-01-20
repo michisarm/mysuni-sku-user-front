@@ -52,11 +52,14 @@ class CreateVideoTypeView  extends React.Component<Props> {
   };
 
   componentDidUpdate(): void {
+    //
+    const collegeService = this.props.collegeService!;
+    const { collegesForPanopto } = collegeService;
 
-    // window.onmessage = this.setData;
-    const { collegeService } = this.props;
-    const { collegesForPanopto } = collegeService || {} as CollegeService;
-    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    if (collegesForPanopto && collegesForPanopto.length === 1) {
+      collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    }
+
     const { media } = this.props.mediaService!;
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
@@ -232,9 +235,10 @@ class CreateVideoTypeView  extends React.Component<Props> {
   }
 
   setData(ret: any) {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
 
-    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
+    if (ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(ret.obj.list)) {
         Promise.resolve()

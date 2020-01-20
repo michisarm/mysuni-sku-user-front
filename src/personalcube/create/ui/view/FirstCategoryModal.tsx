@@ -30,10 +30,10 @@ const color : string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green
 @reactAutobind
 class FirstCategoryModal extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = { activeIndex: -1, selectedChannel: new IdName() };
-  }
+  state = {
+    activeIndex: -1,
+    selectedChannel: new IdName(),
+  };
 
   componentDidMount(): void {
     const { personalCube } = this.props;

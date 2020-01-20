@@ -26,12 +26,9 @@ interface States {
 @reactAutobind
 class CreateIntroView extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      fieldName: '',
-    };
-  }
+  state = {
+    fieldName: '',
+  };
 
   render() {
 

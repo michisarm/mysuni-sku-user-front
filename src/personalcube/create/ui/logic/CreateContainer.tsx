@@ -74,6 +74,7 @@ class CreateContainer extends React.Component<Props, States> {
   }
 
   componentDidMount() {
+    //
     const { skProfileService, inMyLectureService } = this.props;
 
     skProfileService!.findSkProfile();
@@ -120,23 +121,28 @@ class CreateContainer extends React.Component<Props, States> {
   handleClickCubeRow(personalCubeId: string) {
     //
     const { personalCubeService } = this.props;
-    if (personalCubeService) {
-      personalCubeService.findPersonalCube(personalCubeId)
-        .then(() => {
-          const cubeType = personalCubeService.personalCube.contents.type;
-          const cubeState = personalCubeService.personalCube.cubeState;
-          if (cubeState === CubeState.Created) this.props.history.push(routePaths.createDetail(personalCubeId, cubeType));
-          else  this.props.history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
-        });
-    }
+
+    personalCubeService.findPersonalCube(personalCubeId)
+      .then(() => {
+        const cubeType = personalCubeService.personalCube.contents.type;
+        const cubeState = personalCubeService.personalCube.cubeState;
+
+        if (cubeState === CubeState.Created) {
+          this.props.history.push(routePaths.createDetail(personalCubeId, cubeType));
+        }
+        else {
+          this.props.history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
+        }
+      });
   }
 
   onChangeCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
     const { personalCubeService } = this.props;
-    if (personalCubeService && nameSub) {
+
+    if (nameSub) {
       personalCubeService.changePersonalCubeQueryProps(name, value, nameSub, valueSub);
     }
-    if (personalCubeService && !nameSub) {
+    else {
       personalCubeService.changePersonalCubeQueryProps(name, value);
     }
 
@@ -146,15 +152,21 @@ class CreateContainer extends React.Component<Props, States> {
   findAllCubes(limit?: number) {
     const { personalCubeService } = this.props;
     this.setState({ disabled: true });
-    if ( personalCubeService && limit) {
+
+    if (limit) {
       //const offset = 0;
       personalCubeService.changePersonalCubeQueryProps('limit', limit);
       personalCubeService.findAllPersonalCubesByQuery()
         .then(() => {
           const { personalCubes } = this.props.personalCubeService || {} as PersonalCubeService;
           const totalCount = personalCubes.totalCount;
-          if (limit >= totalCount) this.setState({ disabled: true });
-          else if (limit < totalCount) this.setState({ limit: limit + 20, disabled: false });
+
+          if (limit >= totalCount) {
+            this.setState({ disabled: true });
+          }
+          else {
+            this.setState({ limit: limit + 20, disabled: false });
+          }
         });
     }
   }
@@ -205,8 +217,8 @@ class CreateContainer extends React.Component<Props, States> {
   onFilter(channels: ChannelModel[]) {
     //const { activeItem } = this.state;
     const { pageService, lectureService  } = this.props;
-    this.setState({ channels }, () => {
 
+    this.setState({ channels }, () => {
       lectureService!.clearLectures();
       pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
       this.findPagingSharedLectures();
@@ -216,6 +228,7 @@ class CreateContainer extends React.Component<Props, States> {
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
+
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
         .then(() => inMyLectureService!.findAllInMyLectures());

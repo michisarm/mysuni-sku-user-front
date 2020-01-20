@@ -19,12 +19,9 @@ interface States {
 @reactAutobind
 class CreateProfileView extends React.Component<Props, States> {
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      CreateMovieDetailModalOpen: false,
-    };
-  }
+  state = {
+    CreateMovieDetailModalOpen: false,
+  };
 
   handleChangeOpen(CreateMovieDetailModalOpen: boolean) {
     this.setState({ CreateMovieDetailModalOpen });

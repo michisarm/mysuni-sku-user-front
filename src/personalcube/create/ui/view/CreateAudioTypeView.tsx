@@ -51,10 +51,12 @@ class CreateAudioTypeView extends React.Component<Props> {
 
   componentDidUpdate(): void {
     //
-    const { collegeService } = this.props;
-    const { collegesForPanopto } = collegeService || {} as CollegeService;
+    const collegeService = this.props.collegeService!;
+    const { collegesForPanopto } = collegeService;
 
-    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    if (collegesForPanopto && collegesForPanopto.length === 1) {
+      collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    }
 
     const { media } = this.props.mediaService!;
 

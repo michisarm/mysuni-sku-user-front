@@ -22,7 +22,7 @@ interface Props {
 class SharedDetailIntroView extends React.Component<Props> {
   render() {
     const { cubeIntro, cubeType } = this.props;
-    const { board } = this.props.boardService || {} as BoardService;
+    const { board } = this.props.boardService!;
 
     return (
       <>
