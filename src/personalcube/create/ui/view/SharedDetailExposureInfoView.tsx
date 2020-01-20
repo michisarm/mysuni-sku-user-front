@@ -21,9 +21,10 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
               <Table.HeaderCell>아이콘</Table.HeaderCell>
               <Table.Cell>
                 {
-                  personalCube && personalCube.iconBox && (
-                    <div><Image src={personalCube.iconBox.iconUrl || personalCube.iconBox.baseUrl } /></div>
-                  ) || '-'
+                  personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl ?
+                    <div><Image src={`/api/depot/public/depotFile/flow/image/${personalCube.iconBox.iconUrl}`} width="60px" height="60px" /></div>
+                    :
+                    <div><Image src={personalCube.iconBox.baseUrl || '-'} width="60px" height="60px" /></div>
                 }
               </Table.Cell>
             </Table.Row>

@@ -205,6 +205,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
+        baseUrl: lecture.baseUrl,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }

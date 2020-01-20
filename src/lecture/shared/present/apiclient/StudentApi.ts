@@ -1,5 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
-import { LearningState, NameValueList } from 'shared';
+import { LearningState } from 'shared';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
@@ -52,8 +52,12 @@ class StudentApi {
     return axiosApi.put(this.baseUrl + `/flow/learningState`, { studentIds: [studentId], learningState });
   }
 
-  modifyStudent(studentId: string, nameValues: NameValueList) {
-    return axiosApi.put(this.baseUrl + `/${studentId}`, nameValues);
+  modifyStudent(studentId: string, fileBoxId: string) {
+    return axiosApi.put(this.baseUrl + `/flow/courseworkProcess/${studentId}/${fileBoxId}`);
+  }
+
+  modifyStudentForExam(studentId: string, examId: string) {
+    return axiosApi.put(this.baseUrl + `/flow/examProcess/${studentId}/${examId}`);
   }
 }
 

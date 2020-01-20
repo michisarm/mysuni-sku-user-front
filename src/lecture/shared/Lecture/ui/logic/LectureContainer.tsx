@@ -149,16 +149,15 @@ class LectureContainer extends Component<Props, States> {
     let { rating } = this.props;
     const { hovered } = this.state;
 
-    let state;
+    let state = model.state;
     let date;
-    state = model.state;
 
     if (state) {
       rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }
     if (model.required) {
-      state = '필수과정';
+      state = '권장과정';
       rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }
@@ -233,7 +232,7 @@ class LectureContainer extends Component<Props, States> {
       date = moment(model.time).format('YYYY.MM.DD');
     }
     if (model.required) {
-      state = '필수과정';
+      state = '권장과정';
       rating = undefined;
       date = moment(model.time).format('YYYY.MM.DD');
     }

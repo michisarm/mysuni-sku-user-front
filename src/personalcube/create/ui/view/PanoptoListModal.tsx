@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
@@ -38,13 +38,16 @@ class PanoptoListModal extends React.Component<Props, States> {
     const { sharedService, mediaService } = this.props;
     const { panoptoCdo } = this.props.mediaService || {} as MediaService;
     if (sharedService && mediaService) {
+      mediaService.changePanoptoCdoProps('folderOwnerId', getCookie('email'));
       if (page) {
         sharedService.setPage('panopto', page);
         mediaService.changePanoptoCdoProps('currentPage', page);
       } else sharedService.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
       mediaService.findPanoptoList()
         .then(() => {
-          sharedService.setCount('panopto', mediaService.panoptos.totalCount);
+          if (mediaService && mediaService.panoptos && mediaService.panoptos.totalCount) {
+            sharedService.setCount('panopto', mediaService.panoptos.totalCount);
+          }
         });
     }
   }
@@ -85,6 +88,7 @@ class PanoptoListModal extends React.Component<Props, States> {
     const { open } = this.state;
     const results = panoptos && panoptos.results;
     const totalCount = panoptos && panoptos.totalCount;
+
     return (
       <>
         <div className="ui input file">
@@ -148,7 +152,7 @@ class PanoptoListModal extends React.Component<Props, States> {
                 </Table.Body>
               </Table>
               {
-                totalCount === 0 ?
+                totalCount === 0 || !totalCount ?
                   null :
                   <div className="center">
                     <Pagination

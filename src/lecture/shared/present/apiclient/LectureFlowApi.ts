@@ -35,12 +35,6 @@ class LectureFlowApi {
     return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
       .then(response => response && response.data);
   }
-
-  confirmUsageStatisticsByCardId(lectureCardUsid: string) {
-    //
-    return axiosApi.post<boolean>(this.baseUrl + `/confirm/usagestatistics?lectureCardUsid=${lectureCardUsid}`)
-      .then(response => response && response.data);
-  }
 }
 
 LectureFlowApi.instance = new LectureFlowApi();

@@ -74,6 +74,32 @@ export default class CollegeService {
     return channels ? channels.peek() : [];
   }
 
+  @computed
+  get favoriteChannelIdNames() : IdNameList {
+    const list : IdNameList = new IdNameList();
+    this.favoriteChannels.map((channel) => {
+      list.idNames.push({ id: channel.id, name: channel.name, active: false });
+    });
+    return list;
+  }
+
+  @computed
+  get channelMap() {
+    const map = new Map<string, ChannelModel>();
+    this._channels.map(channel => map.set(channel.channelId, channel));
+    return map;
+  }
+
+  @computed
+  get totalChannelCount() {
+    let total = 0;
+    this._colleges.map(college => {
+      total += college.channels.length;
+    });
+    return total;
+  }
+
+
   @action
   async findCollege(collegeId: string) {
     //
@@ -148,14 +174,12 @@ export default class CollegeService {
   clearMainCollege() {
     //
     this.mainCollege = new CollegeModel();
-    // this.College = {} as CollegeModel;
   }
 
   @action
   clearSubCollege() {
     //
     this.subCollege = new CollegeModel();
-    // this.College = {} as CollegeModel;
   }
 
   // Panopto ----------------------------------------------------------------------------------------------------------
@@ -249,30 +273,6 @@ export default class CollegeService {
     });
   }
 
-  @computed
-  get favoriteChannelIdNames() : IdNameList {
-    const list : IdNameList = new IdNameList();
-    this.favoriteChannels.map((channel) => {
-      list.idNames.push({ id: channel.id, name: channel.name, active: false });
-    });
-    return list;
-  }
-
-  @computed
-  get channelMap() {
-    const map = new Map<string, ChannelModel>();
-    this._channels.map(channel => map.set(channel.channelId, channel));
-    return map;
-  }
-
-  @computed
-  get totalChannelCount() {
-    let total = 0;
-    this._colleges.map(college => {
-      total += college.channels.length;
-    });
-    return total;
-  }
 }
 
 Object.defineProperty(CollegeService, 'instance', {

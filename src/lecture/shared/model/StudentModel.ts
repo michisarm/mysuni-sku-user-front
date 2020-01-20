@@ -1,5 +1,5 @@
-import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel, NameValueList, ProposalState } from 'shared';
+import { computed, decorate, observable } from 'mobx';
+import { DramaEntityObservableModel, ProposalState } from 'shared';
 import LearningState from '../../../shared/model/LearningState';
 import StudentScoreModel from './StudentScoreModel';
 import JoinRequestModel from './JoinRequestModel';
@@ -42,19 +42,10 @@ class StudentModel extends DramaEntityObservableModel {
     }
   }
 
-  static  asNameValues(student: StudentModel): NameValueList {
-    const asNameValues = {
-      nameValues: [
-        {
-          name: 'homeworkFileBoxId',
-          value: student.homeworkFileBoxId,
-        },
-      ],
-    };
-
-    return asNameValues;
+  @computed
+  get numberOfTrials() {
+    return this.studentScore.numberOfTrials || 0;
   }
-
 }
 
 decorate(StudentModel, {

@@ -177,6 +177,7 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
+        baseUrl: training.baseUrl,
       }))
         .then(() => {
           if (type === Type.InMyList) {
@@ -227,6 +228,26 @@ class MyTrainingPage extends Component<Props, State> {
     });
   }
 
+
+  getTypeName(type: string) {
+    switch (type) {
+      case Type.InProgress:
+        return '학습중';
+      case Type.InMyList:
+        return '관심목록';
+      case Type.Enrolled:
+        return '학습예정';
+      case Type.Required:
+        return '권장과정';
+      case Type.Completed:
+        return '학습완료';
+      case Type.Retry:
+        return '취소/미이수';
+      default:
+        return '';
+    }
+  }
+
   renderList() {
     const { skProfileService, inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
@@ -246,7 +267,7 @@ class MyTrainingPage extends Component<Props, State> {
         break;
       case Type.Required:
         list = lectureService!.lectures;
-        noSuchContentPanel = '필수과정에 해당하는 학습 과정이 없습니다.';
+        noSuchContentPanel = '권장과정에 해당하는 학습 과정이 없습니다.';
         break;
       case Type.Completed:
         cardType = Lecture.GroupType.List;
@@ -317,7 +338,6 @@ class MyTrainingPage extends Component<Props, State> {
     );
   }
 
-
   render() {
     //
     const { skProfileService, myLearningSummaryService } = this.props;
@@ -332,13 +352,13 @@ class MyTrainingPage extends Component<Props, State> {
         className="mylearning"
         breadcrumb={[
           { text: `Learning` },
-          { text: `${type}` },
+          { text: `${this.getTypeName(type)}` },
         ]}
       >
         <ContentHeader>
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || profileImg}
+              image={member.photoFilePath || profileImg}
               name={member.name}
               company={member.company}
               department={member.department}
@@ -374,7 +394,7 @@ class MyTrainingPage extends Component<Props, State> {
               type: Type.InMyList,
             },
             {
-              name: '필수과정',
+              name: '권장과정',
               type: Type.Required,
               className: 'division',
             },

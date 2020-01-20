@@ -22,11 +22,10 @@ class ProfileView extends Component<Props> {
     return (
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
-          image={member && member.base64Photo || profileImg}
+          image={member.photoFilePath || profileImg}
           name={member.name}
           company={member.company}
           department={member.department}
-          imageEditable
         />
       </ContentHeader.Cell>
     );

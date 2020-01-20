@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Icon } from 'semantic-ui-react';
+import mainRoutePaths from 'main/routePaths';
 import CarouselWrapperView from './CarouselWrapperView';
 import CarouselItemView from './CarouselItemView';
 
@@ -26,16 +27,17 @@ class CarouselContainer extends Component<Props, State> {
         <>
           안녕하세요! &quot;mySUNI&quot;입니다.<br />
           친근하게 애칭처럼 &quot;써니&quot;라고 불러주세요!<br />
-          매 주 4시간만 저와 함께 하시면,<br />
-          여러분에게 놀라운 일이 생길 것이에요~
+          매 주 4시간만 저와 함께 하시면, 여러분에게 놀라운 일이 생길 것이에요~<br />
+          <span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>
         </>
       ),
+      linkText: mainRoutePaths.introductionMySuni(),
       content: (
         <a href="">
           <div className="panopto">
             <iframe
               title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D61add621-ef7f-4348-82ff-ab43004266f6%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
               width="600"
               height="420"
               style={{ padding: '0px', border: '0px' }}
@@ -53,12 +55,11 @@ class CarouselContainer extends Component<Props, State> {
           On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
           2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
           써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
-          <a className="link-tag" href="https://mysuni.sk.com/api/depot/public/depotFile/flow/download/dn-3">
-            <Icon className="arrow right" />매뉴얼 다운로드
-          </a>
+          <span className="link-tag"><Icon className="arrow right" />매뉴얼 다운로드</span>
         </>
       ),
       imageName: '/images/all/img_banner_02.png',
+      linkAnchor: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
@@ -142,6 +143,8 @@ class CarouselContainer extends Component<Props, State> {
               image={item.imageName}
               content={item.content}
               link={item.link}
+              linkText={item.linkText}
+              linkAnchor={item.linkAnchor}
             />
           )
         ))}

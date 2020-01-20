@@ -31,14 +31,12 @@ class CollegeLectureCountService {
   @computed
   get collegeLectureCounts() {
     //
-    const collegeLectureCounts = this._collegeLectureCounts as IObservableArray;
-    return collegeLectureCounts.peek();
+    return (this._collegeLectureCounts as IObservableArray).peek();
   }
 
   @computed
   get channelCounts() {
-    const channelsCounts = this._channelCounts as IObservableArray;
-    return channelsCounts.peek();
+    return (this._channelCounts as IObservableArray).peek();
   }
 
 

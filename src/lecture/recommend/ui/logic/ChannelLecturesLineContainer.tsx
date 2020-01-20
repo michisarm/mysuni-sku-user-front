@@ -59,6 +59,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
+        baseUrl: lecture.baseUrl,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }

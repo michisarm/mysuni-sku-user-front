@@ -52,7 +52,7 @@ class SiteMapModalContainer extends Component<Props, State> {
         { name: '학습중', path: myPageRoutePaths.learningInProgress() },
         { name: '관심목록', path: myPageRoutePaths.learningInMyList() },
         { name: '학습예정', path: myPageRoutePaths.learningEnrolled() },
-        { name: '필수과정', path: myPageRoutePaths.learningRequired() },
+        { name: '권장과정', path: myPageRoutePaths.learningRequired() },
         { name: '학습완료', path: myPageRoutePaths.learningCompleted() },
         { name: '취소/미이수', path: myPageRoutePaths.learningRetry() },
       ],

@@ -71,8 +71,12 @@ class StudentService {
     return this.studentApi.modifyLearningState(studentId, learningState);
   }
 
-  modifyStudent(studentId: string, student: StudentModel) {
-    return this.studentApi.modifyStudent(studentId, StudentModel.asNameValues(student));
+  modifyStudent(studentId: string, fileBoxId: string) {
+    return this.studentApi.modifyStudent(studentId, fileBoxId);
+  }
+
+  modifyStudentForExam(studentId: string, examId: string) {
+    return this.studentApi.modifyStudentForExam(studentId, examId);
   }
 
   @action
@@ -91,20 +95,17 @@ class StudentService {
     //
     const studentCountRdo = await this.studentApi.findStudentCount(rollBookId);
 
-    return runInAction(() => {
-      this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo));
-      return studentCountRdo;
-    });
+    runInAction(() => this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo)));
+    return studentCountRdo;
   }
 
   @action
   async findIsJsonStudent(lectureCardId: string) {
     //
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
-    return runInAction(() => {
-      this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
-      return studentJoinRdos;
-    });
+
+    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    return studentJoinRdos;
   }
 
   @action

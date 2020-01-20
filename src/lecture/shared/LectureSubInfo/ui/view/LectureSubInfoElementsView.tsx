@@ -18,7 +18,7 @@ export const Required = ({ required }: RequiredProp) => {
   //
   if (!required) return null;
   return (
-    <Label className="ribbon2">필수과정</Label>
+    <Label className="ribbon2">핵인싸과정</Label>
   );
 };
 
@@ -141,7 +141,7 @@ export const ClassView = ({ clazz }: ClassProp) => {
       <List.Item>
         <div className="ui">
           <div className="label">{clazz.cubeType === CubeType.Community ? '참여' : '이수'} 인원</div>
-          <div className="value">{clazz.participantCount}</div>
+          <div className="value">{clazz.passedStudentCount}</div>
         </div>
       </List.Item>
     </List>

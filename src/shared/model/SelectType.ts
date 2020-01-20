@@ -44,14 +44,14 @@ export default {
   ],
 
   colleges: [
-    { key: '0', text: 'AI', value: '79' },
-    { key: '1', text: 'DT', value: '6z' },
-    { key: '2', text: '행복', value: '70' },
-    { key: '3', text: 'SV', value: '71' },
-    { key: '4', text: 'Design', value: '72' },
-    { key: '5', text: 'Global', value: '74' },
-    { key: '6', text: 'Leadership', value: '75' },
-    { key: '7', text: 'Management', value: '77' },
+    { key: '0', text: 'AI', value: 'h1' },
+    { key: '1', text: 'DT', value: 'h2' },
+    { key: '2', text: '행복', value: 'h3' },
+    { key: '3', text: 'SV', value: 'h4' },
+    { key: '4', text: 'Design', value: 'h5' },
+    { key: '5', text: 'Global', value: 'h6' },
+    { key: '6', text: 'Leadership', value: 'h7' },
+    { key: '7', text: 'Management', value: 'h8' },
   ],
 
   difficulty: [

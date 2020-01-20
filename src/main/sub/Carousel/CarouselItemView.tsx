@@ -12,6 +12,8 @@ interface Props {
   image?: string,
   content?: React.ReactNode,
   link?: string,
+  linkText?: string,
+  linkAnchor?: string,
 }
 
 @reactAutobind
@@ -19,21 +21,34 @@ class CarouselWrapperView extends Component<Props> {
   //
   renderText() {
     //
-    const { title, description } = this.props;
+    const { link, linkText, linkAnchor, title, description } = this.props;
 
-    return (
+    const element = (
       <div className="text">
         <div className="main-text">{title}</div>
         <div className="sub-text">{description}</div>
       </div>
     );
+
+    if (link) {
+      return <Link to={link}>{element}</Link>;
+    }
+    else if (linkText) {
+      return <Link to={linkText}>{element}</Link>;
+    }
+    else if (linkAnchor) {
+      return <a target="_blank" href={linkAnchor}>{element}</a>;
+    }
+    else {
+      return element;
+    }
   }
 
   renderMedia() {
     //
-    const { image, content } = this.props;
+    const { link, linkAnchor, image, content } = this.props;
 
-    return (
+    const element = (
       <div className="visual">
         { image ?
           <Image src={`${process.env.PUBLIC_URL}${image}`} alt="Main carousel" />
@@ -42,25 +57,25 @@ class CarouselWrapperView extends Component<Props> {
         }
       </div>
     );
+
+    if (link) {
+      return <Link to={link}>{element}</Link>;
+    }
+    else if (linkAnchor) {
+      return <a target="_blank" href={linkAnchor}>{element}</a>;
+    }
+    else {
+      return element;
+    }
   }
 
   render() {
     //
-    const { link } = this.props;
-
     return (
       <div className="swiper-slide">
         <div className="info">
-          { link ?
-            <Link to={link}>{this.renderText()}</Link>
-            :
-            this.renderText()
-          }
-          { link ?
-            <Link to={link}>{this.renderMedia()}</Link>
-            :
-            this.renderMedia()
-          }
+          {this.renderText()}
+          {this.renderMedia()}
         </div>
       </div>
     );

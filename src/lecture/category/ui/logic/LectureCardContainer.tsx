@@ -1,7 +1,7 @@
+
 import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import moment from 'moment';
 
 import depot from '@nara.drama/depot';
 import { CubeType, LearningState, ProposalState } from 'shared';
@@ -11,6 +11,7 @@ import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService }
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
+import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -92,11 +93,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   testCallback() {
-    const { studentService, student, init } = this.props;
+    const { studentService, student, init, viewObject } = this.props;
     const { id: studentId } = student!;
 
     if (studentId) {
-      studentService!.modifyLearningState(studentId, LearningState.Waiting)
+      studentService!.modifyStudentForExam(studentId, viewObject.examId)
         .then(() => {
           if (init) init();
         });
@@ -231,10 +232,12 @@ class LectureCardContainer extends Component<Props, State> {
             && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
             return undefined;
           }
-          if (!applyingPeriod) return undefined;
-          if (moment(applyingPeriod!.startDateSub).diff(moment(today.toLocaleDateString() + '23:59:59'), 'days') > 0
-            || moment(applyingPeriod!.endDateSub).diff(moment(today.toLocaleDateString() + '00:00:00'), 'days') < 0) {
-            return undefined;
+          if (!applyingPeriod) return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
+          const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(applyingPeriod!.startDateSub)!;
+          const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(applyingPeriod!.endDateSub)!;
+          if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
+            || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()) {
+            return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
           }
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
         }
@@ -293,8 +296,12 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    if (viewObject.examId && student && student.learningState === LearningState.Progress) {
-      subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+    if (viewObject.examId && student) {
+      if (student.learningState === LearningState.Progress) {
+        subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+      } else if (student.learningState === LearningState.Missed && student.numberOfTrials < 3) {
+        subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+      }
     }
 
     if (((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId))
@@ -305,21 +312,42 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getOnCancel() {
-    const { cubeType, student, studentService, lectureCardId } = this.props;
+    const { cubeType, student, studentService, lectureCardId, typeViewObject } = this.props;
 
     switch (cubeType) {
       case CubeType.ClassRoomLecture:
       case CubeType.ELearning:
-        if (student && student.id && (!student.learningState
-          && student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Approved)) {
-          return () => {
-            studentService!.removeStudent(student.rollBookId)
-              .then(() => {
-                studentService!.findStudent(student.rollBookId);
-                studentService!.findIsJsonStudent(lectureCardId);
-                studentService!.findStudentCount(student.rollBookId);
-              });
-          };
+        const today = new Date();
+        const cancellablePeriod = typeViewObject.cancellablePeriod;
+
+        if (student && student.id) {
+          if (!cancellablePeriod && (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved)) {
+            return () => {
+              studentService!.removeStudent(student!.rollBookId)
+                .then(() => {
+                  studentService!.findStudent(student!.rollBookId);
+                  studentService!.findIsJsonStudent(lectureCardId);
+                  studentService!.findStudentCount(student!.rollBookId);
+                });
+            };
+          }
+          else if (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved) {
+            const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.startDateSub)!;
+            const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.endDateSub)!;
+            if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <= today.getTime()
+              && new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >= today.getTime()) {
+              return () => {
+                studentService!.removeStudent(student!.rollBookId)
+                  .then(() => {
+                    studentService!.findStudent(student!.rollBookId);
+                    studentService!.findIsJsonStudent(lectureCardId);
+                    studentService!.findStudentCount(student!.rollBookId);
+                  });
+              };
+            }
+          }
         }
         return undefined;
       case CubeType.Audio:
@@ -346,7 +374,7 @@ class LectureCardContainer extends Component<Props, State> {
             learningTime: viewObject.learningTime,
             capacity: typeViewObject ? typeViewObject.capacity : 0,
             cubeType,
-            participantCount: viewObject.participantCount,
+            passedStudentCount: viewObject.rollBooksPassedStudentCount,
           }}
           operator={{
             instructor: viewObject.instructorName,
@@ -394,6 +422,7 @@ class LectureCardContainer extends Component<Props, State> {
           ref={reportModal => this.reportModal = reportModal}
           downloadReport = {this.onClickDownloadReport}
           rollBookId={studentCdo.rollBookId}
+          onSaveCallback={this.testCallback}
         />
         {children}
       </LectureCardContentWrapperView>

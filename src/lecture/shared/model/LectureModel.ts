@@ -35,6 +35,7 @@ class LectureModel extends DramaEntityObservableModel {
   description: string = '';
 
   stampCount: number = 0;
+  passedStudentCount: number = 0;
   studentCount: number = 0;
   time: number = 0;
 
@@ -105,10 +106,13 @@ class LectureModel extends DramaEntityObservableModel {
       switch (this.viewState) {
         case 'Canceled':
         case 'Rejected':
+        case 'NoShow':
+        case 'Missed':
           return '취소/미이수';
         case 'Passed':
           return '학습완료';
         case 'Progress':
+        case 'Waiting':
           return '학습중';
         case 'Approved':
           return '학습예정';
@@ -142,6 +146,7 @@ decorate(LectureModel, {
   description: observable,
   stampCount: observable,
   studentCount: observable,
+  passedStudentCount: observable,
   time: observable,
   reviewSummary: observable,
   required: observable,

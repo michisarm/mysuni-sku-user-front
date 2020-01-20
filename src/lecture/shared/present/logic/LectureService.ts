@@ -3,6 +3,7 @@ import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
+import StudentFlowApi from '../apiclient/StudentFlowApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
@@ -13,6 +14,7 @@ import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../model/SharedRdoModel';
+import StudentCdoModel from '../../model/StudentCdoModel';
 
 
 @autobind
@@ -23,6 +25,8 @@ class LectureService {
   private lectureApi: LectureApi;
 
   private lectureFlowApi: LectureFlowApi;
+
+  private studentFlowApi: StudentFlowApi;
 
 
   @observable
@@ -45,9 +49,10 @@ class LectureService {
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
-  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi) {
+  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
+    this.studentFlowApi = studentFlowApi;
   }
 
   @computed
@@ -223,25 +228,21 @@ class LectureService {
     const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
     const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
-    return runInAction(() => {
-      if (recommendLectureListRdo && recommendLectureListRdo.recommendLectureRdos
-        && recommendLectureListRdo.recommendLectureRdos.length && recommendLectureListRdo.recommendLectureRdos.length === 1) {
-        const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
+    if (recommendLectureListRdo.recommendLectureRdos && recommendLectureListRdo.recommendLectureRdos.length === 1) {
+      const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
 
-        recommendLecture.lectures.results = recommendLecture.lectures.results.map(result => new LectureModel(result));
-        this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results);
-        return recommendLecture.lectures;
-      }
-      return null;
-    });
+      runInAction(() => this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results));
+      return recommendLecture.lectures;
+    }
+    return null;
   }
 
-  async confirmUsageStatisticsByCardId(lectureCardUsid: string) {
+  async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
-    return this.lectureFlowApi.confirmUsageStatisticsByCardId(lectureCardUsid);
+    return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);
+LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance, StudentFlowApi.instance);
 
 export default LectureService;

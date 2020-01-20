@@ -1,16 +1,15 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
-import { Form, Icon, Radio, Select } from 'semantic-ui-react';
+import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from 'personalcube/media';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import $ from 'jquery';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
-import PanoptoListModal from './PanoptoListModal';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
@@ -22,21 +21,14 @@ interface Props {
   collegeService?: CollegeService
 }
 
-interface State {
-  folderId: string
-}
-
 @inject(mobxHelper.injectFrom('college.collegeService', 'personalCube.mediaService'))
 @observer
 @reactAutobind
-class CreateAudioTypeView extends React.Component<Props, State> {
+class CreateAudioTypeView extends React.Component<Props> {
   //
-  state = {
-    folderId: '',
-  };
 
   isSingleUpload = true;
-  externalId: string = '';
+  externalId: string = getCookie('email');
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];
@@ -55,14 +47,12 @@ class CreateAudioTypeView extends React.Component<Props, State> {
     count: 0,
   };
 
-  componentDidMount(): void {
-    this.init();
-    window.onmessage = this.setData;
-  }
-
   componentDidUpdate(): void {
 
     // window.onmessage = this.setData;
+    const { collegeService } = this.props;
+    const { collegesForPanopto } = collegeService || {} as CollegeService;
+    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
     const { media } = this.props.mediaService!;
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
@@ -160,7 +150,7 @@ class CreateAudioTypeView extends React.Component<Props, State> {
     const formData = new FormData();
     formData.append('uploadfile', file, file.name);
     formData.append('sessionNames', sessionName);
-    formData.append('folderId', this.state.folderId);
+    //    formData.append('folderId', this.state.folderId);
     formData.append('externalId', this.externalId);
     formData.append('cookie', this.cookie);
     const $selfProgress = file.target.find('progress'); //File 객체에 저장해둔 프리뷰 DOM의 progress 요소를 찾는다.
@@ -234,15 +224,15 @@ class CreateAudioTypeView extends React.Component<Props, State> {
     }
   }
 
-  setData(e: any) {
+  setData(ret: any) {
     const { mediaService } = this.props;
 
-    if (mediaService && e.data && e.data.boolResult && e.data.obj && e.data.obj.list) {
+    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
-      if (Array.isArray(e.data.obj.list)) {
+      if (Array.isArray(ret.obj.list)) {
         Promise.resolve()
           .then(() => {
-            e.data.obj.list.map((list: any) => {
+            ret.obj.list.map((list: any) => {
               const internalMedia = new InternalMediaConnectionModel();
               internalMedia.panoptoSessionId = list.id;
               internalMedia.viewUrl = list.viewerUrl.replace('Viewer', 'Embed');
@@ -286,13 +276,13 @@ class CreateAudioTypeView extends React.Component<Props, State> {
             checked={media && media.mediaType === 'InternalMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
           />
-          <Radio
+          {/*<Radio
             className="base"
             label="제작오디오 파일 가져오기"
             value={MediaType.InternalMediaUpload}
             checked={media && media.mediaType === 'InternalMediaUpload'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
-          />
+          />*/}
           <Radio
             className="base"
             label="오디오 링크"
@@ -305,11 +295,11 @@ class CreateAudioTypeView extends React.Component<Props, State> {
               media && media.mediaType === MediaType.InternalMedia && (
                 <>
                   {
-                    uploadedPaonoptos && uploadedPaonoptos.length
+                    media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length
                     && (
-                      <div className="ui input file">
+                      <div className="ui input h48 file">
                         {
-                          uploadedPaonoptos.map((internalMedia: InternalMediaConnectionModel, index: number) => (
+                          media.mediaContents.internalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
                             /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
                             <input
                               type="text"
@@ -332,7 +322,7 @@ class CreateAudioTypeView extends React.Component<Props, State> {
                         {/*  placeholder="영상을 업로드해주세요."*/}
                         {/*  readOnly*/}
                         {/*/>*/}
-                        <div className="filter">
+                        {/*<div className="filter">
                           폴더:
                           <Select
                             placeholder="분류를 선택해주세요"
@@ -345,11 +335,9 @@ class CreateAudioTypeView extends React.Component<Props, State> {
                               this.setState({ folderId: data.value });
                             }}
                           />
-                        </div>
+                        </div>*/}
                         {
-                          ( (media && media.mediaContents && media.mediaContents.internalMedias
-                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
-                            && media.mediaContents.internalMedias[0].folderId) ||  this.state.folderId) && (
+                          media && media.mediaContents && media.mediaContents.internalMedias && (
                             <div className="file-drop" id="drop">
                               <p>
                                 <Icon className="upload" />
@@ -362,7 +350,7 @@ class CreateAudioTypeView extends React.Component<Props, State> {
                                 <input type="button" className="btn btn-default" id="btnSubmit" value="업로드" />
                               </div>
                             </div>
-                          )
+                          ) || null
                         }
                       </div>
                     )
@@ -370,11 +358,11 @@ class CreateAudioTypeView extends React.Component<Props, State> {
                 </>
               )
             }
-            {
+            {/*{
               media && media.mediaType === MediaType.InternalMediaUpload && (
                 <PanoptoListModal />
               )
-            }
+            }*/}
             {
               media && media.mediaType === MediaType.LinkMedia  && (
                 <div className="ui input h48">

@@ -58,7 +58,9 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
   setMultiple() {
     //
-    if (this.channelsRef.current!.offsetHeight > 32) {
+    const { current } = this.channelsRef;
+
+    if (current && current.offsetHeight > 32) {
       this.setState({ multiple: true });
     }
   }

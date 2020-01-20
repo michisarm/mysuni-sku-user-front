@@ -243,7 +243,7 @@ export default class PrivacyPolicyModalContainer extends Component<Props, State>
               <div className="text4">- 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우</div>
               <div className="text4">- 다른 사람의 생명/신체를 해할 우려가 있거나 다른 사람의 재산과 그 밖의 이익을 부당하게 침해할 우려가 있는 경우</div>
               <div className="text4">- 개인정보를 처리하지 아니하면 SK 구성원과 약정한 서비스를 제공하지 못하는 등 계약의 이행이 곤란한 경우로서 SK 구성원께서 그 계약의 해지 의사를 명확하게 밝히지 아니한 경우</div>
-              <div className="text3">※ 로그인이 불가능하신 고객께서는 ‘개인정보 처리 요구서 다운로드 하기’를 이용하여 신청서를 작성하신 후 개인정보 담당자에게 이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="https://mysuni.sk.com/api/depot/public/depotFile/flow/download/ee-1">개인정보처리 요구서 다운로드 하기</a></div>
+              <div className="text3">※ 로그인이 불가능하신 고객께서는 ‘개인정보 처리 요구서 다운로드 하기’를 이용하여 신청서를 작성하신 후 개인정보 담당자에게 이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="https://mysuni.sk.com/profile/commondocs/mySUNI_Privacy_Handling_Request.docx">개인정보처리 요구서 다운로드 하기</a></div>
 
               <div className="text2">6. 개인정보의 파기 </div>
               <div className="text3">회사는 원칙적으로 개인정보 보유기간의 경과, 개인정보 처리목적이 달성된 경우에는 지체없이 해당 개인정보를 파기합니다. 파기의 절차, 기한 및 방법은 다음과 같습니다.</div>

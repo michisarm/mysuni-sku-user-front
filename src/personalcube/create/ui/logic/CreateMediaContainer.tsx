@@ -30,11 +30,11 @@ interface Props extends RouteComponentProps {
 class CreateMediaContainer extends React.Component<Props> {
   // Cube 관리 > create > Audio
   // 교육정보
-  onChangeMediaProps(name: string, value: string | Date, nameSub?: string) {
+  onChangeMediaProps(name: string, value: string | Date | [], nameSub?: string) {
     //
     const { mediaService } = this.props;
     if (mediaService) mediaService.changeMediaProps(name, value);
-    if (mediaService && typeof value === 'object' && nameSub) {
+    if (mediaService && value instanceof Date && nameSub) {
       const stringDate = value.toLocaleDateString().replace('. ', '-').replace('. ', '-').replace('.', '');
       mediaService.changeMediaProps(name, value, nameSub, stringDate);
       if (name.indexOf('startDateSub') !== -1) {

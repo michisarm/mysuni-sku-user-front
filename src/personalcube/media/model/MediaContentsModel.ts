@@ -5,6 +5,7 @@ import { InternalMediaConnectionModel } from './InternalMediaConnectionModel';
 export class MediaContentsModel {
   contentsProvider: ContentsProviderModel = new ContentsProviderModel();  // cp사
   internalMedias: InternalMediaConnectionModel[] = [];                                             // 내부제작 미디어 (Video/Audio : panopto-sessionID)
+  internalMediaUpload: InternalMediaConnectionModel[] =[];
   linkMediaUrl: string = '';                                              // 외부 미디어 link url
 
   constructor(mediaContents?: MediaContentsModel) {
@@ -21,6 +22,7 @@ export class MediaContentsModel {
 decorate(MediaContentsModel, {
   contentsProvider: observable,
   internalMedias: observable,
+  internalMediaUpload: observable,
   linkMediaUrl: observable,
 });
 

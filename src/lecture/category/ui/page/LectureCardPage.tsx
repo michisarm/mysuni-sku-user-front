@@ -21,7 +21,6 @@ import {
   LectureServiceType,
   RollBookService,
   StudentCdoModel,
-  StudentCountRdoModel,
   StudentService,
 } from 'lecture';
 import { CourseSetModel, LearningCardService } from 'course';
@@ -104,53 +103,64 @@ class LectureCardPage extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    skProfileService.findSkProfile();
-    lectureService.confirmUsageStatisticsByCardId(params.lectureCardId)
-      .then((confirmed) => {
-        if (confirmed) {
-          history.replace('/empty');
-          setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
-        }
-      });
+    const promises = Promise.all([
+      personalCubeService.findPersonalCube(params.cubeId),
+      skProfileService.findSkProfile(),
+      rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId),
+    ]);
 
+    promises.then(async ([personalCube, skProfile, rollbooks]) => {
+      //
+      if (personalCube) {
+        const { service, contents } = personalCube.contents;
+
+        await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
+
+        if (service.type === ContentsServiceType.Classroom) {
+          await classroomService.findClassrooms(personalCube.personalCubeId);
+        }
+        else if (service.type === ContentsServiceType.Media) {
+          mediaService.findMedia(contents.id).then((media) => {
+            if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
+              this.setState({ linkedInOpen: true });
+            }
+            if (media.mediaType === MediaType.InternalMedia) {
+              const studentCdo = {
+                ...this.getStudentCdo(),
+                proposalState: ProposalState.Approved,
+              };
+
+              lectureService.confirmUsageStatisticsByCardId(studentCdo)
+                .then((confirmed) => {
+                  if (confirmed) {
+                    history.replace('/empty');
+                    setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+                  }
+                });
+            }
+          });
+        }
+        else if (service.type === ContentsServiceType.OfficeWeb) {
+          officeWebService.findOfficeWeb(contents.id);
+        }
+        else if (service.type === ContentsServiceType.Community) {
+          boardService.findBoard(contents.id);
+          this.setState({ type: 'Posts' });
+        }
+      }
+    });
 
     collegeService.findCollege(params.collegeId);
-    rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId)
-      .then(rollBooks => {
-        rollBooks.map(rollBook => studentService!.findStudentCount(rollBook.id));
-      });
 
     lectureCardService.findLectureCard(params.lectureCardId)
       .then((lectureCard) => {
-        reviewService.findReviewSummary(lectureCard!.reviewId);
-        inMyLectureService!.findInMyLecture(lectureCard!.usid, LectureServiceType.Card);
+        if (lectureCard) {
+          reviewService.findReviewSummary(lectureCard.reviewId);
+          inMyLectureService!.findInMyLecture(lectureCard.usid, LectureServiceType.Card);
+        }
       });
 
-    const personalCube = await personalCubeService.findPersonalCube(params.cubeId);
     await studentService.findIsJsonStudent(params.lectureCardId);
-
-    if (personalCube) {
-      const { service, contents } = personalCube.contents;
-
-      await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
-      if (service.type === ContentsServiceType.Classroom) {
-        await classroomService.findClassrooms(personalCube.personalCubeId);
-      }
-      else if (service.type === ContentsServiceType.Media) {
-        mediaService.findMedia(contents.id).then((media) => {
-          if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
-            this.setState({ linkedInOpen: true });
-          }
-        });
-      }
-      else if (service.type === ContentsServiceType.OfficeWeb) {
-        officeWebService.findOfficeWeb(contents.id);
-      }
-      else if (service.type === ContentsServiceType.Community) {
-        boardService.findBoard(contents.id);
-        this.setState({ type: 'Posts' });
-      }
-    }
     this.findStudent();
   }
 
@@ -189,18 +199,15 @@ class LectureCardPage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, studentService, classroomService,
+      personalCubeService, cubeIntroService, studentService, classroomService, rollBookService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
-    const { studentCounts, student }: StudentService = studentService!;
+    const { student }: StudentService = studentService!;
     const { classrooms } = classroomService!;
+    const { rollBooksPassedStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
-    let participantCount = 0;
-    studentCounts!.map((studentCount: StudentCountRdoModel) => {
-      participantCount += studentCount.approvedCount;
-    });
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -215,7 +222,7 @@ class LectureCardPage extends Component<Props, State> {
           else state = SubState.InProgress;
           if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
             const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-            if (index) examId = classrooms[index].roundExamId;
+            if (index && classrooms) examId = classrooms[index].roundExamId;
           }
           else {
             examId = personalCube.contents.examId || '';
@@ -233,7 +240,7 @@ class LectureCardPage extends Component<Props, State> {
       required: personalCube.required,
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
-      participantCount,
+      rollBooksPassedStudentCount,
 
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
@@ -362,12 +369,12 @@ class LectureCardPage extends Component<Props, State> {
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
         if (personalCube.contents.type === CubeType.Video && videoUrl && url) {
-          videoUrl += '%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse';
-          url += '%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse';
+          videoUrl += '&offerviewer=false&showtitle=false&showbrand=false';
+          url += '&offerviewer=false&showtitle=false&showbrand=false';
         }
         else if (personalCube.contents.type === CubeType.Audio && videoUrl && url) {
-          videoUrl += '%26offerviewer%3Dfalse%26interactivity%3Dnone%26showtitle%3Dfalse%26showbrand%3Dfalse';
-          url += '%26offerviewer%3Dfalse%26interactivity%3Dnone%26showtitle%3Dfalse%26showbrand%3Dfalse';
+          videoUrl += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
+          url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
         break;
     }
@@ -430,6 +437,7 @@ class LectureCardPage extends Component<Props, State> {
       courseLectureUsids: [],
       lectureCardUsids: [],
       reviewId: lectureCard.reviewId,
+      baseUrl: personalCube.iconBox.baseUrl,
     });
   }
 
