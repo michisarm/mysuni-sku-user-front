@@ -169,6 +169,8 @@ class MyTrainingPage extends Component<Props, State> {
         });
     }
     else {
+      let servicePatronKeyString = training.patronKey.keyString;
+      if (training instanceof MyTrainingModel) servicePatronKeyString = training.servicePatronKeyString;
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
         serviceId: training.serviceId,
         serviceType: training.serviceType,
@@ -188,6 +190,7 @@ class MyTrainingPage extends Component<Props, State> {
 
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
+        servicePatronKeyString,
       }))
         .then(() => {
           if (type === Type.InMyList) {

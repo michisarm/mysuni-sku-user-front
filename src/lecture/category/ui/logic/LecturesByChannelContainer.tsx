@@ -97,6 +97,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
         reviewId: lecture.reviewId,
         baseUrl: lecture.baseUrl,
+        servicePatronKeyString: lecture.patronKey.keyString,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }

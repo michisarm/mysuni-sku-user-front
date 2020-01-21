@@ -140,6 +140,8 @@ class MyLearningContentContainer extends Component<Props, State> {
         .then(this.findMyContent);
     }
     else {
+      let servicePatronKeyString = training.patronKey.keyString;
+      if (training instanceof MyTrainingModel) servicePatronKeyString = training.servicePatronKeyString;
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
         serviceId: training.serviceId,
         serviceType: training.serviceType,
@@ -159,6 +161,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
+        servicePatronKeyString,
       })).then(this.findMyContent);
     }
   }

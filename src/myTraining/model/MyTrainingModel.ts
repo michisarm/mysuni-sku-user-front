@@ -9,6 +9,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
+  servicePatronKeyString: string = '';
   student: IdName = new IdName();
   category: CategoryModel = new CategoryModel();
   name: string = '';
@@ -99,6 +100,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
 decorate(MyTrainingModel, {
   serviceType: observable,
   serviceId: observable,
+  servicePatronKeyString: observable,
   student: observable,
   category: observable,
   name: observable,

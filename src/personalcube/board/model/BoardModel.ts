@@ -1,5 +1,6 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
+import moment from 'moment';
 import { NameValueList } from 'shared';
 import { BoardConfigModel } from './BoardConfigModel';
 import { BoardCdoModel } from './BoardCdoModel';
@@ -63,9 +64,8 @@ export class BoardModel implements DramaEntity {
   }
 
   @computed
-  get timeStr() {
-    if (this.time) return new Date(this.time).toLocaleDateString();
-    return '';
+  get timeStr() : string {
+    return this.time && moment(this.time).format('YYYY.MM.DD') || '';
   }
 }
 
