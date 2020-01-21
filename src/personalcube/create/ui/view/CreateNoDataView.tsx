@@ -1,5 +1,7 @@
+
+import React from 'react';
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import * as React from 'react';
+
 
 class CreateNoDataView extends React.Component {
   render() {

@@ -31,41 +31,40 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
   //
   componentDidMount() {
     //
-    const { contentsProviderService } = this.props;
-    if (contentsProviderService) {
-      this.findAllContentsProviders();
-    }
+    this.findAllContentsProviders();
   }
 
   onSetCubeIntroPropsByJSON(name: string, value: string) {
     //
     const { cubeIntroService } = this.props;
     const newValue = value ? JSON.parse(value) : value;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, newValue);
+
+    cubeIntroService!.changeCubeIntroProps(name, newValue);
   }
 
   onChangeCubeIntroProps(name: string, value: string) {
     //
     const { cubeIntroService } = this.props;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
+    cubeIntroService!.changeCubeIntroProps(name, value);
   }
 
   onSetMediaPropsByJSON(name: string, value: string) {
     //
     const { mediaService } = this.props;
     const newValue = JSON.parse(value);
-    if (mediaService) mediaService.changeMediaProps(name, newValue);
+
+    mediaService!.changeMediaProps(name, newValue);
   }
 
   findAllContentsProviders() {
     //
     const { contentsProviderService } = this.props;
-    if (contentsProviderService) contentsProviderService.findAllContentsProviders();
+    contentsProviderService!.findAllContentsProviders();
   }
 
   setContentsProvider() {
     const selectContentsProviderType: any = [];
-    const { contentsProviders } = this.props.contentsProviderService || {} as ContentsProviderService;
+    const { contentsProviders } = this.props.contentsProviderService!;
 
     selectContentsProviderType.push({
       key: '',
@@ -89,6 +88,7 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const etcCp = cubeIntro && cubeIntro.operation && cubeIntro.operation.etcCp;
     const organizer = cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer;
+
     return (
       <ContentsProviderSelectForCubeIntroView
         defaultValue={defaultValue}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Radio } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import { observer } from 'mobx-react';

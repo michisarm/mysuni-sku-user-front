@@ -22,12 +22,13 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
 
   onChangeCubeIntroProps(name: string, value: string | number | {}) {
     //
-    const { cubeIntroService } = this.props;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
+    const cubeIntroService = this.props.cubeIntroService!;
+    cubeIntroService.changeCubeIntroProps(name, value);
   }
 
   render() {
     const { cubeIntro } = this.props;
+
     return (
       <>
         <div className="section-tit">

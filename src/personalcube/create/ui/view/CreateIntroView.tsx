@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Form, Icon, Select, Step } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
@@ -26,12 +26,9 @@ interface States {
 @reactAutobind
 class CreateIntroView extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      fieldName: '',
-    };
-  }
+  state = {
+    fieldName: '',
+  };
 
   render() {
 
@@ -100,9 +97,9 @@ class CreateIntroView extends React.Component<Props, States> {
                   this.setState({ fieldName: 'description.applicants' });
                 } else {
                   this.setState({ fieldName: '' });
-                  onChangeCubeIntroProps('description.applicants', e.target.value); }
-              }
-              }
+                  onChangeCubeIntroProps('description.applicants', e.target.value);
+                }
+              }}
             />
             <span className="validation">You can enter up to 500 characters.</span>
           </div>
@@ -136,9 +133,9 @@ class CreateIntroView extends React.Component<Props, States> {
                   this.setState({ fieldName: 'description.completionTerms' });
                 } else {
                   this.setState({ fieldName: '' });
-                  onChangeCubeIntroProps('description.completionTerms', e.target.value); }
-              }
-              }
+                  onChangeCubeIntroProps('description.completionTerms', e.target.value);
+                }
+              }}
             />
             <span className="validation">You can enter up to 1000 characters.</span>
           </div>
@@ -164,7 +161,8 @@ class CreateIntroView extends React.Component<Props, States> {
                   type="text"
                   value={parseInt(String(cubeIntro.learningTime / 60), 10)}
                   onChange={(e: any) => setHourAndMinute('hour', e.target.value)}
-                /><label>h</label>
+                />
+                <label>h</label>
                 <Icon className="clear link" />
               </div>
               <div className="ui h48 input time">
@@ -172,7 +170,8 @@ class CreateIntroView extends React.Component<Props, States> {
                   type="text"
                   value={parseInt(String(cubeIntro.learningTime % 60), 10)}
                   onChange={(e: any) => setHourAndMinute('minute', e.target.value)}
-                /><label>m</label>
+                />
+                <label>m</label>
                 <Icon className="clear link" />
               </div>
             </div>

@@ -39,12 +39,12 @@ class SubCategoryContainer extends Component<Props> {
           <div className="cell v-middle">
             <span className="text1">서브채널을 선택해주세요.</span>
             {
-              channels && channels.length
+              channels && channels.length > 0
               && channels.map((channel) => (
                 <span className="text2">
                   {channel.name}
                 </span>
-              )) || ''
+              ))
             }
             {/*
                 <span className="text2">AI > AI Biz. Implemetation, AI Tech Essential, Computer Vison AI</span>

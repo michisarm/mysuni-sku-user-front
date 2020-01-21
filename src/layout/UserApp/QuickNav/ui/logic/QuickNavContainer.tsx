@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, WorkSpace, getCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { tenantInfo } from '@nara.platform/dock';
 
 import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -31,6 +32,8 @@ interface State {
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
+  hasAdminRole = tenantInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
+
   state = {
     active: false,
     feedType: '',
@@ -133,17 +136,6 @@ class QuickNavContainer extends Component<Props, State> {
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
 
-    let roles: string[] = [];
-
-    if (getCookie('workspaces')) {
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
-      const cineroomId: string = getCookie('cineroomId');
-      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === cineroomId);
-      if (filteredWorkspaces.length) {
-        roles = filteredWorkspaces[0].roles;
-      }
-    }
-
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
@@ -177,7 +169,7 @@ class QuickNavContainer extends Component<Props, State> {
               />
 
               {
-                (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
+                this.hasAdminRole && (
                   <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
                 )
               }

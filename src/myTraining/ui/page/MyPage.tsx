@@ -21,12 +21,17 @@ interface RouteParams {
   tab: string
 }
 
+enum SubBreadcrumb {
+  CompletedList = '학습완료',
+  EarnedStampList = '보유스탬프',
+}
+
 @observer
 @reactAutobind
 class MyPage extends Component<Props, State> {
   //
   state = {
-    subBreadcrumb: 'CompletedList',
+    subBreadcrumb: SubBreadcrumb.CompletedList,
   };
 
   componentDidMount(): void {
@@ -45,7 +50,7 @@ class MyPage extends Component<Props, State> {
     const { match } = this.props;
 
     this.setState({
-      subBreadcrumb: match.params.tab,
+      subBreadcrumb: (SubBreadcrumb as any)[match.params.tab] || '',
     });
   }
 

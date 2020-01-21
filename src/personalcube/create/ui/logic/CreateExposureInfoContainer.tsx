@@ -1,15 +1,16 @@
+
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { IconType, IdName } from 'shared';
-import { ImageBox, PatronType } from '@nara.drama/depot';
-import { boundMethod } from 'autobind-decorator';
+import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
 import classNames from 'classnames';
 import SelectType from '../../../../shared/model/SelectType';
+
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
@@ -27,6 +28,10 @@ interface States {
   fieldName: string
 }
 
+const EXTENSION = {
+  IMAGE: 'jpg|png|jpeg',
+};
+
 @inject(mobxHelper.injectFrom(
   'personalCube.personalCubeService',
   'college.subsidiaryService',
@@ -38,22 +43,19 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
   private fileInputRef = React.createRef<HTMLInputElement>();
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      subsidiariesAll: 'No',
-      focus: false,
-      write: '',
-      fieldName: '',
-    };
-  }
+  state = {
+    subsidiariesAll: 'No',
+    focus: false,
+    write: '',
+    fieldName: '',
+  };
 
   componentDidMount() {
     //
     const { subsidiaryService, collegeService } = this.props;
-    if (subsidiaryService) subsidiaryService.findAllsubsidiarys();
-    if (collegeService) collegeService.findAllColleges();
 
+    subsidiaryService!.findAllsubsidiarys();
+    collegeService!.findAllColleges();
   }
 
   checkOne(checkedTargetJSON: string, name: string) {
@@ -65,16 +67,16 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
     const tempIdList: string[] = [];
     let tempIdNameList: IdName[] = [];
+
     if (name === 'subsidiaries' && personalCube.subsidiaries) {
       tempIdNameList = [ ...personalCube.subsidiaries ];
       tempIdNameList.map((subsidiary: any) => tempIdList.push(subsidiary.id));
-
     }
     if (tempIdList.indexOf(checkedTargetId) !== -1) {
       const newTempSubsidiaryList = this.removeSomethingInList(tempIdList.indexOf(checkedTargetId), tempIdNameList);
       onChangePersonalCubeProps(name, newTempSubsidiaryList);
-
-    } else {
+    }
+    else {
       tempIdNameList.push(checkedTargetIdName);
       onChangePersonalCubeProps(name, tempIdNameList);
     }
@@ -82,9 +84,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
   checkAll(isChecked: string, name: string) {
     //
-    const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
+    const { subsidiaries } = this.props.subsidiaryService!;
     const { onChangePersonalCubeProps } = this.props;
     const allList: IdName[] = [];
+
     if (isChecked === 'Yes') {
       onChangePersonalCubeProps(name, allList);
       if (name === 'subsidiaries') {
@@ -97,6 +100,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
         allList.push(subsidiary.subsidiary);
       });
       onChangePersonalCubeProps(name, allList);
+
       if (name === 'subsidiaries') {
         onChangePersonalCubeProps('requiredSubsidiaries', allList);
         this.setState({ subsidiariesAll: 'Yes' });
@@ -111,15 +115,18 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
   public uploadFile(file: File) {
     //
+    if (!file || (file instanceof File && !this.validatedAll(file))) {
+      return;
+    }
     const { personalCubeService } = this.props;
 
-    if (personalCubeService && file) {
-      personalCubeService.changeFileName(file.name);
+    if (file) {
+      personalCubeService!.changeFileName(file.name);
       const fileReader = new FileReader();
 
       fileReader.onload = (e: any) => {     //event = on_file_select
         const data = e.target.result;
-        personalCubeService.changeCubeProps('iconBox.baseUrl', data);
+        personalCubeService!.changeCubeProps('iconBox.baseUrl', data);
       };
       fileReader.readAsDataURL(file);
     }
@@ -128,19 +135,32 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   public deleteFile() {
     const { personalCubeService } = this.props;
 
-    if (personalCubeService) {
-      personalCubeService.changeCubeProps('iconBox.baseUrl', '');
-    }
+    personalCubeService!.changeCubeProps('iconBox.baseUrl', '');
   }
 
-  @boundMethod
+  validatedAll(file: File) {
+    const validations = [{ type: 'Extension', validValue: EXTENSION.IMAGE }, { type: ValidationType.MaxSize }] as any[];
+    const hasNonPass = validations.some(validation => {
+      if (validation.validator && typeof validation.validator === 'function') {
+        return !validation.validator(file);
+      } else {
+        if (!validation.type || !validation.validValue) {
+          return false;
+        }
+        return !fileUtil.validate(file, validation.type, validation.validValue);
+      }
+    });
+
+    return !hasNonPass;
+  }
+
+
   handleSKIconSelect(tinyAlbumId: string, selectedImageId: string, tinyImage?: string) {
     //
     const { personalCubeService } = this.props;
-    if (personalCubeService) {
-      personalCubeService.changeCubeProps('iconBox.baseUrl', 'data:image/png;base64,' + tinyImage);
-      personalCubeService.changeCubeProps('iconBox.iconUrl', selectedImageId);
-    }
+
+    personalCubeService!.changeCubeProps('iconBox.baseUrl', 'data:image/png;base64,' + tinyImage);
+    personalCubeService!.changeCubeProps('iconBox.iconUrl', selectedImageId);
   }
 
   render() {
@@ -153,10 +173,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const requiredSubsidiaryIdList: string[] = [];
     const collegeList: any = [];
 
-    colleges.map((data, index) => {
-      collegeList.push({ key: index, value: data.collegeId, text: data.name });
-    }
-    );
+    colleges.map((data, index) => collegeList.push({ key: index, value: data.collegeId, text: data.name }));
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
     if (personalCube && personalCube.requiredSubsidiaries) {
       personalCube.requiredSubsidiaries.map(requiredSubsidiary =>
@@ -188,8 +205,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             onChange={(e: any, data: any) => onChangePersonalCubeProps('iconBox.iconType', data.value)}
           />
           {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity
-            && (
+            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity && (
               <div className="round-wrap filebox-icon">
                 <div className="filter">
                   <Select
@@ -214,14 +230,13 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                         patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
                       /> : null
-                }
+                  }
                 </div>
               </div>
             ) || null
           }
           {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal
-            && (
+            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal && (
               <div className="round-wrap2">
                 <div className="top img">
                   {/* 직접등록후, 등록전에는 비어있으면됨 */}
@@ -229,10 +244,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   {
                     personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl
                     && (
-                    <Button onClick={this.deleteFile}>
-                      <Icon className="clear" />
-                      <span className="blind">delete</span>
-                    </Button>
+                      <Button onClick={this.deleteFile}>
+                        <Icon className="clear" />
+                        <span className="blind">delete</span>
+                      </Button>
                     )
                   }
                   {/* // 직접등록후, 등록전에는 비어있으면됨 */}
@@ -246,7 +261,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   <div className="right-btn">
                     <div className="ui input file2">
                       <label
-                       // htmlFor="hidden-new-file2"
+                        // htmlFor="hidden-new-file2"
                         className="ui button"
                         onClick={() => {
                           if (this.fileInputRef && this.fileInputRef.current) {
@@ -283,8 +298,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             </div>
             <div className="h112">
               <ul>
-                {
-                  subsidiaries && subsidiaries.length
+                { subsidiaries && subsidiaries.length > 0
                   && subsidiaries.map((subsidiary, index) => (
                     <li key ={index}>
                       <Checkbox
@@ -298,9 +312,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         onChange={(e: any, data: any) => this.checkOne(data.value, 'subsidiaries')}
                       />
                     </li>
-                  )) || null
+                  ))
                 }
-
               </ul>
             </div>
           </div>
@@ -328,8 +341,9 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
               }}
               placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
             />
-            <Icon className="clear link"
-              onClick={(e: any) => {
+            <Icon
+              className="clear link"
+              onClick={() => {
                 this.setState({ write: '' });
                 onChangePersonalCubeProps('tags', '');
               }}

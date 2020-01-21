@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Card, Icon, Label, Rating } from 'semantic-ui-react';
 
 class SharedListView extends React.Component {

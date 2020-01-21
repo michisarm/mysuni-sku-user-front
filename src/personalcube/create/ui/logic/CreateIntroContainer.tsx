@@ -46,80 +46,86 @@ interface States{
 @observer
 @reactAutobind
 class CreateIntroContainer extends React.Component<Props, States> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = { hour: 0, minute: 0, alertWinOpen: false,
-      alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
-      confirmWinOpen: false };
-  }
+  //
+  state = {
+    hour: 0,
+    minute: 0,
+    alertWinOpen: false,
+    alertMessage: '',
+    alertIcon: '',
+    alertTitle: '',
+    alertType: '',
+    confirmWinOpen: false,
+  };
 
   async componentDidMount() {
     //
-    const { cubeIntroService, personalCubeService, collegeService } = this.props;
+    const { cubeIntroService, collegeService } = this.props;
+    const personalCubeService = this.props.personalCubeService!;
     const { cubeType, personalCubeId } = this.props.match.params;
 
     if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
-      await personalCubeService!.findPersonalCube(personalCubeId);
+      await personalCubeService.findPersonalCube(personalCubeId);
     }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
 
-    if (personalCubeService && cubeIntroService ) {
-      if (!cubeIntroId) {
-        this.clearAll();
-      } else if (personalCubeId && cubeIntroId) {
-        cubeIntroService.findCubeIntro(cubeIntroId)
-          .then(() => {
-            const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
-              && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
-            if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
-            if (cubeType === 'Community') this.setCommunity(contentsId);
-            if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
-          });
-      } }
+    if (!cubeIntroId) {
+      this.clearAll();
+    }
+    else if (personalCubeId && cubeIntroId) {
+      cubeIntroService!.findCubeIntro(cubeIntroId)
+        .then(() => {
+          const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
+            && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
+          if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
+          if (cubeType === 'Community') this.setCommunity(contentsId);
+          if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
+        });
+    }
   }
 
   clearAll() {
     //
     const {
-      personalCubeService, cubeIntroService,
-      mediaService, boardService, officeWebService,
+      personalCubeService,
+      cubeIntroService,
+      mediaService,
+      boardService,
+      officeWebService,
     } = this.props;
-    if (personalCubeService && cubeIntroService
-      && mediaService && boardService && officeWebService) {
-      personalCubeService.clearFileName();
-      cubeIntroService.clearCubeIntro();
-      mediaService.clearMedia();
-      boardService.clearBoard();
-      officeWebService.clearOfficeWeb();
-    }
+
+    personalCubeService!.clearFileName();
+    cubeIntroService!.clearCubeIntro();
+    mediaService!.clearMedia();
+    boardService!.clearBoard();
+    officeWebService!.clearOfficeWeb();
   }
 
   setOfficeWeb(contentsId: string) {
     //
     const { officeWebService } = this.props;
-    if (officeWebService) officeWebService.findOfficeWeb(contentsId);
+    officeWebService!.findOfficeWeb(contentsId);
   }
 
   setCommunity(contentsId: string) {
     //
     const { boardService } = this.props;
-    if (boardService) boardService.findBoard(contentsId);
+    boardService!.findBoard(contentsId);
   }
 
   setMedia(contentsId: string) {
     //
     const { mediaService } = this.props;
-    if (mediaService) mediaService.findMedia(contentsId);
+    mediaService!.findMedia(contentsId);
   }
 
   onChangeCubeIntroProps(name: string, value: string | number | {}) {
     //
     const { cubeIntroService } = this.props;
     if (value < 0) value = 0;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
+    cubeIntroService!.changeCubeIntroProps(name, value);
   }
 
   setHourAndMinute(name: string, value: number) {
@@ -160,16 +166,15 @@ class CreateIntroContainer extends React.Component<Props, States> {
   onHandleInstructorModalOk(selectedInstructor: InstructorModel) {
     //
     const { cubeIntroService } = this.props;
-    if (cubeIntroService) {
-      /* cubeIntroService.changeCubeIntroProps('description.instructor.employeeId', selectedInstructor.employeeId);
-      cubeIntroService.changeCubeIntroProps('description.instructor.email', selectedInstructor.memberSummary.email);
-      cubeIntroService.changeCubeIntroProps('description.instructor.name', selectedInstructor.memberSummary.name);
-      cubeIntroService.changeCubeIntroProps('description.instructor.company', selectedInstructor.memberSummary.department);
-      cubeIntroService.changeCubeIntroProps('description.instructor.category', selectedInstructor.specialtyEnName);
-      cubeIntroService.changeCubeIntroProps('description.instructor.internal', selectedInstructor.internal);
+
+    /* cubeIntroService.changeCubeIntroProps('description.instructor.employeeId', selectedInstructor.employeeId);
+    cubeIntroService.changeCubeIntroProps('description.instructor.email', selectedInstructor.memberSummary.email);
+    cubeIntroService.changeCubeIntroProps('description.instructor.name', selectedInstructor.memberSummary.name);
+    cubeIntroService.changeCubeIntroProps('description.instructor.company', selectedInstructor.memberSummary.department);
+    cubeIntroService.changeCubeIntroProps('description.instructor.category', selectedInstructor.specialtyEnName);
+    cubeIntroService.changeCubeIntroProps('description.instructor.internal', selectedInstructor.internal);
 */
-      cubeIntroService.changeInstructorListModalOpen(false);
-    }
+    cubeIntroService!.changeInstructorListModalOpen(false);
   }
 
   routeToBasicList(personalCubeId?: string, cubeType?: string) {
@@ -423,11 +428,7 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const { cubeType, personalCubeId } = this.props.match.params;
     const cubeIntroId  = cubeIntro && cubeIntro.id;
 
-    const message = (
-      <>
-        <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
-      </>
-    );
+    const message = <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>;
 
     return (
       <section className="content bg-white">

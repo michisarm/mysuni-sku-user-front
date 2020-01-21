@@ -1,5 +1,6 @@
-import { computed, decorate, observable } from 'mobx';
-import { getCookie } from '@nara.platform/accent';
+
+import { decorate, observable, computed } from 'mobx';
+import { tenantInfo } from '@nara.platform/dock';
 import {
   CategoryModel,
   DramaEntityObservableModel,
@@ -57,7 +58,8 @@ class InMyLectureModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = tenantInfo.getTenantCompanyCode();
+
       this.required = inMyLecture.requiredSubsidiaries
         && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 

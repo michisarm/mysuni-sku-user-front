@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ContentHeader } from 'shared';
@@ -19,12 +19,9 @@ interface States {
 @reactAutobind
 class CreateProfileView extends React.Component<Props, States> {
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      CreateMovieDetailModalOpen: false,
-    };
-  }
+  state = {
+    CreateMovieDetailModalOpen: false,
+  };
 
   handleChangeOpen(CreateMovieDetailModalOpen: boolean) {
     this.setState({ CreateMovieDetailModalOpen });
