@@ -242,8 +242,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                   {/* 직접등록후, 등록전에는 비어있으면됨 */}
                   <Image src={personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl} />
                   {
-                    personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl
-                    && (
+                    personalCube && personalCube.iconBox && personalCube.iconBox.baseUrl && (
                       <Button onClick={this.deleteFile}>
                         <Icon className="clear" />
                         <span className="blind">delete</span>
@@ -268,7 +267,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                             this.fileInputRef.current.click();
                           }
                         }}
-                      >파일찾기
+                      >
+                        파일찾기
                       </label>
                       <input
                         type="file"

@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 
 class CommunityLectureRdoModel {
@@ -18,7 +18,7 @@ class CommunityLectureRdoModel {
 
   static new(limit: number, offset: number) {
     return new CommunityLectureRdoModel({
-      createAudienceKey: tenantInfo.getTenantId(),
+      createAudienceKey: patronInfo.getPatronId() || '',
       limit,
       offset,
     });

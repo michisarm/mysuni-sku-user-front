@@ -1,6 +1,7 @@
+
 import { decorate, observable } from 'mobx';
 import { PatronType } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 
 class InMyLectureRdoModel {
@@ -28,7 +29,7 @@ class InMyLectureRdoModel {
       limit,
       offset,
       denizenKey: {
-        keyString: tenantInfo.getTenantId(),
+        keyString: patronInfo.getPatronId() || '',
         patronType: PatronType.Audience,
       },
       channelIds,
@@ -41,7 +42,7 @@ class InMyLectureRdoModel {
       limit: 0,
       offset: 0,
       denizenKey: {
-        keyString: tenantInfo.getTenantId(),
+        keyString: patronInfo.getPatronId() || '',
         patronType: PatronType.Audience,
       },
       serviceId,

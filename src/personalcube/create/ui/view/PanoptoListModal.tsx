@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
@@ -35,9 +35,9 @@ class PanoptoListModal extends React.Component<Props, States> {
   findAllPanoptos(page?: number) {
     const { sharedService, mediaService } = this.props;
     const { panoptoCdo } = this.props.mediaService!;
-    const tenantEmail = tenantInfo.getTenantEmail();
+    const patronEmail = patronInfo.getPatronEmail() || '';
 
-    mediaService!.changePanoptoCdoProps('folderOwnerId', tenantEmail);
+    mediaService!.changePanoptoCdoProps('folderOwnerId', patronEmail);
 
     if (page) {
       sharedService!.setPage('panopto', page);

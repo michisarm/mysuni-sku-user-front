@@ -1,7 +1,7 @@
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
 import $ from 'jquery';
@@ -30,7 +30,7 @@ class CreateAudioTypeView extends React.Component<Props> {
   //
 
   isSingleUpload = true;
-  externalId: string = tenantInfo.getTenantEmail();
+  externalId: string = patronInfo.getPatronEmail() || '';
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Modal, List, Button } from 'semantic-ui-react';
 import ExamPaperService from '../../paper/present/logic/ExamPaperService';
@@ -52,20 +52,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }, this.clear);
   }
 
-  getCitizenId() {
-    const tenantId = tenantInfo.getTenantId();
-    const pavilionId = tenantInfo.getPavilionId();
-    const citizenSequencePart = tenantId.substring(0, tenantId.indexOf('-'));
-    const citizenId = citizenSequencePart + '@' + pavilionId;
-
-    return citizenId;
-  }
 
   async init() {
     const { examinationService, examPaperService, answerSheetService, examId } = this.props;
 
     if (examId) {
-      answerSheetService!.findAnswerSheet(examId, this.getCitizenId());
+      answerSheetService!.findAnswerSheet(examId, patronInfo.getDenizenId() || '');
       const examination = await examinationService!.findExamination(examId);
       examPaperService!.findExamPaper(examination.paperId);
     }
@@ -102,7 +94,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         });
     }
     else {
-      answerSheetService!.setAnswerSheetProp('examineeId', this.getCitizenId());
+      answerSheetService!.setAnswerSheetProp('examineeId', patronInfo.getDenizenId());
       answerSheetService!.setAnswerSheetProp('examId', examId);
       answerSheetService!.setAnswerSheetProp('finished', finished);
       answerSheetService!.registerAnswerSheet(answerSheet)

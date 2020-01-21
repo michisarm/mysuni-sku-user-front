@@ -1,7 +1,7 @@
 
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { IdName, NameValueList, CategoryModel, CreatorModel, IconBox } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
@@ -50,7 +50,7 @@ export class CoursePlanModel implements DramaEntity {
       Object.assign(this, { ...coursePlan, category, courseOperator, iconBox, courseOpen, reportFileBox, stamp, creator });
 
       // UI Model
-      const companyCode = tenantInfo.getTenantCompanyCode();
+      const companyCode = patronInfo.getPatronCompanyCode();
 
       this.required = coursePlan && coursePlan.courseOpen && coursePlan.courseOpen.requiredSubsidiaries
         && coursePlan.courseOpen.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
