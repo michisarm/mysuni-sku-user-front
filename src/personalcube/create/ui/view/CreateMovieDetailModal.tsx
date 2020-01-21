@@ -69,7 +69,6 @@ class CreateMovieDetailModal extends React.Component<Props> {
                         </Button>
                         <span className="desc">macOS 10.13 이상 버전용</span>
                       </span>
-                      <span className="text1">기타 다운로드 옵션을 보려면 <a href="#">여기</a>를 클릭하십시오.</span>
                     </div>
                   </div>
                 </div>
