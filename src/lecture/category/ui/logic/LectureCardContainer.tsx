@@ -293,9 +293,9 @@ class LectureCardContainer extends Component<Props, State> {
     }
 
     if (viewObject.examId && student) {
-      if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting) {
+      if (student.learningState === LearningState.Progress) {
         subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-      } else if (student.learningState === LearningState.Missed && student.numberOfTrials < 3) {
+      } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
         subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
       }
     }
