@@ -1,7 +1,9 @@
-import { observer } from 'mobx-react';
+
+import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+
 import { FileBox, PatronType } from '@nara.drama/depot';
-import * as React from 'react';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';

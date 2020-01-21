@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
@@ -31,7 +31,7 @@ class UserAppContainer extends Component<Props, State> {
 
   setLocalAuth() {
     //
-    if (process.env.NODE_ENV !== 'development' && !tenantInfo.isLogin()) {
+    if (process.env.NODE_ENV !== 'development' && !patronInfo.isLogin()) {
       window.location.href = '/login';
     }
   }

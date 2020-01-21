@@ -1,6 +1,8 @@
-import { observer } from 'mobx-react';
+
+import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import * as React from 'react';
+import { observer } from 'mobx-react';
+
 import { Form, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from '../../../personalcube';

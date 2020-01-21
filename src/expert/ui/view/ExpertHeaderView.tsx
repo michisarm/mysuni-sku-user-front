@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Icon, Image, Label } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';

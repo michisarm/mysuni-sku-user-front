@@ -2,6 +2,7 @@
 enum StateNameType {
   WaitingForApproval = '승인대기',
   Waiting = '결과대기',
+  Failed = '불합격',
   Enrolled = '학습예정',
   Joined = '가입완료',
   InProgress = '학습중',

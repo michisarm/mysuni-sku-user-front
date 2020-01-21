@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
@@ -32,7 +33,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
   isSingleUpload = true;
   // externalId: string = 'SKCC.HUG03@sk.com';
-  externalId: string = tenantInfo.getTenantEmail();
+  externalId: string = patronInfo.getPatronEmail() || '';
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];
@@ -52,11 +53,14 @@ class CreateVideoTypeView  extends React.Component<Props> {
   };
 
   componentDidUpdate(): void {
+    //
+    const collegeService = this.props.collegeService!;
+    const { collegesForPanopto } = collegeService;
 
-    // window.onmessage = this.setData;
-    const { collegeService } = this.props;
-    const { collegesForPanopto } = collegeService || {} as CollegeService;
-    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    if (collegesForPanopto && collegesForPanopto.length === 1) {
+      collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    }
+
     const { media } = this.props.mediaService!;
     if (media && media.mediaType === MediaType.InternalMedia) {
       this.$drop = $('#drop');
@@ -154,7 +158,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
     const formData = new FormData();
     formData.append('uploadfile', file, file.name);
     formData.append('sessionNames', sessionName);
-    //formData.append('folderId', tenantInfo.getTenantEmail());
+    //formData.append('folderId', patronInfo.getPatronEmail());
     formData.append('externalId', this.externalId);
     formData.append('cookie', this.cookie);
     const $selfProgress = file.target.find('progress'); //File 객체에 저장해둔 프리뷰 DOM의 progress 요소를 찾는다.
@@ -218,8 +222,8 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
   init() {
     //
-    const tenantEmail = tenantInfo.getTenantEmail();
-    window.localStorage.setItem('externalId', tenantEmail);
+    const patronEmail = patronInfo.getPatronEmail() || '';
+    window.localStorage.setItem('externalId', patronEmail);
     /* const { collegeService } = this.props;
     const { collegeForPanopto, collegesForPanopto } = collegeService || {} as CollegeService;
 
@@ -227,14 +231,15 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
     if (collegeForPanopto.panoptoFolderId) {
       if (cineroomId === 'ne1-m2-c2') window.localStorage.setItem('externalId', collegeForPanopto.panoptoFolderId);
-      else window.localStorage.setItem('externalId', tenantInfo.getTenantEmail());
+      else window.localStorage.setItem('externalId', patronInfo.getPatronEmail());
     }*/
   }
 
   setData(ret: any) {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
 
-    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
+    if (ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(ret.obj.list)) {
         Promise.resolve()

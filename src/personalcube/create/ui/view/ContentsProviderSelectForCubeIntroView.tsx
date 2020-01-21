@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
@@ -26,13 +26,10 @@ interface States {
 @reactAutobind
 class ContentsProviderSelectForCubeIntroView extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      focus: false,
-      write: '',
-    };
-  }
+  state = {
+    focus: false,
+    write: '',
+  };
 
   render() {
     const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, setContentsProvider, organizer, etcCp, onChangeCubeIntroProps } = this.props;

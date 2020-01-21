@@ -3,7 +3,7 @@ import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import 'react-quill/dist/quill.snow.css';
@@ -57,20 +57,21 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
-    const { categoryService, postService } = this.props;
-    const name = tenantInfo.getTenantName() || '';
-    const email = tenantInfo.getTenantEmail() || '';
+    const categoryService = this.props.categoryService!;
+    const postService = this.props.postService!;
+    const name = patronInfo.getPatronName() || '';
+    const email = patronInfo.getPatronEmail() || '';
 
     Promise.resolve()
       .then(() => {
-        if (postService) postService.clearPost();
+        postService.clearPost();
       })
       .then(() => {
-        if (categoryService) categoryService.findCategoriesByBoardId('QNA');
+        categoryService.findCategoriesByBoardId('QNA');
       })
-      .then(() => postService!.changePostProps('boardId', 'QNA'))
-      .then(() => postService!.changePostProps('writer.name', name))
-      .then(() => postService!.changePostProps('writer.email', email));
+      .then(() => postService.changePostProps('boardId', 'QNA'))
+      .then(() => postService.changePostProps('writer.name', name))
+      .then(() => postService.changePostProps('writer.email', email));
   }
 
   componentWillUnmount(): void {
@@ -125,6 +126,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   onHandleSave() {
     //
     const { post } = this.props.postService || {} as PostService;
+
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
     } else {

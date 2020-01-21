@@ -17,21 +17,23 @@ class CreateBoardContainer extends React.Component<Props> {
   //
   onChangeBoardProps(name: string, value: string | Date | boolean, nameSub?: string) {
     //
-    const { boardService } = this.props;
-    if (boardService && typeof value === 'object' && nameSub) {
+    const boardService = this.props.boardService!;
+
+    if (typeof value === 'object' && nameSub) {
       const stringDate = value.toLocaleDateString()
         .replace('. ', '-')
         .replace('. ', '-')
         .replace('.', '');
       boardService.changeBoardProps(name, value, nameSub, stringDate);
     }
-    if (boardService && !nameSub) {
+    if (!nameSub) {
       boardService.changeBoardProps(name, value);
     }
   }
 
   render() {
-    const { board } = this.props.boardService || {} as BoardService;
+    //
+    const { board } = this.props.boardService!;
 
     return (
       <AdditionalInfoForCommunityView

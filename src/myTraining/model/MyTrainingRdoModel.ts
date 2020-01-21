@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 import { CubeType } from 'shared';
 
 
@@ -26,7 +26,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: tenantInfo.getTenantId(),
+      denizenKey: patronInfo.getPatronId(),
       channelIds,
     });
   }
@@ -36,7 +36,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: tenantInfo.getTenantId(),
+      denizenKey: patronInfo.getPatronId(),
       cubeType,
     });
   }
@@ -46,7 +46,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: tenantInfo.getTenantId(),
+      denizenKey: patronInfo.getPatronId(),
       state,
       channelIds,
     });
@@ -57,7 +57,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: tenantInfo.getTenantId(),
+      denizenKey: patronInfo.getPatronId(),
       required: true,
       channelIds,
     });

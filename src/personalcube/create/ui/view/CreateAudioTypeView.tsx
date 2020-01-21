@@ -1,7 +1,7 @@
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { FileBox, PatronType } from '@nara.drama/depot';
 import $ from 'jquery';
@@ -30,7 +30,7 @@ class CreateAudioTypeView extends React.Component<Props> {
   //
 
   isSingleUpload = true;
-  externalId: string = tenantInfo.getTenantEmail();
+  externalId: string = patronInfo.getPatronEmail() || '';
   uploadUrl: string = 'https://panopto.mysuni.sk.com/pt/s3_upload_once';
   cookie: string = '';
   uploadResult: any[] = [];
@@ -51,10 +51,12 @@ class CreateAudioTypeView extends React.Component<Props> {
 
   componentDidUpdate(): void {
     //
-    const { collegeService } = this.props;
-    const { collegesForPanopto } = collegeService || {} as CollegeService;
+    const collegeService = this.props.collegeService!;
+    const { collegesForPanopto } = collegeService;
 
-    if (collegeService && collegesForPanopto && collegesForPanopto.length === 1) collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    if (collegesForPanopto && collegesForPanopto.length === 1) {
+      collegeService.setCollegeForPanopto(collegesForPanopto[0]);
+    }
 
     const { media } = this.props.mediaService!;
 
@@ -229,9 +231,10 @@ class CreateAudioTypeView extends React.Component<Props> {
   }
 
   setData(ret: any) {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
 
-    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
+    if (ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(ret.obj.list)) {
         Promise.resolve()

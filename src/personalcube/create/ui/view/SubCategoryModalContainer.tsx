@@ -43,9 +43,7 @@ class SubCategoryModalContainer extends React.Component<Props, State> {
   componentDidMount(): void {
     const { collegeService } = this.props;
 
-    if (collegeService) {
-      collegeService.findAllColleges();
-    }
+    collegeService!.findAllColleges();
   }
 
   onOpenModal() {
@@ -133,54 +131,51 @@ class SubCategoryModalContainer extends React.Component<Props, State> {
                 <div className="cell vtop">
                   <div className="select-area">
                     <div className="scrolling-60vh">
-                      {
-                          colleges && colleges.length
-                          && colleges.map((college: CollegeModel, index:number) => (
-                            <Accordion className="channel">
-                              <Accordion.Title
-                                key={college.collegeId}
-                                active={activeIndex === index}
-                                index={0}
-                                onClick={() => this.handleClick(college, index)}
-                              >
-                                <span className={`name ${color[index]}`}>{college.name}</span>
-                                <Icon onClick={() => this.handleClick(college, index)} />
-                              </Accordion.Title>
-                              <Accordion.Content active={activeIndex === index}>
-                                <ul>
-                                  {
-                                    selectedCollege && selectedCollege!.channels && selectedCollege!.channels.length
-                                    && selectedCollege!.channels.map((channel, index) => (
-                                      <li key={channel.channelId} onClick={() => this.onSelectChannel(channel, college)}>
-                                        <Checkbox
-                                          className="base"
-                                          label={channel.name}
-                                          checked={channels.map(ch => ch.id).includes(channel.id)}
-                                         /* checked={!!channelListMap.get(`${channel.id}`)}
-                                          disabled={
-                                            personalCube && personalCube.category && personalCube.category.channel
-                                            && personalCube.category.channel.id === channel.id
-                                          }*/
-                                          //onChange={() => this.onSelectChannel(channel)}
-                                        />
-                                        {/*<div className="ui base checkbox">
-                                          <input
-                                            type="checkbox"
-                                            className="hidden"
-                                            checked={channels.map(ch => ch.id).includes(channel.id)}
-                                          />
-                                          <label>
-                                            {channel.name}
-                                          </label>
-                                        </div>*/}
-                                      </li>
-                                    )) || null
-                                  }
-                                </ul>
-                              </Accordion.Content>
-                            </Accordion>
-                          ))
-                        }
+                      { colleges && colleges.length && colleges.map((college: CollegeModel, index:number) => (
+                        <Accordion className="channel">
+                          <Accordion.Title
+                            key={college.collegeId}
+                            active={activeIndex === index}
+                            index={0}
+                            onClick={() => this.handleClick(college, index)}
+                          >
+                            <span className={`name ${color[index]}`}>{college.name}</span>
+                            <Icon onClick={() => this.handleClick(college, index)} />
+                          </Accordion.Title>
+                          <Accordion.Content active={activeIndex === index}>
+                            <ul>
+                              {
+                                selectedCollege && selectedCollege!.channels && selectedCollege!.channels.length
+                                && selectedCollege!.channels.map((channel) => (
+                                  <li key={channel.channelId} onClick={() => this.onSelectChannel(channel, college)}>
+                                    <Checkbox
+                                      className="base"
+                                      label={channel.name}
+                                      checked={channels.map(ch => ch.id).includes(channel.id)}
+                                     /* checked={!!channelListMap.get(`${channel.id}`)}
+                                      disabled={
+                                        personalCube && personalCube.category && personalCube.category.channel
+                                        && personalCube.category.channel.id === channel.id
+                                      }*/
+                                      //onChange={() => this.onSelectChannel(channel)}
+                                    />
+                                    {/*<div className="ui base checkbox">
+                                      <input
+                                        type="checkbox"
+                                        className="hidden"
+                                        checked={channels.map(ch => ch.id).includes(channel.id)}
+                                      />
+                                      <label>
+                                        {channel.name}
+                                      </label>
+                                    </div>*/}
+                                  </li>
+                                )) || null
+                              }
+                            </ul>
+                          </Accordion.Content>
+                        </Accordion>
+                      ))}
                     </div>
                   </div>
                 </div>

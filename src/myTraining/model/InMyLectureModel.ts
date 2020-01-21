@@ -1,6 +1,6 @@
 
 import { decorate, observable, computed } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 import {
   CategoryModel,
   DramaEntityObservableModel,
@@ -58,7 +58,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
-      const companyCode = tenantInfo.getTenantCompanyCode();
+      const companyCode = patronInfo.getPatronCompanyCode();
 
       this.required = inMyLecture.requiredSubsidiaries
         && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);

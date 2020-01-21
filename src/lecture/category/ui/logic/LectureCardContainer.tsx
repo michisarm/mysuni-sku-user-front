@@ -1,10 +1,9 @@
-
 import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, LearningState, ProposalState } from 'shared';
+import { CubeType, ProposalState, LearningState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
@@ -16,7 +15,6 @@ import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../shared/model/StudentModel';
-
 
 interface Props {
   studentService?: StudentService
@@ -297,7 +295,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (viewObject.examId && student) {
       if (student.learningState === LearningState.Progress) {
         subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-      } else if (student.learningState === LearningState.Missed && student.numberOfTrials < 3) {
+      } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
         subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
       }
     }

@@ -31,16 +31,13 @@ interface States {
 @reactAutobind
 class CreateBasicInfoContainer extends React.Component<Props, States> {
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      firstCategoryModalOpen: false,
-      secondCategoryModalOpen: false,
-      focus: false,
-      write: '',
-      fieldName: '',
-    };
-  }
+  state = {
+    firstCategoryModalOpen: false,
+    secondCategoryModalOpen: false,
+    focus: false,
+    write: '',
+    fieldName: '',
+  };
 
   componentDidMount() {
     //

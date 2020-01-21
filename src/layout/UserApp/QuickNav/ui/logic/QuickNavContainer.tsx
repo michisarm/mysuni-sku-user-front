@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -32,7 +32,7 @@ interface State {
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  hasAdminRole = tenantInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
+  hasAdminRole = patronInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
 
   state = {
     active: false,

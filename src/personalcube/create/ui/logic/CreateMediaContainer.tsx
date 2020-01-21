@@ -32,9 +32,10 @@ class CreateMediaContainer extends React.Component<Props> {
   // 교육정보
   onChangeMediaProps(name: string, value: string | Date | [], nameSub?: string) {
     //
-    const { mediaService } = this.props;
-    if (mediaService) mediaService.changeMediaProps(name, value);
-    if (mediaService && value instanceof Date && nameSub) {
+    const mediaService = this.props.mediaService!;
+
+    mediaService.changeMediaProps(name, value);
+    if (value instanceof Date && nameSub) {
       const stringDate = value.toLocaleDateString().replace('. ', '-').replace('. ', '-').replace('.', '');
       mediaService.changeMediaProps(name, value, nameSub, stringDate);
       if (name.indexOf('startDateSub') !== -1) {
@@ -42,38 +43,38 @@ class CreateMediaContainer extends React.Component<Props> {
         mediaService.changeMediaProps(newName, value, nameSub, stringDate);
       }
     }
-    if (mediaService) {
-      mediaService.changeMediaProps(name, value);
-    }
+    mediaService.changeMediaProps(name, value);
   }
 
   onChangeOfficeWebProps(name: string, value: string | Date | boolean, nameSub?: string) {
     //
-    const { officeWebService } = this.props;
-    if (officeWebService && typeof value === 'object' && nameSub) {
+    const officeWebService = this.props.officeWebService!;
+
+    if (typeof value === 'object' && nameSub) {
       const stringDate = value.toLocaleDateString()
         .replace('. ', '-')
         .replace('. ', '-')
         .replace('.', '');
       officeWebService.changeOfficeWebProps(name, value, nameSub, stringDate);
     }
-    if (officeWebService) officeWebService.changeOfficeWebProps(name, value);
+    officeWebService.changeOfficeWebProps(name, value);
   }
 
   getFileBoxIdForReference(fileBoxId: string) {
     //
     const { personalCubeService } = this.props;
-    const { personalCube } = personalCubeService || {} as PersonalCubeService;
-    if (personalCubeService && personalCube.contents) personalCubeService.changeCubeProps('contents.fileBoxId', fileBoxId);
+    const { personalCube } = personalCubeService!;
+
+    if (personalCube.contents) {
+      personalCubeService!.changeCubeProps('contents.fileBoxId', fileBoxId);
+    }
   }
 
   getFileBoxIdForEducation(fileBoxId: string) {
     //
     const { officeWebService } = this.props;
     // todo 파일 삭제했을때 로직
-    if (officeWebService) {
-      officeWebService.changeOfficeWebProps('fileBoxId', fileBoxId);
-    }
+    officeWebService!.changeOfficeWebProps('fileBoxId', fileBoxId);
   }
 
   render() {
@@ -81,6 +82,7 @@ class CreateMediaContainer extends React.Component<Props> {
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
     const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
     const { cubeType, onChangePersonalCubeProps } = this.props;
+
     return (
       <>
         {

@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 import { CubeType } from 'shared';
 import OrderByType from './OrderByType';
 
@@ -56,7 +56,7 @@ class LectureRdoModel {
       college: '',
       channel: '',
       orderBy: OrderByType.Time,
-      creatorId: tenantInfo.getTenantId(),
+      creatorId: patronInfo.getPatronId(),
       cubeType: CubeType.Community,
       limit,
       offset,
@@ -82,7 +82,7 @@ class LectureRdoModel {
       college: '',
       channel: '',
       orderBy: OrderByType.Time,
-      creatorId: tenantInfo.getTenantId(),
+      creatorId: patronInfo.getPatronId(),
       limit,
       offset,
       channelLimit: 0,
