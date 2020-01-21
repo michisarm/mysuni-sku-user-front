@@ -253,6 +253,7 @@ class CreateContainer extends React.Component<Props, States> {
 
         reviewId: lecture.reviewId,
         baseUrl: lecture.baseUrl,
+        servicePatronKeyString: lecture.patronKey.keyString,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }
