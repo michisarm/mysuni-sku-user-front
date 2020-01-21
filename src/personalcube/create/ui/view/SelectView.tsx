@@ -17,33 +17,30 @@ class SelectView extends React.Component <Props> {
     return (
       <div className="top-guide-title size-type3">
         <div className="list-number">총 <strong>{totalCount}개</strong>의 리스트가 있습니다.</div>
-        {
-          queryFieldName === 'cubeState' ?
-            <div className="right-wrap">
-              <Select
-                placeholder="전체"
-                className="ui small-border dropdown m0"
-                defaultValue={fieldOption[0].value}
-                options={fieldOption}
-                onChange={(e: any, data: any) => onChangeCubeQueryProps( `${queryFieldName}`, data.value)}
-
-              />
-            </div>
-            :
-            <div className="right-wrap">
-              {/*<Select
-                placeholder="전체"
-                className="ui small-border dropdown"
-                defaultValue={fieldOption[0].value}
-                options={fieldOption}
-                onChange={(e: any) => onChangeCubeQueryProps(`${queryFieldName}`, e.target.value)}
-              />*/}
-              <Button icon className="left post">
-                <Icon className="filter2" />Filter
-              </Button>
-            </div>
+        { queryFieldName === 'cubeState' ?
+          <div className="right-wrap">
+            <Select
+              placeholder="전체"
+              className="ui small-border dropdown m0"
+              defaultValue={fieldOption[0].value}
+              options={fieldOption}
+              onChange={(e: any, data: any) => onChangeCubeQueryProps( `${queryFieldName}`, data.value)}
+            />
+          </div>
+          :
+          <div className="right-wrap">
+            {/*<Select
+              placeholder="전체"
+              className="ui small-border dropdown"
+              defaultValue={fieldOption[0].value}
+              options={fieldOption}
+              onChange={(e: any) => onChangeCubeQueryProps(`${queryFieldName}`, e.target.value)}
+            />*/}
+            <Button icon className="left post">
+              <Icon className="filter2" />Filter
+            </Button>
+          </div>
         }
-
       </div>
     );
   }

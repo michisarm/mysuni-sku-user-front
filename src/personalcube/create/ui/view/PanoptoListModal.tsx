@@ -96,23 +96,21 @@ class PanoptoListModal extends React.Component<Props, States> {
     return (
       <>
         <div className="ui input file">
-          {
-            media.getInternalMedias.length
-             && media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-               <input
-                 type="text"
-                 key={index}
-                 value ={internalMedia.name}
-                 readOnly
-               />
-             ))
-          || (
-          <input
-            type="text"
-            placeholder="영상을 업로드해주세요."
-            readOnly
-          />
-          )
+          { media.getInternalMedias.length > 0 ?
+            media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
+              <input
+                type="text"
+                key={index}
+                value ={internalMedia.name}
+                readOnly
+              />
+            ))
+            :
+            <input
+              type="text"
+              placeholder="영상을 업로드해주세요."
+              readOnly
+            />
           }
           <Icon className="clear link" />
           <label htmlFor="hidden-new-file" className="ui button" onClick={() => this.show(true)}>파일찾기</label>
@@ -157,7 +155,8 @@ class PanoptoListModal extends React.Component<Props, States> {
               </Table>
               {
                 totalCount === 0 || !totalCount ?
-                  null :
+                  null
+                  :
                   <div className="center">
                     <Pagination
                       activePage={pageMap.get('panopto') ? pageMap.get('panopto').page : 1}

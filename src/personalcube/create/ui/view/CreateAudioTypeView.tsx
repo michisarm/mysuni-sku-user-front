@@ -231,9 +231,10 @@ class CreateAudioTypeView extends React.Component<Props> {
   }
 
   setData(ret: any) {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
 
-    if (mediaService && ret.boolResult && ret.obj && ret.obj.list) {
+    if (ret.boolResult && ret.obj && ret.obj.list) {
       const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
       if (Array.isArray(ret.obj.list)) {
         Promise.resolve()

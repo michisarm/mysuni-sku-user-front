@@ -9,14 +9,14 @@ import { CollegeModel, CollegeService } from 'college';
 
 
 interface Props {
+  collegeService?: CollegeService
+  personalCubeService?: PersonalCubeService
   open: boolean
   handleChangeOpen: (open: boolean) => void
   personalCube: PersonalCubeModel
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
   colleges: CollegeModel[]
   selectedSubCollege: CollegeModel
-  collegeService?: CollegeService
-  personalCubeService?: PersonalCubeService
 }
 
 interface States {
@@ -94,10 +94,11 @@ class SecondCategoryModal extends React.Component<Props, States> {
 
   selectCollegeButton(selectedSubCollege: CollegeModel) {
     //
-    const { collegeService } = this.props;
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { channelsMap } = this.props.personalCubeService || {} as PersonalCubeService;
+    const collegeService = this.props.collegeService!;
+    const { personalCube } = this.props.personalCubeService!;
+    const { channelsMap } = this.props.personalCubeService!;
     const channelListMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
+
     channelsMap.forEach((value, key) => {
       channelListMap.set(key, value);
     });
@@ -115,12 +116,13 @@ class SecondCategoryModal extends React.Component<Props, States> {
         channelListMap: new Map<string, IdName>(),
       });
     }
-    if (collegeService) collegeService.findSubCollege(selectedSubCollege.collegeId);
+    collegeService.findSubCollege(selectedSubCollege.collegeId);
   }
 
   handleCancel() {
     //
     const { handleChangeOpen, onChangePersonalCubeProps } = this.props;
+
     this.setState({
       selectedCollegeState: new IdName(),
       channelListMap: new Map<string, IdName>(),
@@ -137,6 +139,7 @@ class SecondCategoryModal extends React.Component<Props, States> {
     const categories = personalCube.subCategories;
     const index = categories.findIndex(category => category.channel.name === channel);
     let categoryId = '';
+
     categories.map((category, idx ) => {
       if (idx === index) {
         categoryId = category.channel.id;
@@ -154,13 +157,11 @@ class SecondCategoryModal extends React.Component<Props, States> {
       tempListMap.delete(categoryId);
       this.setState({ channelListMap: tempListMap });
     }
-
   }
 
   render() {
     //
     const { open, personalCube, handleChangeOpen, colleges, selectedSubCollege } = this.props;
-    // const { channelListMap, selectedCollegeState, activeIndex } = this.state;
     const { channelListMap, activeIndex } = this.state;
     const selectedChannels: any = [];
 
@@ -190,17 +191,17 @@ class SecondCategoryModal extends React.Component<Props, States> {
       channelListMap.forEach((value, key) => (
         selectedChannelsInModal.push(
           <List key={key}>
-            {
-            value.map((channel, index) => (
+            { value.map((channel, index) => (
               <Button
                 className="del"
                 key={index}
                 onClick={() => this.onRemove(channel, key)}
                // onClick={() => this.deleteChannelList(selectedChannelsInModal, channel)}
-              >{key} &gt; {channel}
+              >
+                {key} &gt; {channel}
               </Button>
             )) || ''
-          }
+            }
           </List>
         ))
       );

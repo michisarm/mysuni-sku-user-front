@@ -205,8 +205,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             onChange={(e: any, data: any) => onChangePersonalCubeProps('iconBox.iconType', data.value)}
           />
           {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity
-            && (
+            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.SKUniversity && (
               <div className="round-wrap filebox-icon">
                 <div className="filter">
                   <Select
@@ -237,8 +236,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             ) || null
           }
           {
-            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal
-            && (
+            personalCube && personalCube.iconBox && personalCube.iconBox.iconType === IconType.Personal && (
               <div className="round-wrap2">
                 <div className="top img">
                   {/* 직접등록후, 등록전에는 비어있으면됨 */}
@@ -300,8 +298,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
             </div>
             <div className="h112">
               <ul>
-                {
-                  subsidiaries && subsidiaries.length
+                { subsidiaries && subsidiaries.length > 0
                   && subsidiaries.map((subsidiary, index) => (
                     <li key ={index}>
                       <Checkbox
@@ -315,9 +312,8 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
                         onChange={(e: any, data: any) => this.checkOne(data.value, 'subsidiaries')}
                       />
                     </li>
-                  )) || null
+                  ))
                 }
-
               </ul>
             </div>
           </div>

@@ -34,11 +34,11 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
               <Table.HeaderCell>관계사 공개 범위 설정</Table.HeaderCell>
               <Table.Cell>
                 {
-                  personalCube && personalCube.subsidiaries && personalCube.subsidiaries.length
+                  personalCube && personalCube.subsidiaries && personalCube.subsidiaries.length > 0
                   && personalCube.subsidiaries.map((subsidiary, index) => {
                     if (index === 0) return <span key={index}>{subsidiary.name}</span>;
                     else return <span key={index}>, {subsidiary.name}</span>;
-                  }) || null
+                  })
                 }
               </Table.Cell>
             </Table.Row>

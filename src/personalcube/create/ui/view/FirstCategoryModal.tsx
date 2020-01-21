@@ -8,6 +8,7 @@ import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcub
 import { CollegeModel, CollegeService } from 'college';
 
 interface Props {
+  personalCubeService?: PersonalCubeService;
   open: boolean
   handleChangeOpen: (open: boolean) => void
   personalCube: PersonalCubeModel
@@ -15,7 +16,6 @@ interface Props {
   collegeService?: CollegeService
   colleges: CollegeModel[]
   selectedMainCollege: CollegeModel
-  personalCubeService?: PersonalCubeService;
 }
 
 interface States {
@@ -66,10 +66,10 @@ class FirstCategoryModal extends React.Component<Props, States> {
   selectCollegeButton(selectedMainCollege: CollegeModel) {
     //
     const { onChangePersonalCubeProps, collegeService } = this.props;
+    
     onChangePersonalCubeProps('category.college.id', selectedMainCollege.collegeId);
     onChangePersonalCubeProps('category.college.name', selectedMainCollege.name);
-    if (collegeService)  collegeService.findMainCollege(selectedMainCollege.collegeId);
-
+    collegeService!.findMainCollege(selectedMainCollege.collegeId);
   }
 
   handleCancel() {
