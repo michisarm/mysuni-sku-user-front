@@ -20,15 +20,16 @@ class CreateMovieDetailModal extends React.Component<Props> {
 
   handleClickDownload() {
     const userAgent = window.navigator.userAgent;
+    const platform = window.navigator.platform;
 
     if (userAgent.includes('Mac')) {
       window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/Panopto%20Recorder.pkg?arch=None&useCustomBinary=True');
     }
     else if (userAgent.includes('Windows')) {
-      if (userAgent.includes('x64')) {
-        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=Amd64&useCustomBinary=True');
-      } else if (userAgent.includes('x86')) {
-        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.0.0.00117/Software/PanoptoRecorder.exe?arch=X86&useCustomBinary=True');
+      if (platform === 'Win64') {
+        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.1.0.00076/Software/PanoptoRecorder.exe?arch=Amd64&useCustomBinary=True');
+      } else if (platform === 'Win32') {
+        window.open('https://sku.ap.panopto.com/Panopto/Cache/8.1.0.00076/Software/PanoptoRecorder.exe?arch=Amd64&useCustomBinary=True');
       }
     }
   }
@@ -68,7 +69,6 @@ class CreateMovieDetailModal extends React.Component<Props> {
                         </Button>
                         <span className="desc">macOS 10.13 이상 버전용</span>
                       </span>
-                      <span className="text1">기타 다운로드 옵션을 보려면 <a href="#">여기</a>를 클릭하십시오.</span>
                     </div>
                   </div>
                 </div>
