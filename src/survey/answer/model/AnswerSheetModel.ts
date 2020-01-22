@@ -5,6 +5,7 @@ import { DramaEntityObservableModel } from 'shared';
 import SuggestionSheetModel from './SuggestionSheetModel';
 import RespondentModel from './RespondentModel';
 import { AnswerProgress } from './AnswerProgress';
+import EvaluationSheetModel from './EvaluationSheetModel';
 
 export default class AnswerSheetModel extends DramaEntityObservableModel {
   //
@@ -16,12 +17,15 @@ export default class AnswerSheetModel extends DramaEntityObservableModel {
   suggestionSheet: SuggestionSheetModel = new SuggestionSheetModel();
   completeTime: number = 0;
 
+  evaluationSheet: EvaluationSheetModel = new EvaluationSheetModel();
+
   constructor(answerSheet?: AnswerSheetModel) {
     super();
     if (answerSheet) {
       Object.assign(this, answerSheet);
       this.respondent = answerSheet.respondent && new RespondentModel(answerSheet.respondent) || this.respondent;
       this.suggestionSheet = answerSheet.suggestionSheet && new SuggestionSheetModel(answerSheet.suggestionSheet) || this.suggestionSheet;
+      this.evaluationSheet = answerSheet.evaluationSheet && new EvaluationSheetModel(answerSheet.evaluationSheet) || this.evaluationSheet;
     }
   }
 
@@ -37,6 +41,7 @@ export default class AnswerSheetModel extends DramaEntityObservableModel {
 decorate(AnswerSheetModel, {
   respondent: observable,
   suggestionSheet: observable,
+  evaluationSheet: observable,
   managementNumber: observable,
   progress: observable,
   completeTime: observable,

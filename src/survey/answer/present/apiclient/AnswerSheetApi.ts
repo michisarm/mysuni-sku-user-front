@@ -8,9 +8,9 @@ export default class AnswerSheetApi {
 
   static instance: AnswerSheetApi;
 
-  findAnswerSheet(answerSheetId: string) {
-    return axios.get<AnswerSheetModel>(this.rootURL + `/${answerSheetId}`)
-      .then((response) => response && response.data && new AnswerSheetModel(response.data) || null);
+  findAnswerSheet(surveyCaseId: string) {
+    return axios.get<AnswerSheetModel>(this.rootURL + `/bySurveyCaseId`, { params: { surveyCaseId }})
+      .then((response) => response && response.data && new AnswerSheetModel(response.data) || new AnswerSheetModel());
   }
 
   modifyAnswerSheet(answerSheet: AnswerSheetModel) {

@@ -32,7 +32,7 @@ class ShortAnswerView extends React.Component<Props, State> {
     const { sentence } = answer;
 
     return (
-      <div className={classNames('ui right-top-count input', { focus, write: answer, error })}>
+      <div className={classNames('ui right-top-count input', { focus, write: answer && !disabled, error })}>
         <span className="count"><span className="now">{sentence.length}</span>/<span className="max">100</span></span>
         <input
           type="text"

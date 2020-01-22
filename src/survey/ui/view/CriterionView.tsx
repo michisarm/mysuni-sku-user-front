@@ -10,6 +10,7 @@ import { QuestionModel } from '../../form/model/QuestionModel';
 interface Props {
   question: QuestionModel
   answer: AnswerItemModel
+  disabled?: boolean
   items: CriteriaItemModel[]
   onSetAnswer:(answer: CriteriaItemModel) => void
 }
@@ -22,7 +23,8 @@ interface State {
 class CriterionView extends React.Component<Props, State> {
   //
   render() {
-    const { answer, question, items, onSetAnswer } = this.props;
+    const { answer, question, disabled, items, onSetAnswer } = this.props;
+
     return (
       <List>
         {
@@ -35,6 +37,7 @@ class CriterionView extends React.Component<Props, State> {
                 name={`survey_criterion_${question.sequence.toSequenceString()}`}
                 value={item.value}
                 item={item}
+                disabled={disabled}
                 checked={answer.criteriaItem.value === item.value}
                 onChange={(e: any, prop: any) => {
                   console.log(prop);

@@ -212,6 +212,8 @@ class LectureCardPage extends Component<Props, State> {
 
     let state: SubState | undefined;
     let examId: string = '';
+    let surveyId: string = '';
+    let surveyCaseId: string = '';
     if (studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
@@ -224,10 +226,16 @@ class LectureCardPage extends Component<Props, State> {
           else state = SubState.InProgress;
           if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
             const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-            if (index >= 0 && classrooms) examId = classrooms[index].roundExamId;
+            if (index >= 0 && classrooms) {
+              examId = classrooms[index].roundExamId;
+              surveyId = classrooms[index].roundSurveyId;
+              surveyCaseId = classrooms[index].roundSurveyCaseId;
+            }
           }
           else {
             examId = personalCube.contents.examId || '';
+            surveyId = personalCube.contents.surveyId || '';
+            surveyCaseId = personalCube.contents.surveyCaseId || '';
           }
         }
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
@@ -264,7 +272,8 @@ class LectureCardPage extends Component<Props, State> {
       guide: cubeIntro.description.guide,
 
       tags: personalCube.tags,
-      surveyId: personalCube.contents.surveyId,
+      surveyId,
+      surveyCaseId,
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId: cubeIntro.reportFileBox.fileBoxId,
       stamp: 0,

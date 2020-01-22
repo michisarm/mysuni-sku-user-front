@@ -25,6 +25,7 @@ class SingleChoiceView extends React.Component<Props, State> {
   render() {
     const { answer, disabled, question, items, onSetAnswer } = this.props;
 
+    console.log(items);
     return (
       <List>
         {

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosApi as axios } from '@nara.platform/accent';
 import AnswerSheetModel from '../../model/AnswerSheetModel';
 
 export default class ResponseApi {
@@ -12,8 +12,8 @@ export default class ResponseApi {
       .then((response) => response && response.data || null);
   }
 
-  submitAnswerSheet(answerSheetId: string) {
-    return axios.put(this.rootURL + `/complete/${answerSheetId}`);
+  submitAnswerSheet(answerSheetId: string, round: number, answerSheet: AnswerSheetModel) {
+    return axios.put(this.rootURL + `/complete/${answerSheetId}/rounds/${round}`, answerSheet);
   }
 }
 

@@ -409,6 +409,7 @@ class LectureCardContainer extends Component<Props, State> {
           viewObject && viewObject.surveyId && (
             <SurveyAnswerSheetModal
               surveyId={viewObject.surveyId}
+              surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
             />

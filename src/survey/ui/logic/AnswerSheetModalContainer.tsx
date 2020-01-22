@@ -27,6 +27,7 @@ interface Props {
   answerSheetService?: AnswerSheetService
 
   surveyId: string
+  surveyCaseId: string
   trigger?: React.ReactNode
 }
 
@@ -60,12 +61,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   async init() {
-    const { surveyCaseService, surveyFormService, answerSheetService, surveyId } = this.props;
+    const { surveyCaseService, surveyFormService, answerSheetService, surveyId, surveyCaseId } = this.props;
 
-    if (surveyId) {
-      answerSheetService!.findAnswerSheet(surveyId);
-      const surveyCase = await surveyCaseService!.findSurveyCase(surveyId);
-      surveyFormService!.findSurveyForm(surveyCase.surveyFormId);
+    if (surveyId && surveyCaseId) {
+      answerSheetService!.findAnswerSheet(surveyCaseId);
+      surveyCaseService!.findSurveyCase(surveyCaseId);
+      surveyFormService!.findSurveyForm(surveyId);
     }
   }
 
@@ -89,17 +90,22 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { surveyCase } = surveyCaseService!;
     if (!finished) {
       if (answerSheet.id && answerSheet.id.length) {
-        answerSheetService!.saveAnswerSheet();
+        answerSheetService!.saveAnswerSheet()
+          .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
-          .then(() => answerSheetService!.saveAnswerSheet())
+          .then((answerSheetId) => {
+            answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
+            return answerSheetService!.saveAnswerSheet();
+          })
           .then(this.onCloseModal);
       }
     }
     else if (finished) {
       if (answerSheet.id && answerSheet.id.length) {
-        answerSheetService!.submitAnswerSheet(answerSheet.id);
+        answerSheetService!.submitAnswerSheet(answerSheet.id)
+          .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
@@ -116,7 +122,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { surveyForm } = surveyFormService!;
     const { answerMap, answerSheet } = answerSheetService!;
     const { questions, criterionList } = surveyForm!;
-    const disabled = answerSheet.progress === AnswerProgress.Complete;
+    const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
 
     return (
       <Modal
@@ -190,6 +196,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                             <CriterionView
                               question={question}
                               answer={answer}
+                              disabled={disabled}
                               items={criterion.criteriaItems || []}
                               onSetAnswer={(value) => this.onSetAnswer(question, value)}
                             />
@@ -215,8 +222,14 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         </Modal.Content>
         <Modal.Actions className="actions">
           <Button className="w190 pop d" onClick={this.onCloseModal}>취소</Button>
-          <Button className="w190 pop s" onClick={() => this.onSaveAnswerSheet(false)}>저장</Button>
-          <Button className="w190 pop p" onClick={() => this.onSaveAnswerSheet(true)}>제출</Button>
+          {
+            !disabled && (
+              <>
+                <Button className="w190 pop s" onClick={() => this.onSaveAnswerSheet(false)}>저장</Button>
+                <Button className="w190 pop p" onClick={() => this.onSaveAnswerSheet(true)}>제출</Button>
+              </>
+            )
+          }
         </Modal.Actions>
       </Modal>
     );

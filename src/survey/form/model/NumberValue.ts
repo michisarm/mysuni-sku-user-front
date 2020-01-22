@@ -10,6 +10,7 @@ export class NumberValue {
     if (numberValueApiModel) {
       Object.assign(this, numberValueApiModel);
       this.values = new LangStrings(numberValueApiModel.values);
+      if (!this.values.defaultLanguage) this.values.defaultLanguage = 'ko';
     }
   }
 

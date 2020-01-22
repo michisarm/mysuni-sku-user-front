@@ -51,11 +51,7 @@ export default class AnswerSheetService {
   @action
   async submitAnswerSheet(answerSheetId: string) {
     if (answerSheetId || answerSheetId.length) {
-      const answerSheetId = await this.answerSheetApi.modifyAnswerSheet(this.answerSheet);
-      const evaluationSheetId = await this.answerSheetApi.modifyEvaluationSheet(this.answerSheet.id, this.evaluationSheet);
-      if (answerSheetId && evaluationSheetId) {
-        await this.responseApi.submitAnswerSheet(answerSheetId);
-      }
+      await this.responseApi.submitAnswerSheet(answerSheetId, this.answerSheet.round, this.answerSheet);
     }
   }
 
@@ -65,9 +61,12 @@ export default class AnswerSheetService {
   }
 
   @action
-  async findAnswerSheet(answerSheetId: string) {
-    const answerSheet = await this.answerSheetApi.findAnswerSheet(answerSheetId);
-    runInAction(() => this.answerSheet = answerSheet);
+  async findAnswerSheet(surveyCaseId: string) {
+    const answerSheet = await this.answerSheetApi.findAnswerSheet(surveyCaseId);
+    runInAction(() => {
+      this.answerSheet = answerSheet;
+      this.evaluationSheet = answerSheet.evaluationSheet;
+    });
   }
 
   @action

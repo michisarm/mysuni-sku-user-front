@@ -20,6 +20,7 @@ export class ClassroomModel implements DramaEntity {
   capacityClosed: boolean = false;                                      // 정원 마감
   operation: OperationModel = new OperationModel();
   roundSurveyId: string = '';                                           // 설문(차수별)
+  roundSurveyCaseId: string = '';                                           // 설문(차수별)
   roundExamId: string = '';                                             // 테스트(차수별)
   roundReportFileBox: ReportFileBoxModel = new ReportFileBoxModel();    // 과제여부 및 filebox(차수별)
   time: number = 0;
@@ -59,6 +60,7 @@ decorate(ClassroomModel, {
   capacityClosed: observable,
   operation: observable,
   roundSurveyId: observable,
+  roundSurveyCaseId: observable,
   roundExamId: observable,
   roundReportFileBox: observable,
   time: observable,
