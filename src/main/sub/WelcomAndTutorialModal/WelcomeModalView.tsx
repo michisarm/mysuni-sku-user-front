@@ -23,9 +23,6 @@ class WelcomeModalView extends Component<Props> {
 
     return (
       <Modal open={open} className="w824 base welcome">
-        <Modal.Header>
-          mySUNI Welcome Message
-        </Modal.Header>
         <Modal.Content>
           <div className="scrolling-80vh">
             <div className="content-wrap4">

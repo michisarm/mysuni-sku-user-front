@@ -247,7 +247,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
               <Form.Field>
                 <label>첨부파일</label>
                 <Form>
-                  <div className="lg-attach">
+                  <div className="line-attach width-sm">
                     <div className="attach-inner">
                       <FileBox
                         vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
@@ -255,12 +255,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                         onChange={this.getFileBoxIdForReference}
                         id={post && post.contents && post.contents.depotId || ''}
                       />
-                      <div className="bottom">
-                        <span className="text1"><Icon className="info16" />
-                          <span className="blind">information</span>
-                          문서 및 이미지 파일을 업로드 가능합니다.
-                        </span>
-                      </div>
+                      {/*<div className="bottom">*/}
+                      {/*  <span className="text1"><Icon className="info16" />*/}
+                      {/*    <span className="blind">information</span>*/}
+                      {/*    문서 및 이미지 파일을 업로드 가능합니다.*/}
+                      {/*  </span>*/}
+                      {/*</div>*/}
                     </div>
                   </div>
                 </Form>

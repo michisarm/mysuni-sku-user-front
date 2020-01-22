@@ -20,7 +20,7 @@ class RecommendItem extends Component<Props> {
     return (
       <div className="recommend-info">
         <Label className="onlytext">
-          <Icon className="channel16" /><span>관심 Channel</span>
+          <Icon className="channel16" /><span><a>관심 Channel</a></span>
         </Label>
         <span className="value1">
           <span className="text01">{favoriteChannelCount}</span>

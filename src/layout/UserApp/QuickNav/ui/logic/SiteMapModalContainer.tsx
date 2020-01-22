@@ -93,8 +93,8 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'My Page',
       items: [
-        { name: 'Completed List', path: myPageRoutePaths.myPageCompletedList() },
-        { name: 'Earned Stamp List', path: myPageRoutePaths.myPageEarnedStampList() },
+        { name: '학습완료', path: myPageRoutePaths.myPageCompletedList() },
+        { name: '보유스탬프', path: myPageRoutePaths.myPageEarnedStampList() },
       ],
     },
     {
