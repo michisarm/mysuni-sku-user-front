@@ -1,19 +1,20 @@
 
-import React from 'react';
+import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ContentLayout } from 'shared';
-import { Button, Form, Segment } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
 import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';
 import { BoardService } from '../../../board';
 import { OfficeWebService } from '../../../officeweb';
-import CreateBasicInfoContainer from './CreateBasicInfoContainer';
+import DetailBasicInfoContainer from './DetailBasicInfoContainer';
 import CreateExposureInfoContainer from './CreateExposureInfoContainer';
+import { ContentWrapper } from '../view/DetailElementsView';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
@@ -25,7 +26,6 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
 }
 
 interface States {
-  tags: string
   isNext: boolean
 }
 
@@ -38,32 +38,32 @@ interface States {
 ))
 @observer
 @reactAutobind
-class CreateDetailContainer extends React.Component<Props, States> {
+class CreateDetailContainer extends Component<Props, States> {
   //
   state = {
-    tags: '',
     isNext: false,
   };
 
   componentDidMount(): void {
     //
-    const { personalCubeService, match } = this.props;
-    const { personalCubeId } = match.params;
+    const personalCubeService = this.props.personalCubeService!;
+    const { params } = this.props.match;
 
-    if (!personalCubeId) {
+    // 신규
+    if (!params.personalCubeId) {
       this.clearAll();
-    } else {
-      personalCubeService!.findPersonalCube(personalCubeId);
+    }
+    // 수정
+    else {
+      personalCubeService.findPersonalCube(params.personalCubeId);
     }
   }
 
   clearAll() {
     //
-    const {
-      personalCubeService,
-    } = this.props;
+    const personalCubeService = this.props.personalCubeService!;
 
-    personalCubeService!.clearPersonalCube();
+    personalCubeService.clearPersonalCube();
   }
 
   routeToCreateList() {
@@ -71,21 +71,35 @@ class CreateDetailContainer extends React.Component<Props, States> {
     this.props.history.push(routePaths.create());
   }
 
-  onChangePersonalCubeProps(name: string, value: string | {}) {
+  routeToCreateIntro(personalCubeId: string) {
     //
-    const { personalCubeService } = this.props;
-    let getTagList = [];
+    const { history,  personalCubeService } = this.props;
+    const { personalCube } = personalCubeService!;
 
-    if (name === 'tags' && typeof value === 'string') {
-      getTagList = value.split(',');
-      personalCubeService!.changeCubeProps('tags', getTagList);
-    }
-    if (name !== 'tags') personalCubeService!.changeCubeProps(name, value);
+    history.push(routePaths.createIntro(personalCubeId, personalCube.contents.type));
   }
 
-  handleSave(isNext: boolean) {
+  alertRequiredField(message: string) {
     //
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
+    reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
+  }
+
+  onChangePersonalCubeProps(name: string, value: string | {}) {
+    //
+    const personalCubeService = this.props.personalCubeService!;
+
+    personalCubeService.changeCubeProps(name, value);
+    // if (name === 'tags') {
+    //   personalCubeService.changeCubeTagsCsv(value as string);
+    // }
+    // else {
+    //   personalCubeService.changeCubeProps(name, value);
+    // }
+  }
+
+  onSave(isNext: boolean) {
+    //
+    const { personalCube } = this.props.personalCubeService!;
     const personalCubeObject = PersonalCubeModel.getBlankRequiredField(personalCube);
 
     if (personalCubeObject !== 'success') {
@@ -100,11 +114,6 @@ class CreateDetailContainer extends React.Component<Props, States> {
 
       this.setState({ isNext });
     }
-  }
-
-  alertRequiredField(message: string) {
-    //
-    reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
   }
 
   handleOKConfirmWin() {
@@ -172,20 +181,10 @@ class CreateDetailContainer extends React.Component<Props, States> {
     }
   }
 
-  routeToCreateIntro(personalCubeId: string) {
-    //
-    const { history,  personalCubeService } = this.props;
-    const { personalCube } = personalCubeService!;
-
-    history.push(routePaths.createIntro(personalCubeId, personalCube.contents.type));
-  }
-
   render() {
     //
-    const { personalCubeService, match } = this.props;
-    const { tags } = this.state;
+    const { personalCubeService, match: { params }} = this.props;
     const { personalCube } = personalCubeService!;
-    const { params } = match;
 
     return (
       <ContentLayout
@@ -195,47 +194,36 @@ class CreateDetailContainer extends React.Component<Props, States> {
           { text: 'Create', path: routePaths.createCreate() },
         ]}
       >
-        <div className="add-personal-learning support">
-          <div className="add-personal-learning-wrap">
-            <div className="apl-tit">Create</div>
-            <div className="apl-notice">
-              내가 갖고 있는 지식을 강좌로 만들 수 있습니다.<br />관리자의 확인 절차를 거쳐 다른 mySUNI 사용자에게 전파해보세요.
-            </div>
-          </div>
-        </div>
-        <Segment className="full">
-          <div className="apl-form-wrap create">
-            <Form>
-              <CreateBasicInfoContainer
-                personalCubeId={params.personalCubeId}
-                personalCube={personalCube}
-                onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-              />
-              <CreateExposureInfoContainer
-                personalCube={personalCube}
-                onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-                tags={tags}
-              />
-              {
-                params.personalCubeId ?
-                  <div className="buttons">
-                    <Button type="button" className="fix line" onClick={this.onDeleteCube}>Delete</Button>
-                    <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button type="button" className="fix line" onClick={() => this.handleSave(false)}>Save</Button>
-                    <Button type="button" className="fix bg" onClick={() => this.handleSave(true)}>Next</Button>
-                  </div>
-                  :
-                  <div className="buttons">
-                    <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button type="button" className="fix bg" onClick={() => this.handleSave(true)}>Next</Button>
-                  </div>
-              }
-            </Form>
-          </div>
-        </Segment>
+        <ContentWrapper>
+          <DetailBasicInfoContainer
+            personalCubeId={params.personalCubeId}
+            personalCube={personalCube}
+            onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+          />
+
+          <CreateExposureInfoContainer
+            personalCube={personalCube}
+            onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+          />
+
+          {
+            params.personalCubeId ?
+              <div className="buttons">
+                <Button type="button" className="fix line" onClick={this.onDeleteCube}>Delete</Button>
+                <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+                <Button type="button" className="fix line" onClick={() => this.onSave(false)}>Save</Button>
+                <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
+              </div>
+              :
+              <div className="buttons">
+                <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+                <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
+              </div>
+          }
+        </ContentWrapper>
       </ContentLayout>
     );
   }
 }
 
-export default CreateDetailContainer;
+export default withRouter(CreateDetailContainer);

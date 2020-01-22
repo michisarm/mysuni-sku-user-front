@@ -1,20 +1,24 @@
-import React from 'react';
-import { Form, Icon, Select, Step } from 'semantic-ui-react';
-import { observer } from 'mobx-react';
+
+import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import ReactQuill from 'react-quill';
+import { observer } from 'mobx-react';
+
 import classNames from 'classnames';
-import { CubeIntroModel } from '../../../cubeintro';
+import ReactQuill from 'react-quill';
+import { Form, Icon, Select } from 'semantic-ui-react';
 import SelectType from '../../../../shared/model/SelectType';
+import { CubeIntroModel } from '../../../cubeintro';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CreateBoardContainer from '../logic/CreateBoardContainer';
+import { FormTitle } from '../view/DetailElementsView';
+
 
 interface Props {
   cubeIntro: CubeIntroModel
-  onChangeCubeIntroProps: (name: string, value: string | number | {}) => void
-  setHourAndMinute: (name: string, value: number) => void
   hour: number
   minute: number
+  onChangeCubeIntroProps: (name: string, value: string | number | {}) => void
+  setHourAndMinute: (name: string, value: number) => void
   cubeType?: string
 }
 
@@ -24,39 +28,23 @@ interface States {
 
 @observer
 @reactAutobind
-class CreateIntroView extends React.Component<Props, States> {
+class CreateIntroView extends Component<Props, States> {
   //
   state = {
     fieldName: '',
   };
 
   render() {
-
+    //
     const {
       cubeIntro, onChangeCubeIntroProps, setHourAndMinute, cubeType,
     } = this.props;
 
     return (
       <>
-        <div className="section-tit">
-          <span className="text1">교육정보</span>
-          <div className="right-step">
-            <Step.Group className="number-step">
-              <Step completed>
-                <Step.Content>
-                  <span className="number"><span className="blind">1</span></span>
-                  <Step.Title>기본정보 및 노출정보</Step.Title>
-                </Step.Content>
-              </Step>
-              <Step active>
-                <Step.Content>
-                  <span className="number"><span className="blind">2</span></span>
-                  <Step.Title>교육정보 및 부가정보</Step.Title>
-                </Step.Content>
-              </Step>
-            </Step.Group>
-          </div>
-        </div>
+        <FormTitle
+          activeStep={2}
+        />
 
         <Form.Field>
           <label className="necessary">교육목표</label>
