@@ -8,29 +8,21 @@ import { IconType, IdName } from 'shared';
 import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { PersonalCubeModel, PersonalCubeService } from 'personalcube/personalcube';
 import { CollegeService, SubsidiaryService } from 'college';
-import classNames from 'classnames';
 import SelectType from '../../../../shared/model/SelectType';
+import CreateInput from '../shared/CreateInput';
 
 
 interface Props {
-  onChangePersonalCubeProps: (name: string, value: string | {}) => void
-  personalCube: PersonalCubeModel
-  tags: string
+  collegeService?: CollegeService
   personalCubeService?: PersonalCubeService
   subsidiaryService?: SubsidiaryService
-  collegeService?: CollegeService
+  personalCube: PersonalCubeModel
+  onChangePersonalCubeProps: (name: string, value: string | {}) => void
 }
 
 interface States {
   subsidiariesAll: string
-  focus: boolean
-  write: string
-  fieldName: string
 }
-
-const EXTENSION = {
-  IMAGE: 'jpg|png|jpeg',
-};
 
 @inject(mobxHelper.injectFrom(
   'personalCube.personalCubeService',
@@ -40,14 +32,15 @@ const EXTENSION = {
 @observer
 @reactAutobind
 class CreateExposureInfoContainer extends React.Component<Props, States> {
+  //
+  EXTENSION = {
+    IMAGE: 'jpg|png|jpeg',
+  };
 
   private fileInputRef = React.createRef<HTMLInputElement>();
 
   state = {
     subsidiariesAll: 'No',
-    focus: false,
-    write: '',
-    fieldName: '',
   };
 
   componentDidMount() {
@@ -133,13 +126,16 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
   }
 
   public deleteFile() {
+    //
     const { personalCubeService } = this.props;
 
     personalCubeService!.changeCubeProps('iconBox.baseUrl', '');
   }
 
   validatedAll(file: File) {
-    const validations = [{ type: 'Extension', validValue: EXTENSION.IMAGE }, { type: ValidationType.MaxSize }] as any[];
+    //
+    const validations = [{ type: 'Extension', validValue: this.EXTENSION.IMAGE }, { type: ValidationType.MaxSize }] as any[];
+
     const hasNonPass = validations.some(validation => {
       if (validation.validator && typeof validation.validator === 'function') {
         return !validation.validator(file);
@@ -163,7 +159,20 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     personalCubeService!.changeCubeProps('iconBox.iconUrl', selectedImageId);
   }
 
+  onDeleteLastWord(e: any) {
+    //
+    const { personalCube, onChangePersonalCubeProps } = this.props;
+
+    if (personalCube.tags.length > 10 && e.key === 'Backspace') {
+      const value = e.target.value;
+      const lastWordExcluded = value.slice(0, value.lastIndexOf(','));
+
+      onChangePersonalCubeProps('tags', lastWordExcluded.split(','));
+    }
+  }
+
   render() {
+    //
     const { onChangePersonalCubeProps, personalCube } = this.props;
     const { subsidiaries } = this.props.subsidiaryService || {} as SubsidiaryService;
     //const { tinyAlbumId, changeTinyAlbumId } = this.props.personalCubeService || {} as PersonalCubeService;
@@ -319,39 +328,20 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
           </div>
         </Form.Field>
         <Form.Field>
-          <label>Tag 정보 </label>
-          <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write, error: this.state.fieldName === 'tags' })}>{/* .error class 추가시 error ui 활성 */}
-            <input
-              type="text"
-              value={personalCube && personalCube.tags || ''}
-              onClick={() => this.setState({ focus: true })}
-              onBlur={() => this.setState({ focus: false })}
-              onChange={(e: any) => {
-                if (personalCube.tags.length > 10 ) {
-                  this.setState({ fieldName: 'tags' });
-                } else {
-                  this.setState({ write: e.target.value, fieldName: '' });
-                  onChangePersonalCubeProps('tags', e.target.value);
-                }
-              }}
-              onKeyDownCapture={(e: any) => {
-                if (personalCube.tags.length > 10 && e.key === 'Backspace') {
-                  onChangePersonalCubeProps('tags', e.target.value.toString().slice(0, e.target.value.lastIndexOf(',')));
-                }
-              }}
-              placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
-            />
-            <Icon
-              className="clear link"
-              onClick={() => {
-                this.setState({ write: '' });
-                onChangePersonalCubeProps('tags', '');
-              }}
-            />
-            <span className="validation">You can enter up to 10 tags.</span>
-          </div>
+          <CreateInput
+            label="Tag 정보"
+            placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
+            asList
+            value={personalCube.tags}
+            sizeLimited
+            maxSize={10}
+            invalidMessage="You can enter up to 10 tags."
+            inputProps={{
+              onKeyDown: this.onDeleteLastWord,
+            }}
+            onChange={(e: any, data: any) => onChangePersonalCubeProps('tags', data.value )}
+          />
         </Form.Field>
-
       </>
     );
   }

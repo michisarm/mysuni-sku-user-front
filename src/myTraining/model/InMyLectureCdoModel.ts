@@ -26,6 +26,7 @@ class InMyLectureCdoModel {
 
   reviewId: string = '';
   baseUrl: string = '';
+  servicePatronKeyString: string = '';
 
 
   constructor(inMyLecture?: InMyLectureCdoModel) {
@@ -54,6 +55,7 @@ decorate(InMyLectureCdoModel, {
   lectureCardUsids: observable,
   reviewId: observable,
   baseUrl: observable,
+  servicePatronKeyString: observable,
 });
 
 export default InMyLectureCdoModel;

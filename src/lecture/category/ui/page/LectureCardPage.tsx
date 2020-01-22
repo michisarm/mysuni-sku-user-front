@@ -131,13 +131,13 @@ class LectureCardPage extends Component<Props, State> {
                 proposalState: ProposalState.Approved,
               };
 
-              // lectureService.confirmUsageStatisticsByCardId(studentCdo)
-              //   .then((confirmed) => {
-              //     if (confirmed) {
-              //       history.replace('/empty');
-              //       setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
-              //     }
-              //   });
+              lectureService.confirmUsageStatisticsByCardId(studentCdo)
+                .then((confirmed) => {
+                  if (confirmed) {
+                    history.replace('/empty');
+                    setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+                  }
+                });
             }
           });
         }
@@ -444,6 +444,7 @@ class LectureCardPage extends Component<Props, State> {
       lectureCardUsids: [],
       reviewId: lectureCard.reviewId,
       baseUrl: personalCube.iconBox.baseUrl,
+      servicePatronKeyString: personalCube.patronKey.keyString,
     });
   }
 

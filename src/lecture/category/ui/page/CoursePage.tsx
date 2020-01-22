@@ -234,6 +234,7 @@ class CoursePage extends Component<Props, State> {
       lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids || [] : courseLecture!.lectureCardUsids || [],
       reviewId: match.params.serviceType === 'Program' ? programLecture!.reviewId || '' : courseLecture!.reviewId || '',
       baseUrl: coursePlan.iconBox.baseUrl,
+      servicePatronKeyString: coursePlan.patronKey.keyString,
     });
   }
 
