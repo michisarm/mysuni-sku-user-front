@@ -1,5 +1,7 @@
-import { action, observable, runInAction } from 'mobx';
+
+import { observable, action, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
+
 import _ from 'lodash';
 import { CubeState, IdName } from 'shared';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
@@ -8,6 +10,7 @@ import { CubeQueryModel } from '../../model/CubeQueryModel';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { ExcelView } from '../../../../shared/model/ExcelView';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+
 
 @autobind
 export default class PersonalCubeService {
@@ -46,8 +49,19 @@ export default class PersonalCubeService {
   @observable
   tinyAlbumId: string = '';
 
+
   constructor(personalCubeApi: PersonalCubeApi) {
     this.personalCubeApi = personalCubeApi;
+  }
+
+
+
+  // PersonalCube ------------------------------------------------------------------------------------------------------
+
+  @action
+  clearPersonalCube() {
+    //
+    this.personalCube = new PersonalCubeModel();
   }
 
   @action
@@ -70,22 +84,11 @@ export default class PersonalCubeService {
   async findPersonalCube(personalCubeId: string) {
     //
     const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
-    if (personalCube) return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
+
+    if (personalCube) {
+      return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
+    }
     return null;
-  }
-
-  @action
-  async findAllPersonalCubes(offset: number, limit: number) {
-    //
-    const personalCubes = await this.personalCubeApi.findAllPersonalCubes(offset, limit);
-    return runInAction(() => this.personalCubes = personalCubes);
-  }
-
-  @action
-  async findAllPersonalCubesByQuery() {
-    //
-    const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCreateRdo(this.personalCubeQuery));
-    return runInAction(() => this.personalCubes = personalCubes);
   }
 
   @action
@@ -93,6 +96,37 @@ export default class PersonalCubeService {
     //
     this.personalCube = _.set(this.personalCube, name, value);
   }
+
+  @action
+  changeCubeTagsCsv(tagsCsv: string) {
+    //
+    const tagList = tagsCsv.split(',');
+
+    console.log('onChange tags', tagsCsv, tagList);
+    this.personalCube.tags = tagList;
+  }
+
+  // PersonalCubes -----------------------------------------------------------------------------------------------------
+
+  @action
+  async findAllPersonalCubes(offset: number, limit: number) {
+    //
+    const personalCubes = await this.personalCubeApi.findAllPersonalCubes(offset, limit);
+
+    runInAction(() => this.personalCubes = personalCubes);
+    return personalCubes;
+  }
+
+  @action
+  async findAllPersonalCubesByQuery() {
+    //
+    const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCreateRdo(this.personalCubeQuery));
+
+    runInAction(() => this.personalCubes = personalCubes);
+    return personalCubes;
+  }
+
+  // Others ------------------------------------------------------------------------------------------------------------
 
   @action
   changeTinyAlbumId(tinyAlbumId: string) {
@@ -105,13 +139,6 @@ export default class PersonalCubeService {
   clearTinyAlbumId() {
     //
     this.tinyAlbumId = '';
-  }
-
-  @action
-  clearPersonalCube() {
-    //
-    this.personalCube = new PersonalCubeModel();
-    // this.cube = {} as PersonalCubeModel;
   }
 
   @action
@@ -137,7 +164,9 @@ export default class PersonalCubeService {
   async findAllApprovalContents() {
     //
     const approvalContents = await this.personalCubeApi.findAllApprovalContents(CubeQueryModel.asApprovalContentsRdo(this.personalCubeQuery));
-    return runInAction(() => this.approvalContents = approvalContents);
+
+    runInAction(() => this.approvalContents = approvalContents);
+    return approvalContents;
   }
 
   @action

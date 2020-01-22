@@ -3,8 +3,8 @@ import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Button, Segment } from 'semantic-ui-react';
-import { CubeState, CubeType } from 'shared';
+import { Button } from 'semantic-ui-react';
+import { ContentLayout, CubeState, CubeType } from 'shared';
 import { BoardService } from 'personalcube/board';
 import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
@@ -16,6 +16,8 @@ import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
 import { MediaModel, MediaService } from '../../../media';
 import { PersonalCubeModel } from '../../../personalcube';
+import { ContentWrapper } from '../view/DetailElementsView';
+
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   personalCubeService?: PersonalCubeService
@@ -431,77 +433,70 @@ class CreateIntroContainer extends React.Component<Props, States> {
     const message = <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>;
 
     return (
-      <section className="content bg-white">
-        <div className="add-personal-learning support">
-          <div className="add-personal-learning-wrap">
-            <div className="apl-tit">Create</div>
-            <div className="apl-notice">
-              내가 갖고 있는 지식을 강좌로 만들 수 있습니다.<br />관리자의 확인 절차를 거쳐 다른 University 사용자에게 전파해보세요.
-            </div>
-          </div>
-        </div>
-
-        <Segment className="full">
-          <div className="apl-form-wrap create">
-            <div className="ui form">
-              <CreateIntroView
-                cubeIntro={cubeIntro}
-                onChangeCubeIntroProps={this.onChangeCubeIntroProps}
-                setHourAndMinute={this.setHourAndMinute}
-                hour={hour}
-                minute={minute}
-                cubeType={cubeType}
-              />
-              <CreateMediaContainer
-                cubeType={cubeType}
-                onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-              />
-              {
-                personalCubeId ?
-                  <div className="buttons">
-                    <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
-                    <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                    <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
-                    { cubeIntroId ?
-                      <>
-                        <Button className="fix line" onClick={this.handleSave}>Save</Button>
-                        <Button className="fix bg" onClick={() => this.handleApprovalRequest()}>Shared</Button>
-                      </>
-                      :
-                      <Button className="fix bg" onClick={this.handleSave}>Save</Button>
-                    }
-                  </div>
-                  :
-                  <div className="buttons">
-                    <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+      <ContentLayout
+        className="bg-white"
+        breadcrumb={[
+          { text: 'Create' },
+          { text: 'Create', path: routePaths.createCreate() },
+        ]}
+      >
+        <ContentWrapper>
+          <CreateIntroView
+            cubeIntro={cubeIntro}
+            onChangeCubeIntroProps={this.onChangeCubeIntroProps}
+            setHourAndMinute={this.setHourAndMinute}
+            hour={hour}
+            minute={minute}
+            cubeType={cubeType}
+          />
+          <CreateMediaContainer
+            cubeType={cubeType}
+            onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+          />
+          {
+            personalCubeId ?
+              <div className="buttons">
+                <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
+                <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+                <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
+                { cubeIntroId ?
+                  <>
                     <Button className="fix line" onClick={this.handleSave}>Save</Button>
-                    <Button className="fix line" onClick={() => this.routeToBasicList}>Previous</Button>
-                    <Button className="fix bg">Next</Button>
-                  </div>
-              }
-              <AlertWin
-                message={alertMessage}
-                handleClose={this.handleCloseAlertWin}
-                open={alertWinOpen}
-                alertIcon={alertIcon}
-                title={alertTitle}
-                type={alertType}
-                handleOk={this.handleAlertOk}
-              />
-              <ConfirmWin
-                id={cubeIntroId}
-                message={message}
-                open={confirmWinOpen}
-                handleClose={this.handleCloseConfirmWin}
-                handleOk={this.handleOKConfirmWin}
-                title="저장 안내"
-                buttonYesName="OK"
-                buttonNoName="Cancel"
-              />
-            </div>
-          </div>
-        </Segment>
-      </section>
+                    <Button className="fix bg" onClick={() => this.handleApprovalRequest()}>Shared</Button>
+                  </>
+                  :
+                  <Button className="fix bg" onClick={this.handleSave}>Save</Button>
+                }
+              </div>
+              :
+              <div className="buttons">
+                <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+                <Button className="fix line" onClick={this.handleSave}>Save</Button>
+                <Button className="fix line" onClick={() => this.routeToBasicList}>Previous</Button>
+                <Button className="fix bg">Next</Button>
+              </div>
+          }
+          <AlertWin
+            message={alertMessage}
+            handleClose={this.handleCloseAlertWin}
+            open={alertWinOpen}
+            alertIcon={alertIcon}
+            title={alertTitle}
+            type={alertType}
+            handleOk={this.handleAlertOk}
+          />
+          <ConfirmWin
+            id={cubeIntroId}
+            message={message}
+            open={confirmWinOpen}
+            handleClose={this.handleCloseConfirmWin}
+            handleOk={this.handleOKConfirmWin}
+            title="저장 안내"
+            buttonYesName="OK"
+            buttonNoName="Cancel"
+          />
+        </ContentWrapper>
+      </ContentLayout>
     );
   }
 }

@@ -44,7 +44,7 @@ class ChannelsLecturesContainer extends Component<Props> {
   componentDidMount(): void {
     const { collegeService, channels } = this.props;
 
-    collegeService!.setChannels(channels && channels.length && channels.map(chanel => ({ ...chanel, checked: true })) || []);
+    collegeService!.setChannels(channels && channels.length && channels.map(chanel => ({ ...chanel, checked: false })) || []);
     this.findPagingRecommendLectures();
   }
 
@@ -53,10 +53,12 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { channels: prevChannels } = prevProps;
     const { collegeService, channels } = this.props;
 
+    // console.log('ChannelsLecturesContainer componentDidUpdate() prevChannels.length='+prevChannels.length+', channels.length='+channels.length);
+
     if (prevChannels !== channels) {
       collegeService!.setChannels(channels && channels.map(chanel => ({
         ...chanel,
-        checked: true,
+        checked: false,
       })) || []);
     }
 
@@ -105,6 +107,9 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { collegeService } = this.props;
 
     const index = collegeService!._channels.map((channel: ChannelModel) => channel.id).findIndex((id: string) => channel.id === id);
+
+    // console.log('ChannelsLecturesContainer onSelectChannel() index='+index+', collegeService!._channels['+index+'].name='+collegeService!._channels![index].name);
+
     collegeService!.setChannelsProp(index, 'checked', !channel.checked);
   }
 
@@ -120,9 +125,22 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { collegeService, lectureService, onViewAll } = this.props;
     const { channels } = collegeService!;
     const { recommendLectures } = lectureService!;
-    const channelIds = channels.filter((channel: ChannelModel) => channel.checked).map((channel: ChannelModel) => channel.id);
 
-    // console.log('render channels', channels);
+    let channelIds: string[] = [];
+
+    /**
+     * 관심채널보기 전체해제인 경우는 전체 관심채널들에 대한 추천Lecture 라인들을 보여줌.
+     */
+    if(channels.every((channel) => !channel.checked))
+    {
+      channelIds = channels.map((channel: ChannelModel) => channel.id);
+    }
+    // 선택된 관심채널에 대한 추천Lecture 라인들만 보여줌.(체크확인 filter 처리)
+    else {
+      channelIds = channels.filter((channel: ChannelModel) => channel.checked).map((channel: ChannelModel) => channel.id);
+    }
+
+    // console.log('render() recommendLectures.length', recommendLectures.length);
 
     return (
       <ChannelLecturesContentWrapperContainer
