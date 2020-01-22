@@ -50,7 +50,8 @@ class CreateInput extends Component<Props, State> {
 
   onChange(e: any) {
     //
-    const { value, sizeLimited, maxSize, asList, onChange } = this.props;
+    const { sizeLimited, maxSize, asList, onChange } = this.props;
+    const value = asList ? this.getValueAsList(e.target.value) : e.target.value;
 
     if (sizeLimited) {
       const invalid = value.length > maxSize!;
@@ -61,8 +62,7 @@ class CreateInput extends Component<Props, State> {
         return;
       }
     }
-    const originTypeValue = asList ? this.getValueAsList(e.target.value) : e.target.value;
-    onChange(e, { value: originTypeValue });
+    onChange(e, { value });
   }
 
   onClickInput() {

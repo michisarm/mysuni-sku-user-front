@@ -330,15 +330,9 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
         <Form.Field>
           <CreateInput
             label="Tag 정보"
-            placeholder="Tag와 Tag는 쉼표(“,”)로 구분하며, 최대 10개까지 입력하실 수 있습니다."
+            placeholder="Tag와 Tag는 쉼표(“,”)로 구분합니다."
             asList
             value={personalCube.tags}
-            sizeLimited
-            maxSize={10}
-            invalidMessage="You can enter up to 10 tags."
-            inputProps={{
-              onKeyDown: this.onDeleteLastWord,
-            }}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('tags', data.value )}
           />
         </Form.Field>
