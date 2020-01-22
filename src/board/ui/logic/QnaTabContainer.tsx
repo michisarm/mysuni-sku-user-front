@@ -43,7 +43,7 @@ class QnaTabContainer extends React.Component<Props> {
         <div className="support-list-wrap">
           <div className="list-top">
             <Button icon className="left post ask" onClick={routeToQnaRegist}>
-              <Icon className="ask24" />Ask a Question
+              <Icon className="ask24" />&nbsp;&nbsp;Ask a Question
             </Button>
             <div className="radio-wrap">
               <Radio

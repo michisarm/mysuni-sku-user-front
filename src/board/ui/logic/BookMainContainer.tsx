@@ -253,7 +253,7 @@ export class BookMainContainer extends React.Component<Props, States> {
                 <div className="text">mySUNI에 대한 궁금증을 풀어드립니다.<br />Help Desk<span
                   className="dash"
                 /><Icon className="supporttel16" /><span className="blind">support tel</span>
-                  02)6323-9002
+                  02-6323-9002
                 </div>
               </div>
             </div>

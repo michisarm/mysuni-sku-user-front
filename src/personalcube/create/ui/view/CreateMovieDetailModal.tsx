@@ -38,7 +38,10 @@ class CreateMovieDetailModal extends React.Component<Props> {
     const { open, handleChangeOpen } = this.props;
     return (
       <>
-        <Button className="personal line" onClick={() => handleChangeOpen(true)}>Create Movie</Button>
+        <Button className="personal line" onClick={() => handleChangeOpen(true)}>
+          <Icon className="movie16" /><span className="blind">create movie</span>
+          <span>Create Movie</span>
+        </Button>
 
         <Modal open={open} onClose={() => handleChangeOpen(false)} className="base w700">
           <Modal.Header>

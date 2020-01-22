@@ -170,7 +170,7 @@ class QuickNavContainer extends Component<Props, State> {
 
               {
                 this.hasAdminRole && (
-                  <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
+                  <BottomMenuItemView iconName="admin24" text="Admin Site" onClick={this.onClickAdminSite} />
                 )
               }
             </>
