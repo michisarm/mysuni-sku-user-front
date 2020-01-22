@@ -216,7 +216,8 @@ class LectureCardPage extends Component<Props, State> {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;
-        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting || student.learningState === LearningState.Failed) {
+        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting
+          || student.learningState === LearningState.Failed) {
           if (student.learningState === LearningState.Waiting) {
             state = SubState.Waiting;
           }
