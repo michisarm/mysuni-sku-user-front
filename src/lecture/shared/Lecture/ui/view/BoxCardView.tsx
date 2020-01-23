@@ -69,7 +69,7 @@ class BoxCardView extends Component<Props, States> {
         }
         {
           typeof date === 'string'  && (
-            <div className="study-date">{date} 필수 학습 등록</div>
+            <div className="study-date">{date} 학습 시작</div>
           )
         }
         {/* Todo: 기획, 도메인 확인 후 속성명 정의하여 props에 추가 */}
