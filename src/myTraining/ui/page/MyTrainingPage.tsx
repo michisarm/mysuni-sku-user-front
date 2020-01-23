@@ -147,10 +147,10 @@ class MyTrainingPage extends Component<Props, State> {
       offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
-      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, 0, channelIds);
+      offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
     }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
