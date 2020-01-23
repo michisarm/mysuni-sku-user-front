@@ -77,16 +77,26 @@ class MyTrainingPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService } = this.props;
+    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
     if (prevProps.match.params.tab !== currentTab) {
       this.selectMenu(currentTab);
     }
-    if (prevProps.match.params.pageNo !== currentPageNo) {
+    else if (prevProps.match.params.tab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
       const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      if (currentPageNo === '1') {
+        if (currentTab === Type.InMyList) {
+          inMyLectureService!.clear();
+        }
+        if (currentTab === Type.Required) {
+          lectureService!.clearLectures();
+        } else {
+          myTrainingService!.clear();
+        }
+      }
       pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       this.findPagingList(this.getPageNo() - 1);
     }
@@ -147,6 +157,7 @@ class MyTrainingPage extends Component<Props, State> {
       offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
+      console.log(type, page!.limit, page!.nextOffset);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
     }
 
