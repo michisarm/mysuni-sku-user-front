@@ -79,6 +79,10 @@ class StudentService {
     return this.studentApi.modifyStudentForExam(studentId, examId);
   }
 
+  modifyStudentForCoursework(studentId: string, fileBoxId: string ) {
+    return this.studentApi.modifyStudentForCoursework(studentId, fileBoxId);
+  }
+
   @action
   async findStudent(rollBookId: string, round?: number) {
     //

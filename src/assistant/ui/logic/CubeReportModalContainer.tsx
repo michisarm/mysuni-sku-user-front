@@ -54,7 +54,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     const { student } = this.props.studentService || {} as StudentService;
     const { id: studentId } = student!;
     if (studentId && student) {
-      studentService!.modifyStudent(studentId, student.homeworkFileBoxId)
+      studentService!.modifyStudentForCoursework(studentId, student.homeworkFileBoxId)
         .then(() => this.onCloseModal());
       if (onSaveCallback) onSaveCallback();
     }

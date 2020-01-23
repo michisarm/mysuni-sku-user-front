@@ -420,7 +420,6 @@ class LectureCardContainer extends Component<Props, State> {
           ref={reportModal => this.reportModal = reportModal}
           downloadReport = {this.onClickDownloadReport}
           rollBookId={studentCdo.rollBookId}
-          onSaveCallback={this.testCallback}
         />
         {children}
       </LectureCardContentWrapperView>
