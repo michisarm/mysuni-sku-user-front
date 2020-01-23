@@ -33,7 +33,7 @@ class MultiChoiceView extends React.Component<Props, State> {
                 className="base"
                 label={item.value}
                 value={item.number}
-                disabled={disabled}
+                readOnly={disabled}
                 checked={answer.itemNumbers.includes(item.number)}
                 onChange={(e: any, data: any) => {
                   const value = data.value;

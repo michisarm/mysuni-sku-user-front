@@ -38,7 +38,7 @@ class ShortAnswerView extends React.Component<Props, State> {
           type="text"
           placeholder="답변을 입력해주세요. (최대 100자 입력 가능)"
           value={sentence}
-          disabled={disabled}
+          readOnly={disabled}
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
           onChange={(e) => {
