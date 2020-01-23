@@ -20,6 +20,8 @@ interface State {
 @observer
 class CarouselContainer extends Component<Props, State> {
   //
+  AUTO_NEXT_TIME = 30 * 1000;
+
   banners = [
     {
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
@@ -103,10 +105,36 @@ class CarouselContainer extends Component<Props, State> {
     },
   ];
 
+  intervalId = 0;
+
   state = {
     activeIndex: 0,
   };
 
+
+  componentDidMount() {
+    //
+    this.intervalId = setInterval(this.nextBanner, this.AUTO_NEXT_TIME) as any;
+  }
+
+  componentWillUnmount(): void {
+    //
+    if (this.intervalId) {
+      clearInterval(this.intervalId as any);
+    }
+  }
+
+  nextBanner() {
+    //
+    this.setState((state) => {
+      //
+      const nextIndex = state.activeIndex + 1;
+
+      return {
+        activeIndex: this.banners.length <= nextIndex ? 0 : nextIndex,
+      };
+    });
+  }
 
   onClickPrev() {
     //
@@ -143,21 +171,14 @@ class CarouselContainer extends Component<Props, State> {
         }
         pages={
           <div className="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 0 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 1"
-              onClick={() => this.onClickPage(0)}
-            />
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 1 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 2"
-              onClick={() => this.onClickPage(1)}
-            />
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 2 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 3"
-              onClick={() => this.onClickPage(2)}
-            />
+            {items.map((item, index) =>
+              <button
+                key={`carousel-${index}`}
+                className={`swiper-pagination-bullet ${activeIndex === index && 'swiper-pagination-bullet-active'}`}
+                aria-label={`Goto slide ${index + 1}`}
+                onClick={() => this.onClickPage(index)}
+              />
+            )}
           </div>
         }
       >
