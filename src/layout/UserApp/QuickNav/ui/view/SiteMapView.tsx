@@ -13,7 +13,7 @@ interface Props {
 }
 
 export interface SiteMap {
-  name: string
+  name: React.ReactNode
   items: SiteMapItem[]
   countable?: boolean
 }
