@@ -62,6 +62,33 @@ class CarouselContainer extends Component<Props, State> {
       linkAnchor: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
+      title: <>&quot;mySUNI&quot;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
+      description: (
+        <>
+          어떤 과정부터 학습해야 할지 막막하신가요?<br />
+          Target 역량에 따른 학습추천~!<br />
+          써니가 제안합니다!<br />
+          {/*<span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>*/}
+        </>
+      ),
+      linkText: '/board/support/notice-detail/NTC-000033',
+      content: (
+        <a href="">
+          <div className="panopto">
+            <iframe
+              title="video type"
+              src="http://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse"
+              width="600"
+              height="420"
+              style={{ padding: '0px', border: '0px' }}
+              frameBorder="0"
+              allowFullScreen
+            />
+          </div>
+        </a>
+      ),
+    },
+    {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
         <>
