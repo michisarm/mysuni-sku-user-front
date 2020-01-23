@@ -83,10 +83,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
 
     if (isChecked === 'Yes') {
       onChangePersonalCubeProps(name, allList);
-      if (name === 'subsidiaries') {
-        onChangePersonalCubeProps('requiredSubsidiaries', allList);
-        this.setState({ subsidiariesAll: 'No' });
-      }
+      this.setState({ subsidiariesAll: 'No' });
 
     } else {
       subsidiaries.map(subsidiary => {
@@ -94,10 +91,7 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
       });
       onChangePersonalCubeProps(name, allList);
 
-      if (name === 'subsidiaries') {
-        onChangePersonalCubeProps('requiredSubsidiaries', allList);
-        this.setState({ subsidiariesAll: 'Yes' });
-      }
+      this.setState({ subsidiariesAll: 'Yes' });
     }
   }
 
@@ -179,15 +173,10 @@ class CreateExposureInfoContainer extends React.Component<Props, States> {
     const { colleges } = this.props.collegeService || {} as CollegeService;
     const { subsidiariesAll } = this.state;
     const subsidiaryIdList: string[] = [];
-    const requiredSubsidiaryIdList: string[] = [];
     const collegeList: any = [];
 
     colleges.map((data, index) => collegeList.push({ key: index, value: data.collegeId, text: data.name }));
     if (personalCube && personalCube.subsidiaries) personalCube.subsidiaries.map(subsidiary => subsidiaryIdList.push(subsidiary.id));
-    if (personalCube && personalCube.requiredSubsidiaries) {
-      personalCube.requiredSubsidiaries.map(requiredSubsidiary =>
-        requiredSubsidiaryIdList.push(requiredSubsidiary.id));
-    }
 
     return (
       <>
