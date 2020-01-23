@@ -112,7 +112,7 @@ export const ClassView = ({ clazz }: ClassProp) => {
         clazz.learningTime && (
           <List.Item>
             <div className="ui">
-              <div className="label">Time</div>
+              <div className="label">학습시간</div>
               <div className="value">{hourMinuteFormat}</div>
             </div>
           </List.Item>
@@ -122,7 +122,7 @@ export const ClassView = ({ clazz }: ClassProp) => {
         clazz.capacity && (
           <List.Item>
             <div className="ui">
-              <div className="label">정원</div>
+              <div className="label">정원정보</div>
               <div className="value">{clazz.capacity}</div>
             </div>
           </List.Item>

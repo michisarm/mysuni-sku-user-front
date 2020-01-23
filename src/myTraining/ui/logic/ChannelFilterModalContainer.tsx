@@ -166,7 +166,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                                 checked={channels.map(ch => ch.id).includes(channel.id)}
                               />
                               <label>
-                                {channel.name}
+                                {channel.name}&nbsp;
                                 <span>
                                   ({
                                     channelLectureCounts && channelLectureCounts.length > 0
