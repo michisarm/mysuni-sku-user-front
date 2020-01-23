@@ -37,7 +37,7 @@ class SingleChoiceView extends React.Component<Props, State> {
                 label={item.value}
                 name={`survey_radio_${question.sequence.toSequenceString()}`}
                 value={item.number}
-                disabled={disabled}
+                readOnly={disabled}
                 checked={answer.itemNumbers.includes(item.number)}
                 onChange={(e: any, data: any) => {
                   const newItemNumbers = [ data.value ];
