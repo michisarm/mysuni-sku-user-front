@@ -98,7 +98,7 @@ class ChannelsLecturesContainer extends Component<Props> {
   getDisplayableRecommendLectures() {
     //
     const { recommendLectures } = this.props.lectureService!;
-    const { channels, channelIds } = this.props.collegeService!;
+    const { channels } = this.props.collegeService!;
     const notChecked = channels.every((channel) => !channel.checked);
     let displayableRecommendLectures: RecommendLectureRdo[] = [];
 
