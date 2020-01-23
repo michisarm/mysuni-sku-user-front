@@ -96,8 +96,11 @@ class MyTrainingPage extends Component<Props, State> {
         } else {
           myTrainingService!.clear();
         }
+        pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
       }
-      pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      else {
+        pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      }
       this.findPagingList(this.getPageNo() - 1);
     }
   }
