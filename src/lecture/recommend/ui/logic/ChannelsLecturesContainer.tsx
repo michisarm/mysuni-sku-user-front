@@ -2,15 +2,15 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { ReviewService } from '@nara.drama/feedback';
+import { NoSuchContentPanel } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureService, RecommendLectureRdo } from 'lecture';
 import routePaths from '../../../routePaths';
 import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
-import { NoSuchContentPanel } from '../../../../shared';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 
 
@@ -52,8 +52,6 @@ class ChannelsLecturesContainer extends Component<Props> {
     //
     const { channels: prevChannels } = prevProps;
     const { collegeService, channels } = this.props;
-
-    // console.log('ChannelsLecturesContainer componentDidUpdate() prevChannels.length='+prevChannels.length+', channels.length='+channels.length);
 
     if (prevChannels !== channels) {
       collegeService!.setChannels(channels && channels.map(chanel => ({
@@ -97,6 +95,29 @@ class ChannelsLecturesContainer extends Component<Props> {
     return recommendLectures.length < recommendLecturesCount;
   }
 
+  getDisplayableRecommendLectures() {
+    //
+    const { recommendLectures } = this.props.lectureService!;
+    const { channels } = this.props.collegeService!;
+    const notChecked = channels.every((channel) => !channel.checked);
+    let displayableRecommendLectures: RecommendLectureRdo[] = [];
+
+    /**
+     * 관심채널보기 전체해제인 경우는 전체 관심채널들에 대한 추천Lecture 라인들을 보여줌.
+     */
+    if (notChecked) {
+      displayableRecommendLectures = recommendLectures;
+    }
+    // 선택된 관심채널에 대한 추천Lecture 라인들만 보여줌.(체크확인 filter 처리)
+    else {
+      const checkedChannelIds = channels.filter((channel) => channel.checked)
+        .map((channel) => channel.id);
+
+      displayableRecommendLectures = recommendLectures.filter((lecture) => checkedChannelIds.includes(lecture.channel.id));
+    }
+    return displayableRecommendLectures;
+  }
+
   onConfirmChangeFavorite() {
     //
     const { history } = this.props;
@@ -120,24 +141,9 @@ class ChannelsLecturesContainer extends Component<Props> {
 
   render() {
     //
-    const { collegeService, lectureService, onViewAll } = this.props;
+    const { collegeService, onViewAll } = this.props;
     const { channels } = collegeService!;
-    const { recommendLectures } = lectureService!;
-
-    let channelIds: string[] = [];
-
-    /**
-     * 관심채널보기 전체해제인 경우는 전체 관심채널들에 대한 추천Lecture 라인들을 보여줌.
-     */
-    if (channels.every((channel) => !channel.checked)) {
-      channelIds = channels.map((channel: ChannelModel) => channel.id);
-    }
-    // 선택된 관심채널에 대한 추천Lecture 라인들만 보여줌.(체크확인 filter 처리)
-    else {
-      channelIds = channels.filter((channel: ChannelModel) => channel.checked).map((channel: ChannelModel) => channel.id);
-    }
-
-    // console.log('render() recommendLectures.length', recommendLectures.length);
+    const displayableRecommendLectures = this.getDisplayableRecommendLectures();
 
     return (
       <ChannelLecturesContentWrapperContainer
@@ -146,21 +152,18 @@ class ChannelsLecturesContainer extends Component<Props> {
         onConfirmCallback={this.onConfirmChangeFavorite}
       >
         <div className="recommend-area">
-          {
-            (!recommendLectures || recommendLectures.length < 1) ?
-              <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
-              :
-              recommendLectures.map((lecture: RecommendLectureRdo, index: number) => {
-                if (!channelIds.includes(lecture.channel.id)) return null;
-                return (
-                  <ChannelLecturesLineContainer
-                    channel={new ChannelModel(lecture.channel)}
-                    lectures={lecture.lectures}
-                    onViewAll={onViewAll}
-                    key={`channel_cont_${index}`}
-                  />
-                );
-              })
+          { (!displayableRecommendLectures || displayableRecommendLectures.length < 1) ?
+            <NoSuchContentPanel message="추천 학습 과정이 없습니다." />
+            :
+            displayableRecommendLectures
+              .map((lecture: RecommendLectureRdo, index: number) => (
+                <ChannelLecturesLineContainer
+                  channel={new ChannelModel(lecture.channel)}
+                  lectures={lecture.lectures}
+                  onViewAll={onViewAll}
+                  key={`channel_cont_${index}`}
+                />
+              ))
           }
           { this.isContentMore() && (
             <SeeMoreButtonView onClick={this.onClickSeeMore} />

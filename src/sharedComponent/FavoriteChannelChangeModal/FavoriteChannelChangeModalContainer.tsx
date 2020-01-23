@@ -31,7 +31,7 @@ interface State {
 
 @inject(mobxHelper.injectFrom(
   'profile.skProfileService',
-  'college.collegeService',
+  'shared.collegeService',
   'lecture.collegeLectureCountService',
 ))
 @observer
