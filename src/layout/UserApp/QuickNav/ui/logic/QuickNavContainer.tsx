@@ -16,18 +16,19 @@ import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
 } from '../view/QuickNavElementsView';
 import { ChannelModel } from '../../../../../college';
+import NotieService from '../../../present/logic/NotieService';
 
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService
+  skProfileService?: SkProfileService,
+  notieService?: NotieService,
 }
 
 interface State {
   active: boolean,
-  feedType: string
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'layout.notieService'))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
@@ -36,13 +37,13 @@ class QuickNavContainer extends Component<Props, State> {
 
   state = {
     active: false,
-    feedType: '',
   };
 
 
   componentDidMount() {
     //
     window.addEventListener('click', this.deactive);
+    this.props.notieService!.hasQuickLearningFeeds();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -68,6 +69,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickToggle() {
     //
+    this.props.notieService!.hasQuickLearningFeeds();
     this.setState((prevState) => {
       //
       const nextActive = !prevState.active;
@@ -77,6 +79,7 @@ class QuickNavContainer extends Component<Props, State> {
       }
       return { active: nextActive };
     });
+
   }
 
   onClose() {
@@ -87,19 +90,16 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickLearning() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav(myTrainingRoutePaths.learning());
   }
 
   onClickCommunity() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav(myTrainingRoutePaths.community());
   }
 
   onClickSupport() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav('/board/support/Notice');
   }
 
@@ -149,9 +149,9 @@ class QuickNavContainer extends Component<Props, State> {
         <MenuWrapperView
           topButtons={
             <>
-              <TopMenuItemView iconName="learning32" feedType={this.state.feedType} text="Learning" onClick={this.onClickLearning} />
+              <TopMenuItemView iconName="learning32" notieActive={this.props.notieService!.notieActive} text="Learning" onClick={this.onClickLearning} />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
-              <TopMenuItemView iconName="support32" feedType={this.state.feedType} text="Support" onClick={this.onClickSupport} />
+              <TopMenuItemView iconName="support32" notieActive={this.props.notieService!.notieActive} text="Support" onClick={this.onClickSupport} />
             </>
           }
           bottomButtons={

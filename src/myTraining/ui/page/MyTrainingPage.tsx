@@ -23,16 +23,18 @@ import LineHeaderContainer from '../logic/LineHeaderContainer';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
+import NotieService from '../../../layout/UserApp/present/logic/NotieService';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
-  skProfileService?: SkProfileService
-  lectureService?: LectureService
-  myTrainingService?: MyTrainingService
-  inMyLectureService?: InMyLectureService
-  myLearningSummaryService?: MyLearningSummaryService
+  skProfileService?: SkProfileService,
+  lectureService?: LectureService,
+  myTrainingService?: MyTrainingService,
+  inMyLectureService?: InMyLectureService,
+  myLearningSummaryService?: MyLearningSummaryService,
+  notieService?: NotieService,
 }
 
 interface State {
@@ -57,6 +59,7 @@ enum Type {
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.myLearningSummaryService',
+  'layout.notieService',
 ))
 @observer
 @reactAutobind
@@ -77,7 +80,7 @@ class MyTrainingPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
+    const { pageService, inMyLectureService, lectureService, myTrainingService, notieService } = this.props;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
@@ -103,13 +106,21 @@ class MyTrainingPage extends Component<Props, State> {
       }
       this.findPagingList(this.getPageNo() - 1);
     }
+
+    // notieService!.countMenuNoties('Progress');
+    // notieService!.countMenuNoties('Completed');
+    // notieService!.countMenuNoties('Missed');
   }
 
   init() {
-    const { match, skProfileService, myLearningSummaryService } = this.props;
+    const { match, skProfileService, myLearningSummaryService, notieService } = this.props;
 
     skProfileService!.findSkProfile();
     myLearningSummaryService!.findMyLearningSummary();
+
+    notieService!.countMenuNoties('Learning_Progress');
+    notieService!.countMenuNoties('Learning_Passed');
+    notieService!.countMenuNoties('Learning_Missed');
 
     this.selectMenu(match.params.tab);
   }
@@ -139,6 +150,18 @@ class MyTrainingPage extends Component<Props, State> {
   onSelectMenu(type: string) {
     //
     this.props.history.push(routePaths.learningTab(type));
+
+    switch (type) {
+      case Type.InProgress:
+        this.props.notieService!.readNotie('Learning_Progress');
+        break;
+      case Type.Completed:
+        this.props.notieService!.readNotie('Learning_Passed');
+        break;
+      case Type.Retry:
+        this.props.notieService!.readNotie('Learning_Missed');
+    }
+
   }
 
   async findPagingList(pageNo?: number) {
@@ -381,12 +404,16 @@ class MyTrainingPage extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, myLearningSummaryService } = this.props;
+    const { skProfileService, myLearningSummaryService, notieService } = this.props;
     const { type } = this.state;
     const { skProfile } = skProfileService as SkProfileService;
     const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
     const { member } = skProfile as SkProfileModel;
+
+    const completedCount = notieService!.completedCount;
+    const progressCount = notieService!.progressedCount;
+    const missedCount = notieService!.missedCount;
 
     return (
       <ContentLayout
@@ -429,6 +456,7 @@ class MyTrainingPage extends Component<Props, State> {
             {
               name: '학습중',
               type: Type.InProgress,
+              count: progressCount,
             },
             {
               name: '관심목록',
@@ -446,10 +474,12 @@ class MyTrainingPage extends Component<Props, State> {
             {
               name: '학습완료',
               type: Type.Completed,
+              count: completedCount,
             },
             {
               name: '취소/미이수',
               type: Type.Retry,
+              count: missedCount,
             },
           ]}
           type={this.state.type}
