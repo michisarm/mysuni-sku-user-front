@@ -89,7 +89,7 @@ class CarouselContainer extends Component<Props, State> {
            </div>
          </a>
        ),
-     },
+    },
     {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
