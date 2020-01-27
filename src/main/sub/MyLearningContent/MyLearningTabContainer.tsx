@@ -21,6 +21,7 @@ interface TabItem {
   text?: string
   element?: React.ReactNode
   onClick?: () => void
+  count?: number
 }
 
 @reactAutobind
@@ -75,7 +76,7 @@ class MyLearningTabContainer extends Component<Props, State> {
                     onClick={() => this.onClickTab(tab)}
                   >
                     {tab.text || tab.element || tab.name}
-                    {/*<span className="count">+5</span>*/}
+                    { tab.count && <span className="count">+{tab.count}</span> || null }
                   </a>
                 ))}
               </div>
