@@ -70,7 +70,7 @@ class CarouselContainer extends Component<Props, State> {
            어떤 과정부터 학습해야 할지 막막하신가요?<br />
            Target 역량에 따른 학습추천~!<br />
            써니가 제안합니다!<br />
-           {/*<span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>*/}
+           <span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>
         </>
       ),
       linkText: '/board/support/notice-detail/NTC-000033',
