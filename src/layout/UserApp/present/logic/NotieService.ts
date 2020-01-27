@@ -1,5 +1,5 @@
 
-import {observable, action, computed, runInAction} from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import NotieApi from '../apiclient/NotieApi';
 
 
@@ -29,11 +29,11 @@ class NotieService {
   async hasQuickLearningFeeds() {
     const notieActive = await this.notieApi.hasQuickLearningFeeds();
 
-    runInAction(()=> this.notieActive = notieActive);
+    runInAction(() => this.notieActive = notieActive);
     return notieActive;
   }
 
-  get getQuickMenuFeed(){
+  get getQuickMenuFeed() {
     return this.notieActive;
   }
 
@@ -74,7 +74,7 @@ class NotieService {
           this.missedCount = 0;
           break;
       }
-    })
+    });
   }
 }
 

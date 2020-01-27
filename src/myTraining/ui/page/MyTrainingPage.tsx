@@ -80,7 +80,7 @@ class MyTrainingPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const { pageService, inMyLectureService, lectureService, myTrainingService, notieService } = this.props;
+    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
