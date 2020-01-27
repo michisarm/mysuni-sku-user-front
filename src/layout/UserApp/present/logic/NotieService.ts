@@ -21,6 +21,9 @@ class NotieService {
   @observable
   missedCount: number = 0;
 
+  @observable
+  waitingCount: number = 0;
+
   constructor(notieApi: NotieApi = NotieApi.instance) {
     this.notieApi = notieApi;
   }
@@ -52,6 +55,9 @@ class NotieService {
         case 'Learning_Missed':
           this.missedCount = count;
           break;
+        case 'Learning_Waiting':
+          this.waitingCount = count;
+          break;
       }
     });
 
@@ -72,6 +78,9 @@ class NotieService {
           break;
         case 'Learning_Missed':
           this.missedCount = 0;
+          break;
+        case 'Learning_Waiting':
+          this.waitingCount = 0;
           break;
       }
     });
