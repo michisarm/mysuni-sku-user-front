@@ -121,6 +121,7 @@ class MyTrainingPage extends Component<Props, State> {
     notieService!.countMenuNoties('Learning_Progress');
     notieService!.countMenuNoties('Learning_Passed');
     notieService!.countMenuNoties('Learning_Missed');
+    notieService!.countMenuNoties('Learning_Waiting');
 
     this.selectMenu(match.params.tab);
   }
@@ -160,6 +161,9 @@ class MyTrainingPage extends Component<Props, State> {
         break;
       case Type.Retry:
         this.props.notieService!.readNotie('Learning_Missed');
+        break;
+      case Type.Enrolled:
+        this.props.notieService!.readNotie('Learning_Waiting');
     }
 
   }
@@ -414,6 +418,7 @@ class MyTrainingPage extends Component<Props, State> {
     const completedCount = notieService!.completedCount;
     const progressCount = notieService!.progressedCount;
     const missedCount = notieService!.missedCount;
+    const enrolledCount = notieService!.waitingCount;
 
     return (
       <ContentLayout
@@ -470,6 +475,7 @@ class MyTrainingPage extends Component<Props, State> {
             {
               name: '학습예정',
               type: Type.Enrolled,
+              count: enrolledCount,
             },
             {
               name: '학습완료',
