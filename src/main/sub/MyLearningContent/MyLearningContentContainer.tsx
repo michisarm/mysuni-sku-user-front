@@ -16,13 +16,15 @@ import MyTrainingModel from '../../../myTraining/model/MyTrainingModel';
 import MyLearningTabContainer from './MyLearningTabContainer';
 import { Wrapper } from './MyLearningContentElementsView';
 import LectureModel from '../../../lecture/shared/model/LectureModel';
+import NotieService from '../../../layout/UserApp/present/logic/NotieService';
 
 
 interface Props extends RouteComponentProps {
   reviewService?: ReviewService,
-  myTrainingService?: MyTrainingService
-  lectureService?: LectureService
-  inMyLectureService?: InMyLectureService
+  myTrainingService?: MyTrainingService,
+  lectureService?: LectureService,
+  inMyLectureService?: InMyLectureService,
+  notieService?: NotieService,
 }
 
 interface State {
@@ -41,6 +43,7 @@ enum ContentType {
   'myTraining.myTrainingService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
+  'layout.notieService',
 ))
 @observer
 @reactAutobind
@@ -49,8 +52,8 @@ class MyLearningContentContainer extends Component<Props, State> {
   tabs = [
     { name: ContentType.Required, text: '권장과정' },
     { name: ContentType.InMyList, text: '관심목록' },
-    { name: ContentType.InProgress, text: '학습중' },
-    { name: ContentType.Enrolled, text: '학습예정' },
+    { name: ContentType.InProgress, text: '학습중', count: this.props.notieService!.progressedCount },
+    { name: ContentType.Enrolled, text: '학습예정', count: this.props.notieService!.waitingCount },
   ];
 
   PAGE_SIZE = 8;
@@ -62,6 +65,9 @@ class MyLearningContentContainer extends Component<Props, State> {
   componentDidMount(): void {
     //
     this.findMyContent();
+
+    this.props.notieService!.countMenuNoties('Learning_Progress');
+    this.props.notieService!.countMenuNoties('Learning_Waiting');
   }
 
   async findMyContent() {
