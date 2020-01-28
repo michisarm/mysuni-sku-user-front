@@ -44,7 +44,9 @@ class ChannelsLecturesContainer extends Component<Props> {
   componentDidMount(): void {
     const { collegeService, channels } = this.props;
 
-    collegeService!.setChannels(channels && channels.length && channels.map(chanel => ({ ...chanel, checked: false })) || []);
+    collegeService!.setChannels(channels && channels.length && channels.map(chanel =>
+      new ChannelModel({ ...chanel, checked: false })
+    ) || []);
     this.findPagingRecommendLectures();
   }
 
@@ -54,10 +56,12 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { collegeService, channels } = this.props;
 
     if (prevChannels !== channels) {
-      collegeService!.setChannels(channels && channels.map(chanel => ({
-        ...chanel,
-        checked: false,
-      })) || []);
+      collegeService!.setChannels(channels && channels.map(chanel => (
+        new ChannelModel({
+          ...chanel,
+          checked: false,
+        })
+      )) || []);
     }
 
     if (prevProps.match.params.pageNo !== this.props.match.params.pageNo) {

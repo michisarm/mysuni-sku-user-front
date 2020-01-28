@@ -20,13 +20,13 @@ export default class CollegeApi {
   findCollege(collegeId: string) {
     //
     return axios.get<CollegeModel>(this.URLCollege + `/${collegeId}`)
-      .then(response => response && response.data || null);
+      .then(response => response && new CollegeModel(response.data) || null);
   }
 
   findAllColleges() {
     //
     return axios.get<CollegeModel[]>(this.URLCollege + '/available')
-      .then(response => response && response.data || []);
+      .then(response => response && Array.isArray(response.data) && response.data.map(college => new CollegeModel(college)) || []);
   }
 
   findAllCollegesForCreate() {

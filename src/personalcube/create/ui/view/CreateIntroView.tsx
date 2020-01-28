@@ -6,11 +6,10 @@ import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import ReactQuill from 'react-quill';
 import { Form, Icon, Select } from 'semantic-ui-react';
-import SelectType from '../../../../shared/model/SelectType';
+import SelectType from '../../model/SelectOptions';
 import { CubeIntroModel } from '../../../cubeintro';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CreateBoardContainer from '../logic/CreateBoardContainer';
-import { FormTitle } from '../view/DetailElementsView';
 
 
 interface Props {
@@ -42,10 +41,6 @@ class CreateIntroView extends Component<Props, States> {
 
     return (
       <>
-        <FormTitle
-          activeStep={2}
-        />
-
         <Form.Field>
           <label className="necessary">교육목표</label>
           <div className="ui form">

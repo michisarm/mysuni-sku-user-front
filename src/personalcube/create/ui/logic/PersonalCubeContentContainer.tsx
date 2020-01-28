@@ -3,18 +3,18 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { patronInfo } from '@nara.platform/dock';
 
-import { ContentLayout } from 'shared';
 import { Button } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
-import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
+import { PersonalCubeService, PersonalCubeModel } from '../../../personalcube';
 import { MediaService } from '../../../media';
 import { BoardService } from '../../../board';
 import { OfficeWebService } from '../../../officeweb';
-import DetailBasicInfoContainer from './DetailBasicInfoContainer';
-import CreateExposureInfoContainer from './CreateExposureInfoContainer';
-import { ContentWrapper } from '../view/DetailElementsView';
+import BasicInfoFormContainer from './BasicInfoFormContainer';
+import ExposureInfoFormContainer from './ExposureInfoFormContainer';
+import { FormTitle } from '../view/DetailElementsView';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
@@ -38,25 +38,36 @@ interface States {
 ))
 @observer
 @reactAutobind
-class CreateDetailContainer extends Component<Props, States> {
+class PersonalCubeContentContainer extends Component<Props, States> {
   //
   state = {
     isNext: false,
   };
 
-  componentDidMount(): void {
+
+  constructor(props: Props) {
+    //
+    super(props);
+    this.clearAll();
+  }
+
+
+  async componentDidMount() {
     //
     const personalCubeService = this.props.personalCubeService!;
     const { params } = this.props.match;
 
-    // 신규
-    if (!params.personalCubeId) {
-      this.clearAll();
-    }
-    // 수정
-    else {
+    if (params.personalCubeId) {
       personalCubeService.findPersonalCube(params.personalCubeId);
+      // const personalCube = await personalCubeService.findPersonalCube(params.personalCubeId);
+
+      // patronInfo.setWorkspaceByDomain(personalCube!);
     }
+  }
+
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
   }
 
   clearAll() {
@@ -84,39 +95,7 @@ class CreateDetailContainer extends Component<Props, States> {
     reactAlert({ title: '필수 정보 입력 안내', message, warning: true });
   }
 
-  onChangePersonalCubeProps(name: string, value: string | {}) {
-    //
-    const personalCubeService = this.props.personalCubeService!;
-
-    personalCubeService.changeCubeProps(name, value);
-    // if (name === 'tags') {
-    //   personalCubeService.changeCubeTagsCsv(value as string);
-    // }
-    // else {
-    //   personalCubeService.changeCubeProps(name, value);
-    // }
-  }
-
-  onSave(isNext: boolean) {
-    //
-    const { personalCube } = this.props.personalCubeService!;
-    const personalCubeObject = PersonalCubeModel.getBlankRequiredField(personalCube);
-
-    if (personalCubeObject !== 'success') {
-      this.alertRequiredField(personalCubeObject);
-    }
-    else {
-      reactConfirm({
-        title: '저장 안내',
-        message: '입력하신 강좌를 저장 하시겠습니까?',
-        onOk: this.handleOKConfirmWin,
-      });
-
-      this.setState({ isNext });
-    }
-  }
-
-  handleOKConfirmWin() {
+  save() {
     //
     const { skProfileService, personalCubeService, match } = this.props;
     const { isNext } = this.state;
@@ -146,19 +125,7 @@ class CreateDetailContainer extends Component<Props, States> {
     }
   }
 
-  onDeleteCube() {
-    //
-    const { params } = this.props.match;
-
-    reactConfirm({
-      title: '강좌 삭제',
-      message: '등록된 강좌정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.',
-      warning: true,
-      onOk: () => this.handleDeleteCube(params.personalCubeId),
-    });
-  }
-
-  handleDeleteCube(personalCubeId: string) {
+  removePersonalCube(personalCubeId: string) {
     //
     const { personalCubeService, mediaService, boardService, officeWebService, match, history } = this.props;
     const { cubeType } = match.params;
@@ -181,49 +148,82 @@ class CreateDetailContainer extends Component<Props, States> {
     }
   }
 
+  onChangePersonalCubeProps(name: string, value: string | {}) {
+    //
+    const personalCubeService = this.props.personalCubeService!;
+
+    personalCubeService.changeCubeProps(name, value);
+  }
+
+  onSave(isNext: boolean) {
+    //
+    const { personalCube } = this.props.personalCubeService!;
+    const personalCubeObject = PersonalCubeModel.getBlankRequiredField(personalCube);
+
+    if (personalCubeObject !== 'success') {
+      this.alertRequiredField(personalCubeObject);
+    }
+    else {
+      reactConfirm({
+        title: '저장 안내',
+        message: '입력하신 강좌를 저장 하시겠습니까?',
+        onOk: this.save,
+      });
+
+      this.setState({ isNext });
+    }
+  }
+
+  onRemovePersonalCube() {
+    //
+    const { params } = this.props.match;
+
+    reactConfirm({
+      title: '강좌 삭제',
+      message: '등록된 강좌정보를 삭제하시겠습니까? 삭제하신 정보는 복구하실 수 없습니다.',
+      warning: true,
+      onOk: () => this.removePersonalCube(params.personalCubeId),
+    });
+  }
+
   render() {
     //
     const { personalCubeService, match: { params }} = this.props;
     const { personalCube } = personalCubeService!;
 
     return (
-      <ContentLayout
-        className="bg-white"
-        breadcrumb={[
-          { text: 'Create' },
-          { text: 'Create', path: routePaths.createCreate() },
-        ]}
-      >
-        <ContentWrapper>
-          <DetailBasicInfoContainer
-            personalCubeId={params.personalCubeId}
-            personalCube={personalCube}
-            onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-          />
+      <>
+        <FormTitle
+          activeStep={1}
+        />
 
-          <CreateExposureInfoContainer
-            personalCube={personalCube}
-            onChangePersonalCubeProps={this.onChangePersonalCubeProps}
-          />
+        <BasicInfoFormContainer
+          contentNew={!params.personalCubeId}
+          personalCube={personalCube}
+          onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+        />
 
-          {
-            params.personalCubeId ?
-              <div className="buttons">
-                <Button type="button" className="fix line" onClick={this.onDeleteCube}>Delete</Button>
-                <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                <Button type="button" className="fix line" onClick={() => this.onSave(false)}>Save</Button>
-                <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
-              </div>
-              :
-              <div className="buttons">
-                <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
-              </div>
-          }
-        </ContentWrapper>
-      </ContentLayout>
+        <ExposureInfoFormContainer
+          personalCube={personalCube}
+          onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+        />
+
+        { params.personalCubeId ?
+          <div className="buttons">
+            <Button type="button" className="fix line" onClick={this.onRemovePersonalCube}>Delete</Button>
+            <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix line" onClick={() => this.onSave(false)}>Save</Button>
+            <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
+          </div>
+          :
+          <div className="buttons">
+            <Button type="button" className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
+            <Button type="button" className="fix bg" onClick={() => this.onSave(true)}>Next</Button>
+          </div>
+        }
+      </>
     );
   }
 }
 
-export default withRouter(CreateDetailContainer);
+export default withRouter(PersonalCubeContentContainer);

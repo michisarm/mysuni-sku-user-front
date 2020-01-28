@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { Segment, Form, Step } from 'semantic-ui-react';
 
 
-export const ContentWrapper: FunctionComponent = ({ children }) => (
+export const ContentWrapperWithHeader: FunctionComponent = ({ children }) => (
   <>
     <div className="add-personal-learning support">
       <div className="add-personal-learning-wrap">
@@ -46,6 +46,33 @@ export const FormTitle: FunctionComponent<FormTitleProps> = ({ activeStep }) => 
           </Step.Content>
         </Step>
       </Step.Group>
+    </div>
+  </div>
+);
+
+
+export const ChannelFieldRow: FunctionComponent = ({ children }) => (
+  <div className="table-css type5">
+    <div className="row">
+      {children}
+    </div>
+  </div>
+);
+
+
+interface ChannelModalContentWrapper {
+  header: React.ReactNode
+}
+
+export const ChannelModalContentWrapper: FunctionComponent<ChannelModalContentWrapper> = ({ header, children }) => (
+  <div className="channel-change">
+    <div className="table-css">
+      <div className="row head">
+        {header}
+      </div>
+      <div className="row">
+        {children}
+      </div>
     </div>
   </div>
 );

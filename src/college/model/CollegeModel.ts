@@ -1,5 +1,8 @@
-import { DramaEntity, PatronKey } from '@nara.platform/accent';
+
 import { decorate, observable } from 'mobx';
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
+
+import { IdName } from 'shared';
 import { CollegeType } from './CollegeType';
 import { CreatorModel } from './CreatorModel';
 import ChannelModel from './ChannelModel';
@@ -30,6 +33,14 @@ export class CollegeModel implements DramaEntity {
       const channels = college.channels || this.channels;
       Object.assign(this, { ...college, creator, channels });
     }
+  }
+
+  toIdName() {
+    //
+    return new IdName({
+      id: this.collegeId,
+      name: this.name,
+    });
   }
 }
 

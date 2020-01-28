@@ -95,7 +95,6 @@ class SharedDetailContainer extends React.Component<Props, States> {
     } = this.props;
 
     personalCubeService!.clearPersonalCube();
-    personalCubeService!.clearFileName();
     cubeIntroService!.clearCubeIntro();
     mediaService!.clearMedia();
     boardService!.clearBoard();

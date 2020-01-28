@@ -172,6 +172,26 @@ export class PersonalCubeModel implements DramaEntity {
       }
     );
   }
+
+  static getSubCategoriesGroupByCollege(personalCube: PersonalCubeModel): CategoryModel[][] {
+    //
+    const collegeMap: Map<string, CategoryModel[]> = new Map();
+    const subCategories = personalCube.subCategories;
+
+    subCategories.map((subCategory) => {
+      //
+      const collegeChannels = collegeMap.get(subCategory.college.id);
+
+      if (collegeChannels) {
+        collegeChannels.push(subCategory);
+      }
+      else {
+        collegeMap.set(subCategory.college.id, [subCategory]);
+      }
+    });
+
+    return Array.from(collegeMap.values());
+  }
 }
 
 decorate(PersonalCubeModel, {
