@@ -36,6 +36,7 @@ class EssayView extends React.Component<Props, State> {
         <span className="count"><span className="now">{sentence.length}</span>/<span className="max">1000</span></span>
         <textarea
           placeholder="답변을 입력해주세요."
+          value={answer.sentence}
           readOnly={disabled}
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
