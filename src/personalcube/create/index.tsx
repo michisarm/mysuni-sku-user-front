@@ -1,11 +1,5 @@
-import CreateContainer from './ui/logic/CreateContainer';
-import CreateDetailContainer from './ui/logic/PersonalCubeContentContainer';
-import CreateIntroContainer from './ui/logic/DetailIntroContainer';
-import SharedDetailContainer from './ui/logic/SharedDetailContainer';
 
-export {
-  CreateContainer,
-  CreateDetailContainer,
-  CreateIntroContainer,
-  SharedDetailContainer,
-};
+export { default as CreateListPage } from './ui/logic/CreateListContainer';
+export { default as CreatePersonalCubeDetailPage } from './ui/page/CreatePersonalCubeDetailPage';
+export { default as CreateCubeIntroDetailPage } from './ui/page/CreateCubeIntroDetailPage';
+export { default as SharedDetailPage } from './ui/logic/SharedDetailContainer';

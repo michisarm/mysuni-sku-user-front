@@ -54,7 +54,7 @@ interface States {
 ))
 @observer
 @reactAutobind
-class CreateContainer extends React.Component<Props, States> {
+class CreateListContainer extends React.Component<Props, States> {
   //
   PAGE_KEY = 'lecture.shared';
 
@@ -400,4 +400,4 @@ class CreateContainer extends React.Component<Props, States> {
   }
 }
 
-export default CreateContainer;
+export default CreateListContainer;

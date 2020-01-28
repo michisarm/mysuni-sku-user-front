@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
-import DetailIntroContainer from '../logic/DetailIntroContainer';
+import CubeIntroContentContainer from '../logic/CubeIntroContentContainer';
 import { ContentWrapperWithHeader } from '../view/DetailElementsView';
 
 
@@ -24,7 +24,7 @@ class CreateCubeIntroDetailPage extends Component {
         ]}
       >
         <ContentWrapperWithHeader>
-          <DetailIntroContainer />
+          <CubeIntroContentContainer />
         </ContentWrapperWithHeader>
       </ContentLayout>
     );

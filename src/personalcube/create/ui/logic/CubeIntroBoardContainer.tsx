@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps {
 @inject(mobxHelper.injectFrom('personalCube.boardService'))
 @observer
 @reactAutobind
-class CreateBoardContainer extends React.Component<Props> {
+class CubeIntroBoardContainer extends React.Component<Props> {
   //
   onChangeBoardProps(name: string, value: string | Date | boolean, nameSub?: string) {
     //
@@ -44,5 +44,5 @@ class CreateBoardContainer extends React.Component<Props> {
   }
 }
 
-export default withRouter(CreateBoardContainer);
+export default withRouter(CubeIntroBoardContainer);
 
