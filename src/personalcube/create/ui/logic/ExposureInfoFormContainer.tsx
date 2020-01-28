@@ -129,7 +129,6 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
     }
 
     onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
-    onChangePersonalCubeProps('requiredSubsidiaries', nextSubsidiaries);
     this.setState({ subsidiariesAllChecked: checked });
   }
 
