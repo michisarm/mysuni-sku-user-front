@@ -1,6 +1,7 @@
+
 import React from 'react';
-import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button } from 'semantic-ui-react';
@@ -9,13 +10,14 @@ import { BoardService } from 'personalcube/board';
 import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';
-import CreateIntroView from '../view/CreateIntroView';
+import { PersonalCubeModel } from '../../../personalcube';
 import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
-import CreateMediaContainer from './CreateMediaContainer';
+import { MediaModel, MediaService } from '../../../media';
 import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
-import { MediaModel, MediaService } from '../../../media';
-import { PersonalCubeModel } from '../../../personalcube';
+
+import CubeIntroMediaContainer from './CubeIntroMediaContainer';
+import CubeIntroView from '../view/CubeIntroView';
 import { FormTitle } from '../view/DetailElementsView';
 
 
@@ -29,7 +31,7 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
   officeWebService ?: OfficeWebService
 }
 
-interface States{
+interface State {
   hour: number
   minute: number
 
@@ -42,12 +44,17 @@ interface States{
   confirmWinOpen: boolean
 }
 
-@inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'college.contentsProviderService', 'college.collegeService',
-  'personalCube.mediaService', 'personalCube.officeWebService'))
+@inject(mobxHelper.injectFrom(
+  'college.contentsProviderService',
+  'college.collegeService',
+  'personalCube.boardService',
+  'personalCube.personalCubeService',
+  'personalCube.cubeIntroService',
+  'personalCube.mediaService',
+  'personalCube.officeWebService'))
 @observer
 @reactAutobind
-class DetailIntroContainer extends React.Component<Props, States> {
+class CubeIntroContentContainer extends React.Component<Props, State> {
   //
   state = {
     hour: 0,
@@ -183,7 +190,7 @@ class DetailIntroContainer extends React.Component<Props, States> {
       this.props.history.push(routePaths.createNew());
     } else {
       this.handleOKConfirmWin();
-      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      this.props.history.push(routePaths.createPersonalCubeDetail(personalCubeId || '', cubeType || ''));
       // Promise.resolve()
       //   .then(() => this.handleOKConfirmWin())
       //   .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
@@ -203,7 +210,7 @@ class DetailIntroContainer extends React.Component<Props, States> {
           const { params } = this.props.match;
 
           this.props.history.replace('/empty');
-          setTimeout(() => this.props.history.replace(routePaths.createIntro(params.personalCubeId, params.cubeType)), 0);
+          setTimeout(() => this.props.history.replace(routePaths.createCubeIntroDetail(params.personalCubeId, params.cubeType)), 0);
         },
       });
     });
@@ -436,7 +443,7 @@ class DetailIntroContainer extends React.Component<Props, States> {
           activeStep={2}
         />
 
-        <CreateIntroView
+        <CubeIntroView
           cubeIntro={cubeIntro}
           onChangeCubeIntroProps={this.onChangeCubeIntroProps}
           setHourAndMinute={this.setHourAndMinute}
@@ -444,7 +451,7 @@ class DetailIntroContainer extends React.Component<Props, States> {
           minute={minute}
           cubeType={cubeType}
         />
-        <CreateMediaContainer
+        <CubeIntroMediaContainer
           cubeType={cubeType}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
         />
@@ -495,4 +502,4 @@ class DetailIntroContainer extends React.Component<Props, States> {
   }
 }
 
-export default withRouter(DetailIntroContainer);
+export default withRouter(CubeIntroContentContainer);

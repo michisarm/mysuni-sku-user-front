@@ -54,7 +54,7 @@ interface States {
 ))
 @observer
 @reactAutobind
-class CreateContainer extends React.Component<Props, States> {
+class CreateListContainer extends React.Component<Props, States> {
   //
   PAGE_KEY = 'lecture.shared';
 
@@ -123,7 +123,7 @@ class CreateContainer extends React.Component<Props, States> {
         const cubeState = personalCubeService.personalCube.cubeState;
 
         if (cubeState === CubeState.Created) {
-          this.props.history.push(routePaths.createDetail(personalCubeId, cubeType));
+          this.props.history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
         }
         else {
           this.props.history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
@@ -400,4 +400,4 @@ class CreateContainer extends React.Component<Props, States> {
   }
 }
 
-export default CreateContainer;
+export default CreateListContainer;

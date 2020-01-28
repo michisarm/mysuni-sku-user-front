@@ -27,7 +27,7 @@ interface Props extends RouteComponentProps {
 ))
 @observer
 @reactAutobind
-class CreateMediaContainer extends React.Component<Props> {
+class CubeIntroMediaContainer extends React.Component<Props> {
   // Cube 관리 > create > Audio
   // 교육정보
   onChangeMediaProps(name: string, value: string | Date | [], nameSub?: string) {
@@ -144,4 +144,4 @@ class CreateMediaContainer extends React.Component<Props> {
   }
 }
 
-export default withRouter(CreateMediaContainer);
+export default withRouter(CubeIntroMediaContainer);

@@ -9,7 +9,7 @@ import { Form, Icon, Select } from 'semantic-ui-react';
 import SelectType from '../../model/SelectOptions';
 import { CubeIntroModel } from '../../../cubeintro';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
-import CreateBoardContainer from '../logic/CreateBoardContainer';
+import CubeIntroBoardContainer from '../logic/CubeIntroBoardContainer';
 
 
 interface Props {
@@ -27,7 +27,7 @@ interface States {
 
 @observer
 @reactAutobind
-class CreateIntroView extends Component<Props, States> {
+class CubeIntroView extends Component<Props, States> {
   //
   state = {
     fieldName: '',
@@ -173,7 +173,7 @@ class CreateIntroView extends Component<Props, States> {
         {
           cubeType === 'Community' ?
             <Form.Field>
-              <CreateBoardContainer />
+              <CubeIntroBoardContainer />
             </Form.Field>
             : null
         }
@@ -192,4 +192,4 @@ class CreateIntroView extends Component<Props, States> {
     );
   }
 }
-export default CreateIntroView;
+export default CubeIntroView;
