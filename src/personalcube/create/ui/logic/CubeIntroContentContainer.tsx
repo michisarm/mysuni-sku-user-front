@@ -190,7 +190,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
       this.props.history.push(routePaths.createNew());
     } else {
       this.handleOKConfirmWin();
-      this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || ''));
+      this.props.history.push(routePaths.createPersonalCubeDetail(personalCubeId || '', cubeType || ''));
       // Promise.resolve()
       //   .then(() => this.handleOKConfirmWin())
       //   .then(() => this.props.history.push(routePaths.createDetail(personalCubeId || '', cubeType || '')));
@@ -210,7 +210,7 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
           const { params } = this.props.match;
 
           this.props.history.replace('/empty');
-          setTimeout(() => this.props.history.replace(routePaths.createIntro(params.personalCubeId, params.cubeType)), 0);
+          setTimeout(() => this.props.history.replace(routePaths.createCubeIntroDetail(params.personalCubeId, params.cubeType)), 0);
         },
       });
     });

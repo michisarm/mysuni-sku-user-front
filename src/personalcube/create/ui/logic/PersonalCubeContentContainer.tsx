@@ -87,7 +87,7 @@ class PersonalCubeContentContainer extends Component<Props, States> {
     const { history,  personalCubeService } = this.props;
     const { personalCube } = personalCubeService!;
 
-    history.push(routePaths.createIntro(personalCubeId, personalCube.contents.type));
+    history.push(routePaths.createCubeIntroDetail(personalCubeId, personalCube.contents.type));
   }
 
   alertRequiredField(message: string) {

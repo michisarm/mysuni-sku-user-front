@@ -21,10 +21,10 @@ class PersonalCubeRoutes extends PureComponent {
         <Redirect exact from="/personalcube/create" to="/personalcube/create/Create" />
         <Route exact path="/personalcube/create/:tab" component={CreateListPage} />
 
-        <Route exact path="/personalcube/create/detail/new" component={CreatePersonalCubeDetailPage} />
-        <Route exact path="/personalcube/create/detail/:personalCubeId/:cubeType" component={CreatePersonalCubeDetailPage} />
-        <Route exact path="/personalcube/create/intro/:personalCubeId/:cubeType" component={CreateCubeIntroDetailPage} />
-        <Route exact path="/personalcube/create/shared/detail/:personalCubeId/:cubeType/:cubeState" component={SharedDetailPage} />
+        <Route exact path="/personalcube/create/cubes/new" component={CreatePersonalCubeDetailPage} />
+        <Route exact path="/personalcube/create/cubes/cube/:personalCubeId/:cubeType" component={CreatePersonalCubeDetailPage} />
+        <Route exact path="/personalcube/create/cubes/intro/:personalCubeId/:cubeType" component={CreateCubeIntroDetailPage} />
+        <Route exact path="/personalcube/create/cubes/shared/:personalCubeId/:cubeType/:cubeState" component={SharedDetailPage} />
 
         <Route component={NotFoundPage} />
       </Switch>
