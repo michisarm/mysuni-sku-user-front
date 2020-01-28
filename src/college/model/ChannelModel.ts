@@ -1,6 +1,8 @@
 
-import { IdName } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
+import { IdName } from '@nara.platform/accent';
+
+import { IdName as IdNameModel } from 'shared';
 
 
 export class ChannelModel implements IdName {
@@ -24,6 +26,12 @@ export class ChannelModel implements IdName {
     }
   }
 
+  toIdName() {
+    return new IdNameModel({
+      id: this.channelId,
+      name: this.name,
+    });
+  }
 }
 
 decorate(ChannelModel, {

@@ -28,12 +28,6 @@ export default class CollegeService {
   collegesCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
-  mainCollege: CollegeModel = new CollegeModel();
-
-  @observable
-  subCollege: CollegeModel = new CollegeModel();
-
-  @observable
   jobGroups: JobGroupModel[] = [];
 
   @observable
@@ -105,18 +99,32 @@ export default class CollegeService {
     return total;
   }
 
+  // College -----------------------------------------------------------------------------------------------------------
+
+  @action
+  clearCollege() {
+    //
+    this.college = new CollegeModel();
+  }
+
   @action
   async findCollege(collegeId: string) {
     //
     const college = await this.collegeApi.findCollege(collegeId);
-    if (college) {
-      return runInAction(() => {
-        this.college = new CollegeModel(college);
-        return this.college;
-      });
+
+    if (!college) {
+      return undefined;
     }
-    return undefined;
+    runInAction(() => this.college = college);
+    return college;
   }
+
+  @action
+  setCollege(college: CollegeModel) {
+    this.college = college;
+  }
+
+  // Colleges ----------------------------------------------------------------------------------------------------------
 
   @action
   async findAllColleges() {
@@ -125,27 +133,11 @@ export default class CollegeService {
       () => this.collegeApi.findAllColleges(),
       (colleges) => runInAction(() => this._colleges = colleges),
     );
-
+    
     return fetched ? this.collegesCachingFetch.inProgressFetching : this.colleges;
   }
 
-  @action
-  async findAllCollegesForPanopto() {
-    //
-    const colleges = await this.collegeApi.findAllCollegesForCreate();
-    return runInAction(() => this.collegesForPanopto = colleges);
-  }
-
-  @action
-  setCollege(college: CollegeModel) {
-    this.college = college;
-  }
-
-  @action
-  clearCollege() {
-    //
-    this.college = new CollegeModel();
-  }
+  // Others -----------------------------------------------------------------------------------------------------------
 
   @action
   async findAllJobGroups() {
@@ -159,40 +151,19 @@ export default class CollegeService {
     return runInAction(() => this.jobGroup = new JobGroupModel(jobGroup));
   }
 
-  @action
-  async findMainCollege(collegeId: string) {
-    //
-    const college = await this.collegeApi.findCollege(collegeId);
-    if (college) return runInAction(() => this.mainCollege = new CollegeModel(college));
-    return null;
-  }
-
-  @action
-  async findSubCollege(collegeId: string) {
-    //
-    const college = await this.collegeApi.findCollege(collegeId);
-    if (college) return runInAction(() => this.subCollege = new CollegeModel(college));
-    return null;
-  }
-
-  @action
-  clearMainCollege() {
-    //
-    this.mainCollege = new CollegeModel();
-  }
-
-  @action
-  clearSubCollege() {
-    //
-    this.subCollege = new CollegeModel();
-  }
-
   // Panopto ----------------------------------------------------------------------------------------------------------
 
   @action
   clearCollegeForPanopto() {
     //
     this.collegeForPanopto = new CollegeModel();
+  }
+
+  @action
+  async findAllCollegesForPanopto() {
+    //
+    const colleges = await this.collegeApi.findAllCollegesForCreate();
+    return runInAction(() => this.collegesForPanopto = colleges);
   }
 
   @action
@@ -223,7 +194,7 @@ export default class CollegeService {
     const channels = this.college.channels;
 
     channels.map((channel) => {
-      this.college.channels.push({ ...channel, id: channel.id, channelId: channel.id, name: channel.name, checked: false });
+      this.college.channels.push(new ChannelModel({ ...channel, id: channel.id, channelId: channel.id, name: channel.name, checked: false }));
     });
   }
 
@@ -234,17 +205,28 @@ export default class CollegeService {
     });
   }
 
-   @action
+  @action
   clearFavoriteChannels() {
     this.favoriteChannels = [];
   }
-  // Channel -----------------------------------------------------------------------------------------------------------
+
+  // Channels ----------------------------------------------------------------------------------------------------------
 
   @action
-   async findAllChannel() {
-     const channels = await this.channelApi.findAllChannel();
-     runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
-   }
+  async findAllChannel() {
+    const channels = await this.channelApi.findAllChannel();
+    runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
+  }
+
+  @action
+  async findChannels(collegeId: string) {
+    //
+    const college = await this.collegeApi.findCollege(collegeId);
+    const channels = college.channels.map(channel => new ChannelModel(channel));
+
+    runInAction(() => this._channels = channels);
+    return channels;
+  }
 
   @action
   async findChannelById(channelId: string) {
@@ -254,7 +236,7 @@ export default class CollegeService {
 
   //channel 이름 검색 추가
   @action
-  async  findChannelByName(name:string) {
+  async findChannelByName(name:string) {
     const channels = await this.channelApi.findChannelByName(name);
     runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
   }
@@ -268,7 +250,7 @@ export default class CollegeService {
       return null;
     }
     return runInAction(() => {
-      this.college = new CollegeModel(college);
+      this.college = college;
       const channel = this.college.channels
         .find((channel) => channel.id === channelId);
 

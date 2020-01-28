@@ -17,7 +17,7 @@ import { SeeMoreButton } from 'lecture/shared';
 
 import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
-import SelectType from '../../../../shared/model/SelectType';
+import SelectType from '../../model/SelectOptions';
 import CreateListView from '../view/CreateListView';
 import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
 import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';

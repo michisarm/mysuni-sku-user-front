@@ -7,7 +7,7 @@ export class CategoryModel {
 
   college: IdName = new IdName();
   channel: IdName = new IdName();
-  color: CategoryColorType = CategoryColorType.Default;
+  color?: CategoryColorType = CategoryColorType.Default;
 
 
   constructor(category?: CategoryModel) {

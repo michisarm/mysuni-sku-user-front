@@ -1,4 +1,7 @@
-export default {
+
+
+const SelectOptions = {
+
   learningType: [
     { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
     { key: '2', text: 'E-learning', value: 'ELearning' },
@@ -407,3 +410,5 @@ export default {
     { key: '3', text: 'NO', value: false },
   ],
 };
+
+export default SelectOptions;

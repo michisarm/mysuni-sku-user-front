@@ -6,7 +6,7 @@ import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
-import SelectType from '../../../../shared/model/SelectType';
+import SelectType from '../../model/SelectOptions';
 import ContentsProviderSelectContainer from './ContentsProviderSelectContainer';
 
 interface Props {
