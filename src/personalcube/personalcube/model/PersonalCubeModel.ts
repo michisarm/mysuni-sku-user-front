@@ -101,6 +101,10 @@ export class PersonalCubeModel implements DramaEntity {
           value: JSON.stringify(cube.subsidiaries),
         },
         {
+          name: 'requiredSubsidiaries',
+          value: JSON.stringify(cube.subsidiaries),
+        },
+        {
           name: 'cubeState',
           value: cube.cubeState,
         },
@@ -160,7 +164,7 @@ export class PersonalCubeModel implements DramaEntity {
         creator: personalCube.creator,
         searchFilter: personalCube.searchFilter,
         subsidiaries: personalCube.subsidiaries,
-        requiredSubsidiaries: personalCube.requiredSubsidiaries,
+        requiredSubsidiaries: personalCube.subsidiaries,
         contents: personalCube.contents,
         cubeIntro: personalCube.cubeIntro && personalCube.cubeIntro,
         tags: personalCube.tags,

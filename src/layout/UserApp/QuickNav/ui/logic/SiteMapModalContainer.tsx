@@ -64,7 +64,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       ],
     },
     {
-      name: 'Community(서비스 예정)',
+      name: <span>Community<span className="update">업데이트예정</span></span>,
       items: [],
       // items: [
       //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },

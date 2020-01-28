@@ -67,12 +67,6 @@ class CreateContainer extends React.Component<Props, States> {
     channels: [],
   };
 
-  constructor(props: Props) {
-    //
-    super(props);
-    this.init();
-  }
-
   componentDidMount() {
     //
     const { skProfileService, inMyLectureService } = this.props;
@@ -97,6 +91,7 @@ class CreateContainer extends React.Component<Props, States> {
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     lectureService!.clearLectures();
+
     this.setTab(match.params.tab);
   }
 

@@ -37,7 +37,7 @@ class CriterionView extends React.Component<Props, State> {
                 name={`survey_criterion_${question.sequence.toSequenceString()}`}
                 value={item.value}
                 item={item}
-                disabled={disabled}
+                readOnly={disabled}
                 checked={answer.criteriaItem.value === item.value}
                 onChange={(e: any, prop: any) => {
                   console.log(prop);

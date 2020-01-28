@@ -60,7 +60,7 @@ class FaqTabContainer extends React.Component<Props> {
               result && result.length > 0 && result.map((post, index) => {
                 if (post.pinned) {
                   return (
-                    <a target="_blank" className="row important" key={index} onClick={() => routeToFaqDetail(post.postId)}>
+                    <a target="_blank" className="row" key={index} onClick={() => routeToFaqDetail(post.postId)}>
                       <span className="cell title">
                         <span className="inner">
                           <span className="ellipsis">{post.title}</span>

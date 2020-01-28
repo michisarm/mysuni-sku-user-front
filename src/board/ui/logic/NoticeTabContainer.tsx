@@ -80,7 +80,7 @@ class NoticeTabContainer extends React.Component<Props> {
               const count = commentCountMap.get(post.commentFeedbackId) || 0;
               if (post && post.pinned === true) {
                 return (
-                  <a target="_blank" className="row important" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
+                  <a target="_blank" className="row" key={index} onClick={() => routeToNoticeDetail(post.postId)}>
                     <span className="cell title">
                       <span className="inner">
                         <span className="ellipsis">{post.title}</span>

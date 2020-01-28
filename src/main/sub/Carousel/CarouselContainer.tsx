@@ -20,6 +20,8 @@ interface State {
 @observer
 class CarouselContainer extends Component<Props, State> {
   //
+  AUTO_NEXT_TIME = 30 * 1000;
+
   banners = [
     {
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
@@ -33,19 +35,17 @@ class CarouselContainer extends Component<Props, State> {
       ),
       linkText: mainRoutePaths.introductionMySuni(),
       content: (
-        <a href="">
-          <div className="panopto">
-            <iframe
-              title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
-              width="600"
-              height="420"
-              style={{ padding: '0px', border: '0px' }}
-              frameBorder="0"
-              allowFullScreen
-            />
-          </div>
-        </a>
+        <div className="panopto">
+          <iframe
+            title="video type"
+            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
+            width="600"
+            height="420"
+            style={{ padding: '0px', border: '0px' }}
+            frameBorder="0"
+            allowFullScreen
+          />
+        </div>
       ),
     },
     {
@@ -62,6 +62,31 @@ class CarouselContainer extends Component<Props, State> {
       linkAnchor: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
+      title: <>&quot;mySUNI&quot;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
+      description: (
+        <>
+           어떤 과정부터 학습해야 할지 막막하신가요?<br />
+           Target 역량에 따른 학습추천~!<br />
+           써니가 제안합니다!<br />
+          {/*<span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>*/}
+        </>
+      ),
+      linkText: '/board/support/notice-detail/NTC-000033',
+      content: (
+        <div className="panopto">
+          <iframe
+            title="video type"
+            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse"
+            width="600"
+            height="420"
+            style={{ padding: '0px', border: '0px' }}
+            frameBorder="0"
+            allowFullScreen
+          />
+        </div>
+      ),
+    },
+    {
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
         <>
@@ -76,10 +101,36 @@ class CarouselContainer extends Component<Props, State> {
     },
   ];
 
+  intervalId = 0;
+
   state = {
     activeIndex: 0,
   };
 
+
+  componentDidMount() {
+    //
+    // this.intervalId = setInterval(this.nextBanner, this.AUTO_NEXT_TIME) as any;
+  }
+
+  componentWillUnmount(): void {
+    //
+    if (this.intervalId) {
+      clearInterval(this.intervalId as any);
+    }
+  }
+
+  nextBanner() {
+    //
+    this.setState((state) => {
+      //
+      const nextIndex = state.activeIndex + 1;
+
+      return {
+        activeIndex: this.banners.length <= nextIndex ? 0 : nextIndex,
+      };
+    });
+  }
 
   onClickPrev() {
     //
@@ -116,21 +167,14 @@ class CarouselContainer extends Component<Props, State> {
         }
         pages={
           <div className="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 0 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 1"
-              onClick={() => this.onClickPage(0)}
-            />
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 1 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 2"
-              onClick={() => this.onClickPage(1)}
-            />
-            <button
-              className={`swiper-pagination-bullet ${activeIndex === 2 && 'swiper-pagination-bullet-active'}`}
-              aria-label="Go to slide 3"
-              onClick={() => this.onClickPage(2)}
-            />
+            {items.map((item, index) =>
+              <button
+                key={`carousel-${index}`}
+                className={`swiper-pagination-bullet ${activeIndex === index && 'swiper-pagination-bullet-active'}`}
+                aria-label={`Goto slide ${index + 1}`}
+                onClick={() => this.onClickPage(index)}
+              />
+            )}
           </div>
         }
       >

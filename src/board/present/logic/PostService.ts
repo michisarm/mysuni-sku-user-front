@@ -35,13 +35,48 @@ export default class PostService {
   @observable
   postContents: PostContentsModel = new PostContentsModel();
 
+
   constructor(postApi: PostApi) {
     this.postApi = postApi;
   }
 
+  // Post --------------------------------------------------------------------------------------------------------------
+
+  @action
+  clearPost() {
+    //
+    this.post = new PostModel();
+  }
+
   registerPost(post: PostModel) {
-    // post = _.set(post, 'audienceKey', 'r2p8-r@nea-m5-c5');
     return this.postApi.registerPost(PostModel.asCdo(post));
+  }
+
+  @action
+  async findPostByPostId(postId: string) {
+    //
+    const post = await this.postApi.findPostByPostId(postId);
+    return runInAction(() => this.post = new PostModel(post));
+  }
+
+  @action
+  modifyPost(postId: string, post: PostModel) {
+    //
+    return this.postApi.modifyPost(postId, PostModel.asNameValueList(post));
+  }
+
+  @action
+  changePostProps(name: string, value: string | {}) {
+    //
+    this.post = _.set(this.post, name, value);
+  }
+
+  // PostCollection ----------------------------------------------------------------------------------------------------
+
+  @action
+  clearPosts() {
+    //
+    this.posts = new OffsetElementList<PostModel>();
   }
 
   @action
@@ -99,13 +134,6 @@ export default class PostService {
       });
       return posts;
     });
-  }
-
-  @action
-  async findPostByPostId(postId: string) {
-    //
-    const post = await this.postApi.findPostByPostId(postId);
-    return runInAction(() => this.post = new PostModel(post));
   }
 
   @action
@@ -178,29 +206,6 @@ export default class PostService {
     });
   }
 
-  @action
-  modifyPost(postId: string, post: PostModel) {
-    //
-    return this.postApi.modifyPost(postId, PostModel.asNameValueList(post));
-  }
-
-  @action
-  changePostProps(name: string, value: string | {}) {
-    //
-    this.post = _.set(this.post, name, value);
-  }
-
-  @action
-  clearPost() {
-    //
-    this.post = new PostModel();
-  }
-
-  @action
-  clearPosts() {
-    //
-    this.posts = new OffsetElementList<PostModel>();
-  }
 }
 
 Object.defineProperty(PostService, 'instance', {
