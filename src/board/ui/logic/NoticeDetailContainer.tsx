@@ -16,7 +16,7 @@ interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
 }
 
-interface States {
+interface State {
   filesMap: Map<string, any>
 }
 
@@ -25,22 +25,26 @@ interface States {
 ))
 @observer
 @reactAutobind
-class NoticeDetailContainer extends React.Component<Props, States> {
+class NoticeDetailContainer extends React.Component<Props, State> {
   //
+  state = {
+    filesMap: new Map<string, any>(),
+  };
+
+
   constructor(props: Props) {
     //
     super(props);
-    this.state = {
-      filesMap: new Map<string, any>(),
-    };
+    props.postService!.clearPost();
   }
 
   componentDidMount() {
     //
     const { postId } = this.props.match.params;
-    const { postService } = this.props;
-    if (postService) { postService.findPostByPostId(postId)
-      .then(() => this.getFileIds()); }
+    const postService = this.props.postService!;
+
+    postService.findPostByPostId(postId)
+      .then(() => this.getFileIds());
   }
 
   onClose(boardId: string) {
@@ -49,7 +53,7 @@ class NoticeDetailContainer extends React.Component<Props, States> {
 
   getFileIds() {
     //
-    const { post } = this.props.postService || {} as PostService;
+    const { post } = this.props.postService!;
     const referenceFileBoxId = post && post.contents && post.contents.depotId;
 
     Promise.resolve()
@@ -69,18 +73,18 @@ class NoticeDetailContainer extends React.Component<Props, States> {
   }
 
   getFeedbackId(feedbackId: string) {
-    const { postService } = this.props;
-    if (postService) {
-      const { post } = postService!;
-      postService.changePostProps('commentFeedbackId', feedbackId);
-      postService.modifyPost(post.id, post)
-        .then(() => postService!.findPostByPostId(post.id));
-    }
+    //
+    const postService = this.props.postService!;
+    const { post } = postService!;
+
+    postService.changePostProps('commentFeedbackId', feedbackId);
+    postService.modifyPost(post.id, post)
+      .then(() => postService!.findPostByPostId(post.id));
   }
 
   render() {
     //
-    const { post } = this.props.postService || {} as PostService;
+    const { post } = this.props.postService!;
     const { filesMap } = this.state;
 
     return (

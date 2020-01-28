@@ -35,19 +35,17 @@ class CarouselContainer extends Component<Props, State> {
       ),
       linkText: mainRoutePaths.introductionMySuni(),
       content: (
-        <a href="">
-          <div className="panopto">
-            <iframe
-              title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
-              width="600"
-              height="420"
-              style={{ padding: '0px', border: '0px' }}
-              frameBorder="0"
-              allowFullScreen
-            />
-          </div>
-        </a>
+        <div className="panopto">
+          <iframe
+            title="video type"
+            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
+            width="600"
+            height="420"
+            style={{ padding: '0px', border: '0px' }}
+            frameBorder="0"
+            allowFullScreen
+          />
+        </div>
       ),
     },
     {
@@ -75,19 +73,17 @@ class CarouselContainer extends Component<Props, State> {
       ),
       linkText: '/board/support/notice-detail/NTC-000033',
       content: (
-        <a href="">
-          <div className="panopto">
-            <iframe
-              title="video type"
-              src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse"
-              width="600"
-              height="420"
-              style={{ padding: '0px', border: '0px' }}
-              frameBorder="0"
-              allowFullScreen
-            />
-          </div>
-        </a>
+        <div className="panopto">
+          <iframe
+            title="video type"
+            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse"
+            width="600"
+            height="420"
+            style={{ padding: '0px', border: '0px' }}
+            frameBorder="0"
+            allowFullScreen
+          />
+        </div>
       ),
     },
     {
