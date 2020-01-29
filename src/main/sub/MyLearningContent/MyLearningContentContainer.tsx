@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { Button, Icon } from 'semantic-ui-react';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { patronInfo } from '@nara.platform/dock';
 
+import { Button, Icon } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NoSuchContentPanel } from 'shared';
 import { Lecture, LectureService } from 'lecture';
@@ -128,12 +129,15 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     const { model } = data;
     const { history } = this.props;
+    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      // history.push(lectureRoutePaths.courseOverviewPrev(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
+      // history.push(lectureRoutePaths.lectureCardOverviewPrev(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 

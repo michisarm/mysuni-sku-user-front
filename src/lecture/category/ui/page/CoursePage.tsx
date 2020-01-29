@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
+import { patronInfo } from '@nara.platform/dock';
 
+import { Label } from 'semantic-ui-react';
 import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
@@ -40,6 +41,7 @@ interface State {
 }
 
 interface RouteParams {
+  cineroomId: string
   collegeId: string,
   lectureCardId: string,
   coursePlanId: string,
@@ -76,6 +78,7 @@ class CoursePage extends Component<Props, State> {
 
   componentDidMount() {
     //
+    // this.setCineroom();
     this.init();
   }
 
@@ -83,6 +86,20 @@ class CoursePage extends Component<Props, State> {
     //
     if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
       this.init();
+    }
+  }
+
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
+  setCineroom() {
+    //
+    const { params } = this.props.match;
+
+    if (params.cineroomId) {
+      patronInfo.setWorkspaceById(params.cineroomId);
     }
   }
 

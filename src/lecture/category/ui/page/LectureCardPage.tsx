@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
+import { patronInfo } from '@nara.platform/dock';
 
+import { Label } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
@@ -36,7 +37,7 @@ import LinkedInModalContainer from '../logic/LinkedInModalContainer';
 import CubeType from '../../../../personalcube/personalcube/model/CubeType';
 
 
-interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
+interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
   collegeService: CollegeService,
   personalCubeService: PersonalCubeService,
@@ -57,6 +58,13 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 interface State {
   type: string
   linkedInOpen: boolean
+}
+
+interface RouteParams {
+  cineroomId: string
+  collegeId: string
+  cubeId: string
+  lectureCardId: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -94,7 +102,22 @@ class LectureCardPage extends Component<Props, State> {
 
   componentDidMount() {
     //
+    // this.setCineroom();
     this.init();
+  }
+
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
+  setCineroom() {
+    //
+    const { params } = this.props.match;
+
+    if (params.cineroomId) {
+      patronInfo.setWorkspaceById(params.cineroomId);
+    }
   }
 
   async init() {
@@ -135,7 +158,14 @@ class LectureCardPage extends Component<Props, State> {
                 .then((confirmed) => {
                   if (confirmed) {
                     history.replace('/empty');
-                    setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+                    setTimeout(() => {
+                      if (params.cineroomId) {
+                        history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId));
+                      }
+                      else {
+                        history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
+                      }
+                    });
                   }
                 });
             }

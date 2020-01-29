@@ -29,12 +29,17 @@ class LectureRoutes extends Component {
         <Route exact path="/lecture/college/:collegeId/channels/pages/:pageNo" component={CollegeLecturesPage} />
 
         <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={ChannelLecturesPage} />
+
         <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
+
         <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
 
         {/* recommend */}
         <Redirect exact from="/lecture/recommend" to="/lecture/recommend/pages/1" />
         <Route exact path="/lecture/recommend/pages/:pageNo" component={ChannelsLecturesPage} />
+
         <Redirect exact from="/lecture/recommend/channel/:channelId" to="/lecture/recommend/channel/:channelId/pages/1" />
         <Route exact path="/lecture/recommend/channel/:channelId/pages/:pageNo" component={RecommendChannelLecturesPage} />
 

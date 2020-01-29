@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { patronInfo } from '@nara.platform/dock';
 
 import { NoSuchContentPanel, OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
@@ -71,12 +72,15 @@ class ChannelLecturesLineContainer extends Component<Props> {
     const { model } = data;
     const { history } = this.props;
     const collegeId = model.category.college.id;
+    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(routePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
+      // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
   }
 

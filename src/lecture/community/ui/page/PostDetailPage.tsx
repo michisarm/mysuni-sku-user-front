@@ -51,7 +51,7 @@ class PostDetailPage extends React.Component<Props> {
         className="content community"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverview(college.collegeId, cubeId, lectureCardId) },
+          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverviewPrev(college.collegeId, cubeId, lectureCardId) },
           { text: `Detail` },
         ]}
       >

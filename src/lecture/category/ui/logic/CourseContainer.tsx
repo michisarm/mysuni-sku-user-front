@@ -25,6 +25,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 }
 
 interface RouteParams {
+  cineroomId: string,
   collegeId: string,
   coursePlanId: string,
   serviceType: LectureServiceType,
@@ -73,25 +74,48 @@ class CourseContainer extends Component<Props> {
 
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId, {
-        programLectureId: params.serviceId,
-      }));
+      if (params.cineroomId) {
+        history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+          programLectureId: params.serviceId,
+        }));
+      }
+      else {
+        history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
+          programLectureId: params.serviceId,
+        }));
+      }
     }
     else if (serviceType === LectureServiceType.Card) {
       // Program -> Card
       if (params.serviceType === LectureServiceType.Program) {
-        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+
+        if (params.cineroomId) {
+          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+            programLectureId: params.serviceId,
+          }));
+        }
+        else {
+          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+            programLectureId: params.serviceId,
+          }));
+        }
       }
       // Course -> Card
       else {
         const queryParam = queryString.parse(search);
 
-        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
-          programLectureId: queryParam.programLectureId as string,
-          courseLectureId: params.serviceId,
-        }));
+        if (params.cineroomId) {
+          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+            programLectureId: queryParam.programLectureId as string,
+            courseLectureId: params.serviceId,
+          }));
+        }
+        else {
+          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+            programLectureId: queryParam.programLectureId as string,
+            courseLectureId: params.serviceId,
+          }));
+        }
       }
     }
   }
