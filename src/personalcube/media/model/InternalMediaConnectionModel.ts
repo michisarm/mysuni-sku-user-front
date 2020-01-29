@@ -8,6 +8,7 @@ export class InternalMediaConnectionModel {
   startTime: string = '';
   folderName: string = '';
   duration: number = 0;
+  folderId: string = '';
 
   constructor(internalMediaConnection?: InternalMediaConnectionModel) {
     //
@@ -23,4 +24,5 @@ decorate(InternalMediaConnectionModel, {
   startTime: observable,
   folderName: observable,
   duration: observable,
+  folderId: observable,
 });

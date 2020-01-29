@@ -1,11 +1,12 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
+import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
-import SelectType from '../../../../shared/model/SelectType';
+import SelectType from '../../model/SelectOptions';
 import ContentsProviderSelectContainer from './ContentsProviderSelectContainer';
 
 interface Props {
@@ -21,12 +22,13 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
 
   onChangeCubeIntroProps(name: string, value: string | number | {}) {
     //
-    const { cubeIntroService } = this.props;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
+    const cubeIntroService = this.props.cubeIntroService!;
+    cubeIntroService.changeCubeIntroProps(name, value);
   }
 
   render() {
     const { cubeIntro } = this.props;
+
     return (
       <>
         <div className="section-tit">
@@ -103,7 +105,8 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
             <div className="column"><label>교육시간</label></div>
             <div className="column">
               <div className="text1">
-                {parseInt(String(cubeIntro.learningTime / 60), 10)}  h {cubeIntro.learningTime % 60} m
+                {timeToHourMinuteFormat(cubeIntro.learningTime)}
+                {/* {parseInt(String(cubeIntro.learningTime / 60), 10)}  h {cubeIntro.learningTime % 60} m*/}
               </div>
             </div>
           </div>
@@ -146,7 +149,7 @@ class SharedDetailIntroEditContainer extends React.Component<Props> {
             type="cubeInfo"
             defaultValue={
               cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer && cubeIntro.operation.organizer.id
-              && JSON.stringify(cubeIntro.operation.organizer)
+              && JSON.stringify({ id: cubeIntro.operation.organizer.id, name: cubeIntro.operation.organizer.name })
             }
           />
         </Form.Field>

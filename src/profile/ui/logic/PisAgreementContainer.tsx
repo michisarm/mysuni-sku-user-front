@@ -6,8 +6,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { ContentLayout } from 'shared';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import SkProfileService from '../../present/logic/SkProfileService';
-// import { SkProfileUdo } from '../../model/SkProfileUdo';
-// import { PisAgreementModel } from '../../model/PisAgreementModel';
+import { SkProfileUdo } from '../../model/SkProfileUdo';
+import { PisAgreementModel } from '../../model/PisAgreementModel';
 
 interface Props extends RouteComponentProps{
   skProfileService? : SkProfileService
@@ -19,7 +19,6 @@ interface Props extends RouteComponentProps{
 class PisAgreementContainer extends Component<Props> {
 
   state = {
-    all: false,
     mySuni: false,
     domestic: false,
     international: false,
@@ -27,14 +26,17 @@ class PisAgreementContainer extends Component<Props> {
 
   handleChange(e:any, checkProps:any) {
     const name = e.target.id;
-    this.setState({
-      [name]: checkProps.checked,
-    });
+
     if ( name === 'all' ) {
       this.setState({
         mySuni: checkProps.checked,
         domestic: checkProps.checked,
         international: checkProps.checked,
+      });
+    }
+    else {
+      this.setState({
+        [name]: checkProps.checked,
       });
     }
 
@@ -43,23 +45,29 @@ class PisAgreementContainer extends Component<Props> {
   onOk() {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService as SkProfileService;
-    const { studySummary } = skProfileService as SkProfileService;
+    // const { studySummary } = skProfileService as SkProfileService;
 
-    const { all, mySuni, domestic, international } = this.state;
+    const { mySuni, domestic, international } = this.state;
 
-    if ( all || (mySuni && domestic && international)) {
+    if ((mySuni && domestic && international)) {
       if (skProfileService) {
         skProfileService.findSkProfile();
-        skProfileService.findStudySummary();
+        // skProfileService.findStudySummary();
 
         if (skProfile ) {
           skProfile.pisAgreement.signed = true;
           skProfile.pisAgreement.date = new Date().toISOString().slice(1, 10);
-          //  skProfileService.modifySkProfile(new SkProfileUdo(new PisAgreementModel(skProfile.pisAgreement)));
-          if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
-            &&  studySummary.favoriteChannels
-            && studySummary.favoriteChannels.idNames.length < 4
-            && studySummary.favoriteLearningType ) {
+          skProfileService.modifySkProfile(new SkProfileUdo({} as any, new PisAgreementModel(skProfile.pisAgreement)));
+
+          // if ( skProfile.member.favoriteJobGroup.favoriteJobDuty
+          //   && studySummary.favoriteChannels
+          //   && studySummary.favoriteChannels.idNames.length < 4
+          //   && studySummary.favoriteLearningType ) {
+          //   this.props.history.push('/');
+          // } else {
+          //   this.props.history.push('/profile/interest/');
+          // }
+          if ( skProfile.studySummaryConfigured ) {
             this.props.history.push('/');
           } else {
             this.props.history.push('/profile/interest/');
@@ -72,7 +80,7 @@ class PisAgreementContainer extends Component<Props> {
   }
 
   render() {
-    const { all, mySuni, domestic, international } = this.state;
+    const { mySuni, domestic, international } = this.state;
     return (
 
       <ContentLayout
@@ -89,7 +97,7 @@ class PisAgreementContainer extends Component<Props> {
           <h2 className="title1">mySUNI 개인정보 처리방침에 동의해주세요.</h2>
           <div className="check-area">
             {/*<Checkbox label='전체동의' className='base'/>*/}
-            <Checkbox className="black base" label="전체동의" onChange={this.handleChange} id="all" checked={all} />
+            <Checkbox className="black base" label="전체동의" onChange={this.handleChange} id="all" checked={mySuni && domestic && international} />
           </div>
           <div className="check-area">
             <Checkbox label="mySUNI 개인정보 처리방침 동의(필수)" className="base" id="mySuni" checked={mySuni} onChange={this.handleChange} />
@@ -332,7 +340,7 @@ class PisAgreementContainer extends Component<Props> {
                   구성원께서 그 계약의 해지 의사를 명확하게 밝히지 아니한 경우
                 </div>
                 <div className="text3">※ 로그인이 불가능하신 고객께서는 ‘개인정보 처리 요구서 다운로드 하기’를 이용하여 신청서를 작성하신 후 개인정보 담당자에게
-                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="#none">개인정보처리 요구서 다운로드 하기</a>
+                  이메일 송부 하여 주시기 바랍니다. (문의 <a href="mailto:kite.lee@sk.com">kite.lee@sk.com</a>) <br /><a href="https://mysuni.sk.com/profile/commondocs/mySUNI_Privacy_Handling_Request.docx">개인정보처리 요구서 다운로드 하기</a>
                 </div>
 
                 <div className="text2">6. 개인정보의 파기</div>
@@ -470,7 +478,14 @@ class PisAgreementContainer extends Component<Props> {
           </div>
           <div className="guide">약관 동의 후 mySUNI를 이용할 수 있습니다.</div>
           <div className="button-area">
-            <Button className="fix line">Cancel</Button>
+            <Button
+              className="fix line"
+              onClick={() => {
+                reactAlert({ title: '알림', message: '<b>개인정보 처리방침에 동의하셔야</b><br/> <b>mySUNI 서비스 이용이 가능합니다.</b> <br /> <b>감사합니다.</b>' });
+              }}
+            >
+              Cancel
+            </Button>
             <Button className="fix bg" onClick={this.onOk}>OK</Button>
           </div>
         </div>

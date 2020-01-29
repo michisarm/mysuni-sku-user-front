@@ -178,7 +178,7 @@ class ExpertPage extends React.Component<Props> {
                           key={`lecture-${index}`}
                           model={lecture}
                           rating={rating}
-                          // thumbnailImage="http://placehold.it/60x60"
+                          thumbnailImage={lecture.baseUrl || undefined}
                           action={Lecture.ActionType.Add}
                           onAction={this.onActionLecture}
                           onViewDetail={this.onViewDetail}

@@ -11,6 +11,7 @@ export class CubeContentsModel {
   contents: IdName = new IdName();
   lengthInMinute: number = 0;
   surveyId: string = '';
+  surveyCaseId: string = '';
 
   examId: string = '';
   examTitle: string = '';
@@ -34,6 +35,7 @@ decorate(CubeContentsModel, {
   type: observable,
   contents: observable,
   surveyId: observable,
+  surveyCaseId: observable,
   examId: observable,
   examTitle: observable,
   examAuthorName: observable,

@@ -19,19 +19,20 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "^0.0.7",
-    "@nara.drama/depot": "^0.0.15",
-    "@nara.drama/feedback": "^0.0.16",
-    "@sku/personalcube": "0.0.21",
+    "@nara.platform/accent": "0.0.12",
+    "@nara.drama/depot": "1.2.6",
+    "@nara.drama/feedback": "0.0.23",
+    "@nara.platform/dock": "0.0.12-sk",
+    "@sku/personalcube": "0.0.23",
     "@types/react-datepicker": "^2.9.5",
     "@types/sockjs-client": "^1.1.1",
-    "autobind-decorator": "2.4.0",
+    "jquery": "3.3.1",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "json-server": "^0.15.0",
     "lodash": "^4.17.15",
-    "mobx": "4.15.0",
-    "mobx-react": "6.1.4",
+    "mobx": "^4.15.0",
+    "mobx-react": "^6.1.4",
     "nara-react-scripts": "0.1.19",
     "numeral": "^2.0.6",
     "react": "^16.8.6",
@@ -48,7 +49,9 @@
     "@babel/polyfill": "7.0.0",
     "babel-polyfill": "6.26.0",
     "query-string": "^6.9.0",
-    "webpack-bundle-analyzer": "^3.6.0"
+    "webpack-bundle-analyzer": "^3.6.0",
+    "react-id-swiper": "^2.4.0",
+    "swiper": "^5.2.1"
   },
   "devDependencies": {
     "@storybook/react": "^5.2.8",
@@ -70,7 +73,7 @@
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "@types/react-router-dom": "^4.3.3",
-    "@nara.platform/dock": "0.0.6-sk"
+    "@types/jquery": "3.3.1"
   },
   "eslintConfig": {
     "extends": "nara"

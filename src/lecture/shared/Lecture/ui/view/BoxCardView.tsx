@@ -72,7 +72,6 @@ class BoxCardView extends Component<Props, States> {
             <div className="study-date">{date} 학습 시작</div>
           )
         }
-
         {/* Todo: 기획, 도메인 확인 후 속성명 정의하여 props에 추가 */}
         {/*<Label className="bold onlytext">*/}
         {/*  <Icon className="state" /><span>Required</span> // In Progress, Enrolled, Completed, Cancelled */}
@@ -132,7 +131,7 @@ class BoxCardView extends Component<Props, States> {
                 </div>
               ) || null
             }
-            <Field icon="complete" text={`이수 ${numeral(model.studentCount).format('0,0')}명`} />
+            <Field icon="complete" text={`이수 ${numeral(model.passedStudentCount).format('0,0')}명`} />
           </Fields>
 
           {this.renderBottom()}

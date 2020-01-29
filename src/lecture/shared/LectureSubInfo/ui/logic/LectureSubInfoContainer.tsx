@@ -38,8 +38,6 @@ interface Props {
   onCancel?: () => void
   /** 북마크 액션 */
   onBookmark?: () => void
-  /** 공유 액션 */
-  onShare: () => void
   /** 삭제 액션 */
   onRemove?: () => void
   /** 설문 액션*/
@@ -67,7 +65,7 @@ class LectureSubInfoContainer extends Component<Props> {
     //
     const {
       required, mainAction, subActions, state, level, clazz, operator,
-      onCancel, onBookmark, onShare, onRemove, onSurvey, onDownloadReport,
+      onCancel, onBookmark, onRemove, onSurvey, onDownloadReport,
     } = this.props;
     return (
       <div className="sub-info-wrap">
@@ -78,6 +76,7 @@ class LectureSubInfoContainer extends Component<Props> {
               mainAction={mainAction}
               subActions={subActions}
               onCancel={onCancel}
+              state={state}
             />
             <StateView state={state} />
             <LevelView level={level} />
@@ -86,7 +85,6 @@ class LectureSubInfoContainer extends Component<Props> {
           </div>
           <FootButtons
             onBookmark={onBookmark}
-            onShare={onShare}
             onRemove={onRemove}
           />
         </div>

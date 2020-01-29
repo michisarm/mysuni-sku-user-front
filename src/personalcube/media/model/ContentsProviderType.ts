@@ -1,6 +1,8 @@
 
-export enum ContentsProviderType {
-  linkedin= 'linkedin',
-  DataCamp= 'DataCamp',
-  HuNet= 'HuNet'
+enum ContentsProviderType {
+  LinkedIn = 'LinkedIn',
+  DataCamp = 'DataCamp',
+  HuNet = 'HuNet'
 }
+
+export default ContentsProviderType;

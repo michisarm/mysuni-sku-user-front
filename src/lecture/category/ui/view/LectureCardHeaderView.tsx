@@ -28,7 +28,7 @@ class LectureCardHeaderView extends Component<Props> {
     return (
       <LectureContentHeader>
         <LectureContentHeader.ThumbnailCell
-          image={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
+          image={viewObject.thumbnailImage || `${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`}
         />
         <LectureContentHeader.TitleCell
           category={viewObject.category}

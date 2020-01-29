@@ -1,7 +1,7 @@
 import ActionType from './ActionType';
 
 interface Action {
-  type: ActionType
+  type: ActionType | string
   onAction:() => void
 }
 

@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Button, Icon, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { ContentLayout } from 'shared';
+import { ContentLayout, IdName } from 'shared';
 
 import CollegeService from '../../../college/present/logic/CollegeService';
 import TitleView from '../view/TitleView';
@@ -18,12 +18,7 @@ interface Props extends RouteComponentProps{
 }
 
 interface States{
-  isSelectedJobGroup : boolean
-  isSelectedDutyGroup: boolean
-  isEtc : boolean
   focus : boolean
-  write : string
-
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
@@ -34,11 +29,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
   constructor(props:Props) {
     super(props);
     this.state = {
-      isSelectedJobGroup: false,
-      isSelectedDutyGroup: false,
-      isEtc: false,
       focus: false,
-      write: '',
     };
   }
 
@@ -48,10 +39,6 @@ class FavoriteJobContainer extends React.Component<Props, States> {
       collegeService.findAllJobGroups();
       skProfileService.findSkProfile()
         .then(() => {
-          this.setState({
-            isSelectedJobGroup: !!skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup,
-            isSelectedDutyGroup: !!skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobDuty,
-          });
           if (skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup) {
             collegeService.findJobGroupById(skProfileService!.skProfile.member.favoriteJobGroup.favoriteJobGroup.id);
           }
@@ -64,6 +51,7 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     const { jobGroups } = this.props.collegeService || {} as CollegeService;
     const jobGroupSelect : any = [];
     if (jobGroups) {
+      jobGroupSelect.push({ key: 0, value: '', text: '선택해주세요' });
       jobGroups.map((jobGroup, index ) => {
         jobGroupSelect.push({ key: index + 1, value: jobGroup.jobGroupId, text: jobGroup.name });
       });
@@ -75,38 +63,20 @@ class FavoriteJobContainer extends React.Component<Props, States> {
   selectJobGroup(event:any, data:any ) {
     const { collegeService, skProfileService } = this.props;
 
-    if (data.value === 'etc') {
-      this.setState({
-        isEtc: true,
-      });
-    } else {
-      this.setState({
-        isEtc: false,
-      });
-    }
-
-    if (collegeService ) {
+    if (collegeService && skProfileService ) {
       collegeService.findJobGroupById(data.value);
-    }
-
-    this.setState({
-      isSelectedJobGroup: true,
-      isSelectedDutyGroup: false,
-    });
-
-    if (skProfileService) {
       skProfileService.setFavoriteJobGroupProp('favoriteJobGroup', { id: data.value, name: event.target.innerText });
+      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
     }
 
   }
 
   setJobDuties() {
     const { jobGroup } = this.props.collegeService || {} as CollegeService;
-    const { isSelectedJobGroup } = this.state;
 
     const jobDutySelect : any = [];
 
-    if (isSelectedJobGroup && jobGroup) {
+    if (jobGroup) {
       jobGroup.jobDuties.map((jobDuty, index) => {
         jobDutySelect.push({ key: index + 1, value: jobDuty.id, text: jobDuty.name });
       });
@@ -115,11 +85,10 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     return jobDutySelect;
   }
 
-  selectJobDuty(event:any, data:any ) {
+  selectJobDuty(event: any, data: any ) {
     const { skProfileService } = this.props;
 
     this.setState({
-      isSelectedDutyGroup: true,
       focus: false,
     });
 
@@ -128,17 +97,15 @@ class FavoriteJobContainer extends React.Component<Props, States> {
     }
   }
 
-  selectEtcJobDuty(data:any) {
+  selectEtcJobDuty(data: any) {
     const { skProfileService } = this.props;
-    const { isEtc, write } = this.state;
 
     this.setState({
-      isSelectedDutyGroup: true,
       focus: false,
     });
 
-    if (skProfileService && isEtc) {
-      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', { id: 'etc', name: write } );
+    if (skProfileService) {
+      skProfileService.setFavoriteJobGroupProp('favoriteJobDuty', { id: 'etc', name: data.value } );
     }
   }
 
@@ -148,27 +115,31 @@ class FavoriteJobContainer extends React.Component<Props, States> {
 
   onNextClick() {
     const { skProfileService } = this.props;
-    const { isSelectedJobGroup, isSelectedDutyGroup } = this.state;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile!;
+    const { favoriteJobGroup } = member!;
+
     let skProfileUdo : SkProfileUdo;
     if (skProfileService ) {
-      if ( !isSelectedJobGroup || !isSelectedDutyGroup ) {
-        reactAlert({ title: '알림', message: '맞춤 교육을 위해 추후 선택 가능합니다.' });
+      if (!favoriteJobGroup.favoriteJobGroup || !favoriteJobGroup.favoriteJobGroup!.id
+        || !favoriteJobGroup.favoriteJobDuty || !favoriteJobGroup.favoriteJobDuty!.id ) {
+        reactAlert({ title: '알림', message: '관심 직군과 관심 직무를 선택해주세요.' });
       } else {
-        skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup);
+        skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup, skProfileService.skProfile.pisAgreement);
         skProfileService.modifySkProfile(skProfileUdo);
+        this.props.history.push('/profile/interest/learningType');
       }
     }
-    this.props.history.push('/profile/interest/learningType');
   }
 
   render() {
 
     const selectOptionJobGroup = this.setJobGroup();
     const selectOptionJobDuty =  this.setJobDuties();
-    const {  isSelectedJobGroup,  isEtc } = this.state;
-    const {  skProfileService } = this.props;
-    const {  skProfile } = skProfileService!;
-    const {  member } = skProfile!;
+    const { skProfileService } = this.props;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile!;
+    const { favoriteJobGroup } = member!;
 
     return (
       <ContentLayout breadcrumb={[
@@ -187,12 +158,12 @@ class FavoriteJobContainer extends React.Component<Props, States> {
                 <Select
                   placeholder="선택해주세요"
                   options={selectOptionJobGroup}
-                  value={member && member.favoriteJobGroup && member.favoriteJobGroup.favoriteJobGroup && member.favoriteJobGroup.favoriteJobGroup.id}
+                  value={favoriteJobGroup && favoriteJobGroup.favoriteJobGroup && favoriteJobGroup.favoriteJobGroup.id}
                   onChange={(event:any, data:any) => this.selectJobGroup(event, data)}
                 />
               </div>
               {
-                isSelectedJobGroup && !isEtc ? (
+                favoriteJobGroup && favoriteJobGroup.favoriteJobGroup && favoriteJobGroup.favoriteJobGroup.id && favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
                   <div className="select-box">
                     <div className="select-title">관심 있는 직무를 선택해주세요.</div>
                     <Select
@@ -208,18 +179,17 @@ class FavoriteJobContainer extends React.Component<Props, States> {
                 ) : ''
               }
               {
-                isSelectedJobGroup && isEtc ? (
+                favoriteJobGroup && favoriteJobGroup.favoriteJobGroup && favoriteJobGroup.favoriteJobGroup.id && favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
                   <div className="select-box">
                     <div className="select-title">해당 되는 직무가 없을 경우 직접 입력해주세요.</div>
-                    <div className={classNames('ui h48 input', { focus: this.state.focus, write: this.state.write })}>
+                    <div className={classNames('ui h48 input', { focus: this.state.focus, write: favoriteJobGroup && favoriteJobGroup.favoriteJobDuty && favoriteJobGroup.favoriteJobDuty.name })}>
                       <input type="text"
                         placeholder="Text.."
-                        value={this.state.write}
+                        value={favoriteJobGroup && favoriteJobGroup.favoriteJobDuty && favoriteJobGroup.favoriteJobDuty.name}
                         onClick={() => this.setState({ focus: true })}
-                        onBlur={( data:any) => this.selectEtcJobDuty(data) }
-                        onChange={(e) => this.setState({ write: e.target.value })}
+                        onChange={(e) => this.selectEtcJobDuty({ value: e.target.value })}
                       />
-                      <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
+                      <Icon className="clear link" onClick={() => this.selectEtcJobDuty({ value: '' })} />
                     </div>
                   </div>
                 ) : ''

@@ -1,8 +1,10 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
-import { DatePeriod, NameValueList } from 'shared';
+import moment from 'moment';
+import { NameValueList } from 'shared';
 import { BoardConfigModel } from './BoardConfigModel';
 import { BoardCdoModel } from './BoardCdoModel';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class BoardModel implements DramaEntity {
   //
@@ -11,7 +13,7 @@ export class BoardModel implements DramaEntity {
 
   name: string = '';
   boardConfig: BoardConfigModel = new BoardConfigModel();
-  learningPeriod: DatePeriod = new DatePeriod();
+  learningPeriod: NewDatePeriod = new NewDatePeriod();
   config: BoardConfigModel = new BoardConfigModel();
   time: number = 0;
 
@@ -21,7 +23,7 @@ export class BoardModel implements DramaEntity {
     //
     if (board) {
       const boardConfig = board.boardConfig && new BoardConfigModel(board.boardConfig) || this.boardConfig;
-      const learningPeriod = board.learningPeriod && new DatePeriod(board.learningPeriod) || this.learningPeriod;
+      const learningPeriod = board.learningPeriod && new NewDatePeriod(board.learningPeriod) || this.learningPeriod;
       const config = board.config && new BoardConfigModel(board.config) || this.config;
 
       Object.assign(this, { ...board, boardConfig, learningPeriod, config });
@@ -62,9 +64,8 @@ export class BoardModel implements DramaEntity {
   }
 
   @computed
-  get timeStr() {
-    if (this.time) return new Date(this.time).toLocaleDateString();
-    return '';
+  get timeStr() : string {
+    return this.time && moment(this.time).format('YYYY.MM.DD') || '';
   }
 }
 

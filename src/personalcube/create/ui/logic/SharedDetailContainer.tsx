@@ -1,10 +1,11 @@
-import * as React from 'react';
+
+import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import depot from '@nara.drama/depot';
-import { ContentLayout, CubeType, AlertWin, ConfirmWin } from 'shared';
+import { AlertWin, ConfirmWin, CubeType } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import routePaths from '../../../routePaths';
 import { PersonalCubeService } from '../../../personalcube';
@@ -39,62 +40,76 @@ interface States {
   filesMap: Map<string, any>
 }
 
-@inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'personalCube.mediaService', 'personalCube.officeWebService'))
+@inject(mobxHelper.injectFrom(
+  'personalCube.boardService',
+  'personalCube.personalCubeService',
+  'personalCube.cubeIntroService',
+  'personalCube.mediaService',
+  'personalCube.officeWebService'))
 @observer
 @reactAutobind
 class SharedDetailContainer extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = { alertWinOpen: false,
-      alertMessage: '', alertIcon: '', alertTitle: '', alertType: '',
-      confirmWinOpen: false, filesMap: new Map<string, any>() };
-  }
+  state = {
+    alertWinOpen: false,
+    alertMessage: '',
+    alertIcon: '',
+    alertTitle: '',
+    alertType: '',
+    confirmWinOpen: false,
+    filesMap: new Map<string, any>(),
+  };
 
   componentDidMount() {
-    const { personalCubeService, cubeIntroService } = this.props;
+    //
+    const personalCubeService = this.props.personalCubeService!;
+    const cubeIntroService = this.props.cubeIntroService!;
     const { personalCubeId, cubeType } = this.props.match.params;
 
-    if (personalCubeService && cubeIntroService) {
-      personalCubeService.findPersonalCube(personalCubeId)
-        .then(() => {
-          const cubeIntroId = personalCubeService.personalCube
-            && personalCubeService.personalCube.cubeIntro && personalCubeService.personalCube.cubeIntro.id;
-          cubeIntroService.findCubeIntro(cubeIntroId);
-        })
-        .then(() => {
-          const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
-            && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
-          if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
-          if (cubeType === 'Community') this.setCommunity(contentsId);
-          if (cubeType === 'Documents' || cubeType === 'WebPage') this.setOfficeWeb(contentsId);
-        })
-        .then(() => this.getFileIds());
-    }
+    this.clearAll();
+
+    personalCubeService.findPersonalCube(personalCubeId)
+      .then(() => {
+        const { personalCube } = personalCubeService;
+        const referenceFileBoxId = personalCube && personalCube.contents && personalCube.contents.fileBoxId;
+        this.findFiles('reference', referenceFileBoxId);
+      })
+      .then(() => {
+        const cubeIntroId = personalCubeService.personalCube
+          && personalCubeService.personalCube.cubeIntro && personalCubeService.personalCube.cubeIntro.id;
+        cubeIntroService.findCubeIntro(cubeIntroId)
+          .then(() => {
+            const { cubeIntro } = cubeIntroService;
+            const reportFileBoxId = cubeIntro && cubeIntro.reportFileBox && cubeIntro.reportFileBox.fileBoxId;
+            this.findFiles('report', reportFileBoxId);
+          });
+
+        const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
+          && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
+
+        if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
+        if (cubeType === 'Community') this.setCommunity(contentsId);
+        if (cubeType === 'Documents' || cubeType === 'WebPage') this.setOfficeWeb(contentsId);
+      });
   }
 
-  getFileIds() {
+  clearAll() {
     //
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
-    const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
+    const {
+      personalCubeService, cubeIntroService, mediaService, boardService, officeWebService,
+    } = this.props;
 
-    const referenceFileBoxId = personalCube && personalCube.contents && personalCube.contents.fileBoxId;
-    const reportFileBoxId = cubeIntro && cubeIntro.reportFileBox && cubeIntro.reportFileBox.fileBoxId;
-    const officeWebFileBoxId = officeWeb.fileBoxId;
-
-    Promise.resolve()
-      .then(() => {
-        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
-        if (reportFileBoxId) this.findFiles('report', reportFileBoxId);
-        if (officeWebFileBoxId) this.findFiles('officeweb', officeWebFileBoxId);
-      })
-      .then(() => console.log(this.state.filesMap));
+    personalCubeService!.clearPersonalCube();
+    cubeIntroService!.clearCubeIntro();
+    mediaService!.clearMedia();
+    boardService!.clearBoard();
+    officeWebService!.clearOfficeWeb();
   }
 
   findFiles(type: string, fileBoxId: string) {
+    //
     const { filesMap } = this.state;
+
     depot.getDepotFiles(fileBoxId)
       .then(files => {
         filesMap.set(type, files);
@@ -105,20 +120,28 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
   setOfficeWeb(contentsId: string) {
     //
-    const { officeWebService } = this.props;
-    if (officeWebService) officeWebService.findOfficeWeb(contentsId);
+    const officeWebService = this.props.officeWebService!;
+
+    officeWebService.findOfficeWeb(contentsId)
+      .then(() => {
+        const officeWebFileBoxId = officeWebService.officeWeb.fileBoxId;
+
+        if (officeWebFileBoxId) {
+          this.findFiles('officeweb', officeWebFileBoxId);
+        }
+      });
   }
 
   setMedia(contentsId: string) {
     //
-    const { mediaService } = this.props;
-    if ( mediaService ) mediaService.findMedia(contentsId);
+    const mediaService = this.props.mediaService!;
+    mediaService.findMedia(contentsId);
   }
 
   setCommunity(contentsId: string) {
     //
-    const { boardService } = this.props;
-    if ( boardService) boardService.findBoard(contentsId);
+    const boardService = this.props.boardService!;
+    boardService.findBoard(contentsId);
   }
 
   handleAlertOk(type: string) {
@@ -130,19 +153,26 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
   handleSave() {
 
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { cubeIntro } = this.props.cubeIntroService!;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
+
     if ( cubeIntroObject === 'success') {
       this.setState({ confirmWinOpen: true });
-      return;
     }
-    if (cubeIntroObject !== 'success') this.confirmBlank(cubeIntroMessage);
+    else {
+      this.confirmBlank(cubeIntroMessage);
+    }
   }
 
   confirmBlank(message: string) {
     //
-    this.setState({ alertMessage: message, alertWinOpen: true, alertTitle: '필수 정보 입력 안내', alertIcon: 'triangle' });
+    this.setState({
+      alertMessage: message,
+      alertWinOpen: true,
+      alertTitle: '필수 정보 입력 안내',
+      alertIcon: 'triangle',
+    });
   }
 
   handleCloseAlertWin() {
@@ -159,52 +189,50 @@ class SharedDetailContainer extends React.Component<Props, States> {
     });
   }
 
-  handleOKConfirmWin(mode?: string) {
+  handleOKConfirmWin() {
     //
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCubeId, cubeType } = this.props.match.params;
 
-    if (cubeType === CubeType.Video
-      || cubeType === CubeType.Audio) this.modifyMedia(personalCubeId, cubeIntro);
-    if (cubeType === CubeType.Community) this.modifyCommunity(personalCubeId, cubeIntro);
-    if (cubeType === CubeType.Documents
-      || cubeType === CubeType.WebPage) this.modifyOfficeWeb(personalCubeId, cubeIntro);
+    if (cubeType === CubeType.Video || cubeType === CubeType.Audio) {
+      this.modifyMedia(personalCubeId, cubeIntro);
+    }
+    else if (cubeType === CubeType.Community) {
+      this.modifyCommunity(personalCubeId, cubeIntro);
+    }
+    else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
+      this.modifyOfficeWeb(personalCubeId, cubeIntro);
+    }
   }
 
   modifyMedia(personalCubeId: string, cubeIntro: CubeIntroModel) {
     //
-    const { mediaService } = this.props;
-    const { media } = this.props.mediaService || {} as MediaService;
+    const mediaService = this.props.mediaService!;
+    const { media } = mediaService;
 
-    if (mediaService) {
-      Promise.resolve()
-        .then(() => mediaService.modifyMediaByUser(personalCubeId, cubeIntro, media))
-        .then(() => this.routeToCreateList());
-    }
+    Promise.resolve()
+      .then(() => mediaService.modifyMediaByUser(personalCubeId, cubeIntro, media))
+      .then(() => this.routeToCreateList());
   }
 
   modifyCommunity(personalCubeId: string, cubeIntro: CubeIntroModel) {
     //
-    const { boardService } = this.props;
-    const { board } = this.props.boardService || {} as BoardService;
+    const boardService = this.props.boardService!;
+    const { board } = boardService;
 
-    if (boardService ) {
-      Promise.resolve()
-        .then(() => boardService.modifyBoardByUser(personalCubeId, cubeIntro, board))
-        .then(() => this.routeToCreateList());
-    }
+    Promise.resolve()
+      .then(() => boardService.modifyBoardByUser(personalCubeId, cubeIntro, board))
+      .then(() => this.routeToCreateList());
   }
 
   modifyOfficeWeb(personalCubeId: string, cubeIntro: CubeIntroModel ) {
     //
-    const { officeWebService } = this.props;
+    const officeWebService = this.props.officeWebService!;
     const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
 
-    if (officeWebService ) {
-      Promise.resolve()
-        .then(() => officeWebService.modifyOfficeWebByUser(personalCubeId, cubeIntro, officeWeb))
-        .then(() => this.routeToCreateList());
-    }
+    Promise.resolve()
+      .then(() => officeWebService.modifyOfficeWebByUser(personalCubeId, cubeIntro, officeWeb))
+      .then(() => this.routeToCreateList());
   }
 
   routeToCreateList() {
@@ -218,21 +246,17 @@ class SharedDetailContainer extends React.Component<Props, States> {
   }
 
   render() {
-    const { personalCube } = this.props.personalCubeService || {} as PersonalCubeService;
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { personalCube } = this.props.personalCubeService!;
+    const { cubeIntro } = this.props.cubeIntroService!;
     const { cubeType, cubeState, personalCubeId } = this.props.match.params;
     const {
       alertWinOpen, confirmWinOpen, alertMessage, alertIcon, alertTitle, alertType,
     } = this.state;
     const { filesMap } = this.state;
-    const message = (
-      <>
-        <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>
-      </>
-    );
+    const message = <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>;
 
     return (
-      <ContentLayout className="bg-white">
+      <>
         <div className="add-personal-learning support">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">Detail</div>
@@ -252,16 +276,16 @@ class SharedDetailContainer extends React.Component<Props, States> {
               />
 
               {
-              cubeState === 'OpenApproval' ?
-                <SharedDetailIntroView
-                  cubeIntro={cubeIntro}
-                  cubeType={cubeType}
-                />
-                :
-                <SharedDetailIntroEditContainer
-                  cubeIntro={cubeIntro}
-                />
-            }
+                cubeState === 'OpenApproval' ?
+                  <SharedDetailIntroView
+                    cubeIntro={cubeIntro}
+                    cubeType={cubeType}
+                  />
+                  :
+                  <SharedDetailIntroEditContainer
+                    cubeIntro={cubeIntro}
+                  />
+              }
               <SharedTypeDetailView
                 personalCube={personalCube}
                 cubeType={cubeType}
@@ -302,9 +326,8 @@ class SharedDetailContainer extends React.Component<Props, States> {
             </Form>
           </div>
         </Segment>
-      </ContentLayout>
-
+      </>
     );
   }
 }
-export default SharedDetailContainer;
+export default withRouter(SharedDetailContainer);

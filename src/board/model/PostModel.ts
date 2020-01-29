@@ -34,6 +34,8 @@ export class PostModel implements DomainEntity {
   answer: IdName = new IdName();
   period: DatePeriod = new DatePeriod();
 
+  commentFeedbackId: string = '';
+
   constructor(post?: PostModel) {
     if (post) {
       const writer = post.writer && new WriterModel(post.writer) || this.writer;
@@ -51,7 +53,7 @@ export class PostModel implements DomainEntity {
 
   static isBlank(post: PostModel) : string {
     if (!post.title) return '제목';
-    if (!post.category) return '문의유형';
+    if (!post.category.id) return '문의유형';
     if (!post.contents || !post.contents.contents) return '내용';
     return 'success';
   }
@@ -74,6 +76,10 @@ export class PostModel implements DomainEntity {
         {
           name: 'deleted',
           value: String(post.deleted),
+        },
+        {
+          name: 'commentFeedbackId',
+          value: post.commentFeedbackId,
         },
       ],
     };
@@ -104,5 +110,6 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
+  commentFeedbackId: observable,
 
 });

@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react';
 import { SkProfileService } from 'profile';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
 interface Props extends RouteComponentProps {
@@ -39,7 +40,7 @@ class ProfileContainer extends Component<Props, State> {
         <button className="ui user image label" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
           <span className="name">{member.name}</span>
           <span className="affiliation">{member.company}  {member.department}</span>
-          <Image src={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`} alt="profile" />
+          <Image src={member.photoFilePath || profileImg} alt="profile" />
         </button>
       </div>
     );

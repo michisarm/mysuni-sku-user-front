@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { PageService, CubeType } from 'shared';
+import { PageService, CubeType, NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
@@ -137,6 +137,8 @@ class ChannelLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
+        baseUrl: lecture.baseUrl,
+        servicePatronKeyString: lecture.patronKey.keyString,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }
@@ -173,40 +175,45 @@ class ChannelLecturesContainer extends Component<Props, State> {
     return (
       <ChannelLecturesContentWrapperView
         lectureCount={page!.totalCount}
+        countDisabled={lectures.length < 1}
       >
-        <>
-          <CardSorting
-            value={sorting}
-            onChange={this.onChangeSorting}
-          />
+        { lectures.length < 1 ?
+          <NoSuchContentPanel message="등록된 학습 과정이 없습니다." />
+          :
+          <>
+            <CardSorting
+              value={sorting}
+              onChange={this.onChangeSorting}
+            />
 
-          <div className="section">
-            <Lecture.Group type={Lecture.GroupType.Box}>
-              {lectures.map((lecture: LectureModel, index: number) => {
-                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
-                const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                if (lecture.cubeType === CubeType.Community) rating = undefined;
-                return (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                    rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
-                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onActionLecture(inMyLecture || lecture)}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
+            <div className="section">
+              <Lecture.Group type={Lecture.GroupType.Box}>
+                {lectures.map((lecture: LectureModel, index: number) => {
+                  let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+                  const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                  if (lecture.cubeType === CubeType.Community) rating = undefined;
+                  return (
+                    <Lecture
+                      key={`lecture-${index}`}
+                      model={lecture}
+                      rating={rating}
+                      thumbnailImage={lecture.baseUrl || undefined}
+                      action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                      onAction={() => this.onActionLecture(inMyLecture || lecture)}
+                      onViewDetail={this.onViewDetail}
+                    />
+                  );
+                })}
+              </Lecture.Group>
 
-            { this.isContentMore() && (
-              <SeeMoreButton
-                onClick={this.onClickSeeMore}
-              />
-            )}
-          </div>
-        </>
+              { this.isContentMore() && (
+                <SeeMoreButton
+                  onClick={this.onClickSeeMore}
+                />
+              )}
+            </div>
+          </>
+        }
       </ChannelLecturesContentWrapperView>
     );
   }

@@ -1,5 +1,8 @@
-import { DramaEntity, getCookie, PatronKey } from '@nara.platform/accent';
+
 import { decorate, observable } from 'mobx';
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+
 import { IdName, NameValueList, CategoryModel, CreatorModel, IconBox } from 'shared';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from '../../shared/model/CourseOpenModel';
@@ -27,6 +30,7 @@ export class CoursePlanModel implements DramaEntity {
   reportFileBox: ReportFileBoxModel = new ReportFileBoxModel();
   stamp: StampModel = new StampModel();
   creator: CreatorModel = new CreatorModel();
+  learningTime: number = 0;
   time: number = 0;
   openRequests: OpenRequestModel[] = [];
 
@@ -46,13 +50,14 @@ export class CoursePlanModel implements DramaEntity {
       Object.assign(this, { ...coursePlan, category, courseOperator, iconBox, courseOpen, reportFileBox, stamp, creator });
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = patronInfo.getPatronCompanyCode();
+
       this.required = coursePlan && coursePlan.courseOpen && coursePlan.courseOpen.requiredSubsidiaries
         && coursePlan.courseOpen.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
     }
   }
 
-  static  asNameValues(coursePlan: CoursePlanModel): NameValueList {
+  static asNameValues(coursePlan: CoursePlanModel): NameValueList {
     const asNameValues = {
       nameValues: [
         {

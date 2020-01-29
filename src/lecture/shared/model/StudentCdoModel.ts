@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { DenizenKey, PatronType } from '@nara.platform/accent';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 import { ProposalState } from 'shared';
 
 
@@ -23,7 +23,7 @@ class StudentCdoModel {
     //
     if (student) {
       Object.assign(this, { ...student });
-      this.denizenKey = { keyString: tenantInfo.getTenantId(), patronType: PatronType.Audience } as DenizenKey;
+      this.denizenKey = { keyString: patronInfo.getPatronId(), patronType: PatronType.Audience } as DenizenKey;
     }
   }
 

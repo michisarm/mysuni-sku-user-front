@@ -1,16 +1,20 @@
-import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
+import StudentFlowApi from '../apiclient/StudentFlowApi';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';
 import RecommendLectureRdo from '../../model/RecommendLectureRdo';
+import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
 import OrderByType from '../../model/OrderByType';
 import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
+import SharedRdoModel from '../../model/SharedRdoModel';
+import StudentCdoModel from '../../model/StudentCdoModel';
 
 
 @autobind
@@ -22,12 +26,18 @@ class LectureService {
 
   private lectureFlowApi: LectureFlowApi;
 
+  private studentFlowApi: StudentFlowApi;
+
 
   @observable
   _lectures: LectureModel[] = [];
 
+  // @observable
+  // _recommendLectures: RecommendLectureRdo[] = [];
+
   @observable
-  _recommendLectures: RecommendLectureRdo[] = [];
+  _recommendLectureListRdo: RecommendLectureListRdo = new RecommendLectureListRdo();
+
 
   @observable
   recommendLecture: RecommendLectureRdo = new RecommendLectureRdo();
@@ -39,30 +49,33 @@ class LectureService {
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
 
-  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi) {
+  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
+    this.studentFlowApi = studentFlowApi;
   }
 
   @computed
   get lectures() {
     //
-    const lectures = this._lectures as IObservableArray;
-    return lectures.peek();
+    return (this._lectures as IObservableArray).peek();
   }
 
   @computed
   get recommendLectures() {
     //
-    const recommendLectures = this._recommendLectures as IObservableArray;
-    return recommendLectures.peek();
+    return (this._recommendLectureListRdo.recommendLectureRdos as IObservableArray).peek();
+  }
+
+  @computed
+  get recommendLecturesCount() {
+    return this._recommendLectureListRdo.totalCount;
   }
 
   @computed
   get lectureViews() {
     //
-    const lectureViews = this._lectureViews as IObservableArray;
-    return lectureViews.peek();
+    return (this._lectureViews as IObservableArray).peek();
   }
 
 
@@ -82,10 +95,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -96,10 +107,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -110,10 +119,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
@@ -124,10 +131,8 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   // LectureViews ------------------------------------------------------------------------------------------------------
@@ -171,56 +176,73 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
-
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
-  async findPagingSharedLectures(limit: number, offset: number) {
+  async findPagingSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
-    const response = await this.lectureApi.findAllSharedLectures(LectureRdoModel.newShared(limit, offset));
+    const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    return runInAction(() => {
-      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
-      return lectureOffsetElementList;
-    });
-
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
   }
 
   @action
-  async findPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+  async findPagingRecommendLectures(
+    channelLimit: number, limit: number, channelId?: string, orderBy?: OrderByType
+  ) {
     //
-    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, 0, limit, 0, channelId, orderBy);
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
-    return runInAction(() => {
-      this._recommendLectures = recommendLectures.map(recommendLecture => new RecommendLectureRdo(recommendLecture));
-      return recommendLectures;
-    });
+    runInAction(() => this._recommendLectureListRdo = recommendLectureListRdo);
+    return recommendLectureListRdo;
   }
 
   @action
-  async addPagingRecommendLectures(limit: number, offset: number, channelId?: string, orderBy?: OrderByType) {
+  async addFindPagingRecommendLectures(
+    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+  ) {
     //
-    const recommendLectures = await this.lectureFlowApi.findAllRecommendLectures(LectureRdoModel.newRecommend(limit, offset, channelId, orderBy));
+    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
 
-    return runInAction(() => {
-      if (recommendLectures && recommendLectures.length && recommendLectures.length === 1) {
-        const recommendLecture = recommendLectures[0];
-        recommendLecture.lectures.results = recommendLecture.lectures.results.map(result => new LectureModel(result));
-        this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results);
-        return recommendLecture.lectures;
-      }
-      return null;
+    runInAction(() => {
+      this._recommendLectureListRdo.totalCount = recommendLectureListRdo.totalCount;
+      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos
+        .concat(recommendLectureListRdo.recommendLectureRdos);
     });
+    return recommendLectureListRdo;
+  }
+
+  @action
+  async addPagingRecommendLectures(
+    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+  ) {
+    //
+    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
+
+    if (recommendLectureListRdo.recommendLectureRdos && recommendLectureListRdo.recommendLectureRdos.length === 1) {
+      const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
+
+      runInAction(() => this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results));
+      return recommendLecture.lectures;
+    }
+    return null;
+  }
+
+  async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
+    //
+    return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
   }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance);
+LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance, StudentFlowApi.instance);
 
 export default LectureService;

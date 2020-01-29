@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -39,9 +39,20 @@ class HeaderContainer extends Component<Props> {
     this.props.history.push(lectureRoutePaths.recommend());
   }
 
+  onConfirmFavorite() {
+    //
+    const { match, history, onFindStudySummary } = this.props;
+
+    onFindStudySummary();
+
+    if (match.path === '/') {
+      history.replace('/');
+    }
+  }
+
   render() {
     //
-    const { skProfileService, favoriteChannels, onFindStudySummary } = this.props;
+    const { skProfileService, favoriteChannels } = this.props;
     const { skProfile } = skProfileService!;
 
     return (
@@ -57,7 +68,7 @@ class HeaderContainer extends Component<Props> {
             </Button>
           )}
           favorites={favoriteChannels}
-          onConfirmCallback={onFindStudySummary}
+          onConfirmCallback={this.onConfirmFavorite}
         />
       </HeaderView>
     );

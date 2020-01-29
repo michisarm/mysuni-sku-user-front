@@ -6,8 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { ContentLayout } from 'shared';
-import DepotFileViewModel from '@nara.drama/depot/src/depot/ui/model/DepotFileViewModel';
-import depot from '@nara.drama/depot';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { CategoryService, PostService } from '../../../board';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
@@ -53,6 +52,11 @@ class QnaDetailContainer extends React.Component<Props, States> {
         })
         .then(() => this.getFileIds());
     }
+  }
+
+  componentWillUnmount(): void {
+    const { postService } = this.props;
+    postService!.clearPost();
   }
 
   getFileIds() {

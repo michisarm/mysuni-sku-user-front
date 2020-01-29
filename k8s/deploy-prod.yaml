@@ -1,0 +1,64 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    app: user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+      - name: user
+        image: dev03/user:0.0.1
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 20
+          httpGet:
+            path: /healthCheck
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        readinessProbe:
+          failureThreshold: 20
+          httpGet:
+            path: /healthCheck
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        resources:
+          requests:
+            cpu: "2.5"
+            memory: "5Gi"
+          limits:
+            cpu: "2.5"
+            memory: "5Gi"
+        volumeMounts:
+          - name: user-front-persistent-storage
+            mountPath: /usr/share/nginx/html/profile
+          - mountPath: /etc/localtime
+            name: timezone-config
+      volumes:
+        - name: user-front-persistent-storage
+          persistentVolumeClaim:
+            claimName: nara-pvc-1
+        - hostPath:
+            path: /usr/share/zoneinfo/Asia/Seoul
+          name: timezone-config
+      imagePullSecrets:
+      - name: user-secret
+  strategy:
+    type: RollingUpdate

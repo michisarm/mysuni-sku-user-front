@@ -5,10 +5,12 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
+import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
 import myPageRoutePaths from 'myTraining/routePaths';
-import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
+import { CollegeLectureCountService } from 'lecture';
+// import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
 
@@ -47,12 +49,12 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Learning',
       items: [
-        { name: 'In progress', path: myPageRoutePaths.learningInProgress() },
-        { name: 'In My List', path: myPageRoutePaths.learningInMyList() },
-        { name: 'Enrolled', path: myPageRoutePaths.learningEnrolled() },
-        { name: 'Required', path: myPageRoutePaths.learningRequired() },
-        { name: 'Completed List', path: myPageRoutePaths.learningCompleted() },
-        { name: 'Retry', path: myPageRoutePaths.learningRetry() },
+        { name: '학습중', path: myPageRoutePaths.learningInProgress() },
+        { name: '관심목록', path: myPageRoutePaths.learningInMyList() },
+        { name: '학습예정', path: myPageRoutePaths.learningEnrolled() },
+        { name: '권장과정', path: myPageRoutePaths.learningRequired() },
+        { name: '학습완료', path: myPageRoutePaths.learningCompleted() },
+        { name: '취소/미이수', path: myPageRoutePaths.learningRetry() },
       ],
     },
     {
@@ -62,12 +64,13 @@ class SiteMapModalContainer extends Component<Props, State> {
       ],
     },
     {
-      name: 'Community',
-      items: [
-        { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
-        { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
-        { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
-      ],
+      name: <span>Community<span className="update">업데이트예정</span></span>,
+      items: [],
+      // items: [
+      //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
+      //   { name: 'My Created Community', path: myPageRoutePaths.communityMyCreatedCommunity() },
+      //   { name: 'My Feed', path: myPageRoutePaths.communityMyFeed() },
+      // ],
     },
   ];
 
@@ -75,8 +78,9 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Introduction',
       items: [
-        { name: 'mySUNI 소개', path: '/introduction' },
-        { name: 'College 소개', path: '/introduction' },
+        { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
+        { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
+        { name: '인증제도 소개', path: mainRoutePaths.introductionCertification() },
       ],
     },
     {
@@ -89,8 +93,8 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'My Page',
       items: [
-        { name: 'Completed List', path: myPageRoutePaths.myPageCompletedList() },
-        { name: 'Earned Stamp List', path: myPageRoutePaths.myPageEarnedStampList() },
+        { name: '학습완료', path: myPageRoutePaths.myPageCompletedList() },
+        { name: '보유스탬프', path: myPageRoutePaths.myPageEarnedStampList() },
       ],
     },
     {
@@ -110,10 +114,10 @@ class SiteMapModalContainer extends Component<Props, State> {
   };
 
 
-  componentDidMount() {
-    //
-    this.setSiteMapWithCount();
-  }
+  // componentDidMount() {
+  //   //
+  //   this.setSiteMapWithCount();
+  // }
 
   async setSiteMapWithCount() {
     //
@@ -124,10 +128,16 @@ class SiteMapModalContainer extends Component<Props, State> {
 
     const categorySiteMap = {
       ...baseCategoryItems,
-      items: baseCategoryItems.items.map((item) => ({
-        ...item,
-        count: colleges.find((college: CollegeLectureCountRdo) => college.name === item.name)!.collegeCount,
-      })),
+      items: baseCategoryItems.items.map((item) => {
+        //
+        const college = colleges.find((college: any) => college.name === item.name);
+
+        return {
+          ...item,
+          path: college && lectureRoutePaths.collegeLectures(college.collegeId),
+          count: college && college.collegeCount || 0,
+        };
+      }),
     };
 
     const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];
@@ -147,6 +157,7 @@ class SiteMapModalContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.setSiteMapWithCount();
     this.setState({ open: true });
   }
 

@@ -37,7 +37,7 @@ class PostDetailPage extends React.Component<Props> {
 
   routeTo(url: string) {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${url}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${url}`);
   }
 
   render() {
@@ -59,9 +59,9 @@ class PostDetailPage extends React.Component<Props> {
           <div className="post-view-wrap">
             <PostDetail
               postId={postId || ''}
-              onEdit={() => this.routeTo(`posts/${postId}/edit`)}
+              onEdit={() => this.routeTo(`/posts/${postId}/edit`)}
               onRemove={() => this.routeTo('')}
-              onWriteReply={() => this.routeTo(`posts/${postId}/reply/new`)}
+              onWriteReply={() => this.routeTo(`/posts/${postId}/reply/new`)}
               routeToList={() => this.routeTo('')}
             />
           </div>

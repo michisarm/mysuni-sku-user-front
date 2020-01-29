@@ -1,8 +1,8 @@
 
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, CachingFetch } from '@nara.platform/accent';
 
-import { IdNameCount, CachingFetch } from 'shared';
+import { IdNameCount } from 'shared';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
 
@@ -31,16 +31,22 @@ class CollegeLectureCountService {
   @computed
   get collegeLectureCounts() {
     //
-    const collegeLectureCounts = this._collegeLectureCounts as IObservableArray;
-    return collegeLectureCounts.peek();
+    return (this._collegeLectureCounts as IObservableArray).peek();
   }
 
   @computed
   get channelCounts() {
-    const channelsCounts = this._channelCounts as IObservableArray;
-    return channelsCounts.peek();
+    return (this._channelCounts as IObservableArray).peek();
   }
 
+  @computed
+  get totalChannelCount() {
+    let total = 0;
+    this._collegeLectureCounts.map(college => {
+      total += college.channelCounts.length;
+    });
+    return total;
+  }
 
   @action
   clearAll() {

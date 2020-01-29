@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Modal, Table, Popup, Icon, Button, Radio } from 'semantic-ui-react';
 import { ClassroomModel } from 'personalcube/classroom';
+import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 
 
 interface Props {
@@ -49,13 +50,14 @@ class ClassroomModalView extends Component<Props, States> {
     const { classrooms, trigger, joinRounds } = this.props;
     const { selectedClassroom }: States = this.state;
     if (!classrooms || !classrooms.length) return null;
+    const today = new Date();
 
     return (
       <Modal open={this.state.open} onClose={this.close} className="base w1000 inner-scroll" trigger={trigger} onOpen={this.show}>
 
         <Modal.Header className="res">
-          Class Series Detail
-          <span className="sub f12">Please choose the class you want.</span>
+          차수세부내용
+          <span className="sub f12">차수를 선택해주세요.</span>
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-60vh">
@@ -65,8 +67,7 @@ class ClassroomModalView extends Component<Props, States> {
                   <Table.HeaderCell />
                   <Table.HeaderCell>차수</Table.HeaderCell>
                   <Table.HeaderCell>강사</Table.HeaderCell>
-                  <Table.HeaderCell>담당자 정보 및 이메일</Table.HeaderCell>
-                  <Table.HeaderCell>장소</Table.HeaderCell>
+                  <Table.HeaderCell>교육장소/웹사이트</Table.HeaderCell>
                   <Table.HeaderCell>정원정보</Table.HeaderCell>
                   <Table.HeaderCell>수강신청 기간</Table.HeaderCell>
                   <Table.HeaderCell>시작일 및 종료일</Table.HeaderCell>
@@ -76,48 +77,53 @@ class ClassroomModalView extends Component<Props, States> {
 
               <Table.Body>
                 {
-                  classrooms.sort(this.compare).map((classroom: ClassroomModel, index) => (
-                    <Table.Row key={`overview-table-row-${index}`}>
-                      <Table.Cell>
-                        <Radio
-                          name="class-radioGroup"
-                          disabled={
-                            (joinRounds && joinRounds.includes(classroom.round))
-                            || classroom.enrolling.applyingPeriod.startDateSub > new Date()
-                            || classroom.enrolling.applyingPeriod.endDateSub < new Date()
+                  classrooms.sort(this.compare).map((classroom: ClassroomModel, index) => {
+                    const {
+                      year: startYear, month: startMonth, date: startDate,
+                    } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.startDateSub)!;
+                    const {
+                      year: endYear, month: endMonth, date: endDate,
+                    } = getYearMonthDateHourMinuteSecond(classroom.enrolling.applyingPeriod!.endDateSub)!;
+
+                    return (
+                      <Table.Row key={`overview-table-row-${index}`}>
+                        <Table.Cell>
+                          <Radio
+                            name="class-radioGroup"
+                            disabled={
+                              (joinRounds && joinRounds.includes(classroom.round))
+                              || new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
+                              || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()
+                            }
+                            checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
+                            onChange={() => this.setState({ selectedClassroom: classroom })}
+                          />
+                        </Table.Cell>
+                        <Table.Cell>{classroom.round}</Table.Cell>
+                        <Table.Cell>{classroom.instructor.name}</Table.Cell>
+                        <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
+                        <Table.Cell>{classroom.capacity}</Table.Cell>
+                        <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
+                        <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
+                        <Table.Cell>
+                          {
+                            classroom.enrolling.cancellationPenalty && (
+                              <Popup
+                                content={<span>{classroom.enrolling.cancellationPenalty}</span>}
+                                className="ui custom red"
+                                position="bottom right"
+                                trigger={
+                                  <Button icon className="img-icon custom">
+                                    <Icon className="noti32" /><span className="blind">취소 패널티</span>
+                                  </Button>
+                                }
+                              />
+                            ) || null
                           }
-                          checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
-                          onChange={() => this.setState({ selectedClassroom: classroom })}
-                        />
-                      </Table.Cell>
-                      <Table.Cell>{classroom.round}</Table.Cell>
-                      <Table.Cell>{classroom.instructor.name}</Table.Cell>
-                      <Table.Cell>
-                        {classroom.operation.operator.name}
-                        <span className="dash" />{classroom.operation.operator.company}<br />{classroom.operation.operator.email}
-                      </Table.Cell>
-                      <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
-                      <Table.Cell>{classroom.capacity}</Table.Cell>
-                      <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
-                      <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
-                      <Table.Cell>
-                        {
-                          classroom.enrolling.cancellationPenalty && (
-                            <Popup
-                              content={<span>{classroom.enrolling.cancellationPenalty}</span>}
-                              className="ui custom red"
-                              position="bottom right"
-                              trigger={
-                                <Button icon className="img-icon custom">
-                                  <Icon className="noti32" /><span className="blind">취소 패널티</span>
-                                </Button>
-                              }
-                            />
-                          ) || null
-                        }
-                      </Table.Cell>
-                    </Table.Row>
-                  )) || null
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  }) || null
                 }
               </Table.Body>
             </Table>

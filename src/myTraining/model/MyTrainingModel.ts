@@ -1,5 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, ProposalState } from 'shared';
+import { CategoryModel, DramaEntityObservableModel, IdName, LearningState, LearningStateName, ProposalState, ProposalStateName } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
@@ -9,6 +9,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   //
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
+  servicePatronKeyString: string = '';
   student: IdName = new IdName();
   category: CategoryModel = new CategoryModel();
   name: string = '';
@@ -31,7 +32,10 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   reviewId: string = '';
   studentCount: number = 0;
+  // TODO: 서버에서 넣어줘야 함.
+  passedStudentCount: number = 0;
 
+  baseUrl: string = '';
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
@@ -48,6 +52,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
       // UI Model
       this.cubeTypeName = MyTrainingModel.getCubeTypeName(myTraining.cubeType, this.serviceType);
+      this.passedStudentCount = myTraining.studentCount;
     }
   }
 
@@ -82,19 +87,20 @@ class MyTrainingModel extends DramaEntityObservableModel {
   @computed
   get state() {
     if (this.proposalState === ProposalState.Approved) {
-      if (this.learningState === LearningState.Progress) return 'In Progress';
-      if (this.learningState === LearningState.Passed) return 'Completed';
-      if (this.learningState === LearningState.Missed) return 'Missed';
-      if (this.cubeType === CubeType.Community) return 'Joined';
-      else return 'Enrolled';
+      if (this.learningState) return LearningStateName[LearningState[this.learningState]];
+      if (this.cubeType === CubeType.Community) return '가입완료';
+      return '학습예정';
     }
-    else return this.proposalState.toString();
+    else {
+      return ProposalStateName[ProposalState[this.proposalState]];
+    }
   }
 }
 
 decorate(MyTrainingModel, {
   serviceType: observable,
   serviceId: observable,
+  servicePatronKeyString: observable,
   student: observable,
   category: observable,
   name: observable,
@@ -115,6 +121,8 @@ decorate(MyTrainingModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  passedStudentCount: observable,
+  baseUrl: observable,
 });
 
 export default MyTrainingModel;

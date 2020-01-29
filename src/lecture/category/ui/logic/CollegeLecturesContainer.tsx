@@ -205,6 +205,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
         lectureCardUsids: lecture.lectureCardUsids,
 
         reviewId: lecture.reviewId,
+        baseUrl: lecture.baseUrl,
+        servicePatronKeyString: lecture.patronKey.keyString,
       }))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }
@@ -251,16 +253,18 @@ class CollegeLecturesContainer extends Component<Props, State> {
     return (
       <CategoryLecturesWrapperView
         header={
-          <>
-            <DescriptionView
-              name={`${college.name} College`}
-              count={page!.totalCount}
-            />
-            <CardSorting
-              value={sorting}
-              onChange={this.onChangeSorting}
-            />
-          </>
+          lectures && lectures.length > 0 && (
+            <>
+              <DescriptionView
+                name={`${college.name} College`}
+                count={page!.totalCount}
+              />
+              <CardSorting
+                value={sorting}
+                onChange={this.onChangeSorting}
+              />
+            </>
+          )
         }
       >
         {lectures && lectures.length > 0 ?
@@ -275,7 +279,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
                     key={`lecture-${index}`}
                     model={lecture}
                     rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={lecture.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || lecture)}
                     onViewDetail={this.onViewDetail}

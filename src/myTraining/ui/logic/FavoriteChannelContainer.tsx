@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
+import { reaction } from 'mobx';
 
 import { Button, Icon, Label } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 }
 
 interface States {
+  multiple: boolean
   open: boolean
 }
 
@@ -22,18 +24,45 @@ interface States {
 @observer
 @reactAutobind
 class FavoriteChannelContainer extends Component<Props, States> {
+  //
+  panelRef = React.createRef<HTMLDivElement>();
+
+  channelsRef = React.createRef<HTMLDivElement>();
 
   state = {
+    multiple: false,
     open: false,
   };
 
+
   componentDidMount(): void {
     this.init();
+    this.reactionMultiple();
+    this.setMultiple();
   }
 
   init() {
     const { skProfileService } = this.props;
     skProfileService!.findStudySummary();
+  }
+
+  reactionMultiple() {
+    //
+    const { skProfileService } = this.props;
+
+    reaction(
+      () => skProfileService!.studySummaryFavoriteChannels,
+      this.setMultiple,
+    );
+  }
+
+  setMultiple() {
+    //
+    const { current } = this.channelsRef;
+
+    if (current && current.offsetHeight > 32) {
+      this.setState({ multiple: true });
+    }
   }
 
   onToggle() {
@@ -43,14 +72,12 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
   render() {
     const { skProfileService } = this.props;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-    const { open } = this.state;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const { multiple, open } = this.state;
 
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel =>
-        new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
-      ) || [];
+    const channels = studySummaryFavoriteChannels.map(channel =>
+      new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+    );
 
     return (
       <div className="channel-of-interest">
@@ -73,12 +100,16 @@ class FavoriteChannelContainer extends Component<Props, States> {
             </div>
             <div className="cell vtop">
               <div
+                ref={this.panelRef}
                 className={classNames({
                   'item-wrap': true,
                   active: open,
                 })}
               >
-                <div className="belt">
+                <div
+                  ref={this.channelsRef}
+                  className="belt"
+                >
                   {
                     channels && channels.length !== 0 && channels.map((channel, index) => (
                       <Label className="channel" key={`channel-${index}`}>{channel.name}</Label>
@@ -89,16 +120,18 @@ class FavoriteChannelContainer extends Component<Props, States> {
             </div>
             <div className="cell vtop">
               <div className="toggle-btn">
-                <Button icon className="img-icon" onClick={this.onToggle}>
-                  <Icon
-                    className={classNames({
-                      s26: true,
-                      'arrow-down': !open,
-                      'arrow-up': open,
-                    })}
-                  />
-                  <span className="blind">open</span>
-                </Button>
+                { multiple && (
+                  <Button icon className="img-icon" onClick={this.onToggle}>
+                    <Icon
+                      className={classNames({
+                        s26: true,
+                        'arrow-down': !open,
+                        'arrow-up': open,
+                      })}
+                    />
+                    <span className="blind">open</span>
+                  </Button>
+                )}
               </div>
             </div>
           </div>

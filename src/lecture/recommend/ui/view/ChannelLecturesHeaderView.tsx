@@ -15,7 +15,7 @@ interface Props {
 
 @reactAutobind
 @observer
-class CategoryLecturesHeaderView extends Component<Props> {
+class ChannelLecturesHeaderView extends Component<Props> {
   //
   render() {
     //
@@ -45,4 +45,4 @@ class CategoryLecturesHeaderView extends Component<Props> {
   }
 }
 
-export default CategoryLecturesHeaderView;
+export default ChannelLecturesHeaderView;

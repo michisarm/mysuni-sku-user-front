@@ -32,6 +32,8 @@ export { default as IdNameList } from './model/IdNameList';
 export { NameValueList } from './model/NameValueList';
 export { default as OffsetElementList } from './model/OffsetElementList';
 export { PatronKey } from './model/PatronKey';
+export { LangStrings } from './model/LangStrings';
+export { OrderedOffset } from './model/OrderedOffset';
 
 export { CategoryModel } from './model/CategoryModel';
 export { SearchFilter } from './model/SearchFilter';
@@ -43,8 +45,10 @@ export { CubeType } from './model/CubeType';
 export { CubeState } from './model/CubeState';
 export { CourseOpenModel } from './model/CourseOpenModel';
 export { CourseState } from './model/CourseState';
-export { ProposalState } from './model/ProposalState';
-export { LearningState } from './model/LearningState';
+export { default as ProposalState } from './model/ProposalState';
+export { default as ProposalStateName } from './model/ProposalStateName';
+export { default as LearningState } from './model/LearningState';
+export { default as LearningStateName } from './model/LearningStateName';
 
 export { DatePeriod } from './model/DatePeriod';
 export { TimePeriod } from './model/TimePeriod';
@@ -58,8 +62,6 @@ export { default as DynamicImport } from './helper/DynamicImport';
 export { default as withSplitting } from './helper/withSplitting';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
-
-export { default as CachingFetch } from './components/CachingFetch';
 
 /** Component */
 export { default as UserApp } from '../layout/UserApp';

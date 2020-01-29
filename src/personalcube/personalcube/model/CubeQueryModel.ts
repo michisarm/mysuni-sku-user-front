@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { DatePeriod } from 'shared';
-import { tenantInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 
@@ -29,26 +29,26 @@ export class CubeQueryModel {
   offset: number = 0;
   limit: number = 20;
 
+
   static asCubeRdo(cubeQuery: CubeQueryModel) : PersonalCubeRdoModel {
     let isName = false;
     let isWord = false;
     if (cubeQuery.searchPart === '과정명') isName = true;
     if (cubeQuery.searchPart === '생성자') isWord = true;
-    return (
-      {
-        startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
-        endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
-        cubeType: cubeQuery && cubeQuery.cubeType,
-        channel: cubeQuery && cubeQuery.channel,
-        college: cubeQuery && cubeQuery.college,
-        cubeState: cubeQuery && cubeQuery.cubeState,
-        searchFilter: cubeQuery && cubeQuery.searchFilter,
-        name: isName && cubeQuery && cubeQuery.searchWord || '',
-        creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
-        offset: cubeQuery && cubeQuery.offset,
-        limit: cubeQuery && cubeQuery.limit,
-      }
-    );
+
+    return {
+      startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
+      endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
+      cubeType: cubeQuery && cubeQuery.cubeType,
+      channel: cubeQuery && cubeQuery.channel,
+      college: cubeQuery && cubeQuery.college,
+      cubeState: cubeQuery && cubeQuery.cubeState,
+      searchFilter: cubeQuery && cubeQuery.searchFilter,
+      name: isName && cubeQuery && cubeQuery.searchWord || '',
+      creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
+      offset: cubeQuery && cubeQuery.offset,
+      limit: cubeQuery && cubeQuery.limit,
+    };
   }
 
   static asApprovalContentsRdo(cubeQuery: CubeQueryModel) : ApprovalContentsRdo {
@@ -56,43 +56,39 @@ export class CubeQueryModel {
     let isWord = false;
     if (cubeQuery.searchPart === '과정명') isName = true;
     if (cubeQuery.searchPart === '생성자') isWord = true;
-    return (
-      {
-        serviceType: cubeQuery && cubeQuery.serviceType,
-        cubeType: cubeQuery && cubeQuery.cubeType,
-        channel: cubeQuery && cubeQuery.channel,
-        college: cubeQuery && cubeQuery.college,
-        cubeState: cubeQuery && cubeQuery.cubeState,
-        name: isName && cubeQuery && cubeQuery.searchWord || '',
-        creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
-        startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
-        endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
-        offset: cubeQuery && cubeQuery.offset,
-        limit: cubeQuery && cubeQuery.limit,
-      }
-    );
+
+    return {
+      serviceType: cubeQuery && cubeQuery.serviceType,
+      cubeType: cubeQuery && cubeQuery.cubeType,
+      channel: cubeQuery && cubeQuery.channel,
+      college: cubeQuery && cubeQuery.college,
+      cubeState: cubeQuery && cubeQuery.cubeState,
+      name: isName && cubeQuery && cubeQuery.searchWord || '',
+      creatorName: isWord && cubeQuery && cubeQuery.searchWord || '',
+      startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
+      endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
+      offset: cubeQuery && cubeQuery.offset,
+      limit: cubeQuery && cubeQuery.limit,
+    };
   }
 
   static asCreateRdo(cubeQuery: CubeQueryModel) : PersonalCubeRdoModel {
 
-    return (
-      {
-        startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
-        endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
-        cubeType: '',
-        channel: '',
-        college: '',
-        cubeState: cubeQuery && cubeQuery.cubeState,
-        searchFilter: '',
-        name: '',
-        creatorName: '',
-        creatorId: tenantInfo.getTenantId(),
-        offset: cubeQuery && cubeQuery.offset,
-        limit: cubeQuery && cubeQuery.limit,
-      }
-    );
+    return {
+      startDate: cubeQuery && cubeQuery.period && cubeQuery.period.startDateNumber,
+      endDate: cubeQuery && cubeQuery.period && cubeQuery.period.endDateNumber,
+      cubeType: '',
+      channel: '',
+      college: '',
+      cubeState: cubeQuery && cubeQuery.cubeState,
+      searchFilter: '',
+      name: '',
+      creatorName: '',
+      creatorId: patronInfo.getPatronId(),
+      offset: cubeQuery && cubeQuery.offset,
+      limit: cubeQuery && cubeQuery.limit,
+    };
   }
-
 }
 
 decorate(CubeQueryModel, {

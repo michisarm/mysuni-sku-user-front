@@ -49,8 +49,11 @@ export default class MediaService {
 
   @action
   async findMedia(mediaId: string) {
+    //
     const media = await this.mediaApi.findMedia(mediaId);
-    runInAction(() => this.media = new MediaModel(media));
+
+    runInAction(() => this.media = media);
+    return media;
   }
 
   makeMedia(personalCubeModel: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {
@@ -74,17 +77,17 @@ export default class MediaService {
   }
 
   modifyMediaByUser(personalCubeId: string, cubeIntro : CubeIntroModel, media: MediaModel) {
-    this.mediaFlowApi.modifyMediaByUser(personalCubeId, new MediaFlowUserUdoModel(cubeIntro, media));
+    return this.mediaFlowApi.modifyMediaByUser(personalCubeId, new MediaFlowUserUdoModel(cubeIntro, media));
   }
 
   modifyMedia(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, media: MediaModel) {
     //
-    this.mediaFlowApi.modifyMedia(personalCubeId, new MediaFlowUdoModel(cube, cubeIntro, media));
+    return this.mediaFlowApi.modifyMedia(personalCubeId, new MediaFlowUdoModel(cube, cubeIntro, media));
   }
 
   removeMedia(personalCubeId: string) {
     //
-    this.mediaFlowApi.removeMedia(personalCubeId);
+    return this.mediaFlowApi.removeMedia(personalCubeId);
   }
 
   @action

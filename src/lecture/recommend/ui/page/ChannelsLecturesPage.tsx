@@ -5,8 +5,9 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, ContentHeader } from 'shared';
-import { SkProfileModel, SkProfileService, StudySummary } from 'profile';
+import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
@@ -41,14 +42,9 @@ class ChannelLecturesPage extends Component<Props> {
   render() {
     //
     const { skProfileService } = this.props;
-    const { skProfile } = skProfileService as SkProfileService;
-
-    const { member } = skProfile as SkProfileModel;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
-
-    const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-      && favoriteChannels.idNames.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
+    const { member } = skProfileService!.skProfile;
+    const { studySummaryFavoriteChannels } = skProfileService!;
+    const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
     return (
       <ContentLayout
@@ -60,16 +56,16 @@ class ChannelLecturesPage extends Component<Props> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member.photoFilePath || profileImg}
               name={member.name}
-              teams={[member.company || '', member.department || '']}
+              company={member.company}
+              department={member.department}
               imageEditable={false}
               myPageActive
             />
           </ContentHeader.Cell>
           <ContentHeader.Cell inner>
             <ContentHeader.RecommendItem
-              totalChannelCount={999}
               favoriteChannelCount={channels.length || 0}
             />
           </ContentHeader.Cell>

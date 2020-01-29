@@ -1,9 +1,8 @@
 
 import { observable, action, runInAction, computed } from 'mobx';
-import { autobind, NameValueList, OffsetElementList } from '@nara.platform/accent';
+import { autobind, NameValueList, OffsetElementList, CachingFetch } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { CachingFetch } from 'shared';
 import SkProfileApi from '../apiclient/SkProfileApi';
 import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
 import { SkProfileModel } from '../../model/SkProfileModel';
@@ -108,7 +107,7 @@ export default class SkProfileService {
   }
 
   @action
-  async  findStudySummary() {
+  async findStudySummary() {
     //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
@@ -119,7 +118,7 @@ export default class SkProfileService {
   }
 
   @action
-  async  finStudySummaryByProfileId(profileId : string) {
+  async finStudySummaryByProfileId(profileId : string) {
     //profileId skProfile 검색 후 setting 필요한지 테스트 통해서 확인
     const studySummary = await this.skProfileApi.findStudySummaryByProfileId(profileId);
     return runInAction(() => this.studySummary = new StudySummary(studySummary));
@@ -127,6 +126,10 @@ export default class SkProfileService {
 
   modifyStudySummary(nameValues: NameValueList) {
     return this.skProfileApi.modifyStudySummary(nameValues);
+  }
+
+  modifyStudySummaryFirstTime(nameValues: NameValueList) {
+    return this.skProfileApi.modifyStudySummaryFirstTime(nameValues);
   }
 
   modifyStudySummaryByProfileId(profileId:string, nameValues : NameValueList) {

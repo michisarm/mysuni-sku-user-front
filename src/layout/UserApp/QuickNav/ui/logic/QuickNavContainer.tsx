@@ -1,13 +1,14 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-// import SockJs from 'sockjs-client';
+import { patronInfo } from '@nara.platform/dock';
 
-//import { tenantInfo } from '@nara.platform/dock';
+import mainRoutePaths from 'main/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { SkProfileService } from 'profile';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
@@ -15,74 +16,34 @@ import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
 } from '../view/QuickNavElementsView';
 import { ChannelModel } from '../../../../../college';
-
-// import FeedEventRdo from '../model/FeedEventRdo';
+import NotieService from '../../../present/logic/NotieService';
 
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService
+  skProfileService?: SkProfileService,
+  notieService?: NotieService,
 }
 
 interface State {
   active: boolean,
-  feedType: string
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
+@inject(mobxHelper.injectFrom('profile.skProfileService', 'layout.notieService'))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  //userRoles = tenantInfo.getTenantRoles();
+  hasAdminRole = patronInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
 
   state = {
     active: false,
-    feedType: '',
   };
 
-  baseUrl = '/api/pigeon';
-  // baseUrl = 'http://pigeon/api/pigeon';
-
-  // transport = ['xdr-streaming',
-  //   'xhr-streaming',
-  //   'eventsource',
-  //   'iframe-eventsource',
-  //   'htmlfile',
-  //   'iframe-htmlfile',
-  //   'xdr-polling',
-  //   'xhr-polling',
-  //   'iframe-xhr-polling',
-  //   'jsonp-polling'];
 
   componentDidMount() {
     //
-    // const sockjs = new SockJs('http://127.0.0.1:8092/api/pigeon/pigeon', null, { transports: this.transport });
-    //const sockjs = new SockJs(this.baseUrl + '/pigeon');
-    //const sockjs = new SockJs('http://pigeon:8080/api/pigeon/pigeon');
-
-    // sockjs.onopen = () => {
-    //   sockjs.send('Attempt to connect socket..');
-    // };
-    //
-    // sockjs.onmessage = (event: any) => {
-    //   //
-    //   const feedEvent:FeedEventRdo = JSON.parse(event.data);
-    //
-    //   const workSpaceList:WorkSpaceList = JSON.parse(getCookie('workspaces'));
-    //
-    //   const cookieCitizenKey = this.genCitizenKey(workSpaceList);
-    //
-    //   if (cookieCitizenKey === feedEvent.citizenId) {
-    //     this.setState( { feedType: feedEvent.feedType } );
-    //   }
-    //
-    //   // console.log('COOKIE: ' + cookieCitizenKey);
-    //   // console.log('CITIZENID: ' + feedEvent.citizenId);
-    //   // console.log('FEEDTYPE: ' + feedEvent.feedType);
-    // };
-
-    this.props.skProfileService!.findStudySummary();
     window.addEventListener('click', this.deactive);
+    this.props.notieService!.hasQuickLearningFeeds();
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -90,26 +51,6 @@ class QuickNavContainer extends Component<Props, State> {
     if (prevProps.location.key !== this.props.location.key) {
       this.deactive();
     }
-  }
-
-  genCitizenKey(workSpaceList:WorkSpaceList) {
-    //
-    let tenantId = '';
-
-    if (workSpaceList.cineroomWorkspaces !== null && workSpaceList.cineroomWorkspaces) {
-      //
-      tenantId = workSpaceList.cineroomWorkspaces[0].tenantId;
-
-    } else if (workSpaceList.pavilionWorkspaces !== null && workSpaceList.pavilionWorkspaces) {
-      //
-      tenantId = workSpaceList.pavilionWorkspaces[0].tenantId;
-    }
-
-    const splitWholeId:string[] = tenantId.split('@');
-    const pavilions:string[] = splitWholeId[0].split('-');
-    const cinerooms:string[] = splitWholeId[1].split('-');
-
-    return pavilions[0] + '@' + cinerooms[0] + '-' + cinerooms[1];
   }
 
   deactive() {
@@ -128,26 +69,37 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickToggle() {
     //
-    this.setState((prevState) => ({
-      active: !prevState.active,
-    }));
+    this.props.notieService!.hasQuickLearningFeeds();
+    this.setState((prevState) => {
+      //
+      const nextActive = !prevState.active;
+
+      if (nextActive) {
+        this.props.skProfileService!.findStudySummary();
+      }
+      return { active: nextActive };
+    });
+
+  }
+
+  onClose() {
+    //
+    this.props.skProfileService!.findStudySummary();
+    this.setState({ active: false });
   }
 
   onClickLearning() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav(myTrainingRoutePaths.learning());
   }
 
   onClickCommunity() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav(myTrainingRoutePaths.community());
   }
 
   onClickSupport() {
     //
-    this.setState( { feedType: '' } );
     this.routeNav('/board/support/Notice');
   }
 
@@ -165,22 +117,24 @@ class QuickNavContainer extends Component<Props, State> {
     }
   }
 
+  onConfirmFavorite() {
+    //
+    const { location, history } = this.props;
+    const { pathname } = location;
+
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
+    }
+  }
+
   render() {
     //
     const { skProfileService } = this.props;
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
-
-    let roles: string[] = [];
-
-    if (getCookie('workspaces')) {
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
-      const cineroomId: string = getCookie('cineroomId');
-      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === cineroomId);
-      if (filteredWorkspaces.length) {
-        roles = filteredWorkspaces[0].roles;
-      }
-    }
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
@@ -195,9 +149,9 @@ class QuickNavContainer extends Component<Props, State> {
         <MenuWrapperView
           topButtons={
             <>
-              <TopMenuItemView iconName="learning32" feedType={this.state.feedType} text="Learning" onClick={this.onClickLearning} />
-              <TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />
-              <TopMenuItemView iconName="support32" feedType={this.state.feedType} text="Support" onClick={this.onClickSupport} />
+              <TopMenuItemView iconName="learning32" notieActive={this.props.notieService!.notieActive} text="Learning" onClick={this.onClickLearning} />
+              {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
+              <TopMenuItemView iconName="support32" notieActive={this.props.notieService!.notieActive} text="Support" onClick={this.onClickSupport} />
             </>
           }
           bottomButtons={
@@ -205,18 +159,18 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
               <FavoriteChannelChangeModal
                 trigger={(
-                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClickToggle} />
+                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClose} />
                 )}
                 favorites={favoriteChannels}
-                onConfirmCallback={() => {}}
+                onConfirmCallback={this.onConfirmFavorite}
               />
               <SiteMapModalContainer
-                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClickToggle} />}
+                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClose} />}
               />
 
               {
-                (roles.includes('CompanyManager') || roles.includes('CollegeManager') || roles.includes('SuperManager')) && (
-                  <BottomMenuItemView iconName="admin" text="mySUNI Admin Site" onClick={this.onClickAdminSite} />
+                this.hasAdminRole && (
+                  <BottomMenuItemView iconName="admin24" text="Admin Site" onClick={this.onClickAdminSite} />
                 )
               }
             </>

@@ -31,42 +31,47 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
   //
   componentDidMount() {
     //
-    const { contentsProviderService } = this.props;
-    if (contentsProviderService) {
-      this.findAllContentsProviders();
-    }
+    this.findAllContentsProviders();
   }
 
   onSetCubeIntroPropsByJSON(name: string, value: string) {
     //
     const { cubeIntroService } = this.props;
-    const newValue = JSON.parse(value);
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, newValue);
+    const newValue = value ? JSON.parse(value) : value;
+
+    cubeIntroService!.changeCubeIntroProps(name, newValue);
   }
 
   onChangeCubeIntroProps(name: string, value: string) {
     //
     const { cubeIntroService } = this.props;
-    if (cubeIntroService) cubeIntroService.changeCubeIntroProps(name, value);
+    cubeIntroService!.changeCubeIntroProps(name, value);
   }
 
   onSetMediaPropsByJSON(name: string, value: string) {
     //
     const { mediaService } = this.props;
     const newValue = JSON.parse(value);
-    if (mediaService) mediaService.changeMediaProps(name, newValue);
+
+    mediaService!.changeMediaProps(name, newValue);
   }
 
   findAllContentsProviders() {
     //
     const { contentsProviderService } = this.props;
-    if (contentsProviderService) contentsProviderService.findAllContentsProviders();
+    contentsProviderService!.findAllContentsProviders();
   }
 
   setContentsProvider() {
     const selectContentsProviderType: any = [];
-    const { contentsProviders } = this.props.contentsProviderService || {} as ContentsProviderService;
-    contentsProviders.forEach((contentsProvider, index) => {
+    const { contentsProviders } = this.props.contentsProviderService!;
+
+    selectContentsProviderType.push({
+      key: '',
+      text: '선택해주세요',
+      value: '',
+    });
+    contentsProviders.map((contentsProvider) => {
       selectContentsProviderType.push(
         {
           key: contentsProvider.contentsProvider.id,
@@ -77,18 +82,13 @@ class ContentsProviderSelectContainer extends React.Component<Props> {
     return selectContentsProviderType;
   }
 
-  onChangeMediaProps(name: string, value: string) {
-    //
-    const { mediaService } = this.props;
-    if (mediaService) mediaService.changeMediaProps(name, value);
-  }
-
   renderForCubeIntro() {
     //
     const { defaultValue, targetProps } = this.props;
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const etcCp = cubeIntro && cubeIntro.operation && cubeIntro.operation.etcCp;
     const organizer = cubeIntro && cubeIntro.operation && cubeIntro.operation.organizer;
+
     return (
       <ContentsProviderSelectForCubeIntroView
         defaultValue={defaultValue}

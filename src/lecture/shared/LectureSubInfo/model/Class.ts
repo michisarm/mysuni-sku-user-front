@@ -5,7 +5,7 @@ interface Class {
   capacity?: number
   waitingCapacity?: number
   cubeType: CubeType
-  participantCount: string | number
+  passedStudentCount: number
 }
 
 export default Class;

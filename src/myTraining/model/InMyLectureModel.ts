@@ -1,6 +1,15 @@
-import { decorate, observable } from 'mobx';
-import { getCookie } from '@nara.platform/accent';
-import { CategoryModel, DramaEntityObservableModel, IdName } from 'shared';
+
+import { decorate, observable, computed } from 'mobx';
+import { patronInfo } from '@nara.platform/dock';
+import {
+  CategoryModel,
+  DramaEntityObservableModel,
+  IdName,
+  LearningState,
+  LearningStateName,
+  ProposalState,
+  ProposalStateName,
+} from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
@@ -27,7 +36,12 @@ class InMyLectureModel extends DramaEntityObservableModel {
   reviewId: string = '';
   time: number = 0;
   studentCount: number = 0;
+  // TODO: 서버에서 넣어줘야함..
+  passedStudentCount: number = 0;
 
+  baseUrl: string = '';
+  proposalState: ProposalState = ProposalState.Submitted;
+  learningState: LearningState = LearningState.Progress;
 
   // UI only
   required: boolean = false;
@@ -44,11 +58,13 @@ class InMyLectureModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(inMyLecture.category);
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = patronInfo.getPatronCompanyCode();
+
       this.required = inMyLecture.requiredSubsidiaries
         && inMyLecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 
       this.cubeTypeName = InMyLectureModel.getCubeTypeName(inMyLecture.cubeType, this.serviceType);
+      this.passedStudentCount = inMyLecture.studentCount;
     }
   }
 
@@ -79,6 +95,18 @@ class InMyLectureModel extends DramaEntityObservableModel {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
+
+  @computed
+  get state() {
+    if (this.proposalState === ProposalState.Approved) {
+      if (this.learningState) return LearningStateName[LearningState[this.learningState]];
+      if (this.cubeType === CubeType.Community) return '가입완료';
+      return '학습예정';
+    }
+    else {
+      return ProposalStateName[ProposalState[this.proposalState]];
+    }
+  }
 }
 
 decorate(InMyLectureModel, {
@@ -101,6 +129,8 @@ decorate(InMyLectureModel, {
   cubeTypeName: observable,
   reviewId: observable,
   studentCount: observable,
+  passedStudentCount: observable,
+  baseUrl: observable,
 });
 
 export default InMyLectureModel;

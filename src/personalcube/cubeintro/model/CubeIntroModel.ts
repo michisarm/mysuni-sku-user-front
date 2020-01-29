@@ -66,7 +66,6 @@ export class CubeIntroModel implements DramaEntity {
   static asCdo(cubeIntro: CubeIntroModel): CubeIntroCdoModel {
     //
     const operation = cubeIntro.operation && new OperationModel(cubeIntro.operation);
-    if (operation.etcCp) operation.organizer.name = operation.etcCp;
     return (
       {
         audienceKey: 'r2p8-r@nea-m5-c5',
@@ -86,6 +85,7 @@ export class CubeIntroModel implements DramaEntity {
     if (!cubeIntro.description.description) return '교육내용';
     if (!cubeIntro.learningTime) return '교육시간';
     if (!cubeIntro.difficultyLevel) return '난이도';
+    if (!cubeIntro.operation.organizer.id) return '교육기관/출처';
     // 주관사(출처) 확인
     return 'success';
   }

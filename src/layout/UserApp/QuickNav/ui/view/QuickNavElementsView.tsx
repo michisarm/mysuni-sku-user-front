@@ -37,7 +37,7 @@ interface TopMenuItemViewProps {
   iconName: string,
   text: string,
   onClick: () => void,
-  feedType: string
+  notieActive: boolean,
 }
 
 export class TopMenuItemView extends Component<TopMenuItemViewProps> {
@@ -45,14 +45,14 @@ export class TopMenuItemView extends Component<TopMenuItemViewProps> {
   render() {
     //
     const {
-      iconName, text, onClick, feedType,
+      iconName, text, onClick, notieActive,
     } = this.props;
 
     return (
       <Button icon onClick={onClick}>
         <Icon className={iconName} />
         {
-          (feedType === text) && <Icon className="new16" />
+          (notieActive) && <Icon className="new16" />
         }
         <span className="blind">new</span>{text}
       </Button>

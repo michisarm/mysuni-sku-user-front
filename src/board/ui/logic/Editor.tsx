@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import ReactQuill from 'react-quill';
 import { PostModel } from '../../model/PostModel';
@@ -38,7 +38,11 @@ class Editor extends React.Component<Props, States> {
       <ReactQuill theme="snow"
         modules={this.modules}
         formats={this.formats}
-        onChange={html => onChangeContentsProps('contents.contents', html)}
+        onChange={html => {
+          if (html.length < 1001) {
+            onChangeContentsProps('contents.contents', html);
+          }
+        }}
         value={post && post.contents && post.contents.contents || ''}
       />
     );

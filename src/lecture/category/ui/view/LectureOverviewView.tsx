@@ -17,6 +17,7 @@ interface Props {
 
 
 interface State {
+  multiple: boolean,
   categoryOpen: boolean,
 }
 
@@ -25,8 +26,42 @@ interface State {
 class LectureOverviewView extends Component<Props, State> {
   //
   state = {
+    multiple: false,
     categoryOpen: false,
   };
+
+  panelRef = React.createRef<any>();
+  itemRefs: any[] = [];
+
+
+  componentDidMount() {
+    //
+    this.setMultiple();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    //
+    if (prevProps.viewObject !== this.props.viewObject && prevProps.viewObject.subCategories !== this.props.viewObject.subCategories) {
+      this.setMultiple();
+    }
+  }
+
+  setItemsRef(element: any, index: number) {
+    this.itemRefs[index] = element;
+  }
+
+  setMultiple() {
+    //
+    const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
+
+    const categoriesHeight = this.itemRefs
+      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+      .reduce((prev, current) => prev + current, 0);
+
+    if (categoriesHeight > panelHeight) {
+      this.setState({ multiple: true });
+    }
+  }
 
   onToggleCategory() {
     //
@@ -62,6 +97,7 @@ class LectureOverviewView extends Component<Props, State> {
     return Object.entries(subCategoriesPerMain).map(([categoryName, subCategories]: any[], index: number) => (
       <OverviewField.Item
         key={`sub-category-${index}`}
+        ref={(element) => this.setItemsRef(element, index)}
         title={categoryName}
         content={subCategories.join(' / ')}
       />
@@ -76,7 +112,7 @@ class LectureOverviewView extends Component<Props, State> {
       return null;
     }
 
-    const { categoryOpen } = this.state;
+    const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
     return (
@@ -85,43 +121,46 @@ class LectureOverviewView extends Component<Props, State> {
           description={viewObject.description}
         />
         <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId, typeViewObject.fileBoxId ]}
+          fileBoxIds={[ viewObject.fileBoxId ]}
         />
         <OverviewField.List
+          ref={this.panelRef}
           className={classNames('sub-category fn-parents', { open: categoryOpen })}
           header={(
             <OverviewField.Title
               icon="category"
-              text="Sub Category"
+              text="서브채널"
             />
           )}
         >
           {this.renderSubCategories()}
-          <Button
-            icon
-            className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
-            onClick={this.onToggleCategory}
-          >
-            {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
-          </Button>
+          { multiple && (
+            <Button
+              icon
+              className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
+              onClick={this.onToggleCategory}
+            >
+              {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
+            </Button>
+          )}
         </OverviewField.List>
 
         { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (
           <OverviewField.List icon className="period-area">
             <OverviewField.Item
               titleIcon="period"
-              title="Registration Period"
+              title="수강신청기간"
               content={this.getPeriodDate(typeViewObject.applyingPeriod)}
             />
             <OverviewField.Item
               titleIcon="cancellation"
-              title="Cancellation Period"
+              title="취소가능기간"
               content={(
                 <>
                   {this.getPeriodDate(typeViewObject.cancellablePeriod)}
                   { typeViewObject.cancellationPenalty && (
                     <div className="info">
-                      Cancellation penalty : {typeViewObject.cancellationPenalty}
+                      No Show Penalty : {typeViewObject.cancellationPenalty}
                     </div>
                   )}
                 </>
@@ -138,7 +177,7 @@ class LectureOverviewView extends Component<Props, State> {
               header={ typeViewObject.classrooms ? (
                 <OverviewField.Table
                   titleIcon="series"
-                  titleText="Class Series"
+                  titleText="차수정보"
                   classrooms={typeViewObject.classrooms}
                 />
               ) : null }
@@ -147,7 +186,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.goal && (
                   <OverviewField.Item
                     titleIcon="goal"
-                    title="Goal"
+                    title="학습목표"
                     content={viewObject.goal}
                   />
                 ) || null
@@ -156,7 +195,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.applicants && (
                   <OverviewField.Item
                     titleIcon="target"
-                    title="Target"
+                    title="대상"
                     content={viewObject.applicants}
                   />
                 ) || null
@@ -165,7 +204,7 @@ class LectureOverviewView extends Component<Props, State> {
                 viewObject.organizerName && (
                   <OverviewField.Item
                     titleIcon="host"
-                    title="Host"
+                    title="교육기관 출처"
                     content={viewObject.organizerName}
                   />
                 )
@@ -179,16 +218,16 @@ class LectureOverviewView extends Component<Props, State> {
             <OverviewField.List className="info-box2">
               { cubeType === CubeType.ClassRoomLecture && (
                 <OverviewField.Item
-                  title="Place"
+                  title="장소"
                   content={typeViewObject.location}
                 />
               )}
               <OverviewField.Item
-                title="Requirements"
+                title="이수조건"
                 content={viewObject.completionTerms}
               />
               <OverviewField.Item
-                title="Other Guides"
+                title="기타안내"
                 className="quill-des"
                 contentHtml={viewObject.guide}
               />
@@ -198,9 +237,9 @@ class LectureOverviewView extends Component<Props, State> {
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
-            title="Tag"
+            title="태그"
             content={viewObject.tags.map((tag: string, index: number) => (
-              tag && <Button key={`tag-${index}`} className="tag">{tag}</Button>
+              tag && <span key={`tag-${index}`} className="ui label tag">{tag}</span>
             ))}
           />
         </OverviewField.List>

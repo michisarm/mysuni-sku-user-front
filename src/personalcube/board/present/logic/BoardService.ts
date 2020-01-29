@@ -47,12 +47,12 @@ export default class BoardService {
     );
   }
 
-  modifyBoardByUser(personalCubeId: string, cubeIntro: CubeIntroModel, board: BoardModel) {
-    this.boardFlowApi.modifyBoardByUser(personalCubeId, new BoardFlowUserUdoModel(cubeIntro, board));
+  async modifyBoardByUser(personalCubeId: string, cubeIntro: CubeIntroModel, board: BoardModel) {
+    return this.boardFlowApi.modifyBoardByUser(personalCubeId, new BoardFlowUserUdoModel(cubeIntro, board));
   }
 
-  modifyBoard(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, board: BoardModel) {
-    this.boardFlowApi.modifyBoard(personalCubeId, new BoardFlowUdoModel(cube, cubeIntro, board));
+  async modifyBoard(personalCubeId: string, cube: PersonalCubeModel, cubeIntro: CubeIntroModel, board: BoardModel) {
+    return this.boardFlowApi.modifyBoard(personalCubeId, new BoardFlowUdoModel(cube, cubeIntro, board));
   }
 
   @action

@@ -37,7 +37,7 @@ class ReplyDetailPage extends React.Component<Props> {
 
   routeTo(url: string) {
     const { collegeId, cubeId, lectureCardId } = this.props.match.params;
-    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${url}`);
+    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${url}`);
   }
 
   render() {
@@ -59,7 +59,7 @@ class ReplyDetailPage extends React.Component<Props> {
           <div className="post-view-wrap">
             <ReplyDetail
               replyId={replyId || ''}
-              onEdit={() => this.routeTo(`posts/${postId}/reply/${replyId}/edit`)}
+              onEdit={() => this.routeTo(`/posts/${postId}/reply/${replyId}/edit`)}
               onRemove={() => this.routeTo('')}
               routeToList={() => this.routeTo('')}
             />

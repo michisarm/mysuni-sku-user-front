@@ -1,3 +1,4 @@
+
 import { decorate, observable } from 'mobx';
 import { IdName, OffsetElementList } from 'shared';
 import LectureModel from './LectureModel';
@@ -12,6 +13,7 @@ class RecommendLectureRdo {
     //
     if (lecture) {
       Object.assign(this, { ...lecture });
+
       this.lectures = lecture.lectures
         && new OffsetElementList({
           results: lecture.lectures.results.map(lecture => new LectureModel(lecture)),

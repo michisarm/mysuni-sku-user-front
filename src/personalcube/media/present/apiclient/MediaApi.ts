@@ -12,7 +12,7 @@ export default class MediaApi {
   findMedia(mediaId: string) {
     //
     return axios.get<MediaModel>(this.URL + `/${mediaId}`)
-      .then(response => response && response.data || null);
+      .then(response => response && response.data && new MediaModel(response.data) || null);
   }
 
   findPanoptoList(panoptoCdo: PanoptoCdoModel) {

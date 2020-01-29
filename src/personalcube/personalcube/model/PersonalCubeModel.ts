@@ -1,5 +1,8 @@
-import { DramaEntity, getCookie, PatronKey } from '@nara.platform/accent';
+
 import { decorate, observable } from 'mobx';
+import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+
 import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
@@ -45,28 +48,24 @@ export class PersonalCubeModel implements DramaEntity {
       Object.assign(this, { ...personalCube, creator, contents, cubeIntro, category, iconBox });
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = patronInfo.getPatronCompanyCode();
+
       this.required = personalCube.requiredSubsidiaries
         && personalCube.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
     }
   }
 
-  static isBlank(personalCubeModel: PersonalCubeModel) : string {
-    if (!personalCubeModel.category.channel.name) return '대표 카테고리';
-    if (!personalCubeModel.subCategories.length) return '서브 카테고리';
+  static getBlankRequiredField(personalCubeModel: PersonalCubeModel) : string {
+    //
+    if (!personalCubeModel.category.channel.name) return '메인채널';
+    if (!personalCubeModel.subCategories.length) return '서브채널';
     if (!personalCubeModel.name) return '강좌정보';
     if (personalCubeModel.tags.length > 10) return '태그는 10개까지 입력 가능합니다.';
     if (personalCubeModel.contents.type === 'None') return '교육형태';
     return 'success';
   }
 
-  static typeIsBlank(personalCubeModel: PersonalCubeModel) : string {
-    //    if (!personalCubeModel.personalCubeId) return '';//
-    if (personalCubeModel.contents.type === 'None') return '교육형태';
-    return 'success';
-  }
-
-  static  asNameValues(cube: PersonalCubeModel): NameValueList {
+  static asNameValues(cube: PersonalCubeModel): NameValueList {
     const asNameValues = {
       nameValues: [
         {
@@ -99,6 +98,10 @@ export class PersonalCubeModel implements DramaEntity {
         },
         {
           name: 'subsidiaries',
+          value: JSON.stringify(cube.subsidiaries),
+        },
+        {
+          name: 'requiredSubsidiaries',
           value: JSON.stringify(cube.subsidiaries),
         },
         {
@@ -161,13 +164,33 @@ export class PersonalCubeModel implements DramaEntity {
         creator: personalCube.creator,
         searchFilter: personalCube.searchFilter,
         subsidiaries: personalCube.subsidiaries,
-        requiredSubsidiaries: personalCube.requiredSubsidiaries,
+        requiredSubsidiaries: personalCube.subsidiaries,
         contents: personalCube.contents,
         cubeIntro: personalCube.cubeIntro && personalCube.cubeIntro,
         tags: personalCube.tags,
         cubeState: personalCube.cubeState,
       }
     );
+  }
+
+  static getSubCategoriesGroupByCollege(personalCube: PersonalCubeModel): CategoryModel[][] {
+    //
+    const collegeMap: Map<string, CategoryModel[]> = new Map();
+    const subCategories = personalCube.subCategories;
+
+    subCategories.map((subCategory) => {
+      //
+      const collegeChannels = collegeMap.get(subCategory.college.id);
+
+      if (collegeChannels) {
+        collegeChannels.push(subCategory);
+      }
+      else {
+        collegeMap.set(subCategory.college.id, [subCategory]);
+      }
+    });
+
+    return Array.from(collegeMap.values());
   }
 }
 

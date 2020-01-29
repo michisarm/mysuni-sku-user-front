@@ -1,8 +1,8 @@
-
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { DatePeriod, NameValueList } from 'shared';
+import { NameValueList } from 'shared';
 import { OfficeWebCdoModel } from './OfficeWebCdoModel';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class OfficeWebModel implements DramaEntity {
 
@@ -13,12 +13,12 @@ export class OfficeWebModel implements DramaEntity {
   name: string = '';
   fileBoxId: string = '';               // Document
   webPageUrl: string = '';              // webPage/Experiential url
-  learningPeriod: DatePeriod = new DatePeriod();          // 학습시작일 - 학습종료일
+  learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
   time: number = 0;
 
   constructor(officeWeb?: OfficeWebModel) {
     if (officeWeb) {
-      const learningPeriod = officeWeb.learningPeriod && new DatePeriod(officeWeb.learningPeriod) || this.learningPeriod;
+      const learningPeriod = officeWeb.learningPeriod && new NewDatePeriod(officeWeb.learningPeriod) || this.learningPeriod;
       Object.assign(this, { ...officeWeb, learningPeriod });
     }
   }

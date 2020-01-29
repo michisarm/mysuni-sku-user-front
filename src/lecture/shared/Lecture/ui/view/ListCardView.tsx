@@ -83,9 +83,9 @@ class ListCardView extends Component<Props> {
 
           <Thumbnail image={thumbnailImage} />
 
-          <Title title={model.name} category={model.category}>
+          <Title title={<a>{model.name}</a>} category={model.category}>
             <Fields>
-              <Field icon="date" text={`Completed date : ${moment(model.time).format('YYYY.MM.DD')}`} />
+              <Field icon="date" text={`학습완료일 : ${moment(model.time).format('YYYY.MM.DD')}`} />
             </Fields>
           </Title>
 
@@ -101,12 +101,12 @@ class ListCardView extends Component<Props> {
           </Buttons>
 
           <div className="time-area">
+            <div className="location">
+              { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
+            </div>
             <div className="time">
               <strong>&nbsp;</strong>
               {this.getHourMinuteFormat(hour, minute)}
-            </div>
-            <div className="location">
-              { model.cubeType &&  <Field icon="video2" text={model.cubeType} bold />}
             </div>
           </div>
 

@@ -1,5 +1,7 @@
+
+import React from 'react';
+
 import { Image, Table } from 'semantic-ui-react';
-import * as React from 'react';
 import { PersonalCubeModel } from '../../../personalcube';
 
 interface Props {
@@ -20,14 +22,19 @@ class SharedDetailExposureInfoView extends React.Component<Props> {
             <Table.Row>
               <Table.HeaderCell>아이콘</Table.HeaderCell>
               <Table.Cell>
-                <div><Image src={`${process.env.PUBLIC_URL}/images/all/thumb-card-60-px.jpg`} /></div>
+                {
+                  personalCube && personalCube.iconBox && personalCube.iconBox.iconUrl ?
+                    <div><Image src={`/api/depot/public/depotFile/flow/image/${personalCube.iconBox.iconUrl}`} width="60px" height="60px" /></div>
+                    :
+                    <div><Image src={personalCube.iconBox.baseUrl || '-'} width="60px" height="60px" /></div>
+                }
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.HeaderCell>관계사 공개 범위 설정</Table.HeaderCell>
               <Table.Cell>
                 {
-                  personalCube && personalCube.subsidiaries && personalCube.subsidiaries.length
+                  personalCube && personalCube.subsidiaries && personalCube.subsidiaries.length > 0
                   && personalCube.subsidiaries.map((subsidiary, index) => {
                     if (index === 0) return <span key={index}>{subsidiary.name}</span>;
                     else return <span key={index}>, {subsidiary.name}</span>;

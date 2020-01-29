@@ -12,6 +12,7 @@ import { Lecture, LectureService, LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../routePaths';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
@@ -22,16 +23,18 @@ import LineHeaderContainer from '../logic/LineHeaderContainer';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
+import NotieService from '../../../layout/UserApp/present/logic/NotieService';
 
 
-interface Props extends RouteComponentProps<{ tab: string }> {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
-  skProfileService?: SkProfileService
-  lectureService?: LectureService
-  myTrainingService?: MyTrainingService
-  inMyLectureService?: InMyLectureService
-  myLearningSummaryService?: MyLearningSummaryService
+  skProfileService?: SkProfileService,
+  lectureService?: LectureService,
+  myTrainingService?: MyTrainingService,
+  inMyLectureService?: InMyLectureService,
+  myLearningSummaryService?: MyLearningSummaryService,
+  notieService?: NotieService,
 }
 
 interface State {
@@ -56,6 +59,7 @@ enum Type {
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
   'myTraining.myLearningSummaryService',
+  'layout.notieService',
 ))
 @observer
 @reactAutobind
@@ -66,7 +70,7 @@ class MyTrainingPage extends Component<Props, State> {
   PAGE_SIZE = 8;
 
   state= {
-    type: Type.InProgress,
+    type: '',
     channels: [],
   };
 
@@ -76,18 +80,48 @@ class MyTrainingPage extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
+    const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const currentTab = this.props.match.params.tab;
+    const currentPageNo = this.props.match.params.pageNo;
 
     if (prevProps.match.params.tab !== currentTab) {
       this.selectMenu(currentTab);
     }
+    else if (prevProps.match.params.tab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+      const page = pageService!.pageMap.get(this.PAGE_KEY);
+      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      if (currentPageNo === '1') {
+        if (currentTab === Type.InMyList) {
+          inMyLectureService!.clear();
+        }
+        if (currentTab === Type.Required) {
+          lectureService!.clearLectures();
+        } else {
+          myTrainingService!.clear();
+        }
+        pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      }
+      else {
+        pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      }
+      this.findPagingList(this.getPageNo() - 1);
+    }
+
+    // notieService!.countMenuNoties('Progress');
+    // notieService!.countMenuNoties('Completed');
+    // notieService!.countMenuNoties('Missed');
   }
 
   init() {
-    const { match, skProfileService, myLearningSummaryService } = this.props;
+    const { match, skProfileService, myLearningSummaryService, notieService } = this.props;
 
     skProfileService!.findSkProfile();
     myLearningSummaryService!.findMyLearningSummary();
+
+    notieService!.countMenuNoties('Learning_Progress');
+    notieService!.countMenuNoties('Learning_Passed');
+    notieService!.countMenuNoties('Learning_Missed');
+    notieService!.countMenuNoties('Learning_Waiting');
 
     this.selectMenu(match.params.tab);
   }
@@ -107,7 +141,9 @@ class MyTrainingPage extends Component<Props, State> {
       } else {
         myTrainingService!.clear();
       }
-      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+
+      const initialLimit = this.getPageNo() * this.PAGE_SIZE;
+      pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
       this.setState({ type }, this.findPagingList);
     }
   }
@@ -115,9 +151,24 @@ class MyTrainingPage extends Component<Props, State> {
   onSelectMenu(type: string) {
     //
     this.props.history.push(routePaths.learningTab(type));
+
+    switch (type) {
+      case Type.InProgress:
+        this.props.notieService!.readNotie('Learning_Progress');
+        break;
+      case Type.Completed:
+        this.props.notieService!.readNotie('Learning_Passed');
+        break;
+      case Type.Retry:
+        this.props.notieService!.readNotie('Learning_Missed');
+        break;
+      case Type.Enrolled:
+        this.props.notieService!.readNotie('Learning_Waiting');
+    }
+
   }
 
-  async findPagingList() {
+  async findPagingList(pageNo?: number) {
     const { inMyLectureService, myTrainingService, lectureService, pageService, reviewService } = this.props;
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
@@ -136,24 +187,31 @@ class MyTrainingPage extends Component<Props, State> {
       offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
+      console.log(type, page!.limit, page!.nextOffset);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState(type, page!.limit, page!.nextOffset, channelIds);
     }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
-  onActionLecture(training: MyTrainingModel | InMyLectureModel) {
+  onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { type } = this.state;
-    const { inMyLectureService } = this.props;
+    const { inMyLectureService, pageService } = this.props;
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
-          if (type === Type.InMyList) this.init();
+          if (type === Type.InMyList) {
+            inMyLectureService!.clear();
+            pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+            this.findPagingList();
+          }
           else inMyLectureService!.findAllInMyLectures();
         });
     }
     else {
+      let servicePatronKeyString = training.patronKey.keyString;
+      if (training instanceof MyTrainingModel) servicePatronKeyString = training.servicePatronKeyString;
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
         serviceId: training.serviceId,
         serviceType: training.serviceType,
@@ -172,9 +230,15 @@ class MyTrainingPage extends Component<Props, State> {
         lectureCardUsids: training.lectureCardUsids,
 
         reviewId: training.reviewId,
+        baseUrl: training.baseUrl,
+        servicePatronKeyString,
       }))
         .then(() => {
-          if (type === Type.InMyList) this.findPagingList();
+          if (type === Type.InMyList) {
+            inMyLectureService!.clear();
+            pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+            this.findPagingList();
+          }
           else inMyLectureService!.findAllInMyLectures();
         });
     }
@@ -191,6 +255,20 @@ class MyTrainingPage extends Component<Props, State> {
     else if (model.serviceType === LectureServiceType.Card) {
       history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
     }
+  }
+
+  getPageNo() {
+    //
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
+  }
+
+  onClickSeeMore() {
+    //
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   isContentMore() {
@@ -216,6 +294,26 @@ class MyTrainingPage extends Component<Props, State> {
       pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
       this.findPagingList();
     });
+  }
+
+
+  getTypeName(type: string) {
+    switch (type) {
+      case Type.InProgress:
+        return '학습중';
+      case Type.InMyList:
+        return '관심목록';
+      case Type.Enrolled:
+        return '학습예정';
+      case Type.Required:
+        return '권장과정';
+      case Type.Completed:
+        return '학습완료';
+      case Type.Retry:
+        return '취소/미이수';
+      default:
+        return '';
+    }
   }
 
   renderList() {
@@ -275,7 +373,7 @@ class MyTrainingPage extends Component<Props, State> {
                     key={`training-${index}`}
                     model={value}
                     rating={rating}
-                    // thumbnailImage="http://placehold.it/60x60"
+                    thumbnailImage={value.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onActionLecture(inMyLecture || value)}
                     onViewDetail={this.onViewDetail}
@@ -301,38 +399,42 @@ class MyTrainingPage extends Component<Props, State> {
 
         { this.isContentMore() && (
           <SeeMoreButton
-            onClick={this.findPagingList}
+            onClick={this.onClickSeeMore}
           />
         )}
       </Segment>
     );
   }
 
-
   render() {
     //
-    const { skProfileService, myLearningSummaryService } = this.props;
+    const { skProfileService, myLearningSummaryService, notieService } = this.props;
     const { type } = this.state;
     const { skProfile } = skProfileService as SkProfileService;
     const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
 
     const { member } = skProfile as SkProfileModel;
 
+    const completedCount = notieService!.completedCount;
+    const progressCount = notieService!.progressedCount;
+    const missedCount = notieService!.missedCount;
+    const enrolledCount = notieService!.waitingCount;
+
     return (
       <ContentLayout
         className="mylearning"
         breadcrumb={[
           { text: `Learning` },
-          { text: `${type}` },
+          { text: `${this.getTypeName(type)}` },
         ]}
       >
         <ContentHeader>
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member && member.base64Photo || `${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+              image={member.photoFilePath || profileImg}
               name={member.name}
-              teams={[member.company || '', member.department || '']}
-              imageEditable={false}
+              company={member.company}
+              department={member.department}
               myPageActive
             />
           </ContentHeader.Cell>
@@ -357,28 +459,33 @@ class MyTrainingPage extends Component<Props, State> {
         <ContentMenu
           menus={[
             {
-              name: '학습중인 과정',
+              name: '학습중',
               type: Type.InProgress,
+              count: progressCount,
             },
             {
               name: '관심목록',
               type: Type.InMyList,
             },
             {
-              name: '수강확정 과정',
-              type: Type.Enrolled,
-            },
-            {
               name: '권장과정',
               type: Type.Required,
+              className: 'division',
+            },
+            {
+              name: '학습예정',
+              type: Type.Enrolled,
+              count: enrolledCount,
             },
             {
               name: '학습완료',
               type: Type.Completed,
+              count: completedCount,
             },
             {
               name: '취소/미이수',
               type: Type.Retry,
+              count: missedCount,
             },
           ]}
           type={this.state.type}

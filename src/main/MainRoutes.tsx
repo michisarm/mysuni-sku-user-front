@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
@@ -14,8 +14,11 @@ class MainRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Route exact path="/" component={UserMainPage} />
-        <Route exact path="/introduction" component={IntroductionPage} />
+        <Redirect exact from="/" to="/pages/1" />
+        <Route exact path="/pages/:pageNo" component={UserMainPage} />
+        <Redirect exact from="/introduction" to="/introduction/MySuni" />
+        <Route exact path="/introduction/:tab" component={IntroductionPage} />
+        <Route exact path="/empty" render={() => <div style={{ minHeight: 1000 }} />} />
 
         <Route component={NotFoundPage} />
       </Switch>

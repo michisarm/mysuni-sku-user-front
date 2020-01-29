@@ -1,10 +1,12 @@
-
-import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
+import { LearningState } from 'shared';
+import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../model/StudentCdoModel';
 import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
 import StudentCountRdoModel from '../../model/StudentCountRdoModel';
+import StudentModel from '../../model/StudentModel';
 
 
 @autobind
@@ -19,6 +21,9 @@ class StudentService {
 
   @observable
   _studentJoins: StudentJoinRdoModel[] = [];
+
+  @observable
+  student: StudentModel = new StudentModel();
 
 
   constructor(studentApi: StudentApi) {
@@ -62,25 +67,54 @@ class StudentService {
     return this.studentApi.removeStudent(rollBookId);
   }
 
+  modifyLearningState(studentId: string, learningState: LearningState) {
+    return this.studentApi.modifyLearningState(studentId, learningState);
+  }
+
+  modifyStudent(studentId: string, fileBoxId: string) {
+    return this.studentApi.modifyStudent(studentId, fileBoxId);
+  }
+
+  modifyStudentForExam(studentId: string, examId: string) {
+    return this.studentApi.modifyStudentForExam(studentId, examId);
+  }
+
+  modifyStudentForCoursework(studentId: string, fileBoxId: string ) {
+    return this.studentApi.modifyStudentForCoursework(studentId, fileBoxId);
+  }
+
+  @action
+  async findStudent(rollBookId: string, round?: number) {
+    //
+    const student = await this.studentApi.findStudent(rollBookId);
+    return runInAction(() => {
+      this.student = new StudentModel(student);
+      if (round) this.student.round = round;
+      return student;
+    });
+  }
+
   @action
   async findStudentCount(rollBookId: string) {
     //
     const studentCountRdo = await this.studentApi.findStudentCount(rollBookId);
 
-    return runInAction(() => {
-      this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo));
-      return studentCountRdo;
-    });
+    runInAction(() => this.studentCountMap.set(rollBookId, new StudentCountRdoModel(studentCountRdo)));
+    return studentCountRdo;
   }
 
   @action
   async findIsJsonStudent(lectureCardId: string) {
     //
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
-    return runInAction(() => {
-      this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo));
-      return studentJoinRdos;
-    });
+
+    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    return studentJoinRdos;
+  }
+
+  @action
+  setStudentProp(name: string, value: any) {
+    this.student = _.set(this.student, name, value);
   }
 }
 

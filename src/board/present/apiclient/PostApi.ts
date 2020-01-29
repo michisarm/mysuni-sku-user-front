@@ -1,4 +1,5 @@
-import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platform/accent';
+import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
+import { OffsetElementList } from 'shared';
 import { PostModel } from '../../model/PostModel';
 import { PostCdoModel } from '../../model/PostCdoModel';
 

@@ -111,6 +111,7 @@ class CourseContainer extends Component<Props> {
                 <Lecture.Course
                   className="first"
                   lectureView={lecture}
+                  thumbnailImage={lecture.baseUrl || undefined}
                   toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
                   onViewDetail={() => this.onViewDetail(lecture)}
                 />
@@ -121,6 +122,7 @@ class CourseContainer extends Component<Props> {
                   key={`sub-lecture-${index}`}
                   className="included"
                   lectureView={subLecture}
+                  thumbnailImage={subLecture.baseUrl || undefined}
                   onViewDetail={() => this.onViewDetail(subLecture)}
                 />
               )}

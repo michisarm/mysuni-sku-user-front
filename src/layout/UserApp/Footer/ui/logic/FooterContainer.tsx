@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { NavLink } from 'react-router-dom';
+// import { Button } from 'semantic-ui-react';
 import FooterView from '../view/FooterView';
 import PrivacyPolicyModalContainer from './PrivacyPolicyModalContainer';
 
@@ -30,6 +31,12 @@ class FooterContainer extends Component {
     return (
       <FooterView
         nav={this.renderNav()}
+        // buttons={(
+        //   <>
+        //     <Button className="active">KR</Button>
+        //     <Button>EN</Button>
+        //   </>
+        // )}
       />
     );
   }

@@ -159,25 +159,15 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService, lectureService,
+      coursePlanService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
-    const { lectureViews, getSubLectureViews } = lectureService!;
-
-    let learningTime = 0;
-
-    lectureViews.map((lecture: LectureViewModel) => {
-      getSubLectureViews(lecture.id).map((subLecture :LectureViewModel) => {
-        learningTime += subLecture.learningTime;
-      });
-      learningTime += lecture.learningTime;
-    });
 
     return {
       // Sub info
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
-      learningTime,
+      learningTime: coursePlan.learningTime,
       participantCount: '0',  // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
@@ -203,6 +193,7 @@ class CoursePage extends Component<Props, State> {
       time: coursePlan.time,
 
       classroom: undefined,
+      thumbnailImage: coursePlan.iconBox.baseUrl || '',
     };
   }
 
@@ -240,8 +231,10 @@ class CoursePage extends Component<Props, State> {
       cubeId: '',
       courseSetJson: coursePlanContents.courseSet,
       courseLectureUsids: match.params.serviceType === 'Program' ? programLecture.courseLectureUsids : [],
-      lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids : courseLecture.lectureCardUsids,
-      reviewId: match.params.serviceType === 'Program' ? programLecture.reviewId : courseLecture.reviewId,
+      lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids || [] : courseLecture!.lectureCardUsids || [],
+      reviewId: match.params.serviceType === 'Program' ? programLecture!.reviewId || '' : courseLecture!.reviewId || '',
+      baseUrl: coursePlan.iconBox.baseUrl,
+      servicePatronKeyString: coursePlan.patronKey.keyString,
     });
   }
 
@@ -318,8 +311,9 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, reviewService, inMyLectureService } = this.props;
+    const { collegeService, coursePlanService, reviewService, inMyLectureService } = this.props;
     const { college } = collegeService;
+    const { coursePlan } = coursePlanService;
     const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
     const { lectureCardId } = this.props.match.params!;
@@ -333,7 +327,7 @@ class CoursePage extends Component<Props, State> {
         className="channel"
         breadcrumb={[
           { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Course` },
+          { text: `${coursePlan.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, coursePlan.category.channel.id) },
         ]}
       >
         <LectureCardHeaderView
@@ -357,7 +351,6 @@ class CoursePage extends Component<Props, State> {
             inMyLecture={inMyLecture}
             inMyLectureCdo={inMyLectureCdo}
             studentCdo={studentCdo}
-            studentJoins={[]}
             lectureCardId={lectureCardId}
             cubeType={CubeType.None}
             viewObject={viewObject}

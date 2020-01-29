@@ -5,11 +5,12 @@ import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'shared-component';
+import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { IdNameCount } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { CollegeLectureCountService, CollegeLectureCountRdo }  from 'lecture';
+import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
@@ -36,13 +37,12 @@ class CategoryMenuContainer extends Component<Props, State> {
     activeCollege: undefined,
   };
 
-  async componentDidMount() {
+
+  async findCollegeLectureCount() {
     //
     const { collegeLectureCountService } = this.props;
 
-    this.findStudySummary();
     const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
-    console.log('count', collegeLectureCounts);
 
     if (collegeLectureCounts.length > 0) {
       this.onActiveCollege({}, collegeLectureCounts[0]);
@@ -57,6 +57,8 @@ class CategoryMenuContainer extends Component<Props, State> {
 
   onOpen() {
     //
+    this.findCollegeLectureCount();
+    this.findStudySummary();
     this.setState({ categoryOpen: true });
   }
 
@@ -95,6 +97,21 @@ class CategoryMenuContainer extends Component<Props, State> {
   onOpenFavorite() {
     this.modal.onOpenModal();
     this.onClose();
+  }
+
+  onConfirmFavorite() {
+    //
+    const { location, history } = this.props;
+    const { pathname } = location;
+
+    this.findStudySummary();
+
+    if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
+      history.replace(mainRoutePaths.main());
+    }
+    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+      history.replace(lectureRoutePaths.recommend());
+    }
   }
 
   renderMenuActions() {
@@ -149,7 +166,7 @@ class CategoryMenuContainer extends Component<Props, State> {
         <FavoriteChannelChangeModal
           ref={modal => this.modal = modal}
           favorites={channels}
-          onConfirmCallback={this.findStudySummary}
+          onConfirmCallback={this.onConfirmFavorite}
         />
       </>
     );

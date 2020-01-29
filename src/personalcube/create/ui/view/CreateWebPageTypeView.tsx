@@ -1,7 +1,9 @@
-import { observer } from 'mobx-react';
+
+import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+
 import { FileBox, PatronType } from '@nara.drama/depot';
-import * as React from 'react';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
@@ -51,10 +53,9 @@ class CreateWebPageTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                patronType={PatronType.Audience}
-                patronKeyString="sampleAudience"
+                vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 onChange={getFileBoxIdForReference}
-                pavilionId="samplePavilion"
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
               <div className="bottom">

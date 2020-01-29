@@ -8,8 +8,10 @@ import { ContentLayout } from 'shared';
 import Carousel from '../../sub/Carousel';
 import SearchBar from '../../sub/SearchBar';
 import MyLearningSummary from '../../sub/MyLearningSummary';
-import MyLearningContentContainer from '../../sub/MyLearningContent/MyLearningContentContainer';
+import MyLearningContent from '../../sub/MyLearningContent';
+// import Banner from '../../sub/Banner';
 import RecommendChannels from '../../sub/RecommendChannels';
+import WelcomeAndTutorialModal from '../../sub/WelcomAndTutorialModal';
 
 
 interface Props extends RouteComponentProps {
@@ -27,8 +29,10 @@ class UserMainPage extends Component<Props> {
           <Carousel />
           <SearchBar />
           <MyLearningSummary />
-          <MyLearningContentContainer />
+          <MyLearningContent />
+          {/*<Banner />*/}
           <RecommendChannels />
+          <WelcomeAndTutorialModal />
         </div>
       </ContentLayout>
     );

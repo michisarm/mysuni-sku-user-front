@@ -29,7 +29,7 @@ class StarRatingItem extends Component<Props> {
       <div
         className={classNames({
           'fixed-rating': true,
-          [`s${value}`]: true,
+          [`s${Math.floor(Number(value))}`]: true,
         })}
       >
         {stars.map((star: any, index: number) => <span key={`star-rating-${index}`} />)}

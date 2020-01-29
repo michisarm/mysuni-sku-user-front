@@ -5,7 +5,7 @@ class IdName implements AccentIdName {
   //
   id: string = '';
   name: string = '';
-  active: boolean = false;
+  active?: boolean = false;
 
   constructor(idName?: IdName) {
     if ( idName ) {

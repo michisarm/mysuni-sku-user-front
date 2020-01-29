@@ -20,7 +20,7 @@ export const Basic = () =>
     <Segment className="full">
       <OverviewField.Wrapper>
         <OverviewField.List
-          header={<OverviewField.Title icon="category" text="Sub Category" />}
+          header={<OverviewField.Title icon="category" text="서브채널" />}
         >
           Overview.Item area
         </OverviewField.List>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
@@ -25,10 +26,7 @@ interface States {
 @reactAutobind
 class PanoptoListModal extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    super(props);
-    this.state = { open: false };
-  }
+  state = { open: false };
 
   componentDidMount() {
     this.findAllPanoptos(1);
@@ -36,17 +34,24 @@ class PanoptoListModal extends React.Component<Props, States> {
 
   findAllPanoptos(page?: number) {
     const { sharedService, mediaService } = this.props;
-    const { panoptoCdo } = this.props.mediaService || {} as MediaService;
-    if (sharedService && mediaService) {
-      if (page) {
-        sharedService.setPage('panopto', page);
-        mediaService.changePanoptoCdoProps('currentPage', page);
-      } else sharedService.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
-      mediaService.findPanoptoList()
-        .then(() => {
-          sharedService.setCount('panopto', mediaService.panoptos.totalCount);
-        });
+    const { panoptoCdo } = this.props.mediaService!;
+    const patronEmail = patronInfo.getPatronEmail() || '';
+
+    mediaService!.changePanoptoCdoProps('folderOwnerId', patronEmail);
+
+    if (page) {
+      sharedService!.setPage('panopto', page);
+      mediaService!.changePanoptoCdoProps('currentPage', page);
+    } else {
+      sharedService!.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
     }
+
+    mediaService!.findPanoptoList()
+      .then(() => {
+        if (mediaService!.panoptos && mediaService!.panoptos.totalCount) {
+          sharedService!.setCount('panopto', mediaService!.panoptos.totalCount);
+        }
+      });
   }
 
   show(open: boolean) {
@@ -55,17 +60,20 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   selectPanopto(panopto: InternalMediaConnectionModel) {
-    const { mediaService } = this.props;
-    if (mediaService) mediaService.setPanoptoProps(panopto);
+    //
+    const mediaService = this.props.mediaService!;
+
+    panopto.viewUrl = panopto.viewUrl.replace('Viewer', 'Embed');
+    mediaService.setPanoptoProps(panopto);
   }
 
   handleOK() {
-    const { mediaService } = this.props;
+    //
+    const mediaService = this.props.mediaService!;
     const { panopto } = this.props.mediaService || {} as MediaService;
-    if (mediaService) {
-      mediaService.changeMediaProps('mediaContents.internalMedias', [panopto]);
-      this.show(false);
-    }
+
+    mediaService.changeMediaProps('mediaContents.internalMedias', [panopto]);
+    this.show(false);
   }
 
   handleCancel() {
@@ -79,31 +87,30 @@ class PanoptoListModal extends React.Component<Props, States> {
   }
 
   render() {
-    const { panoptos, media, panopto: selectedPanopto } = this.props.mediaService || {} as MediaService;
-    const { pageMap } = this.props.sharedService || {} as SharedService;
+    const { panoptos, media, panopto: selectedPanopto } = this.props.mediaService!;
+    const { pageMap } = this.props.sharedService!;
     const { open } = this.state;
     const results = panoptos && panoptos.results;
     const totalCount = panoptos && panoptos.totalCount;
+
     return (
       <>
         <div className="ui input file">
-          {
-            media.getInternalMedias.length
-             && media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-               <input
-                 type="text"
-                 key={index}
-                 value ={internalMedia.name}
-                 readOnly
-               />
-             ))
-          || (
-          <input
-            type="text"
-            placeholder="영상을 업로드해주세요."
-            readOnly
-          />
-          )
+          { media.getInternalMedias.length > 0 ?
+            media.getInternalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
+              <input
+                type="text"
+                key={index}
+                value ={internalMedia.name}
+                readOnly
+              />
+            ))
+            :
+            <input
+              type="text"
+              placeholder="영상을 업로드해주세요."
+              readOnly
+            />
           }
           <Icon className="clear link" />
           <label htmlFor="hidden-new-file" className="ui button" onClick={() => this.show(true)}>파일찾기</label>
@@ -147,8 +154,9 @@ class PanoptoListModal extends React.Component<Props, States> {
                 </Table.Body>
               </Table>
               {
-                totalCount === 0 ?
-                  null :
+                totalCount === 0 || !totalCount ?
+                  null
+                  :
                   <div className="center">
                     <Pagination
                       activePage={pageMap.get('panopto') ? pageMap.get('panopto').page : 1}

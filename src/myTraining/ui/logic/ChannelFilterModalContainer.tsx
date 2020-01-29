@@ -159,18 +159,20 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                         selectedCollege && selectedCollege!.channels && selectedCollege!.channels.length
                         && selectedCollege!.channels.map((channel, index) => (
                           <li key={channel.channelId} onClick={() => this.onSelectChannel(channel)}>
-                            <div className="ui base checkbox">
+                            <div className="ui checkbox base">
                               <input
                                 type="checkbox"
                                 className="hidden"
                                 checked={channels.map(ch => ch.id).includes(channel.id)}
                               />
                               <label>
-                                {channel.name}
-                                ({
-                                  channelLectureCounts && channelLectureCounts.length > 0
-                                  && channelLectureCounts[index] && channelLectureCounts[index].lectureCount
-                                })
+                                {channel.name}&nbsp;
+                                <span>
+                                  ({
+                                    channelLectureCounts && channelLectureCounts.length > 0
+                                    && channelLectureCounts[index] && channelLectureCounts[index].lectureCount
+                                  })
+                                </span>
                               </label>
                             </div>
                           </li>

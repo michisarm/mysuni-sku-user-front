@@ -5,6 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { Button, Image } from 'semantic-ui-react';
 import { ContentHeader, ContentLayout } from 'shared';
 import { ContentHeaderTotalTimeItem } from 'myTraining/shared';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
 export default {
@@ -15,9 +16,10 @@ export default {
 
 const profileItem = (
   <ContentHeader.ProfileItem
-    image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+    image={profileImg}
     name="김유니"
-    teams={['SK C&C', '플랫폼 개발 1팀']}
+    company="SK C&C"
+    department="플랫폼 개발 1팀"
   />
 );
 
@@ -29,8 +31,9 @@ export const Basic = () =>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
           name="김유니"
-          teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+          company="SK C&C"
+          department="플랫폼 개발 1팀"
+          image={profileImg}
         />
       </ContentHeader.Cell>
     </ContentHeader>
@@ -42,8 +45,9 @@ export const ProfileItem = () =>
       <ContentHeader.Cell inner>
         <ContentHeader.ProfileItem
           name="김유니"
-          teams={['SK C&C', '플랫폼 개발 1팀']}
-          image={`${process.env.PUBLIC_URL}/images/all/img-profile-56-px.png`}
+          company="SK C&C"
+          department="플랫폼 개발 1팀"
+          image={profileImg}
           imageEditable
           myPageActive
           onEditImage={action('editImage')}
@@ -208,7 +212,6 @@ export const RecommendItem = () =>
       <ContentHeader.Cell>
         <ContentHeader.RecommendItem
           favoriteChannelCount={24}
-          totalChannelCount={999}
         />
       </ContentHeader.Cell>
     </ContentHeader>

@@ -1,6 +1,14 @@
-import { decorate, observable } from 'mobx';
-import { getCookie } from '@nara.platform/accent';
-import { CategoryModel, CourseOpenModel, DramaEntityObservableModel, IdName } from 'shared';
+
+import { computed, decorate, observable } from 'mobx';
+import { patronInfo } from '@nara.platform/dock';
+
+import { ReviewSummaryModel } from '@nara.drama/feedback';
+import {
+  CategoryModel,
+  CourseOpenModel,
+  DramaEntityObservableModel,
+  IdName,
+} from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
 import LectureServiceType from './LectureServiceType';
@@ -28,8 +36,15 @@ class LectureModel extends DramaEntityObservableModel {
   description: string = '';
 
   stampCount: number = 0;
+  passedStudentCount: number = 0;
   studentCount: number = 0;
   time: number = 0;
+
+  baseUrl: string = '';
+  creationTime: string = '';
+  viewState: string = '';
+
+  reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
 
   // UI only
@@ -48,11 +63,14 @@ class LectureModel extends DramaEntityObservableModel {
       this.category = new CategoryModel(lecture.category);
 
       // UI Model
-      const companyCode = getCookie('companyCode');
+      const companyCode = patronInfo.getPatronCompanyCode();
+
       this.required = lecture.requiredSubsidiaries
         && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
 
       this.cubeTypeName = LectureModel.getCubeTypeName(lecture.cubeType, this.serviceType);
+
+      this.reviewSummary = lecture.reviewSummary;
     }
   }
 
@@ -83,6 +101,32 @@ class LectureModel extends DramaEntityObservableModel {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
+
+  @computed
+  get state() {
+    if (this.viewState) {
+      switch (this.viewState) {
+        case 'Canceled':
+        case 'Rejected':
+        case 'NoShow':
+        case 'Missed':
+          return '취소/미이수';
+        case 'Passed':
+          return '학습완료';
+        case 'Progress':
+        case 'Waiting':
+          return '학습중';
+        case 'Approved':
+          return '학습예정';
+      }
+    }
+    return undefined;
+  }
+
+  @computed
+  get rating() {
+    return this.reviewSummary && this.reviewSummary.average || 0;
+  }
 }
 
 decorate(LectureModel, {
@@ -104,9 +148,14 @@ decorate(LectureModel, {
   description: observable,
   stampCount: observable,
   studentCount: observable,
+  passedStudentCount: observable,
   time: observable,
+  reviewSummary: observable,
   required: observable,
   cubeTypeName: observable,
+  baseUrl: observable,
+  creationTime: observable,
+  viewState: observable,
 });
 
 export default LectureModel;

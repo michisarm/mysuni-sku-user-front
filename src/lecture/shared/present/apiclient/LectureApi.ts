@@ -1,4 +1,3 @@
-
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
@@ -9,6 +8,7 @@ import LectureViewRdoModel from '../../model/LectureViewRdoModel';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
 import InstructorRdoModel from '../../model/InstructorRdoModel';
+import SharedRdoModel from '../../model/SharedRdoModel';
 
 
 class LectureApi {
@@ -69,10 +69,9 @@ class LectureApi {
       .then(response => response && response.data);
   }
 
-  findAllSharedLectures(lectureRdo: LectureRdoModel) {
+  findAllSharedLectures(sharedRdo: SharedRdoModel) {
     //
-    const params = lectureRdo;
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/shared', { params })
+    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/shared', sharedRdo)
       .then(response => response && response.data);
   }
 }

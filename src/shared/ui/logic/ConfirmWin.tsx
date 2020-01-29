@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Image, Modal } from 'semantic-ui-react';
@@ -31,7 +31,7 @@ class ConfirmWin extends React.Component<Props> {
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <Image wrapped className="modal-img" size="medium" src="/images/all/confirm.png" />
+                <Image wrapped className="modal-img" size="medium" src={`${process.env.PUBLIC_URL}/images/modal/confirm.png`} />
                 <div className="title">{title}</div>
                 <p>{message}</p>
               </Modal.Description>

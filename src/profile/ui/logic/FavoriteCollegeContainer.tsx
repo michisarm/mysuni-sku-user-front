@@ -1,22 +1,26 @@
 import React from 'react';
-import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
-import { ChannelModel } from 'college';
-import CollegeService from '../../../college/present/logic/CollegeService';
+import { ChannelModel, CollegeService } from 'college';
+import { CollegeLectureCountService } from 'lecture';
 import TitleView from '../view/TitleView';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { StudySummary } from '../../model/StudySummary';
+import CollegeLectureCountRdo from '../../../lecture/shared/model/CollegeLectureCountRdo';
+import IdNameCount from '../../../shared/model/IdNameCount';
 
 interface Props extends RouteComponentProps{
   collegeService : CollegeService
   skProfileService : SkProfileService
+  collegeLectureCountService : CollegeLectureCountService
 }
 
 interface States{
+  selectedCollege: CollegeLectureCountRdo
   favorites : ChannelModel [],
 }
 
@@ -31,7 +35,11 @@ const style = {
   left: '1.25rem',
 };
 
-@inject(mobxHelper.injectFrom('college.collegeService', 'profile.skProfileService'))
+@inject(mobxHelper.injectFrom(
+  'college.collegeService',
+  'profile.skProfileService',
+  'lecture.collegeLectureCountService'
+))
 @observer
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, States> {
@@ -39,6 +47,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   constructor(props:Props) {
     super(props);
     this.state = {
+      selectedCollege: new CollegeLectureCountRdo(),
       favorites: [],
     };
   }
@@ -48,43 +57,41 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   init() {
-    const { collegeService, skProfileService } = this.props;
-    const { studySummary } = skProfileService as SkProfileService;
-    const { favoriteChannels } = studySummary as StudySummary;
+    //
+    const { collegeService, skProfileService, collegeLectureCountService } = this.props;
+    const { studySummaryFavoriteChannels } = skProfileService;
 
-    if (collegeService && skProfileService) {
-      collegeService.findAllColleges();
-      skProfileService.findSkProfile();
-      skProfileService.findStudySummary();
+    collegeLectureCountService!.findCollegeLectureCounts();
+    skProfileService!.findSkProfile();
+    skProfileService!.findStudySummary();
+    collegeService!.findAllChannel();
 
-      if (favoriteChannels) {
-        const channels = favoriteChannels && favoriteChannels.idNames && favoriteChannels.idNames
-          && favoriteChannels.idNames.map(channel =>
-            new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
-          ) || [];
+    const channels = studySummaryFavoriteChannels.map(channel =>
+      new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+    );
 
-        this.setState({ favorites: [...channels]});
-      }
-    }
+    this.setState({ favorites: [...channels]});
   }
 
 
-  onSelectCollege( collegeId : string) {
-    const { collegeService } = this.props;
+  onSelectCollege( college : CollegeLectureCountRdo ) {
+    //
+    // const { collegeService } = this.props;
+    //
+    // collegeService!.findCollege(collegeId);
 
-    if (collegeService) {
-      collegeService.findCollege(collegeId);
-    }
+    this.setState({ selectedCollege: college });
   }
 
-  onSelectChannel(channel : ChannelModel) {
+  onSelectChannel(channel : IdNameCount | ChannelModel) {
+    //
     let { favorites }: States = this.state;
 
     if (favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
       favorites = favorites.filter(favoriteChannel => favoriteChannel.id !== channel.id);
     }
     else {
-      favorites.push(channel);
+      favorites.push(new ChannelModel(channel));
     }
     this.setState({ favorites });
 
@@ -95,30 +102,31 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
   }
 
   onNextClick() {
+    //
     const { collegeService, skProfileService } = this.props;
     const { favorites } = this.state;
 
     if (favorites.length < 3 ) {
-      reactConfirm({
+      reactAlert({
         title: '알림',
-        message: '관심 분야는 3개이상 선택해 주세요.</br> 취소를 선택하시면 맞춤 교육을 위해 추후 설정이 가능합니다.',
-        onClose: () => this.props.history.push('/profile/interest/job'),
+        message: '관심 분야는 3개이상 선택해 주세요.',
       });
-    } else {
-      if (collegeService && skProfileService) {
-        collegeService.favoriteChannels = [...favorites];
-        skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
-        skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
-      }
+    }
+    else {
+      collegeService.favoriteChannels = [...favorites];
+      skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
+      skProfileService.modifyStudySummary(StudySummary.asNameValues(skProfileService.studySummary));
+
       this.props.history.push('/profile/interest/job');
     }
   }
 
   render() {
-    const { colleges, college } = this.props.collegeService;
-    const { favorites } = this.state;
+    const { college, channelMap } = this.props.collegeService;
+    const { collegeLectureCounts, totalChannelCount } = this.props.collegeLectureCountService;
+    const { selectedCollege, favorites } = this.state;
 
-
+    console.log(college);
     return (
       <ContentLayout breadcrumb={[
         { text: '관심사 설정', path: '/depth1-path' },
@@ -136,7 +144,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                 <div className="f-list">
                   <div className="scrolling">
                     <div className="college">
-                      {colleges && colleges.length && colleges.map((college, index) => (
+                      {collegeLectureCounts && collegeLectureCounts.length && collegeLectureCounts.map((college, index) => (
                         <div className="ui rect-icon radio checkbox" key={index}>
                           <input type="radio"
                             id={`radio_${index}`}
@@ -144,9 +152,9 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                             className="hidden"
                             tabIndex={index}
                             value={college.collegeId}
-                            onChange={() => this.onSelectCollege(college.collegeId) }
+                            onChange={() => this.onSelectCollege(college) }
                           />
-                          <label htmlFor={`radio_${index}`}>{college.name}({college.channels.length})</label>
+                          <label htmlFor={`radio_${index}`}>{college.name}({college.channelCounts.length})</label>
                         </div>
                       )) || ''
                       }
@@ -161,29 +169,34 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                     <div className="channel">
                       <ul>
                         {
-                          college && college.channels.map((channel, index) => (
-                            <li key={index}>
-                              <div className="ui base checkbox popup-wrap">
-                                <input type="checkbox"
-                                  id={`checkbox_${index}`}
-                                  className="hidden"
-                                  tabIndex={index}
-                                  checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
-                                  onChange={() => this.onSelectChannel(channel)}
-                                />
-                                <Popup className="custom-black"
-                                  content={channel.description /*channel.description*/}
-                                  inverted
-                                  style={style}
-                                  trigger={
-                                    <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
-                                      {channel.name} <span>{/*channel contents 수*/}</span>
-                                    </label>
-                                       }
-                                />
-                              </div>
-                            </li>
-                          )) || ''
+                          selectedCollege && selectedCollege.channelCounts.length && selectedCollege.channelCounts.map((channel, index) => {
+                            const ch = channelMap.get(channel.id) || new ChannelModel();
+                            return (
+                              <li key={index}>
+                                <div className="ui base checkbox popup-wrap">
+                                  <input
+                                    type="checkbox"
+                                    id={`checkbox_${index}`}
+                                    className="hidden"
+                                    tabIndex={index}
+                                    checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                    onChange={() => this.onSelectChannel(channel)}
+                                  />
+                                  <Popup
+                                    className="custom-black"
+                                    content={ch.description}
+                                    inverted
+                                    style={style}
+                                    trigger={
+                                      <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
+                                        {channel.name} <span>({channel.count})</span>
+                                      </label>
+                                    }
+                                  />
+                                </div>
+                              </li>
+                            );
+                          }) || ''
                         }
                       </ul>
                     </div>
@@ -191,7 +204,7 @@ class FavoriteCollegeContainer extends React.Component<Props, States> {
                 </div>
               </div>
               <div className="column">
-                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / 80</span>
+                <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / {totalChannelCount}</span>
                 </div>
                 <div className="f-list">
                   <div className="scrolling">

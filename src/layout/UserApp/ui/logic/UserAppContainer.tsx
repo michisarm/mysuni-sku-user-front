@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { reactAutobind, WorkSpace, WorkSpaceList, getCookie } from '@nara.platform/accent';
+import { reactAutobind } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 
-import Spinner from '../../../Spinner/SpinnerViewer';
 import AppContext, { BreadcrumbValue } from './AppContext';
 import ResponsiveWrapper from './ResponsiveWrapper';
 
@@ -26,30 +26,13 @@ class UserAppContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
-    // this.checkAndRedirectAuth();
     this.setLocalAuth();
   }
 
   setLocalAuth() {
     //
-    if (process.env.NODE_ENV !== 'development') {
-      if (!getCookie('token') || !getCookie('cineroomId') || !getCookie('workspaces')) window.location.href = '/login';
-      const cineroomWorkspaces: WorkSpace[] = JSON.parse(getCookie('workspaces')).cineroomWorkspaces;
-      const filteredWorkspaces: WorkSpace[] = cineroomWorkspaces.filter(workspace => workspace.id === 'ne1-m2-c31');
-      if (!filteredWorkspaces.length) window.location.href = '/mysuni';
-    }
-  }
-
-  checkAndRedirectAuth() {
-    //
-    const cineroomId = getCookie('cineroomId') || '';
-    const workSpaces: WorkSpaceList = JSON.parse(`${getCookie('workspaces')}`);
-    const cineroomSpaces = (workSpaces && workSpaces.cineroomWorkspaces || [])
-      .filter((space: WorkSpace) => cineroomId && space.id && space.id === cineroomId);
-
-    if (!cineroomSpaces.length) {
-      // alert('로그인 필요');
-      // window.location.href= window.location.origin + '/login';
+    if (process.env.NODE_ENV !== 'development' && !patronInfo.isLogin()) {
+      window.location.href = '/login';
     }
   }
 
@@ -79,7 +62,6 @@ class UserAppContainer extends Component<Props, State> {
         value={this.getContext()}
       >
         <ResponsiveWrapper>
-          <Spinner />
           {children}
         </ResponsiveWrapper>
       </AppContext.Provider>
