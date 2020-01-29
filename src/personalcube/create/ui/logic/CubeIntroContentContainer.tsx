@@ -3,6 +3,7 @@ import React from 'react';
 import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
@@ -67,7 +68,17 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     confirmWinOpen: false,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    //
+    this.init();
+  }
+
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
+  async init() {
     //
     const { cubeIntroService, collegeService } = this.props;
     const personalCubeService = this.props.personalCubeService!;
@@ -76,6 +87,9 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
       await personalCubeService.findPersonalCube(personalCubeId);
+      // const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
+
+      // patronInfo.setWorkspaceByDomain(personalCube!);
     }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
@@ -83,14 +97,15 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     if (!cubeIntroId) {
       this.clearAll();
     }
-    else if (personalCubeId && cubeIntroId) {
+    else if (personalCubeId) {
       cubeIntroService!.findCubeIntro(cubeIntroId)
         .then(() => {
           const contentsId = personalCubeService.personalCube && personalCubeService.personalCube.contents
             && personalCubeService.personalCube.contents.contents && personalCubeService.personalCube.contents.contents.id;
+
           if (cubeType === 'Audio' || cubeType === 'Video') this.setMedia(contentsId);
-          if (cubeType === 'Community') this.setCommunity(contentsId);
-          if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
+          else if (cubeType === 'Community') this.setCommunity(contentsId);
+          else if (cubeType === 'Documents' || cubeType === 'WebPage' || cubeType === 'Experiential') this.setOfficeWeb(contentsId);
         });
     }
   }

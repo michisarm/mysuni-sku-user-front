@@ -131,7 +131,9 @@ class SharedTypeDetailView extends React.Component<Props> {
   }
 
   render() {
+    //
     const { personalCube, cubeType } = this.props;
+
     return (
       <>
         <div className="section-tit">
@@ -140,7 +142,7 @@ class SharedTypeDetailView extends React.Component<Props> {
         <Table className="create">
           <Table.Body>
             {
-              cubeType === 'Video' || cubeType === 'Audio' && (
+              (cubeType === 'Video' || cubeType === 'Audio') && (
                 this.renderVideo()
               )
             }
