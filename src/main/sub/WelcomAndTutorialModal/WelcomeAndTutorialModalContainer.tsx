@@ -37,7 +37,8 @@ class LinkedInModal extends Component<{}, State> {
 
   componentDidMount(): void {
     //
-    this.initFromStorage(PageType.Welcome);
+    // this.initFromStorage(PageType.Welcome);
+    this.setState({ openWelcome: true });
     this.initFromStorage(PageType.Tutorial);
   }
 
