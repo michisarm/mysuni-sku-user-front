@@ -1,12 +1,13 @@
 
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+
+
 import { ReviewService } from '@nara.drama/feedback';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
-
-import { ContentLayout, CubeState, CubeType, PageService } from 'shared';
+import { PageService, CubeState, CubeType } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -27,7 +28,7 @@ import LineHeaderContainer from '../../../../myTraining/ui/logic/LineHeaderConta
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
-  personalCubeService: PersonalCubeService
+  personalCubeService?: PersonalCubeService
   pageService?: PageService,
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
@@ -78,9 +79,10 @@ class CreateListContainer extends React.Component<Props, States> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
+    const prevTab = prevProps.match.params.tab;
     const currentTab = this.props.match.params.tab;
 
-    if (prevProps.match.params.tab !== currentTab) {
+    if (prevTab !== currentTab) {
       this.setTab(currentTab);
     }
   }
@@ -115,7 +117,8 @@ class CreateListContainer extends React.Component<Props, States> {
 
   handleClickCubeRow(personalCubeId: string) {
     //
-    const { personalCubeService } = this.props;
+    const personalCubeService = this.props.personalCubeService!;
+    const { history } = this.props;
 
     personalCubeService.findPersonalCube(personalCubeId)
       .then(() => {
@@ -123,16 +126,17 @@ class CreateListContainer extends React.Component<Props, States> {
         const cubeState = personalCubeService.personalCube.cubeState;
 
         if (cubeState === CubeState.Created) {
-          this.props.history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
+          history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
         }
         else {
-          this.props.history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
+          history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
         }
       });
   }
 
   onChangeCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
-    const { personalCubeService } = this.props;
+    //
+    const personalCubeService = this.props.personalCubeService!;
 
     if (nameSub) {
       personalCubeService.changePersonalCubeQueryProps(name, value, nameSub, valueSub);
@@ -145,7 +149,9 @@ class CreateListContainer extends React.Component<Props, States> {
   }
 
   findAllCubes(limit?: number) {
-    const { personalCubeService } = this.props;
+    //
+    const personalCubeService = this.props.personalCubeService!;
+
     this.setState({ disabled: true });
 
     if (limit) {
@@ -254,12 +260,8 @@ class CreateListContainer extends React.Component<Props, States> {
     }
   }
 
-  onRouteToCreate() {
-    this.props.history.push(routePaths.createNew());
-  }
-
   renderCreate() {
-    const { personalCubes, personalCubeQuery } = this.props.personalCubeService || {} as PersonalCubeService;
+    const { personalCubes, personalCubeQuery } = this.props.personalCubeService!;
     const totalCount = personalCubes.totalCount;
     const result = personalCubes.results;
     const { limit } = this.state;
@@ -287,7 +289,7 @@ class CreateListContainer extends React.Component<Props, States> {
             />
           )
         }
-        { totalCount > result.length && (
+        { result && totalCount > result.length && (
           <SeeMoreButton
             onClick={() => this.findAllCubes(limit)}
           />
@@ -352,13 +354,7 @@ class CreateListContainer extends React.Component<Props, States> {
     const { member } = skProfile;
 
     return (
-      <ContentLayout
-        className="create"
-        breadcrumb={[
-          { text: 'Create' },
-          { text: `${activeItem}` },
-        ]}
-      >
+      <>
         <CreateProfileView
           routeToCreateDetail={this.routeToCreateDetail}
           member={member}
@@ -395,9 +391,9 @@ class CreateListContainer extends React.Component<Props, States> {
             this.renderSharedLecture()
           )
         }
-      </ContentLayout>
+      </>
     );
   }
 }
 
-export default CreateListContainer;
+export default withRouter(CreateListContainer);
