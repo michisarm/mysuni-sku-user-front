@@ -97,7 +97,7 @@ class LinkedInModal extends Component<{}, State> {
       openWelcome, openTutorial, noMoreSeeTutorial, noMoreSeeCheckedWelcome, noMoreSeeCheckedTutorial,
     } = this.state;
 
-    if (noMoreSeeTutorial) {
+    if (noMoreSeeTutorial && !openWelcome) {
       return null;
     }
     else if (openWelcome) {
