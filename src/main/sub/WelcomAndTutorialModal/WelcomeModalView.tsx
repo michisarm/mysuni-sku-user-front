@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button, Checkbox, Modal, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Button, Modal, Icon } from 'semantic-ui-react';
 
 
 interface Props {
@@ -19,7 +20,7 @@ class WelcomeModalView extends Component<Props> {
   //
   render() {
     //
-    const { open, noMoreSeeChecked, onClose, onClickNoMoreSee } = this.props;
+    const { open, onClose } = this.props;
 
     return (
       <Modal open={open} className="w824 base">
@@ -28,23 +29,23 @@ class WelcomeModalView extends Component<Props> {
             <div className="content-wrap5">
               <div className="system-message">
                 <div className="tit">
-                  <Icon className="sk-university-login"/>
+                  <Icon className="sk-university-login" />
                   <span className="blind">mySUNI</span> 시스템 안내
                 </div>
                 <div className="box1">
                   <div>안녕하십니까? mySUNI입니다.</div>
-                  구성원 여러분께 급하게 인사 드리느라 아직 몇가지 불편을 드리는 사항들이 있습니다.<br/>
-                  문의 주신 내용들을 최대한 빨리 개선하고, 나날이 진화해 나가는 써니가 되도록<br/>
+                  구성원 여러분께 급하게 인사 드리느라 아직 몇가지 불편을 드리는 사항들이 있습니다.<br />
+                  문의 주신 내용들을 최대한 빨리 개선하고, 나날이 진화해 나가는 써니가 되도록<br />
                   하겠습니다. ^^
                 </div>
                 <div className="box2">
                   <div>Q) 동영상을 시청했는데 학습이력(시간) 반영이 안되요.</div>
                   <ul>
                     <li>- 동영상 학습시간/진도율은 익일 또는 컨텐츠 재방문시 반영됩니다.</li>
-                    <li>- 단, 외부 링크를 통해 학습하는 경우(예: Linkedin Learning) 일주일 등의 주기로<br/>학습이력에 반영되니
+                    <li>- 단, 외부 링크를 통해 학습하는 경우(예: Linkedin Learning) 일주일 등의 주기로<br />학습이력에 반영되니
                       참고하십시오.
                     </li>
-                    <li>- 그러나, 하나의 학습카드에 여러 개의 동영상이 포함된 경우는(예: AI 101) 오류가<br/>발생하고 있어 2월 중으로 조치
+                    <li>- 그러나, 하나의 학습카드에 여러 개의 동영상이 포함된 경우는(예: AI 101) 오류가<br />발생하고 있어 2월 중으로 조치
                       하도록
                       하겠습니다.
                     </li>
@@ -67,7 +68,7 @@ class WelcomeModalView extends Component<Props> {
                   </div>
                   <ol>
                     <li>
-                      1. 매번 과정 ‘상세보기’를 눌러 영상을 학습하느라 힘드셨죠?<br/>
+                      1. 매번 과정 ‘상세보기’를 눌러 영상을 학습하느라 힘드셨죠?<br />
                       바로 영상 컨텐츠를 학습할 수 있도록 ‘바로 보기’ 버튼을 제공합니다. (1월 중)
                     </li>
                     <li>
@@ -76,11 +77,13 @@ class WelcomeModalView extends Component<Props> {
                   </ol>
                 </div>
                 <div className="help-desk">
-                  ※ 이외 시스템 장애, 기능개선 요청은 Helpdesk <span>(02-6323-9002)</span><br/>
+                  ※ 이외 시스템 장애, 기능개선 요청은 Helpdesk <span>(02-6323-9002)</span><br />
                   또는 <span>Support &gt; Q&A</span>를 통해 문의해주시면 지원드리겠습니다.
                 </div>
                 <div className="qa">
-                  <button className="ui button fix line">1:1 문의 바로가기(Q&A)</button>
+                  <Link to="/board/support/Q&A">
+                    <Button className="fix line">1:1 문의 바로가기(Q&A)</Button>
+                  </Link>
                 </div>
               </div>
             </div>
