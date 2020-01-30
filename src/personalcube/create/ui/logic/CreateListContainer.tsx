@@ -40,10 +40,8 @@ class CreateListContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    console.log('ListList.didMount');
     this.findPersonalCubes(20);
   }
-
 
   findPersonalCubes(limit?: number) {
     //

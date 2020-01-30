@@ -53,7 +53,6 @@ class SharedListContainer extends React.Component<Props, States> {
     //
     const { pageService } = this.props;
 
-    console.log('SharedList didMount');
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     this.findSharedLectures(true);
   }
