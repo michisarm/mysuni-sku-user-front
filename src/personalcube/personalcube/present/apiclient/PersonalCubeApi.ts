@@ -38,7 +38,7 @@ export default class PersonalCubeApi {
     return axios.delete(this.URL + `/${personalCubeId}`);
   }
 
-  // Todo: totalCount를 얻는 메소드가 필요함.
+  // Todo: totalCount 를 얻는 메소드가 필요함.
   findAllPersonalCubes(offset: number, limit: number) {
     //
     return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL, { params: {

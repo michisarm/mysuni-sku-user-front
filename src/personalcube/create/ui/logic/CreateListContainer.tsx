@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Menu, Segment, Sticky } from 'semantic-ui-react';
-import { PageService, CubeState, CubeType } from 'shared';
+import { Segment } from 'semantic-ui-react';
+import { PageService, CubeState, CubeType, Tab, TabItemModel } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -34,8 +34,6 @@ interface Props extends RouteComponentProps<{ tab: string }> {
 }
 
 interface States {
-  activeItem : string
-  disabled: boolean
   limit: number
   channels: ChannelModel[]
 }
@@ -57,27 +55,23 @@ class CreateListContainer extends React.Component<Props, States> {
   PAGE_SIZE = 8;
 
   state = {
-    activeItem: '',
-    disabled: false,
     limit: 0,
     channels: [],
   };
 
+
   componentDidMount() {
     //
-    const { inMyLectureService } = this.props;
-
     this.init();
-    inMyLectureService!.findAllInMyLectures();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
     const prevTab = prevProps.match.params.tab;
-    const currentTab = this.props.match.params.tab;
+    const tab = this.props.match.params.tab;
 
-    if (prevTab !== currentTab) {
-      this.setTab(currentTab);
+    if (prevTab !== tab) {
+      this.setTab(tab);
     }
   }
 
@@ -91,21 +85,80 @@ class CreateListContainer extends React.Component<Props, States> {
     this.setTab(match.params.tab);
   }
 
-  setTab(tab: string) {
-    this.setState( { activeItem: tab });
+  getTabs() {
+    //
+    const { lectures } = this.props.lectureService!;
 
+    return [
+      { name: 'Create', item: 'Create', render: this.renderCreate },
+      { name: 'Shared', item: <>Shared<span className="count">{lectures.length}</span></>, render: this.renderSharedLecture },
+    ];
+  }
+
+  setTab(tab: string) {
+    //
     if (tab === 'Create') {
-      this.findAllCubes(20);
-    } else {
+      this.findPersonalCubes(20);
+    }
+    else {
       this.findPagingSharedLectures();
     }
   }
 
-  handleItemClick(e: any, { name }: any) {
-    this.props.history.push(routePaths.createTab(name));
+  findPersonalCubes(limit?: number) {
+    //
+    const personalCubeService = this.props.personalCubeService!;
+
+    if (!limit) {
+      return;
+    }
+
+    personalCubeService.changePersonalCubeQueryProps('limit', limit);
+    personalCubeService.findAllPersonalCubesByQuery()
+      .then(() => {
+        const { personalCubes } = this.props.personalCubeService!;
+        const totalCount = personalCubes.totalCount;
+
+        if (limit < totalCount) {
+          this.setState({ limit: limit + 20 });
+        }
+      });
   }
 
-  handleClickCubeRow(personalCubeId: string) {
+  async findPagingSharedLectures() {
+    //
+    const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { channels } = this.state;
+    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
+
+    const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
+    let feedbackIds: string[] = [];
+
+    if (lectureOffsetList && lectureOffsetList.results && lectureOffsetList.results.length) {
+      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
+
+    inMyLectureService!.findAllInMyLectures();
+
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    return page!.pageNo < page!.totalPages;
+  }
+
+  onChangeTab(tab: TabItemModel) {
+    //
+    this.props.history.push(routePaths.createTab(tab.name));
+  }
+
+  onClickPersonalCubeRow(personalCubeId: string) {
     //
     const personalCubeService = this.props.personalCubeService!;
     const { history } = this.props;
@@ -124,7 +177,7 @@ class CreateListContainer extends React.Component<Props, States> {
       });
   }
 
-  onChangeCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
+  onChangeSearchSelect(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
     //
     const personalCubeService = this.props.personalCubeService!;
 
@@ -135,47 +188,7 @@ class CreateListContainer extends React.Component<Props, States> {
       personalCubeService.changePersonalCubeQueryProps(name, value);
     }
 
-    this.findAllCubes(20);
-  }
-
-  findAllCubes(limit?: number) {
-    //
-    const personalCubeService = this.props.personalCubeService!;
-
-    this.setState({ disabled: true });
-
-    if (limit) {
-      //const offset = 0;
-      personalCubeService.changePersonalCubeQueryProps('limit', limit);
-      personalCubeService.findAllPersonalCubesByQuery()
-        .then(() => {
-          const { personalCubes } = this.props.personalCubeService || {} as PersonalCubeService;
-          const totalCount = personalCubes.totalCount;
-
-          if (limit >= totalCount) {
-            this.setState({ disabled: true });
-          }
-          else {
-            this.setState({ limit: limit + 20, disabled: false });
-          }
-        });
-    }
-  }
-
-  async findPagingSharedLectures() {
-    //
-    const { pageService, lectureService, reviewService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { channels } = this.state;
-    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
-
-    const lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
-    let feedbackIds: string[] = [];
-    if (lectureOffsetList && lectureOffsetList.results && lectureOffsetList.results.length) {
-      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
-      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
-    }
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+    this.findPersonalCubes(20);
   }
 
   onViewDetail(e: any, data: any) {
@@ -192,21 +205,12 @@ class CreateListContainer extends React.Component<Props, States> {
     }
   }
 
-  isContentMore() {
-    //
-    const { pageService } = this.props;
-    const page = pageService!.pageMap.get(this.PAGE_KEY);
-
-    return page!.pageNo < page!.totalPages;
-  }
-
   onClickSeeMore() {
     //
     this.findPagingSharedLectures();
   }
 
   onFilter(channels: ChannelModel[]) {
-    //const { activeItem } = this.state;
     const { pageService, lectureService  } = this.props;
 
     this.setState({ channels }, () => {
@@ -216,7 +220,7 @@ class CreateListContainer extends React.Component<Props, States> {
     });
   }
 
-  onActionLecture(lecture: LectureModel | InMyLectureModel) {
+  onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
 
@@ -251,9 +255,10 @@ class CreateListContainer extends React.Component<Props, States> {
   }
 
   renderCreate() {
+    //
     const { personalCubes, personalCubeQuery } = this.props.personalCubeService!;
     const totalCount = personalCubes.totalCount;
-    const result = personalCubes.results;
+    const results = personalCubes.results;
     const { limit } = this.state;
 
     return (
@@ -262,26 +267,24 @@ class CreateListContainer extends React.Component<Props, States> {
           totalCount={totalCount}
           personalCubeQuery={personalCubeQuery}
           fieldOption={SelectType.userStatus}
-          onChangeCubeQueryProps={this.onChangeCubeQueryProps}
+          onChangeCubeQueryProps={this.onChangeSearchSelect}
           queryFieldName="cubeState"
         />
-        {
-          result && result.length && (
-            <CreateListView
-              result={result}
-              totalCount={totalCount}
-              handleClickCubeRow={this.handleClickCubeRow}
-            />
-          ) || (
-            <NoSuchContentPanel
-              message="아직 생성한 학습이 없습니다."
-              link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
-            />
-          )
+        { results.length > 0 ?
+          <CreateListView
+            result={results}
+            totalCount={totalCount}
+            handleClickCubeRow={this.onClickPersonalCubeRow}
+          />
+          :
+          <NoSuchContentPanel
+            message="아직 생성한 학습이 없습니다."
+            link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
+          />
         }
-        { result && totalCount > result.length && (
+        { totalCount > results.length && (
           <SeeMoreButton
-            onClick={() => this.findAllCubes(limit)}
+            onClick={() => this.findPersonalCubes(limit)}
           />
         )}
       </Segment>
@@ -289,6 +292,7 @@ class CreateListContainer extends React.Component<Props, States> {
   }
 
   renderSharedLecture() {
+    //
     const { lectureService, reviewService, inMyLectureService } = this.props;
     const { lectures } = lectureService!;
     const { ratingMap } = reviewService!;
@@ -297,85 +301,52 @@ class CreateListContainer extends React.Component<Props, States> {
 
     return (
       <Segment className="full">
-        <LineHeaderContainer count={lectures && lectures.length || 0} channels={channels} onFilter={this.onFilter} />
-        {
-          lectures && lectures.length && (
-            <div className="section">
-              <Lecture.Group type={Lecture.GroupType.Box}>
-                {
-                  lectures.map((lecture: LectureModel, index: number) => {
-                    let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
-                    const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                    if (lecture.cubeType === CubeType.Community) rating = undefined;
-                    return (
-                      <Lecture
-                        key={`lecture-${index}`}
-                        model={lecture}
-                        rating={rating}
-                        thumbnailImage={lecture.baseUrl || undefined}
-                        action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                        onAction={() => this.onActionLecture(inMyLecture || lecture)}
-                        onViewDetail={this.onViewDetail}
-                      />
-                    );
-                  })
-                }
-              </Lecture.Group>
+        <LineHeaderContainer count={lectures.length || 0} channels={channels} onFilter={this.onFilter} />
 
-              { this.isContentMore() && (
-                <SeeMoreButton
-                  onClick={this.onClickSeeMore}
-                />
-              )}
-            </div>
-          ) || (
-            <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
-          )
+        { lectures.length > 0 ?
+          <div className="section">
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              { lectures.map((lecture: LectureModel, index: number) => {
+                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+                const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                if (lecture.cubeType === CubeType.Community) rating = undefined;
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={rating}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                    onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
+
+            { this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+              />
+            )}
+          </div>
+          :
+          <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
         }
       </Segment>
     );
   }
 
   render() {
-    const { activeItem } = this.state;
-    const { lectureService } = this.props;
-    const { lectures } = lectureService!;
+    //
+    const { match } = this.props;
 
     return (
-      <>
-        <div>
-          <Sticky className="tab-menu offset0">
-            <div className="cont-inner">
-              <Menu className="sku">
-                <Menu.Item
-                  name="Create"
-                  active={activeItem === 'Create'}
-                  onClick={this.handleItemClick}
-                >
-                  Create
-                </Menu.Item>
-                <Menu.Item
-                  name="Shared"
-                  active={activeItem === 'Shared'}
-                  onClick={this.handleItemClick}
-                >
-                  Shared<span className="count">{lectures.length}</span>
-                </Menu.Item>
-              </Menu>
-            </div>
-          </Sticky>
-        </div>
-        {
-          activeItem === 'Create' && (
-            this.renderCreate()
-          )
-        }
-        {
-          activeItem === 'Shared' && (
-            this.renderSharedLecture()
-          )
-        }
-      </>
+      <Tab
+        tabs={this.getTabs()}
+        defaultActiveName={match.params.tab}
+        onChangeTab={this.onChangeTab}
+      />
     );
   }
 }

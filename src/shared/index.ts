@@ -71,5 +71,6 @@ export { default as ContentHeader } from '../layout/ContentHeader';
 export { default as ContentMenu } from '../layout/ContentMenu';
 export { default as NoSuchContentPanel } from './components/NoSuchContentPanel';
 export { default as InputWrapper } from './components/InputWrapper';
+export { default as Tab, TabItemModel } from './components/Tab';
 export { default as AlertWin } from './ui/logic/AlertWin';
 export { default as ConfirmWin } from './ui/logic/ConfirmWin';
