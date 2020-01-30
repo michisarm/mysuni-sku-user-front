@@ -4,26 +4,26 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Link } from 'react-router-dom';
-import { Button, Modal, Icon } from 'semantic-ui-react';
+import { Modal, Button, Icon, Checkbox } from 'semantic-ui-react';
+import ModalState from './model/ModalState';
 
 
 interface Props {
-  open: boolean,
-  noMoreSeeChecked: boolean,
+  modalState: ModalState,
   onClose: () => void,
-  onClickNoMoreSee: () => void,
+  onCheckDisable: (e: any, data: any) => void,
 }
 
 @reactAutobind
 @observer
-class WelcomeModalView extends Component<Props> {
+class SystemGuideModalView extends Component<Props> {
   //
   render() {
     //
-    const { open, onClose } = this.props;
+    const { modalState, onClose, onCheckDisable } = this.props;
 
     return (
-      <Modal open={open} className="w824 base">
+      <Modal className="w824 base" open={modalState.open}>
         <Modal.Content>
           <div className="scrolling-80vh">
             <div className="content-wrap5">
@@ -90,6 +90,9 @@ class WelcomeModalView extends Component<Props> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions4">
+          <div className="left">
+            <Checkbox label="다시 보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
+          </div>
           <div className="right">
             <Button className="close" onClick={onClose}>Close</Button>
           </div>
@@ -99,4 +102,4 @@ class WelcomeModalView extends Component<Props> {
   }
 }
 
-export default WelcomeModalView;
+export default SystemGuideModalView;
