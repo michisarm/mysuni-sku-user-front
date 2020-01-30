@@ -58,10 +58,10 @@ class PersonalCubeContentContainer extends Component<Props, States> {
     const { params } = this.props.match;
 
     if (params.personalCubeId) {
-      personalCubeService.findPersonalCube(params.personalCubeId);
-      // const personalCube = await personalCubeService.findPersonalCube(params.personalCubeId);
+      // personalCubeService.findPersonalCube(params.personalCubeId);
+      const personalCube = await personalCubeService.findPersonalCube(params.personalCubeId);
 
-      // patronInfo.setWorkspaceByDomain(personalCube!);
+      patronInfo.setWorkspaceByDomain(personalCube!);
     }
   }
 

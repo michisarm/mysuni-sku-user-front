@@ -86,10 +86,10 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
     if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
-      await personalCubeService.findPersonalCube(personalCubeId);
-      // const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
+      // await personalCubeService.findPersonalCube(personalCubeId);
+      const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
 
-      // patronInfo.setWorkspaceByDomain(personalCube!);
+      patronInfo.setWorkspaceByDomain(personalCube!);
     }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;

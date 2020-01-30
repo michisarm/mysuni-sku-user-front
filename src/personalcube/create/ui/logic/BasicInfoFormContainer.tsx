@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-// import { patronInfo } from '@nara.platform/dock';
+import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Select } from 'semantic-ui-react';
 import { IdName, CategoryModel } from 'shared';
@@ -46,7 +46,7 @@ class BasicInfoFormContainer extends Component<Props> {
     });
 
     onChangePersonalCubeProps('category', category);
-    // patronInfo.setWorkspaceByDomain(college);
+    patronInfo.setWorkspaceByDomain(college);
 
     let nextSubCategories = personalCube.subCategories
       .filter(category => category.channel.id !== prevChannelId);

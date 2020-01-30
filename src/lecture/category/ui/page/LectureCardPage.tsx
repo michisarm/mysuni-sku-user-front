@@ -102,7 +102,7 @@ class LectureCardPage extends Component<Props, State> {
 
   componentDidMount() {
     //
-    // this.setCineroom();
+    this.setCineroom();
     this.init();
   }
 
