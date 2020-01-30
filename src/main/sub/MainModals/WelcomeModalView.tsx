@@ -51,7 +51,7 @@ class WelcomeModalView extends Component<Props> {
         </Modal.Content>
         <Modal.Actions className="actions4">
           <div className="left">
-            <Checkbox label="다시 보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
+            <Checkbox label="오늘 하루 보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
           </div>
           <div className="right">
             <Button className="close" onClick={onClose}>Close</Button>

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import moment from 'moment';
 import ModalState from './model/ModalState';
 import WelcomeModalView from './WelcomeModalView';
 import SystemGuideModalView from './SystemGuideModalView';
@@ -46,7 +47,21 @@ class MainModalsContainer extends Component<{}, State> {
 
   initFromStorage(pageType: PageType) {
     //
-    const disabled = window.localStorage.getItem(MainModalsContainer.getLocalStorageKey(pageType));
+    const disabledValue = window.localStorage.getItem(MainModalsContainer.getLocalStorageKey(pageType));
+    let disabled = false;
+
+    if (disabledValue) {
+      if (pageType === PageType.Welcome) {
+        const today = moment().format('YYYY-MM-DD');
+
+        if (today === disabledValue) {
+          disabled = true;
+        }
+      }
+      else {
+        disabled = true;
+      }
+    }
 
     if (disabled) {
       this.setModalStateProp(pageType, 'disabled', true);
@@ -86,7 +101,13 @@ class MainModalsContainer extends Component<{}, State> {
     const disableChecked = this.getModalStateProp(pageType, 'disableChecked');
 
     if (disableChecked) {
-      window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+      if (pageType === PageType.Welcome) {
+        const today = moment().format('YYYY-MM-DD');
+        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
+      }
+      else {
+        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+      }
     }
     this.setModalStateProp(pageType, 'open', false);
   }

@@ -82,7 +82,7 @@ class TutorialModalView extends Component<Props, State> {
           mySUNI의 간단한 사용 방법을 알려드릴게요.
           <span className="counter">(<span className="now">{step + 1}</span> / <span className="max">{steps.length}</span>)</span>
           <div className="right-btn">
-            <Checkbox label="다시 보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
+            <Checkbox label="이창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
             <Button className="close" onClick={onClose}>Close</Button>
           </div>
         </Modal.Header>
