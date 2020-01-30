@@ -10,7 +10,7 @@ import { LectureService } from 'lecture';
 import routePaths from '../../../routePaths';
 import CreateProfileContainer from '../logic/CreateProfileContainer';
 import CreateListContainer from '../logic/CreateListContainer';
-import SharedListContainer from '../logic/CreateSharedListContainer';
+import SharedListContainer from '../logic/SharedListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -26,6 +26,11 @@ interface RouteParams {
 @reactAutobind
 class CreateListPage extends Component<Props> {
   //
+  componentDidMount(): void {
+    //
+    this.props.lectureService!.clearLectures();
+  }
+
   getTabs() {
     //
     const { lectures } = this.props.lectureService!;

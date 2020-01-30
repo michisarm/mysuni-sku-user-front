@@ -12,7 +12,8 @@ interface Props {
   tabs: TabItemModel[]
   className?: string
   defaultActiveName?: string
-  onChangeTab?: (tab: TabItemModel) => void,
+  renderItems?: (props: any) => void
+  onChangeTab?: (tab: TabItemModel) => void
 }
 
 interface State {
@@ -54,15 +55,16 @@ class TabContainer extends Component<Props, State> {
     onChangeTab!(tab);
   }
 
-
-  render() {
+  renderItems() {
     //
-    const { className, tabs } = this.props;
+    const { renderItems, className, tabs } = this.props;
     const { activeName } = this.state;
-    const activeTab = tabs.find(tab => tab.name === activeName);
 
-    return (
-      <>
+    if (renderItems) {
+      return renderItems({ tabs, onClickTab: this.onClickTab });
+    }
+    else {
+      return (
         <div className={classNames('ui sticky', className)}>
           <div className="cont-inner">
             <Menu className="sku">
@@ -79,6 +81,19 @@ class TabContainer extends Component<Props, State> {
             </Menu>
           </div>
         </div>
+      );
+    }
+  }
+
+  render() {
+    //
+    const { tabs } = this.props;
+    const { activeName } = this.state;
+    const activeTab = tabs.find(tab => tab.name === activeName);
+
+    return (
+      <>
+        {this.renderItems()}
 
         { activeTab && (
           activeTab.render({ tab: activeTab })
