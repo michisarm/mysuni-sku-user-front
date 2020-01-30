@@ -49,13 +49,6 @@ enum ContentType {
 @reactAutobind
 class MyLearningContentContainer extends Component<Props, State> {
   //
-  tabs = [
-    { name: ContentType.Required, text: '권장과정' },
-    { name: ContentType.InMyList, text: '관심목록' },
-    { name: ContentType.InProgress, text: '학습중', count: this.props.notieService!.progressedCount },
-    { name: ContentType.Enrolled, text: '학습예정', count: this.props.notieService!.waitingCount },
-  ];
-
   PAGE_SIZE = 8;
 
   state= {
@@ -68,6 +61,28 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     this.props.notieService!.countMenuNoties('Learning_Progress');
     this.props.notieService!.countMenuNoties('Learning_Waiting');
+  }
+
+  getTabs() {
+    //
+    const notieService = this.props.notieService!;
+
+    return [
+      { name: ContentType.Required, text: '권장과정' },
+      { name: ContentType.InMyList, text: '관심목록' },
+      { name: ContentType.InProgress, element: (
+        <>
+          학습중
+          { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
+        </>
+      ) },
+      { name: ContentType.Enrolled, element: (
+        <>
+          학습예정
+          { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
+        </>
+      ) },
+    ];
   }
 
   async findMyContent() {
@@ -242,7 +257,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   render() {
     //
-    const { tabs } = this;
+    const tabs = this.getTabs();
 
     return (
       <MyLearningTabContainer
