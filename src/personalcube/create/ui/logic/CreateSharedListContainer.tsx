@@ -1,0 +1,207 @@
+
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+
+import { ReviewService } from '@nara.drama/feedback';
+import { Segment } from 'semantic-ui-react';
+import { PageService, CubeType } from 'shared';
+import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import lectureRoutePaths from 'lecture/routePaths';
+import { ChannelModel } from 'college';
+import { LectureModel, LectureService } from 'lecture';
+import { SeeMoreButton } from 'lecture/shared';
+
+import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
+import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
+import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
+import LineHeaderContainer from '../../../../myTraining/ui/logic/LineHeaderContainer';
+
+
+interface Props extends RouteComponentProps<{ tab: string }> {
+  pageService?: PageService,
+  lectureService?: LectureService,
+  inMyLectureService?: InMyLectureService,
+  reviewService?: ReviewService
+}
+
+interface States {
+  channels: ChannelModel[]
+}
+
+@inject(mobxHelper.injectFrom(
+  'shared.pageService',
+  'shared.reviewService',
+  'lecture.lectureService',
+  'myTraining.inMyLectureService',
+))
+@observer
+@reactAutobind
+class CreateSharedListContainer extends React.Component<Props, States> {
+  //
+  PAGE_KEY = 'lecture.shared';
+
+  PAGE_SIZE = 8;
+
+  state = {
+    channels: [],
+  };
+
+
+  componentDidMount() {
+    //
+    const { pageService } = this.props;
+
+    console.log('SharedList didMount');
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    this.findSharedLectures(true);
+  }
+
+  async findSharedLectures(init: boolean = false) {
+    //
+    const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+    const { channels } = this.state;
+    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
+
+    let lectureOffsetList;
+
+    if (init) {
+      lectureOffsetList = await lectureService!.findSharedLectures(page!.limit, channelIds);
+    }
+    else {
+      lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
+    }
+
+    let feedbackIds: string[] = [];
+
+    if (lectureOffsetList && lectureOffsetList.results && lectureOffsetList.results.length) {
+      feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
+
+    inMyLectureService!.findAllInMyLectures();
+
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+  }
+
+  isContentMore() {
+    //
+    const { pageService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
+
+    return page!.pageNo < page!.totalPages;
+  }
+
+  onViewDetail(e: any, data: any) {
+    //
+    const { model } = data;
+    const { history } = this.props;
+    const collegeId = model.category.college.id;
+
+    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
+      history.push(lectureRoutePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+    }
+    else if (model.serviceType === LectureServiceType.Card) {
+      history.push(lectureRoutePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
+    }
+  }
+
+  onClickSeeMore() {
+    //
+    this.findSharedLectures();
+  }
+
+  onFilter(channels: ChannelModel[]) {
+    const { pageService, lectureService  } = this.props;
+
+    this.setState({ channels }, () => {
+      lectureService!.clearLectures();
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findSharedLectures();
+    });
+  }
+
+  onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
+    //
+    const { inMyLectureService } = this.props;
+
+    if (lecture instanceof InMyLectureModel) {
+      inMyLectureService!.removeInMyLecture(lecture.id)
+        .then(() => inMyLectureService!.findAllInMyLectures());
+    }
+    else {
+      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
+        serviceId: lecture.serviceId,
+        serviceType: lecture.serviceType,
+        category: lecture.category,
+        name: lecture.name,
+        description: lecture.description,
+        cubeType: lecture.cubeType,
+        learningTime: lecture.learningTime,
+        stampCount: lecture.stampCount,
+        coursePlanId: lecture.coursePlanId,
+
+        requiredSubsidiaries: lecture.requiredSubsidiaries,
+        cubeId: lecture.cubeId,
+        courseSetJson: lecture.courseSetJson,
+        courseLectureUsids: lecture.courseLectureUsids,
+        lectureCardUsids: lecture.lectureCardUsids,
+
+        reviewId: lecture.reviewId,
+        baseUrl: lecture.baseUrl,
+        servicePatronKeyString: lecture.patronKey.keyString,
+      }))
+        .then(() => inMyLectureService!.findAllInMyLectures());
+    }
+  }
+
+  render() {
+    //
+    const { lectureService, reviewService, inMyLectureService } = this.props;
+    const { lectures } = lectureService!;
+    const { ratingMap } = reviewService!;
+    const { inMyLectureMap } = inMyLectureService!;
+    const { channels } = this.state;
+
+    return (
+      <Segment className="full">
+        <LineHeaderContainer count={lectures.length || 0} channels={channels} onFilter={this.onFilter} />
+
+        { lectures.length > 0 ?
+          <div className="section">
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              { lectures.map((lecture: LectureModel, index: number) => {
+                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+                const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+                if (lecture.cubeType === CubeType.Community) rating = undefined;
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={rating}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                    onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
+
+            { this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+              />
+            )}
+          </div>
+          :
+          <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
+        }
+      </Segment>
+    );
+  }
+}
+
+export default withRouter(CreateSharedListContainer);
