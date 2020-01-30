@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Link } from 'react-router-dom';
-import { Button, Modal, Icon } from 'semantic-ui-react';
+import { Button, Modal, Icon, Checkbox } from 'semantic-ui-react';
 
 
 interface Props {
@@ -20,7 +20,7 @@ class WelcomeModalView extends Component<Props> {
   //
   render() {
     //
-    const { open, onClose } = this.props;
+    const { open, noMoreSeeChecked, onClose, onClickNoMoreSee } = this.props;
 
     return (
       <Modal open={open} className="w824 base">
@@ -90,6 +90,9 @@ class WelcomeModalView extends Component<Props> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions4">
+          <div className="left">
+            <Checkbox label="오늘 하루 보지 않기" className="base" checked={noMoreSeeChecked} onClick={onClickNoMoreSee} />
+          </div>
           <div className="right">
             <Button className="close" onClick={onClose}>Close</Button>
           </div>
