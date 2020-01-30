@@ -38,7 +38,7 @@ class InMyLectureApi {
 
   findAllInMyLectures() {
     return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
-      .then(response => response && response.data);
+      .then(response => response && response.data || []);
   }
 }
 

@@ -239,7 +239,7 @@ class LectureOverviewView extends Component<Props, State> {
             titleIcon="tag2"
             title="태그"
             content={viewObject.tags.map((tag: string, index: number) => (
-              tag && <Button key={`tag-${index}`} className="tag">{tag}</Button>
+              tag && <span key={`tag-${index}`} className="ui label tag">{tag}</span>
             ))}
           />
         </OverviewField.List>

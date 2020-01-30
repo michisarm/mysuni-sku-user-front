@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="24" viewBox="0 0 36 24">
+    <defs>
+        <path id="b" d="M0 0h1200v482H0z"/>
+        <filter id="a" width="101.7%" height="104.1%" x="-.8%" y="-1.7%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="3"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.798461069 0 0 0 0 0.83129593 0 0 0 0 0.905174366 0 0 0 1 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#F4F7FD" d="M-130-412h1400V720H-130z"/>
+        <path fill="#F4F7FD" d="M-130-72h1400v702H-130z"/>
+        <g transform="translate(-30 -22)">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#FFF" xlink:href="#b"/>
+        </g>
+        <g>
+            <rect width="35" height="23" x=".5" y=".5" stroke="#E1002A" rx="4"/>
+            <text fill="#E1002A" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="12" font-weight="bold" letter-spacing="-.3">
+                <tspan x="7" y="17">중요</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

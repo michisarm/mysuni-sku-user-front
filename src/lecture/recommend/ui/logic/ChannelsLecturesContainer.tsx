@@ -42,7 +42,9 @@ class ChannelsLecturesContainer extends Component<Props> {
 
 
   componentDidMount(): void {
+    //
     const { collegeService, channels } = this.props;
+    console.log('did mount');
 
     collegeService!.setChannels(channels && channels.length && channels.map(chanel =>
       new ChannelModel({ ...chanel, checked: false })
@@ -56,15 +58,22 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { collegeService, channels } = this.props;
 
     if (prevChannels !== channels) {
-      collegeService!.setChannels(channels && channels.map(chanel => (
-        new ChannelModel({
-          ...chanel,
-          checked: false,
-        })
-      )) || []);
+      const sameLength = prevChannels.length === channels.length;
+
+      if (!sameLength) {
+        collegeService!.setChannels(channels && channels.map((chanel, index) => (
+          new ChannelModel({
+            ...chanel,
+            checked: sameLength ? channels[index].checked :  false,
+          })
+        )) || []);
+      }
     }
 
-    if (prevProps.match.params.pageNo !== this.props.match.params.pageNo) {
+    const { pageNo: prevPageNo } = prevProps.match.params;
+    const { pageNo } = this.props.match.params;
+
+    if (prevPageNo !== pageNo && prevPageNo < pageNo) {
       this.addPagingRecommendLectures();
     }
   }
@@ -82,6 +91,13 @@ class ChannelsLecturesContainer extends Component<Props> {
     const { lectureService } = this.props;
 
     lectureService!.addFindPagingRecommendLectures(this.CHANNELS_SIZE, this.getPageNo() - 1, this.LECTURES_SIZE, 0);
+  }
+
+  findAllRecommendLectures() {
+    //
+    const { lectureService } = this.props;
+
+    lectureService!.findPagingRecommendLectures(500, this.LECTURES_SIZE);
   }
 
   getPageNo() {
@@ -129,11 +145,30 @@ class ChannelsLecturesContainer extends Component<Props> {
   }
 
   onSelectChannel(channel: ChannelModel) {
-    const { collegeService } = this.props;
+    //
+    const collegeService = this.props.collegeService!;
+    const { history } = this.props;
 
-    const index = collegeService!._channels.map((channel: ChannelModel) => channel.id).findIndex((id: string) => channel.id === id);
+    const index = collegeService!._channels
+      .map((channel: ChannelModel) => channel.id)
+      .findIndex((id: string) => channel.id === id);
 
-    collegeService!.setChannelsProp(index, 'checked', !channel.checked);
+    const prevAllChecked = collegeService.channels.every(channel => channel.checked);
+    const prevAllNotChecked = collegeService.channels.every(channel => !channel.checked);
+
+    collegeService.setChannelsProp(index, 'checked', !channel.checked);
+    const allChecked = collegeService.channels.every(channel => channel.checked);
+    const allNotChecked = collegeService.channels.every(channel => !channel.checked);
+
+    // 채널별 조회 -> 전체 채널 조회
+    if (!prevAllChecked && !prevAllNotChecked && (allChecked || allNotChecked)) {
+      this.findPagingRecommendLectures();
+      history.replace(routePaths.currentPage(1));
+    }
+    // 전체 채널 조회 -> 채널별 조회
+    else if ((prevAllChecked || prevAllNotChecked) && (!allChecked && !allNotChecked)) {
+      this.findAllRecommendLectures();
+    }
   }
 
   onClickSeeMore() {

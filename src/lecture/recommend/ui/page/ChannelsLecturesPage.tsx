@@ -66,7 +66,6 @@ class ChannelLecturesPage extends Component<Props> {
           </ContentHeader.Cell>
           <ContentHeader.Cell inner>
             <ContentHeader.RecommendItem
-              totalChannelCount={999}
               favoriteChannelCount={channels.length || 0}
             />
           </ContentHeader.Cell>

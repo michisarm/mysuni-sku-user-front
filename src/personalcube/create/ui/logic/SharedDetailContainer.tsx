@@ -1,10 +1,11 @@
+
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import depot from '@nara.drama/depot';
-import { AlertWin, ConfirmWin, ContentLayout, CubeType } from 'shared';
+import { AlertWin, ConfirmWin, CubeType } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import routePaths from '../../../routePaths';
 import { PersonalCubeService } from '../../../personalcube';
@@ -39,8 +40,12 @@ interface States {
   filesMap: Map<string, any>
 }
 
-@inject(mobxHelper.injectFrom('personalCube.boardService', 'personalCube.personalCubeService',
-  'personalCube.cubeIntroService', 'personalCube.mediaService', 'personalCube.officeWebService'))
+@inject(mobxHelper.injectFrom(
+  'personalCube.boardService',
+  'personalCube.personalCubeService',
+  'personalCube.cubeIntroService',
+  'personalCube.mediaService',
+  'personalCube.officeWebService'))
 @observer
 @reactAutobind
 class SharedDetailContainer extends React.Component<Props, States> {
@@ -62,6 +67,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     const { personalCubeId, cubeType } = this.props.match.params;
 
     this.clearAll();
+
     personalCubeService.findPersonalCube(personalCubeId)
       .then(() => {
         const { personalCube } = personalCubeService;
@@ -90,8 +96,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
   clearAll() {
     //
     const {
-      personalCubeService, cubeIntroService,
-      mediaService, boardService, officeWebService,
+      personalCubeService, cubeIntroService, mediaService, boardService, officeWebService,
     } = this.props;
 
     personalCubeService!.clearPersonalCube();
@@ -102,7 +107,9 @@ class SharedDetailContainer extends React.Component<Props, States> {
   }
 
   findFiles(type: string, fileBoxId: string) {
+    //
     const { filesMap } = this.state;
+
     depot.getDepotFiles(fileBoxId)
       .then(files => {
         filesMap.set(type, files);
@@ -117,8 +124,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
     officeWebService.findOfficeWeb(contentsId)
       .then(() => {
-        const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
-        const officeWebFileBoxId = officeWeb.fileBoxId;
+        const officeWebFileBoxId = officeWebService.officeWeb.fileBoxId;
 
         if (officeWebFileBoxId) {
           this.findFiles('officeweb', officeWebFileBoxId);
@@ -147,7 +153,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
   handleSave() {
 
-    const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
+    const { cubeIntro } = this.props.cubeIntroService!;
     const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
     const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
 
@@ -161,7 +167,12 @@ class SharedDetailContainer extends React.Component<Props, States> {
 
   confirmBlank(message: string) {
     //
-    this.setState({ alertMessage: message, alertWinOpen: true, alertTitle: '필수 정보 입력 안내', alertIcon: 'triangle' });
+    this.setState({
+      alertMessage: message,
+      alertWinOpen: true,
+      alertTitle: '필수 정보 입력 안내',
+      alertIcon: 'triangle',
+    });
   }
 
   handleCloseAlertWin() {
@@ -178,7 +189,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     });
   }
 
-  handleOKConfirmWin(mode?: string) {
+  handleOKConfirmWin() {
     //
     const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
     const { personalCubeId, cubeType } = this.props.match.params;
@@ -245,7 +256,7 @@ class SharedDetailContainer extends React.Component<Props, States> {
     const message = <p className="center">입력하신 학습 강좌에 대해 저장 하시겠습니까?</p>;
 
     return (
-      <ContentLayout className="bg-white">
+      <>
         <div className="add-personal-learning support">
           <div className="add-personal-learning-wrap">
             <div className="apl-tit">Detail</div>
@@ -265,16 +276,16 @@ class SharedDetailContainer extends React.Component<Props, States> {
               />
 
               {
-              cubeState === 'OpenApproval' ?
-                <SharedDetailIntroView
-                  cubeIntro={cubeIntro}
-                  cubeType={cubeType}
-                />
-                :
-                <SharedDetailIntroEditContainer
-                  cubeIntro={cubeIntro}
-                />
-            }
+                cubeState === 'OpenApproval' ?
+                  <SharedDetailIntroView
+                    cubeIntro={cubeIntro}
+                    cubeType={cubeType}
+                  />
+                  :
+                  <SharedDetailIntroEditContainer
+                    cubeIntro={cubeIntro}
+                  />
+              }
               <SharedTypeDetailView
                 personalCube={personalCube}
                 cubeType={cubeType}
@@ -315,9 +326,8 @@ class SharedDetailContainer extends React.Component<Props, States> {
             </Form>
           </div>
         </Segment>
-      </ContentLayout>
-
+      </>
     );
   }
 }
-export default SharedDetailContainer;
+export default withRouter(SharedDetailContainer);
