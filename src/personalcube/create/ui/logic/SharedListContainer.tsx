@@ -6,17 +6,17 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { Segment } from 'semantic-ui-react';
-import { PageService, CubeType } from 'shared';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import lectureRoutePaths from 'lecture/routePaths';
+import { PageService, CubeType, NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college';
-import { LectureModel, LectureService } from 'lecture';
+import lectureRoutePaths from 'lecture/routePaths';
+import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lecture';
 import { SeeMoreButton } from 'lecture/shared';
+import { InMyLectureService, InMyLectureModel, InMyLectureCdoModel } from 'myTraining';
 
-import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
-import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
-import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
-import LineHeaderContainer from '../../../../myTraining/ui/logic/LineHeaderContainer';
+import LineHeaderContainer from 'myTraining/ui/logic/LineHeaderContainer';
+// import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
+// import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
+
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
@@ -166,7 +166,11 @@ class SharedListContainer extends React.Component<Props, States> {
 
     return (
       <Segment className="full">
-        <LineHeaderContainer count={lectures.length || 0} channels={channels} onFilter={this.onFilter} />
+        <LineHeaderContainer
+          count={lectures.length || 0}
+          channels={channels}
+          onFilter={this.onFilter}
+        />
 
         { lectures.length > 0 ?
           <div className="section">

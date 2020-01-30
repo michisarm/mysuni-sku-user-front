@@ -5,17 +5,16 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Segment } from 'semantic-ui-react';
-import { CubeState } from 'shared';
-import { PersonalCubeService } from 'personalcube/personalcube';
+import { CubeState, NoSuchContentPanel } from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
 import { SeeMoreButton } from 'lecture/shared';
+import { LectureServiceType } from 'lecture';
+import { PersonalCubeService } from 'personalcube/personalcube';
 
-import SelectView from '../view/SelectView';
-import SelectType from '../../model/SelectOptions';
-import CreateListView from '../view/CreateListView';
-import NoSuchContentPanel from '../../../../shared/components/NoSuchContentPanel';
-import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
 import routePaths from '../../../routePaths';
+import SelectType from '../../model/SelectOptions';
+import SelectView from '../view/SelectView';
+import CreateListView from '../view/CreateListView';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
