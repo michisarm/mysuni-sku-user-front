@@ -85,7 +85,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
     const pageNo = parseInt(match.params.pageNo, 10);
 
     newPageService!.initPageMap(this.PAGE_KEY, this.PAGE_SIZE, pageNo);
-    lectureService!.clearLectures();
+    lectureService!.clearRecommendLectures();
   }
 
   clearAndInit() {
@@ -152,7 +152,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
     this.setState({
       sorting: data.value,
     }, () => {
-      this.init();
+      this.clearAndInit();
       this.initialFindPagingRecommendLectures();
     });
   }

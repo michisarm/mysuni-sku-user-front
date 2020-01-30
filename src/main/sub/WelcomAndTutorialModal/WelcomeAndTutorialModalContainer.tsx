@@ -10,7 +10,7 @@ import TutorialModalView from './TutorialModalView';
 interface State {
   openWelcome: boolean
   openTutorial: boolean
-  noMoreSeeWelcome: boolean
+  // noMoreSeeWelcome: boolean
   noMoreSeeTutorial: boolean
   noMoreSeeCheckedWelcome: boolean
   noMoreSeeCheckedTutorial: boolean
@@ -28,7 +28,7 @@ class LinkedInModal extends Component<{}, State> {
   state = {
     openWelcome: false,
     openTutorial: false,
-    noMoreSeeWelcome: false,
+    // noMoreSeeWelcome: false,
     noMoreSeeCheckedWelcome: false,
     noMoreSeeTutorial: false,
     noMoreSeeCheckedTutorial: false,
@@ -37,7 +37,8 @@ class LinkedInModal extends Component<{}, State> {
 
   componentDidMount(): void {
     //
-    this.initFromStorage(PageType.Welcome);
+    // this.initFromStorage(PageType.Welcome);
+    this.setState({ openWelcome: true });
     this.initFromStorage(PageType.Tutorial);
   }
 
@@ -93,10 +94,10 @@ class LinkedInModal extends Component<{}, State> {
   render() {
     //
     const {
-      openWelcome, openTutorial, noMoreSeeWelcome, noMoreSeeTutorial, noMoreSeeCheckedWelcome, noMoreSeeCheckedTutorial,
+      openWelcome, openTutorial, noMoreSeeTutorial, noMoreSeeCheckedWelcome, noMoreSeeCheckedTutorial,
     } = this.state;
 
-    if (noMoreSeeWelcome && noMoreSeeTutorial) {
+    if (noMoreSeeTutorial && !openWelcome) {
       return null;
     }
     else if (openWelcome) {

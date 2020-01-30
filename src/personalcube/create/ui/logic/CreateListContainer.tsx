@@ -3,7 +3,6 @@ import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
@@ -11,12 +10,10 @@ import { PageService, CubeState, CubeType } from 'shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import lectureRoutePaths from 'lecture/routePaths';
-import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
 import { SeeMoreButton } from 'lecture/shared';
 
-import CreateProfileView from '../view/CreateProfileView';
 import SelectView from '../view/SelectView';
 import SelectType from '../../model/SelectOptions';
 import CreateListView from '../view/CreateListView';
@@ -33,7 +30,6 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   lectureService?: LectureService,
   lectureCardService?: LectureCardService,
   inMyLectureService?: InMyLectureService,
-  skProfileService?: SkProfileService
   reviewService?: ReviewService
 }
 
@@ -51,7 +47,6 @@ interface States {
   'lecture.lectureService',
   'lecture.lectureCardService',
   'myTraining.inMyLectureService',
-  'profile.skProfileService',
 ))
 @observer
 @reactAutobind
@@ -70,9 +65,8 @@ class CreateListContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    const { skProfileService, inMyLectureService } = this.props;
+    const { inMyLectureService } = this.props;
 
-    skProfileService!.findSkProfile();
     this.init();
     inMyLectureService!.findAllInMyLectures();
   }
@@ -109,10 +103,6 @@ class CreateListContainer extends React.Component<Props, States> {
 
   handleItemClick(e: any, { name }: any) {
     this.props.history.push(routePaths.createTab(name));
-  }
-
-  routeToCreateDetail() {
-    this.props.history.push(routePaths.createNew());
   }
 
   handleClickCubeRow(personalCubeId: string) {
@@ -193,15 +183,12 @@ class CreateListContainer extends React.Component<Props, States> {
     const { model } = data;
     const { history } = this.props;
     const collegeId = model.category.college.id;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      // history.push(lectureRoutePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      // history.push(lectureRoutePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
     }
   }
 
@@ -351,17 +338,11 @@ class CreateListContainer extends React.Component<Props, States> {
 
   render() {
     const { activeItem } = this.state;
-    const { lectureService, skProfileService } = this.props;
+    const { lectureService } = this.props;
     const { lectures } = lectureService!;
-    const { skProfile } = skProfileService!;
-    const { member } = skProfile;
 
     return (
       <>
-        <CreateProfileView
-          routeToCreateDetail={this.routeToCreateDetail}
-          member={member}
-        />
         <div>
           <Sticky className="tab-menu offset0">
             <div className="cont-inner">
