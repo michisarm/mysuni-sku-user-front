@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ContentLayout } from 'shared';
+import CreateProfileContainer from '../logic/CreateProfileContainer';
 import CreateListContainer from '../logic/CreateListContainer';
 
 
@@ -31,6 +32,7 @@ class CreateListPage extends Component<Props> {
           { text: `${params.tab}` },
         ]}
       >
+        <CreateProfileContainer />
         <CreateListContainer />
       </ContentLayout>
     );
