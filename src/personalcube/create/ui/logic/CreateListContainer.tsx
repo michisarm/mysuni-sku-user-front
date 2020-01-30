@@ -127,7 +127,7 @@ class CreateListContainer extends React.Component<Props, States> {
         />
         { results.length > 0 ?
           <CreateListView
-            result={results}
+            personalCubes={results}
             totalCount={totalCount}
             handleClickCubeRow={this.onClickPersonalCubeRow}
           />

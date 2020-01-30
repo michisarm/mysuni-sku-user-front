@@ -1,18 +1,23 @@
+
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 
 import moment from 'moment';
+import { Table } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/personalcube';
 
 
 interface Props {
-  result: PersonalCubeModel[]
+  personalCubes: PersonalCubeModel[]
   totalCount: number
   handleClickCubeRow:(cubeId: string) => void
 }
 
+@reactAutobind
+@observer
 class CreateListView extends React.Component <Props> {
   //
   getCubeType(personalCube: PersonalCubeModel) {
@@ -21,7 +26,7 @@ class CreateListView extends React.Component <Props> {
   }
 
   render() {
-    const { result, totalCount, handleClickCubeRow } = this.props;
+    const { personalCubes, totalCount, handleClickCubeRow } = this.props;
     return (
       <div className="create-list-wrap">
         <Table>
@@ -37,8 +42,7 @@ class CreateListView extends React.Component <Props> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {
-            result && result.length && result.map((cube, index) => {
+            { personalCubes.map((cube, index) => {
               const newCube = new PersonalCubeModel(cube);
               return (
                 <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
