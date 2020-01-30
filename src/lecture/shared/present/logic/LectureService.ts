@@ -237,6 +237,12 @@ class LectureService {
     return null;
   }
 
+  @action
+  clearRecommendLectures() {
+    //
+    this.recommendLecture = new RecommendLectureRdo();
+  }
+
   async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
     return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
