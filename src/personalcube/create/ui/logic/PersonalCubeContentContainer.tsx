@@ -29,7 +29,7 @@ interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: 
 
 interface State {
   isNext: boolean
-  subsidiaryTargeted: boolean
+  targetSubsidiaryId: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -46,7 +46,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   //
   state = {
     isNext: false,
-    subsidiaryTargeted: false,
+    targetSubsidiaryId: '',
   };
 
 
@@ -69,7 +69,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
       const college = await collegeService.findCollege(personalCube!.category.college.id);
 
       if (college && college.collegeType === CollegeType.Company) {
-        this.setState({ subsidiaryTargeted: true });
+        this.setState({ targetSubsidiaryId: college.id });
       }
     }
   }
@@ -167,7 +167,13 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   onChangeCollege(college: CollegeModel) {
     //
     const subsidiaryTargeted = college.collegeType === CollegeType.Company;
-    this.setState({ subsidiaryTargeted });
+
+    if (subsidiaryTargeted) {
+      this.setState({ targetSubsidiaryId: college.collegeId });
+    }
+    else {
+      this.setState({ targetSubsidiaryId: '' });
+    }
   }
 
   onSave(isNext: boolean) {
@@ -204,7 +210,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   render() {
     //
     const { personalCubeService, match: { params }} = this.props;
-    const { subsidiaryTargeted } = this.state;
+    const { targetSubsidiaryId } = this.state;
     const { personalCube } = personalCubeService!;
 
     return (
@@ -222,7 +228,7 @@ class PersonalCubeContentContainer extends Component<Props, State> {
 
         <ExposureInfoFormContainer
           personalCube={personalCube}
-          subsidiaryTargeted={subsidiaryTargeted}
+          targetSubsidiaryId={targetSubsidiaryId}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
         />
 

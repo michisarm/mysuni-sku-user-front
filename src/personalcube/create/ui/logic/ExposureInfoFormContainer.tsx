@@ -15,7 +15,7 @@ import CreateInput from '../shared/CreateInput';
 interface Props {
   subsidiaryService?: SubsidiaryService
   personalCube: PersonalCubeModel
-  subsidiaryTargeted: boolean
+  targetSubsidiaryId: string
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
 }
 
@@ -46,10 +46,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    const prevSubsidiaryTargeted = prevProps.subsidiaryTargeted;
-    const subsidiaryTargeted = this.props.subsidiaryTargeted;
+    const prevTargetSubsidiaryId = prevProps.targetSubsidiaryId;
+    const targetSubsidiaryId = this.props.targetSubsidiaryId;
 
-    if (prevSubsidiaryTargeted !== subsidiaryTargeted) {
+    if (prevTargetSubsidiaryId !== targetSubsidiaryId) {
       this.findSubsidiaries();
     }
   }
@@ -57,9 +57,9 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
   async findSubsidiaries() {
     //
     const subsidiaryService = this.props.subsidiaryService!;
-    const { subsidiaryTargeted, onChangePersonalCubeProps } = this.props;
+    const { targetSubsidiaryId, onChangePersonalCubeProps } = this.props;
 
-    if (subsidiaryTargeted) {
+    if (targetSubsidiaryId) {
       this.setState({ subsidiariesAllChecked: false });
       const subsidiaries = await subsidiaryService.findSubsidiariesByCompany();
 
@@ -180,9 +180,10 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
 
   render() {
     //
-    const { personalCube, subsidiaryTargeted } = this.props;
+    const { personalCube, targetSubsidiaryId } = this.props;
     const { subsidiaries } = this.props.subsidiaryService!;
     const { subsidiariesAllChecked } = this.state;
+    const subsidiaryTargeted = !!targetSubsidiaryId;
 
     return (
       <>
