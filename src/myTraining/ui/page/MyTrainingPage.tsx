@@ -92,7 +92,7 @@ class MyTrainingPage extends Component<Props, State> {
       const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
       if (currentPageNo === '1') {
         if (currentTab === Type.InMyList) {
-          inMyLectureService!.clear();
+          inMyLectureService!.clearInMyLectures();
         }
         if (currentTab === Type.Required) {
           lectureService!.clearLectures();
@@ -134,7 +134,7 @@ class MyTrainingPage extends Component<Props, State> {
       const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
 
       if (type === Type.InMyList) {
-        inMyLectureService!.clear();
+        inMyLectureService!.clearInMyLectures();
       }
       if (type === Type.Required) {
         lectureService!.clearLectures();
@@ -202,7 +202,7 @@ class MyTrainingPage extends Component<Props, State> {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
           if (type === Type.InMyList) {
-            inMyLectureService!.clear();
+            inMyLectureService!.clearInMyLectures();
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
           }
@@ -235,7 +235,7 @@ class MyTrainingPage extends Component<Props, State> {
       }))
         .then(() => {
           if (type === Type.InMyList) {
-            inMyLectureService!.clear();
+            inMyLectureService!.clearInMyLectures();
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
           }
@@ -285,7 +285,7 @@ class MyTrainingPage extends Component<Props, State> {
     const { type } = this.state;
     this.setState({ channels }, () => {
       if (type === Type.InMyList) {
-        inMyLectureService!.clear();
+        inMyLectureService!.clearInMyLectures();
       } else if (type === Type.Required) {
         lectureService!.clearLectures();
       } else {

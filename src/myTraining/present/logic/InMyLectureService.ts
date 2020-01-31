@@ -56,10 +56,10 @@ class InMyLectureService {
     return map;
   }
 
-  // In My Lectures ----------------------------------------------------------------------------------------------------
+  // InMyLectures ------------------------------------------------------------------------------------------------------
 
   @action
-  clear() {
+  clearInMyLectures() {
     this._inMyLectures = [];
   }
 
@@ -82,6 +82,8 @@ class InMyLectureService {
     runInAction(() => this._inMyLectures = this._inMyLectures.concat(lecturesOffsetElementList.results));
     return lecturesOffsetElementList;
   }
+
+  // InMyLectureAll ----------------------------------------------------------------------------------------------------
 
   @action
   async findAllInMyLectures() {

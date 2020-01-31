@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  type: string
+  contentType: string
 }
 
 enum ContentType {
@@ -48,8 +48,8 @@ class MyLearningContentContainer extends Component<Props, State> {
   //
   PAGE_SIZE = 8;
 
-  state= {
-    type: ContentType.Required,
+  state = {
+    contentType: ContentType.Required,
   };
 
   componentDidMount(): void {
@@ -60,46 +60,16 @@ class MyLearningContentContainer extends Component<Props, State> {
     this.props.notieService!.countMenuNoties('Learning_Waiting');
   }
 
-  getTabs() {
-    //
-    const notieService = this.props.notieService!;
-
-    return [
-      { name: ContentType.Required, item: '권장과정', render: this.renderRequiredList },
-      { name: ContentType.InMyList, item: '관심목록', render: this.renderInMyList },
-      {
-        name: ContentType.InProgress,
-        item: (
-          <>
-            학습중
-            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
-          </>
-        ),
-        render: this.renderInProgress,
-      },
-      {
-        name: ContentType.Enrolled,
-        item: (
-          <>
-            학습예정
-            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
-          </>
-        ),
-        render: this.renderEnrolled,
-      },
-    ];
-  }
-
   async findMyContent() {
     //
     const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
-    const { type } = this.state;
+    const { contentType } = this.state;
 
     inMyLectureService!.findAllInMyLectures();
 
-    switch (type) {
+    switch (contentType) {
       case ContentType.InMyList: {
-        inMyLectureService!.clear();
+        inMyLectureService!.clearInMyLectures();
         const offsetList = await inMyLectureService!.findInMyLectures(this.PAGE_SIZE, 0);
         const feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
 
@@ -112,36 +82,39 @@ class MyLearningContentContainer extends Component<Props, State> {
         break;
       case ContentType.InProgress:
         myTrainingService!.clear();
-        myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
+        myTrainingService!.findAllMyTrainingsWithState(contentType, this.PAGE_SIZE, 0);
         break;
       case ContentType.Enrolled:
         myTrainingService!.clear();
-        myTrainingService!.findAllMyTrainingsWithState(type, this.PAGE_SIZE, 0);
+        myTrainingService!.findAllMyTrainingsWithState(contentType, this.PAGE_SIZE, 0);
         break;
     }
   }
 
-  onSelectTab({ name }: any) {
+  onChangeTab({ name }: any) {
     //
-    const { type } = this.state;
+    const { contentType } = this.state;
 
-    if (type !== name) {
-      const { lectureService, inMyLectureService, myTrainingService } = this.props;
-
-      if (name === ContentType.InMyList) {
-        inMyLectureService!.clear();
-      }
-      if (name === ContentType.Required) {
-        lectureService!.clearLectures();
-      } else {
-        myTrainingService!.clear();
-      }
-
-      this.setState(
-        { type: name },
-        this.findMyContent,
-      );
+    if (name === contentType) {
+      return;
     }
+
+    const { lectureService, inMyLectureService, myTrainingService } = this.props;
+
+    if (name === ContentType.Required) {
+      lectureService!.clearLectures();
+    }
+    else if (name === ContentType.InMyList) {
+      inMyLectureService!.clearInMyLectures();
+    }
+    else {
+      myTrainingService!.clear();
+    }
+
+    this.setState(
+      { contentType: name },
+      this.findMyContent,
+    );
   }
 
   onViewDetail(e: any, data: any) {
@@ -195,12 +168,34 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
-  onViewAll() {
+  getTabs() {
     //
-    const { history } = this.props;
-    const { type } = this.state;
+    const notieService = this.props.notieService!;
 
-    history.push(myTrainingRoutes.learningTab(type));
+    return [
+      { name: ContentType.Required, item: '권장과정', render: this.renderRequiredList },
+      { name: ContentType.InMyList, item: '관심목록', render: this.renderInMyList },
+      {
+        name: ContentType.InProgress,
+        item: (
+          <>
+            학습중
+            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
+          </>
+        ),
+        render: this.renderInProgress,
+      },
+      {
+        name: ContentType.Enrolled,
+        item: (
+          <>
+            학습예정
+            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
+          </>
+        ),
+        render: this.renderEnrolled,
+      },
+    ];
   }
 
   getInMyLecture(serviceId: string) {
@@ -222,6 +217,14 @@ class MyLearningContentContainer extends Component<Props, State> {
       rating = learning.rating;
     }
     return rating;
+  }
+
+  onViewAll() {
+    //
+    const { history } = this.props;
+    const { contentType } = this.state;
+
+    history.push(myTrainingRoutes.learningTab(contentType));
   }
 
   renderRequiredList() {
@@ -318,7 +321,7 @@ class MyLearningContentContainer extends Component<Props, State> {
       <Tab
         wrapperClassName="my-learning-area-tab"
         tabs={tabs}
-        onChangeTab={this.onSelectTab}
+        onChangeTab={this.onChangeTab}
         renderItems={this.renderTabItems}
       />
     );
