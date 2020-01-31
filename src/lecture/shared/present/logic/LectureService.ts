@@ -32,6 +32,9 @@ class LectureService {
   @observable
   _lectures: LectureModel[] = [];
 
+  @observable
+  totalLectureCount: number = 0;
+
   // @observable
   // _recommendLectures: RecommendLectureRdo[] = [];
 
@@ -188,7 +191,10 @@ class LectureService {
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 
-    runInAction(() => this._lectures = lectureOffsetElementList.results);
+    runInAction(() => {
+      this._lectures = lectureOffsetElementList.results;
+      this.totalLectureCount = lectureOffsetElementList.totalCount;
+    });
     return lectureOffsetElementList;
   }
 
