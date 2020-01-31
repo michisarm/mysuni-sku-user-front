@@ -31,9 +31,16 @@ export default class SubsidiaryService {
   }
 
   @action
-  async findAllsubsidiarys() {
+  async findAllSubsidiaries() {
     //
     const subsidiaries = await this.subsidiaryApi.findAllSubsidiaries();
+    return runInAction(() => this.subsidiaries = subsidiaries);
+  }
+
+  @action
+  async findSubsidiariesByCompany() {
+    //
+    const subsidiaries = await this.subsidiaryApi.findSubsidiariesByCompany();
     return runInAction(() => this.subsidiaries = subsidiaries);
   }
 

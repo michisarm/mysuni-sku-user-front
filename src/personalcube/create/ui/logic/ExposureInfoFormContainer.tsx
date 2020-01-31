@@ -15,6 +15,7 @@ import CreateInput from '../shared/CreateInput';
 interface Props {
   subsidiaryService?: SubsidiaryService
   personalCube: PersonalCubeModel
+  subsidiaryTargeted: boolean
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
 }
 
@@ -40,9 +41,35 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
 
   componentDidMount() {
     //
-    const { subsidiaryService } = this.props;
+    this.findSubsidiaries();
+  }
 
-    subsidiaryService!.findAllsubsidiarys();
+  componentDidUpdate(prevProps: Props) {
+    //
+    const prevSubsidiaryTargeted = prevProps.subsidiaryTargeted;
+    const subsidiaryTargeted = this.props.subsidiaryTargeted;
+
+    if (prevSubsidiaryTargeted !== subsidiaryTargeted) {
+      this.findSubsidiaries();
+    }
+  }
+
+  async findSubsidiaries() {
+    //
+    const subsidiaryService = this.props.subsidiaryService!;
+    const { subsidiaryTargeted, onChangePersonalCubeProps } = this.props;
+
+    if (subsidiaryTargeted) {
+      this.setState({ subsidiariesAllChecked: false });
+      const subsidiaries = await subsidiaryService.findSubsidiariesByCompany();
+
+      const nextSubsidiaries = subsidiaries.map(subsidiary => subsidiary.subsidiary);
+      onChangePersonalCubeProps('subsidiaries', nextSubsidiaries);
+    }
+    else {
+      subsidiaryService.findAllSubsidiaries();
+      onChangePersonalCubeProps('subsidiaries', []);
+    }
   }
 
   setIconFile(file: File) {
@@ -153,7 +180,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
 
   render() {
     //
-    const { personalCube } = this.props;
+    const { personalCube, subsidiaryTargeted } = this.props;
     const { subsidiaries } = this.props.subsidiaryService!;
     const { subsidiariesAllChecked } = this.state;
 
@@ -252,14 +279,17 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
         <Form.Field>
           <label className="necessary">관계사 공개 범위 설정</label>
           <div className="round-wrap">
-            <div className="filter">
-              <Checkbox
-                className="black"
-                label="전체"
-                checked={subsidiariesAllChecked}
-                onChange={this.onCheckAllSubsidiaries}
-              />
-            </div>
+            { !subsidiaryTargeted && (
+              <div className="filter">
+                <Checkbox
+                  className="black"
+                  label="전체"
+                  readOnly={subsidiaryTargeted}
+                  checked={subsidiariesAllChecked}
+                  onChange={this.onCheckAllSubsidiaries}
+                />
+              </div>
+            )}
             <div className="h112">
               <ul>
                 { subsidiaries.map((subsidiary, index) => (
@@ -270,6 +300,7 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                       label={subsidiary.subsidiary && subsidiary.subsidiary.name || ''}
                       subsidiary={subsidiary.subsidiary}
                       value={subsidiary.subsidiary && JSON.stringify(subsidiary.subsidiary)}
+                      disabled={subsidiaryTargeted}
                       checked={personalCube.subsidiaries.some((cubeSubsidiary) => cubeSubsidiary.id === subsidiary.subsidiary.id)}
                       onChange={this.onCheckSubsidiary}
                     />
