@@ -7,10 +7,11 @@ import moment from 'moment';
 import { ContentHeader } from 'shared';
 import { SkProfileService } from 'profile';
 import { MyLearningSummaryService } from 'myTraining';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
+
 import FavoriteChannelContainer from './FavoriteChannelContainer';
-import ProfileView from '../view/title/ProfileView';
-import LectureTotalTimeView from '../view/title/LectureTotalTimeView';
-import StampInfoView from '../view/title/StampInfoView';
+import ContentHeaderLearningSummaryView from '../view/ContentHeaderLearningSummaryView';
+import ContentHeaderStampView from '../view/ContentHeaderStampView';
 
 
 interface Props {
@@ -30,6 +31,8 @@ interface State {
 @reactAutobind
 class MyPageContentHeaderContainer extends Component<Props, State> {
   //
+  static START_YEAR = 2020;
+
   static get yearOptions() {
     //
     const options = [];
@@ -39,7 +42,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
       const year = currentYear - i;
       const yearText = year.toString();
 
-      if (year >= 2020) {
+      if (year >= MyPageContentHeaderContainer.START_YEAR) {
         options.push({ key: yearText, text: yearText, value: year });
       }
     }
@@ -82,21 +85,30 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
       <ContentHeader
         bottom={<FavoriteChannelContainer />}
       >
-        <ProfileView
-          skProfile={skProfile}
-        />
-        <LectureTotalTimeView
-          year={selectedYear}
-          totalLearningTime={myLearningSummary.totalLearningTime}
-          suniLearningTime={myLearningSummary.suniLearningTime}
-          myCompanyLearningTime={myLearningSummary.myCompanyLearningTime}
-        />
-        <StampInfoView
-          stampCount={myLearningSummary.acheiveStampCount}
-          year={selectedYear}
-          years={yearOptions}
-          onChangeYear={this.onChangeYear}
-        />
+        <ContentHeader.Cell inner>
+          <ContentHeader.ProfileItem
+            image={skProfile.member.photoFilePath || profileImg}
+            name={skProfile.member.name}
+            company={skProfile.member.company}
+            department={skProfile.member.department}
+          />
+        </ContentHeader.Cell>
+        <ContentHeader.Cell inner>
+          <ContentHeaderLearningSummaryView
+            year={selectedYear}
+            totalLearningTime={myLearningSummary.totalLearningTime}
+            mySuniLearningTime={myLearningSummary.suniLearningTime}
+            myCompanyLearningTime={myLearningSummary.myCompanyLearningTime}
+          />
+        </ContentHeader.Cell>
+        <ContentHeader.Cell>
+          <ContentHeaderStampView
+            stampCount={myLearningSummary.acheiveStampCount}
+            selectedYear={selectedYear}
+            yearOptions={yearOptions}
+            onChangeYear={this.onChangeYear}
+          />
+        </ContentHeader.Cell>
       </ContentHeader>
     );
   }

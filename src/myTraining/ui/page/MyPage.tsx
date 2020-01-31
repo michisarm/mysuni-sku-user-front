@@ -60,7 +60,7 @@ class MyPage extends Component<Props, State> {
 
     return (
       <ContentLayout
-        className = "MyPage"
+        className="MyPage"
         breadcrumb={[
           { text: 'MyPage' },
           { text: subBreadcrumb },

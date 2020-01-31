@@ -1,10 +1,11 @@
+
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { reaction } from 'mobx';
 
-import { Button, Icon, Label } from 'semantic-ui-react';
 import classNames from 'classnames';
+import { Button, Icon, Label } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
 import { ChannelModel, CollegeService } from 'college';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
@@ -36,6 +37,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
 
 
   componentDidMount(): void {
+    //
     this.init();
     this.reactionMultiple();
     this.setMultiple();
@@ -87,12 +89,12 @@ class FavoriteChannelContainer extends Component<Props, States> {
               <div className="tit-set">관심 Channel({channels.length || 0})
 
                 <FavoriteChannelChangeModal
-                  // handleConfirm={this.onConfirmModal}
                   favorites={channels}
                   onConfirmCallback={this.init}
                   trigger={(
-                    <Button icon className="img-icon"><Icon className="setting17" />
-                      <span className="blind">setting</span> {/* favoritChannelModal open */}
+                    <Button icon className="img-icon">
+                      <Icon className="setting17" />
+                      <span className="blind">setting</span>
                     </Button>
                   )}
                 />
@@ -110,11 +112,9 @@ class FavoriteChannelContainer extends Component<Props, States> {
                   ref={this.channelsRef}
                   className="belt"
                 >
-                  {
-                    channels && channels.length !== 0 && channels.map((channel, index) => (
-                      <Label className="channel" key={`channel-${index}`}>{channel.name}</Label>
-                    ))
-                  }
+                  { channels && channels.length !== 0 && channels.map((channel, index) => (
+                    <Label className="channel" key={`channel-${index}`}>{channel.name}</Label>
+                  ))}
                 </div>
               </div>
             </div>
