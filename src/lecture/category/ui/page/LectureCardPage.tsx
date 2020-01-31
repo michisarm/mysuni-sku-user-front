@@ -192,7 +192,7 @@ class LectureCardPage extends Component<Props, State> {
         }
       });
 
-    await studentService.findIsJsonStudent(params.lectureCardId);
+    await studentService.findIsJsonStudentByCube(params.lectureCardId);
     this.findStudent();
   }
 
@@ -251,7 +251,8 @@ class LectureCardPage extends Component<Props, State> {
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;
         if (
-          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting || student.learningState === LearningState.TestWaiting
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
           || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
         ) {
           state = SubState.Waiting;
@@ -263,7 +264,8 @@ class LectureCardPage extends Component<Props, State> {
       }
       if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
 
-      if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) && classrooms && classrooms.length) {
+      if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)
+        && classrooms && classrooms.length) {
         const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
         if (index >= 0 && classrooms) {
           examId = classrooms[index].roundExamId;
