@@ -161,7 +161,7 @@ class SharedListContainer extends React.Component<Props, States> {
   render() {
     //
     const { lectureService, reviewService, inMyLectureService } = this.props;
-    const { lectures } = lectureService!;
+    const { lectures, totalLectureCount } = lectureService!;
     const { ratingMap } = reviewService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
@@ -169,7 +169,7 @@ class SharedListContainer extends React.Component<Props, States> {
     return (
       <Segment className="full">
         <LineHeaderContainer
-          count={lectures.length || 0}
+          count={totalLectureCount}
           channels={channels}
           onFilter={this.onFilter}
         />

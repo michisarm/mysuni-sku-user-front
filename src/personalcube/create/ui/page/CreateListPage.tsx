@@ -33,7 +33,7 @@ class CreateListPage extends Component<Props> {
 
   getTabs() {
     //
-    const { lectures } = this.props.lectureService!;
+    const { totalLectureCount } = this.props.lectureService!;
 
     return [
       {
@@ -43,7 +43,7 @@ class CreateListPage extends Component<Props> {
       },
       {
         name: 'Shared',
-        item: <>Shared<span className="count">{lectures.length}</span></>,
+        item: <>Shared<span className="count">{totalLectureCount}</span></>,
         render: () => <SharedListContainer />,
       },
     ];
