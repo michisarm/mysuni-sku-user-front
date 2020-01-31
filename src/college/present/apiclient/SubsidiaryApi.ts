@@ -24,7 +24,7 @@ export default class SubsidiaryApi {
   findAllSubsidiaries() {
     //
     return axios.get<SubsidiaryModel[]>(this.URL)
-      .then(response => response && response.data || null);
+      .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
   modifySubsidiary(subsidiaryId: string, nameValues: NameValueList) {

@@ -32,12 +32,12 @@ export default class CollegeApi {
   findAllCollegesForCreate() {
     //
     return axios.get<CollegeModel[]>(this.URLCollege + '/forCreate')
-      .then(response => response && response.data || []);
+      .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
   findAllJobGroups() {
     return axios.get<JobGroupModel[]>(this.URLJob)
-      .then(response => response && response.data || []);
+      .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
   findJobGroupById(jobGroupId:string) {
