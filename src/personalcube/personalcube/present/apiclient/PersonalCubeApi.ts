@@ -1,4 +1,7 @@
-import { axiosApi as axios, NameValueList, OffsetElementList } from '@nara.platform/accent';
+
+import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
+
+import { OffsetElementList, CubeState } from 'shared';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { PersonalCubeRdoModel } from '../../model/PersonalCubeRdoModel';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
@@ -6,6 +9,7 @@ import { ExcelView } from '../../../../shared/model/ExcelView';
 import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
+
 
 export default class PersonalCubeApi {
   //
@@ -15,6 +19,17 @@ export default class PersonalCubeApi {
   flowURL = '/api/personalCube/cubes/flow';
   approvalURL = '/api/personalCube/approval';
 
+
+  static convertOffsetElementList(response: any): OffsetElementList<PersonalCubeModel> {
+    //
+    if (!response || !response.data) {
+      return new OffsetElementList<PersonalCubeModel>();
+    }
+    const offsetElementList = new OffsetElementList<PersonalCubeModel>(response.data);
+
+    offsetElementList.results = offsetElementList.results.map((result) => new PersonalCubeModel(result));
+    return offsetElementList;
+  }
 
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
@@ -47,11 +62,23 @@ export default class PersonalCubeApi {
     }}).then((response: any) => response && response.data || null);
   }
 
-  //Query
+  // Query
   findAllPersonalCubesByQuery(personalCubeRdo: PersonalCubeRdoModel) {
     //
     return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL + `/searchKey`, { params: personalCubeRdo })
       .then((response: any) => response && response.data || null);
+  }
+
+  // Query
+  findPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
+    //
+    const params = {
+      offset,
+      limit,
+      cubeState,
+    };
+    return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL + `/forCreator`, { params })
+      .then((response: any) => PersonalCubeApi.convertOffsetElementList(response));
   }
 
   findAllApprovalContents(approvalContents: ApprovalContentsRdo) {
