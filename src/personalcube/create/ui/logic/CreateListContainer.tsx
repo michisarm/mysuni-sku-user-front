@@ -3,18 +3,15 @@ import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
 
 import { Segment } from 'semantic-ui-react';
 import { CubeState, NoSuchContentPanel } from 'shared';
-import lectureRoutePaths from 'lecture/routePaths';
 import { SeeMoreButton } from 'lecture/shared';
-import { LectureServiceType } from 'lecture';
 import { PersonalCubeService } from 'personalcube/personalcube';
 
 import routePaths from '../../../routePaths';
 import SelectType from '../../model/SelectOptions';
-import SelectView from '../view/SelectView';
+import ListPanelTopView from '../view/ListPanelTopView';
 import CreateListView from '../view/CreateListView';
 
 
@@ -23,7 +20,8 @@ interface Props extends RouteComponentProps<{ tab: string }> {
 }
 
 interface States {
-  limit: number
+  nextOffset: number
+  cubeState?: CubeState
 }
 
 @inject(mobxHelper.injectFrom(
@@ -33,103 +31,79 @@ interface States {
 @reactAutobind
 class CreateListContainer extends React.Component<Props, States> {
   //
+  PAGE_LIMIT = 20;
+
   state = {
-    limit: 0,
+    nextOffset: 0,
+    cubeState: undefined,
   };
 
 
   componentDidMount() {
     //
-    this.findPersonalCubes(20);
+    this.findPersonalCubes();
   }
 
-  findPersonalCubes(limit?: number) {
+  async findPersonalCubes(cubeState?: CubeState) {
     //
     const personalCubeService = this.props.personalCubeService!;
 
-    if (!limit) {
-      return;
-    }
-
-    personalCubeService.changePersonalCubeQueryProps('limit', limit);
-    personalCubeService.findAllPersonalCubesByQuery()
-      .then(() => {
-        const { personalCubes } = this.props.personalCubeService!;
-        const totalCount = personalCubes.totalCount;
-
-        if (limit < totalCount) {
-          this.setState({ limit: limit + 20 });
-        }
-      });
+    await personalCubeService.findPersonalCubesForCreator(0, this.PAGE_LIMIT, cubeState);
+    this.setState({ nextOffset: 1 });
   }
 
-  onClickPersonalCubeRow(personalCubeId: string) {
+  async findPagingPersonalCubes() {
+    //
+    const personalCubeService = this.props.personalCubeService!;
+    const { nextOffset, cubeState } = this.state;
+
+    await personalCubeService.findAndPushPersonalCubesForCreator(nextOffset, this.PAGE_LIMIT, cubeState);
+    this.setState({ nextOffset: nextOffset + 1 });
+  }
+
+  onChangeSearchSelect(e: any, data: any) {
+    //
+    const cubeState = data.value;
+
+    this.findPersonalCubes(cubeState);
+    this.setState({ cubeState });
+  }
+
+  async onClickPersonalCubeRow(personalCubeId: string) {
     //
     const personalCubeService = this.props.personalCubeService!;
     const { history } = this.props;
 
-    personalCubeService.findPersonalCube(personalCubeId)
-      .then(() => {
-        const cubeType = personalCubeService.personalCube.contents.type;
-        const cubeState = personalCubeService.personalCube.cubeState;
+    const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
 
-        if (cubeState === CubeState.Created) {
-          history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
-        }
-        else {
-          history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
-        }
-      });
-  }
+    const cubeType = personalCube!.contents.type;
+    const cubeState = personalCube!.cubeState;
 
-  onChangeSearchSelect(name: string, value: string | Date | number, nameSub?: string, valueSub?: string | number) {
-    //
-    const personalCubeService = this.props.personalCubeService!;
-
-    if (nameSub) {
-      personalCubeService.changePersonalCubeQueryProps(name, value, nameSub, valueSub);
+    if (cubeState === CubeState.Created) {
+      history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
     }
     else {
-      personalCubeService.changePersonalCubeQueryProps(name, value);
-    }
-
-    this.findPersonalCubes(20);
-  }
-
-  onViewDetail(e: any, data: any) {
-    //
-    const { model } = data;
-    const { history } = this.props;
-    const collegeId = model.category.college.id;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
-
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
     }
   }
 
   render() {
     //
-    const { personalCubes, personalCubeQuery } = this.props.personalCubeService!;
-    const totalCount = personalCubes.totalCount;
-    const results = personalCubes.results;
-    const { limit } = this.state;
+    const { personalCubeOffsetList } = this.props.personalCubeService!;
+    const totalCount = personalCubeOffsetList.totalCount;
+    const personalCubes = personalCubeOffsetList.results;
 
     return (
       <Segment className="full">
-        <SelectView
+        <ListPanelTopView
           totalCount={totalCount}
-          personalCubeQuery={personalCubeQuery}
-          fieldOption={SelectType.userStatus}
-          onChangeCubeQueryProps={this.onChangeSearchSelect}
-          queryFieldName="cubeState"
+          searchSelectOptions={SelectType.userStatus}
+          onChange={this.onChangeSearchSelect}
         />
-        { results.length > 0 ?
+
+        { personalCubes.length > 0 ?
           <CreateListView
-            personalCubes={results}
+            personalCubes={personalCubes}
             totalCount={totalCount}
             handleClickCubeRow={this.onClickPersonalCubeRow}
           />
@@ -139,9 +113,9 @@ class CreateListContainer extends React.Component<Props, States> {
             link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
           />
         }
-        { totalCount > results.length && (
+        { totalCount > personalCubes.length && (
           <SeeMoreButton
-            onClick={() => this.findPersonalCubes(limit)}
+            onClick={() => this.findPagingPersonalCubes()}
           />
         )}
       </Segment>
