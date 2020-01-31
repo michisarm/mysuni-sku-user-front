@@ -56,7 +56,7 @@ class LectureService {
   }
 
   @computed
-  get lectures() {
+  get lectures(): LectureModel[] {
     //
     return (this._lectures as IObservableArray).peek();
   }

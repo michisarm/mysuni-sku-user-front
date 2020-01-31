@@ -1,11 +1,9 @@
 
 import React, { FunctionComponent } from 'react';
-
 import { Segment } from 'semantic-ui-react';
 
 
-
-export const Wrapper: FunctionComponent = ({ children }) => (
+export const ContentWrapper: FunctionComponent = ({ children }) => (
   <Segment className="full">
     <div className="ui active tab">
       {children}
@@ -13,3 +11,14 @@ export const Wrapper: FunctionComponent = ({ children }) => (
   </Segment>
 );
 
+export const TabsView: FunctionComponent = ({ children }) => (
+  <Segment className="full">
+    <div className="ui tab-menu">
+      <div className="cont-inner">
+        <div className="ui sku menu">
+          {children}
+        </div>
+      </div>
+    </div>
+  </Segment>
+);
