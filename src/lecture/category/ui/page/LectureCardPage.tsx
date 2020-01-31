@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { Label } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, ProposalState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
@@ -35,6 +35,7 @@ import { State as SubState } from '../../../shared/LectureSubInfo';
 import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
 import CubeType from '../../../../personalcube/personalcube/model/CubeType';
+import LearningState from '../../../../shared/model/LearningState';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -244,36 +245,42 @@ class LectureCardPage extends Component<Props, State> {
     let examId: string = '';
     let surveyId: string = '';
     let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
     if (studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;
-        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting
-          || student.learningState === LearningState.Failed) {
-          if (student.learningState === LearningState.Waiting) {
-            state = SubState.Waiting;
-          }
-          else state = SubState.InProgress;
-          if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
-            const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-            if (index >= 0 && classrooms) {
-              examId = classrooms[index].roundExamId;
-              surveyId = classrooms[index].roundSurveyId;
-              surveyCaseId = classrooms[index].roundSurveyCaseId;
-            }
-          }
-          else {
-            examId = personalCube.contents.examId || '';
-            surveyId = personalCube.contents.surveyId || '';
-            surveyCaseId = personalCube.contents.surveyCaseId || '';
-          }
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
         }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
       if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+
+      if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) && classrooms && classrooms.length) {
+        const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
+        if (index >= 0 && classrooms) {
+          examId = classrooms[index].roundExamId;
+          surveyId = classrooms[index].roundSurveyId;
+          surveyCaseId = classrooms[index].roundSurveyCaseId;
+          reportFileBoxId = classrooms[index].roundReportFileBox.fileBoxId;
+        }
+      }
+      else {
+        examId = personalCube.contents.examId || '';
+        surveyId = personalCube.contents.surveyId || '';
+        surveyCaseId = personalCube.contents.surveyCaseId || '';
+        reportFileBoxId = cubeIntro.reportFileBox.fileBoxId;
+      }
     }
+
+
 
     return {
       // Sub info
@@ -305,7 +312,7 @@ class LectureCardPage extends Component<Props, State> {
       surveyId,
       surveyCaseId,
       fileBoxId: personalCube.contents.fileBoxId,
-      reportFileBoxId: cubeIntro.reportFileBox.fileBoxId,
+      reportFileBoxId,
       stamp: 0,
 
       //etc
@@ -384,7 +391,6 @@ class LectureCardPage extends Component<Props, State> {
       cancellationPenalty: classroom.enrolling.cancellationPenalty,
       location: classroom.operation.location,
       learningPeriod: classroom.enrolling.learningPeriod,
-      reportFileBoxId: classroom.roundReportFileBox.fileBoxId,
       classrooms: classrooms.length > 1 && classrooms,
       siteUrl,
     };

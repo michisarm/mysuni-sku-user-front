@@ -293,16 +293,19 @@ class LectureCardContainer extends Component<Props, State> {
     }
 
     if (viewObject.examId && student) {
-      if (student.learningState === LearningState.Progress) {
+      if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
         subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
       } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
         subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
       }
     }
 
-    if (((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId))
-      && (student && (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting))) {
-      subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+    if (viewObject && viewObject.reportFileBoxId && student
+      && !student.learningState && student.learningState !== LearningState.Passed && student.learningState === LearningState.Missed) {
+      if (student.studentScore.homeworkScore) {
+        subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }) });
+      }
+      else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
   }
