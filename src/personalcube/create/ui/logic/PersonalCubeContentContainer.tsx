@@ -167,7 +167,6 @@ class PersonalCubeContentContainer extends Component<Props, State> {
   onChangeCollege(college: CollegeModel) {
     //
     const subsidiaryTargeted = college.collegeType === CollegeType.Company;
-    console.log('subsidiaryTargeted', subsidiaryTargeted);
     this.setState({ subsidiaryTargeted });
   }
 
