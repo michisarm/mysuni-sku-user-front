@@ -84,9 +84,20 @@ class StudentService {
   }
 
   @action
-  async findStudent(rollBookId: string, round?: number) {
+  async findStudentByRollBookId(rollBookId: string, round?: number) {
     //
-    const student = await this.studentApi.findStudent(rollBookId);
+    const student = await this.studentApi.findStudentByRollBookId(rollBookId);
+    return runInAction(() => {
+      this.student = new StudentModel(student);
+      if (round) this.student.round = round;
+      return student;
+    });
+  }
+
+  @action
+  async findStudent(studentId: string, round?: number) {
+    //
+    const student = await this.studentApi.findStudent(studentId);
     return runInAction(() => {
       this.student = new StudentModel(student);
       if (round) this.student.round = round;
@@ -124,6 +135,11 @@ class StudentService {
   @action
   setStudentProp(name: string, value: any) {
     this.student = _.set(this.student, name, value);
+  }
+
+  @action
+  clear() {
+    this.student = new StudentModel();
   }
 }
 

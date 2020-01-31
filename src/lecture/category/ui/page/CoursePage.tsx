@@ -13,7 +13,13 @@ import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
 import { ReviewService } from '@nara.drama/feedback';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
-import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
+import {
+  CourseLectureService,
+  LectureService,
+  LectureServiceType,
+  ProgramLectureService,
+  StudentService,
+} from '../../../shared';
 import LectureCardHeaderView from '../view/LectureCardHeaderView';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
@@ -21,7 +27,9 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import LectureViewModel from '../../../shared/model/LectureViewModel';
 import StudentCdoModel from '../../../shared/model/StudentCdoModel';
-import RollBookService from '../../../shared/present/logic/RollBookService';
+import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
+import { State as SubState } from '../../../shared/LectureSubInfo';
+import LearningState from '../../../../shared/model/LearningState';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -31,7 +39,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   courseLectureService: CourseLectureService,
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
-  rollBookService: RollBookService,
+  studentService: StudentService,
   reviewService: ReviewService,
   inMyLectureService?: InMyLectureService,
 }
@@ -56,7 +64,7 @@ interface RouteParams {
   'lecture.courseLectureService',
   'lecture.programLectureService',
   'lecture.lectureService',
-  'lecture.rollBookService',
+  'lecture.studentService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
 ))
@@ -108,6 +116,41 @@ class CoursePage extends Component<Props, State> {
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
     this.findInMyLecture();
+    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    this.findStudent();
+  }
+
+  compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
+    if (join1.updateTime < join2.updateTime) return 1;
+    return -1;
+  }
+
+  getStudentJoin() {
+    const {
+      studentService,
+    } = this.props;
+    const { studentJoins }: StudentService = studentService!;
+
+    if (studentJoins && studentJoins.length) {
+      studentJoins.sort(this.compare);
+      const studentJoin = studentJoins[0];
+      return studentJoin;
+    }
+    return null;
+  }
+
+  findStudent() {
+    const {
+      studentService,
+    } = this.props;
+    const { studentJoins }: StudentService = studentService!;
+
+    if (studentJoins && studentJoins.length) {
+      const studentJoin = this.getStudentJoin();
+      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      else studentService!.clear();
+    }
+    else studentService!.clear();
   }
 
   async findBaseInfo() {
@@ -176,9 +219,38 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService,
+      coursePlanService, studentService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { student } = studentService!;
+
+    let state: SubState | undefined;
+    let examId: string = '';
+    let surveyId: string = '';
+    let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
+    if (student && student.id) {
+      if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
+      if (student.proposalState === ProposalState.Approved) {
+        if (!student.learningState) state = SubState.Enrolled;
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
+        }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (student.learningState === LearningState.Passed) state = SubState.Completed;
+        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      }
+      if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+
+      examId = coursePlanContents.examId || '';
+      surveyId = coursePlanContents.surveyId || '';
+      surveyCaseId = coursePlanContents.surveyCaseId || '';
+      reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    }
 
     return {
       // Sub info
@@ -192,14 +264,20 @@ class CoursePage extends Component<Props, State> {
       operatorCompany: coursePlan.courseOperator.company,
       operatorEmail: coursePlan.courseOperator.email,
 
+      state: state || undefined,
+      examId,
+
       // Fields
       subCategories: coursePlan.subCategories,
       description: coursePlanContents.description,
 
       tags: coursePlan.courseOpen.tags,
-      surveyId: coursePlanContents.surveyId,
+
+      surveyId,
+      surveyCaseId,
+
       fileBoxId: coursePlanContents.fileBoxId,
-      reportFileBoxId: coursePlan.reportFileBox.fileBoxId,
+      reportFileBoxId,
       stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
 
       //etc
@@ -255,24 +333,6 @@ class CoursePage extends Component<Props, State> {
     });
   }
 
-  getStudentCdo(): StudentCdoModel {
-    const {
-      skProfileService, rollBookService, programLectureService, courseLectureService,
-    } = this.props;
-    const { skProfile } = skProfileService!;
-    const { rollBook } = rollBookService!;
-    const { member } = skProfile;
-    return new StudentCdoModel({
-      rollBookId: rollBook.id,
-      name: member.name,
-      email: member.email,
-      company: member.company,
-      department: member.department,
-      proposalState: ProposalState.Submitted,
-      programLectureUsid: programLectureService!.programLecture!.usid,
-      courseLectureUsid: courseLectureService!.courseLecture!.usid,
-    });
-  }
 
   getMenus() {
     //
@@ -337,7 +397,6 @@ class CoursePage extends Component<Props, State> {
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
-    const studentCdo = this.getStudentCdo();
 
     return (
       <ContentLayout
@@ -367,7 +426,7 @@ class CoursePage extends Component<Props, State> {
           <LectureCardContainer
             inMyLecture={inMyLecture}
             inMyLectureCdo={inMyLectureCdo}
-            studentCdo={studentCdo}
+            studentCdo={new StudentCdoModel()}
             lectureCardId={lectureCardId}
             cubeType={CubeType.None}
             viewObject={viewObject}

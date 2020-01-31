@@ -84,7 +84,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentService, lectureCardId } = this.props;
     return studentService!.registerStudent(studentCdo)
       .then(() => {
-        studentService!.findStudent(studentCdo.rollBookId);
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
@@ -167,7 +167,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
       .then(() => {
-        studentService!.findStudent(studentCdo.rollBookId);
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
@@ -184,7 +184,7 @@ class LectureCardContainer extends Component<Props, State> {
       studentService!.studentMarkComplete(student.rollBookId)
         .then(() => {
           studentService!.findIsJsonStudentByCube(lectureCardId);
-          studentService!.findStudent(student.rollBookId);
+          studentService!.findStudent(student.id);
         });
     }
   }
@@ -325,7 +325,7 @@ class LectureCardContainer extends Component<Props, State> {
             return () => {
               studentService!.removeStudent(student!.rollBookId)
                 .then(() => {
-                  studentService!.findStudent(student!.rollBookId);
+                  studentService!.findStudent(student!.id);
                   studentService!.findIsJsonStudentByCube(lectureCardId);
                   studentService!.findStudentCount(student!.rollBookId);
                 });
@@ -340,7 +340,7 @@ class LectureCardContainer extends Component<Props, State> {
               return () => {
                 studentService!.removeStudent(student!.rollBookId)
                   .then(() => {
-                    studentService!.findStudent(student!.rollBookId);
+                    studentService!.findStudent(student!.id);
                     studentService!.findIsJsonStudentByCube(lectureCardId);
                     studentService!.findStudentCount(student!.rollBookId);
                   });
