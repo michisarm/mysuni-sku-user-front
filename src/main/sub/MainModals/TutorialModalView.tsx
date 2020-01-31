@@ -4,13 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Button, Modal, Checkbox, Image } from 'semantic-ui-react';
+import ModalState from './model/ModalState';
 
 
 interface Props {
-  open: boolean,
-  noMoreSeeChecked: boolean,
+  modalState: ModalState,
   onClose: () => void,
-  onClickNoMoreSee: () => void,
+  onCheckDisable: (e: any, data: any) => void,
 }
 
 interface State {
@@ -72,17 +72,17 @@ class TutorialModalView extends Component<Props, State> {
 
   render() {
     //
-    const { open, noMoreSeeChecked, onClickNoMoreSee, onClose } = this.props;
+    const { modalState, onCheckDisable, onClose } = this.props;
     const { step, hasPrev, hasNext }  = this.state;
     const { steps } = this;
 
     return (
-      <Modal className="base w1000 tutorials" open={open}>
+      <Modal className="base w1000 tutorials" open={modalState.open}>
         <Modal.Header>
           mySUNI의 간단한 사용 방법을 알려드릴게요.
           <span className="counter">(<span className="now">{step + 1}</span> / <span className="max">{steps.length}</span>)</span>
           <div className="right-btn">
-            <Checkbox label="더 이상 보지 않기" className="base" checked={noMoreSeeChecked} onClick={onClickNoMoreSee} />
+            <Checkbox label="이창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
             <Button className="close" onClick={onClose}>Close</Button>
           </div>
         </Modal.Header>
