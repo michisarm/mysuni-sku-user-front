@@ -223,8 +223,10 @@ class LectureCardPage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      if (studentJoin) studentService!.findStudent(studentJoin.rollbookId);
+      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      else studentService!.clear();
     }
+    else studentService!.clear();
   }
 
 
@@ -240,13 +242,12 @@ class LectureCardPage extends Component<Props, State> {
     const { rollBooksPassedStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
-
     let state: SubState | undefined;
     let examId: string = '';
     let surveyId: string = '';
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
-    if (studentJoin) {
+    if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;

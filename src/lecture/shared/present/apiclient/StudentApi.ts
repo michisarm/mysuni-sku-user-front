@@ -25,7 +25,12 @@ class StudentApi {
       .then(response => response && response.data);
   }
 
-  findStudent(rollBookId: string) {
+  findStudent(studentId: string) {
+    return axiosApi.get<StudentModel>(this.baseUrl + `/${studentId}`)
+      .then(response => response && response.data || null);
+  }
+
+  findStudentByRollBookId(rollBookId: string) {
     return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
       .then(response => response && response.data || null);
   }

@@ -16,6 +16,7 @@ export class CoursePlanContentsModel implements DramaEntity {
   courseSet: CourseSetModel = new CourseSetModel();
 
   surveyId: string = '';
+  surveyCaseId: string = '';
   surveyTitle: string = '';
   surveyDesignerName: string = '';
 

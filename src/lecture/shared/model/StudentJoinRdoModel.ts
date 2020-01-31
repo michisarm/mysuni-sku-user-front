@@ -4,7 +4,8 @@ import { LearningState, ProposalState } from 'shared';
 
 class StudentJoinRdoModel {
   //
-  rollbookId: string = '';
+  rollBookId: string = '';
+  studentId: string = '';
   round: number = 0;
   join: boolean = false;
 
@@ -21,7 +22,8 @@ class StudentJoinRdoModel {
 }
 
 decorate(StudentJoinRdoModel, {
-  rollbookId: observable,
+  rollBookId: observable,
+  studentId: observable,
   round: observable,
   join: observable,
   learningState: observable,
