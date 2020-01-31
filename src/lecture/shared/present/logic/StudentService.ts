@@ -113,6 +113,15 @@ class StudentService {
   }
 
   @action
+  async findIsJsonStudentByCube(lectureCardId: string) {
+    //
+    const studentJoinRdos = await this.studentApi.findIsJsonStudentByCube(lectureCardId);
+
+    runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    return studentJoinRdos;
+  }
+
+  @action
   setStudentProp(name: string, value: any) {
     this.student = _.set(this.student, name, value);
   }

@@ -85,7 +85,7 @@ class LectureCardContainer extends Component<Props, State> {
     return studentService!.registerStudent(studentCdo)
       .then(() => {
         studentService!.findStudent(studentCdo.rollBookId);
-        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
   }
@@ -168,7 +168,7 @@ class LectureCardContainer extends Component<Props, State> {
     studentService!.joinCommunity({ ...studentCdo })
       .then(() => {
         studentService!.findStudent(studentCdo.rollBookId);
-        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
   }
@@ -183,7 +183,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId)
         .then(() => {
-          studentService!.findIsJsonStudent(lectureCardId);
+          studentService!.findIsJsonStudentByCube(lectureCardId);
           studentService!.findStudent(student.rollBookId);
         });
     }
@@ -326,7 +326,7 @@ class LectureCardContainer extends Component<Props, State> {
               studentService!.removeStudent(student!.rollBookId)
                 .then(() => {
                   studentService!.findStudent(student!.rollBookId);
-                  studentService!.findIsJsonStudent(lectureCardId);
+                  studentService!.findIsJsonStudentByCube(lectureCardId);
                   studentService!.findStudentCount(student!.rollBookId);
                 });
             };
@@ -341,7 +341,7 @@ class LectureCardContainer extends Component<Props, State> {
                 studentService!.removeStudent(student!.rollBookId)
                   .then(() => {
                     studentService!.findStudent(student!.rollBookId);
-                    studentService!.findIsJsonStudent(lectureCardId);
+                    studentService!.findIsJsonStudentByCube(lectureCardId);
                     studentService!.findStudentCount(student!.rollBookId);
                   });
               };

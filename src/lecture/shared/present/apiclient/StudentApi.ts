@@ -35,6 +35,11 @@ class StudentApi {
       .then(response => response && response.data);
   }
 
+  findIsJsonStudentByCube(lectureCardId: string) {
+    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJsonByCube`, { params: { lectureCardId }})
+      .then(response => response && response.data || []);
+  }
+
   findIsJsonStudent(lectureCardId: string) {
     return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJson`, { params: { lectureCardId }})
       .then(response => response && response.data || []);
