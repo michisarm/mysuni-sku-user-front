@@ -292,6 +292,9 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+    console.log(viewObject);
+    console.log(student);
+
     if (viewObject.examId && student) {
       if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
         subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });

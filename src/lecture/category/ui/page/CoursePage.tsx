@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Label } from 'semantic-ui-react';
-import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
+import { ContentLayout, ContentMenu, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
@@ -29,7 +29,6 @@ import LectureViewModel from '../../../shared/model/LectureViewModel';
 import StudentCdoModel from '../../../shared/model/StudentCdoModel';
 import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import { State as SubState } from '../../../shared/LectureSubInfo';
-import LearningState from '../../../../shared/model/LearningState';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -147,6 +146,7 @@ class CoursePage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
+      console.log(studentJoin);
       if (studentJoin) studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
@@ -230,23 +230,24 @@ class CoursePage extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
     if (student && student.id) {
-      if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
-      if (student.proposalState === ProposalState.Approved) {
-        if (!student.learningState) state = SubState.Enrolled;
-        if (
-          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
-          || student.learningState === LearningState.TestWaiting
-          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
-        ) {
-          state = SubState.Waiting;
-        }
-        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (student.learningState === LearningState.Passed) state = SubState.Completed;
-        if (student.learningState === LearningState.Missed) state = SubState.Missed;
-      }
-      if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+      // if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
+      // if (student.proposalState === ProposalState.Approved) {
+      //   if (!student.learningState) state = SubState.Enrolled;
+      //   if (
+      //     student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+      //     || student.learningState === LearningState.TestWaiting
+      //     || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+      //   ) {
+      //     state = SubState.Waiting;
+      //   }
+      //   if (student.learningState === LearningState.Progress) state = SubState.InProgress;
+      //   if (student.learningState === LearningState.Passed) state = SubState.Completed;
+      //   if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      // }
+      // if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
 
-      examId = coursePlanContents.examId || '';
+      examId = coursePlanContents.testId || '';
+
       surveyId = coursePlanContents.surveyId || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
@@ -388,11 +389,12 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, coursePlanService, reviewService, inMyLectureService } = this.props;
+    const { collegeService, coursePlanService, reviewService, inMyLectureService, studentService } = this.props;
     const { college } = collegeService;
     const { coursePlan } = coursePlanService;
     const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
+    const { student, studentJoins } = studentService!;
     const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
@@ -427,10 +429,13 @@ class CoursePage extends Component<Props, State> {
             inMyLecture={inMyLecture}
             inMyLectureCdo={inMyLectureCdo}
             studentCdo={new StudentCdoModel()}
+            student={student}
+            studentJoins={studentJoins}
             lectureCardId={lectureCardId}
             cubeType={CubeType.None}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
+            init={this.init}
           >
             { this.renderChildren(viewObject, typeViewObject) }
           </LectureCardContainer>

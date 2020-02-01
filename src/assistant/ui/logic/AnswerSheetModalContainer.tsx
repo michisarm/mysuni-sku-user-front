@@ -124,7 +124,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       <Modal
         open={open}
         onOpen={this.onOpenModal}
-        onClose={this.onCloseModal}
+        // onClose={this.onCloseModal}
         trigger={trigger}
         className="base w1000 inner-scroll test-modal"
       >
