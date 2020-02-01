@@ -19,6 +19,7 @@ interface Props {
   contentNew: boolean
   personalCube: PersonalCubeModel
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
+  onChangeCollege: (college: CollegeModel) => void
 }
 
 @observer
@@ -37,7 +38,7 @@ class BasicInfoFormContainer extends Component<Props> {
 
   onConfirmMainChannel(college: CollegeModel, channel: IdName) {
     //
-    const { personalCube, onChangePersonalCubeProps } = this.props;
+    const { personalCube, onChangePersonalCubeProps, onChangeCollege } = this.props;
     const prevChannelId = personalCube.category.channel.id;
 
     const category = new CategoryModel({
@@ -57,6 +58,8 @@ class BasicInfoFormContainer extends Component<Props> {
       nextSubCategories = nextSubCategories.concat(category);
     }
     onChangePersonalCubeProps('subCategories', nextSubCategories);
+
+    onChangeCollege(college);
   }
 
   onConfirmSubChannel(categoryChannels: CategoryModel[]) {

@@ -1,8 +1,11 @@
-import { axiosApi as axios } from '@nara.platform/accent';
-import { SubsidiaryModel } from '../../model/SubsidiaryModel';
-import { NameValueList } from '../../../shared/model/NameValueList';
 
-export default class SubsidiaryApi {
+import { axiosApi as axios } from '@nara.platform/accent';
+import { NameValueList } from 'shared';
+import { SubsidiaryModel } from '../../model/SubsidiaryModel';
+
+
+class SubsidiaryApi {
+  //
   URL = '/api/college/subsidiaries';
 
   static instance: SubsidiaryApi;
@@ -27,6 +30,13 @@ export default class SubsidiaryApi {
       .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
+  findSubsidiariesByCompany() {
+    //
+    return axios.get<SubsidiaryModel[]>(this.URL + '/byCineroomId')
+      .then(response => response && Array.isArray(response.data) && response.data || []);
+
+  }
+
   modifySubsidiary(subsidiaryId: string, nameValues: NameValueList) {
     //
     return axios.put<void>(this.URL + `${subsidiaryId}`, nameValues);
@@ -43,3 +53,5 @@ Object.defineProperty(SubsidiaryApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default SubsidiaryApi;

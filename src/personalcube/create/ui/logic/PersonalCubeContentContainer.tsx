@@ -7,8 +7,9 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
 import { SkProfileService } from 'profile';
+import { CollegeService, CollegeModel, CollegeType } from 'college';
 import routePaths from '../../../routePaths';
-import { PersonalCubeService, PersonalCubeModel } from '../../../personalcube';
+import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';
 import { BoardService } from '../../../board';
 import { OfficeWebService } from '../../../officeweb';
@@ -19,18 +20,21 @@ import { FormTitle } from '../view/DetailElementsView';
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   skProfileService?: SkProfileService
+  collegeService?: CollegeService
   personalCubeService?: PersonalCubeService
   mediaService?: MediaService
   boardService?: BoardService
   officeWebService?: OfficeWebService
 }
 
-interface States {
+interface State {
   isNext: boolean
+  targetSubsidiaryId: string
 }
 
 @inject(mobxHelper.injectFrom(
   'profile.skProfileService',
+  'college.collegeService',
   'personalCube.personalCubeService',
   'personalCube.mediaService',
   'personalCube.boardService',
@@ -38,10 +42,11 @@ interface States {
 ))
 @observer
 @reactAutobind
-class PersonalCubeContentContainer extends Component<Props, States> {
+class PersonalCubeContentContainer extends Component<Props, State> {
   //
   state = {
     isNext: false,
+    targetSubsidiaryId: '',
   };
 
 
@@ -51,17 +56,21 @@ class PersonalCubeContentContainer extends Component<Props, States> {
     this.clearAll();
   }
 
-
   async componentDidMount() {
     //
     const personalCubeService = this.props.personalCubeService!;
     const { params } = this.props.match;
 
     if (params.personalCubeId) {
-      // personalCubeService.findPersonalCube(params.personalCubeId);
+      const collegeService = this.props.collegeService!;
       const personalCube = await personalCubeService.findPersonalCube(params.personalCubeId);
 
       patronInfo.setWorkspaceByDomain(personalCube!);
+      const college = await collegeService.findCollege(personalCube!.category.college.id);
+
+      if (college && college.collegeType === CollegeType.Company) {
+        this.setState({ targetSubsidiaryId: college.id });
+      }
     }
   }
 
@@ -155,6 +164,18 @@ class PersonalCubeContentContainer extends Component<Props, States> {
     personalCubeService.changeCubeProps(name, value);
   }
 
+  onChangeCollege(college: CollegeModel) {
+    //
+    const subsidiaryTargeted = college.collegeType === CollegeType.Company;
+
+    if (subsidiaryTargeted) {
+      this.setState({ targetSubsidiaryId: college.collegeId });
+    }
+    else {
+      this.setState({ targetSubsidiaryId: '' });
+    }
+  }
+
   onSave(isNext: boolean) {
     //
     const { personalCube } = this.props.personalCubeService!;
@@ -189,6 +210,7 @@ class PersonalCubeContentContainer extends Component<Props, States> {
   render() {
     //
     const { personalCubeService, match: { params }} = this.props;
+    const { targetSubsidiaryId } = this.state;
     const { personalCube } = personalCubeService!;
 
     return (
@@ -201,10 +223,12 @@ class PersonalCubeContentContainer extends Component<Props, States> {
           contentNew={!params.personalCubeId}
           personalCube={personalCube}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
+          onChangeCollege={this.onChangeCollege}
         />
 
         <ExposureInfoFormContainer
           personalCube={personalCube}
+          targetSubsidiaryId={targetSubsidiaryId}
           onChangePersonalCubeProps={this.onChangePersonalCubeProps}
         />
 
