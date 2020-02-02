@@ -6,7 +6,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Select } from 'semantic-ui-react';
 import { IdName, CategoryModel } from 'shared';
-import { CollegeModel } from 'college';
+import { CollegeModel, CollegeType } from 'college';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';
@@ -18,6 +18,7 @@ import { ChannelFieldRow } from '../view/DetailElementsView';
 interface Props {
   contentNew: boolean
   personalCube: PersonalCubeModel
+  defaultCollegeType: CollegeType
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
   onChangeCollege: (college: CollegeModel) => void
 }
@@ -26,6 +27,28 @@ interface Props {
 @reactAutobind
 class BasicInfoFormContainer extends Component<Props> {
   //
+  state = {
+    collegeType: CollegeType.University,
+  };
+
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+    //
+    const prevDefaultCollegeType = prevProps.defaultCollegeType;
+    const defaultCollegeType = this.props.defaultCollegeType;
+
+    if (prevDefaultCollegeType !== defaultCollegeType) {
+      this.setDefaultCollegeType();
+    }
+  }
+
+  setDefaultCollegeType() {
+    //
+    const { defaultCollegeType } = this.props;
+
+    this.setState({ collegeType: defaultCollegeType });
+  }
+
   onChangeName(e: any, data: any) {
     //
     this.props.onChangePersonalCubeProps('name', data.value);
@@ -59,6 +82,7 @@ class BasicInfoFormContainer extends Component<Props> {
     }
     onChangePersonalCubeProps('subCategories', nextSubCategories);
 
+    this.setState({ collegeType: college.collegeType });
     onChangeCollege(college);
   }
 
@@ -74,6 +98,7 @@ class BasicInfoFormContainer extends Component<Props> {
     const {
       contentNew, personalCube,
     } = this.props;
+    const { collegeType } = this.state;
     const subCategoriesGroupByCollege = PersonalCubeModel.getSubCategoriesGroupByCollege(personalCube);
 
     return (
@@ -119,6 +144,7 @@ class BasicInfoFormContainer extends Component<Props> {
 
                 <SubChannelModalContainer
                   trigger={<Button icon className="left post delete">채널선택</Button>}
+                  collegeType={collegeType}
                   defaultSelectedCategoryChannels={personalCube.subCategories}
                   onConfirmCategoryChannels={this.onConfirmSubChannel}
                 />

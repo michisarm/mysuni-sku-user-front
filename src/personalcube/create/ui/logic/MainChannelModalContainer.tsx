@@ -86,7 +86,7 @@ class MainChannelModalContainer extends Component<Props, State> {
 
     const college = colleges.find((college) => college.collegeId === selectedCollege.id);
 
-    onConfirmChannel(college, selectedChannel);
+    onConfirmChannel(college!, selectedChannel);
     this.onClose();
   }
 

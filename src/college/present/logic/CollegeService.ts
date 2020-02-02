@@ -55,21 +55,21 @@ export default class CollegeService {
   }
 
   @computed
-  get colleges() {
+  get colleges(): CollegeModel[] {
     //
     const colleges = this._colleges as IObservableArray;
     return colleges ? colleges.peek() : [];
   }
 
   @computed
-  get channels() {
+  get channels(): ChannelModel[] {
     //
     const channels = this._channels as IObservableArray;
     return channels ? channels.peek() : [];
   }
 
   @computed
-  get channelIds() {
+  get channelIds(): string[] {
     //
     return this.channels.map(channel => channel.channelId);
   }
@@ -133,7 +133,7 @@ export default class CollegeService {
       () => this.collegeApi.findAllColleges(),
       (colleges) => runInAction(() => this._colleges = colleges),
     );
-    
+
     return fetched ? this.collegesCachingFetch.inProgressFetching : this.colleges;
   }
 

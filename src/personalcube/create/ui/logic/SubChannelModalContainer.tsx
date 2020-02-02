@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon, Modal } from 'semantic-ui-react';
 import { IdName, CategoryModel } from 'shared';
-import { CollegeService, CollegeModel, CollegeColors } from 'college';
+import { CollegeService, CollegeModel, CollegeType, CollegeColors } from 'college';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
 
 
@@ -13,6 +13,7 @@ interface Props {
   collegeService?: CollegeService
   trigger: React.ReactNode
   defaultSelectedCategoryChannels: CategoryModel[]
+  collegeType: CollegeType
   onConfirmCategoryChannels: (categoryChannels: CategoryModel[]) => void
 }
 
@@ -139,9 +140,10 @@ class SubChannelModalContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, trigger }: Props = this.props;
+    const { collegeService, trigger, collegeType }: Props = this.props;
     const { open, selectedCollege, nextSelectedCategoryChannels }: State = this.state;
-    const colleges: CollegeModel[] = collegeService!.colleges;
+    const colleges = collegeService!.colleges;
+    console.log(colleges, collegeType);
 
     return (
       <Modal className="base w1000" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
@@ -190,6 +192,7 @@ class SubChannelModalContainer extends Component<Props, State> {
                               <Checkbox
                                 className="base"
                                 label={channel.name}
+                                disabled={college.collegeType !== collegeType}
                                 checked={
                                   nextSelectedCategoryChannels
                                     .map((categoryChannel => categoryChannel.channel.id))
