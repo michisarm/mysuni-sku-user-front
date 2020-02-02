@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
-import { inject } from 'mobx-react';
 import { SkProfileService } from 'profile';
 import Header from '../../Header';
 import Footer from '../../Footer';
@@ -16,7 +16,7 @@ interface Props {
 
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
 @reactAutobind
-@reactAutobind
+@observer
 class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
@@ -26,8 +26,10 @@ class AppLayoutContainer extends Component<Props> {
   async findProfile() {
     if (process.env.NODE_ENV !== 'development') {
       const { skProfileService } = this.props;
+
       skProfileService!.findSkProfile().then(() => {
         const { skProfile } = skProfileService!;
+
         if (!skProfile.pisAgreement.signed) {
           window.location.href = process.env.PUBLIC_URL + '/profile/agreement';
         }

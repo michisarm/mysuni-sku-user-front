@@ -10,7 +10,6 @@ import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
 import {
@@ -20,7 +19,7 @@ import {
   ProgramLectureService,
   StudentService,
 } from '../../../shared';
-import LectureCardHeaderView from '../view/LectureCardHeaderView';
+import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
@@ -39,7 +38,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
   studentService: StudentService,
-  reviewService: ReviewService,
   inMyLectureService?: InMyLectureService,
 }
 
@@ -64,7 +62,6 @@ interface RouteParams {
   'lecture.programLectureService',
   'lecture.lectureService',
   'lecture.studentService',
-  'shared.reviewService',
   'myTraining.inMyLectureService',
 ))
 @reactAutobind
@@ -172,28 +169,26 @@ class CoursePage extends Component<Props, State> {
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
-        reviewId,
         lectureCardUsids,
         courseLectureUsids,
       } = await programLectureService.findProgramLecture(match.params.serviceId);
-      const lectureViews = await this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids, courseLectureUsids);
+      const lectureViews = await this.findLectureViews(lectureCardUsids, courseLectureUsids);
 
       this.findSubLectureViews(lectureViews);
     }
     else {
       const {
-        reviewId,
         lectureCardUsids,
       } = await courseLectureService.findCourseLecture(match.params.serviceId);
-      this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids);
+
+      this.findLectureViews(lectureCardUsids);
     }
   }
 
-  async findReviewFeedbackAndLectureViews(reviewId: string, lectureCardUsids: string[], courseLectureUsids?: string[], ) {
+  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[], ) {
     //
-    const { match, lectureService, reviewService } = this.props;
+    const { match, lectureService } = this.props;
 
-    reviewService.findReviewSummary(reviewId);
     return lectureService.findLectureViews(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
   }
 
@@ -346,6 +341,20 @@ class CoursePage extends Component<Props, State> {
     return menus;
   }
 
+  getReviewId() {
+    //
+    const { match, programLectureService, courseLectureService } = this.props;
+    let reviewId;
+
+    if (match.params.serviceType === LectureServiceType.Program) {
+      reviewId = programLectureService.programLecture.reviewId;
+    }
+    else {
+      reviewId = courseLectureService.courseLecture.reviewId;
+    }
+    return reviewId;
+  }
+
   renderChildren(viewObject: any, typeViewObject: any) {
     //
     const { type } = this.state;
@@ -389,10 +398,9 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, coursePlanService, reviewService, inMyLectureService, studentService } = this.props;
+    const { collegeService, coursePlanService, inMyLectureService, studentService } = this.props;
     const { college } = collegeService;
     const { coursePlan } = coursePlanService;
-    const { reviewSummary } = reviewService;
     const { inMyLecture } = inMyLectureService!;
     const { student, studentJoins } = studentService!;
     const { lectureCardId } = this.props.match.params!;
@@ -408,11 +416,10 @@ class CoursePage extends Component<Props, State> {
           { text: `${coursePlan.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, coursePlan.category.channel.id) },
         ]}
       >
-        <LectureCardHeaderView
-          viewObject={viewObject}
+        <CourseContentHeaderContainer
+          coursePlan={coursePlan}
+          reviewId={this.getReviewId()}
           typeViewObject={typeViewObject}
-          rating={reviewSummary.average}
-          maxRating={reviewSummary.maxStarCount}
         />
         <ContentMenu
           menus={this.getMenus()}
