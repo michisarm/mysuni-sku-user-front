@@ -143,7 +143,6 @@ class SubChannelModalContainer extends Component<Props, State> {
     const { collegeService, trigger, collegeType }: Props = this.props;
     const { open, selectedCollege, nextSelectedCategoryChannels }: State = this.state;
     const colleges = collegeService!.colleges;
-    console.log(colleges, collegeType);
 
     return (
       <Modal className="base w1000" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
