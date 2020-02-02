@@ -15,7 +15,6 @@ import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
 import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
-import { CourseSetModel } from 'course';
 import { InMyLectureCdoModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
@@ -437,31 +436,15 @@ class LectureCardPage extends Component<Props, State> {
   }
 
   getInMyLectureCdo(): InMyLectureCdoModel {
+    //
     const {
       personalCubeService, lectureCardService, cubeIntroService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { lectureCard } = lectureCardService!;
-    return new InMyLectureCdoModel({
-      serviceType: LectureServiceType.Card,
-      serviceId: lectureCard.usid,
-      category: personalCube.category,
-      name: personalCube.name,
-      description: cubeIntro.description.description,
-      cubeType: personalCube.contents.type,
-      learningTime: cubeIntro.learningTime,
-      stampCount: 0,
-      coursePlanId: '',
-      requiredSubsidiaries: personalCube.requiredSubsidiaries,
-      cubeId: personalCube.personalCubeId,
-      courseSetJson: new CourseSetModel(),
-      courseLectureUsids: [],
-      lectureCardUsids: [],
-      reviewId: lectureCard.reviewId,
-      baseUrl: personalCube.iconBox.baseUrl,
-      servicePatronKeyString: personalCube.patronKey.keyString,
-    });
+
+    return InMyLectureCdoModel.fromLecture(personalCube, cubeIntro, lectureCard);
   }
 
   getStudentCdo(): StudentCdoModel {

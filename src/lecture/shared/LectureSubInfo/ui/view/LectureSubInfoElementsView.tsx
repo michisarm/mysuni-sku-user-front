@@ -192,8 +192,6 @@ interface FootButtonsProp {
 @reactAutobind
 export class FootButtons extends React.Component<FootButtonsProp> {
   //
-  URL_INFO: any = React.createRef();
-
   render() {
     const { onBookmark, onRemove } = this.props;
     return (
