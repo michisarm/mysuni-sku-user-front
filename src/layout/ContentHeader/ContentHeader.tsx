@@ -8,7 +8,6 @@ import ProfileItem from './sub/ProfileItem';
 import WaitingItem from './sub/WaitingItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
-import StampItem from './sub/StampItem';
 import RecommendItem from './sub/RecommendItem';
 
 
@@ -30,8 +29,6 @@ class ContentHeader extends Component<Props> {
   static ChartItem = ChartItem;
 
   static CommunityItem = CommunityItem;
-
-  static StampItem = StampItem;
 
   static RecommendItem = RecommendItem;
 

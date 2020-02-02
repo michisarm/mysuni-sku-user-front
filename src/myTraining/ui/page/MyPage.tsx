@@ -5,9 +5,8 @@ import { observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ContentLayout } from 'shared';
-import TitleContainer from '../logic/TitleContainer';
+import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
 import MenuItemContainer from '../logic/MenuItemContainer';
-import FavoriteChannelContainer from '../logic/FavoriteChannelContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -61,17 +60,13 @@ class MyPage extends Component<Props, State> {
 
     return (
       <ContentLayout
-        className = "MyPage"
+        className="MyPage"
         breadcrumb={[
           { text: 'MyPage' },
           { text: subBreadcrumb },
         ]}
       >
-        <div className="main-info-area">
-          <TitleContainer />
-          <FavoriteChannelContainer />
-        </div>
-
+        <MyPageContentHeaderContainer />
         <MenuItemContainer />
       </ContentLayout>
     );

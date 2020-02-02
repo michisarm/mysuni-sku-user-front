@@ -137,30 +137,6 @@ CommunityItem.story = {
 };
 
 
-export const StampItem = () =>
-  //
-  (
-    <ContentHeader>
-      <ContentHeader.Cell inner>
-        {profileItem}
-      </ContentHeader.Cell>
-      <ContentHeader.Cell>
-        <ContentHeader.StampItem
-          annualStamps={[
-            { year: 2019 },
-            { year: 2018 },
-            { year: 2017 },
-            { year: 2016 },
-          ]}
-        />
-      </ContentHeader.Cell>
-    </ContentHeader>
-  );
-StampItem.story = {
-  name: '(Todo) ContentHeader.StampItem',
-};
-
-
 export const Bottom = () =>
   //
   (

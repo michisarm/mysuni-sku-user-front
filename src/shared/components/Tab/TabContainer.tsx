@@ -11,6 +11,7 @@ import TabItemModel from './model/TabItemModel';
 interface Props {
   tabs: TabItemModel[]
   className?: string
+  wrapperClassName?: string
   defaultActiveName?: string
   renderItems?: (props: any) => void
   onChangeTab?: (tab: TabItemModel) => void
@@ -61,7 +62,7 @@ class TabContainer extends Component<Props, State> {
     const { activeName } = this.state;
 
     if (renderItems) {
-      return renderItems({ tabs, onClickTab: this.onClickTab });
+      return renderItems({ tabs, activeName, onClickTab: this.onClickTab });
     }
     else {
       return (
@@ -87,11 +88,11 @@ class TabContainer extends Component<Props, State> {
 
   render() {
     //
-    const { tabs } = this.props;
+    const { tabs, wrapperClassName } = this.props;
     const { activeName } = this.state;
     const activeTab = tabs.find(tab => tab.name === activeName);
 
-    return (
+    const contents = (
       <>
         {this.renderItems()}
 
@@ -100,6 +101,15 @@ class TabContainer extends Component<Props, State> {
         )}
       </>
     );
+
+    if (wrapperClassName) {
+      return (
+        <div className={wrapperClassName}>
+          {contents}
+        </div>
+      );
+    }
+    return contents;
   }
 }
 
