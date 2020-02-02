@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import classNames from 'classnames';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Sticky } from 'semantic-ui-react';
 import TabItemModel from './model/TabItemModel';
 
 
@@ -26,7 +25,7 @@ interface State {
 class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
-    className: 'tab-menu offset0 temp',
+    className: 'tab-menu offset0',
     onChangeTab: () => {},
   };
 
@@ -60,13 +59,13 @@ class TabContainer extends Component<Props, State> {
     //
     const { renderItems, className, tabs } = this.props;
     const { activeName } = this.state;
-
+    console.log('className', className);
     if (renderItems) {
       return renderItems({ tabs, activeName, onClickTab: this.onClickTab });
     }
     else {
       return (
-        <div className={classNames('ui sticky', className)}>
+        <Sticky className={className}>
           <div className="cont-inner">
             <Menu className="sku">
               { tabs.map((tab, index) => (
@@ -81,7 +80,7 @@ class TabContainer extends Component<Props, State> {
               ))}
             </Menu>
           </div>
-        </div>
+        </Sticky>
       );
     }
   }
@@ -93,13 +92,13 @@ class TabContainer extends Component<Props, State> {
     const activeTab = tabs.find(tab => tab.name === activeName);
 
     const contents = (
-      <>
+      <div>
         {this.renderItems()}
 
         { activeTab && (
           activeTab.render({ tab: activeTab })
         )}
-      </>
+      </div>
     );
 
     if (wrapperClassName) {

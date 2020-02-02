@@ -1,11 +1,12 @@
+
 import React, { Component } from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
+import { ContentLayout, LearningState, ProposalState } from 'shared';
+import Tab, { TabItemModel } from 'shared/components/Tab';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { PersonalCubeService, ContentsServiceType, CubeTypeNameType } from 'personalcube/personalcube';
@@ -53,7 +54,6 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 }
 
 interface State {
-  type: string
   linkedInOpen: boolean
 }
 
@@ -78,7 +78,6 @@ interface State {
 class LectureCardPage extends Component<Props, State> {
   //
   state= {
-    type: 'Overview',
     linkedInOpen: false,
   };
 
@@ -143,7 +142,6 @@ class LectureCardPage extends Component<Props, State> {
         }
         else if (service.type === ContentsServiceType.Community) {
           boardService.findBoard(contents.id);
-          this.setState({ type: 'Posts' });
         }
       }
     });
@@ -474,85 +472,98 @@ class LectureCardPage extends Component<Props, State> {
     });
   }
 
-  getMenus() {
+  getTabs() {
     //
     const { personalCube } = this.props.personalCubeService;
-    const menus: typeof ContentMenu.Menu[] = [];
+    const tabs: TabItemModel[] = [];
+
     if (personalCube.contents.type === 'Community') {
-      menus.push(
-        { name: 'Posts', type: 'Posts' },
-        { name: 'My Posts', type: 'MyPosts' },
-        { name: 'Overview', type: 'Overview' },
+      tabs.push(
+        { name: 'Posts',    item: 'Posts',    render: this.renderPosts },
+        { name: 'My Posts', item: 'MyPosts',  render: this.renderMyPosts },
+        { name: 'Overview', item: 'Overview', render: this.renderOverview },
       );
     }
     else {
-      menus.push(
-        { name: 'Overview', type: 'Overview' },
-        { name: 'Comments', type: 'Comments' },
+      tabs.push(
+        { name: 'Overview', item: 'Overview', render: this.renderOverview },
+        { name: 'Comments', item: 'Comments', render: this.renderComment },
       );
     }
 
-    return menus;
+    return tabs;
   }
 
-  renderChildren(viewObject: any, typeViewObject: any) {
+  renderOverview() {
     //
-    const { type } = this.state;
-    const { personalCube } = this.props.personalCubeService;
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+
+    return this.renderBaseContentWith(
+      <LectureOverviewView
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+      />
+    );
+  }
+
+  renderComment() {
+    //
     const { lectureCard } = this.props.lectureCardService;
-    const { student } = this.props.studentService;
-    const { collegeId, lectureCardId } = this.props.match.params;
 
-    switch (type) {
-      case 'Overview':
-        return (
-          <LectureOverviewView
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-          />
-        );
-      case 'Comments':
-        return (
-          <LectureCommentsContainer
-            reviewFeedbackId={lectureCard.reviewId}
-            commentFeedbackId={lectureCard.commentId}
-          />
-        );
-      case 'Posts':
-        return (
-          <PostList
-            boardId={personalCube.contents.contents.id}
-            emptyMessage="Community에 등록된 글이 없습니다."
-            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
-            routeToPost={
-              student && student.id ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
-            }
-            type={PostList.ListType.Basic}
-          />
-        );
-      case 'MyPosts':
-        return (
-          <PostListByWriter
-            boardId={personalCube.contents.contents.id}
-            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
-            emptyMessage="내가 작성한 글이 없습니다."
-            routeToPost={
-              student && student.id ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
-            }
-          />
-        );
-      default:
-        return null;
-    }
+    return this.renderBaseContentWith(
+      <LectureCommentsContainer
+        reviewFeedbackId={lectureCard.reviewId}
+        commentFeedbackId={lectureCard.commentId}
+      />
+    );
   }
 
-  render() {
+  renderPosts() {
     //
-    const { collegeService, personalCubeService, lectureCardService, inMyLectureService, studentService } = this.props;
-    const { linkedInOpen } = this.state;
-    const { college } = collegeService;
+    const { personalCube } = this.props.personalCubeService;
+    const { student } = this.props.studentService;
+    const { history, match } = this.props;
+    const { params } = match;
+    const postUrl = `/lecture/college/${params.collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${params.lectureCardId}/posts`;
+
+    return this.renderBaseContentWith(
+      <PostList
+        type={PostList.ListType.Basic}
+        boardId={personalCube.contents.contents.id}
+        emptyMessage="Community에 등록된 글이 없습니다."
+        linkedUrl={`${process.env.PUBLIC_URL}${postUrl}`}
+        routeToPost={
+          student.id ? () => history.push(`${postUrl}/new`) : undefined
+        }
+      />
+    );
+  }
+
+  renderMyPosts() {
+    //
+    const { personalCube } = this.props.personalCubeService;
+    const { student } = this.props.studentService;
+    const { history, match } = this.props;
+    const { params } = match;
+    const postsUrl = `/lecture/college/${params.collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${params.lectureCardId}/posts`;
+
+    return this.renderBaseContentWith(
+      <PostListByWriter
+        boardId={personalCube.contents.contents.id}
+        linkedUrl={`${process.env.PUBLIC_URL}${postsUrl}`}
+        emptyMessage="내가 작성한 글이 없습니다."
+        routeToPost={
+          student.id ? () => history.push(`${postsUrl}/new`) : undefined
+        }
+      />
+    );
+  }
+
+  renderBaseContentWith(cardContent: React.ReactNode) {
+    //
+    const { personalCubeService, inMyLectureService, studentService } = this.props;
     const { personalCube } = personalCubeService;
-    const { lectureCard } = lectureCardService;
     const { inMyLecture } = inMyLectureService!;
     const { student, studentJoins } = studentService!;
     const { params } = this.props.match;
@@ -560,6 +571,34 @@ class LectureCardPage extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
     const studentCdo = this.getStudentCdo();
+
+    return (
+      <LectureCardContainer
+        inMyLecture={inMyLecture}
+        inMyLectureCdo={inMyLectureCdo}
+        studentCdo={studentCdo}
+        studentJoins={studentJoins}
+        student={student}
+        lectureCardId={params.lectureCardId}
+        cubeType={personalCube.contents.type}
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+        init={this.init}
+      >
+        {cardContent}
+      </LectureCardContainer>
+    );
+  }
+
+  render() {
+    //
+    const { collegeService, personalCubeService, lectureCardService } = this.props;
+    const { linkedInOpen } = this.state;
+    const { college } = collegeService;
+    const { personalCube } = personalCubeService;
+    const { lectureCard } = lectureCardService;
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
 
     return (
       <ContentLayout
@@ -585,7 +624,6 @@ class LectureCardPage extends Component<Props, State> {
               </div>
               <div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                   <iframe
                     title={typeViewObject.videoUrl}
                     src={typeViewObject.videoUrl}
@@ -606,32 +644,10 @@ class LectureCardPage extends Component<Props, State> {
           ) || null
         }
 
-        <ContentMenu
-          menus={this.getMenus()}
-          type={this.state.type}
-          onSelectMenu={(type) => this.setState({ type })}
-          lectureHeader={
-            <div className="cont-inner summary">
-              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
-              <span className="detail-tit">{viewObject.name}</span>
-            </div>
-          }
-        >
-          <LectureCardContainer
-            inMyLecture={inMyLecture}
-            inMyLectureCdo={inMyLectureCdo}
-            studentCdo={studentCdo}
-            studentJoins={studentJoins}
-            student={student}
-            lectureCardId={params.lectureCardId}
-            cubeType={personalCube.contents.type}
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-            init={this.init}
-          >
-            { this.renderChildren(viewObject, typeViewObject) }
-          </LectureCardContainer>
-        </ContentMenu>
+        <Tab
+          className="tab-menu2 offset0"
+          tabs={this.getTabs()}
+        />
 
         <LinkedInModalContainer
           enabled={linkedInOpen}
