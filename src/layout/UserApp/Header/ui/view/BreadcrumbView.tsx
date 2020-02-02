@@ -23,8 +23,9 @@ class BreadcrumbView extends Component<Props, State> {
     id: 'SKCC.07750@sk.com',
   };
 
-  //TODO::삭제해야
+  // TODO: 삭제해야
   onLogin() {
+    //
     const postData = new FormData();
     postData.append('grant_type', 'password');
     postData.append('scope', 'client');
@@ -51,7 +52,11 @@ class BreadcrumbView extends Component<Props, State> {
           setCookie('workspaces', JSON.stringify(data.workspaces));
           setCookie('displayName', data.displayName);
           setCookie('email', this.state.id);
-          setCookie('cineroomId', data.workspaces.cineroomWorkspaces[data.workspaces.cineroomWorkspaces.length - 1].id);
+
+          const cineroomWorkspaces = data.workspaces.cineroomWorkspaces;
+          const cineroom = cineroomWorkspaces.find((cineroom: any) => cineroom.name === 'SK University');
+          setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
+
           if (data.additionalInformation && data.additionalInformation.companyCode) {
             setCookie('companyCode', data.additionalInformation.companyCode);
           }

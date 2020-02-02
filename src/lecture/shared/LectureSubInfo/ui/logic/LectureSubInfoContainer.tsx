@@ -83,6 +83,7 @@ class LectureSubInfoContainer extends Component<Props> {
             <ClassView clazz={clazz} />
             <OperatorView operator={operator} />
           </div>
+
           <FootButtons
             onBookmark={onBookmark}
             onRemove={onRemove}
