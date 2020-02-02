@@ -5,30 +5,26 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ProposalState } from 'shared';
-import Tab, { TabItemModel } from 'shared/components/Tab';
+import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
 import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
-import { CourseSetModel, LearningCardService } from 'course';
+import { CourseSetModel } from 'course';
 import { InMyLectureCdoModel } from 'myTraining';
 import routePaths from '../../../routePaths';
+import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
+import { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentHeaderContainer from '../logic/LectureCardContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
-import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
-import { State as SubState } from '../../../shared/LectureSubInfo';
-import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
-import CubeType from '../../../../personalcube/personalcube/model/CubeType';
-import LearningState from '../../../../shared/model/LearningState';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
+import LectureOverviewView from '../view/LectureOverviewView';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -44,7 +40,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureService: LectureService,
   rollBookService: RollBookService,
   studentService: StudentService,
-  learningCardService: LearningCardService,
 }
 
 interface State {
@@ -71,7 +66,6 @@ interface RouteParams {
   'lecture.lectureService',
   'lecture.rollBookService',
   'lecture.studentService',
-  'course.learningCardService',
 ))
 @reactAutobind
 @observer
@@ -383,9 +377,6 @@ class LectureCardPage extends Component<Props, State> {
     const { personalCube } = this.props.personalCubeService!;
     let url = '';
     let videoUrl = '';
-    const width = personalCube.contents.type === CubeType.Video ? 800 : 400;
-    const height = personalCube.contents.type === CubeType.Video ? 450 : 225;
-
 
     switch (media.mediaType) {
       case MediaType.ContentsProviderMedia:
@@ -418,8 +409,6 @@ class LectureCardPage extends Component<Props, State> {
         startDate: media.learningPeriod.startDateDot,
         endDate: media.learningPeriod.endDateDot,
       },
-      width,
-      height,
     };
   }
 
@@ -498,7 +487,7 @@ class LectureCardPage extends Component<Props, State> {
   getTabs() {
     //
     const { personalCube } = this.props.personalCubeService;
-    const tabs: TabItemModel[] = [];
+    const tabs = [];
 
     if (personalCube.contents.type === 'Community') {
       tabs.push(
@@ -515,6 +504,15 @@ class LectureCardPage extends Component<Props, State> {
     }
 
     return tabs;
+  }
+
+  getMediaSize() {
+    //
+    const { personalCube } = this.props.personalCubeService!;
+    const width = personalCube.contents.type === CubeType.Video ? 800 : 400;
+    const height = personalCube.contents.type === CubeType.Video ? 450 : 225;
+
+    return { width, height };
   }
 
   renderOverview() {
@@ -622,6 +620,7 @@ class LectureCardPage extends Component<Props, State> {
     const { lectureCard } = lectureCardService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
+    const { width, height } = this.getMediaSize();
 
     return (
       <ContentLayout
@@ -650,8 +649,8 @@ class LectureCardPage extends Component<Props, State> {
                   <iframe
                     title={typeViewObject.videoUrl}
                     src={typeViewObject.videoUrl}
-                    width={typeViewObject.width}
-                    height={typeViewObject.height}
+                    width={width}
+                    height={height}
                     style={{ padding: '0px', border: '0px' }}
                     frameBorder="0"
                     allowFullScreen

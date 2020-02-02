@@ -4,8 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Label } from 'semantic-ui-react';
-import { ContentLayout, ContentMenu, CubeType } from 'shared';
+import { ContentLayout, CubeType, Tab } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureCdoModel } from 'myTraining';
@@ -40,10 +39,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentService: StudentService,
 }
 
-interface State {
-  type: string
-}
-
 interface RouteParams {
   cineroomId: string
   collegeId: string,
@@ -64,12 +59,8 @@ interface RouteParams {
 ))
 @reactAutobind
 @observer
-class CoursePage extends Component<Props, State> {
+class CoursePage extends Component<Props> {
   //
-  state= {
-    type: 'List',
-  };
-
   constructor(props: Props) {
     //
     super(props);
@@ -319,16 +310,13 @@ class CoursePage extends Component<Props, State> {
     });
   }
 
-
-  getMenus() {
+  getTabs() {
     //
-    const menus: typeof ContentMenu.Menu[] = [
-      { name: 'List', type: 'List' },
-      { name: 'Overview', type: 'Overview' },
-      { name: 'Comments', type: 'Comments' },
+    return [
+      { name: 'List', item: 'List', render: this.renderList },
+      { name: 'Overview', item: 'Overview', render: this.renderOverview },
+      { name: 'Comments', item: 'Comments', render: this.renderComments },
     ];
-
-    return menus;
   }
 
   getReviewId() {
@@ -345,58 +333,90 @@ class CoursePage extends Component<Props, State> {
     return reviewId;
   }
 
-  renderChildren(viewObject: any, typeViewObject: any) {
+  renderList() {
     //
-    const { type } = this.state;
+    return this.renderBaseContentWith(
+      <CourseContainer />
+    );
+  }
+
+  renderOverview() {
+    //
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+
+    return this.renderBaseContentWith(
+      <LectureOverviewView
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+      />
+    );
+  }
+
+  renderComments() {
+    //
+    const { programLectureService, courseLectureService, match } = this.props;
+    const { params } = match;
 
     let reviewFeedbackId = '';
     let commentFeedbackId = '';
-    if (this.props.match.params.serviceType === LectureServiceType.Program) {
-      const { programLecture } = this.props.programLectureService;
+
+    if (params.serviceType === LectureServiceType.Program) {
+      const { programLecture } = programLectureService;
+
       reviewFeedbackId = programLecture.reviewId;
       commentFeedbackId = programLecture.commentId;
     }
     else {
-      const { courseLecture } = this.props.courseLectureService;
+      const { courseLecture } = courseLectureService;
+
       reviewFeedbackId = courseLecture.reviewId;
       commentFeedbackId = courseLecture.commentId;
     }
 
-    switch (type) {
-      case 'List':
-        return (
-          <CourseContainer />
-        );
-      case 'Overview':
-        return (
-          <LectureOverviewView
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-          />
-        );
-      case 'Comments':
-        return (
-          <LectureCommentsContainer
-            reviewFeedbackId={reviewFeedbackId}
-            commentFeedbackId={commentFeedbackId}
-          />
-        );
-      default:
-        return null;
-    }
+    return this.renderBaseContentWith(
+      <LectureCommentsContainer
+        reviewFeedbackId={reviewFeedbackId}
+        commentFeedbackId={commentFeedbackId}
+      />
+    );
   }
 
-  render() {
+  renderBaseContentWith(courseContent: React.ReactNode) {
     //
-    const { collegeService, coursePlanService, studentService, match } = this.props;
-    const { college } = collegeService;
-    const { coursePlan } = coursePlanService;
+    const { studentService, match } = this.props;
     const { student, studentJoins } = studentService!;
     const { params } = match;
     const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
+
+    return (
+      <LectureCardContainer
+        lectureServiceId={params.serviceId}
+        lectureCardId={lectureCardId}
+        lectureServiceType={params.serviceType}
+        inMyLectureCdo={inMyLectureCdo}
+        studentCdo={new StudentCdoModel()}
+        student={student}
+        studentJoins={studentJoins}
+        cubeType={CubeType.None}
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+        init={this.init}
+      >
+        {courseContent}
+      </LectureCardContainer>
+    );
+  }
+
+  render() {
+    //
+    const { collegeService, coursePlanService } = this.props;
+    const { college } = collegeService;
+    const { coursePlan } = coursePlanService;
+    const typeViewObject = this.getTypeViewObject();
 
     return (
       <ContentLayout
@@ -411,33 +431,11 @@ class CoursePage extends Component<Props, State> {
           reviewId={this.getReviewId()}
           typeViewObject={typeViewObject}
         />
-        <ContentMenu
-          menus={this.getMenus()}
-          type={this.state.type}
-          onSelectMenu={(type) => this.setState({ type })}
-          lectureHeader={
-            <div className="cont-inner summary">
-              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
-              <span className="detail-tit">{viewObject.name}</span>
-            </div>
-          }
-        >
-          <LectureCardContainer
-            lectureServiceId={params.serviceId}
-            lectureCardId={lectureCardId}
-            lectureServiceType={params.serviceType}
-            inMyLectureCdo={inMyLectureCdo}
-            studentCdo={new StudentCdoModel()}
-            student={student}
-            studentJoins={studentJoins}
-            cubeType={CubeType.None}
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-            init={this.init}
-          >
-            { this.renderChildren(viewObject, typeViewObject) }
-          </LectureCardContainer>
-        </ContentMenu>
+
+        <Tab
+          className="tab-menu2 offset0"
+          tabs={this.getTabs()}
+        />
       </ContentLayout>
     );
   }
