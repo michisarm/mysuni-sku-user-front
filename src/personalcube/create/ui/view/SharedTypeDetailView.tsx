@@ -38,8 +38,8 @@ class SharedTypeDetailView extends React.Component<Props> {
           <Table.Cell>
             {
               media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length > 0
-                && media.mediaContents.internalMedias.map(internalMedia => (
-                  <Form.Field>
+                && media.mediaContents.internalMedias.map((internalMedia, index) => (
+                  <Form.Field key={`shared-cell-${index}`}>
                     <p><a onClick={() => goToVideo(internalMedia.viewUrl)}>{internalMedia.folderName} | {internalMedia.name} </a></p>
                   </Form.Field>
                 ))
