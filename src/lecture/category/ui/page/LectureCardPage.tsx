@@ -4,12 +4,11 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { PersonalCubeService, ContentsServiceType, CubeTypeNameType } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomService } from 'personalcube/classroom';
@@ -26,7 +25,7 @@ import {
 import { CourseSetModel, LearningCardService } from 'course';
 import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import routePaths from '../../../routePaths';
-import LectureCardHeaderView from '../view/LectureCardHeaderView';
+import LectureCardContentHeaderContainer from '../logic/LectureCardContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
@@ -50,7 +49,6 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
   rollBookService: RollBookService,
   studentService: StudentService,
   learningCardService: LearningCardService,
-  reviewService: ReviewService,
   inMyLectureService?: InMyLectureService,
 }
 
@@ -73,7 +71,6 @@ interface State {
   'lecture.rollBookService',
   'lecture.studentService',
   'course.learningCardService',
-  'shared.reviewService',
   'myTraining.inMyLectureService',
 ))
 @reactAutobind
@@ -99,7 +96,7 @@ class LectureCardPage extends Component<Props, State> {
 
   async init() {
     const {
-      match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
+      match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, studentService,
       rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService, inMyLectureService,
     } = this.props;
     const { params } = match;
@@ -156,7 +153,6 @@ class LectureCardPage extends Component<Props, State> {
     lectureCardService.findLectureCard(params.lectureCardId)
       .then((lectureCard) => {
         if (lectureCard) {
-          reviewService.findReviewSummary(lectureCard.reviewId);
           inMyLectureService!.findInMyLecture(lectureCard.usid, LectureServiceType.Card);
         }
       });
@@ -552,14 +548,14 @@ class LectureCardPage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, personalCubeService, reviewService, inMyLectureService, studentService } = this.props;
+    const { collegeService, personalCubeService, lectureCardService, inMyLectureService, studentService } = this.props;
     const { linkedInOpen } = this.state;
     const { college } = collegeService;
     const { personalCube } = personalCubeService;
-    const { reviewSummary } = reviewService;
+    const { lectureCard } = lectureCardService;
     const { inMyLecture } = inMyLectureService!;
     const { student, studentJoins } = studentService!;
-    const { lectureCardId } = this.props.match.params!;
+    const { params } = this.props.match;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
@@ -573,11 +569,10 @@ class LectureCardPage extends Component<Props, State> {
           { text: `${personalCube.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, personalCube.category.channel.id) },
         ]}
       >
-        <LectureCardHeaderView
-          viewObject={viewObject}
+        <LectureCardContentHeaderContainer
+          personalCube={personalCube}
+          lectureCard={lectureCard}
           typeViewObject={typeViewObject}
-          maxRating={reviewSummary.maxStarCount}
-          rating={reviewSummary.average}
         />
 
         {
@@ -628,7 +623,7 @@ class LectureCardPage extends Component<Props, State> {
             studentCdo={studentCdo}
             studentJoins={studentJoins}
             student={student}
-            lectureCardId={lectureCardId}
+            lectureCardId={params.lectureCardId}
             cubeType={personalCube.contents.type}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
