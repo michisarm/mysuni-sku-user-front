@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Select } from 'semantic-ui-react';
 import { IdName, CategoryModel } from 'shared';
-import { CollegeModel, CollegeType } from 'college';
+import { CollegeService, CollegeModel, CollegeType } from 'college';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';
@@ -16,37 +16,54 @@ import { ChannelFieldRow } from '../view/DetailElementsView';
 
 
 interface Props {
+  collegeService?: CollegeService
   contentNew: boolean
   personalCube: PersonalCubeModel
-  defaultCollegeType: CollegeType
   onChangePersonalCubeProps: (name: string, value: string | {}) => void
   onChangeCollege: (college: CollegeModel) => void
 }
 
+interface State {
+  selectedCollegeId: string
+  collegeType?: CollegeType
+}
+
+@inject(mobxHelper.injectFrom(
+  'college.collegeService',
+))
 @observer
 @reactAutobind
-class BasicInfoFormContainer extends Component<Props> {
+class BasicInfoFormContainer extends Component<Props, State> {
   //
   state = {
-    collegeType: CollegeType.University,
+    selectedCollegeId: '',
+    collegeType: undefined,
   };
 
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
     //
-    const prevDefaultCollegeType = prevProps.defaultCollegeType;
-    const defaultCollegeType = this.props.defaultCollegeType;
+    const { personalCube: prevPersonalCube } = prevProps;
+    const { personalCube } = this.props;
 
-    if (prevDefaultCollegeType !== defaultCollegeType) {
-      this.setDefaultCollegeType();
+    if (prevPersonalCube !== personalCube && personalCube.personalCubeId) {
+      this.setSelectedCollege();
     }
   }
 
-  setDefaultCollegeType() {
+  async setSelectedCollege() {
     //
-    const { defaultCollegeType } = this.props;
+    const { collegeService, personalCube } = this.props;
+    const collegeId = personalCube.category.college.id;
 
-    this.setState({ collegeType: defaultCollegeType });
+    const college = await collegeService!.findCollege(collegeId);
+
+    if (college) {
+      this.setState({
+        collegeType: college.collegeType,
+        selectedCollegeId: college.collegeId,
+      });
+    }
   }
 
   onChangeName(e: any, data: any) {
@@ -61,28 +78,21 @@ class BasicInfoFormContainer extends Component<Props> {
 
   onConfirmMainChannel(college: CollegeModel, channel: IdName) {
     //
-    const { personalCube, onChangePersonalCubeProps, onChangeCollege } = this.props;
-    const prevChannelId = personalCube.category.channel.id;
+    const { onChangePersonalCubeProps, onChangeCollege } = this.props;
 
     const category = new CategoryModel({
       college: college.toIdName(),
       channel,
     });
 
-    onChangePersonalCubeProps('category', category);
     patronInfo.setWorkspaceByDomain(college);
+    onChangePersonalCubeProps('category', category);
+    onChangePersonalCubeProps('subCategories', [category]);
 
-    let nextSubCategories = personalCube.subCategories
-      .filter(category => category.channel.id !== prevChannelId);
-
-    const existent = nextSubCategories.some((nextSubCategory) => nextSubCategory.channel.id === category.channel.id);
-
-    if (!existent) {
-      nextSubCategories = nextSubCategories.concat(category);
-    }
-    onChangePersonalCubeProps('subCategories', nextSubCategories);
-
-    this.setState({ collegeType: college.collegeType });
+    this.setState({
+      selectedCollegeId: college.collegeId,
+      collegeType: college.collegeType,
+    });
     onChangeCollege(college);
   }
 
@@ -98,7 +108,7 @@ class BasicInfoFormContainer extends Component<Props> {
     const {
       contentNew, personalCube,
     } = this.props;
-    const { collegeType } = this.state;
+    const { selectedCollegeId, collegeType } = this.state;
     const subCategoriesGroupByCollege = PersonalCubeModel.getSubCategoriesGroupByCollege(personalCube);
 
     return (
@@ -145,6 +155,7 @@ class BasicInfoFormContainer extends Component<Props> {
                 <SubChannelModalContainer
                   trigger={<Button icon className="left post delete">채널선택</Button>}
                   collegeType={collegeType}
+                  targetCollegeId={selectedCollegeId}
                   defaultSelectedCategoryChannels={personalCube.subCategories}
                   onConfirmCategoryChannels={this.onConfirmSubChannel}
                 />
