@@ -33,7 +33,7 @@ interface State {
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  hasAdminRole = patronInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
+  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
 
   state = {
     active: false,
