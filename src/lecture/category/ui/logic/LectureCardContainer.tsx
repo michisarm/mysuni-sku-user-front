@@ -6,8 +6,8 @@ import depot from '@nara.drama/depot';
 import { CubeType, ProposalState, LearningState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
-import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService, LectureServiceType } from 'lecture';
+import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
@@ -20,12 +20,14 @@ interface Props {
   studentService?: StudentService
   rollBookService?: RollBookService
   inMyLectureService?: InMyLectureService
+  lectureServiceId: string
+  lectureCardId: string
+  lectureServiceType: LectureServiceType
   inMyLectureCdo: InMyLectureCdoModel
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
-  inMyLecture: InMyLectureModel
-  lectureCardId: string
+
   cubeType: CubeType
   viewObject: any
   typeViewObject: any
@@ -49,6 +51,19 @@ class LectureCardContainer extends Component<Props, State> {
   examModal: any = null;
   surveyModal: any = null;
   reportModal: any = null;
+
+
+  componentDidMount(): void {
+    //
+    this.findInMyLecture();
+  }
+
+  findInMyLecture() {
+    //
+    const { inMyLectureService, lectureServiceId, lectureServiceType } = this.props;
+
+    inMyLectureService!.findInMyLecture(lectureServiceId, lectureServiceType);
+  }
 
   async onSelectClassroom(classroom: ClassroomModel) {
     const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
@@ -144,7 +159,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickBookmark() {
-    const { inMyLecture, inMyLectureCdo, inMyLectureService } = this.props;
+    //
+    const inMyLectureService = this.props.inMyLectureService!;
+    const { inMyLectureCdo } = this.props;
+    const { inMyLecture } = inMyLectureService;
+
     if (!inMyLecture || !inMyLecture.id) {
       inMyLectureService!.addInMyLecture(inMyLectureCdo)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
@@ -152,7 +171,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onRemove() {
-    const { inMyLecture, inMyLectureService, inMyLectureCdo } = this.props;
+    //
+    const inMyLectureService = this.props.inMyLectureService!;
+    const { inMyLectureCdo } = this.props;
+    const { inMyLecture } = inMyLectureService;
+
     if (inMyLecture && inMyLecture.id) {
       inMyLectureService!.removeInMyLecture(inMyLecture.id)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
@@ -292,8 +315,6 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    console.log(viewObject);
-    console.log(student);
 
     if (viewObject.examId && student) {
       if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
@@ -366,7 +387,8 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLecture } = inMyLectureService!;
 
     return (
       <LectureCardContentWrapperView>

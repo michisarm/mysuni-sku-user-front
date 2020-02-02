@@ -59,7 +59,7 @@ class TabContainer extends Component<Props, State> {
     //
     const { renderItems, className, tabs } = this.props;
     const { activeName } = this.state;
-    console.log('className', className);
+
     if (renderItems) {
       return renderItems({ tabs, activeName, onClickTab: this.onClickTab });
     }

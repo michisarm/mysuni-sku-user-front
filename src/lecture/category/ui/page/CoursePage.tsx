@@ -8,7 +8,7 @@ import { Label } from 'semantic-ui-react';
 import { ContentLayout, ContentMenu, CubeType } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureCdoModel } from 'myTraining';
 
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
@@ -38,7 +38,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
   studentService: StudentService,
-  inMyLectureService?: InMyLectureService,
 }
 
 interface State {
@@ -62,7 +61,6 @@ interface RouteParams {
   'lecture.programLectureService',
   'lecture.lectureService',
   'lecture.studentService',
-  'myTraining.inMyLectureService',
 ))
 @reactAutobind
 @observer
@@ -111,7 +109,6 @@ class CoursePage extends Component<Props, State> {
     //
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
-    this.findInMyLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     this.findStudent();
   }
@@ -203,13 +200,6 @@ class CoursePage extends Component<Props, State> {
       }
     });
   }
-
-  async findInMyLecture() {
-    const { inMyLectureService, match } = this.props;
-    const { params } = match;
-    return inMyLectureService!.findInMyLecture(params.serviceId, params.serviceType);
-  }
-
 
   getViewObject() {
     //
@@ -398,11 +388,11 @@ class CoursePage extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, coursePlanService, inMyLectureService, studentService } = this.props;
+    const { collegeService, coursePlanService, studentService, match } = this.props;
     const { college } = collegeService;
     const { coursePlan } = coursePlanService;
-    const { inMyLecture } = inMyLectureService!;
     const { student, studentJoins } = studentService!;
+    const { params } = match;
     const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
@@ -433,12 +423,13 @@ class CoursePage extends Component<Props, State> {
           }
         >
           <LectureCardContainer
-            inMyLecture={inMyLecture}
+            lectureServiceId={params.serviceId}
+            lectureCardId={lectureCardId}
+            lectureServiceType={params.serviceType}
             inMyLectureCdo={inMyLectureCdo}
             studentCdo={new StudentCdoModel()}
             student={student}
             studentJoins={studentJoins}
-            lectureCardId={lectureCardId}
             cubeType={CubeType.None}
             viewObject={viewObject}
             typeViewObject={typeViewObject}
