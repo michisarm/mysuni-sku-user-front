@@ -5,7 +5,6 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Label } from 'semantic-ui-react';
 import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ProposalState } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
