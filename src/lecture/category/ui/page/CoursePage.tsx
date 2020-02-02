@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Label } from 'semantic-ui-react';
-import { ContentLayout, ContentMenu, CubeType } from 'shared';
+import { ContentLayout, ContentMenu, CubeType, LearningState, ProposalState } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
 import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
@@ -230,21 +230,18 @@ class CoursePage extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
     if (student && student.id) {
-      // if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
-      // if (student.proposalState === ProposalState.Approved) {
-      //   if (!student.learningState) state = SubState.Enrolled;
-      //   if (
-      //     student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
-      //     || student.learningState === LearningState.TestWaiting
-      //     || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
-      //   ) {
-      //     state = SubState.Waiting;
-      //   }
-      //   if (student.learningState === LearningState.Progress) state = SubState.InProgress;
-      //   if (student.learningState === LearningState.Passed) state = SubState.Completed;
-      //   if (student.learningState === LearningState.Missed) state = SubState.Missed;
-      // }
-      // if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+      if (student.proposalState === ProposalState.Approved) {
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
+        }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (student.learningState === LearningState.Passed) state = SubState.Completed;
+        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      }
 
       examId = coursePlanContents.testId || '';
 
