@@ -15,13 +15,16 @@ import {
   Lecture,
 } from '../../../shared';
 import routePaths from '../../../routePaths';
+import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
   courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
+  lectureCardId : string
 }
 
 interface RouteParams {
@@ -33,6 +36,7 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
   'lecture.lectureService',
   'lecture.programLectureService',
   'lecture.courseLectureService',
@@ -45,6 +49,7 @@ class CourseContainer extends Component<Props> {
   componentDidMount() {
     //
     this.findCoursePlan();
+    this.findSkProfile();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -63,6 +68,12 @@ class CourseContainer extends Component<Props> {
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
     }
+  }
+
+  async findSkProfile()
+  {
+    const { skProfileService } = this.props;
+    await skProfileService!.findSkProfile();
   }
 
   onViewDetail(lecture: LectureViewModel) {
@@ -122,7 +133,15 @@ class CourseContainer extends Component<Props> {
 
   render() {
     //
-    const { lectureService } = this.props;
+    const {
+      skProfileService,
+      lectureService,
+      lectureCardId,
+      match,
+    } = this.props;
+    const { params } = match;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
     const { lectureViews, getSubLectureViews } = lectureService!;
 
     return (
@@ -138,6 +157,10 @@ class CourseContainer extends Component<Props> {
                   thumbnailImage={lecture.baseUrl || undefined}
                   toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
                   onViewDetail={() => this.onViewDetail(lecture)}
+
+                  collegeId={params.collegeId}
+                  lectureCardId={lectureCardId}
+                  member={member}
                 />
               )}
             >
@@ -148,6 +171,10 @@ class CourseContainer extends Component<Props> {
                   lectureView={subLecture}
                   thumbnailImage={subLecture.baseUrl || undefined}
                   onViewDetail={() => this.onViewDetail(subLecture)}
+
+                  collegeId={params.collegeId}
+                  lectureCardId={lectureCardId}
+                  member={member}
                 />
               )}
             </Lecture.CourseSection>
