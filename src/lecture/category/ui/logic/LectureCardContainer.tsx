@@ -317,7 +317,7 @@ class LectureCardContainer extends Component<Props, State> {
 
 
     if (viewObject.examId && student) {
-      if (student.serviceType === 'Lecture') {
+      if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
