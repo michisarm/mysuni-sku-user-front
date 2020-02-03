@@ -219,9 +219,7 @@ class CoursePage extends Component<Props> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (student.phaseCount === student.completePhaseCount) {
-        examId = coursePlanContents.testId || '';
-      }
+      examId = coursePlanContents.testId || '';
 
       surveyId = coursePlanContents.surveyId || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';

@@ -317,10 +317,25 @@ class LectureCardContainer extends Component<Props, State> {
 
 
     if (viewObject.examId && student) {
-      if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
-        subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-      } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
-        subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+      if (student.serviceType === 'Lecture') {
+        if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        }
+      }
+      else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
+        if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
+        ) {
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+        } else if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
+        ) {
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        }
       }
     }
 
