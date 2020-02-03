@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import Carousel from '../../sub/Carousel';
@@ -26,7 +26,9 @@ class UserMainPage extends Component<Props> {
     return (
       <ContentLayout className="main">
         <div className="main-wrap">
-          <Carousel />
+          <Carousel
+            autoScrolling
+          />
           <SearchBar />
           <MyLearningSummary />
           <MyLearningContent />
