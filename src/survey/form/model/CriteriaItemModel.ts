@@ -4,7 +4,7 @@ import { LangStrings } from 'shared';
 export class CriteriaItemModel {
   index: number = 0;
   names: LangStrings = new LangStrings();
-  value: number = 0;
+  value: number | undefined = undefined;
 
   constructor(criteriaItem?: CriteriaItemModel) {
     //
