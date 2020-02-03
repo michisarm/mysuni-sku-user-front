@@ -5,9 +5,10 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout } from 'shared';
 import moment from 'moment';
-import { CategoryService, PostService } from '../../../board';
+import { ContentLayout } from 'shared';
+import routePaths from '../../routePaths';
+import { CategoryService, PostService } from '../..';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -37,8 +38,8 @@ class FaqDetailContainer extends React.Component<Props> {
     }
   }
 
-  onClose(boardId: string) {
-    this.props.history.push(`/board/support/${boardId}`);
+  onClose() {
+    this.props.history.push(routePaths.supportFAQ());
   }
 
   render() {
@@ -64,7 +65,7 @@ class FaqDetailContainer extends React.Component<Props> {
                       <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
                     </div>
                     <div className="actions">
-                      <Button icon className="left postset commu-list16" onClick={() => this.onClose('FAQ')}><Icon
+                      <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon
                         className="commu-list16"
                       />List
                       </Button>
@@ -89,7 +90,7 @@ class FaqDetailContainer extends React.Component<Props> {
           </div>
           <Segment className="full">
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('FAQ')}>
+              <Button icon className="left post list2" onClick={this.onClose}>
                 <Icon className="list24" /> List
               </Button>
             </div>

@@ -4,10 +4,11 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
+import { ContentLayout } from 'shared';
+import routePaths from '../../routePaths';
 import { AnswerService, CategoryService, PostService } from '../../../board';
 
 
@@ -77,8 +78,8 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
       });
   }
 
-  onClose(boardId: string) {
-    this.props.history.push(`/board/support/${boardId}`);
+  onClose() {
+    this.props.history.push(routePaths.supportQnA());
   }
 
   render() {
@@ -109,7 +110,7 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
                     <span className="date">{answer.writtenTime && moment(answer.writtenTime).format('YYYY.MM.DD HH:mm:ss')}</span>
                   </div>
                   <div className="actions">
-                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
+                    <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
                   </div>
                 </div>
               </div>
@@ -144,7 +145,7 @@ class AnsweredDetailContainer extends React.Component<Props, States> {
           </div>
           <Segment className="full">
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('Q&A')}>
+              <Button icon className="left post list2" onClick={this.onClose}>
                 <Icon className="list24" /> List
               </Button>
             </div>

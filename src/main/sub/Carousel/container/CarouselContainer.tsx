@@ -5,11 +5,14 @@ import { observer } from 'mobx-react';
 
 import { Icon } from 'semantic-ui-react';
 import mainRoutePaths from 'main/routePaths';
-import CarouselWrapperView from './CarouselWrapperView';
-import CarouselItemView from './CarouselItemView';
+import boardRoutePaths from 'board/routePaths';
+import ContentType from '../model/ContentType';
+import CarouselWrapperView from '../view/CarouselWrapperView';
+import CarouselItemView from '../view/CarouselItemView';
 
 
 interface Props {
+  autoScrolling?: boolean
 }
 
 interface State {
@@ -20,10 +23,15 @@ interface State {
 @observer
 class CarouselContainer extends Component<Props, State> {
   //
+  static defaultProps = {
+    autoScrolling: false,
+  };
+
   AUTO_NEXT_TIME = 30 * 1000;
 
   banners = [
     {
+      type: ContentType.ExternalWindowVideo,
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
       description: (
         <>
@@ -33,22 +41,12 @@ class CarouselContainer extends Component<Props, State> {
           <span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>
         </>
       ),
-      linkText: mainRoutePaths.introductionMySuni(),
-      content: (
-        <div className="panopto">
-          <iframe
-            title="video type"
-            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse"
-            width="600"
-            height="420"
-            style={{ padding: '0px', border: '0px' }}
-            frameBorder="0"
-            allowFullScreen
-          />
-        </div>
-      ),
+      link: mainRoutePaths.introductionMySuni(),
+      imageUrl: '/images/all/img_banner_01.jpg',
+      mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse',
     },
     {
+      type: ContentType.FileDownload,
       title: <>시스템 기획자가 알려주는<br />&#39;mySUNI&#39; 100% 활용하기!</>,
       description: (
         <>
@@ -58,35 +56,25 @@ class CarouselContainer extends Component<Props, State> {
           <span className="link-tag"><Icon className="arrow right" />매뉴얼 다운로드</span>
         </>
       ),
-      imageName: '/images/all/img_banner_02.png',
-      linkAnchor: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
+      imageUrl: '/images/all/img_banner_02.png',
+      mediaUrl: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
-      title: <>&quot;mySUNI&quot;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
+      type: ContentType.ExternalWindowVideo,
+      title: <>&#39;mySUNI&#39;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
       description: (
         <>
            어떤 과정부터 학습해야 할지 막막하신가요?<br />
            Target 역량에 따른 학습추천~!<br />
            써니가 제안합니다!<br />
-          {/*<span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>*/}
         </>
       ),
-      linkText: '/board/support/notice-detail/NTC-000033',
-      content: (
-        <div className="panopto">
-          <iframe
-            title="video type"
-            src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse"
-            width="600"
-            height="420"
-            style={{ padding: '0px', border: '0px' }}
-            frameBorder="0"
-            allowFullScreen
-          />
-        </div>
-      ),
+      link: boardRoutePaths.supportNoticePost('NTC-000033'),
+      imageUrl: '/images/all/img_banner_03.jpg',
+      mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse',
     },
     {
+      type: ContentType.LinkContent,
       title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
         <>
@@ -96,8 +84,8 @@ class CarouselContainer extends Component<Props, State> {
           총 20개 Course 부터! SUNI Stamp에 도전해보세요~!!!
         </>
       ),
-      imageName: '/images/all/img_banner_03_a.png',
-      link: '/board/support/notice-detail/NTC-00002r',
+      link: boardRoutePaths.supportNoticePost('NTC-00002r'),
+      imageUrl: '/images/all/img_banner_04.png',
     },
   ];
 
@@ -110,13 +98,22 @@ class CarouselContainer extends Component<Props, State> {
 
   componentDidMount() {
     //
-    // this.intervalId = setInterval(this.nextBanner, this.AUTO_NEXT_TIME) as any;
+    this.setAutoScrolling();
   }
 
   componentWillUnmount(): void {
     //
     if (this.intervalId) {
       clearInterval(this.intervalId as any);
+    }
+  }
+
+  setAutoScrolling() {
+    //
+    const { autoScrolling } = this.props;
+
+    if (autoScrolling) {
+      this.intervalId = setInterval(this.nextBanner, this.AUTO_NEXT_TIME) as any;
     }
   }
 
@@ -182,13 +179,12 @@ class CarouselContainer extends Component<Props, State> {
           index === activeIndex && (
             <CarouselItemView
               key={`carousel_item_${index}`}
+              type={item.type}
               title={item.title}
               description={item.description}
-              image={item.imageName}
-              content={item.content}
               link={item.link}
-              linkText={item.linkText}
-              linkAnchor={item.linkAnchor}
+              mediaUrl={item.mediaUrl}
+              imageUrl={item.imageUrl}
             />
           )
         ))}

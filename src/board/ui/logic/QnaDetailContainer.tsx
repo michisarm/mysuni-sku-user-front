@@ -5,10 +5,11 @@ import { RouteComponentProps } from 'react-router';
 
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { ContentLayout } from 'shared';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
-import { CategoryService, PostService } from '../../../board';
+import { ContentLayout } from 'shared';
+import routePaths from '../../routePaths';
+import { CategoryService, PostService } from '../..';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
 
@@ -97,7 +98,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
         post.deleted = true;
         if (postService) postService.modifyPost(postId, post);
       });
-    this.onClose('Q&A');
+    this.onClose();
   }
 
   deleteQnaDetail() {
@@ -107,8 +108,8 @@ class QnaDetailContainer extends React.Component<Props, States> {
     });
   }
 
-  onClose(boardId: string) {
-    this.props.history.push(`/board/support/${boardId}`);
+  onClose() {
+    this.props.history.push(routePaths.supportQnA());
   }
 
   render() {
@@ -141,7 +142,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                   </div>
                   <div className="actions">
                     <Button icon className="left postset delete" onClick={() => this.deleteQnaDetail()}><Icon name="delete" />Delete</Button>
-                    <Button icon className="left postset commu-list16" onClick={() => this.onClose('Q&A')}><Icon className="commu-list16" />List</Button>
+                    <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
                   </div>
                 </div>
               </div>
@@ -180,7 +181,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
                 <Button icon className="left post delete" onClick={() => this.deleteQnaDetail()}>
                   <Icon className="del24" /> Delete
                 </Button>
-                <Button icon className="left post list2" onClick={() => this.onClose('Q&A')}>
+                <Button icon className="left post list2" onClick={this.onClose}>
                   <Icon className="list24" /> List
                 </Button>
               </div>
