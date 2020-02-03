@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Select } from 'semantic-ui-react';
+import { ListPanelTopLine } from 'shared';
 
 
 interface Props {
@@ -14,16 +15,17 @@ interface Props {
 
 @reactAutobind
 @observer
-class ListPanelTopView extends React.Component<Props> {
+class CreateListPanelTopLineView extends React.Component<Props> {
 
   render() {
     //
     const { totalCount, searchSelectOptions, onChange } = this.props;
 
     return (
-      <div className="top-guide-title size-type3">
-        <div className="list-number">총 <strong>{totalCount}개</strong>의 리스트가 있습니다.</div>
-
+      <ListPanelTopLine
+        className="size-type3"
+        count={totalCount}
+      >
         <div className="right-wrap">
           <Select
             placeholder="전체"
@@ -33,10 +35,10 @@ class ListPanelTopView extends React.Component<Props> {
             onChange={onChange}
           />
         </div>
-      </div>
+      </ListPanelTopLine>
     );
   }
 
 }
 
-export default ListPanelTopView;
+export default CreateListPanelTopLineView;

@@ -4,7 +4,7 @@ import { CategoryModel, IdName } from 'shared';
 import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
 import { CubeIntroModel } from 'personalcube/cubeintro';
 import { CourseSetModel } from 'course/model/CourseSetModel';
-import { LectureServiceType, LectureCardModel } from 'lecture/shared';
+import { LectureServiceType, LectureCardModel, LectureModel } from 'lecture/shared';
 
 
 class InMyLectureCdoModel {
@@ -38,7 +38,7 @@ class InMyLectureCdoModel {
   }
 
 
-  static fromLecture(personalCube: PersonalCubeModel, cubeIntro: CubeIntroModel, lectureCard: LectureCardModel) {
+  static fromLectureCard(personalCube: PersonalCubeModel, cubeIntro: CubeIntroModel, lectureCard: LectureCardModel) {
     //
     return new InMyLectureCdoModel({
       serviceType: LectureServiceType.Card,
@@ -58,6 +58,31 @@ class InMyLectureCdoModel {
       reviewId: lectureCard.reviewId,
       baseUrl: personalCube.iconBox.baseUrl,
       servicePatronKeyString: personalCube.patronKey.keyString,
+    });
+  }
+
+  static fromLecture(lecture: LectureModel) {
+    //
+    return new InMyLectureCdoModel({
+      serviceId: lecture.serviceId,
+      serviceType: lecture.serviceType,
+      category: lecture.category,
+      name: lecture.name,
+      description: lecture.description,
+      cubeType: lecture.cubeType,
+      learningTime: lecture.learningTime,
+      stampCount: lecture.stampCount,
+      coursePlanId: lecture.coursePlanId,
+
+      requiredSubsidiaries: lecture.requiredSubsidiaries,
+      cubeId: lecture.cubeId,
+      courseSetJson: lecture.courseSetJson,
+      courseLectureUsids: lecture.courseLectureUsids,
+      lectureCardUsids: lecture.lectureCardUsids,
+
+      reviewId: lecture.reviewId,
+      baseUrl: lecture.baseUrl,
+      servicePatronKeyString: lecture.patronKey.keyString,
     });
   }
 }

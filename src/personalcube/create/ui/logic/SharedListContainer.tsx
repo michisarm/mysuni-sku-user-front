@@ -14,10 +14,7 @@ import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lectu
 import { SeeMoreButton } from 'lecture/shared';
 import { InMyLectureService, InMyLectureModel, InMyLectureCdoModel } from 'myTraining';
 
-import LineHeaderContainer from 'myTraining/ui/logic/LineHeaderContainer';
-// import Lecture from '../../../../lecture/shared/Lecture/ui/logic/LectureContainer';
-// import LectureServiceType from '../../../../lecture/shared/model/LectureServiceType';
-
+import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
@@ -25,6 +22,7 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   lectureService?: LectureService,
   inMyLectureService?: InMyLectureService,
   reviewService?: ReviewService
+  active: boolean
 }
 
 interface States {
@@ -76,7 +74,7 @@ class SharedListContainer extends React.Component<Props, States> {
 
     let feedbackIds: string[] = [];
 
-    if (lectureOffsetList && lectureOffsetList.results && lectureOffsetList.results.length) {
+    if (lectureOffsetList.results.length > 0) {
       feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
@@ -86,12 +84,40 @@ class SharedListContainer extends React.Component<Props, States> {
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
   }
 
+  getRating(lecture: LectureModel) {
+    //
+    const { ratingMap } = this.props.reviewService!;
+
+    let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+
+    if (lecture.cubeType === CubeType.Community) {
+      rating = undefined;
+    }
+    return rating;
+  }
+
   isContentMore() {
     //
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
     return page!.pageNo < page!.totalPages;
+  }
+
+  onFilter(channels: ChannelModel[]) {
+    //
+    const { pageService, lectureService  } = this.props;
+
+    this.setState({ channels }, () => {
+      lectureService!.clearLectures();
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findSharedLectures();
+    });
+  }
+
+  onClickSeeMore() {
+    //
+    this.findSharedLectures();
   }
 
   onViewDetail(e: any, data: any) {
@@ -109,21 +135,6 @@ class SharedListContainer extends React.Component<Props, States> {
     }
   }
 
-  onClickSeeMore() {
-    //
-    this.findSharedLectures();
-  }
-
-  onFilter(channels: ChannelModel[]) {
-    const { pageService, lectureService  } = this.props;
-
-    this.setState({ channels }, () => {
-      lectureService!.clearLectures();
-      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      this.findSharedLectures();
-    });
-  }
-
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
     const { inMyLectureService } = this.props;
@@ -133,43 +144,26 @@ class SharedListContainer extends React.Component<Props, States> {
         .then(() => inMyLectureService!.findAllInMyLectures());
     }
     else {
-      inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
-        serviceId: lecture.serviceId,
-        serviceType: lecture.serviceType,
-        category: lecture.category,
-        name: lecture.name,
-        description: lecture.description,
-        cubeType: lecture.cubeType,
-        learningTime: lecture.learningTime,
-        stampCount: lecture.stampCount,
-        coursePlanId: lecture.coursePlanId,
-
-        requiredSubsidiaries: lecture.requiredSubsidiaries,
-        cubeId: lecture.cubeId,
-        courseSetJson: lecture.courseSetJson,
-        courseLectureUsids: lecture.courseLectureUsids,
-        lectureCardUsids: lecture.lectureCardUsids,
-
-        reviewId: lecture.reviewId,
-        baseUrl: lecture.baseUrl,
-        servicePatronKeyString: lecture.patronKey.keyString,
-      }))
+      inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
         .then(() => inMyLectureService!.findAllInMyLectures());
     }
   }
 
   render() {
     //
-    const { lectureService, reviewService, inMyLectureService } = this.props;
+    const { lectureService, inMyLectureService, active } = this.props;
     const { lectures, totalLectureCount } = lectureService!;
-    const { ratingMap } = reviewService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
 
+    if (!active) {
+      return null;
+    }
+
     return (
       <Segment className="full">
-        <LineHeaderContainer
-          count={totalLectureCount}
+        <SharedListPanelTopLineView
+          totalCount={totalLectureCount}
           channels={channels}
           onFilter={this.onFilter}
         />
@@ -177,15 +171,13 @@ class SharedListContainer extends React.Component<Props, States> {
         { lectures.length > 0 ?
           <div className="section">
             <Lecture.Group type={Lecture.GroupType.Box}>
-              { lectures.map((lecture: LectureModel, index: number) => {
-                let rating: number | undefined = ratingMap.get(lecture.reviewId) || 0;
+              { lectures.map((lecture, index) => {
                 const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                if (lecture.cubeType === CubeType.Community) rating = undefined;
                 return (
                   <Lecture
                     key={`lecture-${index}`}
                     model={lecture}
-                    rating={rating}
+                    rating={this.getRating(lecture)}
                     thumbnailImage={lecture.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                     onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}

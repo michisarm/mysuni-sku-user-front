@@ -58,6 +58,8 @@ export { default as LectureCardPage } from './category/ui/page/LectureCardPage';
 export { default as LectureContentHeader } from './shared/LectureContentHeader';
 export { default as LectureSubInfo } from './shared/LectureSubInfo';
 export { default as Lecture } from './shared/Lecture';
+export { default as ChannelFilterModal } from './shared/ChannelFilterModal';
+
 export { default as ChannelsLecturesPage } from './recommend/ui/page/ChannelsLecturesPage';
 export { default as RecommendChannelLecturesPage } from './recommend/ui/page/ChannelLecturesPage';
 export { default as ChannelLecturesLine } from './recommend/ui/logic/ChannelLecturesLineContainer';

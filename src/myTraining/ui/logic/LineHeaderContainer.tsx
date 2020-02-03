@@ -1,10 +1,12 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Button, Icon } from 'semantic-ui-react';
-import { ChannelModel } from 'college';
+import { observer } from 'mobx-react';
 
-import ChannelFilterModalContainer from './ChannelFilterModalContainer';
+import { Button, Icon } from 'semantic-ui-react';
+import { ListPanelTopLine } from 'shared';
+import { ChannelModel } from 'college';
+import { ChannelFilterModal } from 'lecture';
 
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
 }
 
 @reactAutobind
+@observer
 class LineHeaderContainer extends Component<Props> {
   //
   render() {
@@ -21,19 +24,21 @@ class LineHeaderContainer extends Component<Props> {
     const { count, channels, onFilter } = this.props;
 
     return (
-      <div className="top-guide-title">
-        <div className="list-number">총 <strong>{count}개</strong>의 리스트가 있습니다.</div>
+      <ListPanelTopLine count={count}>
         {
           onFilter && (
-            <ChannelFilterModalContainer
+            <ChannelFilterModal
+              trigger={(
+                <Button icon className="left post">
+                  <Icon className="filter2" />Filter
+                </Button>
+              )}
               channels={channels}
               onFilter={onFilter}
-              trigger={<Button icon className="left post"><Icon className="filter2" />Filter</Button>}
             />
           )
         }
-
-      </div>
+      </ListPanelTopLine>
     );
   }
 }
