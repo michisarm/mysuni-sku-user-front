@@ -11,12 +11,13 @@ import { PersonalCubeService } from 'personalcube/personalcube';
 
 import routePaths from '../../../routePaths';
 import SelectType from '../../model/SelectOptions';
-import ListPanelTopView from '../view/ListPanelTopView';
+import CreateListPanelTopLineView from '../view/CreateListPanelTopLineView';
 import CreateListView from '../view/CreateListView';
 
 
 interface Props extends RouteComponentProps<{ tab: string }> {
   personalCubeService?: PersonalCubeService
+  active: boolean
 }
 
 interface States {
@@ -90,12 +91,16 @@ class CreateListContainer extends React.Component<Props, States> {
   render() {
     //
     const { personalCubeOffsetList } = this.props.personalCubeService!;
-    const totalCount = personalCubeOffsetList.totalCount;
-    const personalCubes = personalCubeOffsetList.results;
+    const { active } = this.props;
+    const { totalCount, results: personalCubes } = personalCubeOffsetList;
+
+    if (!active) {
+      return null;
+    }
 
     return (
       <Segment className="full">
-        <ListPanelTopView
+        <CreateListPanelTopLineView
           totalCount={totalCount}
           searchSelectOptions={SelectType.userStatus}
           onChange={this.onChangeSearchSelect}

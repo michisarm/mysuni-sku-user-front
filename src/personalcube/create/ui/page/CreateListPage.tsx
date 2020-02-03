@@ -39,14 +39,14 @@ class CreateListPage extends Component<Props> {
       {
         name: 'Create',
         item: 'Create',
-        render: () => <CreateListContainer />,
+        render: ({ active }) => <CreateListContainer active={active} />,
       },
       {
         name: 'Shared',
         item: <>Shared<span className="count">{totalLectureCount}</span></>,
-        render: () => <SharedListContainer />,
+        render: ({ active }) => <SharedListContainer active={active} />,
       },
-    ];
+    ] as TabItemModel[];
   }
 
   onChangeTab(tab: TabItemModel) {
@@ -69,6 +69,7 @@ class CreateListPage extends Component<Props> {
         <CreateProfileContainer />
 
         <Tab
+          allMounted
           tabs={this.getTabs()}
           defaultActiveName={params.tab}
           onChangeTab={this.onChangeTab}

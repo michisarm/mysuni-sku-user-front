@@ -10,11 +10,13 @@ import 'react-quill/dist/quill.snow.css';
 import { ContentLayout } from 'shared';
 import { FileBox, PatronType } from '@nara.drama/depot';
 import classNames from 'classnames';
-import { BoardService, CategoryService, PostService } from '../../../board';
+import routePaths from '../../routePaths';
+import { BoardService, CategoryService, PostService } from '../..';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import { PostModel } from '../../model/PostModel';
 // import Editor from './Editor';
+
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   boardService?: BoardService,
@@ -95,13 +97,13 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   handleOKConfirmWin() {
     //
-    const { postService } = this.props;
+    const { postService, history } = this.props;
     const { post } = postService!;
 
     postService!.registerPost(post)
-      .then((postId) => this.props.history.push(`/board/support/qna-detail/${postId}`));
+      .then((postId) => history.push(routePaths.supportQnAPost(postId as string)));
 
-    this.onClose('Q&A');
+    this.onClose();
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
@@ -119,8 +121,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     postService!.changePostProps(name, value);
   }
 
-  onClose(boardId: string) {
-    this.props.history.push(`/board/support/${boardId}`);
+  onClose() {
+    this.props.history.push(routePaths.supportQnA());
   }
 
   onHandleSave() {
@@ -266,7 +268,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                 </Form>
               </Form.Field>
               <div className="buttons">
-                <Button className="fix line" onClick={() => this.onClose('Q&A')}>Close</Button>
+                <Button className="fix line" onClick={this.onClose}>Close</Button>
                 <Button className="fix bg" onClick={this.onHandleSave}>Submit</Button>
               </div>
             </Form>

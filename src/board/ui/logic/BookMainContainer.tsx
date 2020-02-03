@@ -1,17 +1,20 @@
+
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { CommentService } from '@nara.drama/feedback';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
+import { CommentService } from '@nara.drama/feedback';
 import { Icon, Menu, Sticky } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
-import { CategoryService, PostService } from '../../../board';
+import routePaths from '../../routePaths';
+import { CategoryService, PostService } from '../..';
+import { PostModel } from '../../model/PostModel';
 import QnaTabContainer from './QnaTabContainer';
 import FaqTabContainer from './FaqTabContainer';
 import NoticeTabContainer from './NoticeTabContainer';
 import HelpContainer from './HelpContainer';
-import { PostModel } from '../../model/PostModel';
+
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   postService?: PostService
@@ -86,11 +89,10 @@ export class BookMainContainer extends React.Component<Props, States> {
 
   handleItemClick(e: any, { name }: any) {
     //
-    const { postService } = this.props;
-    if (postService) {
-      this.setState({ activeItem: name, faqCategoryId: '', faqTabIndex: 0 });
-    }
-    this.props.history.push(`/board/support/${name}`);
+    const { history } = this.props;
+
+    this.setState({ activeItem: name, faqCategoryId: '', faqTabIndex: 0 });
+    history.push(routePaths.supportTab(name));
 
     if (name === 'Notice') {
       this.findNoticePinnedPosts();
@@ -212,23 +214,23 @@ export class BookMainContainer extends React.Component<Props, States> {
   }
 
   routeToQnaRegist() {
-    this.props.history.push('/board/support-qna');
+    this.props.history.push(routePaths.supportQnANewPost());
   }
 
   routeToFaqDetail(postId: string) {
-    this.props.history.push(`/board/support/faq-detail/${postId}`);
+    this.props.history.push(routePaths.supportFAQPost(postId));
   }
 
   routeToQnaDetail(postId: string) {
-    this.props.history.push(`/board/support/qna-detail/${postId}`);
+    this.props.history.push(routePaths.supportQnAPost(postId));
   }
 
   routeToNoticeDetail(postId: string) {
-    this.props.history.push(`/board/support/notice-detail/${postId}`);
+    this.props.history.push(routePaths.supportNoticePost(postId));
   }
 
   routeToAnsweredDetail(postId: string) {
-    this.props.history.push(`/board/support/answered-detail/${postId}`);
+    this.props.history.push(routePaths.supportQnAAnswer(postId));
   }
 
   render() {
@@ -242,7 +244,7 @@ export class BookMainContainer extends React.Component<Props, States> {
         className="support"
         breadcrumb={[
           { text: `Support` },
-          { text: `${activeItem}`, path: `/board/support/${activeItem}` },
+          { text: `${activeItem}`, path: routePaths.supportTab(activeItem) },
         ]}
       >
         <div className="main-info-area">

@@ -444,7 +444,7 @@ class LectureCardPage extends Component<Props, State> {
     const { cubeIntro } = cubeIntroService!;
     const { lectureCard } = lectureCardService!;
 
-    return InMyLectureCdoModel.fromLecture(personalCube, cubeIntro, lectureCard);
+    return InMyLectureCdoModel.fromLectureCard(personalCube, cubeIntro, lectureCard);
   }
 
   getStudentCdo(): StudentCdoModel {

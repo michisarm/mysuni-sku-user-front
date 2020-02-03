@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -12,6 +12,7 @@ interface Props {
   className?: string
   wrapperClassName?: string
   defaultActiveName?: string
+  allMounted?: boolean
   renderItems?: (props: any) => void
   onChangeTab?: (tab: TabItemModel) => void
 }
@@ -87,7 +88,7 @@ class TabContainer extends Component<Props, State> {
 
   render() {
     //
-    const { tabs, wrapperClassName } = this.props;
+    const { tabs, wrapperClassName, allMounted } = this.props;
     const { activeName } = this.state;
     const activeTab = tabs.find(tab => tab.name === activeName);
 
@@ -95,9 +96,17 @@ class TabContainer extends Component<Props, State> {
       <div>
         {this.renderItems()}
 
-        { activeTab && (
-          activeTab.render({ tab: activeTab })
-        )}
+        { allMounted ?
+          tabs.map(tab =>
+            <Fragment key={`tab-${tab.name}`}>
+              {tab.render({ tab, active: tab.name === activeName })}
+            </Fragment>
+          )
+          :
+          activeTab && (
+            activeTab.render({ tab: activeTab, active: true })
+          )
+        }
       </div>
     );
 
