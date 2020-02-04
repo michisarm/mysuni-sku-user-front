@@ -334,8 +334,10 @@ class CoursePage extends Component<Props> {
 
   renderList() {
     //
+    const { lectureCardId } = this.props.match.params!;
     return this.renderBaseContentWith(
-      <CourseContainer />
+
+      <CourseContainer lectureCardId={lectureCardId} />
     );
   }
 
