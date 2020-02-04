@@ -72,6 +72,7 @@ class TabContainer extends Component<Props, State> {
               { tabs.map((tab, index) => (
                 <Menu.Item
                   key={`tab-${index}`}
+                  className={tab.className}
                   name={tab.name}
                   active={activeName === tab.name}
                   onClick={() => this.onClickTab(tab)}
