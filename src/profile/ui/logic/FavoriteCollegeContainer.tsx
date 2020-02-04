@@ -7,7 +7,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
-import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
+import { CollegeLectureCountService } from 'lecture';
+import CollegeLectureCountRdo from 'lecture/shared/model/CollegeLectureCountRdo';
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
