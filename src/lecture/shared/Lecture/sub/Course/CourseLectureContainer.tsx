@@ -386,7 +386,7 @@ class CourseLectureContainer extends Component<Props> {
         <Buttons>
           <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
           {
-            className === 'included' && lectureView.cubeType === CubeType.Video ? <Button className={`${cls}`} onClick={this.getMainActionForVideo}>학습하기</Button> : null
+            lectureView.cubeType === CubeType.Video ? <Button className={`${cls}`} onClick={this.getMainActionForVideo}>학습하기</Button> : null
           }
         </Buttons>
 
