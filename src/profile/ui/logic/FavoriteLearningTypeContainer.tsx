@@ -5,14 +5,16 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { ContentLayout, IdNameList } from '../../../shared';
+import { ContentLayout, IdNameList } from 'shared';
+import { CollegeService } from 'college';
 
-import CollegeService from '../../../college/present/logic/CollegeService';
-import TitleView from '../view/TitleView';
+import mainRoutePaths from 'main/routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import { StudySummary } from '../../model/StudySummary';
+import TitleView from '../view/TitleView';
 
-interface Props extends RouteComponentProps{
+
+interface Props extends RouteComponentProps {
   collegeService? : CollegeService
   skProfileService? : SkProfileService
 }
@@ -36,18 +38,15 @@ const goal  : string [] = ['새로운 지식과 트렌드를 배우기 위해', 
 @observer
 @reactAutobind
 class FavoriteLearningTypeContainer extends React.Component<Props, States> {
-
-  constructor(props:Props) {
-    super(props);
-    this.state = {
-      typeGroup: '오프라인',
-      timeGroup: '오전',
-      areaGroup: ['서울 - 강북'],
-      goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
-      focus: false,
-      write: '',
-    };
-  }
+  //
+  state = {
+    typeGroup: '오프라인',
+    timeGroup: '오전',
+    areaGroup: ['서울 - 강북'],
+    goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
+    focus: false,
+    write: '',
+  };
 
   componentDidMount(): void {
     const { skProfileService } = this.props;
@@ -92,7 +91,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
 
 
   onSubmmit() {
-    const { skProfileService, collegeService } = this.props;
+    const { skProfileService, collegeService, history } = this.props;
 
     const { typeGroup, timeGroup, areaGroup, goalGroup, write } = this.state;
     const learningTyps : IdNameList = new IdNameList();
@@ -107,7 +106,7 @@ class FavoriteLearningTypeContainer extends React.Component<Props, States> {
       skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
       skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
       skProfileService.modifyStudySummaryFirstTime(StudySummary.asNameValues(skProfileService.studySummary))
-        .then(() => this.props.history.push('/'));
+        .then(() => history.push(mainRoutePaths.introduction()));
     }
   }
 

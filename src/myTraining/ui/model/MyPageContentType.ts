@@ -1,7 +1,7 @@
 
-enum PageType {
+enum MyPageContentType {
   CompletedList = 'CompletedList',
   EarnedStampList = 'EarnedStampList',
 }
 
-export default PageType;
+export default MyPageContentType;

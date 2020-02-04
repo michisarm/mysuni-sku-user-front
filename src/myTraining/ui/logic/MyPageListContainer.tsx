@@ -14,7 +14,7 @@ import { SeeMoreButton } from 'lecture/shared';
 
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import PageType from '../model/PageType';
+import MyPageContentType from '../model/MyPageContentType';
 import LineHeaderContainer from './LineHeaderContainer';
 
 
@@ -75,7 +75,7 @@ class MyPageListContainer extends Component<Props, States> {
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
     let offsetList: any = null;
 
-    if (activeItem === PageType.CompletedList) {
+    if (activeItem === MyPageContentType.CompletedList) {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset, channelIds);
     }
     else {
@@ -155,7 +155,7 @@ class MyPageListContainer extends Component<Props, States> {
             :
             <NoSuchContentPanel
               message={(
-                activeItem === PageType.CompletedList ?
+                activeItem === MyPageContentType.CompletedList ?
                   <>학습완료에 해당하는<br />학습 과정이 없습니다.</>
                   :
                   '획득한 스탬프가 없습니다.'

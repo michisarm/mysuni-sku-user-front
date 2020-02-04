@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
-import PageType from '../model/PageType';
+import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
 import MenuItemContainer from '../logic/MyPageListContainer';
 
@@ -59,12 +59,12 @@ class MyPage extends Component<Props, State> {
     //
     return [
       {
-        name: PageType.CompletedList,
+        name: MyPageContentType.CompletedList,
         item: '학습완료',
         render: () => <MenuItemContainer />,
       },
       {
-        name: PageType.EarnedStampList,
+        name: MyPageContentType.EarnedStampList,
         item: '보유스탬프',
         render: () => <MenuItemContainer />,
       },
