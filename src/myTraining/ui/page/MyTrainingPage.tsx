@@ -114,7 +114,7 @@ class MyTrainingPage extends Component<Props, State> {
   }
 
   init() {
-    const { match, skProfileService, myLearningSummaryService, notieService } = this.props;
+    const { match, skProfileService, myLearningSummaryService, notieService, inMyLectureService, lectureService } = this.props;
 
     skProfileService!.findSkProfile();
     myLearningSummaryService!.findMyLearningSummary();
@@ -123,6 +123,12 @@ class MyTrainingPage extends Component<Props, State> {
     notieService!.countMenuNoties('Learning_Passed');
     notieService!.countMenuNoties('Learning_Missed');
     notieService!.countMenuNoties('Learning_Waiting');
+
+    //관심목록 갯수 조회
+    inMyLectureService!.countInMyLectures();
+
+    //권장과정 갯수 조회
+    lectureService!.countRequiredLectures();
 
     this.selectMenu(match.params.tab);
   }
@@ -411,7 +417,7 @@ class MyTrainingPage extends Component<Props, State> {
 
   render() {
     //
-    const { skProfileService, myLearningSummaryService, notieService } = this.props;
+    const { skProfileService, myLearningSummaryService, notieService, lectureService, inMyLectureService } = this.props;
     const { type } = this.state;
     const { skProfile } = skProfileService as SkProfileService;
     const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
@@ -422,6 +428,9 @@ class MyTrainingPage extends Component<Props, State> {
     const progressCount = notieService!.progressedCount;
     const missedCount = notieService!.missedCount;
     const enrolledCount = notieService!.waitingCount;
+
+    const inMyLecturesCount = inMyLectureService!.inMyLecturesCount;
+    const requiredLecturesCount = lectureService!.requiredLecturesCount;
 
     return (
       <ContentLayout
@@ -469,11 +478,13 @@ class MyTrainingPage extends Component<Props, State> {
             {
               name: '관심목록',
               type: Type.InMyList,
+              count: inMyLecturesCount,
             },
             {
               name: '권장과정',
               type: Type.Required,
               className: 'division',
+              count: requiredLecturesCount,
             },
             {
               name: '학습예정',
