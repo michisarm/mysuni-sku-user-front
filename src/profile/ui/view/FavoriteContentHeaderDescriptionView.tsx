@@ -1,14 +1,16 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
 
-interface Props{
-  step:number
+
+interface Props {
+  step: number
 }
 
 @observer
 @reactAutobind
-class TitleText extends React.Component<Props> {
+class FavoriteContentHeaderDescriptionView extends Component<Props> {
 
   render() {
     const { step } = this.props;
@@ -40,8 +42,7 @@ class TitleText extends React.Component<Props> {
         </div>
       );
     }
-
   }
 }
 
-export default TitleText;
+export default FavoriteContentHeaderDescriptionView;

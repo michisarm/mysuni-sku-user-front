@@ -4,12 +4,12 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
-import FavoriteWelcomeContainer from '../logic/FavoriteWelcomeContainer';
+import PersonalInfoAgreementContainer from '../logic/PersonalInfoAgreementContainer';
 
 
 @observer
 @reactAutobind
-class FavoriteWelcomePage extends Component {
+class PersonalInfoAgreementPage extends Component {
   //
   render() {
     //
@@ -17,10 +17,10 @@ class FavoriteWelcomePage extends Component {
       <ContentLayout
         className="bg-white"
       >
-        <FavoriteWelcomeContainer />
+        <PersonalInfoAgreementContainer />
       </ContentLayout>
     );
   }
 }
 
-export default FavoriteWelcomePage;
+export default PersonalInfoAgreementPage;

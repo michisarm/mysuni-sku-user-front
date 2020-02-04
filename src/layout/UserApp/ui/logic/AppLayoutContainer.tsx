@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
+import profileRoutePaths from 'profile/routePaths';
 import { SkProfileService } from 'profile';
 import Header from '../../Header';
 import Footer from '../../Footer';
@@ -31,10 +32,10 @@ class AppLayoutContainer extends Component<Props> {
         const { skProfile } = skProfileService!;
 
         if (!skProfile.pisAgreement.signed) {
-          window.location.href = process.env.PUBLIC_URL + '/profile/agreement';
+          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
         }
         else if (!skProfile.studySummaryConfigured) {
-          window.location.href = process.env.PUBLIC_URL + '/profile/interest';
+          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
         }
       });
     }

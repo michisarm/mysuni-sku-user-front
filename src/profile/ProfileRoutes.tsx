@@ -4,11 +4,13 @@ import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
-import PisAgreementContainer from './ui/logic/PisAgreementContainer';
+import PersonalInfoAgreementPage from './ui/page/PersonalInfoAgreementPage';
+
 import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
-import FavoriteCollegeContainer from './ui/logic/FavoriteCollegeContainer';
-import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
-import FavoriteLearningTypeContainer from './ui/logic/FavoriteLearningTypeContainer';
+import FavoriteCollegePage from './ui/page/FavoriteCollegePage';
+import FavoriteJobPage from './ui/page/FavoriteJobPage';
+import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
+
 import LoadingPage from './ui/page/LoadingPage';
 
 
@@ -18,11 +20,13 @@ class ProfileRoutes extends React.PureComponent {
     //
     return (
       <Switch>
-        <Route exact path="/profile/agreement" component={PisAgreementContainer} />
+        <Route exact path="/profile/agreement" component={PersonalInfoAgreementPage} />
+
         <Route exact path="/profile/interest" component={FavoriteWelcomePage} />
-        <Route exact path="/profile/interest/college" component={FavoriteCollegeContainer} />
-        <Route exact path="/profile/interest/job" component={FavoriteJobContainer} />
-        <Route exact path="/profile/interest/learningType" component={FavoriteLearningTypeContainer} />
+        <Route exact path="/profile/interest/college" component={FavoriteCollegePage} />
+        <Route exact path="/profile/interest/job" component={FavoriteJobPage} />
+        <Route exact path="/profile/interest/learningType" component={FavoriteLearningTypePage} />
+        {/* FIXME: 미사용 페이지인것 같음 */}
         <Route exact path="/profile/interest/loading" component={LoadingPage} />
 
         <Route component={NotFoundPage} />
