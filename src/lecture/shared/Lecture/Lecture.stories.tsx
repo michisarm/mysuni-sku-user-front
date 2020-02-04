@@ -32,6 +32,7 @@ export const Basic = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    timeStrByState: '',
     rating: 0,
   });
 
@@ -98,6 +99,7 @@ export const Required = () => {
     cubeType: CubeType.Documents,
     learningTime: 40,
     state: undefined,
+    timeStrByState: '',
     rating: 0,
   });
 
@@ -130,6 +132,7 @@ export const Line = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    timeStrByState: '',
     rating: 0,
   });
 
@@ -198,6 +201,7 @@ export const Course = () => {
     cubeType: CubeType.ClassRoomLecture,
     learningTime: 90,
     state: undefined,
+    timeStrByState: '',
     rating: 0,
   });
 

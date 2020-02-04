@@ -1,6 +1,7 @@
 
 import { decorate, observable, computed } from 'mobx';
 import { patronInfo } from '@nara.platform/dock';
+import moment from 'moment';
 import {
   CategoryModel,
   DramaEntityObservableModel,
@@ -11,8 +12,8 @@ import {
   ProposalStateName,
 } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
-import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
-import { CourseSetModel } from '../../course/model/CourseSetModel';
+import { LectureServiceType } from 'lecture';
+import { CourseSetModel } from 'course';
 
 
 class InMyLectureModel extends DramaEntityObservableModel {
@@ -43,6 +44,9 @@ class InMyLectureModel extends DramaEntityObservableModel {
   proposalState: ProposalState = ProposalState.Submitted;
   learningState: LearningState = LearningState.Progress;
 
+  createDate: string = '';
+  startDate: string = '';
+  endDate: string = '';
   // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
@@ -107,6 +111,35 @@ class InMyLectureModel extends DramaEntityObservableModel {
       return ProposalStateName[ProposalState[this.proposalState]];
     }
   }
+
+  @computed
+  get timeStrByState() {
+    if (this.proposalState) {
+      if (this.proposalState === ProposalState.Submitted) return '';
+      if (this.proposalState === ProposalState.Approved) {
+        if (!this.learningState && this.startDate) {
+          return moment(this.startDate).format('YYYY.MM.DD') + ' 부터 학습시작';
+        }
+        if (
+          this.learningState === LearningState.Progress || this.learningState === LearningState.Waiting
+          || this.learningState === LearningState.HomeworkWaiting || this.learningState === LearningState.TestWaiting
+          || this.learningState === LearningState.TestPassed || this.learningState === LearningState.Failed
+        ) {
+          return moment(Number(this.time)).format('YYYY.MM.DD') + ' 학습 시작';
+        }
+        if (this.learningState === LearningState.Passed) {
+          return moment(Number(this.time)).format('YYYY.MM.DD') + ' 학습 완료';
+        }
+        if (this.learningState === LearningState.Missed) {
+          return moment(Number(this.time)).format('YYYY.MM.DD') + ' 이수 실패';
+        }
+      }
+      if (this.proposalState === ProposalState.Rejected) {
+        return moment(Number(this.time)).format('YYYY.MM.DD') + ' 수강신청 반려';
+      }
+    }
+    return '';
+  }
 }
 
 decorate(InMyLectureModel, {
@@ -131,6 +164,9 @@ decorate(InMyLectureModel, {
   studentCount: observable,
   passedStudentCount: observable,
   baseUrl: observable,
+  createDate: observable,
+  startDate: observable,
+  endDate: observable,
 });
 
 export default InMyLectureModel;

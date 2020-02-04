@@ -152,16 +152,15 @@ class LectureContainer extends Component<Props, States> {
     let state = model.state;
     let date;
 
-    if (state) {
-      rating = undefined;
-      date = moment(model.time).format('YYYY.MM.DD');
-    }
-    if (model.required) {
+    if (model.required && !state) {
       state = '권장과정';
       rating = undefined;
-      date = moment(model.time).format('YYYY.MM.DD');
+      date = moment(model.time).format('YYYY.MM.DD') + ' 필수 학습 등록';
     }
-
+    else if (state) {
+      rating = undefined;
+      date = model.timeStrByState;
+    }
 
     return (
       <BoxCardView
@@ -223,18 +222,17 @@ class LectureContainer extends Component<Props, States> {
     let { rating } = this.props;
     const { hovered } = this.state;
 
-    let state;
+    let state = model.state;
     let date;
-    state = model.state;
 
-    if (state) {
-      rating = undefined;
-      date = moment(model.time).format('YYYY.MM.DD');
-    }
-    if (model.required) {
+    if (model.required && !state) {
       state = '권장과정';
       rating = undefined;
-      date = moment(model.time).format('YYYY.MM.DD');
+      date = moment(model.time).format('YYYY.MM.DD') + '필수 학습 등록';
+    }
+    else if (state) {
+      rating = undefined;
+      date = model.timeStrByState;
     }
 
     return (
