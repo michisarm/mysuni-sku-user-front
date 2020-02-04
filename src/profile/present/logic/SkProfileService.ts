@@ -63,13 +63,13 @@ export default class SkProfileService {
   }
 
   @action
-  async  findSkProfileByAudienceId(audienceId: string) {
+  async findSkProfileByAudienceId(audienceId: string) {
     const  skProfile = await  this.skProfileApi.findSkProfileByAudienceId(audienceId);
     return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
 
   @action
-  async  findSkProfileByProfileId(profileId: string) {
+  async findSkProfileByProfileId(profileId: string) {
     const skProfile = await  this.skProfileApi.findSkProfileByProfileId(profileId);
     return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
   }
@@ -85,7 +85,7 @@ export default class SkProfileService {
   }
 
   @action
-  async  findAllSkProfile(offset:number, limit : number) {
+  async findAllSkProfile(offset:number, limit : number) {
     const skProfiles = await  this.skProfileApi.findAllSkProfile(offset, limit);
     if (skProfiles) {
       skProfiles!.results = skProfiles!.results.map(skProfile => new SkProfileModel(skProfile));
