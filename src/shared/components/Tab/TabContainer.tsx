@@ -13,6 +13,7 @@ interface Props {
   wrapperClassName?: string
   defaultActiveName?: string
   allMounted?: boolean
+  large?: boolean
   renderItems?: (props: any) => void
   onChangeTab?: (tab: TabItemModel) => void
 }
@@ -58,7 +59,7 @@ class TabContainer extends Component<Props, State> {
 
   renderItems() {
     //
-    const { renderItems, className, tabs } = this.props;
+    const { renderItems, className, large, tabs } = this.props;
     const { activeName } = this.state;
 
     if (renderItems) {
@@ -68,7 +69,7 @@ class TabContainer extends Component<Props, State> {
       return (
         <Sticky className={className}>
           <div className="cont-inner">
-            <Menu className="sku">
+            <Menu className={large ? 'sku2' : 'sku'}>
               { tabs.map((tab, index) => (
                 <Menu.Item
                   key={`tab-${index}`}

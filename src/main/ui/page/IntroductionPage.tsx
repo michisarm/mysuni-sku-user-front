@@ -4,27 +4,82 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { ContentLayout } from 'shared';
-import IntroductionContainer from '../../sub/Introduction';
+import { ContentLayout, Tab, TabItemModel } from 'shared';
+import routePaths from '../../routePaths';
+import MySuniView from '../view/MySuniView';
+import CollegeView from '../view/CollegeView';
+import CertificationView from '../view/CertificationView';
 
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps<RouteParams> {
 }
+
+interface RouteParams {
+  tab: ContentType
+}
+
+enum ContentType {
+  MySuni = 'MySuni',
+  College = 'College',
+  Certification = 'Certification',
+}
+
+enum ContentTypeName {
+  MySuni = 'mySUNI 소개',
+  College = 'College 소개',
+  Certification = '인증제도 소개',
+}
+
 
 @reactAutobind
 @observer
 class UserMainPage extends Component<Props> {
   //
+  getTabs() {
+    //
+    return [
+      {
+        name: ContentType.MySuni,
+        item: ContentTypeName.MySuni,
+        render: () => <MySuniView />,
+      },
+      {
+        name: ContentType.College,
+        item: ContentTypeName.College,
+        render: () => <CollegeView />,
+      },
+      {
+        name: ContentType.Certification,
+        item: ContentTypeName.Certification,
+        render: () => <CertificationView />,
+      },
+    ] as TabItemModel[];
+  }
+
+  onChangeTab(tab: TabItemModel) {
+    //
+    this.props.history.push(routePaths.introductionTab(tab.name));
+  }
+
   render() {
     //
+    const { params } = this.props.match;
+
     return (
       <ContentLayout
         className="bg-white introduction"
         breadcrumb={[
           { text: 'Introduction' },
+          { text: ContentTypeName[params.tab] },
         ]}
       >
-        <IntroductionContainer />
+        <Tab
+          large
+          className="tab-menu2 offset0"
+          defaultActiveName={params.tab}
+          tabs={this.getTabs()}
+          onChangeTab={this.onChangeTab}
+        />
       </ContentLayout>
     );
   }
