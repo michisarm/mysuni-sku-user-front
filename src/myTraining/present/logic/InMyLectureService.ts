@@ -26,6 +26,8 @@ class InMyLectureService {
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
+  @observable
+  inMyLecturesCount: number = 0;
 
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
@@ -107,6 +109,19 @@ class InMyLectureService {
 
     runInAction(() => this.inMyLecture = new InMyLectureModel(inMyLecture));
     return inMyLecture;
+  }
+
+  /**
+   * 관심목록 갯수 조회
+   */
+  @action
+  async countInMyLectures()
+  {
+    const count = await this.inMyLectureApi.countInMyLectures();
+
+    runInAction(() => {
+      this.inMyLecturesCount = count;
+    });
   }
 
 }

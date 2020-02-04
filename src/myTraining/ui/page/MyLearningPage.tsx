@@ -11,14 +11,20 @@ import MyLearningContentType from '../model/MyLearningContentType';
 import MyLearningContentTypeName from '../model/MyLearningContentTypeName';
 import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
 import MyLearningListContainer from '../logic/MyLearningListContainer';
+import LectureService from '../../../lecture/shared/present/logic/LectureService';
+import InMyLectureService from '../../present/logic/InMyLectureService';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   notieService?: NotieService,
+  lectureService: LectureService,
+  inMyLectureService: InMyLectureService,
 }
 
 @inject(mobxHelper.injectFrom(
   'layout.notieService',
+  'lecture.lectureService',
+  'myTraining.inMyLectureService',
 ))
 @observer
 @reactAutobind
@@ -31,22 +37,31 @@ class MyLearningPage extends Component<Props> {
 
   getNoties() {
     //
-    const { notieService } = this.props;
+    const { notieService, inMyLectureService, lectureService } = this.props;
 
     notieService!.countMenuNoties('Learning_Progress');
     notieService!.countMenuNoties('Learning_Passed');
     notieService!.countMenuNoties('Learning_Missed');
     notieService!.countMenuNoties('Learning_Waiting');
+
+    //관심목록 갯수 조회
+    inMyLectureService!.countInMyLectures();
+
+    //권장과정 갯수 조회
+    lectureService!.countRequiredLectures();
   }
 
   getTabs() {
     //
-    const { notieService } = this.props;
+    const { notieService, inMyLectureService, lectureService } = this.props;
 
     const progressCount = notieService!.progressedCount;
     const enrolledCount = notieService!.waitingCount;
     const completedCount = notieService!.completedCount;
     const missedCount = notieService!.missedCount;
+
+    const inMyLecturesCount = inMyLectureService!.inMyLecturesCount;
+    const requiredLecturesCount = lectureService!.requiredLecturesCount;
 
     return [
       {
@@ -56,13 +71,13 @@ class MyLearningPage extends Component<Props> {
       },
       {
         name: MyLearningContentType.InMyList,
-        item: this.getTabItem(MyLearningContentType.InMyList),
+        item: this.getTabItem(MyLearningContentType.InMyList, inMyLecturesCount),
         render: () => <MyLearningListContainer />,
       },
       {
         name: MyLearningContentType.Required,
         className: 'division',
-        item: this.getTabItem(MyLearningContentType.Required),
+        item: this.getTabItem(MyLearningContentType.Required, requiredLecturesCount),
         render: () => <MyLearningListContainer />,
       },
       {

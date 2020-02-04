@@ -35,6 +35,14 @@ class LectureFlowApi {
     return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
       .then(response => response && response.data);
   }
+
+  /**
+   * 권장과정 갯수 조회 API
+   */
+  countRequiredLectures() {
+    return axiosApi.post<number>(this.baseUrl + '/requiredCount')
+      .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
+  }
 }
 
 LectureFlowApi.instance = new LectureFlowApi();

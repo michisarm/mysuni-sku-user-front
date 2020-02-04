@@ -51,6 +51,8 @@ class LectureService {
   @observable
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
+  @observable
+  requiredLecturesCount: number = 0;
 
   constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
@@ -80,7 +82,6 @@ class LectureService {
     //
     return (this._lectureViews as IObservableArray).peek();
   }
-
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 
@@ -264,6 +265,19 @@ class LectureService {
   async confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {
     //
     return this.studentFlowApi.confirmUsageStatisticsByCardId(studentCdo);
+  }
+
+  /**
+   * 권장과정 갯수 조회
+   */
+  @action
+  async countRequiredLectures()
+  {
+    const count = await this.lectureFlowApi.countRequiredLectures();
+
+    runInAction(() => {
+      this.requiredLecturesCount = count;
+    });
   }
 }
 

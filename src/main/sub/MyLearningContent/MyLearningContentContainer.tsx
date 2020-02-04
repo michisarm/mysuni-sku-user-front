@@ -59,6 +59,8 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     this.props.notieService!.countMenuNoties('Learning_Progress');
     this.props.notieService!.countMenuNoties('Learning_Waiting');
+    this.props.lectureService!.countRequiredLectures();
+    this.props.inMyLectureService!.countInMyLectures();
   }
 
   async findMyContent() {
@@ -175,10 +177,28 @@ class MyLearningContentContainer extends Component<Props, State> {
   getTabs() {
     //
     const notieService = this.props.notieService!;
+    const lectureService = this.props.lectureService!;
+    const inMyLectureService = this.props.inMyLectureService!;
 
     return [
-      { name: ContentType.Required, item: '권장과정', render: this.renderRequiredList },
-      { name: ContentType.InMyList, item: '관심목록', render: this.renderInMyList },
+      { name: ContentType.Required,
+        item: (
+          <>
+            권장과정
+            { lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>}
+          </>
+        ),
+        render: this.renderRequiredList,
+      },
+      { name: ContentType.InMyList,
+        item: (
+          <>
+            관심목록
+            { inMyLectureService.inMyLecturesCount > 0 && <span className="count">+{inMyLectureService.inMyLecturesCount}</span>}
+          </>
+        ),
+        render: this.renderInMyList,
+      },
       {
         name: ContentType.InProgress,
         item: (
