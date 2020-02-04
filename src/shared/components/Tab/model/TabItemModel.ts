@@ -4,9 +4,12 @@ import RenderPropsModel from './RenderPropsModel';
 
 
 interface TabItemModel {
+  //
   name: string;
-  item?: React.ReactNode;
   render: (props: RenderPropsModel) => React.ReactNode;
+
+  item?: React.ReactNode;
+  className?: string;
   onClick?: () => void;
 }
 

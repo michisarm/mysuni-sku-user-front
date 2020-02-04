@@ -1,30 +1,28 @@
+
 import React, { Component } from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { Segment } from 'semantic-ui-react';
 
-import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel, PageService, CubeType } from 'shared';
-import { SkProfileModel, SkProfileService } from 'profile';
+import { NoSuchContentPanel, PageService, CubeType } from 'shared';
+import { SkProfileService } from 'profile';
 import { Lecture, LectureService, LectureModel } from 'lecture';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../routePaths';
-import { ContentHeaderTotalTimeItem } from '../../shared';
-import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import InMyLectureService from '../../present/logic/InMyLectureService';
-import LineHeaderContainer from '../logic/LineHeaderContainer';
-
 import MyTrainingModel from '../../model/MyTrainingModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
-import NotieService from '../../../layout/UserApp/present/logic/NotieService';
+
+import MyLearningContentType from '../model/MyLearningContentType';
+import LineHeaderContainer from '../logic/LineHeaderContainer';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -34,22 +32,11 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   lectureService?: LectureService,
   myTrainingService?: MyTrainingService,
   inMyLectureService?: InMyLectureService,
-  myLearningSummaryService?: MyLearningSummaryService,
-  notieService?: NotieService,
 }
 
 interface State {
   type: string
   channels: ChannelModel[]
-}
-
-enum Type {
-  InProgress= 'InProgress',
-  InMyList= 'InMyList',
-  Enrolled= 'Enrolled',
-  Required= 'Required',
-  Completed= 'Completed',
-  Retry= 'Retry',
 }
 
 @inject(mobxHelper.injectFrom(
@@ -59,12 +46,10 @@ enum Type {
   'lecture.lectureService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
-  'myTraining.myLearningSummaryService',
-  'layout.notieService',
 ))
 @observer
 @reactAutobind
-class MyTrainingPage extends Component<Props, State> {
+class MyLearningPage extends Component<Props, State> {
   //
   PAGE_KEY = 'training';
 
@@ -92,10 +77,10 @@ class MyTrainingPage extends Component<Props, State> {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
       const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
       if (currentPageNo === '1') {
-        if (currentTab === Type.InMyList) {
+        if (currentTab === MyLearningContentType.InMyList) {
           inMyLectureService!.clearInMyLectures();
         }
-        if (currentTab === Type.Required) {
+        if (currentTab === MyLearningContentType.Required) {
           lectureService!.clearLectures();
         } else {
           myTrainingService!.clear();
@@ -107,28 +92,11 @@ class MyTrainingPage extends Component<Props, State> {
       }
       this.findPagingList(this.getPageNo() - 1);
     }
-
-    // notieService!.countMenuNoties('Progress');
-    // notieService!.countMenuNoties('Completed');
-    // notieService!.countMenuNoties('Missed');
   }
 
   init() {
-    const { match, skProfileService, myLearningSummaryService, notieService, inMyLectureService, lectureService } = this.props;
-
-    skProfileService!.findSkProfile();
-    myLearningSummaryService!.findMyLearningSummary();
-
-    notieService!.countMenuNoties('Learning_Progress');
-    notieService!.countMenuNoties('Learning_Passed');
-    notieService!.countMenuNoties('Learning_Missed');
-    notieService!.countMenuNoties('Learning_Waiting');
-
-    //관심목록 갯수 조회
-    inMyLectureService!.countInMyLectures();
-
-    //권장과정 갯수 조회
-    lectureService!.countRequiredLectures();
+    //
+    const { match } = this.props;
 
     this.selectMenu(match.params.tab);
   }
@@ -140,10 +108,10 @@ class MyTrainingPage extends Component<Props, State> {
     if (type !== prevType) {
       const { pageService, lectureService, inMyLectureService, myTrainingService } = this.props;
 
-      if (type === Type.InMyList) {
+      if (type === MyLearningContentType.InMyList) {
         inMyLectureService!.clearInMyLectures();
       }
-      if (type === Type.Required) {
+      if (type === MyLearningContentType.Required) {
         lectureService!.clearLectures();
       } else {
         myTrainingService!.clear();
@@ -153,26 +121,6 @@ class MyTrainingPage extends Component<Props, State> {
       pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
       this.setState({ type }, this.findPagingList);
     }
-  }
-
-  onSelectMenu(type: string) {
-    //
-    this.props.history.push(routePaths.learningTab(type));
-
-    switch (type) {
-      case Type.InProgress:
-        this.props.notieService!.readNotie('Learning_Progress');
-        break;
-      case Type.Completed:
-        this.props.notieService!.readNotie('Learning_Passed');
-        break;
-      case Type.Retry:
-        this.props.notieService!.readNotie('Learning_Missed');
-        break;
-      case Type.Enrolled:
-        this.props.notieService!.readNotie('Learning_Waiting');
-    }
-
   }
 
   async findPagingList(pageNo?: number) {
@@ -185,12 +133,13 @@ class MyTrainingPage extends Component<Props, State> {
     let feedbackIds: string[] = [];
 
     inMyLectureService!.findAllInMyLectures();
-    if (type === Type.InMyList) {
+
+    if (type === MyLearningContentType.InMyList) {
       offsetList = await inMyLectureService!.findInMyLectures(page!.limit, page!.nextOffset, channelIds);
       feedbackIds = (offsetList.results || []).map((lecture: InMyLectureModel) => lecture.reviewId);
       await reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
-    else if (type === Type.Required) {
+    else if (type === MyLearningContentType.Required) {
       offsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset, channelIds);
     }
     else {
@@ -207,7 +156,7 @@ class MyTrainingPage extends Component<Props, State> {
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
-          if (type === Type.InMyList) {
+          if (type === MyLearningContentType.InMyList) {
             inMyLectureService!.clearInMyLectures();
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
@@ -240,7 +189,7 @@ class MyTrainingPage extends Component<Props, State> {
         servicePatronKeyString,
       }))
         .then(() => {
-          if (type === Type.InMyList) {
+          if (type === MyLearningContentType.InMyList) {
             inMyLectureService!.clearInMyLectures();
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
@@ -293,9 +242,9 @@ class MyTrainingPage extends Component<Props, State> {
     const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const { type } = this.state;
     this.setState({ channels }, () => {
-      if (type === Type.InMyList) {
+      if (type === MyLearningContentType.InMyList) {
         inMyLectureService!.clearInMyLectures();
-      } else if (type === Type.Required) {
+      } else if (type === MyLearningContentType.Required) {
         lectureService!.clearLectures();
       } else {
         myTrainingService!.clear();
@@ -305,30 +254,10 @@ class MyTrainingPage extends Component<Props, State> {
     });
   }
 
-
-  getTypeName(type: string) {
-    switch (type) {
-      case Type.InProgress:
-        return '학습중';
-      case Type.InMyList:
-        return '관심목록';
-      case Type.Enrolled:
-        return '학습예정';
-      case Type.Required:
-        return '권장과정';
-      case Type.Completed:
-        return '학습완료';
-      case Type.Retry:
-        return '취소/미이수';
-      default:
-        return '';
-    }
-  }
-
-  renderList() {
+  render() {
+    //
     const { skProfileService, inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
-    const { skProfile } = skProfileService as SkProfileService;
-    const { member } = skProfile as SkProfileModel;
+    const { member } = skProfileService!.skProfile;
     const { ratingMap } =  reviewService as ReviewService;
     const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
@@ -338,28 +267,28 @@ class MyTrainingPage extends Component<Props, State> {
     let noSuchContentPanel = '';
 
     switch (type) {
-      case Type.InMyList:
+      case MyLearningContentType.InMyList:
         list = inMyLectureService!.inMyLectures;
         noSuchContentPanel = '관심목록에 추가한 학습 과정이 없습니다.';
         break;
-      case Type.Required:
+      case MyLearningContentType.Required:
         list = lectureService!.lectures;
         noSuchContentPanel = '권장과정에 해당하는 학습 과정이 없습니다.';
         break;
-      case Type.Completed:
+      case MyLearningContentType.Completed:
         cardType = Lecture.GroupType.List;
         list = myTrainingService!.myTrainings;
         noSuchContentPanel = '학습완료에 해당하는 학습 과정이 없습니다.';
         break;
-      case Type.Enrolled:
+      case MyLearningContentType.Enrolled:
         noSuchContentPanel = '수강 대기중인 학습 과정이 없습니다.';
         list = myTrainingService!.myTrainings;
         break;
-      case Type.InProgress:
+      case MyLearningContentType.InProgress:
         noSuchContentPanel = '수강중인 학습 과정이 없습니다.';
         list = myTrainingService!.myTrainings;
         break;
-      case Type.Retry:
+      case MyLearningContentType.Retry:
         list = myTrainingService!.myTrainings;
         noSuchContentPanel = '취소/미이수에 해당하는 학습 과정이 없습니다.';
         break;
@@ -414,102 +343,6 @@ class MyTrainingPage extends Component<Props, State> {
       </Segment>
     );
   }
-
-  render() {
-    //
-    const { skProfileService, myLearningSummaryService, notieService, lectureService, inMyLectureService } = this.props;
-    const { type } = this.state;
-    const { skProfile } = skProfileService as SkProfileService;
-    const { myLearningSummary } = myLearningSummaryService as MyLearningSummaryService;
-
-    const { member } = skProfile as SkProfileModel;
-
-    const completedCount = notieService!.completedCount;
-    const progressCount = notieService!.progressedCount;
-    const missedCount = notieService!.missedCount;
-    const enrolledCount = notieService!.waitingCount;
-
-    const inMyLecturesCount = inMyLectureService!.inMyLecturesCount;
-    const requiredLecturesCount = lectureService!.requiredLecturesCount;
-
-    return (
-      <ContentLayout
-        className="mylearning"
-        breadcrumb={[
-          { text: `Learning` },
-          { text: `${this.getTypeName(type)}` },
-        ]}
-      >
-        <ContentHeader>
-          <ContentHeader.Cell inner>
-            <ContentHeader.ProfileItem
-              image={member.photoFilePath || profileImg}
-              name={member.name}
-              company={member.company}
-              department={member.department}
-              myPageActive
-            />
-          </ContentHeader.Cell>
-          <ContentHeader.Cell inner>
-            <ContentHeaderTotalTimeItem
-              minute={myLearningSummary.totalLearningTime}
-            />
-            {
-              (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0) && (
-                <ContentHeader.ChartItem
-                  universityTime={myLearningSummary.suniLearningTime}
-                  myCompanyTime={myLearningSummary.myCompanyLearningTime}
-                />
-              ) || (
-                <ContentHeader.WaitingItem
-                  onClick={() => this.props.history.push(lectureRoutePaths.recommend())}
-                />
-              )
-            }
-          </ContentHeader.Cell>
-        </ContentHeader>
-        <ContentMenu
-          menus={[
-            {
-              name: '학습중',
-              type: Type.InProgress,
-              count: progressCount,
-            },
-            {
-              name: '관심목록',
-              type: Type.InMyList,
-              count: inMyLecturesCount,
-            },
-            {
-              name: '권장과정',
-              type: Type.Required,
-              className: 'division',
-              count: requiredLecturesCount,
-            },
-            {
-              name: '학습예정',
-              type: Type.Enrolled,
-              count: enrolledCount,
-            },
-            {
-              name: '학습완료',
-              type: Type.Completed,
-              count: completedCount,
-            },
-            {
-              name: '취소/미이수',
-              type: Type.Retry,
-              count: missedCount,
-            },
-          ]}
-          type={this.state.type}
-          onSelectMenu={this.onSelectMenu}
-        >
-          { this.renderList() }
-        </ContentMenu>
-      </ContentLayout>
-    );
-  }
 }
 
-export default withRouter(MyTrainingPage);
+export default withRouter(MyLearningPage);

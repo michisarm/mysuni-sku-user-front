@@ -221,6 +221,8 @@ class CoursePage extends Component<Props> {
 
       examId = coursePlanContents.testId || '';
 
+      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
+
       surveyId = coursePlanContents.surveyId || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';

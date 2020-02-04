@@ -75,8 +75,9 @@ class PisAgreementContainer extends Component<Props> {
         }
       }
     }
-    else reactAlert({ title: '알림', message: '개인정보 처리방침을 확인하시고 동의해주세요' });
-
+    else {
+      reactAlert({ title: '알림', message: '개인정보 처리방침을 확인하시고 동의해주세요' });
+    }
   }
 
   render() {
