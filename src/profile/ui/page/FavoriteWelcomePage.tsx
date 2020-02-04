@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import FavoriteWelcomeContainer from '../logic/FavoriteWelcomeContainer';
+import FavoriteWelcomeMySuniIntroView from '../view/FavoriteWelcomeMySuniIntroView';
+import FavoriteStartButtonView from '../view/FavoriteStartButtonView';
 
 
 @observer
@@ -15,9 +17,13 @@ class FavoriteWelcomePage extends Component {
     //
     return (
       <ContentLayout
-        className="bg-white"
+        className="introduction login-set bg-white"
       >
         <FavoriteWelcomeContainer />
+        <FavoriteWelcomeMySuniIntroView />
+        <div className="start-wrap">
+          <FavoriteStartButtonView />
+        </div>
       </ContentLayout>
     );
   }
