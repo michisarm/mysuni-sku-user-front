@@ -40,6 +40,15 @@ class InMyLectureApi {
     return axiosApi.get<InMyLectureModel[]>(this.baseUrl + '/myLectures/all')
       .then(response => response && Array.isArray(response.data) && response.data || []);
   }
+
+  /**
+   * 관심목록 갯수 조회 API
+   */
+  countInMyLectures() {
+    return axiosApi.post<number>(this.baseUrl + '/myLecturesCount')
+      .then((response : any) => response.data && response.data.myStateCount && response.data.myStateCount.valueOf()); //myStateCount
+  }
+
 }
 
 InMyLectureApi.instance = new InMyLectureApi();
