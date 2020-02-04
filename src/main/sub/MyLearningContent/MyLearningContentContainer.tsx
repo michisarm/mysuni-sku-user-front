@@ -181,7 +181,8 @@ class MyLearningContentContainer extends Component<Props, State> {
     const inMyLectureService = this.props.inMyLectureService!;
 
     return [
-      { name: ContentType.Required,
+      {
+        name: ContentType.Required,
         item: (
           <>
             권장과정
@@ -190,7 +191,8 @@ class MyLearningContentContainer extends Component<Props, State> {
         ),
         render: this.renderRequiredList,
       },
-      { name: ContentType.InMyList,
+      {
+        name: ContentType.InMyList,
         item: (
           <>
             관심목록
