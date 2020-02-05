@@ -12,7 +12,7 @@ interface Props {
 
 @reactAutobind
 @observer
-class LinePanelTopLineContainer extends Component<Props> {
+class ListPanelTopLineContainer extends Component<Props> {
   //
   render() {
     //
@@ -27,4 +27,4 @@ class LinePanelTopLineContainer extends Component<Props> {
   }
 }
 
-export default LinePanelTopLineContainer;
+export default ListPanelTopLineContainer;

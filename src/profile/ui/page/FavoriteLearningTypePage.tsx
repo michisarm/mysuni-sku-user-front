@@ -26,12 +26,14 @@ class FavoriteLearningTypePage extends Component {
     //
     return (
       <ContentLayout
-        className="bg-white"
+        disabled
       >
-        <div className="interest-content step3">
-          <FavoriteContentHeaderContainer step={3} />
-          <FavoriteLearningTypeContainer />
-        </div>
+        <section>
+          <div className="interest-content step3">
+            <FavoriteContentHeaderContainer step={3} />
+            <FavoriteLearningTypeContainer />
+          </div>
+        </section>
       </ContentLayout>
     );
   }

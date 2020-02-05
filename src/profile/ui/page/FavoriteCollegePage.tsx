@@ -12,17 +12,29 @@ import FavoriteContentHeaderContainer from '../logic/FavoriteContentHeaderContai
 @reactAutobind
 class FavoriteCollegePage extends React.Component {
   //
+  componentDidMount(): void {
+    //
+    document.body.classList.add('white');
+  }
+
+  componentWillUnmount(): void {
+    //
+    document.body.classList.remove('white');
+  }
+
   render() {
     //
     return (
       <ContentLayout
-        className="bg-white"
+        disabled
       >
-        <div className="interest-content step1">
-          <FavoriteContentHeaderContainer step={1} />
+        <section className="bg-white">
+          <div className="interest-content step1">
+            <FavoriteContentHeaderContainer step={1} />
 
-          <FavoriteCollegeContainer />
-        </div>
+            <FavoriteCollegeContainer />
+          </div>
+        </section>
       </ContentLayout>
     );
   }
