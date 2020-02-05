@@ -1,9 +1,11 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+
+import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button, Radio } from 'semantic-ui-react';
-import { ClassroomModel } from 'personalcube/classroom';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
+import { ClassroomModel } from 'personalcube/classroom';
 
 
 interface Props {
@@ -16,12 +18,17 @@ interface Props {
 interface States {
   open: boolean
   selectedClassroom: ClassroomModel | null
+  scrollEnded: boolean
 }
 
 @reactAutobind
 class ClassroomModalView extends Component<Props, States> {
   //
-  state = { open: false, selectedClassroom: null };
+  state = {
+    open: false,
+    selectedClassroom: null,
+    scrollEnded: false,
+  };
 
   show() {
     this.setState({ open: true, selectedClassroom: null });
@@ -45,21 +52,38 @@ class ClassroomModalView extends Component<Props, States> {
     this.close();
   }
 
+  onScroll(e: any) {
+    //
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+    const { scrollEnded } = this.state;
+
+    if (scrollHeight === scrollTop + clientHeight) {
+      this.setState({
+        scrollEnded: true,
+      });
+    }
+    else if (scrollEnded) {
+      this.setState({
+        scrollEnded: false,
+      });
+    }
+  }
+
   render() {
     //
     const { classrooms, trigger, joinRounds } = this.props;
-    const { selectedClassroom }: States = this.state;
+    const { open, selectedClassroom, scrollEnded }: States = this.state;
     if (!classrooms || !classrooms.length) return null;
     const today = new Date();
 
     return (
-      <Modal open={this.state.open} onClose={this.close} className="base w1000 inner-scroll" trigger={trigger} onOpen={this.show}>
+      <Modal className={classNames('base w1000', { 'inner-scroll': scrollEnded })} trigger={trigger} open={open} onClose={this.close} onOpen={this.show}>
 
         <Modal.Header className="res">
           차수세부내용
           <span className="sub f12">차수를 선택해주세요.</span>
         </Modal.Header>
-        <Modal.Content>
+        <Modal.Content onScroll={this.onScroll}>
           <div className="scrolling-60vh">
             <Table className="head-fix ml-05-p01">
               <Table.Header>
