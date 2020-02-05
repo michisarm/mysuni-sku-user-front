@@ -4,7 +4,7 @@ import FavoriteCollegeContainer from './ui/logic/FavoriteCollegeContainer';
 import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
 import FavoriteLearningTypeContainer from './ui/logic/FavoriteLearningTypeContainer';
 import SkProfileService from './present/logic/SkProfileService';
-import LoadingPage from './ui/page/LoadingPage';
+import ProgressPage from './ui/page/ProgressPage';
 import { SkProfileModel } from './model/SkProfileModel';
 import { EmployeeModel } from './model/EmployeeModel';
 import { CodeNameModel } from './model/CodeNameModel';
@@ -21,7 +21,7 @@ export {
   SkProfileModel, EmployeeModel, CodeNameModel, StudySummary,
   PersonalInfoAgreementContainer,
   FavoriteWelcomePage,
-  LoadingPage,
+  ProgressPage,
   FavoriteCollegeContainer,
   FavoriteJobContainer,
   FavoriteLearningTypeContainer,

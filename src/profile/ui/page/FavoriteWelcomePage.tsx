@@ -13,6 +13,16 @@ import FavoriteStartButtonView from '../view/FavoriteStartButtonView';
 @reactAutobind
 class FavoriteWelcomePage extends Component {
   //
+  componentDidMount(): void {
+    //
+    document.body.classList.add('white');
+  }
+
+  componentWillUnmount(): void {
+    //
+    document.body.classList.remove('white');
+  }
+
   render() {
     //
     return (

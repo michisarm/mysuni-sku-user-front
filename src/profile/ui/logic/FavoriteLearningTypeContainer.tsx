@@ -58,39 +58,6 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
     skProfileService!.findStudySummary();
   }
 
-  handleChange(event: any, target: any) {
-    //
-    const name: 'typeGroup' | 'timeGroup' = target.name;
-    const state = { ...this.state };
-
-    state[name] = target.value;
-    this.setState(state);
-  }
-
-  handleCheckBox(event: any, targetProps: any) {
-    //
-    const name : 'areaGroup' | 'goalGroup' = targetProps.name;
-    const value = targetProps.value;
-    const state = { ...this.state };
-
-    if (targetProps.checked && targetProps.name === 'goalGroup' &&  state.goalGroup.length === 3) {
-      reactAlert({ title: '교육목적', message: '중복 3개까지 선택 가능합니다.', onClose: () => targetProps.checked = false });
-      return;
-    }
-
-    if (targetProps.checked) {
-      state[name].push(value);
-    } else {
-      state[name] = state[name].filter(data =>  data !== value);
-    }
-
-    this.setState(state);
-  }
-
-  onPreviousClick() {
-    this.props.history.push(routePaths.favoriteJob());
-  }
-
   onSubmmit() {
     //
     const skProfileService = this.props.skProfileService!;
@@ -111,7 +78,43 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
     skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
     skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
     skProfileService.modifyStudySummaryFirstTime(StudySummary.asNameValues(skProfileService.studySummary))
-      .then(() => history.push(mainRoutePaths.introduction()));
+      .then(() => {
+        history.push(routePaths.favoriteProgress());
+        setTimeout(() => history.replace(mainRoutePaths.introduction()), 3000);
+      });
+  }
+
+  onPrevious() {
+    this.props.history.push(routePaths.favoriteJob());
+  }
+
+  onChangeRadio(event: any, target: any) {
+    //
+    const name: 'typeGroup' | 'timeGroup' = target.name;
+    const state = { ...this.state };
+
+    state[name] = target.value;
+    this.setState(state);
+  }
+
+  onChangeCheck(event: any, targetProps: any) {
+    //
+    const name : 'areaGroup' | 'goalGroup' = targetProps.name;
+    const value = targetProps.value;
+    const state = { ...this.state };
+
+    if (targetProps.checked && targetProps.name === 'goalGroup' &&  state.goalGroup.length === 3) {
+      reactAlert({ title: '교육목적', message: '중복 3개까지 선택 가능합니다.', onClose: () => targetProps.checked = false });
+      return;
+    }
+
+    if (targetProps.checked) {
+      state[name].push(value);
+    } else {
+      state[name] = state[name].filter(data =>  data !== value);
+    }
+
+    this.setState(state);
   }
 
   render() {
@@ -132,7 +135,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
                   key={index}
                   tabIndex={index}
                   checked={label === typeGroup}
-                  onChange={this.handleChange}
+                  onChange={this.onChangeRadio}
                 />
               ))
               }
@@ -149,7 +152,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
                     className="base"
                     key={index}
                     defaultChecked={index === 0}
-                    onChange={(event:any, props:any) => this.handleCheckBox(event, props)}
+                    onChange={(event: any, props: any) => this.onChangeCheck(event, props)}
                   />
                 ))
               }
@@ -160,7 +163,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
             <div className="check-area">
               {
                 time && time.map((label, index) => (
-                  <Radio name="timeGroup" label={label} value={label} className="base" key={index} checked={label === timeGroup} onChange={this.handleChange} />
+                  <Radio name="timeGroup" label={label} value={label} className="base" key={index} checked={label === timeGroup} onChange={this.onChangeRadio} />
                 ))
               }
             </div>
@@ -177,7 +180,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
                     className="base"
                     key={index}
                     checked={goalGroup.includes(label)}
-                    onChange={(event:any, props:any) => this.handleCheckBox(event, props)}
+                    onChange={(event:any, props:any) => this.onChangeCheck(event, props)}
                   />
                 ))
               }
@@ -206,7 +209,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
         {/*  <span>학습 유형을 선택해주세요.</span>*/}
         {/*</div>*/}
         <div className="button-area">
-          <Button className="fix line" onClick={this.onPreviousClick}>Previous</Button>
+          <Button className="fix line" onClick={this.onPrevious}>Previous</Button>
           <Button className="fix bg" onClick={this.onSubmmit}>Submit</Button>
         </div>
       </Form>

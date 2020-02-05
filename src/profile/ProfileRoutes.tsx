@@ -11,7 +11,7 @@ import FavoriteCollegePage from './ui/page/FavoriteCollegePage';
 import FavoriteJobPage from './ui/page/FavoriteJobPage';
 import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
 
-import LoadingPage from './ui/page/LoadingPage';
+import ProgressPage from './ui/page/ProgressPage';
 
 
 class ProfileRoutes extends React.PureComponent {
@@ -26,8 +26,7 @@ class ProfileRoutes extends React.PureComponent {
         <Route exact path="/profile/interest/college" component={FavoriteCollegePage} />
         <Route exact path="/profile/interest/job" component={FavoriteJobPage} />
         <Route exact path="/profile/interest/learningType" component={FavoriteLearningTypePage} />
-        {/* FIXME: 미사용 페이지인것 같음 */}
-        <Route exact path="/profile/interest/loading" component={LoadingPage} />
+        <Route exact path="/profile/interest/progress" component={ProgressPage} />
 
         <Route component={NotFoundPage} />
       </Switch>
