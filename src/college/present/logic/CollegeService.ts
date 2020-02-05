@@ -7,7 +7,6 @@ import { IdNameList } from 'shared';
 import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';
-import { JobGroupModel } from '../../model/JobGroupModel';
 import ChannelModel from '../../model/ChannelModel';
 
 
@@ -26,12 +25,6 @@ export default class CollegeService {
   _colleges: CollegeModel[] = [];
 
   collegesCachingFetch: CachingFetch = new CachingFetch();
-
-  @observable
-  jobGroups: JobGroupModel[] = [];
-
-  @observable
-  jobGroup: JobGroupModel = new JobGroupModel();
 
   @observable
   _channels: ChannelModel[] = [];
@@ -135,20 +128,6 @@ export default class CollegeService {
     );
 
     return fetched ? this.collegesCachingFetch.inProgressFetching : this.colleges;
-  }
-
-  // Others -----------------------------------------------------------------------------------------------------------
-
-  @action
-  async findAllJobGroups() {
-    const jobGroups = await this.collegeApi.findAllJobGroups();
-    return runInAction(() => this.jobGroups = jobGroups);
-  }
-
-  @action
-  async findJobGroupById(jobGroupId: string) {
-    const jobGroup = await this.collegeApi.findJobGroupById(jobGroupId);
-    return runInAction(() => this.jobGroup = new JobGroupModel(jobGroup));
   }
 
   // Panopto ----------------------------------------------------------------------------------------------------------

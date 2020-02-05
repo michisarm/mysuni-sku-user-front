@@ -91,3 +91,5 @@ decorate(SkProfileModel, {
   passwordAuthenticated: observable,
   studySummaryConfigured: observable,
 });
+
+export default SkProfileModel;

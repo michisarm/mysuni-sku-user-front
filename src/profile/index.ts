@@ -1,4 +1,4 @@
-import PisAgreementContainer from './ui/logic/PisAgreementContainer';
+import PersonalInfoAgreementContainer from './ui/logic/PersonalInfoAgreementContainer';
 import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
 import FavoriteCollegeContainer from './ui/logic/FavoriteCollegeContainer';
 import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
@@ -19,7 +19,7 @@ export const profileStores = {
 
 export {
   SkProfileModel, EmployeeModel, CodeNameModel, StudySummary,
-  PisAgreementContainer,
+  PersonalInfoAgreementContainer,
   FavoriteWelcomePage,
   LoadingPage,
   FavoriteCollegeContainer,
