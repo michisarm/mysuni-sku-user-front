@@ -7,6 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { NoSuchContentPanel, OffsetElementList } from 'shared';
 import { ChannelModel } from 'college';
+import { SkProfileService } from 'profile';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
@@ -15,6 +16,7 @@ import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps {
+  skProfileService?: SkProfileService,
   inMyLectureService?: InMyLectureService,
   lectures: OffsetElementList<LectureModel>
   channel: ChannelModel
@@ -22,6 +24,7 @@ interface Props extends RouteComponentProps {
 }
 
 @inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
   'myTraining.inMyLectureService'
 ))
 @reactAutobind
@@ -75,11 +78,9 @@ class ChannelLecturesLineContainer extends Component<Props> {
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      // history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
       history.push(routePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      // history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
       history.push(routePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
   }
@@ -94,9 +95,11 @@ class ChannelLecturesLineContainer extends Component<Props> {
 
   render() {
     //
-    const { inMyLectureService, channel, lectures } = this.props;
-    const { results, totalCount } =  lectures;
+    const { skProfileService, inMyLectureService, channel, lectures } = this.props;
+    const { profileMemberName } = skProfileService!;
     const { inMyLectureMap } =  inMyLectureService!;
+    const { results, totalCount } =  lectures;
+
 
     return (
       <>
@@ -104,7 +107,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
           channel={channel}
           title={(
             <>
-              의 학습 과정입니다. <span className="channel">({totalCount})</span>
+              채널에서 {profileMemberName}님께 추천하는 과정입니다. <span className="channel">({totalCount})</span>
             </>
           )}
           onViewAll={this.onViewAll}

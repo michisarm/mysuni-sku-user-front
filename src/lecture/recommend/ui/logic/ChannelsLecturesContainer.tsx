@@ -197,10 +197,10 @@ class ChannelsLecturesContainer extends Component<Props> {
             displayableRecommendLectures
               .map((lecture: RecommendLectureRdo, index: number) => (
                 <ChannelLecturesLineContainer
+                  key={`channel_cont_${index}`}
                   channel={new ChannelModel(lecture.channel)}
                   lectures={lecture.lectures}
                   onViewAll={onViewAll}
-                  key={`channel_cont_${index}`}
                 />
               ))
           }
