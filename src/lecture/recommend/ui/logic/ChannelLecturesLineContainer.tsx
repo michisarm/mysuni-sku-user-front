@@ -100,7 +100,6 @@ class ChannelLecturesLineContainer extends Component<Props> {
     const { inMyLectureMap } =  inMyLectureService!;
     const { results, totalCount } =  lectures;
 
-
     return (
       <>
         <Lecture.LineHeader

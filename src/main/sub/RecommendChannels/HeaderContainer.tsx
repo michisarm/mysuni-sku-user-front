@@ -14,6 +14,7 @@ import HeaderView from './HeaderView';
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService
+  totalChannelCount: number
   favoriteChannels: ChannelModel[];
   onFindStudySummary: () => void,
 }
@@ -52,7 +53,7 @@ class HeaderContainer extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, favoriteChannels } = this.props;
+    const { skProfileService, totalChannelCount, favoriteChannels } = this.props;
     const { skProfile } = skProfileService!;
 
     return (
@@ -63,7 +64,7 @@ class HeaderContainer extends Component<Props> {
         <FavoriteChannelChangeModal
           trigger={(
             <Button icon className="img-icon">
-              <span className="underline">현재 선택된 관심 Channel(<span className="sel">{favoriteChannels.length}</span>)</span>
+              <span className="underline">현재 선택된 관심 Channel(<span className="sel">{favoriteChannels.length}</span>/{totalChannelCount})</span>
               <Icon className="setting17" /><span className="blind">setting</span>
             </Button>
           )}

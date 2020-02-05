@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import { LectureService, RecommendLectureRdo, ChannelLecturesLine } from 'lecture';
+import { LectureService, CollegeLectureCountService, RecommendLectureRdo, ChannelLecturesLine } from 'lecture';
 import { ChannelModel } from 'college';
 import { SkProfileService } from 'profile';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -16,6 +16,7 @@ import routePaths from '../../routePaths';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService
+  collegeLectureCountService?: CollegeLectureCountService
   lectureService?: LectureService
 }
 
@@ -25,6 +26,7 @@ interface RouteParams {
 
 @inject(mobxHelper.injectFrom(
   'profile.skProfileService',
+  'lecture.collegeLectureCountService',
   'lecture.lectureService',
 ))
 @observer
@@ -37,6 +39,7 @@ class RecommendChannelsContainer extends Component<Props> {
 
   componentDidMount(): void {
     //
+    this.findCollegeLectureCounts();
     this.findPagingRecommendLectures();
     this.findStudySummary();
   }
@@ -49,6 +52,12 @@ class RecommendChannelsContainer extends Component<Props> {
     if (prevParams.pageNo !== params.pageNo) {
       this.addPagingRecommendLectures();
     }
+  }
+
+  findCollegeLectureCounts() {
+    //
+    const { collegeLectureCountService } = this.props;
+    collegeLectureCountService!.findCollegeLectureCounts();
   }
 
   findStudySummary() {
@@ -101,8 +110,9 @@ class RecommendChannelsContainer extends Component<Props> {
 
   render() {
     //
-    const { skProfileService, lectureService } = this.props;
+    const { skProfileService, collegeLectureCountService, lectureService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
+    const { totalChannelCount } = collegeLectureCountService!;
     const { recommendLectures } = lectureService!;
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
@@ -112,6 +122,7 @@ class RecommendChannelsContainer extends Component<Props> {
     return (
       <Wrapper>
         <HeaderContainer
+          totalChannelCount={totalChannelCount}
           favoriteChannels={favoriteChannels}
           onFindStudySummary={() => {
             this.findStudySummary();
