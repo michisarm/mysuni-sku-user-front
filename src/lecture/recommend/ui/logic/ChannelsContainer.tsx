@@ -9,8 +9,8 @@ import { NoSuchContentPanel } from 'shared';
 import { ChannelModel, CollegeService } from 'college';
 import { LectureService, RecommendLectureRdo } from 'lecture';
 import routePaths from '../../../routePaths';
-import ChannelLecturesContentWrapperContainer from './ChannelLecturesContentWrapperContainer';
 import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';
+import ChannelsContentWrapperView from '../view/ChannelsContentWrapperView';
 import SeeMoreButtonView from '../view/SeeMoreButtonView';
 
 
@@ -34,7 +34,7 @@ interface RouteParams {
 ))
 @reactAutobind
 @observer
-class ChannelsLecturesContainer extends Component<Props> {
+class ChannelsContainer extends Component<Props> {
   //
   CHANNELS_SIZE = 5;
 
@@ -44,7 +44,6 @@ class ChannelsLecturesContainer extends Component<Props> {
   componentDidMount(): void {
     //
     const { collegeService, channels } = this.props;
-    console.log('did mount');
 
     collegeService!.setChannels(channels && channels.length && channels.map(chanel =>
       new ChannelModel({ ...chanel, checked: false })
@@ -185,7 +184,7 @@ class ChannelsLecturesContainer extends Component<Props> {
     const displayableRecommendLectures = this.getDisplayableRecommendLectures();
 
     return (
-      <ChannelLecturesContentWrapperContainer
+      <ChannelsContentWrapperView
         channels={channels}
         onSelectChannel={this.onSelectChannel}
         onConfirmCallback={this.onConfirmChangeFavorite}
@@ -208,9 +207,9 @@ class ChannelsLecturesContainer extends Component<Props> {
             <SeeMoreButtonView onClick={this.onClickSeeMore} />
           )}
         </div>
-      </ChannelLecturesContentWrapperContainer>
+      </ChannelsContentWrapperView>
     );
   }
 }
 
-export default withRouter(ChannelsLecturesContainer);
+export default withRouter(ChannelsContainer);

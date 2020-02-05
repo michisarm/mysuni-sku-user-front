@@ -13,7 +13,7 @@ interface Props {
   onConfirmCallback: () => void
 }
 
-class ChannelLecturesContentWrapperContainer extends Component<Props> {
+class ChannelsContentWrapperView extends Component<Props> {
   //
   render() {
     //
@@ -36,4 +36,4 @@ class ChannelLecturesContentWrapperContainer extends Component<Props> {
   }
 }
 
-export default ChannelLecturesContentWrapperContainer;
+export default ChannelsContentWrapperView;

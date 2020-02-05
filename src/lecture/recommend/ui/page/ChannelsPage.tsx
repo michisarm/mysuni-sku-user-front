@@ -9,7 +9,7 @@ import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
 import routePaths from '../../../routePaths';
 import ChannelsContentHeaderContainer from '../logic/ChannelsContentHeaderContainer';
-import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
+import ChannelsLecturesContainer from '../logic/ChannelsContainer';
 
 
 interface Props extends RouteComponentProps {
