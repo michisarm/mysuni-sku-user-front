@@ -6,6 +6,7 @@ import { Label, Icon } from 'semantic-ui-react';
 
 
 interface Props {
+  totalChannelCount: number,
   favoriteChannelCount: number,
 }
 
@@ -14,7 +15,7 @@ class RecommendItem extends Component<Props> {
   //
   render() {
     //
-    const { favoriteChannelCount } = this.props;
+    const { favoriteChannelCount, totalChannelCount } = this.props;
 
     return (
       <div className="recommend-info">
@@ -23,6 +24,8 @@ class RecommendItem extends Component<Props> {
         </Label>
         <span className="value1">
           <span className="text01">{favoriteChannelCount}</span>
+          <span className="text02">/</span>
+          <span className="text03">{totalChannelCount}</span>
           <span className="text04">개</span>
         </span>
       </div>

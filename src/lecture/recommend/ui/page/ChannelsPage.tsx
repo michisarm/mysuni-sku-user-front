@@ -1,14 +1,14 @@
 
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentLayout, ContentHeader } from 'shared';
+import { ContentLayout } from 'shared';
 import { SkProfileService } from 'profile';
 import { ChannelModel } from 'college';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
+import ChannelsContentHeaderContainer from '../logic/ChannelsContentHeaderContainer';
 import ChannelsLecturesContainer from '../logic/ChannelsLecturesContainer';
 
 
@@ -28,7 +28,6 @@ class ChannelLecturesPage extends Component<Props> {
   init() {
     const { skProfileService } = this.props;
 
-    skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
   }
 
@@ -42,7 +41,6 @@ class ChannelLecturesPage extends Component<Props> {
   render() {
     //
     const { skProfileService } = this.props;
-    const { member } = skProfileService!.skProfile;
     const { studySummaryFavoriteChannels } = skProfileService!;
     const channels = studySummaryFavoriteChannels.map(channel => new ChannelModel({ ...channel, channelId: channel.id })) || [];
 
@@ -53,23 +51,9 @@ class ChannelLecturesPage extends Component<Props> {
           { text: `Recommend` },
         ]}
       >
-        <ContentHeader className="content-division">
-          <ContentHeader.Cell inner>
-            <ContentHeader.ProfileItem
-              image={member.photoFilePath || profileImg}
-              name={member.name}
-              company={member.company}
-              department={member.department}
-              imageEditable={false}
-              myPageActive
-            />
-          </ContentHeader.Cell>
-          <ContentHeader.Cell inner>
-            <ContentHeader.RecommendItem
-              favoriteChannelCount={channels.length || 0}
-            />
-          </ContentHeader.Cell>
-        </ContentHeader>
+        <ChannelsContentHeaderContainer
+          channels={channels}
+        />
         <ChannelsLecturesContainer
           channels={channels}
           onViewAll={this.routeTo}

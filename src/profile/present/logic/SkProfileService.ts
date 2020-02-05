@@ -39,11 +39,6 @@ export default class SkProfileService {
   }
 
   @computed
-  get profileMember() {
-    return this.skProfile.member;
-  }
-
-  @computed
   get profileMemberName() {
     return this.skProfile.member.name;
   }

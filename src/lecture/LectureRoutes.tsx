@@ -9,7 +9,7 @@ import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
 import CoursePage from './category/ui/page/CoursePage';
 import LectureCardPage from './category/ui/page/LectureCardPage';
 
-import ChannelsLecturesPage from './recommend/ui/page/ChannelsLecturesPage';
+import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
 import RecommendChannelLecturesPage from './recommend/ui/page/ChannelLecturesPage';
 
 import PostFormPage from './community/ui/page/PostFormPage';
