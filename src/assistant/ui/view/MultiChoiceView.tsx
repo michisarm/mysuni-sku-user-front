@@ -31,7 +31,7 @@ class MultiChoiceView extends React.Component<Props, State> {
             <List.Item key={item.itemNo + '_item'}>
               <Checkbox
                 className="base"
-                label={item.itemText}
+                label={`${item.itemNo}. ${item.itemText}`}
                 value={item.itemNo}
                 checked={answers.includes(item.itemNo)}
                 onChange={(e: any, data: any) => {

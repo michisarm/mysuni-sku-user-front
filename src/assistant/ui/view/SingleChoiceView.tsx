@@ -31,7 +31,7 @@ class SingleChoiceView extends React.Component<Props, State> {
             <List.Item key={item.itemNo + '_item'}>
               <Radio
                 className="base"
-                label={item.itemText}
+                label={`${item.itemNo}. ${item.itemText}`}
                 name={`test_${question.questionNo}`}
                 value={item.itemNo}
                 checked={answer === item.itemNo}
