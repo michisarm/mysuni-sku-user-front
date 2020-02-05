@@ -60,7 +60,6 @@ class MyLearningContentContainer extends Component<Props, State> {
     this.props.notieService!.countMenuNoties('Learning_Progress');
     this.props.notieService!.countMenuNoties('Learning_Waiting');
     this.props.lectureService!.countRequiredLectures();
-    this.props.inMyLectureService!.countInMyLectures();
   }
 
   async findMyContent() {
@@ -180,6 +179,8 @@ class MyLearningContentContainer extends Component<Props, State> {
     const lectureService = this.props.lectureService!;
     const inMyLectureService = this.props.inMyLectureService!;
 
+    const inMyLectureAllCount = inMyLectureService.inMyLectureAllCount;
+
     return [
       { name: ContentType.Required,
         item: (
@@ -194,7 +195,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             관심목록
-            { inMyLectureService.inMyLecturesCount > 0 && <span className="count">+{inMyLectureService.inMyLecturesCount}</span>}
+            { inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>}
           </>
         ),
         render: this.renderInMyList,
