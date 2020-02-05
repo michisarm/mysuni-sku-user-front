@@ -12,6 +12,16 @@ import FavoriteLearningTypeContainer from '../logic/FavoriteLearningTypeContaine
 @reactAutobind
 class FavoriteLearningTypePage extends Component {
   //
+  componentDidMount(): void {
+    //
+    document.body.classList.add('white');
+  }
+
+  componentWillUnmount(): void {
+    //
+    document.body.classList.remove('white');
+  }
+
   render() {
     //
     return (

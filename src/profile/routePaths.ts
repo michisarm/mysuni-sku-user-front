@@ -17,4 +17,7 @@ export default {
   favoriteLearningType: () =>
     `/profile/interest/learningType`,
 
+  favoriteProgress: () =>
+    `/profile/interest/progress`,
+
 };
