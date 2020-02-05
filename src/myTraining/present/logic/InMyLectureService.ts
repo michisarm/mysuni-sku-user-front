@@ -111,6 +111,24 @@ class InMyLectureService {
     return inMyLecture;
   }
 
+  @action
+  async addInMyLectureInAllList(serviceId: string, serviceType: string) {
+    //
+    const inMyLecture = await this.inMyLectureApi.findInMyLecture(InMyLectureRdoModel.newWithSingle(serviceId, serviceType));
+
+    runInAction(() => this._inMyLectureAll.push(new InMyLectureModel(inMyLecture)));
+    return inMyLecture;
+  }
+
+  @action
+  removeInMyLectureInAllList(serviceId: string, serviceType: string) {
+    //
+    const index = this._inMyLectureAll.findIndex(inMyLecture => inMyLecture.serviceId === serviceId && inMyLecture.serviceType === serviceType);
+    if (index >= 0) {
+      this._inMyLectureAll = this._inMyLectureAll.slice(0, index).concat(this._inMyLectureAll.slice(index + 1));
+    }
+  }
+
   /**
    * 관심목록 갯수 조회
    */

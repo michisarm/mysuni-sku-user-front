@@ -161,7 +161,9 @@ class MyLearningPage extends Component<Props, State> {
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
           }
-          else inMyLectureService!.findAllInMyLectures();
+          else {
+            inMyLectureService!.removeInMyLectureInAllList(training.serviceId, training.serviceType);
+          }
         });
     }
     else {
@@ -194,7 +196,7 @@ class MyLearningPage extends Component<Props, State> {
             pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
             this.findPagingList();
           }
-          else inMyLectureService!.findAllInMyLectures();
+          else inMyLectureService!.addInMyLectureInAllList(training.serviceId, training.serviceType);
         });
     }
   }
