@@ -26,9 +26,6 @@ class InMyLectureService {
   @observable
   inMyLecture: InMyLectureModel = new InMyLectureModel();
 
-  @observable
-  inMyLecturesCount: number = 0;
-
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
   }
@@ -45,6 +42,15 @@ class InMyLectureService {
     //
     const inMyLecturesAll = this._inMyLectureAll as IObservableArray;
     return inMyLecturesAll.peek();
+  }
+
+  /**
+   * 관심목록 총 갯수(관심목록탭 숫자 표기시 사용)
+   */
+  @computed
+  get inMyLectureAllCount() {
+    //
+    return this._inMyLectureAll.length;
   }
 
   @computed
@@ -92,9 +98,7 @@ class InMyLectureService {
     //
     const fetched = this.inMyLectureAllCachingFetch.fetch(
       () => this.inMyLectureApi.findAllInMyLectures(),
-      (inMyLectures) => runInAction(() =>
-        this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))
-      ),
+      (inMyLectures) => runInAction(() => this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))),
     );
 
     return fetched ? this.inMyLectureAllCachingFetch.inProgressFetching : this.inMyLectureAll;
@@ -128,20 +132,6 @@ class InMyLectureService {
       this._inMyLectureAll = this._inMyLectureAll.slice(0, index).concat(this._inMyLectureAll.slice(index + 1));
     }
   }
-
-  /**
-   * 관심목록 갯수 조회
-   */
-  @action
-  async countInMyLectures()
-  {
-    const count = await this.inMyLectureApi.countInMyLectures();
-
-    runInAction(() => {
-      this.inMyLecturesCount = count;
-    });
-  }
-
 }
 
 InMyLectureService.instance = new InMyLectureService(InMyLectureApi.instance);
