@@ -141,11 +141,11 @@ class SharedListContainer extends React.Component<Props, States> {
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
     else {
       inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
   }
 

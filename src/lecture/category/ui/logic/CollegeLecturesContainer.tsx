@@ -186,7 +186,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -210,7 +210,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
         baseUrl: lecture.baseUrl,
         servicePatronKeyString: lecture.patronKey.keyString,
       }))
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
   }
 
