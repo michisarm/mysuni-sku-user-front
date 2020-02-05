@@ -11,7 +11,7 @@ import { CollegeService } from 'college';
 import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomService } from 'personalcube/classroom';
+import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
 import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
@@ -24,6 +24,7 @@ import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
+import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/dateTimeHelper';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -340,19 +341,79 @@ class LectureCardPage extends Component<Props, State> {
     let siteUrl = '';
 
     if (classrooms.length) {
+      // 차수가 하나인 경우
       if (classrooms.length === 1) {
         classroom = classrooms[0];
         if (!classroom.enrolling.enrollingAvailable) siteUrl = classroom.operation.siteUrl;
       }
+      // 차수가 여러개인 경우
       else {
-        //TODO 가장 가까운날짜
-        classroom = classrooms[classrooms.length - 1];
+        // 오늘이 차수의 학습기간 내에 있는지 여부
+        const filteredClassrooms = classrooms.filter(classroom => {
+          if (classroom.enrolling && classroom.enrolling.learningPeriod) {
+            const today = new Date();
+            const learningPeriod = classroom.enrolling.learningPeriod;
+            const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.startDateSub)!;
+            const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.endDateSub)!;
+            if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() < today.getTime()
+              && new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() > today.getTime()) {
+              return true;
+            }
+            return false;
+          }
+          return false;
+        });
+        if (filteredClassrooms.length) {
+          // 오늘이 학습기간내인 차수가 여러개인 경우 시작일이 먼저인 것으로
+          if (filteredClassrooms.length > 1) {
+            const compare = (classroom1: ClassroomModel, classroom2: ClassroomModel) => {
+              if (classroom1.enrolling.learningPeriod.startDate > classroom2.enrolling.learningPeriod.startDate) return 1;
+              return -1;
+            };
+            filteredClassrooms.sort(compare);
+          }
+          classroom = filteredClassrooms[0];
+        }
+        // 오늘이 학습기간내인 것이 없는 경우
+        else {
+          // 오늘 이후의 학습기간을 가진 차수 조회
+          const filteredClassrooms = classrooms.filter(classroom => {
+            if (classroom.enrolling && classroom.enrolling.learningPeriod) {
+              const today = new Date();
+              const learningPeriod = classroom.enrolling.learningPeriod;
+              const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.startDateSub)!;
+              if (new Date(startYear, startMonth, startDate, 23, 59, 59).getTime() > today.getTime()) {
+                return true;
+              }
+              return false;
+            }
+            return false;
+          });
+          // 오늘 이후의 학습기간을 가진 차수가 여러개인 경우 제일 가까운 차수
+          if (filteredClassrooms.length) {
+            if (filteredClassrooms.length > 1) {
+              const compare = (classroom1: ClassroomModel, classroom2: ClassroomModel) => {
+                if (classroom1.enrolling.learningPeriod.startDate > classroom2.enrolling.learningPeriod.startDate) return 1;
+                return -1;
+              };
+              filteredClassrooms.sort(compare);
+            }
+            classroom = filteredClassrooms[0];
+          }
+          // 이도저도 아닌경우 마지막 차수
+          else {
+            classroom = classrooms[classrooms.length - 1];
+          }
+        }
       }
     }
-    if (studentJoin && studentJoin.learningState === LearningState.Progress) {
+    if (studentJoin) {
       const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
       if (index >= 0) {
-        siteUrl = classrooms[index].operation.siteUrl;
+        classroom = classrooms[index];
+        if (studentJoin.learningState === LearningState.Progress) {
+          siteUrl = classrooms[index].operation.siteUrl;
+        }
       }
     }
 
