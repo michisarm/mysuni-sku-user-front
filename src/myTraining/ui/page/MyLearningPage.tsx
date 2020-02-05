@@ -37,7 +37,7 @@ class MyLearningPage extends Component<Props> {
 
   getNoties() {
     //
-    const { notieService, inMyLectureService, lectureService } = this.props;
+    const { notieService, lectureService } = this.props;
 
     notieService!.countMenuNoties('Learning_Progress');
     notieService!.countMenuNoties('Learning_Passed');

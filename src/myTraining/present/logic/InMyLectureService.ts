@@ -98,7 +98,8 @@ class InMyLectureService {
     //
     const fetched = this.inMyLectureAllCachingFetch.fetch(
       () => this.inMyLectureApi.findAllInMyLectures(),
-      (inMyLectures) => runInAction(() => this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))),
+      (inMyLectures) =>
+        runInAction(() => this._inMyLectureAll = inMyLectures.map((inMyLecture: InMyLectureModel) => new InMyLectureModel(inMyLecture))),
     );
 
     return fetched ? this.inMyLectureAllCachingFetch.inProgressFetching : this.inMyLectureAll;
