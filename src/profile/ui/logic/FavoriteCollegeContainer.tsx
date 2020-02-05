@@ -206,10 +206,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
           </div>
           <Button className="clear" onClick={this.onReset}><Icon className="reset" /><span className="blind">reset</span></Button>
         </div>
-        <div className="select-error">
-          <Icon value="error16" /><span className="blind">error</span>
-          <span>관심 분야를 3개 이상 선택해주세요.</span>
-        </div>
+        {/*<div className="select-error">*/}
+        {/*  <Icon value="error16" /><span className="blind">error</span>*/}
+        {/*  <span>관심 분야를 3개 이상 선택해주세요.</span>*/}
+        {/*</div>*/}
         <div className="button-area">
           <Button className="fix bg" onClick={this.onNextClick}>Next</Button>
         </div>

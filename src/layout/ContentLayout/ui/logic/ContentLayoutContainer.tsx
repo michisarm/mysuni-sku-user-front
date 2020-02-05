@@ -14,6 +14,8 @@ interface Props extends RouteComponentProps {
   /** CSS className: html의 <div className="content"> 에 추가로 들어가는 클래스명을 명시합니다. */
   className?: string,
 
+  disabled?: boolean
+
   /** breadcrumb (page navigation) */
   breadcrumb?: Breadcrumb[],
 
@@ -61,7 +63,11 @@ class ContentLayoutContainer extends Component<Props> {
 
   render() {
     //
-    const { className, children } = this.props;
+    const { className, disabled, children } = this.props;
+
+    if (disabled) {
+      return children;
+    }
 
     return (
       <section className={classNames('content', className)}>

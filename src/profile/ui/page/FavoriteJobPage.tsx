@@ -12,17 +12,29 @@ import FavoriteJobContainer from '../logic/FavoriteJobContainer';
 @reactAutobind
 class FavoriteJobPage extends React.Component {
   //
+  componentDidMount(): void {
+    //
+    document.body.classList.add('white');
+  }
+
+  componentWillUnmount(): void {
+    //
+    document.body.classList.remove('white');
+  }
+
   render() {
     //
     return (
       <ContentLayout
-        className="bg-white"
+        disabled
       >
-        <div className="interest-content step2">
-          <FavoriteContentHeaderContainer step={2} />
+        <section>
+          <div className="interest-content step2">
+            <FavoriteContentHeaderContainer step={2} />
 
-          <FavoriteJobContainer />
-        </div>
+            <FavoriteJobContainer />
+          </div>
+        </section>
       </ContentLayout>
     );
   }

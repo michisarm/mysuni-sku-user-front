@@ -137,7 +137,6 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
         <PersonalInfoTermsView />
 
-        <div className="guide">약관 동의 후 mySUNI를 이용할 수 있습니다.</div>
         <div className="button-area">
           <Button className="fix line" onClick={this.onCancel}>Cancel</Button>
           <Button className="fix bg" onClick={this.onConfirm}>OK</Button>

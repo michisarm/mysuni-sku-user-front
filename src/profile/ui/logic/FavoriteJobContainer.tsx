@@ -187,10 +187,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
             ) : ''
           }
         </div>
-        <div className="select-error">
-          <Icon className="error16" /><span className="blind">error</span>
-          <span>직군 및 직무를 선택해주세요.</span>
-        </div>
+        {/*<div className="select-error">*/}
+        {/*  <Icon className="error16" /><span className="blind">error</span>*/}
+        {/*  <span>직군 및 직무를 선택해주세요.</span>*/}
+        {/*</div>*/}
         <div className="button-area">
           <Button className="fix line" onClick={() => this.onPreviousClick()}>Previous</Button>
           <Button className="fix bg" onClick={() => this.onNextClick()}>Next</Button>

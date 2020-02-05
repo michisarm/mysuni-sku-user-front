@@ -38,7 +38,7 @@ class ResponsiveEnvWrapper extends Component<ResponsiveEnvWrapperProps> {
     const { responsive, children } = this.props;
 
     return (
-      <Responsive {...responsive} as={React.Fragment}>
+      <Responsive {...responsive}>
         {children}
       </Responsive>
     );
