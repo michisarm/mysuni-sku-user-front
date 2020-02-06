@@ -104,7 +104,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                   <div className="title-inner">
                     <div className="title">{post.title}</div>
                     <div className="user-info">
-                      <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
+                      <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD HH:MM')}</span>
                     </div>
                     <div className="actions">
                       <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
