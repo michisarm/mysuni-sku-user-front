@@ -23,6 +23,7 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   inMyLectureService?: InMyLectureService,
   reviewService?: ReviewService
   active: boolean
+  onChangeSharedCount: (sharedCount: number) => void
 }
 
 interface States {
@@ -58,7 +59,7 @@ class SharedListContainer extends React.Component<Props, States> {
 
   async findSharedLectures(init: boolean = false) {
     //
-    const { pageService, lectureService, reviewService, inMyLectureService } = this.props;
+    const { pageService, lectureService, reviewService, inMyLectureService, onChangeSharedCount } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
@@ -67,6 +68,7 @@ class SharedListContainer extends React.Component<Props, States> {
 
     if (init) {
       lectureOffsetList = await lectureService!.findSharedLectures(page!.limit, channelIds);
+
     }
     else {
       lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
@@ -82,6 +84,7 @@ class SharedListContainer extends React.Component<Props, States> {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+    onChangeSharedCount(lectureOffsetList.totalCount);
   }
 
   getRating(lecture: LectureModel) {

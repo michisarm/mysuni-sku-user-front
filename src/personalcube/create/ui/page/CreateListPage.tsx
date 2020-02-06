@@ -1,11 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
-import { LectureService } from 'lecture';
 
 import routePaths from '../../../routePaths';
 import CreateProfileContainer from '../logic/CreateProfileContainer';
@@ -14,37 +13,61 @@ import SharedListContainer from '../logic/SharedListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
-  lectureService?: LectureService,
+}
+
+interface State {
+  createCount: number
+  sharedCount: number
 }
 
 interface RouteParams {
   tab: string
 }
 
-@inject(mobxHelper.injectFrom('lecture.lectureService'))
 @observer
 @reactAutobind
-class CreateListPage extends Component<Props> {
+class CreateListPage extends Component<Props, State> {
   //
-  componentDidMount(): void {
-    //
-    this.props.lectureService!.clearLectures();
-  }
+  state = {
+    createCount: 0,
+    sharedCount: 0,
+  };
+
 
   getTabs() {
     //
-    const { totalLectureCount } = this.props.lectureService!;
+    const { createCount, sharedCount } = this.state;
 
     return [
       {
         name: 'Create',
-        item: 'Create',
-        render: ({ active }) => <CreateListContainer active={active} />,
+        item: (
+          <>
+            Create
+            <span className="count">{createCount > 0 ? `+${createCount}` : createCount}</span>
+          </>
+        ),
+        render: ({ active }) => (
+          <CreateListContainer
+            active={active}
+            onChangeCreateCount={this.onChangeCreateCount}
+          />
+        ),
       },
       {
         name: 'Shared',
-        item: <>Shared<span className="count">{totalLectureCount}</span></>,
-        render: ({ active }) => <SharedListContainer active={active} />,
+        item: (
+          <>
+            Shared
+            <span className="count">{sharedCount > 0 ? `+${sharedCount}` : sharedCount}</span>
+          </>
+        ),
+        render: ({ active }) => (
+          <SharedListContainer
+            active={active}
+            onChangeSharedCount={this.onChangeSharedCount}
+          />
+        ),
       },
     ] as TabItemModel[];
   }
@@ -52,6 +75,15 @@ class CreateListPage extends Component<Props> {
   onChangeTab(tab: TabItemModel) {
     //
     this.props.history.push(routePaths.createTab(tab.name));
+  }
+
+  onChangeCreateCount(createCount: number) {
+    this.setState({ createCount });
+  }
+
+  onChangeSharedCount(sharedCount: number) {
+    //
+    this.setState({ sharedCount });
   }
 
   render() {

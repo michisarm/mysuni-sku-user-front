@@ -18,6 +18,7 @@ import CreateListView from '../view/CreateListView';
 interface Props extends RouteComponentProps<{ tab: string }> {
   personalCubeService?: PersonalCubeService
   active: boolean
+  onChangeCreateCount: (createCount: number) => void
 }
 
 interface States {
@@ -48,18 +49,24 @@ class CreateListContainer extends React.Component<Props, States> {
   async findPersonalCubes(cubeState?: CubeState) {
     //
     const personalCubeService = this.props.personalCubeService!;
+    const { onChangeCreateCount } = this.props;
 
-    await personalCubeService.findPersonalCubesForCreator(0, this.PAGE_LIMIT, cubeState);
+    const offsetList = await personalCubeService.findPersonalCubesForCreator(0, this.PAGE_LIMIT, cubeState);
+
     this.setState({ nextOffset: 1 });
+    onChangeCreateCount(offsetList.totalCount);
   }
 
   async findPagingPersonalCubes() {
     //
     const personalCubeService = this.props.personalCubeService!;
+    const { onChangeCreateCount } = this.props;
     const { nextOffset, cubeState } = this.state;
 
-    await personalCubeService.findAndPushPersonalCubesForCreator(nextOffset, this.PAGE_LIMIT, cubeState);
+    const offsetList = await personalCubeService.findAndPushPersonalCubesForCreator(nextOffset, this.PAGE_LIMIT, cubeState);
+
     this.setState({ nextOffset: nextOffset + 1 });
+    onChangeCreateCount(offsetList.totalCount);
   }
 
   onChangeSearchSelect(e: any, data: any) {
