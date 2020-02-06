@@ -5,6 +5,30 @@
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Opera and Firefox */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                   supported by Chrome, Opera and Firefox */
+}
+
+.org i.icon.search:before {
+  content: "\f002" !important;
+  background: none !important;
+}
+
+.ui.modal.org .org-header > div {
+  vertical-align: middle;
+}
+
+.ui.modal.org .select-group {
+  height: 2rem;
+}
+
+.ui.modal.org .select-group .dropdown.selection {
+  height: 1rem;
+  line-height: 2.25rem !important;
+}
+
+.ui.modal.org .select-group .dropdown.selection .menu > .item {
+  height: 2.5rem;
+  line-height: 2.5;
 }
