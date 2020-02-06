@@ -254,6 +254,8 @@ class CoursePage extends Component<Props, State> {
       proposalState: ProposalState.Submitted,
       programLectureUsid: programLectureService!.programLecture!.usid,
       courseLectureUsid: courseLectureService!.courseLecture!.usid,
+      leaderEmails: [],
+      url: '',
     });
   }
 

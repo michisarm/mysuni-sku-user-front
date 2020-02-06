@@ -252,6 +252,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       <FileBox
                         vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
                         patronKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
+                        // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                         onChange={this.getFileBoxIdForReference}
                         id={post && post.contents && post.contents.depotId || ''}
                       />

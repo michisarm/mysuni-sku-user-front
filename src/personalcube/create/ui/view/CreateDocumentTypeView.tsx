@@ -39,6 +39,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
                 id={officeWeb && officeWeb.fileBoxId || ''}
                 vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                 patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                 onChange={getFileBoxIdForEducation}
               />
               <div className="info-text"><Icon className="info16" />
@@ -57,6 +58,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
                 vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                 patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
                 onChange={getFileBoxIdForReference}
+                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
               <div className="bottom">

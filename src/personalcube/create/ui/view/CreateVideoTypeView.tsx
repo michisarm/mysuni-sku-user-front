@@ -407,6 +407,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
               <FileBox
                 vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />

@@ -110,6 +110,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
                           id={student && student.homeworkFileBoxId || ''}
                           vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                           patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                          // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                           onChange={this.getFileBoxIdForReference}
                         />
                       </div>

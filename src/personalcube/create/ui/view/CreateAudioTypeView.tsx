@@ -3,7 +3,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
-import { FileBox, PatronType } from '@nara.drama/depot';
+import {FileBox, PatronType, ValidationType} from '@nara.drama/depot';
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
@@ -397,6 +397,7 @@ class CreateAudioTypeView extends React.Component<Props> {
               <FileBox
                 vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
+                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
