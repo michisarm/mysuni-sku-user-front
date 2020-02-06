@@ -45,7 +45,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   init() {
     const { rollBookId, studentService } = this.props;
     if (studentService && rollBookId) {
-      studentService.findStudent(rollBookId);
+      studentService.findStudentByRollBookId(rollBookId);
     }
   }
 

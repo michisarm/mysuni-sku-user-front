@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { patronInfo } from '@nara.platform/dock';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
@@ -29,10 +30,17 @@ interface State {
 }
 
 enum ContentType {
-  InMyList = 'InMyList',
   Required = 'Required',
+  InMyList = 'InMyList',
   InProgress = 'InProgress',
   Enrolled = 'Enrolled',
+}
+
+enum ContentTypeName {
+  Required = '권장과정',
+  InMyList = '관심목록',
+  InProgress = '학습중',
+  Enrolled = '학습예정',
 }
 
 @inject(mobxHelper.injectFrom(
@@ -58,6 +66,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     this.props.notieService!.countMenuNoties('Learning_Progress');
     this.props.notieService!.countMenuNoties('Learning_Waiting');
+    this.props.lectureService!.countRequiredLectures();
   }
 
   async findMyContent() {
@@ -91,6 +100,79 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
+  getTabs() {
+    //
+    const notieService = this.props.notieService!;
+    const lectureService = this.props.lectureService!;
+    const inMyLectureService = this.props.inMyLectureService!;
+
+    const inMyLectureAllCount = inMyLectureService.inMyLectureAllCount;
+
+    return [
+      {
+        name: ContentType.Required,
+        item: (
+          <>
+            { ContentTypeName.Required }
+            { lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>}
+          </>
+        ),
+        render: this.renderRequiredList,
+      },
+      {
+        name: ContentType.InMyList,
+        item: (
+          <>
+            { ContentTypeName.InMyList }
+            { inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>}
+          </>
+        ),
+        render: this.renderInMyList,
+      },
+      {
+        name: ContentType.InProgress,
+        item: (
+          <>
+            { ContentTypeName.InProgress }
+            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
+          </>
+        ),
+        render: this.renderInProgress,
+      },
+      {
+        name: ContentType.Enrolled,
+        item: (
+          <>
+            { ContentTypeName.Enrolled }
+            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
+          </>
+        ),
+        render: this.renderEnrolled,
+      },
+    ];
+  }
+
+  getInMyLecture(serviceId: string) {
+    //
+    const { inMyLectureMap } = this.props.inMyLectureService!;
+
+    return inMyLectureMap.get(serviceId);
+  }
+
+  getRating(learning: LectureModel | InMyLectureModel) {
+    //
+    const { ratingMap } = this.props.reviewService!;
+    let rating: number | undefined;
+
+    if (learning instanceof InMyLectureModel && learning.cubeType !== CubeType.Community) {
+      rating = ratingMap.get(learning.reviewId) || 0;
+    }
+    else if (learning instanceof LectureModel && learning.cubeType !== CubeType.Community) {
+      rating = learning.rating;
+    }
+    return rating;
+  }
+
   onChangeTab({ name }: any) {
     //
     const { contentType } = this.state;
@@ -117,16 +199,25 @@ class MyLearningContentContainer extends Component<Props, State> {
     );
   }
 
+  onViewAll() {
+    //
+    const { history } = this.props;
+    const { contentType } = this.state;
+
+    history.push(myTrainingRoutes.learningTab(contentType));
+  }
+
   onViewDetail(e: any, data: any) {
     //
     const { model } = data;
     const { history } = this.props;
+    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
     }
   }
 
@@ -168,94 +259,39 @@ class MyLearningContentContainer extends Component<Props, State> {
     }
   }
 
-  getTabs() {
-    //
-    const notieService = this.props.notieService!;
-
-    return [
-      { name: ContentType.Required, item: '권장과정', render: this.renderRequiredList },
-      { name: ContentType.InMyList, item: '관심목록', render: this.renderInMyList },
-      {
-        name: ContentType.InProgress,
-        item: (
-          <>
-            학습중
-            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
-          </>
-        ),
-        render: this.renderInProgress,
-      },
-      {
-        name: ContentType.Enrolled,
-        item: (
-          <>
-            학습예정
-            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
-          </>
-        ),
-        render: this.renderEnrolled,
-      },
-    ];
-  }
-
-  getInMyLecture(serviceId: string) {
-    //
-    const { inMyLectureMap } = this.props.inMyLectureService!;
-
-    return inMyLectureMap.get(serviceId);
-  }
-
-  getRating(learning: LectureModel | InMyLectureModel) {
-    //
-    const { ratingMap } = this.props.reviewService!;
-    let rating: number | undefined;
-
-    if (learning instanceof InMyLectureModel && learning.cubeType !== CubeType.Community) {
-      rating = ratingMap.get(learning.reviewId) || 0;
-    }
-    else if (learning instanceof LectureModel && learning.cubeType !== CubeType.Community) {
-      rating = learning.rating;
-    }
-    return rating;
-  }
-
-  onViewAll() {
-    //
-    const { history } = this.props;
-    const { contentType } = this.state;
-
-    history.push(myTrainingRoutes.learningTab(contentType));
-  }
-
   renderRequiredList() {
     //
     const { lectures } = this.props.lectureService!;
+    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.Required}에 해당하는 학습 과정이 없습니다.`} />;
 
-    return this.renderList(lectures);
+    return this.renderList(lectures, noSuchElement);
   }
 
   renderInMyList() {
     //
     const { inMyLectures } = this.props.inMyLectureService!;
+    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.InMyList}에 추가한 학습 과정이 없습니다.`} />;
 
-    return this.renderList(inMyLectures);
+    return this.renderList(inMyLectures, noSuchElement);
   }
 
   renderInProgress() {
     //
     const { myTrainings } = this.props.myTrainingService!;
+    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.InProgress}인 과정이 없습니다.`} />;
 
-    return this.renderList(myTrainings);
+    return this.renderList(myTrainings, noSuchElement);
   }
 
   renderEnrolled() {
     //
     const { myTrainings } = this.props.myTrainingService!;
+    const noSuchElement = <NoSuchContentPanel message={`${ContentTypeName.Enrolled}중인 과정이 없습니다.`} />;
 
-    return this.renderList(myTrainings);
+    return this.renderList(myTrainings, noSuchElement);
   }
 
-  renderList(learnings: (MyTrainingModel | LectureModel | InMyLectureModel)[]) {
+  renderList(learnings: (MyTrainingModel | LectureModel | InMyLectureModel)[], noSuchComponent: React.ReactNode) {
     //
     return (
       <>
@@ -289,7 +325,7 @@ class MyLearningContentContainer extends Component<Props, State> {
               })}
             </Lecture.Group>
             :
-            <NoSuchContentPanel message="해당하는 학습과정이 없습니다." />
+            noSuchComponent
           }
         </ContentWrapper>
       </>

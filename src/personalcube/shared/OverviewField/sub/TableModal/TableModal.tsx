@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+
+import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button } from 'semantic-ui-react';
 import { ClassroomModel } from 'personalcube/classroom';
 
@@ -12,12 +14,16 @@ interface Props {
 
 interface States {
   open: boolean
+  scrollEnded: boolean
 }
 
 @reactAutobind
 class TableModal extends Component<Props, States> {
   //
-  state = { open: false };
+  state = {
+    open: false,
+    scrollEnded: false,
+  };
 
   show() {
     this.setState({ open: true });
@@ -32,19 +38,39 @@ class TableModal extends Component<Props, States> {
     return -1;
   }
 
+  onScroll(e: any) {
+    //
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+    const { scrollEnded } = this.state;
+
+    if (scrollHeight === scrollTop + clientHeight) {
+      this.setState({
+        scrollEnded: true,
+      });
+    }
+    else if (scrollEnded) {
+      this.setState({
+        scrollEnded: false,
+      });
+    }
+  }
+
   render() {
     //
     const { classrooms, trigger } = this.props;
-    if (!classrooms || !classrooms.length) return null;
+    const { open, scrollEnded } = this.state;
+
+    if (!classrooms || classrooms.length < 1) {
+      return null;
+    }
 
     return (
-      <Modal open={this.state.open} onClose={this.close} className="base w1000 inner-scroll" trigger={trigger} onOpen={this.show}>
-
+      <Modal className={classNames('base w1000', { 'inner-scroll': scrollEnded })} open={open} onClose={this.close} trigger={trigger} onOpen={this.show}>
         <Modal.Header className="res">
           차수세부내용
           <span className="sub f12">차수를 확인해주세요.</span>
         </Modal.Header>
-        <Modal.Content>
+        <Modal.Content onScroll={this.onScroll}>
           <div className="scrolling-60vh">
             <Table className="head-fix ml-05-p01">
               <Table.Header>

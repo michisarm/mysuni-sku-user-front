@@ -4,9 +4,11 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { ContentLayout } from 'shared';
+import { ContentLayout, Tab, TabItemModel } from 'shared';
+import routePaths from '../../routePaths';
+import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
-import MenuItemContainer from '../logic/MenuItemContainer';
+import MenuItemContainer from '../logic/MyPageListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -53,9 +55,30 @@ class MyPage extends Component<Props, State> {
     });
   }
 
+  getTabs() {
+    //
+    return [
+      {
+        name: MyPageContentType.CompletedList,
+        item: '학습완료',
+        render: () => <MenuItemContainer />,
+      },
+      {
+        name: MyPageContentType.EarnedStampList,
+        item: '보유스탬프',
+        render: () => <MenuItemContainer />,
+      },
+    ] as TabItemModel[];
+  }
+
+  onChangeTab(tab: TabItemModel) {
+    //
+    this.props.history.push(routePaths.myPageTab(tab.name));
+  }
 
   render() {
     //
+    const { params } = this.props.match;
     const { subBreadcrumb } = this.state;
 
     return (
@@ -67,7 +90,12 @@ class MyPage extends Component<Props, State> {
         ]}
       >
         <MyPageContentHeaderContainer />
-        <MenuItemContainer />
+
+        <Tab
+          tabs={this.getTabs()}
+          defaultActiveName={params.tab}
+          onChangeTab={this.onChangeTab}
+        />
       </ContentLayout>
     );
   }

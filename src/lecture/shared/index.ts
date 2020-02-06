@@ -12,6 +12,7 @@ export { default as ProgramLectureModel } from './model/ProgramLectureModel';
 export { default as CourseLectureModel } from './model/CourseLectureModel';
 export { default as LectureServiceType } from './model/LectureServiceType';
 export { default as LectureViewModel } from './model/LectureViewModel';
+export { default as LectureCardModel } from './model/LectureCardModel';
 export { default as ChannelCountRdo } from './model/ChannelCountRdo';
 export { default as CollegeLectureCountRdo } from './model/CollegeLectureCountRdo';
 export { default as OrderByType } from './model/OrderByType';

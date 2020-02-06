@@ -5,11 +5,12 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import { ContentLayout } from 'shared';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { PostService } from '../../../board';
+import { ContentLayout } from 'shared';
+import routePaths from '../../routePaths';
+import { PostService } from '../..';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -47,8 +48,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
       .then(() => this.getFileIds());
   }
 
-  onClose(boardId: string) {
-    this.props.history.push(`/board/support/${boardId}`);
+  onClose() {
+    this.props.history.push(routePaths.supportNotice());
   }
 
   getFileIds() {
@@ -106,7 +107,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                       <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
                     </div>
                     <div className="actions">
-                      <Button icon className="left postset commu-list16" onClick={() => this.onClose('Notice')}><Icon className="commu-list16" />List</Button>
+                      <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
                     </div>
                   </div>
                 </div>
@@ -148,7 +149,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               />
             </div>
             <div className="actions bottom">
-              <Button icon className="left post list2" onClick={() => this.onClose('Notice')}>
+              <Button icon className="left post list2" onClick={this.onClose}>
                 <Icon className="list24" /> List
               </Button>
             </div>

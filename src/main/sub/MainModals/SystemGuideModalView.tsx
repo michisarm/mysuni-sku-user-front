@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Link } from 'react-router-dom';
 import { Modal, Button, Icon, Checkbox } from 'semantic-ui-react';
+import boardRoutePaths from 'board/routePaths';
 import ModalState from './model/ModalState';
 
 
@@ -81,7 +82,7 @@ class SystemGuideModalView extends Component<Props> {
                   또는 <span>Support &gt; Q&A</span>를 통해 문의해주시면 지원드리겠습니다.
                 </div>
                 <div className="qa">
-                  <Link to="/board/support/Q&A">
+                  <Link to={boardRoutePaths.supportQnA()}>
                     <Button className="fix line">1:1 문의 바로가기(Q&A)</Button>
                   </Link>
                 </div>

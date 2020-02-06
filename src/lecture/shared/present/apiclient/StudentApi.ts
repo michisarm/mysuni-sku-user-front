@@ -25,7 +25,12 @@ class StudentApi {
       .then(response => response && response.data);
   }
 
-  findStudent(rollBookId: string) {
+  findStudent(studentId: string) {
+    return axiosApi.get<StudentModel>(this.baseUrl + `/${studentId}`)
+      .then(response => response && response.data || null);
+  }
+
+  findStudentByRollBookId(rollBookId: string) {
     return axiosApi.get<StudentModel>(this.baseUrl + `/byRollBookId`, { params: { rollBookId }})
       .then(response => response && response.data || null);
   }
@@ -33,6 +38,11 @@ class StudentApi {
   findStudentCount(rollBookId: string) {
     return axiosApi.get<StudentCountRdoModel>(this.baseUrl + `/flow/count/byRollBookId`, { params: { rollBookId }})
       .then(response => response && response.data);
+  }
+
+  findIsJsonStudentByCube(lectureCardId: string) {
+    return axiosApi.get<StudentJoinRdoModel[]>(this.baseUrl + `/flow/isJsonByCube`, { params: { lectureCardId }})
+      .then(response => response && response.data || []);
   }
 
   findIsJsonStudent(lectureCardId: string) {

@@ -11,6 +11,7 @@ import {
 } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 
+import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../../course/model/CourseSetModel';
 
@@ -42,6 +43,8 @@ class LectureModel extends DramaEntityObservableModel {
 
   baseUrl: string = '';
   creationTime: string = '';
+  updateTimeForTest: number = 0;
+  updateTime: number = 0;
   viewState: string = '';
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
@@ -114,13 +117,43 @@ class LectureModel extends DramaEntityObservableModel {
         case 'Passed':
           return '학습완료';
         case 'Progress':
+        case 'Failed':
+        case 'TestPassed':
         case 'Waiting':
+        case 'TestWaiting':
+        case 'HomeworkWaiting':
           return '학습중';
         case 'Approved':
           return '학습예정';
       }
     }
     return undefined;
+  }
+
+  @computed
+  get timeStrByState() {
+    if (this.viewState) {
+      if (this.viewState === 'NoShow' || this.viewState === 'Missed') {
+        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 이수 실패';
+      }
+      if (this.viewState === 'Passed') {
+        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 학습 완료';
+      }
+      if (this.viewState === 'Approved') {
+        //TODO STARTDATE
+        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
+      }
+      if (
+        this.viewState === 'Progress' || this.viewState === 'Failed' || this.viewState === 'TestPassed'
+        || this.viewState === 'Waiting' || this.viewState === 'TestWaiting' || this.viewState === 'HomeworkWaiting'
+      ) {
+        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 학습 시작';
+      }
+      if (this.viewState === 'Rejected') {
+        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 수강신청 반려';
+      }
+    }
+    return '';
   }
 
   @computed
@@ -155,6 +188,8 @@ decorate(LectureModel, {
   cubeTypeName: observable,
   baseUrl: observable,
   creationTime: observable,
+  updateTime: observable,
+  updateTimeForTest: observable,
   viewState: observable,
 });
 

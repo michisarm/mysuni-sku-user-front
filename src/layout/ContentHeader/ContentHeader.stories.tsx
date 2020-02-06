@@ -187,6 +187,7 @@ export const RecommendItem = () =>
       </ContentHeader.Cell>
       <ContentHeader.Cell>
         <ContentHeader.RecommendItem
+          totalChannelCount={50}
           favoriteChannelCount={24}
         />
       </ContentHeader.Cell>

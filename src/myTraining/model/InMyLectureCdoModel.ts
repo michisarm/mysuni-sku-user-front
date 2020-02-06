@@ -1,9 +1,10 @@
+
 import { decorate, observable } from 'mobx';
 import { CategoryModel, IdName } from 'shared';
-import { CubeType } from 'personalcube/personalcube';
-import LectureServiceType from '../../lecture/shared/model/LectureServiceType';
-import { CourseSetModel } from '../../course/model/CourseSetModel';
-
+import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
+import { CubeIntroModel } from 'personalcube/cubeintro';
+import { CourseSetModel } from 'course/model/CourseSetModel';
+import { LectureServiceType, LectureCardModel, LectureModel } from 'lecture/shared';
 
 
 class InMyLectureCdoModel {
@@ -36,6 +37,54 @@ class InMyLectureCdoModel {
     }
   }
 
+
+  static fromLectureCard(personalCube: PersonalCubeModel, cubeIntro: CubeIntroModel, lectureCard: LectureCardModel) {
+    //
+    return new InMyLectureCdoModel({
+      serviceType: LectureServiceType.Card,
+      serviceId: lectureCard.usid,
+      category: personalCube.category,
+      name: personalCube.name,
+      description: cubeIntro.description.description,
+      cubeType: personalCube.contents.type,
+      learningTime: cubeIntro.learningTime,
+      stampCount: 0,
+      coursePlanId: '',
+      requiredSubsidiaries: personalCube.requiredSubsidiaries,
+      cubeId: personalCube.personalCubeId,
+      courseSetJson: new CourseSetModel(),
+      courseLectureUsids: [],
+      lectureCardUsids: [],
+      reviewId: lectureCard.reviewId,
+      baseUrl: personalCube.iconBox.baseUrl,
+      servicePatronKeyString: personalCube.patronKey.keyString,
+    });
+  }
+
+  static fromLecture(lecture: LectureModel) {
+    //
+    return new InMyLectureCdoModel({
+      serviceId: lecture.serviceId,
+      serviceType: lecture.serviceType,
+      category: lecture.category,
+      name: lecture.name,
+      description: lecture.description,
+      cubeType: lecture.cubeType,
+      learningTime: lecture.learningTime,
+      stampCount: lecture.stampCount,
+      coursePlanId: lecture.coursePlanId,
+
+      requiredSubsidiaries: lecture.requiredSubsidiaries,
+      cubeId: lecture.cubeId,
+      courseSetJson: lecture.courseSetJson,
+      courseLectureUsids: lecture.courseLectureUsids,
+      lectureCardUsids: lecture.lectureCardUsids,
+
+      reviewId: lecture.reviewId,
+      baseUrl: lecture.baseUrl,
+      servicePatronKeyString: lecture.patronKey.keyString,
+    });
+  }
 }
 
 decorate(InMyLectureCdoModel, {

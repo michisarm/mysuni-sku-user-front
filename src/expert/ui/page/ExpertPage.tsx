@@ -97,10 +97,10 @@ class ExpertPage extends React.Component<Props> {
     const collegeId = model.category.college.id;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(routePaths.courseOverviewPrev(collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverviewPrev(collegeId, model.cubeId, model.serviceId));
     }
   }
 

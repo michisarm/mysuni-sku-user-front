@@ -26,7 +26,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: patronInfo.getPatronId(),
+      denizenKey: patronInfo.getDenizenId(),
       channelIds,
     });
   }
@@ -36,7 +36,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: patronInfo.getPatronId(),
+      denizenKey: patronInfo.getDenizenId(),
       cubeType,
     });
   }
@@ -46,7 +46,7 @@ class MyTrainingRdoModel {
     return new MyTrainingRdoModel({
       limit,
       offset,
-      denizenKey: patronInfo.getPatronId(),
+      denizenKey: patronInfo.getDenizenId(),
       state,
       channelIds,
     });

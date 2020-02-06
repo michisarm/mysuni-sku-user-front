@@ -26,15 +26,22 @@ export default {
   channelLectures: (collegeId: string, channelId: string) =>
     `/lecture/college/${collegeId}/channel/${channelId}`,
 
-  courseOverview: (
-    collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
-    { programLectureId, courseLectureId }: OptionalParams = {}
+  courseOverviewPrev: (
+    collegeId: string, coursePlanId: string, serviceType: string, serviceId: string, { programLectureId, courseLectureId }: OptionalParams = {}
   ) => `/lecture/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ programLectureId, courseLectureId })}`,
 
-  lectureCardOverview: (
-    collegeId: string, cubeId: string, lectureCardId: string,
+  courseOverview: (
+    cineroomId: string, collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
     { programLectureId, courseLectureId }: OptionalParams = {}
+  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ programLectureId, courseLectureId })}`,
+
+  lectureCardOverviewPrev: (
+    collegeId: string, cubeId: string, lectureCardId: string, { programLectureId, courseLectureId }: OptionalParams = {}
   ) => `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams({ programLectureId, courseLectureId })}`,
+
+  lectureCardOverview: (
+    cineroomId: string, collegeId: string, cubeId: string, lectureCardId: string, { programLectureId, courseLectureId }: OptionalParams = {}
+  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}${getQueryParams({ programLectureId, courseLectureId })}`,
 
   // Recommend
   recommend: () =>

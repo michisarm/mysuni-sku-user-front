@@ -2,41 +2,32 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
+import { patronInfo } from '@nara.platform/dock';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ContentMenu, LearningState, ProposalState } from 'shared';
+import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
-import { ContentsServiceType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
+import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/board';
 import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomService } from 'personalcube/classroom';
+import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';
 import { OfficeWebService } from 'personalcube/officeweb';
-import {
-  LectureCardService,
-  LectureService,
-  LectureServiceType,
-  RollBookService,
-  StudentCdoModel,
-  StudentService,
-} from 'lecture';
-import { CourseSetModel, LearningCardService } from 'course';
-import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
+import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
+import { InMyLectureCdoModel } from 'myTraining';
 import routePaths from '../../../routePaths';
-import LectureCardHeaderView from '../view/LectureCardHeaderView';
-import LectureCardContainer from '../logic/LectureCardContainer';
-import LectureOverviewView from '../view/LectureOverviewView';
-import LectureCommentsContainer from '../logic/LectureCommentsContainer';
+import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
 import { State as SubState } from '../../../shared/LectureSubInfo';
-import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
+import LectureCardContentHeaderContainer from '../logic/LectureCardContentHeaderContainer';
+import LectureCardContainer from '../logic/LectureCardContainer';
+import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
-import CubeType from '../../../../personalcube/personalcube/model/CubeType';
+import LectureOverviewView from '../view/LectureOverviewView';
+import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/dateTimeHelper';
 
 
-interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string }> {
+interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
   collegeService: CollegeService,
   personalCubeService: PersonalCubeService,
@@ -49,14 +40,17 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
   lectureService: LectureService,
   rollBookService: RollBookService,
   studentService: StudentService,
-  learningCardService: LearningCardService,
-  reviewService: ReviewService,
-  inMyLectureService?: InMyLectureService,
 }
 
 interface State {
-  type: string
   linkedInOpen: boolean
+}
+
+interface RouteParams {
+  cineroomId: string
+  collegeId: string
+  cubeId: string
+  lectureCardId: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -72,16 +66,12 @@ interface State {
   'lecture.lectureService',
   'lecture.rollBookService',
   'lecture.studentService',
-  'course.learningCardService',
-  'shared.reviewService',
-  'myTraining.inMyLectureService',
 ))
 @reactAutobind
 @observer
 class LectureCardPage extends Component<Props, State> {
   //
   state= {
-    type: 'Overview',
     linkedInOpen: false,
   };
 
@@ -94,13 +84,28 @@ class LectureCardPage extends Component<Props, State> {
 
   componentDidMount() {
     //
+    this.setCineroom();
     this.init();
+  }
+
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
+  setCineroom() {
+    //
+    const { params } = this.props.match;
+
+    if (params.cineroomId) {
+      patronInfo.setWorkspaceById(params.cineroomId);
+    }
   }
 
   async init() {
     const {
-      match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, reviewService, studentService,
-      rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService, inMyLectureService,
+      match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, studentService,
+      rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService,
     } = this.props;
     const { params } = match;
 
@@ -135,7 +140,14 @@ class LectureCardPage extends Component<Props, State> {
                 .then((confirmed) => {
                   if (confirmed) {
                     history.replace('/empty');
-                    setTimeout(() => history.replace(routePaths.lectureCardOverview(params.collegeId, params.cubeId, params.lectureCardId)));
+                    setTimeout(() => {
+                      if (params.cineroomId) {
+                        history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId));
+                      }
+                      else {
+                        history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
+                      }
+                    });
                   }
                 });
             }
@@ -146,22 +158,13 @@ class LectureCardPage extends Component<Props, State> {
         }
         else if (service.type === ContentsServiceType.Community) {
           boardService.findBoard(contents.id);
-          this.setState({ type: 'Posts' });
         }
       }
     });
 
     collegeService.findCollege(params.collegeId);
-
-    lectureCardService.findLectureCard(params.lectureCardId)
-      .then((lectureCard) => {
-        if (lectureCard) {
-          reviewService.findReviewSummary(lectureCard.reviewId);
-          inMyLectureService!.findInMyLecture(lectureCard.usid, LectureServiceType.Card);
-        }
-      });
-
-    await studentService.findIsJsonStudent(params.lectureCardId);
+    lectureCardService.findLectureCard(params.lectureCardId);
+    await studentService.findIsJsonStudentByCube(params.lectureCardId);
     this.findStudent();
   }
 
@@ -192,8 +195,10 @@ class LectureCardPage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      if (studentJoin) studentService!.findStudent(studentJoin.rollbookId);
+      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      else studentService!.clear();
     }
+    else studentService!.clear();
   }
 
 
@@ -209,41 +214,48 @@ class LectureCardPage extends Component<Props, State> {
     const { rollBooksPassedStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
-
     let state: SubState | undefined;
     let examId: string = '';
     let surveyId: string = '';
     let surveyCaseId: string = '';
-    if (studentJoin) {
+    let reportFileBoxId: string = '';
+    if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
         if (!student.learningState) state = SubState.Enrolled;
-        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting
-          || student.learningState === LearningState.Failed) {
-          if (student.learningState === LearningState.Waiting) {
-            state = SubState.Waiting;
-          }
-          else state = SubState.InProgress;
-          if (personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture) {
-            const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-            if (index >= 0 && classrooms) {
-              examId = classrooms[index].roundExamId;
-              surveyId = classrooms[index].roundSurveyId;
-              surveyCaseId = classrooms[index].roundSurveyCaseId;
-            }
-          }
-          else {
-            examId = personalCube.contents.examId || '';
-            surveyId = personalCube.contents.surveyId || '';
-            surveyCaseId = personalCube.contents.surveyCaseId || '';
-          }
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
         }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
       if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+
+      if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)
+        && classrooms && classrooms.length) {
+        const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
+        if (index >= 0 && classrooms) {
+          examId = classrooms[index].roundExamId;
+          surveyId = classrooms[index].roundSurveyId;
+          surveyCaseId = classrooms[index].roundSurveyCaseId;
+          reportFileBoxId = classrooms[index].roundReportFileBox.fileBoxId;
+        }
+      }
+      else {
+        examId = personalCube.contents.examId || '';
+        surveyId = personalCube.contents.surveyId || '';
+        surveyCaseId = personalCube.contents.surveyCaseId || '';
+        reportFileBoxId = cubeIntro.reportFileBox.fileBoxId;
+      }
     }
+
+
 
     return {
       // Sub info
@@ -275,7 +287,7 @@ class LectureCardPage extends Component<Props, State> {
       surveyId,
       surveyCaseId,
       fileBoxId: personalCube.contents.fileBoxId,
-      reportFileBoxId: cubeIntro.reportFileBox.fileBoxId,
+      reportFileBoxId,
       stamp: 0,
 
       //etc
@@ -329,19 +341,79 @@ class LectureCardPage extends Component<Props, State> {
     let siteUrl = '';
 
     if (classrooms.length) {
+      // 차수가 하나인 경우
       if (classrooms.length === 1) {
         classroom = classrooms[0];
         if (!classroom.enrolling.enrollingAvailable) siteUrl = classroom.operation.siteUrl;
       }
+      // 차수가 여러개인 경우
       else {
-        //TODO 가장 가까운날짜
-        classroom = classrooms[classrooms.length - 1];
+        // 오늘이 차수의 학습기간 내에 있는지 여부
+        const filteredClassrooms = classrooms.filter(classroom => {
+          if (classroom.enrolling && classroom.enrolling.learningPeriod) {
+            const today = new Date();
+            const learningPeriod = classroom.enrolling.learningPeriod;
+            const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.startDateSub)!;
+            const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.endDateSub)!;
+            if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() < today.getTime()
+              && new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() > today.getTime()) {
+              return true;
+            }
+            return false;
+          }
+          return false;
+        });
+        if (filteredClassrooms.length) {
+          // 오늘이 학습기간내인 차수가 여러개인 경우 시작일이 먼저인 것으로
+          if (filteredClassrooms.length > 1) {
+            const compare = (classroom1: ClassroomModel, classroom2: ClassroomModel) => {
+              if (classroom1.enrolling.learningPeriod.startDate > classroom2.enrolling.learningPeriod.startDate) return 1;
+              return -1;
+            };
+            filteredClassrooms.sort(compare);
+          }
+          classroom = filteredClassrooms[0];
+        }
+        // 오늘이 학습기간내인 것이 없는 경우
+        else {
+          // 오늘 이후의 학습기간을 가진 차수 조회
+          const filteredClassrooms = classrooms.filter(classroom => {
+            if (classroom.enrolling && classroom.enrolling.learningPeriod) {
+              const today = new Date();
+              const learningPeriod = classroom.enrolling.learningPeriod;
+              const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(learningPeriod!.startDateSub)!;
+              if (new Date(startYear, startMonth, startDate, 23, 59, 59).getTime() > today.getTime()) {
+                return true;
+              }
+              return false;
+            }
+            return false;
+          });
+          // 오늘 이후의 학습기간을 가진 차수가 여러개인 경우 제일 가까운 차수
+          if (filteredClassrooms.length) {
+            if (filteredClassrooms.length > 1) {
+              const compare = (classroom1: ClassroomModel, classroom2: ClassroomModel) => {
+                if (classroom1.enrolling.learningPeriod.startDate > classroom2.enrolling.learningPeriod.startDate) return 1;
+                return -1;
+              };
+              filteredClassrooms.sort(compare);
+            }
+            classroom = filteredClassrooms[0];
+          }
+          // 이도저도 아닌경우 마지막 차수
+          else {
+            classroom = classrooms[classrooms.length - 1];
+          }
+        }
       }
     }
-    if (studentJoin && studentJoin.learningState === LearningState.Progress) {
+    if (studentJoin) {
       const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
       if (index >= 0) {
-        siteUrl = classrooms[index].operation.siteUrl;
+        classroom = classrooms[index];
+        if (studentJoin.learningState === LearningState.Progress) {
+          siteUrl = classrooms[index].operation.siteUrl;
+        }
       }
     }
 
@@ -354,7 +426,6 @@ class LectureCardPage extends Component<Props, State> {
       cancellationPenalty: classroom.enrolling.cancellationPenalty,
       location: classroom.operation.location,
       learningPeriod: classroom.enrolling.learningPeriod,
-      reportFileBoxId: classroom.roundReportFileBox.fileBoxId,
       classrooms: classrooms.length > 1 && classrooms,
       siteUrl,
     };
@@ -366,9 +437,6 @@ class LectureCardPage extends Component<Props, State> {
     const { personalCube } = this.props.personalCubeService!;
     let url = '';
     let videoUrl = '';
-    const width = personalCube.contents.type === CubeType.Video ? 800 : 400;
-    const height = personalCube.contents.type === CubeType.Video ? 450 : 225;
-
 
     switch (media.mediaType) {
       case MediaType.ContentsProviderMedia:
@@ -401,8 +469,6 @@ class LectureCardPage extends Component<Props, State> {
         startDate: media.learningPeriod.startDateDot,
         endDate: media.learningPeriod.endDateDot,
       },
-      width,
-      height,
     };
   }
 
@@ -431,31 +497,15 @@ class LectureCardPage extends Component<Props, State> {
   }
 
   getInMyLectureCdo(): InMyLectureCdoModel {
+    //
     const {
       personalCubeService, lectureCardService, cubeIntroService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { lectureCard } = lectureCardService!;
-    return new InMyLectureCdoModel({
-      serviceType: LectureServiceType.Card,
-      serviceId: lectureCard.usid,
-      category: personalCube.category,
-      name: personalCube.name,
-      description: cubeIntro.description.description,
-      cubeType: personalCube.contents.type,
-      learningTime: cubeIntro.learningTime,
-      stampCount: 0,
-      coursePlanId: '',
-      requiredSubsidiaries: personalCube.requiredSubsidiaries,
-      cubeId: personalCube.personalCubeId,
-      courseSetJson: new CourseSetModel(),
-      courseLectureUsids: [],
-      lectureCardUsids: [],
-      reviewId: lectureCard.reviewId,
-      baseUrl: personalCube.iconBox.baseUrl,
-      servicePatronKeyString: personalCube.patronKey.keyString,
-    });
+
+    return InMyLectureCdoModel.fromLectureCard(personalCube, cubeIntro, lectureCard);
   }
 
   getStudentCdo(): StudentCdoModel {
@@ -480,92 +530,143 @@ class LectureCardPage extends Component<Props, State> {
     });
   }
 
-  getMenus() {
+  getTabs() {
     //
     const { personalCube } = this.props.personalCubeService;
-    const menus: typeof ContentMenu.Menu[] = [];
+    const tabs = [];
+
     if (personalCube.contents.type === 'Community') {
-      menus.push(
-        { name: 'Posts', type: 'Posts' },
-        { name: 'My Posts', type: 'MyPosts' },
-        { name: 'Overview', type: 'Overview' },
+      tabs.push(
+        { name: 'Posts',    item: 'Posts',    render: this.renderPosts },
+        { name: 'My Posts', item: 'MyPosts',  render: this.renderMyPosts },
+        { name: 'Overview', item: 'Overview', render: this.renderOverview },
       );
     }
     else {
-      menus.push(
-        { name: 'Overview', type: 'Overview' },
-        { name: 'Comments', type: 'Comments' },
+      tabs.push(
+        { name: 'Overview', item: 'Overview', render: this.renderOverview },
+        { name: 'Comments', item: 'Comments', render: this.renderComment },
       );
     }
 
-    return menus;
+    return tabs;
   }
 
-  renderChildren(viewObject: any, typeViewObject: any) {
+  getMediaSize() {
     //
-    const { type } = this.state;
-    const { personalCube } = this.props.personalCubeService;
+    const { personalCube } = this.props.personalCubeService!;
+    const width = personalCube.contents.type === CubeType.Video ? 800 : 400;
+    const height = personalCube.contents.type === CubeType.Video ? 450 : 225;
+
+    return { width, height };
+  }
+
+  renderOverview() {
+    //
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+
+    return this.renderBaseContentWith(
+      <LectureOverviewView
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+      />
+    );
+  }
+
+  renderComment() {
+    //
     const { lectureCard } = this.props.lectureCardService;
-    const { student } = this.props.studentService;
-    const { collegeId, lectureCardId } = this.props.match.params;
 
-    switch (type) {
-      case 'Overview':
-        return (
-          <LectureOverviewView
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-          />
-        );
-      case 'Comments':
-        return (
-          <LectureCommentsContainer
-            reviewFeedbackId={lectureCard.reviewId}
-            commentFeedbackId={lectureCard.commentId}
-          />
-        );
-      case 'Posts':
-        return (
-          <PostList
-            boardId={personalCube.contents.contents.id}
-            emptyMessage="Community에 등록된 글이 없습니다."
-            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
-            routeToPost={
-              student && student.id ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
-            }
-            type={PostList.ListType.Basic}
-          />
-        );
-      case 'MyPosts':
-        return (
-          <PostListByWriter
-            boardId={personalCube.contents.contents.id}
-            linkedUrl={`${process.env.PUBLIC_URL}/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts`}
-            emptyMessage="내가 작성한 글이 없습니다."
-            routeToPost={
-              student && student.id ? () => this.props.history.push(`/lecture/college/${collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${lectureCardId}/posts/new`) : undefined
-            }
-          />
-        );
-      default:
-        return null;
-    }
+    return this.renderBaseContentWith(
+      <LectureCommentsContainer
+        reviewFeedbackId={lectureCard.reviewId}
+        commentFeedbackId={lectureCard.commentId}
+      />
+    );
   }
 
-  render() {
+  renderPosts() {
     //
-    const { collegeService, personalCubeService, reviewService, inMyLectureService, studentService } = this.props;
-    const { linkedInOpen } = this.state;
-    const { college } = collegeService;
+    const { personalCube } = this.props.personalCubeService;
+    const { student } = this.props.studentService;
+    const { history, match } = this.props;
+    const { params } = match;
+    const postUrl = `/lecture/college/${params.collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${params.lectureCardId}/posts`;
+
+    return this.renderBaseContentWith(
+      <PostList
+        type={PostList.ListType.Basic}
+        boardId={personalCube.contents.contents.id}
+        emptyMessage="Community에 등록된 글이 없습니다."
+        linkedUrl={`${process.env.PUBLIC_URL}${postUrl}`}
+        routeToPost={
+          student.id ? () => history.push(`${postUrl}/new`) : undefined
+        }
+      />
+    );
+  }
+
+  renderMyPosts() {
+    //
+    const { personalCube } = this.props.personalCubeService;
+    const { student } = this.props.studentService;
+    const { history, match } = this.props;
+    const { params } = match;
+    const postsUrl = `/lecture/college/${params.collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${params.lectureCardId}/posts`;
+
+    return this.renderBaseContentWith(
+      <PostListByWriter
+        boardId={personalCube.contents.contents.id}
+        linkedUrl={`${process.env.PUBLIC_URL}${postsUrl}`}
+        emptyMessage="내가 작성한 글이 없습니다."
+        routeToPost={
+          student.id ? () => history.push(`${postsUrl}/new`) : undefined
+        }
+      />
+    );
+  }
+
+  renderBaseContentWith(cardContent: React.ReactNode) {
+    //
+    const { personalCubeService, studentService } = this.props;
     const { personalCube } = personalCubeService;
-    const { reviewSummary } = reviewService;
-    const { inMyLecture } = inMyLectureService!;
     const { student, studentJoins } = studentService!;
-    const { lectureCardId } = this.props.match.params!;
+    const { params } = this.props.match;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo();
     const studentCdo = this.getStudentCdo();
+
+    return (
+      <LectureCardContainer
+        lectureServiceId={params.lectureCardId}
+        lectureCardId={params.lectureCardId}
+        lectureServiceType={LectureServiceType.Card}
+        inMyLectureCdo={inMyLectureCdo}
+        studentCdo={studentCdo}
+        studentJoins={studentJoins}
+        student={student}
+        cubeType={personalCube.contents.type}
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+        init={this.init}
+      >
+        {cardContent}
+      </LectureCardContainer>
+    );
+  }
+
+  render() {
+    //
+    const { collegeService, personalCubeService, lectureCardService } = this.props;
+    const { linkedInOpen } = this.state;
+    const { college } = collegeService;
+    const { personalCube } = personalCubeService;
+    const { lectureCard } = lectureCardService;
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+    const { width, height } = this.getMediaSize();
 
     return (
       <ContentLayout
@@ -575,11 +676,10 @@ class LectureCardPage extends Component<Props, State> {
           { text: `${personalCube.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, personalCube.category.channel.id) },
         ]}
       >
-        <LectureCardHeaderView
-          viewObject={viewObject}
+        <LectureCardContentHeaderContainer
+          personalCube={personalCube}
+          lectureCard={lectureCard}
           typeViewObject={typeViewObject}
-          maxRating={reviewSummary.maxStarCount}
-          rating={reviewSummary.average}
         />
 
         {
@@ -592,12 +692,11 @@ class LectureCardPage extends Component<Props, State> {
               </div>
               <div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                   <iframe
                     title={typeViewObject.videoUrl}
                     src={typeViewObject.videoUrl}
-                    width={typeViewObject.width}
-                    height={typeViewObject.height}
+                    width={width}
+                    height={height}
                     style={{ padding: '0px', border: '0px' }}
                     frameBorder="0"
                     allowFullScreen
@@ -613,32 +712,10 @@ class LectureCardPage extends Component<Props, State> {
           ) || null
         }
 
-        <ContentMenu
-          menus={this.getMenus()}
-          type={this.state.type}
-          onSelectMenu={(type) => this.setState({ type })}
-          lectureHeader={
-            <div className="cont-inner summary">
-              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
-              <span className="detail-tit">{viewObject.name}</span>
-            </div>
-          }
-        >
-          <LectureCardContainer
-            inMyLecture={inMyLecture}
-            inMyLectureCdo={inMyLectureCdo}
-            studentCdo={studentCdo}
-            studentJoins={studentJoins}
-            student={student}
-            lectureCardId={lectureCardId}
-            cubeType={personalCube.contents.type}
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-            init={this.init}
-          >
-            { this.renderChildren(viewObject, typeViewObject) }
-          </LectureCardContainer>
-        </ContentMenu>
+        <Tab
+          className="tab-menu2 offset0"
+          tabs={this.getTabs()}
+        />
 
         <LinkedInModalContainer
           enabled={linkedInOpen}

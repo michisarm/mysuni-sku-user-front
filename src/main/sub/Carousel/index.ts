@@ -1,2 +1,2 @@
 
-export { default } from './CarouselContainer';
+export { default } from './container/CarouselContainer';

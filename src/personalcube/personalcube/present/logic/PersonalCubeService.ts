@@ -3,9 +3,9 @@ import { observable, action, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
+import { CubeState } from 'shared';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
-import { CubeQueryModel } from '../../model/CubeQueryModel';
 
 
 @autobind
@@ -19,13 +19,11 @@ export default class PersonalCubeService {
   personalCube: PersonalCubeModel = new PersonalCubeModel();
 
   @observable
-  personalCubes: OffsetElementList<PersonalCubeModel> = { results: [], totalCount: 0 };
-
-  @observable
-  personalCubeQuery: CubeQueryModel = new CubeQueryModel();
+  personalCubeOffsetList: OffsetElementList<PersonalCubeModel> = { results: [], totalCount: 0 };
 
 
   constructor(personalCubeApi: PersonalCubeApi) {
+    //
     this.personalCubeApi = personalCubeApi;
   }
 
@@ -70,34 +68,36 @@ export default class PersonalCubeService {
     this.personalCube = _.set(this.personalCube, name, value);
   }
 
-  // PersonalCubes -----------------------------------------------------------------------------------------------------
+  // PersonalCubeOffsetList --------------------------------------------------------------------------------------------
 
   @action
   async findAllPersonalCubes(offset: number, limit: number) {
     //
     const personalCubes = await this.personalCubeApi.findAllPersonalCubes(offset, limit);
 
-    runInAction(() => this.personalCubes = personalCubes);
+    runInAction(() => this.personalCubeOffsetList = personalCubes);
     return personalCubes;
   }
 
-  // PersonalCubeQuery -------------------------------------------------------------------------------------------------
-
   @action
-  async findAllPersonalCubesByQuery() {
+  async findPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
     //
-    const personalCubes = await this.personalCubeApi.findAllPersonalCubesByQuery(CubeQueryModel.asCreateRdo(this.personalCubeQuery));
+    const personalCubes = await this.personalCubeApi.findPersonalCubesForCreator(offset, limit, cubeState);
 
-    runInAction(() => this.personalCubes = personalCubes);
+    runInAction(() => this.personalCubeOffsetList = personalCubes);
     return personalCubes;
   }
 
   @action
-  changePersonalCubeQueryProps(name: string, value: string | Date | number, nameSub?: string, valueSub?: number | string) {
-    this.personalCubeQuery = _.set(this.personalCubeQuery, name, value);
-    if (typeof value === 'object' && nameSub) {
-      this.personalCubeQuery = _.set(this.personalCubeQuery, nameSub, valueSub);
-    }
+  async findAndPushPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
+    //
+    const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(offset, limit, cubeState);
+
+    runInAction(() => {
+      this.personalCubeOffsetList.results = this.personalCubeOffsetList.results.concat(personalCubeOffsetList.results);
+      this.personalCubeOffsetList.totalCount = personalCubeOffsetList.totalCount;
+    });
+    return personalCubeOffsetList;
   }
 }
 

@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Modal, Icon, Button } from 'semantic-ui-react';
+import boardRoutePaths from 'board/routePaths';
 import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import createRoutePaths from 'personalcube/routePaths';
@@ -100,9 +101,9 @@ class SiteMapModalContainer extends Component<Props, State> {
     {
       name: 'Support',
       items: [
-        { name: 'Notice', path: '/board/support/Notice' },
-        { name: 'FAQ', path: '/board/support/FAQ' },
-        { name: 'Q&A', path: '/board/support/Q&A' },
+        { name: 'Notice', path: boardRoutePaths.supportNotice() },
+        { name: 'FAQ', path: boardRoutePaths.supportFAQ() },
+        { name: 'Q&A', path: boardRoutePaths.supportQnA() },
       ],
     },
   ];

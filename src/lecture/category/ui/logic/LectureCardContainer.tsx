@@ -6,8 +6,8 @@ import depot from '@nara.drama/depot';
 import { CubeType, ProposalState, LearningState } from 'shared';
 import { MediaType } from 'personalcube/media';
 import { ClassroomModel } from 'personalcube/classroom';
-import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService, LectureServiceType } from 'lecture';
+import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
@@ -23,12 +23,14 @@ interface Props {
   studentService?: StudentService
   rollBookService?: RollBookService
   inMyLectureService?: InMyLectureService
+  lectureServiceId: string
+  lectureCardId: string
+  lectureServiceType: LectureServiceType
   inMyLectureCdo: InMyLectureCdoModel
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
-  inMyLecture: InMyLectureModel
-  lectureCardId: string
+
   cubeType: CubeType
   viewObject: any
   typeViewObject: any
@@ -61,6 +63,19 @@ class LectureCardContainer extends Component<Props, State> {
 
   componentWillUnmount(): void {
     this.setState({ rollBook: new RollBookModel() });
+  }
+
+
+  componentDidMount(): void {
+    //
+    this.findInMyLecture();
+  }
+
+  findInMyLecture() {
+    //
+    const { inMyLectureService, lectureServiceId, lectureServiceType } = this.props;
+
+    inMyLectureService!.findInMyLecture(lectureServiceId, lectureServiceType);
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
@@ -99,8 +114,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentService, lectureCardId } = this.props;
     return studentService!.registerStudent(studentCdo)
       .then(() => {
-        studentService!.findStudent(studentCdo.rollBookId);
-        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
   }
@@ -177,7 +192,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickBookmark() {
-    const { inMyLecture, inMyLectureCdo, inMyLectureService } = this.props;
+    //
+    const inMyLectureService = this.props.inMyLectureService!;
+    const { inMyLectureCdo } = this.props;
+    const { inMyLecture } = inMyLectureService;
+
     if (!inMyLecture || !inMyLecture.id) {
       inMyLectureService!.addInMyLecture(inMyLectureCdo)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
@@ -185,7 +204,11 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onRemove() {
-    const { inMyLecture, inMyLectureService, inMyLectureCdo } = this.props;
+    //
+    const inMyLectureService = this.props.inMyLectureService!;
+    const { inMyLectureCdo } = this.props;
+    const { inMyLecture } = inMyLectureService;
+
     if (inMyLecture && inMyLecture.id) {
       inMyLectureService!.removeInMyLecture(inMyLecture.id)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
@@ -200,8 +223,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
       .then(() => {
-        studentService!.findStudent(studentCdo.rollBookId);
-        studentService!.findIsJsonStudent(lectureCardId);
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
       });
   }
@@ -216,8 +239,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId)
         .then(() => {
-          studentService!.findIsJsonStudent(lectureCardId);
-          studentService!.findStudent(student.rollBookId);
+          studentService!.findIsJsonStudentByCube(lectureCardId);
+          studentService!.findStudent(student.id);
         });
     }
   }
@@ -329,17 +352,36 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+
     if (viewObject.examId && student) {
-      if (student.learningState === LearningState.Progress) {
-        subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-      } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
-        subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+      if (!student.serviceType || student.serviceType === 'Lecture') {
+        if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        }
+      }
+      else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
+        if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
+        ) {
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+        } else if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
+        ) {
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        }
       }
     }
 
-    if (((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId))
-      && (student && (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting))) {
-      subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+    if (viewObject && viewObject.reportFileBoxId && student
+      && !student.learningState && student.learningState !== LearningState.Passed && student.learningState === LearningState.Missed) {
+      if (student.studentScore.homeworkScore) {
+        subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }) });
+      }
+      else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
   }
@@ -359,8 +401,8 @@ class LectureCardContainer extends Component<Props, State> {
             return () => {
               studentService!.removeStudent(student!.rollBookId)
                 .then(() => {
-                  studentService!.findStudent(student!.rollBookId);
-                  studentService!.findIsJsonStudent(lectureCardId);
+                  studentService!.findStudent(student!.id);
+                  studentService!.findIsJsonStudentByCube(lectureCardId);
                   studentService!.findStudentCount(student!.rollBookId);
                 });
             };
@@ -374,8 +416,8 @@ class LectureCardContainer extends Component<Props, State> {
               return () => {
                 studentService!.removeStudent(student!.rollBookId)
                   .then(() => {
-                    studentService!.findStudent(student!.rollBookId);
-                    studentService!.findIsJsonStudent(lectureCardId);
+                    studentService!.findStudent(student!.id);
+                    studentService!.findIsJsonStudentByCube(lectureCardId);
                     studentService!.findStudentCount(student!.rollBookId);
                   });
               };
@@ -397,7 +439,8 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLecture, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLecture } = inMyLectureService!;
 
     return (
       <LectureCardContentWrapperView>

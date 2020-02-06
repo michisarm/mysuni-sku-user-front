@@ -38,7 +38,7 @@ class CriterionView extends React.Component<Props, State> {
                 value={item.value}
                 item={item}
                 readOnly={disabled}
-                checked={answer.criteriaItem.value === item.value}
+                checked={answer.criteriaItem.value && answer.criteriaItem.value === item.value || false}
                 onChange={(e: any, prop: any) => {
                   onSetAnswer(prop.item);
                 }}

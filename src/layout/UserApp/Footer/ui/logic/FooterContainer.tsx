@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { NavLink } from 'react-router-dom';
-// import { Button } from 'semantic-ui-react';
-import FooterView from '../view/FooterView';
+import boardRoutePaths from 'board/routePaths';
 import PrivacyPolicyModalContainer from './PrivacyPolicyModalContainer';
+import FooterView from '../view/FooterView';
 
 
 @reactAutobind
@@ -16,9 +16,9 @@ class FooterContainer extends Component {
     return (
       <>
         <NavLink to="/introduction" className="item">Introduction</NavLink>
-        <NavLink to="/board/support/Notice" className="item">Notice</NavLink>
-        <NavLink to="/board/support/FAQ" className="item">FAQ</NavLink>
-        <NavLink to="/board/support/Q&A" className="item">Q&A</NavLink>
+        <NavLink to={boardRoutePaths.supportNotice()} className="item">Notice</NavLink>
+        <NavLink to={boardRoutePaths.supportFAQ()} className="item">FAQ</NavLink>
+        <NavLink to={boardRoutePaths.supportQnA()} className="item">Q&A</NavLink>
         <PrivacyPolicyModalContainer
           trigger={<a className="item">개인정보 처리방침</a>}
         />

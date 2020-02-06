@@ -2,25 +2,31 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
+import { patronInfo } from '@nara.platform/dock';
 
-import { ContentLayout, ContentMenu, CubeType, ProposalState } from 'shared';
+import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
 import { CollegeService } from 'college';
 import { CoursePlanService } from 'course';
-import { InMyLectureService, InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureCdoModel } from 'myTraining';
 
-import { ReviewService } from '@nara.drama/feedback';
 import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
-import { CourseLectureService, LectureService, LectureServiceType, ProgramLectureService } from '../../../shared';
-import LectureCardHeaderView from '../view/LectureCardHeaderView';
+import {
+  CourseLectureService,
+  LectureService,
+  LectureServiceType,
+  ProgramLectureService,
+  StudentService,
+} from '../../../shared';
+import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import LectureViewModel from '../../../shared/model/LectureViewModel';
 import StudentCdoModel from '../../../shared/model/StudentCdoModel';
-import RollBookService from '../../../shared/present/logic/RollBookService';
+import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
+import { State as SubState } from '../../../shared/LectureSubInfo';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -30,16 +36,11 @@ interface Props extends RouteComponentProps<RouteParams> {
   courseLectureService: CourseLectureService,
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
-  rollBookService: RollBookService,
-  reviewService: ReviewService,
-  inMyLectureService?: InMyLectureService,
-}
-
-interface State {
-  type: string
+  studentService: StudentService,
 }
 
 interface RouteParams {
+  cineroomId: string
   collegeId: string,
   lectureCardId: string,
   coursePlanId: string,
@@ -54,18 +55,12 @@ interface RouteParams {
   'lecture.courseLectureService',
   'lecture.programLectureService',
   'lecture.lectureService',
-  'lecture.rollBookService',
-  'shared.reviewService',
-  'myTraining.inMyLectureService',
+  'lecture.studentService',
 ))
 @reactAutobind
 @observer
-class CoursePage extends Component<Props, State> {
+class CoursePage extends Component<Props> {
   //
-  state= {
-    type: 'List',
-  };
-
   constructor(props: Props) {
     //
     super(props);
@@ -76,6 +71,7 @@ class CoursePage extends Component<Props, State> {
 
   componentDidMount() {
     //
+    this.setCineroom();
     this.init();
   }
 
@@ -86,11 +82,60 @@ class CoursePage extends Component<Props, State> {
     }
   }
 
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
+  setCineroom() {
+    //
+    const { params } = this.props.match;
+
+    if (params.cineroomId) {
+      patronInfo.setWorkspaceById(params.cineroomId);
+    }
+  }
+
   async init() {
     //
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
-    this.findInMyLecture();
+    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    this.findStudent();
+  }
+
+  compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
+    if (join1.updateTime < join2.updateTime) return 1;
+    return -1;
+  }
+
+  getStudentJoin() {
+    const {
+      studentService,
+    } = this.props;
+    const { studentJoins }: StudentService = studentService!;
+
+    if (studentJoins && studentJoins.length) {
+      studentJoins.sort(this.compare);
+      const studentJoin = studentJoins[0];
+      return studentJoin;
+    }
+    return null;
+  }
+
+  findStudent() {
+    const {
+      studentService,
+    } = this.props;
+    const { studentJoins }: StudentService = studentService!;
+
+    if (studentJoins && studentJoins.length) {
+      const studentJoin = this.getStudentJoin();
+      console.log(studentJoin);
+      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      else studentService!.clear();
+    }
+    else studentService!.clear();
   }
 
   async findBaseInfo() {
@@ -112,28 +157,26 @@ class CoursePage extends Component<Props, State> {
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
-        reviewId,
         lectureCardUsids,
         courseLectureUsids,
       } = await programLectureService.findProgramLecture(match.params.serviceId);
-      const lectureViews = await this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids, courseLectureUsids);
+      const lectureViews = await this.findLectureViews(lectureCardUsids, courseLectureUsids);
 
       this.findSubLectureViews(lectureViews);
     }
     else {
       const {
-        reviewId,
         lectureCardUsids,
       } = await courseLectureService.findCourseLecture(match.params.serviceId);
-      this.findReviewFeedbackAndLectureViews(reviewId, lectureCardUsids);
+
+      this.findLectureViews(lectureCardUsids);
     }
   }
 
-  async findReviewFeedbackAndLectureViews(reviewId: string, lectureCardUsids: string[], courseLectureUsids?: string[], ) {
+  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[], ) {
     //
-    const { match, lectureService, reviewService } = this.props;
+    const { match, lectureService } = this.props;
 
-    reviewService.findReviewSummary(reviewId);
     return lectureService.findLectureViews(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
   }
 
@@ -149,19 +192,41 @@ class CoursePage extends Component<Props, State> {
     });
   }
 
-  async findInMyLecture() {
-    const { inMyLectureService, match } = this.props;
-    const { params } = match;
-    return inMyLectureService!.findInMyLecture(params.serviceId, params.serviceType);
-  }
-
-
   getViewObject() {
     //
     const {
-      coursePlanService,
+      coursePlanService, studentService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { student } = studentService!;
+
+    let state: SubState | undefined;
+    let examId: string = '';
+    let surveyId: string = '';
+    let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
+    if (student && student.id) {
+      if (student.proposalState === ProposalState.Approved) {
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
+        }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (student.learningState === LearningState.Passed) state = SubState.Completed;
+        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      }
+
+      examId = coursePlanContents.testId || '';
+
+      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
+
+      surveyId = coursePlanContents.surveyId || '';
+      surveyCaseId = coursePlanContents.surveyCaseId || '';
+      reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    }
 
     return {
       // Sub info
@@ -175,14 +240,20 @@ class CoursePage extends Component<Props, State> {
       operatorCompany: coursePlan.courseOperator.company,
       operatorEmail: coursePlan.courseOperator.email,
 
+      state: state || undefined,
+      examId,
+
       // Fields
       subCategories: coursePlan.subCategories,
       description: coursePlanContents.description,
 
       tags: coursePlan.courseOpen.tags,
-      surveyId: coursePlanContents.surveyId,
+
+      surveyId,
+      surveyCaseId,
+
       fileBoxId: coursePlanContents.fileBoxId,
-      reportFileBoxId: coursePlan.reportFileBox.fileBoxId,
+      reportFileBoxId,
       stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
 
       //etc
@@ -238,91 +309,115 @@ class CoursePage extends Component<Props, State> {
     });
   }
 
-  getStudentCdo(): StudentCdoModel {
-    const {
-      skProfileService, rollBookService, programLectureService, courseLectureService,
-    } = this.props;
-    const { skProfile } = skProfileService!;
-    const { rollBook } = rollBookService!;
-    const { member } = skProfile;
-    return new StudentCdoModel({
-      rollBookId: rollBook.id,
-      name: member.name,
-      email: member.email,
-      company: member.company,
-      department: member.department,
-      proposalState: ProposalState.Submitted,
-      programLectureUsid: programLectureService!.programLecture!.usid,
-      courseLectureUsid: courseLectureService!.courseLecture!.usid,
-      leaderEmails: [],
-      url: '',
-    });
-  }
-
-  getMenus() {
+  getTabs() {
     //
-    const menus: typeof ContentMenu.Menu[] = [
-      { name: 'List', type: 'List' },
-      { name: 'Overview', type: 'Overview' },
-      { name: 'Comments', type: 'Comments' },
+    return [
+      { name: 'List', item: 'List', render: this.renderList },
+      { name: 'Overview', item: 'Overview', render: this.renderOverview },
+      { name: 'Comments', item: 'Comments', render: this.renderComments },
     ];
-
-    return menus;
   }
 
-  renderChildren(viewObject: any, typeViewObject: any) {
+  getReviewId() {
     //
-    const { type } = this.state;
+    const { match, programLectureService, courseLectureService } = this.props;
+    let reviewId;
+
+    if (match.params.serviceType === LectureServiceType.Program) {
+      reviewId = programLectureService.programLecture.reviewId;
+    }
+    else {
+      reviewId = courseLectureService.courseLecture.reviewId;
+    }
+    return reviewId;
+  }
+
+  renderList() {
+    //
+    const { lectureCardId } = this.props.match.params!;
+    return this.renderBaseContentWith(
+
+      <CourseContainer lectureCardId={lectureCardId} />
+    );
+  }
+
+  renderOverview() {
+    //
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+
+    return this.renderBaseContentWith(
+      <LectureOverviewView
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+      />
+    );
+  }
+
+  renderComments() {
+    //
+    const { programLectureService, courseLectureService, match } = this.props;
+    const { params } = match;
 
     let reviewFeedbackId = '';
     let commentFeedbackId = '';
-    if (this.props.match.params.serviceType === LectureServiceType.Program) {
-      const { programLecture } = this.props.programLectureService;
+
+    if (params.serviceType === LectureServiceType.Program) {
+      const { programLecture } = programLectureService;
+
       reviewFeedbackId = programLecture.reviewId;
       commentFeedbackId = programLecture.commentId;
     }
     else {
-      const { courseLecture } = this.props.courseLectureService;
+      const { courseLecture } = courseLectureService;
+
       reviewFeedbackId = courseLecture.reviewId;
       commentFeedbackId = courseLecture.commentId;
     }
 
-    switch (type) {
-      case 'List':
-        return (
-          <CourseContainer />
-        );
-      case 'Overview':
-        return (
-          <LectureOverviewView
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-          />
-        );
-      case 'Comments':
-        return (
-          <LectureCommentsContainer
-            reviewFeedbackId={reviewFeedbackId}
-            commentFeedbackId={commentFeedbackId}
-          />
-        );
-      default:
-        return null;
-    }
+    return this.renderBaseContentWith(
+      <LectureCommentsContainer
+        reviewFeedbackId={reviewFeedbackId}
+        commentFeedbackId={commentFeedbackId}
+      />
+    );
   }
 
-  render() {
+  renderBaseContentWith(courseContent: React.ReactNode) {
     //
-    const { collegeService, coursePlanService, reviewService, inMyLectureService } = this.props;
-    const { college } = collegeService;
-    const { coursePlan } = coursePlanService;
-    const { reviewSummary } = reviewService;
-    const { inMyLecture } = inMyLectureService!;
+    const { studentService, match } = this.props;
+    const { student, studentJoins } = studentService!;
+    const { params } = match;
     const { lectureCardId } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
-    const studentCdo = this.getStudentCdo();
+
+    return (
+      <LectureCardContainer
+        lectureServiceId={params.serviceId}
+        lectureCardId={lectureCardId}
+        lectureServiceType={params.serviceType}
+        inMyLectureCdo={inMyLectureCdo}
+        studentCdo={new StudentCdoModel()}
+        student={student}
+        studentJoins={studentJoins}
+        cubeType={CubeType.None}
+        viewObject={viewObject}
+        typeViewObject={typeViewObject}
+        init={this.init}
+      >
+        {courseContent}
+      </LectureCardContainer>
+    );
+  }
+
+  render() {
+    //
+    const { collegeService, coursePlanService } = this.props;
+    const { college } = collegeService;
+    const { coursePlan } = coursePlanService;
+    const typeViewObject = this.getTypeViewObject();
 
     return (
       <ContentLayout
@@ -332,35 +427,16 @@ class CoursePage extends Component<Props, State> {
           { text: `${coursePlan.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, coursePlan.category.channel.id) },
         ]}
       >
-        <LectureCardHeaderView
-          viewObject={viewObject}
+        <CourseContentHeaderContainer
+          coursePlan={coursePlan}
+          reviewId={this.getReviewId()}
           typeViewObject={typeViewObject}
-          rating={reviewSummary.average}
-          maxRating={reviewSummary.maxStarCount}
         />
-        <ContentMenu
-          menus={this.getMenus()}
-          type={this.state.type}
-          onSelectMenu={(type) => this.setState({ type })}
-          lectureHeader={
-            <div className="cont-inner summary">
-              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
-              <span className="detail-tit">{viewObject.name}</span>
-            </div>
-          }
-        >
-          <LectureCardContainer
-            inMyLecture={inMyLecture}
-            inMyLectureCdo={inMyLectureCdo}
-            studentCdo={studentCdo}
-            lectureCardId={lectureCardId}
-            cubeType={CubeType.None}
-            viewObject={viewObject}
-            typeViewObject={typeViewObject}
-          >
-            { this.renderChildren(viewObject, typeViewObject) }
-          </LectureCardContainer>
-        </ContentMenu>
+
+        <Tab
+          className="tab-menu2 offset0"
+          tabs={this.getTabs()}
+        />
       </ContentLayout>
     );
   }

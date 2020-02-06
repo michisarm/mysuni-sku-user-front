@@ -15,16 +15,20 @@ import {
   Lecture,
 } from '../../../shared';
 import routePaths from '../../../routePaths';
+import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
   courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
+  lectureCardId : string
 }
 
 interface RouteParams {
+  cineroomId: string,
   collegeId: string,
   coursePlanId: string,
   serviceType: LectureServiceType,
@@ -32,6 +36,7 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
   'lecture.lectureService',
   'lecture.programLectureService',
   'lecture.courseLectureService',
@@ -44,6 +49,7 @@ class CourseContainer extends Component<Props> {
   componentDidMount() {
     //
     this.findCoursePlan();
+    this.findSkProfile();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -64,6 +70,12 @@ class CourseContainer extends Component<Props> {
     }
   }
 
+  async findSkProfile()
+  {
+    const { skProfileService } = this.props;
+    await skProfileService!.findSkProfile();
+  }
+
   onViewDetail(lecture: LectureViewModel) {
     //
     const { cubeId, coursePlanId, serviceId, serviceType } = lecture;
@@ -73,32 +85,63 @@ class CourseContainer extends Component<Props> {
 
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(params.collegeId, coursePlanId, serviceType, serviceId, {
-        programLectureId: params.serviceId,
-      }));
+      if (params.cineroomId) {
+        history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+          programLectureId: params.serviceId,
+        }));
+      }
+      else {
+        history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
+          programLectureId: params.serviceId,
+        }));
+      }
     }
     else if (serviceType === LectureServiceType.Card) {
       // Program -> Card
       if (params.serviceType === LectureServiceType.Program) {
-        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+
+        if (params.cineroomId) {
+          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+            programLectureId: params.serviceId,
+          }));
+        }
+        else {
+          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+            programLectureId: params.serviceId,
+          }));
+        }
       }
       // Course -> Card
       else {
         const queryParam = queryString.parse(search);
 
-        history.push(routePaths.lectureCardOverview(params.collegeId, cubeId, serviceId, {
-          programLectureId: queryParam.programLectureId as string,
-          courseLectureId: params.serviceId,
-        }));
+        if (params.cineroomId) {
+          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+            programLectureId: queryParam.programLectureId as string,
+            courseLectureId: params.serviceId,
+          }));
+        }
+        else {
+          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+            programLectureId: queryParam.programLectureId as string,
+            courseLectureId: params.serviceId,
+          }));
+        }
       }
     }
   }
 
   render() {
     //
-    const { lectureService } = this.props;
+    const {
+      skProfileService,
+      lectureService,
+      lectureCardId,
+      match,
+    } = this.props;
+    const { params } = match;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
     const { lectureViews, getSubLectureViews } = lectureService!;
 
     return (
@@ -114,6 +157,10 @@ class CourseContainer extends Component<Props> {
                   thumbnailImage={lecture.baseUrl || undefined}
                   toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
                   onViewDetail={() => this.onViewDetail(lecture)}
+
+                  collegeId={params.collegeId}
+                  lectureCardId={lectureCardId}
+                  member={member}
                 />
               )}
             >
@@ -124,6 +171,10 @@ class CourseContainer extends Component<Props> {
                   lectureView={subLecture}
                   thumbnailImage={subLecture.baseUrl || undefined}
                   onViewDetail={() => this.onViewDetail(subLecture)}
+
+                  collegeId={params.collegeId}
+                  lectureCardId={lectureCardId}
+                  member={member}
                 />
               )}
             </Lecture.CourseSection>

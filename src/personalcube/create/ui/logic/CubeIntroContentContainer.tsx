@@ -12,7 +12,7 @@ import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';
 import { PersonalCubeModel } from '../../../personalcube';
-import { CubeIntroModel, CubeIntroService, InstructorModel } from '../../../cubeintro';
+import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
 import { MediaModel, MediaService } from '../../../media';
 import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
@@ -86,10 +86,10 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
     if (cubeType === 'Video' || cubeType === 'Audio') collegeService!.findAllCollegesForPanopto();
     if (personalCubeId) {
-      await personalCubeService.findPersonalCube(personalCubeId);
-      // const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
+      // await personalCubeService.findPersonalCube(personalCubeId);
+      const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
 
-      // patronInfo.setWorkspaceByDomain(personalCube!);
+      patronInfo.setWorkspaceByDomain(personalCube!);
     }
     const cubeIntroId = personalCubeService && personalCubeService.personalCube && personalCubeService.personalCube.cubeIntro
       && personalCubeService.personalCube.cubeIntro.id;
@@ -150,53 +150,41 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     cubeIntroService!.changeCubeIntroProps(name, value);
   }
 
-  setHourAndMinute(name: string, value: number) {
+  onChangeHourAndMinute(name: string, value: number) {
     //
-    Promise.resolve()
-      .then(() => {
-        if (name === 'hour') this.setState({ hour: value });
-        if (name === 'minute') {
-          if (value >= 60) value = 59;
-          this.setState({ minute: value });
-        }
-      })
-      .then(() => {
-        const { hour, minute } = this.state;
-        const reg = /^[0-9]+$/;
-        const hourValidation = reg.test(String(hour));
-        const minuteValidation = reg.test(String(minute));
-        if (hourValidation === false) {
-          this.setState({ hour: 0 });
-        }
-        if (minuteValidation === false) {
-          this.setState({ minute: 0 });
-        }
+    let nextValue = value;
 
-      })
-      .then(() => this.setLearningTime());
+    if (name === 'hour') {
+      let minute = this.state.minute;
+
+      if (value >= 40) {
+        if (minute > 0) {
+          minute = 0;
+          this.setState({ minute });
+        }
+        nextValue = 40;
+      }
+      this.setState({ hour: nextValue });
+      this.setLearningTime(nextValue, minute);
+    }
+    else if (name === 'minute') {
+      const { hour } = this.state;
+
+      if (hour === 40) {
+        nextValue = 0;
+      }
+      else if (value >= 60) {
+        nextValue = 59;
+      }
+      this.setState({ minute: nextValue });
+      this.setLearningTime(hour, nextValue);
+    }
   }
 
-  setLearningTime() {
+  setLearningTime(hour: number, minute: number) {
     //
-    const { hour, minute } = this.state;
-    const numberHour = Number(hour);
-    const numberMinute = Number(minute);
-    const newMinute = numberHour * 60 + numberMinute;
-    this.onChangeCubeIntroProps('learningTime', newMinute);
-  }
-
-  onHandleInstructorModalOk(selectedInstructor: InstructorModel) {
-    //
-    const { cubeIntroService } = this.props;
-
-    /* cubeIntroService.changeCubeIntroProps('description.instructor.employeeId', selectedInstructor.employeeId);
-    cubeIntroService.changeCubeIntroProps('description.instructor.email', selectedInstructor.memberSummary.email);
-    cubeIntroService.changeCubeIntroProps('description.instructor.name', selectedInstructor.memberSummary.name);
-    cubeIntroService.changeCubeIntroProps('description.instructor.company', selectedInstructor.memberSummary.department);
-    cubeIntroService.changeCubeIntroProps('description.instructor.category', selectedInstructor.specialtyEnName);
-    cubeIntroService.changeCubeIntroProps('description.instructor.internal', selectedInstructor.internal);
-*/
-    cubeIntroService!.changeInstructorListModalOpen(false);
+    const learningTime = hour * 60 + minute;
+    this.onChangeCubeIntroProps('learningTime', learningTime);
   }
 
   routeToBasicList(personalCubeId?: string, cubeType?: string) {
@@ -460,11 +448,11 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
         <CubeIntroView
           cubeIntro={cubeIntro}
-          onChangeCubeIntroProps={this.onChangeCubeIntroProps}
-          setHourAndMinute={this.setHourAndMinute}
           hour={hour}
           minute={minute}
           cubeType={cubeType}
+          onChangeCubeIntroProps={this.onChangeCubeIntroProps}
+          onChangeHourAndMinute={this.onChangeHourAndMinute}
         />
         <CubeIntroMediaContainer
           cubeType={cubeType}

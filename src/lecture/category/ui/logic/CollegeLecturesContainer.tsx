@@ -1,7 +1,9 @@
+
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel, NewPageService, CubeType } from 'shared';
@@ -184,7 +186,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
     else {
       inMyLectureService!.addInMyLecture(new InMyLectureCdoModel({
@@ -208,7 +210,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
         baseUrl: lecture.baseUrl,
         servicePatronKeyString: lecture.patronKey.keyString,
       }))
-        .then(() => inMyLectureService!.findAllInMyLectures());
+        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
   }
 
@@ -216,12 +218,15 @@ class CollegeLecturesContainer extends Component<Props, State> {
     //
     const { history, collegeService } = this.props;
     const { college } = collegeService!;
+    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program ||  model.serviceType === LectureServiceType.Course) {
-      history.push(routePaths.courseOverview(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      // history.push(routePaths.courseOverviewPrev(college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(routePaths.courseOverview(cineroom.id, college.collegeId, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(routePaths.lectureCardOverview(college.collegeId, model.cubeId, model.serviceId));
+      // history.push(routePaths.lectureCardOverviewPrev(college.collegeId, model.cubeId, model.serviceId));
+      history.push(routePaths.lectureCardOverview(cineroom.id, college.collegeId, model.cubeId, model.serviceId));
     }
   }
 

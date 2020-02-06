@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon, Modal } from 'semantic-ui-react';
-import { IdName, CategoryModel } from 'shared';
-import { CollegeService, CollegeModel, CollegeColors } from 'college';
+import { CategoryModel, IdName } from 'shared';
+import { CollegeColors, CollegeModel, CollegeService, CollegeType } from 'college';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
 
 
@@ -13,13 +12,15 @@ interface Props {
   collegeService?: CollegeService
   trigger: React.ReactNode
   defaultSelectedCategoryChannels: CategoryModel[]
+  collegeType?: CollegeType
+  targetCollegeId?: string
   onConfirmCategoryChannels: (categoryChannels: CategoryModel[]) => void
 }
 
 interface State {
   open: boolean
   selectedCollege: IdName
-  nextSelectedCategoryChannels: CategoryModel[]
+  selectedCategoryChannels: CategoryModel[]
 }
 
 @inject(mobxHelper.injectFrom('college.collegeService'))
@@ -30,7 +31,7 @@ class SubChannelModalContainer extends Component<Props, State> {
   state = {
     open: false,
     selectedCollege: new IdName(),
-    nextSelectedCategoryChannels: [],
+    selectedCategoryChannels: [],
   };
 
 
@@ -48,6 +49,13 @@ class SubChannelModalContainer extends Component<Props, State> {
     if (prevSelectedCategoryChannels !== defaultSelectedCategoryChannels) {
       this.setSelectedCategoryChannels();
     }
+
+    const { targetCollegeId: prevTargetCollegeId } = prevProps;
+    const { targetCollegeId, collegeType } = this.props;
+
+    if (prevTargetCollegeId !== targetCollegeId && collegeType) {
+      this.setSelectedCollege();
+    }
   }
 
   findAllColleges() {
@@ -59,12 +67,57 @@ class SubChannelModalContainer extends Component<Props, State> {
     //
     const { defaultSelectedCategoryChannels } = this.props;
 
-    this.setState({ nextSelectedCategoryChannels: [ ...defaultSelectedCategoryChannels]});
+    this.setState({ selectedCategoryChannels: [ ...defaultSelectedCategoryChannels]});
+  }
+
+  setSelectedCollege() {
+    //
+    const { collegeService, targetCollegeId } = this.props;
+    const { colleges } = collegeService!;
+
+    const college = colleges.find(college => college.collegeId === targetCollegeId);
+
+    if (college) {
+      this.setState({ selectedCollege: college.toIdName() });
+    }
+  }
+
+  getTargetColleges() {
+    //
+    const { colleges } = this.props.collegeService!;
+    const { targetCollegeId, collegeType } = this.props;
+
+    if (collegeType && collegeType === CollegeType.Company) {
+      const college = colleges.find(college => college.collegeId === targetCollegeId);
+
+      if (college) {
+        return [college];
+      }
+    }
+    return colleges.filter(college => college.collegeType === CollegeType.University);
+  }
+
+  isActiveCollege(college: CollegeModel) {
+    //
+    const { collegeType } = this.props;
+    const { selectedCollege } = this.state;
+
+    return collegeType === CollegeType.Company ? true :  college.collegeId === selectedCollege.id;
   }
 
   onOpen() {
     //
-    this.setState({ open: true });
+    const { collegeType, targetCollegeId } = this.props;
+
+    if (!collegeType || !targetCollegeId) {
+      reactAlert({
+        title: '메인채널 선택',
+        message: '서브채널을 선택하기 전에 메인채널을 먼저 선택해 주세요.',
+      });
+    }
+    else {
+      this.setState({ open: true });
+    }
   }
 
   onClose() {
@@ -75,9 +128,9 @@ class SubChannelModalContainer extends Component<Props, State> {
   onConfirm() {
     //
     const { onConfirmCategoryChannels } = this.props;
-    const { nextSelectedCategoryChannels } = this.state;
+    const { selectedCategoryChannels } = this.state;
 
-    onConfirmCategoryChannels(nextSelectedCategoryChannels);
+    onConfirmCategoryChannels(selectedCategoryChannels);
     this.onClose();
   }
 
@@ -88,7 +141,7 @@ class SubChannelModalContainer extends Component<Props, State> {
   }
 
   onReset() {
-    this.setState({ nextSelectedCategoryChannels: []});
+    this.setState({ selectedCategoryChannels: []});
   }
 
   onClickCollege(currentSelectedCollege: CollegeModel) {
@@ -112,26 +165,26 @@ class SubChannelModalContainer extends Component<Props, State> {
     //
     this.setState((state) => {
       //
-      let nextSelectedCategoryChannels = [...state.nextSelectedCategoryChannels];
+      let selectedCategoryChannels = [...state.selectedCategoryChannels];
 
       if (checked) {
-        nextSelectedCategoryChannels.push(new CategoryModel({
+        selectedCategoryChannels.push(new CategoryModel({
           college: state.selectedCollege,
           channel,
         }),);
       }
       else {
-        nextSelectedCategoryChannels = nextSelectedCategoryChannels.filter(categoryModel => categoryModel.channel.id !== channel.id);
+        selectedCategoryChannels = selectedCategoryChannels.filter(categoryModel => categoryModel.channel.id !== channel.id);
       }
 
-      return { nextSelectedCategoryChannels };
+      return { selectedCategoryChannels };
     });
   }
 
   onRemove(categoryChannel: CategoryModel) {
     //
     this.setState((state) => ({
-      nextSelectedCategoryChannels: state.nextSelectedCategoryChannels.filter((categoryModel) =>
+      selectedCategoryChannels: state.selectedCategoryChannels.filter((categoryModel) =>
         categoryModel.channel.id !== categoryChannel.channel.id
       ),
     }));
@@ -139,9 +192,9 @@ class SubChannelModalContainer extends Component<Props, State> {
 
   render() {
     //
-    const { collegeService, trigger }: Props = this.props;
-    const { open, selectedCollege, nextSelectedCategoryChannels }: State = this.state;
-    const colleges: CollegeModel[] = collegeService!.colleges;
+    const { trigger, collegeType }: Props = this.props;
+    const { open, selectedCategoryChannels }: State = this.state;
+    const targetColleges = this.getTargetColleges();
 
     return (
       <Modal className="base w1000" open={open} trigger={trigger} onOpen={this.onOpen} onClose={this.onClose}>
@@ -159,7 +212,7 @@ class SubChannelModalContainer extends Component<Props, State> {
                 <div className="cell v-middle">
                   <span className="text01">Selected</span>
                   <span className="count">
-                    <span className="text01 add">{nextSelectedCategoryChannels.length}</span>
+                    <span className="text01 add">{selectedCategoryChannels.length}</span>
                     <span className="text02"> / 80</span>
                   </span>
                   <div className="right">
@@ -174,16 +227,16 @@ class SubChannelModalContainer extends Component<Props, State> {
             <div className="cell vtop">
               <div className="select-area">
                 <div className="scrolling-60vh">
-                  { colleges.length > 0 && colleges.map((college, index) => (
+                  { targetColleges.map((college, index) => (
                     <Accordion key={`college-${index}`} className="channel">
                       <Accordion.Title
-                        active={college.collegeId === selectedCollege.id}
+                        active={this.isActiveCollege(college)}
                         onClick={() => this.onClickCollege(college)}
                       >
                         <span className={`name ${CollegeColors[index]}`}>{college.name}</span>
-                        <Icon />
+                        { collegeType === CollegeType.University && <Icon />}
                       </Accordion.Title>
-                      <Accordion.Content active={college.collegeId === selectedCollege.id}>
+                      <Accordion.Content active={this.isActiveCollege(college)}>
                         <ul>
                           { college.channels.map((channel, idx) => (
                             <li key={`channel-${idx}`}>
@@ -191,7 +244,7 @@ class SubChannelModalContainer extends Component<Props, State> {
                                 className="base"
                                 label={channel.name}
                                 checked={
-                                  nextSelectedCategoryChannels
+                                  selectedCategoryChannels
                                     .map((categoryChannel => categoryChannel.channel.id))
                                     .includes(channel.id)
                                 }
@@ -210,7 +263,7 @@ class SubChannelModalContainer extends Component<Props, State> {
               <div className="select-area">
                 <div className="scrolling-60vh">
                   <div className="select-item">
-                    {nextSelectedCategoryChannels.map((categoryChannel, index) => (
+                    {selectedCategoryChannels.map((categoryChannel, index) => (
                       <Button key={`category-channel-${index}`} className="del" onClick={() => this.onRemove(categoryChannel)}>
                         {categoryChannel.college.name} &gt; {categoryChannel.channel.name}
                       </Button>

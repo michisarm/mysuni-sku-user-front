@@ -22,7 +22,7 @@ export default class ContentsProviderApi {
   findAllContentsProviders() {
     //
     return axios.get<ContentsProviderModel[]>(this.URL)
-      .then(response => response && response.data || null);
+      .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
   modifyContentsProvider(contentsProviderId: string, nameValues: NameValueList) {

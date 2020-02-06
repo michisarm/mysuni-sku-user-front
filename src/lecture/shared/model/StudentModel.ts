@@ -28,6 +28,10 @@ class StudentModel extends DramaEntityObservableModel {
   updateTimeForTest: number = 0;
   homeworkFileBoxId: string = '';
 
+  serviceType: string = '';
+  phaseCount: number = 0;           // Course 일 경우 조회시 산출됨. 저장되지 않음.
+  completePhaseCount: number = 0;   // Course 일 경우 조회시 산출됨. 저장되지 않음.
+
   //UI
   round: number = 0;
 
@@ -69,6 +73,9 @@ decorate(StudentModel, {
   updateTimeForTest: observable,
   homeworkFileBoxId: observable,
   round: observable,
+  serviceType: observable,
+  phaseCount: observable,
+  completePhaseCount: observable,
 });
 
 export default StudentModel;

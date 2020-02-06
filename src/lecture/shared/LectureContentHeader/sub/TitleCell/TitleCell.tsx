@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import moment from 'moment';
-import { CubeType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import { Icon, Label, LabelProps } from 'semantic-ui-react';
 import { CategoryModel, DatePeriod } from 'shared';
 import CubeIconType from '../../../Lecture/model/CubeIconType';
@@ -10,9 +10,9 @@ import CubeIconType from '../../../Lecture/model/CubeIconType';
 
 interface Props {
   title: string,
-  type: CubeType,
-  typeName: string,
+  type: CubeType | 'Program' | 'Course',
   creationTime: number,
+  typeName?: string,
   label?: { color: LabelProps['color'], text: string },
   category?: CategoryModel,
   learningPeriod?: DatePeriod
@@ -25,6 +25,8 @@ class TitleCell extends Component<Props> {
   render() {
     //
     const { label, category, title, type, typeName, creationTime, children, learningPeriod } = this.props;
+    const cubeTypeName = typeName || CubeTypeNameType[type];
+
     return (
       <div className="title-area">
         { label ?
@@ -39,7 +41,7 @@ class TitleCell extends Component<Props> {
         <div className="deatil">
           <div className="item">
             <Label className="bold onlytext">
-              <Icon className={CubeIconType[type]} /><span>{typeName}</span>
+              <Icon className={CubeIconType[type]} /><span>{cubeTypeName}</span>
             </Label>
             { category && category.channel.name && <span className="channel">{category.channel.name}</span>}
           </div>

@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
+import ProfileContainer from './ProfileContainer';
 import HeaderWrapperView from '../view/HeaderWrapperView';
 import {
   LogoView, MenuView, SearchBarView,
 } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
-import ProfileContainer from './ProfileContainer';
 
 
 interface Props extends RouteComponentProps {
@@ -26,7 +27,7 @@ class HeaderContainer extends Component<Props, State> {
   //
   static contextType  = Context;
 
-  supportPath = '/board/support/Notice';
+  supportPath = boardRoutePaths.supportNotice();
 
   state = {
     searchValue: '',

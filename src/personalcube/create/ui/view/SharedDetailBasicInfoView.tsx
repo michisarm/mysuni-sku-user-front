@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { Table } from 'semantic-ui-react';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import { PersonalCubeModel, CubeType, CubeTypeNameType } from 'personalcube/personalcube';
 import moment from 'moment';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 
@@ -62,7 +62,7 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
               <Table.Row>
                 <Table.HeaderCell>교육형태</Table.HeaderCell>
                 <Table.Cell>
-                  <div>{personalCube.contents && personalCube.contents.type}</div>
+                  <div>{personalCube.contents && CubeTypeNameType[CubeType[personalCube.contents.type]]}</div>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>

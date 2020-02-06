@@ -17,7 +17,7 @@ interface Props {
   hour: number
   minute: number
   onChangeCubeIntroProps: (name: string, value: string | number | {}) => void
-  setHourAndMinute: (name: string, value: number) => void
+  onChangeHourAndMinute: (name: string, value: number) => void
   cubeType?: string
 }
 
@@ -33,10 +33,71 @@ class CubeIntroView extends Component<Props, States> {
     fieldName: '',
   };
 
+  setLearningTime(name: string, value: string) {
+    //
+    const { onChangeHourAndMinute } = this.props;
+    let numberValue = parseInt(value, 10);
+
+    if (Number.isNaN(numberValue)) {
+      numberValue = 0;
+    }
+    onChangeHourAndMinute(name, numberValue);
+  }
+
+  onChangeGoal(e: any) {
+    //
+    const { value } = e.target;
+    const { onChangeCubeIntroProps } = this.props;
+
+    if (value.length > 500 ) {
+      this.setState({ fieldName: 'description.goal' });
+    } else {
+      this.setState({ fieldName: '' });
+      onChangeCubeIntroProps('description.goal', value);
+    }
+  }
+
+  onChangeApplicants(e: any) {
+    //
+    const { value } = e.target;
+    const { onChangeCubeIntroProps } = this.props;
+
+    if (value.length > 500 ) {
+      this.setState({ fieldName: 'description.applicants' });
+    } else {
+      this.setState({ fieldName: '' });
+      onChangeCubeIntroProps('description.applicants', value);
+    }
+  }
+
+  onChangeCompletionTerms(e: any) {
+    //
+    const { value } = e.target;
+    const { onChangeCubeIntroProps } = this.props;
+
+    if (value.length > 1000 ) {
+      this.setState({ fieldName: 'description.completionTerms' });
+    } else {
+      this.setState({ fieldName: '' });
+      onChangeCubeIntroProps('description.completionTerms', value);
+    }
+  }
+
+  onChangeLearningTimeHour(e: any) {
+    //
+    this.setLearningTime('hour', e.target.value);
+  }
+
+  onChangeLearningTimeMinute(e: any) {
+    //
+    this.setLearningTime('minute', e.target.value);
+  }
+
+
   render() {
     //
     const {
-      cubeIntro, onChangeCubeIntroProps, setHourAndMinute, cubeType,
+      cubeIntro, cubeType, onChangeCubeIntroProps,
     } = this.props;
 
     return (
@@ -53,14 +114,7 @@ class CubeIntroView extends Component<Props, States> {
               </span>
               <textarea placeholder="교육 목표를 입력해주세요. (최대 500자 입력 가능)"
                 value={cubeIntro && cubeIntro.description && cubeIntro.description.goal || ''}
-                onChange={(e:any) => {
-                  if (e.target.value.length > 500 ) {
-                    this.setState({ fieldName: 'description.goal' });
-                  } else {
-                    this.setState({ fieldName: '' });
-                    onChangeCubeIntroProps('description.goal', e.target.value); }
-                }
-                }
+                onChange={this.onChangeGoal}
               />
               <span className="validation">You can enter up to 500 characters.</span>
             </div>
@@ -75,14 +129,7 @@ class CubeIntroView extends Component<Props, States> {
             </span>
             <textarea placeholder="교육 대상을 입력해주세요. (최대 500자 입력가능)"
               value={cubeIntro && cubeIntro.description && cubeIntro.description.applicants || ''}
-              onChange={(e:any) => {
-                if (e.target.value.length > 500 ) {
-                  this.setState({ fieldName: 'description.applicants' });
-                } else {
-                  this.setState({ fieldName: '' });
-                  onChangeCubeIntroProps('description.applicants', e.target.value);
-                }
-              }}
+              onChange={this.onChangeApplicants}
             />
             <span className="validation">You can enter up to 500 characters.</span>
           </div>
@@ -90,11 +137,12 @@ class CubeIntroView extends Component<Props, States> {
         <Form.Field>
           <label className="necessary">교육내용</label>
           <div className="ui editor-wrap">
-            <ReactQuill theme="snow"
+            <ReactQuill
+              theme="snow"
               modules={SelectType.modules}
               formats={SelectType.formats}
-              onChange={html => onChangeCubeIntroProps('description.description', html)}
               value={cubeIntro && cubeIntro.description && cubeIntro.description.description || ''}
+              onChange={html => onChangeCubeIntroProps('description.description', html)}
             />
             {/*<Editor />*/}
           </div>
@@ -111,14 +159,7 @@ class CubeIntroView extends Component<Props, States> {
             <textarea
               placeholder="이수조건을 입력해주세요."
               value={cubeIntro && cubeIntro.description && cubeIntro.description.completionTerms || ''}
-              onChange={(e:any) => {
-                if (e.target.value.length > 1000 ) {
-                  this.setState({ fieldName: 'description.completionTerms' });
-                } else {
-                  this.setState({ fieldName: '' });
-                  onChangeCubeIntroProps('description.completionTerms', e.target.value);
-                }
-              }}
+              onChange={this.onChangeCompletionTerms}
             />
             <span className="validation">You can enter up to 1000 characters.</span>
           </div>
@@ -126,11 +167,12 @@ class CubeIntroView extends Component<Props, States> {
         <Form.Field>
           <label>기타안내</label>
           <div className="ui editor-wrap">
-            <ReactQuill theme="snow"
+            <ReactQuill
+              theme="snow"
               modules={SelectType.modules}
               formats={SelectType.formats}
-              onChange={html => onChangeCubeIntroProps('description.guide', html)}
               value={cubeIntro && cubeIntro.description && cubeIntro.description.guide || ''}
+              onChange={html => onChangeCubeIntroProps('description.guide', html)}
             />
           </div>
         </Form.Field>
@@ -143,7 +185,7 @@ class CubeIntroView extends Component<Props, States> {
                 <input
                   type="text"
                   value={parseInt(String(cubeIntro.learningTime / 60), 10)}
-                  onChange={(e: any) => setHourAndMinute('hour', e.target.value)}
+                  onChange={this.onChangeLearningTimeHour}
                 />
                 <label>h</label>
                 <Icon className="clear link" />
@@ -152,7 +194,7 @@ class CubeIntroView extends Component<Props, States> {
                 <input
                   type="text"
                   value={parseInt(String(cubeIntro.learningTime % 60), 10)}
-                  onChange={(e: any) => setHourAndMinute('minute', e.target.value)}
+                  onChange={this.onChangeLearningTimeMinute}
                 />
                 <label>m</label>
                 <Icon className="clear link" />
@@ -161,23 +203,22 @@ class CubeIntroView extends Component<Props, States> {
             <div className="column">
               <label>난이도</label>
               <Select
-                placeholder="선택해주세요"
                 className="dropdown"
+                placeholder="선택해주세요"
+                value={cubeIntro && cubeIntro.difficultyLevel || ''}
                 options={SelectType.difficulty}
                 onChange={(e: any, data: any) => onChangeCubeIntroProps('difficultyLevel', data.value)}
-                value={cubeIntro && cubeIntro.difficultyLevel || ''}
               />
             </div>
           </div>
         </Form.Field>
-        {
-          cubeType === 'Community' ?
-            <Form.Field>
-              <CubeIntroBoardContainer />
-            </Form.Field>
-            : null
-        }
-        {/* */}
+
+        { cubeType === 'Community' && (
+          <Form.Field>
+            <CubeIntroBoardContainer />
+          </Form.Field>
+        )}
+
         <Form.Field>
           <ContentsProviderSelectContainer
             targetProps="operation.organizer"

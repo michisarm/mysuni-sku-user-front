@@ -62,6 +62,7 @@ export class PersonalCubeModel implements DramaEntity {
     if (!personalCubeModel.name) return '강좌정보';
     if (personalCubeModel.tags.length > 10) return '태그는 10개까지 입력 가능합니다.';
     if (personalCubeModel.contents.type === 'None') return '교육형태';
+    if (personalCubeModel.subsidiaries.length < 1) return '관계사 공개 범위';
     return 'success';
   }
 

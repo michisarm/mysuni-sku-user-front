@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import mainRoutePaths from 'main/routePaths';
+import boardRoutePaths from 'board/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
@@ -33,7 +34,7 @@ interface State {
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  hasAdminRole = patronInfo.hasRole('CompanyManager', 'CollegeManager', 'SuperManager');
+  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
 
   state = {
     active: false,
@@ -100,7 +101,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickSupport() {
     //
-    this.routeNav('/board/support/Notice');
+    this.routeNav(boardRoutePaths.supportNotice());
   }
 
   onClickIntroduction() {

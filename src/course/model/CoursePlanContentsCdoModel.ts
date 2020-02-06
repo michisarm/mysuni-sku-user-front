@@ -8,6 +8,6 @@ export class CoursePlanContentsCdoModel {
   learningPeriod: DatePeriod = new DatePeriod();
   courseSet: CourseSetModel = new CourseSetModel();
   surveyId: string = '';
-  examId: string = '';
+  testId: string = '';
   fileBoxId: string = '';
 }

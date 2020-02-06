@@ -16,10 +16,12 @@ export class CoursePlanContentsModel implements DramaEntity {
   courseSet: CourseSetModel = new CourseSetModel();
 
   surveyId: string = '';
+  surveyCaseId: string = '';
   surveyTitle: string = '';
   surveyDesignerName: string = '';
 
-  examId: string = '';
+  testId: string = '';
+  paperId: string = '';
   examTitle: string = '';
   examAuthorName: string = '';
 
@@ -60,8 +62,8 @@ export class CoursePlanContentsModel implements DramaEntity {
           value: courseContents.surveyId,
         },
         {
-          name: 'examId',
-          value: courseContents.examId,
+          name: 'testId',
+          value: courseContents.testId,
         },
       ],
     };
@@ -86,7 +88,7 @@ export class CoursePlanContentsModel implements DramaEntity {
         learningPeriod: coursePlanContents.learningPeriod,
         courseSet: coursePlanContents.courseSet,
         surveyId: coursePlanContents.surveyId,
-        examId: coursePlanContents.examId,
+        testId: coursePlanContents.testId,
         fileBoxId: coursePlanContents.fileBoxId,
       }
     );
@@ -107,7 +109,8 @@ decorate(CoursePlanContentsModel, {
   surveyTitle: observable,
   surveyDesignerName: observable,
 
-  examId: observable,
+  testId: observable,
+  paperId: observable,
   examTitle: observable,
   examAuthorName: observable,
 
