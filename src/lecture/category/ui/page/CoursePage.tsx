@@ -196,9 +196,10 @@ class CoursePage extends Component<Props> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService,
+      coursePlanService, studentService, courseLectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { courseLecture } = courseLectureService!;
     const { student } = studentService!;
 
     let state: SubState | undefined;
@@ -234,7 +235,7 @@ class CoursePage extends Component<Props> {
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: coursePlan.learningTime,
-      participantCount: '0',  // Todo
+      rollBooksPassedStudentCount: courseLecture.passedStudentCount,  // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,
