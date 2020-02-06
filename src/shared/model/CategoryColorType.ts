@@ -1,7 +1,7 @@
 
 
 enum CategoryColorType {
-  Default = 'grey',
+  Default = 'navy',
   AI = 'purple',
   DT = 'violet',
   Global = 'green',
