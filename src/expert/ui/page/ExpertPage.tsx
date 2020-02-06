@@ -8,7 +8,7 @@ import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { PageService, ContentLayout, NoSuchContentPanel } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import { InstructorService } from '../../index';
-import ExpertHeaderView from '../view/ExpertHeaderView';
+import ExpertContentHeaderView from '../view/ExpertContentHeaderView';
 import InstructorIntroduceView from '../view/InstructorIntroduceView';
 import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
 import { LectureCardService, LectureModel, LectureService } from '../../../lecture';
@@ -58,7 +58,7 @@ class ExpertPage extends Component<Props> {
     const { instructorService } = this.props;
     const { instructorId } = this.props.match.params;
 
-    if (instructorService) instructorService.findInstructor(instructorId);
+    instructorService.findInstructor(instructorId);
     this.findPagingInstructorLectures();
   }
 
@@ -122,7 +122,6 @@ class ExpertPage extends Component<Props> {
   render() {
     const { activeItem } = this.state;
     const { instructor } = this.props.instructorService!;
-    const result = instructor.result;
 
     const { lectureService, reviewService } = this.props;
     // const { pageService, lectureService, reviewService } = this.props;
@@ -137,8 +136,8 @@ class ExpertPage extends Component<Props> {
           { text: 'Expert' },
         ]}
       >
-        <ExpertHeaderView
-          result={result}
+        <ExpertContentHeaderView
+          instructor={instructor}
         />
         <div>
           <Sticky className="tab-menu offset0">
@@ -166,7 +165,7 @@ class ExpertPage extends Component<Props> {
           {
             activeItem === 'Introduce' ?
               <InstructorIntroduceView
-                result={result}
+                instructor={instructor}
               />
               :
               <Segment className="full">
