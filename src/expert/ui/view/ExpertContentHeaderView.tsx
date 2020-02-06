@@ -3,13 +3,18 @@ import { Icon, Image, Label } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
 
+
 interface Props {
-  result: InstructorModel
+  instructor: InstructorModel
 }
 
-class ExpertHeaderView extends React.Component<Props> {
+class ExpertContentHeaderView extends React.Component<Props> {
+  //
   render() {
-    const { result } = this.props;
+    //
+    const { instructor } = this.props;
+    const { memberSummary } = instructor;
+
     return (
       <div className="main-info-area">
         <div className="progress-info-wrap">
@@ -22,11 +27,11 @@ class ExpertHeaderView extends React.Component<Props> {
               </div>
               <div className="text-info">
                 <div className="name">
-                  {result && result.memberSummary && result.memberSummary.name}
+                  {memberSummary.name}
                 </div>
                 <div className="part">
-                  <span>{result && result.memberSummary && result.memberSummary.department}</span>
-                  <span>{result && result.internal ? '사내강사' : '사외강사'}</span>
+                  <span>{memberSummary.department}</span>
+                  <span>{instructor.internal ? '사내강사' : '사외강사'}</span>
                 </div>
               </div>
             </div>
@@ -34,19 +39,16 @@ class ExpertHeaderView extends React.Component<Props> {
           <div className="cell">
             <div className="cell-inner">
 
-              {(result && result.channel && result.channel.college && result.channel.college.name
-                || result && result.channel && result.channel.channel && result.channel.channel.name
-                || result && result.memberSummary && result.memberSummary.email) && (
+              {(instructor.category.college.name || memberSummary.email) && (
                 <div className="expert-info">
                   <Label className="onlytext">
                     <Icon className="college16" /><span>전문분야</span>
                   </Label>
 
                   <span className="value1">
-                    <span>{result && result.channel && result.channel.college && result.channel.college.name}/
-                      {result && result.channel && result.channel.channel && result.channel.channel.name}
-                    </span>
-                    <a href="#">{result && result.memberSummary && result.memberSummary.email}</a>
+                    <span>{instructor.category.college.name}</span>
+                    <span>{instructor.category.channel.name}</span>
+                    <a href="#">{memberSummary.email}</a>
                   </span>
                 </div>
               )}
@@ -56,7 +58,7 @@ class ExpertHeaderView extends React.Component<Props> {
                   <Icon className="class16" /><span>참여한 강의</span>
                 </Label>
                 <span className="value2">
-                  <strong>{result && result.lectureCount}</strong><span>개</span>
+                  <strong>{instructor.lectureCount}</strong><span>개</span>
                 </span>
               </div>
               <div className="expert-info">
@@ -64,7 +66,7 @@ class ExpertHeaderView extends React.Component<Props> {
                   <Icon className="total-time" /><span>총 강의시간</span>
                 </Label>
                 <span className="value3">
-                  <strong>{result && result.lectureHour}</strong><span>h</span>
+                  <strong>{instructor.lectureHour}</strong><span>h</span>
                   <strong className="min">00</strong><span>m</span>
                 </span>
               </div>
@@ -76,4 +78,4 @@ class ExpertHeaderView extends React.Component<Props> {
   }
 }
 
-export default ExpertHeaderView;
+export default ExpertContentHeaderView;

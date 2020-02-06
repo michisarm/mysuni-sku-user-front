@@ -1,6 +1,8 @@
+
 import { decorate, observable } from 'mobx';
-import { ChannelModel } from './ChannelModel';
+import { CategoryModel } from 'shared';
 import { MemberSummaryModel } from './MemberSummaryModel';
+
 
 export class InstructorModel {
   //
@@ -9,7 +11,7 @@ export class InstructorModel {
   email: string = '';
   name: string = '';
   company: string = '';
-  category: string = '';
+  category: CategoryModel = new CategoryModel();
   internal: boolean = false;
   specialty: string = '';
   instructorLearningTime: number = 0;
@@ -25,14 +27,15 @@ export class InstructorModel {
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
   specialtyEnName: string = '';
   specialtyKrName: string = '';
-  channel: ChannelModel = new ChannelModel();
+
 
   constructor(instructor?: InstructorModel) {
     if (instructor) {
-      const channel = instructor.channel && new ChannelModel(instructor.channel) || this.channel;
-      const memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
-      Object.assign(this, { ...instructor, channel, memberSummary });
+      Object.assign(this, { ...instructor });
 
+      this.category = instructor.category && new CategoryModel(instructor.category) || this.category;
+      // this.channel = instructor.category && new ChannelModel(instructor.channel) || this.channel;
+      this.memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
     }
   }
 }
@@ -58,6 +61,5 @@ decorate(InstructorModel, {
   memberSummary: observable,
   specialtyEnName: observable,
   specialtyKrName: observable,
-  channel: observable,
 });
 
