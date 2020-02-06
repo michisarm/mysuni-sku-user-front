@@ -1,4 +1,8 @@
+
 import React from 'react';
+import { reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+
 import { Icon, Image, Label } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { InstructorModel } from '../../model/InstructorModel';
@@ -8,7 +12,9 @@ interface Props {
   instructor: InstructorModel
 }
 
-class ExpertContentHeaderView extends React.Component<Props> {
+@observer
+@reactAutobind
+class InstructorContentHeaderView extends React.Component<Props> {
   //
   render() {
     //
@@ -38,7 +44,6 @@ class ExpertContentHeaderView extends React.Component<Props> {
           </div>
           <div className="cell">
             <div className="cell-inner">
-
               {(instructor.category.college.name || memberSummary.email) && (
                 <div className="expert-info">
                   <Label className="onlytext">
@@ -78,4 +83,4 @@ class ExpertContentHeaderView extends React.Component<Props> {
   }
 }
 
-export default ExpertContentHeaderView;
+export default InstructorContentHeaderView;
