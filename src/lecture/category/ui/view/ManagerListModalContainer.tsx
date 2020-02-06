@@ -4,7 +4,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { Chart, CompanyViewModel, MemberViewModel, DepartmentViewModel } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
 
-import '@nara.drama/approval/lib/snap.css';
+
 import { SkProfileService } from 'profile';
 
 interface Props {
@@ -44,8 +44,6 @@ class ManagerListModalContainer extends React.Component<Props, States> {
   handleOk(member: MemberViewModel, department: DepartmentViewModel, company: CompanyViewModel) {
     //
     const { handleOk } = this.props;
-    console.log(member);
-    console.log(1);
     handleOk(member);
     this.onShow(false);
   }
