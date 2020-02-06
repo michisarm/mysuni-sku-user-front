@@ -12,6 +12,9 @@ class CourseLectureModel extends DramaEntityObservableModel {
   commentId: string = '';
   time: number = 0;
 
+  studentCount: number = 0;
+  passedStudentCount: number = 0;
+
 
   constructor(courseLecture?: CourseLectureModel) {
     super();
@@ -28,6 +31,8 @@ decorate(CourseLectureModel, {
   reviewId: observable,
   commentId: observable,
   time: observable,
+  studentCount: observable,
+  passedStudentCount: observable,
 });
 
 export default CourseLectureModel;

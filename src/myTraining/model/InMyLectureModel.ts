@@ -37,7 +37,6 @@ class InMyLectureModel extends DramaEntityObservableModel {
   reviewId: string = '';
   time: number = 0;
   studentCount: number = 0;
-  // TODO: 서버에서 넣어줘야함..
   passedStudentCount: number = 0;
 
   baseUrl: string = '';

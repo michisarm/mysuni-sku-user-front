@@ -130,19 +130,19 @@ class ClassroomModalView extends Component<Props, States> {
                         <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
                         <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
                         <Table.Cell>
-                          {
-                            classroom.enrolling.cancellationPenalty && (
-                              <Popup
-                                content={<span>{classroom.enrolling.cancellationPenalty}</span>}
-                                className="ui custom red"
-                                position="bottom right"
-                                trigger={
-                                  <Button icon className="img-icon custom">
-                                    <Icon className="noti32" /><span className="blind">취소 패널티</span>
-                                  </Button>
-                                }
-                              />
-                            ) || null
+                          { classroom.enrolling.cancellationPenalty ?
+                            <Popup
+                              content={<span>{classroom.enrolling.cancellationPenalty}</span>}
+                              className="ui custom red"
+                              position="bottom right"
+                              trigger={
+                                <Button icon className="img-icon custom">
+                                  <Icon className="noti32" /><span className="blind">취소 패널티</span>
+                                </Button>
+                              }
+                            />
+                            :
+                            <span className="empty-dash" />
                           }
                         </Table.Cell>
                       </Table.Row>

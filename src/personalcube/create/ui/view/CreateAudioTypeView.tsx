@@ -3,10 +3,10 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
-import {FileBox, PatronType, ValidationType} from '@nara.drama/depot';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import {depotHelper, SearchFilter} from 'shared';
+import { depotHelper, SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from 'personalcube/media';
 import { PersonalCubeModel } from 'personalcube/personalcube';

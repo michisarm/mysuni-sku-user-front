@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
@@ -195,9 +196,10 @@ class CoursePage extends Component<Props> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService,
+      coursePlanService, studentService, courseLectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
+    const { courseLecture } = courseLectureService!;
     const { student } = studentService!;
 
     let state: SubState | undefined;
@@ -233,7 +235,7 @@ class CoursePage extends Component<Props> {
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: coursePlan.learningTime,
-      participantCount: '0',  // Todo
+      rollBooksPassedStudentCount: courseLecture.passedStudentCount,  // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,
@@ -436,6 +438,12 @@ class CoursePage extends Component<Props> {
         <Tab
           className="tab-menu2 offset0"
           tabs={this.getTabs()}
+          header={
+            <div className="cont-inner summary">
+              <Label color={coursePlan.category.color}>{coursePlan.category.college.name}</Label>
+              <span className="detail-tit">{coursePlan.name}</span>
+            </div>
+          }
         />
       </ContentLayout>
     );

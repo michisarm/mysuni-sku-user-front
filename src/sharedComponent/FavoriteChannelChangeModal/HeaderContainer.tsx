@@ -94,7 +94,7 @@ class HeaderContainer extends Component<Props, State> {
           <span className="text01">Selected</span>
           <span className="count">
             <span className="text01 add">{favoriteChannels.length}</span>
-            <span className="text02">/{totalChannelCount}</span>
+            <span className="text02"> / {totalChannelCount}</span>
           </span>
           <div className="right">
             <button className="clear" onClick={onResetSelected}>

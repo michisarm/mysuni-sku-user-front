@@ -6,8 +6,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import {FileBox, PatronType, ValidationType} from '@nara.drama/depot';
-import {depotHelper, SearchFilter} from 'shared';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+import { depotHelper, SearchFilter } from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from '../../../media';
 import { PersonalCubeModel } from '../../../personalcube';

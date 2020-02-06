@@ -1,5 +1,5 @@
 
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment, ReactNode} from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
@@ -9,6 +9,7 @@ import TabItemModel from './model/TabItemModel';
 
 interface Props {
   tabs: TabItemModel[]
+  header?: ReactNode
   className?: string
   wrapperClassName?: string
   defaultActiveName?: string
@@ -35,6 +36,7 @@ class TabContainer extends Component<Props, State> {
     activeName: '',
   };
 
+  contextRef: any = React.createRef();
 
   constructor(props: Props) {
     //
@@ -59,7 +61,7 @@ class TabContainer extends Component<Props, State> {
 
   renderItems() {
     //
-    const { renderItems, className, large, tabs } = this.props;
+    const { renderItems, header, className, large, tabs } = this.props;
     const { activeName } = this.state;
 
     if (renderItems) {
@@ -67,7 +69,8 @@ class TabContainer extends Component<Props, State> {
     }
     else {
       return (
-        <Sticky className={className}>
+        <Sticky context={this.contextRef} className={className}>
+          {header}
           <div className="cont-inner">
             <Menu className={large ? 'sku2' : 'sku'}>
               { tabs.map((tab, index) => (
@@ -95,7 +98,7 @@ class TabContainer extends Component<Props, State> {
     const activeTab = tabs.find(tab => tab.name === activeName);
 
     const contents = (
-      <div>
+      <div ref={this.contextRef}>
         {this.renderItems()}
 
         { allMounted ?

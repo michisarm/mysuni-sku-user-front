@@ -4,8 +4,8 @@ import { patronInfo } from '@nara.platform/dock';
 import { Chart, CompanyViewModel, MemberViewModel, DepartmentViewModel } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
 
-
 import { SkProfileService } from 'profile';
+
 
 interface Props {
   skProfileService?: SkProfileService
