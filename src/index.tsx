@@ -1,7 +1,6 @@
 
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
-import '@nara.drama/approval/lib/snap.css';
 import 'semantic-ui-less/semantic.less';
 import '@nara.drama/approval/lib/snap.css';
 import './style/css/main.b6db522c.chunk.css';
