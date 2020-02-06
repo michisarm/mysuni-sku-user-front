@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
-import { ContentLayout, PageService } from 'shared';
+import { PageService, ContentLayout, NoSuchContentPanel } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import { InstructorService } from '../../index';
 import ExpertHeaderView from '../view/ExpertHeaderView';
@@ -170,28 +170,34 @@ class ExpertPage extends React.Component<Props> {
               :
               <Segment className="full">
                 <div className="section">
-                  <Lecture.Group type={Lecture.GroupType.Box}>
-                    {lectures.map((lecture: LectureModel, index: number) => {
-                      const rating = ratingMap.get(lecture.reviewId) || 0;
-                      return (
-                        <Lecture
-                          key={`lecture-${index}`}
-                          model={lecture}
-                          rating={rating}
-                          thumbnailImage={lecture.baseUrl || undefined}
-                          action={Lecture.ActionType.Add}
-                          onAction={this.onActionLecture}
-                          onViewDetail={this.onViewDetail}
-                        />
-                      );
-                    })}
-                  </Lecture.Group>
+                  { lectures.length > 0 ?
+                    <>
+                      <Lecture.Group type={Lecture.GroupType.Box}>
+                        {lectures.map((lecture: LectureModel, index: number) => {
+                          const rating = ratingMap.get(lecture.reviewId) || 0;
+                          return (
+                            <Lecture
+                              key={`lecture-${index}`}
+                              model={lecture}
+                              rating={rating}
+                              thumbnailImage={lecture.baseUrl || undefined}
+                              action={Lecture.ActionType.Add}
+                              onAction={this.onActionLecture}
+                              onViewDetail={this.onViewDetail}
+                            />
+                          );
+                        })}
+                      </Lecture.Group>
 
-                  { this.isContentMore() && (
-                    <SeeMoreButton
-                      onClick={this.onClickSeeMore}
-                    />
-                  )}
+                      { this.isContentMore() && (
+                        <SeeMoreButton
+                          onClick={this.onClickSeeMore}
+                        />
+                      )}
+                    </>
+                    :
+                    <NoSuchContentPanel message="등록된 강의가 없습니다." />
+                  }
                 </div>
               </Segment>
           }
