@@ -10,7 +10,7 @@ configure({
 });
 
 @autobind
-export default class InstructorService {
+class InstructorService {
   //
   static instance: InstructorService;
 
@@ -18,6 +18,7 @@ export default class InstructorService {
 
   @observable
   instructor: InstructorModel = new InstructorModel();
+
 
   constructor(instructorApi: InstructorApi) {
     this.instructorApi = instructorApi;
@@ -38,3 +39,5 @@ Object.defineProperty(InstructorService, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default InstructorService;

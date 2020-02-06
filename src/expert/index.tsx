@@ -1,5 +1,5 @@
-import ExpertPage from './ui/page/ExpertPage';
-import InstructorService from './present/logic/IntructorService';
+import InstructorPage from './ui/page/InstructorPage';
+import InstructorService from './present/logic/InstructorService';
 
 export const expertStores = {
   expert: {
@@ -9,6 +9,6 @@ export const expertStores = {
 
 
 export {
-  ExpertPage,
+  InstructorPage,
   InstructorService,
 };
