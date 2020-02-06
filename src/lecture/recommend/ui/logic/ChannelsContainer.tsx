@@ -59,13 +59,14 @@ class ChannelsContainer extends Component<Props> {
     if (prevChannels !== channels) {
       const sameLength = prevChannels.length === channels.length;
 
-      if (!sameLength) {
-        collegeService!.setChannels(channels && channels.map((chanel, index) => (
+      if (!sameLength && channels) {
+        collegeService!.setChannels(channels.map((chanel, index) => (
           new ChannelModel({
             ...chanel,
             checked: sameLength ? channels[index].checked :  false,
           })
         )) || []);
+        this.onConfirmChangeFavorite();
       }
     }
 
@@ -118,6 +119,7 @@ class ChannelsContainer extends Component<Props> {
     //
     const { recommendLectures } = this.props.lectureService!;
     const { channels } = this.props.collegeService!;
+
     const notChecked = channels.every((channel) => !channel.checked);
     let displayableRecommendLectures: RecommendLectureRdo[] = [];
 
@@ -134,13 +136,14 @@ class ChannelsContainer extends Component<Props> {
 
       displayableRecommendLectures = recommendLectures.filter((lecture) => checkedChannelIds.includes(lecture.channel.id));
     }
+
     return displayableRecommendLectures;
   }
 
   onConfirmChangeFavorite() {
     //
     const { history } = this.props;
-    history.replace(routePaths.recommend());
+    setTimeout(() => history.replace(routePaths.recommend()), 100);
   }
 
   onSelectChannel(channel: ChannelModel) {

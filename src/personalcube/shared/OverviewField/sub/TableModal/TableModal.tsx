@@ -108,7 +108,7 @@ class TableModal extends Component<Props, States> {
                       <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
                       <Table.Cell>
                         {
-                          classroom.enrolling.cancellationPenalty && (
+                          classroom.enrolling.cancellationPenalty ?
                             <Popup
                               content={<span>{classroom.enrolling.cancellationPenalty}</span>}
                               className="ui custom red"
@@ -119,7 +119,8 @@ class TableModal extends Component<Props, States> {
                                 </Button>
                               }
                             />
-                          ) || null
+                            :
+                            <span className="empty-dash" />
                         }
                       </Table.Cell>
                     </Table.Row>

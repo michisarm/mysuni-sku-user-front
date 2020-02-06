@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { Label, Icon } from 'semantic-ui-react';
-
 
 interface Props {
   totalChannelCount: number,
   favoriteChannelCount: number,
+  top: React.ReactNode,
 }
 
 @reactAutobind
@@ -15,13 +14,12 @@ class RecommendItem extends Component<Props> {
   //
   render() {
     //
-    const { favoriteChannelCount, totalChannelCount } = this.props;
+    const { top, favoriteChannelCount, totalChannelCount } = this.props;
 
     return (
       <div className="recommend-info">
-        <Label className="onlytext">
-          <Icon className="channel16" /><span><a>관심 Channel</a></span>
-        </Label>
+        {top}
+
         <span className="value1">
           <span className="text01">{favoriteChannelCount}</span>
           <span className="text02">/</span>

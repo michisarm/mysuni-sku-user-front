@@ -4,12 +4,13 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 
 import { Button, Modal } from 'semantic-ui-react';
-import { CollegeModel, ChannelModel, CollegeService } from 'college';
-import { LectureCountService } from 'lecture';
+import { CollegeService, CollegeModel, ChannelModel } from 'college';
+import { LectureCountService, CollegeLectureCountService } from 'lecture';
 
 
 interface Props {
   collegeService? : CollegeService
+  collegeLectureCountService?: CollegeLectureCountService
   lectureCountService? : LectureCountService
 
   trigger?: React.ReactNode
@@ -25,7 +26,11 @@ interface State{
 }
 
 
-@inject(mobxHelper.injectFrom('lecture.lectureCountService', 'college.collegeService'))
+@inject(mobxHelper.injectFrom(
+  'college.collegeService',
+  'lecture.lectureCountService',
+  'lecture.collegeLectureCountService',
+))
 @observer
 @reactAutobind
 class ChannelFilterModalContainer extends Component<Props, State> {
@@ -38,11 +43,16 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    const { collegeService } = this.props;
+    //
+    this.init();
+  }
 
-    if (collegeService) {
-      collegeService.findAllColleges();
-    }
+  init() {
+    //
+    const { collegeService, collegeLectureCountService } = this.props;
+
+    collegeService!.findAllColleges();
+    collegeLectureCountService!.findCollegeLectureCounts();
   }
 
   onOpenModal() {
@@ -105,10 +115,11 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   render() {
-    const { collegeService, trigger, lectureCountService } = this.props;
+    const { collegeService, lectureCountService, collegeLectureCountService, trigger } = this.props;
     const { open, channels, selectedCollege }: State = this.state;
-    const { colleges } = collegeService as CollegeService;
-    const { channelLectureCounts } = lectureCountService as LectureCountService;
+    const { colleges } = collegeService!;
+    const { channelLectureCounts } = lectureCountService!;
+    const { totalChannelCount } = collegeLectureCountService!;
 
     return (
 
@@ -184,15 +195,18 @@ class ChannelFilterModalContainer extends Component<Props, State> {
               </div>
             </div>
             <div className="column">
-              <div className="f-tit">Selected <span className="counter"><span className="now">{channels.length}</span></span>
+              <div className="f-tit">
+                Selected
+                <span className="counter">
+                  <span className="now" style={{ color: '#ff664d' }}>{channels.length} </span>/ {totalChannelCount}
+                </span>
               </div>
               <div className="f-list">
                 <div className="scrolling">
                   <div className="selected">
                     {/* 선택 전 */}
-                    {
-                      channels && channels.length
-                      && channels.map((channel) => (
+                    { channels && channels.length > 0 ?
+                      channels.map((channel) => (
                         <Button
                           className="del"
                           key={`del_${channel.id}`}
@@ -200,7 +214,9 @@ class ChannelFilterModalContainer extends Component<Props, State> {
                         >
                           {channel.name}
                         </Button>
-                      )) || (<div className="empty">Not Selected</div>)
+                      ))
+                      :
+                      <div className="empty">Not Selected</div>
                     }
                   </div>
                 </div>
