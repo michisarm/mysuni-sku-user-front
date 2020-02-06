@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
@@ -436,6 +437,12 @@ class CoursePage extends Component<Props> {
         <Tab
           className="tab-menu2 offset0"
           tabs={this.getTabs()}
+          header={
+            <div className="cont-inner summary">
+              <Label color={coursePlan.category.color}>{coursePlan.category.college.name}</Label>
+              <span className="detail-tit">{coursePlan.name}</span>
+            </div>
+          }
         />
       </ContentLayout>
     );

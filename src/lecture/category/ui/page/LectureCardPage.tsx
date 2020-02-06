@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
@@ -715,6 +716,12 @@ class LectureCardPage extends Component<Props, State> {
         <Tab
           className="tab-menu2 offset0"
           tabs={this.getTabs()}
+          header={
+            <div className="cont-inner summary">
+              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
+              <span className="detail-tit">{viewObject.name}</span>
+            </div>
+          }
         />
 
         <LinkedInModalContainer
