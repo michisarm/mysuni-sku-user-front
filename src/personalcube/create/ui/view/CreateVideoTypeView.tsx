@@ -6,8 +6,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { FileBox, PatronType } from '@nara.drama/depot';
-import { SearchFilter } from 'shared';
+import {FileBox, PatronType, ValidationType} from '@nara.drama/depot';
+import {depotHelper, SearchFilter} from 'shared';
 import { CollegeService } from 'college';
 import { MediaModel, MediaService, MediaType } from '../../../media';
 import { PersonalCubeModel } from '../../../personalcube';
@@ -407,7 +407,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
               <FileBox
                 vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
+                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />

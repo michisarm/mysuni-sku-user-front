@@ -3,9 +3,9 @@ import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { FileBox, PatronType } from '@nara.drama/depot';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { SearchFilter } from 'shared';
+import { depotHelper, SearchFilter } from 'shared';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import { OfficeWebModel } from 'personalcube/officeweb';
 
@@ -55,7 +55,7 @@ class CreateWebPageTypeView extends React.Component<Props> {
               <FileBox
                 vaultKey={{ keyString: 'sample', patronType: PatronType.Audience }}
                 patronKey={{ keyString: 'sample', patronType: PatronType.Audience }}
-                // validations={[{ type: ValidationType.Duplication, validator: DepotUtil.duplicationValidator }]}
+                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />
