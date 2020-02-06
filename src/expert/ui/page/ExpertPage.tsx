@@ -1,6 +1,7 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
@@ -38,7 +39,7 @@ interface Props extends RouteComponentProps<{ instructorId : string }> {
 @observer
 @observer
 @reactAutobind
-class ExpertPage extends React.Component<Props> {
+class ExpertPage extends Component<Props> {
   //
   state = { activeItem: 'Introduce' };
 
@@ -120,7 +121,7 @@ class ExpertPage extends React.Component<Props> {
 
   render() {
     const { activeItem } = this.state;
-    const { instructor } = this.props.instructorService || {} as InstructorService;
+    const { instructor } = this.props.instructorService!;
     const result = instructor.result;
 
     const { lectureService, reviewService } = this.props;
