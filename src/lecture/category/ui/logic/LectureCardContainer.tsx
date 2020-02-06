@@ -61,14 +61,13 @@ class LectureCardContainer extends Component<Props, State> {
     rollBook: new RollBookModel(),
   };
 
-  componentWillUnmount(): void {
-    this.setState({ rollBook: new RollBookModel() });
-  }
-
-
   componentDidMount(): void {
     //
     this.findInMyLecture();
+  }
+
+  componentWillUnmount(): void {
+    this.setState({ rollBook: new RollBookModel() });
   }
 
   findInMyLecture() {

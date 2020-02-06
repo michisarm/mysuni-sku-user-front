@@ -244,6 +244,8 @@ class CourseLectureContainer extends Component<Props> {
       proposalState: ProposalState.Submitted,
       programLectureUsid: '',
       courseLectureUsid: '',
+      leaderEmails: [],
+      url: '',
       enClosed: false,
       //enClosed: boardService!.board!.boardConfig!.enClosed,
     });
