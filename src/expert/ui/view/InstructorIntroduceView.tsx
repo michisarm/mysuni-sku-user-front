@@ -15,7 +15,7 @@ class InstructorIntroduceView extends React.Component<Props> {
         <div className="expert-cont">
           <div className="text-info">
             <div className="text02">
-              {result && result.career.split('\n').map( (line, index) => (
+              {result && result.career && result.career.split('\n').map( (line, index) => (
                 <div key={`career-${index}`}>{line.replace('"', '')}<br /></div>
               ))}
             </div>

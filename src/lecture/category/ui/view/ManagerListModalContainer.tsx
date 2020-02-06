@@ -44,8 +44,6 @@ class ManagerListModalContainer extends React.Component<Props, States> {
   handleOk(member: MemberViewModel, department: DepartmentViewModel, company: CompanyViewModel) {
     //
     const { handleOk } = this.props;
-    console.log(member);
-    console.log(1);
     handleOk(member);
     this.onShow(false);
   }

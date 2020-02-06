@@ -40,7 +40,6 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   reviewId: string = '';
   studentCount: number = 0;
-  // TODO: 서버에서 넣어줘야 함.
   passedStudentCount: number = 0;
 
   baseUrl: string = '';
