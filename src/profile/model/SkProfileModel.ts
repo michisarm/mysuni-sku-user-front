@@ -32,6 +32,12 @@ export class SkProfileModel implements DramaEntity {
     }
   }
 
+  @computed
+  get departmentCode() {
+    //
+    return this.member && this.member.departmentCode || '';
+  }
+
   static asNameValues(skProfile : SkProfileModel) : NameValueList {
     const asNameValues = {
       nameValues: [

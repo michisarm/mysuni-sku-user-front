@@ -11,10 +11,13 @@ import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
+import { MemberViewModel } from '@nara.drama/approval';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../shared/model/StudentModel';
+import ManagerListModalContainer from '../view/ManagerListModalContainer';
+import RollBookModel from '../../../shared/model/RollBookModel';
 
 interface Props {
   studentService?: StudentService
@@ -36,6 +39,7 @@ interface Props {
 }
 
 interface State {
+  rollBook: RollBookModel
 }
 
 @inject(mobxHelper.injectFrom(
@@ -51,11 +55,19 @@ class LectureCardContainer extends Component<Props, State> {
   examModal: any = null;
   surveyModal: any = null;
   reportModal: any = null;
+  managerModal: any = null;
 
+  state = {
+    rollBook: new RollBookModel(),
+  };
 
   componentDidMount(): void {
     //
     this.findInMyLecture();
+  }
+
+  componentWillUnmount(): void {
+    this.setState({ rollBook: new RollBookModel() });
   }
 
   findInMyLecture() {
@@ -66,15 +78,16 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    const { rollBookService, lectureCardId, student, studentService, studentCdo, typeViewObject } = this.props;
+    this.onManager();
+    const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
       studentService!.removeStudent(student.rollBookId)
-        .then(() => this.registerStudent({ ...studentCdo, rollBookId: rollBook.id }));
+        .then(() => this.setState({ rollBook }, this.onManager ));
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
-      this.registerStudent({ ...studentCdo, rollBookId: rollBook.id });
+      this.setState({ rollBook }, this.onManager );
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
@@ -87,6 +100,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onRegisterStudent(proposalState?: ProposalState) {
     const { studentCdo, student } = this.props;
+
     if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
       this.registerStudent({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
@@ -117,9 +131,27 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  onClickManagerListOk(member: MemberViewModel) {
+    //
+    const { studentCdo, student } = this.props;
+    const { rollBook } = this.state;
+    let proposalState = studentCdo.proposalState;
+    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
+    let rollBookId = studentCdo.rollBookId;
+    if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    studentCdo.leaderEmails = [member.email];
+    studentCdo.url = window.location.href;
+
+    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
+  }
+
+
   onClickEnrollment() {
     //
-    this.onRegisterStudent();
+    this.onManager();
   }
 
   onClickChangeSeries() {
@@ -218,6 +250,10 @@ class LectureCardContainer extends Component<Props, State> {
 
   onReport() {
     this.reportModal.onOpenModal();
+  }
+
+  onManager() {
+    this.managerModal.onShow(true);
   }
 
   getMainAction() {
@@ -438,6 +474,10 @@ class LectureCardContainer extends Component<Props, State> {
           ref={classroomModal => this.classroomModal = classroomModal}
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
+        />
+        <ManagerListModalContainer
+          ref={managerModal => this.managerModal = managerModal}
+          handleOk={this.onClickManagerListOk}
         />
         {
           viewObject && viewObject.examId && (

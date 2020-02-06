@@ -16,6 +16,9 @@ class StudentCdoModel {
   programLectureUsid: string = '';
   courseLectureUsid: string = '';
 
+  leaderEmails: string[] = [];
+  url: string = '';
+
   // Community용
   enClosed?: boolean;
 

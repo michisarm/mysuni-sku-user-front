@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { FileBox, PatronType } from '@nara.drama/depot';
-import { SearchFilter } from 'shared';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+import { depotHelper, SearchFilter } from 'shared';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { OfficeWebModel } from 'personalcube/officeweb';
 import { PersonalCubeModel } from 'personalcube/personalcube';
@@ -39,6 +39,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
                 id={officeWeb && officeWeb.fileBoxId || ''}
                 vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                 patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                 onChange={getFileBoxIdForEducation}
               />
               <div className="info-text"><Icon className="info16" />
@@ -56,6 +57,7 @@ class CreateDocumentTypeView extends React.Component<Props> {
               <FileBox
                 vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                 patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                 onChange={getFileBoxIdForReference}
                 id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
               />

@@ -7,8 +7,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import 'react-quill/dist/quill.snow.css';
-import { ContentLayout } from 'shared';
-import { FileBox, PatronType } from '@nara.drama/depot';
+import { ContentLayout, depotHelper } from 'shared';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import classNames from 'classnames';
 import routePaths from '../../routePaths';
 import { BoardService, CategoryService, PostService } from '../..';
@@ -254,6 +254,7 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                       <FileBox
                         vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
                         patronKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
+                        validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                         onChange={this.getFileBoxIdForReference}
                         id={post && post.contents && post.contents.depotId || ''}
                       />

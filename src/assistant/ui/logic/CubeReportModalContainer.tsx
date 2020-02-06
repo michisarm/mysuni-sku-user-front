@@ -2,8 +2,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Button, Icon, Modal } from 'semantic-ui-react';
-import { FileBox, PatronType } from '@nara.drama/depot';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { StudentService } from '../../../lecture/shared';
+import { depotHelper } from '../../../shared';
 
 interface Props {
   studentService ?: StudentService
@@ -110,6 +111,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
                           id={student && student.homeworkFileBoxId || ''}
                           vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
                           patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
+                          validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                           onChange={this.getFileBoxIdForReference}
                         />
                       </div>
