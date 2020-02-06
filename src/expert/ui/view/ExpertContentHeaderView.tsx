@@ -30,7 +30,7 @@ class ExpertContentHeaderView extends React.Component<Props> {
                   {memberSummary.name}
                 </div>
                 <div className="part">
-                  <span>{memberSummary.department}</span>
+                  <span>{memberSummary.department} </span>
                   <span>{instructor.internal ? '사내강사' : '사외강사'}</span>
                 </div>
               </div>

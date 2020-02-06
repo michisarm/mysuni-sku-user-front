@@ -6,27 +6,25 @@ import { MemberSummaryModel } from './MemberSummaryModel';
 
 export class InstructorModel {
   //
-
-  employeeId: string = '';
-  email: string = '';
-  name: string = '';
-  company: string = '';
-  category: CategoryModel = new CategoryModel();
-  internal: boolean = false;
-  specialty: string = '';
-  instructorLearningTime: number = 0;
-
   id: string = '';
-  career: string = '';
-  feedbackId: string = '';
-  tag: string = '';
+  employeeId: string = '';
+  internal: boolean = false;
   resting: boolean = false;
+  category: CategoryModel = new CategoryModel();
+
+  instructorLearningTime: number = 0;
   lectureCount: number = 0;
   lectureHour: number = 0;
   careerYear: number = 0;
+
+  career: string = '';
+  tag: string = '';
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
+  specialty: string = '';
   specialtyEnName: string = '';
   specialtyKrName: string = '';
+
+  feedbackId: string = '';
 
 
   constructor(instructor?: InstructorModel) {
@@ -34,32 +32,30 @@ export class InstructorModel {
       Object.assign(this, { ...instructor });
 
       this.category = instructor.category && new CategoryModel(instructor.category) || this.category;
-      // this.channel = instructor.category && new ChannelModel(instructor.channel) || this.channel;
       this.memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
     }
   }
 }
 
 decorate(InstructorModel, {
-  employeeId: observable,
-  email: observable,
-  name: observable,
-  company: observable,
-  category: observable,
-  internal: observable,
-  specialty: observable,
-  instructorLearningTime: observable,
-
   id: observable,
-  career: observable,
-  feedbackId: observable,
-  tag: observable,
+  employeeId: observable,
+  internal: observable,
   resting: observable,
+  category: observable,
+
+  instructorLearningTime: observable,
   lectureCount: observable,
   lectureHour: observable,
   careerYear: observable,
+
+  career: observable,
+  tag: observable,
   memberSummary: observable,
+  specialty: observable,
   specialtyEnName: observable,
   specialtyKrName: observable,
+
+  feedbackId: observable,
 });
 
