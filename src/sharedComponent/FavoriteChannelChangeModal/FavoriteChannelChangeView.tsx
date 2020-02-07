@@ -24,6 +24,14 @@ class FavoriteChannelChangeView extends Component<Props> {
   //
   color: string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
+
+  isChecked(collegeType: CollegeType, channelId: string) {
+    //
+    const { favoriteChannels }  = this.props;
+
+    return collegeType === CollegeType.Company || favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channelId);
+  }
+
   render() {
     //
     const { colleges, channelIds, selectedCollegeIds, favoriteChannels, favoriteCompanyChannels, onToggleCollege, onToggleChannel } = this.props;
@@ -61,7 +69,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                                         className="base"
                                         label={<label>{channel.name} <span>({channel.count})</span></label>}
                                         name={channel.name}
-                                        checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                        checked={this.isChecked(college.collegeType, channel.id)}
                                         disabled={college.collegeType === CollegeType.Company}
                                         onChange={() => onToggleChannel(channel)}
                                       />
