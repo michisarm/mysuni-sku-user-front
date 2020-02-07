@@ -132,7 +132,7 @@ class CoursePage extends Component<Props> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      console.log(studentJoin);
+      // console.log(studentJoin);
       if (studentJoin) studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
@@ -336,6 +336,7 @@ class CoursePage extends Component<Props> {
 
   renderList() {
     //
+    // console.log('CoursePage renderList');
     const { lectureCardId } = this.props.match.params!;
     return this.renderBaseContentWith(
 
@@ -395,6 +396,7 @@ class CoursePage extends Component<Props> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
 
+    // console.log('CoursePage renderBaseContentWith studentJoins=', studentJoins + ', student=', student);
     return (
       <LectureCardContainer
         lectureServiceId={params.serviceId}
