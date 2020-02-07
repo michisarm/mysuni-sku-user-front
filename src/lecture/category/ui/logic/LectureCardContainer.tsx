@@ -255,7 +255,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onManager() {
-    this.managerModal.onShow(true);
+    // this.managerModal.onShow(true);
   }
 
   getMainAction() {
