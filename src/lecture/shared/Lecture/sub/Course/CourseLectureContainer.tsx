@@ -99,9 +99,6 @@ class CourseLectureContainer extends Component<Props> {
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-    await studentService!.findIsJsonStudent(lectureView.serviceId);
-    this.findStudent();
-
     console.log('CourseLectureContainer init() rollBooks=', this.rollBooks);
   }
 
@@ -117,59 +114,68 @@ class CourseLectureContainer extends Component<Props> {
     return -1;
   }
 
-  getStudentJoin() {
+  getStudentJoinForVideo() {
     const {
       studentService,
     } = this.props;
-    const { studentJoins }: StudentService = studentService!;
+    const { studentJoinsForVideo }: StudentService = studentService!;
 
-    if (studentJoins && studentJoins.length) {
-      studentJoins.sort(this.compare);
-      const studentJoin = studentJoins[0];
-      return studentJoin;
+    if (studentJoinsForVideo && studentJoinsForVideo.length) {
+      studentJoinsForVideo.sort(this.compare);
+      const studentJoinForVideo = studentJoinsForVideo[0];
+      return studentJoinForVideo;
     }
     return null;
   }
 
-  findStudent() {
+  async findStudentForVideo() {
     const {
       studentService,
     } = this.props;
-    const { studentJoins }: StudentService = studentService!;
+    const { studentJoinsForVideo }: StudentService = studentService!;
 
-    if (studentJoins && studentJoins.length) {
-      const studentJoin = this.getStudentJoin();
-      if (studentJoin) studentService!.findStudentByRollBookId(studentJoin.rollBookId);
+    if (studentJoinsForVideo && studentJoinsForVideo.length) {
+      const studentJoin = this.getStudentJoinForVideo();
+      if (studentJoin) await studentService!.findStudentForVideo(studentJoin.studentId);
     }
   }
 
   registerStudentForVideo(studentCdo: StudentCdoModel)
   {
-    //lectureCardId
+    //
     const { studentService, lectureView } = this.props;
     console.log('CourseLectureContainer registerStudentForVideo studentService=' + studentService);
     console.log('CourseLectureContainer registerStudentForVideo lectureCardId=' + lectureView.serviceId);
 
-    return studentService!.registerStudent(studentCdo)
-      .then(() => {
-        studentService!.findStudent(studentCdo.rollBookId);
-        studentService!.findIsJsonStudent(lectureView.serviceId);
-        studentService!.findStudentCount(studentCdo.rollBookId);
-      });
+    return studentService!.registerStudent(studentCdo);
+    // return studentService!.registerStudent(studentCdo)
+    // .then(() => {
+    //   studentService!.findStudent(studentCdo.rollBookId);
+    //   studentService!.findIsJsonStudent(lectureView.serviceId);
+    //   studentService!.findStudentCount(studentCdo.rollBookId);
+    // });
   }
 
-  onRegisterStudentForVideo(proposalState?: ProposalState)
+  async onRegisterStudentForVideo(proposalState?: ProposalState)
   {
+    const { studentService, lectureView } = this.props;
+
+    await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
+    await this.findStudentForVideo();
+
+    const { studentForVideo } = this.props.studentService!;
+
     const studentCdo = this.getStudentCdo();
-    const { student } = this.props.studentService!;
+
     console.log('CourseLectureContainer onRegisterStudentForVideo studentCdo=', studentCdo);
-    console.log('CourseLectureContainer onRegisterStudentForVideo student=', student);
-    if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected))
+    console.log('CourseLectureContainer onRegisterStudentForVideo studentForVideo=', studentForVideo);
+
+    if ((!studentForVideo || !studentForVideo.id) || (studentForVideo.proposalState !== ProposalState.Canceled && studentForVideo.proposalState !== ProposalState.Rejected))
     {
       this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
-    else if (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected) {
-      this.registerStudentForVideo({ ...studentCdo, proposalState: student.proposalState });
+    else if (studentForVideo.proposalState === ProposalState.Canceled || studentForVideo.proposalState === ProposalState.Rejected) {
+      this.registerStudentForVideo({ ...studentCdo, proposalState: studentForVideo.proposalState });
     }
   }
 
@@ -211,6 +217,7 @@ class CourseLectureContainer extends Component<Props> {
         break;
       case MediaType.LinkMedia:
         url = media.mediaContents.linkMediaUrl;
+        console.log('CourseLectureContainer getMediaUrl media.mediaContents.linkMediaUrl=' + url);
         break;
       case MediaType.InternalMedia:
       case MediaType.InternalMediaUpload:
@@ -281,8 +288,10 @@ class CourseLectureContainer extends Component<Props> {
       //     });
       // }
 
+      console.log('this.getMediaUrl media=', media);
       const url = this.getMediaUrl(media);
 
+      console.log('this.getMediaUrl url=', url);
       //외부 영상, CP사 영상
       if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia)
       {
@@ -306,30 +315,30 @@ class CourseLectureContainer extends Component<Props> {
       studentService,
     } = this.props;
     // const { personalCube } = personalCubeService!;
-    const { student }: StudentService = studentService!;
-    const studentJoin = this.getStudentJoin();
+    const { studentForVideo }: StudentService = studentService!;
+    const studentJoin = this.getStudentJoinForVideo();
 
     let state: SubState | undefined;
 
     if (studentJoin)
     {
-      if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
-      if (student.proposalState === ProposalState.Approved)
+      if (studentForVideo.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
+      if (studentForVideo.proposalState === ProposalState.Approved)
       {
-        if (!student.learningState) state = SubState.Enrolled;
-        if (student.learningState === LearningState.Progress || student.learningState === LearningState.Waiting
-          || student.learningState === LearningState.Failed)
+        if (!studentForVideo.learningState) state = SubState.Enrolled;
+        if (studentForVideo.learningState === LearningState.Progress || studentForVideo.learningState === LearningState.Waiting
+          || studentForVideo.learningState === LearningState.Failed)
         {
-          if (student.learningState === LearningState.Waiting)
+          if (studentForVideo.learningState === LearningState.Waiting)
           {
             state = SubState.Waiting;
           } else state = SubState.InProgress;
         }
-        if (student.learningState === LearningState.Passed) state = SubState.Completed;
-        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+        if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
+        if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
         if (this.personalCube!.contents.type === CubeType.Community) state = SubState.Joined;
       }
-      if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+      if (studentForVideo.proposalState === ProposalState.Rejected) state = SubState.Rejected;
     }
 
     return state;
