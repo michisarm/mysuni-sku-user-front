@@ -294,41 +294,37 @@ class MyLearningContentContainer extends Component<Props, State> {
   renderList(learnings: (MyTrainingModel | LectureModel | InMyLectureModel)[], noSuchComponent: React.ReactNode) {
     //
     return (
-      <>
-        <hr className="dash" />
+      <ContentWrapper>
+        <div className="right">
+          <Button icon className="right btn-blue" onClick={this.onViewAll}>
+            View all
+            <Icon className="morelink" />
+          </Button>
+        </div>
 
-        <ContentWrapper>
-          <div className="right">
-            <Button icon className="right btn-blue" onClick={this.onViewAll}>
-              View all
-              <Icon className="morelink" />
-            </Button>
-          </div>
+        { learnings.length > 0 ?
+          <Lecture.Group type={Lecture.GroupType.Line}>
+            { learnings.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
+              //
+              const inMyLecture = this.getInMyLecture(learning.serviceId);
 
-          { learnings.length > 0 ?
-            <Lecture.Group type={Lecture.GroupType.Line}>
-              { learnings.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
-                //
-                const inMyLecture = this.getInMyLecture(learning.serviceId);
-
-                return (
-                  <Lecture
-                    key={`learning-${index}`}
-                    model={learning}
-                    rating={this.getRating(learning)}
-                    thumbnailImage={learning.baseUrl || undefined}
-                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onActionLecture(inMyLecture || learning)}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
-            :
-            noSuchComponent
-          }
-        </ContentWrapper>
-      </>
+              return (
+                <Lecture
+                  key={`learning-${index}`}
+                  model={learning}
+                  rating={this.getRating(learning)}
+                  thumbnailImage={learning.baseUrl || undefined}
+                  action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                  onAction={() => this.onActionLecture(inMyLecture || learning)}
+                  onViewDetail={this.onViewDetail}
+                />
+              );
+            })}
+          </Lecture.Group>
+          :
+          noSuchComponent
+        }
+      </ContentWrapper>
     );
   }
 
@@ -349,6 +345,16 @@ class MyLearningContentContainer extends Component<Props, State> {
     );
   }
 
+  renderTabContent({ tab, active }: any) {
+    //
+    return (
+      <>
+        <hr className="dash" />
+        {tab.render({ tab, active })}
+      </>
+    );
+  }
+
   render() {
     //
     const tabs = this.getTabs();
@@ -359,6 +365,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         tabs={tabs}
         onChangeTab={this.onChangeTab}
         renderItems={this.renderTabItems}
+        renderContent={this.renderTabContent}
       />
     );
   }

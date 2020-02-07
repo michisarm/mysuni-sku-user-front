@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import classNames from 'classnames';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import MySuniView from '../view/MySuniView';
@@ -61,6 +62,15 @@ class UserMainPage extends Component<Props> {
     this.props.history.push(routePaths.introductionTab(tab.name));
   }
 
+  renderTabContent(props : any) {
+    //
+    return (
+      <div className={classNames('ui tab', { active: props.active })}>
+        {props.tab.render(props)}
+      </div>
+    );
+  }
+
   render() {
     //
     const { params } = this.props.match;
@@ -79,6 +89,7 @@ class UserMainPage extends Component<Props> {
           defaultActiveName={params.tab}
           tabs={this.getTabs()}
           onChangeTab={this.onChangeTab}
+          renderContent={this.renderTabContent}
         />
       </ContentLayout>
     );

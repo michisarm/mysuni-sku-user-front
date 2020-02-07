@@ -4,7 +4,6 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { Segment } from 'semantic-ui-react';
 import { CubeState, NoSuchContentPanel } from 'shared';
 import { SeeMoreButton } from 'lecture/shared';
 import { PersonalCubeService } from 'personalcube/personalcube';
@@ -17,7 +16,6 @@ import CreateListView from '../view/CreateListView';
 
 interface Props extends RouteComponentProps<{ tab: string }> {
   personalCubeService?: PersonalCubeService
-  active: boolean
   onChangeCreateCount: (createCount: number) => void
 }
 
@@ -98,39 +96,37 @@ class CreateListContainer extends React.Component<Props, States> {
   render() {
     //
     const { personalCubeOffsetList } = this.props.personalCubeService!;
-    const { active } = this.props;
     const { totalCount, results: personalCubes } = personalCubeOffsetList;
 
-    if (!active) {
-      return null;
+    if (personalCubes.length < 1) {
+      return (
+        <NoSuchContentPanel
+          message="아직 생성한 학습이 없습니다."
+          link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
+        />
+      );
     }
 
     return (
-      <Segment className="full">
+      <>
         <CreateListPanelTopLineView
           totalCount={totalCount}
           searchSelectOptions={SelectType.userStatus}
           onChange={this.onChangeSearchSelect}
         />
 
-        { personalCubes.length > 0 ?
-          <CreateListView
-            personalCubes={personalCubes}
-            totalCount={totalCount}
-            handleClickCubeRow={this.onClickPersonalCubeRow}
-          />
-          :
-          <NoSuchContentPanel
-            message="아직 생성한 학습이 없습니다."
-            link={{ text: 'Create 바로가기', path: routePaths.createNew() }}
-          />
-        }
+        <CreateListView
+          personalCubes={personalCubes}
+          totalCount={totalCount}
+          handleClickCubeRow={this.onClickPersonalCubeRow}
+        />
+
         { totalCount > personalCubes.length && (
           <SeeMoreButton
             onClick={() => this.findPagingPersonalCubes()}
           />
         )}
-      </Segment>
+      </>
     );
   }
 }

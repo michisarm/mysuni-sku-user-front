@@ -6,8 +6,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Segment } from 'semantic-ui-react';
-
 import { NoSuchContentPanel, PageService, CubeType } from 'shared';
 import { SkProfileService } from 'profile';
 import { Lecture, LectureService, LectureModel } from 'lecture';
@@ -256,16 +254,37 @@ class MyLearningPage extends Component<Props, State> {
     });
   }
 
+  renderNoSuchContent(noSuchContentPanel: React.ReactNode) {
+    //
+    const { skProfileService, history } = this.props;
+    const { profileMemberName } = skProfileService!;
+
+    return (
+      <NoSuchContentPanel message={(
+        <>
+          <div className="text">{noSuchContentPanel}</div>
+          <a
+            className="ui icon right button btn-blue2"
+            onClick={() => history.push('/lecture/recommend')}
+          >
+            {profileMemberName}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
+          </a>
+        </>
+      )}
+      />
+    );
+  }
+
   render() {
     //
-    const { skProfileService, inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
-    const { member } = skProfileService!.skProfile;
-    const { ratingMap } =  reviewService as ReviewService;
+    const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
+    const { ratingMap } =  reviewService!;
     const { type, channels } = this.state;
     const { inMyLectureMap } =  inMyLectureService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
     let list: (MyTrainingModel | LectureModel | InMyLectureModel)[] = [];
+
     let noSuchContentPanel = '';
 
     switch (type) {
@@ -296,53 +315,45 @@ class MyLearningPage extends Component<Props, State> {
         break;
     }
 
+    if (!list || list.length < 1) {
+      return this.renderNoSuchContent(noSuchContentPanel);
+    }
+
     return (
-      <Segment className="full">
-        <LineHeaderContainer count={page && page.totalCount || 0} channels={channels} onFilter={this.onFilter} />
-        {
-          list && list.length && (
-            <Lecture.Group type={cardType}>
-              {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
-                let rating: number | undefined;
-                if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
-                  rating = ratingMap.get(value.reviewId) || 0;
-                }
-                const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;
-                return (
-                  <Lecture
-                    key={`training-${index}`}
-                    model={value}
-                    rating={rating}
-                    thumbnailImage={value.baseUrl || undefined}
-                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onActionLecture(inMyLecture || value)}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
-          ) || (
-            <NoSuchContentPanel message={(
-              <>
-                <div className="text">{noSuchContentPanel}</div>
-                <a
-                  className="ui icon right button btn-blue2"
-                  onClick={() => this.props.history.push('/lecture/recommend')}
-                >
-                  {member.name}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
-                </a>
-              </>
-              )}
-            />
-          )
-        }
+      <>
+        <LineHeaderContainer
+          count={page && page.totalCount || 0}
+          channels={channels}
+          onFilter={this.onFilter}
+        />
+
+        <Lecture.Group type={cardType}>
+          {list.map((value: MyTrainingModel | LectureModel | InMyLectureModel, index: number) => {
+            let rating: number | undefined;
+            if ((value instanceof InMyLectureModel || value instanceof LectureModel) && value.cubeType !== CubeType.Community) {
+              rating = ratingMap.get(value.reviewId) || 0;
+            }
+            const inMyLecture = inMyLectureMap.get(value.serviceId) || undefined;
+            return (
+              <Lecture
+                key={`training-${index}`}
+                model={value}
+                rating={rating}
+                thumbnailImage={value.baseUrl || undefined}
+                action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                onAction={() => this.onActionLecture(inMyLecture || value)}
+                onViewDetail={this.onViewDetail}
+              />
+            );
+          })}
+        </Lecture.Group>
 
         { this.isContentMore() && (
           <SeeMoreButton
             onClick={this.onClickSeeMore}
           />
         )}
-      </Segment>
+      </>
     );
   }
 }

@@ -6,7 +6,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { Segment } from 'semantic-ui-react';
 import { PageService, CubeType, NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college';
 import lectureRoutePaths from 'lecture/routePaths';
@@ -22,7 +21,6 @@ interface Props extends RouteComponentProps<{ tab: string }> {
   lectureService?: LectureService,
   inMyLectureService?: InMyLectureService,
   reviewService?: ReviewService
-  active: boolean
   onChangeSharedCount: (sharedCount: number) => void
 }
 
@@ -154,52 +152,48 @@ class SharedListContainer extends React.Component<Props, States> {
 
   render() {
     //
-    const { lectureService, inMyLectureService, active } = this.props;
+    const { lectureService, inMyLectureService } = this.props;
     const { lectures, totalLectureCount } = lectureService!;
     const { inMyLectureMap } = inMyLectureService!;
     const { channels } = this.state;
 
-    if (!active) {
-      return null;
+    if (lectures.length < 1) {
+      return <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />;
     }
 
     return (
-      <Segment className="full">
+      <>
         <SharedListPanelTopLineView
           totalCount={totalLectureCount}
           channels={channels}
           onFilter={this.onFilter}
         />
 
-        { lectures.length > 0 ?
-          <div className="section">
-            <Lecture.Group type={Lecture.GroupType.Box}>
-              { lectures.map((lecture, index) => {
-                const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
-                return (
-                  <Lecture
-                    key={`lecture-${index}`}
-                    model={lecture}
-                    rating={this.getRating(lecture)}
-                    thumbnailImage={lecture.baseUrl || undefined}
-                    action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
-                    onViewDetail={this.onViewDetail}
-                  />
-                );
-              })}
-            </Lecture.Group>
+        <div className="section">
+          <Lecture.Group type={Lecture.GroupType.Box}>
+            { lectures.map((lecture, index) => {
+              const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+              return (
+                <Lecture
+                  key={`lecture-${index}`}
+                  model={lecture}
+                  rating={this.getRating(lecture)}
+                  thumbnailImage={lecture.baseUrl || undefined}
+                  action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                  onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
+                  onViewDetail={this.onViewDetail}
+                />
+              );
+            })}
+          </Lecture.Group>
 
-            { this.isContentMore() && (
-              <SeeMoreButton
-                onClick={this.onClickSeeMore}
-              />
-            )}
-          </div>
-          :
-          <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
-        }
-      </Segment>
+          { this.isContentMore() && (
+            <SeeMoreButton
+              onClick={this.onClickSeeMore}
+            />
+          )}
+        </div>
+      </>
     );
   }
 }

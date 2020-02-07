@@ -1,13 +1,13 @@
-import React from 'react';
 
-import { Segment } from 'semantic-ui-react';
+import React, { Component } from 'react';
 import { InstructorModel } from '../../model/InstructorModel';
+
 
 interface Props {
   instructor: InstructorModel
 }
 
-class InstructorIntroduceView extends React.Component<Props> {
+class InstructorIntroduceView extends Component<Props> {
   //
   render() {
     //
@@ -15,27 +15,25 @@ class InstructorIntroduceView extends React.Component<Props> {
     const { memberSummary } = instructor;
 
     return (
-      <Segment className="full">
-        <div className="expert-cont">
-          <div className="text-info">
-            <div className="text01">세부강의 분야</div>
-            <div className="text02">
-              {memberSummary.introduction && memberSummary.introduction.split('\n').map( (line, index) => (
-                <div key={`introduction-${index}`}>{line.replace('"', '')}<br /></div>
-              ))}
-            </div>
+      <div className="expert-cont">
+        <div className="text-info">
+          <div className="text01">세부강의 분야</div>
+          <div className="text02">
+            {memberSummary.introduction && memberSummary.introduction.split('\n').map( (line, index) => (
+              <div key={`introduction-${index}`}>{line.replace('"', '')}<br /></div>
+            ))}
+          </div>
 
-            <div className="dash" />
+          <div className="dash" />
 
-            <div className="text01">주요경력</div>
-            <div className="text02">
-              {instructor.career && instructor.career.split('\n').map( (line, index) => (
-                <div key={`career-${index}`}>{line.replace('"', '')}<br /></div>
-              ))}
-            </div>
+          <div className="text01">주요경력</div>
+          <div className="text02">
+            {instructor.career && instructor.career.split('\n').map( (line, index) => (
+              <div key={`career-${index}`}>{line.replace('"', '')}<br /></div>
+            ))}
           </div>
         </div>
-      </Segment>
+      </div>
     );
   }
 }

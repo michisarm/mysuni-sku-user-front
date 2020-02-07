@@ -8,7 +8,7 @@ class CertificationView extends Component {
   render() {
     //
     return (
-      <div className="ui attached active" data-tab="third">
+      <>
         <div className="common-intro case3">
           <div className="inner">
             <div className="strong">mySUNI에서는 구성원의 자발적 학습에 대한 동기 부여를<br />위해 3단계 인증제도를 운영하고 있습니다.
@@ -56,7 +56,7 @@ class CertificationView extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -4,7 +4,6 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Segment } from 'semantic-ui-react';
 import { PageService, NoSuchContentPanel } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
 import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
@@ -110,38 +109,36 @@ class InstructorLecturesContainer extends Component<Props> {
     const { ratingMap } = reviewService!;
 
     return (
-      <Segment className="full">
-        <div className="section">
-          { lectures.length > 0 ?
-            <>
-              <Lecture.Group type={Lecture.GroupType.Box}>
-                {lectures.map((lecture: LectureModel, index: number) => {
-                  const rating = ratingMap.get(lecture.reviewId) || 0;
-                  return (
-                    <Lecture
-                      key={`lecture-${index}`}
-                      model={lecture}
-                      rating={rating}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      action={Lecture.ActionType.Add}
-                      onAction={this.onActionLecture}
-                      onViewDetail={this.onViewDetail}
-                    />
-                  );
-                })}
-              </Lecture.Group>
+      <div className="expert-cont">
+        { lectures.length > 0 ?
+          <>
+            <Lecture.Group type={Lecture.GroupType.Box}>
+              {lectures.map((lecture: LectureModel, index: number) => {
+                const rating = ratingMap.get(lecture.reviewId) || 0;
+                return (
+                  <Lecture
+                    key={`lecture-${index}`}
+                    model={lecture}
+                    rating={rating}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    action={Lecture.ActionType.Add}
+                    onAction={this.onActionLecture}
+                    onViewDetail={this.onViewDetail}
+                  />
+                );
+              })}
+            </Lecture.Group>
 
-              { this.isContentMore() && (
-                <SeeMoreButton
-                  onClick={this.onClickSeeMore}
-                />
-              )}
-            </>
-            :
-            <NoSuchContentPanel message="등록된 강의가 없습니다." />
-          }
-        </div>
-      </Segment>
+            { this.isContentMore() && (
+              <SeeMoreButton
+                onClick={this.onClickSeeMore}
+              />
+            )}
+          </>
+          :
+          <NoSuchContentPanel message="등록된 강의가 없습니다." />
+        }
+      </div>
     );
   }
 

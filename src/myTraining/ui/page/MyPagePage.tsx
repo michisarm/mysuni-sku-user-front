@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -8,7 +7,7 @@ import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
-import MenuItemContainer from '../logic/MyPageListContainer';
+import MyPageListContainer from '../logic/MyPageListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -16,6 +15,8 @@ interface Props extends RouteComponentProps<RouteParams> {
 
 interface State {
   subBreadcrumb: string
+  completedCount: number
+  earnedStampCount: number
 }
 
 interface RouteParams {
@@ -29,13 +30,17 @@ enum SubBreadcrumb {
 
 @observer
 @reactAutobind
-class MyPage extends Component<Props, State> {
+class MyPagePage extends Component<Props, State> {
   //
   state = {
     subBreadcrumb: SubBreadcrumb.CompletedList,
+    completedCount: 0,
+    earnedStampCount: 0,
   };
 
+
   componentDidMount(): void {
+    //
     this.setSubBreadcrumb();
   }
 
@@ -57,16 +62,40 @@ class MyPage extends Component<Props, State> {
 
   getTabs() {
     //
+    const { completedCount, earnedStampCount } = this.state;
+
     return [
       {
         name: MyPageContentType.CompletedList,
-        item: '학습완료',
-        render: () => <MenuItemContainer />,
+        item: (
+          <>
+            학습완료
+            <span className="count">{completedCount > 0 ? `+${completedCount}` : completedCount}</span>
+          </>
+        ),
+        render: () => (
+          <MyPageListContainer
+            contentType={MyPageContentType.CompletedList}
+            onChangeCompletedCount={this.onChangeCompletedCount}
+            onChangeEarnedStampCount={this.onChangeEarnedStampCount}
+          />
+        ),
       },
       {
         name: MyPageContentType.EarnedStampList,
-        item: '보유스탬프',
-        render: () => <MenuItemContainer />,
+        item: (
+          <>
+            보유스탬프
+            <span className="count">{earnedStampCount > 0 ? `+${earnedStampCount}` : earnedStampCount}</span>
+          </>
+        ),
+        render: () => (
+          <MyPageListContainer
+            contentType={MyPageContentType.EarnedStampList}
+            onChangeCompletedCount={this.onChangeCompletedCount}
+            onChangeEarnedStampCount={this.onChangeEarnedStampCount}
+          />
+        ),
       },
     ] as TabItemModel[];
   }
@@ -74,6 +103,16 @@ class MyPage extends Component<Props, State> {
   onChangeTab(tab: TabItemModel) {
     //
     this.props.history.push(routePaths.myPageTab(tab.name));
+  }
+
+  onChangeCompletedCount(completedCount: number) {
+    //
+    this.setState({ completedCount });
+  }
+
+  onChangeEarnedStampCount(earnedStampCount: number) {
+    //
+    this.setState({ earnedStampCount });
   }
 
   render() {
@@ -101,4 +140,4 @@ class MyPage extends Component<Props, State> {
   }
 }
 
-export default withRouter(MyPage);
+export default withRouter(MyPagePage);

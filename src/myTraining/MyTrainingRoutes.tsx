@@ -6,7 +6,7 @@ import NotFoundPage from 'layout/NotFoundPage';
 
 import MyTrainingPage from './ui/page/MyLearningPage';
 // import MyCommunityPage from './ui/page/MyCommunityPage';
-import MyPage from './ui/page/MyPage';
+import MyPage from './ui/page/MyPagePage';
 
 
 class MainRoutes extends React.Component {

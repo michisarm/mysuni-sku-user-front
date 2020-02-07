@@ -47,9 +47,8 @@ class CreateListPage extends Component<Props, State> {
             <span className="count">{createCount > 0 ? `+${createCount}` : createCount}</span>
           </>
         ),
-        render: ({ active }) => (
+        render: () => (
           <CreateListContainer
-            active={active}
             onChangeCreateCount={this.onChangeCreateCount}
           />
         ),
@@ -62,9 +61,8 @@ class CreateListPage extends Component<Props, State> {
             <span className="count">{sharedCount > 0 ? `+${sharedCount}` : sharedCount}</span>
           </>
         ),
-        render: ({ active }) => (
+        render: () => (
           <SharedListContainer
-            active={active}
             onChangeSharedCount={this.onChangeSharedCount}
           />
         ),

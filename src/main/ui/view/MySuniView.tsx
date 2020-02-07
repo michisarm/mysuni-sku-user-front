@@ -10,7 +10,7 @@ class MySuniView extends Component {
   render() {
     //
     return (
-      <div className="ui attached tab active" data-tab="first">
+      <>
         <div className="common-intro case1">
           <div className="inner">
             <div className="strong">mySUNI는 구성원 개인의 자기 성장과 행복 추구를 위해 <br />성장 역량을 강화하는 새로운 학습 플랫폼입니다.</div>
@@ -162,7 +162,7 @@ class MySuniView extends Component {
             </ul>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
