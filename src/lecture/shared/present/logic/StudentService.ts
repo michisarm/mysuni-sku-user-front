@@ -22,9 +22,20 @@ class StudentService {
   @observable
   _studentJoins: StudentJoinRdoModel[] = [];
 
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보
+   */
+  @observable
+  _studentJoinsForVideo: StudentJoinRdoModel[] = [];
+
   @observable
   student: StudentModel = new StudentModel();
 
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Student Id로부터 Student 정보
+   */
+  @observable
+  studentForVideo: StudentModel = new StudentModel();
 
   constructor(studentApi: StudentApi) {
     this.studentApi = studentApi;
@@ -41,6 +52,16 @@ class StudentService {
   get studentJoins(): StudentJoinRdoModel[] {
     //
     const studentJoins = this._studentJoins as IObservableArray;
+    return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
+  }
+
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
+   * 업데이트 시간순(updateTime)으로 데이터 배열 정렬
+   */
+  get studentJoinsForVideo(): StudentJoinRdoModel[] {
+    //
+    const studentJoins = this._studentJoinsForVideo as IObservableArray;
     return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
   }
 
@@ -105,6 +126,31 @@ class StudentService {
     });
   }
 
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Student Id로부터 Student 정보 가져오기
+   */
+  @action
+  async findStudentForVideo(studentId: string, round?: number) {
+    //
+    const student = await this.studentApi.findStudent(studentId);
+    return runInAction(() => {
+      this.studentForVideo = new StudentModel(student);
+      if (round) this.studentForVideo.round = round;
+      return student;
+    });
+  }
+
+  @action
+  async findStudentToMap(studentId: string, round?: number) {
+    //
+    const student = await this.studentApi.findStudent(studentId);
+    return runInAction(() => {
+      this.student = new StudentModel(student);
+      if (round) this.student.round = round;
+      return student;
+    });
+  }
+
   @action
   async findStudentCount(rollBookId: string) {
     //
@@ -120,6 +166,18 @@ class StudentService {
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
 
     runInAction(() => this._studentJoins = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+    return studentJoinRdos;
+  }
+
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
+   */
+  @action
+  async findIsJsonStudentForVideo(lectureCardId: string) {
+    //
+    const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
+
+    runInAction(() => this._studentJoinsForVideo = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
     return studentJoinRdos;
   }
 
