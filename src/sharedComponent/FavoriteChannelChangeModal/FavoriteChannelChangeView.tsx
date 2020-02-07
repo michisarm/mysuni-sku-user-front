@@ -1,11 +1,10 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button, Icon, Accordion, Checkbox } from 'semantic-ui-react';
+import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
-import { ChannelModel } from 'college';
+import { ChannelModel, CollegeType } from 'college';
 import { CollegeLectureCountRdo } from 'lecture';
 
 
@@ -14,6 +13,7 @@ interface Props {
   channelIds: string[]
   selectedCollegeIds: string[]
   favoriteChannels: ChannelModel[]
+  favoriteCompanyChannels: ChannelModel[]
   onToggleCollege: (college: CollegeLectureCountRdo) => void,
   onToggleChannel: (channel: IdNameCount | ChannelModel) => void,
 }
@@ -24,9 +24,17 @@ class FavoriteChannelChangeView extends Component<Props> {
   //
   color: string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
+
+  isChecked(collegeType: CollegeType, channelId: string) {
+    //
+    const { favoriteChannels }  = this.props;
+
+    return collegeType === CollegeType.Company || favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channelId);
+  }
+
   render() {
     //
-    const { colleges, channelIds, selectedCollegeIds, favoriteChannels, onToggleCollege, onToggleChannel } = this.props;
+    const { colleges, channelIds, selectedCollegeIds, favoriteChannels, favoriteCompanyChannels, onToggleCollege, onToggleChannel } = this.props;
 
     return (
       <div className="row">
@@ -58,10 +66,11 @@ class FavoriteChannelChangeView extends Component<Props> {
                                   .map((channel, index) => (
                                     <li key={`channel-${index}`}>
                                       <Checkbox
+                                        className="base"
                                         label={<label>{channel.name} <span>({channel.count})</span></label>}
                                         name={channel.name}
-                                        className="base"
-                                        checked={favoriteChannels.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
+                                        checked={this.isChecked(college.collegeType, channel.id)}
+                                        disabled={college.collegeType === CollegeType.Company}
                                         onChange={() => onToggleChannel(channel)}
                                       />
                                     </li>
@@ -82,13 +91,16 @@ class FavoriteChannelChangeView extends Component<Props> {
           <div className="select-area">
             <div className="scrolling-60vh">
               <div className="select-item">
-                {
-                  favoriteChannels.map((channel: ChannelModel) => (
-                    <Button key={`del_${channel.id}`} className="del" onClick={() => onToggleChannel(channel)}>
-                      {channel.name}
-                    </Button>
-                  ))
-                }
+                { favoriteChannels.map((channel: ChannelModel) => (
+                  <Button key={`del_${channel.id}`} className="del" onClick={() => onToggleChannel(channel)}>
+                    {channel.name}
+                  </Button>
+                ))}
+                { favoriteCompanyChannels.map((channel: ChannelModel) => (
+                  <Button key={`del_${channel.id}`} className="del default">
+                    {channel.name}
+                  </Button>
+                ))}
               </div>
             </div>
           </div>

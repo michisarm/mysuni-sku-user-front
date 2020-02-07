@@ -1,9 +1,10 @@
 
-import React, {Component, Fragment, ReactNode} from 'react';
+import React, { Component, ReactNode } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Menu, Sticky } from 'semantic-ui-react';
+import classNames from 'classnames';
+import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import TabItemModel from './model/TabItemModel';
 
 
@@ -15,7 +16,8 @@ interface Props {
   defaultActiveName?: string
   allMounted?: boolean
   large?: boolean
-  renderItems?: (props: any) => void
+  renderItems?: (props: any) => React.ReactNode
+  renderContent?: (props: any) => React.ReactNode
   onChangeTab?: (tab: TabItemModel) => void
 }
 
@@ -91,6 +93,24 @@ class TabContainer extends Component<Props, State> {
     }
   }
 
+  renderContent(tab: TabItemModel) {
+    //
+    const { renderContent } = this.props;
+    const { activeName } = this.state;
+
+    if (typeof renderContent === 'function') {
+      return renderContent({ tab, active: tab.name === activeName });
+    }
+
+    return (
+      <Segment className="full" key={`tab-content-${tab.name}`}>
+        <div className={classNames('ui tab', { active: tab.name === activeName })}>
+          {tab.render({ tab, active: tab.name === activeName })}
+        </div>
+      </Segment>
+    );
+  }
+
   render() {
     //
     const { tabs, wrapperClassName, allMounted } = this.props;
@@ -102,15 +122,9 @@ class TabContainer extends Component<Props, State> {
         {this.renderItems()}
 
         { allMounted ?
-          tabs.map(tab =>
-            <Fragment key={`tab-${tab.name}`}>
-              {tab.render({ tab, active: tab.name === activeName })}
-            </Fragment>
-          )
+          tabs.map(tab => this.renderContent(tab))
           :
-          activeTab && (
-            activeTab.render({ tab: activeTab, active: true })
-          )
+          activeTab && this.renderContent(activeTab)
         }
       </div>
     );

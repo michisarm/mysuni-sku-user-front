@@ -33,7 +33,7 @@ class TitleCell extends Component<Props> {
           <Label color={label.color}>{label.text}</Label>
           :
           category && category.college.name && (
-            <Label color={category.color}>{category.college.name}</Label>
+            <Label className={category.color}>{category.college.name}</Label>
           )
         }
 

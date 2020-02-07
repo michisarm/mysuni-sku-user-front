@@ -5,7 +5,6 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Segment } from 'semantic-ui-react';
 import lectureRoutePaths from 'lecture/routePaths';
 import { PageService, NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college';
@@ -25,6 +24,9 @@ interface States {
 interface Props extends RouteComponentProps<{ tab: string }> {
   pageService?: PageService,
   myTrainingService?: MyTrainingService
+  contentType: MyPageContentType
+  onChangeCompletedCount: (completedCount: number) => void
+  onChangeEarnedStampCount: (earnedStampCount: number) => void
 }
 
 @inject(mobxHelper.injectFrom(
@@ -41,6 +43,7 @@ class MyPageListContainer extends Component<Props, States> {
   state = {
     channels: [],
   };
+
 
   componentDidMount(): void {
     //
@@ -68,28 +71,28 @@ class MyPageListContainer extends Component<Props, States> {
 
   async findPagingList() {
     //
-    const { pageService, myTrainingService } = this.props;
+    const { pageService, myTrainingService, onChangeCompletedCount, onChangeEarnedStampCount } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
-    const activeItem = this.getActiveItem();
+    const activeItem = this.getAContentType();
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
     let offsetList: any = null;
 
     if (activeItem === MyPageContentType.CompletedList) {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset, channelIds);
+      onChangeCompletedCount(offsetList.totalCount);
     }
     else {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
+      onChangeEarnedStampCount(offsetList.totalCount);
     }
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
   }
 
-  getActiveItem() {
+  getAContentType() {
     //
-    const { params } = this.props.match;
-
-    return params.tab;
+    return this.props.contentType;
   }
 
   isContentMore() {
@@ -130,46 +133,46 @@ class MyPageListContainer extends Component<Props, States> {
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { myTrainings } =  myTrainingService!;
     const { channels } = this.state;
-    const activeItem = this.getActiveItem();
+    const activeItem = this.getAContentType();
+
+    if (myTrainings.length < 1) {
+      return (
+        <NoSuchContentPanel
+          message={(
+            activeItem === MyPageContentType.CompletedList ?
+              <>학습완료에 해당하는<br />학습 과정이 없습니다.</>
+              :
+              '획득한 스탬프가 없습니다.'
+          )}
+        />
+      );
+    }
 
     return (
-      <Segment className="full">
-        <div className="ui tab active">
-          <LineHeaderContainer
-            count={page && page.totalCount || 0}
-            channels={channels}
-            onFilter={this.onFilter}
+      <>
+        <LineHeaderContainer
+          count={page && page.totalCount || 0}
+          channels={channels}
+          onFilter={this.onFilter}
+        />
+
+        <Lecture.Group type={Lecture.GroupType.ListStamp}>
+          { myTrainings.map((myTraining: MyTrainingModel, index: number) => (
+            <Lecture
+              key={`training-${index}`}
+              model={myTraining}
+              thumbnailImage={myTraining.baseUrl}
+              onViewDetail={this.onViewDetail}
+            />
+          ))}
+        </Lecture.Group>
+
+        { this.isContentMore() && (
+          <SeeMoreButton
+            onClick={this.findPagingList}
           />
-
-          { myTrainings.length > 0 ?
-            <Lecture.Group type={Lecture.GroupType.ListStamp}>
-              { myTrainings.map((myTraining: MyTrainingModel, index: number) => (
-                <Lecture
-                  key={`training-${index}`}
-                  model={myTraining}
-                  thumbnailImage={myTraining.baseUrl}
-                  onViewDetail={this.onViewDetail}
-                />
-              ))}
-            </Lecture.Group>
-            :
-            <NoSuchContentPanel
-              message={(
-                activeItem === MyPageContentType.CompletedList ?
-                  <>학습완료에 해당하는<br />학습 과정이 없습니다.</>
-                  :
-                  '획득한 스탬프가 없습니다.'
-              )}
-            />
-          }
-
-          { this.isContentMore() && (
-            <SeeMoreButton
-              onClick={this.findPagingList}
-            />
-          )}
-        </div>
-      </Segment>
+        )}
+      </>
     );
   }
 }

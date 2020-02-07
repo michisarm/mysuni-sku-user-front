@@ -718,7 +718,7 @@ class LectureCardPage extends Component<Props, State> {
           tabs={this.getTabs()}
           header={
             <div className="cont-inner summary">
-              <Label color={viewObject.category.color}>{viewObject.category.college.name}</Label>
+              <Label className={viewObject.category.color}>{viewObject.category.college.name}</Label>
               <span className="detail-tit">{viewObject.name}</span>
             </div>
           }

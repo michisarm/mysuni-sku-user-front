@@ -5,12 +5,11 @@ import { observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Icon } from 'semantic-ui-react';
-import { ChannelModel } from '../../college';
 
 
 interface Props {
   totalChannelCount: number
-  favoriteChannels: ChannelModel []
+  selectedChannelCount: number
   onSearch: (e: any, searchKey: string) => void
   onResetSelected: () => void
 }
@@ -67,7 +66,7 @@ class HeaderContainer extends Component<Props, State> {
 
   render() {
     //
-    const { favoriteChannels, totalChannelCount, onResetSelected } = this.props;
+    const { selectedChannelCount, totalChannelCount, onResetSelected } = this.props;
     const { searchKey, focus } = this.state;
 
     return (
@@ -93,7 +92,7 @@ class HeaderContainer extends Component<Props, State> {
         <div className="cell v-middle">
           <span className="text01">Selected</span>
           <span className="count">
-            <span className="text01 add">{favoriteChannels.length}</span>
+            <span className="text01 add">{selectedChannelCount}</span>
             <span className="text02"> / {totalChannelCount}</span>
           </span>
           <div className="right">

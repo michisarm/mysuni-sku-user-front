@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
-import ExpertPage from './ui/page/ExpertPage';
+import InstructorPage from './ui/page/InstructorPage';
 
 
 class ExpertRoutes extends React.PureComponent {
@@ -13,7 +13,8 @@ class ExpertRoutes extends React.PureComponent {
     //
     return (
       <Switch>
-        <Route exact path="/expert/instructor/:instructorId" component={ExpertPage} />
+        <Redirect exact from="/expert/instructor/:instructorId" to="/expert/instructor/:instructorId/Introduce" />
+        <Route exact path="/expert/instructor/:instructorId/:tab" component={InstructorPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

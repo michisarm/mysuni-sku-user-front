@@ -442,7 +442,7 @@ class CoursePage extends Component<Props> {
           tabs={this.getTabs()}
           header={
             <div className="cont-inner summary">
-              <Label color={coursePlan.category.color}>{coursePlan.category.college.name}</Label>
+              <Label className={coursePlan.category.color}>{coursePlan.category.college.name}</Label>
               <span className="detail-tit">{coursePlan.name}</span>
             </div>
           }

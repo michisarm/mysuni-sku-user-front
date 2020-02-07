@@ -11,6 +11,7 @@ import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail,
 } from '../../../ui/view/LectureElementsView';
+import { dateTimeHelper } from '../../../../../shared';
 
 
 
@@ -33,6 +34,40 @@ class ListCardView extends Component<Props> {
     onViewDetail: () => {},
   };
 
+  getHourMinuteFormat(hour: number, minute: number) {
+    //
+    if (hour < 1 && minute < 1) {
+      return (
+        <>
+          <strong>00</strong><span>h</span>
+          <strong className="ml9">00</strong><span>m</span>
+        </>
+      );
+    }
+    else if (hour < 1) {
+      return (
+        <>
+          <strong className="ml9">{minute}</strong><span>m</span>
+        </>
+      );
+    }
+    else if (minute < 1) {
+      return (
+        <>
+          <strong>{hour}</strong><span>h</span>
+        </>
+      );
+    }
+    else {
+      return (
+        <>
+          <strong>{hour}</strong><span>h</span>
+          <strong className="ml9">{minute}</strong><span>m</span>
+        </>
+      );
+    }
+  }
+
   render() {
     //
     const {
@@ -40,8 +75,17 @@ class ListCardView extends Component<Props> {
       onAction,
     } = this.props;
 
+    const { hour, minute } = model.learningTime && dateTimeHelper.timeToHourMinute(model.learningTime) || { hour: 0, minute: 0 };
+
     return (
       <Card>
+        {
+          model.required && (
+            <div className="card-ribbon-wrap">
+              <div className="ui ribbon2 label">핵인싸과정</div>
+            </div>
+          )
+        }
         <div className="card-inner">
           {/* Todo: stampReady, 미사용이면 제거 */}
           {/*<Ribbon stampReady={false} />*/}
@@ -70,11 +114,18 @@ class ListCardView extends Component<Props> {
               { model.cubeTypeName &&  <Field icon="video2" text={model.cubeTypeName} bold />}
             </div>
             {
-              model.stampCount && (
+              model.cubeTypeName === 'Course' && model.stampCount && (
                 <div className="stamp">Stamp<strong>x{model.stampCount}</strong></div>
               ) || null
             }
-
+            {
+              model.cubeTypeName !== 'Course' && (
+                <div className="time">
+                  <strong>&nbsp;</strong>
+                  {this.getHourMinuteFormat(hour, minute)}
+                </div>
+              ) || null
+            }
           </div>
         </div>
       </Card>

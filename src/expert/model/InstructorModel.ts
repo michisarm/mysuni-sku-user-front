@@ -1,63 +1,61 @@
+
 import { decorate, observable } from 'mobx';
-import { ChannelModel } from './ChannelModel';
+import { CategoryModel } from 'shared';
 import { MemberSummaryModel } from './MemberSummaryModel';
+
 
 export class InstructorModel {
   //
-
-  employeeId: string = '';
-  email: string = '';
-  name: string = '';
-  company: string = '';
-  category: string = '';
-  internal: boolean = false;
-  specialty: string = '';
-  instructorLearningTime: number = 0;
-
   id: string = '';
-  career: string = '';
-  feedbackId: string = '';
-  tag: string = '';
+  employeeId: string = '';
+  internal: boolean = false;
   resting: boolean = false;
+  category: CategoryModel = new CategoryModel();
+
+  instructorLearningTime: number = 0;
   lectureCount: number = 0;
   lectureHour: number = 0;
   careerYear: number = 0;
+
+  career: string = '';
+  tag: string = '';
   memberSummary: MemberSummaryModel = new MemberSummaryModel();
+  specialty: string = '';
   specialtyEnName: string = '';
   specialtyKrName: string = '';
-  channel: ChannelModel = new ChannelModel();
+
+  feedbackId: string = '';
+
 
   constructor(instructor?: InstructorModel) {
     if (instructor) {
-      const channel = instructor.channel && new ChannelModel(instructor.channel) || this.channel;
-      const memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
-      Object.assign(this, { ...instructor, channel, memberSummary });
+      Object.assign(this, { ...instructor });
 
+      this.category = instructor.category && new CategoryModel(instructor.category) || this.category;
+      this.memberSummary = instructor.memberSummary && new MemberSummaryModel(instructor.memberSummary) || this.memberSummary;
     }
   }
 }
 
 decorate(InstructorModel, {
-  employeeId: observable,
-  email: observable,
-  name: observable,
-  company: observable,
-  category: observable,
-  internal: observable,
-  specialty: observable,
-  instructorLearningTime: observable,
-
   id: observable,
-  career: observable,
-  feedbackId: observable,
-  tag: observable,
+  employeeId: observable,
+  internal: observable,
   resting: observable,
+  category: observable,
+
+  instructorLearningTime: observable,
   lectureCount: observable,
   lectureHour: observable,
   careerYear: observable,
+
+  career: observable,
+  tag: observable,
   memberSummary: observable,
+  specialty: observable,
   specialtyEnName: observable,
   specialtyKrName: observable,
-  channel: observable,
+
+  feedbackId: observable,
 });
 

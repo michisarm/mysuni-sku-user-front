@@ -1,14 +1,15 @@
 import { decorate, observable } from 'mobx';
 
 export class MemberSummaryModel {
+  //
   employeeId: string = '';
-  department: string = '';
-  introduction: string = '';
-  shortIntroduction: string = '';
   name: string = '';
   email: string = '';
-  photoId: string = '';
+
+  department: string = '';
   position: string = '';
+  photoId: string = '';
+  introduction: string = '';
 
   constructor(memberSummary?: MemberSummaryModel) {
     //
@@ -20,7 +21,6 @@ decorate(MemberSummaryModel, {
   employeeId: observable,
   department: observable,
   introduction: observable,
-  shortIntroduction: observable,
   name: observable,
   email: observable,
   photoId: observable,
