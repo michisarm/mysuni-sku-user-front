@@ -78,7 +78,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    this.onManager();
+    // this.onManager();
+    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
@@ -148,10 +149,11 @@ class LectureCardContainer extends Component<Props, State> {
     this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }
 
-
+  //
   onClickEnrollment() {
     //
-    this.onManager();
+    // this.onManager();
+    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
   }
 
   onClickChangeSeries() {
@@ -253,7 +255,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onManager() {
-    this.managerModal.onShow(true);
+    // this.managerModal.onShow(true);
   }
 
   getMainAction() {
