@@ -102,7 +102,7 @@ class SharedListContainer extends React.Component<Props, States> {
     const { pageService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    return page!.pageNo < page!.totalPages;
+    return page && page.pageNo < page.totalPages;
   }
 
   onFilter(channels: ChannelModel[]) {
