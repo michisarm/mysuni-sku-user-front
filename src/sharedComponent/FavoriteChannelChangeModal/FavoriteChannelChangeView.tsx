@@ -89,7 +89,7 @@ class FavoriteChannelChangeView extends Component<Props> {
                   </Button>
                 ))}
                 { favoriteCompanyChannels.map((channel: ChannelModel) => (
-                  <Button key={`del_${channel.id}`} className="del">
+                  <Button key={`del_${channel.id}`} className="del default">
                     {channel.name}
                   </Button>
                 ))}
