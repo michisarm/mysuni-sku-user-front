@@ -3,12 +3,16 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { MediaService, CubeIntroService, OfficeWebService, PersonalCubeService } from 'personalcube';
+import { PersonalCubeService } from '../../../personalcube/stores';
+import { CubeIntroService } from '../../../cubeintro/stores';
+import { MediaService } from '../../../media/stores';
+import { OfficeWebService } from '../../../officeweb/stores';
 import CreateAudioTypeView from '../view/CreateAudioTypeView';
 import CreateVideoTypeView from '../view/CreateVideoTypeView';
 import CreateWebPageTypeView from '../view/CreateWebPageTypeView';
 import CreateDocumentTypeView from '../view/CreateDocumentTypeView';
 import CreateCommunityTypeView from '../view/CreateCommunityTypeView';
+
 
 interface Props extends RouteComponentProps {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

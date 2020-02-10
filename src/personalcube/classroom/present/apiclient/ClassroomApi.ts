@@ -1,11 +1,14 @@
+
 import { axiosApi as axios } from '@nara.platform/accent';
-import { ClassroomModel } from '../../model/ClassroomModel';
+import ClassroomModel from '../../model/ClassroomModel';
 
-export default class ClassroomApi {
 
+class ClassroomApi {
+  //
   URL = '/api/personalCube/classrooms';
 
   static instance: ClassroomApi;
+
 
   findClassroom(classroomId: string) {
     //
@@ -19,3 +22,5 @@ Object.defineProperty(ClassroomApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default ClassroomApi;

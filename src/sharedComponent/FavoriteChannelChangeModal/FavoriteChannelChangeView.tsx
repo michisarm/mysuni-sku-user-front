@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
-import { ChannelModel, CollegeType } from 'college';
+import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture';
 
 

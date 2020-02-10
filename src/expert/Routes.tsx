@@ -7,7 +7,7 @@ import NotFoundPage from 'layout/NotFoundPage';
 import InstructorPage from './ui/page/InstructorPage';
 
 
-class ExpertRoutes extends React.PureComponent {
+class Routes extends React.PureComponent {
   //
   render() {
     //
@@ -22,4 +22,4 @@ class ExpertRoutes extends React.PureComponent {
   }
 }
 
-export default ExpertRoutes;
+export default Routes;

@@ -2,11 +2,12 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Icon, Label } from 'semantic-ui-react';
-import { PostService } from '../../../board';
+import PostService from '../../present/logic/PostService';
+
 
 interface Props {
   postService?: PostService
-  routeToFaqDetail:(postId: string) => void
+  routeToFaqDetail: (postId: string) => void
 }
 
 @inject(mobxHelper.injectFrom(

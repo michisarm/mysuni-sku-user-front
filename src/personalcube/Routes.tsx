@@ -12,7 +12,7 @@ import {
 } from './create';
 
 
-class PersonalCubeRoutes extends PureComponent {
+class Routes extends PureComponent {
   //
   render() {
     //
@@ -32,4 +32,4 @@ class PersonalCubeRoutes extends PureComponent {
   }
 }
 
-export default PersonalCubeRoutes;
+export default Routes;

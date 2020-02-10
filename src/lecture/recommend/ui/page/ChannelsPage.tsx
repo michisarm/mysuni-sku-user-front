@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
-import { SkProfileService } from 'profile';
-import { ChannelModel } from 'college';
+import { SkProfileService } from 'profile/stores';
+import { ChannelModel } from 'college/model';
 import routePaths from '../../../routePaths';
 import ChannelsContentHeaderContainer from '../logic/ChannelsContentHeaderContainer';
 import ChannelsLecturesContainer from '../logic/ChannelsContainer';

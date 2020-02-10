@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { Segment, Dropdown } from 'semantic-ui-react';
 import { observer } from 'mobx-react';
 
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 
 
 interface Props {

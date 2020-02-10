@@ -1,0 +1,2 @@
+
+export { OfficeWebModel } from './OfficeWebModel';

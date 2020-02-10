@@ -10,7 +10,7 @@ import moment from 'moment';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import { PostService } from '../..';
+import PostService from '../../present/logic/PostService';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

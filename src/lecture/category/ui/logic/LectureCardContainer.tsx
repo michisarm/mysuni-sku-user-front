@@ -4,10 +4,11 @@ import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
 import { CubeType, ProposalState, LearningState } from 'shared';
-import { MediaType } from 'personalcube/media';
-import { ClassroomModel } from 'personalcube/classroom';
+import { MediaType } from 'personalcube/media/model';
+import { ClassroomModel } from 'personalcube/classroom/model';
 import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService, LectureServiceType } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
+import { InMyLectureCdoModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
 import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';

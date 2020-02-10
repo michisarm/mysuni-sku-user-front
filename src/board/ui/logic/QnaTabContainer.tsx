@@ -3,7 +3,9 @@ import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import moment from 'moment';
-import { CategoryService, PostService } from '../../../board';
+import CategoryService from '../../present/logic/CategoryService';
+import PostService from '../../present/logic/PostService';
+
 
 interface Props {
   postService?: PostService
@@ -14,7 +16,7 @@ interface Props {
   end: number
   answered: any
   routeToQnaDetail: (postId: string) => void
-  routeToAnsweredDetail:(postId : string) => void
+  routeToAnsweredDetail: (postId : string) => void
 }
 
 @inject(mobxHelper.injectFrom(

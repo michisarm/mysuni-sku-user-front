@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { Image } from 'semantic-ui-react';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';

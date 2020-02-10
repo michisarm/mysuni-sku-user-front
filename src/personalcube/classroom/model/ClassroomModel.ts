@@ -1,10 +1,13 @@
+
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { InstructorModel, OperationModel, ReportFileBoxModel } from '../../cubeintro';
+import { InstructorModel, OperationModel, ReportFileBoxModel } from '../../cubeintro/model';
 import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 
-export class ClassroomModel implements DramaEntity {
+
+class ClassroomModel implements DramaEntity {
+  //
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
@@ -66,3 +69,4 @@ decorate(ClassroomModel, {
   time: observable,
 });
 
+export default ClassroomModel;

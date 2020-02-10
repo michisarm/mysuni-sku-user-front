@@ -7,10 +7,11 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PageService, CubeType, NoSuchContentPanel } from 'shared';
-import { CollegeService } from 'college';
-import { PersonalCubeService } from 'personalcube/personalcube';
+import { CollegeService } from 'college/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { LectureCardService, LectureModel, LectureService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';

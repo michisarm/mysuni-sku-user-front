@@ -5,16 +5,21 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { PostList } from '@sku/personalcube';
-import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
-import { SkProfileModel, SkProfileService } from 'profile';
-import { MyTrainingService } from 'myTraining/index';
-import { Lecture, LectureService } from 'lecture';
-import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
+import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
+import { SkProfileModel } from 'profile/model';
+import { SkProfileService } from 'profile/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { Lecture, LectureService } from 'lecture';
+
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { MyFeed, MyFeedModel } from '../../../myTraining';
-import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
-import lectureRoutePaths from '../../../lecture/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
+
+import { MyTrainingService } from 'myTraining/stores';
+import { MyFeedModel } from 'myTraining/model';
+import { MyFeed } from 'myTraining';
+import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
+
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import LineHeaderContainer from '../logic/LineHeaderContainer';

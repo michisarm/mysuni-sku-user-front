@@ -10,9 +10,9 @@ import CourseSection from '../../../lecture/shared/Lecture/sub/CourseSection';
 
 import Action from '../../../lecture/shared/Lecture/model/Action';
 import { ActionType } from '../../../lecture/shared/Lecture/model';
-import MyFeedView from '../view/MyFeedView';
 import MyFeedModel from '../../model/MyFeedModel';
-import { MyFeedService } from '../../index';
+import { MyFeedService } from '../../stores';
+import MyFeedView from '../view/MyFeedView';
 
 
 

@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { ContentHeaderTotalTimeItem } from '../../shared';

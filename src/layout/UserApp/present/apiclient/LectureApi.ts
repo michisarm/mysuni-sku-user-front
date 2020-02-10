@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import ChannelCountRdo from '../../model/ChannelCountRdo';
 
 

@@ -5,13 +5,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { UserApp, AppLayout } from './shared';
 
 
-const MainRoutes = lazy(() => import('./main/MainRoutes'));
-const ProfileRoutes = lazy(() => import('./profile/ProfileRoutes'));
-const PersonalCubeRoutes = lazy(() => import('./personalcube/PersonalCubeRoutes'));
-const LectureRoutes = lazy(() => import('./lecture/LectureRoutes'));
-const MyTrainingRoutes = lazy(() => import('./myTraining/MyTrainingRoutes'));
-const BoardRoutes = lazy(() => import('./board/BoardRoutes'));
-const ExpertRoutes = lazy(() => import('./expert/ExpertRoutes'));
+const MainRoutes = lazy(() => import('./main/Routes'));
+const ProfileRoutes = lazy(() => import('./profile/Routes'));
+const PersonalCubeRoutes = lazy(() => import('./personalcube/Routes'));
+const LectureRoutes = lazy(() => import('./lecture/Routes'));
+const MyTrainingRoutes = lazy(() => import('./myTraining/Routes'));
+const BoardRoutes = lazy(() => import('./board/Routes'));
+const ExpertRoutes = lazy(() => import('./expert/Routes'));
 
 
 class Routes extends PureComponent {

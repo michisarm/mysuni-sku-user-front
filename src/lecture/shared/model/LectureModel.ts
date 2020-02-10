@@ -9,7 +9,7 @@ import {
   DramaEntityObservableModel,
   IdName,
 } from 'shared';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 
 import moment from 'moment';
 import LectureServiceType from './LectureServiceType';

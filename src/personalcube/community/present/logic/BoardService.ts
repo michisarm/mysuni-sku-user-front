@@ -1,14 +1,17 @@
+
 import { action, configure, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
+
+import { PersonalCubeModel } from '../../../personalcube/model';
+import { CubeIntroModel } from '../../../cubeintro/model';
 import BoardFlowApi from '../apiclient/BoardFlowApi';
 import BoardApi from '../apiclient/BoardApi';
 import { BoardModel } from '../../model/BoardModel';
-import { CubeIntroModel } from '../../../cubeintro';
 import { BoardFlowUserCdoModel } from '../../model/BoardFlowUserCdoModel';
 import { BoardFlowUserUdoModel } from '../../model/BoardFlowUserUdoModel';
-import { PersonalCubeModel } from '../../../personalcube';
 import { BoardFlowUdoModel } from '../../model/BoardFlowUdoModel';
+
 
 configure({
   enforceActions: 'observed',

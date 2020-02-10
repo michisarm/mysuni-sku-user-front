@@ -7,9 +7,11 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel, NewPageService, CubeType } from 'shared';
-import { ChannelModel, CollegeService } from 'college';
+import { ChannelModel } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 import LectureCountService from '../../present/logic/LectureCountService';
 import routePaths from '../../../routePaths';
 

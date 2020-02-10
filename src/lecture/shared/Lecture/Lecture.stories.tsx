@@ -5,8 +5,8 @@ import { number, select } from '@storybook/addon-knobs';
 
 import { Segment } from 'semantic-ui-react';
 import { CubeType, CategoryModel, IdName } from 'shared';
-import { LectureModel } from 'lecture/index';
-import { ChannelModel } from 'college';
+import { LectureModel } from 'lecture';
+import { ChannelModel } from 'college/model';
 import Lecture from './ui/logic/LectureContainer';
 
 

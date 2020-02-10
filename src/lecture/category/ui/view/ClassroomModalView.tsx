@@ -5,7 +5,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button, Radio } from 'semantic-ui-react';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import { ClassroomModel } from 'personalcube/classroom';
+import { ClassroomModel } from 'personalcube/classroom/model';
 
 
 interface Props {

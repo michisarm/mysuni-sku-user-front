@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { CubeState, NoSuchContentPanel } from 'shared';
 import { SeeMoreButton } from 'lecture/shared';
-import { PersonalCubeService } from 'personalcube/personalcube';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
 
 import routePaths from '../../../routePaths';
 import SelectType from '../../model/SelectOptions';

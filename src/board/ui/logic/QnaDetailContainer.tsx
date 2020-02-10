@@ -9,7 +9,8 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import { CategoryService, PostService } from '../..';
+import CategoryService from '../../present/logic/CategoryService';
+import PostService from '../../present/logic/PostService';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 
 

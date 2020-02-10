@@ -6,8 +6,8 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { ChannelModel } from 'college';
-import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
 
 
 interface OnSelectChannelData {

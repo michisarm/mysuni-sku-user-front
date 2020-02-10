@@ -13,7 +13,8 @@ import NotieService from 'layout/UserApp/present/logic/NotieService';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lecture';
-import { MyTrainingService, InMyLectureService, MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
+import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 
 

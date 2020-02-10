@@ -6,8 +6,9 @@ import { reaction } from 'mobx';
 
 import classNames from 'classnames';
 import { Button, Icon, Label } from 'semantic-ui-react';
-import { SkProfileService } from 'profile';
-import { ChannelModel, CollegeService } from 'college';
+import { SkProfileService } from 'profile/stores';
+import { CollegeService } from 'college/stores';
+import { ChannelModel } from 'college/model';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
 
 

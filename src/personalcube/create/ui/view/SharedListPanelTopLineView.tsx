@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ListPanelTopLine } from 'shared';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import { ChannelFilterModal } from 'lecture';
 
 

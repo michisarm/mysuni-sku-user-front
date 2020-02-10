@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react';
 
 import moment from 'moment';
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
-import { MyLearningSummaryService } from 'myTraining';
+import { SkProfileService } from 'profile/stores';
+import { MyLearningSummaryService } from 'myTraining/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 import FavoriteChannelContainer from './FavoriteChannelContainer';

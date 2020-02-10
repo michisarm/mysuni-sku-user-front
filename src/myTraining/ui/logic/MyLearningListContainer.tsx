@@ -7,9 +7,9 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel, PageService, CubeType } from 'shared';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 import { Lecture, LectureService, LectureModel } from 'lecture';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 import routePaths from '../../routePaths';

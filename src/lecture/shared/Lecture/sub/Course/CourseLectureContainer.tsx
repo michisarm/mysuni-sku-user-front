@@ -6,7 +6,9 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { Icon, Button } from 'semantic-ui-react';
-import { LectureSubInfo, LectureViewModel } from 'lecture/index';
+import { EmployeeModel } from 'profile/model';
+import { LectureSubInfo, LectureViewModel } from 'lecture';
+
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
@@ -18,18 +20,19 @@ import StudentService from '../../../present/logic/StudentService';
 import RollBookService from '../../../present/logic/RollBookService';
 import BoardService from '../../../../../personalcube/community/present/logic/BoardService';
 import PersonalCubeService from '../../../../../personalcube/personalcube/present/logic/PersonalCubeService';
-import { EmployeeModel } from '../../../../../profile';
+
 import StudentModel from '../../../model/StudentModel';
-import { PersonalCubeModel } from '../../../../../personalcube/personalcube';
+import { PersonalCubeModel } from '../../../../../personalcube/personalcube/model';
 import RollBookModel from '../../../model/RollBookModel';
 import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 import ProposalState from '../../../../../shared/model/ProposalState';
-import { MediaModel, MediaType } from '../../../../../personalcube/media';
+import { MediaModel, MediaType } from '../../../../../personalcube/media/model';
 import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import ContentsServiceType from '../../../../../personalcube/personalcube/model/ContentsServiceType';
 import { State as SubState } from '../../../LectureSubInfo';
 import LearningState from '../../../../../shared/model/LearningState';
+
 
 interface Props {
   rollBookService?: RollBookService,

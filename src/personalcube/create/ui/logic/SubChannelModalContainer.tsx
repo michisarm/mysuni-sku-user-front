@@ -4,7 +4,8 @@ import { inject, observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon, Modal } from 'semantic-ui-react';
 import { CategoryModel, IdName } from 'shared';
-import { CollegeColors, CollegeModel, CollegeService, CollegeType } from 'college';
+import { CollegeColors, CollegeModel, CollegeType } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';
 
 

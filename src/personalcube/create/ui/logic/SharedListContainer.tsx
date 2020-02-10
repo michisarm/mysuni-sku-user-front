@@ -7,11 +7,12 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { PageService, CubeType, NoSuchContentPanel } from 'shared';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import lectureRoutePaths from 'lecture/routePaths';
 import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lecture';
 import { SeeMoreButton } from 'lecture/shared';
-import { InMyLectureService, InMyLectureModel, InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureModel, InMyLectureCdoModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 

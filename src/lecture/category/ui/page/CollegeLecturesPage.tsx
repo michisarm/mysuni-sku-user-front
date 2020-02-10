@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import mainRoutePaths from 'main/routePaths';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesHeaderView from '../view/CategoryLecturesHeaderView';
 import CategoryLecturesContainer from '../logic/CollegeLecturesContainer';

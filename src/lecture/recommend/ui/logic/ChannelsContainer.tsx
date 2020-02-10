@@ -6,7 +6,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
-import { ChannelModel, CollegeService } from 'college';
+import { ChannelModel } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { LectureService, RecommendLectureRdo } from 'lecture';
 import routePaths from '../../../routePaths';
 import ChannelLecturesLineContainer from './ChannelLecturesLineContainer';

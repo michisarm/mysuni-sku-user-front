@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import numeral from 'numeral';
 
 import { Icon, Button, Accordion } from 'semantic-ui-react';
-import { MyTrainingModel, InMyLectureModel } from 'myTraining';
+import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import Action from '../../model/Action';
 import { CourseSectionContext } from '../CourseSection';
 import {

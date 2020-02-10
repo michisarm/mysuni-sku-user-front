@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { Chart, CompanyViewModel, MemberViewModel, DepartmentViewModel } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
 
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 
 
 interface Props {

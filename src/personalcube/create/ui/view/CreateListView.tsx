@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Table } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
-import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/personalcube';
+import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/personalcube/model';
 
 
 interface Props {

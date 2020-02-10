@@ -1,11 +1,13 @@
+
 import { action, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
-import { CubeIntroModel } from '../../../cubeintro';
+
+import { PersonalCubeModel } from '../../../personalcube/model';
+import { CubeIntroModel } from '../../../cubeintro/model';
 import OfficeApi from '../apiclient/OfficeApi';
 import OfficeWebFlowApi from '../apiclient/OfficeWebFlowApi';
 import { OfficeWebModel } from '../../model/OfficeWebModel';
-import { PersonalCubeModel } from '../../../personalcube';
 import { OfficeWebFlowUdoModel } from '../../model/OfficeWebFlowUdoModel';
 import { OfficeWebFlowCdoModel } from '../../model/OfficeWebFlowCdoModel';
 import { OfficeWebFlowUserCdoModel } from '../../model/OfficeWebFlowUserCdoModel';

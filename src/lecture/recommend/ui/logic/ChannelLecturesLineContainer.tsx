@@ -6,9 +6,10 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { NoSuchContentPanel, OffsetElementList } from 'shared';
-import { ChannelModel } from 'college';
-import { SkProfileService } from 'profile';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import LectureModel from '../../../shared/model/LectureModel';

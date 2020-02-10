@@ -1,16 +1,18 @@
+
 import { ReviewService, CommentService } from '@nara.drama/feedback';
 import { sharedStores } from 'shared';
 import layoutStores from 'layout/stores';
-import { collegeStores, CollegeService } from 'college';
+import collegeStores, { CollegeService } from 'college/stores';
+import profileStores from 'profile/stores';
+import surveyStores from 'survey/stores';
+import assistantStores from 'assistant/stores';
+import boardStores from 'board/stores';
+import expertStores from 'expert/stores';
+
+import personalCubeStores from 'personalcube/stores';
 import { courseStores } from 'course';
-import { personalCubeStores } from 'personalcube';
 import { lectureCardStores } from 'lecture';
-import { expertStores } from 'expert';
-import { profileStores } from 'profile';
-import { boardStores } from 'board';
-import { myTrainingStores } from 'myTraining';
-import { assistantStores } from 'assistant';
-import { surveyStores } from 'survey';
+import myTrainingStores from 'myTraining/stores';
 
 
 const stores = {
@@ -22,15 +24,15 @@ const stores = {
   },
   ...layoutStores,
   ...collegeStores,
-  ...personalCubeStores,
-  ...lectureCardStores,
-  ...courseStores,
-  ...myTrainingStores,
+  ...profileStores,
+  ...surveyStores,
+  ...assistantStores,
   ...boardStores,
   ...expertStores,
-  ...profileStores,
-  ...assistantStores,
-  ...surveyStores,
+  ...personalCubeStores,
+  ...courseStores,
+  ...lectureCardStores,
+  ...myTrainingStores,
 };
 
 export default stores;

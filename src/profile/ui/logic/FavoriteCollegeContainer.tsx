@@ -6,7 +6,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
-import { ChannelModel, CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
+import { ChannelModel } from 'college/model';
 import { CollegeLectureCountService } from 'lecture';
 import CollegeLectureCountRdo from 'lecture/shared/model/CollegeLectureCountRdo';
 
