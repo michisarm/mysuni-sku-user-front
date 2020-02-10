@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NewPageService, NoSuchContentPanel } from 'shared';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import { LectureModel, LectureService } from 'lecture';
 import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
 import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';

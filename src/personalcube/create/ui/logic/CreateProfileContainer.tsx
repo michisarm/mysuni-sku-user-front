@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 
 import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';

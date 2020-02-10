@@ -7,7 +7,7 @@ import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper, SearchFilter } from 'shared';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import { MediaModel, MediaService, MediaType } from 'personalcube/media';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';

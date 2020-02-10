@@ -4,7 +4,8 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 
 import { Button, Modal } from 'semantic-ui-react';
-import { CollegeService, CollegeModel, ChannelModel } from 'college';
+import { CollegeModel, ChannelModel } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { LectureCountService, CollegeLectureCountService } from 'lecture';
 
 

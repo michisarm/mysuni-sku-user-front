@@ -6,7 +6,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Select } from 'semantic-ui-react';
 import { IdName, CategoryModel } from 'shared';
-import { CollegeService, CollegeModel, CollegeType } from 'college';
+import { CollegeModel, CollegeType } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';

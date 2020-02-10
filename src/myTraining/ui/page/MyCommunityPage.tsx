@@ -6,8 +6,9 @@ import { RouteComponentProps } from 'react-router';
 
 import { PostList } from '@sku/personalcube';
 import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
-import { SkProfileModel, SkProfileService } from 'profile';
-import { MyTrainingService } from 'myTraining/index';
+import { SkProfileModel } from 'profile/model';
+import { SkProfileService } from 'profile/stores';
+import { MyTrainingService } from 'myTraining';
 import { Lecture, LectureService } from 'lecture';
 import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';

@@ -5,8 +5,10 @@ import { observer, inject } from 'mobx-react';
 
 import { Button, Modal } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
-import { SkProfileService, StudySummaryModel } from 'profile';
-import { CollegeService, ChannelModel, CollegeType } from 'college';
+import { StudySummaryModel } from 'profile/model';
+import { SkProfileService } from 'profile/stores';
+import { ChannelModel, CollegeType } from 'college/model';
+import { CollegeService } from 'college/stores';
 import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import HeaderContainer from './HeaderContainer';
 import { ContentWrapper } from './FavoriteChannelChangeElementsView';

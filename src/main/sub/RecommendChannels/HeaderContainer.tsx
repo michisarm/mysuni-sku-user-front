@@ -6,8 +6,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { SkProfileService } from 'profile';
-import { ChannelModel } from 'college';
+import { SkProfileService } from 'profile/stores';
+import { ChannelModel } from 'college/model';
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderView from './HeaderView';
 

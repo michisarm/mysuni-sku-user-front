@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { PostDetail } from '@sku/personalcube';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import { ContentLayout } from 'shared';
 import routePaths from '../../../routePaths';
 

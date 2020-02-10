@@ -6,8 +6,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
-import { SkProfileService } from 'profile';
-import { CollegeService, CollegeModel, CollegeType } from 'college';
+import { SkProfileService } from 'profile/stores';
+import { CollegeModel, CollegeType } from 'college/model';
+import { CollegeService } from 'college/stores';
 import routePaths from '../../../routePaths';
 import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';

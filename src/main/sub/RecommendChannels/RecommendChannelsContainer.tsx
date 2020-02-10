@@ -5,8 +5,8 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { LectureService, CollegeLectureCountService, RecommendLectureRdo, ChannelLecturesLine } from 'lecture';
-import { ChannelModel } from 'college';
-import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderContainer from './HeaderContainer';
 import { Wrapper, EmptyContents } from './RecommendElementsView';

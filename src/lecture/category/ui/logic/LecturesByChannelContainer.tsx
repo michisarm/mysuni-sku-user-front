@@ -7,8 +7,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NoSuchContentPanel } from 'shared';
-import { LectureService } from 'lecture/index';
-import { ChannelModel } from 'college';
+import { LectureService } from 'lecture';
+import { ChannelModel } from 'college/model';
 import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';

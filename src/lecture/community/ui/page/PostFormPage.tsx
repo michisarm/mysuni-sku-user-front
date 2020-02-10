@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { BoardService, PostForm } from '@sku/personalcube';
 import { ContentLayout } from 'shared';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube';
 import { LectureCardService } from 'lecture/index';
 import { LearningCardService } from 'course';

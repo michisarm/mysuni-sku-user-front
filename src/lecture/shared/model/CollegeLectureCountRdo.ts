@@ -1,7 +1,7 @@
 
 import { observable, computed } from 'mobx';
 import { IdNameCount } from 'shared';
-import { CollegeType } from 'college';
+import { CollegeType } from 'college/model';
 
 
 class CollegeLectureCountRdo {

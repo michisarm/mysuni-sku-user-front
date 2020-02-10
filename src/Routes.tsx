@@ -6,7 +6,7 @@ import { UserApp, AppLayout } from './shared';
 
 
 const MainRoutes = lazy(() => import('./main/MainRoutes'));
-const ProfileRoutes = lazy(() => import('./profile/ProfileRoutes'));
+const ProfileRoutes = lazy(() => import('./profile/Routes'));
 const PersonalCubeRoutes = lazy(() => import('./personalcube/PersonalCubeRoutes'));
 const LectureRoutes = lazy(() => import('./lecture/LectureRoutes'));
 const MyTrainingRoutes = lazy(() => import('./myTraining/MyTrainingRoutes'));

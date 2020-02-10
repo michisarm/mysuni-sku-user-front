@@ -1,6 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import LectureModel from '../../model/LectureModel';
 import LectureRdoModel from '../../model/LectureRdoModel';
 import LectureViewModel from '../../model/LectureViewModel';

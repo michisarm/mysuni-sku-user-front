@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { MediaService } from 'personalcube/media';
-import { ContentsProviderService } from 'college';
+import { ContentsProviderService } from 'college/stores';
 import ContentsProviderSelectForCubeIntroView from '../view/ContentsProviderSelectForCubeIntroView';
 import ContentsProviderSelectForMediaView from '../view/ContentsProviderSelectForMediaView';
 

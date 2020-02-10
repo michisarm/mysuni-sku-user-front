@@ -8,7 +8,7 @@ import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { depotHelper, SearchFilter } from 'shared';
-import { CollegeService } from 'college';
+import { CollegeService } from 'college/stores';
 import { MediaModel, MediaService, MediaType } from '../../../media';
 import { PersonalCubeModel } from '../../../personalcube';
 import PanoptoListModal from './PanoptoListModal';

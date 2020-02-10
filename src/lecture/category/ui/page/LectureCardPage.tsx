@@ -7,8 +7,8 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
-import { SkProfileService } from 'profile';
-import { CollegeService } from 'college';
+import { SkProfileService } from 'profile/stores';
+import { CollegeService } from 'college/stores';
 import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
 import { BoardService } from 'personalcube/community';
 import { CubeIntroService } from 'personalcube/cubeintro';

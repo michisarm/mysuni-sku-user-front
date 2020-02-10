@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import lectureRoutePaths from 'lecture/routePaths';
 import { PageService, NoSuchContentPanel } from 'shared';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import { Lecture, LectureServiceType } from 'lecture';
 import { SeeMoreButton } from 'lecture/shared';
 

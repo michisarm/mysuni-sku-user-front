@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-react';
 import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { IdName, IconType } from 'shared';
-import { SubsidiaryService } from 'college';
+import { SubsidiaryService } from 'college/stores';
 import { PersonalCubeModel } from 'personalcube/personalcube';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';

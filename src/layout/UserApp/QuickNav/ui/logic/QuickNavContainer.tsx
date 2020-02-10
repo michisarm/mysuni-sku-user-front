@@ -10,13 +10,13 @@ import boardRoutePaths from 'board/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { SkProfileService } from 'profile';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
 import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import {
   MenuWrapperView, TopMenuItemView, BottomMenuItemView,
 } from '../view/QuickNavElementsView';
-import { ChannelModel } from '../../../../../college';
 import NotieService from '../../../present/logic/NotieService';
 
 

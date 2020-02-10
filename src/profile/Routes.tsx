@@ -14,7 +14,7 @@ import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
 import ProgressPage from './ui/page/ProgressPage';
 
 
-class ProfileRoutes extends React.PureComponent {
+class Routes extends React.PureComponent {
   //
   render() {
     //
@@ -34,4 +34,4 @@ class ProfileRoutes extends React.PureComponent {
   }
 }
 
-export default ProfileRoutes;
+export default Routes;
