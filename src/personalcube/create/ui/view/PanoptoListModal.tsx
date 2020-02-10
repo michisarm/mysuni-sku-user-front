@@ -5,7 +5,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
 import { SharedService } from 'shared';
-import { MediaService } from 'personalcube/media';
+import { MediaService } from 'personalcube/media/stores';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
 

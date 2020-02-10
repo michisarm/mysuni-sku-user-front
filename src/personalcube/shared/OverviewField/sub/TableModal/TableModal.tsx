@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 
 import classNames from 'classnames';
 import { Modal, Table, Popup, Icon, Button } from 'semantic-ui-react';
-import { ClassroomModel } from 'personalcube/classroom';
+import { ClassroomModel } from 'personalcube/classroom/model';
 
 
 interface Props {

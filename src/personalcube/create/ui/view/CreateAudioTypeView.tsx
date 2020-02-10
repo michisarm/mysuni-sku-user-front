@@ -8,8 +8,9 @@ import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper, SearchFilter } from 'shared';
 import { CollegeService } from 'college/stores';
-import { MediaModel, MediaService, MediaType } from 'personalcube/media';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import { MediaModel, MediaType } from 'personalcube/media/model';
+import { MediaService } from 'personalcube/media/stores';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
 

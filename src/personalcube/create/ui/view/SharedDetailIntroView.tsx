@@ -4,8 +4,8 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 
 import { Table } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import { CubeIntroModel } from '../../../cubeintro';
-import { BoardService } from '../../../community';
+import { CubeIntroModel } from '../../../cubeintro/model';
+import { BoardService } from '../../../community/stores';
 import { timeToHourMinuteFormat } from '../../../../shared/helper/dateTimeHelper';
 
 

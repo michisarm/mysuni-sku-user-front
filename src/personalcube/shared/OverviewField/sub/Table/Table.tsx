@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
-import { ClassroomModel } from 'personalcube/classroom';
+import { ClassroomModel } from 'personalcube/classroom/model';
 import { Button, Label, Icon, Table as SemanticTable } from 'semantic-ui-react';
 import TableModal from '../TableModal';
 

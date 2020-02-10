@@ -12,7 +12,7 @@ import QnaDetailContainer from './ui/logic/QnaDetailContainer';
 import AnsweredDetailContainer from './ui/logic/AnsweredDetailContainer';
 
 
-class BoardRoutes extends React.PureComponent {
+class Routes extends React.PureComponent {
   //
   render() {
     //
@@ -31,4 +31,4 @@ class BoardRoutes extends React.PureComponent {
   }
 }
 
-export default BoardRoutes;
+export default Routes;

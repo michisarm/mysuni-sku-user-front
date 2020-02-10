@@ -4,7 +4,8 @@ import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import moment from 'moment';
-import { PostService } from '../../../board';
+import PostService from '../../present/logic/PostService';
+
 
 interface Props {
   postService?: PostService

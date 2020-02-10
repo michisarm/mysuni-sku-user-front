@@ -1,14 +1,14 @@
-import InstructorPage from './ui/page/InstructorPage';
+
 import InstructorService from './present/logic/InstructorService';
 
-export const expertStores = {
+
+export default {
   expert: {
     instructorService: InstructorService.instance,
   },
 };
 
-
 export {
-  InstructorPage,
   InstructorService,
 };
+

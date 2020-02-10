@@ -7,7 +7,7 @@ import { Button, Checkbox, Form, Icon, Image, Radio, Select } from 'semantic-ui-
 import { fileUtil, ImageBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { IdName, IconType } from 'shared';
 import { SubsidiaryService } from 'college/stores';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import SelectOptions from '../../model/SelectOptions';
 import CreateInput from '../shared/CreateInput';
 

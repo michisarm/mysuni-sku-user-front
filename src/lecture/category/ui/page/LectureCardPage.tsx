@@ -9,14 +9,20 @@ import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { CollegeService } from 'college/stores';
-import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
-import { BoardService } from 'personalcube/community';
-import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
-import { MediaService, MediaType } from 'personalcube/media';
-import { OfficeWebService } from 'personalcube/officeweb';
+
+import { ContentsServiceType, CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { ClassroomModel } from 'personalcube/classroom/model';
+import { MediaType } from 'personalcube/media/model';
+
+import { CubeIntroService } from 'personalcube/cubeintro/stores';
+import { ClassroomService } from 'personalcube/classroom/stores';
+import { MediaService } from 'personalcube/media/stores';
+import { OfficeWebService } from 'personalcube/officeweb/stores';
+import { BoardService } from 'personalcube/community/stores';
+
 import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
 import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
 import { State as SubState } from '../../../shared/LectureSubInfo';

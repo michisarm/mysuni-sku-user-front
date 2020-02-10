@@ -3,8 +3,8 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { CubeIntroService } from 'personalcube/cubeintro';
-import { MediaService } from 'personalcube/media';
+import { CubeIntroService } from 'personalcube/cubeintro/stores';
+import { MediaService } from 'personalcube/media/stores';
 import { ContentsProviderService } from 'college/stores';
 import ContentsProviderSelectForCubeIntroView from '../view/ContentsProviderSelectForCubeIntroView';
 import ContentsProviderSelectForMediaView from '../view/ContentsProviderSelectForMediaView';

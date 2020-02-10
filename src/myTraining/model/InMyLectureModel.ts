@@ -11,7 +11,7 @@ import {
   ProposalState,
   ProposalStateName,
 } from 'shared';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { LectureServiceType } from 'lecture';
 import { CourseSetModel } from 'course';
 

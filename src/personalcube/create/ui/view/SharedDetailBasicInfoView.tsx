@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { Table } from 'semantic-ui-react';
-import { PersonalCubeModel, CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { PersonalCubeModel, CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import moment from 'moment';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 

@@ -7,12 +7,16 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import depot from '@nara.drama/depot';
 import { AlertWin, ConfirmWin, CubeType } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
+
 import routePaths from '../../../routePaths';
-import { PersonalCubeService } from '../../../personalcube';
-import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
-import { MediaService } from '../../../media';
-import { OfficeWebService } from '../../../officeweb';
-import { BoardService } from '../../../community';
+import { CubeIntroModel } from '../../../cubeintro/model';
+
+import { PersonalCubeService } from '../../../personalcube/stores';
+import { CubeIntroService } from '../../../cubeintro/stores';
+import { MediaService } from '../../../media/stores';
+import { OfficeWebService } from '../../../officeweb/stores';
+import { BoardService } from '../../../community/stores';
+
 import SharedDetailBasicInfoView from '../view/SharedDetailBasicInfoView';
 import SharedDetailExposureInfoView from '../view/SharedDetailExposureInfoView';
 import SharedDetailIntroView from '../view/SharedDetailIntroView';

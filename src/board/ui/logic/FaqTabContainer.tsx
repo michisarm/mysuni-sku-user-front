@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
-import { CategoryService, PostService } from '../../../board';
+import CategoryService from '../../present/logic/CategoryService';
+import PostService from '../../present/logic/PostService';
 
 
 interface Props {
@@ -15,7 +17,7 @@ interface Props {
   faqTabIndex: number
   accordIndex: number
   end: number
-  routeToFaqDetail:(postId: string) => void
+  routeToFaqDetail: (postId: string) => void
 }
 
 @inject(mobxHelper.injectFrom(

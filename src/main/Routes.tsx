@@ -8,7 +8,7 @@ import UserMainPage from './ui/page/UserMainPage';
 import IntroductionPage from './ui/page/IntroductionPage';
 
 
-class MainRoutes extends React.Component {
+class Routes extends React.Component {
   //
   render() {
     //
@@ -26,4 +26,4 @@ class MainRoutes extends React.Component {
   }
 }
 
-export default MainRoutes;
+export default Routes;

@@ -1,7 +1,9 @@
+
 import { NameValueList } from 'shared';
-import { CubeIntroModel } from '../../cubeintro';
-import { PersonalCubeModel } from '../../personalcube';
+import { PersonalCubeModel } from '../../personalcube/model';
+import { CubeIntroModel } from '../../cubeintro/model';
 import { BoardModel } from './BoardModel';
+
 
 export class BoardFlowUdoModel {
   audienceKey: string = 'r2p8-r@nea-m5-c5';

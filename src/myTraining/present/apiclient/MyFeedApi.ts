@@ -3,7 +3,7 @@ import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyFeedRdoModel from '../../model/MyFeedRdoModel';
-import { MyFeedModel } from '../../../myTraining';
+import { MyFeedModel } from '../../model';
 
 
 class MyFeedApi {

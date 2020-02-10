@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import ReactQuill from 'react-quill';
 import { Form, Icon, Select } from 'semantic-ui-react';
 import SelectType from '../../model/SelectOptions';
-import { CubeIntroModel } from '../../../cubeintro';
+import { CubeIntroModel } from '../../../cubeintro/model';
 import ContentsProviderSelectContainer from '../logic/ContentsProviderSelectContainer';
 import CubeIntroBoardContainer from '../logic/CubeIntroBoardContainer';
 

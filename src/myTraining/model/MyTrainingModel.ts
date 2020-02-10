@@ -10,7 +10,7 @@ import {
   ProposalStateName,
 } from 'shared';
 import { CourseSetModel } from 'course';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { LectureServiceType } from 'lecture';
 
 class MyTrainingModel extends DramaEntityObservableModel {

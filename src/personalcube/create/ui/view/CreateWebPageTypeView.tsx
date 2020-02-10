@@ -6,8 +6,8 @@ import { observer } from 'mobx-react';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { depotHelper, SearchFilter } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube';
-import { OfficeWebModel } from 'personalcube/officeweb';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
+import { OfficeWebModel } from 'personalcube/officeweb/model';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

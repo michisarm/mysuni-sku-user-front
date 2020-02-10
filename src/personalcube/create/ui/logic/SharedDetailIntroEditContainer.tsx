@@ -5,7 +5,8 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { Form, Select } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
-import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
+import { CubeIntroModel } from '../../../cubeintro/model';
+import { CubeIntroService } from '../../../cubeintro/stores';
 import SelectType from '../../model/SelectOptions';
 import ContentsProviderSelectContainer from './ContentsProviderSelectContainer';
 

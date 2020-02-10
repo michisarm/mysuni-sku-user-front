@@ -5,7 +5,7 @@ import ContentsProviderService from './present/logic/ContentsProviderService';
 import JobGroupService from './present/logic/JobGroupService';
 
 
-export const collegeStores = {
+export default {
   college: {
     collegeService: CollegeService.instance,
     subsidiaryService: SubsidiaryService.instance,

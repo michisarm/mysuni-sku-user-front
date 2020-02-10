@@ -9,7 +9,7 @@ import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shar
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course';
-import { InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
 import {

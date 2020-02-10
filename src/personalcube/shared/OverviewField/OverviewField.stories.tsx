@@ -3,8 +3,8 @@ import React from 'react';
 
 import { Segment } from 'semantic-ui-react';
 
-import { ClassroomModel } from 'personalcube/classroom';
-import { InstructorModel } from 'personalcube/cubeintro';
+import { ClassroomModel } from 'personalcube/classroom/model';
+import { InstructorModel } from 'personalcube/cubeintro/model';
 import OverviewField from './OverviewField';
 
 export default {

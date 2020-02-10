@@ -18,7 +18,7 @@ import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
 
 
-class LectureRoutes extends Component {
+class Routes extends Component {
   //
   render() {
     //
@@ -57,4 +57,4 @@ class LectureRoutes extends Component {
   }
 }
 
-export default LectureRoutes;
+export default Routes;

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Form, Radio } from 'semantic-ui-react';
 import { SearchFilter } from 'shared';
-import { PersonalCubeModel } from '../../../personalcube';
+import { PersonalCubeModel } from '../../../personalcube/model';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void

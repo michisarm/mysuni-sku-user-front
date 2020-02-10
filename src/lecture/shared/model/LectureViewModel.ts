@@ -1,7 +1,7 @@
 
 import { computed, decorate, observable } from 'mobx';
 import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBox } from 'shared';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import LectureServiceType from './LectureServiceType';
 
 

@@ -9,8 +9,9 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { depotHelper, SearchFilter } from 'shared';
 import { CollegeService } from 'college/stores';
-import { MediaModel, MediaService, MediaType } from '../../../media';
-import { PersonalCubeModel } from '../../../personalcube';
+import { MediaModel, MediaType } from '../../../media/model';
+import { MediaService } from '../../../media/stores';
+import { PersonalCubeModel } from '../../../personalcube/model';
 import PanoptoListModal from './PanoptoListModal';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 

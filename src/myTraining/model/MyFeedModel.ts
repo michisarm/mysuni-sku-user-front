@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { DramaEntityObservableModel, IdName } from 'shared';
-import { CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeTypeNameType } from 'personalcube/personalcube/model';
 
 export enum NotieType {
   Email='Email',

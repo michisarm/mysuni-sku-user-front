@@ -8,7 +8,8 @@ import ReactQuill from 'react-quill';
 import moment from 'moment';
 import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import { CategoryService, PostService } from '../..';
+import CategoryService from '../../present/logic/CategoryService';
+import PostService from '../../present/logic/PostService';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
