@@ -2,8 +2,8 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import 'semantic-ui-less/semantic.less';
-import './style/css/main.def4edbb.chunk.css';
-import './style/css/2.264ecc17.chunk.css';
+import './style/css/main.4f72f6c0.chunk.css';
+import './style/css/2.81501c65.chunk.css';
 import './style/app.css';
 
 
