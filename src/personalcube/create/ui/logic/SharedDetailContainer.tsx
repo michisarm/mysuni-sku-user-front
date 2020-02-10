@@ -12,7 +12,7 @@ import { PersonalCubeService } from '../../../personalcube';
 import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
 import { MediaService } from '../../../media';
 import { OfficeWebService } from '../../../officeweb';
-import { BoardService } from '../../../board';
+import { BoardService } from '../../../community';
 import SharedDetailBasicInfoView from '../view/SharedDetailBasicInfoView';
 import SharedDetailExposureInfoView from '../view/SharedDetailExposureInfoView';
 import SharedDetailIntroView from '../view/SharedDetailIntroView';

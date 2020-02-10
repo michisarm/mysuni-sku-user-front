@@ -16,7 +16,7 @@ import {
 import MediaService from '../../../../../personalcube/media/present/logic/MediaService';
 import StudentService from '../../../present/logic/StudentService';
 import RollBookService from '../../../present/logic/RollBookService';
-import BoardService from '../../../../../personalcube/board/present/logic/BoardService';
+import BoardService from '../../../../../personalcube/community/present/logic/BoardService';
 import PersonalCubeService from '../../../../../personalcube/personalcube/present/logic/PersonalCubeService';
 import { EmployeeModel } from '../../../../../profile';
 import StudentModel from '../../../model/StudentModel';

@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared';
-import { BoardService } from 'personalcube/board';
+import { BoardService } from 'personalcube/community';
 import { CollegeService, ContentsProviderService } from 'college';
 import routePaths from '../../../routePaths';
 import { OfficeWebService, PersonalCubeService } from '../../../index';

@@ -10,7 +10,7 @@ import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
 import { SkProfileService } from 'profile';
 import { CollegeService } from 'college';
 import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
-import { BoardService } from 'personalcube/board';
+import { BoardService } from 'personalcube/community';
 import { CubeIntroService } from 'personalcube/cubeintro';
 import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
 import { MediaService, MediaType } from 'personalcube/media';

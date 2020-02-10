@@ -11,7 +11,7 @@ import { CollegeService, CollegeModel, CollegeType } from 'college';
 import routePaths from '../../../routePaths';
 import { PersonalCubeModel, PersonalCubeService } from '../../../personalcube';
 import { MediaService } from '../../../media';
-import { BoardService } from '../../../board';
+import { BoardService } from '../../../community';
 import { OfficeWebService } from '../../../officeweb';
 import BasicInfoFormContainer from './BasicInfoFormContainer';
 import ExposureInfoFormContainer from './ExposureInfoFormContainer';

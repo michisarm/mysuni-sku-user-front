@@ -3,7 +3,7 @@ import { Radio } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { BoardModel } from '../../../board/model/BoardModel';
+import { BoardModel } from '../../../community/model/BoardModel';
 
 interface Props {
   onChangeBoardProps: (name: string, value: string | Date | boolean, nameSub?: string) => void
