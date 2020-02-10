@@ -11,7 +11,7 @@ import { JobGroupService } from 'college';
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { SkProfileUdo } from '../../model/SkProfileUdo';
+import SkProfileUdo from '../../model/SkProfileUdo';
 
 
 interface Props extends RouteComponentProps {

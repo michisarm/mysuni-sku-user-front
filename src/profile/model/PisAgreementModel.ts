@@ -1,14 +1,19 @@
+
 import { decorate, observable } from 'mobx';
 
-export class PisAgreementModel {
+
+class PisAgreementModel {
+  //
   signed: boolean = false;
   date: string = '';
 
   imageFileBoxId: string = '';           // 이미지파일
-  signImageFileBoxId:string='';
+  signImageFileBoxId: string = '';
 
   constructor(pisAgreement?: PisAgreementModel) {
-    if (pisAgreement) Object.assign(this, { ...pisAgreement });
+    if (pisAgreement) {
+      Object.assign(this, { ...pisAgreement });
+    }
   }
 }
 
@@ -18,3 +23,5 @@ decorate(PisAgreementModel, {
   imageFileBoxId: observable,
   signImageFileBoxId: observable,
 });
+
+export default PisAgreementModel;

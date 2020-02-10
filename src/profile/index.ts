@@ -1,14 +1,5 @@
-import PersonalInfoAgreementContainer from './ui/logic/PersonalInfoAgreementContainer';
-import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
-import FavoriteCollegeContainer from './ui/logic/FavoriteCollegeContainer';
-import FavoriteJobContainer from './ui/logic/FavoriteJobContainer';
-import FavoriteLearningTypeContainer from './ui/logic/FavoriteLearningTypeContainer';
+
 import SkProfileService from './present/logic/SkProfileService';
-import ProgressPage from './ui/page/ProgressPage';
-import { SkProfileModel } from './model/SkProfileModel';
-import { EmployeeModel } from './model/EmployeeModel';
-import { CodeNameModel } from './model/CodeNameModel';
-import { StudySummary } from './model/StudySummary';
 
 export const profileStores = {
   profile: {
@@ -16,14 +7,11 @@ export const profileStores = {
   },
 };
 
-
 export {
-  SkProfileModel, EmployeeModel, CodeNameModel, StudySummary,
-  PersonalInfoAgreementContainer,
-  FavoriteWelcomePage,
-  ProgressPage,
-  FavoriteCollegeContainer,
-  FavoriteJobContainer,
-  FavoriteLearningTypeContainer,
   SkProfileService,
 };
+
+export { default as SkProfileModel } from './model/SkProfileModel';
+export { default as EmployeeModel } from './model/EmployeeModel';
+export { default as StudySummaryModel } from './model/StudySummaryModel';
+

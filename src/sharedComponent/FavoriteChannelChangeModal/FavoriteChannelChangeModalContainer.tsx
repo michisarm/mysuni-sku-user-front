@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 
 import { Button, Modal } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
-import { SkProfileService, StudySummary } from 'profile';
+import { SkProfileService, StudySummaryModel } from 'profile';
 import { CollegeService, ChannelModel, CollegeType } from 'college';
 import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import HeaderContainer from './HeaderContainer';
@@ -99,7 +99,7 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
     const nextFavoriteChannels = [...favoriteChannels, ...favoriteCompanyChannels];
 
     skProfileService!.setStudySummaryProp('favoriteChannels', { idNames: nextFavoriteChannels });
-    skProfileService!.modifyStudySummary(StudySummary.asNameValues(skProfileService!.studySummary))
+    skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary))
       .then(() => {
         if (typeof onConfirmCallback === 'function') {
           onConfirmCallback();

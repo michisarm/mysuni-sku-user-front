@@ -1,15 +1,15 @@
+
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
 import { NameValueList } from 'shared';
-import { MemberType } from './MemberType';
-import { MemberLocaleModel } from './MemberLocaleModel';
-import { EmployeeModel } from './EmployeeModel';
-import { PisAgreementModel } from './PisAgreementModel';
-import { SkProfileCdoModel } from './SkProfileCdoModel';
+import MemberType from './MemberType';
+import MemberLocaleModel from './MemberLocaleModel';
+import EmployeeModel from './EmployeeModel';
+import PisAgreementModel from './PisAgreementModel';
 
 
-export class SkProfileModel implements DramaEntity {
-
+class SkProfileModel implements DramaEntity {
+  //
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
@@ -74,16 +74,6 @@ export class SkProfileModel implements DramaEntity {
     }
     return '';
   }
-
-  static asCdo(skProfile : SkProfileModel) : SkProfileCdoModel {
-    return (
-      {
-        member: skProfile.member,
-        memberLocale: skProfile.memberLocale,
-      }
-    );
-  }
-
 }
 
 decorate(SkProfileModel, {

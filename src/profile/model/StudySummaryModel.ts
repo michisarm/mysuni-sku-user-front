@@ -2,12 +2,13 @@
 import { decorate, observable } from 'mobx';
 import { IdNameList, NameValueList } from 'shared';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { StudySummaryCdoModel } from './StudySummaryCdoModel';
 
-export class StudySummary implements DramaEntity {
-  entityVersion: number=0;
-  id: string='';
-  patronKey: PatronKey={} as PatronKey;
+
+class StudySummaryModel implements DramaEntity {
+  //
+  entityVersion: number = 0;
+  id: string = '';
+  patronKey: PatronKey = {} as PatronKey;
 
   favoriteChannels: IdNameList = new IdNameList();
   favoriteColleges: IdNameList = new IdNameList();
@@ -19,7 +20,7 @@ export class StudySummary implements DramaEntity {
   // stampCount: number = 0;
   // joinedCommunity: number = 0;
 
-  constructor(studySummary?: StudySummary) {
+  constructor(studySummary?: StudySummaryModel) {
     if (studySummary) {
       const favoriteChannels = studySummary.favoriteChannels && new IdNameList(studySummary.favoriteChannels) || this.favoriteChannels;
       const favoriteColleges = studySummary.favoriteColleges && new IdNameList(studySummary.favoriteColleges) || this.favoriteColleges;
@@ -32,7 +33,7 @@ export class StudySummary implements DramaEntity {
     }
   }
 
-  static asNameValues(studySummary: StudySummary): NameValueList {
+  static asNameValues(studySummary: StudySummaryModel): NameValueList {
     const asNameValues = {
       nameValues: [
         {
@@ -52,20 +53,9 @@ export class StudySummary implements DramaEntity {
 
     return asNameValues;
   }
-
-  static asCdo(studySummary: StudySummary) : StudySummaryCdoModel {
-    return (
-      {
-        profileId: studySummary.id,
-        favoriteChannels: studySummary.favoriteChannels,
-        favoriteColleges: studySummary.favoriteColleges,
-        favoriteLearningType: studySummary.favoriteLearningType,
-      }
-    );
-  }
 }
 
-decorate(StudySummary, {
+decorate(StudySummaryModel, {
   id: observable,
   entityVersion: observable,
   patronKey: observable,
@@ -73,5 +63,6 @@ decorate(StudySummary, {
   favoriteChannels: observable,
   favoriteColleges: observable,
   favoriteLearningType: observable,
-
 });
+
+export default StudySummaryModel;

@@ -12,7 +12,7 @@ import CollegeLectureCountRdo from 'lecture/shared/model/CollegeLectureCountRdo'
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { StudySummary } from '../../model/StudySummary';
+import StudySummaryModel from '../../model/StudySummaryModel';
 
 
 interface Props extends RouteComponentProps {
@@ -110,7 +110,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     else {
       collegeService!.favoriteChannels = [...favorites];
       skProfileService!.setStudySummaryProp('favoriteChannels', collegeService!.favoriteChannelIdNames);
-      skProfileService!.modifyStudySummary(StudySummary.asNameValues(skProfileService!.studySummary));
+      skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary));
 
       history.push(routePaths.favoriteJob());
     }

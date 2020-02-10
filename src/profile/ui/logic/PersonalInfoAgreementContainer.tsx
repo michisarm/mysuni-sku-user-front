@@ -8,8 +8,8 @@ import moment from 'moment';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { SkProfileUdo } from '../../model/SkProfileUdo';
-import { PisAgreementModel } from '../../model/PisAgreementModel';
+import SkProfileUdo from '../../model/SkProfileUdo';
+import PisAgreementModel from '../../model/PisAgreementModel';
 import PersonalInfoTermsView from '../view/PersonalInfoTermsView';
 
 

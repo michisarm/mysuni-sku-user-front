@@ -11,8 +11,8 @@ import { CollegeService } from 'college';
 
 import mainRoutePaths from 'main/routePaths';
 import routePaths from '../../routePaths';
-import { StudySummary } from '../../model/StudySummary';
 import SkProfileService from '../../present/logic/SkProfileService';
+import StudySummaryModel from '../../model/StudySummaryModel';
 
 
 interface Props extends RouteComponentProps {
@@ -77,7 +77,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
 
     skProfileService.setStudySummaryProp('favoriteChannels', collegeService.favoriteChannelIdNames);
     skProfileService.setStudySummaryProp('favoriteLearningType', learningTyps);
-    skProfileService.modifyStudySummaryFirstTime(StudySummary.asNameValues(skProfileService.studySummary))
+    skProfileService.modifyStudySummaryFirstTime(StudySummaryModel.asNameValues(skProfileService.studySummary))
       .then(() => {
         history.push(routePaths.favoriteProgress());
         setTimeout(() => history.replace(mainRoutePaths.introduction()), 3000);
