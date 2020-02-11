@@ -82,15 +82,6 @@ export default class PersonalCubeService {
   @action
   async findPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
     //
-    const personalCubes = await this.personalCubeApi.findPersonalCubesForCreator(offset, limit, cubeState);
-
-    runInAction(() => this.personalCubeOffsetList = personalCubes);
-    return personalCubes;
-  }
-
-  @action
-  async findAndPushPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
-    //
     const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(offset, limit, cubeState);
 
     runInAction(() => {
@@ -98,6 +89,11 @@ export default class PersonalCubeService {
       this.personalCubeOffsetList.totalCount = personalCubeOffsetList.totalCount;
     });
     return personalCubeOffsetList;
+  }
+
+  @action
+  clear() {
+    this.personalCubeOffsetList = { results: [], totalCount: 0 } as OffsetElementList<PersonalCubeModel>;
   }
 }
 
