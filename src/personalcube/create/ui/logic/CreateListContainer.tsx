@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { CubeState, NoSuchContentPanel } from 'shared';
+import { CubeState, NoSuchContentPanel, PageService } from 'shared';
 import { SeeMoreButton } from 'lecture/shared';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 
@@ -14,56 +14,77 @@ import CreateListPanelTopLineView from '../view/CreateListPanelTopLineView';
 import CreateListView from '../view/CreateListView';
 
 
-interface Props extends RouteComponentProps<{ tab: string }> {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  pageService?: PageService,
   personalCubeService?: PersonalCubeService
   onChangeCreateCount: (createCount: number) => void
 }
 
 interface States {
-  nextOffset: number
   cubeState?: CubeState
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.pageService',
   'personalCube.personalCubeService',
 ))
 @observer
 @reactAutobind
 class CreateListContainer extends React.Component<Props, States> {
   //
-  PAGE_LIMIT = 20;
+  PAGE_KEY = 'create';
+  PAGE_SIZE = 8;
 
   state = {
-    nextOffset: 0,
     cubeState: undefined,
   };
 
 
   componentDidMount() {
     //
-    this.findPersonalCubes();
+    const { pageService } = this.props;
+    const initialLimit = this.getPageNo() * this.PAGE_SIZE;
+    pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
+    this.findPersonalCubes(this.state.cubeState);
   }
 
-  async findPersonalCubes(cubeState?: CubeState) {
+  componentDidUpdate(prevProps: Readonly<Props>): void {
     //
-    const personalCubeService = this.props.personalCubeService!;
-    const { onChangeCreateCount } = this.props;
+    const { pageService, personalCubeService } = this.props;
+    const prevTab = prevProps.match.params.tab;
+    const currentTab = this.props.match.params.tab;
+    const currentPageNo = this.props.match.params.pageNo;
 
-    const offsetList = await personalCubeService.findPersonalCubesForCreator(0, this.PAGE_LIMIT, cubeState);
-
-    this.setState({ nextOffset: 1 });
-    onChangeCreateCount(offsetList.totalCount);
+    if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+      const page = pageService!.pageMap.get(this.PAGE_KEY);
+      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      if (currentPageNo === '1') {
+        personalCubeService!.clear();
+        pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      }
+      else {
+        pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      }
+      this.findPersonalCubes(this.state.cubeState, this.getPageNo() - 1);
+    }
   }
 
-  async findPagingPersonalCubes() {
+  getPageNo() {
     //
-    const personalCubeService = this.props.personalCubeService!;
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
+  }
+
+  async findPersonalCubes(cubeState: CubeState | undefined, pageNo?: number) {
+    //
+    const { pageService, personalCubeService } = this.props;
+    const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { onChangeCreateCount } = this.props;
-    const { nextOffset, cubeState } = this.state;
 
-    const offsetList = await personalCubeService.findAndPushPersonalCubesForCreator(nextOffset, this.PAGE_LIMIT, cubeState);
+    const offsetList = await personalCubeService!.findPersonalCubesForCreator(page!.nextOffset, page!.limit, cubeState);
 
-    this.setState({ nextOffset: nextOffset + 1 });
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
     onChangeCreateCount(offsetList.totalCount);
   }
 
@@ -91,6 +112,13 @@ class CreateListContainer extends React.Component<Props, States> {
     else {
       history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
     }
+  }
+
+  onClickSeeMore() {
+    //
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   render() {
@@ -123,7 +151,7 @@ class CreateListContainer extends React.Component<Props, States> {
 
         { totalCount > personalCubes.length && (
           <SeeMoreButton
-            onClick={() => this.findPagingPersonalCubes()}
+            onClick={() => this.onClickSeeMore()}
           />
         )}
       </>

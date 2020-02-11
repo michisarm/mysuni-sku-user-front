@@ -18,8 +18,9 @@ class Routes extends PureComponent {
     //
     return (
       <Switch>
-        <Redirect exact from="/personalcube/create" to="/personalcube/create/Create" />
+        <Redirect exact from="/personalcube/create" to="/personalcube/create/Create/pages/1" />
         <Route exact path="/personalcube/create/:tab" component={CreateListPage} />
+        <Route exact path="/personalcube/create/:tab/pages/:pageNo" component={CreateListPage} />
 
         <Route exact path="/personalcube/create/cubes/new" component={CreatePersonalCubeDetailPage} />
         <Route exact path="/personalcube/create/cubes/cube/:personalCubeId/:cubeType" component={CreatePersonalCubeDetailPage} />

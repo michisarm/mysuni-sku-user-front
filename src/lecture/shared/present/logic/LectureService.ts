@@ -185,22 +185,7 @@ class LectureService {
   }
 
   @action
-  async findSharedLectures(limit: number, channelIds: string[] = []) {
-    //
-    const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, 0, channelIds));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
-
-    runInAction(() => {
-      this._lectures = lectureOffsetElementList.results;
-      this.totalLectureCount = lectureOffsetElementList.totalCount;
-    });
-    return lectureOffsetElementList;
-  }
-
-  @action
-  async findPagingSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
+  async findSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
     const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
