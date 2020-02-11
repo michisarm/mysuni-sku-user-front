@@ -12,7 +12,7 @@ const routePaths = {
   learningRetry: () => routePaths.learningTab('Retry'),
 
   myPage: () => '/my-training/my-page',
-  myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}`,
+  myPageTab: (tab: string = 'CompletedList') => `/my-training/my-page/${tab}/pages/1`,
   myPageCompletedList: () => routePaths.myPageTab('CompletedList'),
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
 

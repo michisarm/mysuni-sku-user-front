@@ -97,7 +97,7 @@ class CourseLectureContainer extends Component<Props> {
 
   async init()
   {
-    const { personalCubeService, rollBookService, studentService, lectureView } = this.props;
+    const { personalCubeService, rollBookService, lectureView } = this.props;
 
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
@@ -173,8 +173,8 @@ class CourseLectureContainer extends Component<Props> {
     console.log('CourseLectureContainer onRegisterStudentForVideo studentCdo=', studentCdo);
     console.log('CourseLectureContainer onRegisterStudentForVideo studentForVideo=', studentForVideo);
 
-    if ((!studentForVideo || !studentForVideo.id) || (studentForVideo.proposalState !== ProposalState.Canceled && studentForVideo.proposalState !== ProposalState.Rejected))
-    {
+    if ((!studentForVideo || !studentForVideo.id)
+      || (studentForVideo.proposalState !== ProposalState.Canceled && studentForVideo.proposalState !== ProposalState.Rejected)) {
       this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
     else if (studentForVideo.proposalState === ProposalState.Canceled || studentForVideo.proposalState === ProposalState.Rejected) {
