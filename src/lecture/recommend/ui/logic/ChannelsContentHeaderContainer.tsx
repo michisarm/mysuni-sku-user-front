@@ -66,7 +66,7 @@ class ChannelsContentHeaderContainer extends Component<Props> {
             name={member.name}
             company={member.company}
             department={member.department}
-            imageEditable={true}
+            imageEditable={false}
             myPageActive
           />
         </ContentHeader.Cell>
