@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { FavoriteChannelChangeModal } from 'shared';
+import { NotieService } from 'notie/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import mainRoutePaths from 'main/routePaths';
@@ -16,7 +17,6 @@ import boardRoutePaths from 'board/routePaths';
 import SiteMapModalContainer from './SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import { MenuWrapperView, TopMenuItemView, BottomMenuItemView } from '../view/QuickNavElementsView';
-import NotieService from '../../../present/logic/NotieService';
 
 
 interface Props extends RouteComponentProps {
@@ -28,7 +28,10 @@ interface State {
   active: boolean,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'layout.notieService'))
+@inject(mobxHelper.injectFrom(
+  'notie.notieService',
+  'profile.skProfileService',
+))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
