@@ -310,7 +310,7 @@ class MyCommunityPage extends Component<Props, State> {
               name={member.name}
               company={member.company}
               department={member.department}
-              imageEditable={false}
+              imageEditable={true}
               myPageActive
             />
           </ContentHeader.Cell>
