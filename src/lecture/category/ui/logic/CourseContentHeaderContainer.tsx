@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CoursePlanModel } from 'course';
+import { CoursePlanModel } from 'course/model';
 import LectureContentHeader from '../../../shared/LectureContentHeader';
 
 

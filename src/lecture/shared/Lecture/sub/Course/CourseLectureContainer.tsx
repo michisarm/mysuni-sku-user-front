@@ -6,32 +6,27 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { Icon, Button } from 'semantic-ui-react';
+
+import { ProposalState, LearningState } from 'shared';
 import { EmployeeModel } from 'profile/model';
-import { LectureSubInfo, LectureViewModel } from 'lecture';
+import { PersonalCubeModel, CubeType, ContentsServiceType } from 'personalcube/personalcube/model';
+import { MediaModel, MediaType } from 'personalcube/media/model';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { MediaService } from 'personalcube/media/stores';
+import { BoardService } from 'personalcube/community/stores';
+
+import { LectureViewModel, StudentModel, RollBookModel, StudentJoinRdoModel, StudentCdoModel } from '../../../../model';
+import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
+
+import StudentService from '../../../present/logic/StudentService';
+import RollBookService from '../../../present/logic/RollBookService';
+import {
+  Title, SubField, Buttons, Thumbnail,
+} from '../../../ui/view/LectureElementsView';
 
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
-import {
-  Title, SubField, Buttons, Thumbnail,
-} from '../../../ui/view/LectureElementsView';
-import MediaService from '../../../../../personalcube/media/present/logic/MediaService';
-import StudentService from '../../../present/logic/StudentService';
-import RollBookService from '../../../present/logic/RollBookService';
-import BoardService from '../../../../../personalcube/community/present/logic/BoardService';
-import PersonalCubeService from '../../../../../personalcube/personalcube/present/logic/PersonalCubeService';
-
-import StudentModel from '../../../model/StudentModel';
-import { PersonalCubeModel } from '../../../../../personalcube/personalcube/model';
-import RollBookModel from '../../../model/RollBookModel';
-import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
-import StudentCdoModel from '../../../model/StudentCdoModel';
-import ProposalState from '../../../../../shared/model/ProposalState';
-import { MediaModel, MediaType } from '../../../../../personalcube/media/model';
-import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
-import ContentsServiceType from '../../../../../personalcube/personalcube/model/ContentsServiceType';
-import { State as SubState } from '../../../LectureSubInfo';
-import LearningState from '../../../../../shared/model/LearningState';
 
 
 interface Props {

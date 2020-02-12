@@ -11,7 +11,7 @@ import { CourseSectionContext } from '../CourseSection';
 import {
   Title, Buttons,
 } from '../../../ui/view/LectureElementsView';
-import LectureModel from '../../../model/LectureModel';
+import LectureModel from '../../../../model/LectureModel';
 
 
 interface Props {

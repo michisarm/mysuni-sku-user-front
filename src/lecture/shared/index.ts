@@ -6,24 +6,12 @@ export { default as CourseLectureService } from './present/logic/CourseLectureSe
 export { default as RollBookService } from './present/logic/RollBookService';
 export { default as StudentService } from './present/logic/StudentService';
 
-/** Model */
-export { default as LectureModel } from './model/LectureModel';
-export { default as ProgramLectureModel } from './model/ProgramLectureModel';
-export { default as CourseLectureModel } from './model/CourseLectureModel';
-export { default as LectureServiceType } from './model/LectureServiceType';
-export { default as LectureViewModel } from './model/LectureViewModel';
-export { default as LectureCardModel } from './model/LectureCardModel';
-export { default as ChannelCountRdo } from './model/ChannelCountRdo';
-export { default as CollegeLectureCountRdo } from './model/CollegeLectureCountRdo';
-export { default as OrderByType } from './model/OrderByType';
-export { default as StudentCdoModel } from './model/StudentCdoModel';
-export { default as StudentJoinRdoModel } from './model/StudentJoinRdoModel';
-export { default as StudentCountRdoModel } from './model/StudentCountRdoModel';
-
 export { default as LectureApi } from './present/apiclient/LectureApi';
 
 /** Component */
 export { default as Lecture } from './Lecture';
+export { default as LectureContentHeader } from './LectureContentHeader';
+export { default as ChannelFilterModal } from './ChannelFilterModal';
 export { default as ChannelsPanel } from './ui/logic/ChannelsPanelContainer';
 export { default as CardSorting } from './ui/view/CardSortingView';
 export { default as SeeMoreButton } from './ui/view/SeeMoreButtonView';

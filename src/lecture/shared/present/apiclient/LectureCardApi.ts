@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import LectureCardModel from '../../model/LectureCardModel';
+import LectureCardModel from '../../../model/LectureCardModel';
 
 class LectureCardApi {
   //

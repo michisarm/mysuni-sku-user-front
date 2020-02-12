@@ -12,8 +12,8 @@ import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
-import LectureModel from '../../../shared/model/LectureModel';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
+import LectureModel from '../../../model/LectureModel';
+import LectureServiceType from '../../../model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps {

@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import moment from 'moment';
-import { LectureModel, LectureViewModel } from 'lecture';
+import { LectureModel, LectureViewModel } from 'lecture/model';
 import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';

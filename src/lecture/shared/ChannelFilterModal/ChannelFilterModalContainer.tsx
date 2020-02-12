@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { Button, Modal } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
-import { LectureCountService, CollegeLectureCountService } from 'lecture';
+import { LectureCountService, CollegeLectureCountService } from 'lecture/stores';
 
 
 interface Props {

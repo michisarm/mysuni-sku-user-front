@@ -8,14 +8,15 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { PageService, CubeType, NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
+import { LectureModel, LectureServiceType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import { Lecture, SeeMoreButton } from 'lecture';
 import lectureRoutePaths from 'lecture/routePaths';
-import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lecture';
-import { SeeMoreButton } from 'lecture/shared';
 import { InMyLectureModel, InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 
-import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 import routePaths from '../../../routePaths';
+import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {

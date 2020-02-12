@@ -1,6 +1,6 @@
 
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
-import LectureCardModel from '../../model/LectureCardModel';
+import LectureCardModel from '../../../model/LectureCardModel';
 import LectureCardApi from '../apiclient/LectureCardApi';
 
 

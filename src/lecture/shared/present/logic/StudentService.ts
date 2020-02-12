@@ -3,10 +3,10 @@ import { autobind } from '@nara.platform/accent';
 import { LearningState } from 'shared';
 import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
-import StudentCdoModel from '../../model/StudentCdoModel';
-import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
-import StudentCountRdoModel from '../../model/StudentCountRdoModel';
-import StudentModel from '../../model/StudentModel';
+import StudentCdoModel from '../../../model/StudentCdoModel';
+import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
+import StudentCountRdoModel from '../../../model/StudentCountRdoModel';
+import StudentModel from '../../../model/StudentModel';
 
 
 @autobind

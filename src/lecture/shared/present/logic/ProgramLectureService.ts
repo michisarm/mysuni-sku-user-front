@@ -1,6 +1,6 @@
 
 import { observable, action, runInAction } from 'mobx';
-import ProgramLectureModel from '../../model/ProgramLectureModel';
+import ProgramLectureModel from '../../../model/ProgramLectureModel';
 import CourseLectureApi from '../apiclient/ProgramLectureApi';
 
 

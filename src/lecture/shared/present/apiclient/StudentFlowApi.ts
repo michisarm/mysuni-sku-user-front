@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import StudentCdoModel from '../../model/StudentCdoModel';
+import StudentCdoModel from '../../../model/StudentCdoModel';
 
 
 class StudentFlowApi {

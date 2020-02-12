@@ -4,17 +4,17 @@ import { OffsetElementList } from 'shared';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
-import LectureModel from '../../model/LectureModel';
-import LectureRdoModel from '../../model/LectureRdoModel';
-import LectureViewModel from '../../model/LectureViewModel';
-import RecommendLectureRdo from '../../model/RecommendLectureRdo';
-import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
-import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
-import InstructorRdoModel from '../../model/InstructorRdoModel';
-import OrderByType from '../../model/OrderByType';
-import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
-import SharedRdoModel from '../../model/SharedRdoModel';
-import StudentCdoModel from '../../model/StudentCdoModel';
+import LectureModel from '../../../model/LectureModel';
+import LectureRdoModel from '../../../model/LectureRdoModel';
+import LectureViewModel from '../../../model/LectureViewModel';
+import RecommendLectureRdo from '../../../model/RecommendLectureRdo';
+import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
+import CommunityLectureRdoModel from '../../../model/CommunityLectureRdoModel';
+import InstructorRdoModel from '../../../model/InstructorRdoModel';
+import OrderByType from '../../../model/OrderByType';
+import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
+import SharedRdoModel from '../../../model/SharedRdoModel';
+import StudentCdoModel from '../../../model/StudentCdoModel';
 
 
 @autobind

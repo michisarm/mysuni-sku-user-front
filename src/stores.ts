@@ -10,8 +10,8 @@ import boardStores from 'board/stores';
 import expertStores from 'expert/stores';
 
 import personalCubeStores from 'personalcube/stores';
-import { courseStores } from 'course';
-import { lectureCardStores } from 'lecture';
+import courseStores from 'course/stores';
+import lectureCardStores from 'lecture/stores';
 import myTrainingStores from 'myTraining/stores';
 
 
