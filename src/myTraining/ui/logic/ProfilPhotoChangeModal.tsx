@@ -16,7 +16,9 @@ interface Props {
 }
 
 interface States {
-  open : boolean
+  open : boolean,
+  photoTypeTemp: string,
+  photoImageTemp: string,
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
@@ -28,11 +30,14 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
   state = {
     open: false,
+    photoTypeTemp: '',
+    photoImageTemp: '',
   };
 
   onOpen() {
     //
-    this.setState({ open: true });
+    //초기 상태는 skprofile 조회 내용을 그대로 보여주기 위해 이전 설정을 초기화
+    this.setState({ open: true, photoTypeTemp: '', photoImageTemp: '' });
   }
 
   onClose() {
@@ -42,8 +47,13 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
   onConfirm() {
     //
+    const { photoTypeTemp, photoImageTemp } = this.state;
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
+
+    if (photoTypeTemp) skProfileService!.setProfileProp('photoType', photoTypeTemp );
+
+    if (photoImageTemp) skProfileService!.setProfileProp('photoImage', photoImageTemp);
 
     skProfileService!.modifyPhotoImageByProfileId(skProfile.id, skProfile.photoType, skProfile.photoImage);
 
@@ -78,12 +88,11 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
       return;
     }
 
-    const { skProfileService } = this.props;
     const fileReader = new FileReader();
 
     fileReader.onload = (e: any) =>
     {
-      skProfileService!.setProfileProp('photoImage', e.target.result);
+      this.setState({ photoImageTemp: e.target.result });
     };
 
     fileReader.readAsDataURL(file);
@@ -100,9 +109,9 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const { name, company, department, size, trigger, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
-    const { open } = this.state;
+    const { open, photoTypeTemp, photoImageTemp } = this.state;
 
-    const protoType = skProfile!.photoType;
+    const protoType = photoTypeTemp || skProfile!.photoType;
     let photoFilePath: string = '';
 
     //IM 시스템으로부터 인터페이스받은 사용자 증명사진 보여줌.
@@ -112,7 +121,8 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     } else if (protoType === '1')
     {
       //depot 서비스의 파일 업로드 API이용해서 업로드 호출후 반환된 이미지 base64 문자열을 그대로 보여줌.(profile 재조회 안함.)
-      photoFilePath = skProfile.photoImage; //base64Photo
+
+      photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
     }
 
     // console.log('photoFilePath=', photoFilePath);
@@ -144,20 +154,20 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       label="IM"
                       name="radioGroup"
                       value="0"
-                      onChange={(e: any, data: any) => skProfileService!.setProfileProp('photoType', data.value )}
-                      checked={skProfile!.photoType === '0'}
+                      onChange={(e: any, data: any) => this.setState({ photoTypeTemp: data.value })}
+                      checked={protoType === '0'}
                     />
                     <Radio
                       className="base"
                       label="mySUNI"
                       name="radioGroup"
                       value="1"
-                      onChange={(e: any, data: any) => skProfileService!.setProfileProp('photoType', data.value )}
-                      checked={skProfile!.photoType === '1'}
+                      onChange={(e: any, data: any) => this.setState({ photoTypeTemp: data.value })}
+                      checked={protoType === '1'}
                     />
                   </Form.Field>
                   {
-                    skProfile!.photoType === '1' && (
+                    protoType === '1' && (
                       <>
                         <input
                           type="file"
