@@ -82,6 +82,8 @@ class CourseLectureContainer extends Component<Props> {
   static contextType = CourseSectionContext;
 
   personalCube: PersonalCubeModel | null = {} as PersonalCubeModel;
+  studentForVideo: StudentModel | null = {} as StudentModel;
+  studentJoinForVideo: StudentJoinRdoModel | null = {} as StudentJoinRdoModel;
   rollBooks: RollBookModel[] = [];
 
   componentDidMount()
@@ -92,12 +94,15 @@ class CourseLectureContainer extends Component<Props> {
 
   async init()
   {
-    const { personalCubeService, rollBookService, lectureView } = this.props;
+    const { personalCubeService, rollBookService, studentService, lectureView } = this.props;
 
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-    console.log('CourseLectureContainer init() rollBooks=', this.rollBooks);
+    // console.log('CourseLectureContainer init() rollBooks=', this.rollBooks);
+    studentService!.findIsJsonStudentForVideo(lectureView.serviceId).then(value => {
+      this.studentForVideo = this.findStudentForVideo();
+    });
   }
 
   onToggle() {
@@ -120,22 +125,28 @@ class CourseLectureContainer extends Component<Props> {
 
     if (studentJoinsForVideo && studentJoinsForVideo.length) {
       studentJoinsForVideo.sort(this.compare);
-      const studentJoinForVideo = studentJoinsForVideo[0];
-      return studentJoinForVideo;
+      const studentJoin = studentJoinsForVideo[0];
+      return studentJoin;
     }
     return null;
   }
 
-  async findStudentForVideo() {
+  findStudentForVideo() {
     const {
       studentService,
     } = this.props;
-    const { studentJoinsForVideo }: StudentService = studentService!;
+    const { studentJoins }: StudentService = studentService!;
 
-    if (studentJoinsForVideo && studentJoinsForVideo.length) {
-      const studentJoin = this.getStudentJoinForVideo();
-      if (studentJoin) await studentService!.findStudentForVideo(studentJoin.studentId);
+    if (studentJoins && studentJoins.length)
+    {
+      this.studentJoinForVideo = this.getStudentJoinForVideo();
+      // console.log(studentJoin);
+      if (this.studentJoinForVideo) studentService!.findStudentForVideo(this.studentJoinForVideo.studentId);
+      else studentService!.clearForVideo();
     }
+    else studentService!.clearForVideo();
+
+    return studentService!.studentForVideo;
   }
 
   registerStudentForVideo(studentCdo: StudentCdoModel)
@@ -145,21 +156,20 @@ class CourseLectureContainer extends Component<Props> {
     console.log('CourseLectureContainer registerStudentForVideo studentService=' + studentService);
     console.log('CourseLectureContainer registerStudentForVideo lectureCardId=' + lectureView.serviceId);
 
-    return studentService!.registerStudent(studentCdo);
-    // return studentService!.registerStudent(studentCdo)
-    // .then(() => {
-    //   studentService!.findStudent(studentCdo.rollBookId);
-    //   studentService!.findIsJsonStudent(lectureView.serviceId);
-    //   studentService!.findStudentCount(studentCdo.rollBookId);
-    // });
+    //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
+    return studentService!.registerStudent(studentCdo).then(() => {
+      studentService!.findStudentForVideo(studentCdo.rollBookId);
+      studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
+      // studentService!.findStudentCount(studentCdo.rollBookId);
+    });
   }
 
   async onRegisterStudentForVideo(proposalState?: ProposalState)
   {
-    const { studentService, lectureView } = this.props;
+    // const { studentService, lectureView } = this.props;
 
-    await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
-    await this.findStudentForVideo();
+    // await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
+    // await this.findStudentForVideo();
 
     const { studentForVideo } = this.props.studentService!;
 
@@ -168,8 +178,9 @@ class CourseLectureContainer extends Component<Props> {
     console.log('CourseLectureContainer onRegisterStudentForVideo studentCdo=', studentCdo);
     console.log('CourseLectureContainer onRegisterStudentForVideo studentForVideo=', studentForVideo);
 
-    if ((!studentForVideo || !studentForVideo.id)
-      || (studentForVideo.proposalState !== ProposalState.Canceled && studentForVideo.proposalState !== ProposalState.Rejected)) {
+    if ((!studentForVideo || !studentForVideo.id) || (studentForVideo.proposalState !== ProposalState.Canceled
+      && studentForVideo.proposalState !== ProposalState.Rejected))
+    {
       this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
     else if (studentForVideo.proposalState === ProposalState.Canceled || studentForVideo.proposalState === ProposalState.Rejected) {
@@ -306,40 +317,40 @@ class CourseLectureContainer extends Component<Props> {
     return null;
   }
 
-  getLearningState() : SubState | undefined
+  getClassNameForLearningState()
   {
     //
     const {
       studentService,
     } = this.props;
     // const { personalCube } = personalCubeService!;
-    const { studentForVideo }: StudentService = studentService!;
-    const studentJoin = this.getStudentJoinForVideo();
+    const { studentForVideo } = studentService!;
+    // const { studentJoinsForVideo } = studentService!;
 
     let state: SubState | undefined;
 
-    if (studentJoin)
+    console.log('CourseLectureContainer getLearningState() studentForVideo=', studentForVideo);
+    if (studentForVideo && studentForVideo.id)
     {
-      if (studentForVideo.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (studentForVideo.proposalState === ProposalState.Approved)
       {
-        if (!studentForVideo.learningState) state = SubState.Enrolled;
-        if (studentForVideo.learningState === LearningState.Progress || studentForVideo.learningState === LearningState.Waiting
-          || studentForVideo.learningState === LearningState.Failed)
+        if (
+          studentForVideo.learningState === LearningState.Waiting || studentForVideo.learningState === LearningState.HomeworkWaiting
+          || studentForVideo.learningState === LearningState.TestWaiting
+          || studentForVideo.learningState === LearningState.TestPassed || studentForVideo.learningState === LearningState.Failed
+        )
         {
-          if (studentForVideo.learningState === LearningState.Waiting)
-          {
-            state = SubState.Waiting;
-          } else state = SubState.InProgress;
+          state = SubState.Waiting;
         }
+        if (studentForVideo.learningState === LearningState.Progress) state = SubState.InProgress;
         if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
         if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
-        if (this.personalCube!.contents.type === CubeType.Community) state = SubState.Joined;
       }
-      if (studentForVideo.proposalState === ProposalState.Rejected) state = SubState.Rejected;
     }
 
-    return state;
+    const className: string = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
+
+    return className;
   }
 
   render() {
@@ -354,16 +365,7 @@ class CourseLectureContainer extends Component<Props> {
     } = this.props;
     const { open } = this.context;
 
-    const ss = '';//this.getLearningState();
-
-    let cls : string;
-    if (ss)
-    {
-      cls = (ss === SubState.InProgress) ? 'fix bg' : '';
-    } else
-    {
-      cls = 'fix line';
-    }
+    const classNameForLearningState = this.getClassNameForLearningState();
 
     return (
       <div className={`card-box ${className}`}>
@@ -395,7 +397,8 @@ class CourseLectureContainer extends Component<Props> {
         <Buttons>
           <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
           {
-            lectureView.cubeType === CubeType.Video ? <Button className={`${cls}`} onClick={this.getMainActionForVideo}>학습하기</Button> : null
+            lectureView.cubeType === CubeType.Video ?
+              <Button className={classNameForLearningState} onClick={this.getMainActionForVideo}>학습하기</Button> : null
           }
         </Buttons>
 
