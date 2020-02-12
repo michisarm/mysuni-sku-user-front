@@ -52,8 +52,8 @@ class ChannelsContentHeaderContainer extends Component<Props> {
   render() {
     //
     const { skProfileService, collegeLectureCountService, channels } = this.props;
-    const { studySummaryFavoriteChannels } = skProfileService!;
-    const { member } = skProfileService!.skProfile;
+    const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
+    const { member } = skProfile;
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
@@ -63,7 +63,7 @@ class ChannelsContentHeaderContainer extends Component<Props> {
       <ContentHeader className="content-division">
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
-            image={member.photoFilePath || profileImg}
+            image={skProfile.photoFilePath || profileImg}
             name={member.name}
             company={member.company}
             department={member.department}

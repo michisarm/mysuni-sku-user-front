@@ -22,6 +22,9 @@ class SkProfileModel implements DramaEntity {
   passwordAuthenticated : boolean = false;
   studySummaryConfigured: boolean = false;
 
+  photoType: string = '0';  //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
+  photoImage: string = '';  //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
+
   constructor(skProfile?: SkProfileModel) {
     //
     if (skProfile) {
@@ -39,7 +42,7 @@ class SkProfileModel implements DramaEntity {
   }
 
   static asNameValues(skProfile : SkProfileModel) : NameValueList {
-    const asNameValues = {
+    const asNameValues1 = {
       nameValues: [
         {
           name: 'member',
@@ -64,7 +67,7 @@ class SkProfileModel implements DramaEntity {
       ],
     };
 
-    return asNameValues;
+    return asNameValues1;
   }
 
   @computed
@@ -73,6 +76,25 @@ class SkProfileModel implements DramaEntity {
       return new Date(this.signedDate).toISOString().slice(0, 10);
     }
     return '';
+  }
+
+  @computed
+  get photoFilePath() {
+    //
+    let photoImageFilePath: string = '';
+
+    //IM 사용자 증명사진 보이기(타 시스템 이관 이미지 파일)
+    if (!this.photoType || this.photoType === '0')
+    {
+      photoImageFilePath = this.member && this.member.photoFilename && `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.companyCode.toLowerCase()}/${this.member.photoFilename}`;
+    }
+    //mySUNI 사이트(depot)에서 등록한 사용자 증명사진 보이기
+    else if (this.photoType === '1')
+    {
+      photoImageFilePath = this.photoImage; //base64Photo
+    }
+
+    return photoImageFilePath;
   }
 }
 
@@ -86,6 +108,8 @@ decorate(SkProfileModel, {
   signedDate: observable,
   passwordAuthenticated: observable,
   studySummaryConfigured: observable,
+  photoType: observable,
+  photoImage: observable,
 });
 
 export default SkProfileModel;

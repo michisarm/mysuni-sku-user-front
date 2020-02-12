@@ -305,7 +305,7 @@ class MyCommunityPage extends Component<Props, State> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member.photoFilePath || profileImg}
+              image={skProfile.photoFilePath || profileImg}
               name={member.name}
               company={member.company}
               department={member.department}

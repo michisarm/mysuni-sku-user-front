@@ -87,7 +87,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
       >
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
-            image={skProfile.member.photoFilePath || profileImg}
+            image={skProfile.photoFilePath || profileImg}
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}
