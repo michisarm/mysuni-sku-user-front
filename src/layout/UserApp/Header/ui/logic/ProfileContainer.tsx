@@ -39,7 +39,7 @@ class ProfileContainer extends Component<Props, State> {
       <div className="g-info">
         <button className="ui user image label" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>
           <span className="name">{member.name}</span>
-          <span className="affiliation">{member.company} PPP {member.department}</span>
+          <span className="affiliation">{member.company} {member.department}</span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
         </button>
       </div>
