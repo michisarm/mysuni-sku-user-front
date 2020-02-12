@@ -8,14 +8,14 @@ import { patronInfo } from '@nara.platform/dock';
 import lectureRoutePaths from 'lecture/routePaths';
 import { PageService, NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
-import { Lecture, LectureServiceType } from 'lecture';
-import { SeeMoreButton } from 'lecture/shared';
+import { LectureServiceType } from 'lecture/model';
+import { Lecture, SeeMoreButton } from 'lecture';
 
+import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyPageContentType from '../model/MyPageContentType';
 import LineHeaderContainer from './LineHeaderContainer';
-import routePaths from '../../routePaths';
 
 
 interface States {

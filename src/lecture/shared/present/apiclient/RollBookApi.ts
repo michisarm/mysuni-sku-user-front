@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import RollBookModel from '../../model/RollBookModel';
+import RollBookModel from '../../../model/RollBookModel';
 
 
 class RollBookApi {

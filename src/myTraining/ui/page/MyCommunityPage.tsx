@@ -10,20 +10,20 @@ import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPa
 import { SkProfileModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import { Lecture, LectureService } from 'lecture';
+import { LectureServiceType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import { Lecture, SeeMoreButton } from 'lecture';
+import lectureRoutePaths from 'lecture/routePaths';
+import { MyFeedModel } from 'myTraining/model';
+import { MyTrainingService } from 'myTraining/stores';
+import { MyFeed } from 'myTraining';
 
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import lectureRoutePaths from 'lecture/routePaths';
-
-import { MyTrainingService } from 'myTraining/stores';
-import { MyFeedModel } from 'myTraining/model';
-import { MyFeed } from 'myTraining';
-import { LectureServiceType, SeeMoreButton } from 'lecture/shared';
 
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import LineHeaderContainer from '../logic/LineHeaderContainer';
-import LectureModel from '../../../lecture/shared/model/LectureModel';
+import LectureModel from '../../../lecture/model/LectureModel';
 import MyFeedService from '../../present/logic/MyFeedService';
 
 

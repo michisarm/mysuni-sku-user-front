@@ -4,7 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { IdNameCount } from 'shared';
-import { CollegeLectureCountRdo } from 'lecture';
+import { CollegeLectureCountRdo } from 'lecture/model';
 
 
 interface Props {

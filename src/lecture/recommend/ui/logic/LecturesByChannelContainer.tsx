@@ -8,14 +8,15 @@ import { patronInfo } from '@nara.platform/dock';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NewPageService, NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college/stores';
-import { LectureModel, LectureService } from 'lecture';
+import { LectureModel, OrderByType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
-import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
+import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../../../category/ui/view/ChannelLecturesContentWrapperView';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
+import LectureServiceType from '../../../model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ channelId: string, pageNo: string }> {

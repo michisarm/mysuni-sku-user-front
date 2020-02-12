@@ -13,7 +13,7 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 
 import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
-import { CourseSetModel } from '../../../course/model/CourseSetModel';
+import { CourseSetModel } from '../../course/model/CourseSetModel';
 
 
 class LectureModel extends DramaEntityObservableModel {

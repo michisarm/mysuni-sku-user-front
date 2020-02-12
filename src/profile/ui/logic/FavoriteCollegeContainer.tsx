@@ -8,8 +8,8 @@ import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared';
 import { CollegeService } from 'college/stores';
 import { ChannelModel } from 'college/model';
-import { CollegeLectureCountService } from 'lecture';
-import CollegeLectureCountRdo from 'lecture/shared/model/CollegeLectureCountRdo';
+import { CollegeLectureCountService } from 'lecture/stores';
+import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';

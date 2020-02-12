@@ -4,13 +4,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { Icon, Label } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
-import { CollegeLectureCountService } from 'lecture';
+import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { Icon, Label } from 'semantic-ui-react';
 
 
 interface Props extends RouteComponentProps {

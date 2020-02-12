@@ -21,10 +21,10 @@ import { MediaService } from 'personalcube/media/stores';
 import { OfficeWebService } from 'personalcube/officeweb/stores';
 import { BoardService } from 'personalcube/community/stores';
 
-import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
-import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
+import { StudentJoinRdoModel, StudentCdoModel, LectureServiceType } from '../../../model';
+import { LectureCardService, LectureService, RollBookService, StudentService } from '../../../stores';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentHeaderContainer from '../logic/LectureCardContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';

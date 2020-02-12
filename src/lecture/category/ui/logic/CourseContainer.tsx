@@ -5,17 +5,12 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import queryString from 'query-string';
 import { Segment } from 'semantic-ui-react';
-import { CoursePlanService } from 'course';
-import {
-  CourseLectureService,
-  LectureService,
-  ProgramLectureService,
-  LectureServiceType,
-  LectureViewModel,
-  Lecture,
-} from '../../../shared';
+import SkProfileService from 'profile/present/logic/SkProfileService';
+import { CoursePlanService } from 'course/stores';
+import { LectureServiceType, LectureViewModel } from '../../../model';
+import { CourseLectureService, LectureService, ProgramLectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
-import SkProfileService from '../../../../profile/present/logic/SkProfileService';
+import { Lecture } from '../../../shared';
 
 
 interface Props extends RouteComponentProps<RouteParams> {

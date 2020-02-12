@@ -12,8 +12,8 @@ import {
   ProposalStateName,
 } from 'shared';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
-import { LectureServiceType } from 'lecture';
-import { CourseSetModel } from 'course';
+import { CourseSetModel } from 'course/model';
+import { LectureServiceType } from 'lecture/model';
 
 
 class InMyLectureModel extends DramaEntityObservableModel {

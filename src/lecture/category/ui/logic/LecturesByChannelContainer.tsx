@@ -7,15 +7,13 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType, NoSuchContentPanel } from 'shared';
-import { LectureService } from 'lecture';
 import { ChannelModel } from 'college/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
+import { LectureService } from '../../../stores';
+import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
 import routePaths from '../../../routePaths';
-import Lecture from '../../../shared/Lecture';
-import LectureModel from '../../../shared/model/LectureModel';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
-import OrderByType from '../../../shared/model/OrderByType';
+import { Lecture } from '../../../shared';
 
 
 interface Props extends RouteComponentProps {

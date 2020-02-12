@@ -8,25 +8,17 @@ import { patronInfo } from '@nara.platform/dock';
 import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
-import { CoursePlanService } from 'course';
+import { CoursePlanService } from 'course/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
-import {
-  CourseLectureService,
-  LectureService,
-  LectureServiceType,
-  ProgramLectureService,
-  StudentService,
-} from '../../../shared';
+import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
+import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
-import LectureViewModel from '../../../shared/model/LectureViewModel';
-import StudentCdoModel from '../../../shared/model/StudentCdoModel';
-import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 
 

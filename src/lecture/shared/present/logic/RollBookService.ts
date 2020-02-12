@@ -2,7 +2,7 @@
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import RollBookApi from '../apiclient/RollBookApi';
-import RollBookModel from '../../model/RollBookModel';
+import RollBookModel from '../../../model/RollBookModel';
 
 
 @autobind

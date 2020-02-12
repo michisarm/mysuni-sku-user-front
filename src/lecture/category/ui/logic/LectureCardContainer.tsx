@@ -6,7 +6,8 @@ import depot from '@nara.drama/depot';
 import { CubeType, ProposalState, LearningState } from 'shared';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
-import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService, LectureServiceType } from 'lecture';
+import { StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from 'lecture/model';
+import { RollBookService, StudentService } from 'lecture/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
@@ -16,9 +17,9 @@ import { MemberViewModel } from '@nara.drama/approval';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
-import StudentModel from '../../../shared/model/StudentModel';
+import StudentModel from '../../../model/StudentModel';
 import ManagerListModalContainer from '../view/ManagerListModalContainer';
-import RollBookModel from '../../../shared/model/RollBookModel';
+import RollBookModel from '../../../model/RollBookModel';
 
 interface Props {
   studentService?: StudentService

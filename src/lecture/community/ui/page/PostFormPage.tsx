@@ -8,8 +8,8 @@ import { BoardService, PostForm } from '@sku/personalcube';
 import { ContentLayout } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import { LectureCardService } from 'lecture';
-import { LearningCardService } from 'course';
+import { LectureCardService } from 'lecture/stores';
+import { LearningCardService } from 'course/stores';
 import routePaths from '../../../routePaths';
 
 

@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -6,12 +7,13 @@ import classNames from 'classnames';
 import numeral from 'numeral';
 import { Button, Card, Icon, Rating, Label } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LectureModel } from 'lecture/index';
-import { InMyLectureModel, MyTrainingModel } from 'myTraining/model';
 import { CubeTypeNameType } from 'personalcube/personalcube/model';
+import { InMyLectureModel, MyTrainingModel } from 'myTraining/model';
+
+import { LectureModel } from '../../../../model';
+import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
-import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from '../../../ui/view/LectureElementsView';
 
 
 interface Props {
