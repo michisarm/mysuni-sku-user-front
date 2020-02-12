@@ -5,14 +5,14 @@ import { observer, inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
 import { IdNameCount } from 'shared/model';
-import { SkProfileService } from 'profile/stores';
+import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountRdo }  from 'lecture/model';
 import { CollegeLectureCountService }  from 'lecture/stores';
-import mainRoutePaths from 'main/routePaths';
 import lectureRoutePaths from 'lecture/routePaths';
+import mainRoutePaths from 'main/routePaths';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
 

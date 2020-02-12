@@ -5,18 +5,17 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import mainRoutePaths from 'main/routePaths';
-import boardRoutePaths from 'board/routePaths';
-import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutePaths from 'myTraining/routePaths';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
+import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
-import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
+import mainRoutePaths from 'main/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
+import boardRoutePaths from 'board/routePaths';
+
+import SiteMapModalContainer from './SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
-import {
-  MenuWrapperView, TopMenuItemView, BottomMenuItemView,
-} from '../view/QuickNavElementsView';
+import { MenuWrapperView, TopMenuItemView, BottomMenuItemView } from '../view/QuickNavElementsView';
 import NotieService from '../../../present/logic/NotieService';
 
 

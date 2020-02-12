@@ -25,7 +25,6 @@ timestamps {
             stage('BUILD') {
                 container('node') {
                     sh 'npm install'
-                    sh 'cp webpack.config.js node_modules/nara-react-scripts/config/'
                     sh 'npm run build-app'
                 }
             }

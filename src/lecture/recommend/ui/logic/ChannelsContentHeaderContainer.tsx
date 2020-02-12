@@ -5,10 +5,9 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Icon, Label } from 'semantic-ui-react';
-import { ContentHeader } from 'shared';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { SkProfileService } from 'profile/stores';
+import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
