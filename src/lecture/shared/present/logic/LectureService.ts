@@ -1,6 +1,6 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';

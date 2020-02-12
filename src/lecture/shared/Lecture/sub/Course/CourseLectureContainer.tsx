@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { Icon, Button } from 'semantic-ui-react';
 
-import { ProposalState, LearningState } from 'shared';
+import { ProposalState, LearningState } from 'shared/model';
 import { EmployeeModel } from 'profile/model';
 import { PersonalCubeModel, CubeType, ContentsServiceType } from 'personalcube/personalcube/model';
 import { MediaModel, MediaType } from 'personalcube/media/model';

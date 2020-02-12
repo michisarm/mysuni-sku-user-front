@@ -10,7 +10,7 @@ import {
   LearningStateName,
   ProposalState,
   ProposalStateName,
-} from 'shared';
+} from 'shared/model';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { CourseSetModel } from 'course/model';
 import { LectureServiceType } from 'lecture/model';

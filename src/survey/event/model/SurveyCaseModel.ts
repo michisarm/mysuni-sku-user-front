@@ -1,7 +1,7 @@
 import { computed, decorate, observable } from 'mobx';
 import { NameValueList } from '@nara.platform/accent';
 
-import { LangStrings, DramaEntityObservableModel } from 'shared';
+import { LangStrings, DramaEntityObservableModel } from 'shared/model';
 import RoundPartModel from './RoundPartModel';
 
 export default class SurveyCaseModel extends DramaEntityObservableModel {

@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { CubeType } from 'personalcube/personalcube/model';
-import { CategoryModel, IdName, DatePeriod } from 'shared';
+import { CategoryModel, IdName, DatePeriod } from 'shared/model';
 import LectureContentHeader from '../LectureContentHeader';
 
 

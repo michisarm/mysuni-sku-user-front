@@ -1,4 +1,5 @@
-import { CategoryModel, CreatorModel, IconBox, CourseOpenModel } from 'shared';
+
+import { CategoryModel, CreatorModel, IconBoxModel, CourseOpenModel } from 'shared/model';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { ReportFileBoxModel } from './ReportFileBoxModel';
 import { StampModel } from './StampModel';
@@ -11,7 +12,7 @@ export class CoursePlanCdoModel {
   name: string = '';
   contentsId: string = '';
   courseOperator: CourseOperatorModel = new CourseOperatorModel();
-  iconBox: IconBox = new IconBox();
+  iconBox: IconBoxModel = new IconBoxModel();
   courseOpen: CourseOpenModel = new CourseOpenModel();
   reportFileBox: ReportFileBoxModel = new ReportFileBoxModel();
   stamp: StampModel = new StampModel();

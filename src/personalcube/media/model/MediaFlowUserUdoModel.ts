@@ -1,5 +1,5 @@
 
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared/model';
 import { CubeIntroModel } from '../../cubeintro/model';
 import { MediaModel } from './MediaModel';
 

@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';

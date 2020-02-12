@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { Accordion, Button, Icon, Modal, Radio } from 'semantic-ui-react';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import { CollegeModel, CollegeColors } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';

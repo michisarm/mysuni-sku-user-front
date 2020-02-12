@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import { Table } from 'semantic-ui-react';
-import { SearchFilter } from 'shared';
+import { SearchFilterType } from 'shared/model';
 import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
 import { PersonalCubeModel, CubeTypeNameType, CubeType } from 'personalcube/personalcube/model';
 
@@ -50,7 +50,7 @@ class CreateListView extends React.Component <Props> {
                   <Table.Cell className="title"><a><span className="ellipsis">{cube.name && cube.name}</span></a></Table.Cell>
                   <Table.Cell className="type">{this.getCubeType(cube)}</Table.Cell>
                   <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
-                  <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilter.SearchOn ? 'Yes' : 'No'}</Table.Cell>
+                  <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilterType.SearchOn ? 'Yes' : 'No'}</Table.Cell>
                   <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
                   <Table.Cell className="date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>

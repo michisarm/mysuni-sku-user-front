@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
-import { CubeState, CubeType } from 'shared';
+import { CubeState, CubeType } from 'shared/model';
 import { BoardService } from 'personalcube/community/stores';
 import { CollegeService, ContentsProviderService } from 'college/stores';
 

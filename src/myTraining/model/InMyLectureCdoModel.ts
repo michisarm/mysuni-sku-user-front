@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { CategoryModel, IdName } from 'shared';
+import { CategoryModel, IdName } from 'shared/model';
 import { CubeType, PersonalCubeModel } from 'personalcube/personalcube/model';
 import { CubeIntroModel } from 'personalcube/cubeintro/model';
 import { CourseSetModel } from 'course/model';

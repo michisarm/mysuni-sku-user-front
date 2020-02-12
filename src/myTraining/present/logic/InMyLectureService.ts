@@ -1,7 +1,7 @@
 
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import { autobind, CachingFetch } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
 import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';

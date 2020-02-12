@@ -1,7 +1,2 @@
 
-import AnswerSheetModalContainer  from './ui/logic/AnswerSheetModalContainer';
-
-
-export {
-  AnswerSheetModalContainer,
-};
+export { default as AnswerSheetModal } from './ui/logic/AnswerSheetModalContainer';

@@ -5,7 +5,8 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import depot from '@nara.drama/depot';
-import { AlertWin, ConfirmWin, CubeType } from 'shared';
+import { CubeType } from 'shared/model';
+import { AlertWin, ConfirmWin } from 'shared';
 import { Button, Form, Segment } from 'semantic-ui-react';
 
 import routePaths from '../../../routePaths';

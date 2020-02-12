@@ -1,7 +1,7 @@
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
 import moment from 'moment';
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared/model';
 import { BoardConfigModel } from './BoardConfigModel';
 import { BoardCdoModel } from './BoardCdoModel';
 import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';

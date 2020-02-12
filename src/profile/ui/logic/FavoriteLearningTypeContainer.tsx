@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Button, Icon, Checkbox, Radio } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { IdNameList } from 'shared';
+import { IdNameList } from 'shared/model';
 import { CollegeService } from 'college/stores';
 
 import mainRoutePaths from 'main/routePaths';

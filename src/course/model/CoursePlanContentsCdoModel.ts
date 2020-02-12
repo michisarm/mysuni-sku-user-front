@@ -1,4 +1,4 @@
-import { DatePeriod, CreatorModel } from 'shared';
+import { DatePeriod, CreatorModel } from 'shared/model';
 import { CourseSetModel } from './CourseSetModel';
 
 export class CoursePlanContentsCdoModel {

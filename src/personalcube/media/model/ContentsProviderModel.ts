@@ -1,5 +1,6 @@
+
 import { decorate, observable, computed } from 'mobx';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import ContentsProviderType from './ContentsProviderType';
 
 export class ContentsProviderModel {

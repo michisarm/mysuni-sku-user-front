@@ -1,13 +1,15 @@
+
 import { decorate, observable } from 'mobx';
 import { IconType } from './IconType';
 
-export class IconBox {
+
+class IconBoxModel {
   //
   iconType: IconType = IconType.SKUniversity;
   iconUrl: string = '';
   baseUrl: string = '';
 
-  constructor(iconBox?: IconBox) {
+  constructor(iconBox?: IconBoxModel) {
     //
     if (iconBox) {
       //
@@ -16,8 +18,10 @@ export class IconBox {
   }
 }
 
-decorate(IconBox, {
+decorate(IconBoxModel, {
   iconType: observable,
   iconUrl: observable,
   baseUrl: observable,
 });
+
+export default IconBoxModel;

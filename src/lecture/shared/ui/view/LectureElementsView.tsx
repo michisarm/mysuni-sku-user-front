@@ -2,7 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Image, Label } from 'semantic-ui-react';
-import { CategoryModel } from 'shared';
+import { CategoryModel } from 'shared/model';
 
 
 interface TitleProps {

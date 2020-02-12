@@ -8,8 +8,10 @@ import { patronInfo } from '@nara.platform/dock';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType, Tab, NoSuchContentPanel } from 'shared';
-import NotieService from 'layout/UserApp/present/logic/NotieService';
+import { CubeType } from 'shared/model';
+import { Tab, NoSuchContentPanel } from 'shared';
+import { NotieService } from 'notie/stores';
+
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
@@ -47,8 +49,8 @@ enum ContentTypeName {
 }
 
 @inject(mobxHelper.injectFrom(
-  'layout.notieService',
   'shared.reviewService',
+  'notie.notieService',
   'lecture.lectureService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',

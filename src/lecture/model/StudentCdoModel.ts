@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import { ProposalState } from 'shared';
+import { ProposalState } from 'shared/model';
 
 
 class StudentCdoModel {

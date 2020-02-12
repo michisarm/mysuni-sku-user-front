@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { LearningState, ProposalState } from 'shared';
+import { LearningState, ProposalState } from 'shared/model';
 
 
 class StudentJoinRdoModel {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { boolean, object, select } from '@storybook/addon-knobs';
 import { Segment } from 'semantic-ui-react';
-import { CubeType, storybookHelper } from 'shared';
+import { CubeType } from 'shared/model';
+import { storybookHelper } from 'shared';
 import LectureSubInfo from '../LectureSubInfo';
 
 

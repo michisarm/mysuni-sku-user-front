@@ -3,7 +3,7 @@ import { observable, action, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { CubeState } from 'shared';
+import { CubeState } from 'shared/model';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 

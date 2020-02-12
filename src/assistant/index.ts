@@ -1,9 +1,4 @@
 
-import AnswerSheetModalContainer from './ui/logic/AnswerSheetModalContainer';
-import CubeReportModalContainer from './ui/logic/CubeReportModalContainer';
+export { default as AnswerSheetModal } from './ui/logic/AnswerSheetModalContainer';
+export { default as CubeReportModal } from './ui/logic/CubeReportModalContainer';
 
-
-export {
-  AnswerSheetModalContainer,
-  CubeReportModalContainer,
-};

@@ -5,19 +5,18 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import mainRoutePaths from 'main/routePaths';
-import boardRoutePaths from 'board/routePaths';
-import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutePaths from 'myTraining/routePaths';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
+import { FavoriteChannelChangeModal } from 'shared';
+import { NotieService } from 'notie/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
-import SiteMapModalContainer from '../../../QuickNav/ui/logic/SiteMapModalContainer';
+import mainRoutePaths from 'main/routePaths';
+import lectureRoutePaths from 'lecture/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
+import boardRoutePaths from 'board/routePaths';
+
+import SiteMapModalContainer from './SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
-import {
-  MenuWrapperView, TopMenuItemView, BottomMenuItemView,
-} from '../view/QuickNavElementsView';
-import NotieService from '../../../present/logic/NotieService';
+import { MenuWrapperView, TopMenuItemView, BottomMenuItemView } from '../view/QuickNavElementsView';
 
 
 interface Props extends RouteComponentProps {
@@ -29,7 +28,10 @@ interface State {
   active: boolean,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'layout.notieService'))
+@inject(mobxHelper.injectFrom(
+  'notie.notieService',
+  'profile.skProfileService',
+))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {

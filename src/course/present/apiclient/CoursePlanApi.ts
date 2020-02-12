@@ -1,6 +1,6 @@
 
 import { axiosApi as axios, OffsetElementList } from '@nara.platform/accent';
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared/model';
 import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '../../model';
 
 export default class CoursePlanApi {

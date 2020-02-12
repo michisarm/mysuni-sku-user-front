@@ -1,4 +1,4 @@
-import { CubeType } from 'shared';
+import { CubeType } from 'shared/model';
 
 interface Class {
   learningTime: number

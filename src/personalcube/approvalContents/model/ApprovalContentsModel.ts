@@ -1,6 +1,7 @@
 import { decorate, observable } from 'mobx';
-import { CategoryModel, CreatorModel } from 'shared';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
+import { CategoryModel, CreatorModel } from 'shared/model';
+
 
 export class ApprovalContentsModel implements DramaEntity {
   id: string = '';

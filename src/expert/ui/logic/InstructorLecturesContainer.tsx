@@ -4,8 +4,9 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { PageService, NoSuchContentPanel } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { LectureService } from 'lecture/stores';
 import routePaths from 'lecture/routePaths';

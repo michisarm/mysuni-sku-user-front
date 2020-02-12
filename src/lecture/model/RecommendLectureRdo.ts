@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { IdName, OffsetElementList } from 'shared';
+import { IdName, OffsetElementList } from 'shared/model';
 import LectureModel from './LectureModel';
 
 

@@ -5,15 +5,10 @@ import { inject, observer } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
+import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
-
-interface OnSelectChannelData {
-  index: number,
-  channel: ChannelModel,
-}
 
 interface Props {
   skProfileService?: SkProfileService
@@ -22,6 +17,11 @@ interface Props {
   channels: ChannelModel[]
   onSelectChannel: (e: any, data: OnSelectChannelData) => void
   onConfirmCallback?: () => void
+}
+
+interface OnSelectChannelData {
+  index: number,
+  channel: ChannelModel,
 }
 
 interface States {

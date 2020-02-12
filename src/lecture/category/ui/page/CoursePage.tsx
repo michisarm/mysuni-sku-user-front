@@ -5,7 +5,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
-import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
+import { CubeType, LearningState, ProposalState } from 'shared/model';
+import { ContentLayout, Tab } from 'shared';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';

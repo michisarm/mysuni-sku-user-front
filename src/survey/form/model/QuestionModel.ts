@@ -1,5 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { LangStrings, DramaEntityObservableModel } from 'shared';
+import { LangStrings, DramaEntityObservableModel } from 'shared/model';
 import { SequenceModel } from './SequenceModel';
 import { QuestionItemType } from './QuestionItemType';
 import QuestionItems from './QuestionItems';

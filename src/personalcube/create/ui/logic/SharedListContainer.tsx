@@ -6,7 +6,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { PageService, CubeType, NoSuchContentPanel } from 'shared';
+import { CubeType } from 'shared/model';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { LectureService } from 'lecture/stores';
