@@ -109,9 +109,15 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const { name, company, department, size, trigger, skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
+
+    /**
+     * photoTypeTemp, photoImageTemp 는 사용자가 confirm 버튼을 누르기 전까지 변경한 photoType, photoImage 변경상태을 저장하고 있다가
+     * 사용자가 confirm 버튼을 누르면 시스템에 실제로 저장함.
+     */
     const { open, photoTypeTemp, photoImageTemp } = this.state;
 
-    const protoType = photoTypeTemp || skProfile!.photoType;
+    //첫 로딩시 사용자 profile 정보(skProfile!.photoType)에 값이 없는 경우(기본적으로 0 - IM 으로 선택함).
+    const protoType = photoTypeTemp || skProfile!.photoType || '0';
     let photoFilePath: string = '';
 
     //IM 시스템으로부터 인터페이스받은 사용자 증명사진 보여줌.
