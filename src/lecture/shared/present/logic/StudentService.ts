@@ -59,6 +59,7 @@ class StudentService {
    * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
    * 업데이트 시간순(updateTime)으로 데이터 배열 정렬
    */
+  @computed
   get studentJoinsForVideo(): StudentJoinRdoModel[] {
     //
     const studentJoins = this._studentJoinsForVideo as IObservableArray;
@@ -198,6 +199,11 @@ class StudentService {
   @action
   clear() {
     this.student = new StudentModel();
+  }
+
+  @action
+  clearForVideo() {
+    this.studentForVideo = new StudentModel();
   }
 }
 

@@ -38,6 +38,12 @@ export default class SkProfileApi {
   modifyStudySummaryFirstTime(nameValues : NameValueList) {
     return axios.put<void>(this.URL + `/summary/firsttime`, nameValues);
   }
+
+  // mySUNI에서 본인 증명사진 base64 데이터 저장
+  modifyPhotoUrlByProfileId(profileId: string, nameValues : NameValueList) {
+    return axios.put<void>(this.URL + `/photoUrl/${profileId}`, nameValues);
+  }
+
 }
 
 Object.defineProperty(SkProfileApi, 'instance', {

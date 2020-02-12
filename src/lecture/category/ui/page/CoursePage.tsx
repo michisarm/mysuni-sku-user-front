@@ -98,6 +98,15 @@ class CoursePage extends Component<Props> {
     this.findStudent();
   }
 
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
+   */
+  async lectureStudentAfterVideoPlay()
+  {
+    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    this.findStudent();
+  }
+
   compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
     if (join1.updateTime < join2.updateTime) return 1;
     return -1;
@@ -194,6 +203,8 @@ class CoursePage extends Component<Props> {
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
     const { student } = studentService!;
+
+    // console.log('CoursePage getViewObject() student=', student);
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -329,11 +340,13 @@ class CoursePage extends Component<Props> {
 
   renderList() {
     //
-    // console.log('CoursePage renderList');
-    const { lectureCardId } = this.props.match.params!;
+    const { serviceId } = this.props.match.params!;
+
+    // console.log('CoursePage renderList lectureCardId=', serviceId);
+
     return this.renderBaseContentWith(
 
-      <CourseContainer lectureCardId={lectureCardId} />
+      <CourseContainer lectureCardId={serviceId} />
     );
   }
 
@@ -389,7 +402,8 @@ class CoursePage extends Component<Props> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
 
-    // console.log('CoursePage renderBaseContentWith studentJoins=', studentJoins + ', student=', student);
+    // console.log('CoursePage renderBaseContentWith viewObject=', viewObject);
+
     return (
       <LectureCardContainer
         lectureServiceId={params.serviceId}
