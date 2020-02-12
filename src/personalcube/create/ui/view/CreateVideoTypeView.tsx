@@ -7,7 +7,8 @@ import { patronInfo } from '@nara.platform/dock';
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { depotHelper, SearchFilter } from 'shared';
+import { SearchFilterType } from 'shared/model';
+import { depotHelper } from 'shared';
 import { CollegeService } from 'college/stores';
 import { MediaModel, MediaType } from '../../../media/model';
 import { MediaService } from '../../../media/stores';
@@ -428,17 +429,17 @@ class CreateVideoTypeView  extends React.Component<Props> {
             className="base"
             label="공개"
             name="radioGroup"
-            value={SearchFilter.SearchOn}
+            value={SearchFilterType.SearchOn}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
-            value={SearchFilter.SearchOff}
+            value={SearchFilterType.SearchOff}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
           />
         </Form.Field>
       </>

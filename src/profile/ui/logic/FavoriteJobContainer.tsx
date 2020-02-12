@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Button, Icon, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import { JobGroupService } from 'college/stores';
 
 import routePaths from '../../routePaths';

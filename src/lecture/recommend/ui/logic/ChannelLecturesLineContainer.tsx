@@ -5,7 +5,8 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
-import { NoSuchContentPanel, OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
+import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';

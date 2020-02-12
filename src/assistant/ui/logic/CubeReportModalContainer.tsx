@@ -1,10 +1,12 @@
+
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
-import { StudentService } from '../../../lecture/shared';
-import { depotHelper } from '../../../shared';
+import { Button, Icon, Modal } from 'semantic-ui-react';
+import { depotHelper } from 'shared';
+import { StudentService } from 'lecture/stores';
 
 interface Props {
   studentService ?: StudentService

@@ -1,12 +1,12 @@
 import { decorate, observable } from 'mobx';
 import IdName from './IdName';
-import { SearchFilter } from './SearchFilter';
+import SearchFilterType from './SearchFilterType';
 import { CourseState } from './CourseState';
 
 export class CourseOpenModel {
   //
   courseState: CourseState = CourseState.Created;
-  searchFilter: SearchFilter = SearchFilter.SearchOff;
+  searchFilter: SearchFilterType = SearchFilterType.SearchOff;
   subsidiaries: IdName[] = [];
   requiredSubsidiaries: IdName[] = [];
   tags: string[] = [];

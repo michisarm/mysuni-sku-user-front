@@ -1,6 +1,6 @@
 
 import { observable, computed } from 'mobx';
-import { IdNameCount } from 'shared';
+import { IdNameCount } from 'shared/model';
 import { CollegeType } from 'college/model';
 
 

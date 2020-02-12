@@ -3,7 +3,7 @@ import { IObservableArray, observable, action, runInAction, computed } from 'mob
 import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { IdNameList } from 'shared';
+import { IdNameList } from 'shared/model';
 import CollegeApi from '../apiclient/CollegeApi';
 import ChannelApi from '../apiclient/ChannelApi';
 import { CollegeModel } from '../../model/CollegeModel';

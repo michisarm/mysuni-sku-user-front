@@ -1,7 +1,7 @@
 import { decorate, observable } from 'mobx';
 import { NameValueList } from '@nara.platform/accent';
 
-import { DramaEntityObservableModel } from 'shared';
+import { DramaEntityObservableModel } from 'shared/model';
 import SuggestionSheetModel from './SuggestionSheetModel';
 import RespondentModel from './RespondentModel';
 import { AnswerProgress } from './AnswerProgress';

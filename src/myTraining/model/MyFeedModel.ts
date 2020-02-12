@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { DramaEntityObservableModel, IdName } from 'shared';
+import { DramaEntityObservableModel, IdName } from 'shared/model';
 import { CubeTypeNameType } from 'personalcube/personalcube/model';
 
 export enum NotieType {

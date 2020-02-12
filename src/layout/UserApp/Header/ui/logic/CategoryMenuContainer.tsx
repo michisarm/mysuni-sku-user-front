@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { IdNameCount } from 'shared';
+import { IdNameCount } from 'shared/model';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
 import { CollegeLectureCountRdo }  from 'lecture/model';

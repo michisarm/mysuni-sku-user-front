@@ -6,7 +6,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import lectureRoutePaths from 'lecture/routePaths';
-import { PageService, NoSuchContentPanel } from 'shared';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureServiceType } from 'lecture/model';
 import { Lecture, SeeMoreButton } from 'lecture';

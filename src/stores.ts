@@ -1,6 +1,6 @@
 
 import { ReviewService, CommentService } from '@nara.drama/feedback';
-import { sharedStores } from 'shared';
+import sharedStores from 'shared/stores';
 import layoutStores from 'layout/stores';
 import collegeStores, { CollegeService } from 'college/stores';
 import profileStores from 'profile/stores';

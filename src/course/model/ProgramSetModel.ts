@@ -1,5 +1,7 @@
+
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
+
 
 export class ProgramSetModel {
   //

@@ -3,7 +3,7 @@ import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 
-import { IdName, NameValueList, CategoryModel, CreatorModel, IconBox } from 'shared';
+import { IdName, NameValueList, CategoryModel, CreatorModel, IconBoxModel } from 'shared/model';
 import { CourseOperatorModel } from './CourseOperatorModel';
 import { CourseOpenModel } from '../../shared/model/CourseOpenModel';
 import { StampModel } from './StampModel';
@@ -24,7 +24,7 @@ export class CoursePlanModel implements DramaEntity {
   name: string = '';
   contentsId: string = '';
   courseOperator: CourseOperatorModel = new CourseOperatorModel();
-  iconBox: IconBox = new IconBox();
+  iconBox: IconBoxModel = new IconBoxModel();
   courseOpen: CourseOpenModel = new CourseOpenModel();
   feedbackId: string = '';
   reportFileBox: ReportFileBoxModel = new ReportFileBoxModel();
@@ -41,7 +41,7 @@ export class CoursePlanModel implements DramaEntity {
     if (coursePlan) {
       const category = coursePlan.category && new CategoryModel(coursePlan.category) || this.category;
       const courseOperator = coursePlan.courseOperator && new CourseOperatorModel(coursePlan.courseOperator) || this.courseOperator;
-      const iconBox = coursePlan.iconBox && new IconBox(coursePlan.iconBox) || this.iconBox;
+      const iconBox = coursePlan.iconBox && new IconBoxModel(coursePlan.iconBox) || this.iconBox;
       const courseOpen = coursePlan.courseOpen && new CourseOpenModel(coursePlan.courseOpen) || this.courseOpen;
       const reportFileBox = coursePlan.reportFileBox && new ReportFileBoxModel(coursePlan.reportFileBox) || this.reportFileBox;
       const stamp = coursePlan.stamp && new StampModel(coursePlan.stamp) || this.stamp;

@@ -3,7 +3,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon } from 'semantic-ui-react';
-import { IdNameCount } from 'shared';
+import { IdNameCount } from 'shared/model';
 import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
 

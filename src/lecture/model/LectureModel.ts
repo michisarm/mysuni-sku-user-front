@@ -8,7 +8,7 @@ import {
   CourseOpenModel,
   DramaEntityObservableModel,
   IdName,
-} from 'shared';
+} from 'shared/model';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 
 import moment from 'moment';

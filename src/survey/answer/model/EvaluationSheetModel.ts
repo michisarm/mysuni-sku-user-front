@@ -1,7 +1,8 @@
 import { decorate, observable } from 'mobx';
 import { NameValueList } from '@nara.platform/accent';
-import { DramaEntityObservableModel } from 'shared';
+import { DramaEntityObservableModel } from 'shared/model';
 import AnswerModel from './AnswerModel';
+
 
 export default class EvaluationSheetModel extends DramaEntityObservableModel {
   //

@@ -1,5 +1,5 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared/model';
 import { CubeIntroModel } from '../../model/CubeIntroModel';
 
 export default class CubeIntroApi {

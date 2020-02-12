@@ -6,7 +6,8 @@ import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
+import { ProposalState, LearningState } from 'shared/model';
+import { ContentLayout, Tab } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { CollegeService } from 'college/stores';
 

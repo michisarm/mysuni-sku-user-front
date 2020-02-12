@@ -1,6 +1,6 @@
 
 import { computed, decorate, observable } from 'mobx';
-import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBox } from 'shared';
+import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBoxModel } from 'shared/model';
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import LectureServiceType from './LectureServiceType';
 
@@ -15,7 +15,7 @@ class LectureViewModel extends DramaEntityObservableModel {
   name: string = '';
   cubeType: CubeType = CubeType.None;
   category: CategoryModel = new CategoryModel();
-  iconBox: IconBox = new IconBox();
+  iconBox: IconBoxModel = new IconBoxModel();
   creationDate: number = 0;
   learningPeriod: DatePeriod = new DatePeriod();
   lectureCardUsids: string[] = [];

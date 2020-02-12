@@ -1,7 +1,7 @@
 import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import CoursePlanApi from '../apiclient/CoursePlanApi';
 import { CoursePlanModel } from '../../model/CoursePlanModel';
 import { CoursePlanContentsModel } from '../../model/CoursePlanContentsModel';

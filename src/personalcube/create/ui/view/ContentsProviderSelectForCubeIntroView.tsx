@@ -1,10 +1,11 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { observer } from 'mobx-react';
 import { reactAutobind } from '@nara.platform/accent';
-import { IdName } from 'shared';
-import { Grid, Icon, Select } from 'semantic-ui-react';
+import { observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+
 import classNames from 'classnames';
+import { Grid, Icon, Select } from 'semantic-ui-react';
+import { IdName } from 'shared/model';
 
 
 interface Props extends RouteComponentProps {

@@ -1,6 +1,6 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { LearningState } from 'shared';
+import { LearningState } from 'shared/model';
 import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../../model/StudentCdoModel';

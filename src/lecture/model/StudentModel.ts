@@ -1,6 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { DramaEntityObservableModel, ProposalState } from 'shared';
-import LearningState from '../../shared/model/LearningState';
+import { DramaEntityObservableModel, ProposalState, LearningState } from 'shared/model';
 import StudentScoreModel from './StudentScoreModel';
 import JoinRequestModel from './JoinRequestModel';
 

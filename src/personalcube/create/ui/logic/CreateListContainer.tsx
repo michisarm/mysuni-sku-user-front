@@ -4,7 +4,9 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
-import { CubeState, NoSuchContentPanel, PageService } from 'shared';
+import { CubeState } from 'shared/model';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
 import { SeeMoreButton } from 'lecture/shared';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 

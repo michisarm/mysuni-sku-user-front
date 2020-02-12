@@ -1,5 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
-import { LangStrings } from 'shared';
+import { LangStrings } from 'shared/model';
 
 export class CriteriaItemModel {
   index: number = 0;

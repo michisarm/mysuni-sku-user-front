@@ -1,6 +1,6 @@
 
 import { axiosApi } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingModel from '../../model/MyTrainingModel';
 

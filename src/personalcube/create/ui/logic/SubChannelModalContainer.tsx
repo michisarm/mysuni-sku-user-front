@@ -3,7 +3,7 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { Accordion, Button, Checkbox, Icon, Modal } from 'semantic-ui-react';
-import { CategoryModel, IdName } from 'shared';
+import { CategoryModel, IdName } from 'shared/model';
 import { CollegeColors, CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { ChannelModalContentWrapper } from '../view/DetailElementsView';

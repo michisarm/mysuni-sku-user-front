@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { Button, Modal } from 'semantic-ui-react';
-import { IdNameCount } from 'shared';
+import { IdNameCount } from 'shared/model';
 import { StudySummaryModel } from 'profile/model';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel, CollegeType } from 'college/model';

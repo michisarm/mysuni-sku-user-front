@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Select } from 'semantic-ui-react';
-import { IdName, CategoryModel } from 'shared';
+import { IdName, CategoryModel } from 'shared/model';
 import { CollegeModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeModel } from 'personalcube/personalcube/model';

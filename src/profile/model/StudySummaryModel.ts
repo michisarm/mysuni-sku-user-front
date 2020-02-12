@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { IdNameList, NameValueList } from 'shared';
+import { IdNameList, NameValueList } from 'shared/model';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 
 

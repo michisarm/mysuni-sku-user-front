@@ -2,7 +2,7 @@
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import { CollegeType } from './CollegeType';
 import { CreatorModel } from './CreatorModel';
 import ChannelModel from './ChannelModel';

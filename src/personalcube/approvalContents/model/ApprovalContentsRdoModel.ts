@@ -1,5 +1,5 @@
 import { decorate, observable } from 'mobx';
-import { CubeType, CubeState } from 'shared';
+import { CubeType, CubeState } from 'shared/model';
 
 export class ApprovalContentsRdoModel {
 

@@ -1,6 +1,6 @@
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { CubeType } from 'shared';
+import { CubeType } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';

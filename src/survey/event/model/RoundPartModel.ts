@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { NameValueList } from '@nara.platform/accent';
-import { DatePeriod, DramaEntityObservableModel, LangStrings } from 'shared';
+import { DatePeriod, DramaEntityObservableModel, LangStrings } from 'shared/model';
 import { SurveyProgress } from './SurveyProgress';
 import OperatorModel from './OperatorModel';
 import SurveyEventModel from './SurveyEventModel';

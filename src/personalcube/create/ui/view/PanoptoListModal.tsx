@@ -4,7 +4,7 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Form, Icon, Modal, Pagination, Radio, Table } from 'semantic-ui-react';
-import { SharedService } from 'shared';
+import { SharedService } from 'shared/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 

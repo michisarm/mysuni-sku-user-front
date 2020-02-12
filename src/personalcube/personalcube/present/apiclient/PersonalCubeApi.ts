@@ -1,7 +1,7 @@
 
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 
-import { OffsetElementList, CubeState } from 'shared';
+import { OffsetElementList, CubeState } from 'shared/model';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 import { PersonalCubeRdoModel } from '../../model/PersonalCubeRdoModel';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
