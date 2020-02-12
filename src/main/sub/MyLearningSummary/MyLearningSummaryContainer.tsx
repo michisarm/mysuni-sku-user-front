@@ -7,7 +7,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentHeader } from 'shared';
-import { MyLearningSummaryModal, MyLearningSummaryService } from 'myTraining';
+import { MyLearningSummaryService } from 'myTraining/stores';
+import { MyLearningSummaryModal } from 'myTraining';
 import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSummaryElementsView';
 
 

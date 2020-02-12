@@ -1,30 +1,34 @@
-import { computed, decorate, observable } from 'mobx';
-import { MemberModel } from './MemberModel';
-import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
-import { LangStrings } from '../../shared/model/LangStrings';
 
-export class EmployeeModel extends MemberModel {
+import { computed, decorate, observable } from 'mobx';
+
+import { LangStrings } from 'shared/model/LangStrings';
+import MemberModel from './MemberModel';
+import FavoriteJobGroupModel from './FavoriteJobGroupModel';
+
+
+class EmployeeModel extends MemberModel {
+  //
   employeeId: string = '' ;      // 암호화
-  names: LangStrings = new  LangStrings();
+  names: LangStrings = new LangStrings();
   //name : string = '';
   email: string = '';           // 암호화
   phone: string = '';           // 암호화
   jobTitle : string = '';      //직위
-  jobRank : string ='';         //직급 rank
-  jobName : string ='';         //직무 job
-  jobDuty : string ='';         //직책 duty
+  jobRank : string = '';         //직급 rank
+  jobName : string = '';         //직무 job
+  jobDuty : string = '';         //직책 duty
   base64Photo: string = '';     //base64 image 크기
-  photoFileUrl:string ='';      //SK IM Photo URL
+  photoFileUrl:string = '';      //SK IM Photo URL
   photoFilename: string = '';
 
   // team: TeamModel = new TeamModel();
 
-  companyCode : string ='';
-  companyNames : LangStrings = new LangStrings();
-  departmentCode : string='';
-  departmentNames : LangStrings = new LangStrings();
-  leaderId : string ='';
-  leaderNames : string = '';
+  companyCode: string = '';
+  companyNames: LangStrings = new LangStrings();
+  departmentCode: string= '';
+  departmentNames: LangStrings = new LangStrings();
+  leaderId: string = '';
+  leaderNames: string = '';
 
   favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
 
@@ -95,3 +99,5 @@ decorate(EmployeeModel, {
   leaderNames: observable,
   favoriteJobGroup: observable,
 });
+
+export default EmployeeModel;

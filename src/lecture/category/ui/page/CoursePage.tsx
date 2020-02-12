@@ -5,28 +5,21 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
-import { ContentLayout, CubeType, LearningState, ProposalState, Tab } from 'shared';
-import { CollegeService } from 'college';
-import { CoursePlanService } from 'course';
-import { InMyLectureCdoModel } from 'myTraining';
+import { CubeType, LearningState, ProposalState } from 'shared/model';
+import { ContentLayout, Tab } from 'shared';
+import { CollegeService } from 'college/stores';
+import { SkProfileService } from 'profile/stores';
+import { CoursePlanService } from 'course/stores';
+import { InMyLectureCdoModel } from 'myTraining/model';
 
-import { SkProfileService } from 'profile';
 import routePaths from '../../../routePaths';
-import {
-  CourseLectureService,
-  LectureService,
-  LectureServiceType,
-  ProgramLectureService,
-  StudentService,
-} from '../../../shared';
+import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
+import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
-import LectureViewModel from '../../../shared/model/LectureViewModel';
-import StudentCdoModel from '../../../shared/model/StudentCdoModel';
-import StudentJoinRdoModel from '../../../shared/model/StudentJoinRdoModel';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 
 
@@ -101,6 +94,15 @@ class CoursePage extends Component<Props> {
     //
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
+    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    this.findStudent();
+  }
+
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
+   */
+  async lectureStudentAfterVideoPlay()
+  {
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     this.findStudent();
   }
@@ -201,6 +203,8 @@ class CoursePage extends Component<Props> {
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
     const { student } = studentService!;
+
+    // console.log('CoursePage getViewObject() student=', student);
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -336,11 +340,13 @@ class CoursePage extends Component<Props> {
 
   renderList() {
     //
-    // console.log('CoursePage renderList');
-    const { lectureCardId } = this.props.match.params!;
+    const { serviceId } = this.props.match.params!;
+
+    // console.log('CoursePage renderList lectureCardId=', serviceId);
+
     return this.renderBaseContentWith(
 
-      <CourseContainer lectureCardId={lectureCardId} />
+      <CourseContainer lectureCardId={serviceId} />
     );
   }
 
@@ -396,7 +402,8 @@ class CoursePage extends Component<Props> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
 
-    // console.log('CoursePage renderBaseContentWith studentJoins=', studentJoins + ', student=', student);
+    // console.log('CoursePage renderBaseContentWith viewObject=', viewObject);
+
     return (
       <LectureCardContainer
         lectureServiceId={params.serviceId}

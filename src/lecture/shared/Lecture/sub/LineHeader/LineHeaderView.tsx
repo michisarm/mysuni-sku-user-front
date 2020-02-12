@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 
 
 interface Props {

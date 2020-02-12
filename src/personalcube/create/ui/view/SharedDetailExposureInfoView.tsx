@@ -2,7 +2,7 @@
 import React from 'react';
 
 import { Image, Table } from 'semantic-ui-react';
-import { PersonalCubeModel } from '../../../personalcube';
+import { PersonalCubeModel } from '../../../personalcube/model';
 
 interface Props {
   personalCube: PersonalCubeModel

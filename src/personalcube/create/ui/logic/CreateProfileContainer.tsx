@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 
 import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import routePaths from '../../../routePaths';
@@ -44,7 +44,7 @@ class CreateProfileContainer extends React.Component<Props> {
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             myPageActive
-            image={skProfile.member.photoFilePath || defaultProfileImg}
+            image={skProfile.photoFilePath || defaultProfileImg}
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}

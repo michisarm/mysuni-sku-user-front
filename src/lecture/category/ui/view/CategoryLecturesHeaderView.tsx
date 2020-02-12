@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Button } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
-import { CollegeModel } from 'college';
+import { CollegeModel } from 'college/model';
 import { ThumbnailView, TitleView } from './CategoryLecturesHeaderElementsView';
 
 

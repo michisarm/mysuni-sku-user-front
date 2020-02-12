@@ -5,9 +5,10 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { SkProfileService } from 'profile';
-import { ChannelModel } from 'college';
+import { FavoriteChannelChangeModal } from 'shared';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
+
 import lectureRoutePaths from 'lecture/routePaths';
 import HeaderView from './HeaderView';
 

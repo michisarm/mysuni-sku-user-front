@@ -1,7 +1,7 @@
-// import { axiosApi as axios } from '@nara.platform/accent';
 
 import { axiosApi as axios } from '@nara.platform/accent';
-import { ClassroomModel } from '../..';
+import { ClassroomModel } from '../../model';
+
 
 export default class ClassroomGroupFlowApi {
 

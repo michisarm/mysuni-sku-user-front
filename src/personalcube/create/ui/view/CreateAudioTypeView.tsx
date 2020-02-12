@@ -6,10 +6,12 @@ import { patronInfo } from '@nara.platform/dock';
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import $ from 'jquery';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { depotHelper, SearchFilter } from 'shared';
-import { CollegeService } from 'college';
-import { MediaModel, MediaService, MediaType } from 'personalcube/media';
-import { PersonalCubeModel } from 'personalcube/personalcube';
+import { SearchFilterType } from 'shared/model';
+import { depotHelper } from 'shared';
+import { CollegeService } from 'college/stores';
+import { MediaModel, MediaType } from 'personalcube/media/model';
+import { MediaService } from 'personalcube/media/stores';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import { InternalMediaConnectionModel } from '../../../media/model/InternalMediaConnectionModel';
 
 
@@ -417,16 +419,16 @@ class CreateAudioTypeView extends React.Component<Props> {
             className="base"
             label="공개"
             name="radioGroup"
-            value={SearchFilter.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            value={SearchFilterType.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
-            value={SearchFilter.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
+            value={SearchFilterType.SearchOff}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
         </Form.Field>

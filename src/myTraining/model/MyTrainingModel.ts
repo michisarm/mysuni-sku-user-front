@@ -8,10 +8,10 @@ import {
   LearningStateName,
   ProposalState,
   ProposalStateName,
-} from 'shared';
-import { CourseSetModel } from 'course';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
-import { LectureServiceType } from 'lecture';
+} from 'shared/model';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import { CourseSetModel } from 'course/model';
+import { LectureServiceType } from 'lecture/model';
 
 class MyTrainingModel extends DramaEntityObservableModel {
   //

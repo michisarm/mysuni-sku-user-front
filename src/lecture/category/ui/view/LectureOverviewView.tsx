@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { DatePeriod } from 'shared';
-import { CubeType } from 'personalcube/personalcube';
+import { DatePeriod } from 'shared/model';
+import { CubeType } from 'personalcube/personalcube/model';
 import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';

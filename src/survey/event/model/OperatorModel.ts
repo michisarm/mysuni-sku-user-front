@@ -1,4 +1,4 @@
-import { LangStrings } from 'shared';
+import { LangStrings } from 'shared/model';
 
 export default class OperatorModel {
 

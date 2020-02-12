@@ -6,19 +6,26 @@ import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
 import { PostList, PostListByWriter } from '@sku/personalcube';
-import { ContentLayout, ProposalState, LearningState, Tab } from 'shared';
-import { SkProfileService } from 'profile';
-import { CollegeService } from 'college';
-import { ContentsServiceType, CubeType, CubeTypeNameType, PersonalCubeService } from 'personalcube/personalcube';
-import { BoardService } from 'personalcube/board';
-import { CubeIntroService } from 'personalcube/cubeintro';
-import { ClassroomModel, ClassroomService } from 'personalcube/classroom';
-import { MediaService, MediaType } from 'personalcube/media';
-import { OfficeWebService } from 'personalcube/officeweb';
-import { LectureCardService, LectureService, RollBookService, StudentCdoModel, StudentService } from 'lecture';
-import { InMyLectureCdoModel } from 'myTraining';
+import { ProposalState, LearningState } from 'shared/model';
+import { ContentLayout, Tab } from 'shared';
+import { SkProfileService } from 'profile/stores';
+import { CollegeService } from 'college/stores';
+
+import { ContentsServiceType, CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { ClassroomModel } from 'personalcube/classroom/model';
+import { MediaType } from 'personalcube/media/model';
+
+import { CubeIntroService } from 'personalcube/cubeintro/stores';
+import { ClassroomService } from 'personalcube/classroom/stores';
+import { MediaService } from 'personalcube/media/stores';
+import { OfficeWebService } from 'personalcube/officeweb/stores';
+import { BoardService } from 'personalcube/community/stores';
+
+import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
-import { StudentJoinRdoModel, LectureServiceType } from '../../../shared';
+import { StudentJoinRdoModel, StudentCdoModel, LectureServiceType } from '../../../model';
+import { LectureCardService, LectureService, RollBookService, StudentService } from '../../../stores';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import LectureCardContentHeaderContainer from '../logic/LectureCardContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';

@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { ContentHeaderTotalTimeItem } from '../../shared';
@@ -39,7 +39,8 @@ class MyLearningContentHeaderContainer extends Component<Props> {
   render() {
     //
     const { skProfileService, myLearningSummaryService, history } = this.props;
-    const { member } = skProfileService!.skProfile;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
 
     return (
@@ -47,7 +48,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
             myPageActive
-            image={member.photoFilePath || profileImg}
+            image={skProfile.photoFilePath || profileImg}
             name={member.name}
             company={member.company}
             department={member.department}

@@ -6,12 +6,13 @@ import moment from 'moment';
 
 import { Card, Icon, Button } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { LectureModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'myTraining';
-import Action from '../../model/Action';
+import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
+
+import { LectureModel } from '../../../../model';
 import {
   Title, Fields, Field, Buttons, Thumbnail,
 } from '../../../ui/view/LectureElementsView';
+import Action from '../../model/Action';
 
 
 interface Props {

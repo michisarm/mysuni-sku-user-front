@@ -1,7 +1,9 @@
-import { NameValueList } from '../../../shared/model/NameValueList';
-import { PersonalCubeModel } from '../../../personalcube/personalcube/model/PersonalCubeModel';
-import { CubeIntroModel } from '../../cubeintro';
+
+import { NameValueList } from 'shared/model';
+import { PersonalCubeModel } from '../../personalcube/model';
+import { CubeIntroModel } from '../../cubeintro/model';
 import { MediaModel } from './MediaModel';
+
 
 export class MediaFlowUdoModel {
   //

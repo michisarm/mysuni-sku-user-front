@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import { Segment } from 'semantic-ui-react';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import ChannelsPanelContainer from '../../../shared/ui/logic/ChannelsPanelContainer';
 
 

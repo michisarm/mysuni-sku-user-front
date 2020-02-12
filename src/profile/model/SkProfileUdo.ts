@@ -1,12 +1,13 @@
 
 import { decorate, observable } from 'mobx';
-import { FavoriteJobGroupModel } from './FavoriteJobGroupModel';
-import { PisAgreementModel } from './PisAgreementModel';
+import FavoriteJobGroupModel from './FavoriteJobGroupModel';
+import PisAgreementModel from './PisAgreementModel';
 
-export class SkProfileUdo {
+
+class SkProfileUdo {
   //
-  favoriteJobGroup : FavoriteJobGroupModel = new FavoriteJobGroupModel();
-  pisAgreement : PisAgreementModel = new PisAgreementModel();
+  favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
+  pisAgreement: PisAgreementModel = new PisAgreementModel();
 
   constructor(favoriteJobGroupModel? : FavoriteJobGroupModel, pisAgreement? : PisAgreementModel) {
     if (favoriteJobGroupModel) {
@@ -27,3 +28,5 @@ decorate(SkProfileUdo, {
   favoriteJobGroup: observable,
   pisAgreement: observable,
 });
+
+export default SkProfileUdo;

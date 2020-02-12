@@ -4,9 +4,9 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
-import { LectureCardModel } from 'lecture/index';
-import LectureContentHeader from '../../../shared/LectureContentHeader';
+import { CubeType, PersonalCubeModel } from 'personalcube/personalcube/model';
+import { LectureCardModel } from '../../../model';
+import { LectureContentHeader } from '../../../shared';
 
 
 interface Props {

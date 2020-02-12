@@ -6,12 +6,12 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Button, Icon, Select } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { IdName } from 'shared';
-import { JobGroupService } from 'college';
+import { IdName } from 'shared/model';
+import { JobGroupService } from 'college/stores';
 
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
-import { SkProfileUdo } from '../../model/SkProfileUdo';
+import SkProfileUdo from '../../model/SkProfileUdo';
 
 
 interface Props extends RouteComponentProps {

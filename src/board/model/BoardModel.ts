@@ -1,6 +1,6 @@
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared';
+import { IdName } from 'shared/model';
 import { BoardConfigModel } from './BoardConfigModel';
 
 export class BoardModel implements DomainEntity {

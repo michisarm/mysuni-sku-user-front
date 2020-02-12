@@ -5,14 +5,15 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
-import NotieService from 'layout/UserApp/present/logic/NotieService';
+import { NotieService } from 'notie/stores';
+import { LectureService } from 'lecture/stores';
+
 import routePaths from '../../routePaths';
+import { InMyLectureService } from '../../stores';
 import MyLearningContentType from '../model/MyLearningContentType';
 import MyLearningContentTypeName from '../model/MyLearningContentTypeName';
 import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
 import MyLearningListContainer from '../logic/MyLearningListContainer';
-import LectureService from '../../../lecture/shared/present/logic/LectureService';
-import InMyLectureService from '../../present/logic/InMyLectureService';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -22,7 +23,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 }
 
 @inject(mobxHelper.injectFrom(
-  'layout.notieService',
+  'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
 ))

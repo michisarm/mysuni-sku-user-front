@@ -1,7 +1,10 @@
-import { decorate, observable } from 'mobx';
-import { LangStrings } from '../../shared/model/LangStrings';
 
-export class MemberLocaleModel {
+import { decorate, observable } from 'mobx';
+import { LangStrings } from 'shared/model/LangStrings';
+
+
+class MemberLocaleModel {
+  //
   nations: LangStrings = new LangStrings();
   languages: LangStrings = new LangStrings();
 
@@ -19,3 +22,5 @@ decorate(MemberLocaleModel, {
   nations: observable,
   languages: observable,
 });
+
+export default MemberLocaleModel;

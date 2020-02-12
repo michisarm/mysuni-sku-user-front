@@ -4,7 +4,7 @@ import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import profileRoutePaths from 'profile/routePaths';
-import { SkProfileService } from 'profile';
+import { SkProfileService } from 'profile/stores';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';

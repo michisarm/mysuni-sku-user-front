@@ -5,9 +5,10 @@ import { observer } from 'mobx-react';
 
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { Form, Icon, Radio } from 'semantic-ui-react';
-import { depotHelper, SearchFilter } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube';
-import { OfficeWebModel } from 'personalcube/officeweb';
+import { SearchFilterType } from 'shared/model';
+import { depotHelper } from 'shared';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
+import { OfficeWebModel } from 'personalcube/officeweb/model';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
@@ -75,16 +76,16 @@ class CreateWebPageTypeView extends React.Component<Props> {
             className="base"
             label="공개"
             name="radioGroup"
-            value={SearchFilter.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            value={SearchFilterType.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
-            value={SearchFilter.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
+            value={SearchFilterType.SearchOff}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
         </Form.Field>

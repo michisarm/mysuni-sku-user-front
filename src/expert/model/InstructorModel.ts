@@ -1,6 +1,6 @@
 
 import { decorate, observable } from 'mobx';
-import { CategoryModel } from 'shared';
+import { CategoryModel } from 'shared/model';
 import { MemberSummaryModel } from './MemberSummaryModel';
 
 

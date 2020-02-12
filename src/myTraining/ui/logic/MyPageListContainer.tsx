@@ -6,11 +6,13 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import lectureRoutePaths from 'lecture/routePaths';
-import { PageService, NoSuchContentPanel } from 'shared';
-import { ChannelModel } from 'college';
-import { Lecture, LectureServiceType } from 'lecture';
-import { SeeMoreButton } from 'lecture/shared';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { ChannelModel } from 'college/model';
+import { LectureServiceType } from 'lecture/model';
+import { Lecture, SeeMoreButton } from 'lecture';
 
+import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyPageContentType from '../model/MyPageContentType';
@@ -21,7 +23,7 @@ interface States {
   channels: ChannelModel[]
 }
 
-interface Props extends RouteComponentProps<{ tab: string }> {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   myTrainingService?: MyTrainingService
   contentType: MyPageContentType
@@ -52,24 +54,46 @@ class MyPageListContainer extends Component<Props, States> {
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
+    const { pageService, myTrainingService } = this.props;
     const prevTab = prevProps.match.params.tab;
     const currentTab = this.props.match.params.tab;
+    const currentPageNo = this.props.match.params.pageNo;
 
     if (prevTab !== currentTab) {
       this.setMyTrainings();
     }
+    else if (prevProps.match.params.tab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+      const page = pageService!.pageMap.get(this.PAGE_KEY);
+      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      if (currentPageNo === '1') {
+        myTrainingService!.clear();
+        pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      }
+      else {
+        pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      }
+      this.findPagingList(this.getPageNo() - 1);
+    }
+  }
+
+  getPageNo() {
+    //
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
   }
 
   setMyTrainings() {
     //
     const { pageService, myTrainingService } = this.props;
 
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    const initialLimit = this.getPageNo() * this.PAGE_SIZE;
+    pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
     myTrainingService!.clear();
     this.findPagingList();
   }
 
-  async findPagingList() {
+  async findPagingList(pageNo?: number) {
     //
     const { pageService, myTrainingService, onChangeCompletedCount, onChangeEarnedStampCount } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
@@ -87,12 +111,19 @@ class MyPageListContainer extends Component<Props, States> {
       onChangeEarnedStampCount(offsetList.totalCount);
     }
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
   getAContentType() {
     //
     return this.props.contentType;
+  }
+
+  onClickSeeMore() {
+    //
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   isContentMore() {
@@ -169,7 +200,7 @@ class MyPageListContainer extends Component<Props, States> {
 
         { this.isContentMore() && (
           <SeeMoreButton
-            onClick={this.findPagingList}
+            onClick={this.onClickSeeMore}
           />
         )}
       </>

@@ -6,16 +6,19 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { PageService, CubeType, NoSuchContentPanel } from 'shared';
-import { CollegeService } from 'college';
-import { PersonalCubeService } from 'personalcube/personalcube';
-import { LectureCardService, LectureModel, LectureService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
+import { CubeType } from 'shared/model';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { CollegeService } from 'college/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+
+import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureCardService, LectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
-import Lecture from '../../../shared/Lecture';
+import { Lecture, CardSorting, SeeMoreButton } from '../../../shared';
 import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWrapperView';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {

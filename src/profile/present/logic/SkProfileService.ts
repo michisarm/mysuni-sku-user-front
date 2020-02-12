@@ -1,17 +1,16 @@
 
 import { observable, action, runInAction, computed } from 'mobx';
-import { autobind, NameValueList, OffsetElementList, CachingFetch } from '@nara.platform/accent';
+import { autobind, NameValueList, CachingFetch } from '@nara.platform/accent';
 
 import _ from 'lodash';
 import SkProfileApi from '../apiclient/SkProfileApi';
-import { SkProfileQueryModel } from '../../model/SkProfileQueryModel';
-import { SkProfileModel } from '../../model/SkProfileModel';
-import { StudySummary } from '../../model/StudySummary';
-import { SkProfileUdo } from '../../model/SkProfileUdo';
+import SkProfileModel from '../../model/SkProfileModel';
+import StudySummaryModel from '../../model/StudySummaryModel';
+import SkProfileUdo from '../../model/SkProfileUdo';
 
 
 @autobind
-export default class SkProfileService {
+class SkProfileService {
   //
   static instance: SkProfileService;
 
@@ -23,18 +22,13 @@ export default class SkProfileService {
   skProfileCachingFetch: CachingFetch = new CachingFetch();
 
   @observable
-  skProfiles: OffsetElementList<SkProfileModel> ={ results: [], totalCount: 0 };
-
-  @observable
-  skProfileQuery: SkProfileQueryModel = new SkProfileQueryModel();
-
-  @observable
-  studySummary: StudySummary = new StudySummary();
+  studySummary: StudySummaryModel = new StudySummaryModel();
 
   studySummaryCachingFetch: CachingFetch = new CachingFetch();
 
 
   constructor(skProfileApi: SkProfileApi) {
+    //
     this.skProfileApi = skProfileApi;
   }
 
@@ -51,9 +45,11 @@ export default class SkProfileService {
     return favoriteChannels && favoriteChannels.idNames || [];
   }
 
-  registerSkProfile(skProfile: SkProfileModel) {
-    //
-    this.skProfileApi.registerSkProfile(skProfile);
+  // SkProfile ---------------------------------------------------------------------------------------------------------
+
+  @action
+  clearSkProfile() {
+    this.skProfile = new SkProfileModel();
   }
 
   @action
@@ -63,70 +59,29 @@ export default class SkProfileService {
       () => this.skProfileApi.findSkProfile(),
       (skProfile) => runInAction(() => this.skProfile = new SkProfileModel(skProfile)),
     );
-
     return fetched ? this.skProfileCachingFetch.inProgressFetching : this.skProfile;
-  }
-
-  @action
-  async findSkProfileByAudienceId(audienceId: string) {
-    const  skProfile = await  this.skProfileApi.findSkProfileByAudienceId(audienceId);
-    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
-  }
-
-  @action
-  async findSkProfileByProfileId(profileId: string) {
-    const skProfile = await  this.skProfileApi.findSkProfileByProfileId(profileId);
-    return runInAction(() => this.skProfile = new SkProfileModel(skProfile));
-  }
-
-  @action
-  async findAllSkProfilesBySearchKey() {
-    const skProfiles = await this.skProfileApi.findAllSkProfilesBySearchKey(SkProfileQueryModel.asSkProfileRdo(this.skProfileQuery));
-    if (skProfiles) {
-      skProfiles.results = skProfiles!.results.map(skProfile => new SkProfileModel(skProfile));
-      return runInAction(() => this.skProfiles = skProfiles);
-    }
-    return '';
-  }
-
-  @action
-  async findAllSkProfile(offset:number, limit : number) {
-    const skProfiles = await  this.skProfileApi.findAllSkProfile(offset, limit);
-    if (skProfiles) {
-      skProfiles!.results = skProfiles!.results.map(skProfile => new SkProfileModel(skProfile));
-      return runInAction(() => this.skProfiles = skProfiles);
-    }
-    return '';
-  }
-
-  modfifySkProfileByProfileId(profileId:string, skProfileUdo : SkProfileUdo) {
-    this.skProfileApi.modifySkProfileByProfileId(profileId, skProfileUdo);
   }
 
   modifySkProfile(skProfileUdo : SkProfileUdo) {
     this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 
-  removeSkProfile(profileId:string) {
-    this.skProfileApi.removeSkProfile(profileId);
+  @action
+  setFavoriteJobGroupProp(name:string, value:any) {
+    this.skProfile.member.favoriteJobGroup = _.set(this.skProfile.member.favoriteJobGroup, name, value);
   }
+
+  // StudySummary ------------------------------------------------------------------------------------------------------
 
   @action
   async findStudySummary() {
     //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
-      (studySummary) => runInAction(() => this.studySummary = new StudySummary(studySummary)),
+      (studySummary) => runInAction(() => this.studySummary = new StudySummaryModel(studySummary)),
     );
 
     return fetched ? this.studySummaryCachingFetch.inProgressFetching : this.studySummary;
-  }
-
-  @action
-  async finStudySummaryByProfileId(profileId : string) {
-    //profileId skProfile 검색 후 setting 필요한지 테스트 통해서 확인
-    const studySummary = await this.skProfileApi.findStudySummaryByProfileId(profileId);
-    return runInAction(() => this.studySummary = new StudySummary(studySummary));
   }
 
   modifyStudySummary(nameValues: NameValueList) {
@@ -137,22 +92,40 @@ export default class SkProfileService {
     return this.skProfileApi.modifyStudySummaryFirstTime(nameValues);
   }
 
-  modifyStudySummaryByProfileId(profileId:string, nameValues : NameValueList) {
-    this.skProfileApi.modifyStudySummaryByProfileId(profileId, nameValues);
-  }
+  /**
+   * mySUNI에서 본인 증명사진 base64 데이터 저장
+   */
+  modifyPhotoImageByProfileId(profileId: string, photoType: string, photoImage : string)
+  {
+    let asNameValues = {} as NameValueList;
 
-  @action
-  setSkQueryProfileProp(name: string, value: any) {
-    this.skProfileQuery = _.set(this.skProfileQuery, name, value);
-    if (value instanceof  Date) {
-      if (name === 'datePeriod.startDateSub') this.skProfileQuery.datePeriod.startDateSub.setTime(value.getTime());
-      if (name === 'datePeriod.endDateSub') this.skProfileQuery.datePeriod.endDateSub.setTime(value.getTime());
+    if (!photoType || photoType === '0')
+    {
+      asNameValues = {
+        nameValues: [
+          {
+            name: 'photoType',
+            value: '0', // 0 - 타시스템인 IM으로부터 인터페이스 받은 증명사진을 보여줌.
+          },
+        ],
+      };
+    } else if (photoType && photoType === '1')
+    {
+      asNameValues = {
+        nameValues: [
+          {
+            name: 'photoType',
+            value: '1', // 1 - mySUNI에서 사용자가 등록한 증명사진를 보여줌.
+          },
+          {
+            name: 'photoImage',
+            value: photoImage,
+          },
+        ],
+      };
     }
-  }
 
-  @action
-  setSkProfileProp(name:string, value:any) {
-    this.skProfile = _.set(this.skProfile, name, value);
+    return this.skProfileApi.modifyPhotoUrlByProfileId(profileId, asNameValues);
   }
 
   @action
@@ -161,19 +134,23 @@ export default class SkProfileService {
   }
 
   @action
-  setFavoriteJobGroupProp(name:string, value:any) {
-    this.skProfile.member.favoriteJobGroup = _.set(this.skProfile.member.favoriteJobGroup, name, value);
+  setMemberProp(name: string, value: string | {} | string[])
+  {
+    this.skProfile.member = _.set(this.skProfile.member, name, value);
   }
 
   @action
-  clearSkProfile() {
-    this.skProfile = new SkProfileModel();
+  setProfileProp(name: string, value: string | {} | string[] | number)
+  {
+    console.log('SkProfileService setProfileProp=', value);
+    this.skProfile = _.set(this.skProfile, name, value);
   }
 }
-
 
 Object.defineProperty(SkProfileService, 'instance', {
   value: new SkProfileService(SkProfileApi.instance),
   writable: false,
   configurable: false,
 });
+
+export default SkProfileService;

@@ -1,10 +1,10 @@
 
 import { decorate, observable } from 'mobx';
-import { CategoryModel, IdName } from 'shared';
-import { CubeType, PersonalCubeModel } from 'personalcube/personalcube';
-import { CubeIntroModel } from 'personalcube/cubeintro';
-import { CourseSetModel } from 'course/model/CourseSetModel';
-import { LectureServiceType, LectureCardModel, LectureModel } from 'lecture/shared';
+import { CategoryModel, IdName } from 'shared/model';
+import { CubeType, PersonalCubeModel } from 'personalcube/personalcube/model';
+import { CubeIntroModel } from 'personalcube/cubeintro/model';
+import { CourseSetModel } from 'course/model';
+import { LectureServiceType, LectureCardModel, LectureModel } from 'lecture/model';
 
 
 class InMyLectureCdoModel {

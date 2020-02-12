@@ -4,8 +4,8 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { Form, Radio } from 'semantic-ui-react';
-import { SearchFilter } from 'shared';
-import { PersonalCubeModel } from '../../../personalcube';
+import { SearchFilterType } from 'shared/model';
+import { PersonalCubeModel } from '../../../personalcube/model';
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
@@ -34,16 +34,16 @@ class CreateCommunityTypeView extends React.Component<Props> {
             className="base"
             label="공개"
             name="radioGroup"
-            value={SearchFilter.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOn}
+            value={SearchFilterType.SearchOn}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
-            value={SearchFilter.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilter.SearchOff}
+            value={SearchFilterType.SearchOff}
+            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
             onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
           />
         </Form.Field>

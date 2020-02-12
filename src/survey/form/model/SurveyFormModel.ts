@@ -1,6 +1,7 @@
 import { computed, decorate, observable } from 'mobx';
-import { LangStrings, DramaEntityObservableModel } from 'shared';
 import moment from 'moment';
+
+import { LangStrings, DramaEntityObservableModel } from 'shared/model';
 import { FormDesignerModel } from './FormDesignerModel';
 import { DesignState } from './DesignState';
 import { QuestionPathModel } from './QuestionPathModel';

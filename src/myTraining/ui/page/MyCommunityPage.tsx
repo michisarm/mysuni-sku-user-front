@@ -5,20 +5,26 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 
 import { PostList } from '@sku/personalcube';
-import { ContentHeader, ContentLayout, ContentMenu, PageService, NoSuchContentPanel } from 'shared';
-import { SkProfileModel, SkProfileService } from 'profile';
-import { MyTrainingService } from 'myTraining/index';
-import { Lecture, LectureService } from 'lecture';
-import { PersonalCubeService } from 'personalcube';
 import { Segment, Accordion } from 'semantic-ui-react';
+import { PageService } from 'shared/stores';
+import { ContentHeader, ContentLayout, ContentMenu, NoSuchContentPanel } from 'shared';
+import { SkProfileModel } from 'profile/model';
+import { SkProfileService } from 'profile/stores';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { LectureServiceType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import { Lecture, SeeMoreButton } from 'lecture';
+import lectureRoutePaths from 'lecture/routePaths';
+import { MyFeedModel } from 'myTraining/model';
+import { MyTrainingService } from 'myTraining/stores';
+import { MyFeed } from 'myTraining';
+
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
-import { MyFeed, MyFeedModel } from '../../../myTraining';
-import { LectureServiceType, SeeMoreButton } from '../../../lecture/shared';
-import lectureRoutePaths from '../../../lecture/routePaths';
+
 import routePaths from '../../routePaths';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import LineHeaderContainer from '../logic/LineHeaderContainer';
-import LectureModel from '../../../lecture/shared/model/LectureModel';
+import LectureModel from '../../../lecture/model/LectureModel';
 import MyFeedService from '../../present/logic/MyFeedService';
 
 
@@ -300,11 +306,11 @@ class MyCommunityPage extends Component<Props, State> {
         <ContentHeader className="content-division">
           <ContentHeader.Cell inner>
             <ContentHeader.ProfileItem
-              image={member.photoFilePath || profileImg}
+              image={skProfile.photoFilePath || profileImg}
               name={member.name}
               company={member.company}
               department={member.department}
-              imageEditable={false}
+              imageEditable={true}
               myPageActive
             />
           </ContentHeader.Cell>

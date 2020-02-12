@@ -1,20 +1,20 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { OffsetElementList } from 'shared';
+import { OffsetElementList } from 'shared/model';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
-import LectureModel from '../../model/LectureModel';
-import LectureRdoModel from '../../model/LectureRdoModel';
-import LectureViewModel from '../../model/LectureViewModel';
-import RecommendLectureRdo from '../../model/RecommendLectureRdo';
-import RecommendLectureListRdo from '../../model/RecommendLectureListRdo';
-import CommunityLectureRdoModel from '../../model/CommunityLectureRdoModel';
-import InstructorRdoModel from '../../model/InstructorRdoModel';
-import OrderByType from '../../model/OrderByType';
-import LectureFilterRdoModel from '../../model/LectureFilterRdoModel';
-import SharedRdoModel from '../../model/SharedRdoModel';
-import StudentCdoModel from '../../model/StudentCdoModel';
+import LectureModel from '../../../model/LectureModel';
+import LectureRdoModel from '../../../model/LectureRdoModel';
+import LectureViewModel from '../../../model/LectureViewModel';
+import RecommendLectureRdo from '../../../model/RecommendLectureRdo';
+import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
+import CommunityLectureRdoModel from '../../../model/CommunityLectureRdoModel';
+import InstructorRdoModel from '../../../model/InstructorRdoModel';
+import OrderByType from '../../../model/OrderByType';
+import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
+import SharedRdoModel from '../../../model/SharedRdoModel';
+import StudentCdoModel from '../../../model/StudentCdoModel';
 
 
 @autobind
@@ -185,22 +185,7 @@ class LectureService {
   }
 
   @action
-  async findSharedLectures(limit: number, channelIds: string[] = []) {
-    //
-    const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, 0, channelIds));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
-
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
-
-    runInAction(() => {
-      this._lectures = lectureOffsetElementList.results;
-      this.totalLectureCount = lectureOffsetElementList.totalCount;
-    });
-    return lectureOffsetElementList;
-  }
-
-  @action
-  async findPagingSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
+  async findSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
     //
     const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);

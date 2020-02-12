@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { patronInfo } from '@nara.platform/dock';
-import { CubeType } from 'shared';
+import { CubeType } from 'shared/model';
 
 
 class MyTrainingRdoModel {

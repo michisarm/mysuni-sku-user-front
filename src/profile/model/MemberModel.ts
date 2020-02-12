@@ -1,13 +1,20 @@
+
 import { decorate, observable } from 'mobx';
 
-export class MemberModel {
+
+class MemberModel {
+  //
   citizenId: string = '';
 
   constructor(member?: MemberModel) {
-    if (member) Object.assign(this, { ...member });
+    if (member) {
+      Object.assign(this, { ...member });
+    }
   }
 }
 
 decorate(MemberModel, {
   citizenId: observable,
 });
+
+export default MemberModel;

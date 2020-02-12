@@ -3,7 +3,7 @@ import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 
-import { CategoryModel, CreatorModel, CubeState, IconBox, IdName, NameValueList, SearchFilter } from 'shared';
+import { CategoryModel, CreatorModel, CubeState, IconBoxModel, IdName, NameValueList, SearchFilterType } from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
@@ -19,10 +19,10 @@ export class PersonalCubeModel implements DramaEntity {
   name: string = '';
   category: CategoryModel = new CategoryModel();
   subCategories: CategoryModel[] = [];
-  iconBox: IconBox = new IconBox();
+  iconBox: IconBoxModel = new IconBoxModel();
   creator: CreatorModel = new CreatorModel();
   cubeState: CubeState = CubeState.Created;
-  searchFilter: SearchFilter = SearchFilter.SearchOff;
+  searchFilter: SearchFilterType = SearchFilterType.SearchOff;
 
   subsidiaries: IdName[] = [];
   requiredSubsidiaries: IdName[] = [];
@@ -43,7 +43,7 @@ export class PersonalCubeModel implements DramaEntity {
       const contents = personalCube.contents && new CubeContentsModel(personalCube.contents) || this.contents;
       const cubeIntro = personalCube.cubeIntro && new IdName(personalCube.cubeIntro) || this.cubeIntro;
       const category = personalCube.category && new CategoryModel(personalCube.category) || this.category;
-      const iconBox = personalCube.iconBox && new IconBox(personalCube.iconBox) || this.iconBox;
+      const iconBox = personalCube.iconBox && new IconBoxModel(personalCube.iconBox) || this.iconBox;
 
       Object.assign(this, { ...personalCube, creator, contents, cubeIntro, category, iconBox });
 

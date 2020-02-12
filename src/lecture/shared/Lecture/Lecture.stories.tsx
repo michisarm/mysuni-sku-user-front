@@ -4,9 +4,9 @@ import { action } from '@storybook/addon-actions';
 import { number, select } from '@storybook/addon-knobs';
 
 import { Segment } from 'semantic-ui-react';
-import { CubeType, CategoryModel, IdName } from 'shared';
-import { LectureModel } from 'lecture/index';
-import { ChannelModel } from 'college';
+import { CubeType, CategoryModel, IdName } from 'shared/model';
+import { LectureModel } from 'lecture/model';
+import { ChannelModel } from 'college/model';
 import Lecture from './ui/logic/LectureContainer';
 
 

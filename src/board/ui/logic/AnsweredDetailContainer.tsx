@@ -9,7 +9,9 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import { AnswerService, CategoryService, PostService } from '../../../board';
+import AnswerService from '../../present/logic/AnswerService';
+import CategoryService from '../../present/logic/CategoryService';
+import PostService from '../../present/logic/PostService';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

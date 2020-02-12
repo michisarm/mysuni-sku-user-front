@@ -6,15 +6,19 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType, NewPageService, NoSuchContentPanel } from 'shared';
-import { CollegeService } from 'college';
-import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureModel, InMyLectureService } from 'myTraining';
-import { CardSorting, OrderByType, SeeMoreButton } from '../../../shared';
+import { CubeType } from 'shared/model';
+import { NewPageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { CollegeService } from 'college/stores';
+import { LectureModel, OrderByType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
 import Lecture from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../../../category/ui/view/ChannelLecturesContentWrapperView';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
+import LectureServiceType from '../../../model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ channelId: string, pageNo: string }> {

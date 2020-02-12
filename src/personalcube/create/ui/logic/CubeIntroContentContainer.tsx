@@ -6,14 +6,18 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
-import { CubeState, CubeType } from 'shared';
-import { BoardService } from 'personalcube/board';
-import { CollegeService, ContentsProviderService } from 'college';
+import { CubeState, CubeType } from 'shared/model';
+import { BoardService } from 'personalcube/community/stores';
+import { CollegeService, ContentsProviderService } from 'college/stores';
+
 import routePaths from '../../../routePaths';
-import { OfficeWebService, PersonalCubeService } from '../../../index';
-import { PersonalCubeModel } from '../../../personalcube';
-import { CubeIntroModel, CubeIntroService } from '../../../cubeintro';
-import { MediaModel, MediaService } from '../../../media';
+import { PersonalCubeModel } from '../../../personalcube/model';
+import { CubeIntroModel } from '../../../cubeintro/model';
+import { MediaModel } from '../../../media/model';
+import { PersonalCubeService } from '../../../personalcube/stores';
+import { CubeIntroService } from '../../../cubeintro/stores';
+import { OfficeWebService } from '../../../officeweb/stores';
+import { MediaService } from '../../../media/stores';
 import AlertWin from '../../../../shared/ui/logic/AlertWin';
 import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
 

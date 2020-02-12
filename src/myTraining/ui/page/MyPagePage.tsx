@@ -21,6 +21,7 @@ interface State {
 
 interface RouteParams {
   tab: string
+  pageNo: string
 }
 
 enum SubBreadcrumb {

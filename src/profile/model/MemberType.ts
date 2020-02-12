@@ -1,4 +1,5 @@
-export enum MemberType {
+
+enum MemberType {
   //
   SkMember = 'SkMember',
   SkContractor = 'SkContractor',
@@ -6,3 +7,5 @@ export enum MemberType {
   Instructor = 'Instructor',
   PublicMember = 'PublicMember'
 }
+
+export default MemberType;

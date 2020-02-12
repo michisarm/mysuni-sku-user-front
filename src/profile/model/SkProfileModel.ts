@@ -1,15 +1,15 @@
+
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { computed, decorate, observable } from 'mobx';
-import { NameValueList } from 'shared';
-import { MemberType } from './MemberType';
-import { MemberLocaleModel } from './MemberLocaleModel';
-import { EmployeeModel } from './EmployeeModel';
-import { PisAgreementModel } from './PisAgreementModel';
-import { SkProfileCdoModel } from './SkProfileCdoModel';
+import { NameValueList } from 'shared/model';
+import MemberType from './MemberType';
+import MemberLocaleModel from './MemberLocaleModel';
+import EmployeeModel from './EmployeeModel';
+import PisAgreementModel from './PisAgreementModel';
 
 
-export class SkProfileModel implements DramaEntity {
-
+class SkProfileModel implements DramaEntity {
+  //
   id: string = '';
   entityVersion: number = 0;
   patronKey: PatronKey = {} as PatronKey;
@@ -21,6 +21,9 @@ export class SkProfileModel implements DramaEntity {
   signedDate : string = '';
   passwordAuthenticated : boolean = false;
   studySummaryConfigured: boolean = false;
+
+  photoType: string = '0';  //0 - IM(타 시스템의 사용자 증명사진), 1 - mySUNI에서 등록한 사용자 증명사진인 경우
+  photoImage: string = '';  //mySUNI 로부터 사용자가 등록한 증명사진 이미지 base64 값
 
   constructor(skProfile?: SkProfileModel) {
     //
@@ -39,7 +42,7 @@ export class SkProfileModel implements DramaEntity {
   }
 
   static asNameValues(skProfile : SkProfileModel) : NameValueList {
-    const asNameValues = {
+    const asNameValues1 = {
       nameValues: [
         {
           name: 'member',
@@ -64,7 +67,7 @@ export class SkProfileModel implements DramaEntity {
       ],
     };
 
-    return asNameValues;
+    return asNameValues1;
   }
 
   @computed
@@ -75,15 +78,24 @@ export class SkProfileModel implements DramaEntity {
     return '';
   }
 
-  static asCdo(skProfile : SkProfileModel) : SkProfileCdoModel {
-    return (
-      {
-        member: skProfile.member,
-        memberLocale: skProfile.memberLocale,
-      }
-    );
-  }
+  @computed
+  get photoFilePath() {
+    //
+    let photoImageFilePath: string = '';
 
+    //IM 사용자 증명사진 보이기(타 시스템 이관 이미지 파일)
+    if (!this.photoType || this.photoType === '0')
+    {
+      photoImageFilePath = this.member && this.member.photoFilename && `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${this.member.companyCode.toLowerCase()}/${this.member.photoFilename}`;
+    }
+    //mySUNI 사이트(depot)에서 등록한 사용자 증명사진 보이기
+    else if (this.photoType === '1')
+    {
+      photoImageFilePath = this.photoImage; //base64Photo
+    }
+
+    return photoImageFilePath;
+  }
 }
 
 decorate(SkProfileModel, {
@@ -96,6 +108,8 @@ decorate(SkProfileModel, {
   signedDate: observable,
   passwordAuthenticated: observable,
   studySummaryConfigured: observable,
+  photoType: observable,
+  photoImage: observable,
 });
 
 export default SkProfileModel;

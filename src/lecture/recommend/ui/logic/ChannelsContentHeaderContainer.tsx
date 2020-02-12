@@ -4,13 +4,12 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { ContentHeader } from 'shared';
-import { FavoriteChannelChangeModal } from 'sharedComponent';
-import { SkProfileService } from 'profile';
-import { ChannelModel } from 'college';
-import { CollegeLectureCountService } from 'lecture';
-import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Icon, Label } from 'semantic-ui-react';
+import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
+import { ChannelModel } from 'college/model';
+import { SkProfileService } from 'profile/stores';
+import { CollegeLectureCountService } from 'lecture/stores';
+import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
 interface Props extends RouteComponentProps {
@@ -52,8 +51,8 @@ class ChannelsContentHeaderContainer extends Component<Props> {
   render() {
     //
     const { skProfileService, collegeLectureCountService, channels } = this.props;
-    const { studySummaryFavoriteChannels } = skProfileService!;
-    const { member } = skProfileService!.skProfile;
+    const { studySummaryFavoriteChannels, skProfile } = skProfileService!;
+    const { member } = skProfile;
 
     const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
       new ChannelModel({ ...channel, channelId: channel.id, checked: true })
@@ -63,11 +62,11 @@ class ChannelsContentHeaderContainer extends Component<Props> {
       <ContentHeader className="content-division">
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
-            image={member.photoFilePath || profileImg}
+            image={skProfile.photoFilePath || profileImg}
             name={member.name}
             company={member.company}
             department={member.department}
-            imageEditable={false}
+            imageEditable={true}
             myPageActive
           />
         </ContentHeader.Cell>

@@ -1,20 +1,21 @@
+
 import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 import _ from 'lodash';
-import { IdName } from 'shared';
+
+import { IdName, CourseState } from 'shared/model';
 import CoursePlanApi from '../apiclient/CoursePlanApi';
-import { CoursePlanModel } from '../../model/CoursePlanModel';
-import { CoursePlanContentsModel } from '../../model/CoursePlanContentsModel';
 import CoursePlanFlowApi from '../apiclient/CoursePlanFlowApi';
-import { CoursePlanFlowCdoModel } from '../../model/CoursePlanFlowCdoModel';
+
+import { CoursePlanModel, CoursePlanContentsModel, CoursePlanFlowCdoModel } from '../../model';
 import { CoursePlanFlowUdoModel } from '../../model/CoursePlanFlowUdoModel';
 import { CoursePlanQueryModel } from '../../model/CoursePlanQueryModel';
 import { LearningCardModel } from '../../model/LearningCardModel';
-import { CourseState } from '../../../shared/model/CourseState';
 import { CourseRequestCdoModel } from '../../model/CourseRequestCdoModel';
 
+
 @autobind
-export default class CoursePlanService {
+class CoursePlanService {
   //
   static instance: CoursePlanService;
 
@@ -279,3 +280,5 @@ Object.defineProperty(CoursePlanService, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default CoursePlanService;

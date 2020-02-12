@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Form, Radio } from 'semantic-ui-react';
-import { OrderByType } from '../../../shared';
+import { OrderByType } from '../../../model';
 
 
 interface Props {

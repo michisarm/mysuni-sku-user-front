@@ -3,21 +3,23 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState, LearningState } from 'shared';
-import { MediaType } from 'personalcube/media';
-import { ClassroomModel } from 'personalcube/classroom';
-import { RollBookService, StudentCdoModel, StudentJoinRdoModel, StudentService, LectureServiceType } from 'lecture';
-import { InMyLectureCdoModel, InMyLectureService } from 'myTraining';
-import { AnswerSheetModalContainer, CubeReportModalContainer } from 'assistant';
-import { AnswerSheetModalContainer as SurveyAnswerSheetModal } from 'survey';
+import { CubeType, ProposalState, LearningState } from 'shared/model';
+import { MediaType } from 'personalcube/media/model';
+import { ClassroomModel } from 'personalcube/classroom/model';
+import { StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from 'lecture/model';
+import { RollBookService, StudentService } from 'lecture/stores';
+import { InMyLectureCdoModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+import { AnswerSheetModal, CubeReportModal } from 'assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import { MemberViewModel } from '@nara.drama/approval';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
-import StudentModel from '../../../shared/model/StudentModel';
+import StudentModel from '../../../model/StudentModel';
 import ManagerListModalContainer from '../view/ManagerListModalContainer';
-import RollBookModel from '../../../shared/model/RollBookModel';
+import RollBookModel from '../../../model/RollBookModel';
 
 interface Props {
   studentService?: StudentService
@@ -483,7 +485,7 @@ class LectureCardContainer extends Component<Props, State> {
         />
         {
           viewObject && viewObject.examId && (
-            <AnswerSheetModalContainer
+            <AnswerSheetModal
               examId={viewObject.examId}
               ref={examModal => this.examModal = examModal}
               onSaveCallback={this.testCallback}
@@ -500,7 +502,7 @@ class LectureCardContainer extends Component<Props, State> {
             />
           )
         }
-        <CubeReportModalContainer
+        <CubeReportModal
           downloadFileBoxId ={viewObject.reportFileBoxId || typeViewObject.reportFileBoxId}
           ref={reportModal => this.reportModal = reportModal}
           downloadReport = {this.onClickDownloadReport}

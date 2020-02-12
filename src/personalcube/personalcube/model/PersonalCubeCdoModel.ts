@@ -1,5 +1,7 @@
-import { CubeState, IdName, SearchFilter, CreatorModel, CategoryModel, IconBox } from 'shared';
+
+import { CubeState, IdName, CreatorModel, CategoryModel, SearchFilterType, IconBoxModel } from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
+
 
 export class PersonalCubeCdoModel {
   //
@@ -8,9 +10,9 @@ export class PersonalCubeCdoModel {
   name: string = '';
   category: CategoryModel = new CategoryModel();
   subCategories: CategoryModel[] = [];
-  iconBox: IconBox = new IconBox();
+  iconBox: IconBoxModel = new IconBoxModel();
   creator: CreatorModel = new CreatorModel();
-  searchFilter: SearchFilter = SearchFilter.SearchOff;
+  searchFilter: SearchFilterType = SearchFilterType.SearchOff;
   subsidiaries: IdName[] = [];
   requiredSubsidiaries: IdName[] = [];
   contents: CubeContentsModel = new CubeContentsModel();

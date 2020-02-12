@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Icon, Image } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
+import ProfilPhotoChangeModal from '../../../../myTraining/ui/logic/ProfilPhotoChangeModal';
 
 
 interface Props extends RouteComponentProps {
@@ -21,7 +22,7 @@ interface Props extends RouteComponentProps {
 class ContentHeaderProfileItem extends Component<Props> {
   //
   static defaultProps = {
-    imageEditable: false,
+    imageEditable: true,
     myPageActive: false,
     onEditImage: () => {},
   };
@@ -34,7 +35,6 @@ class ContentHeaderProfileItem extends Component<Props> {
     //
     const {
       image, imageEditable, name, myPageActive, company, department,
-      onEditImage,
     } = this.props;
 
     return (
@@ -50,9 +50,12 @@ class ContentHeaderProfileItem extends Component<Props> {
             </button>
           )}
           { imageEditable && (
-            <Button icon className="img-icon" onClick={onEditImage}>
-              <Icon className="photo-edit" />
-            </Button>
+            <ProfilPhotoChangeModal
+              name={name}
+              company={company}
+              department={department}
+              trigger={<Button icon className="img-icon"><Icon className="photo-edit" /></Button>}
+            />
           )}
         </div>
         <div className="text-info">

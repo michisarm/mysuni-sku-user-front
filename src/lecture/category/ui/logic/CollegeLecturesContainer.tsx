@@ -6,21 +6,25 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { NoSuchContentPanel, NewPageService, CubeType } from 'shared';
-import { ChannelModel, CollegeService } from 'college';
-import { LectureModel, LectureService } from 'lecture';
-import { InMyLectureService, InMyLectureCdoModel, InMyLectureModel } from 'myTraining';
-import LectureCountService from '../../present/logic/LectureCountService';
-import routePaths from '../../../routePaths';
+import { CubeType } from 'shared/model';
+import { NewPageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { ChannelModel } from 'college/model';
+import { CollegeService } from 'college/stores';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 
-import { CardSorting, ChannelsPanel, SeeMoreButton, OrderByType } from '../../../shared';
-import Lecture from '../../../shared/Lecture';
+import routePaths from '../../../routePaths';
+import { LectureModel, LectureServiceType, OrderByType } from '../../../model';
+import { LectureService } from '../../../stores';
+import { Lecture, CardSorting, ChannelsPanel, SeeMoreButton } from '../../../shared';
+
+import LecturesByChannelContainer from '../../../category/ui/logic/LecturesByChannelContainer';
+import LectureCountService from '../../present/logic/LectureCountService';
 import CategoryLecturesContentWrapperView from '../view/CategoryLecturesContentWrapperView';
 import CategoryLecturesWrapperView from '../view/CategoryLecturesWrapperView';
 import ChannelsLecturesWrapperView from '../view/ChannelsLecturesWrapperView';
 import { DescriptionView } from '../view/CategoryLecturesElementsView';
-import LecturesByChannelContainer from '../../../category/ui/logic/LecturesByChannelContainer';
-import LectureServiceType from '../../../shared/model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<RouteParams> {

@@ -1,5 +1,7 @@
+
 import { decorate, observable } from 'mobx';
-import { CubeState, SearchFilter, CategoryModel, CreatorModel } from 'shared';
+import { CubeState, SearchFilterType, CategoryModel, CreatorModel } from 'shared/model';
+
 
 export class ApprovalContents {
   serviceId: string = '';
@@ -9,7 +11,7 @@ export class ApprovalContents {
   time: number = 0;
   creator: CreatorModel = new CreatorModel();
   cubeState: CubeState = CubeState.Created;
-  searchFilter: SearchFilter = SearchFilter.SearchOff;
+  searchFilter: SearchFilterType = SearchFilterType.SearchOff;
 
   constructor(approvalContents?: ApprovalContents) {
     if (approvalContents) {

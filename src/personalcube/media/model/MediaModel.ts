@@ -1,6 +1,6 @@
 import { computed, decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
-import { NameValueList } from 'shared';
+import { NameValueList } from 'shared/model';
 import { MediaType } from './MediaType';
 import { MediaContentsModel } from './MediaContentsModel';
 import { MediaCdoModel } from './MediaCdoModel';

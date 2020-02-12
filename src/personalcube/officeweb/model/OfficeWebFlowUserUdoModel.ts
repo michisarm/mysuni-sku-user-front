@@ -1,8 +1,11 @@
-import { CubeIntroModel } from '../../cubeintro';
-import { NameValueList } from '../../../shared/model/NameValueList';
+
+import { NameValueList } from 'shared/model';
+import { CubeIntroModel } from '../../cubeintro/model';
 import { OfficeWebModel } from './OfficeWebModel';
 
+
 export class OfficeWebFlowUserUdoModel {
+  //
   audienceKey: string = 'r2p8-r@nea-m5-c5';
   cubeIntroNameValueList: NameValueList = new NameValueList();
   officeWebNameValueList: NameValueList = new NameValueList();

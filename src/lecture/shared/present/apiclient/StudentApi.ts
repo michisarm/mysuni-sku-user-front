@@ -1,9 +1,9 @@
 import { axiosApi } from '@nara.platform/accent';
-import { LearningState } from 'shared';
-import StudentCdoModel from '../../model/StudentCdoModel';
-import StudentCountRdoModel from '../../model/StudentCountRdoModel';
-import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
-import StudentModel from '../../model/StudentModel';
+import { LearningState } from 'shared/model';
+import StudentCdoModel from '../../../model/StudentCdoModel';
+import StudentCountRdoModel from '../../../model/StudentCountRdoModel';
+import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
+import StudentModel from '../../../model/StudentModel';
 
 
 class StudentApi {

@@ -1,12 +1,12 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { LearningState } from 'shared';
+import { LearningState } from 'shared/model';
 import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
-import StudentCdoModel from '../../model/StudentCdoModel';
-import StudentJoinRdoModel from '../../model/StudentJoinRdoModel';
-import StudentCountRdoModel from '../../model/StudentCountRdoModel';
-import StudentModel from '../../model/StudentModel';
+import StudentCdoModel from '../../../model/StudentCdoModel';
+import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
+import StudentCountRdoModel from '../../../model/StudentCountRdoModel';
+import StudentModel from '../../../model/StudentModel';
 
 
 @autobind
@@ -59,6 +59,7 @@ class StudentService {
    * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
    * 업데이트 시간순(updateTime)으로 데이터 배열 정렬
    */
+  @computed
   get studentJoinsForVideo(): StudentJoinRdoModel[] {
     //
     const studentJoins = this._studentJoinsForVideo as IObservableArray;
@@ -198,6 +199,11 @@ class StudentService {
   @action
   clear() {
     this.student = new StudentModel();
+  }
+
+  @action
+  clearForVideo() {
+    this.studentForVideo = new StudentModel();
   }
 }
 

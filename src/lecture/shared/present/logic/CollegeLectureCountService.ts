@@ -2,9 +2,9 @@
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind, CachingFetch } from '@nara.platform/accent';
 
-import { IdNameCount } from 'shared';
+import { IdNameCount } from 'shared/model';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
-import CollegeLectureCountRdo from '../../model/CollegeLectureCountRdo';
+import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
 
 
 @autobind

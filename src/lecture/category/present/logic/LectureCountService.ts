@@ -1,7 +1,7 @@
 
 import { IObservableArray, observable, action, computed, runInAction } from 'mobx';
 import _ from 'lodash';
-import { ChannelModel } from 'college';
+import { ChannelModel } from 'college/model';
 import { LectureApi } from '../../../shared';
 import ChannelCountRdo from '../../../../layout/UserApp/model/ChannelCountRdo';
 

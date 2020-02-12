@@ -4,13 +4,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { PageService, NoSuchContentPanel } from 'shared';
 import { ReviewService } from '@nara.drama/feedback/src/snap/snap';
-import Lecture from '../../../lecture/shared/Lecture/ui/logic/LectureContainer';
-import { LectureModel, LectureService } from '../../../lecture';
-import { SeeMoreButton } from '../../../lecture/shared';
-import LectureServiceType from '../../../lecture/shared/model/LectureServiceType';
-import routePaths from '../../../lecture/routePaths';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { LectureModel, LectureServiceType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import routePaths from 'lecture/routePaths';
+import { Lecture, SeeMoreButton } from 'lecture';
 
 
 interface Props extends RouteComponentProps<{ instructorId : string }> {

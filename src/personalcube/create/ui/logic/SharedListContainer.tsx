@@ -6,17 +6,22 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
-import { PageService, CubeType, NoSuchContentPanel } from 'shared';
-import { ChannelModel } from 'college';
+import { CubeType } from 'shared/model';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { ChannelModel } from 'college/model';
+import { LectureModel, LectureServiceType } from 'lecture/model';
+import { LectureService } from 'lecture/stores';
+import { Lecture, SeeMoreButton } from 'lecture';
 import lectureRoutePaths from 'lecture/routePaths';
-import { LectureService, LectureModel, LectureServiceType, Lecture } from 'lecture';
-import { SeeMoreButton } from 'lecture/shared';
-import { InMyLectureService, InMyLectureModel, InMyLectureCdoModel } from 'myTraining';
+import { InMyLectureModel, InMyLectureCdoModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
 
+import routePaths from '../../../routePaths';
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
 
-interface Props extends RouteComponentProps<{ tab: string }> {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   lectureService?: LectureService,
   inMyLectureService?: InMyLectureService,
@@ -51,26 +56,40 @@ class SharedListContainer extends React.Component<Props, States> {
     //
     const { pageService } = this.props;
 
-    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    this.findSharedLectures(true);
+    const initialLimit = this.getPageNo() * this.PAGE_SIZE;
+    pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
+    this.findSharedLectures();
   }
 
-  async findSharedLectures(init: boolean = false) {
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    //
+    const { pageService, lectureService } = this.props;
+    const prevTab = prevProps.match.params.tab;
+    const currentTab = this.props.match.params.tab;
+    const currentPageNo = this.props.match.params.pageNo;
+
+    if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+      const page = pageService!.pageMap.get(this.PAGE_KEY);
+      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      if (currentPageNo === '1') {
+        lectureService!.clearLectures();
+        pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      }
+      else {
+        pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
+      }
+      this.findSharedLectures(this.getPageNo() - 1);
+    }
+  }
+
+  async findSharedLectures(pageNo?: number) {
     //
     const { pageService, lectureService, reviewService, inMyLectureService, onChangeSharedCount } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
 
-    let lectureOffsetList;
-
-    if (init) {
-      lectureOffsetList = await lectureService!.findSharedLectures(page!.limit, channelIds);
-
-    }
-    else {
-      lectureOffsetList = await lectureService!.findPagingSharedLectures(page!.limit, page!.nextOffset, channelIds);
-    }
+    const lectureOffsetList = await lectureService!.findSharedLectures(page!.limit, page!.nextOffset, channelIds);
 
     let feedbackIds: string[] = [];
 
@@ -81,8 +100,15 @@ class SharedListContainer extends React.Component<Props, States> {
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
     onChangeSharedCount(lectureOffsetList.totalCount);
+  }
+
+  getPageNo() {
+    //
+    const { match } = this.props;
+
+    return parseInt(match.params.pageNo, 10);
   }
 
   getRating(lecture: LectureModel) {
@@ -118,7 +144,9 @@ class SharedListContainer extends React.Component<Props, States> {
 
   onClickSeeMore() {
     //
-    this.findSharedLectures();
+    const { history } = this.props;
+
+    history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
   onViewDetail(e: any, data: any) {

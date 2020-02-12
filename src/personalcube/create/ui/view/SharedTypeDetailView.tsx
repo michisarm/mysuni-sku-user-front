@@ -4,14 +4,16 @@ import { inject, observer } from 'mobx-react';
 
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { Form, Table } from 'semantic-ui-react';
-import { SearchFilter } from 'shared';
-import { PersonalCubeModel } from 'personalcube/personalcube';
-import { MediaService, MediaType } from '../../../media';
-import { OfficeWebService } from '../../../officeweb';
+import { SearchFilterType } from 'shared/model';
+import { PersonalCubeModel } from 'personalcube/personalcube/model';
+import { MediaType } from '../../../media/model';
+import { MediaService } from '../../../media/stores';
+import { OfficeWebService } from '../../../officeweb/stores';
+
 
 interface Props {
   mediaService?: MediaService
-  officeWebService ?: OfficeWebService
+  officeWebService?: OfficeWebService
   personalCube: PersonalCubeModel
   cubeType: string
   filesMap?: Map<string, any>
@@ -160,7 +162,7 @@ class SharedTypeDetailView extends React.Component<Props> {
               <Table.HeaderCell>학습카드 공개여부</Table.HeaderCell>
               <Table.Cell>
                 {
-                  personalCube && personalCube.searchFilter === SearchFilter.SearchOn ?
+                  personalCube && personalCube.searchFilter === SearchFilterType.SearchOn ?
                     <div>Yes</div>
                     :
                     <div>No</div>

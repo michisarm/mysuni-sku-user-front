@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import moment from 'moment';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube';
+import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { Icon, Label, LabelProps } from 'semantic-ui-react';
-import { CategoryModel, DatePeriod } from 'shared';
+import { CategoryModel, DatePeriod } from 'shared/model';
 import CubeIconType from '../../../Lecture/model/CubeIconType';
 
 

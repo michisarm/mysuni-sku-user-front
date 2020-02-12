@@ -2,7 +2,7 @@
 import { observable, action } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 
-import { NewPageModel } from 'shared';
+import { NewPageModel } from 'shared/model';
 
 
 @autobind

@@ -5,8 +5,8 @@ import { observer, inject } from 'mobx-react';
 
 import moment from 'moment';
 import { ContentHeader } from 'shared';
-import { SkProfileService } from 'profile';
-import { MyLearningSummaryService } from 'myTraining';
+import { SkProfileService } from 'profile/stores';
+import { MyLearningSummaryService } from 'myTraining/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 import FavoriteChannelContainer from './FavoriteChannelContainer';
@@ -87,7 +87,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
       >
         <ContentHeader.Cell inner>
           <ContentHeader.ProfileItem
-            image={skProfile.member.photoFilePath || profileImg}
+            image={skProfile.photoFilePath || profileImg}
             name={skProfile.member.name}
             company={skProfile.member.company}
             department={skProfile.member.department}

@@ -1,7 +1,7 @@
 import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import ClassroomApi from '../apiclient/ClassroomApi';
-import { ClassroomModel } from '../../model/ClassroomModel';
+import ClassroomModel from '../../model/ClassroomModel';
 import ClassroomGroupFlowApi from '../apiclient/ClassroomGroupFlowApi';
 
 

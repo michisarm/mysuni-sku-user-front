@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
-import { DatePeriod } from 'shared';
 import { patronInfo } from '@nara.platform/dock';
+import { DatePeriod } from 'shared/model';
 import { ApprovalContentsRdo } from './ApprovalContentsRdo';
 import { PersonalCubeRdoModel } from './PersonalCubeRdoModel';
 

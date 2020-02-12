@@ -5,8 +5,9 @@ import { observer } from 'mobx-react';
 import moment from 'moment';
 
 import { Card, Icon, Button } from 'semantic-ui-react';
-import { LectureModel } from 'lecture/index';
-import { MyTrainingModel, InMyLectureModel } from 'myTraining';
+import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
+
+import { LectureModel } from '../../../../model';
 import Action from '../../model/Action';
 import {
   Title, Fields, Field, Buttons, Thumbnail,

@@ -1,5 +1,7 @@
-import { LangStrings } from 'shared';
+
 import { computed, decorate, observable } from 'mobx';
+import { LangStrings } from 'shared/model';
+
 
 export class NumberValue {
 
