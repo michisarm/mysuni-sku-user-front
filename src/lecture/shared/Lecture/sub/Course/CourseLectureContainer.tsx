@@ -100,9 +100,8 @@ class CourseLectureContainer extends Component<Props> {
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
     // console.log('CourseLectureContainer init() rollBooks=', this.rollBooks);
-    studentService!.findIsJsonStudentForVideo(lectureView.serviceId).then(value => {
-      this.studentForVideo = this.findStudentForVideo();
-    });
+    await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
+    this.studentForVideo = await this.findStudentForVideo();
   }
 
   onToggle() {
@@ -131,7 +130,7 @@ class CourseLectureContainer extends Component<Props> {
     return null;
   }
 
-  findStudentForVideo() {
+  async findStudentForVideo() {
     const {
       studentService,
     } = this.props;
@@ -141,7 +140,7 @@ class CourseLectureContainer extends Component<Props> {
     {
       this.studentJoinForVideo = this.getStudentJoinForVideo();
       // console.log(studentJoin);
-      if (this.studentJoinForVideo) studentService!.findStudentForVideo(this.studentJoinForVideo.studentId);
+      if (this.studentJoinForVideo) await studentService!.findStudentForVideo(this.studentJoinForVideo.studentId);
       else studentService!.clearForVideo();
     }
     else studentService!.clearForVideo();
