@@ -1,16 +1,17 @@
 import React from 'react';
 import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import { Chart, CompanyViewModel, MemberViewModel, DepartmentViewModel } from '@nara.drama/approval';
+import {Chart, MemberViewModel} from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
 
 import { SkProfileService } from 'profile/stores';
+import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 
 
 interface Props {
   skProfileService?: SkProfileService
   trigger?: React.ReactNode
-  handleOk: (member: MemberViewModel) => void
+  handleOk: (member: ApprovalMemberModel) => void
 }
 
 interface States {
@@ -41,10 +42,10 @@ class ManagerListModalContainer extends React.Component<Props, States> {
     this.setState({ open });
   }
 
-  handleOk(member: MemberViewModel, department: DepartmentViewModel, company: CompanyViewModel) {
+  handleOk(member: ApprovalMemberModel) {
     //
     const { handleOk } = this.props;
-    handleOk(member);
+    handleOk(new ApprovalMemberModel(member));
     this.onShow(false);
   }
 

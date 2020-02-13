@@ -1,4 +1,5 @@
 
+
 import { ReviewService, CommentService } from '@nara.drama/feedback';
 import sharedStores from 'shared/stores';
 import layoutStores from 'layout/stores';
@@ -15,6 +16,7 @@ import personalCubeStores from 'personalcube/stores';
 import courseStores from 'course/stores';
 import lectureCardStores from 'lecture/stores';
 import myTrainingStores from 'myTraining/stores';
+import approvalStores from 'approval/stores';
 
 
 const stores = {
@@ -36,6 +38,7 @@ const stores = {
   ...courseStores,
   ...lectureCardStores,
   ...myTrainingStores,
+  ...approvalStores,
 };
 
 export default stores;
