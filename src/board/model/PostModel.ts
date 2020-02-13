@@ -20,7 +20,7 @@ class PostModel implements DomainEntity {
   title: string = '';
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();
-  time: string = '';
+  time: number = 0;
   readCount: string = '';
   config: PostConfigModel = new PostConfigModel();
   category: IdName = new IdName();

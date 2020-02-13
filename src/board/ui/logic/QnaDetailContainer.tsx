@@ -116,8 +116,8 @@ class QnaDetailContainer extends Component<Props, States> {
   render() {
     //
     const { confirmWinOpen } = this.state;
-    const { post } = this.props.postService || {} as PostService;
-    const { category } = this.props.categoryService || {} as CategoryService;
+    const { post } = this.props.postService!;
+    const { category } = this.props.categoryService!;
     const { filesMap } = this.state;
 
     return (
@@ -125,18 +125,19 @@ class QnaDetailContainer extends Component<Props, States> {
         <div className="post-view qna">
           <BoardDetailContentHeaderView
             deletable
-            post={post}
+            title={post.title}
+            time={post.time}
             subField={<span className="category">{category.name}</span>}
             onClickList={this.onClickList}
             onClickDelete={this.deleteQnaDetail}
           />
 
-          { post && post.contents && (
+          { post.contents && (
             <div className="content-area">
               <div className="content-inner">
                 <ReactQuill
                   theme="bubble"
-                  value={post && post.contents && post.contents.contents || ''}
+                  value={post.contents.contents || ''}
                   readOnly
                 />
                 <div className="file">

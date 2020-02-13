@@ -88,9 +88,9 @@ class NoticeListContainer extends Component<Props, State> {
     commentService!.countByFeedbackIds(feedbackIds);
   }
 
-  isNewPost(time: string) {
+  isNewPost(time: number) {
     //
-    return time && new Date(time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+    return time > 0 && new Date(time) > new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
   }
 
   onClickPost(postId: string) {

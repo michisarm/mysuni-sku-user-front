@@ -5,11 +5,11 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
-import { PostModel } from '../../model';
 
 
 interface Props {
-  post: PostModel
+  title: string
+  time: number
   onClickList: (e: any) => void
   subField?: React.ReactNode
   deletable?: boolean
@@ -22,15 +22,15 @@ class BoardDetailContentHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { post, subField, deletable, onClickList, onClickDelete } = this.props;
+    const { title, time, subField, deletable, onClickList, onClickDelete } = this.props;
 
     return (
       <div className="title-area">
         <div className="title-inner">
-          <div className="title">{post.title}</div>
+          <div className="title">{title}</div>
           <div className="user-info">
             {subField}
-            <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD HH:MM')}</span>
+            <span className="date">{time && moment(time).format('YYYY.MM.DD HH:MM')}</span>
           </div>
           <div className="actions">
             { deletable && (

@@ -51,23 +51,22 @@ class FaqDetailContainer extends Component<Props> {
       <>
         <div className="post-view">
           <BoardDetailContentHeaderView
-            post={post}
+            title={post.title}
+            time={post.time}
             onClickList={this.onClickList}
           />
 
-          {
-            post && post.contents && (
-              <div className="content-area">
-                <div className="content-inner">
-                  <ReactQuill
-                    theme="bubble"
-                    value={post && post.contents && post.contents.contents || ''}
-                    readOnly
-                  />
-                </div>
+          { post.contents && (
+            <div className="content-area">
+              <div className="content-inner">
+                <ReactQuill
+                  readOnly
+                  theme="bubble"
+                  value={post.contents.contents || ''}
+                />
               </div>
-            )
-          }
+            </div>
+          )}
         </div>
 
         <Segment className="full">

@@ -92,36 +92,35 @@ class NoticeDetailContainer extends React.Component<Props, State> {
       <>
         <div className="post-view">
           <BoardDetailContentHeaderView
-            post={post}
+            title={post.title}
+            time={post.time}
             onClickList={this.onClickList}
           />
 
-          {
-            post && post.contents && (
-              <div className="content-area">
-                <div className="content-inner">
-                  <ReactQuill
-                    readOnly
-                    theme="bubble"
-                    value={post && post.contents && post.contents.contents || ''}
-                  />
-                </div>
-                <div className="file">
-                  <span>첨부파일 : </span>
-                  {
-                    filesMap && filesMap.get('reference')
-                    && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                      <a href="#" className="link" key={index}>
-                        <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                          {foundedFile.name}
-                        </span>
-                      </a>
-                    )) || '-'
-                  }
-                </div>
+          { post.contents && (
+            <div className="content-area">
+              <div className="content-inner">
+                <ReactQuill
+                  readOnly
+                  theme="bubble"
+                  value={post.contents.contents || ''}
+                />
               </div>
-            )
-          }
+              <div className="file">
+                <span>첨부파일 : </span>
+                {
+                  filesMap && filesMap.get('reference')
+                  && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                    <a href="#" className="link" key={index}>
+                      <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                        {foundedFile.name}
+                      </span>
+                    </a>
+                  )) || '-'
+                }
+              </div>
+            </div>
+          )}
         </div>
 
         <Segment className="full">
