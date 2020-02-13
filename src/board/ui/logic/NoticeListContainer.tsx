@@ -5,12 +5,14 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import classNames from 'classnames';
+import moment from 'moment';
 import { CommentService } from '@nara.drama/feedback';
 import { Button, Icon, Segment } from 'semantic-ui-react';
-import moment from 'moment';
+import { NoSuchContentPanel } from 'shared';
+import { PostModel } from '../../model';
 import { PostService } from '../../stores';
 import routePaths from '../../routePaths';
-import { PostModel } from '../../model';
+
 
 
 interface Props extends RouteComponentProps {
@@ -134,29 +136,26 @@ class NoticeListContainer extends Component<Props, State> {
     const posts = postService!.posts.results;
     const postTotalCount = postService!.posts.totalCount;
 
+    if (pinnedPosts.length === 0 && posts.length === 0) {
+      return (
+        <Segment className="full">
+          <NoSuchContentPanel message="등록된 Notice가 없습니다." />
+        </Segment>
+      );
+    }
+
     return (
       <Segment className="full">
         <div className="support-list-wrap">
           <div className="su-list notice">
-            <>
-              { pinnedPosts.map((pinnedPost, index) =>
-                this.renderPostRow(pinnedPost, index, true)
-              )}
+            { pinnedPosts.map((pinnedPost, index) =>
+              this.renderPostRow(pinnedPost, index, true)
+            )}
 
-              { posts.map((post, index) =>
-                this.renderPostRow(post, index)
-              )}
-            </>
+            { posts.map((post, index) =>
+              this.renderPostRow(post, index)
+            )}
           </div>
-
-          { pinnedPosts.length === 0 && posts.length === 0 && (
-            <Segment className="full">
-              <div className="no-cont-wrap">
-                <i className="icon no-contents80"><span className="blind">콘텐츠 없음</span></i>
-                <div className="text">등록된 Notice가 없습니다.</div>
-              </div>
-            </Segment>
-          )}
 
           {(( pinnedPosts.length > 0 || posts.length > 0 ) && posts.length < postTotalCount) && (
             <div className="more-comments" onClick={() => this.findNoticePosts(offset)}>

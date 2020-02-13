@@ -1,16 +1,17 @@
-import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+
+import React, { Component } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import moment from 'moment';
-import { ContentLayout, ConfirmWin } from 'shared';
 
+import { ConfirmWin } from 'shared';
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
+import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -29,7 +30,7 @@ interface States {
 ))
 @observer
 @reactAutobind
-class QnaDetailContainer extends React.Component<Props, States> {
+class QnaDetailContainer extends Component<Props, States> {
   //
   constructor(props: Props) {
     //
@@ -98,7 +99,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
         post.deleted = true;
         if (postService) postService.modifyPost(postId, post);
       });
-    this.onClose();
+    this.onClickList();
   }
 
   deleteQnaDetail() {
@@ -108,7 +109,7 @@ class QnaDetailContainer extends React.Component<Props, States> {
     });
   }
 
-  onClose() {
+  onClickList() {
     this.props.history.push(routePaths.supportQnA());
   }
 
@@ -120,87 +121,65 @@ class QnaDetailContainer extends React.Component<Props, States> {
     const { filesMap } = this.state;
 
     return (
-      <ContentLayout
-        className="support"
-        breadcrumb={[
-          { text: 'Support' },
-          { text: 'Q&A' },
-        ]}
-      >
-        <div className="post-view-wrap">
-          <div className="post-view qna">
-            {
-            post && (
-              <div className="title-area">
-                <div className="title-inner">
-                  <div className="title">
-                    {post.title}
-                  </div>
-                  <div className="user-info">
-                    <span className="category">{category.name}</span>
-                    <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD HH:mm:ss')}</span>
-                  </div>
-                  <div className="actions">
-                    <Button icon className="left postset delete" onClick={() => this.deleteQnaDetail()}><Icon name="delete" />Delete</Button>
-                    <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
-                  </div>
-                </div>
-              </div>
-            )
-          }
-            {
-            post && post.contents && (
-              <div className="content-area">
-                <div className="content-inner">
-                  <ReactQuill
-                    theme="bubble"
-                    value={post && post.contents && post.contents.contents || ''}
-                    readOnly
-                  />
-                  <div className="file">
-                    <span>첨부파일 :</span>
-                    {
-                      filesMap && filesMap.get('reference')
-                      && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                        <a href="#" className="link" key={index}>
-                          <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                            {foundedFile.name}
-                          </span>
-                        </a>
-                      )) || '-'
-                    }
-                  </div>
-                </div>
-              </div>
-            )
-          }
-          </div>
-          <Segment className="full">
-            <Container>
-              <div className="actions bottom">
-                <Button icon className="left post delete" onClick={() => this.deleteQnaDetail()}>
-                  <Icon className="del24" /> Delete
-                </Button>
-                <Button icon className="left post list2" onClick={this.onClose}>
-                  <Icon className="list24" /> List
-                </Button>
-              </div>
-              <ConfirmWin
-                message="삭제하시겠습니까?"
-                open={confirmWinOpen}
-                handleClose={this.handleCloseConfirmWin}
-                handleOk={this.handleOKConfirmWin}
-                title="삭제안내"
-                buttonYesName="OK"
-                buttonNoName="Cancel"
-              />
-            </Container>
-          </Segment>
+      <>
+        <div className="post-view qna">
+          <BoardDetailContentHeaderView
+            deletable
+            post={post}
+            subField={<span className="category">{category.name}</span>}
+            onClickList={this.onClickList}
+            onClickDelete={this.deleteQnaDetail}
+          />
 
+          { post && post.contents && (
+            <div className="content-area">
+              <div className="content-inner">
+                <ReactQuill
+                  theme="bubble"
+                  value={post && post.contents && post.contents.contents || ''}
+                  readOnly
+                />
+                <div className="file">
+                  <span>첨부파일 :</span>
+                  {
+                    filesMap && filesMap.get('reference')
+                    && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                      <a href="#" className="link" key={index}>
+                        <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                          {foundedFile.name}
+                        </span>
+                      </a>
+                    )) || '-'
+                  }
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </ContentLayout>
+        <Segment className="full">
+          <Container>
+            <div className="actions bottom">
+              <Button icon className="left post delete" onClick={() => this.deleteQnaDetail()}>
+                <Icon className="del24" /> Delete
+              </Button>
+              <Button icon className="left post list2" onClick={this.onClickList}>
+                <Icon className="list24" /> List
+              </Button>
+            </div>
+            <ConfirmWin
+              message="삭제하시겠습니까?"
+              open={confirmWinOpen}
+              handleClose={this.handleCloseConfirmWin}
+              handleOk={this.handleOKConfirmWin}
+              title="삭제안내"
+              buttonYesName="OK"
+              buttonNoName="Cancel"
+            />
+          </Container>
+        </Segment>
+      </>
     );
   }
 }
 
-export default QnaDetailContainer;
+export default withRouter(QnaDetailContainer);

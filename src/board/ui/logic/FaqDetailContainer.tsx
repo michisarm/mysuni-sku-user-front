@@ -1,15 +1,15 @@
-import React from 'react';
+
+import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import moment from 'moment';
-import { ContentLayout } from 'shared';
 
 import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
+import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -23,84 +23,63 @@ interface Props extends RouteComponentProps<{ postId: string }> {
 ))
 @observer
 @reactAutobind
-class FaqDetailContainer extends React.Component<Props> {
+class FaqDetailContainer extends Component<Props> {
   //
   componentDidMount() {
     //
     const { postId } = this.props.match.params;
     const { postService, categoryService } = this.props;
 
-    if (postService && categoryService) {
-      Promise.resolve()
-        .then(() => postService.findPostByPostId(postId))
-        .then(() => {
-          if (postService.post.category.id) categoryService.findCategoryByCategoryId(postService.post.category.id);
-        });
-    }
+    postService!.findPostByPostId(postId)
+      .then(() => {
+        const categoryId = postService!.post.category.id;
+        if (categoryId) {
+          categoryService!.findCategoryByCategoryId(categoryId);
+        }
+      });
   }
 
-  onClose() {
+  onClickList() {
     this.props.history.push(routePaths.supportFAQ());
   }
 
   render() {
     //
-    const { post } = this.props.postService || {} as PostService;
+    const { post } = this.props.postService!;
 
     return (
-      <ContentLayout
-        className="support"
-        breadcrumb={[
-          { text: 'Support' },
-          { text: 'FAQ' },
-        ]}
-      >
-        <div className="post-view-wrap">
-          <div className="post-view">
-            {
-              post && (
-                <div className="title-area">
-                  <div className="title-inner">
-                    <div className="title"> {post.title}</div>
-                    <div className="user-info">
-                      <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
-                    </div>
-                    <div className="actions">
-                      <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon
-                        className="commu-list16"
-                      />List
-                      </Button>
-                    </div>
-                  </div>
+      <>
+        <div className="post-view">
+          <BoardDetailContentHeaderView
+            post={post}
+            onClickList={this.onClickList}
+          />
+
+          {
+            post && post.contents && (
+              <div className="content-area">
+                <div className="content-inner">
+                  <ReactQuill
+                    theme="bubble"
+                    value={post && post.contents && post.contents.contents || ''}
+                    readOnly
+                  />
                 </div>
-              )
-            }
-            {
-              post && post.contents && (
-                <div className="content-area">
-                  <div className="content-inner">
-                    <ReactQuill
-                      theme="bubble"
-                      value={post && post.contents && post.contents.contents || ''}
-                      readOnly
-                    />
-                  </div>
-                </div>
-              )
-            }
-          </div>
-          <Segment className="full">
-            <div className="actions bottom">
-              <Button icon className="left post list2" onClick={this.onClose}>
-                <Icon className="list24" /> List
-              </Button>
-            </div>
-          </Segment>
+              </div>
+            )
+          }
         </div>
 
-      </ContentLayout>
+        <Segment className="full">
+          <div className="actions bottom">
+            <Button icon className="left post list2" onClick={this.onClickList}>
+              <Icon className="list24" /> List
+            </Button>
+          </div>
+        </Segment>
+      </>
     );
   }
 }
 
-export default FaqDetailContainer;
+export default withRouter(FaqDetailContainer);
