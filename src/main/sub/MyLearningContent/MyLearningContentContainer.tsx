@@ -69,8 +69,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     this.findMyContent();
 
-    this.props.notieService!.countMenuNoties('Learning_Progress');
-    this.props.notieService!.countMenuNoties('Learning_Waiting');
+    this.props.myTrainingService!.findAllTabMyTraining();
     this.props.lectureService!.countRequiredLectures();
   }
 
@@ -110,6 +109,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     const notieService = this.props.notieService!;
     const lectureService = this.props.lectureService!;
     const inMyLectureService = this.props.inMyLectureService!;
+    const myTrainingService = this.props.myTrainingService!;
 
     const inMyLectureAllCount = inMyLectureService.inMyLectureAllCount;
 
@@ -139,7 +139,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.InProgress }
-            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
+            { myTrainingService.inprogressCount > 0 && <span className="count">+{myTrainingService.inprogressCount}</span>}
           </>
         ),
         render: this.renderInProgress,
@@ -149,7 +149,7 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.Enrolled }
-            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
+            { myTrainingService.enrolledCount > 0 && <span className="count">+{myTrainingService.enrolledCount}</span>}
           </>
         ),
         render: this.renderEnrolled,
