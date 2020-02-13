@@ -33,5 +33,10 @@
   line-height: 2.5;
 }
 
+/* approval 추가 후 create -> content 부분 높이 줄어 든 오류 수정 */
+#root section.bg-white {
+  height : auto;
+}
+
 
 
