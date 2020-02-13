@@ -8,6 +8,7 @@ import './style/css/2.0808e7ad.chunk.css';
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
