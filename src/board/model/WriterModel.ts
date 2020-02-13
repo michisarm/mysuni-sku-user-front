@@ -1,6 +1,9 @@
+
 import { decorate, observable } from 'mobx';
 
-export class WriterModel {
+
+class WriterModel {
+  //
   employeeId: string = 'Admin';
   email: string = 'aa@mail.com';
   name: string = 'Roy';
@@ -16,3 +19,5 @@ decorate(WriterModel, {
   email: observable,
   name: observable,
 });
+
+export default WriterModel;

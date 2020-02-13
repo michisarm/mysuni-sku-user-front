@@ -1,15 +1,13 @@
-import { observable, action, configure, runInAction } from 'mobx';
+
+import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import BoardApi from '../apiclient/BoardApi';
-import { BoardModel } from '../../model/BoardModel';
+import BoardModel from '../../model/BoardModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
-export default class BoardService {
+class BoardService {
   //
   static instance: BoardService;
 
@@ -49,3 +47,5 @@ Object.defineProperty(BoardService, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default BoardService;

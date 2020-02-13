@@ -7,11 +7,10 @@ import { Button, Container, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
-import { ContentLayout } from 'shared';
+import { ContentLayout, ConfirmWin } from 'shared';
+
 import routePaths from '../../routePaths';
-import CategoryService from '../../present/logic/CategoryService';
-import PostService from '../../present/logic/PostService';
-import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
+import { CategoryService, PostService } from '../../stores';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -9,9 +10,7 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import moment from 'moment';
 import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import AnswerService from '../../present/logic/AnswerService';
-import CategoryService from '../../present/logic/CategoryService';
-import PostService from '../../present/logic/PostService';
+import { AnswerService, CategoryService, PostService } from '../../stores';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

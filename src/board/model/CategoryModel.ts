@@ -1,7 +1,9 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
-export class CategoryModel implements DomainEntity {
+
+class CategoryModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -29,5 +31,6 @@ decorate(CategoryModel, {
   categoryId: observable,
   deleted: observable,
   time: observable,
-
 });
+
+export default CategoryModel;

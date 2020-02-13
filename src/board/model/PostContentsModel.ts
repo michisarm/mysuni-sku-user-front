@@ -1,6 +1,8 @@
+
 import { decorate, observable } from 'mobx';
 
-export class PostContentsModel {
+
+class PostContentsModel {
   //
   contents: string = '';
   depotId: string = '';
@@ -15,5 +17,6 @@ export class PostContentsModel {
 decorate(PostContentsModel, {
   contents: observable,
   depotId: observable,
-
 });
+
+export default PostContentsModel;

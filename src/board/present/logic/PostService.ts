@@ -1,14 +1,10 @@
-import { action, configure, observable, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import _ from 'lodash';
 import PostApi from '../apiclient/PostApi';
-import { PostModel } from '../../model/PostModel';
-import { PostContentsModel } from '../../model/PostContentsModel';
+import { PostModel, PostContentsModel } from '../../model';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class PostService {
@@ -90,8 +86,9 @@ export default class PostService {
   async findPostsByCategoryId(categoryId: string, offset: number, limit: number) {
     //
     const posts = await this.postApi.findPostsByCategoryId(categoryId, offset, limit);
-    if (posts) return runInAction(() => this.posts = posts);
-    else return null;
+
+    runInAction(() => this.posts = posts);
+    return posts;
   }
 
   @action
@@ -112,14 +109,11 @@ export default class PostService {
   async findPostsByBoardIdAndPinned(boardId: string, offset: number, limit: number) {
     //
     const pinnedPosts = await this.postApi.findPostsByBoardIdAndPinned(boardId, offset, limit);
-    return runInAction(() => {
-      this.pinnedPosts = new OffsetElementList<PostModel>({
-        results: pinnedPosts.results.map((post: PostModel) => new PostModel(post)),
-        totalCount: pinnedPosts.totalCount,
-        empty: !!pinnedPosts.totalCount,
-      });
-      return pinnedPosts;
+
+    runInAction(() => {
+      this.pinnedPosts = pinnedPosts;
     });
+    return pinnedPosts;
   }
 
   @action

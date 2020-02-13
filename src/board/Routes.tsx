@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
-import BookMainContainer from './ui/logic/BookMainContainer';
+import BoardListPage from './ui/page/BoardListPage';
 import NoticeDetailContainer from './ui/logic/NoticeDetailContainer';
 import FaqDetailContainer from './ui/logic/FaqDetailContainer';
 import QnaRegisterContainer from './ui/logic/QnaRegisterContainer';
@@ -18,7 +18,7 @@ class Routes extends React.PureComponent {
     //
     return (
       <Switch>
-        <Route exact path="/board/support/:boardId" component={BookMainContainer} />
+        <Route exact path="/board/support/:boardId" component={BoardListPage} />
         <Route exact path="/board/support/notice-detail/:postId" component={NoticeDetailContainer} />
         <Route exact path="/board/support/faq-detail/:postId" component={FaqDetailContainer} />
         <Route exact path="/board/support-qna" component={QnaRegisterContainer} />

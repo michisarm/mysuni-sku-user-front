@@ -1,22 +1,24 @@
-import React from 'react';
+
+import React, { Fragment } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { Button, Icon, Radio, Segment } from 'semantic-ui-react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import moment from 'moment';
-import CategoryService from '../../present/logic/CategoryService';
-import PostService from '../../present/logic/PostService';
+
+import { CategoryService, PostService } from '../../stores';
+import routePaths from '../../routePaths';
 
 
-interface Props {
+interface Props extends RouteComponentProps {
   postService?: PostService
   categoryService?: CategoryService
-  routeToQnaRegist: () => void
-  //findQnaPosts: (answered: any, categoryId: string, end: number) => void
-  findQnaPosts: (answered: any, end: number) => void
-  end: number
-  answered: any
-  routeToQnaDetail: (postId: string) => void
-  routeToAnsweredDetail: (postId : string) => void
+}
+
+interface State {
+  offset: number
+  answered: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -25,26 +27,75 @@ interface Props {
 ))
 @observer
 @reactAutobind
-class QnaTabContainer extends React.Component<Props> {
+class QnaListContainer extends React.Component<Props, State> {
+  //
+  state = {
+    offset: 0,
+    answered: '',
+  };
+
+
+  constructor(props: Props) {
+    //
+    super(props);
+    props.postService!.clearPosts();
+  }
+
+  componentDidMount() {
+    //
+    this.findQnaPosts('all', 10);
+  }
+
+  findQnaPosts(answered: any, offset: number) {
+    //
+    const postService = this.props.postService!;
+
+    if (answered === 'all' || !String(answered).length) {
+      postService.findQnaPosts(0, offset)
+        .then(() => {
+          this.setState({
+            answered,
+            offset: offset + 10,
+          });
+        });
+    }
+    else {
+      postService.clearPosts();
+      postService.findQnaPostsByAnswered( answered, 0, offset)
+        .then(() => {
+          this.setState({
+            answered,
+            offset: offset + 10,
+          });
+        });
+    }
+  }
+
+  routeToQnaRegist() {
+    //
+    this.props.history.push(routePaths.supportQnANewPost());
+  }
+
+  routeToQnaDetail(postId: string) {
+    //
+    this.props.history.push(routePaths.supportQnAPost(postId));
+  }
+
+  routeToAnsweredDetail(postId: string) {
+    //
+    this.props.history.push(routePaths.supportQnAAnswer(postId));
+  }
 
   render() {
     //
-    const {
-      routeToQnaRegist,
-      findQnaPosts,
-      end,
-      answered,
-      routeToQnaDetail,
-      routeToAnsweredDetail,
-    } = this.props;
-    const { posts } = this.props.postService || {} as PostService;
-    // const result = posts.results;
+    const { posts } = this.props.postService!;
+    const { offset, answered } = this.state;
 
     return (
       <Segment className="full">
         <div className="support-list-wrap">
           <div className="list-top">
-            <Button icon className="left post ask" onClick={routeToQnaRegist}>
+            <Button icon className="left post ask" onClick={this.routeToQnaRegist}>
               <Icon className="ask24" />&nbsp;&nbsp;Ask a Question
             </Button>
             <div className="radio-wrap">
@@ -55,7 +106,7 @@ class QnaTabContainer extends React.Component<Props> {
                 value="all"
                 checked={answered === 'all'}
                 onChange={(e: any, data: any) => {
-                  findQnaPosts(data.value, 10 );
+                  this.findQnaPosts(data.value, 10 );
                 }}
               />
               <Radio
@@ -65,7 +116,7 @@ class QnaTabContainer extends React.Component<Props> {
                 value="true"
                 checked={answered === 'true'}
                 onChange={(e: any, data: any) => {
-                  findQnaPosts(data.value, 10 );
+                  this.findQnaPosts(data.value, 10 );
                 }}
               />
               <Radio
@@ -75,7 +126,7 @@ class QnaTabContainer extends React.Component<Props> {
                 value="false"
                 checked={answered === 'false'}
                 onChange={(e: any, data: any) => {
-                  findQnaPosts(data.value, 10 );
+                  this.findQnaPosts(data.value, 10 );
                 }}
               />
             </div>
@@ -118,8 +169,8 @@ class QnaTabContainer extends React.Component<Props> {
               posts.results && posts.results.length > 0 && posts.results.map((post, index) => {
                 if (post.answered) {
                   return (
-                    <>
-                      <a target="_blank" className="row" onClick={() => routeToQnaDetail(post.postId)}>
+                    <Fragment key={`post-${index}`}>
+                      <a target="_blank" className="row" onClick={() => this.routeToQnaDetail(post.postId)}>
                         <span className="cell title">
                           <span className="inner">
                             <span className="ellipsis">{post.title}</span>
@@ -129,7 +180,7 @@ class QnaTabContainer extends React.Component<Props> {
                         <span className="cell status">답변완료</span>
                         <span className="cell date">{post.time && moment(post.time).format('YYYY.MM.DD')}</span>
                       </a>
-                      <a target="_blank" className="row reply" onClick={() => routeToAnsweredDetail(post.postId)}>
+                      <a target="_blank" className="row reply" onClick={() => this.routeToAnsweredDetail(post.postId)}>
                         <span className="cell title">
                           <Icon className="reply16-b" /><span className="blind">reply</span>
                           <span className="ellipsis">{post.answer.name}</span>
@@ -138,11 +189,11 @@ class QnaTabContainer extends React.Component<Props> {
                         <span className="cell status" />
                         <span className="cell date">{post.answeredAt && moment(post.time).format('YYYY.MM.DD')}</span>
                       </a>
-                    </>
+                    </Fragment>
                   );
                 } else {
                   return (
-                    <a target="_blank" className="row" key ={index} onClick={() => routeToQnaDetail(post.postId)}>
+                    <a target="_blank" className="row" key ={index} onClick={() => this.routeToQnaDetail(post.postId)}>
                       <span className="cell title">
                         <span className="inner">
                           <span className="ellipsis">{post.title}</span>
@@ -169,7 +220,7 @@ class QnaTabContainer extends React.Component<Props> {
           }
           {
             posts.results && posts.results.length && posts.results.length < posts.totalCount && (
-              <div className="more-comments" onClick={() => findQnaPosts(answered, end)}>
+              <div className="more-comments" onClick={() => this.findQnaPosts(answered, offset)}>
                 <Button icon
                   className="left moreview"
                 >
@@ -185,4 +236,4 @@ class QnaTabContainer extends React.Component<Props> {
   }
 }
 
-export default QnaTabContainer;
+export default withRouter(QnaListContainer);

@@ -1,10 +1,13 @@
+
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import { PostModel } from '../../model/PostModel';
-import { PostCdoModel } from '../../model/PostCdoModel';
+import { apiHelper } from 'shared';
+import PostModel from '../../model/PostModel';
+import PostCdoModel from '../../model/PostCdoModel';
 
-export default class PostApi {
 
+class PostApi {
+  //
   URL = '/api/board/posts';
 
   static instance: PostApi;
@@ -33,7 +36,7 @@ export default class PostApi {
   findPostsByBoardIdAndPinned(boardId: string, offset: number, limit: number) {
     //
     return axios.get<OffsetElementList<PostModel>>(this.URL + '/pinned', { params: { boardId, offset, limit }})
-      .then((response: any) => response && response.data || { results: [], totalCount: 0 });
+      .then((response: any) => apiHelper.responseToOffsetElementList(response, PostModel));
   }
 
   findNoticePosts(offset: number, limit: number) {
@@ -95,3 +98,5 @@ Object.defineProperty(PostApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default PostApi;

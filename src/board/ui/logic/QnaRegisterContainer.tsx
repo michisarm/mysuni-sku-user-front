@@ -16,8 +16,7 @@ import CategoryService from '../../present/logic/CategoryService';
 import PostService from '../../present/logic/PostService';
 import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
-import { PostModel } from '../../model/PostModel';
-// import Editor from './Editor';
+import PostModel from '../../model/PostModel';
 
 
 interface Props extends RouteComponentProps<{ boardId: string }> {

@@ -1,9 +1,12 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared/model';
-import { BoardConfigModel } from './BoardConfigModel';
 
-export class BoardModel implements DomainEntity {
+import { IdName } from 'shared/model';
+import BoardConfigModel from './BoardConfigModel';
+
+
+class BoardModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -37,5 +40,6 @@ decorate(BoardModel, {
   title: observable,
 
   config: observable,
-
 });
+
+export default BoardModel;

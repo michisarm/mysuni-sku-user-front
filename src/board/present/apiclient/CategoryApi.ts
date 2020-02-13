@@ -1,7 +1,9 @@
-import { axiosApi as axios } from '@nara.platform/accent';
-import { CategoryModel } from '../../model/CategoryModel';
 
-export default class CategoryApi {
+import { axiosApi as axios } from '@nara.platform/accent';
+import CategoryModel from '../../model/CategoryModel';
+
+
+class CategoryApi {
 
   URL = '/api/board/categories';
 
@@ -24,3 +26,5 @@ Object.defineProperty(CategoryApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default CategoryApi;

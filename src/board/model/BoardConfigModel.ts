@@ -1,7 +1,9 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
-export class BoardConfigModel implements DomainEntity {
+
+class BoardConfigModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -11,6 +13,7 @@ export class BoardConfigModel implements DomainEntity {
   notifiable: boolean = false;
   shareable: boolean = false;
   visible: boolean = false;
+
 
   constructor(boardConfig?: BoardConfigModel) {
     if (boardConfig) {
@@ -34,5 +37,6 @@ decorate(BoardConfigModel, {
   notifiable: observable,
   shareable: observable,
   visible: observable,
-
 });
+
+export default BoardConfigModel;

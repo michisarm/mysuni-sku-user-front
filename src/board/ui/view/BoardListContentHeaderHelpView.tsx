@@ -1,25 +1,24 @@
+
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
+
 import { Icon, Label } from 'semantic-ui-react';
-import PostService from '../../present/logic/PostService';
+import { PostModel } from '../../model';
 
 
 interface Props {
-  postService?: PostService
+  faqTotalCount: number
+  faqPosts: PostModel[]
   routeToFaqDetail: (postId: string) => void
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.postService',
-))
 @observer
 @reactAutobind
-class HelpContainer extends React.Component<Props> {
+class BoardListContentHeaderHelpView extends React.Component<Props> {
 
   render() {
-    const { faqPosts } = this.props.postService || {} as PostService;
-    const { routeToFaqDetail } = this.props;
+    const { faqTotalCount, faqPosts, routeToFaqDetail } = this.props;
     //
     return (
       <div className="tip-area">
@@ -27,8 +26,7 @@ class HelpContainer extends React.Component<Props> {
           <Icon className="tip16" /><span>유용한 도움말</span>
         </Label>
         <div className="q-list">
-          {
-          faqPosts && faqPosts.totalCount && faqPosts.results.map((faqPost, index) => (
+          { faqTotalCount > 0 && faqPosts.map((faqPost, index) => (
             <a target="_blank" key = {index}>
               <span className="ellipsis" onClick={() => routeToFaqDetail(faqPost.postId)}>
                 {faqPost.title}
@@ -42,4 +40,4 @@ class HelpContainer extends React.Component<Props> {
   }
 }
 
-export default HelpContainer;
+export default BoardListContentHeaderHelpView;

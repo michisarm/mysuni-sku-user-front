@@ -1,15 +1,12 @@
-import { observable, action, configure, runInAction } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 import CategoryApi from '../apiclient/CategoryApi';
-import { CategoryModel } from '../../model/CategoryModel';
+import CategoryModel from '../../model/CategoryModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
-export default class CategoryService {
+class CategoryService {
   //
   static instance: CategoryService;
 
@@ -57,3 +54,5 @@ Object.defineProperty(CategoryService, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default CategoryService;

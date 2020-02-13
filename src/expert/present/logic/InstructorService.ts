@@ -1,13 +1,9 @@
 
-import { action, configure, observable, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import InstructorApi from '../apiclient/InstructorApi';
 import { InstructorModel } from '../../model/InstructorModel';
 
-
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 class InstructorService {

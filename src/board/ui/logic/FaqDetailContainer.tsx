@@ -7,9 +7,9 @@ import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
 import { ContentLayout } from 'shared';
+
 import routePaths from '../../routePaths';
-import CategoryService from '../../present/logic/CategoryService';
-import PostService from '../../present/logic/PostService';
+import { CategoryService, PostService } from '../../stores';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {

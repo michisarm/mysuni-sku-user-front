@@ -1,13 +1,10 @@
-import { observable, action, configure, runInAction, computed } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import _ from 'lodash';
 import { autobind } from '@nara.platform/accent';
 import AnswerSheetApi from '../apiclient/AnswerSheetApi';
 import { AnswerSheetModel } from '../../model/AnswerSheetModel';
 import { ItemAnswerModel } from '../../model/ItemAnswerModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class AnswerSheetService {
