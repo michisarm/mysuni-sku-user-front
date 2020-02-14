@@ -13,13 +13,13 @@ import TutorialModalView from './TutorialModalView';
 interface State {
   welcomeModalState: ModalState
   tutorialModalState: ModalState
-  systemGuideModalState: ModalState
+  // systemGuideModalState: ModalState
 }
 
 enum PageType {
   Welcome = 'welcome',
   Tutorial = 'tutorial',
-  SystemGuide = 'systemGuide',
+  // SystemGuide = 'systemGuide',
 }
 
 @reactAutobind
@@ -34,7 +34,7 @@ class MainModalsContainer extends Component<{}, State> {
   state = {
     welcomeModalState: new ModalState(),
     tutorialModalState: new ModalState(),
-    systemGuideModalState: new ModalState(),
+    // systemGuideModalState: new ModalState(),
   };
 
 
@@ -42,7 +42,7 @@ class MainModalsContainer extends Component<{}, State> {
     //
     this.initFromStorage(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
-    this.initFromStorage(PageType.SystemGuide);
+    // this.initFromStorage(PageType.SystemGuide);
   }
 
   initFromStorage(pageType: PageType) {
@@ -121,12 +121,12 @@ class MainModalsContainer extends Component<{}, State> {
   onCloseTutorial() {
     //
     this.onClose(PageType.Tutorial);
-    this.initFromStorage(PageType.SystemGuide);
+    // this.initFromStorage(PageType.SystemGuide);
   }
 
-  onCloseSystemGuide() {
-    this.onClose(PageType.SystemGuide);
-  }
+  // onCloseSystemGuide() {
+  //   this.onClose(PageType.SystemGuide);
+  // }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
     //
@@ -138,10 +138,12 @@ class MainModalsContainer extends Component<{}, State> {
     const {
       welcomeModalState,
       tutorialModalState,
-      systemGuideModalState,
+      // systemGuideModalState,
     } = this.state;
 
-    if (welcomeModalState.disabled && tutorialModalState.disabled && systemGuideModalState.disabled) {
+    if (welcomeModalState.disabled && tutorialModalState.disabled
+    // && systemGuideModalState.disabled
+    ) {
       return null;
     }
     else if (welcomeModalState.open) {
@@ -162,15 +164,16 @@ class MainModalsContainer extends Component<{}, State> {
         />
       );
     }
-    else if (systemGuideModalState.open) {
-      return (
-        <SystemGuideModalView
-          modalState={systemGuideModalState}
-          onClose={this.onCloseSystemGuide}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
-        />
-      );
-    }
+    // 2012-02-14 요구사항 - JuneHee
+    // else if (systemGuideModalState.open) {
+    //   return (
+    //     <SystemGuideModalView
+    //       modalState={systemGuideModalState}
+    //       onClose={this.onCloseSystemGuide}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //     />
+    //   );
+    // }
     return null;
   }
 }
