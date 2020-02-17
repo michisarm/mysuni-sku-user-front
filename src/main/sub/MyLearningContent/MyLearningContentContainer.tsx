@@ -78,13 +78,10 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   async findMyContent() {
     //
-    const { actionLogService, inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
+    const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
     const { contentType } = this.state;
 
     inMyLectureService!.findAllInMyLectures();
-
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(contentType);
-    actionLogService?.registerActionLog(actionLog);
 
     switch (contentType) {
       case ContentType.InMyList: {
@@ -192,7 +189,10 @@ class MyLearningContentContainer extends Component<Props, State> {
       return;
     }
 
-    const { lectureService, inMyLectureService, myTrainingService } = this.props;
+    const { actionLogService, lectureService, inMyLectureService, myTrainingService } = this.props;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(ContentTypeName[contentType]);
+    actionLogService?.registerActionLog(actionLog);
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
