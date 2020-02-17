@@ -108,7 +108,7 @@ class MyTrainingService {
   }
 
   @action
-  async findAllTabMyTraining(){
+  async findAllTabMyTraining() {
     //
     const myTrainingTabModel = await this.myTrainingApi.findAllTabMyTraining();
     runInAction(() => {
