@@ -44,9 +44,14 @@ class CreateListContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    const { pageService } = this.props;
+    const { pageService, personalCubeService } = this.props;
+    const currentPageNo = this.props.match.params.pageNo;
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
     pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
+    if (currentPageNo === '1') {
+      personalCubeService!.clear();
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    }
     this.findPersonalCubes(this.state.cubeState);
   }
 
@@ -85,7 +90,6 @@ class CreateListContainer extends React.Component<Props, States> {
     const { onChangeCreateCount } = this.props;
 
     const offsetList = await personalCubeService!.findPersonalCubesForCreator(page!.nextOffset, page!.limit, cubeState);
-
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
     onChangeCreateCount(offsetList.totalCount);
   }
@@ -146,7 +150,7 @@ class CreateListContainer extends React.Component<Props, States> {
         />
 
         <CreateListView
-          personalCubes={personalCubes}
+          personalCubes={personalCubeOffsetList.results}
           totalCount={totalCount}
           handleClickCubeRow={this.onClickPersonalCubeRow}
         />
