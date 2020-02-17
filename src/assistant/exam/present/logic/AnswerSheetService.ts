@@ -50,18 +50,14 @@ export default class AnswerSheetService {
 
   @action
   setAnswer(questionNo: string, answer: string, questionsNos: string[]) {
-    console.log(';;');
-    console.log(this.answerSheet);
     if (this.answerSheet && this.answerSheet.answers) {
       let answers = [ ...this.answerSheet.answers ];
       if (!answers.length) {
         answers = questionsNos.map((questionNo) => new ItemAnswerModel({ questionNo, answer: '' }));
       }
-      console.log(answers);
       const index = answers.map(answer => answer.questionNo).findIndex(qno => qno === questionNo);
       if (index >= 0) {
         answers[index].answer = answer;
-        console.log(answers);
         this.answerSheet = _.set(this.answerSheet, `answers`, answers);
       }
     }

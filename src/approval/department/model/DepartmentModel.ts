@@ -16,8 +16,6 @@ export class DepartmentModel {
 
   constructor(department?: DepartmentModel) {
     if (department) {
-      console.log(111);
-      console.log(department);
       const names = new LangStrings(department.names);
       const manager = new IdName(department.manager);
       Object.assign(this, { ...department, names, manager });

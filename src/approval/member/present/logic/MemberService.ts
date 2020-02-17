@@ -30,7 +30,6 @@ export default class MemberService {
   @action
   changeApprovalManagerProps(approvalMember: ApprovalMemberModel) {
     this.approvalMember = approvalMember;
-    console.log(this.approvalMember);
   }
 
   @action

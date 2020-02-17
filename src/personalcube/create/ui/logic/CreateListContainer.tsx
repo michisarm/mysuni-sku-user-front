@@ -96,10 +96,17 @@ class CreateListContainer extends React.Component<Props, States> {
 
   onChangeSearchSelect(e: any, data: any) {
     //
+    const { history, pageService, personalCubeService } = this.props;
     const cubeState = data.value;
-
-    this.findPersonalCubes(cubeState);
+    const currentPageNo = this.props.match.params.pageNo;
+    personalCubeService!.clear();
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     this.setState({ cubeState });
+    if (currentPageNo !== '1') {
+      history.replace(routePaths.currentPage(1));
+    } else {
+      this.findPersonalCubes(cubeState, this.getPageNo() - 1);
+    }
   }
 
   async onClickPersonalCubeRow(personalCubeId: string) {
@@ -130,6 +137,7 @@ class CreateListContainer extends React.Component<Props, States> {
   render() {
     //
     const { personalCubeOffsetList } = this.props.personalCubeService!;
+    const { cubeState } = this.state;
     const { totalCount, results: personalCubes } = personalCubeOffsetList;
 
     if (personalCubes.length < 1) {
@@ -147,6 +155,7 @@ class CreateListContainer extends React.Component<Props, States> {
           totalCount={totalCount}
           searchSelectOptions={SelectType.userStatus}
           onChange={this.onChangeSearchSelect}
+          cubeState={cubeState}
         />
 
         <CreateListView
