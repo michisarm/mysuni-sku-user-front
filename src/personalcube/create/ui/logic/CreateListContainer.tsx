@@ -22,42 +22,39 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   onChangeCreateCount: (createCount: number) => void
 }
 
-interface States {
-  cubeState?: CubeState
-}
-
 @inject(mobxHelper.injectFrom(
   'shared.pageService',
   'personalCube.personalCubeService',
 ))
 @observer
 @reactAutobind
-class CreateListContainer extends React.Component<Props, States> {
+class CreateListContainer extends React.Component<Props> {
   //
   PAGE_KEY = 'create';
   PAGE_SIZE = 8;
 
-  state = {
-    cubeState: undefined,
-  };
-
-
   componentDidMount() {
     //
     const { pageService, personalCubeService } = this.props;
+    const { searchState } = personalCubeService!;
     const currentPageNo = this.props.match.params.pageNo;
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
     pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
     if (currentPageNo === '1') {
       personalCubeService!.clear();
       pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findPersonalCubes(searchState);
+    } else {
+      personalCubeService!.clear();
+      this.findPersonalCubes(searchState, this.getPageNo() - 1);
     }
-    this.findPersonalCubes(this.state.cubeState);
+
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
     //
     const { pageService, personalCubeService } = this.props;
+    const { searchState } = personalCubeService!;
     const prevTab = prevProps.match.params.tab;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
@@ -72,7 +69,7 @@ class CreateListContainer extends React.Component<Props, States> {
       else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
-      this.findPersonalCubes(this.state.cubeState, this.getPageNo() - 1);
+      this.findPersonalCubes(searchState, this.getPageNo() - 1);
     }
   }
 
@@ -101,7 +98,7 @@ class CreateListContainer extends React.Component<Props, States> {
     const currentPageNo = this.props.match.params.pageNo;
     personalCubeService!.clear();
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-    this.setState({ cubeState });
+    personalCubeService!.changeSearchState(cubeState);
     if (currentPageNo !== '1') {
       history.replace(routePaths.currentPage(1));
     } else {
@@ -136,8 +133,7 @@ class CreateListContainer extends React.Component<Props, States> {
 
   render() {
     //
-    const { personalCubeOffsetList } = this.props.personalCubeService!;
-    const { cubeState } = this.state;
+    const { personalCubeOffsetList, searchState } = this.props.personalCubeService!;
     const { totalCount, results: personalCubes } = personalCubeOffsetList;
 
     if (personalCubes.length < 1) {
@@ -155,7 +151,7 @@ class CreateListContainer extends React.Component<Props, States> {
           totalCount={totalCount}
           searchSelectOptions={SelectType.userStatus}
           onChange={this.onChangeSearchSelect}
-          cubeState={cubeState}
+          searchState={searchState}
         />
 
         <CreateListView
