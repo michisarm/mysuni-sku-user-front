@@ -6,6 +6,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
+import { ActionLogService } from 'shared/stores';
+import { ActionLogModel } from 'shared/model';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
@@ -13,10 +15,12 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSumm
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   myLearningSummaryService?: MyLearningSummaryService
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'myTraining.myLearningSummaryService',
 ))
 @observer
@@ -55,6 +59,22 @@ class MyLearningSummaryContainer extends Component<Props> {
   onClickStamp() {
     //
     this.props.history.push(myTrainingRoutePaths.myPageEarnedStampList());
+  }
+
+  onClickViewAll() {
+    const { actionLogService, history } = this.props;
+
+    history.push(myTrainingRoutePaths.learning());
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
+    actionLogService?.registerActionLog(actionLog);
+  }
+
+  onClickLearningSummary(text: string) {
+    const { actionLogService } = this.props;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(text);
+    actionLogService?.registerActionLog(actionLog);
   }
 
   render() {
@@ -101,14 +121,14 @@ class MyLearningSummaryContainer extends Component<Props> {
           <Button
             icon
             className="right btn-black"
-            onClick={() => this.props.history.push(myTrainingRoutePaths.learning())}
+            onClick={() => this.onClickViewAll()}
           >
             View all
             <Icon className="morelink" />
           </Button>
         </ItemWrapper>
 
-        <ItemWrapper>
+        <ItemWrapper onClick={() => this.onClickLearningSummary('총 학습시간')}>
           <MyLearningSummaryModal
             trigger={(
               <Button className="btn-complex48">
@@ -132,7 +152,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           />
         </ItemWrapper>
 
-        <ItemWrapper>
+        <ItemWrapper onClick={() => this.onClickLearningSummary('완료된 학습')}>
           <HeaderItemView
             icon="complete"
             label="완료된 학습"
@@ -141,7 +161,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           />
         </ItemWrapper>
 
-        <ItemWrapper>
+        <ItemWrapper onClick={() => this.onClickLearningSummary('획득 Stamp')}>
           <HeaderItemView
             icon="stamp"
             label="획득 Stamp"

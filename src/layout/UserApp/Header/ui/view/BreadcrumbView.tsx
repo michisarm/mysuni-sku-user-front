@@ -1,11 +1,16 @@
 
 import React, { Component, Fragment } from 'react';
-import { reactAutobind, axiosApi, setCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, axiosApi, setCookie } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+
+import { ActionLogService } from 'shared/stores';
+import { ActionLogModel } from 'shared/model';
 import { BreadcrumbValue } from '../../../index';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   values?: BreadcrumbValue[];
   supportPath: string;
 }
@@ -15,6 +20,9 @@ interface State {
   id: string
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 class BreadcrumbView extends Component<Props, State> {
   //
@@ -66,6 +74,12 @@ class BreadcrumbView extends Component<Props, State> {
 
   }
 
+  onClickBreadcrumb(menuName: string) {
+    const { actionLogService } = this.props;
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(menuName);
+    actionLogService?.registerActionLog(actionLog);
+  }
+
   renderItem(value: BreadcrumbValue, index: number) {
     //
     const { values } = this.props;
@@ -73,20 +87,19 @@ class BreadcrumbView extends Component<Props, State> {
 
     if (isLast) {
       if (value.path) {
-        return <Link to={value.path} className="section active">{value.text}</Link>;
+        return <Link to={value.path} className="section active" onClick={() => this.onClickBreadcrumb(value.text)}>{value.text}</Link>;
       }
       else {
         return <div className="section active">{value.text}</div>;
       }
     }
     else if (value.path) {
-      return <Link to={value.path} className="section">{value.text}</Link>;
+      return <Link to={value.path} className="section" onClick={() => this.onClickBreadcrumb(value.text)}>{value.text}</Link>;
     }
     else {
       return <a>{value.text}</a>;
     }
   }
-
 
   render() {
     //
@@ -96,7 +109,7 @@ class BreadcrumbView extends Component<Props, State> {
       <div className="breadcrumbs">
         <div className="cont-inner">
           <div className="ui standard breadcrumb">
-            <Link to="/" className="section">
+            <Link to="/" className="section" onClick={() => this.onClickBreadcrumb('Home')}>
               Home
             </Link>
 

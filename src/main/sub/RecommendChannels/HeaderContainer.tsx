@@ -5,6 +5,8 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
+import { ActionLogService } from 'shared/stores';
+import { ActionLogModel } from 'shared/model';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -14,13 +16,16 @@ import HeaderView from './HeaderView';
 
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService
-  totalChannelCount: number
-  favoriteChannels: ChannelModel[];
+  actionLogService?: ActionLogService,
+  skProfileService?: SkProfileService,
+  totalChannelCount: number,
+  favoriteChannels: ChannelModel[],
   onFindStudySummary: () => void,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'profile.skProfileService',))
 @reactAutobind
 @observer
 class HeaderContainer extends Component<Props> {
@@ -38,6 +43,11 @@ class HeaderContainer extends Component<Props> {
 
   onViewAll() {
     //
+    const { actionLogService } = this.props;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
+    actionLogService?.registerActionLog(actionLog, true);
+
     this.props.history.push(lectureRoutePaths.recommend());
   }
 
