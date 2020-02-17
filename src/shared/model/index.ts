@@ -28,3 +28,5 @@ export { DatePeriod } from './DatePeriod';
 export { TimePeriod } from './TimePeriod';
 export { default as PageModel } from './PageModel';
 export { default as NewPageModel } from './NewPageModel';
+
+export { default as ActionLogModel } from './ActionLogModel';

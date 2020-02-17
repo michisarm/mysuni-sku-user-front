@@ -97,8 +97,8 @@ class BoxCardView extends Component<Props, States> {
           'card-h': true,
           on: hovered,
         })}
-        onMouseOver={onHoverIn}
-        onMouseOut={onHoverOut}
+        onMouseEnter={onHoverIn}
+        onMouseLeave={onHoverOut}
       >
         {/* Todo: stampReady */}
         <Ribbon required={model!.required} />

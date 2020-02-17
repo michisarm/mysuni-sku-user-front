@@ -106,7 +106,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   getTabs() {
     //
-    const notieService = this.props.notieService!;
+    // const notieService = this.props.notieService!;
     const lectureService = this.props.lectureService!;
     const inMyLectureService = this.props.inMyLectureService!;
     const myTrainingService = this.props.myTrainingService!;

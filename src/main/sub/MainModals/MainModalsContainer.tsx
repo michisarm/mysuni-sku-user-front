@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import moment from 'moment';
 import ModalState from './model/ModalState';
 import WelcomeModalView from './WelcomeModalView';
-import SystemGuideModalView from './SystemGuideModalView';
+// import SystemGuideModalView from './SystemGuideModalView';
 import TutorialModalView from './TutorialModalView';
 
 

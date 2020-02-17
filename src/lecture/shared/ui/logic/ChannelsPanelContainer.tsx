@@ -11,7 +11,7 @@ import { SkProfileService } from 'profile/stores';
 
 
 interface Props {
-  skProfileService?: SkProfileService
+  skProfileService?: SkProfileService,
   title?: React.ReactNode,
   configurable?: boolean,
   channels: ChannelModel[]
@@ -47,7 +47,8 @@ class ChannelsPanelContainer extends Component<Props, States> {
   panelRef = React.createRef<HTMLDivElement>();
 
 
-  componentDidMount() {
+  componentDidMount()
+  {
     this.setMultiple();
   }
 
@@ -127,7 +128,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
                   {channels.map((channel, index) => (
                     <Button
                       key={`sub-category-${index}`}
-                      className={`toggle toggle4 ${channel.checked ? 'active' : ''}`}
+                      className={`toggle toggle4 ${ channel.checked ? 'active' : ''}`}
                       onClick={(e) => this.onClickChannel(e, index, channel)}
                     >
                       {channel.name}

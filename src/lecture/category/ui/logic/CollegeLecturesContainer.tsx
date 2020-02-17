@@ -343,11 +343,12 @@ class CollegeLecturesContainer extends Component<Props, State> {
           channels={channels}
           onSelectChannel={this.onSelectChannel}
         />
-        {allSelected ?
-          this.renderCollegeLectures()
-          :
-          this.renderChannelsLectures()
+        {
+          lectureCountService!.categoryType === 'CollegeLectures' || allSelected ?
+            this.renderCollegeLectures() :
+            this.renderChannelsLectures()
         }
+
       </CategoryLecturesContentWrapperView>
     );
   }

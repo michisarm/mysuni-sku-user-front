@@ -35,7 +35,7 @@ class MyTrainingApi {
       .then(this.getOffsetElementList);
   }
 
-  findAllTabMyTraining(){
+  findAllTabMyTraining() {
     return axiosApi.get<MyTrainingTabModel>(this.baseUrl + '/tab/counts').then((response) => response.data);
   }
 }
