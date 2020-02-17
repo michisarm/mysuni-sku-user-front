@@ -1,8 +1,11 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { ActionLogService } from 'shared/stores';
+import { ActionLogModel } from 'shared/model';
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
@@ -15,6 +18,7 @@ import BreadcrumbView from '../view/BreadcrumbView';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
 }
 
 interface State {
@@ -22,6 +26,9 @@ interface State {
   focused: boolean,
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 class HeaderContainer extends Component<Props, State> {
   //
@@ -48,7 +55,11 @@ class HeaderContainer extends Component<Props, State> {
 
   onSearch() {
     //
+    const { actionLogService } = this.props;
     const { searchValue } = this.state;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('search', searchValue);
+    actionLogService?.registerActionLog(actionLog, true);
 
     if (searchValue) {
       window.location.href = encodeURI(`/search?query=${searchValue}`);

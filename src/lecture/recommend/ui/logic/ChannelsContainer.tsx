@@ -6,6 +6,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
+import { ActionLogService } from 'shared/stores';
+import { ActionLogModel } from 'shared/model';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { RecommendLectureRdo } from 'lecture/model';
@@ -17,6 +19,7 @@ import SeeMoreButtonView from '../view/SeeMoreButtonView';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionLogService?: ActionLogService,
   collegeService?: CollegeService
   lectureService?: LectureService
   reviewService?: ReviewService
@@ -30,6 +33,7 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'college.collegeService',
   'lecture.lectureService',
   'shared.reviewService',
@@ -151,7 +155,10 @@ class ChannelsContainer extends Component<Props> {
   onSelectChannel(channel: ChannelModel) {
     //
     const collegeService = this.props.collegeService!;
-    const { history } = this.props;
+    const { history, actionLogService } = this.props;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(channel.name);
+    actionLogService?.registerActionLog(actionLog);
 
     const index = collegeService!._channels
       .map((channel: ChannelModel) => channel.id)
