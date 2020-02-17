@@ -58,10 +58,10 @@ class HeaderContainer extends Component<Props, State> {
     const { actionLogService } = this.props;
     const { searchValue } = this.state;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('search', searchValue);
-    actionLogService?.registerActionLog(actionLog, true);
-
     if (searchValue) {
+      const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('search', searchValue);
+      actionLogService?.registerActionLog(actionLog, true);
+
       window.location.href = encodeURI(`/search?query=${searchValue}`);
     }
   }
@@ -84,6 +84,11 @@ class HeaderContainer extends Component<Props, State> {
     this.setState({ searchValue: '' });
   }
 
+  onClickMenu(menuName: string) {
+    const { actionLogService } = this.props;
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(menuName);
+    actionLogService?.registerActionLog(actionLog);
+  }
 
   render() {
     //
@@ -100,8 +105,8 @@ class HeaderContainer extends Component<Props, State> {
         )}
       >
         <>
-          <LogoView />
-          <MenuView />
+          <LogoView onClickMenu={this.onClickMenu} />
+          <MenuView onClickMenu={this.onClickMenu} />
           <CategoryMenuContainer />
 
           <SearchBarView

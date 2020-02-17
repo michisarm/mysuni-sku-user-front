@@ -7,8 +7,9 @@ import { patronInfo } from '@nara.platform/dock';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
+import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
+import { CubeType, ActionLogModel } from 'shared/model';
 import { Tab, NoSuchContentPanel } from 'shared';
 import { NotieService } from 'notie/stores';
 
@@ -23,6 +24,7 @@ import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   notieService?: NotieService,
   reviewService?: ReviewService,
   lectureService?: LectureService,
@@ -49,6 +51,7 @@ enum ContentTypeName {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.reviewService',
   'notie.notieService',
   'lecture.lectureService',
@@ -75,10 +78,13 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   async findMyContent() {
     //
-    const { inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
+    const { actionLogService, inMyLectureService, lectureService, myTrainingService, reviewService } = this.props;
     const { contentType } = this.state;
 
     inMyLectureService!.findAllInMyLectures();
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(contentType);
+    actionLogService?.registerActionLog(actionLog);
 
     switch (contentType) {
       case ContentType.InMyList: {
@@ -206,10 +212,13 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onViewAll() {
     //
-    const { history } = this.props;
+    const { actionLogService, history } = this.props;
     const { contentType } = this.state;
 
     history.push(myTrainingRoutes.learningTab(contentType));
+
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
+    actionLogService?.registerActionLog(actionLog);
   }
 
   onViewDetail(e: any, data: any) {
