@@ -14,18 +14,21 @@ import MyLearningContentType from '../model/MyLearningContentType';
 import MyLearningContentTypeName from '../model/MyLearningContentTypeName';
 import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
 import MyLearningListContainer from '../logic/MyLearningListContainer';
+import MyTrainingService from '../../present/logic/MyTrainingService';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   notieService?: NotieService,
   lectureService: LectureService,
   inMyLectureService: InMyLectureService,
+  myTrainingService: MyTrainingService,
 }
 
 @inject(mobxHelper.injectFrom(
   'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
+  'myTraining.myTrainingService',
 ))
 @observer
 @reactAutobind
@@ -38,12 +41,9 @@ class MyLearningPage extends Component<Props> {
 
   getNoties() {
     //
-    const { notieService, lectureService } = this.props;
+    const { myTrainingService, lectureService } = this.props;
 
-    notieService!.countMenuNoties('Learning_Progress');
-    notieService!.countMenuNoties('Learning_Passed');
-    notieService!.countMenuNoties('Learning_Missed');
-    notieService!.countMenuNoties('Learning_Waiting');
+    myTrainingService!.findAllTabMyTraining();
 
     //권장과정 갯수 조회
     lectureService!.countRequiredLectures();
@@ -51,12 +51,12 @@ class MyLearningPage extends Component<Props> {
 
   getTabs() {
     //
-    const { notieService, inMyLectureService, lectureService } = this.props;
+    const { myTrainingService, inMyLectureService, lectureService } = this.props;
 
-    const progressCount = notieService!.progressedCount;
-    const enrolledCount = notieService!.waitingCount;
-    const completedCount = notieService!.completedCount;
-    const missedCount = notieService!.missedCount;
+    const progressCount = myTrainingService!.inprogressCount;
+    const enrolledCount = myTrainingService!.enrolledCount;
+    const completedCount = myTrainingService!.completedCount;
+    const missedCount = myTrainingService!.retryCount;
 
     const inMyLectureAllCount = inMyLectureService!.inMyLectureAllCount;
     const requiredLecturesCount = lectureService!.requiredLecturesCount;

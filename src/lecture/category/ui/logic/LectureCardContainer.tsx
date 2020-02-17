@@ -13,13 +13,13 @@ import { InMyLectureService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import { MemberViewModel } from '@nara.drama/approval';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
-import ManagerListModalContainer from '../view/ManagerListModalContainer';
 import RollBookModel from '../../../model/RollBookModel';
+import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
+import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 
 interface Props {
   studentService?: StudentService
@@ -57,7 +57,7 @@ class LectureCardContainer extends Component<Props, State> {
   examModal: any = null;
   surveyModal: any = null;
   reportModal: any = null;
-  managerModal: any = null;
+  applyReferenceModel: any = null;
 
   state = {
     rollBook: new RollBookModel(),
@@ -80,17 +80,16 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    this.onManager();
-    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
+    this.onApplyReference();
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
       studentService!.removeStudent(student.rollBookId)
-        .then(() => this.setState({ rollBook }, this.onManager ));
+        .then(() => this.setState({ rollBook }, this.onApplyReference ));
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
-      this.setState({ rollBook }, this.onManager );
+      this.setState({ rollBook }, this.onApplyReference );
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
@@ -134,28 +133,10 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
-  onClickManagerListOk(member: MemberViewModel) {
-    //
-    const { studentCdo, student } = this.props;
-    const { rollBook } = this.state;
-    let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
-      proposalState = student.proposalState;
-    }
-    let rollBookId = studentCdo.rollBookId;
-    if (rollBook && rollBook.id) rollBookId = rollBook.id;
-
-    studentCdo.leaderEmails = [member.email];
-    studentCdo.url = window.location.href;
-
-    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
-  }
-
   //
   onClickEnrollment() {
     //
-    this.onManager();
-    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
+    this.onApplyReference();
   }
 
   onClickChangeSeries() {
@@ -256,8 +237,25 @@ class LectureCardContainer extends Component<Props, State> {
     this.reportModal.onOpenModal();
   }
 
-  onManager() {
-    this.managerModal.onShow(true);
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
+  }
+
+  onClickApplyReferentOk(member: ApprovalMemberModel) {
+    //
+    const { studentCdo, student } = this.props;
+    const { rollBook } = this.state;
+    let proposalState = studentCdo.proposalState;
+    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
+    let rollBookId = studentCdo.rollBookId;
+    if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    studentCdo.leaderEmails = [member.email];
+    studentCdo.url = window.location.href;
+
+    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }
 
   getMainAction() {
@@ -479,9 +477,9 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
-        <ManagerListModalContainer
-          ref={managerModal => this.managerModal = managerModal}
-          handleOk={this.onClickManagerListOk}
+        <ApplyReferenceModal
+          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+          handleOk={this.onClickApplyReferentOk}
         />
         {
           viewObject && viewObject.examId && (

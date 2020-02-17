@@ -7,9 +7,9 @@ import NotFoundPage from 'layout/NotFoundPage';
 import BoardListPage from './ui/page/BoardListPage';
 import NoticeDetailPage from './ui/page/NoticeDetailPage';
 import FaqDetailPage from './ui/page/FaqDetailPage';
-import QnaRegisterContainer from './ui/logic/QnaRegisterContainer';
+import QnaRegisterPage from './ui/page/QnaRegisterPage';
 import QnaDetailPage from './ui/page/QnaDetailPage';
-import AnsweredDetailContainer from './ui/logic/AnsweredDetailContainer';
+import AnswerDetailPage from './ui/page/AnswerDetailPage';
 
 
 class Routes extends React.PureComponent {
@@ -21,9 +21,9 @@ class Routes extends React.PureComponent {
         <Route exact path="/board/support/:boardId" component={BoardListPage} />
         <Route exact path="/board/support/notice-detail/:postId" component={NoticeDetailPage} />
         <Route exact path="/board/support/faq-detail/:postId" component={FaqDetailPage} />
-        <Route exact path="/board/support-qna" component={QnaRegisterContainer} />
+        <Route exact path="/board/support-qna" component={QnaRegisterPage} />
         <Route exact path="/board/support/qna-detail/:postId" component={QnaDetailPage} />
-        <Route exact path="/board/support/answered-detail/:postId" component={AnsweredDetailContainer} />
+        <Route exact path="/board/support/answered-detail/:postId" component={AnswerDetailPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

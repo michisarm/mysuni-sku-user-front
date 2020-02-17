@@ -18,7 +18,7 @@ class NotFoundPage extends Component<Props> {
   render() {
     //
     return (
-      <section className="center-content bg-white">
+      <section className="center-content bg-white full">
         <div className="align error404">
           <div>
             <Image src={`${process.env.PUBLIC_URL}/images/all/404.png`} alt="Not found" />
