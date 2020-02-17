@@ -13,12 +13,15 @@ import { CollegeLectureCountRdo }  from 'lecture/model';
 import { CollegeLectureCountService }  from 'lecture/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import mainRoutePaths from 'main/routePaths';
+import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
+
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService,
   collegeLectureCountService?: CollegeLectureCountService,
+  lectureCountService?: LectureCountService
 }
 
 interface State {
@@ -26,7 +29,11 @@ interface State {
   activeCollege?: CollegeLectureCountRdo,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'lecture.collegeLectureCountService'))
+@inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'lecture.collegeLectureCountService',
+  'lecture.lectureCountService',
+))
 @reactAutobind
 @observer
 class CategoryMenuContainer extends Component<Props, State> {
@@ -81,13 +88,17 @@ class CategoryMenuContainer extends Component<Props, State> {
   onClickChannel(e: any, channel?: IdNameCount) {
     //
     const { activeCollege } = this.state;
-    const { history } = this.props;
+    const { history, lectureCountService } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
 
-    if (!channel) {
+    if (!channel)
+    {
+      lectureCountService!.setCategoryType('CollegeLectures');
       history.push(lectureRoutePaths.collegeLectures(active.collegeId));
     }
-    else if (active.collegeId && channel.id) {
+    else if (active.collegeId && channel.id)
+    {
+      lectureCountService!.setCategoryType('ChannelsLectures');
       history.push(lectureRoutePaths.channelLectures(active.collegeId, channel.id));
     }
     this.setState({
