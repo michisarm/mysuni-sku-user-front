@@ -237,7 +237,10 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(training, '아이콘');
+    actionLogService?.registerActionLog(actionLog);
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
