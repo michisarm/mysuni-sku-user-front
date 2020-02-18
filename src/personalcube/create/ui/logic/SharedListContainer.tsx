@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureModel, LectureServiceType } from 'lecture/model';
@@ -22,6 +22,7 @@ import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   lectureService?: LectureService,
   inMyLectureService?: InMyLectureService,
@@ -34,6 +35,7 @@ interface States {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'shared.reviewService',
   'lecture.lectureService',
@@ -166,7 +168,9 @@ class SharedListContainer extends React.Component<Props, States> {
 
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)

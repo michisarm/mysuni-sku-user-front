@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ContentHeader } from 'shared';
+import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
 
 import defaultProfileImg from 'style/../../public/images/all/img-profile-56-px.png';
@@ -14,10 +15,12 @@ import CreateMovieModalContainer from './CreateMovieModalContainer';
 
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService
+  actionLogService?: ActionLogService,
+  skProfileService?: SkProfileService,
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'profile.skProfileService',
 ))
 @reactAutobind
@@ -30,9 +33,15 @@ class CreateProfileContainer extends React.Component<Props> {
   }
 
   onClickCreate() {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: 'create' });
     this.props.history.push(routePaths.createNew());
   }
 
+  onClickCreateMovie() {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: 'create movie' });
+  }
 
   render() {
     //
@@ -57,7 +66,7 @@ class CreateProfileContainer extends React.Component<Props> {
           </Button>
           <CreateMovieModalContainer
             trigger={(
-              <Button className="personal line">
+              <Button className="personal line" onClick={this.onClickCreateMovie}>
                 <Icon className="movie16" /><span className="blind">create movie</span>
                 <span>Create Movie</span>
               </Button>

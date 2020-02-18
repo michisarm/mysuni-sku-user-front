@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 import { CubeState } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { SeeMoreButton } from 'lecture/shared';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
@@ -17,12 +17,14 @@ import CreateListView from '../view/CreateListView';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   personalCubeService?: PersonalCubeService
   onChangeCreateCount: (createCount: number) => void
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'personalCube.personalCubeService',
 ))
@@ -93,9 +95,13 @@ class CreateListContainer extends React.Component<Props> {
 
   onChangeSearchSelect(e: any, data: any) {
     //
-    const { history, pageService, personalCubeService } = this.props;
+    const { actionLogService, history, pageService, personalCubeService } = this.props;
     const cubeState = data.value;
     const currentPageNo = this.props.match.params.pageNo;
+
+    const cubeStateName: string = data.options.reduce((a: any, b: any) => { return a === b.value ? b.text : a; }, data.value);
+    actionLogService?.registerClickActionLog({ subAction: cubeStateName });
+
     personalCubeService!.clear();
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     personalCubeService!.changeSearchState(cubeState);
