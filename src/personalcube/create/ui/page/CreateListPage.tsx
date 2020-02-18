@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
+import { ActionLogService } from 'shared/stores';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 
 import routePaths from '../../../routePaths';
@@ -13,6 +14,7 @@ import SharedListContainer from '../logic/SharedListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionLogService?: ActionLogService,
 }
 
 interface State {
@@ -24,6 +26,9 @@ interface RouteParams {
   tab: string
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @observer
 @reactAutobind
 class CreateListPage extends Component<Props, State> {
@@ -72,7 +77,9 @@ class CreateListPage extends Component<Props, State> {
 
   onChangeTab(tab: TabItemModel) {
     //
-    this.props.history.push(routePaths.createTab(tab.name));
+    const { actionLogService, history } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: tab.name });
+    history.push(routePaths.createTab(tab.name));
   }
 
   onChangeCreateCount(createCount: number) {

@@ -11,6 +11,7 @@ interface Props {
   totalCount: number
   searchSelectOptions: any[]
   onChange: (e: any, data: any) => void
+  searchState: any
 }
 
 @reactAutobind
@@ -19,7 +20,7 @@ class CreateListPanelTopLineView extends React.Component<Props> {
 
   render() {
     //
-    const { totalCount, searchSelectOptions, onChange } = this.props;
+    const { totalCount, searchSelectOptions, onChange, searchState } = this.props;
 
     return (
       <ListPanelTopLine
@@ -30,7 +31,7 @@ class CreateListPanelTopLineView extends React.Component<Props> {
           <Select
             placeholder="전체"
             className="small-border m0"
-            defaultValue={searchSelectOptions[0].value}
+            value={searchState}
             options={searchSelectOptions}
             onChange={onChange}
           />

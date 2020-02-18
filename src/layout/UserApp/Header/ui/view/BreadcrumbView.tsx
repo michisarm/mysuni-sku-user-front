@@ -5,7 +5,6 @@ import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import { BreadcrumbValue } from '../../../index';
 
 
@@ -76,8 +75,7 @@ class BreadcrumbView extends Component<Props, State> {
 
   onClickBreadcrumb(menuName: string) {
     const { actionLogService } = this.props;
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(menuName);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: menuName });
   }
 
   renderItem(value: BreadcrumbValue, index: number) {

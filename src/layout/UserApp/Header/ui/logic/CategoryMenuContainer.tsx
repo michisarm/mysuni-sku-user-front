@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
+import { ActionLogService } from 'shared/stores';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -19,6 +20,7 @@ import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   skProfileService?: SkProfileService,
   collegeLectureCountService?: CollegeLectureCountService,
   lectureCountService?: LectureCountService
@@ -30,6 +32,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'profile.skProfileService',
   'lecture.collegeLectureCountService',
   'lecture.lectureCountService',
@@ -107,6 +110,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onOpenFavorite() {
+    this.onClickActionLog('관심 Channel 변경');
     this.modal.onOpenModal();
     this.onClose();
   }
@@ -124,6 +128,11 @@ class CategoryMenuContainer extends Component<Props, State> {
     else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
       history.replace(lectureRoutePaths.recommend());
     }
+  }
+
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   renderMenuActions() {
@@ -156,7 +165,7 @@ class CategoryMenuContainer extends Component<Props, State> {
       <>
         <div className="g-menu-detail">
           <Popup
-            trigger={<Button className="detail-open">Category</Button>}
+            trigger={<Button className="detail-open" onClick={() => this.onClickActionLog('Category')}>Category</Button>}
             on="click"
             className="g-menu-detail"
             basic

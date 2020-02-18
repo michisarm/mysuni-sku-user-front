@@ -7,7 +7,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Icon } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
@@ -64,17 +63,14 @@ class MyLearningSummaryContainer extends Component<Props> {
   onClickViewAll() {
     const { actionLogService, history } = this.props;
 
-    history.push(myTrainingRoutePaths.learning());
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
-    actionLogService?.registerActionLog(actionLog);
+    history.push(myTrainingRoutePaths.learning());
   }
 
   onClickLearningSummary(text: string) {
     const { actionLogService } = this.props;
-
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(text);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {
@@ -128,10 +124,10 @@ class MyLearningSummaryContainer extends Component<Props> {
           </Button>
         </ItemWrapper>
 
-        <ItemWrapper onClick={() => this.onClickLearningSummary('총 학습시간')}>
+        <ItemWrapper>
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-complex48">
+              <Button className="btn-complex48" onClick={() => this.onClickLearningSummary('총 학습시간')}>
                 <span className="i">
                   <Icon className="time48" />
                   <span className="blind">total time</span>

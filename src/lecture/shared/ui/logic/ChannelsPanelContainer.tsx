@@ -6,11 +6,13 @@ import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { FavoriteChannelChangeModal } from 'shared';
+import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   skProfileService?: SkProfileService,
   title?: React.ReactNode,
   configurable?: boolean,
@@ -29,7 +31,10 @@ interface States {
   open: boolean
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'profile.skProfileService',
+))
 @observer
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {
@@ -89,10 +94,16 @@ class ChannelsPanelContainer extends Component<Props, States> {
     });
   }
 
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   render() {
     //
     const { channels, title, configurable, onConfirmCallback } = this.props;
     const { multiple, open } = this.state;
+
 
     return (
       <div className="channel-of-interest">
@@ -104,7 +115,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
                 {configurable && (
                   <FavoriteChannelChangeModal
                     trigger={(
-                      <Button icon className="img-icon">
+                      <Button icon className="img-icon" onClick={() => this.onClickActionLog('관심 Channel 보기')}>
                         <Icon className="setting17" /><span className="blind">setting</span>
                       </Button>
                     )}

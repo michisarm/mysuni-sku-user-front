@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
@@ -27,6 +27,7 @@ import LineHeaderContainer from '../logic/LineHeaderContainer';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   reviewService?: ReviewService,
   skProfileService?: SkProfileService,
@@ -41,6 +42,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'shared.reviewService',
   'profile.skProfileService',
@@ -241,6 +243,11 @@ class MyLearningPage extends Component<Props, State> {
     return page!.pageNo < page!.totalPages;
   }
 
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   onFilter(channels: ChannelModel[]) {
     const { pageService, inMyLectureService, lectureService, myTrainingService } = this.props;
     const { type } = this.state;
@@ -268,7 +275,10 @@ class MyLearningPage extends Component<Props, State> {
           <div className="text">{noSuchContentPanel}</div>
           <a
             className="ui icon right button btn-blue2"
-            onClick={() => history.push('/lecture/recommend')}
+            onClick={() => {
+              this.onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
+              history.push('/lecture/recommend');
+            }}
           >
             {profileMemberName}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
           </a>

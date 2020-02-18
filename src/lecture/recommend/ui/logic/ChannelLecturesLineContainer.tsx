@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel, OffsetElementList } from 'shared/model';
+import { OffsetElementList } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -45,8 +45,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
     //
     const { actionLogService, inMyLectureService } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(lecture, '아이콘');
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
@@ -96,8 +95,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
   onViewAll(e: any) {
     const { actionLogService, channel, onViewAll } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     onViewAll(e, {
       channel,

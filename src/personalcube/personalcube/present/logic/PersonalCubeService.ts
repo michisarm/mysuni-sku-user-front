@@ -1,11 +1,10 @@
-
-import { observable, action, runInAction } from 'mobx';
-import { autobind, OffsetElementList } from '@nara.platform/accent';
+import {action, observable, runInAction} from 'mobx';
+import {autobind, OffsetElementList} from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { CubeState } from 'shared/model';
+import {CubeState} from 'shared/model';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
-import { PersonalCubeModel } from '../../model/PersonalCubeModel';
+import {PersonalCubeModel} from '../../model/PersonalCubeModel';
 
 
 @autobind
@@ -20,6 +19,9 @@ export default class PersonalCubeService {
 
   @observable
   personalCubeOffsetList: OffsetElementList<PersonalCubeModel> = { results: [], totalCount: 0 };
+
+  @observable
+  searchState: CubeState = CubeState.ALL;
 
 
   constructor(personalCubeApi: PersonalCubeApi) {
@@ -94,6 +96,14 @@ export default class PersonalCubeService {
   @action
   clear() {
     this.personalCubeOffsetList = { results: [], totalCount: 0 } as OffsetElementList<PersonalCubeModel>;
+  }
+
+  // SearchState --------------------------------------------------------------------------------------------
+
+  @action
+  changeSearchState(cubeState: CubeState) {
+    //
+    this.searchState = cubeState;
   }
 }
 

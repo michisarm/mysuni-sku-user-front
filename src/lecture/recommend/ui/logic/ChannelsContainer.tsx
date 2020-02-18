@@ -7,7 +7,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ReviewService } from '@nara.drama/feedback';
 import { NoSuchContentPanel } from 'shared';
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { RecommendLectureRdo } from 'lecture/model';
@@ -157,8 +156,7 @@ class ChannelsContainer extends Component<Props> {
     const collegeService = this.props.collegeService!;
     const { history, actionLogService } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(channel.name);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: channel.name });
 
     const index = collegeService!._channels
       .map((channel: ChannelModel) => channel.id)

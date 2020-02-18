@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
-import { CubeType, ActionLogModel } from 'shared/model';
+import { CubeType } from 'shared/model';
 import { Tab, NoSuchContentPanel } from 'shared';
 import { NotieService } from 'notie/stores';
 
@@ -191,8 +191,7 @@ class MyLearningContentContainer extends Component<Props, State> {
 
     const { actionLogService, lectureService, inMyLectureService, myTrainingService } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(ContentTypeName[contentType]);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: ContentTypeName[contentType] });
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
@@ -215,10 +214,9 @@ class MyLearningContentContainer extends Component<Props, State> {
     const { actionLogService, history } = this.props;
     const { contentType } = this.state;
 
-    history.push(myTrainingRoutes.learningTab(contentType));
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
-    actionLogService?.registerActionLog(actionLog);
+    history.push(myTrainingRoutes.learningTab(contentType));
   }
 
   onViewDetail(e: any, data: any) {
@@ -237,7 +235,9 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)

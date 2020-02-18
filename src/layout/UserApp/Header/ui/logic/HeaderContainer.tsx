@@ -5,7 +5,6 @@ import { inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
@@ -59,8 +58,7 @@ class HeaderContainer extends Component<Props, State> {
     const { searchValue } = this.state;
 
     if (searchValue) {
-      const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('search', searchValue);
-      actionLogService?.registerActionLog(actionLog, true);
+      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchValue, isEmpty: true });
 
       window.location.href = encodeURI(`/search?query=${searchValue}`);
     }
@@ -86,8 +84,7 @@ class HeaderContainer extends Component<Props, State> {
 
   onClickMenu(menuName: string) {
     const { actionLogService } = this.props;
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(menuName);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerClickActionLog({ subAction: menuName });
   }
 
   render() {
