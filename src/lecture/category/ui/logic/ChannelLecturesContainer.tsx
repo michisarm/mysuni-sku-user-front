@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
@@ -22,6 +22,7 @@ import ChannelLecturesContentWrapperView from '../view/ChannelLecturesContentWra
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   collegeService?: CollegeService,
   personalCubeService?: PersonalCubeService,
@@ -36,6 +37,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'lecture.lectureService',
   'lecture.lectureCardService',
@@ -108,6 +110,8 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
+
     this.setState({
       sorting: data.value,
     }, () => {

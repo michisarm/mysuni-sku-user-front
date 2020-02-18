@@ -7,7 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { NewPageService } from 'shared/stores';
+import { ActionLogService, NewPageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -28,6 +28,7 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionLogService?: ActionLogService,
   newPageService?: NewPageService,
   collegeService?: CollegeService,
   lectureService?: LectureService,
@@ -47,6 +48,7 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.newPageService',
   'college.collegeService',
   'lecture.lectureService',
@@ -175,6 +177,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
+
     this.setState({
       sorting: data.value,
     }, () => {
