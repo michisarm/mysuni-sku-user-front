@@ -101,7 +101,7 @@ class CoursePage extends Component<Props> {
   /**
    * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
    */
-  async lectureStudentAfterVideoPlay()
+  async onRefreshLearningState()
   {
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     this.findStudent();
@@ -346,7 +346,10 @@ class CoursePage extends Component<Props> {
 
     return this.renderBaseContentWith(
 
-      <CourseContainer lectureCardId={serviceId} />
+      <CourseContainer
+        lectureCardId={serviceId}
+        onRefreshLearningState={this.onRefreshLearningState}
+      />
     );
   }
 

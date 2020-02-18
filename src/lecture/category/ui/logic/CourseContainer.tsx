@@ -19,7 +19,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService?: ProgramLectureService,
   courseLectureService?:  CourseLectureService,
   coursePlanService?: CoursePlanService,
-  lectureCardId : string
+  lectureCardId : string,
+  onRefreshLearningState?: () => void,
 }
 
 interface RouteParams {
@@ -41,6 +42,10 @@ interface RouteParams {
 @observer
 class CourseContainer extends Component<Props> {
   //
+  static defaultProps = {
+    onRefreshLearningState: () => {},
+  };
+
   componentDidMount() {
     //
     this.findCoursePlan();
@@ -133,6 +138,7 @@ class CourseContainer extends Component<Props> {
       lectureService,
       lectureCardId,
       match,
+      onRefreshLearningState,
     } = this.props;
     const { params } = match;
     const { skProfile } = skProfileService!;
@@ -156,6 +162,7 @@ class CourseContainer extends Component<Props> {
                   collegeId={params.collegeId}
                   lectureCardId={lectureCardId}
                   member={member}
+                  onRefreshLearningState={onRefreshLearningState}
                 />
               )}
             >
@@ -170,6 +177,7 @@ class CourseContainer extends Component<Props> {
                   collegeId={params.collegeId}
                   lectureCardId={lectureCardId}
                   member={member}
+                  onRefreshLearningState={onRefreshLearningState}
                 />
               )}
             </Lecture.CourseSection>

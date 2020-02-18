@@ -35,7 +35,7 @@ class StudentService {
    * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Student Id로부터 Student 정보
    */
   @observable
-  studentForVideo: StudentModel = new StudentModel();
+  _studentForVideo: StudentModel = new StudentModel();
 
   constructor(studentApi: StudentApi) {
     this.studentApi = studentApi;
@@ -55,20 +55,39 @@ class StudentService {
     return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
   }
 
-  /**
-   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
-   * 업데이트 시간순(updateTime)으로 데이터 배열 정렬
-   */
-  @computed
-  get studentJoinsForVideo(): StudentJoinRdoModel[] {
-    //
-    const studentJoins = this._studentJoinsForVideo as IObservableArray;
-    return studentJoins.peek().filter((studentJoin: StudentJoinRdoModel) => studentJoin.join).sort(this.compare);
-  }
-
   compare(studentJoin1: StudentJoinRdoModel, studentJoin2: StudentJoinRdoModel) {
     if (studentJoin1.updateTime < studentJoin2.updateTime) return 1;
     return -1;
+  }
+
+  @computed
+  get studentForVideo(): StudentModel
+  {
+    return this._studentForVideo;
+  }
+
+  /**
+   * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져온뒤
+   * 업데이트 시간순(updateTime)으로 StudentJoin을 정렬해서 최상위 한건을 대상으로 학생정보 가져옴.
+   *
+   */
+  @action
+  async getStudentForVideo(lectureCardId: string): Promise<StudentModel>
+  {
+    //
+    let student: StudentModel = new StudentModel();
+    const studentJoinsForVideo = await this.findIsJsonStudentForVideo(lectureCardId);
+
+    if (studentJoinsForVideo && studentJoinsForVideo.length)
+    {
+      studentJoinsForVideo.sort(this.compare);
+      const studentJoin = studentJoinsForVideo[0];
+      // console.log(studentJoin);
+      student = await this.findStudentForVideo(studentJoin!.studentId);
+
+    } else this.clearForVideo();
+
+    return student;
   }
 
   // Student ----------------------------------------------------------------------------------------------------------
@@ -134,22 +153,13 @@ class StudentService {
   async findStudentForVideo(studentId: string, round?: number) {
     //
     const student = await this.studentApi.findStudent(studentId);
-    return runInAction(() => {
-      this.studentForVideo = new StudentModel(student);
-      if (round) this.studentForVideo.round = round;
-      return student;
-    });
-  }
 
-  @action
-  async findStudentToMap(studentId: string, round?: number) {
-    //
-    const student = await this.studentApi.findStudent(studentId);
-    return runInAction(() => {
-      this.student = new StudentModel(student);
-      if (round) this.student.round = round;
-      return student;
+    runInAction(() => {
+      this._studentForVideo = new StudentModel(student);
+      if (round) this._studentForVideo.round = round;
     });
+
+    return student;
   }
 
   @action
@@ -173,12 +183,12 @@ class StudentService {
   /**
    * Course Lecture or Prgrame Lecture 내 Video Lecture Card 인 경우 Lecture Card Id로부터 StudentJoin 배열 정보 가져오기
    */
-  @action
   async findIsJsonStudentForVideo(lectureCardId: string) {
     //
     const studentJoinRdos = await this.studentApi.findIsJsonStudent(lectureCardId);
 
     runInAction(() => this._studentJoinsForVideo = studentJoinRdos.map(studentJoinRdo => new StudentJoinRdoModel(studentJoinRdo)));
+
     return studentJoinRdos;
   }
 
@@ -203,7 +213,7 @@ class StudentService {
 
   @action
   clearForVideo() {
-    this.studentForVideo = new StudentModel();
+    this._studentForVideo = new StudentModel();
   }
 }
 
