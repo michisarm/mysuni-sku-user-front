@@ -99,7 +99,7 @@ class CreateListContainer extends React.Component<Props> {
     const cubeState = data.value;
     const currentPageNo = this.props.match.params.pageNo;
 
-    const cubeStateName: string = data.options.reduce((a: any, b: any) => { return a === b.value ? b.text : a; }, data.value);
+    const cubeStateName: string = data.options.reduce((a: any, b: any) => (a === b.value ? b.text : a), data.value);
     actionLogService?.registerClickActionLog({ subAction: cubeStateName });
 
     personalCubeService!.clear();
