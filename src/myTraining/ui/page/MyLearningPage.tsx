@@ -5,6 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
+import { ActionLogService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
 import { LectureService } from 'lecture/stores';
 
@@ -18,6 +19,7 @@ import MyTrainingService from '../../present/logic/MyTrainingService';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   notieService?: NotieService,
   lectureService: LectureService,
   inMyLectureService: InMyLectureService,
@@ -25,6 +27,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
@@ -117,7 +120,9 @@ class MyLearningPage extends Component<Props> {
   onChangeTab(tab: TabItemModel) {
     //
     const notieService = this.props.notieService!;
-    const { history } = this.props;
+    const { history, actionLogService } = this.props;
+
+    actionLogService?.registerClickActionLog({ subAction: MyLearningContentTypeName[tab.name as keyof typeof MyLearningContentType] });
 
     history.push(routePaths.learningTab(tab.name));
 

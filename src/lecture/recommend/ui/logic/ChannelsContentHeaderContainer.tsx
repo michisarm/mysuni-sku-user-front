@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Icon, Label } from 'semantic-ui-react';
 import { ContentHeader, FavoriteChannelChangeModal } from 'shared';
+import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
@@ -13,12 +14,14 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService
   skProfileService?: SkProfileService
   collegeLectureCountService?: CollegeLectureCountService
   channels: ChannelModel[]
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'profile.skProfileService',
   'lecture.collegeLectureCountService',
 ))
@@ -39,10 +42,15 @@ class ChannelsContentHeaderContainer extends Component<Props> {
     collegeLectureCountService!.findCollegeLectureCounts();
   }
 
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   getFavoriteChannelButton() {
     //
     return (
-      <Label className="onlytext">
+      <Label className="onlytext" onClick={() => this.onClickActionLog('관심 Channel')}>
         <Icon className="channel16" /><span><a>관심 Channel</a></span>
       </Label>
     );

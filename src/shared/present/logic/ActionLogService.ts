@@ -2,7 +2,20 @@ import moment from 'moment';
 import { autobind, getCookie } from '@nara.platform/accent';
 import ActionLogApi from '../apiclient/ActionLogApi';
 import ActionLogModel from '../../model/ActionLogModel';
+import { LectureModel } from '../../../lecture/model';
+import { InMyLectureModel, MyTrainingModel } from '../../../myTraining/model';
 
+interface SeenActionParam {
+  lecture: LectureModel | MyTrainingModel | InMyLectureModel,
+  subAction?: string,
+  isEmpty?: boolean,
+}
+
+interface ClickActionParam {
+  subAction: string,
+  subContext?: string,
+  isEmpty?: boolean,
+}
 
 @autobind
 class ActionLogService {
@@ -21,6 +34,16 @@ class ActionLogService {
 
   constructor(actionLogApi: ActionLogApi) {
     this.actionLogApi = actionLogApi;
+  }
+
+  registerSeenActionLog({ lecture, subAction = '', isEmpty = false }: SeenActionParam) {
+    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(lecture, subAction);
+    this.registerActionLog(actionLog, isEmpty);
+  }
+
+  registerClickActionLog({ subAction, subContext = '', isEmpty = false }: ClickActionParam) {
+    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(subAction, subContext);
+    this.registerActionLog(actionLog, isEmpty);
   }
 
   registerActionLog(actionLog: ActionLogModel, isEmpty: boolean = false) {

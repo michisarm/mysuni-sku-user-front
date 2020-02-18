@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import { Segment, Icon } from 'semantic-ui-react';
 import { InputWrapper } from 'shared';
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 
 
 interface Props {
@@ -25,8 +24,7 @@ class SearchBarContainer extends Component<Props> {
     const { actionLogService } = this.props;
 
     if (value) {
-      const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('search', value);
-      actionLogService?.registerActionLog(actionLog, true);
+      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: value, isEmpty: true });
 
       window.location.href = encodeURI(`/search?query=${value}`);
     }

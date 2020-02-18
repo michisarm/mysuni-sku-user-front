@@ -53,7 +53,7 @@ export default class ActionLogModel {
     console.log('fromClickActionLog', subAction, subContext);
 
     const actionLog: ActionLogModel = new ActionLogModel();
-    actionLog.action = 1;
+    actionLog.action = 2;
     actionLog.eventTimestampe = moment().toISOString(true);
     actionLog.deviceType = 1;
     actionLog.subAction = subAction;

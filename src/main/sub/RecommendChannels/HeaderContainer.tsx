@@ -6,7 +6,6 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -45,8 +44,7 @@ class HeaderContainer extends Component<Props> {
     //
     const { actionLogService } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog('View all');
-    actionLogService?.registerActionLog(actionLog, true);
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     this.props.history.push(lectureRoutePaths.recommend());
   }

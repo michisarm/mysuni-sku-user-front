@@ -5,7 +5,6 @@ import { inject, observer } from 'mobx-react';
 
 import moment from 'moment';
 import { ActionLogService } from 'shared/stores';
-import { ActionLogModel } from 'shared/model';
 import { LectureModel, LectureViewModel } from 'lecture/model';
 import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
@@ -101,8 +100,7 @@ class LectureContainer extends Component<Props, States> {
   onHoverIn() {
     const { actionLogService, model } = this.props;
 
-    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(model);
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerSeenActionLog({ lecture: model });
 
     this.setState({
       hovered: true,
@@ -148,8 +146,7 @@ class LectureContainer extends Component<Props, States> {
       model,
     };
 
-    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(model, '상세보기');
-    actionLogService?.registerActionLog(actionLog);
+    actionLogService?.registerSeenActionLog({ lecture: model, subAction: '상세보기' });
 
     onViewDetail!(e, data);
   }
