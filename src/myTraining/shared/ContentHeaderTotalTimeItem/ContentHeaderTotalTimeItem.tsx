@@ -71,11 +71,11 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
     }
 
     return (
-      <div className="ui statistic total-time" onClick={this.onClickActionLog}>
+      <div className="ui statistic total-time">
         {
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-total-time">
+              <Button className="btn-total-time" onClick={this.onClickActionLog}>
                 <Label className="onlytext">
                   <Icon className="total-time" /><span>총 학습시간</span>
                 </Label>

@@ -7,6 +7,7 @@ import { patronInfo } from '@nara.platform/dock';
 
 import { Button } from 'semantic-ui-react';
 import { CubeState, CubeType } from 'shared/model';
+import { ActionLogService } from 'shared/stores';
 import { BoardService } from 'personalcube/community/stores';
 import { CollegeService, ContentsProviderService } from 'college/stores';
 
@@ -27,6 +28,7 @@ import { FormTitle } from '../view/DetailElementsView';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
+  actionLogService?: ActionLogService,
   personalCubeService?: PersonalCubeService
   cubeIntroService?: CubeIntroService
   contentsProviderService?: ContentsProviderService
@@ -50,6 +52,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'college.contentsProviderService',
   'college.collegeService',
   'personalCube.boardService',
@@ -433,6 +436,11 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
       .then(() => this.props.history.push(routePaths.create()));
   }
 
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   render() {
 
     const { cubeIntro } = this.props.cubeIntroService!;
@@ -465,24 +473,24 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
         {
           personalCubeId ?
             <div className="buttons">
-              <Button className="fix line" onClick={this.onDeleteCube}>Delete</Button>
-              <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-              <Button className="fix line" onClick={() => this.routeToBasicList(personalCubeId, cubeType)}>Previous</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Delete'); this.onDeleteCube(); }}>Delete</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Cancel'); this.routeToCreateList(); }}>Cancel</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Previous'); this.routeToBasicList(personalCubeId, cubeType); }}>Previous</Button>
               { cubeIntroId ?
                 <>
-                  <Button className="fix line" onClick={this.handleSave}>Save</Button>
-                  <Button className="fix bg" onClick={() => this.handleApprovalRequest()}>Shared</Button>
+                  <Button className="fix line" onClick={() => { this.onClickActionLog('Save'); this.handleSave(); }}>Save</Button>
+                  <Button className="fix bg" onClick={() => { this.onClickActionLog('Shared'); this.handleApprovalRequest(); }}>Shared</Button>
                 </>
                 :
-                <Button className="fix bg" onClick={this.handleSave}>Save</Button>
+                <Button className="fix bg" onClick={() => { this.onClickActionLog('Save'); this.handleSave(); }}>Save</Button>
               }
             </div>
             :
             <div className="buttons">
-              <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-              <Button className="fix line" onClick={this.handleSave}>Save</Button>
-              <Button className="fix line" onClick={() => this.routeToBasicList}>Previous</Button>
-              <Button className="fix bg">Next</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Cancel'); this.routeToCreateList(); }}>Cancel</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Save'); this.handleSave(); }}>Save</Button>
+              <Button className="fix line" onClick={() => { this.onClickActionLog('Previous'); this.routeToBasicList(); }}>Previous</Button>
+              <Button className="fix bg" onClick={() => this.onClickActionLog('Next')}>Next</Button>
             </div>
         }
         <AlertWin

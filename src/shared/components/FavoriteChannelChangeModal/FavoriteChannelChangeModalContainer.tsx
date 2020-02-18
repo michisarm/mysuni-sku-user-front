@@ -120,9 +120,9 @@ class FavoriteChannelChangeModalContainer extends Component<Props, State> {
 
   onSearch(e: any, searchKey: string) {
     //
-    const { collegeService } = this.props;
+    const { actionLogService, collegeService } = this.props;
 
-    this.onClickActionLog(searchKey);
+    actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchKey });
 
     collegeService!.findChannelByName(searchKey);
   }

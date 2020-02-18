@@ -31,7 +31,6 @@ class CreateListPanelTopLineView extends React.Component<Props> {
           <Select
             placeholder="전체"
             className="small-border m0"
-            defaultValue={searchState}
             value={searchState}
             options={searchSelectOptions}
             onChange={onChange}

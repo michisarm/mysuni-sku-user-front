@@ -124,10 +124,10 @@ class MyLearningSummaryContainer extends Component<Props> {
           </Button>
         </ItemWrapper>
 
-        <ItemWrapper onClick={() => this.onClickLearningSummary('총 학습시간')}>
+        <ItemWrapper>
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-complex48">
+              <Button className="btn-complex48" onClick={() => this.onClickLearningSummary('총 학습시간')}>
                 <span className="i">
                   <Icon className="time48" />
                   <span className="blind">total time</span>

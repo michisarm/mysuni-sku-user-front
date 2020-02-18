@@ -60,6 +60,11 @@ class HeaderContainer extends Component<Props> {
     }
   }
 
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   render() {
     //
     const { skProfileService, totalChannelCount, favoriteChannels } = this.props;
@@ -72,7 +77,7 @@ class HeaderContainer extends Component<Props> {
       >
         <FavoriteChannelChangeModal
           trigger={(
-            <Button icon className="img-icon">
+            <Button icon className="img-icon" onClick={() => this.onClickActionLog('현재 선택된 관심 Channel')}>
               <span className="underline">현재 선택된 관심 Channel(<span className="sel">{favoriteChannels.length}</span>/{totalChannelCount})</span>
               <Icon className="setting17" /><span className="blind">setting</span>
             </Button>
