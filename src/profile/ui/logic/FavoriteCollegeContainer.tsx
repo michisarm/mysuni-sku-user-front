@@ -131,7 +131,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
             <div className="f-list">
               <div className="scrolling">
                 <div className="college">
-                  {collegeLectureCounts && collegeLectureCounts.length && collegeLectureCounts.map((college, index) => (
+                  {collegeLectureCounts && collegeLectureCounts.length > 0 && collegeLectureCounts.map((college, index) => (
                     <div className="ui rect-icon radio checkbox" key={index}>
                       <input type="radio"
                         id={`radio_${index}`}
@@ -143,8 +143,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                       />
                       <label htmlFor={`radio_${index}`}>{college.name}({college.channelCounts.length})</label>
                     </div>
-                  )) || ''
-                  }
+                  ))}
                 </div>
               </div>
             </div>

@@ -19,11 +19,11 @@
     "json-server": "json-server --watch json-server/db.json --routes json-server/routes.json --port 8082"
   },
   "dependencies": {
-    "@nara.platform/accent": "0.0.12",
+    "@nara.platform/accent": "0.0.12-test3",
     "@nara.drama/approval": "0.3.1",
     "@nara.drama/depot": "1.2.6-sk",
     "@nara.drama/feedback": "0.0.24",
-    "@nara.platform/dock": "0.0.14-sk",
+    "@nara.platform/dock": "0.0.14-sk-test3",
     "@sku/personalcube": "0.0.24",
     "jquery": "3.3.1",
     "axios": "^0.19.0",

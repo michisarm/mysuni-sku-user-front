@@ -1,6 +1,6 @@
 
 import React, { Component, Fragment } from 'react';
-import { reactAutobind, mobxHelper, axiosApi, setCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, axiosApi, StorageModel } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
 
@@ -26,7 +26,6 @@ interface State {
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    // id: 'SKCC.07746@sk.com',
     id: 'SKCC.07750@sk.com',
   };
 
@@ -52,23 +51,33 @@ class BreadcrumbView extends Component<Props, State> {
       config,
     )
       .then(({ data }: any) => {
-        if (data.access_token) {
-          const accessToken = data.access_token;
-
-          setCookie('token', accessToken);
-          setCookie('workspaces', JSON.stringify(data.workspaces));
-          setCookie('displayName', data.displayName);
-          setCookie('email', this.state.id);
-
-          const cineroomWorkspaces = data.workspaces.cineroomWorkspaces;
-          const cineroom = cineroomWorkspaces.find((cineroom: any) => cineroom.name === 'SK University');
-          setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
-
-          if (data.additionalInformation && data.additionalInformation.companyCode) {
-            setCookie('companyCode', data.additionalInformation.companyCode);
-          }
-          window.location.href = window.location.href;
+        //
+        if (!data.access_token) {
+          return;
         }
+        const accessToken = data.access_token;
+
+        new StorageModel('cookie', 'isLogin').saveAsString('true');
+        new StorageModel('localStorage', 'token').saveAsString(accessToken);
+        new StorageModel('localStorage', 'workspaces').save(data.workspaces);
+        new StorageModel('localStorage', 'displayName').saveAsString(data.displayName);
+        new StorageModel('localStorage', 'email').saveAsString(this.state.id);
+        // setCookie('token', accessToken);
+        // setCookie('workspaces', JSON.stringify(data.workspaces));
+        // setCookie('displayName', data.displayName);
+        // setCookie('email', this.state.id);
+
+        const cineroomWorkspaces = data.workspaces.cineroomWorkspaces;
+        const cineroom = cineroomWorkspaces.find((cineroom: any) => cineroom.name === 'SK University');
+
+        new StorageModel('localStorage', 'cineroomId').saveAsString(cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
+        // setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
+
+        if (data.additionalInformation && data.additionalInformation.companyCode) {
+          new StorageModel('localStorage', 'companyCode').saveAsString(data.additionalInformation.companyCode);
+          // setCookie('companyCode', data.additionalInformation.companyCode);
+        }
+        window.location.href = window.location.href;
       });
 
   }
