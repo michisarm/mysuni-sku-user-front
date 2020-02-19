@@ -122,7 +122,10 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
         .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
@@ -172,6 +175,7 @@ class ChannelLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: 'list more' });
     this.findPagingChannelLectures();
   }
 

@@ -155,7 +155,10 @@ class MyLearningPage extends Component<Props, State> {
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { type } = this.state;
-    const { inMyLectureService, pageService } = this.props;
+    const { actionLogService, inMyLectureService, pageService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
@@ -229,8 +232,9 @@ class MyLearningPage extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    const { history } = this.props;
+    const { actionLogService, history } = this.props;
 
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 

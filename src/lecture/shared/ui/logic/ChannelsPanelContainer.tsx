@@ -88,6 +88,8 @@ class ChannelsPanelContainer extends Component<Props, States> {
     //
     const { onSelectChannel } = this.props;
 
+    this.onClickActionLog(channel.name);
+
     onSelectChannel(e, {
       index,
       channel,

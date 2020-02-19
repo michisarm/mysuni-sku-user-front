@@ -182,8 +182,9 @@ class ChannelsContainer extends Component<Props> {
 
   onClickSeeMore() {
     //
-    const { history } = this.props;
+    const { actionLogService, history } = this.props;
 
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 

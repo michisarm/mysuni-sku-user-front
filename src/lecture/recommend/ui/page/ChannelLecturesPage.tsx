@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout } from 'shared';
 import { ChannelModel } from 'college/model';
+import { ActionLogService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import routePaths from '../../../routePaths';
@@ -14,11 +15,13 @@ import LecturesByChannelContainer from '../logic/LecturesByChannelContainer';
 
 
 interface Props extends RouteComponentProps<{ channelId: string }> {
+  actionLogService?: ActionLogService,
   collegeService: CollegeService,
   skProfileService: SkProfileService,
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'college.collegeService',
   'profile.skProfileService',
 ))
@@ -34,6 +37,7 @@ class ChannelLecturesPage extends Component<Props> {
   }
 
   onSelectChannel(channel: ChannelModel) {
+    this.props.actionLogService?.registerClickActionLog({ subAction: channel.name });
     this.props.history.push(routePaths.recommendChannelLectures(channel.id));
   }
 
