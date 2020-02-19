@@ -47,7 +47,7 @@ class ActionLogService {
   }
 
   registerActionLog(actionLog: ActionLogModel, isEmpty: boolean = false) {
-    actionLog.userId = getCookie('email');
+    actionLog.userId = process.env.NODE_ENV === 'development' ? getCookie('email') : getCookie('tryingLoginId');
     actionLog.context = window.location.href;
 
     this._actionLogs.push(actionLog);

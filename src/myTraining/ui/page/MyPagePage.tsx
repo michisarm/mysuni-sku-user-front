@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
+import { ActionLogService } from 'shared/stores';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import MyPageContentType from '../model/MyPageContentType';
@@ -11,6 +12,7 @@ import MyPageListContainer from '../logic/MyPageListContainer';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionLogService?: ActionLogService
 }
 
 interface State {
@@ -29,6 +31,7 @@ enum SubBreadcrumb {
   EarnedStampList = '보유스탬프',
 }
 
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @observer
 @reactAutobind
 class MyPagePage extends Component<Props, State> {
@@ -103,6 +106,7 @@ class MyPagePage extends Component<Props, State> {
 
   onChangeTab(tab: TabItemModel) {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: (SubBreadcrumb as any)[tab.name] });
     this.props.history.push(routePaths.myPageTab(tab.name));
   }
 
