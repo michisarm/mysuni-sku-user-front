@@ -80,6 +80,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
   onSetAnswer(question: QuestionModel, answer: any) {
     //
+    console.dir( question);
+    console.dir(answer);
     const { answerSheetService } = this.props;
     answerSheetService!.changeEvaluationSheetProp(question, answer);
   }
@@ -109,7 +111,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
-          .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
+          .then((answerSheet) => answerSheetService!.submitAnswerSheet(answerSheet.id))
           .then(this.onCloseModal);
       }
     }
