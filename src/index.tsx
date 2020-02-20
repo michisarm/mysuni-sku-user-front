@@ -5,8 +5,8 @@ import 'semantic-ui-less/semantic.less';
 
 import '@nara.drama/approval/lib/snap.css';
 
-import './style/css/main.4f72f6c0.chunk.css';
-import './style/css/2.547874ee.chunk.css';
+import './style/css/main.551d0df0.chunk.css';
+import './style/css/2.df51df59.chunk.css';
 
 import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
