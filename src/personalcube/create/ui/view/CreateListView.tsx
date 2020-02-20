@@ -37,7 +37,7 @@ class CreateListView extends React.Component <Props> {
               <Table.HeaderCell className="type">교육형태</Table.HeaderCell>
               <Table.HeaderCell className="status">상태</Table.HeaderCell>
               <Table.HeaderCell className="open">공개여부</Table.HeaderCell>
-              <Table.HeaderCell className="people">이수자</Table.HeaderCell>
+              {/*<Table.HeaderCell className="people">이수자</Table.HeaderCell>*/}
               <Table.HeaderCell className="date">일자</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -51,7 +51,7 @@ class CreateListView extends React.Component <Props> {
                   <Table.Cell className="type">{this.getCubeType(cube)}</Table.Cell>
                   <Table.Cell>{EnumUtil.getEnumValue(CubeStateView, newCube.cubeState).get(newCube.cubeState)}</Table.Cell>
                   <Table.Cell className="open">{cube.searchFilter && cube.searchFilter === SearchFilterType.SearchOn ? 'Yes' : 'No'}</Table.Cell>
-                  <Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>
+                  {/*<Table.Cell className="people">{cube.creator && cube.creator.name}</Table.Cell>*/}
                   <Table.Cell className="date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
                 </Table.Row>
               );
