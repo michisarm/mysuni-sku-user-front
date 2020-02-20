@@ -43,3 +43,7 @@
 #root section.content .tab-menu-inner .ui.menu {
   width : 75rem !important;
 }
+
+.ui.statistic.total-time .ui.button.btn-total-time {
+  background : none !important;
+}
