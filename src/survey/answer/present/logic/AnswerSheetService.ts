@@ -51,7 +51,6 @@ export default class AnswerSheetService {
   @action
   async submitAnswerSheet(answerSheetId: string) {
     if (answerSheetId || answerSheetId.length) {
-      this.answerSheet.id = answerSheetId;
       await this.responseApi.submitAnswerSheet(answerSheetId, this.answerSheet.round, this.answerSheet);
     }
   }

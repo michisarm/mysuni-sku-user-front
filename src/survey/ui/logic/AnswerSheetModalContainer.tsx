@@ -108,9 +108,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
           .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
-        answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
-          .then((answerSheet) => answerSheetService!.submitAnswerSheet(answerSheet.id))
-          .then(this.onCloseModal);
+         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
+           .then((res) => answerSheet.id=res)
+           .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
+           .then(this.onCloseModal);
       }
     }
   }
