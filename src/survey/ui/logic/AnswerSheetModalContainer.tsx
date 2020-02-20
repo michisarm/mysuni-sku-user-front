@@ -80,8 +80,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
   onSetAnswer(question: QuestionModel, answer: any) {
     //
-    console.dir( question);
-    console.dir(answer);
     const { answerSheetService } = this.props;
     answerSheetService!.changeEvaluationSheetProp(question, answer);
   }
