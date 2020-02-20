@@ -122,7 +122,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.Required }
-            { lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>}
+            {
+              lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderRequiredList,
@@ -132,7 +135,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.InMyList }
-            { inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>}
+            {
+              inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderInMyList,
@@ -142,7 +148,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.InProgress }
-            { myTrainingService.inprogressCount > 0 && <span className="count">+{myTrainingService.inprogressCount}</span>}
+            {
+              myTrainingService.inprogressCount > 0 && <span className="count">+{myTrainingService.inprogressCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderInProgress,
@@ -152,7 +161,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.Enrolled }
-            { myTrainingService.enrolledCount > 0 && <span className="count">+{myTrainingService.enrolledCount}</span>}
+            {
+              myTrainingService.enrolledCount > 0 && <span className="count">+{myTrainingService.enrolledCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderEnrolled,

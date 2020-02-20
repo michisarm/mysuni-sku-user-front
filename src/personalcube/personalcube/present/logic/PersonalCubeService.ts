@@ -1,10 +1,10 @@
-import {action, observable, runInAction} from 'mobx';
-import {autobind, OffsetElementList} from '@nara.platform/accent';
+import { action, observable, runInAction } from 'mobx';
+import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import {CubeState} from 'shared/model';
+import { CubeState } from 'shared/model';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
-import {PersonalCubeModel} from '../../model/PersonalCubeModel';
+import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 
 
 @autobind

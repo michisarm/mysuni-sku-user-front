@@ -112,7 +112,7 @@ class MyLearningPage extends Component<Props> {
     return (
       <>
         {MyLearningContentTypeName[contentType]}
-        {count > 0 && <span className="count">+{count}</span>}
+        {count > 0 && <span className="count">+{count}</span> || <span className="count">0</span>}
       </>
     );
   }
