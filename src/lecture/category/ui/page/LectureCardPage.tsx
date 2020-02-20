@@ -560,7 +560,8 @@ class LectureCardPage extends Component<Props, State> {
     else {
       tabs.push(
         { name: 'Overview', item: 'Overview', render: this.renderOverview },
-        { name: 'Comments',
+        {
+          name: 'Comments',
           item: (
             <>
               Comments
@@ -570,7 +571,8 @@ class LectureCardPage extends Component<Props, State> {
               }
             </>
           ),
-          render: this.renderComment },
+          render: this.renderComment,
+        },
       );
     }
 
