@@ -147,6 +147,7 @@ class MainModalsContainer extends Component<{}, State> {
     ) {
       return null;
     }
+    // 2012-02-21 요구사항 - MinJun, JeeSu
     // else if (welcomeModalState.open) {
     //   return (
     //     <WelcomeModalView
