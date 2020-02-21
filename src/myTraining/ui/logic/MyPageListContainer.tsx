@@ -105,6 +105,7 @@ class MyPageListContainer extends Component<Props, States> {
     if (activeItem === MyPageContentType.CompletedList) {
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
       onChangeEarnedStampCount(offsetList.totalCount);
+      myTrainingService!.clear();
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset, channelIds);
       onChangeCompletedCount(offsetList.totalCount);
     }
