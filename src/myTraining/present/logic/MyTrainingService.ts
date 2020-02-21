@@ -108,6 +108,16 @@ class MyTrainingService {
   }
 
   @action
+  async countMyTrainingsWithStamp(channelIds: string[] = []) {
+    //
+    const rdo = MyTrainingRdoModel.new(1, 0, channelIds);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+
+    return trainingOffsetElementList.totalCount;
+  }
+
+
+  @action
   async findAllTabMyTraining() {
     //
     const myTrainingTabModel = await this.myTrainingApi.findAllTabMyTraining();
