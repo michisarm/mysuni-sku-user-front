@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import ModalState from './model/ModalState';
-import WelcomeModalView from './WelcomeModalView';
+// import WelcomeModalView from './WelcomeModalView';
 // import SystemGuideModalView from './SystemGuideModalView';
 import TutorialModalView from './TutorialModalView';
 
@@ -17,7 +17,7 @@ interface State {
 }
 
 enum PageType {
-  Welcome = 'welcome',
+  // Welcome = 'welcome',
   Tutorial = 'tutorial',
   // SystemGuide = 'systemGuide',
 }
@@ -40,7 +40,7 @@ class MainModalsContainer extends Component<{}, State> {
 
   componentDidMount(): void {
     //
-    this.initFromStorage(PageType.Welcome);
+    // this.initFromStorage(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
     // this.initFromStorage(PageType.SystemGuide);
   }
@@ -51,16 +51,16 @@ class MainModalsContainer extends Component<{}, State> {
     let disabled = false;
 
     if (disabledValue) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-
-        if (today === disabledValue) {
-          disabled = true;
-        }
-      }
-      else {
-        disabled = true;
-      }
+      // if (pageType === PageType.Welcome) {
+      //   const today = moment().format('YYYY-MM-DD');
+      //
+      //   if (today === disabledValue) {
+      //     disabled = true;
+      //   }
+      // }
+      // else {
+      disabled = true;
+      // }
     }
 
     if (disabled) {
@@ -101,20 +101,20 @@ class MainModalsContainer extends Component<{}, State> {
     const disableChecked = this.getModalStateProp(pageType, 'disableChecked');
 
     if (disableChecked) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
-      }
-      else {
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
-      }
+      // if (pageType === PageType.Welcome) {
+      //   const today = moment().format('YYYY-MM-DD');
+      //   window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
+      // }
+      // else {
+      window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+      // }
     }
     this.setModalStateProp(pageType, 'open', false);
   }
 
   onCloseWelcome() {
     //
-    this.onClose(PageType.Welcome);
+    // this.onClose(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
   }
 
