@@ -5,19 +5,19 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import ModalState from './model/ModalState';
-import WelcomeModalView from './WelcomeModalView';
+// import WelcomeModalView from './WelcomeModalView';
 // import SystemGuideModalView from './SystemGuideModalView';
 import TutorialModalView from './TutorialModalView';
 
 
 interface State {
-  welcomeModalState: ModalState
+  // welcomeModalState: ModalState
   tutorialModalState: ModalState
   // systemGuideModalState: ModalState
 }
 
 enum PageType {
-  Welcome = 'welcome',
+  // Welcome = 'welcome',
   Tutorial = 'tutorial',
   // SystemGuide = 'systemGuide',
 }
@@ -32,7 +32,7 @@ class MainModalsContainer extends Component<{}, State> {
   }
 
   state = {
-    welcomeModalState: new ModalState(),
+    // welcomeModalState: new ModalState(),
     tutorialModalState: new ModalState(),
     // systemGuideModalState: new ModalState(),
   };
@@ -40,7 +40,7 @@ class MainModalsContainer extends Component<{}, State> {
 
   componentDidMount(): void {
     //
-    this.initFromStorage(PageType.Welcome);
+    // this.initFromStorage(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
     // this.initFromStorage(PageType.SystemGuide);
   }
@@ -50,18 +50,18 @@ class MainModalsContainer extends Component<{}, State> {
     const disabledValue = window.localStorage.getItem(MainModalsContainer.getLocalStorageKey(pageType));
     let disabled = false;
 
-    if (disabledValue) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-
-        if (today === disabledValue) {
-          disabled = true;
-        }
-      }
-      else {
-        disabled = true;
-      }
-    }
+    // if (disabledValue) {
+    //   if (pageType === PageType.Welcome) {
+    //     const today = moment().format('YYYY-MM-DD');
+    //
+    //     if (today === disabledValue) {
+    //       disabled = true;
+    //     }
+    //   }
+    //   else {
+    //     disabled = true;
+    //   }
+    // }
 
     if (disabled) {
       this.setModalStateProp(pageType, 'disabled', true);
@@ -100,21 +100,21 @@ class MainModalsContainer extends Component<{}, State> {
     //
     const disableChecked = this.getModalStateProp(pageType, 'disableChecked');
 
-    if (disableChecked) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
-      }
-      else {
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
-      }
-    }
+    // if (disableChecked) {
+    //   if (pageType === PageType.Welcome) {
+    //     const today = moment().format('YYYY-MM-DD');
+    //     window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
+    //   }
+    //   else {
+    //     window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+    //   }
+    // }
     this.setModalStateProp(pageType, 'open', false);
   }
 
   onCloseWelcome() {
     //
-    this.onClose(PageType.Welcome);
+    // this.onClose(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
   }
 
@@ -136,25 +136,27 @@ class MainModalsContainer extends Component<{}, State> {
   render() {
     //
     const {
-      welcomeModalState,
+      // welcomeModalState,
       tutorialModalState,
       // systemGuideModalState,
     } = this.state;
 
-    if (welcomeModalState.disabled && tutorialModalState.disabled
-    // && systemGuideModalState.disabled
+    if (tutorialModalState.disabled
+      // && welcomeModalState.disabled
+     // && systemGuideModalState.disabled
     ) {
       return null;
     }
-    else if (welcomeModalState.open) {
-      return (
-        <WelcomeModalView
-          modalState={welcomeModalState}
-          onClose={this.onCloseWelcome}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Welcome, data.checked)}
-        />
-      );
-    }
+    // 2012-02-21 요구사항 - MinJun, JeeSu
+    // else if (welcomeModalState.open) {
+    //   return (
+    //     <WelcomeModalView
+    //       modalState={welcomeModalState}
+    //       onClose={this.onCloseWelcome}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Welcome, data.checked)}
+    //     />
+    //   );
+    // }
     else if (tutorialModalState.open) {
       return (
         <TutorialModalView
