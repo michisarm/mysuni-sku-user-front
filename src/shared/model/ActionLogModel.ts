@@ -29,9 +29,6 @@ export default class ActionLogModel {
   }
 
   static fromSeenActionLog(model: LectureModel | MyTrainingModel | InMyLectureModel, subAction: string = '') : ActionLogModel {
-
-    console.log('fromSeenActionLog', model, subAction);
-
     const actionLog: ActionLogModel = new ActionLogModel();
     actionLog.action = 1;
     actionLog.eventTimestampe = moment().toISOString(true);
@@ -49,14 +46,12 @@ export default class ActionLogModel {
   }
 
   static fromClickActionLog(subAction: string = '', subContext: string = '') : ActionLogModel {
-
-    console.log('fromClickActionLog', subAction, subContext);
-
     const actionLog: ActionLogModel = new ActionLogModel();
     actionLog.action = 2;
     actionLog.eventTimestampe = moment().toISOString(true);
     actionLog.deviceType = 1;
     actionLog.subAction = subAction;
+    actionLog.subContext = subContext;
     return actionLog;
   }
 
