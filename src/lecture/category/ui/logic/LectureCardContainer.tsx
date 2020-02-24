@@ -3,10 +3,10 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState, LearningState } from 'shared/model';
+import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
-import { StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from 'lecture/model';
+import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
 import { RollBookService, StudentService } from 'lecture/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
@@ -378,7 +378,8 @@ class LectureCardContainer extends Component<Props, State> {
     }
 
     if (viewObject && viewObject.reportFileBoxId && student
-      && !student.learningState && student.learningState !== LearningState.Passed && student.learningState === LearningState.Missed) {
+      && student.proposalState === ProposalState.Approved
+      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
       if (student.studentScore.homeworkScore) {
         subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }) });
       }
