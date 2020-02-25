@@ -22,7 +22,7 @@
     "@nara.platform/accent": "0.1.0",
     "@nara.drama/approval": "0.3.1",
     "@nara.drama/depot": "1.2.6-sk",
-    "@nara.drama/feedback": "0.0.26",
+    "@nara.drama/feedback": "0.0.27",
     "@nara.platform/dock": "0.1.0-sk",
     "@sku/personalcube": "0.0.24",
     "jquery": "3.3.1",
