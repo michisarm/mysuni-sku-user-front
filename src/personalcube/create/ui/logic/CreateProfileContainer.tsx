@@ -34,13 +34,13 @@ class CreateProfileContainer extends React.Component<Props> {
 
   onClickCreate() {
     const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: 'create' });
+    actionLogService?.registerClickActionLog({ subAction: 'Create' });
     this.props.history.push(routePaths.createNew());
   }
 
   onClickCreateMovie() {
     const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: 'create movie' });
+    actionLogService?.registerClickActionLog({ subAction: 'Create movie' });
   }
 
   render() {
