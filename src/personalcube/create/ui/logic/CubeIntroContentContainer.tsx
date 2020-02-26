@@ -25,10 +25,12 @@ import ConfirmWin from '../../../../shared/ui/logic/ConfirmWin';
 import CubeIntroMediaContainer from './CubeIntroMediaContainer';
 import CubeIntroView from '../view/CubeIntroView';
 import { FormTitle } from '../view/DetailElementsView';
+import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 
 
 interface Props extends RouteComponentProps<{ personalCubeId: string, cubeType: string }> {
   actionLogService?: ActionLogService,
+  skProfileService?: SkProfileService,
   personalCubeService?: PersonalCubeService
   cubeIntroService?: CubeIntroService
   contentsProviderService?: ContentsProviderService
@@ -53,6 +55,7 @@ interface State {
 
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
+  'profile.skProfileService',
   'college.contentsProviderService',
   'college.collegeService',
   'personalCube.boardService',
@@ -103,6 +106,9 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
 
     if (!cubeIntroId) {
       this.clearAll();
+
+      //저장전 초기 담당자 지정
+      this.setOperator();
     }
     else if (personalCubeId) {
       cubeIntroService!.findCubeIntro(cubeIntroId)
@@ -130,6 +136,26 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     mediaService!.clearMedia();
     boardService!.clearBoard();
     officeWebService!.clearOfficeWeb();
+  }
+
+  /**
+   * 담당자 정보 지정 Operator
+   */
+  setOperator()
+  {
+    const { cubeIntroService } = this.props;
+    const { changeCubeIntroProps } = cubeIntroService!;
+
+    const { skProfileService } = this.props;
+    const { skProfile } = skProfileService!;
+    const { member } = skProfile;
+
+    // console.log('setOperator() member.name=', member.name + ', member.employeeId=', member.employeeId + '
+    // , member.email=', member.email + ', member.companyCode=', member.companyCode);
+    changeCubeIntroProps('operation.operator.name', member.name);
+    changeCubeIntroProps('operation.operator.employeeId', member.employeeId);
+    changeCubeIntroProps('operation.operator.email', member.email);
+    changeCubeIntroProps('operation.operator.company', member.companyCode);
   }
 
   setOfficeWeb(contentsId: string) {
@@ -274,10 +300,13 @@ class CubeIntroContentContainer extends React.Component<Props, State> {
     const contentId  = personalCube.contents.contents.id;
     const cubeIntroId = personalCube.cubeIntro.id;
 
+    // console.log('handleOKConfirmWin cubeIntroService!.modifyCubeIntro cubeIntro=', cubeIntro);
+
     if (personalCubeId) {
       return personalCubeService!.modifyPersonalCube(personalCubeId, personalCube)
         .then(() => {
           if (cubeIntroId) {
+
             return cubeIntroService!.modifyCubeIntro(cubeIntroId, cubeIntro);
           }
           return null;
