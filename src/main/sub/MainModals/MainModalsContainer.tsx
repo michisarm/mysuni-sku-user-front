@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import moment from 'moment';
+// import moment from 'moment';
 import ModalState from './model/ModalState';
 // import WelcomeModalView from './WelcomeModalView';
 // import SystemGuideModalView from './SystemGuideModalView';
