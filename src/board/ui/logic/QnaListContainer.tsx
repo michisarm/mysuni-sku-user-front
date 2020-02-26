@@ -130,6 +130,13 @@ class QnaListContainer extends React.Component<Props, State> {
     if (!posts.results || posts.results.length < 1) {
       return (
         <Segment className="full">
+          <div className="support-list-wrap">
+            <div className="list-top">
+              <Button icon className="left post ask" onClick={this.onClickNewQna}>
+                <Icon className="ask24" />&nbsp;&nbsp;Ask a Question
+              </Button>
+            </div>
+          </div>
           <NoSuchContentPanel message="등록된 Q&A가 없습니다." />
         </Segment>
       );
