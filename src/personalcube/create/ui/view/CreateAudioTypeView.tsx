@@ -284,6 +284,10 @@ class CreateAudioTypeView extends React.Component<Props> {
             value={MediaType.InternalMedia}
             checked={media && media.mediaType === 'InternalMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            disabled={
+              media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'InternalMedia'
+              || media.linkMediaUrl.length > 0
+            }
           />
           {/*<Radio
             className="base"
@@ -298,6 +302,7 @@ class CreateAudioTypeView extends React.Component<Props> {
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            disabled={media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'LinkMedia' }
           />
           <div className="ui form">
             {

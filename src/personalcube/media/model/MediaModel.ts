@@ -31,6 +31,16 @@ export class MediaModel implements DramaEntity {
     return this.mediaContents && this.mediaContents.internalMedias;
   }
 
+  @computed
+  get internalMedias() {
+    return this.mediaContents && this.mediaContents.internalMedias;
+  }
+
+  @computed
+  get linkMediaUrl() {
+    return this.mediaContents && this.mediaContents.linkMediaUrl;
+  }
+
   static  asNameValues(media: MediaModel): NameValueList {
     const asNameValues = {
       nameValues: [

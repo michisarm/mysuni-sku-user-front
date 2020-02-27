@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -128,6 +128,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
   eachUpload() {
     const file = this.uploadFiles.shift();
+    console.log(file);
 
     const sessionName = this.sessionNames.shift();
     if (file === undefined) {
@@ -142,7 +143,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
         *###############################
         *###############################
         ###############################*/
-        alert('업로드가 완료되었습니다.');
         // iframe 인 경우 parent.함수명 호출
         // local broswer 인 경우 내장 함수명 바로 호출
         $('.thumb').remove();
@@ -184,6 +184,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
       success(ret: any) {
         // setTimeout(clazzThis.eachUpload, 500); //다음 파일 업로드
         clazzThis.setData(ret);
+        reactAlert({ title: '알림', message: '업로드가 완료되었습니다.' });
         // console.log(ret);
         if (ret.boolResult) clazzThis.uploadResult.push(ret.obj.list);
 
@@ -291,6 +292,10 @@ class CreateVideoTypeView  extends React.Component<Props> {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
             }}
+            disabled={
+              media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'InternalMedia'
+              || media.linkMediaUrl.length > 0
+            }
           />
           <Radio
             className="base"
@@ -301,6 +306,10 @@ class CreateVideoTypeView  extends React.Component<Props> {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
             }}
+            disabled={
+              media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'InternalMediaUpload'
+              || media.linkMediaUrl.length > 0
+            }
           />
           <Radio
             className="base"
@@ -308,13 +317,14 @@ class CreateVideoTypeView  extends React.Component<Props> {
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
             onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            disabled={media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'LinkMedia' }
           />
           <div className="ui form">
             {
               media && media.mediaType === MediaType.InternalMedia && (
                 <>
                   {
-                    media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length
+                    media.internalMedias && media.internalMedias.length
                     && (
                       <div className="ui input h48 file">
                         {
@@ -356,7 +366,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
                           />
                         </div>*/}
                         {
-                          media && media.mediaContents && media.mediaContents.internalMedias && (
+                          media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length === 0 && (
                           <div className="file-drop" id="drop">
                             <p>
                               <Icon className="upload" />
