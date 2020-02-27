@@ -109,7 +109,7 @@ class NoticeListContainer extends Component<Props, State> {
         target="_blank"
         className={classNames({
           row: true,
-          important: pinned,
+          important: post.pinned,
           new: this.isNewPost(post.time),
         })}
         onClick={() => this.onClickPost(post.postId)}
