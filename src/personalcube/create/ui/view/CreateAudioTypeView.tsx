@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -17,7 +17,7 @@ import { InternalMediaConnectionModel } from '../../../media/model/InternalMedia
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
-  onChangeMediaProps: (name: string, value: string | Date, nameSub?: string) => void
+  onChangeMediaProps: (name: string, value: string | Date | [], nameSub?: string) => void
   media: MediaModel
   getFileBoxIdForReference: (fileBoxId: string) => void
   personalCube: PersonalCubeModel
@@ -182,7 +182,7 @@ class CreateAudioTypeView extends React.Component<Props> {
       success(ret: any) {
         // setTimeout(clazzThis.eachUpload, 500); //다음 파일 업로드
         clazzThis.setData(ret);
-        // console.log(ret);
+        reactAlert({ title: '알림', message: '업로드가 완료되었습니다.' });
         if (ret.boolResult) clazzThis.uploadResult.push(ret.obj.list);
 
       },
@@ -281,19 +281,22 @@ class CreateAudioTypeView extends React.Component<Props> {
             label="오디오 파일 업로드"
             value={MediaType.InternalMedia}
             checked={media && media.mediaType === 'InternalMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
-            disabled={
-              media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'InternalMedia'
-              || media.linkMediaUrl.length > 0
-            }
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
           <Radio
             className="base"
             label="오디오 링크"
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
-            disabled={media.internalMedias && media.internalMedias.length > 0 && media.mediaType !== 'LinkMedia' }
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
           <div className="ui form">
             {

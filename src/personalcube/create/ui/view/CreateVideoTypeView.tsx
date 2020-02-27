@@ -283,6 +283,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
             onChange={(e: any, data: any) => {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
             }}
           />
           <Radio
@@ -293,6 +294,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
             onChange={(e: any, data: any) => {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
             }}
           />
           <Radio
@@ -300,7 +302,11 @@ class CreateVideoTypeView  extends React.Component<Props> {
             label="영상링크"
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
           <div className="ui form">
             {
