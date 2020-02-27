@@ -29,7 +29,7 @@ class CarouselItemView extends Component<Props> {
     const content = (
       <div className="text">
         <div className="main-text">{title}</div>
-        <div className="sub-text">{description}</div>
+        <div className="sub-text expansion">{description}</div>
       </div>
     );
     let element;
