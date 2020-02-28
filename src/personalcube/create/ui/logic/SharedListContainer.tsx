@@ -56,10 +56,11 @@ class SharedListContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    const { pageService } = this.props;
+    const { pageService, lectureService } = this.props;
 
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
     pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
+    lectureService!.clearLectures();
     this.findSharedLectures();
   }
 
