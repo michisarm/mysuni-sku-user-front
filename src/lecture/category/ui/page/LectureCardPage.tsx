@@ -53,7 +53,8 @@ interface Props extends RouteComponentProps<RouteParams> {
 }
 
 interface State {
-  linkedInOpen: boolean
+  linkedInOpen: boolean,
+  loaded: boolean,
 }
 
 interface RouteParams {
@@ -84,6 +85,7 @@ class LectureCardPage extends Component<Props, State> {
   //
   state= {
     linkedInOpen: false,
+    loaded: false,
   };
 
   constructor(props: Props) {
@@ -119,6 +121,8 @@ class LectureCardPage extends Component<Props, State> {
       rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService, commentService,
     } = this.props;
     const { params } = match;
+
+    this.setState({ loaded: false });
 
     const promises = Promise.all([
       personalCubeService.findPersonalCube(params.cubeId),
@@ -179,7 +183,8 @@ class LectureCardPage extends Component<Props, State> {
         commentService!.countByFeedbackId(lectureCard!.commentId);
       });
     await studentService.findIsJsonStudentByCube(params.lectureCardId);
-    this.findStudent();
+    await this.findStudent();
+    this.setState({ loaded: true });
   }
 
   compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
@@ -201,7 +206,7 @@ class LectureCardPage extends Component<Props, State> {
     return null;
   }
 
-  findStudent() {
+  async findStudent() {
     const {
       studentService,
     } = this.props;
@@ -209,7 +214,7 @@ class LectureCardPage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
     else studentService!.clear();
@@ -678,6 +683,7 @@ class LectureCardPage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         init={this.init}
+        loaded={this.state.loaded}
       >
         {cardContent}
       </LectureCardContainer>

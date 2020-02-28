@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 
 import { Button, List, Modal } from 'semantic-ui-react';
 import SurveyCaseService from '../../event/present/logic/SurveyCaseService';
@@ -116,6 +116,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }
   }
 
+  onSubmitClick() {
+    reactConfirm({ title: '알림', message: '설문을 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+  }
+
   render() {
     //
     const { open } = this.state;
@@ -227,7 +231,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
             !disabled && (
               <>
                 <Button className="w190 pop s" onClick={() => this.onSaveAnswerSheet(false)}>저장</Button>
-                <Button className="w190 pop p" onClick={() => this.onSaveAnswerSheet(true)}>제출</Button>
+                <Button className="w190 pop p" onClick={() => this.onSubmitClick()}>제출</Button>
               </>
             )
           }
