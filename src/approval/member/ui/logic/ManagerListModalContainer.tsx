@@ -54,7 +54,7 @@ class ManagerListModalContainer extends React.Component<Props, States> {
     const { skProfileService } = this.props;
     const { open } = this.state;
     const { skProfile } = skProfileService!;
-    const cineroomId = getCookie('cineroomId');
+    const cineroomId = patronInfo.getCineroomId();
     const companyCode = patronInfo.getPatronCompanyCode();
     return (
       <Chart
