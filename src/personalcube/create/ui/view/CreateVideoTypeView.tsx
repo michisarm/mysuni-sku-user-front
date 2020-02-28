@@ -297,6 +297,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
               onChangeMediaProps('mediaContents.linkMediaUrl', '');
             }}
           />
+
           <Radio
             className="base"
             label="영상링크"
