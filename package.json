@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@nara.platform/accent": "0.1.0",
-    "@nara.drama/approval": "0.3.5",
+    "@nara.drama/approval": "0.3.5-test",
     "@nara.drama/depot": "1.2.7-sk-test2",
     "@nara.drama/feedback": "0.0.28",
     "@nara.platform/dock": "0.1.0-sk",
