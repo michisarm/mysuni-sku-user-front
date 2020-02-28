@@ -38,6 +38,7 @@ interface Props {
   typeViewObject: any
   children: React.ReactNode
   init?:() => void
+  loaded: boolean
 }
 
 interface State {
@@ -58,14 +59,38 @@ class LectureCardContainer extends Component<Props, State> {
   surveyModal: any = null;
   reportModal: any = null;
   applyReferenceModel: any = null;
+  prevViewObjectState: string = '';
 
   state = {
     rollBook: new RollBookModel(),
   };
 
+
   componentDidMount(): void {
     //
     this.findInMyLecture();
+  }
+
+  componentDidUpdate(prevProps: any, prevState: any) {
+
+    if (!prevProps.loaded && !this.props.loaded
+      && prevProps.viewObject?.state !== this.props.viewObject?.state
+      && prevProps.student?.id === this.props.student?.id) {
+      this.prevViewObjectState = prevProps.viewObject.state;
+    } else if (!prevProps.loaded && this.props.loaded) {
+      if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'TestWaiting') {
+        reactAlert({ title: '알림', message: '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.' });
+      } else if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'Failed') {
+        reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
+      } else if (this.props.viewObject.state === 'Missed') {
+        reactAlert({ title: '알림', message: '과정이 미이수되었습니다. 처음부터 다시 학습 후 Test를 응시해주시기 바랍니다.' });
+      } else if (this.prevViewObjectState === 'InProgress' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      }
+    }
+
   }
 
   componentWillUnmount(): void {

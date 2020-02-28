@@ -35,6 +35,10 @@ interface Props extends RouteComponentProps<RouteParams> {
   commentService: CommentService,
 }
 
+interface State {
+  loaded: boolean,
+}
+
 interface RouteParams {
   cineroomId: string
   collegeId: string,
@@ -56,8 +60,12 @@ interface RouteParams {
 ))
 @reactAutobind
 @observer
-class CoursePage extends Component<Props> {
+class CoursePage extends Component<Props, State> {
   //
+  state = {
+    loaded: false,
+  };
+
   constructor(props: Props) {
     //
     super(props);
@@ -95,10 +103,12 @@ class CoursePage extends Component<Props> {
 
   async init() {
     //
+    this.setState({ loaded: false });
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
-    this.findStudent();
+    await this.findStudent();
+    this.setState({ loaded: true });
   }
 
   /**
@@ -129,7 +139,7 @@ class CoursePage extends Component<Props> {
     return null;
   }
 
-  findStudent() {
+  async findStudent() {
     const {
       studentService,
     } = this.props;
@@ -138,7 +148,7 @@ class CoursePage extends Component<Props> {
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
       // console.log(studentJoin);
-      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
     else studentService!.clear();
@@ -441,6 +451,7 @@ class CoursePage extends Component<Props> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         init={this.init}
+        loaded={this.state.loaded}
       >
         {courseContent}
       </LectureCardContainer>
