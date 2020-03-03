@@ -4,7 +4,6 @@ import { NameValueList } from 'shared/model';
 import { MediaType } from './MediaType';
 import { MediaContentsModel } from './MediaContentsModel';
 import { MediaCdoModel } from './MediaCdoModel';
-import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class MediaModel implements DramaEntity {
 
@@ -15,14 +14,15 @@ export class MediaModel implements DramaEntity {
   mediaType: MediaType = MediaType.LinkMedia;
   name: string = '';
   mediaContents: MediaContentsModel = new MediaContentsModel();
-  learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
+  // learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
   time: number = 0;
 
   constructor(media?: MediaModel) {
     if (media) {
       const mediaContents = media.mediaContents && new MediaContentsModel(media.mediaContents) || this.mediaContents;
-      const learningPeriod = media.learningPeriod && new NewDatePeriod(media.learningPeriod) || this.learningPeriod;
-      Object.assign(this, { ...media, mediaContents, learningPeriod });
+      // const learningPeriod = media.learningPeriod && new NewDatePeriod(media.learningPeriod) || this.learningPeriod;
+      // Object.assign(this, { ...media, mediaContents, learningPeriod });
+      Object.assign(this, { ...media, mediaContents });
     }
   }
 
@@ -56,10 +56,10 @@ export class MediaModel implements DramaEntity {
           name: 'mediaContents',
           value: JSON.stringify(media.mediaContents),
         },
-        {
-          name: 'learningPeriod',
-          value: JSON.stringify(media.learningPeriod),
-        },
+        // {
+        //   name: 'learningPeriod',
+        //   value: JSON.stringify(media.learningPeriod),
+        // },
       ],
     };
 
@@ -74,7 +74,7 @@ export class MediaModel implements DramaEntity {
         mediaType: media.mediaType,
         name: media.name,
         mediaContents: media.mediaContents,
-        learningPeriod: media.learningPeriod,
+        // learningPeriod: media.learningPeriod,
       }
     );
   }
@@ -124,6 +124,6 @@ decorate(MediaModel, {
   mediaType: observable,
   mediaContents: observable,
   name: observable,
-  learningPeriod: observable,
+  // learningPeriod: observable,
   time: observable,
 });

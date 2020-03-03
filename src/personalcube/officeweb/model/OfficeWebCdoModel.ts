@@ -6,5 +6,5 @@ export class OfficeWebCdoModel {
   name: string = '';
   fileBoxId: string = '';
   webPageUrl: string = '';
-  learningPeriod: NewDatePeriod = new NewDatePeriod();
+  // learningPeriod: NewDatePeriod = new NewDatePeriod();
 }

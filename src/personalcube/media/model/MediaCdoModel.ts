@@ -7,5 +7,5 @@ export class MediaCdoModel {
   mediaType: string = '';
   name: string = '';
   mediaContents: MediaContentsModel = new MediaContentsModel();
-  learningPeriod: NewDatePeriod = new NewDatePeriod();
+  // learningPeriod: NewDatePeriod = new NewDatePeriod();
 }
