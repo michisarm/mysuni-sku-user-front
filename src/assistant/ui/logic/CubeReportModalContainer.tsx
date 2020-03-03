@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactConfirm } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
@@ -69,6 +69,10 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     if (studentService) studentService.setStudentProp('homeworkFileBoxId', depotId);
   }
 
+  onSubmitClick() {
+    reactConfirm({ title: '알림', message: '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.', onOk: () => this.onSaveModal() });
+  }
+
   render() {
     //
     const { open } = this.state;
@@ -126,7 +130,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
         </Modal.Content>
         <Modal.Actions className="actions2">
           <Button className="pop2 d" onClick={this.onCloseModal}>Cancel</Button>
-          <Button className="pop2 p" onClick={this.onSaveModal}>Submit</Button>
+          <Button className="pop2 p" onClick={this.onSubmitClick}>Submit</Button>
         </Modal.Actions>
       </Modal>
     );

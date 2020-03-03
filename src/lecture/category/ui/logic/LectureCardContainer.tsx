@@ -278,7 +278,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
     studentCdo.leaderEmails = [member.email];
-    studentCdo.url = window.location.href;
+    studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
     this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }

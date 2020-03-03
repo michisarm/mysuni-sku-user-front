@@ -1,17 +1,15 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 import moment from 'moment';
 
-import { Card, Icon, Button } from 'semantic-ui-react';
+import { Button, Card, Icon } from 'semantic-ui-react';
 import { dateTimeHelper } from 'shared';
-import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
+import { LearningState } from 'shared/model';
+import { InMyLectureModel, MyTrainingModel } from 'myTraining/model';
 
 import { LectureModel } from '../../../../model';
-import {
-  Title, Fields, Field, Buttons, Thumbnail,
-} from '../../../ui/view/LectureElementsView';
+import { Buttons, Field, Fields, Thumbnail, Title } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
 
 
@@ -76,6 +74,14 @@ class ListCardView extends Component<Props> {
     } = this.props;
     const { hour, minute } = dateTimeHelper.timeToHourMinute(model.learningTime);
 
+    let image = thumbnailImage;
+
+    if ((model instanceof LectureModel && model.viewState === 'Passed')
+      || ((model instanceof MyTrainingModel || model instanceof InMyLectureModel) && model.learningState === LearningState.Passed)
+    ) {
+      image = `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.jpg`;
+    }
+
     return (
       <Card>
         {
@@ -89,7 +95,7 @@ class ListCardView extends Component<Props> {
           {/* Todo: stampReady, 미사용이면 제거 */}
           {/*<Ribbon stampReady={false} />*/}
 
-          <Thumbnail image={thumbnailImage} />
+          <Thumbnail image={image} />
 
           <Title title={<a>{model.name}</a>} category={model.category}>
             <Fields>

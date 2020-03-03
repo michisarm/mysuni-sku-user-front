@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCookie, mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { Chart } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
