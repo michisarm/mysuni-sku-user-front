@@ -207,6 +207,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService;
 
     if (!inMyLecture || !inMyLecture.id) {
+      reactAlert({ title: '알림', message: '본 과정이 관심목록에 추가되었습니다.' });
       inMyLectureService!.addInMyLecture(inMyLectureCdo)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }
@@ -219,6 +220,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService;
 
     if (inMyLecture && inMyLecture.id) {
+      reactAlert({ title: '알림', message: '본 과정이 관심목록에서 제외되었습니다.' });
       inMyLectureService!.removeInMyLecture(inMyLecture.id)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }

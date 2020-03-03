@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
@@ -213,7 +213,10 @@ class SharedListContainer extends React.Component<Props, States> {
                   rating={this.getRating(lecture)}
                   thumbnailImage={lecture.baseUrl || undefined}
                   action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                  onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
+                  onAction={() => {
+                    reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                    this.onToggleBookmarkLecture(inMyLecture || lecture);
+                  }}
                   onViewDetail={this.onViewDetail}
                 />
               );

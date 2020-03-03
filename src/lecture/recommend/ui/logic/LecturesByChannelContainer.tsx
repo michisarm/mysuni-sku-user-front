@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
@@ -262,7 +262,10 @@ class LecturesByChannelContainer extends Component<Props, State> {
                       rating={rating}
                       thumbnailImage={lecture.baseUrl || undefined}
                       action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                      onAction={() => this.onActionLecture(inMyLecture || lecture)}
+                      onAction={() => {
+                        reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                        this.onActionLecture(inMyLecture || lecture);
+                      }}
                       onViewDetail={this.onViewDetail}
                     />
                   );
