@@ -1,4 +1,3 @@
-import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class OfficeWebCdoModel {
   //

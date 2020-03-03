@@ -3,6 +3,7 @@ import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { NameValueList } from 'shared/model';
 import { OfficeWebCdoModel } from './OfficeWebCdoModel';
+import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 
 export class OfficeWebModel implements DramaEntity {
@@ -14,14 +15,13 @@ export class OfficeWebModel implements DramaEntity {
   name: string = '';
   fileBoxId: string = '';               // Document
   webPageUrl: string = '';              // webPage/Experiential url
-  // learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
+  learningPeriod: NewDatePeriod = new NewDatePeriod();          // 학습시작일 - 학습종료일
   time: number = 0;
 
   constructor(officeWeb?: OfficeWebModel) {
     if (officeWeb) {
-      // const learningPeriod = officeWeb.learningPeriod && new NewDatePeriod(officeWeb.learningPeriod) || this.learningPeriod;
-      // Object.assign(this, { ...officeWeb, learningPeriod });
-      Object.assign(this, { ...officeWeb });
+      const learningPeriod = officeWeb.learningPeriod && new NewDatePeriod(officeWeb.learningPeriod) || this.learningPeriod;
+      Object.assign(this, { ...officeWeb, learningPeriod });
     }
   }
 
@@ -67,6 +67,6 @@ decorate(OfficeWebModel, {
   name: observable,
   fileBoxId: observable,
   webPageUrl: observable,
-  // learningPeriod: observable,
+  learningPeriod: observable,
   time: observable,
 });
