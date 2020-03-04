@@ -83,7 +83,9 @@ class ActionLogService {
 
     // console.log('ActionLogService _actionLogs request');
 
-    this.actionLogApi.registerActionLogs(actionLogs);
+    this.actionLogApi.registerActionLogs(actionLogs).catch(err => {
+      console.log('action log api error : ', err);
+    });
   }
 
 }
