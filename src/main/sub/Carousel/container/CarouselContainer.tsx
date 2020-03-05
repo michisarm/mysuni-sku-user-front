@@ -70,7 +70,8 @@ class CarouselContainer extends Component<Props, State> {
           #4. 성큼 다가온 AI everywhere 시대! SK의 AI는 어디쯤 와있을까?
         </>
       ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-35q/lecture-card/LECTURE-CARD-1v1',
+
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-77w/lecture-card/LECTURE-CARD-2ax',
       imageUrl: '/images/all/img_banner_05.jpg',
     },
     {
