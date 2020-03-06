@@ -31,6 +31,16 @@ export class MediaModel implements DramaEntity {
     return this.mediaContents && this.mediaContents.internalMedias;
   }
 
+  @computed
+  get internalMedias() {
+    return this.mediaContents && this.mediaContents.internalMedias;
+  }
+
+  @computed
+  get linkMediaUrl() {
+    return this.mediaContents && this.mediaContents.linkMediaUrl;
+  }
+
   static  asNameValues(media: MediaModel): NameValueList {
     const asNameValues = {
       nameValues: [
@@ -46,10 +56,10 @@ export class MediaModel implements DramaEntity {
           name: 'mediaContents',
           value: JSON.stringify(media.mediaContents),
         },
-        {
-          name: 'learningPeriod',
-          value: JSON.stringify(media.learningPeriod),
-        },
+        // {
+        //   name: 'learningPeriod',
+        //   value: JSON.stringify(media.learningPeriod),
+        // },
       ],
     };
 
@@ -64,7 +74,7 @@ export class MediaModel implements DramaEntity {
         mediaType: media.mediaType,
         name: media.name,
         mediaContents: media.mediaContents,
-        learningPeriod: media.learningPeriod,
+        // learningPeriod: media.learningPeriod,
       }
     );
   }
@@ -114,6 +124,6 @@ decorate(MediaModel, {
   mediaType: observable,
   mediaContents: observable,
   name: observable,
-  learningPeriod: observable,
+  // learningPeriod: observable,
   time: observable,
 });

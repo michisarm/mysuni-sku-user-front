@@ -8,9 +8,13 @@ import lecturePaths from 'lecture/routePaths';
 import myTrainingPaths from 'myTraining/routePaths';
 
 
-export const LogoView: React.FC = () => (
+interface LogoViewProps {
+  onClickMenu: (menuName: string) => void,
+}
+
+export const LogoView: React.FC<LogoViewProps> = ({ onClickMenu }) => (
   <div className="g-logo">
-    <Link to="/">
+    <Link to="/" onClick={() => onClickMenu('mySUNI')}>
       <i className="sk-university icon">
         <span className="blind">mySUNI</span>
       </i>
@@ -20,15 +24,16 @@ export const LogoView: React.FC = () => (
 
 
 interface MenuViewProps {
+  onClickMenu: (menuName: string) => void,
 }
 
-export const MenuView: React.FC<MenuViewProps> = () => (
+export const MenuView: React.FC<MenuViewProps> = ({ onClickMenu }) => (
   <div className="g-menu">
     <div className="nav">
-      <NavLink to={myTrainingPaths.learning()} className="item">Learning</NavLink>
-      {/*<NavLink to={myTrainingPaths.community()} className="item">Community</NavLink>*/}
-      <NavLink to={lecturePaths.recommend()} className="item">Recommend</NavLink>
-      <NavLink to={personalCubePaths.create()} className="item">Create</NavLink>
+      <NavLink to={myTrainingPaths.learning()} className="item" onClick={() => onClickMenu('Learning')}>Learning</NavLink>
+      {/*<NavLink to={myTrainingPaths.community()} className="item" onClick={() => onClickMenu('Community')}>Community</NavLink>*/}
+      <NavLink to={lecturePaths.recommend()} className="item" onClick={() => onClickMenu('Recommend')}>Recommend</NavLink>
+      <NavLink to={personalCubePaths.create()} className="item" onClick={() => onClickMenu('Create')}>Create</NavLink>
     </div>
   </div>
 );

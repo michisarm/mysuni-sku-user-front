@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind, reactAlert } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -128,6 +128,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
 
   eachUpload() {
     const file = this.uploadFiles.shift();
+    console.log(file);
 
     const sessionName = this.sessionNames.shift();
     if (file === undefined) {
@@ -142,7 +143,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
         *###############################
         *###############################
         ###############################*/
-        alert('업로드가 완료되었습니다.');
         // iframe 인 경우 parent.함수명 호출
         // local broswer 인 경우 내장 함수명 바로 호출
         $('.thumb').remove();
@@ -184,6 +184,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
       success(ret: any) {
         // setTimeout(clazzThis.eachUpload, 500); //다음 파일 업로드
         clazzThis.setData(ret);
+        reactAlert({ title: '알림', message: '업로드가 완료되었습니다.' });
         // console.log(ret);
         if (ret.boolResult) clazzThis.uploadResult.push(ret.obj.list);
 
@@ -226,15 +227,6 @@ class CreateVideoTypeView  extends React.Component<Props> {
     //
     const patronEmail = patronInfo.getPatronEmail() || '';
     window.localStorage.setItem('externalId', patronEmail);
-    /* const { collegeService } = this.props;
-    const { collegeForPanopto, collegesForPanopto } = collegeService || {} as CollegeService;
-
-    const cineroomId = sessionStorage.getItem('cineroomId');
-
-    if (collegeForPanopto.panoptoFolderId) {
-      if (cineroomId === 'ne1-m2-c2') window.localStorage.setItem('externalId', collegeForPanopto.panoptoFolderId);
-      else window.localStorage.setItem('externalId', patronInfo.getPatronEmail());
-    }*/
   }
 
   setData(ret: any) {
@@ -242,8 +234,9 @@ class CreateVideoTypeView  extends React.Component<Props> {
     const mediaService = this.props.mediaService!;
 
     if (ret.boolResult && ret.obj && ret.obj.list) {
-      const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
+      const internalMediaList: InternalMediaConnectionModel[] = [];
       if (Array.isArray(ret.obj.list)) {
+        console.log(ret.obj.list);
         Promise.resolve()
           .then(() => {
             ret.obj.list.map((list: any) => {
@@ -290,6 +283,7 @@ class CreateVideoTypeView  extends React.Component<Props> {
             onChange={(e: any, data: any) => {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
             }}
           />
           <Radio
@@ -300,26 +294,31 @@ class CreateVideoTypeView  extends React.Component<Props> {
             onChange={(e: any, data: any) => {
               onChangeMediaProps('mediaType', data.value);
               onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
             }}
           />
+
           <Radio
             className="base"
             label="영상링크"
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
           <div className="ui form">
             {
               media && media.mediaType === MediaType.InternalMedia && (
                 <>
                   {
-                    media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length
+                    media.internalMedias && media.internalMedias.length
                     && (
                       <div className="ui input h48 file">
                         {
                           media.mediaContents.internalMedias.map((internalMedia: InternalMediaConnectionModel, index: number) => (
-                            /*<p key={index}>{internalMedia.name} | {internalMedia.folderName}</p>*/
                             <input
                               type="text"
                               key={index}
@@ -329,34 +328,13 @@ class CreateVideoTypeView  extends React.Component<Props> {
                           )) || null
                         }
                         <Icon className="clear link" />
-                        {/*<label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>*/}
-                        {/*<label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
                         <input type="file" id="hidden-new-file" />
                       </div>
                     )
                     || (
                       <div className="round-wrap file-drop-wrap">
-                        {/*<input*/}
-                        {/*  type="text"*/}
-                        {/*  placeholder="영상을 업로드해주세요."*/}
-                        {/*  readOnly*/}
-                        {/*/>*/}
-                        {/* <div className="filter">
-                          폴더:
-                          <Select
-                            placeholder="분류를 선택해주세요"
-                            className="ui small-border dropdown"
-                            options={this.makeCollegeOption()}
-                            value={media && media.mediaContents && media.mediaContents.internalMedias
-                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
-                            && media.mediaContents.internalMedias[0].folderId || this.state.folderId || ''}
-                            onChange={(e: any, data: any) => {
-                              this.setState({ folderId: data.value });
-                            }}
-                          />
-                        </div>*/}
                         {
-                          media && media.mediaContents && media.mediaContents.internalMedias && (
+                          media && media.mediaContents && media.mediaContents.internalMedias && media.mediaContents.internalMedias.length === 0 && (
                           <div className="file-drop" id="drop">
                             <p>
                               <Icon className="upload" />

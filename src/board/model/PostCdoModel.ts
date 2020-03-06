@@ -1,9 +1,12 @@
-import { IdName } from 'shared/model';
-import { PostConfigModel } from './PostConfigModel';
-import { PostContentsModel } from './PostContentsModel';
-import { WriterModel } from './WriterModel';
 
-export class PostCdoModel {
+import { IdName } from 'shared/model';
+
+import PostConfigModel from './PostConfigModel';
+import PostContentsModel from './PostContentsModel';
+import WriterModel from './WriterModel';
+
+
+class PostCdoModel {
   //
   audienceKey: string = '';
   boardId: string = '';
@@ -12,5 +15,6 @@ export class PostCdoModel {
   contents: PostContentsModel = new PostContentsModel();
   config: PostConfigModel = new PostConfigModel();
   category: IdName = new IdName();
-
 }
+
+export default PostCdoModel;

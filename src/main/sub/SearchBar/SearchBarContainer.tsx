@@ -1,18 +1,31 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Segment, Icon } from 'semantic-ui-react';
 import { InputWrapper } from 'shared';
+import { ActionLogService } from 'shared/stores';
 
 
+interface Props {
+  actionLogService?: ActionLogService,
+}
+
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
-class SearchBarContainer extends Component {
+class SearchBarContainer extends Component<Props> {
   //
   onSearch(value: string) {
     //
+    const { actionLogService } = this.props;
+
     if (value) {
+      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: value, isEmpty: true });
+
       window.location.href = encodeURI(`/search?query=${value}`);
     }
   }

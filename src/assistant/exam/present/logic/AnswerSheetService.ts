@@ -1,13 +1,10 @@
-import { observable, action, configure, runInAction, computed } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import _ from 'lodash';
 import { autobind } from '@nara.platform/accent';
 import AnswerSheetApi from '../apiclient/AnswerSheetApi';
 import { AnswerSheetModel } from '../../model/AnswerSheetModel';
 import { ItemAnswerModel } from '../../model/ItemAnswerModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class AnswerSheetService {
@@ -53,18 +50,14 @@ export default class AnswerSheetService {
 
   @action
   setAnswer(questionNo: string, answer: string, questionsNos: string[]) {
-    console.log(';;');
-    console.log(this.answerSheet);
     if (this.answerSheet && this.answerSheet.answers) {
       let answers = [ ...this.answerSheet.answers ];
       if (!answers.length) {
         answers = questionsNos.map((questionNo) => new ItemAnswerModel({ questionNo, answer: '' }));
       }
-      console.log(answers);
       const index = answers.map(answer => answer.questionNo).findIndex(qno => qno === questionNo);
       if (index >= 0) {
         answers[index].answer = answer;
-        console.log(answers);
         this.answerSheet = _.set(this.answerSheet, `answers`, answers);
       }
     }

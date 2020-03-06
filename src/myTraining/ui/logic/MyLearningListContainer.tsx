@@ -1,13 +1,13 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { ChannelModel } from 'college/model';
@@ -27,6 +27,7 @@ import LineHeaderContainer from '../logic/LineHeaderContainer';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   reviewService?: ReviewService,
   skProfileService?: SkProfileService,
@@ -41,6 +42,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'shared.reviewService',
   'profile.skProfileService',
@@ -153,7 +155,10 @@ class MyLearningPage extends Component<Props, State> {
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
     const { type } = this.state;
-    const { inMyLectureService, pageService } = this.props;
+    const { actionLogService, inMyLectureService, pageService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
         .then(() => {
@@ -227,8 +232,9 @@ class MyLearningPage extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    const { history } = this.props;
+    const { actionLogService, history } = this.props;
 
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
@@ -239,6 +245,11 @@ class MyLearningPage extends Component<Props, State> {
 
     if (!page || !page.pageNo || !page.totalPages) return false;
     return page!.pageNo < page!.totalPages;
+  }
+
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   onFilter(channels: ChannelModel[]) {
@@ -268,7 +279,10 @@ class MyLearningPage extends Component<Props, State> {
           <div className="text">{noSuchContentPanel}</div>
           <a
             className="ui icon right button btn-blue2"
-            onClick={() => history.push('/lecture/recommend')}
+            onClick={() => {
+              this.onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
+              history.push('/lecture/recommend');
+            }}
           >
             {profileMemberName}님에게 추천하는 학습 과정 보기<i className="icon morelink" />
           </a>
@@ -344,7 +358,10 @@ class MyLearningPage extends Component<Props, State> {
                 rating={rating}
                 thumbnailImage={value.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                onAction={() => this.onActionLecture(inMyLecture || value)}
+                onAction={() => {
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                  this.onActionLecture(inMyLecture || value);
+                }}
                 onViewDetail={this.onViewDetail}
               />
             );

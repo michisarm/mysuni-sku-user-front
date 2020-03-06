@@ -4,12 +4,12 @@ import { Route, Switch } from 'react-router-dom';
 
 import NotFoundPage from 'layout/NotFoundPage';
 
-import BookMainContainer from './ui/logic/BookMainContainer';
-import NoticeDetailContainer from './ui/logic/NoticeDetailContainer';
-import FaqDetailContainer from './ui/logic/FaqDetailContainer';
-import QnaRegisterContainer from './ui/logic/QnaRegisterContainer';
-import QnaDetailContainer from './ui/logic/QnaDetailContainer';
-import AnsweredDetailContainer from './ui/logic/AnsweredDetailContainer';
+import BoardListPage from './ui/page/BoardListPage';
+import NoticeDetailPage from './ui/page/NoticeDetailPage';
+import FaqDetailPage from './ui/page/FaqDetailPage';
+import QnaRegisterPage from './ui/page/QnaRegisterPage';
+import QnaDetailPage from './ui/page/QnaDetailPage';
+import AnswerDetailPage from './ui/page/AnswerDetailPage';
 
 
 class Routes extends React.PureComponent {
@@ -18,12 +18,12 @@ class Routes extends React.PureComponent {
     //
     return (
       <Switch>
-        <Route exact path="/board/support/:boardId" component={BookMainContainer} />
-        <Route exact path="/board/support/notice-detail/:postId" component={NoticeDetailContainer} />
-        <Route exact path="/board/support/faq-detail/:postId" component={FaqDetailContainer} />
-        <Route exact path="/board/support-qna" component={QnaRegisterContainer} />
-        <Route exact path="/board/support/qna-detail/:postId" component={QnaDetailContainer} />
-        <Route exact path="/board/support/answered-detail/:postId" component={AnsweredDetailContainer} />
+        <Route exact path="/board/support/:boardId" component={BoardListPage} />
+        <Route exact path="/board/support/notice-detail/:postId" component={NoticeDetailPage} />
+        <Route exact path="/board/support/faq-detail/:postId" component={FaqDetailPage} />
+        <Route exact path="/board/support-qna" component={QnaRegisterPage} />
+        <Route exact path="/board/support/qna-detail/:postId" component={QnaDetailPage} />
+        <Route exact path="/board/support/answered-detail/:postId" component={AnswerDetailPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

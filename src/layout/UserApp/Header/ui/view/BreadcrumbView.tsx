@@ -1,11 +1,15 @@
 
 import React, { Component, Fragment } from 'react';
-import { reactAutobind, axiosApi, setCookie } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, axiosApi, StorageModel } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 import { Link } from 'react-router-dom';
+
+import { ActionLogService } from 'shared/stores';
 import { BreadcrumbValue } from '../../../index';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   values?: BreadcrumbValue[];
   supportPath: string;
 }
@@ -15,12 +19,14 @@ interface State {
   id: string
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    // id: 'SKCC.07746@sk.com',
-    id: 'SKCC.07750@sk.com',
+    id: 'djpaek@sk.com',
   };
 
   // TODO: 삭제해야
@@ -30,7 +36,7 @@ class BreadcrumbView extends Component<Props, State> {
     postData.append('grant_type', 'password');
     postData.append('scope', 'client');
     postData.append('username', this.state.id);
-    postData.append('password', '1');
+    postData.append('password', 'SKCC.07874');
 
     const config = {
       headers: {
@@ -45,25 +51,40 @@ class BreadcrumbView extends Component<Props, State> {
       config,
     )
       .then(({ data }: any) => {
-        if (data.access_token) {
-          const accessToken = data.access_token;
-
-          setCookie('token', accessToken);
-          setCookie('workspaces', JSON.stringify(data.workspaces));
-          setCookie('displayName', data.displayName);
-          setCookie('email', this.state.id);
-
-          const cineroomWorkspaces = data.workspaces.cineroomWorkspaces;
-          const cineroom = cineroomWorkspaces.find((cineroom: any) => cineroom.name === 'SK University');
-          setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
-
-          if (data.additionalInformation && data.additionalInformation.companyCode) {
-            setCookie('companyCode', data.additionalInformation.companyCode);
-          }
-          window.location.href = window.location.href;
+        //
+        if (!data.access_token) {
+          return;
         }
+        const accessToken = data.access_token;
+
+        new StorageModel('cookie', 'isLogin').saveAsString('true');
+        new StorageModel('localStorage', 'token').saveAsString(accessToken);
+        new StorageModel('localStorage', 'workspaces').save(data.workspaces);
+        new StorageModel('localStorage', 'displayName').saveAsString(data.displayName);
+        new StorageModel('localStorage', 'email').saveAsString(this.state.id);
+        // setCookie('token', accessToken);
+        // setCookie('workspaces', JSON.stringify(data.workspaces));
+        // setCookie('displayName', data.displayName);
+        // setCookie('email', this.state.id);
+
+        const cineroomWorkspaces = data.workspaces.cineroomWorkspaces;
+        const cineroom = cineroomWorkspaces.find((cineroom: any) => cineroom.name === 'SK University');
+
+        new StorageModel('localStorage', 'cineroomId').saveAsString(cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
+        // setCookie('cineroomId', cineroom ? cineroom.id : cineroomWorkspaces[cineroomWorkspaces.length - 1].id);
+
+        if (data.additionalInformation && data.additionalInformation.companyCode) {
+          new StorageModel('localStorage', 'companyCode').saveAsString(data.additionalInformation.companyCode);
+          // setCookie('companyCode', data.additionalInformation.companyCode);
+        }
+        window.location.href = window.location.href;
       });
 
+  }
+
+  onClickBreadcrumb(menuName: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: menuName });
   }
 
   renderItem(value: BreadcrumbValue, index: number) {
@@ -73,20 +94,19 @@ class BreadcrumbView extends Component<Props, State> {
 
     if (isLast) {
       if (value.path) {
-        return <Link to={value.path} className="section active">{value.text}</Link>;
+        return <Link to={value.path} className="section active" onClick={() => this.onClickBreadcrumb(value.text)}>{value.text}</Link>;
       }
       else {
         return <div className="section active">{value.text}</div>;
       }
     }
     else if (value.path) {
-      return <Link to={value.path} className="section">{value.text}</Link>;
+      return <Link to={value.path} className="section" onClick={() => this.onClickBreadcrumb(value.text)}>{value.text}</Link>;
     }
     else {
       return <a>{value.text}</a>;
     }
   }
-
 
   render() {
     //
@@ -96,7 +116,7 @@ class BreadcrumbView extends Component<Props, State> {
       <div className="breadcrumbs">
         <div className="cont-inner">
           <div className="ui standard breadcrumb">
-            <Link to="/" className="section">
+            <Link to="/" className="section" onClick={() => this.onClickBreadcrumb('Home')}>
               Home
             </Link>
 

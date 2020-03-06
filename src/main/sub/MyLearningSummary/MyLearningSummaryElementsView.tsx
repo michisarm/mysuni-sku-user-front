@@ -18,9 +18,13 @@ export const HeaderWrapperView: FunctionComponent = ({ children }) => (
 );
 
 
-export const ItemWrapper: FunctionComponent = ({ children }) => (
+interface ItemWrapperProps {
+  onClick?: () => void,
+}
+
+export const ItemWrapper: FunctionComponent<ItemWrapperProps> = ({ children, onClick }) => (
   <div className="cell v-middle">
-    <div className="cell-inner">
+    <div className="cell-inner" onClick={onClick}>
       {children}
     </div>
   </div>

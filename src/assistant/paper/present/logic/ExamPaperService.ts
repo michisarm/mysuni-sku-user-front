@@ -1,11 +1,8 @@
-import { observable, action, configure, runInAction } from 'mobx';
+import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import ExamPaperApi from '../apiclient/ExamPaperApi';
 import { ExamPaperModel } from '../../model/ExamPaperModel';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class ExamPaperService {

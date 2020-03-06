@@ -1,16 +1,16 @@
-import React from 'react';
-import { mobxHelper, reactAutobind } from '@nara.platform/accent';
-import { CommentList } from '@nara.drama/feedback';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
 
+import React from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
+import { CommentList } from '@nara.drama/feedback';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
-import moment from 'moment';
-import depot, { DepotFileViewModel } from '@nara.drama/depot';
-import { ContentLayout } from 'shared';
 import routePaths from '../../routePaths';
-import PostService from '../../present/logic/PostService';
+import { PostService } from '../../stores';
+import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 
 
 interface Props extends RouteComponentProps<{ postId: string }> {
@@ -48,7 +48,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
       .then(() => this.getFileIds());
   }
 
-  onClose() {
+  onClickList() {
     this.props.history.push(routePaths.supportNotice());
   }
 
@@ -57,20 +57,20 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { post } = this.props.postService!;
     const referenceFileBoxId = post && post.contents && post.contents.depotId;
 
-    Promise.resolve()
-      .then(() => {
-        if (referenceFileBoxId) this.findFiles('reference', referenceFileBoxId);
-      });
+    if (referenceFileBoxId) {
+      this.findFiles('reference', referenceFileBoxId);
+    }
   }
 
-  findFiles(type: string, fileBoxId: string) {
+  async findFiles(type: string, fileBoxId: string) {
+    //
     const { filesMap } = this.state;
-    depot.getDepotFiles(fileBoxId)
-      .then(files => {
-        filesMap.set(type, files);
-        const newMap = new Map(filesMap.set(type, files));
-        this.setState({ filesMap: newMap });
-      });
+
+    const files = await depot.getDepotFiles(fileBoxId);
+
+    filesMap.set(type, files);
+    const newMap = new Map(filesMap.set(type, files));
+    this.setState({ filesMap: newMap });
   }
 
   getFeedbackId(feedbackId: string) {
@@ -89,75 +89,57 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { filesMap } = this.state;
 
     return (
-      <ContentLayout
-        className="support"
-        breadcrumb={[
-          { text: 'Support' },
-          { text: 'Notice' },
-        ]}
-      >
-        <div className="post-view-wrap">
-          <div className="post-view">
-            {
-              post && (
-                <div className="title-area">
-                  <div className="title-inner">
-                    <div className="title">{post.title}</div>
-                    <div className="user-info">
-                      <span className="date">{post.time && moment(post.time).format('YYYY.MM.DD HH:MM')}</span>
-                    </div>
-                    <div className="actions">
-                      <Button icon className="left postset commu-list16" onClick={this.onClose}><Icon className="commu-list16" />List</Button>
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-            {
-              post && post.contents && (
-                <div className="content-area">
-                  <div className="content-inner">
-                    <ReactQuill
-                      theme="bubble"
-                      value={post && post.contents && post.contents.contents || ''}
-                      readOnly
-                    />
-                  </div>
-                  <div className="file">
-                    <span>첨부파일 : </span>
-                    {
-                      filesMap && filesMap.get('reference')
-                      && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                        <a href="#" className="link" key={index}>
-                          <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                            {foundedFile.name}
-                          </span>
-                        </a>
-                      )) || '-'
-                    }
-                  </div>
-                </div>
-              )
-            }
-          </div>
-          <Segment className="full">
-            <div className="comment-area">
-              <CommentList
-                feedbackId={post && post.commentFeedbackId || ''}
-                getFeedbackId={this.getFeedbackId}
-                hideCamera
-              />
+      <>
+        <div className="post-view">
+          <BoardDetailContentHeaderView
+            title={post.title}
+            time={post.time}
+            onClickList={this.onClickList}
+          />
+
+          { post.contents && (
+            <div className="content-area">
+              <div className="content-inner">
+                <ReactQuill
+                  readOnly
+                  theme="bubble"
+                  value={post.contents.contents || ''}
+                />
+              </div>
+              <div className="file">
+                <span>첨부파일 : </span>
+                {
+                  filesMap && filesMap.get('reference')
+                  && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                    <a href="#" className="link" key={index}>
+                      <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
+                        {foundedFile.name}
+                      </span>
+                    </a>
+                  )) || '-'
+                }
+              </div>
             </div>
-            <div className="actions bottom">
-              <Button icon className="left post list2" onClick={this.onClose}>
-                <Icon className="list24" /> List
-              </Button>
-            </div>
-          </Segment>
+          )}
         </div>
-      </ContentLayout>
+
+        <Segment className="full">
+          <div className="comment-area">
+            <CommentList
+              feedbackId={post && post.commentFeedbackId || ''}
+              getFeedbackId={this.getFeedbackId}
+              hideCamera
+            />
+          </div>
+          <div className="actions bottom">
+            <Button icon className="left post list2" onClick={this.onClickList}>
+              <Icon className="list24" /> List
+            </Button>
+          </div>
+        </Segment>
+      </>
     );
   }
 }
 
-export default NoticeDetailContainer;
+export default withRouter(NoticeDetailContainer);

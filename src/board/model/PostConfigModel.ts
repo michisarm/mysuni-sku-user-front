@@ -1,7 +1,9 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 
-export class PostConfigModel implements DomainEntity {
+
+class PostConfigModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -11,6 +13,7 @@ export class PostConfigModel implements DomainEntity {
   shareable: boolean = false;
   answered: boolean = false;
 
+
   constructor(postConfig?: PostConfigModel) {
     if (postConfig) {
       //
@@ -18,7 +21,6 @@ export class PostConfigModel implements DomainEntity {
       this.notifiable = postConfig.notifiable || postConfig.notifiable;
       this.shareable = postConfig.shareable || postConfig.shareable;
       this.answered = postConfig.answered || postConfig.answered;
-
     }
   }
 }
@@ -31,5 +33,6 @@ decorate(PostConfigModel, {
   notifiable: observable,
   shareable: observable,
   answered: observable,
-
 });
+
+export default PostConfigModel;

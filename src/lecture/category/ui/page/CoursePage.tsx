@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
+import { CommentService } from '@nara.drama/feedback';
 
 import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { ContentLayout, Tab } from 'shared';
@@ -31,6 +32,11 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
   studentService: StudentService,
+  commentService: CommentService,
+}
+
+interface State {
+  loaded: boolean,
 }
 
 interface RouteParams {
@@ -50,11 +56,16 @@ interface RouteParams {
   'lecture.programLectureService',
   'lecture.lectureService',
   'lecture.studentService',
+  'shared.commentService',
 ))
 @reactAutobind
 @observer
-class CoursePage extends Component<Props> {
+class CoursePage extends Component<Props, State> {
   //
+  state = {
+    loaded: false,
+  };
+
   constructor(props: Props) {
     //
     super(props);
@@ -92,16 +103,18 @@ class CoursePage extends Component<Props> {
 
   async init() {
     //
+    this.setState({ loaded: false });
     this.findBaseInfo();
     this.findProgramOrCourseLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
-    this.findStudent();
+    await this.findStudent();
+    this.setState({ loaded: true });
   }
 
   /**
    * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
    */
-  async lectureStudentAfterVideoPlay()
+  async onRefreshLearningState()
   {
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     this.findStudent();
@@ -126,7 +139,7 @@ class CoursePage extends Component<Props> {
     return null;
   }
 
-  findStudent() {
+  async findStudent() {
     const {
       studentService,
     } = this.props;
@@ -135,7 +148,7 @@ class CoursePage extends Component<Props> {
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
       // console.log(studentJoin);
-      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
     else studentService!.clear();
@@ -156,13 +169,15 @@ class CoursePage extends Component<Props> {
 
   async findProgramOrCourseLecture() {
     //
-    const { match, programLectureService, courseLectureService } = this.props;
+    const { match, programLectureService, courseLectureService, commentService } = this.props;
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
         lectureCardUsids,
         courseLectureUsids,
+        commentId,
       } = await programLectureService.findProgramLecture(match.params.serviceId);
+      commentService.countByFeedbackId(commentId);
       const lectureViews = await this.findLectureViews(lectureCardUsids, courseLectureUsids);
 
       this.findSubLectureViews(lectureViews);
@@ -170,7 +185,9 @@ class CoursePage extends Component<Props> {
     else {
       const {
         lectureCardUsids,
+        commentId,
       } = await courseLectureService.findCourseLecture(match.params.serviceId);
+      commentService.countByFeedbackId(commentId);
 
       this.findLectureViews(lectureCardUsids);
     }
@@ -317,10 +334,24 @@ class CoursePage extends Component<Props> {
 
   getTabs() {
     //
+    const { commentCount } = this.props.commentService;
+
     return [
       { name: 'List', item: 'List', render: this.renderList },
       { name: 'Overview', item: 'Overview', render: this.renderOverview },
-      { name: 'Comments', item: 'Comments', render: this.renderComments },
+      {
+        name: 'Comments',
+        item: (
+          <>
+            Comments
+            {
+              commentCount && commentCount.count > 0 && <span className="count">+{commentCount.count}</span>
+              || <span className="count">{commentCount.count}</span>
+            }
+          </>
+        ),
+        render: this.renderComments,
+      },
     ];
   }
 
@@ -346,7 +377,10 @@ class CoursePage extends Component<Props> {
 
     return this.renderBaseContentWith(
 
-      <CourseContainer lectureCardId={serviceId} />
+      <CourseContainer
+        lectureCardId={serviceId}
+        onRefreshLearningState={this.onRefreshLearningState}
+      />
     );
   }
 
@@ -417,6 +451,7 @@ class CoursePage extends Component<Props> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         init={this.init}
+        loaded={this.state.loaded}
       >
         {courseContent}
       </LectureCardContainer>

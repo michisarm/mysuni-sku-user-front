@@ -15,7 +15,7 @@ import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { BoardService } from 'personalcube/community/stores';
 
-import { LectureViewModel, StudentModel, RollBookModel, StudentJoinRdoModel, StudentCdoModel } from '../../../../model';
+import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel } from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
@@ -37,7 +37,7 @@ interface Props {
   mediaService?: MediaService,
   collegeId?: string,
   lectureView: LectureViewModel,
-  className: string,
+  className?: string,
   thumbnailImage?: string,
   action?: Action,
   toggle?: boolean,
@@ -45,10 +45,15 @@ interface Props {
   onAction?: () => void,
   onViewDetail?: (e: any) => void,
   onToggle?: () => void,
-
+  onRefreshLearningState?: () => void,
   student?: StudentModel,
   lectureCardId?: string,
   member? : EmployeeModel
+}
+
+interface State
+{
+  classNameForLearningState: string,
 }
 
 @inject(mobxHelper.injectFrom(
@@ -60,10 +65,12 @@ interface Props {
 ))
 @reactAutobind
 @observer
-class CourseLectureContainer extends Component<Props> {
+class CourseLectureContainer extends Component<Props, State> {
   //
+
+  static contextType = CourseSectionContext;
+
   static defaultProps = {
-    className: '',
     thumbnailImage: null,
     action: null,
     toggle: false,
@@ -71,7 +78,8 @@ class CourseLectureContainer extends Component<Props> {
     onAction: () => {},
     onViewDetail: () => {},
     onToggle: () => {},
-
+    onRefreshLearningState: () => {},
+    className: '',
     rollBookService: RollBookService,
     boardService: BoardService,
     personalCubeService: PersonalCubeService,
@@ -79,29 +87,81 @@ class CourseLectureContainer extends Component<Props> {
     mediaService: MediaService,
   };
 
-  static contextType = CourseSectionContext;
 
   personalCube: PersonalCubeModel | null = {} as PersonalCubeModel;
-  studentForVideo: StudentModel | null = {} as StudentModel;
-  studentJoinForVideo: StudentJoinRdoModel | null = {} as StudentJoinRdoModel;
+  classNameForLearningState: string  = '';
+  studentForVideoObj: StudentModel | null = {} as StudentModel;
   rollBooks: RollBookModel[] = [];
 
-  componentDidMount()
+  state =
+  {
+    classNameForLearningState: 'fix line' || 'fix bg',
+  };
+
+  constructor(props: Props)
   {
     //
+    super(props);
     this.init();
   }
+
+  // componentDidMount()
+  // {
+  //   //
+  //
+  // }
 
   async init()
   {
     const { personalCubeService, rollBookService, studentService, lectureView } = this.props;
+    const { getStudentForVideo } = studentService!;
 
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-    // console.log('CourseLectureContainer init() rollBooks=', this.rollBooks);
-    await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
-    this.studentForVideo = await this.findStudentForVideo();
+    getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
+    {
+      this.studentForVideoObj = studentForVideo;
+      const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+      this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+    });
+
+    // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
+    // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
+  }
+
+  setClassNameForLearningState(studentForVideo: StudentModel)
+  {
+    let classNameForLearningState: string = 'fix line' || 'fix bg';
+
+    const { lectureView } = this.props;
+
+    if (studentForVideo)
+    {
+      let state: SubState = SubState.Waiting;
+
+      if (studentForVideo && studentForVideo.id) {
+        if (studentForVideo.proposalState === ProposalState.Approved) {
+          if (
+            studentForVideo.learningState === LearningState.Waiting || studentForVideo.learningState === LearningState.HomeworkWaiting
+            || studentForVideo.learningState === LearningState.TestWaiting
+            || studentForVideo.learningState === LearningState.TestPassed || studentForVideo.learningState === LearningState.Failed
+          ) {
+            state = SubState.Waiting;
+          }
+          if (studentForVideo.learningState === LearningState.Progress) state = SubState.InProgress;
+          if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
+          if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
+        }
+      }
+
+      classNameForLearningState = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
+
+      console.log('CourseLectureContainer setClassNameForLearningState() lectureView.name=', lectureView.name, ', rollBooks=', this.rollBooks, ', studentForVideo=', studentForVideo, ', classNameForLearningState=', classNameForLearningState);
+      // this.classNameForLearningState = classNameForLearningState;
+    }
+
+    return classNameForLearningState;
   }
 
   onToggle() {
@@ -111,79 +171,48 @@ class CourseLectureContainer extends Component<Props> {
     setOpen(!open);
   }
 
-  compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
-    if (join1.updateTime < join2.updateTime) return 1;
-    return -1;
-  }
-
-  getStudentJoinForVideo() {
-    const {
-      studentService,
-    } = this.props;
-    const { studentJoinsForVideo }: StudentService = studentService!;
-
-    if (studentJoinsForVideo && studentJoinsForVideo.length) {
-      studentJoinsForVideo.sort(this.compare);
-      const studentJoin = studentJoinsForVideo[0];
-      return studentJoin;
-    }
-    return null;
-  }
-
-  async findStudentForVideo() {
-    const {
-      studentService,
-    } = this.props;
-    const { studentJoins }: StudentService = studentService!;
-
-    if (studentJoins && studentJoins.length)
-    {
-      this.studentJoinForVideo = this.getStudentJoinForVideo();
-      // console.log(studentJoin);
-      if (this.studentJoinForVideo) await studentService!.findStudentForVideo(this.studentJoinForVideo.studentId);
-      else studentService!.clearForVideo();
-    }
-    else studentService!.clearForVideo();
-
-    return studentService!.studentForVideo;
-  }
-
   registerStudentForVideo(studentCdo: StudentCdoModel)
   {
     //
-    const { studentService, lectureView } = this.props;
-    console.log('CourseLectureContainer registerStudentForVideo studentService=' + studentService);
-    console.log('CourseLectureContainer registerStudentForVideo lectureCardId=' + lectureView.serviceId);
+    const { studentService, lectureView, onRefreshLearningState } = this.props;
+    const { getStudentForVideo } = studentService!;
+    console.log('CourseLectureContainer registerStudentForVideo lectureView.name=', lectureView.name, ', lectureCardId=' + lectureView.serviceId, ', studentCdo=', studentCdo);
 
     //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
-    return studentService!.registerStudent(studentCdo).then(() => {
-      studentService!.findStudentForVideo(studentCdo.rollBookId);
-      studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
+    return studentService!.registerStudent(studentCdo).then(() =>
+    {
+      getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
+      {
+        this.studentForVideoObj = studentForVideo;
+        const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+
+        //Course 전체 학습상태 갱신
+        onRefreshLearningState!();
+
+        //학습하기한 Lecture Card의 학습하기 버튼 상태 갱신(CSS 변경)
+        this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      });
+
+      // studentService!.findStudentForVideo(studentCdo.rollBookId);
+      // studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
       // studentService!.findStudentCount(studentCdo.rollBookId);
     });
   }
 
   async onRegisterStudentForVideo(proposalState?: ProposalState)
   {
-    // const { studentService, lectureView } = this.props;
-
-    // await studentService!.findIsJsonStudentForVideo(lectureView.serviceId);
-    // await this.findStudentForVideo();
-
-    const { studentForVideo } = this.props.studentService!;
-
     const studentCdo = this.getStudentCdo();
 
     console.log('CourseLectureContainer onRegisterStudentForVideo studentCdo=', studentCdo);
-    console.log('CourseLectureContainer onRegisterStudentForVideo studentForVideo=', studentForVideo);
+    console.log('CourseLectureContainer onRegisterStudentForVideo this.studentForVideoObj=', this.studentForVideoObj);
 
-    if ((!studentForVideo || !studentForVideo.id) || (studentForVideo.proposalState !== ProposalState.Canceled
-      && studentForVideo.proposalState !== ProposalState.Rejected))
+    if ((!this.studentForVideoObj || !this.studentForVideoObj.id) || (this.studentForVideoObj.proposalState !== ProposalState.Canceled
+      && this.studentForVideoObj.proposalState !== ProposalState.Rejected))
     {
       this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
-    else if (studentForVideo.proposalState === ProposalState.Canceled || studentForVideo.proposalState === ProposalState.Rejected) {
-      this.registerStudentForVideo({ ...studentCdo, proposalState: studentForVideo.proposalState });
+    else if (this.studentForVideoObj.proposalState === ProposalState.Canceled || this.studentForVideoObj.proposalState === ProposalState.Rejected) {
+      this.registerStudentForVideo({ ...studentCdo, proposalState: this.studentForVideoObj.proposalState });
     }
   }
 
@@ -225,7 +254,7 @@ class CourseLectureContainer extends Component<Props> {
         break;
       case MediaType.LinkMedia:
         url = media.mediaContents.linkMediaUrl;
-        console.log('CourseLectureContainer getMediaUrl media.mediaContents.linkMediaUrl=' + url);
+        // console.log('CourseLectureContainer getMediaUrl media.mediaContents.linkMediaUrl=' + url);
         break;
       case MediaType.InternalMedia:
       case MediaType.InternalMediaUpload:
@@ -316,55 +345,23 @@ class CourseLectureContainer extends Component<Props> {
     return null;
   }
 
-  getClassNameForLearningState()
-  {
-    //
-    const {
-      studentService,
-    } = this.props;
-    // const { personalCube } = personalCubeService!;
-    const { studentForVideo } = studentService!;
-    // const { studentJoinsForVideo } = studentService!;
-
-    let state: SubState | undefined;
-
-    console.log('CourseLectureContainer getLearningState() studentForVideo=', studentForVideo);
-    if (studentForVideo && studentForVideo.id)
-    {
-      if (studentForVideo.proposalState === ProposalState.Approved)
-      {
-        if (
-          studentForVideo.learningState === LearningState.Waiting || studentForVideo.learningState === LearningState.HomeworkWaiting
-          || studentForVideo.learningState === LearningState.TestWaiting
-          || studentForVideo.learningState === LearningState.TestPassed || studentForVideo.learningState === LearningState.Failed
-        )
-        {
-          state = SubState.Waiting;
-        }
-        if (studentForVideo.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
-        if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
-      }
-    }
-
-    const className: string = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
-
-    return className;
-  }
-
   render() {
     //
     // const {
     //   className, lectureView, thumbnailImage, action, toggle,
     //   onAction, onViewDetail, onToggle,
     // } = this.props;
+    const { classNameForLearningState } = this.state;
     const {
       className, lectureView, thumbnailImage, toggle,
       onViewDetail,
     } = this.props;
     const { open } = this.context;
 
-    const classNameForLearningState = this.getClassNameForLearningState();
+    //Lecture Card가 Video인 경우만 학습하기 버튼이 보이고, 진행상태인 경우 버튼 css적용(fix bg)
+    const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
+
+    console.log('CourseLectureContainer render() lectureView.name=', lectureView.name, ',lectureView.cubeType=', lectureView.cubeType, ', classNameForLearningState=' + classNameForLearningState, ', className1=', className1);
 
     return (
       <div className={`card-box ${className}`}>
@@ -397,7 +394,7 @@ class CourseLectureContainer extends Component<Props> {
           <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
           {
             lectureView.cubeType === CubeType.Video ?
-              <Button className={classNameForLearningState} onClick={this.getMainActionForVideo}>학습하기</Button> : null
+              <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button> : null
           }
         </Buttons>
 

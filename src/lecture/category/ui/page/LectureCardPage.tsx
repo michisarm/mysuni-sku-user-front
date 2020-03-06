@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
+import { CommentService } from '@nara.drama/feedback';
 import { PostList, PostListByWriter } from '@sku/personalcube';
 import { ProposalState, LearningState } from 'shared/model';
 import { ContentLayout, Tab } from 'shared';
@@ -48,10 +49,12 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureService: LectureService,
   rollBookService: RollBookService,
   studentService: StudentService,
+  commentService: CommentService,
 }
 
 interface State {
-  linkedInOpen: boolean
+  linkedInOpen: boolean,
+  loaded: boolean,
 }
 
 interface RouteParams {
@@ -74,6 +77,7 @@ interface RouteParams {
   'lecture.lectureService',
   'lecture.rollBookService',
   'lecture.studentService',
+  'shared.commentService',
 ))
 @reactAutobind
 @observer
@@ -81,6 +85,7 @@ class LectureCardPage extends Component<Props, State> {
   //
   state= {
     linkedInOpen: false,
+    loaded: false,
   };
 
   constructor(props: Props) {
@@ -113,9 +118,11 @@ class LectureCardPage extends Component<Props, State> {
   async init() {
     const {
       match, history, skProfileService, collegeService, personalCubeService, cubeIntroService, classroomService, studentService,
-      rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService,
+      rollBookService, mediaService, officeWebService, boardService, lectureService, lectureCardService, commentService,
     } = this.props;
     const { params } = match;
+
+    this.setState({ loaded: false });
 
     const promises = Promise.all([
       personalCubeService.findPersonalCube(params.cubeId),
@@ -171,9 +178,13 @@ class LectureCardPage extends Component<Props, State> {
     });
 
     collegeService.findCollege(params.collegeId);
-    lectureCardService.findLectureCard(params.lectureCardId);
+    lectureCardService.findLectureCard(params.lectureCardId)
+      .then((lectureCard) => {
+        commentService!.countByFeedbackId(lectureCard!.commentId);
+      });
     await studentService.findIsJsonStudentByCube(params.lectureCardId);
-    this.findStudent();
+    await this.findStudent();
+    this.setState({ loaded: true });
   }
 
   compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
@@ -195,7 +206,7 @@ class LectureCardPage extends Component<Props, State> {
     return null;
   }
 
-  findStudent() {
+  async findStudent() {
     const {
       studentService,
     } = this.props;
@@ -203,7 +214,7 @@ class LectureCardPage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      if (studentJoin) studentService!.findStudent(studentJoin.studentId);
+      if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
     else studentService!.clear();
@@ -540,6 +551,7 @@ class LectureCardPage extends Component<Props, State> {
 
   getTabs() {
     //
+    const { commentCount } = this.props.commentService;
     const { personalCube } = this.props.personalCubeService;
     const tabs = [];
 
@@ -553,7 +565,19 @@ class LectureCardPage extends Component<Props, State> {
     else {
       tabs.push(
         { name: 'Overview', item: 'Overview', render: this.renderOverview },
-        { name: 'Comments', item: 'Comments', render: this.renderComment },
+        {
+          name: 'Comments',
+          item: (
+            <>
+              Comments
+              {
+                commentCount && commentCount.count > 0 && <span className="count">+{commentCount.count}</span>
+                || <span className="count">{commentCount.count}</span>
+              }
+            </>
+          ),
+          render: this.renderComment,
+        },
       );
     }
 
@@ -659,6 +683,7 @@ class LectureCardPage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         init={this.init}
+        loaded={this.state.loaded}
       >
         {cardContent}
       </LectureCardContainer>

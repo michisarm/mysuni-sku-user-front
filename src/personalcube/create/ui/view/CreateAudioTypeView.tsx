@@ -1,5 +1,5 @@
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -17,7 +17,7 @@ import { InternalMediaConnectionModel } from '../../../media/model/InternalMedia
 
 interface Props {
   onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
-  onChangeMediaProps: (name: string, value: string | Date, nameSub?: string) => void
+  onChangeMediaProps: (name: string, value: string | Date | [], nameSub?: string) => void
   media: MediaModel
   getFileBoxIdForReference: (fileBoxId: string) => void
   personalCube: PersonalCubeModel
@@ -182,7 +182,7 @@ class CreateAudioTypeView extends React.Component<Props> {
       success(ret: any) {
         // setTimeout(clazzThis.eachUpload, 500); //다음 파일 업로드
         clazzThis.setData(ret);
-        // console.log(ret);
+        reactAlert({ title: '알림', message: '업로드가 완료되었습니다.' });
         if (ret.boolResult) clazzThis.uploadResult.push(ret.obj.list);
 
       },
@@ -237,7 +237,7 @@ class CreateAudioTypeView extends React.Component<Props> {
     const mediaService = this.props.mediaService!;
 
     if (ret.boolResult && ret.obj && ret.obj.list) {
-      const internalMediaList: InternalMediaConnectionModel[] = [ ...mediaService.uploadedPaonoptos ];
+      const internalMediaList: InternalMediaConnectionModel[] = [];
       if (Array.isArray(ret.obj.list)) {
         Promise.resolve()
           .then(() => {
@@ -266,8 +266,6 @@ class CreateAudioTypeView extends React.Component<Props> {
   render() {
 
     const { onChangePersonalCubeProps, onChangeMediaProps, media, getFileBoxIdForReference, personalCube } = this.props;
-    // const { uploadedPaonoptos } = this.props.mediaService!;
-    // const uploadURL = process.env.NODE_ENV === 'development' ? '/panoptoindex.html' : '/manager/panoptoindex.html';
 
     return (
       <>
@@ -283,21 +281,22 @@ class CreateAudioTypeView extends React.Component<Props> {
             label="오디오 파일 업로드"
             value={MediaType.InternalMedia}
             checked={media && media.mediaType === 'InternalMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
-          {/*<Radio
-            className="base"
-            label="제작오디오 파일 가져오기"
-            value={MediaType.InternalMediaUpload}
-            checked={media && media.mediaType === 'InternalMediaUpload'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
-          />*/}
           <Radio
             className="base"
             label="오디오 링크"
             value={MediaType.LinkMedia}
             checked={media && media.mediaType === 'LinkMedia'}
-            onChange={(e: any, data: any) => onChangeMediaProps('mediaType', data.value)}
+            onChange={(e: any, data: any) => {
+              onChangeMediaProps('mediaType', data.value);
+              onChangeMediaProps('mediaContents.internalMedias', []);
+              onChangeMediaProps('mediaContents.linkMediaUrl', '');
+            }}
           />
           <div className="ui form">
             {
@@ -319,32 +318,11 @@ class CreateAudioTypeView extends React.Component<Props> {
                           )) || null
                         }
                         <Icon className="clear link" />
-                        {/*<label htmlFor="hidden-new-file" className="ui button" onClick={() => window.open(uploadURL)}>파일찾기</label>*/}
-                        {/*<label htmlFor="hidden-new-file" className="ui button">파일찾기</label>*/}
                         <input type="file" id="hidden-new-file" />
                       </div>
                     )
                     || (
                       <div className="round-wrap file-drop-wrap">
-                        {/*<input*/}
-                        {/*  type="text"*/}
-                        {/*  placeholder="영상을 업로드해주세요."*/}
-                        {/*  readOnly*/}
-                        {/*/>*/}
-                        {/*<div className="filter">
-                          폴더:
-                          <Select
-                            placeholder="분류를 선택해주세요"
-                            className="ui small-border dropdown"
-                            options={this.makeCollegeOption()}
-                            value={media && media.mediaContents && media.mediaContents.internalMedias
-                            && media.mediaContents.internalMedias.length && media.mediaContents.internalMedias[0]
-                            && media.mediaContents.internalMedias[0].folderId || this.state.folderId || ''}
-                            onChange={(e: any, data: any) => {
-                              this.setState({ folderId: data.value });
-                            }}
-                          />
-                        </div>*/}
                         {
                           media && media.mediaContents && media.mediaContents.internalMedias && (
                             <div className="file-drop" id="drop">
@@ -367,11 +345,6 @@ class CreateAudioTypeView extends React.Component<Props> {
                 </>
               )
             }
-            {/*{
-              media && media.mediaType === MediaType.InternalMediaUpload && (
-                <PanoptoListModal />
-              )
-            }*/}
             {
               media && media.mediaType === MediaType.LinkMedia  && (
                 <div className="ui input h48">

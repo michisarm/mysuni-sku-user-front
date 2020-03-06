@@ -2,22 +2,17 @@
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
-import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
-import 'react-quill/dist/quill.snow.css';
-import { ContentLayout, depotHelper } from 'shared';
-import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import classNames from 'classnames';
+import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
+import { depotHelper, AlertWin, ConfirmWin } from 'shared';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+
 import routePaths from '../../routePaths';
-import BoardService from '../../present/logic/BoardService';
-import CategoryService from '../../present/logic/CategoryService';
-import PostService from '../../present/logic/PostService';
-import ConfirmWin from '../../../shared/ui/logic/ConfirmWin';
-import AlertWin from '../../../shared/ui/logic/AlertWin';
-import { PostModel } from '../../model/PostModel';
-// import Editor from './Editor';
+import { PostModel } from '../../model';
+import { BoardService, CategoryService, PostService } from '../../stores';
 
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
@@ -45,19 +40,16 @@ interface States {
 @reactAutobind
 class QnaRegisterContainer extends React.Component<Props, States> {
   //
-  constructor(props: Props) {
-    //
-    super(props);
-    this.state = {
-      alertWinOpen: false,
-      confirmWinOpen: false,
-      isBlankTarget: '',
-      focus: false,
-      write: '',
-      fieldName: '',
-      length: 0,
-    };
-  }
+  state = {
+    alertWinOpen: false,
+    confirmWinOpen: false,
+    isBlankTarget: '',
+    focus: false,
+    write: '',
+    fieldName: '',
+    length: 0,
+  };
+
 
   componentDidMount(): void {
     //
@@ -66,19 +58,17 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     const name = patronInfo.getPatronName() || '';
     const email = patronInfo.getPatronEmail() || '';
 
-    Promise.resolve()
+    postService.clearPost();
+    categoryService.findCategoriesByBoardId('QNA')
       .then(() => {
-        postService.clearPost();
-      })
-      .then(() => {
-        categoryService.findCategoriesByBoardId('QNA');
-      })
-      .then(() => postService.changePostProps('boardId', 'QNA'))
-      .then(() => postService.changePostProps('writer.name', name))
-      .then(() => postService.changePostProps('writer.email', email));
+        postService.changePostProps('boardId', 'QNA');
+        postService.changePostProps('writer.name', name);
+        postService.changePostProps('writer.email', email);
+      });
   }
 
   componentWillUnmount(): void {
+    //
     const { postService } = this.props;
     postService!.clearPost();
   }
@@ -109,7 +99,8 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
-    } else {
+    }
+    else {
       this.setState({
         isBlankTarget: PostModel.isBlank(post),
         alertWinOpen: true,
@@ -129,11 +120,12 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   onHandleSave() {
     //
-    const { post } = this.props.postService || {} as PostService;
+    const { post } = this.props.postService!;
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
-    } else {
+    }
+    else {
       this.setState({
         isBlankTarget: PostModel.isBlank(post),
         alertWinOpen: true,
@@ -144,16 +136,18 @@ class QnaRegisterContainer extends React.Component<Props, States> {
   getFileBoxIdForReference(fileBoxId: string) {
     //
     const { postService } = this.props;
-    const { post } = postService || {} as PostService;
+    const { post } = postService!;
 
-    if (post.contents) postService!.changePostProps('contents.depotId', fileBoxId);
+    if (post.contents) {
+      postService!.changePostProps('contents.depotId', fileBoxId);
+    }
   }
 
   render() {
     //
     const { categorys } = this.props.categoryService!;
     const { post } = this.props.postService!;
-    const { alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
+    const { focus, write, fieldName, alertWinOpen, isBlankTarget, confirmWinOpen } = this.state;
     const questionType: any = [];
 
     categorys.map((data, index) => {
@@ -161,23 +155,13 @@ class QnaRegisterContainer extends React.Component<Props, States> {
     });
 
     return (
-      <ContentLayout className="bg-white">
-        <div className="add-personal-learning support">
-          <div className="add-personal-learning-wrap">
-            <div className="apl-tit">Ask a Question</div>
-            <div className="apl-notice">
-              현재 1:1 문의 답변에 평균 7일 ~ 14일 정도 소요될 수 있으며, 확인이 필요한 문의의 경우 20일 이상 지연될 수 있습니다.<br />
-              신속하게 답변드릴 수 있도록 최선을 다하겠습니다. 기본적인 문의의 경우 FAQ를 통해 관련 내용을 확인하실 수 있으니 참고 부탁드립니다.
-            </div>
-          </div>
-        </div>
-
+      <>
         <Segment className="full">
           <div className="apl-form-wrap support">
             <Form>
               <Form.Field>
                 <label>제목</label>
-                <div className={classNames('ui right-top-count input', { focus: this.state.focus, write: this.state.write, error: this.state.fieldName === 'title' })}>
+                <div className={classNames('ui right-top-count input', { focus, write, error: fieldName === 'title' })}>
                   <span className="count">
                     <span className="now">{post && post.title && post.title.length || 0}</span>/
                     <span className="max">100</span>
@@ -254,11 +238,11 @@ class QnaRegisterContainer extends React.Component<Props, States> {
                   <div className="line-attach width-sm">
                     <div className="attach-inner">
                       <FileBox
+                        id={post && post.contents && post.contents.depotId || ''}
                         vaultKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
                         patronKey={{ keyString: 'qna-sample', patronType: PatronType.Audience }}
                         validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
                         onChange={this.getFileBoxIdForReference}
-                        id={post && post.contents && post.contents.depotId || ''}
                       />
                       {/*<div className="bottom">*/}
                       {/*  <span className="text1"><Icon className="info16" />*/}
@@ -279,21 +263,21 @@ class QnaRegisterContainer extends React.Component<Props, States> {
         </Segment>
         <AlertWin
           target={isBlankTarget}
-          handleClose={this.handleCloseAlertWin}
           open={alertWinOpen}
+          handleClose={this.handleCloseAlertWin}
         />
         <ConfirmWin
           message="저장하시겠습니까?"
           open={confirmWinOpen}
-          handleClose={this.handleCloseConfirmWin}
-          handleOk={this.handleOKConfirmWin}
           title="저장안내"
           buttonYesName="OK"
           buttonNoName="Cancel"
+          handleClose={this.handleCloseConfirmWin}
+          handleOk={this.handleOKConfirmWin}
         />
-      </ContentLayout>
+      </>
     );
   }
 }
 
-export default QnaRegisterContainer;
+export default withRouter(QnaRegisterContainer);

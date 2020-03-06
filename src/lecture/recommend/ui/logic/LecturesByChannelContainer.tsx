@@ -1,13 +1,13 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { NewPageService } from 'shared/stores';
+import { ActionLogService, NewPageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { CollegeService } from 'college/stores';
 import { LectureModel, OrderByType } from 'lecture/model';
@@ -22,6 +22,7 @@ import LectureServiceType from '../../../model/LectureServiceType';
 
 
 interface Props extends RouteComponentProps<{ channelId: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   newPageService?: NewPageService,
   collegeService?: CollegeService,
   lectureService?: LectureService,
@@ -35,6 +36,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.newPageService',
   'college.collegeService',
   'lecture.lectureService',
@@ -153,6 +155,8 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
+
     this.setState({
       sorting: data.value,
     }, () => {
@@ -163,7 +167,10 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
+
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
         .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
@@ -213,8 +220,10 @@ class LecturesByChannelContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    const { match, history } = this.props;
+    const { actionLogService, match, history } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
+
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(pageNo + 1));
   }
 
@@ -253,7 +262,10 @@ class LecturesByChannelContainer extends Component<Props, State> {
                       rating={rating}
                       thumbnailImage={lecture.baseUrl || undefined}
                       action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                      onAction={() => this.onActionLecture(inMyLecture || lecture)}
+                      onAction={() => {
+                        reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                        this.onActionLecture(inMyLecture || lecture);
+                      }}
                       onViewDetail={this.onViewDetail}
                     />
                   );

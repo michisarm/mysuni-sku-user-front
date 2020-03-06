@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon } from 'semantic-ui-react';
 import myTrainingRoutePaths from 'myTraining/routePaths';
+import { ActionLogService } from 'shared/stores';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
@@ -13,10 +14,12 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSumm
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   myLearningSummaryService?: MyLearningSummaryService
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'myTraining.myLearningSummaryService',
 ))
 @observer
@@ -55,6 +58,19 @@ class MyLearningSummaryContainer extends Component<Props> {
   onClickStamp() {
     //
     this.props.history.push(myTrainingRoutePaths.myPageEarnedStampList());
+  }
+
+  onClickViewAll() {
+    const { actionLogService, history } = this.props;
+
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+
+    history.push(myTrainingRoutePaths.learning());
+  }
+
+  onClickLearningSummary(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {
@@ -101,7 +117,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <Button
             icon
             className="right btn-black"
-            onClick={() => this.props.history.push(myTrainingRoutePaths.learning())}
+            onClick={() => this.onClickViewAll()}
           >
             View all
             <Icon className="morelink" />
@@ -111,7 +127,7 @@ class MyLearningSummaryContainer extends Component<Props> {
         <ItemWrapper>
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-complex48">
+              <Button className="btn-complex48" onClick={() => this.onClickLearningSummary('총 학습시간')}>
                 <span className="i">
                   <Icon className="time48" />
                   <span className="blind">total time</span>
@@ -132,7 +148,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           />
         </ItemWrapper>
 
-        <ItemWrapper>
+        <ItemWrapper onClick={() => this.onClickLearningSummary('완료된 학습')}>
           <HeaderItemView
             icon="complete"
             label="완료된 학습"
@@ -141,7 +157,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           />
         </ItemWrapper>
 
-        <ItemWrapper>
+        <ItemWrapper onClick={() => this.onClickLearningSummary('획득 Stamp')}>
           <HeaderItemView
             icon="stamp"
             label="획득 Stamp"

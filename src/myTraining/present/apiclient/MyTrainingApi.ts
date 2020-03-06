@@ -3,6 +3,7 @@ import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingModel from '../../model/MyTrainingModel';
+import MyTrainingTabModel from '../../model/MyTrainingTabModel';
 
 
 class MyTrainingApi {
@@ -32,6 +33,10 @@ class MyTrainingApi {
 
     return axiosApi.get<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/stamps', { params })
       .then(this.getOffsetElementList);
+  }
+
+  findAllTabMyTraining() {
+    return axiosApi.get<MyTrainingTabModel>(this.baseUrl + '/tab/counts').then((response) => response.data);
   }
 }
 

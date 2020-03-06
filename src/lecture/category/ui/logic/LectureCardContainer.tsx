@@ -3,23 +3,23 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState, LearningState } from 'shared/model';
+import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
-import { StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from 'lecture/model';
+import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
 import { RollBookService, StudentService } from 'lecture/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import { MemberViewModel } from '@nara.drama/approval';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
-import ManagerListModalContainer from '../view/ManagerListModalContainer';
 import RollBookModel from '../../../model/RollBookModel';
+import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
+import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 
 interface Props {
   studentService?: StudentService
@@ -38,6 +38,7 @@ interface Props {
   typeViewObject: any
   children: React.ReactNode
   init?:() => void
+  loaded: boolean
 }
 
 interface State {
@@ -57,15 +58,39 @@ class LectureCardContainer extends Component<Props, State> {
   examModal: any = null;
   surveyModal: any = null;
   reportModal: any = null;
-  managerModal: any = null;
+  applyReferenceModel: any = null;
+  prevViewObjectState: string = '';
 
   state = {
     rollBook: new RollBookModel(),
   };
 
+
   componentDidMount(): void {
     //
     this.findInMyLecture();
+  }
+
+  componentDidUpdate(prevProps: any, prevState: any) {
+
+    if (!prevProps.loaded && !this.props.loaded
+      && prevProps.viewObject?.state !== this.props.viewObject?.state
+      && prevProps.student?.id === this.props.student?.id) {
+      this.prevViewObjectState = prevProps.viewObject.state;
+    } else if (!prevProps.loaded && this.props.loaded) {
+      if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'TestWaiting') {
+        reactAlert({ title: '알림', message: '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.' });
+      } else if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'Failed') {
+        reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
+      } else if (this.props.viewObject.state === 'Missed') {
+        reactAlert({ title: '알림', message: '과정이 미이수되었습니다. 처음부터 다시 학습 후 Test를 응시해주시기 바랍니다.' });
+      } else if (this.prevViewObjectState === 'InProgress' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      }
+    }
+
   }
 
   componentWillUnmount(): void {
@@ -80,17 +105,16 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    this.onManager();
-    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
+    this.onApplyReference();
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
       studentService!.removeStudent(student.rollBookId)
-        .then(() => this.setState({ rollBook }, this.onManager ));
+        .then(() => this.setState({ rollBook }, this.onApplyReference ));
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
-      this.setState({ rollBook }, this.onManager );
+      this.setState({ rollBook }, this.onApplyReference );
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
@@ -134,28 +158,10 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
-  onClickManagerListOk(member: MemberViewModel) {
-    //
-    const { studentCdo, student } = this.props;
-    const { rollBook } = this.state;
-    let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
-      proposalState = student.proposalState;
-    }
-    let rollBookId = studentCdo.rollBookId;
-    if (rollBook && rollBook.id) rollBookId = rollBook.id;
-
-    studentCdo.leaderEmails = [member.email];
-    studentCdo.url = window.location.href;
-
-    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
-  }
-
   //
   onClickEnrollment() {
     //
-    this.onManager();
-    console.log('조직도 일시 중단 ( ~ 조직도 css 완료 전까지');
+    this.onApplyReference();
   }
 
   onClickChangeSeries() {
@@ -201,6 +207,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService;
 
     if (!inMyLecture || !inMyLecture.id) {
+      reactAlert({ title: '알림', message: '본 과정이 관심목록에 추가되었습니다.' });
       inMyLectureService!.addInMyLecture(inMyLectureCdo)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }
@@ -213,6 +220,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService;
 
     if (inMyLecture && inMyLecture.id) {
+      reactAlert({ title: '알림', message: '본 과정이 관심목록에서 제외되었습니다.' });
       inMyLectureService!.removeInMyLecture(inMyLecture.id)
         .then(() => inMyLectureService!.findInMyLecture(inMyLectureCdo.serviceId, inMyLectureCdo.serviceType));
     }
@@ -256,8 +264,25 @@ class LectureCardContainer extends Component<Props, State> {
     this.reportModal.onOpenModal();
   }
 
-  onManager() {
-    this.managerModal.onShow(true);
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
+  }
+
+  onClickApplyReferentOk(member: ApprovalMemberModel) {
+    //
+    const { studentCdo, student } = this.props;
+    const { rollBook } = this.state;
+    let proposalState = studentCdo.proposalState;
+    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
+    let rollBookId = studentCdo.rollBookId;
+    if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    studentCdo.leaderEmails = [member.email];
+    studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
+
+    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }
 
   getMainAction() {
@@ -380,7 +405,8 @@ class LectureCardContainer extends Component<Props, State> {
     }
 
     if (viewObject && viewObject.reportFileBoxId && student
-      && !student.learningState && student.learningState !== LearningState.Passed && student.learningState === LearningState.Missed) {
+      && student.proposalState === ProposalState.Approved
+      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
       if (student.studentScore.homeworkScore) {
         subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }) });
       }
@@ -479,9 +505,9 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
-        <ManagerListModalContainer
-          ref={managerModal => this.managerModal = managerModal}
-          handleOk={this.onClickManagerListOk}
+        <ApplyReferenceModal
+          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+          handleOk={this.onClickApplyReferentOk}
         />
         {
           viewObject && viewObject.examId && (

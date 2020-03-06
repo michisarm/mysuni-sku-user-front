@@ -1,9 +1,12 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { PostContentsModel } from './PostContentsModel';
-import { WriterModel } from './WriterModel';
 
-export class AnswerModel implements DomainEntity {
+import PostContentsModel from './PostContentsModel';
+import WriterModel from './WriterModel';
+
+
+class AnswerModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
@@ -46,3 +49,5 @@ decorate(AnswerModel, {
   contents: observable,
   answerId: observable,
 });
+
+export default AnswerModel;

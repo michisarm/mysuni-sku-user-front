@@ -1,7 +1,9 @@
-import { axiosApi as axios } from '@nara.platform/accent';
-import { BoardModel } from '../../model/BoardModel';
 
-export default class BoardApi {
+import { axiosApi as axios } from '@nara.platform/accent';
+import BoardModel from '../../model/BoardModel';
+
+
+class BoardApi {
 
   URL = '/api/board/boards';
 
@@ -29,3 +31,5 @@ Object.defineProperty(BoardApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default BoardApi;

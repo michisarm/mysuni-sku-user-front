@@ -1,13 +1,13 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { NewPageService } from 'shared/stores';
+import { ActionLogService, NewPageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { CollegeService } from 'college/stores';
@@ -28,6 +28,7 @@ import { DescriptionView } from '../view/CategoryLecturesElementsView';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionLogService?: ActionLogService,
   newPageService?: NewPageService,
   collegeService?: CollegeService,
   lectureService?: LectureService,
@@ -47,6 +48,7 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.newPageService',
   'college.collegeService',
   'lecture.lectureService',
@@ -175,6 +177,8 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onChangeSorting(e: any, data: any) {
     //
+    this.props.actionLogService?.registerClickActionLog({ subAction: data.label });
+
     this.setState({
       sorting: data.value,
     }, () => {
@@ -186,7 +190,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onActionLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
@@ -236,9 +242,10 @@ class CollegeLecturesContainer extends Component<Props, State> {
 
   onClickSeeMore() {
     //
-    const { match, history } = this.props;
+    const { actionLogService, match, history } = this.props;
     const pageNo = parseInt(match.params.pageNo, 10);
     // this.findPagingCollegeLectures();
+    actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.collegeLecturesPage(pageNo + 1));
   }
 
@@ -290,7 +297,10 @@ class CollegeLecturesContainer extends Component<Props, State> {
                     rating={rating}
                     thumbnailImage={lecture.baseUrl || undefined}
                     action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                    onAction={() => this.onActionLecture(inMyLecture || lecture)}
+                    onAction={() => {
+                      reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                      this.onActionLecture(inMyLecture || lecture);
+                    }}
                     onViewDetail={this.onViewDetail}
                   />
                 );
@@ -343,11 +353,12 @@ class CollegeLecturesContainer extends Component<Props, State> {
           channels={channels}
           onSelectChannel={this.onSelectChannel}
         />
-        {allSelected ?
-          this.renderCollegeLectures()
-          :
-          this.renderChannelsLectures()
+        {
+          lectureCountService!.categoryType === 'CollegeLectures' || allSelected ?
+            this.renderCollegeLectures() :
+            this.renderChannelsLectures()
         }
+
       </CategoryLecturesContentWrapperView>
     );
   }

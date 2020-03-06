@@ -1,26 +1,26 @@
+
 import { DomainEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
-import { IdName } from 'shared/model';
-import { PostContentsModel } from './PostContentsModel';
-import { PostConfigModel } from './PostConfigModel';
-import { PostCdoModel } from './PostCdoModel';
-import { OpenState } from './OpenState';
-import { WriterModel } from './WriterModel';
-import { NameValueList } from '../../shared/model/NameValueList';
-import { DatePeriod } from '../../shared/model/DatePeriod';
+import { IdName, NameValueList, DatePeriod } from 'shared/model';
 
-export class PostModel implements DomainEntity {
+import PostContentsModel from './PostContentsModel';
+import PostConfigModel from './PostConfigModel';
+import PostCdoModel from './PostCdoModel';
+import OpenState from './OpenState';
+import WriterModel from './WriterModel';
+
+
+class PostModel implements DomainEntity {
   //
   id: string = '';
   entityVersion: number = 0;
-  //audienceKey: string = 'r2p8-r@nea-m5-c5';
   audienceKey: string = '';
 
   postId: string = '';
   title: string = '';
   writer: WriterModel = new WriterModel();
   contents: PostContentsModel = new PostContentsModel();
-  time: string = '';
+  time: number = 0;
   readCount: string = '';
   config: PostConfigModel = new PostConfigModel();
   category: IdName = new IdName();
@@ -111,5 +111,6 @@ decorate(PostModel, {
   answer: observable,
   period: observable,
   commentFeedbackId: observable,
-
 });
+
+export default PostModel;

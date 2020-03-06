@@ -1,5 +1,5 @@
 
-import { action, configure, observable, runInAction } from 'mobx';
+import { action, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import _ from 'lodash';
 
@@ -12,10 +12,6 @@ import { BoardFlowUserCdoModel } from '../../model/BoardFlowUserCdoModel';
 import { BoardFlowUserUdoModel } from '../../model/BoardFlowUserUdoModel';
 import { BoardFlowUdoModel } from '../../model/BoardFlowUdoModel';
 
-
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
 export default class BoardService {

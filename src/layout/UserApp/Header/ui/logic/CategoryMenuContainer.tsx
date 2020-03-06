@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Button, Icon, Popup } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
+import { ActionLogService } from 'shared/stores';
 import { FavoriteChannelChangeModal } from 'shared';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
@@ -13,12 +14,16 @@ import { CollegeLectureCountRdo }  from 'lecture/model';
 import { CollegeLectureCountService }  from 'lecture/stores';
 import lectureRoutePaths from 'lecture/routePaths';
 import mainRoutePaths from 'main/routePaths';
+import LectureCountService from 'lecture/category/present/logic/LectureCountService';
 import CategoryMenuPanelView from '../view/CategoryMenuPanelView';
 
 
+
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   skProfileService?: SkProfileService,
   collegeLectureCountService?: CollegeLectureCountService,
+  lectureCountService?: LectureCountService
 }
 
 interface State {
@@ -26,7 +31,12 @@ interface State {
   activeCollege?: CollegeLectureCountRdo,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService', 'lecture.collegeLectureCountService'))
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'profile.skProfileService',
+  'lecture.collegeLectureCountService',
+  'lecture.lectureCountService',
+))
 @reactAutobind
 @observer
 class CategoryMenuContainer extends Component<Props, State> {
@@ -81,13 +91,17 @@ class CategoryMenuContainer extends Component<Props, State> {
   onClickChannel(e: any, channel?: IdNameCount) {
     //
     const { activeCollege } = this.state;
-    const { history } = this.props;
+    const { history, lectureCountService } = this.props;
     const active: CollegeLectureCountRdo = activeCollege as any;
 
-    if (!channel) {
+    if (!channel)
+    {
+      lectureCountService!.setCategoryType('CollegeLectures');
       history.push(lectureRoutePaths.collegeLectures(active.collegeId));
     }
-    else if (active.collegeId && channel.id) {
+    else if (active.collegeId && channel.id)
+    {
+      lectureCountService!.setCategoryType('ChannelsLectures');
       history.push(lectureRoutePaths.channelLectures(active.collegeId, channel.id));
     }
     this.setState({
@@ -96,6 +110,7 @@ class CategoryMenuContainer extends Component<Props, State> {
   }
 
   onOpenFavorite() {
+    this.onClickActionLog('관심 Channel 변경');
     this.modal.onOpenModal();
     this.onClose();
   }
@@ -113,6 +128,11 @@ class CategoryMenuContainer extends Component<Props, State> {
     else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
       history.replace(lectureRoutePaths.recommend());
     }
+  }
+
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   renderMenuActions() {
@@ -145,7 +165,7 @@ class CategoryMenuContainer extends Component<Props, State> {
       <>
         <div className="g-menu-detail">
           <Popup
-            trigger={<Button className="detail-open">Category</Button>}
+            trigger={<Button className="detail-open" onClick={() => this.onClickActionLog('Category')}>Category</Button>}
             on="click"
             className="g-menu-detail"
             basic

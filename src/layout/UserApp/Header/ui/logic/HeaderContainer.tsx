@@ -1,8 +1,10 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import { ActionLogService } from 'shared/stores';
 import boardRoutePaths from 'board/routePaths';
 import { Context } from '../../../index';
 import CategoryMenuContainer from './CategoryMenuContainer';
@@ -15,6 +17,7 @@ import BreadcrumbView from '../view/BreadcrumbView';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
 }
 
 interface State {
@@ -22,6 +25,9 @@ interface State {
   focused: boolean,
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 class HeaderContainer extends Component<Props, State> {
   //
@@ -48,9 +54,12 @@ class HeaderContainer extends Component<Props, State> {
 
   onSearch() {
     //
+    const { actionLogService } = this.props;
     const { searchValue } = this.state;
 
     if (searchValue) {
+      actionLogService?.registerClickActionLog({ subAction: 'search', subContext: searchValue, isEmpty: true });
+
       window.location.href = encodeURI(`/search?query=${searchValue}`);
     }
   }
@@ -73,6 +82,10 @@ class HeaderContainer extends Component<Props, State> {
     this.setState({ searchValue: '' });
   }
 
+  onClickMenu(menuName: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: menuName });
+  }
 
   render() {
     //
@@ -89,8 +102,8 @@ class HeaderContainer extends Component<Props, State> {
         )}
       >
         <>
-          <LogoView />
-          <MenuView />
+          <LogoView onClickMenu={this.onClickMenu} />
+          <MenuView onClickMenu={this.onClickMenu} />
           <CategoryMenuContainer />
 
           <SearchBarView

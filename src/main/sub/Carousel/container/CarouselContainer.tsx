@@ -60,6 +60,21 @@ class CarouselContainer extends Component<Props, State> {
       mediaUrl: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
     },
     {
+      type: ContentType.LinkContent,
+      title: <>CES 2020의 핵심 트렌드를<br />&#8220;전지적 SK시점&#8221;으로 정리한<br />&#060;CES 2020 치트 키&#062;</>,
+      description: (
+        <>
+          <b>#1. 찐 리뷰 – 10분 순삭!! &#39;CES 2020 핵심&#39; 정리★</b><br />
+          #2. 구성원 &#39;편애&#39;리뷰 – SK 전시관 기획ᆞ운영자들의 &#39;편애&#39; 가득한 리뷰 Show<br />
+          #3. SK 반, CES 반 – &#39;짬&#39;에서 나오는 리더들의 리뷰!<br />
+          #4. 성큼 다가온 AI everywhere 시대! SK의 AI는 어디쯤 와있을까?
+        </>
+      ),
+
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-77w/lecture-card/LECTURE-CARD-2ax',
+      imageUrl: '/images/all/img_banner_05.jpg',
+    },
+    {
       type: ContentType.ExternalWindowVideo,
       title: <>&#39;mySUNI&#39;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
       description: (

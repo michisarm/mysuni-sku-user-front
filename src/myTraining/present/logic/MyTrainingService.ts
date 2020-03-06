@@ -16,6 +16,18 @@ class MyTrainingService {
   @observable
   _myTrainings: MyTrainingModel[] = [];
 
+  @observable
+  inprogressCount: number = 0;
+
+  @observable
+  enrolledCount: number = 0;
+
+  @observable
+  completedCount: number = 0;
+
+  @observable
+  retryCount: number = 0;
+
 
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
@@ -93,6 +105,30 @@ class MyTrainingService {
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
     return trainingOffsetElementList;
+  }
+
+  @action
+  async countMyTrainingsWithStamp(channelIds: string[] = []) {
+    //
+    const rdo = MyTrainingRdoModel.new(1, 0, channelIds);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+
+    return trainingOffsetElementList.totalCount;
+  }
+
+
+  @action
+  async findAllTabMyTraining() {
+    //
+    const myTrainingTabModel = await this.myTrainingApi.findAllTabMyTraining();
+    runInAction(() => {
+      this.inprogressCount = myTrainingTabModel.inprogressCount;
+      this.completedCount = myTrainingTabModel.completedCount;
+      this.enrolledCount = myTrainingTabModel.enrolledCount;
+      this.retryCount = myTrainingTabModel.retryCount;
+    });
+
+    return myTrainingTabModel;
   }
 }
 

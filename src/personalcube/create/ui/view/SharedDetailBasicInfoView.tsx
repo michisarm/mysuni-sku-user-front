@@ -12,9 +12,11 @@ interface Props {
 }
 
 class SharedDetailBasicInfoView extends React.Component<Props> {
-  render() {
+  render()
+  {
     const { personalCube } = this.props;
     const selectedChannels: any = [];
+    let rejectRemarks: any = '';
 
     if (personalCube && personalCube.subCategories) {
       const channelListMap = PersonalCubeModel.makeChannelsMap(personalCube.subCategories);
@@ -29,6 +31,14 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
           })
         )
       ));
+    }
+
+    if (personalCube && personalCube.openRequests && personalCube.openRequests.length > 0 && personalCube.openRequests[0].response)
+    {
+      rejectRemarks = <><br />사유<span className="dash" />{personalCube.openRequests[0].response.remark}</>;
+    } else
+    {
+      rejectRemarks = '';
     }
 
     return (
@@ -76,7 +86,9 @@ class SharedDetailBasicInfoView extends React.Component<Props> {
               <Table.Row>
                 <Table.HeaderCell>승인정보</Table.HeaderCell>
                 <Table.Cell>
-                  <div>{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}</div>
+                  <div>{EnumUtil.getEnumValue(CubeStateView, personalCube.cubeState).get(personalCube.cubeState)}
+                    {rejectRemarks}
+                  </div>
                 </Table.Cell>
               </Table.Row>
             </Table.Body>

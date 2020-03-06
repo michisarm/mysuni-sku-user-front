@@ -1,14 +1,12 @@
-import { observable, action, configure, runInAction } from 'mobx';
+
+import { observable, action, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import AnswerApi from '../apiclient/AnswerApi';
-import { AnswerModel } from '../../model/AnswerModel';
+import { AnswerModel } from '../../model';
 
-configure({
-  enforceActions: 'observed',
-});
 
 @autobind
-export default class AnswerService {
+class AnswerService {
   //
   static instance: AnswerService;
 
@@ -42,3 +40,5 @@ Object.defineProperty(AnswerService, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default AnswerService;

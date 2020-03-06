@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
-import { PageService } from 'shared/stores';
+import { ActionLogService, PageService } from 'shared/stores';
 import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureModel, LectureServiceType } from 'lecture/model';
@@ -22,6 +22,7 @@ import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
   pageService?: PageService,
   lectureService?: LectureService,
   inMyLectureService?: InMyLectureService,
@@ -34,6 +35,7 @@ interface States {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.pageService',
   'shared.reviewService',
   'lecture.lectureService',
@@ -54,10 +56,11 @@ class SharedListContainer extends React.Component<Props, States> {
 
   componentDidMount() {
     //
-    const { pageService } = this.props;
+    const { pageService, lectureService } = this.props;
 
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
     pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
+    lectureService!.clearLectures();
     this.findSharedLectures();
   }
 
@@ -166,7 +169,9 @@ class SharedListContainer extends React.Component<Props, States> {
 
   onToggleBookmarkLecture(lecture: LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(lecture.id)
@@ -208,7 +213,10 @@ class SharedListContainer extends React.Component<Props, States> {
                   rating={this.getRating(lecture)}
                   thumbnailImage={lecture.baseUrl || undefined}
                   action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                  onAction={() => this.onToggleBookmarkLecture(inMyLecture || lecture)}
+                  onAction={() => {
+                    reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                    this.onToggleBookmarkLecture(inMyLecture || lecture);
+                  }}
                   onViewDetail={this.onViewDetail}
                 />
               );

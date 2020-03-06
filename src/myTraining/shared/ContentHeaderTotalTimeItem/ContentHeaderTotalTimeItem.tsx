@@ -1,21 +1,32 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { inject } from 'mobx-react';
 
 import { Button, Label, Icon } from 'semantic-ui-react';
+import { ActionLogService } from 'shared/stores';
 import { MyLearningSummaryModal } from 'myTraining';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   minute?: number,
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 class ContentHeaderTotalTimeItem extends Component<Props> {
   //
   static defaultProps = {
     minute: 0,
   };
+
+  onClickActionLog() {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: '총 학습시간' });
+  }
 
   render() {
     //
@@ -64,7 +75,7 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
         {
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-total-time">
+              <Button className="btn-total-time" onClick={this.onClickActionLog}>
                 <Label className="onlytext">
                   <Icon className="total-time" /><span>총 학습시간</span>
                 </Label>

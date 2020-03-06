@@ -1,13 +1,15 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
 import { IdNameCount } from 'shared/model';
 import { CollegeLectureCountRdo } from 'lecture/model';
+import { ActionLogService } from 'shared/stores';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   colleges: CollegeLectureCountRdo[],
   activeCollege?: CollegeLectureCountRdo,
   channels?: IdNameCount[],
@@ -16,10 +18,19 @@ interface Props {
   onRouteChannel: (e: any, channel?: IdNameCount) => void,
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+))
 @reactAutobind
 @observer
 class CategoryMenuPanelView extends Component<Props> {
   //
+
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
+  }
+
   render() {
     //
     const {
@@ -42,7 +53,10 @@ class CategoryMenuPanelView extends Component<Props> {
                     <button
                       key={`category_${college.collegeId}`}
                       className={activeCollege && activeCollege.collegeId === college.collegeId ? 'active' : ''}
-                      onClick={(e) => onActiveCollege(e, college)}
+                      onClick={(e) => {
+                        this.onClickActionLog(college.name);
+                        onActiveCollege(e, college);
+                      }}
                     >
                       {college.name}
                     </button>
@@ -55,14 +69,23 @@ class CategoryMenuPanelView extends Component<Props> {
                 <div className="scrolling">
                   { activeCollege && (
                     <>
-                      <button onClick={(e) => onRouteChannel(e)}>
+                      <button onClick={(e) => {
+                        this.onClickActionLog(`${activeCollege.name} 전체보기`);
+                        onRouteChannel(e);
+                      }}
+                      >
                         {activeCollege.name} 전체보기
                         <span>({activeCollege.collegeCount})</span>
                       </button>
 
                       { Array.isArray(channels) && (
                         channels.map((channel) => (
-                          <button key={`sub-category-${channel.id}`} onClick={(e) => onRouteChannel(e, channel)}>
+                          <button key={`sub-category-${channel.id}`}
+                            onClick={(e) => {
+                              this.onClickActionLog(channel.name);
+                              onRouteChannel(e, channel);
+                            }}
+                          >
                             {channel.name}
                             <span>({channel.count})</span>
                           </button>

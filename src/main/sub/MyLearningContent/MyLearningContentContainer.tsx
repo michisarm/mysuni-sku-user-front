@@ -1,12 +1,13 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
+import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { Tab, NoSuchContentPanel } from 'shared';
@@ -23,6 +24,7 @@ import { ContentWrapper, TabsView } from './MyLearningContentElementsView';
 
 
 interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
   notieService?: NotieService,
   reviewService?: ReviewService,
   lectureService?: LectureService,
@@ -49,6 +51,7 @@ enum ContentTypeName {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'shared.reviewService',
   'notie.notieService',
   'lecture.lectureService',
@@ -69,8 +72,7 @@ class MyLearningContentContainer extends Component<Props, State> {
     //
     this.findMyContent();
 
-    this.props.notieService!.countMenuNoties('Learning_Progress');
-    this.props.notieService!.countMenuNoties('Learning_Waiting');
+    this.props.myTrainingService!.findAllTabMyTraining();
     this.props.lectureService!.countRequiredLectures();
   }
 
@@ -107,9 +109,10 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   getTabs() {
     //
-    const notieService = this.props.notieService!;
+    // const notieService = this.props.notieService!;
     const lectureService = this.props.lectureService!;
     const inMyLectureService = this.props.inMyLectureService!;
+    const myTrainingService = this.props.myTrainingService!;
 
     const inMyLectureAllCount = inMyLectureService.inMyLectureAllCount;
 
@@ -119,7 +122,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.Required }
-            { lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>}
+            {
+              lectureService.requiredLecturesCount > 0 && <span className="count">+{lectureService.requiredLecturesCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderRequiredList,
@@ -129,7 +135,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.InMyList }
-            { inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>}
+            {
+              inMyLectureAllCount > 0 && <span className="count">+{inMyLectureAllCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderInMyList,
@@ -139,7 +148,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.InProgress }
-            { notieService.progressedCount > 0 && <span className="count">+{notieService.progressedCount}</span>}
+            {
+              myTrainingService.inprogressCount > 0 && <span className="count">+{myTrainingService.inprogressCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderInProgress,
@@ -149,7 +161,10 @@ class MyLearningContentContainer extends Component<Props, State> {
         item: (
           <>
             { ContentTypeName.Enrolled }
-            { notieService.waitingCount > 0 && <span className="count">+{notieService.waitingCount}</span>}
+            {
+              myTrainingService.enrolledCount > 0 && <span className="count">+{myTrainingService.enrolledCount}</span>
+              || <span className="count">0</span>
+            }
           </>
         ),
         render: this.renderEnrolled,
@@ -186,7 +201,9 @@ class MyLearningContentContainer extends Component<Props, State> {
       return;
     }
 
-    const { lectureService, inMyLectureService, myTrainingService } = this.props;
+    const { actionLogService, lectureService, inMyLectureService, myTrainingService } = this.props;
+
+    actionLogService?.registerClickActionLog({ subAction: ContentTypeName[contentType] });
 
     if (name === ContentType.Required) {
       lectureService!.clearLectures();
@@ -206,8 +223,10 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onViewAll() {
     //
-    const { history } = this.props;
+    const { actionLogService, history } = this.props;
     const { contentType } = this.state;
+
+    actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     history.push(myTrainingRoutes.learningTab(contentType));
   }
@@ -228,7 +247,9 @@ class MyLearningContentContainer extends Component<Props, State> {
 
   onActionLecture(training: MyTrainingModel | LectureModel | InMyLectureModel) {
     //
-    const { inMyLectureService } = this.props;
+    const { actionLogService, inMyLectureService } = this.props;
+
+    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id)
@@ -320,7 +341,10 @@ class MyLearningContentContainer extends Component<Props, State> {
                   rating={this.getRating(learning)}
                   thumbnailImage={learning.baseUrl || undefined}
                   action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
-                  onAction={() => this.onActionLecture(inMyLecture || learning)}
+                  onAction={() => {
+                    reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                    this.onActionLecture(inMyLecture || learning);
+                  }}
                   onViewDetail={this.onViewDetail}
                 />
               );

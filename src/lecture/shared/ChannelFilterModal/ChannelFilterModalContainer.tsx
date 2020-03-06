@@ -5,11 +5,13 @@ import classNames from 'classnames';
 
 import { Button, Modal } from 'semantic-ui-react';
 import { CollegeModel, ChannelModel } from 'college/model';
+import { ActionLogService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { LectureCountService, CollegeLectureCountService } from 'lecture/stores';
 
 
 interface Props {
+  actionLogService?: ActionLogService,
   collegeService? : CollegeService
   collegeLectureCountService?: CollegeLectureCountService
   lectureCountService? : LectureCountService
@@ -28,6 +30,7 @@ interface State{
 
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
   'college.collegeService',
   'lecture.lectureCountService',
   'lecture.collegeLectureCountService',
@@ -64,6 +67,8 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   onCloseModal() {
+    this.onClickActionLog('Close');
+
     this.setState({
       open: false,
       selectedCollege: null,
@@ -72,6 +77,8 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   }
 
   onFilter() {
+    this.onClickActionLog('Filter');
+
     //favoriteChannel 변경사항 저장하기
     const { onFilter } = this.props;
     if (onFilter) onFilter(this.state.channels);
@@ -80,6 +87,8 @@ class ChannelFilterModalContainer extends Component<Props, State> {
 
   onSelectChannel(channel: ChannelModel) {
     //
+    this.onClickActionLog(channel.name);
+
     let { channels }: State = this.state;
     if (channels.map(ch => ch.id).includes(channel.id)) {
       channels = channels.filter(ch => ch.id !== channel.id);
@@ -111,8 +120,16 @@ class ChannelFilterModalContainer extends Component<Props, State> {
   handleClick(college: CollegeModel) {
     //
     const { lectureCountService } = this.props;
+
+    this.onClickActionLog(college.name);
+
     this.setState({ selectedCollege: college });
     lectureCountService!.findLectureCountByCollegeId(college.collegeId, college.channels);
+  }
+
+  onClickActionLog(text: string) {
+    const { actionLogService } = this.props;
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {

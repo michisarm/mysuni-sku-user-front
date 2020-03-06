@@ -33,5 +33,29 @@
   line-height: 2.5;
 }
 
+/* approval 추가 후 create -> content 부분 높이 줄어 든 오류 수정 */
+/*#root section.bg-white {*/
+/*  height : auto;*/
+/*}*/
 
+
+/* mySUNI introduction 탭메뉴 깨짐 수정 */
+#root section.content .tab-menu-inner .ui.menu {
+  width : 75rem !important;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .channel-change .table-css .row.head .cell.v-middle .right .clear i.icon.reset::before {
+    position : absolute;
+    left : 30px;
+  }
+  .ui.segment.full .recommend-detail .channel-of-interest .table-css .row .cell.vtop .tit-set .ui.button.icon.img-icon i.icon.setting17 {
+    position: absolute;
+    top: -1px;
+    left: 0;
+  }
+  .ui.accordion.channel .title i::before {
+    height: 1.7rem;
+  }
+}
 

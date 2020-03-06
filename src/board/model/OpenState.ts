@@ -1,7 +1,10 @@
-export enum OpenState {
+
+enum OpenState {
   Created,
   OpenApproval,
   Opened,
   Closed,
   Rejected,
 }
+
+export default OpenState;

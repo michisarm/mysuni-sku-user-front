@@ -1,7 +1,9 @@
-import { axiosApi as axios } from '@nara.platform/accent';
-import { AnswerModel } from '../../model/AnswerModel';
 
-export default class AnswerApi {
+import { axiosApi as axios } from '@nara.platform/accent';
+import { AnswerModel } from '../../model';
+
+
+class AnswerApi {
 
   URL = '/api/board/posts/answer';
 
@@ -18,3 +20,5 @@ Object.defineProperty(AnswerApi, 'instance', {
   writable: false,
   configurable: false,
 });
+
+export default AnswerApi;

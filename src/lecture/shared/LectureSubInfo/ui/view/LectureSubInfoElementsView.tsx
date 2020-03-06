@@ -2,7 +2,7 @@
 import React from 'react';
 import { Label, Button, Step, List, Icon, Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import { CubeType } from 'shared/model';
 import { dateTimeHelper } from 'shared';
 import Action from '../../model/Action';
@@ -237,6 +237,7 @@ export class FootButtons extends React.Component<FootButtonsProp> {
                 textarea.setSelectionRange(0, 9999);
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
+                reactAlert({ title: '알림', message: 'URL이 복사되었습니다.' });
               }}
             >
               <Icon className="share2" />

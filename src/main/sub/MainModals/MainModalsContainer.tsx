@@ -3,23 +3,23 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import moment from 'moment';
+// import moment from 'moment';
 import ModalState from './model/ModalState';
-import WelcomeModalView from './WelcomeModalView';
-import SystemGuideModalView from './SystemGuideModalView';
+// import WelcomeModalView from './WelcomeModalView';
+// import SystemGuideModalView from './SystemGuideModalView';
 import TutorialModalView from './TutorialModalView';
 
 
 interface State {
-  welcomeModalState: ModalState
+  // welcomeModalState: ModalState
   tutorialModalState: ModalState
-  systemGuideModalState: ModalState
+  // systemGuideModalState: ModalState
 }
 
 enum PageType {
-  Welcome = 'welcome',
+  // Welcome = 'welcome',
   Tutorial = 'tutorial',
-  SystemGuide = 'systemGuide',
+  // SystemGuide = 'systemGuide',
 }
 
 @reactAutobind
@@ -32,17 +32,17 @@ class MainModalsContainer extends Component<{}, State> {
   }
 
   state = {
-    welcomeModalState: new ModalState(),
+    // welcomeModalState: new ModalState(),
     tutorialModalState: new ModalState(),
-    systemGuideModalState: new ModalState(),
+    // systemGuideModalState: new ModalState(),
   };
 
 
   componentDidMount(): void {
     //
-    this.initFromStorage(PageType.Welcome);
+    // this.initFromStorage(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
-    this.initFromStorage(PageType.SystemGuide);
+    // this.initFromStorage(PageType.SystemGuide);
   }
 
   initFromStorage(pageType: PageType) {
@@ -51,16 +51,16 @@ class MainModalsContainer extends Component<{}, State> {
     let disabled = false;
 
     if (disabledValue) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-
-        if (today === disabledValue) {
-          disabled = true;
-        }
-      }
-      else {
-        disabled = true;
-      }
+      // if (pageType === PageType.Welcome) {
+      //   const today = moment().format('YYYY-MM-DD');
+      //
+      //   if (today === disabledValue) {
+      //     disabled = true;
+      //   }
+      // }
+      // else {
+      disabled = true;
+      // }
     }
 
     if (disabled) {
@@ -101,32 +101,32 @@ class MainModalsContainer extends Component<{}, State> {
     const disableChecked = this.getModalStateProp(pageType, 'disableChecked');
 
     if (disableChecked) {
-      if (pageType === PageType.Welcome) {
-        const today = moment().format('YYYY-MM-DD');
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
-      }
-      else {
-        window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
-      }
+      // if (pageType === PageType.Welcome) {
+      //   const today = moment().format('YYYY-MM-DD');
+      //   window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), today);
+      // }
+      // else {
+      window.localStorage.setItem(MainModalsContainer.getLocalStorageKey(pageType), 'disabled');
+      // }
     }
     this.setModalStateProp(pageType, 'open', false);
   }
 
   onCloseWelcome() {
     //
-    this.onClose(PageType.Welcome);
+    // this.onClose(PageType.Welcome);
     this.initFromStorage(PageType.Tutorial);
   }
 
   onCloseTutorial() {
     //
     this.onClose(PageType.Tutorial);
-    this.initFromStorage(PageType.SystemGuide);
+    // this.initFromStorage(PageType.SystemGuide);
   }
 
-  onCloseSystemGuide() {
-    this.onClose(PageType.SystemGuide);
-  }
+  // onCloseSystemGuide() {
+  //   this.onClose(PageType.SystemGuide);
+  // }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
     //
@@ -136,23 +136,27 @@ class MainModalsContainer extends Component<{}, State> {
   render() {
     //
     const {
-      welcomeModalState,
+      // welcomeModalState,
       tutorialModalState,
-      systemGuideModalState,
+      // systemGuideModalState,
     } = this.state;
 
-    if (welcomeModalState.disabled && tutorialModalState.disabled && systemGuideModalState.disabled) {
+    if (tutorialModalState.disabled
+    // && welcomeModalState.disabled
+    // && systemGuideModalState.disabled
+    ) {
       return null;
     }
-    else if (welcomeModalState.open) {
-      return (
-        <WelcomeModalView
-          modalState={welcomeModalState}
-          onClose={this.onCloseWelcome}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Welcome, data.checked)}
-        />
-      );
-    }
+    // 2012-02-21 요구사항 - MinJun, JeeSu
+    // else if (welcomeModalState.open) {
+    //   return (
+    //     <WelcomeModalView
+    //       modalState={welcomeModalState}
+    //       onClose={this.onCloseWelcome}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Welcome, data.checked)}
+    //     />
+    //   );
+    // }
     else if (tutorialModalState.open) {
       return (
         <TutorialModalView
@@ -162,15 +166,16 @@ class MainModalsContainer extends Component<{}, State> {
         />
       );
     }
-    else if (systemGuideModalState.open) {
-      return (
-        <SystemGuideModalView
-          modalState={systemGuideModalState}
-          onClose={this.onCloseSystemGuide}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
-        />
-      );
-    }
+    // 2012-02-14 요구사항 - JuneHee
+    // else if (systemGuideModalState.open) {
+    //   return (
+    //     <SystemGuideModalView
+    //       modalState={systemGuideModalState}
+    //       onClose={this.onCloseSystemGuide}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //     />
+    //   );
+    // }
     return null;
   }
 }

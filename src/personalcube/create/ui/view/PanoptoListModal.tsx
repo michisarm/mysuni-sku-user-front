@@ -36,12 +36,14 @@ class PanoptoListModal extends React.Component<Props, States> {
     const { sharedService, mediaService } = this.props;
     const { panoptoCdo } = this.props.mediaService!;
     const patronEmail = patronInfo.getPatronEmail() || '';
+    console.log(patronEmail);
 
     mediaService!.changePanoptoCdoProps('folderOwnerId', patronEmail);
 
     if (page) {
       sharedService!.setPage('panopto', page);
       mediaService!.changePanoptoCdoProps('currentPage', page);
+      mediaService!.changePanoptoCdoProps('folderOwnerId', patronEmail);
     } else {
       sharedService!.setPageMap('panopto', 0, Number(panoptoCdo.page_size));
     }
@@ -117,8 +119,8 @@ class PanoptoListModal extends React.Component<Props, States> {
         </div>
         <Modal className="base w700" open={open} onClose={() => this.show(false)}>
           <Modal.Header className="res">
-            File Upload
-            <span className="sub f12">업로드 하실 항목을 선택해 주세요.</span>
+            파일 찾기
+            <span className="sub f12">파일을 선택해 주세요.</span>
           </Modal.Header>
           <Modal.Content>
             <div className="scrolling-60vh">

@@ -36,10 +36,10 @@ export class OfficeWebModel implements DramaEntity {
           name: 'webPageUrl',
           value: officeWeb.webPageUrl,
         },
-        {
-          name: 'learningPeriod',
-          value: JSON.stringify(officeWeb.learningPeriod),
-        },
+        // {
+        //   name: 'learningPeriod',
+        //   value: JSON.stringify(officeWeb.learningPeriod),
+        // },
       ],
     };
 
@@ -54,7 +54,7 @@ export class OfficeWebModel implements DramaEntity {
         name: officeWeb.name,
         fileBoxId: officeWeb.fileBoxId,
         webPageUrl: officeWeb.webPageUrl,
-        learningPeriod: officeWeb.learningPeriod,
+        // learningPeriod: officeWeb.learningPeriod,
       }
     );
   }

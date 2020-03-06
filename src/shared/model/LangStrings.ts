@@ -9,7 +9,11 @@ export class LangStrings implements AccentLangStrings {
 
   constructor(langStrings?: LangStrings) {
     if (langStrings) {
-      const langStringMap = langStrings.langStringMap && new Map(Object.entries(langStrings.langStringMap)) || new Map<string, string>();
+      let langStringMap = langStrings.langStringMap && new Map(Object.entries(langStrings.langStringMap)) || new Map<string, string>();
+      // todo 다른 부분 영향 있는지 확인 - JuneHee
+      if (langStrings.langStringMap instanceof Map) {
+        langStringMap = langStrings.langStringMap;
+      }
       Object.assign(this, { ...langStrings, langStringMap });
     }
   }
