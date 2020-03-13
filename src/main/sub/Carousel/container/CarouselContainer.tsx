@@ -32,17 +32,17 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
-      title: <>test SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
+      title: <>mySUNI mobile Open!!</>,
       description: (
         <>
-          AI, DT 등 Future Tech 학습 과정 33시간,<br />
-          SK행복경영을 더 깊이 이해 할 수 있는 학습 과정 12시간,<br />
-          BM혁신을 도와주는 학습 과정 12시간, 약 60시간!<br />
-          총 20개 Course 부터! SUNI Stamp에 도전해보세요~!!!
+          많이 기다리셨죠&#63; Mobile 버전에 오픈 되었습니다.<br />
+          하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br />
+          둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br />
+          셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길&#44; 짬날 때&#41;<br />
         </>
       ),
-      link: boardRoutePaths.supportNoticePost('NTC-00002r'),
-      imageUrl: '/images/all/img_banner_04.png',
+      link: boardRoutePaths.supportNoticePost('NTC-000037'),
+      imageUrl: '/images/all/img_banner_06.png',
     },
     {
       type: ContentType.ExternalWindowVideo,
