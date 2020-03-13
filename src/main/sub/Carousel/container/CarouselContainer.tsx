@@ -42,7 +42,7 @@ class CarouselContainer extends Component<Props, State> {
         </>
       ),
       link: boardRoutePaths.supportNoticePost('NTC-000037'),
-      imageUrl: '/images/all/img_banner_06.png',
+      imageUrl: '/images/all/img_banner_06.jpg',
     },
     {
       type: ContentType.LinkContent,
