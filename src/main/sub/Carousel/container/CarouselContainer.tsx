@@ -45,6 +45,25 @@ class CarouselContainer extends Component<Props, State> {
       imageUrl: '/images/all/img_banner_06.png',
     },
     {
+      type: ContentType.LinkContent,
+      title: <>SKMS 알아보기</>,
+      description: (
+        <>
+          지난 2얼 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br />
+          <br />
+          우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br />
+          <br />
+          <b>
+          &#35;개정 취지 &#35;구성원 &#35;행복 &#35;사회적 가치
+          &#35;VWBE &#35;SK와 SKMS &#35;경영철학 &#35;실행원리
+          </b>
+        </>
+      ),
+
+      link: '/lecture/college/CLG00017/channel/CHN0004q',
+      imageUrl: '/images/all/img_banner_07.jpg',
+    },
+    {
       type: ContentType.ExternalWindowVideo,
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
       description: (
