@@ -122,7 +122,7 @@ class CarouselContainer extends Component<Props, State> {
     },
     {
       type: ContentType.LinkContent,
-      title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (`공`통 권장)과정 60시간</>,
+      title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
       description: (
         <>
           AI, DT 등 Future Tech 학습 과정 33시간,<br />
