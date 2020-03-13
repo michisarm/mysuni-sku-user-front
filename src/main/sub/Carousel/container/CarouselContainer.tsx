@@ -54,6 +54,7 @@ class CarouselContainer extends Component<Props, State> {
         <>
           지난 2얼 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br />
           <br />
+          우리는 누구인지, 우리가 믿는 것은 무엇이며&#44;<br />
           우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br />
           <br />
           <b>
