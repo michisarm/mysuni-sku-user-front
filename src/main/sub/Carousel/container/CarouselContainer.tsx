@@ -32,13 +32,13 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
-      title: <>mySUNI mobile Open!!</>,
+      title: <>mySUNI mobile Open&#33;&#33;</>,
       description: (
         <>
-          많이 기다리셨죠? Mobile 버전이 오픈 되었습니다. <br/>
-          하나, 쉬운 접속!(mobile SK스토어을 통해 App다운/실행)<br/>
-          둘, 편리한 사용!(Web보다 간결한 UI)<br/>
-          셋, 언제, 어디서나  학습!(출/퇴근 길, 짬날 때)<br/>
+          많이 기다리셨죠&#63; Mobile 버전이 오픈 되었습니다&#46; <br/>
+          하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br/>
+          둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br/>
+          셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길, 짬날 때&#41;<br/>
         </>
       ),
       link: boardRoutePaths.supportNoticePost('NTC-000037'),
@@ -49,13 +49,13 @@ class CarouselContainer extends Component<Props, State> {
       title: <>SKMS 알아보기</>,
       description: (
         <>
-          지난 2얼 18일 우리 앞에 새롭게 선보인 New SKMS.<br/>
+          지난 2얼 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br/>
           <br/>
-          우리는 누구인지, 우리가 믿는 것은 무엇이며,<br/>
-          우리의 믿음을 어떻게 구현할지를 알아봅니다.<br/>
+          우리는 누구인지, 우리가 믿는 것은 무엇이며&#44;<br/>
+          우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br/>
           <br/>
-          <b># 개정 취지 #구성원 #행복 #사회적 가치
-          # VWBE # SK와 SKMS # 경영철학 # 실행원리</b>
+          <b>&#35;개정 취지 &#35;구성원 &#35;행복 &#35;사회적 가치
+            &#35;VWBE &#35;SK와 SKMS &#35;경영철학 &#35;실행원리</b>
         </>
       ),
 
