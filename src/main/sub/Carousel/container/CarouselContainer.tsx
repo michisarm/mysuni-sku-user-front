@@ -36,8 +36,11 @@ class CarouselContainer extends Component<Props, State> {
       description: (
         <>
           많이 기다리셨죠&#63; Mobile 버전에 오픈 되었습니다.<br />
+          <br />
           하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br />
+          <br />
           둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br />
+          <br />
           셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길&#44; 짬날 때&#41;<br />
         </>
       ),
