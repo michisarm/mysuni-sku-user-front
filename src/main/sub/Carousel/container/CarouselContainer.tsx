@@ -27,7 +27,7 @@ class CarouselContainer extends Component<Props, State> {
     autoScrolling: false,
   };
 
-  AUTO_NEXT_TIME = 3 * 1000;
+  AUTO_NEXT_TIME = 5 * 1000;
 
   banners = [
     {
@@ -71,7 +71,7 @@ class CarouselContainer extends Component<Props, State> {
         </>
       ),
 
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-77w/lecture-card/LECTURE-CARD-2ax',
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-79n/lecture-card/LECTURE-CARD-55i',
       imageUrl: '/images/all/img_banner_05.jpg',
     },
     {
