@@ -38,7 +38,7 @@ class CarouselContainer extends Component<Props, State> {
             많이 기다리셨죠? Mobile 버전이 오픈 되었습니다. <br/>
             하나, 쉬운 접속!(mobile SK스토어을 통해 App다운/실행)<br/>
             둘, 편리한 사용!(Web보다 간결한 UI)<br/>
-            셋, 언제, 어디서나  학습!(출/퇴근 길, 짬날 때)<br/>
+            셋, 언제, 어디서나  학습!(출퇴근 길, 짬날 때)<br/>
         </>
       ),
       link: boardRoutePaths.supportNoticePost('NTC-000037'),
@@ -122,7 +122,7 @@ class CarouselContainer extends Component<Props, State> {
     },
     {
       type: ContentType.LinkContent,
-      title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
+      title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (`공`통 권장)과정 60시간</>,
       description: (
         <>
           AI, DT 등 Future Tech 학습 과정 33시간,<br />
