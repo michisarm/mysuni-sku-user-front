@@ -35,12 +35,12 @@ class CarouselContainer extends Component<Props, State> {
       title: <>mySUNI mobile Open!!</>,
       description: (
         <>
-          <b>
+
             많이 기다리셨죠? Mobile 버전이 오픈 되었습니다. <br/>
             하나, 쉬운 접속!(mobile SK스토어을 통해 App다운/실행)<br/>
             둘, 편리한 사용!(Web보다 간결한 UI)<br/>
             셋, 언제, 어디서나  학습!(출/퇴근 길, 짬날 때)<br/>
-          </b>
+
         </>
       ),
 
@@ -52,12 +52,16 @@ class CarouselContainer extends Component<Props, State> {
       title: <>SKMS 알아보기</>,
       description: (
         <>
-          <b>
+
             지난 2얼 18일 우리 앞에 새롭게 선보인 New SKMS.<br/>
             <br/>
             우리는 누구인지, 우리가 믿는 것은 무엇이며,<br/>
             우리의 믿음을 어떻게 구현할지를 알아봅니다.<br/>
-          </b>
+            <br/>
+            <b># 개정 취지 #구성원 #행복 #사회적 가치
+              # VWBE # SK와 SKMS # 경영철학 # 실행원리</b>
+
+
         </>
       ),
 
