@@ -120,8 +120,8 @@ class AnswerDetailContainer extends Component<Props, States> {
                         <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
                           {foundedFile.name}
                         </span>
-                      </a>
-                    )|| '<br/>') || ''
+                      </a>+'<br/>'
+                    )) || ''
                   }
                 </div>
               </div>
