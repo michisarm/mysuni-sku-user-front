@@ -117,6 +117,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                           {foundedFile.name}
                         </span>
                       </a>
+                      <br/>
                     </p>
                   )) || '-'
                 }

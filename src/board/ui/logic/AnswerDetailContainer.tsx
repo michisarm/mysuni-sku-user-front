@@ -122,6 +122,7 @@ class AnswerDetailContainer extends Component<Props, States> {
                             {foundedFile.name}
                           </span>
                         </a>
+                        <br/>
                       </p>
                     )) || ''
                   }
