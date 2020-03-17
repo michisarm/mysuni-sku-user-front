@@ -113,7 +113,6 @@ class AnswerDetailContainer extends Component<Props, States> {
                 </div>
                 <div className="file">
                   <span>첨부파일 :</span><br/>
-                  // eslint-disable-next-line
                   <ul>
                     {
                       filesMap && filesMap.get('reference')
