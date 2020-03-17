@@ -147,9 +147,9 @@ class QnaDetailContainer extends Component<Props, States> {
                     && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
                       <div>
                         <a href="#" className="link" key={index}>
-                          {/* eslint-disable-next-line react/style-prop-object */}
                           <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                            {foundedFile.name}
+                            {' ' + foundedFile.name}
+                            {this.render()}
                           </span><br/>
                         </a>
                         <br/>
