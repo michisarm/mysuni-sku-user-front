@@ -146,16 +146,15 @@ class QnaDetailContainer extends Component<Props, States> {
                     {
                       filesMap && filesMap.get('reference')
                       && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                        // eslint-disable-next-line
                         <li>
                           <a href="#" className="link" key={index}>
                             <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                              {foundedFile.name}
+                              {/* eslint-disable-next-line react/no-unescaped-entities */}
+                              {foundedFile.name} + '\n'
                             </span>
                           </a>
                         </li>
                       )
-                        // eslint-disable-next-line
                       ) || '-'
                   }
                   </ul>

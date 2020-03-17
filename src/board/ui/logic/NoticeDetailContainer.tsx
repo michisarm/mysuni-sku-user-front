@@ -116,7 +116,8 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                       <li>
                         <a href="#" className="link" key={index}>
                           <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                            {foundedFile.name}
+                            {/* eslint-disable-next-line react/no-unescaped-entities */}
+                            {foundedFile.name} + '\n'
                           </span>
                         </a>
                       </li>
