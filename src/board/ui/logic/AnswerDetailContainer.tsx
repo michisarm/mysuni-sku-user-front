@@ -113,22 +113,19 @@ class AnswerDetailContainer extends Component<Props, States> {
                 </div>
                 <div className="file">
                   <span>첨부파일 :</span><br/>
-                  <ul>
-                    {
+                  {
                       filesMap && filesMap.get('reference')
                       && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                        <li>
+                        <div>
                           <a href="#" className="link" key={index}>
                             <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                              {/* eslint-disable-next-line react/no-unescaped-entities */}
-                              {foundedFile.name} + '\n'
+                              {foundedFile.name}
                             </span>
                           </a>
-                        </li>
+                        </div>
                       )
                       ) || ''
                     }
-                  </ul>
                 </div>
               </div>
             )}
