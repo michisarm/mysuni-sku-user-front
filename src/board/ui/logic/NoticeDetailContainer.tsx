@@ -114,8 +114,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                     <div>
                       <a href="#" className="link" key={index}>
                         <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                          {' ' + foundedFile.name}
-                          {this.render()}
+                          {'    ' + foundedFile.name}
                         </span><br/>
                       </a>
                       <br/>
