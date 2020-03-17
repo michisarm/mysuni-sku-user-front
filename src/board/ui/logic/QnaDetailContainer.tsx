@@ -146,6 +146,7 @@ class QnaDetailContainer extends Component<Props, States> {
                     {
                       filesMap && filesMap.get('reference')
                       && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
+                        // eslint-disable-next-line
                         <li>
                           <a href="#" className="link" key={index}>
                             <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
@@ -153,7 +154,9 @@ class QnaDetailContainer extends Component<Props, States> {
                             </span>
                           </a>
                         </li>
-                      )) || '-'
+                      )
+                        // eslint-disable-next-line
+                      ) || '-'
                   }
                   </ul>
                 </div>
