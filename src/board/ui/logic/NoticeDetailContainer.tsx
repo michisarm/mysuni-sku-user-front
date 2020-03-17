@@ -113,15 +113,16 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                   && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
                     <div>
                       <a href="#" className="link" key={index}>
+                        {/* eslint-disable-next-line react/style-prop-object */}
                         <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
                           {foundedFile.name}
-                        </span>
+                        </span><br/>
                       </a>
                       <br/>
                     </div>
                   )) || '-'
                 }
-              </div>
+              </div><br/>
             </div>
           )}
         </div>
