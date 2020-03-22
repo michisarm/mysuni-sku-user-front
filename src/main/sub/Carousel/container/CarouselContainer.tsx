@@ -32,7 +32,7 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
-      title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br /> 【Life Style】 OPEN!</>,
+      title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />【Life Style】 OPEN!</>,
       description: (
         <>
           일상의 소소한 즐거움을 찾고&#44; 행복을 느낄 수 있는<br />
