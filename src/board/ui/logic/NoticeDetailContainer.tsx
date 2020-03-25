@@ -107,7 +107,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 />
               </div>
               <div className="file">
-                <span>첨부파일 : </span><br/>
+                <span>첨부파일 : </span><br />
                 {
                   filesMap && filesMap.get('reference')
                   && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
@@ -115,14 +115,14 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                       <a href="#" className="link" key={index}>
                         <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
                           {'    ' + foundedFile.name + '     '}
-                        </span><br/>
+                        </span><br />
                       </a>
-                      <br/>
+                      <br />
                     </div>
                   )
                   ) || '-<div></div><div></div><div></div>'
                 }
-              </div><br/>
+              </div><br />
             </div>
           )}
         </div>
