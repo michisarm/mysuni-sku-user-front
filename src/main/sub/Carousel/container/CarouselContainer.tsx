@@ -32,6 +32,19 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
+      title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
+      description: (
+        <>
+          일상의 소소한 즐거움을 찾고&#44; 행복을 느낄 수 있는<br />
+          다양한 분야&#40;영상제작&#44; 미술&#44; Cooking&#44; 글쓰기 등&#41;의<br />
+          콘텐츠가 여러분을 찾아 갑니다&#46;<br />
+        </>
+      ),
+      link: '/lecture/college/CLG0001a/channels/pages/1',
+      imageUrl: '/images/all/img_banner_lifestyle_20200322.png',
+    },
+    {
+      type: ContentType.LinkContent,
       title: <>mySUNI mobile Open!!</>,
       description: (
         <>
@@ -134,6 +147,21 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00002r'),
       imageUrl: '/images/all/img_banner_04.png',
     },
+    /*
+    // by JSM
+    {
+      type: ContentType.LinkContent,
+      title: <>좋아하는 채널 변경 화면으로 이동</>,
+      description: (
+        <>
+          Change my favorite channel!!!
+        </>
+      ),
+      link: '/favorite/channel',
+      imageUrl: '',
+    },
+    */
+
   ];
 
   intervalId = 0;

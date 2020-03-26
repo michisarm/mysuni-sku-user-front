@@ -1,5 +1,5 @@
 import { MediaContentsModel } from './MediaContentsModel';
-import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
+// import { NewDatePeriod } from '../../../shared/model/NewDatePeriod';
 
 export class MediaCdoModel {
   //
