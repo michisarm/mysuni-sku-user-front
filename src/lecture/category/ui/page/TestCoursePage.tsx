@@ -17,7 +17,7 @@ import routePaths from '../../../routePaths';
 import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
-import TestExamSurverView from '../view/TestExamSurverView';
+import TestExamSurverContainer from '../logic/TestExamSurverContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
@@ -456,15 +456,22 @@ class TestCoursePage extends Component<Props, State> {
       >
         {courseContent}
       </LectureCardContainer>
+
     );
   }
 
   render() {
     //
-    const { collegeService, coursePlanService } = this.props;
+    const { studentService, match, collegeService, coursePlanService } = this.props;
+    const { student, studentJoins } = studentService!;
+    const { params } = match;
+    const { lectureCardId } = this.props.match.params!;
+    const viewObject = this.getViewObject();
+    const typeViewObject = this.getTypeViewObject();
+    const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
+
     const { college } = collegeService;
     const { coursePlan, coursePlanContents } = coursePlanService;
-    const typeViewObject = this.getTypeViewObject();
 
     return (
       <ContentLayout
@@ -491,10 +498,27 @@ class TestCoursePage extends Component<Props, State> {
           }
         />
 
-        <TestExamSurverView
+        <TestExamSurverContainer
+          lectureServiceId={params.serviceId}
+          lectureCardId={lectureCardId}
+          lectureServiceType={params.serviceType}
+          inMyLectureCdo={inMyLectureCdo}
+          studentCdo={new StudentCdoModel()}
+          student={student}
+          studentJoins={studentJoins}
+          cubeType={CubeType.None}
+          viewObject={viewObject}
+          typeViewObject={typeViewObject}
+
+          init={this.init}
+          loaded={this.state.loaded}
+
           coursePlan={coursePlan}
           coursePlanContents={coursePlanContents}
-        />
+        >
+          {coursePlanContents}
+        </TestExamSurverContainer>
+
       </ContentLayout>
     );
   }
