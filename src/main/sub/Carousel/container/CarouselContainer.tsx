@@ -147,6 +147,18 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00002r'),
       imageUrl: '/images/all/img_banner_04.png',
     },
+    // by JSM
+    {
+      type: ContentType.LinkContent,
+      title: <>좋아하는 채널 변경 화면으로 이동</>,
+      description: (
+        <>
+          Change my favorite channel!!!
+        </>
+      ),
+      link: '/favorite/channel',
+      imageUrl: '',
+    },
   ];
 
   intervalId = 0;
