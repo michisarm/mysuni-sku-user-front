@@ -214,7 +214,7 @@ class FavoriteChannelContainer extends Component<Props, State> {
             />
           </ContentWrapper>
         </div>
-        <div className="actions" style={{textAlign:'center',marginTop:'10px',marginBottom:'10px'}} >
+        <div className="actions" style={{ textAlign: 'center', marginTop: '10px', marginBottom: '10px' }}>
           <Button className="w190 pop d" onClick={this.onCloseModal}>Cancel</Button>&nbsp;
           <Button className="w190 pop p" onClick={this.onConfirm}>Confirm</Button>
         </div>
