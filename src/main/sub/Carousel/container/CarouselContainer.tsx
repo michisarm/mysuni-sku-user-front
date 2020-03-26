@@ -147,6 +147,7 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00002r'),
       imageUrl: '/images/all/img_banner_04.png',
     },
+/*
     // by JSM
     {
       type: ContentType.LinkContent,
@@ -159,6 +160,7 @@ class CarouselContainer extends Component<Props, State> {
       link: '/favorite/channel',
       imageUrl: '',
     },
+*/
   ];
 
   intervalId = 0;
