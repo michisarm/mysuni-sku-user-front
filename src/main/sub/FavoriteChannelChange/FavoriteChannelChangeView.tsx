@@ -20,7 +20,7 @@ interface Props {
 
 @observer
 @reactAutobind
-class FavoriteChannelView extends Component<Props> {
+class FavoriteChannelChangeView extends Component<Props> {
   //
   color: string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
 
@@ -110,4 +110,4 @@ class FavoriteChannelView extends Component<Props> {
   }
 }
 
-export default FavoriteChannelView;
+export default FavoriteChannelChangeView;

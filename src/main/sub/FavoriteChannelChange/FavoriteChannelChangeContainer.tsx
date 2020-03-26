@@ -15,8 +15,8 @@ import { CollegeService } from 'college/stores';
 import { CollegeLectureCountRdo } from 'lecture/model';
 import { CollegeLectureCountService } from 'lecture/stores';
 import HeaderContainer from './HeaderContainer';
-import { ContentWrapper } from './FavoriteChannelElementsView';
-import FavoriteChannelView from './FavoriteChannelView';
+import { ContentWrapper } from './FavoriteChannelChangeElementsView';
+import FavoriteChannelChangeView from './FavoriteChannelChangeView';
 
 export const history = createBrowserHistory();
 
@@ -46,7 +46,7 @@ interface State {
 ))
 @observer
 @reactAutobind
-class FavoriteChannelContainer extends Component<Props, State> {
+class FavoriteChannelChangeContainer extends Component<Props, State> {
   //
   state = {
     open: false,
@@ -203,7 +203,7 @@ class FavoriteChannelContainer extends Component<Props, State> {
               onResetSelected={this.onReset}
             />
 
-            <FavoriteChannelView
+            <FavoriteChannelChangeView
               colleges={collegeLectureCounts}
               channelIds={channelIds}
               favoriteChannels={favoriteChannels}
@@ -223,4 +223,4 @@ class FavoriteChannelContainer extends Component<Props, State> {
   }
 }
 
-export default FavoriteChannelContainer;
+export default FavoriteChannelChangeContainer;

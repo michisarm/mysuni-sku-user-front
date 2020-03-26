@@ -6,7 +6,7 @@ import NotFoundPage from 'layout/NotFoundPage';
 
 import UserMainPage from './ui/page/UserMainPage';
 import IntroductionPage from './ui/page/IntroductionPage';
-import FavoriteChannel from './sub/FavoriteChannel/FavoriteChannelContainer';
+import FavoriteChannel from './sub/FavoriteChannelChange/FavoriteChannelChangeContainer';
 
 class Routes extends React.Component {
   //
@@ -20,7 +20,7 @@ class Routes extends React.Component {
         <Route exact path="/introduction/:tab" component={IntroductionPage} />
         <Route exact path="/empty" render={() => <div style={{ minHeight: 1000 }} />} />
         // by JSM
-        <Route exact path="/favorite/channel" component={FavoriteChannel} />
+        <Route exact path="/favorite/channel/change" component={FavoriteChannel} />
         <Route component={NotFoundPage} />
       </Switch>
     );
