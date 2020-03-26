@@ -484,7 +484,7 @@ const panes = [
               </div>
               <div className="label">반도체 College</div>
               <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
-              <div className="normal">SK 구성원 누구에게나 필요한 반도체 소양을 높여줄 뿐 아니라 <br />반도체 산업의 본질을 파악하고,
+              <div className="normal">SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라 <br />반도체 산업의 본질을 파악하고,
                 미래의 기술이 열어갈 세상을 전망 할 수 <br />있도록 도와드립니다.
               </div>
               <ul className="tag-wrap">
