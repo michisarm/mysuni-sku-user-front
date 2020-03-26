@@ -10,14 +10,17 @@ import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lectur
 import { RollBookService, StudentService } from 'lecture/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
-import { AnswerSheetModal } from 'assistant';
+import { AnswerSheetModal, CubeReportModal } from 'assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import TestExamSurverView from '../view/TestExamSurverView';
+import LectureExam from '../../../shared/LectureExam';
+import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
+import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
+import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
-import { CoursePlanModel, CoursePlanContentsModel } from '../../../../course/model';
 
 interface Props {
   studentService?: StudentService
@@ -37,10 +40,6 @@ interface Props {
   children: React.ReactNode
   init?:() => void
   loaded: boolean
-
-  coursePlan: CoursePlanModel
-  coursePlanContents: CoursePlanContentsModel
-
 }
 
 interface State {
@@ -54,7 +53,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class TestExamSurverContainer extends Component<Props, State> {
+class TestLectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
   examModal: any = null;
@@ -80,17 +79,17 @@ class TestExamSurverContainer extends Component<Props, State> {
       && prevProps.student?.id === this.props.student?.id) {
       this.prevViewObjectState = prevProps.viewObject.state;
     } else if (!prevProps.loaded && this.props.loaded) {
-      // if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'TestWaiting') {
-      //   reactAlert({ title: '알림', message: '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.' });
-      // } else if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'Failed') {
-      //   reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
-      // } else if (this.props.viewObject.state === 'Missed') {
-      //   reactAlert({ title: '알림', message: '과정이 미이수되었습니다. 처음부터 다시 학습 후 Test를 응시해주시기 바랍니다.' });
-      // } else if (this.prevViewObjectState === 'InProgress' && this.props.viewObject.state === 'Completed') {
-      //   reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
-      // } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
-      //   reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
-      // }
+      if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'TestWaiting') {
+        reactAlert({ title: '알림', message: '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.' });
+      } else if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'Failed') {
+        reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
+      } else if (this.props.viewObject.state === 'Missed') {
+        reactAlert({ title: '알림', message: '과정이 미이수되었습니다. 처음부터 다시 학습 후 Test를 응시해주시기 바랍니다.' });
+      } else if (this.prevViewObjectState === 'InProgress' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
+        reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
+      }
     }
 
   }
@@ -353,8 +352,35 @@ class TestExamSurverContainer extends Component<Props, State> {
   }
 
   getSubActions() {
-    const { viewObject, student } = this.props;
+    const { cubeType, typeViewObject, viewObject, student } = this.props;
     const subActions = [];
+
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+      case CubeType.ELearning:
+        if (student && student.id && student.proposalState === ProposalState.Submitted
+          && typeViewObject.classrooms && typeViewObject.classrooms.length) {
+          subActions.push({ type: LectureSubInfo.ActionType.ChangeSeries, onAction: this.onClickChangeSeries });
+        }
+        break;
+      case CubeType.Audio:
+      case CubeType.Video:
+        if (student && student.id && typeViewObject.mediaType === MediaType.LinkMedia
+          && student.learningState === LearningState.Progress && !viewObject.examId) {
+          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
+        }
+        break;
+      case CubeType.WebPage:
+      case CubeType.Experiential:
+      case CubeType.Documents:
+        if (student && student.id && student.learningState === LearningState.Progress && !viewObject.examId) {
+          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
+        }
+        break;
+      case CubeType.Community:
+        break;
+    }
+
 
     if (viewObject.examId && student) {
       if (!student.serviceType || student.serviceType === 'Lecture') {
@@ -379,27 +405,148 @@ class TestExamSurverContainer extends Component<Props, State> {
       }
     }
 
+    if (viewObject && viewObject.reportFileBoxId && student
+      && student.proposalState === ProposalState.Approved
+      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
+      if (student.studentScore.homeworkScore) {
+        subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }) });
+      }
+      else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+    }
     return subActions.length ? subActions : undefined;
+  }
+
+  getOnCancel() {
+    const { cubeType, student, studentService, lectureCardId, typeViewObject } = this.props;
+
+    switch (cubeType) {
+      case CubeType.ClassRoomLecture:
+      case CubeType.ELearning: {
+        const today = new Date();
+        const cancellablePeriod = typeViewObject.cancellablePeriod;
+
+        if (student && student.id) {
+          if (!cancellablePeriod && (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved)) {
+            return () => {
+              studentService!.removeStudent(student!.rollBookId)
+                .then(() => {
+                  studentService!.findStudent(student!.id);
+                  studentService!.findIsJsonStudentByCube(lectureCardId);
+                  studentService!.findStudentCount(student!.rollBookId);
+                });
+            };
+          }
+          else if (!student.learningState && student.proposalState !== ProposalState.Canceled
+            && student.proposalState !== ProposalState.Approved) {
+            const { year: startYear, month: startMonth, date: startDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.startDateSub)!;
+            const { year: endYear, month: endMonth, date: endDate } = getYearMonthDateHourMinuteSecond(cancellablePeriod!.endDateSub)!;
+            if (new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <= today.getTime()
+              && new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >= today.getTime()) {
+              return () => {
+                studentService!.removeStudent(student!.rollBookId)
+                  .then(() => {
+                    studentService!.findStudent(student!.id);
+                    studentService!.findIsJsonStudentByCube(lectureCardId);
+                    studentService!.findStudentCount(student!.rollBookId);
+                  });
+              };
+            }
+          }
+        }
+        return undefined;
+      }
+      case CubeType.Audio:
+      case CubeType.Video:
+      case CubeType.WebPage:
+      case CubeType.Experiential:
+      case CubeType.Documents:
+      case CubeType.Community:
+      default:
+        return undefined;
+    }
   }
 
   render() {
     //
-    const { viewObject, children } = this.props;
+    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLecture } = inMyLectureService!;
 
     return (
-      <TestExamSurverView>
+      <LectureCardContentWrapperView>
+        <LectureSubInfo
+          required={viewObject.required}
+          level={viewObject.difficultyLevel}
+          clazz={{
+            learningTime: viewObject.learningTime,
+            capacity: typeViewObject ? typeViewObject.capacity : 0,
+            cubeType,
+            passedStudentCount: viewObject.rollBooksPassedStudentCount,
+          }}
+          operator={{
+            instructor: viewObject.instructorName,
+            name: viewObject.operatorName,
+            company: viewObject.operatorCompany,
+            email: viewObject.operatorEmail,
+          }}
+          state={viewObject.state}
+          mainAction={this.getMainAction()}
+          subActions={this.getSubActions()}
+          onCancel={this.getOnCancel()}
+          onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
+          onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
+          onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
+          /* onDownloadReport={
+             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+           }*/
+        />
+        <ClassroomModalView
+          ref={classroomModal => this.classroomModal = classroomModal}
+          classrooms={typeViewObject.classrooms}
+          onOk={this.onSelectClassroom}
+        />
+        <ApplyReferenceModal
+          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+          handleOk={this.onClickApplyReferentOk}
+        />
         {
-          <AnswerSheetModal
-            examId={viewObject.examId}
-            ref={examModal => this.examModal = examModal}
-            onSaveCallback={this.testCallback}
-          />
+          viewObject && viewObject.examId && (
+            <AnswerSheetModal
+              examId={viewObject.examId}
+              ref={examModal => this.examModal = examModal}
+              onSaveCallback={this.testCallback}
+            />
+          )
         }
-
+        {
+          viewObject && viewObject.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={viewObject.surveyId}
+              surveyCaseId={viewObject.surveyCaseId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
+            />
+          )
+        }
+        <CubeReportModal
+          downloadFileBoxId ={viewObject.reportFileBoxId || typeViewObject.reportFileBoxId}
+          ref={reportModal => this.reportModal = reportModal}
+          downloadReport = {this.onClickDownloadReport}
+          rollBookId={studentCdo.rollBookId}
+        />
         {children}
-      </TestExamSurverView>
+
+        <LectureExam
+          onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
+          onDownloadReport={
+             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+           }
+        />
+      </LectureCardContentWrapperView>
     );
   }
 }
 
-export default TestExamSurverContainer;
+export default TestLectureCardContainer;

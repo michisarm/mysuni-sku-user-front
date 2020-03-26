@@ -17,8 +17,7 @@ import routePaths from '../../../routePaths';
 import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
-import TestExamSurverContainer from '../logic/TestExamSurverContainer';
-import LectureCardContainer from '../logic/LectureCardContainer';
+import TestLectureCardContainer from '../logic/TestLectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
@@ -440,7 +439,7 @@ class TestCoursePage extends Component<Props, State> {
     // console.log('CoursePage renderBaseContentWith viewObject=', viewObject);
 
     return (
-      <LectureCardContainer
+      <TestLectureCardContainer
         lectureServiceId={params.serviceId}
         lectureCardId={lectureCardId}
         lectureServiceType={params.serviceType}
@@ -455,23 +454,16 @@ class TestCoursePage extends Component<Props, State> {
         loaded={this.state.loaded}
       >
         {courseContent}
-      </LectureCardContainer>
-
+      </TestLectureCardContainer>
     );
   }
 
   render() {
     //
-    const { studentService, match, collegeService, coursePlanService } = this.props;
-    const { student, studentJoins } = studentService!;
-    const { params } = match;
-    const { lectureCardId } = this.props.match.params!;
-    const viewObject = this.getViewObject();
-    const typeViewObject = this.getTypeViewObject();
-    const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
-
+    const { collegeService, coursePlanService } = this.props;
     const { college } = collegeService;
-    const { coursePlan, coursePlanContents } = coursePlanService;
+    const { coursePlan } = coursePlanService;
+    const typeViewObject = this.getTypeViewObject();
 
     return (
       <ContentLayout
@@ -497,28 +489,6 @@ class TestCoursePage extends Component<Props, State> {
             </div>
           }
         />
-
-        <TestExamSurverContainer
-          lectureServiceId={params.serviceId}
-          lectureCardId={lectureCardId}
-          lectureServiceType={params.serviceType}
-          inMyLectureCdo={inMyLectureCdo}
-          studentCdo={new StudentCdoModel()}
-          student={student}
-          studentJoins={studentJoins}
-          cubeType={CubeType.None}
-          viewObject={viewObject}
-          typeViewObject={typeViewObject}
-
-          init={this.init}
-          loaded={this.state.loaded}
-
-          coursePlan={coursePlan}
-          coursePlanContents={coursePlanContents}
-        >
-          {coursePlanContents}
-        </TestExamSurverContainer>
-
       </ContentLayout>
     );
   }
