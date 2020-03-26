@@ -147,6 +147,7 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00002r'),
       imageUrl: '/images/all/img_banner_04.png',
     },
+
 /*
     // by JSM
     {
@@ -161,6 +162,7 @@ class CarouselContainer extends Component<Props, State> {
       imageUrl: '',
     },
 */
+
   ];
 
   intervalId = 0;
