@@ -464,6 +464,78 @@ const panes = [
         </div>
       </Tab.Pane>,
   },
+  {
+    menuItem: '반도체', render: () =>
+      <Tab.Pane>
+        <div className="ui attached tab full segment active" data-tab="colleges9">
+          <div className="college-cont-title semicond">
+            <div className="belt">
+              <div className="panopto">
+                <iframe
+                  title="audio type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3Dfbe4050a-7d9d-40bb-a819-ab89007cb3cd%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dnone%26showbrand%3Dfalse"
+                  width="436"
+                  height="245"
+                  style={{ padding: '0px', border: '0px' }}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay"
+                />
+              </div>
+              <div className="label">반도체 College</div>
+              <div className="strong">반도체, 미래를 보는 눈을 뜨다.</div>
+              <div className="normal">SK 구성원 누구에게나 도움이 될 반도체 소양을 높여줄 뿐 아니라 <br />반도체 산업의 본질을 파악하고,
+                미래의 기술이 열어갈 세상을 전망 할 수 <br />있도록 도와드립니다.
+              </div>
+              <ul className="tag-wrap">
+                <li># 반도체 역사</li>
+                <li># 반도체 산업 전망</li>
+                <li># 반도체 용어</li>
+                <li># 반도체 기술 이론</li>
+                <li># 반도체 종류</li>
+                <li># 미래 기술</li>
+                <li># 반도체 Ecosystem</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="college-free4">
+            <div className="belt">
+              <div className="label">반도체 Basic Course</div>
+              <div className="title"><strong>반도체 Biz.부터 Tech까지, 이것만 알면 누구나 ‘반.잘.알’</strong><span>(반도체 잘 아는 사람)</span></div>
+              <div className="dot-list">
+                <dl>
+                  <dt><span className="nbsp">대</span>상</dt>
+                  <dd>SK 구성원 누구나</dd>
+                </dl>
+                <dl>
+                  <dt>학습방법</dt>
+                  <dd>3가지 Channel을 통해 제공되는 컨텐츠를 순서대로 듣다 보면, 반도체 Ecosystem을 이해할 수 있는 기본 다지기 완성!</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div className="college-cont-map in">
+            <div className="belt">
+              <div className="label">전체 커리큘럼</div>
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/img-co9.png`} alt="" />
+              </div>
+            </div>
+          </div>
+
+          <div className="college-free4 bottom">
+            <div className="belt">
+              <div className="label">반도체 Advanced Course</div>
+              <div className="con">반도체 Advanced Track은 반도체 산업 구조 전반, Value Chain 및 미래 반도체 기술에 대한 In-depth한 지식을 습득할 수 있는 과정들로 구성될
+                <br />예정이며, 최고의 강사진과 고품격 강의 제공을 위해 열심히 과정을 준비하고 있습니다. (20년 7월 Open 예정)
+              </div>
+          </div>
+        </div>
+        </div>
+      </Tab.Pane>,
+  },
 ];
 
 interface Props extends RouteComponentProps {

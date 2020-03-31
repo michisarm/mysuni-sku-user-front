@@ -59,3 +59,35 @@
   }
 }
 
+
+/* 20200330 */
+#root section.content.f-channel {
+  padding-bottom:0;
+  background-color:#fff;
+}
+.f-channel .header.res {
+  height: auto !important;
+  padding:1.125rem 0;
+  line-height: inherit;
+  border-bottom:1px solid #d6deed;
+  font-weight: 700;
+}
+.f-channel .header.res .sub.f12 {
+  font-size: .75rem;
+  display: block;
+  margin: .625rem 0 0 0;
+  font-weight: 400;
+  letter-spacing: -.01625rem;
+  color: #6c788f;
+}
+.f-channel .cell .h30 input:focus {
+  border-color: #85b7d9 !important;
+}
+.f-channel .actions {
+  text-align:center;
+  border-top: 1px solid rgba(34,36,38,.15);
+  padding: .9375rem 0 !important;
+}
+.f-channel .actions> .button {
+  margin-left: .75rem;
+}

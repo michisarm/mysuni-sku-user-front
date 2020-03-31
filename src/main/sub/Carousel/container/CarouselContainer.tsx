@@ -27,9 +27,54 @@ class CarouselContainer extends Component<Props, State> {
     autoScrolling: false,
   };
 
-  AUTO_NEXT_TIME = 3 * 1000;
+  AUTO_NEXT_TIME = 5 * 1000;
 
   banners = [
+    {
+      type: ContentType.LinkContent,
+      title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
+      description: (
+        <>
+          일상의 소소한 즐거움을 찾고&#44; 행복을 느낄 수 있는<br />
+          다양한 분야&#40;영상제작&#44; 미술&#44; Cooking&#44; 글쓰기 등&#41;의<br />
+          콘텐츠가 여러분을 찾아 갑니다&#46;<br />
+        </>
+      ),
+      link: '/lecture/college/CLG0001a/channels/pages/1',
+      imageUrl: '/images/all/img_banner_lifestyle_20200322.png',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>mySUNI mobile Open!!</>,
+      description: (
+        <>
+          많이 기다리셨죠&#63; mySUNI mobile 설치하세요.<br />
+          하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br />
+          둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br />
+          셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길&#44; 짬날 때&#41;<br />
+        </>
+      ),
+      link: boardRoutePaths.supportNoticePost('NTC-000037'),
+      imageUrl: '/images/all/img_banner_06.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>SKMS 알아보기</>,
+      description: (
+        <>
+          2020년 2월 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br />
+          우리는 누구인지, 우리가 믿는 것은 무엇이며&#44;<br />
+          우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br />
+          <i>
+          &#35;개정 취지 &#35;구성원 &#35;행복 &#35;사회적 가치
+          &#35;VWBE &#35;SK와 SKMS &#35;경영철학 &#35;실행원리
+          </i>
+        </>
+      ),
+
+      link: '/lecture/college/CLG00017/channel/CHN0004q',
+      imageUrl: '/images/all/img_banner_07.jpg',
+    },
     {
       type: ContentType.ExternalWindowVideo,
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
@@ -70,7 +115,8 @@ class CarouselContainer extends Component<Props, State> {
           #4. 성큼 다가온 AI everywhere 시대! SK의 AI는 어디쯤 와있을까?
         </>
       ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-35q/lecture-card/LECTURE-CARD-1v1',
+
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-79n/lecture-card/LECTURE-CARD-55i',
       imageUrl: '/images/all/img_banner_05.jpg',
     },
     {
@@ -101,6 +147,21 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00002r'),
       imageUrl: '/images/all/img_banner_04.png',
     },
+    /*
+    // by JSM
+    {
+      type: ContentType.LinkContent,
+      title: <>좋아하는 채널 변경 화면으로 이동</>,
+      description: (
+        <>
+          Change my favorite channel!!!
+        </>
+      ),
+      link: '/favorite/channel',
+      imageUrl: '',
+    },
+    */
+
   ];
 
   intervalId = 0;
