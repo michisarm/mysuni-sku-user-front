@@ -7,7 +7,8 @@ import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
 import CoursePage from './category/ui/page/CoursePage';
-import TestCoursePage from './category/ui/page/TestCoursePage';
+import TestCoursePage from './category/ui/page/TestCoursePage'; // TEST
+import ZMSCoursePage from './category/ui/page/ZMSCoursePage'; // MSJ TEST
 import LectureCardPage from './category/ui/page/LectureCardPage';
 
 import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
@@ -34,6 +35,7 @@ class Routes extends Component {
         <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
         <Route exact path="/lecture/cineroom/test/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={TestCoursePage} />
+        <Route exact path="/lecture/cineroom/zms/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={ZMSCoursePage} />
 
         <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />

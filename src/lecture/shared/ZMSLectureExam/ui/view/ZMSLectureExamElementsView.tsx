@@ -1,14 +1,12 @@
 
 import React from 'react';
-import Action from '../../../LectureSubInfo/model/Action';
 
 interface ReportProps {
   OnReport?: () => void
-  title?: String
-  stau?: String
+  viewObject?: any
 }
 
-export const Report = ({ OnReport, title, stau }: ReportProps) => {
+export const Report = ({ OnReport,viewObject }: ReportProps) => {
   //
   if (!OnReport) return null;
   return (
@@ -34,12 +32,10 @@ export const Report = ({ OnReport, title, stau }: ReportProps) => {
 
 interface TestProp {
   OnTest?: () => void
-  title?: String
-  stau?: String
-  subActions?: Action[]
+  viewObject?: any
 }
 
-export const Test = ({ OnTest, title, stau, subActions}: TestProp) => {
+export const Test = ({ OnTest, viewObject}: TestProp) => {
   //
   if (!OnTest) return null;
 
@@ -50,10 +46,10 @@ export const Test = ({ OnTest, title, stau, subActions}: TestProp) => {
       </div>
       <div className="desc">
         <div className="t-copy">Test</div>
-        <div className="s-copy">{title}</div>
+        <div className="s-copy">{viewObject.examTitle}</div>
       </div>
       <div className="btn-area">
-        <button className="ui button trs" disabled><span>설문하기</span></button>
+        <button className="ui button trs"><span>과제제출</span></button>
       </div>
     </div>
   );
@@ -61,11 +57,10 @@ export const Test = ({ OnTest, title, stau, subActions}: TestProp) => {
 
 interface SurveyProp {
   onSurvey?: () => void
-  title?: String
-  stau?: String
+  viewObject?: any
 }
 
-export const Survey = ({ onSurvey, title, stau }: SurveyProp) => {
+export const Survey = ({ onSurvey,viewObject }: SurveyProp) => {
   //
   if (!onSurvey) return null;
   return (
@@ -75,7 +70,7 @@ export const Survey = ({ onSurvey, title, stau }: SurveyProp) => {
       </div>
       <div className="desc">
         <div className="t-copy">Survey</div>
-        <div className="s-copy">{title}</div>
+        <div className="s-copy">{viewObject.surveyTitle}</div>
       </div>
       <div className="btn-area">
         <button className="ui button trs" disabled><span>설문하기</span></button>

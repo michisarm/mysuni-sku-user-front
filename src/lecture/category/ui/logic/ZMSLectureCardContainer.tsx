@@ -14,7 +14,7 @@ import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
+import ZMSLectureExam from '../../../shared/ZMSLectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
@@ -22,10 +22,6 @@ import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
-
-import SurveyCaseService from '../../../../survey/event/present/logic/SurveyCaseService';
-import SurveyFormService from '../../../../survey/form/present/logic/SurveyFormService';
-import AnswerSheetService from '../../../../survey/answer/present/logic/AnswerSheetService';
 
 interface Props {
   studentService?: StudentService
@@ -45,9 +41,6 @@ interface Props {
   children: React.ReactNode
   init?:() => void
   loaded: boolean
-  surveyCaseService: SurveyCaseService
-  surveyFormService: SurveyFormService
-  answerSheetService: AnswerSheetService
 }
 
 interface State {
@@ -62,7 +55,7 @@ interface State {
 ))
 @reactAutobind
 @observer
-class TestLectureCardContainer extends Component<Props, State> {
+class ZMSLectureCardContainer extends Component<Props, State> {
   //
   classroomModal: any = null;
   examModal: any = null;
@@ -399,7 +392,7 @@ class TestLectureCardContainer extends Component<Props, State> {
     if (viewObject.examId && student) {
       if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
-          subActions.push({type: LectureSubInfo.ActionType.Test, onAction: this.onTest});
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         }
@@ -409,7 +402,7 @@ class TestLectureCardContainer extends Component<Props, State> {
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
         ) {
-          subActions.push({type: LectureSubInfo.ActionType.Test, onAction: this.onTest});
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
@@ -481,40 +474,6 @@ class TestLectureCardContainer extends Component<Props, State> {
     }
   }
 
-  getSurveyAction() {
-    const { viewObject, surveyCaseService, answerSheetService, surveyFormService} = this.props;
-
-    if (viewObject.surveyCaseId) {
-      answerSheetService!.findAnswerSheet(viewObject.surveyCaseId);
-      surveyCaseService!.findSurveyCase(viewObject.surveyCaseId);
-      surveyFormService!.findSurveyForm(viewObject.surveyId);
-    }
-  }
-
-  // setSurveyState(collegeName: string) {
-  //   //
-  //   switch (collegeName) {
-  //     case 'AI':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.AI;
-  //     case 'DT':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.DT;
-  //     case 'Global':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.Global;
-  //     case 'Leadership':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.Leadership;
-  //     case 'Management':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.Management;
-  //     case 'SV':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.SV;
-  //     case '행복':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.Happiness;
-  //     case '혁신디자인':
-  //       return CategoryLecturesHeaderView.thumbnailIcon.InnovationDesign;
-  //     default:
-  //       return CategoryLecturesHeaderView.thumbnailIcon.Default;
-  //   }
-  // }
-
   render() {
     //
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children, student } = this.props;
@@ -585,19 +544,17 @@ class TestLectureCardContainer extends Component<Props, State> {
         />
 
         {children}
-        <LectureExam
+        <ZMSLectureExam
           onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
           onTest={viewObject.examId ? this.onTest : undefined}
           onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-          surveyObject={viewObject.surveyId ? this.getSurveyAction() : undefined}
-          examTitle={viewObject.examTitle ? this.getSurveyAction() : undefined}
-          subActions={this.getSubActions()}
-          stau={this.props.viewObject.state}
+          viewObject={viewObject}
         />
+
       </LectureCardContentWrapperView>
 
     );
   }
 }
 
-export default TestLectureCardContainer;
+export default ZMSLectureCardContainer;

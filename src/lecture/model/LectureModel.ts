@@ -120,7 +120,6 @@ class LectureModel extends DramaEntityObservableModel {
         case 'Failed':
         case 'TestPassed':
         case 'Waiting':
-        case 'TestWaiting':
         case 'HomeworkWaiting':
           return '학습중';
         case 'Approved':

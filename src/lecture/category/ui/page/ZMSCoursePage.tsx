@@ -11,20 +11,19 @@ import { ContentLayout, Tab } from 'shared';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
+import { ExamPaperService, ExaminationService } from 'assistant/stores';
+import { SurveyCaseService } from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
 import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
-import TestLectureCardContainer from '../logic/TestLectureCardContainer';
+import ZMSLectureCardContainer from '../logic/ZMSLectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
-import SurveyCaseService from '../../../../survey/event/present/logic/SurveyCaseService';
-import SurveyFormService from '../../../../survey/form/present/logic/SurveyFormService';
-import AnswerSheetService from '../../../../survey/answer/present/logic/AnswerSheetService';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -36,9 +35,10 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureService: LectureService,
   studentService: StudentService,
   commentService: CommentService,
+
+  examinationService: ExaminationService,
+  examPaperService: ExamPaperService,
   surveyCaseService: SurveyCaseService,
-  surveyFormService: SurveyFormService,
-  answerSheetService: AnswerSheetService,
 }
 
 interface State {
@@ -63,10 +63,14 @@ interface RouteParams {
   'lecture.lectureService',
   'lecture.studentService',
   'shared.commentService',
+
+  'assistant.examinationService',
+  'assistant.examPaperService',
+  'survey.surveyCaseService',
 ))
 @reactAutobind
 @observer
-class TestCoursePage extends Component<Props, State> {
+class ZMSCoursePage extends Component<Props, State> {
   //
   state = {
     loaded: false,
@@ -163,7 +167,7 @@ class TestCoursePage extends Component<Props, State> {
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService,
+      match, collegeService, coursePlanService, examinationService, examPaperService, surveyCaseService
     } = this.props;
     const { params } = match;
 
@@ -171,6 +175,15 @@ class TestCoursePage extends Component<Props, State> {
 
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
     coursePlanService.findCoursePlanContents(coursePlan.contentsId);
+
+    if (coursePlanService.coursePlanContents.testId) {
+      const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
+      examPaperService!.findExamPaper(examination.paperId);
+    }
+
+    if (coursePlanService.coursePlanContents.surveyCaseId) {
+      surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+    }
   }
 
   async findProgramOrCourseLecture() {
@@ -221,7 +234,7 @@ class TestCoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService, courseLectureService,
+      coursePlanService, studentService, courseLectureService, examPaperService, surveyCaseService
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
@@ -231,11 +244,12 @@ class TestCoursePage extends Component<Props, State> {
 
     let state: SubState | undefined;
     let examId: string = '';
+    let examTitle: string = '';
     let surveyId: string = '';
     let surveyTitle: string = '';
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
-    let examTitle: string = '';
+
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
         if (
@@ -251,11 +265,12 @@ class TestCoursePage extends Component<Props, State> {
       }
 
       examId = coursePlanContents.testId || '';
+      examTitle = examPaperService.examPaper.title;
 
       if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
       examTitle = coursePlanContents.examTitle || '';
       surveyId = coursePlanContents.surveyId || '';
-      surveyTitle = coursePlanContents.surveyTitle || '';
+      surveyTitle = JSON.stringify(surveyCaseService.surveyCase.titles) || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     }
@@ -439,7 +454,7 @@ class TestCoursePage extends Component<Props, State> {
 
   renderBaseContentWith(courseContent: React.ReactNode) {
     //
-    const { studentService, match, surveyCaseService, surveyFormService, answerSheetService } = this.props;
+    const { studentService, match } = this.props;
     const { student, studentJoins } = studentService!;
     const { params } = match;
     const { lectureCardId } = this.props.match.params!;
@@ -447,10 +462,8 @@ class TestCoursePage extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
 
-    // console.log('CoursePage renderBaseContentWith viewObject=', viewObject);
-
     return (
-      <TestLectureCardContainer
+      <ZMSLectureCardContainer
         lectureServiceId={params.serviceId}
         lectureCardId={lectureCardId}
         lectureServiceType={params.serviceType}
@@ -463,12 +476,9 @@ class TestCoursePage extends Component<Props, State> {
         typeViewObject={typeViewObject}
         init={this.init}
         loaded={this.state.loaded}
-        answerSheetService={answerSheetService}
-        surveyCaseService={surveyCaseService}
-        surveyFormService={surveyFormService}
       >
         {courseContent}
-      </TestLectureCardContainer>
+      </ZMSLectureCardContainer>
     );
   }
 
@@ -508,4 +518,4 @@ class TestCoursePage extends Component<Props, State> {
   }
 }
 
-export default withRouter(TestCoursePage);
+export default withRouter(ZMSCoursePage);

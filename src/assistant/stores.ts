@@ -11,3 +11,9 @@ export default {
   },
 };
 
+export {
+  ExamPaperService,
+  ExaminationService,
+  AnswerSheetService,
+};
+

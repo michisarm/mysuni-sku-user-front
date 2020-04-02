@@ -1,27 +1,54 @@
 
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { Survey, Report } from '../view/LectureExamElementsView';
-
+import { Report, Test, Survey } from '../view/LectureExamElementsView';
+import Action from '../../../LectureSubInfo/model/Action';
 
 interface Props {
+  /** 과제 액션*/
+  onReport?: () => void
+  /** 테스트 액 */
+  onTest?: () => void
   /** 설문 액션*/
   onSurvey?: () => void
-  /** 과제 다운로드 액션*/
-  onDownloadReport?: () => void
+
+  surveyObject?: any
+
+  stau?: any
+
+  subActions?: Action[]
+
+  examTitle: any
 }
+
+
 
 @reactAutobind
 class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onSurvey, onDownloadReport } = this.props;
+    const { onReport, onTest, onSurvey, surveyObject, stau, subActions, examTitle } = this.props;
 
     return (
-      <div className="sub-info-wrap">
-        <Survey onSurvey={onSurvey} />
-        <Report onDownloadReport={onDownloadReport} />
+      <div className="ui full segment">
+        <div className="contents">
+          {/*<Report
+            OnReport={onReport}
+            stau={stau}
+          />*/}
+          <Test
+            OnTest={onTest}
+            subActions={subActions}
+            title={examTitle}
+            stau={stau}
+          />
+          <Survey
+            onSurvey={onSurvey}
+            title={surveyObject.title}
+            stau={stau}
+          />
+        </div>
       </div>
     );
   }

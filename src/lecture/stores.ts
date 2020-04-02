@@ -8,6 +8,10 @@ import StudentService from './shared/present/logic/StudentService';
 import CollegeLectureCountService from './shared/present/logic/CollegeLectureCountService';
 import LectureCountService from './category/present/logic/LectureCountService';
 
+import AnswerSheetService from '../survey/answer/present/logic/AnswerSheetService';
+import SurveyCaseService from '../survey/event/present/logic/SurveyCaseService';
+import SurveyFormService from '../survey/form/present/logic/SurveyFormService';
+
 
 export default {
   lecture: {
@@ -19,6 +23,9 @@ export default {
     studentService: StudentService.instance,
     collegeLectureCountService: CollegeLectureCountService.instance,
     lectureCountService: LectureCountService.instance,
+    answerSheetService:AnswerSheetService.instance,
+    surveyCaseService:SurveyCaseService.instance,
+    surveyFormService:SurveyFormService.instance,
   },
 };
 
@@ -31,4 +38,7 @@ export {
   StudentService,
   CollegeLectureCountService,
   LectureCountService,
+  AnswerSheetService,
+  SurveyCaseService,
+  SurveyFormService,
 };

@@ -11,6 +11,7 @@ enum StateNameType {
   Missed = '미이수',
   Rejected = '반려됨',
   NoShow = '불참',
+  TestWaiting= '채점중'
 }
 
 export default StateNameType;
