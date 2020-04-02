@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Report</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Report" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#FFFFFF" x="0" y="0" width="70" height="70"></rect>
+        <g id="Group-5-Copy" transform="translate(11.000000, 10.000000)" fill-rule="nonzero">
+            <rect id="Rectangle" stroke="#6A758B" stroke-width="2" transform="translate(25.725104, 32.680419) rotate(-7.000000) translate(-25.725104, -32.680419) " x="6.22510407" y="13.6804189" width="39" height="38" rx="2"></rect>
+            <rect id="Rectangle" stroke="#6A758B" stroke-width="2" fill="#FFFFFF" x="0" y="6" width="44" height="48" rx="2"></rect>
+            <rect id="Rectangle-Copy-12" fill="#6A758B" x="5" y="46" width="26" height="2"></rect>
+            <rect id="Rectangle-Copy-14" fill="#6A758B" x="5" y="41" width="34" height="2"></rect>
+            <rect id="Rectangle-Copy-15" fill="#6A758B" x="5" y="36" width="10" height="2"></rect>
+            <g id="Group" transform="translate(6.000000, 12.000000)">
+                <rect id="Rectangle-Copy-16" fill="#6A758B" x="18" y="8" width="15" height="2"></rect>
+                <rect id="Rectangle-Copy-19" fill="#6A758B" x="18" y="13" width="15" height="2"></rect>
+                <rect id="Rectangle-Copy-17" fill="#6A758B" x="18" y="3" width="15" height="2"></rect>
+                <path d="M13,9.5 C13,13.0898509 10.0898509,16 6.5,16 C2.91014913,16 0,13.0898509 0,9.5 C0,5.91014913 2.91014913,3 6.5,3" id="Path" stroke="#6A758B" stroke-width="2"></path>
+                <path d="M8,0 C12.418278,0 16,3.581722 16,8 L8,8 L8,0 Z" id="Combined-Shape" fill="#EA644D"></path>
+            </g>
+            <path d="M31,0 L31,3 L36,3 C37.1045695,3 38,3.8954305 38,5 L38,8 L6,8 L6,5 C6,3.8954305 6.8954305,3 8,3 L13,3 L13,0 L31,0 Z" id="Combined-Shape" stroke="#6A758B" stroke-width="2" fill="#FFFFFF"></path>
+        </g>
+        <rect id="Rectangle-Copy-9" stroke="#6A758B" stroke-width="2" fill-rule="nonzero" x="21" y="6" width="24" height="4" rx="1"></rect>
+    </g>
+</svg>
