@@ -550,8 +550,8 @@ class LectureCardContainer extends Component<Props, State> {
             email: viewObject.operatorEmail,
           }}
           state={viewObject.state}
-          // mainAction={this.getMainAction()}
-          subActions={this.getSubActions()}
+          mainAction={this.getMainAction()}
+          // subActions={this.getSubActions()}
           onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
