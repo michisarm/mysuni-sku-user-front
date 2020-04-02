@@ -416,19 +416,19 @@ class LectureCardContainer extends Component<Props, State> {
           && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
         ) {
           this.setStateName('0', 'Test');
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
         ) {
           this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
-          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials > 2)
         ) {
           this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (student.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
         } else if (student.learningState === LearningState.Passed) {
@@ -551,7 +551,7 @@ class LectureCardContainer extends Component<Props, State> {
           }}
           state={viewObject.state}
           mainAction={this.getMainAction()}
-          // subActions={this.getSubActions()}
+          subActions={this.getSubActions()}
           onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
