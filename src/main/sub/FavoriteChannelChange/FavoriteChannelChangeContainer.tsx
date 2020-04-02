@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -54,12 +53,13 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    ///alert('componentDidMount');
-    console.log('>>>>>>>>>>>>>>>>> in... componentDidMount()');
+    console.log('componentDidMount');
     this.onFindStudySummary();
-    console.log('>>>>>>>>>>>>>>>>> this.onFindStudySummary(); next');
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    console.log('componentDidUpdate');
     this.onOpenModal();
-    console.log('>>>>>>>>>>>>>>>>> this.onOpenModal(); next');
   }
 
   componentWillUnmount(): void {
