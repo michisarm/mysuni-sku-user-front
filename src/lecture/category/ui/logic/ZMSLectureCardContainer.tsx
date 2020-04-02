@@ -450,25 +450,28 @@ class ZMSLectureCardContainer extends Component<Props, State> {
 
   setStateName(type: string, name: string) {
 
-    const { viewObject } = this.props;
+    // const { viewObject } = this.props;
+    //
+    // switch (viewObject.state) {
+    //   case EnumState.WaitingForApproval: this.state.type = type; break;
+    //   case EnumState.Enrolled: this.state.type = type; break;
+    //   case EnumState.InProgress: this.state.type = '0'; break;
+    //   case EnumState.Missed: this.state.type = '4'; break;
+    //   case EnumState.Completed: this.state.type = '5'; break;
+    //   case EnumState.Waiting: this.state.type = type; break;
+    //   case EnumState.Joined: this.state.type = type; break;
+    //   case EnumState.Rejected: this.state.type = type; break;
+    //   case EnumState.NoShow: this.state.type = type; break;
+    //   case EnumState.TestWaiting: this.state.type = type; break;
+    //   case EnumState.Failed: this.state.type = '3'; break;
+    // }
 
-    switch (viewObject.state) {
-      case EnumState.WaitingForApproval: this.state.type = type; break;
-      case EnumState.Enrolled: this.state.type = type; break;
-      case EnumState.InProgress: this.state.type = '0'; break;
-      case EnumState.Missed: this.state.type = '4'; break;
-      case EnumState.Completed: this.state.type = '5'; break;
-      case EnumState.Waiting: this.state.type = type; break;
-      case EnumState.Joined: this.state.type = type; break;
-      case EnumState.Rejected: this.state.type = type; break;
-      case EnumState.NoShow: this.state.type = type; break;
-      case EnumState.TestWaiting: this.state.type = type; break;
-      case EnumState.Failed: this.state.type = '3'; break;
-    }
+    // console.log(viewObject);
 
-    console.log(viewObject);
-    console.log(this.state);
+    this.state.type = type;
     this.state.name = name;
+
+    console.log(this.state);
   }
 
   getOnCancel() {
