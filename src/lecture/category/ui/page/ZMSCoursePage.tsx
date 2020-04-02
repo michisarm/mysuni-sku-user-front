@@ -69,7 +69,7 @@ interface RouteParams {
 
   'assistant.examinationService',
   'assistant.examPaperService',
-  'survey,answerSheetService',
+  'survey.answerSheetService',
   'survey.surveyCaseService',
 ))
 @reactAutobind
