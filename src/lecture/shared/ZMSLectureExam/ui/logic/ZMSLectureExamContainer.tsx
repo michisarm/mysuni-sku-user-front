@@ -12,6 +12,8 @@ interface Props {
   onSurvey?: () => void
 
   viewObject?: any
+  type?: string
+  name?: string
 }
 
 @reactAutobind
@@ -19,7 +21,7 @@ class ZMSLectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onTest, onSurvey, viewObject } = this.props;
+    const { onReport, onTest, onSurvey, viewObject, type, name } = this.props;
 
     return (
       <div className="ui full segment">
@@ -27,14 +29,20 @@ class ZMSLectureExamContainer extends Component<Props> {
           <Report
             OnReport={onReport}
             viewObject={viewObject}
+            type={type}
+            name={name}
           />
           <Test
             OnTest={onTest}
             viewObject={viewObject}
+            type={type}
+            name={name}
           />
           <Survey
             onSurvey={onSurvey}
             viewObject={viewObject}
+            type={type}
+            name={name}
           />
         </div>
       </div>

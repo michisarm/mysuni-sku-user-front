@@ -3,7 +3,7 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, LearningState, ProposalState } from 'shared/model';
+import { CubeType, ProposalState } from 'shared/model';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
 import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
@@ -22,6 +22,7 @@ import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
+import LearningState from '../../../../shared/model/LearningState';
 
 interface Props {
   studentService?: StudentService
@@ -44,8 +45,7 @@ interface Props {
 }
 
 interface State {
-  rollBook: RollBookModel
-
+  rollBook: RollBookModel,
 }
 
 @inject(mobxHelper.injectFrom(
@@ -53,6 +53,7 @@ interface State {
   'lecture.studentService',
   'myTraining.inMyLectureService',
 ))
+
 @reactAutobind
 @observer
 class ZMSLectureCardContainer extends Component<Props, State> {
@@ -66,7 +67,9 @@ class ZMSLectureCardContainer extends Component<Props, State> {
 
   state = {
     rollBook: new RollBookModel(),
-    subTest: String
+    subTest: String,
+    type: '',
+    name: '',
   };
 
 
@@ -388,13 +391,18 @@ class ZMSLectureCardContainer extends Component<Props, State> {
         break;
     }
 
-
     if (viewObject.examId && student) {
       if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+          this.setStateName('0', 'Test');
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
+          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
         }
       }
       else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
@@ -402,12 +410,18 @@ class ZMSLectureCardContainer extends Component<Props, State> {
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
         ) {
+          this.setStateName('0', 'Test');
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
         ) {
+          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
         }
       }
     }
@@ -421,6 +435,27 @@ class ZMSLectureCardContainer extends Component<Props, State> {
       else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
+  }
+
+  setStateName(type: string, name: string) {
+
+    const { viewObject } = this.props;
+
+    switch (viewObject.state) {
+      case EnumState.WaitingForApproval: this.state.type = type; break;
+      case EnumState.Enrolled: this.state.type = type; break;
+      case EnumState.InProgress: this.state.type = '0'; break;
+      case EnumState.Missed: this.state.type = '4'; break;
+      case EnumState.Completed: this.state.type = '5'; break;
+      case EnumState.Waiting: this.state.type = type; break;
+      case EnumState.Joined: this.state.type = type; break;
+      case EnumState.Rejected: this.state.type = type; break;
+      case EnumState.NoShow: this.state.type = type; break;
+      case EnumState.TestWaiting: this.state.type = type; break;
+      case EnumState.Failed: this.state.type = '3'; break;
+    }
+
+    this.state.name = name;
   }
 
   getOnCancel() {
@@ -549,6 +584,8 @@ class ZMSLectureCardContainer extends Component<Props, State> {
           onTest={viewObject.examId ? this.onTest : undefined}
           onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           viewObject={viewObject}
+          type={this.state.type}
+          name={this.state.name}
         />
 
       </LectureCardContentWrapperView>

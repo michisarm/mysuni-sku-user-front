@@ -192,8 +192,6 @@ class ZMSCoursePage extends Component<Props, State> {
       const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
       console.log(obj);
-      console.log(title);
-      console.log(title.ko);
 
       this.state.surveyTitle =  title.ko;
     }
