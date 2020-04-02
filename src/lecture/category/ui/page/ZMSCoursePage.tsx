@@ -118,7 +118,7 @@ class ZMSCoursePage extends Component<Props, State> {
   async init() {
     //
     this.setState({ loaded: false });
-    this.findBaseInfo();
+    await this.findBaseInfo();
     this.findProgramOrCourseLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     await this.findStudent();
@@ -188,7 +188,14 @@ class ZMSCoursePage extends Component<Props, State> {
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
       const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
-      this.state.surveyTitle =  JSON.stringify(surveyCase.titles);
+      const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+      const title = JSON.parse(JSON.stringify(obj.langStringMap));
+
+      console.log(obj);
+      console.log(title);
+      console.log(title.ko);
+
+      this.state.surveyTitle =  title.ko;
     }
   }
 

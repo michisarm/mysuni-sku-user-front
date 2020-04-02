@@ -54,11 +54,6 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     console.log('componentDidMount');
-    this.onFindStudySummary();
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    console.log('componentDidUpdate');
     this.onOpenModal();
   }
 
@@ -90,13 +85,10 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
     });
   }
 
-  async onFindStudySummary() {
-    //
-    this.props.skProfileService!.findStudySummary();
-  }
-
   async onOpenModal() {
     //
+    await this.props.skProfileService!.findStudySummary();
+
     const { collegeService, collegeLectureCountService } = this.props;
     const { skProfileService } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
