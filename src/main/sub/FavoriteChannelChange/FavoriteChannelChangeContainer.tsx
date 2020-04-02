@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -54,11 +55,11 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     ///alert('componentDidMount');
-    alert('>>>>>>>>>>>>>>>>> in... componentDidMount()');
+    console.log('>>>>>>>>>>>>>>>>> in... componentDidMount()');
     this.onFindStudySummary();
-    alert('>>>>>>>>>>>>>>>>> this.onFindStudySummary(); next');
+    console.log('>>>>>>>>>>>>>>>>> this.onFindStudySummary(); next');
     this.onOpenModal();
-    alert('>>>>>>>>>>>>>>>>> this.onOpenModal(); next');
+    console.log('>>>>>>>>>>>>>>>>> this.onOpenModal(); next');
   }
 
   componentWillUnmount(): void {
@@ -88,6 +89,7 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
       favoriteCompanyChannels: companyChannels,
     });
   }
+
   async onFindStudySummary() {
     //
     this.props.skProfileService!.findStudySummary();

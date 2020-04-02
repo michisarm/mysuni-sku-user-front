@@ -43,6 +43,8 @@ interface Props extends RouteComponentProps<RouteParams> {
 
 interface State {
   loaded: boolean,
+  examTitle: string,
+  surveyTitle: string,
 }
 
 interface RouteParams {
@@ -74,6 +76,8 @@ class ZMSCoursePage extends Component<Props, State> {
   //
   state = {
     loaded: false,
+    examTitle: '',
+    surveyTitle: '',
   };
 
   constructor(props: Props) {
@@ -174,15 +178,17 @@ class ZMSCoursePage extends Component<Props, State> {
     collegeService.findCollege(params.collegeId);
 
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
-    coursePlanService.findCoursePlanContents(coursePlan.contentsId);
+    await coursePlanService.findCoursePlanContents(coursePlan.contentsId);
 
     if (coursePlanService.coursePlanContents.testId) {
       const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
-      examPaperService!.findExamPaper(examination.paperId);
+      const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+      this.state.examTitle = examPaper.title;
     }
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
-      surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+      const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+      this.state.surveyTitle =  JSON.stringify(surveyCase.titles);
     }
   }
 
@@ -265,12 +271,12 @@ class ZMSCoursePage extends Component<Props, State> {
       }
 
       examId = coursePlanContents.testId || '';
-      examTitle = examPaperService.examPaper.title;
+      examTitle = this.state.examTitle;
 
       if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
       examTitle = coursePlanContents.examTitle || '';
       surveyId = coursePlanContents.surveyId || '';
-      surveyTitle = JSON.stringify(surveyCaseService.surveyCase.titles) || '';
+      surveyTitle = this.state.surveyTitle || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     }

@@ -14,8 +14,6 @@ interface Props {
   viewObject?: any
 }
 
-
-
 @reactAutobind
 class ZMSLectureExamContainer extends Component<Props> {
   //

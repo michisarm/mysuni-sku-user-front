@@ -45,7 +45,7 @@ export const Test = ({ OnTest, viewObject}: TestProp) => {
         <img src={`${process.env.PUBLIC_URL}/images/all/test.svg`} alt="test" />
       </div>
       <div className="desc">
-        <div className="t-copy">Test</div>
+        <div className="t-copy">Test {viewObject.examId}</div>
         <div className="s-copy">{viewObject.examTitle}</div>
       </div>
       <div className="btn-area">
@@ -69,7 +69,7 @@ export const Survey = ({ onSurvey,viewObject }: SurveyProp) => {
         <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="report" />
       </div>
       <div className="desc">
-        <div className="t-copy">Survey</div>
+        <div className="t-copy">Survey {viewObject.surveyId}</div>
         <div className="s-copy">{viewObject.surveyTitle}</div>
       </div>
       <div className="btn-area">
