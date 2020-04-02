@@ -15,7 +15,7 @@ export const Report = ({ OnReport,viewObject, type, name }: ReportProps) => {
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src="/images/all/report.svg" alt="Report" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="Report" />
       </div>
       <div className="desc">
         <div className="t-copy">Report</div>
@@ -60,7 +60,7 @@ export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src="/images/all/test.svg" alt="Test" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/test.svg`} alt="Test" />
       </div>
       <div className="desc">
         <div className="t-copy">Test</div>
@@ -122,7 +122,7 @@ export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src="/images/all/report.svg" alt="Survey" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="Survey" />
       </div>
       <div className="desc">
         <div className="t-copy">Survey</div>
