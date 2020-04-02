@@ -235,8 +235,6 @@ class ZMSLectureCardContainer extends Component<Props, State> {
     }
   }
 
-
-
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
@@ -455,6 +453,8 @@ class ZMSLectureCardContainer extends Component<Props, State> {
       case EnumState.Failed: this.state.type = '3'; break;
     }
 
+    console.log(viewObject);
+    console.log(this.state);
     this.state.name = name;
   }
 

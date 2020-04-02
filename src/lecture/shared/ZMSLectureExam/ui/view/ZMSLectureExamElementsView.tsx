@@ -25,7 +25,7 @@ export const Report = ({ OnReport,viewObject, type, name }: ReportProps) => {
 
         {
           type === '0' && (
-            <button className="ui button trs"><span>{name}</span></button>
+            <button className="ui button trs" onClick={OnReport}><span>{name}</span></button>
           )
         }
 
@@ -69,7 +69,7 @@ export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
       <div className="btn-area">
         {
           type === '0' && (
-            <button className="ui button trs"><span>{name}</span></button>
+            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
           )
         }
 
@@ -81,7 +81,7 @@ export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
 
         {
           type === '2' && (
-            <button className="ui button trs"><span>{name}</span></button>
+            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
           )
         }
 
@@ -132,18 +132,18 @@ export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
 
         {
           type === '0' && (
-            <button className="ui button trs"><span>{name}</span></button>
+            <button className="ui button trs" onClick={onSurvey}><span>{name}</span></button>
           )
         }
 
         {
-          type === '1' && (
+          type === '3' && (
             <button className="ui button trs" disabled><span>{name}</span></button>
           )
         }
 
         {
-          type === '2' && (
+          type === '5' && (
             <span className="state">{name}</span>
           )
         }
