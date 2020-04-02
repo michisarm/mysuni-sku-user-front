@@ -183,6 +183,8 @@ class ZMSCoursePage extends Component<Props, State> {
     if (coursePlanService.coursePlanContents.testId) {
       const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
       const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+
+      console.log(examPaper);
       this.state.examTitle = examPaper.title;
     }
 
@@ -192,7 +194,6 @@ class ZMSCoursePage extends Component<Props, State> {
       const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
       console.log(obj);
-
       this.state.surveyTitle =  title.ko;
     }
   }
@@ -276,10 +277,10 @@ class ZMSCoursePage extends Component<Props, State> {
       }
 
       examId = coursePlanContents.testId || '';
-      examTitle = this.state.examTitle;
+      examTitle = this.state.examTitle || '';
 
       if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
-      examTitle = coursePlanContents.examTitle || '';
+
       surveyId = coursePlanContents.surveyId || '';
       surveyTitle = this.state.surveyTitle || '';
       surveyCaseId = coursePlanContents.surveyCaseId || '';

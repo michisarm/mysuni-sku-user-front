@@ -132,19 +132,19 @@ export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
 
         {
           type === '0' && (
-            <button className="ui button trs" onClick={onSurvey}><span>{name}</span></button>
+            <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
           )
         }
 
         {
-          type === '3' && (
-            <button className="ui button trs" disabled><span>{name}</span></button>
+          type === '1' && (
+            <button className="ui button trs" disabled><span>설문하기</span></button>
           )
         }
 
         {
           type === '5' && (
-            <span className="state">{name}</span>
+            <span className="state">참여완료</span>
           )
         }
 

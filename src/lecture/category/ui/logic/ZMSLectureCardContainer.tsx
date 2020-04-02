@@ -395,12 +395,17 @@ class ZMSLectureCardContainer extends Component<Props, State> {
           this.setStateName('0', 'Test');
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
+          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
           this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (student.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
         } else if (student.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
         }
       }
       else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
@@ -414,12 +419,20 @@ class ZMSLectureCardContainer extends Component<Props, State> {
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
         ) {
+          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Failed && student.numberOfTrials > 2)
+        ) {
           this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (student.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
         } else if (student.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
         }
       }
     }
