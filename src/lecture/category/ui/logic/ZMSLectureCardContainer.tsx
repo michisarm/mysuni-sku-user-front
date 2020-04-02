@@ -70,6 +70,8 @@ class ZMSLectureCardContainer extends Component<Props, State> {
     subTest: String,
     type: '',
     name: '',
+    surveyType: '',
+    surveyName: '',
   };
 
 

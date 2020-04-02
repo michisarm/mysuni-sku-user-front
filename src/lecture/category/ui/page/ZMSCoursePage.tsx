@@ -12,7 +12,7 @@ import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
-import { SurveyCaseService } from 'survey/stores';
+import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
@@ -24,7 +24,7 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
-
+import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
@@ -38,6 +38,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 
   examinationService: ExaminationService,
   examPaperService: ExamPaperService,
+  answerSheetService: AnswerSheetService,
   surveyCaseService: SurveyCaseService,
 }
 
@@ -68,6 +69,7 @@ interface RouteParams {
 
   'assistant.examinationService',
   'assistant.examPaperService',
+  'survey,answerSheetService',
   'survey.surveyCaseService',
 ))
 @reactAutobind
@@ -77,6 +79,7 @@ class ZMSCoursePage extends Component<Props, State> {
   state = {
     loaded: false,
     examTitle: '',
+    surveyState: false,
     surveyTitle: '',
   };
 
@@ -171,7 +174,7 @@ class ZMSCoursePage extends Component<Props, State> {
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService, examinationService, examPaperService, surveyCaseService
+      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService
     } = this.props;
     const { params } = match;
 
@@ -189,11 +192,17 @@ class ZMSCoursePage extends Component<Props, State> {
     }
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
+      await answerSheetService!.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
       const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+
       const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
       const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
       console.log(obj);
+      const { answerSheet } = answerSheetService!;
+      const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+
+      this.state.surveyState = disabled;
       this.state.surveyTitle =  title.ko;
     }
   }
@@ -259,6 +268,7 @@ class ZMSCoursePage extends Component<Props, State> {
     let examTitle: string = '';
     let surveyId: string = '';
     let surveyTitle: string = '';
+    let surveyState: boolean = false;
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
 
@@ -283,6 +293,7 @@ class ZMSCoursePage extends Component<Props, State> {
 
       surveyId = coursePlanContents.surveyId || '';
       surveyTitle = this.state.surveyTitle || '';
+      surveyState = this.state.surveyState || false;
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     }
@@ -311,6 +322,7 @@ class ZMSCoursePage extends Component<Props, State> {
       examTitle,
       surveyId,
       surveyTitle,
+      surveyState,
       surveyCaseId,
 
       fileBoxId: coursePlanContents.fileBoxId,
