@@ -71,7 +71,7 @@ class CardGroup extends Component<Props> {
     }
     else if (type === GroupType.Course) {
       elements = (
-        <div className="contents course-list">
+        <div className="contents course-list" css="min-height: 0 !important;">
           {children}
         </div>
       );

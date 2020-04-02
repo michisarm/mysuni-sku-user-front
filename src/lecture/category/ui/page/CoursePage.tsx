@@ -11,6 +11,8 @@ import { ContentLayout, Tab } from 'shared';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
+import { ExamPaperService, ExaminationService } from 'assistant/stores';
+import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
@@ -22,7 +24,7 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
-
+import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
@@ -33,10 +35,17 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureService: LectureService,
   studentService: StudentService,
   commentService: CommentService,
+
+  examinationService: ExaminationService,
+  examPaperService: ExamPaperService,
+  answerSheetService: AnswerSheetService,
+  surveyCaseService: SurveyCaseService,
 }
 
 interface State {
   loaded: boolean,
+  examTitle: string,
+  surveyTitle: string,
 }
 
 interface RouteParams {
@@ -57,6 +66,11 @@ interface RouteParams {
   'lecture.lectureService',
   'lecture.studentService',
   'shared.commentService',
+
+  'assistant.examinationService',
+  'assistant.examPaperService',
+  'survey.answerSheetService',
+  'survey.surveyCaseService',
 ))
 @reactAutobind
 @observer
@@ -64,6 +78,9 @@ class CoursePage extends Component<Props, State> {
   //
   state = {
     loaded: false,
+    examTitle: '',
+    surveyState: false,
+    surveyTitle: '',
   };
 
   constructor(props: Props) {
@@ -104,7 +121,7 @@ class CoursePage extends Component<Props, State> {
   async init() {
     //
     this.setState({ loaded: false });
-    this.findBaseInfo();
+    await this.findBaseInfo();
     this.findProgramOrCourseLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     await this.findStudent();
@@ -157,14 +174,37 @@ class CoursePage extends Component<Props, State> {
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService,
+      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService
     } = this.props;
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
 
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
-    coursePlanService.findCoursePlanContents(coursePlan.contentsId);
+    await coursePlanService.findCoursePlanContents(coursePlan.contentsId);
+
+    if (coursePlanService.coursePlanContents.testId) {
+      const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
+      const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+
+      console.log(examPaper);
+      this.state.examTitle = examPaper.title;
+    }
+
+    if (coursePlanService.coursePlanContents.surveyCaseId) {
+      await answerSheetService!.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
+      const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+
+      const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+      const title = JSON.parse(JSON.stringify(obj.langStringMap));
+
+      console.log(obj);
+      const { answerSheet } = answerSheetService!;
+      const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+
+      this.state.surveyState = disabled;
+      this.state.surveyTitle =  title.ko;
+    }
   }
 
   async findProgramOrCourseLecture() {
@@ -215,7 +255,7 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService, courseLectureService,
+      coursePlanService, studentService, courseLectureService, examPaperService, surveyCaseService
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
@@ -225,9 +265,13 @@ class CoursePage extends Component<Props, State> {
 
     let state: SubState | undefined;
     let examId: string = '';
+    let examTitle: string = '';
     let surveyId: string = '';
+    let surveyTitle: string = '';
+    let surveyState: boolean = false;
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
+
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
         if (
@@ -243,10 +287,13 @@ class CoursePage extends Component<Props, State> {
       }
 
       examId = coursePlanContents.testId || '';
+      examTitle = this.state.examTitle || '';
 
       if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
 
       surveyId = coursePlanContents.surveyId || '';
+      surveyTitle = this.state.surveyTitle || '';
+      surveyState = this.state.surveyState || false;
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     }
@@ -272,7 +319,10 @@ class CoursePage extends Component<Props, State> {
 
       tags: coursePlan.courseOpen.tags,
 
+      examTitle,
       surveyId,
+      surveyTitle,
+      surveyState,
       surveyCaseId,
 
       fileBoxId: coursePlanContents.fileBoxId,
@@ -435,8 +485,6 @@ class CoursePage extends Component<Props, State> {
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     const inMyLectureCdo = this.getInMyLectureCdo(viewObject);
-
-    // console.log('CoursePage renderBaseContentWith viewObject=', viewObject);
 
     return (
       <LectureCardContainer

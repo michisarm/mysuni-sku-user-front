@@ -1,84 +1,153 @@
 
 import React from 'react';
-import Action from '../../../LectureSubInfo/model/Action';
 
 interface ReportProps {
   OnReport?: () => void
-  title?: String
-  stau?: String
+  viewObject?: any
+  type?: string
+  name?: string
 }
 
-export const Report = ({ OnReport, title, stau }: ReportProps) => {
+export const Report = ({ OnReport,viewObject, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
+
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="report" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="Report" />
       </div>
       <div className="desc">
         <div className="t-copy">Report</div>
         <div className="s-copy">Front-End Machine Learning UI/UX Guide Director</div>
       </div>
-      <switch>
-        stau == 2
+      <div className="btn-area">
+
         {
-          <div className="btn-area">
-            <button className="ui button trs" disabled><span>과제제출</span></button>
-          </div>
+          type === '0' && (
+            <button className="ui button trs" onClick={OnReport}><span>{name}</span></button>
+          )
         }
-      </switch>
+
+        {
+          type === '1' && (
+            <button className="ui button trs" disabled><span>{name}</span></button>
+          )
+        }
+
+        {
+          type === '2' && (
+            <span className="state">{name}</span>
+          )
+        }
+
+      </div>
     </div>
   );
 };
 
-interface TestProp {
+interface TestProps {
   OnTest?: () => void
-  title?: String
-  stau?: String
-  subActions?: Action[]
+  viewObject?: any
+  type?: string
+  name?: string
 }
 
-export const Test = ({ OnTest, title, stau, subActions}: TestProp) => {
+export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
   //
   if (!OnTest) return null;
 
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src={`${process.env.PUBLIC_URL}/images/all/test.svg`} alt="test" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/test.svg`} alt="Test" />
       </div>
       <div className="desc">
         <div className="t-copy">Test</div>
-        <div className="s-copy">{title}</div>
+        <div className="s-copy">{viewObject.examTitle}</div>
       </div>
       <div className="btn-area">
-        <button className="ui button trs" disabled><span>설문하기</span></button>
+        {
+          type === '0' && (
+            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
+          )
+        }
+
+        {
+          type === '1' && (
+            <button className="ui button trs" disabled><span>{name}</span></button>
+          )
+        }
+
+        {
+          type === '2' && (
+            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
+          )
+        }
+
+        {
+          type === '3' && (
+            <button className="ui button trs" disabled><span>{name}</span></button>
+          )
+        }
+
+        {
+          type === '4' && (
+            <span className="state">{name}</span>
+          )
+        }
+
+        {
+          type === '5' && (
+            <span className="state">{name}</span>
+          )
+        }
+
       </div>
     </div>
   );
 };
 
-interface SurveyProp {
+interface SurveyProps {
   onSurvey?: () => void
-  title?: String
-  stau?: String
+  viewObject?: any
+  type?: string
+  name?: string
 }
 
-export const Survey = ({ onSurvey, title, stau }: SurveyProp) => {
+export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
+
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="report" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="Survey" />
       </div>
       <div className="desc">
         <div className="t-copy">Survey</div>
-        <div className="s-copy">{title}</div>
+        <div className="s-copy">{viewObject.surveyTitle}</div>
       </div>
       <div className="btn-area">
-        <button className="ui button trs" disabled><span>설문하기</span></button>
+
+        {
+          !viewObject.surveyState && (
+            <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+          )
+        }
+
+        {/*{*/}
+        {/*  type === '1' && (*/}
+        {/*    <button className="ui button trs" disabled><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {
+          viewObject.surveyState && (
+            <span className="state">참여완료</span>
+          )
+        }
+
       </div>
     </div>
   );
