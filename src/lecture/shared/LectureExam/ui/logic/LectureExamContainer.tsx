@@ -6,8 +6,10 @@ import { Report, Test, Survey } from '../view/LectureExamElementsView';
 interface Props {
   /** 과제 액션*/
   onReport?: () => void
-  /** 테스트 액 */
+  /** 테스트 액션 */
   onTest?: () => void
+  /** 테스트 비활성화 시 */
+  onTestNotReady?: () => void
   /** 설문 액션*/
   onSurvey?: () => void
 
@@ -21,7 +23,7 @@ class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onTest, onSurvey, viewObject, type, name } = this.props;
+    const { onReport, onTest, onTestNotReady, onSurvey, viewObject, type, name } = this.props;
 
     return (
       <div className="ui full segment">
@@ -34,6 +36,7 @@ class LectureExamContainer extends Component<Props> {
           />
           <Test
             OnTest={onTest}
+            OnTestNotReady={onTestNotReady}
             viewObject={viewObject}
             type={type}
             name={name}

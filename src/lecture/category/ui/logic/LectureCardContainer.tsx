@@ -275,6 +275,12 @@ class LectureCardContainer extends Component<Props, State> {
     this.examModal.onOpenModal();
   }
 
+  // truefree 2020-04-03
+  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onTestNotReady() {
+    reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
   onSurvey() {
     this.surveyModal.onOpenModal();
   }
@@ -600,6 +606,7 @@ class LectureCardContainer extends Component<Props, State> {
         <LectureExam
           onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
           onTest={viewObject.examId ? this.onTest : undefined}
+          onTestNotReady={typeViewObject.examId ? this.onTestNotReady : undefined}
           onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           viewObject={viewObject}
           type={this.state.type}

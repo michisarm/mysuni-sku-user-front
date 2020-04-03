@@ -48,12 +48,13 @@ export const Report = ({ OnReport,viewObject, type, name }: ReportProps) => {
 
 interface TestProps {
   OnTest?: () => void
+  OnTestNotReady?: () => void
   viewObject?: any
   type?: string
   name?: string
 }
 
-export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
+export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name}: TestProps) => {
   //
   if (!OnTest) return null;
 
@@ -75,7 +76,7 @@ export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
 
         {
           type === '1' && (
-            <button className="ui button trs" disabled><span>{name}</span></button>
+            <button className="ui button trs" style="opacity:0.3;" onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
@@ -87,7 +88,7 @@ export const Test = ({ OnTest, viewObject, type, name}: TestProps) => {
 
         {
           type === '3' && (
-            <button className="ui button trs" disabled><span>{name}</span></button>
+            <button className="ui button trs" style="opacity:0.3;" onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
