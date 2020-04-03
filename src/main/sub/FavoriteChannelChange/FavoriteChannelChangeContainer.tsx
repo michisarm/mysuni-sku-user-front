@@ -116,7 +116,7 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
       favoriteChannels: [],
     });
 
-    window.location.href = "/";
+    window.location.href = '/';
     //history.goBack();
   }
 
