@@ -32,6 +32,38 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
+      title: <>자기주도 학습의 첫걸음&#44;<br />관심 채널을 내 마음대로!</>,
+      description: (
+        <>
+          1월 써니가 오픈안 이후&#44;<br />
+          반도체&#44; SK경영 등 컨텐츠가 더욱 다채로워졌습니다.<br />
+          지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br/>
+          <br />
+          <br />
+          <span className="link-tag">관심채널 변경안내</span>
+        </>
+      ),
+      link: '/favorite/channel/change',
+      imageUrl: '/images/all/img_banner_favoritechannels_20200403.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>반도체를 알면 미래가 보인다</>,
+      description: (
+        <>
+          <b>컴퓨터&#44; 스마트폰&#44; 자동차에 필수적인 &#39;반도체&#39;</b><br />
+          <b>AI&#44; IoT&#44; 자율주행 기술의 중심에 자리하는 &#39;반도체 산업&#39;</b><br /><br />
+          알고 싶지만 어렵고 방대한 양에<br />
+          반도체 학습을 어떻게 접근해야 할 지 난감하셨나요?<br /><br />
+          반도체College가 구성원 여러분께만 알려드리는 쉽고&#44; 재미있는 반도체!<br />
+          그 특별한 반도체 학습 Contents를 새롭게 선보입니다.<br />
+        </>
+      ),
+      link: '/lecture/college/CLG00019/channels/pages/1',
+      imageUrl: '/images/all/img_banner_semiconductor_20200403.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
       title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
       description: (
         <>
@@ -57,24 +89,24 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-000037'),
       imageUrl: '/images/all/img_banner_06.jpg',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>SKMS 알아보기</>,
-      description: (
-        <>
-          2020년 2월 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br />
-          우리는 누구인지, 우리가 믿는 것은 무엇이며&#44;<br />
-          우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br />
-          <i>
-          &#35;개정 취지 &#35;구성원 &#35;행복 &#35;사회적 가치
-          &#35;VWBE &#35;SK와 SKMS &#35;경영철학 &#35;실행원리
-          </i>
-        </>
-      ),
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>SKMS 알아보기</>,
+    //   description: (
+    //     <>
+    //       2020년 2월 18일 우리 앞에 새롭게 선보인 New SKMS&#46;<br />
+    //       우리는 누구인지, 우리가 믿는 것은 무엇이며&#44;<br />
+    //       우리의 믿음을 어떻게 구현할지를 알아봅니다&#46;<br />
+    //       <i>
+    //       &#35;개정 취지 &#35;구성원 &#35;행복 &#35;사회적 가치
+    //       &#35;VWBE &#35;SK와 SKMS &#35;경영철학 &#35;실행원리
+    //       </i>
+    //     </>
+    //   ),
 
-      link: '/lecture/college/CLG00017/channel/CHN0004q',
-      imageUrl: '/images/all/img_banner_07.jpg',
-    },
+    //   link: '/lecture/college/CLG00017/channel/CHN0004q',
+    //   imageUrl: '/images/all/img_banner_07.jpg',
+    // },
     {
       type: ContentType.ExternalWindowVideo,
       title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
@@ -90,63 +122,63 @@ class CarouselContainer extends Component<Props, State> {
       imageUrl: '/images/all/img_banner_01.jpg',
       mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse',
     },
-    {
-      type: ContentType.FileDownload,
-      title: <>시스템 기획자가 알려주는<br />&#39;mySUNI&#39; 100% 활용하기!</>,
-      description: (
-        <>
-          On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
-          2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
-          써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
-          <span className="link-tag"><Icon className="arrow right" />매뉴얼 다운로드</span>
-        </>
-      ),
-      imageUrl: '/images/all/img_banner_02.png',
-      mediaUrl: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
-    },
-    {
-      type: ContentType.LinkContent,
-      title: <>CES 2020의 핵심 트렌드를<br />&#8220;전지적 SK시점&#8221;으로 정리한<br />&#060;CES 2020 치트 키&#062;</>,
-      description: (
-        <>
-          <b>#1. 찐 리뷰 – 10분 순삭!! &#39;CES 2020 핵심&#39; 정리★</b><br />
-          #2. 구성원 &#39;편애&#39;리뷰 – SK 전시관 기획ᆞ운영자들의 &#39;편애&#39; 가득한 리뷰 Show<br />
-          #3. SK 반, CES 반 – &#39;짬&#39;에서 나오는 리더들의 리뷰!<br />
-          #4. 성큼 다가온 AI everywhere 시대! SK의 AI는 어디쯤 와있을까?
-        </>
-      ),
+    // {
+    //   type: ContentType.FileDownload,
+    //   title: <>시스템 기획자가 알려주는<br />&#39;mySUNI&#39; 100% 활용하기!</>,
+    //   description: (
+    //     <>
+    //       On-line Contents를 중심으로 Open하여 2월 중순 집합교육을 제공하고,<br />
+    //       2월 말 모바일 학습 기능을 제공할 예정입니다.<br />
+    //       써니는 여러분과 같이 계속 성장하는 플랫폼입니다. 기대해주세요^^<br />
+    //       <span className="link-tag"><Icon className="arrow right" />매뉴얼 다운로드</span>
+    //     </>
+    //   ),
+    //   imageUrl: '/images/all/img_banner_02.png',
+    //   mediaUrl: 'https://mysuni.sk.com/profile/commondocs/mySUNI_User_Manual_v1_2020115.pdf',
+    // },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>CES 2020의 핵심 트렌드를<br />&#8220;전지적 SK시점&#8221;으로 정리한<br />&#060;CES 2020 치트 키&#062;</>,
+    //   description: (
+    //     <>
+    //       <b>#1. 찐 리뷰 – 10분 순삭!! &#39;CES 2020 핵심&#39; 정리★</b><br />
+    //       #2. 구성원 &#39;편애&#39;리뷰 – SK 전시관 기획ᆞ운영자들의 &#39;편애&#39; 가득한 리뷰 Show<br />
+    //       #3. SK 반, CES 반 – &#39;짬&#39;에서 나오는 리더들의 리뷰!<br />
+    //       #4. 성큼 다가온 AI everywhere 시대! SK의 AI는 어디쯤 와있을까?
+    //     </>
+    //   ),
 
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-79n/lecture-card/LECTURE-CARD-55i',
-      imageUrl: '/images/all/img_banner_05.jpg',
-    },
-    {
-      type: ContentType.ExternalWindowVideo,
-      title: <>&#39;mySUNI&#39;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
-      description: (
-        <>
-           어떤 과정부터 학습해야 할지 막막하신가요?<br />
-           Target 역량에 따른 학습추천~!<br />
-           써니가 제안합니다!<br />
-        </>
-      ),
-      link: boardRoutePaths.supportNoticePost('NTC-000033'),
-      imageUrl: '/images/all/img_banner_03.jpg',
-      mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse',
-    },
-    {
-      type: ContentType.LinkContent,
-      title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
-      description: (
-        <>
-          AI, DT 등 Future Tech 학습 과정 33시간,<br />
-          SK행복경영을 더 깊이 이해 할 수 있는 학습 과정 12시간,<br />
-          BM혁신을 도와주는 학습 과정 12시간, 약 60시간!<br />
-          총 20개 Course 부터! SUNI Stamp에 도전해보세요~!!!
-        </>
-      ),
-      link: boardRoutePaths.supportNoticePost('NTC-00002r'),
-      imageUrl: '/images/all/img_banner_04.png',
-    },
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-79n/lecture-card/LECTURE-CARD-55i',
+    //   imageUrl: '/images/all/img_banner_05.jpg',
+    // },
+    // {
+    //   type: ContentType.ExternalWindowVideo,
+    //   title: <>&#39;mySUNI&#39;를 통한 AI/DT 역량 근육!<br />어떻게 기르나요?<br />최적의 학습 경로! 써니가 추천합니다!</>,
+    //   description: (
+    //     <>
+    //        어떤 과정부터 학습해야 할지 막막하신가요?<br />
+    //        Target 역량에 따른 학습추천~!<br />
+    //        써니가 제안합니다!<br />
+    //     </>
+    //   ),
+    //   link: boardRoutePaths.supportNoticePost('NTC-000033'),
+    //   imageUrl: '/images/all/img_banner_03.jpg',
+    //   mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&returnurl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D917b4b5d-f487-4a84-ae05-ab4a0018d159%26offerviewer%3Dfalse%26showtitle%3Dfalse%26interactivity%3Dfalse%26showbrand%3Dfalse',
+    // },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>SK 구성원 이라면 반드시 들어야 할<br /> 핵•인•싸 (공통 권장)과정 60시간</>,
+    //   description: (
+    //     <>
+    //       AI, DT 등 Future Tech 학습 과정 33시간,<br />
+    //       SK행복경영을 더 깊이 이해 할 수 있는 학습 과정 12시간,<br />
+    //       BM혁신을 도와주는 학습 과정 12시간, 약 60시간!<br />
+    //       총 20개 Course 부터! SUNI Stamp에 도전해보세요~!!!
+    //     </>
+    //   ),
+    //   link: boardRoutePaths.supportNoticePost('NTC-00002r'),
+    //   imageUrl: '/images/all/img_banner_04.png',
+    // },
     /*
     // by JSM
     {
