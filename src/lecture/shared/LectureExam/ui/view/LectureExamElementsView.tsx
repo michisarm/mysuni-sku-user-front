@@ -76,7 +76,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name}: TestProp
 
         {
           type === '1' && (
-            <button className="ui button trs" style="opacity:0.3;" onClick={OnTestNotReady}><span>{name}</span></button>
+            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
@@ -88,7 +88,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name}: TestProp
 
         {
           type === '3' && (
-            <button className="ui button trs" style="opacity:0.3;" onClick={OnTestNotReady}><span>{name}</span></button>
+            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
