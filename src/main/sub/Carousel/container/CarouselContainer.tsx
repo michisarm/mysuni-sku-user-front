@@ -35,11 +35,9 @@ class CarouselContainer extends Component<Props, State> {
       title: <>자기주도 학습의 첫걸음&#44;<br />관심 채널을 내 마음대로!</>,
       description: (
         <>
-          1월 써니가 오픈안 이후&#44;<br />
+          1월 써니가 오픈한 이후&#44;<br />
           반도체&#44; SK경영 등 컨텐츠가 더욱 다채로워졌습니다.<br />
           지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br/>
-          <br />
-          <br />
           <span className="link-tag">관심채널 변경안내</span>
         </>
       ),
@@ -52,11 +50,11 @@ class CarouselContainer extends Component<Props, State> {
       description: (
         <>
           <b>컴퓨터&#44; 스마트폰&#44; 자동차에 필수적인 &#39;반도체&#39;</b><br />
-          <b>AI&#44; IoT&#44; 자율주행 기술의 중심에 자리하는 &#39;반도체 산업&#39;</b><br /><br />
+          <b>AI&#44; IoT&#44; 자율주행 기술의 중심에 자리하는 &#39;반도체 산업&#39;</b><br />
           알고 싶지만 어렵고 방대한 양에<br />
-          반도체 학습을 어떻게 접근해야 할 지 난감하셨나요?<br /><br />
+          반도체 학습을 어떻게 접근해야 할 지 난감하셨나요?<br />
           반도체College가 구성원 여러분께만 알려드리는 쉽고&#44; 재미있는 반도체!<br />
-          그 특별한 반도체 학습 Contents를 새롭게 선보입니다.<br />
+          그 특별한 반도체 학습 Contents를 새롭게 선보입니다.
         </>
       ),
       link: '/lecture/college/CLG00019/channels/pages/1',
