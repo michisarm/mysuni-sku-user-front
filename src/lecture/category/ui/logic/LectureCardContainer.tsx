@@ -606,7 +606,7 @@ class LectureCardContainer extends Component<Props, State> {
         <LectureExam
           onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
           onTest={viewObject.examId ? this.onTest : undefined}
-          onTestNotReady={typeViewObject.examId ? this.onTestNotReady : undefined}
+          onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
           onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           viewObject={viewObject}
           type={this.state.type}
