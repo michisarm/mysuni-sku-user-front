@@ -141,12 +141,14 @@ class MainModalsContainer extends Component<{}, State> {
       // systemGuideModalState,
     } = this.state;
 
-    if (tutorialModalState.disabled
+    return null;
+
+    // if (tutorialModalState.disabled
     // && welcomeModalState.disabled
     // && systemGuideModalState.disabled
-    ) {
-      return null;
-    }
+    // ) {
+    //   return null;
+    // }
     // 2012-02-21 요구사항 - MinJun, JeeSu
     // else if (welcomeModalState.open) {
     //   return (
@@ -157,15 +159,16 @@ class MainModalsContainer extends Component<{}, State> {
     //     />
     //   );
     // }
-    else if (tutorialModalState.open) {
-      return (
-        <TutorialModalView
-          modalState={tutorialModalState}
-          onClose={this.onCloseTutorial}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Tutorial, data.checked)}
-        />
-      );
-    }
+    // 2020-04-08 김우성 - 사용방법 팝업 제거
+    // else if (tutorialModalState.open) {
+    //   return (
+    //     <TutorialModalView
+    //       modalState={tutorialModalState}
+    //       onClose={this.onCloseTutorial}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.Tutorial, data.checked)}
+    //     />
+    //   );
+    // }
     // 2012-02-14 요구사항 - JuneHee
     // else if (systemGuideModalState.open) {
     //   return (
@@ -176,7 +179,7 @@ class MainModalsContainer extends Component<{}, State> {
     //     />
     //   );
     // }
-    return null;
+    
   }
 }
 
