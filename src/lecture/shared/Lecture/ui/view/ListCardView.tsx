@@ -79,7 +79,7 @@ class ListCardView extends Component<Props> {
     if ((model instanceof LectureModel && model.viewState === 'Passed')
       || ((model instanceof MyTrainingModel || model instanceof InMyLectureModel) && model.learningState === LearningState.Passed)
     ) {
-      image = `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.jpg`;
+      image = `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
     }
 
     return (
