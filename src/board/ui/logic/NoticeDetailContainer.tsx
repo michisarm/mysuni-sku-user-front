@@ -120,7 +120,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                       <br />
                     </div>
                   )
-                  ) || ''
+                  ) || '-'
                 }
               </div><br />
             </div>
