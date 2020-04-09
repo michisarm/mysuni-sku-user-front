@@ -25,6 +25,11 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   skAcademyCollegeTime: number= 0;
   lifeStyleCollegeTime: number= 0;
 
+  semiconductorCollegeTime: number= 0;
+  skManagementCollegeTime: number= 0;
+  skAcademyCollegeTime: number= 0;
+  lifeStyleCollegeTime: number= 0;
+
   constructor(summary?: MyLearningSummaryModel) {
     super();
     if (summary) {
