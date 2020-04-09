@@ -46,6 +46,7 @@ interface State {
   loaded: boolean,
   examTitle: string,
   surveyTitle: string,
+  tabState: string,
 }
 
 interface RouteParams {
@@ -81,6 +82,7 @@ class CoursePage extends Component<Props, State> {
     examTitle: '',
     surveyState: false,
     surveyTitle: '',
+    tabState: '',
   };
 
   constructor(props: Props) {
@@ -271,6 +273,7 @@ class CoursePage extends Component<Props, State> {
     let surveyState: boolean = false;
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
+    let tabState: string = '';
 
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
@@ -296,6 +299,7 @@ class CoursePage extends Component<Props, State> {
       surveyState = this.state.surveyState || false;
       surveyCaseId = coursePlanContents.surveyCaseId || '';
       reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+      tabState = this.state.tabState || '';
     }
 
     return {
@@ -324,6 +328,7 @@ class CoursePage extends Component<Props, State> {
       surveyTitle,
       surveyState,
       surveyCaseId,
+      tabState,
 
       fileBoxId: coursePlanContents.fileBoxId,
       reportFileBoxId,
@@ -422,6 +427,7 @@ class CoursePage extends Component<Props, State> {
   renderList() {
     //
     const { serviceId } = this.props.match.params!;
+    this.state.tabState = 'list';
 
     // console.log('CoursePage renderList lectureCardId=', serviceId);
 
@@ -438,6 +444,7 @@ class CoursePage extends Component<Props, State> {
     //
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
+    this.state.tabState = 'view';
 
     return this.renderBaseContentWith(
       <LectureOverviewView
@@ -451,6 +458,7 @@ class CoursePage extends Component<Props, State> {
     //
     const { programLectureService, courseLectureService, match } = this.props;
     const { params } = match;
+    this.state.tabState = 'comments';
 
     let reviewFeedbackId = '';
     let commentFeedbackId = '';

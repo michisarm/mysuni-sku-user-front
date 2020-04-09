@@ -54,6 +54,7 @@ interface Props {
 interface State
 {
   classNameForLearningState: string,
+  inProgress: SubState,
 }
 
 @inject(mobxHelper.injectFrom(
@@ -96,6 +97,7 @@ class CourseLectureContainer extends Component<Props, State> {
   state =
   {
     classNameForLearningState: 'fix line' || 'fix bg',
+    inProgress: SubState.Waiting,
   };
 
   constructor(props: Props)
@@ -155,6 +157,7 @@ class CourseLectureContainer extends Component<Props, State> {
         }
       }
 
+      this.state.inProgress = state;
       classNameForLearningState = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
 
       console.log('CourseLectureContainer setClassNameForLearningState() lectureView.name=', lectureView.name, ', rollBooks=', this.rollBooks, ', studentForVideo=', studentForVideo, ', classNameForLearningState=', classNameForLearningState);
@@ -360,13 +363,16 @@ class CourseLectureContainer extends Component<Props, State> {
 
     //Lecture Card가 Video인 경우만 학습하기 버튼이 보이고, 진행상태인 경우 버튼 css적용(fix bg)
     const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
+    const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
+      `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
-    console.log('CourseLectureContainer render() lectureView.name=', lectureView.name, ',lectureView.cubeType=', lectureView.cubeType, ', classNameForLearningState=' + classNameForLearningState, ', className1=', className1);
+    console.log('CourseLectureContainer render() lectureView.name=', lectureView.name, ',lectureView.cubeType=', lectureView.cubeType,
+      ', classNameForLearningState=' + classNameForLearningState, ', className1=', className1);
 
     return (
       <div className={`card-box ${className}`}>
 
-        <Thumbnail image={thumbnailImage} />
+        <Thumbnail image={thumbnail} />
 
         <Title title={lectureView.name} category={lectureView.category}>
           <div className="deatil">
@@ -393,9 +399,13 @@ class CourseLectureContainer extends Component<Props, State> {
         <Buttons>
           <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
           {
-            lectureView.cubeType === CubeType.Video ?
-              <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button> : null
-          }
+            lectureView.cubeType === CubeType.Video && (
+              this.state.inProgress !== SubState.Completed ? (
+                <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>
+              ) : (
+                <span className="completed-txt">학습완료</span>
+              )
+            )}
         </Buttons>
 
         { toggle && (

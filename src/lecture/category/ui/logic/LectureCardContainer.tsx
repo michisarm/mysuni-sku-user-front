@@ -70,8 +70,6 @@ class LectureCardContainer extends Component<Props, State> {
     subTest: String,
     type: '',
     name: '',
-    surveyType: '',
-    surveyName: '',
   };
 
 
@@ -457,29 +455,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   setStateName(type: string, name: string) {
-
-    // const { viewObject } = this.props;
-    //
-    // switch (viewObject.state) {
-    //   case EnumState.WaitingForApproval: this.state.type = type; break;
-    //   case EnumState.Enrolled: this.state.type = type; break;
-    //   case EnumState.InProgress: this.state.type = '0'; break;
-    //   case EnumState.Missed: this.state.type = '4'; break;
-    //   case EnumState.Completed: this.state.type = '5'; break;
-    //   case EnumState.Waiting: this.state.type = type; break;
-    //   case EnumState.Joined: this.state.type = type; break;
-    //   case EnumState.Rejected: this.state.type = type; break;
-    //   case EnumState.NoShow: this.state.type = type; break;
-    //   case EnumState.TestWaiting: this.state.type = type; break;
-    //   case EnumState.Failed: this.state.type = '3'; break;
-    // }
-
-    // console.log(viewObject);
-
     this.state.type = type;
     this.state.name = name;
-
-    console.log(this.state);
   }
 
   getOnCancel() {
@@ -535,7 +512,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children, student } = this.props;
+    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
 
     return (
@@ -603,15 +580,20 @@ class LectureCardContainer extends Component<Props, State> {
         />
 
         {children}
-        <LectureExam
-          onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-          onTest={viewObject.examId ? this.onTest : undefined}
-          onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-          onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-          viewObject={viewObject}
-          type={this.state.type}
-          name={this.state.name}
-        />
+
+        {
+          viewObject && viewObject.tabState === 'list' && (
+            <LectureExam
+              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onTest={viewObject.examId ? this.onTest : undefined}
+              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+              viewObject={viewObject}
+              type={this.state.type}
+              name={this.state.name}
+            />
+          )
+        }
 
       </LectureCardContentWrapperView>
 
