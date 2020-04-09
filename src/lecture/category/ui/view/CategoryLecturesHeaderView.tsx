@@ -34,6 +34,8 @@ class CategoryLecturesHeaderView extends Component<Props> {
     SV: 'college-sv86',
     Happiness: 'college-happy86',
     InnovationDesign: 'college-design86',
+    SemicondDesign: 'college-semicond86',
+    Skacademy: 'college-Skacademy86',
   };
 
   getThumbnailIcon(collegeName: string) {
@@ -55,6 +57,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
         return CategoryLecturesHeaderView.thumbnailIcon.Happiness;
       case '혁신디자인':
         return CategoryLecturesHeaderView.thumbnailIcon.InnovationDesign;
+      case '반도체':
+        return CategoryLecturesHeaderView.thumbnailIcon.SemicondDesign;
+      case 'SK아카데미':
+        return CategoryLecturesHeaderView.thumbnailIcon.Skacademy;
       default:
         return CategoryLecturesHeaderView.thumbnailIcon.Default;
     }
