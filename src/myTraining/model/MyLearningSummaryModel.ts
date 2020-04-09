@@ -48,6 +48,10 @@ decorate(MyLearningSummaryModel, {
   globalCollegeTime: observable,
   leadershipCollegeTime: observable,
   managementCollegeTime: observable,
+  semiconductorCollegeTime: observable,
+  skManagementCollegeTime: observable,
+  skAcademyCollegeTime: observable,
+  lifeStyleCollegeTime: observable,
 });
 
 export default MyLearningSummaryModel;
