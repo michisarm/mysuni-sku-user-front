@@ -41,7 +41,7 @@ class EssayView extends React.Component<Props, State> {
           onClick={() => this.setState({ focus: true })}
           onBlur={() => this.setState({ focus: false })}
           onChange={(e) => {
-            if (e.target.value.length > 100 ) {
+            if (e.target.value.length > 1000 ) {
               this.setState({ error: true });
             } else {
               this.setState({ error: false });
