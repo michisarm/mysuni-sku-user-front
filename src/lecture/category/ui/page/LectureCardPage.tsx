@@ -632,6 +632,8 @@ class LectureCardPage extends Component<Props, State> {
         boardId={personalCube.contents.contents.id}
         emptyMessage="Community에 등록된 글이 없습니다."
         linkedUrl={`${process.env.PUBLIC_URL}${postUrl}`}
+        offset={0}
+        limit={10}
         routeToPost={
           student.id ? () => history.push(`${postUrl}/new`) : undefined
         }
@@ -652,6 +654,8 @@ class LectureCardPage extends Component<Props, State> {
         boardId={personalCube.contents.contents.id}
         linkedUrl={`${process.env.PUBLIC_URL}${postsUrl}`}
         emptyMessage="내가 작성한 글이 없습니다."
+        offset={0}
+        limit={10}
         routeToPost={
           student.id ? () => history.push(`${postsUrl}/new`) : undefined
         }
