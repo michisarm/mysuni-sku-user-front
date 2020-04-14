@@ -189,9 +189,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     }
                     return (
                       <List.Item as="li" key={question.questionNo}>
-                        <div className="ol-title" dangerouslySetInnerHTML={{__html:question.direction}}>
-                          <span className="q-score">({question.allocatedPoint}점)</span>
-                        </div>
+                        <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
                         <div className="ol-answer">
                           {answerArea}
                         </div>
