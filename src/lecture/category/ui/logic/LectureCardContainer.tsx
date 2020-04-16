@@ -595,7 +595,6 @@ class LectureCardContainer extends Component<Props, State> {
             <LectureLearningModalView
               ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
               videoUrl = {typeViewObject.videoUrl}
-              studentCdo = {studentCdo}
             />
           )
         }
