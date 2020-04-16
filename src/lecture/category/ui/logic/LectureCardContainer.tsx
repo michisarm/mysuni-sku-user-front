@@ -3,7 +3,7 @@ import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, ProposalState } from 'shared/model';
+import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
 import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
@@ -14,15 +14,13 @@ import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
-import { State as EnumState } from '../../../shared/LectureSubInfo/model';
-import LearningState from '../../../../shared/model/LearningState';
+import LectureLearningModalView from '../view/LectureLearningModalView';
 
 interface Props {
   studentService?: StudentService
@@ -45,7 +43,7 @@ interface Props {
 }
 
 interface State {
-  rollBook: RollBookModel,
+  rollBook: RollBookModel
 }
 
 @inject(mobxHelper.injectFrom(
@@ -53,7 +51,6 @@ interface State {
   'lecture.studentService',
   'myTraining.inMyLectureService',
 ))
-
 @reactAutobind
 @observer
 class LectureCardContainer extends Component<Props, State> {
@@ -63,13 +60,11 @@ class LectureCardContainer extends Component<Props, State> {
   surveyModal: any = null;
   reportModal: any = null;
   applyReferenceModel: any = null;
+  lectureLearningModal: any = null;
   prevViewObjectState: string = '';
 
   state = {
     rollBook: new RollBookModel(),
-    subTest: String,
-    type: '',
-    name: '',
   };
 
 
@@ -85,21 +80,19 @@ class LectureCardContainer extends Component<Props, State> {
       && prevProps.student?.id === this.props.student?.id) {
       this.prevViewObjectState = prevProps.viewObject.state;
     } else if (!prevProps.loaded && this.props.loaded) {
-
-      if (this.props.viewObject.state === EnumState.Waiting && this.props.student?.learningState === 'TestWaiting') {
+      if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'TestWaiting') {
         reactAlert({ title: '알림', message: '관리자가 채점중에 있습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.' });
-      } else if (this.props.viewObject.state === EnumState.Waiting && this.props.student?.learningState === 'Failed') {
+      } else if (this.props.viewObject.state === 'Waiting' && this.props.student?.learningState === 'Failed') {
         reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
-      } else if (this.props.viewObject.state === EnumState.Missed) {
+      } else if (this.props.viewObject.state === 'Missed') {
         reactAlert({ title: '알림', message: '과정이 미이수되었습니다. 처음부터 다시 학습 후 Test를 응시해주시기 바랍니다.' });
-      } else if (this.prevViewObjectState === EnumState.InProgress && this.props.viewObject.state === EnumState.Completed) {
+      } else if (this.prevViewObjectState === 'InProgress' && this.props.viewObject.state === 'Completed') {
         reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
-      } else if (this.prevViewObjectState === EnumState.Waiting && this.props.viewObject.state === EnumState.Completed) {
+      } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
         reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
       }
-
-      this.state.subTest = this.props.viewObject.state;
     }
+
   }
 
   componentWillUnmount(): void {
@@ -182,7 +175,10 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url, '_blank');
+
+      //0413 window.open -> modal로 변경
+      //window.open(typeViewObject.url, '_blank');
+      this.lectureLearningModal.onOpenModal();
     }
     else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -195,7 +191,10 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      window.open(typeViewObject.url, '_blank');
+
+      //0413 window.open -> modal로 변경
+      //window.open(typeViewObject.url, '_blank');
+      this.lectureLearningModal.onOpenModal();
     }
     else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -235,6 +234,10 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  onClickSurvey() {
+    this.surveyModal.onOpenModal();
+  }
+
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo })
@@ -261,26 +264,16 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
-  onApplyReference() {
-    this.applyReferenceModel.onOpenModal();
+  onTest() {
+    this.examModal.onOpenModal();
   }
 
   onReport() {
     this.reportModal.onOpenModal();
   }
 
-  onTest() {
-    this.examModal.onOpenModal();
-  }
-
-  // truefree 2020-04-03
-  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
-  onTestNotReady() {
-    reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
-  }
-
-  onSurvey() {
-    this.surveyModal.onOpenModal();
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
   }
 
   onClickApplyReferentOk(member: ApprovalMemberModel) {
@@ -395,23 +388,13 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+
     if (viewObject.examId && student) {
       if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
-          this.setStateName('0', 'Test');
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
-          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-        } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
-          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-        } else if (student.learningState === LearningState.Missed) {
-          this.setStateName('4', '미이수');
-        } else if (student.learningState === LearningState.Passed) {
-          this.setStateName('5', '이수');
-        } else {
-          this.setStateName('1', 'Test');
         }
       }
       else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
@@ -419,26 +402,12 @@ class LectureCardContainer extends Component<Props, State> {
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
         ) {
-          this.setStateName('0', 'Test');
-          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
         ) {
-          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
-          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-        } else if (
-          student.phaseCount === student.completePhaseCount
-          && (student.learningState === LearningState.Failed && student.numberOfTrials > 2)
-        ) {
-          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-        } else if (student.learningState === LearningState.Missed) {
-          this.setStateName('4', '미이수');
-        } else if (student.learningState === LearningState.Passed) {
-          this.setStateName('5', '이수');
-        } else {
-          this.setStateName('1', 'Test');
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         }
       }
     }
@@ -452,11 +421,6 @@ class LectureCardContainer extends Component<Props, State> {
       else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
-  }
-
-  setStateName(type: string, name: string) {
-    this.state.type = type;
-    this.state.name = name;
   }
 
   getOnCancel() {
@@ -538,7 +502,7 @@ class LectureCardContainer extends Component<Props, State> {
           onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
-          // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+          onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
           /* onDownloadReport={
              ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
                () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
@@ -578,25 +542,17 @@ class LectureCardContainer extends Component<Props, State> {
           downloadReport = {this.onClickDownloadReport}
           rollBookId={studentCdo.rollBookId}
         />
-
-        {children}
-
         {
-          viewObject && viewObject.tabState === 'list' && (
-            <LectureExam
-              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-              onTest={viewObject.examId ? this.onTest : undefined}
-              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-              viewObject={viewObject}
-              type={this.state.type}
-              name={this.state.name}
+          // 0413 window.open => modal view로 변경
+          typeViewObject && (
+            <LectureLearningModalView
+              ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
+              videoUrl = {typeViewObject.videoUrl}
             />
           )
         }
-
+        {children}
       </LectureCardContentWrapperView>
-
     );
   }
 }
