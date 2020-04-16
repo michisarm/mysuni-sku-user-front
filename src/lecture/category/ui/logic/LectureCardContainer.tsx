@@ -21,6 +21,8 @@ import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import LectureLearningModalView from '../view/LectureLearningModalView';
+import { State as EnumState } from '../../../shared/LectureSubInfo/model';
+import LectureExam from '../../../shared/LectureExam';
 
 interface Props {
   studentService?: StudentService
@@ -65,6 +67,9 @@ class LectureCardContainer extends Component<Props, State> {
 
   state = {
     rollBook: new RollBookModel(),
+    subTest: String,
+    type: '',
+    name: '',
   };
 
 
@@ -91,6 +96,8 @@ class LectureCardContainer extends Component<Props, State> {
       } else if (this.prevViewObjectState === 'Waiting' && this.props.viewObject.state === 'Completed') {
         reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
       }
+
+      this.state.subTest = this.props.viewObject.state;
     }
 
   }
@@ -264,16 +271,26 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
-  onTest() {
-    this.examModal.onOpenModal();
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
   }
 
   onReport() {
     this.reportModal.onOpenModal();
   }
 
-  onApplyReference() {
-    this.applyReferenceModel.onOpenModal();
+  onTest() {
+    this.examModal.onOpenModal();
+  }
+
+  // truefree 2020-04-03
+  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onTestNotReady() {
+    reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
+  onSurvey() {
+    this.surveyModal.onOpenModal();
   }
 
   onClickApplyReferentOk(member: ApprovalMemberModel) {
@@ -392,9 +409,20 @@ class LectureCardContainer extends Component<Props, State> {
     if (viewObject.examId && student) {
       if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+          this.setStateName('0', 'Test');
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
+          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
           subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
+          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
         }
       }
       else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
@@ -402,12 +430,26 @@ class LectureCardContainer extends Component<Props, State> {
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
         ) {
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          this.setStateName('0', 'Test');
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
           student.phaseCount === student.completePhaseCount
           && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
         ) {
-          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (
+          student.phaseCount === student.completePhaseCount
+          && (student.learningState === LearningState.Failed && student.numberOfTrials > 2)
+        ) {
+          this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
         }
       }
     }
@@ -421,6 +463,11 @@ class LectureCardContainer extends Component<Props, State> {
       else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
+  }
+
+  setStateName(type: string, name: string) {
+    this.state.type = type;
+    this.state.name = name;
   }
 
   getOnCancel() {
@@ -502,7 +549,7 @@ class LectureCardContainer extends Component<Props, State> {
           onCancel={this.getOnCancel()}
           onBookmark={inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark}
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
-          onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
+          // onSurvey={viewObject.surveyId ? this.onClickSurvey : undefined}
           /* onDownloadReport={
              ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
                () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
@@ -548,11 +595,28 @@ class LectureCardContainer extends Component<Props, State> {
             <LectureLearningModalView
               ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
               videoUrl = {typeViewObject.videoUrl}
+              studentCdo = {studentCdo}
             />
           )
         }
         {children}
+
+        {
+          viewObject && viewObject.tabState === 'list' && (
+            <LectureExam
+              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onTest={viewObject.examId ? this.onTest : undefined}
+              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+              viewObject={viewObject}
+              type={this.state.type}
+              name={this.state.name}
+            />
+          )
+        }
+
       </LectureCardContentWrapperView>
+
     );
   }
 }
