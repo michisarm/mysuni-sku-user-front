@@ -43,8 +43,24 @@ class SiteMapModalContainer extends Component<Props, State> {
       { name: 'Global', path: lectureRoutePaths.collegeLectures('CLG00006') },
       { name: 'Leadership', path: lectureRoutePaths.collegeLectures('CLG00007') },
       { name: 'Management', path: lectureRoutePaths.collegeLectures('CLG00008') },
+      { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
+      { name: 'SK아카데미', path: lectureRoutePaths.collegeLectures('CLG00018') },
+      { name: 'SK경영', path: lectureRoutePaths.collegeLectures('CLG00017') },
+      { name: 'Life Style', path: lectureRoutePaths.collegeLectures('CLG0001a') },
     ],
   };
+
+  /*baseCategoryItems2 = {
+    name: '',
+    countable: true,
+    items: [
+      { name: 'Management', path: lectureRoutePaths.collegeLectures('CLG00008') },
+      { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
+      { name: 'SK아카데미', path: lectureRoutePaths.collegeLectures('CLG00018') },
+      { name: 'SK경영', path: lectureRoutePaths.collegeLectures('CLG00017') },
+      { name: 'Life Style', path: lectureRoutePaths.collegeLectures('CLG0001a') },
+    ],
+  };*/
 
   baseTopSiteMaps = [
     {
@@ -65,7 +81,7 @@ class SiteMapModalContainer extends Component<Props, State> {
       ],
     },
     {
-      name: <span>Community<span className="update">업데이트예정</span></span>,
+      name: <span><br /><br />Community<br />(서비스 예정)</span>,
       items: [],
       // items: [
       //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
