@@ -719,7 +719,7 @@ class LectureCardPage extends Component<Props, State> {
           typeViewObject={typeViewObject}
         />
 
-        {
+        {/*{
           typeViewObject.videoUrl && (
             <>
               <div className="cont-inner">
@@ -739,15 +739,15 @@ class LectureCardPage extends Component<Props, State> {
                     allowFullScreen
                     allow="autoplay"
                   />
-                  {/*<video width="854" height="480" id="video1">*/}
-                  {/*  <source src={typeViewObject.videoUrl} type="video/mp4" />*/}
-                  {/*</video>*/}
-                  {/*<img src={typeViewObject.videoUrl} />*/}
+                  <video width="854" height="480" id="video1">
+                    <source src={typeViewObject.videoUrl} type="video/mp4" />
+                  </video>
+                  <img src={typeViewObject.videoUrl} />
                 </div>
               </div>
             </>
           ) || null
-        }
+        }*/}
 
         <Tab
           className="tab-menu2 offset0"
