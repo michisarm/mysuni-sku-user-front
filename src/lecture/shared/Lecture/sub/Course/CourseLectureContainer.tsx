@@ -15,7 +15,7 @@ import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { BoardService } from 'personalcube/community/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
-import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
+import { AnswerSheetService, SurveyCaseService, SurveyFormService } from 'survey/stores';
 
 import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel } from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
@@ -61,6 +61,7 @@ interface Props {
   examPaperService?: ExamPaperService,
   answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
+  surveyFormService?: SurveyFormService
 }
 
 interface State
@@ -86,6 +87,7 @@ interface State
   'assistant.examPaperService',
   'survey.answerSheetService',
   'survey.surveyCaseService',
+  'survey.surveyFormService',
 ))
 @reactAutobind
 @observer
@@ -153,43 +155,46 @@ class CourseLectureContainer extends Component<Props, State> {
   async init()
   {
     const { personalCubeService, rollBookService, studentService, lectureView,
-      examinationService, examPaperService, answerSheetService, surveyCaseService, } = this.props;
+      examinationService, examPaperService, answerSheetService, surveyCaseService, surveyFormService } = this.props;
     const { getStudentForVideo } = studentService!;
 
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-    const { studentJoins }: StudentService = studentService!;
-
     if (this.rollBooks[0]) {
-      await this.props.studentService!.findStudentByRollBookId(this.rollBooks[0].id);
-      if (studentJoins && studentJoins.length) {
-        const studentJoin = this.getStudentJoin();
-        // console.log(studentJoin);
-        if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
+      const studentData = await studentService!.findStudentByRollBookId(this.rollBooks[0].id);
+
+      if (studentData) {
+        const { studentJoins }: StudentService = studentService!;
+
+        if (studentJoins && studentJoins.length) {
+          const studentJoin = this.getStudentJoin();
+          if (studentJoin) await studentService!.findStudent(studentData.id);
+          else studentService!.clear();
+        }
         else studentService!.clear();
-      }
-      else studentService!.clear();
 
-      if (this.personalCube?.contents.examId)
-      {
-        const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
-        const examPaper = await examPaperService!.findExamPaper(examination.paperId);
-        this.state.examTitle = examPaper.title;
-      }
+        if (this.personalCube?.contents.examId)
+        {
+          const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
+          const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+          this.state.examTitle = examPaper.title;
+        }
 
-      if (this.personalCube?.contents.surveyCaseId) {
-        await answerSheetService!.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
-        const surveyCase = await surveyCaseService!.findSurveyCase(this.personalCube?.contents.surveyCaseId);
+        if (this.personalCube?.contents.surveyCaseId) {
+          await answerSheetService!.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+          // const surveyCase = await surveyCaseService!.findSurveyCase(this.personalCube?.contents.surveyCaseId);
+          const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
 
-        const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-        const title = JSON.parse(JSON.stringify(obj.langStringMap));
+          const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+          const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
-        const { answerSheet } = answerSheetService!;
-        const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+          const { answerSheet } = answerSheetService!;
+          const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
 
-        this.state.surveyState = disabled;
-        this.state.surveyTitle =  title.ko;
+          this.state.surveyState = disabled;
+          this.state.surveyTitle =  title.ko;
+        }
       }
 
       this.viewObject = this.getViewObject();
@@ -254,7 +259,6 @@ class CourseLectureContainer extends Component<Props, State> {
       this.state.inProgress = state;
       classNameForLearningState = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
 
-      console.log('CourseLectureContainer setClassNameForLearningState() lectureView.name=', lectureView.name, ', rollBooks=', this.rollBooks, ', studentForVideo=', studentForVideo, ', classNameForLearningState=', classNameForLearningState);
       // this.classNameForLearningState = classNameForLearningState;
     }
 
@@ -273,7 +277,6 @@ class CourseLectureContainer extends Component<Props, State> {
     //
     const { studentService, lectureView, onRefreshLearningState } = this.props;
     const { getStudentForVideo } = studentService!;
-    console.log('CourseLectureContainer registerStudentForVideo lectureView.name=', lectureView.name, ', lectureCardId=' + lectureView.serviceId, ', studentCdo=', studentCdo);
 
     //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
     return studentService!.registerStudent(studentCdo).then(() =>
@@ -300,9 +303,6 @@ class CourseLectureContainer extends Component<Props, State> {
   {
     const studentCdo = this.getStudentCdo();
 
-    console.log('CourseLectureContainer onRegisterStudentForVideo studentCdo=', studentCdo);
-    console.log('CourseLectureContainer onRegisterStudentForVideo this.studentForVideoObj=', this.studentForVideoObj);
-
     if ((!this.studentForVideoObj || !this.studentForVideoObj.id) || (this.studentForVideoObj.proposalState !== ProposalState.Canceled
       && this.studentForVideoObj.proposalState !== ProposalState.Rejected))
     {
@@ -316,7 +316,7 @@ class CourseLectureContainer extends Component<Props, State> {
   onLearningStartForVideo(url : string)
   {
     const { onDoLearn } = this.props;
-    console.log('CourseLectureContainer onLearningStartForVideo url=' + url);
+
     if (url && url.startsWith('http')) {
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
@@ -331,7 +331,7 @@ class CourseLectureContainer extends Component<Props, State> {
   onClickPlayForVideo(url : string)
   {
     const { onDoLearn } = this.props;
-    console.log('CourseLectureContainer onClickPlayForVideo url=' + url);
+
     if (url && url.startsWith('http'))
     {
       this.onRegisterStudentForVideo(ProposalState.Approved);
@@ -360,7 +360,6 @@ class CourseLectureContainer extends Component<Props, State> {
         break;
       case MediaType.LinkMedia:
         url = media.mediaContents.linkMediaUrl;
-        // console.log('CourseLectureContainer getMediaUrl media.mediaContents.linkMediaUrl=' + url);
         break;
       case MediaType.InternalMedia:
       case MediaType.InternalMediaUpload:
@@ -384,7 +383,6 @@ class CourseLectureContainer extends Component<Props, State> {
       member,
     } = this.props;
 
-    console.log('CourseLectureContainer getStudentCdo=' + this.rollBooks[0].id);
     return new StudentCdoModel({
       rollBookId: this.rollBooks.length ? this.rollBooks[0].id : '',
       name: member!.name,
@@ -408,7 +406,6 @@ class CourseLectureContainer extends Component<Props, State> {
     // const { personalCube } = personalCubeService!;
 
     const { service, contents } = this.personalCube!.contents;
-    console.log('CourseLectureContainer getMainActionForVideo service=', service + ', contents=', contents);
 
     //Video, Audio
     if (service.type  === ContentsServiceType.Media)
@@ -431,10 +428,8 @@ class CourseLectureContainer extends Component<Props, State> {
       //     });
       // }
 
-      console.log('this.getMediaUrl media=', media);
       const url = this.getMediaUrl(media);
 
-      console.log('this.getMediaUrl url=', url);
       //외부 영상, CP사 영상
       if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia)
       {
