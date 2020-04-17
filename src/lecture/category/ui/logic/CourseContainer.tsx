@@ -12,7 +12,7 @@ import {CourseLectureService, LectureService, ProgramLectureService} from '../..
 import routePaths from '../../../routePaths';
 import {Lecture} from '../../../shared';
 import LectureLearningModalView from '../view/LectureLearningModalView';
-import ProposalState from "../../../../shared/model/ProposalState";
+import ProposalState from '../../../../shared/model/ProposalState';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService,
