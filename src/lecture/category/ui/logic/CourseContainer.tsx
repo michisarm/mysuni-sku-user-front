@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -8,7 +7,7 @@ import queryString from 'query-string';
 import { Segment } from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
 import { CoursePlanService } from 'course/stores';
-import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
+import { LectureServiceType, LectureViewModel, StudentCdoModel } from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared';
@@ -145,7 +144,7 @@ class CourseContainer extends Component<Props, State> {
     }
   }
 
-  // ÇÐ½ÀÇÏ±â - ÇÐ½À ¸ð´ÞÃ¢ ÆË¾÷
+  // ï¿½Ð½ï¿½ï¿½Ï±ï¿½ - ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½Ã¢ ï¿½Ë¾ï¿½
   onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
     this.learningVideoUrl = videoUrl;
     this.learnStudentCdo = studentCdo;
@@ -154,7 +153,7 @@ class CourseContainer extends Component<Props, State> {
     });
   }
 
-  // ÇÐ½À ¸ð´ÞÃ¢ ´Ý±â - ÇÐ½ÀÅë°èÁ¤º¸ ÀúÀå
+  // ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½Ã¢ ï¿½Ý±ï¿½ - ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
   onLearningModalClose() {
     const { lectureService } = this.props;
     if (this.learnStudentCdo) lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo);

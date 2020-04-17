@@ -26,28 +26,26 @@ class LectureExamContainer extends Component<Props> {
     const { onReport, onTest, onTestNotReady, onSurvey, viewObject, type, name } = this.props;
 
     return (
-      <div className="ui full segment">
-        <div className="contents">
-          <Report
-            OnReport={onReport}
-            viewObject={viewObject}
-            type={type}
-            name={name}
-          />
-          <Test
-            OnTest={onTest}
-            OnTestNotReady={onTestNotReady}
-            viewObject={viewObject}
-            type={type}
-            name={name}
-          />
-          <Survey
-            onSurvey={onSurvey}
-            viewObject={viewObject}
-            type={type}
-            name={name}
-          />
-        </div>
+      <div className="contents trs-box-wrap non-height">
+        <Report
+          OnReport={onReport}
+          viewObject={viewObject}
+          type={type}
+          name={name}
+        />
+        <Test
+          OnTest={onTest}
+          OnTestNotReady={onTestNotReady}
+          viewObject={viewObject}
+          type={type}
+          name={name}
+        />
+        <Survey
+          onSurvey={onSurvey}
+          viewObject={viewObject}
+          type={type}
+          name={name}
+        />
       </div>
     );
   }

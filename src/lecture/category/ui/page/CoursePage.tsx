@@ -189,7 +189,6 @@ class CoursePage extends Component<Props, State> {
       const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
       const examPaper = await examPaperService!.findExamPaper(examination.paperId);
 
-      console.log(examPaper);
       this.state.examTitle = examPaper.title;
     }
 
@@ -200,7 +199,6 @@ class CoursePage extends Component<Props, State> {
       const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
       const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
-      console.log(obj);
       const { answerSheet } = answerSheetService!;
       const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
 
@@ -427,6 +425,7 @@ class CoursePage extends Component<Props, State> {
   renderList() {
     //
     const { serviceId } = this.props.match.params!;
+    const { coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService} = this.props;
     this.state.tabState = 'list';
 
     // console.log('CoursePage renderList lectureCardId=', serviceId);
@@ -436,6 +435,7 @@ class CoursePage extends Component<Props, State> {
       <CourseContainer
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
+        coursePlanService={coursePlanService}
       />
     );
   }

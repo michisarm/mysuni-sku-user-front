@@ -13,6 +13,7 @@ export const CourseSectionContext = React.createContext({
 interface Props {
   lecture: React.ReactNode,
   children: React.ReactNode,
+  exam?: any,
 }
 
 interface State {
@@ -46,14 +47,15 @@ class CourseSectionContainer extends Component<Props, State> {
 
   render() {
     //
-    const { lecture, children } = this.props;
+    const { lecture, children, exam } = this.props;
     const { open } = this.state;
 
     return (
       <CourseSectionContext.Provider value={this.getContextValue()}>
         <div className={classNames('course-card', 'fn-parents', { open })}>
           {lecture}
-          { open && children}
+          {open && children}
+          {exam}
         </div>
       </CourseSectionContext.Provider>
     );

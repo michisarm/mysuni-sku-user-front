@@ -418,13 +418,13 @@ class LectureCardContainer extends Component<Props, State> {
       if (!student.serviceType || student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
           this.setStateName('0', 'Test');
-          subActions.push({type: LectureSubInfo.ActionType.Test, onAction: this.onTest});
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
-          subActions.push({type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest});
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
           this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          subActions.push({type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest});
+          subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (student.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
         } else if (student.learningState === LearningState.Passed) {
@@ -467,9 +467,9 @@ class LectureCardContainer extends Component<Props, State> {
       if (student.studentScore.homeworkScore) {
         subActions.push({
           type: LectureSubInfo.ActionType.Report,
-          onAction: () => reactAlert({title: '알림', message: '이미 채점이 되었습니다.'})
+          onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }),
         });
-      } else subActions.push({type: LectureSubInfo.ActionType.Report, onAction: this.onReport});
+      } else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
     }
     return subActions.length ? subActions : undefined;
   }

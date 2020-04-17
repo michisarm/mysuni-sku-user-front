@@ -37,7 +37,7 @@ class CarouselContainer extends Component<Props, State> {
         <>
           1월 써니가 오픈한 이후&#44;<br />
           반도체&#44; SK경영 등 컨텐츠가 더욱 다채로워졌습니다.<br />
-          지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br/>
+          지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br />
           <span className="link-tag">관심채널 변경안내</span>
         </>
       ),

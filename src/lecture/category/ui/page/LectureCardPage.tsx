@@ -703,7 +703,7 @@ class LectureCardPage extends Component<Props, State> {
     const { lectureCard } = lectureCardService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
-    const { width, height } = this.getMediaSize();
+    // const { width, height } = this.getMediaSize();
 
     return (
       <ContentLayout

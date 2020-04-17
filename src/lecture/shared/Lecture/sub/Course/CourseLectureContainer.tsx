@@ -14,8 +14,10 @@ import { MediaModel, MediaType } from 'personalcube/media/model';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { BoardService } from 'personalcube/community/stores';
+import { ExamPaperService, ExaminationService } from 'assistant/stores';
+import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
 
-import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel } from '../../../../model';
+import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel } from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
@@ -27,6 +29,10 @@ import {
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
+import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgress';
+import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer';
+import { AnswerSheetModal } from '../../../../../assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
 
 
 interface Props {
@@ -49,13 +55,24 @@ interface Props {
   onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
   student?: StudentModel,
   lectureCardId?: string,
-  member? : EmployeeModel
+  member? : EmployeeModel,
+
+  examinationService?: ExaminationService,
+  examPaperService?: ExamPaperService,
+  answerSheetService?: AnswerSheetService,
+  surveyCaseService?: SurveyCaseService,
 }
 
 interface State
 {
   classNameForLearningState: string,
   inProgress: SubState,
+  examTitle: string,
+  surveyState: boolean,
+  surveyTitle: string,
+  type: string,
+  name: string,
+  isContent: boolean,
 }
 
 @inject(mobxHelper.injectFrom(
@@ -63,7 +80,12 @@ interface State
   'personalCube.boardService',
   'personalCube.personalCubeService',
   'lecture.studentService',
-  'personalCube.mediaService'
+  'personalCube.mediaService',
+
+  'assistant.examinationService',
+  'assistant.examPaperService',
+  'survey.answerSheetService',
+  'survey.surveyCaseService',
 ))
 @reactAutobind
 @observer
@@ -89,6 +111,12 @@ class CourseLectureContainer extends Component<Props, State> {
     mediaService: MediaService,
   };
 
+  examModal: any = null;
+  surveyModal: any = null;
+  reportModal: any = null;
+  applyReferenceModel: any = null;
+
+  viewObject: any = null;
 
   personalCube: PersonalCubeModel | null = {} as PersonalCubeModel;
   classNameForLearningState: string  = '';
@@ -99,6 +127,12 @@ class CourseLectureContainer extends Component<Props, State> {
   {
     classNameForLearningState: 'fix line' || 'fix bg',
     inProgress: SubState.Waiting,
+    examTitle: '',
+    surveyState: false,
+    surveyTitle: '',
+    type: '',
+    name: '',
+    isContent: false,
   };
 
   constructor(props: Props)
@@ -108,19 +142,59 @@ class CourseLectureContainer extends Component<Props, State> {
     this.init();
   }
 
-  // componentDidMount()
-  // {
-  //   //
-  //
-  // }
+  componentDidMount()
+  {
+    //
+    if (this.rollBooks[0]) {
+      this.init();
+    }
+  }
 
   async init()
   {
-    const { personalCubeService, rollBookService, studentService, lectureView } = this.props;
+    const { personalCubeService, rollBookService, studentService, lectureView,
+      examinationService, examPaperService, answerSheetService, surveyCaseService, } = this.props;
     const { getStudentForVideo } = studentService!;
 
     this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
+
+    const { studentJoins }: StudentService = studentService!;
+
+    if (this.rollBooks[0]) {
+      await this.props.studentService!.findStudentByRollBookId(this.rollBooks[0].id);
+      if (studentJoins && studentJoins.length) {
+        const studentJoin = this.getStudentJoin();
+        // console.log(studentJoin);
+        if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
+        else studentService!.clear();
+      }
+      else studentService!.clear();
+
+      if (this.personalCube?.contents.examId)
+      {
+        const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
+        const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+        this.state.examTitle = examPaper.title;
+      }
+
+      if (this.personalCube?.contents.surveyCaseId) {
+        await answerSheetService!.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+        const surveyCase = await surveyCaseService!.findSurveyCase(this.personalCube?.contents.surveyCaseId);
+
+        const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+        const title = JSON.parse(JSON.stringify(obj.langStringMap));
+
+        const { answerSheet } = answerSheetService!;
+        const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+
+        this.state.surveyState = disabled;
+        this.state.surveyTitle =  title.ko;
+      }
+
+      this.viewObject = this.getViewObject();
+      this.setExamState();
+    }
 
     getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
     {
@@ -131,6 +205,25 @@ class CourseLectureContainer extends Component<Props, State> {
 
     // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
     // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
+  }
+
+  getStudentJoin() {
+    const {
+      studentService,
+    } = this.props;
+    const { studentJoins }: StudentService = studentService!;
+
+    if (studentJoins && studentJoins.length) {
+      studentJoins.sort(this.compare);
+      const studentJoin = studentJoins[0];
+      return studentJoin;
+    }
+    return null;
+  }
+
+  compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
+    if (join1.updateTime < join2.updateTime) return 1;
+    return -1;
   }
 
   setClassNameForLearningState(studentForVideo: StudentModel)
@@ -366,12 +459,155 @@ class CourseLectureContainer extends Component<Props, State> {
     }
   }
 
+  getViewObject() {
+    //
+    const { studentService, lectureView } = this.props;
+    const { student } = studentService!;
+
+    this.state.isContent = false;
+
+    let state: SubState | undefined;
+    let examId: string = '';
+    let examTitle: string = '';
+    let surveyId: string = '';
+    let surveyTitle: string = '';
+    let surveyState: boolean = false;
+    let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
+
+    if (this.personalCube && student && student.id) {
+      if (student.proposalState === ProposalState.Approved) {
+        if (
+          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
+          || student.learningState === LearningState.TestWaiting
+          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+        ) {
+          state = SubState.Waiting;
+        }
+        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (student.learningState === LearningState.Passed) state = SubState.Completed;
+        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      }
+
+      examId = this.personalCube?.contents.examId || '';
+      examTitle = this.state.examTitle || '';
+
+      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
+
+      surveyId = this.personalCube?.contents.surveyId || '';
+      surveyTitle = this.state.surveyTitle || '';
+      surveyState = this.state.surveyState || false;
+      surveyCaseId = this.personalCube?.contents.surveyCaseId || '';
+      reportFileBoxId = this.personalCube?.contents.fileBoxId || '';
+
+      if (this.personalCube?.contents.examId || this.personalCube?.contents.surveyCaseId) {
+        this.state.isContent = true;
+      }
+    }
+
+    return {
+      // Sub info
+      examId,
+      // Fields
+      examTitle,
+      surveyId,
+      surveyTitle,
+      surveyState,
+      surveyCaseId,
+      reportFileBoxId,
+    };
+  }
+
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
+  }
+
+  onReport() {
+    this.reportModal.onOpenModal();
+  }
+
+  onTest() {
+    this.examModal.onOpenModal();
+  }
+
+  // truefree 2020-04-03
+  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onTestNotReady() {
+    reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
+  onSurvey() {
+    this.surveyModal.onOpenModal();
+  }
+
+  testCallback() {
+    const { studentService, student } = this.props;
+    const { id: studentId } = student!;
+
+    if (studentId) {
+      studentService!.modifyStudentForExam(studentId, this.personalCube!.contents.examId)
+        .then(() => {
+          // if (init) init();
+        });
+    }
+  }
+
+  setExamState() {
+    const { studentService } = this.props;
+
+    if (this.personalCube?.contents.examId && studentService?.student) {
+      if (!studentService?.student.serviceType || studentService?.student.serviceType === 'Lecture') {
+        if (studentService?.student.learningState === LearningState.Progress || studentService?.student.learningState === LearningState.HomeworkWaiting) {
+          this.setStateName('0', 'Test');
+        } else if (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials < 3) {
+          this.setStateName('2', `재응시(${studentService?.student.numberOfTrials}/3)`);
+        } else if (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials > 2) {
+          this.setStateName('3', `재응시(${studentService?.student.numberOfTrials}/3)`);
+        } else if (studentService?.student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (studentService?.student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
+        }
+      }
+      else if (studentService?.student.serviceType === 'Course' || studentService?.student.serviceType === 'Program') {
+        if (
+          studentService?.student.phaseCount === studentService?.student.completePhaseCount
+          && (studentService?.student.learningState === LearningState.Progress || studentService?.student.learningState === LearningState.HomeworkWaiting)
+        ) {
+          this.setStateName('0', 'Test');
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+        } else if (
+          studentService?.student.phaseCount === studentService?.student.completePhaseCount
+          && (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials < 3)
+        ) {
+          this.setStateName('2', `재응시(${studentService?.student.numberOfTrials}/3)`);
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (
+          studentService?.student.phaseCount === studentService?.student.completePhaseCount
+          && (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials > 2)
+        ) {
+          this.setStateName('3', `재응시(${studentService?.student.numberOfTrials}/3)`);
+          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        } else if (studentService?.student.learningState === LearningState.Missed) {
+          this.setStateName('4', '미이수');
+        } else if (studentService?.student.learningState === LearningState.Passed) {
+          this.setStateName('5', '이수');
+        } else {
+          this.setStateName('1', 'Test');
+        }
+      }
+    }
+  }
+
+  setStateName(type: string, name: string) {
+    this.state.type = type;
+    this.state.name = name;
+  }
+
   render() {
     //
-    // const {
-    //   className, lectureView, thumbnailImage, action, toggle,
-    //   onAction, onViewDetail, onToggle,
-    // } = this.props;
     const { classNameForLearningState } = this.state;
     const {
       className, lectureView, thumbnailImage, toggle,
@@ -384,63 +620,95 @@ class CourseLectureContainer extends Component<Props, State> {
     const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
-    console.log('CourseLectureContainer render() lectureView.name=', lectureView.name, ',lectureView.cubeType=', lectureView.cubeType,
-      ', classNameForLearningState=' + classNameForLearningState, ', className1=', className1);
-
     return (
-      <div className={`card-box ${className}`}>
+      <div>
+        <div className={`card-box ${className}`}>
 
-        <Thumbnail image={thumbnail} />
+          <Thumbnail image={thumbnail} />
 
-        <Title title={lectureView.name} category={lectureView.category}>
-          <div className="deatil">
-            { lectureView.cubeTypeName && (
+          <Title title={lectureView.name} category={lectureView.category}>
+            <div className="deatil">
+              { lectureView.cubeTypeName && (
+                <Field>
+                  <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />
+                  <span className="channel">{lectureView.category.channel.name}</span>
+                </Field>
+              )}
               <Field>
-                <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />
-                <span className="channel">{lectureView.category.channel.name}</span>
+                <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
+                  {lectureView.learningPeriod && (
+                    <span className="ml17">
+                      학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
+                    </span>
+                  )}
+                </SubField>
               </Field>
-            )}
-            <Field>
-              <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
-                {lectureView.learningPeriod && (
-                  <span className="ml17">
-                    학습기간 :
-                    {lectureView.learningPeriod && lectureView.learningPeriod.startDate}
-                     ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
-                  </span>
-                )}
-              </SubField>
-            </Field>
-          </div>
-        </Title>
+            </div>
+          </Title>
 
-        <Buttons>
-          <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
+          <Buttons>
+            <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
+            {
+              lectureView.cubeType === CubeType.Video && (
+                this.state.inProgress !== SubState.Completed ? (
+                  <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>
+                ) : (
+                  <span className="completed-txt">학습완료</span>
+                )
+              )}
+          </Buttons>
+
+          { toggle && (
+            <Button
+              icon
+              className={classNames({
+                'img-icon': true,
+                'fn-more-toggle': true,
+                'card-open': !open,
+                'card-close': open,
+              })}
+              onClick={this.onToggle}
+            >
+              <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
+            </Button>
+          )}
+
           {
-            lectureView.cubeType === CubeType.Video && (
-              this.state.inProgress !== SubState.Completed ? (
-                <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>
-              ) : (
-                <span className="completed-txt">학습완료</span>
-              )
-            )}
-        </Buttons>
+            this.viewObject && this.personalCube?.contents.examId && (
+              <AnswerSheetModal
+                examId={this.personalCube?.contents.examId}
+                ref={examModal => this.examModal = examModal}
+                onSaveCallback={this.testCallback}
+              />
+            )
+          }
+          {
+            this.viewObject && this.personalCube?.contents.surveyId && (
+              <SurveyAnswerSheetModal
+                surveyId={this.personalCube?.contents.surveyId}
+                surveyCaseId={this.personalCube?.contents.surveyCaseId}
+                ref={surveyModal => this.surveyModal = surveyModal}
+                // onSaveCallback={this.testCallback}
+              />
+            )
+          }
+        </div>
 
-        { toggle && (
-          <Button
-            icon
-            className={classNames({
-              'img-icon': true,
-              'fn-more-toggle': true,
-              'card-open': !open,
-              'card-close': open,
-            })}
-            onClick={this.onToggle}
-          >
-            <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-          </Button>
-        )}
+        {
+          this.viewObject && this.state.isContent === true && (
+            <LectureExam
+              // onReport={this.personalCube?.contents.fileBoxId ? this.onReport : undefined}
+              onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
+              onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
+              onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
+              viewObject={this.viewObject}
+              type={this.state.type}
+              name={this.state.name}
+            />
+          )
+        }
       </div>
+
     );
   }
 }
