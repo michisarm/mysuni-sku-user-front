@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import { Segment } from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
 import { CoursePlanService } from 'course/stores';
-import { LectureServiceType, LectureViewModel } from '../../../model';
+import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService } from '../../../stores';
 import routePaths from '../../../routePaths';
 import { Lecture } from '../../../shared';
-
+import LectureLearningModalView from '../view/LectureLearningModalView';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService,
@@ -31,6 +32,10 @@ interface RouteParams {
   serviceId: string
 }
 
+interface State {
+  openLearnModal: boolean
+}
+
 @inject(mobxHelper.injectFrom(
   'profile.skProfileService',
   'lecture.lectureService',
@@ -40,10 +45,19 @@ interface RouteParams {
 ))
 @reactAutobind
 @observer
-class CourseContainer extends Component<Props> {
+class CourseContainer extends Component<Props, State> {
   //
   static defaultProps = {
     onRefreshLearningState: () => {},
+  };
+
+  lectureLearningModal: any = null;
+  learningVideoUrl: string = '';
+  learnStudentCdo: StudentCdoModel | null = null;
+
+
+  state = {
+    openLearnModal: false,
   };
 
   componentDidMount() {
@@ -131,6 +145,27 @@ class CourseContainer extends Component<Props> {
     }
   }
 
+  // 학습하기 - 학습 모달창 팝업
+  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
+    this.learningVideoUrl = videoUrl;
+    this.learnStudentCdo = studentCdo;
+    this.setState({
+      openLearnModal: true,
+    });
+  }
+
+  // 학습 모달창 닫기 - 학습통계정보 저장
+  onLearningModalClose() {
+    const { lectureService } = this.props;
+    if (this.learnStudentCdo) lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo);
+
+    this.learningVideoUrl = '';
+    this.learnStudentCdo = null;
+    this.setState({
+      openLearnModal: false,
+    });
+  }
+
   render() {
     //
     const {
@@ -144,46 +179,58 @@ class CourseContainer extends Component<Props> {
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
     const { lectureViews, getSubLectureViews } = lectureService!;
-
+    const { openLearnModal } = this.state;
     return (
-      <Segment className="full">
-        <Lecture.Group type={Lecture.GroupType.Course}>
-          {lectureViews.map((lecture: LectureViewModel, index: number) => (
-            <Lecture.CourseSection
-              key={`course-${index}`}
-              lecture={(
-                <Lecture.Course
-                  className="first"
-                  lectureView={lecture}
-                  thumbnailImage={lecture.baseUrl || undefined}
-                  toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                  onViewDetail={() => this.onViewDetail(lecture)}
+      <>
+        <Segment className="full">
+          <Lecture.Group type={Lecture.GroupType.Course}>
+            {lectureViews.map((lecture: LectureViewModel, index: number) => (
+              <Lecture.CourseSection
+                key={`course-${index}`}
+                lecture={(
+                  <Lecture.Course
+                    className="first"
+                    lectureView={lecture}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                    onViewDetail={() => this.onViewDetail(lecture)}
 
-                  collegeId={params.collegeId}
-                  lectureCardId={lectureCardId}
-                  member={member}
-                  onRefreshLearningState={onRefreshLearningState}
-                />
-              )}
-            >
-              {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                <Lecture.Course
-                  key={`sub-lecture-${index}`}
-                  className="included"
-                  lectureView={subLecture}
-                  thumbnailImage={subLecture.baseUrl || undefined}
-                  onViewDetail={() => this.onViewDetail(subLecture)}
+                    collegeId={params.collegeId}
+                    lectureCardId={lectureCardId}
+                    member={member}
+                    onRefreshLearningState={onRefreshLearningState}
+                  />
+                )}
+              >
+                {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                  <Lecture.Course
+                    key={`sub-lecture-${index}`}
+                    className="included"
+                    lectureView={subLecture}
+                    thumbnailImage={subLecture.baseUrl || undefined}
+                    onViewDetail={() => this.onViewDetail(subLecture)}
 
-                  collegeId={params.collegeId}
-                  lectureCardId={lectureCardId}
-                  member={member}
-                  onRefreshLearningState={onRefreshLearningState}
-                />
-              )}
-            </Lecture.CourseSection>
-          ))}
-        </Lecture.Group>
-      </Segment>
+                    collegeId={params.collegeId}
+                    lectureCardId={lectureCardId}
+                    member={member}
+                    onRefreshLearningState={onRefreshLearningState}
+                    onDoLearn={this.onDoLearn}
+                  />
+                )}
+              </Lecture.CourseSection>
+            ))}
+          </Lecture.Group>
+        </Segment>
+        {
+          openLearnModal && (
+            <LectureLearningModalView
+              ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
+              videoUrl={this.learningVideoUrl}
+              onClose={this.onLearningModalClose}
+            />
+          )
+        }
+      </>
     );
   }
 }

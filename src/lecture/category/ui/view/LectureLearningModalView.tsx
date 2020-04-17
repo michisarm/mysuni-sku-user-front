@@ -6,40 +6,40 @@ import { Button, Modal } from 'semantic-ui-react';
 
 interface Props {
   videoUrl?: string
-}
-
-interface States {
-  open: boolean
+  onClose?: ()=>void
 }
 
 @reactAutobind
-class LectureLearningModalView extends React.Component<Props, States> {
+class LectureLearningModalView extends Component<Props> {
 
   state = {
-    open : false
+    open : true
   };
 
-  onOpenModal() {
+  handleClick = () => {
     this.setState({ open : true });
-  }
+  };
 
-  onCloseModal() {
+  handleClose = () => {
+    const { onClose } = this.props;
+
     this.setState({ open : false });
-  }
+
+    if (onClose) {
+      onClose();
+    }
+  };
 
   render() {
 
-    const { open } = this.state;
     const { videoUrl } = this.props;
 
-    console.log('videoUrl : ' + videoUrl);
-
     return(
-      <Modal className="base w1000 video-class" open={open} onOpen={this.onOpenModal} onClose={this.onCloseModal}>
+      <Modal className="base w1000 video-class" open={this.state.open} onClose={this.handleClose}>
         <Modal.Header>
           동영상 학습 후 &quot;Close&quot;버튼을 클릭하시면 학습이력이 즉시 반영됩니다.
           <div className="right-btn">
-            <Button className="close" onClick={this.onCloseModal}>Close</Button>
+            <Button className="close" onClick={this.handleClose}>Close</Button>
           </div>
         </Modal.Header>
         <Modal.Content>

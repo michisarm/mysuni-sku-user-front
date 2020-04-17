@@ -46,6 +46,7 @@ interface Props {
   onViewDetail?: (e: any) => void,
   onToggle?: () => void,
   onRefreshLearningState?: () => void,
+  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
   student?: StudentModel,
   lectureCardId?: string,
   member? : EmployeeModel
@@ -221,10 +222,12 @@ class CourseLectureContainer extends Component<Props, State> {
 
   onLearningStartForVideo(url : string)
   {
+    const { onDoLearn } = this.props;
     console.log('CourseLectureContainer onLearningStartForVideo url=' + url);
     if (url && url.startsWith('http')) {
       this.onRegisterStudentForVideo(ProposalState.Approved);
-      window.open(url, '_blank');
+      this.popupLearnModal(url);
+      //window.open(url, '_blank');
     } else
     {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -234,16 +237,23 @@ class CourseLectureContainer extends Component<Props, State> {
 
   onClickPlayForVideo(url : string)
   {
+    const { onDoLearn } = this.props;
     console.log('CourseLectureContainer onClickPlayForVideo url=' + url);
     if (url && url.startsWith('http'))
     {
       this.onRegisterStudentForVideo(ProposalState.Approved);
-      window.open(url, '_blank');
+      this.popupLearnModal(url);
+      //window.open(url, '_blank');
     } else
     {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
+  }
+
+  onEndLearn() {
+    const studentCdo = this.getStudentCdo();
+
   }
 
   getMediaUrl(media: MediaModel) : string
@@ -346,6 +356,14 @@ class CourseLectureContainer extends Component<Props, State> {
     // }
 
     return null;
+  }
+
+  popupLearnModal(url: string) {
+    const { onDoLearn } = this.props;
+    if (onDoLearn) {
+      const studentCdo = this.getStudentCdo();
+      onDoLearn(url, studentCdo);
+    }
   }
 
   render() {

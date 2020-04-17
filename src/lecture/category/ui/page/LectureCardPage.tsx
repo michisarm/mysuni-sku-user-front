@@ -719,7 +719,7 @@ class LectureCardPage extends Component<Props, State> {
           typeViewObject={typeViewObject}
         />
 
-        {/*{
+        {
           typeViewObject.videoUrl && (
             <>
               <div className="cont-inner">
@@ -727,7 +727,8 @@ class LectureCardPage extends Component<Props, State> {
                   ※ 동영상 학습 시간은 익일 혹은 컨텐츠 재방문시 반영됩니다.
                 </div>
               </div>
-              <div className="between-section">
+
+              {/*<div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
                   <iframe
                     title={typeViewObject.videoUrl}
@@ -744,10 +745,10 @@ class LectureCardPage extends Component<Props, State> {
                   </video>
                   <img src={typeViewObject.videoUrl} />
                 </div>
-              </div>
+              </div>*/}
             </>
           ) || null
-        }*/}
+        }
 
         <Tab
           className="tab-menu2 offset0"
