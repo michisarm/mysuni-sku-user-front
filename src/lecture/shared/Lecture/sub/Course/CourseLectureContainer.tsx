@@ -33,6 +33,7 @@ import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgres
 import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer';
 import { AnswerSheetModal } from '../../../../../assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
+import StudentApi from '../../../present/apiclient/StudentApi';
 
 
 interface Props {
@@ -119,6 +120,7 @@ class CourseLectureContainer extends Component<Props, State> {
   applyReferenceModel: any = null;
 
   viewObject: any = null;
+  studentData: any = StudentModel;
 
   personalCube: PersonalCubeModel | null = {} as PersonalCubeModel;
   classNameForLearningState: string  = '';
@@ -162,17 +164,17 @@ class CourseLectureContainer extends Component<Props, State> {
     this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
     if (this.rollBooks[0]) {
-      const studentData = await studentService!.findStudentByRollBookId(this.rollBooks[0].id);
+      this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
 
-      if (studentData) {
-        const { studentJoins }: StudentService = studentService!;
-
-        if (studentJoins && studentJoins.length) {
-          const studentJoin = this.getStudentJoin();
-          if (studentJoin) await studentService!.findStudent(studentData.id);
-          else studentService!.clear();
-        }
-        else studentService!.clear();
+      if (this.studentData ) {
+        // const { studentJoins }: StudentService = studentService!;
+        //
+        // if (studentJoins && studentJoins.length) {
+        //   const studentJoin = this.getStudentJoin();
+        //   if (studentJoin) await studentService!.findStudent(this.studentData.id);
+        //   else studentService!.clear();
+        // }
+        // else studentService!.clear();
 
         if (this.personalCube?.contents.examId)
         {
@@ -198,7 +200,7 @@ class CourseLectureContainer extends Component<Props, State> {
       }
 
       this.viewObject = this.getViewObject();
-      this.setExamState();
+      this.setExamState(this.studentData);
     }
 
     getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
@@ -470,24 +472,25 @@ class CourseLectureContainer extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
 
-    if (this.personalCube && student && student.id) {
-      if (student.proposalState === ProposalState.Approved) {
+    if (this.personalCube && this.studentData  && this.studentData .id) {
+      if (this.studentData .proposalState === ProposalState.Approved) {
         if (
-          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
-          || student.learningState === LearningState.TestWaiting
-          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+          this.studentData .learningState === LearningState.Waiting || this.studentData .learningState === LearningState.HomeworkWaiting
+          || this.studentData .learningState === LearningState.TestWaiting
+          || this.studentData .learningState === LearningState.TestPassed || this.studentData .learningState === LearningState.Failed
         ) {
           state = SubState.Waiting;
         }
-        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (student.learningState === LearningState.Passed) state = SubState.Completed;
-        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+        if (this.studentData .learningState === LearningState.Progress) state = SubState.InProgress;
+        if (this.studentData .learningState === LearningState.Passed) state = SubState.Completed;
+        if (this.studentData .learningState === LearningState.Missed) state = SubState.Missed;
       }
 
       examId = this.personalCube?.contents.examId || '';
       examTitle = this.state.examTitle || '';
 
-      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
+      if (!examId && this.studentData .phaseCount === this.studentData .completePhaseCount &&
+        this.studentData .learningState === LearningState.Progress) state = SubState.Waiting;
 
       surveyId = this.personalCube?.contents.surveyId || '';
       surveyTitle = this.state.surveyTitle || '';
@@ -537,57 +540,62 @@ class CourseLectureContainer extends Component<Props, State> {
 
   testCallback() {
     const { studentService, student } = this.props;
-    const { id: studentId } = student!;
+    // const { id: studentId } = student!;
 
-    if (studentId) {
-      studentService!.modifyStudentForExam(studentId, this.personalCube!.contents.examId)
-        .then(() => {
-          // if (init) init();
-        });
-    }
+    console.log('student : ', this.studentData);
+    // if (this.studentData) {
+    //   studentService!.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
+    //     .then(() => {
+    //       if (this.init()) this.init();
+    //     });
+    // }
   }
 
-  setExamState() {
-    const { studentService } = this.props;
+  setExamState(studentData: any) {
 
-    if (this.personalCube?.contents.examId && studentService?.student) {
-      if (!studentService?.student.serviceType || studentService?.student.serviceType === 'Lecture') {
-        if (studentService?.student.learningState === LearningState.Progress || studentService?.student.learningState === LearningState.HomeworkWaiting) {
+    console.log('this.personalCube : ', this.personalCube);
+    console.log('studentData : ', studentData);
+
+    if (this.personalCube?.contents.examId && studentData) {
+      if (studentData.serviceType || studentData.serviceType === 'Lecture') {
+        if (studentData.learningState === LearningState.Progress ||
+          studentData.learningState === LearningState.HomeworkWaiting) {
           this.setStateName('0', 'Test');
-        } else if (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials < 3) {
-          this.setStateName('2', `재응시(${studentService?.student.numberOfTrials}/3)`);
-        } else if (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials > 2) {
-          this.setStateName('3', `재응시(${studentService?.student.numberOfTrials}/3)`);
-        } else if (studentService?.student.learningState === LearningState.Missed) {
+        } else if (studentData.learningState === LearningState.Failed && studentData.numberOfTrials < 3) {
+          this.setStateName('2', `재응시(${studentData.numberOfTrials}/3)`);
+        } else if (studentData.learningState === LearningState.Failed && studentData.numberOfTrials > 2) {
+          this.setStateName('3', `재응시(${studentData.numberOfTrials}/3)`);
+        } else if (studentData.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
-        } else if (studentService?.student.learningState === LearningState.Passed) {
+        } else if (studentData.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
         } else {
           this.setStateName('1', 'Test');
         }
       }
-      else if (studentService?.student.serviceType === 'Course' || studentService?.student.serviceType === 'Program') {
+      else if (studentData.serviceType === 'Course' || studentData.serviceType === 'Program') {
         if (
-          studentService?.student.phaseCount === studentService?.student.completePhaseCount
-          && (studentService?.student.learningState === LearningState.Progress || studentService?.student.learningState === LearningState.HomeworkWaiting)
+          studentData.phaseCount === studentData.completePhaseCount
+          && (studentData.learningState === LearningState.Progress
+          || studentData.learningState === LearningState.HomeworkWaiting)
         ) {
           this.setStateName('0', 'Test');
           // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (
-          studentService?.student.phaseCount === studentService?.student.completePhaseCount
-          && (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials < 3)
+          studentData.phaseCount === studentData.completePhaseCount
+          && (studentData.learningState === LearningState.Failed && studentData.numberOfTrials < 3)
         ) {
-          this.setStateName('2', `재응시(${studentService?.student.numberOfTrials}/3)`);
+          this.setStateName('2', `재응시(${studentData.numberOfTrials}/3)`);
           // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         } else if (
-          studentService?.student.phaseCount === studentService?.student.completePhaseCount
-          && (studentService?.student.learningState === LearningState.Failed && studentService?.student.numberOfTrials > 2)
+          studentData.phaseCount === studentData.completePhaseCount
+          && (studentData.learningState === LearningState.Failed && studentData.numberOfTrials > 2)
         ) {
-          this.setStateName('3', `재응시(${studentService?.student.numberOfTrials}/3)`);
+          this.setStateName('3', `재응시(${studentData.numberOfTrials}/3)`);
           // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-        } else if (studentService?.student.learningState === LearningState.Missed) {
+        } else if (studentData.learningState === LearningState.Missed) {
           this.setStateName('4', '미이수');
-        } else if (studentService?.student.learningState === LearningState.Passed) {
+        } else if (studentData.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
         } else {
           this.setStateName('1', 'Test');
