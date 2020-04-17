@@ -160,7 +160,7 @@ class CourseContainer extends Component<Props, State> {
     if (this.learnStudentCdo) {
       lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo)
         .then((confirmed) => {
-          if (confirmed && onPageRefresh) {
+          if (onPageRefresh) {
             onPageRefresh();
           }
         });

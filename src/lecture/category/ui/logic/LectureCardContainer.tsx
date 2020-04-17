@@ -322,7 +322,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     lectureService?.confirmUsageStatisticsByCardId(studentCdo)
       .then((confirmed) => {
-        if (confirmed && onPageRefresh) {
+        if (onPageRefresh) {
           onPageRefresh();
         }
       });
