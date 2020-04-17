@@ -318,6 +318,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentCdo, lectureService } = this.props;
     lectureService?.confirmUsageStatisticsByCardId(studentCdo);
   }
+  
   getMainAction() {
     const { cubeType, typeViewObject, studentJoins } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
