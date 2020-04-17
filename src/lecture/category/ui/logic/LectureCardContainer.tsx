@@ -44,10 +44,12 @@ interface Props {
   children: React.ReactNode
   init?:() => void
   loaded: boolean
+  onPageRefresh?:() => void
 }
 
 interface State {
   rollBook: RollBookModel
+  openLearningModal: boolean
 }
 
 @inject(mobxHelper.injectFrom(
@@ -74,6 +76,7 @@ class LectureCardContainer extends Component<Props, State> {
     subTest: String,
     type: '',
     name: '',
+    openLearningModal: false,
   };
 
 
@@ -188,7 +191,7 @@ class LectureCardContainer extends Component<Props, State> {
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
-      this.lectureLearningModal.onOpenModal();
+      this.setState( {openLearningModal: true});
     }
     else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -204,7 +207,7 @@ class LectureCardContainer extends Component<Props, State> {
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
-      this.lectureLearningModal.onOpenModal();
+      this.setState( {openLearningModal: true});
     }
     else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -314,9 +317,16 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onLearningModalClose() {
-    console.log('onLearningModalClose=================');
-    const { studentCdo, lectureService } = this.props;
-    lectureService?.confirmUsageStatisticsByCardId(studentCdo);
+    const { studentCdo, lectureService, onPageRefresh } = this.props;
+    this.setState({openLearningModal: false});
+
+    lectureService?.confirmUsageStatisticsByCardId(studentCdo)
+      .then((confirmed) => {
+        if (confirmed && onPageRefresh) {
+          onPageRefresh();
+        }
+      });
+
   }
 
   getMainAction() {
@@ -534,6 +544,7 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
+    const { openLearningModal } = this.state;
 
     return (
       <LectureCardContentWrapperView>
@@ -601,7 +612,7 @@ class LectureCardContainer extends Component<Props, State> {
 
         {
           // 0413 window.open => modal view로 변경
-          typeViewObject && typeViewObject.videoUrl && (
+          openLearningModal && typeViewObject && typeViewObject.videoUrl && (
             <LectureLearningModalView
               ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
               videoUrl={typeViewObject.videoUrl}

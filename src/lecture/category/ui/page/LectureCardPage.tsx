@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -593,6 +594,24 @@ class LectureCardPage extends Component<Props, State> {
     return { width, height };
   }
 
+  onPageRefresh() {
+    const { history, match, location } = this.props;
+    const { params } = match;
+    const { search } = location;
+    const queryParam = queryString.parse(search);
+
+    history.replace('/empty');
+    setTimeout(() => {
+      if (params.cineroomId) {
+        history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
+          { courseLectureId: queryParam.programLectureId as string}));
+      }
+      else {
+        history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
+      }
+    });
+  }
+
   renderOverview() {
     //
     const viewObject = this.getViewObject();
@@ -688,6 +707,8 @@ class LectureCardPage extends Component<Props, State> {
         typeViewObject={typeViewObject}
         init={this.init}
         loaded={this.state.loaded}
+        onPageRefresh={this.onPageRefresh}
+
       >
         {cardContent}
       </LectureCardContainer>

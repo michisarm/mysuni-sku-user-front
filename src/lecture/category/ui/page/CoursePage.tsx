@@ -422,6 +422,21 @@ class CoursePage extends Component<Props, State> {
     return reviewId;
   }
 
+  onPageRefresh() {
+    const { history, match } = this.props;
+    const { params } = match;
+
+    history.replace('/empty');
+    setTimeout(() => {
+      if (params.cineroomId) {
+        history.replace(routePaths.courseOverview(params.cineroomId, params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
+      }
+      else {
+        history.replace(routePaths.courseOverviewPrev(params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
+      }
+    });
+  }
+
   renderList() {
     //
     const { serviceId } = this.props.match.params!;
@@ -436,6 +451,7 @@ class CoursePage extends Component<Props, State> {
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}
+        onPageRefresh={this.onPageRefresh}
       />
     );
   }
@@ -508,6 +524,7 @@ class CoursePage extends Component<Props, State> {
         typeViewObject={typeViewObject}
         init={this.init}
         loaded={this.state.loaded}
+        onPageRefresh={this.onPageRefresh}
       >
         {courseContent}
       </LectureCardContainer>

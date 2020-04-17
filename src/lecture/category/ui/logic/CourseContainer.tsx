@@ -21,6 +21,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   coursePlanService?: CoursePlanService,
   lectureCardId : string,
   onRefreshLearningState?: () => void,
+  onPageRefresh?:() => void,
 }
 
 interface RouteParams {
@@ -144,7 +145,7 @@ class CourseContainer extends Component<Props, State> {
     }
   }
 
-  // �н��ϱ� - �н� ���â �˾�
+  // 학습하기 - 학습 모달창 팝업
   onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
     this.learningVideoUrl = videoUrl;
     this.learnStudentCdo = studentCdo;
@@ -153,10 +154,17 @@ class CourseContainer extends Component<Props, State> {
     });
   }
 
-  // �н� ���â �ݱ� - �н�������� ����
+  // 학습 모달창 닫기 - 학습통계정보 저장
   onLearningModalClose() {
-    const { lectureService } = this.props;
-    if (this.learnStudentCdo) lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo);
+    const { lectureService, onPageRefresh } = this.props;
+    if (this.learnStudentCdo) {
+      lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo)
+        .then((confirmed) => {
+          if (confirmed && onPageRefresh) {
+            onPageRefresh();
+          }
+        });
+    }
 
     this.learningVideoUrl = '';
     this.learnStudentCdo = null;
@@ -198,6 +206,7 @@ class CourseContainer extends Component<Props, State> {
                     lectureCardId={lectureCardId}
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
+                    onDoLearn={this.onDoLearn}
                   />
                 )}
               >
