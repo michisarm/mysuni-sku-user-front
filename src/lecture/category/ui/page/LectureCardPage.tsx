@@ -740,7 +740,7 @@ class LectureCardPage extends Component<Props, State> {
           typeViewObject={typeViewObject}
         />
 
-        {
+        {/*{
           typeViewObject.videoUrl && (
             <>
               <div className="cont-inner">
@@ -749,7 +749,7 @@ class LectureCardPage extends Component<Props, State> {
                 </div>
               </div>
 
-              {/*<div className="between-section">
+              {<div className="between-section">
                 <div className={`cont-inner ${viewObject.cubeType === CubeType.Audio ? 'audio-type' : ''}`}>
                   <iframe
                     title={typeViewObject.videoUrl}
@@ -766,10 +766,10 @@ class LectureCardPage extends Component<Props, State> {
                   </video>
                   <img src={typeViewObject.videoUrl} />
                 </div>
-              </div>*/}
+              </div>}
             </>
           ) || null
-        }
+        }*/}
 
         <Tab
           className="tab-menu2 offset0"
