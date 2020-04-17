@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import React, {Component} from 'react';
+import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
 
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
 import queryString from 'query-string';
-import { Segment } from 'semantic-ui-react';
+import {Segment} from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
-import { CoursePlanService } from 'course/stores';
-import { LectureServiceType, LectureViewModel, StudentCdoModel } from '../../../model';
-import { CourseLectureService, LectureService, ProgramLectureService } from '../../../stores';
+import {CoursePlanService} from 'course/stores';
+import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
+import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
 import routePaths from '../../../routePaths';
-import { Lecture } from '../../../shared';
+import {Lecture} from '../../../shared';
 import LectureLearningModalView from '../view/LectureLearningModalView';
+import ProposalState from "../../../../shared/model/ProposalState";
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService,
@@ -148,6 +149,7 @@ class CourseContainer extends Component<Props, State> {
   // 학습하기 - 학습 모달창 팝업
   onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
     this.learningVideoUrl = videoUrl;
+    studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
     this.setState({
       openLearnModal: true,
@@ -158,6 +160,10 @@ class CourseContainer extends Component<Props, State> {
   onLearningModalClose() {
     const { lectureService, onPageRefresh } = this.props;
     if (this.learnStudentCdo) {
+      const studentCdo = {
+        ...this.learnStudentCdo,
+        proposalState: ProposalState.Approved,
+      };
       lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo)
         .then((confirmed) => {
           if (confirmed && onPageRefresh) {

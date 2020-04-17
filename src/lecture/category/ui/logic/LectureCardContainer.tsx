@@ -319,8 +319,12 @@ class LectureCardContainer extends Component<Props, State> {
   onLearningModalClose() {
     const { studentCdo, lectureService, onPageRefresh } = this.props;
     this.setState({openLearningModal: false});
+    const lectureStudentCdo = {
+      ...studentCdo,
+      proposalState: ProposalState.Approved,
+    };
 
-    lectureService?.confirmUsageStatisticsByCardId(studentCdo)
+    lectureService?.confirmUsageStatisticsByCardId(lectureStudentCdo)
       .then((confirmed) => {
         if (confirmed && onPageRefresh) {
           onPageRefresh();
