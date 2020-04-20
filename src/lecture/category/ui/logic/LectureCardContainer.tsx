@@ -215,6 +215,22 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  onOpenStart() {
+    const { typeViewObject } = this.props;
+
+    if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
+      this.onRegisterStudent(ProposalState.Approved);
+
+      //0416
+      window.open(typeViewObject.url, '_blank');
+      //this.setState( {openLearningModal: true});
+    }
+    else {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+      console.warn('[UserFront] Url is empty.');
+    }
+  }
+
   onDownload() {
     const { typeViewObject } = this.props;
     this.onRegisterStudent(ProposalState.Approved);
@@ -377,24 +393,14 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Audio:
       case CubeType.Video:
         if (typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
-          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
+          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onOpenStart };
         }
         else {
           return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlay };
         }
       case CubeType.WebPage:
       case CubeType.Experiential:
-        return {
-          type: LectureSubInfo.ActionType.LearningStart,
-          onAction: () => {
-            if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
-              (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
-              this.onRegisterStudent(ProposalState.Approved);
-            }
-            if (typeViewObject.url.startsWith('https')) window.open(typeViewObject.url, '_blank');
-            else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-          },
-        };
+        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onOpenStart };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
