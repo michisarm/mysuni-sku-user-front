@@ -394,7 +394,7 @@ class LectureCardContainer extends Component<Props, State> {
             if (typeViewObject.url.startsWith('https')) window.open(typeViewObject.url, '_blank');
             else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
           },
-      };
+        };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
