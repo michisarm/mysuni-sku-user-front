@@ -83,7 +83,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
         </ContentHeader.Cell>
         <ContentHeader.Cell className="btn-wrap">
           <Button className="personal line" onClick={() => { actionLogService?.registerClickActionLog({ subAction: 'mySUNI 전체 커리큘럼 보기' }); onClickMySuni(); }}>
-            <span>mySUNI 전체 커리큘럼 보기</span>
+            <span>College 전체 커리큘럼 보기</span>
           </Button>
         </ContentHeader.Cell>
       </ContentHeader>

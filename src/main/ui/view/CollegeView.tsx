@@ -547,12 +547,12 @@ const panes = [
               </div>
               <div className="label">SK아카데미 College</div>
               <div className="strong">“나무를 키우듯, 인재를 키워온 SK인재육성의 산실”</div>
-              <div className="normal">SK아카데미는 계층별로 SKMS/Values 전파를 통해 SK 기업문화의 토대를 강화하고, <br />체계적인 육성 Pipeline에 따라 미래 경영자와 Biz. 전문가를 육성합니다.
+              <div className="normal">SK아카데미는 SKMS/Values 전파를 통해 SK 기업문화의 토대를 강화하고, <br />체계적인 육성 Pipeline에 따라 미래 경영자와 Biz. 전문가를 육성합니다.
               </div>
               <ul className="tag-wrap">
                 <li># 신입사원</li>
                 <li># 영입구성원</li>
-                <li># 신임리더</li>
+                <li># 신임팀장</li>
                 <li># 신임임원</li>
                 <li># 영입임원</li>
                 <li># HLP</li>
@@ -567,7 +567,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co10.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co10.svg`} alt="" />
               </div>
             </div>
           </div>
@@ -575,11 +575,11 @@ const panes = [
           <div className="college-tag skacademy">
             <div className="belt">
               <div className="label chip5">SKMS / SK Values</div>
-              <div className="strong">신입/영입구성원 대상 SKMS/핵심가치 전파와 신임리더의 행복경영 실천을 위한 역할 정립</div>
+              <div className="strong">신입/영입구성원 대상 SKMS/핵심가치 전파와 신임팀장의 행복경영 실천을 위한 역할 정립</div>
               <ul className="tag-wrap">
                 <li># 신입사원</li>
                 <li># 영업구성원</li>
-                <li># 신임리더</li>
+                <li># 신임팀장</li>
                 <li># 신임임원</li>
                 <li># 영입임원</li>
                 <li># SKMS 강사양성</li>
