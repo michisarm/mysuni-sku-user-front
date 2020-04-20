@@ -35,7 +35,7 @@ class CarouselContainer extends Component<Props, State> {
       title: <>[UI개선] 동영상 Player가 embed 대신 pop-up 방식으로 변경 됩니다.</>,
       description: (
         <>
-          동영상 시청이 끝나고 우측 'Close' 버튼을 누르면, 학습 시간이 바로 반영 됩니다.<br />
+          동영상 시청이 끝나고 우측 &#39;Close&#39; 버튼을 누르면, 학습 시간이 바로 반영 됩니다.<br />
           ※ 자동 이수처리 제외 교육 <br/>
           &nbsp;&nbsp;&nbsp;&nbsp;- 외부연계과정(링크드인, 코세라 등) 주 1회 반영 <br />
           &nbsp;&nbsp;&nbsp;&nbsp;- Playlist 과정(AI 101, 머신러닝의 이해와 실습 등)은 주 2회 반영<br />
