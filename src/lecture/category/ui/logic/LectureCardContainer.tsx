@@ -384,7 +384,17 @@ class LectureCardContainer extends Component<Props, State> {
         }
       case CubeType.WebPage:
       case CubeType.Experiential:
-        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStart };
+        return {
+        type: LectureSubInfo.ActionType.LearningStart,
+          onAction: () => {
+            if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+              (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+              this.onRegisterStudent(ProposalState.Approved);
+            }
+            if (typeViewObject.url.startsWith('https')) window.open(typeViewObject.url, '_blank');
+            else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+          },
+      };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
       case CubeType.Community:
