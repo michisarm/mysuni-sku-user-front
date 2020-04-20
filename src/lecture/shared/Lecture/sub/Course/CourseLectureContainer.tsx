@@ -351,6 +351,22 @@ class CourseLectureContainer extends Component<Props, State> {
     }
   }
 
+  onClickPlayForOpen(url : string)
+  {
+    const { onDoLearn } = this.props;
+
+    if (url && url.startsWith('http'))
+    {
+      //this.onRegisterStudentForVideo(ProposalState.Approved);
+      //this.popupLearnModal(url);
+      window.open(url, '_blank');
+    } else
+    {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+      console.warn('[UserFront] Url is empty.');
+    }
+  }
+
   onEndLearn() {
     const studentCdo = this.getStudentCdo();
 
@@ -440,7 +456,7 @@ class CourseLectureContainer extends Component<Props, State> {
       //외부 영상, CP사 영상
       if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia)
       {
-        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onLearningStartForVideo(url) };
+        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onClickPlayForOpen(url) };
       } else {
         return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlayForVideo(url) };
       }
