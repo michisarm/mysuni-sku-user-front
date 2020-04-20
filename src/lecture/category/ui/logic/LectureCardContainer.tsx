@@ -385,7 +385,7 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.WebPage:
       case CubeType.Experiential:
         return {
-        type: LectureSubInfo.ActionType.LearningStart,
+          type: LectureSubInfo.ActionType.LearningStart,
           onAction: () => {
             if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
               (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
