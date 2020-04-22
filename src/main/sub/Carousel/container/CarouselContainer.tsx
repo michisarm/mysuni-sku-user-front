@@ -58,20 +58,20 @@ class CarouselContainer extends Component<Props, State> {
       link: '/favorite/channel/change',
       imageUrl: '/images/all/img_banner_favoritechannels_20200403.jpg',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>반도체를 알면 미래가 보인다</>,
-      description: (
-        <>
-          <b>컴퓨터&#44; 스마트폰&#44; 자동차에 필수적인 &#39;반도체&#39;</b><br />
-          <b>AI&#44; IoT&#44; 자율주행 기술의 중심에 자리하는 &#39;반도체 산업&#39;</b><br />
-          반도체College가 구성원 여러분께만 알려드리는 쉽고&#44; 재미있는 반도체!<br />
-          그 특별한 반도체 학습 Contents를 새롭게 선보입니다.
-        </>
-      ),
-      link: '/lecture/college/CLG00019/channels/pages/1',
-      imageUrl: '/images/all/img_banner_semiconductor_20200403.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>반도체를 알면 미래가 보인다</>,
+    //   description: (
+    //     <>
+    //       <b>컴퓨터&#44; 스마트폰&#44; 자동차에 필수적인 &#39;반도체&#39;</b><br />
+    //       <b>AI&#44; IoT&#44; 자율주행 기술의 중심에 자리하는 &#39;반도체 산업&#39;</b><br />
+    //       반도체College가 구성원 여러분께만 알려드리는 쉽고&#44; 재미있는 반도체!<br />
+    //       그 특별한 반도체 학습 Contents를 새롭게 선보입니다.
+    //     </>
+    //   ),
+    //   link: '/lecture/college/CLG00019/channels/pages/1',
+    //   imageUrl: '/images/all/img_banner_semiconductor_20200403.jpg',
+    // },
     {
       type: ContentType.LinkContent,
       title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
