@@ -47,13 +47,6 @@ class ApplyReferenceModal extends React.Component<Props> {
   onOpenModal() {
     //
     this.setState({ open: true });
-    // 2020-04-22 김우성
-    // Modal 창 숨김을 위해 뜨자마자 onOK 메소드 내용 그대로 실행해봄..
-    const { handleOk, memberService } = this.props;
-    const { approvalMember } = memberService!;
-    handleOk(approvalMember);
-    this.close();
-    // 2020-04-22 김우성 여기까지
   }
 
   close() {
