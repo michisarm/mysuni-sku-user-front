@@ -47,6 +47,13 @@ class ApplyReferenceModal extends React.Component<Props> {
   onOpenModal() {
     //
     this.setState({ open: true });
+    // 2020-04-22 김우성
+    // 참조자 모달 팝업 막기 위해 onOK 내용 바로 실행
+    const { handleOk, memberService } = this.props;
+    const { approvalMember } = memberService!;
+    handleOk(approvalMember);
+    this.close();
+    // 2020-04-22 김우성 여기까지 
   }
 
   close() {
