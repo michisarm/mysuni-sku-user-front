@@ -144,7 +144,7 @@ class MyLearningSummaryModal extends Component<Props> {
                         <span className="name b1">mySUNI</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.suniLearningTime)}</span>
                       </li>
                       <li>
-                        <span className="name b2">My company</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.myCompanyLearningTime)}</span>
+                        <span className="name b2">My company</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime)}</span>
                       </li>
                     </ul>
                   </div>

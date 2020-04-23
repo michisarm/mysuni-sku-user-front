@@ -24,6 +24,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   skManagementCollegeTime: number= 0;
   skAcademyCollegeTime: number= 0;
   lifeStyleCollegeTime: number= 0;
+  myCompanyInSuniLearningTime: number= 0;
 
   constructor(summary?: MyLearningSummaryModel) {
     super();
@@ -52,6 +53,7 @@ decorate(MyLearningSummaryModel, {
   skManagementCollegeTime: observable,
   skAcademyCollegeTime: observable,
   lifeStyleCollegeTime: observable,
+  myCompanyInSuniLearningTime: observable,
 });
 
 export default MyLearningSummaryModel;
