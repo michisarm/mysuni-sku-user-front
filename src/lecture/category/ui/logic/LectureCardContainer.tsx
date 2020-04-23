@@ -464,7 +464,6 @@ class LectureCardContainer extends Component<Props, State> {
             default: this.setStateName('0', 'Test');
               break;
           }
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           // this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
           // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
