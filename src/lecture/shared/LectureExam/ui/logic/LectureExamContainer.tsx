@@ -12,6 +12,8 @@ interface Props {
   onTestNotReady?: () => void
   /** 설문 액션*/
   onSurvey?: () => void
+  /** 설문 비활성화 시 **/
+  OnSurveyNotReady?: () => void
 
   viewObject?: any
   type?: string
@@ -23,7 +25,7 @@ class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onTest, onTestNotReady, onSurvey, viewObject, type, name } = this.props;
+    const { onReport, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, type, name } = this.props;
 
     return (
       <div className="contents trs-box-wrap non-height">
@@ -42,6 +44,7 @@ class LectureExamContainer extends Component<Props> {
         />
         <Survey
           onSurvey={onSurvey}
+          OnSurveyNotReady={OnSurveyNotReady}
           viewObject={viewObject}
           type={type}
           name={name}

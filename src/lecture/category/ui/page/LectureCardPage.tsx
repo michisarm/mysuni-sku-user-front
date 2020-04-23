@@ -24,6 +24,10 @@ import { MediaService } from 'personalcube/media/stores';
 import { OfficeWebService } from 'personalcube/officeweb/stores';
 import { BoardService } from 'personalcube/community/stores';
 
+import { CoursePlanService } from 'course/stores';
+import { ExamPaperService, ExaminationService } from 'assistant/stores';
+import { SurveyCaseService, SurveyFormService } from 'survey/stores';
+
 import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
 import { StudentJoinRdoModel, StudentCdoModel, LectureServiceType } from '../../../model';
@@ -35,6 +39,8 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import LinkedInModalContainer from '../logic/LinkedInModalContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
 import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/dateTimeHelper';
+import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
+import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -51,11 +57,22 @@ interface Props extends RouteComponentProps<RouteParams> {
   rollBookService: RollBookService,
   studentService: StudentService,
   commentService: CommentService,
+
+  coursePlanService: CoursePlanService,
+  examinationService: ExaminationService,
+  examPaperService: ExamPaperService,
+  // answerSheetService: AnswerSheetService,
+  surveyCaseService: SurveyCaseService,
+  surveyFormService?: SurveyFormService
 }
 
 interface State {
   linkedInOpen: boolean,
   loaded: boolean,
+  examTitle: string,
+  surveyTitle: string,
+  type: string,
+  name : string,
 }
 
 interface RouteParams {
@@ -79,6 +96,13 @@ interface RouteParams {
   'lecture.rollBookService',
   'lecture.studentService',
   'shared.commentService',
+
+  'course.coursePlanService',
+  'assistant.examinationService',
+  'assistant.examPaperService',
+  // 'survey.answerSheetService',
+  'survey.surveyCaseService',
+  'survey.surveyFormService',
 ))
 @reactAutobind
 @observer
@@ -87,6 +111,11 @@ class LectureCardPage extends Component<Props, State> {
   state= {
     linkedInOpen: false,
     loaded: false,
+    examTitle: '',
+    surveyState: false,
+    surveyTitle: '',
+    type: '',
+    name: '',
   };
 
   constructor(props: Props) {
@@ -185,8 +214,43 @@ class LectureCardPage extends Component<Props, State> {
       });
     await studentService.findIsJsonStudentByCube(params.lectureCardId);
     await this.findStudent();
+
+    await this.searchForExams();
+
     this.setState({ loaded: true });
   }
+
+  /*
+    * 20200421 MSJ
+    * 시험 정보가 있는지 검색
+  */
+  async searchForExams() {
+    const { personalCubeService, examinationService, examPaperService, surveyFormService } = this.props;
+    const { personalCube } = personalCubeService!;
+
+    if (personalCube.contents.examId) {
+      const examination = await examinationService!.findExamination(personalCube.contents.examId);
+      const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+
+      this.state.examTitle = examPaper.title;
+    }
+
+    if (personalCube.contents.surveyCaseId) {
+      const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(personalCube.contents.surveyCaseId);
+      const surveyCase = await surveyFormService!.findSurveyForm(personalCube.contents.surveyId);
+
+      const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+      const title = JSON.parse(JSON.stringify(obj.langStringMap));
+
+      const disabled = answerSheetService && answerSheetService.progress && answerSheetService.progress === AnswerProgress.Complete;
+
+      this.state.surveyState = disabled;
+      this.state.surveyTitle =  title.ko;
+    }
+
+    this.setExamState();
+  }
+
 
   compare(join1: StudentJoinRdoModel, join2: StudentJoinRdoModel) {
     if (join1.updateTime < join2.updateTime) return 1;
@@ -221,24 +285,102 @@ class LectureCardPage extends Component<Props, State> {
     else studentService!.clear();
   }
 
+  setExamState() {
+    const { studentService } = this.props;
+    const { student }: StudentService = studentService!;
+
+    this.setStateName('1', 'Test');
+
+    if (student.serviceType || student.serviceType === 'Lecture') {
+      if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+        this.setStateName('0', 'Test');
+      } else if (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials < 3) {
+        // this.setStateName('2', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials > 2) {
+        // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Missed) {
+        // this.setStateName('4', '미이수');
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Passed) {
+        this.setStateName('5', '이수');
+      } else {
+        this.setStateName('1', 'Test');
+      }
+    }
+    else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
+      if (
+        student.phaseCount === student.completePhaseCount
+        && (student.learningState === LearningState.Progress
+        || student.learningState === LearningState.HomeworkWaiting)
+      ) {
+        this.setStateName('0', 'Test');
+        // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+      } else if (
+        student.phaseCount === student.completePhaseCount
+        && (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials < 3)
+      ) {
+        // this.setStateName('2', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (
+        student.phaseCount === student.completePhaseCount
+        && (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials > 2)
+      ) {
+        // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Missed) {
+        // this.setStateName('4', '미이수');
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Passed) {
+        this.setStateName('5', '이수');
+      } else {
+        this.setStateName('1', 'Test');
+      }
+    }
+  }
+
+  setStateName(type: string, name: string) {
+    this.state.type = type;
+    this.state.name = name;
+  }
 
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, studentService, classroomService, rollBookService,
+      personalCubeService, cubeIntroService, studentService, rollBookService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { student }: StudentService = studentService!;
-    const { classrooms } = classroomService!;
     const { rollBooksPassedStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
     let state: SubState | undefined;
     let examId: string = '';
+    let examTitle: string = '';
     let surveyId: string = '';
+    let surveyTitle: string = '';
+    let surveyState: boolean = false;
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
+    let examType: string = '';
+    let examName: string = '';
+    let studentId: string = '';
+
+    examId = personalCube.contents.examId || '';
+    examTitle = this.state.examTitle || '';
+    surveyId = personalCube.contents.surveyId || '';
+    surveyTitle = this.state.surveyTitle || '';
+    surveyState = this.state.surveyState || false;
+    surveyCaseId = personalCube.contents.surveyCaseId || '';
+    reportFileBoxId = cubeIntro.reportFileBox.fileBoxId;
+    examType = this.state.type || '';
+    examName = this.state.name || '';
+    studentId = student.id || '';
+
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
@@ -255,27 +397,28 @@ class LectureCardPage extends Component<Props, State> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
         if (personalCube.contents.type === CubeType.Community) state = SubState.Joined;
       }
+
       if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
 
-      if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)
-        && classrooms && classrooms.length) {
-        const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
-        if (index >= 0 && classrooms) {
-          examId = classrooms[index].roundExamId;
-          surveyId = classrooms[index].roundSurveyId;
-          surveyCaseId = classrooms[index].roundSurveyCaseId;
-          reportFileBoxId = classrooms[index].roundReportFileBox.fileBoxId;
-        }
-      }
-      else {
-        examId = personalCube.contents.examId || '';
-        surveyId = personalCube.contents.surveyId || '';
-        surveyCaseId = personalCube.contents.surveyCaseId || '';
-        reportFileBoxId = cubeIntro.reportFileBox.fileBoxId;
-      }
+      // if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)
+      //   && classrooms && classrooms.length) {
+      //   const index = classrooms.map(classroom => classroom.round).findIndex(round => round === studentJoin.round);
+      //   if (index >= 0 && classrooms) {
+      //     // examId = classrooms[index].roundExamId;
+      //     // examTitle = this.state.examTitle || '';
+      //     // surveyId = classrooms[index].roundSurveyId;
+      //     // surveyTitle = this.state.surveyTitle || '';
+      //     // surveyState = this.state.surveyState || false;
+      //     // surveyCaseId = classrooms[index].roundSurveyCaseId;
+      //     // reportFileBoxId = classrooms[index].roundReportFileBox.fileBoxId;
+      //     // examType = this.state.type || '';
+      //     // examName = this.state.name || '';
+      //   }
+      // }
+      // else {
+      //
+      // }
     }
-
-
 
     return {
       // Sub info
@@ -304,8 +447,14 @@ class LectureCardPage extends Component<Props, State> {
       guide: cubeIntro.description.guide,
 
       tags: personalCube.tags,
+      examTitle,
       surveyId,
+      surveyTitle,
+      surveyState,
       surveyCaseId,
+      examType,
+      examName,
+      studentId,
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId,
       stamp: 0,
@@ -604,7 +753,7 @@ class LectureCardPage extends Component<Props, State> {
     setTimeout(() => {
       if (params.cineroomId) {
         history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
-          { courseLectureId: queryParam.programLectureId as string}));
+          { courseLectureId: queryParam.programLectureId as string }));
       }
       else {
         history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));

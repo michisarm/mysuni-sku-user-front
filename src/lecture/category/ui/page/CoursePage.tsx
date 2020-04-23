@@ -29,13 +29,13 @@ import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
   collegeService: CollegeService,
-  coursePlanService: CoursePlanService,
   courseLectureService: CourseLectureService,
   programLectureService: ProgramLectureService,
   lectureService: LectureService,
   studentService: StudentService,
   commentService: CommentService,
 
+  coursePlanService: CoursePlanService,
   examinationService: ExaminationService,
   examPaperService: ExamPaperService,
   answerSheetService: AnswerSheetService,
@@ -61,13 +61,13 @@ interface RouteParams {
 @inject(mobxHelper.injectFrom(
   'college.collegeService',
   'profile.skProfileService',
-  'course.coursePlanService',
   'lecture.courseLectureService',
   'lecture.programLectureService',
   'lecture.lectureService',
   'lecture.studentService',
   'shared.commentService',
 
+  'course.coursePlanService',
   'assistant.examinationService',
   'assistant.examPaperService',
   'survey.answerSheetService',
@@ -166,7 +166,7 @@ class CoursePage extends Component<Props, State> {
 
     if (studentJoins && studentJoins.length) {
       const studentJoin = this.getStudentJoin();
-      // console.log(studentJoin);
+
       if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
     }
@@ -176,7 +176,7 @@ class CoursePage extends Component<Props, State> {
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService
+      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService,
     } = this.props;
     const { params } = match;
 
@@ -255,13 +255,11 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService, courseLectureService, examPaperService, surveyCaseService
+      coursePlanService, studentService, courseLectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
     const { student } = studentService!;
-
-    // console.log('CoursePage getViewObject() student=', student);
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -272,6 +270,15 @@ class CoursePage extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
     let tabState: string = '';
+
+    examId = coursePlanContents.testId || '';
+    examTitle = this.state.examTitle || '';
+    surveyId = coursePlanContents.surveyId || '';
+    surveyTitle = this.state.surveyTitle || '';
+    surveyState = this.state.surveyState || false;
+    surveyCaseId = coursePlanContents.surveyCaseId || '';
+    reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    tabState = this.state.tabState || '';
 
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
@@ -287,17 +294,9 @@ class CoursePage extends Component<Props, State> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      examId = coursePlanContents.testId || '';
-      examTitle = this.state.examTitle || '';
-
-      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) state = SubState.Waiting;
-
-      surveyId = coursePlanContents.surveyId || '';
-      surveyTitle = this.state.surveyTitle || '';
-      surveyState = this.state.surveyState || false;
-      surveyCaseId = coursePlanContents.surveyCaseId || '';
-      reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
-      tabState = this.state.tabState || '';
+      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) {
+        state = SubState.Waiting;
+      }
     }
 
     return {
@@ -440,10 +439,8 @@ class CoursePage extends Component<Props, State> {
   renderList() {
     //
     const { serviceId } = this.props.match.params!;
-    const { coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService} = this.props;
+    const { coursePlanService } = this.props;
     this.state.tabState = 'list';
-
-    // console.log('CoursePage renderList lectureCardId=', serviceId);
 
     return this.renderBaseContentWith(
 

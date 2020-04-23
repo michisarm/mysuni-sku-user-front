@@ -8,6 +8,8 @@ import { CubeType } from 'personalcube/personalcube/model';
 import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
+import StudentApi from '../../../shared/present/apiclient/StudentApi';
+
 
 
 interface Props {
@@ -33,6 +35,10 @@ class LectureOverviewView extends Component<Props, State> {
   panelRef = React.createRef<any>();
   itemRefs: any[] = [];
 
+  examModal: any = null;
+  surveyModal: any = null;
+  reportModal: any = null;
+  applyReferenceModel: any = null;
 
   componentDidMount() {
     //
@@ -73,6 +79,41 @@ class LectureOverviewView extends Component<Props, State> {
   getPeriodDate(datePeriod: DatePeriod) {
     if (!datePeriod) return '';
     return `${datePeriod.startDate} ~ ${datePeriod.endDate}`;
+  }
+
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
+  }
+
+  onReport() {
+    this.reportModal.onOpenModal();
+  }
+
+  onTest() {
+    alert();
+    this.examModal.onOpenModal();
+  }
+
+  // truefree 2020-04-03
+  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onTestNotReady() {
+    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
+  onSurvey() {
+    this.surveyModal.onOpenModal();
+  }
+
+  testCallback() {
+    const { viewObject } = this.props;
+    // const { id: studentId } = student!;
+
+    if (viewObject) {
+      StudentApi.instance.modifyStudentForExam(viewObject.studentId, viewObject.examId)
+        .then(() => {
+          // if (this.init()) this.init();
+        });
+    }
   }
 
   renderSubCategories() {
@@ -120,6 +161,42 @@ class LectureOverviewView extends Component<Props, State> {
         <OverviewField.Description
           description={viewObject.description}
         />
+
+        {/*{*/}
+        {/*  viewObject && viewObject.examId && (*/}
+        {/*    <AnswerSheetModal*/}
+        {/*      examId={viewObject.examId}*/}
+        {/*      ref={examModal => this.examModal = examModal}*/}
+        {/*      onSaveCallback={this.testCallback}*/}
+        {/*    />*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {/*{*/}
+        {/*  viewObject && viewObject.surveyId && (*/}
+        {/*    <SurveyAnswerSheetModal*/}
+        {/*      surveyId={viewObject.surveyId}*/}
+        {/*      surveyCaseId={viewObject.surveyCaseId}*/}
+        {/*      ref={surveyModal => this.surveyModal = surveyModal}*/}
+        {/*      // onSaveCallback={this.testCallback}*/}
+        {/*    />*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {/*{*/}
+        {/*  viewObject && (*/}
+        {/*    <LectureExam*/}
+        {/*      // onReport={this.personalCube?.contents.fileBoxId ? this.onReport : undefined}*/}
+        {/*      onTest={viewObject.examId ? this.onTest : undefined}*/}
+        {/*      onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}*/}
+        {/*      onSurvey={viewObject.surveyId ? this.onSurvey : undefined}*/}
+        {/*      viewObject={viewObject}*/}
+        {/*      type={viewObject.examType}*/}
+        {/*      name={viewObject.examName}*/}
+        {/*    />*/}
+        {/*  )*/}
+        {/*}*/}
+
         <OverviewField.FileDownload
           fileBoxIds={[ viewObject.fileBoxId ]}
         />

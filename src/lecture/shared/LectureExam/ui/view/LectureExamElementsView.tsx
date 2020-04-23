@@ -8,7 +8,7 @@ interface ReportProps {
   name?: string
 }
 
-export const Report = ({ OnReport,viewObject, type, name }: ReportProps) => {
+export const Report = ({ OnReport, viewObject, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
 
@@ -54,7 +54,7 @@ interface TestProps {
   name?: string
 }
 
-export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name}: TestProps) => {
+export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
 
@@ -111,19 +111,20 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name}: TestProp
 
 interface SurveyProps {
   onSurvey?: () => void
+  OnSurveyNotReady?: () => void
   viewObject?: any
   type?: string
   name?: string
 }
 
-export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
+export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
 
   return (
     <div className="trs-box">
       <div className="thumbnail">
-        <img src={`${process.env.PUBLIC_URL}/images/all/report.svg`} alt="Survey" />
+        <img src={`${process.env.PUBLIC_URL}/images/all/survey.svg`} alt="Survey" />
       </div>
       <div className="desc">
         <div className="t-copy">Survey</div>
@@ -131,9 +132,53 @@ export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
       </div>
       <div className="btn-area">
 
+        {/*{*/}
+        {/*  !viewObject.surveyState && type === '0' && (*/}
+        {/*    <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {/*{*/}
+        {/*  !viewObject.surveyState && type === '2' && (*/}
+        {/*    <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
+
         {
-          !viewObject.surveyState && (
+          !viewObject.surveyState && type === '1' && (
+            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+            // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+          )
+        }
+
+        {
+          !viewObject.surveyState && type === '3' && (
+            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+            // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+          )
+        }
+
+        {/*{*/}
+        {/*  type === '4' && (*/}
+        {/*    <span className="state">{name}</span>*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {/*{*/}
+        {/*  !viewObject.surveyState && type === '5' && (*/}
+        {/*    <span className="state">참여완료</span>*/}
+        {/*  )*/}
+        {/*}*/}
+
+        {
+          !viewObject.surveyState && type !== '1' && type !== '3' && (
             <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+          )
+        }
+
+        {
+          viewObject.surveyState && (
+            <span className="state">참여완료</span>
           )
         }
 
@@ -143,11 +188,11 @@ export const Survey = ({ onSurvey,viewObject, type, name }: SurveyProps) => {
         {/*  )*/}
         {/*}*/}
 
-        {
-          viewObject.surveyState && (
-            <span className="state">참여완료</span>
-          )
-        }
+        {/*{*/}
+        {/*  viewObject.surveyState && (*/}
+        {/*    <span className="state">참여완료</span>*/}
+        {/*  )*/}
+        {/*}*/}
 
       </div>
     </div>

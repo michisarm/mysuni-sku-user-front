@@ -23,9 +23,9 @@ export default {
     studentService: StudentService.instance,
     collegeLectureCountService: CollegeLectureCountService.instance,
     lectureCountService: LectureCountService.instance,
-    answerSheetService:AnswerSheetService.instance,
-    surveyCaseService:SurveyCaseService.instance,
-    surveyFormService:SurveyFormService.instance,
+    answerSheetService: AnswerSheetService.instance,
+    surveyCaseService: SurveyCaseService.instance,
+    surveyFormService: SurveyFormService.instance,
   },
 };
 
