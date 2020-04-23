@@ -104,12 +104,23 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }
     else if (finished) {
       if (answerSheet.id && answerSheet.id.length) {
+        answerSheetService!.saveAnswerSheet()
+          .then(()=>{
+            answerSheetService!.submitAnswerSheet(answerSheet.id)
+              .then(this.onCloseModal);
+          });
+        /*
         answerSheetService!.submitAnswerSheet(answerSheet.id)
           .then(this.onCloseModal);
+         */
       } else {
-        answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
+         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
          answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
-           .then((res) => answerSheet.id = res)
+           .then((res) => {
+             answerSheet.id = res;
+             answerSheetService!.changeAnswerSheetProp('id', res);
+             return answerSheetService!.saveAnswerSheet();
+           })
            .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
            .then(this.onCloseModal);
       }
