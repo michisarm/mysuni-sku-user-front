@@ -64,7 +64,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     collegeLectureCountService!.findCollegeLectureCounts();
     skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
-    collegeService!.findAllChannel();
+    // collegeService!.findAllChannel();
 
     const channels = studySummaryFavoriteChannels.map(channel =>
       new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
