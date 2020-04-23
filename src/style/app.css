@@ -97,3 +97,27 @@
 /* 20200417 site-map */
 .site-map > ul:first-of-type > li:first-of-type ul { display:flex; flex-direction:column; flex-wrap:wrap; height:256px; width:100% !important;}
 .site-map > ul:first-of-type > li:first-of-type ul li { width:50%; }
+/*
+.g-info { position: absolute; right: 0; top: 0; width: 12.4375rem; height: 100%; border-left: 0.0625rem solid #eee; }
+.g-info .balloon-pop { display: none; position: absolute; right: -2px; bottom: -5.4375rem; width: 8.75rem; height: 6.6875rem; background: url("./media/GNB_menu_logout.png") 0 0 no-repeat; background-size: 100% 100%; z-index: 100; }
+.g-info .balloon-pop ul { padding: 1.625rem 1.25rem 0; }
+.g-info .balloon-pop ul li { margin-bottom: 12px; }
+.g-info .balloon-pop ul li a, body > .header .group .g-info .balloon-pop ul li button { display: block; }
+.g-info .balloon-pop ul li a span, .g-info .balloon-pop ul li button span { display: inline-block; margin-left: 0.25rem; line-height: 22px; vertical-align: top; font-size: 0.875rem; color: #222; height: 24px; }
+.g-info .balloon-pop.show { display: block; }
+i.icon.balloon { width: 1.5rem; height: 1.5rem; vertical-align: top; }
+i.icon.balloon.mypage::before { content: ''; display: block; width: 100%; height: 100%; background: url("./media/icon-balloon-mypage.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height: 100%; background: url("./media/icon-balloon-logout.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+*/
+
+.g-info { position: absolute; right: 0; top: 0; width: 12.4375rem; height: 100%; border-left: 0.0625rem solid #eee; }
+.g-info .balloon-pop { display: none; position: absolute; right: -2px; bottom: -5.4375rem; width: 8.75rem; height: 6.6875rem; background: url("./media/GNB_menu_logout.png") 0 0 no-repeat; background-size: 100% 100%; z-index: 100; }
+.g-info .balloon-pop ul { padding: 1.625rem 1.25rem 0; }
+.g-info .balloon-pop ul li { margin-bottom: 12px; }
+.g-info .balloon-pop ul li a, .g-info .balloon-pop ul li button { display: block; }
+.g-info .balloon-pop ul li a span, .g-info .balloon-pop ul li button span { display: inline-block; margin-left: 0.25rem; line-height: 22px; vertical-align: top; font-size: 0.875rem; color: #222; height: 24px; }
+.g-info .balloon-pop.show { display: block; }
+i.icon.balloon { width: 1.5rem; height: 1.5rem; vertical-align: top; }
+i.icon.balloon.mypage::before { content: ''; display: block; width: 100%; height: 100%; background: url("./media/icon-balloon-mypage.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height: 100%; background: url("./media/icon-balloon-logout.svg") 0 0 no-repeat !important; background-size: 100% auto; }
+
