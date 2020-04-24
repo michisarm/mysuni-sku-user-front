@@ -289,7 +289,7 @@ class CoursePage extends Component<Props, State> {
           || student.learningState === LearningState.TestWaiting
           || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
         ) {
-          state = SubState.Waiting;
+          state = SubState.InProgress;
         }
         if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
