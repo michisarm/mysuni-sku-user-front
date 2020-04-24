@@ -131,6 +131,26 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         <div className="s-copy">{viewObject.surveyTitle}</div>
       </div>
       <div className="btn-area">
+        {
+          viewObject.surveyState && (
+            <span className="state">참여완료</span>
+          )
+        }
+
+        {
+          !viewObject.surveyState && (viewObject.state === 'InProgress' || viewObject.state === 'Waiting') && (
+            <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+          )
+        }
+
+        {
+          !viewObject.surveyState && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && (
+            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+          )
+        }
+
+
+
 
         {/*{*/}
         {/*  !viewObject.surveyState && type === '0' && (*/}
@@ -144,19 +164,19 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         {/*  )*/}
         {/*}*/}
 
-        {
-          !viewObject.surveyState && type === '1' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
-            // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
-          )
-        }
+        {/*{*/}
+        {/*  !viewObject.surveyState && type === '1' && (*/}
+        {/*    <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>*/}
+        {/*    // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
 
-        {
-          !viewObject.surveyState && type === '3' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
-            // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
-          )
-        }
+        {/*{*/}
+        {/*  !viewObject.surveyState && type === '3' && (*/}
+        {/*    <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>*/}
+        {/*    // <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
 
         {/*{*/}
         {/*  type === '4' && (*/}
@@ -170,17 +190,17 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         {/*  )*/}
         {/*}*/}
 
-        {
-          !viewObject.surveyState && type !== '1' && type !== '3' && (
-            <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
-          )
-        }
+        {/*{*/}
+        {/*  !viewObject.surveyState && type !== '1' && type !== '3' && (*/}
+        {/*    <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>*/}
+        {/*  )*/}
+        {/*}*/}
 
-        {
-          viewObject.surveyState && (
-            <span className="state">참여완료</span>
-          )
-        }
+        {/*{*/}
+        {/*  viewObject.surveyState && (*/}
+        {/*    <span className="state">참여완료</span>*/}
+        {/*  )*/}
+        {/*}*/}
 
         {/*{*/}
         {/*  type === '1' && (*/}
