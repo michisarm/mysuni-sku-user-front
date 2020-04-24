@@ -300,6 +300,9 @@ class LectureCardPage extends Component<Props, State> {
       } else if (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials > 2) {
         // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Waiting) {
+        // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
@@ -330,6 +333,9 @@ class LectureCardPage extends Component<Props, State> {
       ) {
         // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
         // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Waiting) {
+        // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
