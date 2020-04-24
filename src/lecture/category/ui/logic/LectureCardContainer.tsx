@@ -475,7 +475,9 @@ class LectureCardContainer extends Component<Props, State> {
     if (viewObject && viewObject.surveyId && student) {
       if (student.serviceType === 'Lecture') {
         if (viewObject && viewObject.surveyState) {
-          subActions.push({ type: LectureSubInfo.ActionType.ParticipationCompleted, onAction: this.onMarkComplete });
+          subActions.push({ type: LectureSubInfo.ActionType.ParticipationCompleted,
+            onAction: () => reactAlert({ title: '알림', message: '설문하기 참여를 완료 하셨습니다.' }),
+          });
         } else {
           subActions.push({ type: LectureSubInfo.ActionType.SurveyParticipation, onAction: this.onSurvey });
         }
