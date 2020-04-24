@@ -472,8 +472,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     this.setStateName('1', 'Test');
 
-    console.log('Lecture Card Container student : ', student);
-
     if (viewObject.examId && student) {
       if (student.serviceType && student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
@@ -607,6 +605,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
 
+    console.log('card container : ', viewObject);
     return (
       <LectureCardContentWrapperView>
         <LectureSubInfo

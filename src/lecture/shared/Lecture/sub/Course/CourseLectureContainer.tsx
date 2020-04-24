@@ -69,7 +69,7 @@ interface Props {
 interface State
 {
   classNameForLearningState: string,
-  inProgress: SubState,
+  inProgress: string,
   examTitle: string,
   surveyState: boolean,
   surveyTitle: string,
@@ -131,7 +131,7 @@ class CourseLectureContainer extends Component<Props, State> {
   state =
   {
     classNameForLearningState: 'fix line' || 'fix bg',
-    inProgress: SubState.Waiting,
+    inProgress: '',
     examTitle: '',
     surveyState: false,
     surveyTitle: '',
@@ -465,7 +465,7 @@ class CourseLectureContainer extends Component<Props, State> {
     //
     this.state.isContent = false;
 
-    let state: SubState | undefined;
+    let state: string | undefined;
     let examId: string = '';
     let examTitle: string = '';
     let surveyId: string = '';
@@ -474,7 +474,7 @@ class CourseLectureContainer extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
 
-    state = this.state.inProgress || '';
+    state = this.state.inProgress || undefined;
     examId = this.personalCube?.contents.examId || '';
     examTitle = this.state.examTitle || '';
     surveyId = this.personalCube?.contents.surveyId || '';
@@ -500,8 +500,11 @@ class CourseLectureContainer extends Component<Props, State> {
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (!examId && this.studentData.phaseCount === this.studentData.completePhaseCount &&
-        this.studentData.learningState === LearningState.Progress) state = SubState.Waiting;
+      // if (!examId && this.studentData.phaseCount === this.studentData.completePhaseCount &&
+      //   this.studentData.learningState === LearningState.Progress) {
+      //   console.log('SubState.Waiting : ', SubState.Waiting);
+      //   // state = SubState.Waiting;
+      // }
     }
 
     return {
@@ -634,6 +637,8 @@ class CourseLectureContainer extends Component<Props, State> {
     const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
     const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
+
+    console.log('lecture container : ', this.viewObject);
 
     return (
       <div>

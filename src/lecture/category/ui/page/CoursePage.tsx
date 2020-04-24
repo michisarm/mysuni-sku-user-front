@@ -294,9 +294,9 @@ class CoursePage extends Component<Props, State> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) {
-        state = SubState.Waiting;
-      }
+      // if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) {
+      //   state = SubState.Waiting;
+      // }
     }
 
     return {
