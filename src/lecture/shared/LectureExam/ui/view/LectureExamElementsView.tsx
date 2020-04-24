@@ -57,7 +57,7 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
-
+  console.log('Test viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -120,7 +120,7 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-  // console.log('Survey viewObject : ', viewObject);
+  console.log('Survey viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">

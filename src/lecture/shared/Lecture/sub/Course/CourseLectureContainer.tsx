@@ -489,9 +489,9 @@ class CourseLectureContainer extends Component<Props, State> {
         if (
           this.studentData.learningState === LearningState.Waiting || this.studentData.learningState === LearningState.HomeworkWaiting
           || this.studentData.learningState === LearningState.TestWaiting
-          || this.studentData.learningState === LearningState.TestPassed || this.studentData.earningState === LearningState.Failed
+          || this.studentData.learningState === LearningState.TestPassed || this.studentData.learningState === LearningState.Failed
         ) {
-          state = SubState.Waiting;
+          state = SubState.InProgress;
         }
         if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
         if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
@@ -502,7 +502,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
       if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
         this.studentData.learningState === LearningState.Progress) {
-        state = SubState.Waiting;
+        state = SubState.InProgress;
       }
     }
 
