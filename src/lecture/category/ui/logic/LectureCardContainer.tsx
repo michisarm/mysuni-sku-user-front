@@ -505,7 +505,6 @@ class LectureCardContainer extends Component<Props, State> {
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
           // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Passed) {
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTestNotReady });
           this.setStateName('5', '이수');
         } else {
           subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTestNotReady });
