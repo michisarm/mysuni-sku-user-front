@@ -459,9 +459,7 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
-    if (viewObject && viewObject.reportFileBoxId && student
-      && student.proposalState === ProposalState.Approved
-      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
+    if (viewObject && viewObject.reportFileBoxId && student && student.proposalState === ProposalState.Approved && student.learningState) {
       if (student.serviceType === 'Lecture') {
         if (student.studentScore.homeworkScore) {
           subActions.push({
@@ -497,7 +495,7 @@ class LectureCardContainer extends Component<Props, State> {
         } else if (student.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
         } else {
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTestNotReady });
+          subActions.push({ type: 'Test', onAction: this.onTestNotReady });
           this.setStateName('1', 'Test');
         }
       } else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
@@ -528,7 +526,7 @@ class LectureCardContainer extends Component<Props, State> {
       if (student.serviceType === 'Lecture') {
         if (viewObject && viewObject.surveyState) {
           subActions.push({ type: LectureSubInfo.ActionType.ParticipationCompleted,
-            onAction: () => reactAlert({ title: '알림', message: 'Survey 설문 참여를 완료 하셨습니다.' }),
+            onAction: () => reactAlert({ title: '알림', message: 'Survey 설문 참여가 완료 되었습니다.' }),
           });
         } else {
           subActions.push({ type: LectureSubInfo.ActionType.SurveyParticipation, onAction: this.onSurvey });
