@@ -474,6 +474,7 @@ class CourseLectureContainer extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
 
+    state = this.state.inProgress || '';
     examId = this.personalCube?.contents.examId || '';
     examTitle = this.state.examTitle || '';
     surveyId = this.personalCube?.contents.surveyId || '';
@@ -490,11 +491,13 @@ class CourseLectureContainer extends Component<Props, State> {
           || this.studentData.learningState === LearningState.TestWaiting
           || this.studentData.learningState === LearningState.TestPassed || this.studentData.earningState === LearningState.Failed
         ) {
-          // state = SubState.Waiting;
+          state = SubState.Waiting;
         }
         if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
-        if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
+        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
+        // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
+        // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
       if (!examId && this.studentData.phaseCount === this.studentData.completePhaseCount &&
@@ -503,6 +506,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
     return {
       // Sub info
+      state,
       examId,
       // Fields
       examTitle,
@@ -529,12 +533,14 @@ class CourseLectureContainer extends Component<Props, State> {
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onTestNotReady() {
-    reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+    reactAlert({ title: 'Test&Report 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
 
   OnSurveyNotReady() {
-    reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
+    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    // reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
 
@@ -561,14 +567,7 @@ class CourseLectureContainer extends Component<Props, State> {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (studentData.learningState === LearningState.Progress ||
           studentData.learningState === LearningState.HomeworkWaiting) {
-          switch (this.personalCube?.contents.type) {
-            case CubeType.Audio:
-            case CubeType.Video:
-              this.setStateName('1', 'Test');
-              break;
-            default: this.setStateName('0', 'Test');
-              break;
-          }
+          this.setStateName('0', 'Test');
         } else if (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials < 3) {
           // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
@@ -590,15 +589,7 @@ class CourseLectureContainer extends Component<Props, State> {
           && (studentData.learningState === LearningState.Progress
           || studentData.learningState === LearningState.HomeworkWaiting)
         ) {
-          switch (this.personalCube?.contents.type) {
-            case CubeType.Audio:
-            case CubeType.Video:
-              this.setStateName('1', 'Test');
-              break;
-            default: this.setStateName('0', 'Test');
-              break;
-          }
-          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          this.setStateName('0', 'Test');
         } else if (
           studentData.phaseCount === studentData.completePhaseCount
           && (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials < 3)
@@ -643,12 +634,6 @@ class CourseLectureContainer extends Component<Props, State> {
     const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
     const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
-
-    if (this.state.inProgress === SubState.Completed) {
-      this.state.surveyState = true;
-    } else {
-      this.state.surveyState = false;
-    }
 
     return (
       <div>

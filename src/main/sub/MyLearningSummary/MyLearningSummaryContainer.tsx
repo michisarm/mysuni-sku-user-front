@@ -144,7 +144,7 @@ class MyLearningSummaryContainer extends Component<Props> {
         <ItemWrapper>
           <ContentHeader.ChartItem
             universityTime={myLearningSummary.suniLearningTime || 0}
-            myCompanyTime={myLearningSummary.myCompanyLearningTime || 0}
+            myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime || 0}
           />
         </ItemWrapper>
 

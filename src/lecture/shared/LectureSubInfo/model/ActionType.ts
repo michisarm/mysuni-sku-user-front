@@ -9,6 +9,8 @@ enum ActionType {
   MarkComplete = '학습완료',
   Join = '가입하기',
   Test = '시험보기',
+  SurveyParticipation = '설문하기',
+  ParticipationCompleted = '참여완료',
 }
 
 export default ActionType;

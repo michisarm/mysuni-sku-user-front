@@ -22,7 +22,7 @@ interface State {
 @reactAutobind
 @observer
 class ProfileContainer extends Component<Props, State> {
-  balloonRef: any = React.createRef();
+  profileButtonRef: any = React.createRef();
 
   state = {
     balloonShowClass: ''
@@ -43,8 +43,8 @@ class ProfileContainer extends Component<Props, State> {
   }
 
   handleClickOutside(e: MouseEvent) {
-    if (this.balloonRef && !this.balloonRef.current.contains(e.target)) {
-      this.setState({balloonShowClass: ''});
+    if (this.profileButtonRef && !this.profileButtonRef.current.contains(e.target)) {
+      setTimeout(()=>this.setState({balloonShowClass: ''}), 500);
     }
   }
 
@@ -67,12 +67,12 @@ class ProfileContainer extends Component<Props, State> {
     const { balloonShowClass } = this.state;
     return (
       <div className="g-info">
-        <button className="ui user image label" onClick={this.onTogglePop}>
+        <button className="ui user image label" onClick={this.onTogglePop} ref={this.profileButtonRef}>
           <span className="name">{member.name}</span>
           <span className="affiliation">{member.company} {member.department}</span>
           <Image src={skProfile.photoFilePath || profileImg} alt="profile" />
         </button>
-        <div className={`balloon-pop ${balloonShowClass}`} ref={this.balloonRef}>
+        <div className={`balloon-pop ${balloonShowClass}`}>
           <ul>
             <li>
               <a href="#" onClick={() => this.props.history.push(myTrainingRoutePaths.myPage())}>

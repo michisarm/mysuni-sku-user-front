@@ -308,15 +308,24 @@ class LectureCardContainer extends Component<Props, State> {
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onTestNotReady() {
-    reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
-    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+    const { viewObject } = this.props;
+
+    if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
+      reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+    } else {
+      reactAlert({ title: 'Test&Report 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    }
   }
 
   OnSurveyNotReady() {
-    reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
-    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
-  }
+    const { viewObject } = this.props;
 
+    if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
+      reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
+    } else {
+      reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    }
+  }
 
   onSurvey() {
     this.surveyModal.onOpenModal();
@@ -353,7 +362,6 @@ class LectureCardContainer extends Component<Props, State> {
           onPageRefresh();
         }
       });
-
   }
 
   getMainAction() {
@@ -451,68 +459,72 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+    if (viewObject && viewObject.reportFileBoxId && student
+      && student.proposalState === ProposalState.Approved
+      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
+      if (student.serviceType === 'Lecture') {
+        if (student.studentScore.homeworkScore) {
+          subActions.push({
+            type: LectureSubInfo.ActionType.Report,
+            onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }),
+          });
+        } else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
+      }
+    }
+
+    if (viewObject && viewObject.surveyId && student) {
+      if (student.serviceType === 'Lecture') {
+        if (viewObject && viewObject.surveyState) {
+          subActions.push({ type: LectureSubInfo.ActionType.ParticipationCompleted, onAction: this.onMarkComplete });
+        } else {
+          subActions.push({ type: LectureSubInfo.ActionType.SurveyParticipation, onAction: this.onSurvey });
+        }
+      }
+    }
+
     this.setStateName('1', 'Test');
 
-    if (viewObject && student) {
-      if (!student.serviceType || student.serviceType === 'Lecture') {
+    if (viewObject.examId && student) {
+      if (student.serviceType && student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
-          switch (cubeType) {
-            case CubeType.Audio:
-            case CubeType.Video:
-              this.setStateName('1', 'Test');
-              break;
-            default: this.setStateName('0', 'Test');
-              break;
-          }
+          this.setStateName('0', 'Test');
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           // this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
-          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          subActions.push({ type: `재응시 (${student.numberOfTrials})`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
           // this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          subActions.push({ type: `재응시 (${student.numberOfTrials})`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Missed) {
           // this.setStateName('4', '미이수');
+          subActions.push({ type: `재응시 (${student.numberOfTrials})`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
         } else if (student.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
         } else {
+          subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTestNotReady });
           this.setStateName('1', 'Test');
         }
       } else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
-        if (
-          student.phaseCount === student.completePhaseCount
-          && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
-        ) {
-          switch (cubeType) {
-            case CubeType.Audio:
-            case CubeType.Video:
-              this.setStateName('1', 'Test');
-              break;
-            default: this.setStateName('0', 'Test');
-              break;
-          }
+        if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
+          this.setStateName('0', 'Test');
           // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-        } else if (
-          student.phaseCount === student.completePhaseCount
-          && (student.learningState === LearningState.Failed && student.numberOfTrials < 3)
-        ) {
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           // this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
-          // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          // subActions.push({ type: `재응시( ${student.numberOfTrials} )`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-        } else if (
-          student.phaseCount === student.completePhaseCount
-          && (student.learningState === LearningState.Failed && student.numberOfTrials > 2)
-        ) {
+        } else if (student.learningState === LearningState.Failed && student.numberOfTrials > 2) {
           // this.setStateName('3', `재응시(${student.numberOfTrials}/3)`);
-          // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+          // subActions.push({ type: `재응시( ${student.numberOfTrials} )`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
         } else if (student.learningState === LearningState.Missed) {
           // this.setStateName('4', '미이수');
+          // subActions.push({ type: `재응시( ${student.numberOfTrials} )`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
         } else if (student.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
@@ -522,16 +534,6 @@ class LectureCardContainer extends Component<Props, State> {
       }
     }
 
-    if (viewObject && viewObject.reportFileBoxId && student
-      && student.proposalState === ProposalState.Approved
-      && student.learningState && student.learningState !== LearningState.Passed && student.learningState !== LearningState.Missed) {
-      if (student.studentScore.homeworkScore) {
-        subActions.push({
-          type: LectureSubInfo.ActionType.Report,
-          onAction: () => reactAlert({ title: '알림', message: '이미 채점이 되었습니다.' }),
-        });
-      } else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
-    }
     return subActions.length ? subActions : undefined;
   }
 
