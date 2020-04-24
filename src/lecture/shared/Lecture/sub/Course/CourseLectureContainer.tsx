@@ -582,6 +582,8 @@ class CourseLectureContainer extends Component<Props, State> {
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
         } else if (studentData.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
+        } else if (studentData.learningState === LearningState.TestPassed) {
+          this.setStateName('5', '결과대기');
         } else {
           this.setStateName('1', 'Test');
         }
@@ -612,6 +614,8 @@ class CourseLectureContainer extends Component<Props, State> {
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
         } else if (studentData.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
+        } else if (studentData.learningState === LearningState.TestPassed) {
+          this.setStateName('5', '결과대기');
         } else {
           this.setStateName('1', 'Test');
         }
