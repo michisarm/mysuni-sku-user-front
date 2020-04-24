@@ -388,6 +388,8 @@ class LectureCardPage extends Component<Props, State> {
     examName = this.state.name || '';
     studentId = student.id || '';
 
+    console.log('lecture card page student : ', student);
+
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
       if (student.proposalState === ProposalState.Approved) {
