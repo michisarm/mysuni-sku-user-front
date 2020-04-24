@@ -313,12 +313,13 @@ class LectureCardPage extends Component<Props, State> {
       }
     }
     else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
-      if (
-        student.phaseCount === student.completePhaseCount
-        && (student.learningState === LearningState.Progress
-        || student.learningState === LearningState.HomeworkWaiting)
+      if (student.phaseCount === student.completePhaseCount && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
       ) {
-        this.setStateName('0', 'Test');
+        if (student.phaseCount === student.completePhaseCount) {
+          this.setStateName('0', 'Test');
+        } else {
+          this.setStateName('1', 'Test');
+        }
         // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
       } else if (
         student.phaseCount === student.completePhaseCount

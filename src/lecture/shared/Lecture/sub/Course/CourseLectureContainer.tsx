@@ -500,11 +500,10 @@ class CourseLectureContainer extends Component<Props, State> {
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      // if (!examId && this.studentData.phaseCount === this.studentData.completePhaseCount &&
-      //   this.studentData.learningState === LearningState.Progress) {
-      //   console.log('SubState.Waiting : ', SubState.Waiting);
-      //   // state = SubState.Waiting;
-      // }
+      if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
+        this.studentData.learningState === LearningState.Progress) {
+        state = SubState.Waiting;
+      }
     }
 
     return {

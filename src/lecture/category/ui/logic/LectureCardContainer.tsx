@@ -13,7 +13,7 @@ import { InMyLectureService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import LectureSubInfo from '../../../shared/LectureSubInfo';
+import LectureSubInfo, {State as SubState} from '../../../shared/LectureSubInfo';
 import LectureExam from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
@@ -506,8 +506,11 @@ class LectureCardContainer extends Component<Props, State> {
         }
       } else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
-          this.setStateName('0', 'Test');
-          // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
+          if (student.phaseCount === student.completePhaseCount) {
+            this.setStateName('0', 'Test');
+          } else {
+            this.setStateName('1', 'Test');
+          }
         } else if (student.learningState === LearningState.Failed && student.numberOfTrials < 3) {
           // this.setStateName('2', `재응시(${student.numberOfTrials}/3)`);
           // subActions.push({ type: `재응시( ${student.numberOfTrials} )`, onAction: this.onTest });

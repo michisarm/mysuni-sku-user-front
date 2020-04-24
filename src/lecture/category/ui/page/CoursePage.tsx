@@ -294,7 +294,14 @@ class CoursePage extends Component<Props, State> {
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      // if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) {
+      if (student.learningState === LearningState.Progress) {
+        if (student.phaseCount !== student.completePhaseCount) {
+          state = SubState.Waiting;
+        }
+      }
+
+      // if (!examId && (student.phaseCount !== student.completePhaseCount) && student.learningState === LearningState.Progress) {
+      //   console.log('Course Page Waiting : ', SubState.Waiting);
       //   state = SubState.Waiting;
       // }
     }
