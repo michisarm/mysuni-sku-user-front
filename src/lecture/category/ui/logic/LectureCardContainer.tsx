@@ -472,6 +472,8 @@ class LectureCardContainer extends Component<Props, State> {
 
     this.setStateName('1', 'Test');
 
+    console.log('Lecture Card Container student : ', student);
+
     if (viewObject.examId && student) {
       if (student.serviceType && student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
@@ -494,7 +496,7 @@ class LectureCardContainer extends Component<Props, State> {
           subActions.push({ type: `재응시 (${student.numberOfTrials})`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
           // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
-        } else if (student.learningState === LearningState.Passed) {
+        } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
           this.setStateName('5', '이수');
         } else {
           subActions.push({ type: 'Test', onAction: this.onTestNotReady });
@@ -520,7 +522,7 @@ class LectureCardContainer extends Component<Props, State> {
           // this.setStateName('4', '미이수');
           // subActions.push({ type: `재응시( ${student.numberOfTrials} )`, onAction: this.onTest });
           this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-        } else if (student.learningState === LearningState.Passed) {
+        } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
           this.setStateName('5', '이수');
         } else {
           this.setStateName('1', 'Test');

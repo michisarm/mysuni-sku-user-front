@@ -66,6 +66,7 @@ export const StateView = ({ state }: StateProp) => {
     st = State.Waiting;
   }
 
+
   return (
     <div className="state-txt">
       <div>{StateNameType[State[st]]}</div>

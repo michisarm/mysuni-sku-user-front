@@ -291,6 +291,8 @@ class LectureCardPage extends Component<Props, State> {
 
     this.setStateName('1', 'Test');
 
+    console.log('Lecture Card Page student : ', student);
+
     if (student.serviceType || student.serviceType === 'Lecture') {
       if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {
         this.setStateName('0', 'Test');
@@ -306,7 +308,7 @@ class LectureCardPage extends Component<Props, State> {
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-      } else if (student.learningState === LearningState.Passed) {
+      } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
         this.setStateName('5', '이수');
       } else {
         this.setStateName('1', 'Test');
@@ -340,7 +342,7 @@ class LectureCardPage extends Component<Props, State> {
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-      } else if (student.learningState === LearningState.Passed) {
+      } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
         this.setStateName('5', '이수');
       } else {
         this.setStateName('1', 'Test');
