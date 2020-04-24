@@ -1,15 +1,13 @@
-
 import React from 'react';
-import { Label, Button, Step, List, Icon, Popup } from 'semantic-ui-react';
+import {Button, Icon, Label, List, Popup, Step} from 'semantic-ui-react';
 import classNames from 'classnames';
-import { reactAutobind, reactAlert } from '@nara.platform/accent';
-import { CubeType } from 'shared/model';
-import { dateTimeHelper } from 'shared';
+import {reactAlert, reactAutobind} from '@nara.platform/accent';
+import {CubeType} from 'shared/model';
+import {dateTimeHelper} from 'shared';
 import Action from '../../model/Action';
 import Class from '../../model/Class';
 import Operator from '../../model/Operator';
-import { State, StateNameType, Level }  from '../../model';
-
+import {Level, State, StateNameType} from '../../model';
 
 interface RequiredProp {
   required?: boolean,
@@ -57,9 +55,16 @@ interface StateProp {
 export const StateView = ({ state }: StateProp) => {
   //
   if (!state) return null;
+
+  let st = state;
+
+  if (st === State.Failed) {
+    st = State.Waiting;
+  }
+
   return (
     <div className="state-txt">
-      <div>{StateNameType[State[state]]}</div>
+      <div>{StateNameType[State[st]]}</div>
     </div>
   );
 };
