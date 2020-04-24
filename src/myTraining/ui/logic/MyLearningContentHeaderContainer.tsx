@@ -61,10 +61,10 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           <ContentHeaderTotalTimeItem
             minute={myLearningSummary.totalLearningTime}
           />
-          { (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0) ?
+          { (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0 || myLearningSummary.myCompanyInSuniLearningTime > 0) ?
             <ContentHeader.ChartItem
               universityTime={myLearningSummary.suniLearningTime}
-              myCompanyTime={myLearningSummary.myCompanyLearningTime}
+              myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}
             />
             :
             <ContentHeader.WaitingItem
