@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-
 import { BoardService, PostForm } from '@sku/personalcube';
 import { ContentLayout } from 'shared';
 import { CollegeService } from 'college/stores';
@@ -11,6 +11,7 @@ import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { LectureCardService } from 'lecture/stores';
 import { LearningCardService } from 'course/stores';
 import routePaths from '../../../routePaths';
+
 
 
 interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
@@ -32,6 +33,8 @@ interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string,
 @reactAutobind
 class PostFormPage extends React.Component<Props> {
   //
+  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
+
   componentDidMount(): void {
     this.init();
   }
@@ -57,6 +60,10 @@ class PostFormPage extends React.Component<Props> {
     const { boardService, collegeService } = this.props;
     const { board } = boardService as BoardService;
     const { college } = collegeService as CollegeService;
+
+    if(this.hasAdminRole){
+      patronInfo.setWorkspaceById('ne1-m2-c2');
+    }
 
     return (
       <ContentLayout

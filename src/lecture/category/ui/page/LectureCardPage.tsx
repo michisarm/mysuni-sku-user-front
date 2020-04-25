@@ -108,8 +108,6 @@ interface RouteParams {
 @observer
 class LectureCardPage extends Component<Props, State> {
   //
-  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
-
   state= {
     linkedInOpen: false,
     loaded: false,
@@ -205,9 +203,6 @@ class LectureCardPage extends Component<Props, State> {
           officeWebService.findOfficeWeb(contents.id);
         }
         else if (service.type === ContentsServiceType.Community) {
-          if(this.hasAdminRole){
-            patronInfo.setWorkspaceById('ne1-m2-c2');
-          }
           boardService.findBoard(contents.id);
         }
       }
