@@ -625,6 +625,7 @@ class LectureCardContainer extends Component<Props, State> {
             capacity: typeViewObject ? typeViewObject.capacity : 0,
             cubeType,
             passedStudentCount: viewObject.rollBooksPassedStudentCount,
+            studentCount: viewObject.rollBooksStudentCount,
           }}
           operator={{
             instructor: viewObject.instructorName,

@@ -108,6 +108,8 @@ interface RouteParams {
 @observer
 class LectureCardPage extends Component<Props, State> {
   //
+  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
+
   state= {
     linkedInOpen: false,
     loaded: false,
@@ -116,6 +118,7 @@ class LectureCardPage extends Component<Props, State> {
     surveyTitle: '',
     type: '',
     name: '',
+    activeTab: 'Posts',
   };
 
   constructor(props: Props) {
@@ -202,6 +205,9 @@ class LectureCardPage extends Component<Props, State> {
           officeWebService.findOfficeWeb(contents.id);
         }
         else if (service.type === ContentsServiceType.Community) {
+          if(this.hasAdminRole){
+            patronInfo.setWorkspaceById('ne1-m2-c2');
+          }
           boardService.findBoard(contents.id);
         }
       }
@@ -357,12 +363,13 @@ class LectureCardPage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      personalCubeService, cubeIntroService, studentService, rollBookService,
+      personalCubeService, cubeIntroService, studentService, classroomService, rollBookService,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
     const { student }: StudentService = studentService!;
-    const { rollBooksPassedStudentCount } = rollBookService!;
+    const { classrooms } = classroomService!;
+    const { rollBooksPassedStudentCount, rollBooksStudentCount } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
     let state: SubState | undefined;
@@ -435,6 +442,7 @@ class LectureCardPage extends Component<Props, State> {
       difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: cubeIntro.learningTime,
       rollBooksPassedStudentCount,
+      rollBooksStudentCount,
 
       instructorName: cubeIntro.description.instructor.name,
       operatorName: cubeIntro.operation.operator.name,
@@ -743,6 +751,20 @@ class LectureCardPage extends Component<Props, State> {
     return tabs;
   }
 
+  getTabName() {
+    //
+    const { personalCube } = this.props.personalCubeService;
+    let tabName = '';
+
+    if (personalCube.contents.type === 'Community') {
+      tabName = 'Posts';
+    } else {
+      tabName = 'Overview';
+    }
+
+    return tabName;
+  }
+
   getMediaSize() {
     //
     const { personalCube } = this.props.personalCubeService!;
@@ -876,7 +898,7 @@ class LectureCardPage extends Component<Props, State> {
   render() {
     //
     const { collegeService, personalCubeService, lectureCardService } = this.props;
-    const { linkedInOpen } = this.state;
+    const { linkedInOpen, activeTab } = this.state;
     const { college } = collegeService;
     const { personalCube } = personalCubeService;
     const { lectureCard } = lectureCardService;
@@ -932,6 +954,7 @@ class LectureCardPage extends Component<Props, State> {
         <Tab
           className="tab-menu2 offset0"
           tabs={this.getTabs()}
+          defaultActiveName={activeTab}
           header={
             <div className="cont-inner summary">
               <Label className={viewObject.category.color}>{viewObject.category.college.name}</Label>

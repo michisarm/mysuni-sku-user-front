@@ -152,7 +152,7 @@ export const ClassView = ({ clazz }: ClassProp) => {
       <List.Item>
         <div className="ui">
           <div className="label">{clazz.cubeType === CubeType.Community ? '참여' : '이수'} 인원</div>
-          <div className="value">{clazz.passedStudentCount}</div>
+          <div className="value">{clazz.cubeType === CubeType.Community ? clazz.studentCount : clazz.passedStudentCount}</div>
         </div>
       </List.Item>
     </List>

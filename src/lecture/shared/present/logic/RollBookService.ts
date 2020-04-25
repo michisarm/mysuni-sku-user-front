@@ -36,6 +36,12 @@ class RollBookService {
   }
 
   @computed
+  get rollBooksStudentCount() {
+    //
+    return this._rollBooks.reduce((prev: number, current: RollBookModel) => prev + current.studentCount, 0);
+  }
+
+  @computed
   get rollBookIds() {
     return this._rollBooks.map((rollBook) => rollBook.id);
   }
