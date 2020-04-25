@@ -280,6 +280,8 @@ class CoursePage extends Component<Props, State> {
     reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     tabState = this.state.tabState || '';
 
+    console.log('course page student : ', student);
+
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
         if (
@@ -287,16 +289,23 @@ class CoursePage extends Component<Props, State> {
           || student.learningState === LearningState.TestWaiting
           || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
         ) {
-          state = SubState.Waiting;
+          state = SubState.InProgress;
         }
         if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (!examId && student.phaseCount === student.completePhaseCount && student.learningState === LearningState.Progress) {
-        state = SubState.Waiting;
-      }
+      // if (student.learningState === LearningState.Progress) {
+      //   if (student.phaseCount !== student.completePhaseCount) {
+      //     state = SubState.Waiting;
+      //   }
+      // }
+
+      // if (!examId && (student.phaseCount !== student.completePhaseCount) && student.learningState === LearningState.Progress) {
+      //   console.log('Course Page Waiting : ', SubState.Waiting);
+      //   state = SubState.Waiting;
+      // }
     }
 
     return {

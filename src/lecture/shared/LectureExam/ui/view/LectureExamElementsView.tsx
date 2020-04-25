@@ -57,7 +57,7 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
-
+  console.log('Test viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -120,7 +120,7 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-
+  console.log('Survey viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -138,19 +138,17 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         }
 
         {
-          !viewObject.surveyState && (viewObject.state === 'InProgress' || viewObject.state === 'Waiting') && (
+          !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
+            viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
             <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
           )
         }
 
         {
-          !viewObject.surveyState && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && (
+          !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
             <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
           )
         }
-
-
-
 
         {/*{*/}
         {/*  !viewObject.surveyState && type === '0' && (*/}

@@ -300,22 +300,26 @@ class LectureCardPage extends Component<Props, State> {
       } else if (student.learningState === LearningState.Failed && student.studentScore.numberOfTrials > 2) {
         // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Waiting) {
+        // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-      } else if (student.learningState === LearningState.Passed) {
+      } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
         this.setStateName('5', '이수');
       } else {
         this.setStateName('1', 'Test');
       }
     }
     else if (student.serviceType === 'Course' || student.serviceType === 'Program') {
-      if (
-        student.phaseCount === student.completePhaseCount
-        && (student.learningState === LearningState.Progress
-        || student.learningState === LearningState.HomeworkWaiting)
+      if (student.phaseCount === student.completePhaseCount && (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting)
       ) {
-        this.setStateName('0', 'Test');
+        if (student.phaseCount === student.completePhaseCount) {
+          this.setStateName('0', 'Test');
+        } else {
+          this.setStateName('1', 'Test');
+        }
         // subActions.push({ type: LectureSubInfo.ActionType.Test, onAction: this.onTest });
       } else if (
         student.phaseCount === student.completePhaseCount
@@ -331,10 +335,13 @@ class LectureCardPage extends Component<Props, State> {
         // this.setStateName('3', `재응시(${student.studentScore.numberOfTrials}/3)`);
         // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
+      } else if (student.learningState === LearningState.Waiting) {
+        // this.setStateName('4', '미이수');
+        this.setStateName('0', `재응시 (${student.numberOfTrials})`);
       } else if (student.learningState === LearningState.Missed) {
         // this.setStateName('4', '미이수');
         this.setStateName('0', `재응시 (${student.numberOfTrials})`);
-      } else if (student.learningState === LearningState.Passed) {
+      } else if (student.learningState === LearningState.Passed || student.learningState === LearningState.TestPassed) {
         this.setStateName('5', '이수');
       } else {
         this.setStateName('1', 'Test');
@@ -380,6 +387,8 @@ class LectureCardPage extends Component<Props, State> {
     examType = this.state.type || '';
     examName = this.state.name || '';
     studentId = student.id || '';
+
+    console.log('lecture card page student : ', student);
 
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
