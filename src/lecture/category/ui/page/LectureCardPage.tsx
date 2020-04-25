@@ -954,7 +954,7 @@ class LectureCardPage extends Component<Props, State> {
         <Tab
           className="tab-menu2 offset0"
           tabs={this.getTabs()}
-          defaultActiveName={activeTab}
+          defaultActiveName={this.getTabName()}
           header={
             <div className="cont-inner summary">
               <Label className={viewObject.category.color}>{viewObject.category.college.name}</Label>

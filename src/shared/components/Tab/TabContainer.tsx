@@ -52,6 +52,16 @@ class TabContainer extends Component<Props, State> {
     }
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const { onChangeTab, tabs } = this.props;
+
+    if(prevProps.defaultActiveName !== this.props.defaultActiveName){
+      if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
+        this.onClickTab(tabs[0]);
+      }
+    }
+  }
+
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
