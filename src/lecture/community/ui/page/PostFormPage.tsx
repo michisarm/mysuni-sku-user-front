@@ -39,6 +39,11 @@ class PostFormPage extends React.Component<Props> {
     this.init();
   }
 
+  componentWillUnmount(): void {
+    //
+    patronInfo.clearWorkspace();
+  }
+
   async init() {
     const { collegeService, personalCubeService, boardService, lectureCardService, learningCardService } = this.props;
     const { collegeId, lectureCardId } = this.props.match.params;
@@ -47,6 +52,10 @@ class PostFormPage extends React.Component<Props> {
     const learningCard = await learningCardService!.findLearningCard(lectureCard!.learningCard.id);
     const personalCube = await personalCubeService!.findPersonalCube(learningCard.personalCube.id);
     boardService!.findBoard(personalCube!.contents.contents.id);
+
+    if(this.hasAdminRole){
+      patronInfo.setWorkspaceById('ne1-m2-c2');
+    }
   }
 
   routeTo() {
@@ -60,10 +69,6 @@ class PostFormPage extends React.Component<Props> {
     const { boardService, collegeService } = this.props;
     const { board } = boardService as BoardService;
     const { college } = collegeService as CollegeService;
-
-    if(this.hasAdminRole){
-      patronInfo.setWorkspaceById('ne1-m2-c2');
-    }
 
     return (
       <ContentLayout
