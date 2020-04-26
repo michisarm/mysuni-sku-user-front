@@ -141,7 +141,7 @@ class MyLearningSummaryModal extends Component<Props> {
                     </div>
                     <ul className="bullet-list1">
                       <li>
-                        <span className="name b1">mySUNI</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.suniLearningTime)}</span>
+                        <span className="name b1">mySUNI</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime)}</span>
                       </li>
                       <li>
                         <span className="name b2">My company</span><span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime)}</span>

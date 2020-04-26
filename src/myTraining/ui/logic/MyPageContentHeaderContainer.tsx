@@ -97,7 +97,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
           <ContentHeaderLearningSummaryView
             year={selectedYear}
             totalLearningTime={myLearningSummary.totalLearningTime}
-            mySuniLearningTime={myLearningSummary.suniLearningTime}
+            mySuniLearningTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime}
             myCompanyLearningTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}
           />
         </ContentHeader.Cell>
