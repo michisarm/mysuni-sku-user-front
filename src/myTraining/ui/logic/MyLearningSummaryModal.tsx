@@ -49,13 +49,14 @@ class MyLearningSummaryModal extends Component<Props> {
   getChartValue() {
     //
     const { myLearningSummaryService } = this.props;
-    const { suniLearningTime, myCompanyLearningTime } = myLearningSummaryService!.myLearningSummary;
+    // const { suniLearningTime, myCompanyLearningTime } = myLearningSummaryService!.myLearningSummary;
+    const { myLearningSummary } = myLearningSummaryService!;
 
 
-    if (!(suniLearningTime + myCompanyLearningTime)) {
+    if (!(myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime)) {
       return 0;
     }
-    return  Math.floor(suniLearningTime / (suniLearningTime + myCompanyLearningTime) * 360);
+    return  Math.floor((myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime) / (myLearningSummary.suniLearningTime + myLearningSummary.myCompanyLearningTime) * 360);
   }
 
   render() {
