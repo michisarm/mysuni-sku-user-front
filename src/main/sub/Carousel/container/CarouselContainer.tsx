@@ -32,6 +32,46 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
+      title: <>SV위원회와 함께하는 &#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
+      description: (
+        <>
+          ON AIR &#64; 4&#47;28(화) 오전 10시30분 ~ 11시30분<br />
+          ※ 주요 내용 <br />
+          ▣ 온실가스 배출 관리 범위(Scope 1&#47;2&#47;3)에 대한 이해<br />
+          ▣ 관련 규제 동향 및 국내&#47;외 기업 대응 사례<br />
+        </>
+      ),
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00004/cube/CUBE-806/lecture-card/LECTURE-CARD-5td',
+      imageUrl: '/images/all/img_banner_ESGTalk_20200427.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>개정된 핵인싸 과정으로<br/>역량 향상의 씨앗을 심어보세요</>,
+      description: (
+        <>
+          전사 차원의 Human Capital 육성 방향에 따라 <br/>
+          핵인싸 과정이 전면 개편 되었습니다.<br/>
+          핵인싸 과정 이수로 역량도 업글하시고, SK 인싸 되세요~!<br/>
+        </>
+      ),
+      link: boardRoutePaths.supportNoticePost('NTC-00003c'),
+      imageUrl: '/images/all/img_banner_required_20200427.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>AI&#47;DT 끝판왕 말고 첫판왕!<br />이제는 쉽고 빠르게 AI&#47;DT Literacy 채널에서 만나보세요~</>,
+      description: (
+        <>
+          Category: AI &#62; AI&#47;DT Literacy 채널에서<br/>
+          AI&#47;DT 기본을 다지는 mySUNI의 엄선된 컨텐츠를 수강해보세요.<br/> 
+          시작 전, [학습 안내] 카드를 꼭 읽어주세요~
+        </>
+      ),
+      link: '/lecture/college/CLG00001/channel/CHN0005a',
+      imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
+    },
+    {
+      type: ContentType.LinkContent,
       title: <>[UI개선] 동영상 Player가 embed 대신 pop-up 방식으로 변경 됩니다.</>,
       description: (
         <>
@@ -44,20 +84,20 @@ class CarouselContainer extends Component<Props, State> {
       link: '',
       imageUrl: '/images/all/img_banner_moviemodal_20200420.jpg',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>자기주도 학습의 첫걸음&#44;<br />관심 채널을 내 마음대로!</>,
-      description: (
-        <>
-          1월 써니가 오픈한 이후&#44;<br />
-          반도체&#44; SK경영 등 컨텐츠가 더욱 다채로워졌습니다.<br />
-          지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br />
-          <span className="link-tag">관심채널 변경안내</span>
-        </>
-      ),
-      link: '/favorite/channel/change',
-      imageUrl: '/images/all/img_banner_favoritechannels_20200403.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>자기주도 학습의 첫걸음&#44;<br />관심 채널을 내 마음대로!</>,
+    //   description: (
+    //     <>
+    //       1월 써니가 오픈한 이후&#44;<br />
+    //       반도체&#44; SK경영 등 컨텐츠가 더욱 다채로워졌습니다.<br />
+    //       지금&#44; 관심채널 변경을 통해 새로운 컨텐츠를 구독해보세요!<br />
+    //       <span className="link-tag">관심채널 변경안내</span>
+    //     </>
+    //   ),
+    //   link: '/favorite/channel/change',
+    //   imageUrl: '/images/all/img_banner_favoritechannels_20200403.jpg',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>반도체를 알면 미래가 보인다</>,
@@ -72,33 +112,33 @@ class CarouselContainer extends Component<Props, State> {
     //   link: '/lecture/college/CLG00019/channels/pages/1',
     //   imageUrl: '/images/all/img_banner_semiconductor_20200403.jpg',
     // },
-    {
-      type: ContentType.LinkContent,
-      title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
-      description: (
-        <>
-          일상의 소소한 즐거움을 찾고&#44; 행복을 느낄 수 있는<br />
-          다양한 분야&#40;영상제작&#44; 미술&#44; Cooking&#44; 글쓰기 등&#41;의<br />
-          콘텐츠가 여러분을 찾아 갑니다&#46;<br />
-        </>
-      ),
-      link: '/lecture/college/CLG0001a/channels/pages/1',
-      imageUrl: '/images/all/img_banner_lifestyle_20200322.png',
-    },
-    {
-      type: ContentType.LinkContent,
-      title: <>mySUNI mobile Open!!</>,
-      description: (
-        <>
-          많이 기다리셨죠&#63; mySUNI mobile 설치하세요.<br />
-          하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br />
-          둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br />
-          셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길&#44; 짬날 때&#41;<br />
-        </>
-      ),
-      link: boardRoutePaths.supportNoticePost('NTC-000037'),
-      imageUrl: '/images/all/img_banner_06.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>소소하지만 확실한 행복을 잡아라 ~<br />mySUNI가 드리는 플러스 알파&#44;<br />Life Style OPEN!</>,
+    //   description: (
+    //     <>
+    //       일상의 소소한 즐거움을 찾고&#44; 행복을 느낄 수 있는<br />
+    //       다양한 분야&#40;영상제작&#44; 미술&#44; Cooking&#44; 글쓰기 등&#41;의<br />
+    //       콘텐츠가 여러분을 찾아 갑니다&#46;<br />
+    //     </>
+    //   ),
+    //   link: '/lecture/college/CLG0001a/channels/pages/1',
+    //   imageUrl: '/images/all/img_banner_lifestyle_20200322.png',
+    // },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>mySUNI mobile Open!!</>,
+    //   description: (
+    //     <>
+    //       많이 기다리셨죠&#63; mySUNI mobile 설치하세요.<br />
+    //       하나&#44; 쉬운 접속&#33;&#40;mobile SK스토어을 통해 App다운&#47;실행&#41;<br />
+    //       둘&#44; 편리한 사용&#33;&#40;Web보다 간결한 UI&#41;<br />
+    //       셋&#44; 언제 어디서나 학습&#33;&#40;출&#47;퇴근 길&#44; 짬날 때&#41;<br />
+    //     </>
+    //   ),
+    //   link: boardRoutePaths.supportNoticePost('NTC-000037'),
+    //   imageUrl: '/images/all/img_banner_06.jpg',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>SKMS 알아보기</>,
