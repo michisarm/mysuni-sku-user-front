@@ -32,7 +32,7 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
-      title: <>SV위원회와 함께하는 &#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
+      title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
       description: (
         <>
           ON AIR &#64; 4&#47;28(화) 오전 10시30분 ~ 11시30분<br />
