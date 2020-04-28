@@ -30,20 +30,20 @@ class CarouselContainer extends Component<Props, State> {
   AUTO_NEXT_TIME = 5 * 1000;
 
   banners = [
-    {
-      type: ContentType.LinkContent,
-      title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
-      description: (
-        <>
-          ON AIR &#64; 4&#47;28(화) 오전 10시30분 ~ 11시30분<br />
-          ※ 주요 내용 <br />
-          ▣ 온실가스 배출 관리 범위(Scope 1&#47;2&#47;3)에 대한 이해<br />
-          ▣ 관련 규제 동향 및 국내&#47;외 기업 대응 사례<br />
-        </>
-      ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00004/cube/CUBE-806/lecture-card/LECTURE-CARD-5td',
-      imageUrl: '/images/all/img_banner_ESGTalk_20200427.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
+    //   description: (
+    //     <>
+    //       ON AIR &#64; 4&#47;28(화) 오전 10시30분 ~ 11시30분<br />
+    //       ※ 주요 내용 <br />
+    //       ▣ 온실가스 배출 관리 범위(Scope 1&#47;2&#47;3)에 대한 이해<br />
+    //       ▣ 관련 규제 동향 및 국내&#47;외 기업 대응 사례<br />
+    //     </>
+    //   ),
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00004/cube/CUBE-806/lecture-card/LECTURE-CARD-5td',
+    //   imageUrl: '/images/all/img_banner_ESGTalk_20200427.jpg',
+    // },
     {
       type: ContentType.LinkContent,
       title: <>개정된 핵인싸 과정으로<br/>역량 향상의 씨앗을 심어보세요</>,
