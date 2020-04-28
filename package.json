@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
-    "@nara.drama/approval": "0.3.5",
-    "@nara.drama/depot": "1.2.7-sk-test2",
-    "@nara.drama/feedback": "0.0.28",
+    "@nara.drama/approval": "0.3.6",
+    "@nara.drama/depot": "1.2.8",
+    "@nara.drama/feedback": "0.1.1",
     "@nara.platform/accent": "0.1.0",
     "@nara.platform/dock": "0.1.0-sk",
     "@sku/personalcube": "0.0.26",
