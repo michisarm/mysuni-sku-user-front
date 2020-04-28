@@ -6,7 +6,6 @@ import { CubeState } from 'shared/model';
 import PersonalCubeApi from '../apiclient/PersonalCubeApi';
 import { PersonalCubeModel } from '../../model/PersonalCubeModel';
 
-
 @autobind
 export default class PersonalCubeService {
   //
@@ -60,7 +59,7 @@ export default class PersonalCubeService {
 
     if (personalCube.contents.fileBoxId) {
       const fileBox = await this.personalCubeApi.findFileBox(personalCube.contents.fileBoxId);
-      if (fileBox === '' || fileBox === null || fileBox === undefined || fileBox === '[]') {
+      if (fileBox === '' || fileBox === null || fileBox === undefined || fileBox.toString() === '[]') {
         personalCube.contents.fileBoxId = '';
       }
     }
