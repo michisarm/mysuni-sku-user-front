@@ -121,7 +121,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { examPaperService, examinationService, answerSheetService, trigger } = this.props;
     const { examination } = examinationService!;
     const { examPaper } = examPaperService!;
-    const { answerMap } = answerSheetService!;
+    const { answerMap, answerChkMap } = answerSheetService!;
     const { score, questions } = examPaper!;
 
     return (
@@ -154,7 +154,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                   questions && questions.length
                   && questions.map(question => {
                     let answerArea = null;
+                    let correctArea = null; // 오답 처리
                     const answer = answerMap.get(question.questionNo) || '';
+                    console.log('answer onLoad user ::' + answer);
+
+                    const answerChk = answerChkMap.get(question.questionNo) || '';
+                    console.log('answerChk onLoad ::' + answerChk);
 
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:
@@ -177,6 +182,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                         );
                         break;
                       case QuestionType.SingleChoice:
+                        correctArea = 'Y';
                         answerArea = (
                           <SingleChoiceView
                             answer={answer}
@@ -189,7 +195,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     }
                     return (
                       <List.Item as="li" key={question.questionNo}>
+                        {answerChk === question.answer &&
                         <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || answerChk === '' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || answerChk !== question.answer && correctArea === 'Y' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`(오답) ${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        }
                         <div className="ol-answer">
                           {answerArea}
                         </div>

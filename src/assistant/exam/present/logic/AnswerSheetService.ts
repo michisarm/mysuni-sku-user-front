@@ -31,6 +31,17 @@ export default class AnswerSheetService {
     return map;
   }
 
+  @computed
+  get answerChkMap() {
+    const map = new Map<string, string>();
+    if (this.answerSheet && this.answerSheet.answersChk && this.answerSheet.answersChk.length) {
+      this.answerSheet.answersChk.map(answer => {
+        map.set(answer.questionNo, answer.answer);
+      });
+    }
+    return map;
+  }
+
   registerAnswerSheet(answerSheet: AnswerSheetModel) {
     return this.answerSheetApi.registerAnswerSheet(answerSheet);
   }

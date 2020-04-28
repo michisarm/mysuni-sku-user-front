@@ -11,12 +11,17 @@ export class AnswerSheetModel {
   finished: boolean = false;
   examId: string = '';
   answers: ItemAnswerModel[] = [];
+  answersChk: ItemAnswerModel[] = [];
 
   constructor(answerSheet?: AnswerSheetModel) {
     if (answerSheet) {
       const answers = answerSheet.answers && answerSheet.answers.length
         && answerSheet.answers.map(answer => new ItemAnswerModel(answer)) || this.answers;
       Object.assign(this, { ...answerSheet, answers });
+
+      const answersChk = answerSheet.answersChk && answerSheet.answersChk.length
+        && answerSheet.answersChk.map(answer => new ItemAnswerModel(answer)) || this.answers;
+      Object.assign(this, { ...answerSheet, answersChk });
     }
   }
 
