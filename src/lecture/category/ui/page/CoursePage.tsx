@@ -186,14 +186,14 @@ class CoursePage extends Component<Props, State> {
     await coursePlanService.findCoursePlanContents(coursePlan.contentsId);
 
     if (coursePlanService.coursePlanContents.testId) {
-      const examination = await examinationService!.findExamination(coursePlanService.coursePlanContents.testId);
-      const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+      const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
+      const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
 
       this.state.examTitle = examPaper.title;
     }
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
-      await answerSheetService!.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
+      await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
       const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
 
       const obj =  JSON.parse(JSON.stringify(surveyCase.titles));

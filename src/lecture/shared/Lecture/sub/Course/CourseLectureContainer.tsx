@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
+import depot from '@nara.drama/depot';
+
 import classNames from 'classnames';
 import moment from 'moment';
 import { Icon, Button } from 'semantic-ui-react';
@@ -31,11 +33,11 @@ import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
 import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgress';
 import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer';
-import { AnswerSheetModal } from '../../../../../assistant';
+import { AnswerSheetModal, CubeReportModal } from '../../../../../assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
-
+import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -73,6 +75,7 @@ interface State
   examTitle: string,
   surveyState: boolean,
   surveyTitle: string,
+  reportFileId: string,
   type: string,
   name: string,
   isContent: boolean,
@@ -129,16 +132,17 @@ class CourseLectureContainer extends Component<Props, State> {
   rollBooks: RollBookModel[] = [];
 
   state =
-  {
-    classNameForLearningState: 'fix line' || 'fix bg',
-    inProgress: '',
-    examTitle: '',
-    surveyState: false,
-    surveyTitle: '',
-    type: '',
-    name: '',
-    isContent: false,
-  };
+    {
+      classNameForLearningState: 'fix line' || 'fix bg',
+      inProgress: '',
+      examTitle: '',
+      reportFileId: '',
+      surveyState: false,
+      surveyTitle: '',
+      type: '',
+      name: '',
+      isContent: false,
+    };
 
   constructor(props: Props)
   {
@@ -147,60 +151,75 @@ class CourseLectureContainer extends Component<Props, State> {
     this.init();
   }
 
-  componentDidMount()
-  {
-    //
-    if (this.rollBooks[0]) {
-      this.init();
-    }
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    if (this.props !== prevProps) {
-      this.init();
-    }
-  }
+  // componentDidMount()
+  // {
+  //   //
+  //   if (this.rollBooks[0]) {
+  //     this.init();
+  //   }
+  // }
+  //
+  // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  //   if (this.props !== prevProps) {
+  //     this.init();
+  //   }
+  // }
 
   async init()
   {
     const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService } = this.props;
     const { getStudentForVideo } = studentService!;
 
-    this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
-    this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
+    if (lectureView && lectureView.cubeId) {
+      this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
+      this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-    if (this.rollBooks[0]) {
-      this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
+      console.log('init lectureView : ', lectureView);
+      console.log('init personalCube : ', this.personalCube);
+      console.log('init rollBooks : ', this.rollBooks[0]);
 
-      if (this.personalCube?.contents.examId)
+      if (this.rollBooks[0]) {
+        this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
+
+        if (this.personalCube?.contents.examId)
+        {
+          const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
+          const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+          this.state.examTitle = examPaper.title;
+        }
+
+        if (this.personalCube?.contents.surveyCaseId) {
+          const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+          const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+
+          const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+
+          const title = JSON.parse(JSON.stringify(obj.langStringMap));
+
+          const disabled = answerSheetService && answerSheetService.progress && answerSheetService.progress === AnswerProgress.Complete;
+          this.state.surveyState = disabled;
+          this.state.surveyTitle =  title.ko;
+        }
+
+        if (this.personalCube?.cubeIntro.id)
+        {
+          const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
+          if (cubeIntro?.reportFileBox.fileBoxId) {
+            this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
+          }
+        }
+
+        this.viewObject = this.getViewObject();
+        this.setExamState(this.studentData);
+      }
+
+      getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
       {
-        const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
-        const examPaper = await examPaperService!.findExamPaper(examination.paperId);
-        this.state.examTitle = examPaper.title;
-      }
-
-      if (this.personalCube?.contents.surveyCaseId) {
-        const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
-        const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
-
-        const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-        const title = JSON.parse(JSON.stringify(obj.langStringMap));
-
-        const disabled = answerSheetService && answerSheetService.progress && answerSheetService.progress === AnswerProgress.Complete;
-        this.state.surveyState = disabled;
-        this.state.surveyTitle =  title.ko;
-      }
-
-      this.viewObject = this.getViewObject();
-      this.setExamState(this.studentData);
+        this.studentForVideoObj = studentForVideo;
+        const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+        this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      });
     }
-
-    getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
-    {
-      this.studentForVideoObj = studentForVideo;
-      const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
-      this.setState({ classNameForLearningState: classNameForLearningStateTemp });
-    });
 
     // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
     // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
@@ -481,7 +500,7 @@ class CourseLectureContainer extends Component<Props, State> {
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = this.personalCube?.contents.surveyCaseId || '';
-    reportFileBoxId = this.personalCube?.contents.fileBoxId || '';
+    reportFileBoxId = this.state.reportFileId || '';
     this.state.isContent = true;
 
     if (this.personalCube && this.studentData  && this.studentData.id) {
@@ -534,8 +553,14 @@ class CourseLectureContainer extends Component<Props, State> {
 
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onReportNotReady() {
+    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
   onTestNotReady() {
-    reactAlert({ title: 'Test&Report 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
@@ -564,7 +589,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
   setExamState(studentData: any) {
     this.setStateName('1', 'Test');
-
+    console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (studentData.learningState === LearningState.Progress ||
@@ -627,6 +652,11 @@ class CourseLectureContainer extends Component<Props, State> {
     this.state.name = name;
   }
 
+  onClickDownloadReport(fileBoxId: string) {
+    //
+    depot.downloadDepot(fileBoxId);
+  }
+
   render() {
     //
     const { classNameForLearningState } = this.state;
@@ -641,7 +671,8 @@ class CourseLectureContainer extends Component<Props, State> {
     const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
-    console.log('lecture container : ', this.viewObject);
+    console.log('lecture container viewObject : ', this.viewObject);
+    console.log('lecture container personalCube : ', this.personalCube);
 
     return (
       <div>
@@ -715,12 +746,25 @@ class CourseLectureContainer extends Component<Props, State> {
               />
             )
           }
+
+          {
+            this.viewObject && this.viewObject.reportFileBoxId && (
+              <CubeReportModal
+                downloadFileBoxId ={this.viewObject.reportFileBoxId}
+                ref={reportModal => this.reportModal = reportModal}
+                downloadReport = {this.onClickDownloadReport}
+                rollBookId={this.rollBooks[0].id}
+              />
+            )
+          }
+
         </div>
 
         {
           this.viewObject && this.state.isContent === true && (
             <LectureExam
-              // onReport={this.personalCube?.contents.fileBoxId ? this.onReport : undefined}
+              onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
+              onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
               onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
               onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
               onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}

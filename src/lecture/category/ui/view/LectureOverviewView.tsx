@@ -3,14 +3,16 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import { AnswerSheetModal, CubeReportModal } from 'assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
+
 import { DatePeriod } from 'shared/model';
 import { CubeType } from 'personalcube/personalcube/model';
 import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-
-
+import LectureExam from '../../../shared/LectureExam';
 
 interface Props {
   viewObject: any
@@ -90,7 +92,6 @@ class LectureOverviewView extends Component<Props, State> {
   }
 
   onTest() {
-    alert();
     this.examModal.onOpenModal();
   }
 
@@ -162,31 +163,31 @@ class LectureOverviewView extends Component<Props, State> {
           description={viewObject.description}
         />
 
-        {/*{*/}
-        {/*  viewObject && viewObject.examId && (*/}
-        {/*    <AnswerSheetModal*/}
-        {/*      examId={viewObject.examId}*/}
-        {/*      ref={examModal => this.examModal = examModal}*/}
-        {/*      onSaveCallback={this.testCallback}*/}
-        {/*    />*/}
-        {/*  )*/}
-        {/*}*/}
+        {
+          viewObject && viewObject.examId && (
+            <AnswerSheetModal
+              examId={viewObject.examId}
+              ref={examModal => this.examModal = examModal}
+              onSaveCallback={this.testCallback}
+            />
+          )
+        }
 
-        {/*{*/}
-        {/*  viewObject && viewObject.surveyId && (*/}
-        {/*    <SurveyAnswerSheetModal*/}
-        {/*      surveyId={viewObject.surveyId}*/}
-        {/*      surveyCaseId={viewObject.surveyCaseId}*/}
-        {/*      ref={surveyModal => this.surveyModal = surveyModal}*/}
-        {/*      // onSaveCallback={this.testCallback}*/}
-        {/*    />*/}
-        {/*  )*/}
-        {/*}*/}
+        {
+          viewObject && viewObject.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={viewObject.surveyId}
+              surveyCaseId={viewObject.surveyCaseId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
+            />
+          )
+        }
 
         {/*{*/}
         {/*  viewObject && (*/}
         {/*    <LectureExam*/}
-        {/*      // onReport={this.personalCube?.contents.fileBoxId ? this.onReport : undefined}*/}
+        {/*      onReport={viewObject.reportFileBoxId ? this.onReport : undefined}*/}
         {/*      onTest={viewObject.examId ? this.onTest : undefined}*/}
         {/*      onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}*/}
         {/*      onSurvey={viewObject.surveyId ? this.onSurvey : undefined}*/}
@@ -200,6 +201,7 @@ class LectureOverviewView extends Component<Props, State> {
         <OverviewField.FileDownload
           fileBoxIds={[ viewObject.fileBoxId ]}
         />
+
         <OverviewField.List
           ref={this.panelRef}
           className={classNames('sub-category fn-parents', { open: categoryOpen })}

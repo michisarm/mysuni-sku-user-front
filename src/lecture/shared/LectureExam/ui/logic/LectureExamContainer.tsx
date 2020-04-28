@@ -6,7 +6,9 @@ import { Report, Test, Survey } from '../view/LectureExamElementsView';
 interface Props {
   /** 과제 액션*/
   onReport?: () => void
-  /** 테스트 액션 */
+  /** 과 비활성화 시 */
+  onReportNotReady?: () => void
+  /** 테스트제 액션 */
   onTest?: () => void
   /** 테스트 비활성화 시 */
   onTestNotReady?: () => void
@@ -25,12 +27,13 @@ class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, type, name } = this.props;
+    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, type, name } = this.props;
 
     return (
       <div className="contents trs-box-wrap non-height">
         <Report
           OnReport={onReport}
+          onReportNotReady={onReportNotReady}
           viewObject={viewObject}
           type={type}
           name={name}
