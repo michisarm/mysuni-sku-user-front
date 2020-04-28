@@ -705,9 +705,9 @@ class LectureCardContainer extends Component<Props, State> {
 
         {children}
 
-        <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId ]}
-        />
+        {/*<OverviewField.FileDownload*/}
+        {/*  fileBoxIds={[ viewObject.fileBoxId ]}*/}
+        {/*/>*/}
 
         {
           viewObject && viewObject.tabState === 'list' && (

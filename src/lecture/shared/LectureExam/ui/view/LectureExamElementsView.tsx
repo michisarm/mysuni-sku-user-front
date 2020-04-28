@@ -20,7 +20,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, type, name }: R
       </div>
       <div className="desc">
         <div className="t-copy">Report</div>
-        <div className="s-copy">Front-End Machine Learning UI/UX Guide Director</div>
+        {/*<div className="s-copy">Front-End Machine Learning UI/UX Guide Director</div>*/}
       </div>
       <div className="btn-area">
 
@@ -50,13 +50,13 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, type, name }: R
 
         {
           type === '4' && (
-            <span className="state">{name}</span>
+            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
           type === '5' && (
-            <span className="state">{name}</span>
+            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 

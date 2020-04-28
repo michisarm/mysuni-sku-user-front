@@ -53,7 +53,6 @@ class FavoriteChannelChangeContainer extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    console.log('componentDidMount');
     this.onOpenModal();
   }
 
