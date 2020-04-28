@@ -111,7 +111,7 @@ export default class PersonalCubeApi {
 
   findFileBox(depotIds: string) {
     //
-    return axios.get<string>(this.depotURL + `?depotIds=[${depotIds}]`)
+    return axios.get<string>(this.depotURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
       .then(response => response && response.data || null);
   }
 }
