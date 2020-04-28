@@ -58,6 +58,13 @@ export default class PersonalCubeService {
     //
     const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
 
+    if (personalCube.contents.fileBoxId) {
+      const fileBox = await this.personalCubeApi.findFileBox(personalCube.contents.fileBoxId);
+      if (fileBox === '' || fileBox === null || fileBox === undefined || fileBox === '[]') {
+        personalCube.contents.fileBoxId = '';
+      }
+    }
+
     if (personalCube) {
       return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
     }

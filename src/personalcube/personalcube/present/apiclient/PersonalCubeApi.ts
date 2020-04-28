@@ -10,14 +10,15 @@ import { ApprovalContentsRdo } from '../../model/ApprovalContentsRdo';
 import { ApprovalContents } from '../../model/ApprovalContents';
 import { PersonalCubeRequestCdoModel } from '../../model/PersonalCubeRequestCdoModel';
 
-
 export default class PersonalCubeApi {
   //
   static instance: PersonalCubeApi;
 
-  URL = '/api/personalCube/personalcubes';
-  flowURL = '/api/personalCube/cubes/flow';
-  approvalURL = '/api/personalCube/approval';
+  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  URL = this.devUrl + '/api/personalCube/personalcubes';
+  flowURL = this.devUrl + '/api/personalCube/cubes/flow';
+  approvalURL = this.devUrl + '/api/personalCube/approval';
+  depotURL = this.devUrl + '/api/depot/depotFile/multiple';
 
 
   static convertOffsetElementList(response: any): OffsetElementList<PersonalCubeModel> {
@@ -106,6 +107,12 @@ export default class PersonalCubeApi {
     return axios.get<ExcelView>(this.URL + `/excel`, { params: personalCubeRdo })
       // .then((response: any) => window.location.href = response.request.responseURL);
       .then((response: any) => console.log(response));
+  }
+
+  findFileBox(depotIds: string) {
+    //
+    return axios.get<string>(this.depotURL + `?depotIds=[${depotIds}]`)
+      .then(response => response && response.data || null);
   }
 }
 
