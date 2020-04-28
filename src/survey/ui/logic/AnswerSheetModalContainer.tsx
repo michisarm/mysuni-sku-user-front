@@ -29,6 +29,7 @@ interface Props {
   surveyId: string
   surveyCaseId: string
   trigger?: React.ReactNode
+  onSaveCallback?:() => void
 }
 
 interface States {
@@ -85,21 +86,25 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSaveAnswerSheet(finished: boolean) {
-    const { answerSheetService, surveyCaseService } = this.props;
+    const { answerSheetService, surveyCaseService, onSaveCallback } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
     if (!finished) {
       if (answerSheet.id && answerSheet.id.length) {
-        answerSheetService!.saveAnswerSheet()
-          .then(this.onCloseModal);
+        answerSheetService!.saveAnswerSheet().then(() => {
+          this.onCloseModal();
+          if (onSaveCallback) onSaveCallback();
+        }); // .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
           .then((answerSheetId) => {
             answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
             return answerSheetService!.saveAnswerSheet();
-          })
-          .then(this.onCloseModal);
+          }).then(() => {
+            this.onCloseModal();
+            if (onSaveCallback) onSaveCallback();
+          }); // .then(this.onCloseModal);
       }
     }
     else if (finished) {

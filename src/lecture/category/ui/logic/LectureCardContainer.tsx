@@ -23,6 +23,7 @@ import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyRefer
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
+import {OverviewField} from '../../../../personalcube';
 
 
 interface Props {
@@ -307,13 +308,23 @@ class LectureCardContainer extends Component<Props, State> {
 
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onReportNotReady() {
+    const { viewObject } = this.props;
+
+    if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
+      reactAlert({ title: 'Report 안내', message: '과정 이수 완료 후 Report 가능합니다.' });
+    } else {
+      reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    }
+  }
+
   onTestNotReady() {
     const { viewObject } = this.props;
 
     if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
-      reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+      reactAlert({ title: 'Test 안내', message: '과정 이수 완료 후 Test 응시 가능합니다.' });
     } else {
-      reactAlert({ title: 'Test&Report 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+      reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
     }
   }
 
@@ -614,7 +625,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
 
-    console.log('card container : ', viewObject);
+    console.log('card container viewObject : ', viewObject);
+
     return (
       <LectureCardContentWrapperView>
         <LectureSubInfo
@@ -669,7 +681,7 @@ class LectureCardContainer extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
-              // onSaveCallback={this.testCallback}
+              onSaveCallback={this.testCallback}
             />
           )
         }
@@ -693,10 +705,15 @@ class LectureCardContainer extends Component<Props, State> {
 
         {children}
 
+        <OverviewField.FileDownload
+          fileBoxIds={[ viewObject.fileBoxId ]}
+        />
+
         {
           viewObject && viewObject.tabState === 'list' && (
             <LectureExam
-              // onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
               onTest={viewObject.examId ? this.onTest : undefined}
               onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
               onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
