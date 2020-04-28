@@ -155,11 +155,12 @@ class CourseLectureContainer extends Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    if (this.props !== prevProps) {
-      this.init();
-    }
-  }
+  // 20200428 psh 동영상 팝업 띄울 때 이거 탐..주석 처리
+  // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  //   if (this.props !== prevProps) {
+  //     this.init();
+  //   }
+  // }
 
   async init()
   {
