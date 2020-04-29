@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
+import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
@@ -99,8 +99,16 @@ class LectureOverviewView extends Component<Props, State> {
 
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onReportNotReady() {
+    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+  }
+
   onTestNotReady() {
-    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+  }
+
+  OnSurveyNotReady() {
+    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
   }
 
   onSurvey() {
@@ -202,9 +210,11 @@ class LectureOverviewView extends Component<Props, State> {
           viewObject && (
             <LectureExam
               onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
               onTest={viewObject.examId ? this.onTest : undefined}
               onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
               onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+              OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
               type={viewObject.examType}
               name={viewObject.examName}

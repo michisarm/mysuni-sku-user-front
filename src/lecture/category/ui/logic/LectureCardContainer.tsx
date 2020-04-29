@@ -217,13 +217,14 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onOpenStart() {
-    const { typeViewObject } = this.props;
+    const { typeViewObject, init } = this.props;
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
 
       //0416
       window.open(typeViewObject.url, '_blank');
+      if (init) init();
       //this.setState( {openLearningModal: true});
     }
     else {
@@ -547,7 +548,7 @@ class LectureCardContainer extends Component<Props, State> {
         }
       }
       const studentNumberOfTrials = student.numberOfTrials;
-      console.log('student numberOfTrials ::' + studentNumberOfTrials);
+      //console.log('student numberOfTrials ::' + studentNumberOfTrials);
       // setter
       localStorage.setItem('numberOfTrials', studentNumberOfTrials.toString());
     }
