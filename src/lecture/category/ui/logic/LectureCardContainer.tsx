@@ -546,6 +546,10 @@ class LectureCardContainer extends Component<Props, State> {
           this.setStateName('1', 'Test');
         }
       }
+      const studentNumberOfTrials = student.numberOfTrials;
+      console.log('student numberOfTrials ::' + studentNumberOfTrials);
+      // setter
+      localStorage.setItem('numberOfTrials', studentNumberOfTrials.toString());
     }
 
     if (viewObject && viewObject.surveyId && student) {

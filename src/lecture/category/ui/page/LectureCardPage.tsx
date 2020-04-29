@@ -153,6 +153,11 @@ class LectureCardPage extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
+    // remove
+    localStorage.removeItem('finishedChk');
+    // remove
+    localStorage.removeItem('numberOfTrials');
+
     this.setState({ loaded: false });
 
     const promises = Promise.all([
