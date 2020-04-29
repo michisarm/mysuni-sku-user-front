@@ -792,22 +792,23 @@ class LectureCardPage extends Component<Props, State> {
   }
 
   onPageRefresh() {
-    const { history, match, location } = this.props;
-    const { params } = match;
-    const { search } = location;
-    const queryParam = queryString.parse(search);
+    // const { history, match, location } = this.props;
+    // const { params } = match;
+    // const { search } = location;
+    // const queryParam = queryString.parse(search);
 
-    history.replace('/empty');
-    setTimeout(() => {
-      this.init();
-      // if (params.cineroomId) {
-      //   history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
-      //     { courseLectureId: queryParam.programLectureId as string }));
-      // }
-      // else {
-      //   history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
-      // }
-    });
+    this.init();
+    // history.replace('/empty');
+    // setTimeout(() => {
+
+    // if (params.cineroomId) {
+    //   history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
+    //     { courseLectureId: queryParam.programLectureId as string }));
+    // }
+    // else {
+    //   history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
+    // }
+    // });
   }
 
   renderOverview() {
