@@ -119,6 +119,43 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }
   }
 
+  // MultiChoice 선택 정답 여부 체크
+  onSaveAnswerMultiChoice(answerChkStr: string, answerMulti: string) {
+    let answerChkArr = [];
+    console.log('onSaveAnswerMultiChoice answerChkStr :: ' + answerChkStr);
+    console.log('onSaveAnswerMultiChoice answerMulti :: ' + answerMulti);
+    // 문제지 정답
+    answerChkArr = answerChkStr.split(',');
+    // 사용자 정답
+    const answerMultiJson = JSON.parse(answerMulti);
+
+    let chechkMultiYn = 'N';
+    let checkCnt = 0;
+
+    // 자릿수 비교
+    if(answerChkArr.length === answerMultiJson.length) {
+      // 정답지
+      for ( let i = 0; i < answerChkArr.length; i++ ) {
+        // 사용자문제지
+        for ( let j = 0; j < answerMultiJson.length; j++ ) {
+          // 정답지 사용자 문제지 체크
+          if( answerChkArr[i] === answerMultiJson[j]) {
+            checkCnt++;
+          }
+        }
+      }
+    }
+
+    // 정답지와 사용자 정답 갯수 체크
+    if(answerChkArr.length === checkCnt) {
+      chechkMultiYn = 'Y';
+    }
+
+    console.log('onSaveAnswerMultiChoice chechkMultiYn :: ' + chechkMultiYn);
+
+    return chechkMultiYn;
+  }
+
   onSubmitClick() {
     reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
   }
@@ -163,6 +200,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                   && questions.map(question => {
                     let answerArea = null;
                     let correctArea = null; // 오답 처리
+                    let correctMultiArea = null; // 멀티 오답 처리
+
                     const answer = answerMap.get(question.questionNo) || '';
                     console.log('answer onLoad user ::' + answer);
 
@@ -189,7 +228,9 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                         );
                         break;
                       case QuestionType.MultiChoice:
-                        correctArea = 'Y';
+                        correctArea = 'M';
+                        correctMultiArea = this.onSaveAnswerMultiChoice(answerChk, question.answer);
+                        console.log('case QuestionType.MultiChoice correctMultiArea ::' + correctMultiArea);
                         answerArea = (
                           <MultiChoiceView
                             answer={answer}
@@ -212,10 +253,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     }
                     return (
                       <List.Item as="li" key={question.questionNo}>
-                        {numberOfTrials !== '0' && finichChkVal !== 'N' && answerChk === question.answer.replace('[', '').replace(']', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '') && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || finichChkVal !== 'N' && answerChk === question.answer.replace('[', '').replace(']', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '') && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        {numberOfTrials !== '0'&& finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
                         || answerChk === '' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || answerChk !== question.answer.replace('[', '').replace(']', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '').replace('"', '') && correctArea === 'Y' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || answerChk !== question.answer && correctArea === 'Y' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
+                        || finichChkVal !== 'N' && correctArea === 'M' && correctMultiArea === 'Y' && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
                         || <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
                         }
                         <div className="ol-answer">
