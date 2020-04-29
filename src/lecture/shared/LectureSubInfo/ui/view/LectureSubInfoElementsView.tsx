@@ -31,16 +31,17 @@ interface ButtonsProp {
 export const Buttons = ({ mainAction, subActions, onCancel, state }: ButtonsProp) => {
   //
   if (!mainAction && !subActions && !onCancel) return null;
+  console.log('subActions : ',subActions);
   return (
     <div className="btn-area">
       { mainAction && <Button className="fix bg" onClick={mainAction.onAction}>{mainAction.type}</Button> }
 
-      {
-        subActions && subActions.length > 0
-          && subActions.map(subAction => (
-            <Button key={subAction.type} className="fix bg blue" onClick={subAction.onAction}>{subAction.type}</Button>
-          ))
-      }
+      {/*{*/}
+      {/*  subActions && subActions.length > 0*/}
+      {/*    && subActions.map(subAction => (*/}
+      {/*      <Button key={subAction.type} className="fix bg blue" onClick={subAction.onAction}>{subAction.type}</Button>*/}
+      {/*    ))*/}
+      {/*}*/}
       {
         State.Rejected === state || onCancel && <Button className="fix line" onClick={onCancel}>취소하기</Button>
       }

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
+import depot from '@nara.drama/depot';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 
@@ -105,6 +106,11 @@ class LectureOverviewView extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
+  onClickDownloadReport(fileBoxId: string) {
+    //
+    depot.downloadDepot(fileBoxId);
+  }
+
   testCallback() {
     const { viewObject } = this.props;
     // const { id: studentId } = student!;
@@ -173,6 +179,13 @@ class LectureOverviewView extends Component<Props, State> {
           )
         }
 
+        <CubeReportModal
+          downloadFileBoxId ={viewObject.reportFileBoxId}
+          ref={reportModal => this.reportModal = reportModal}
+          downloadReport = {this.onClickDownloadReport}
+          rollBookId={viewObject.rollBookId}
+        />
+
         {
           viewObject && viewObject.surveyId && (
             <SurveyAnswerSheetModal
@@ -184,19 +197,19 @@ class LectureOverviewView extends Component<Props, State> {
           )
         }
 
-        {/*{*/}
-        {/*  viewObject && (*/}
-        {/*    <LectureExam*/}
-        {/*      onReport={viewObject.reportFileBoxId ? this.onReport : undefined}*/}
-        {/*      onTest={viewObject.examId ? this.onTest : undefined}*/}
-        {/*      onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}*/}
-        {/*      onSurvey={viewObject.surveyId ? this.onSurvey : undefined}*/}
-        {/*      viewObject={viewObject}*/}
-        {/*      type={viewObject.examType}*/}
-        {/*      name={viewObject.examName}*/}
-        {/*    />*/}
-        {/*  )*/}
-        {/*}*/}
+        {
+          viewObject && (
+            <LectureExam
+              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+              onTest={viewObject.examId ? this.onTest : undefined}
+              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+              viewObject={viewObject}
+              type={viewObject.examType}
+              name={viewObject.examName}
+            />
+          )
+        }
 
         <OverviewField.FileDownload
           fileBoxIds={[ viewObject.fileBoxId ]}

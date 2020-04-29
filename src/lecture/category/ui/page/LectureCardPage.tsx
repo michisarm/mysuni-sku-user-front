@@ -369,7 +369,7 @@ class LectureCardPage extends Component<Props, State> {
     const { cubeIntro } = cubeIntroService!;
     const { student }: StudentService = studentService!;
     const { classrooms } = classroomService!;
-    const { rollBooksPassedStudentCount, rollBooksStudentCount } = rollBookService!;
+    const { rollBooksPassedStudentCount, rollBooksStudentCount, rollBooks } = rollBookService!;
     const studentJoin = this.getStudentJoin();
 
     let state: SubState | undefined;
@@ -383,6 +383,7 @@ class LectureCardPage extends Component<Props, State> {
     let examType: string = '';
     let examName: string = '';
     let studentId: string = '';
+    let rollBookId: string = '';
 
     examId = personalCube.contents.examId || '';
     examTitle = this.state.examTitle || '';
@@ -394,8 +395,9 @@ class LectureCardPage extends Component<Props, State> {
     examType = this.state.type || '';
     examName = this.state.name || '';
     studentId = student.id || '';
+    rollBookId = rollBooks[0]?.id || '';
 
-    console.log('lecture card page student : ', student);
+    //console.log('lecture card page student : ', student);
 
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
@@ -472,6 +474,7 @@ class LectureCardPage extends Component<Props, State> {
       examType,
       examName,
       studentId,
+      rollBookId,
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId,
       stamp: 0,
