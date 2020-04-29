@@ -450,12 +450,13 @@ class CoursePage extends Component<Props, State> {
 
     history.replace('/empty');
     setTimeout(() => {
-      if (params.cineroomId) {
-        history.replace(routePaths.courseOverview(params.cineroomId, params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
-      }
-      else {
-        history.replace(routePaths.courseOverviewPrev(params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
-      }
+      this.init();
+      // if (params.cineroomId) {
+      //   history.replace(routePaths.courseOverview(params.cineroomId, params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
+      // }
+      // else {
+      //   history.replace(routePaths.courseOverviewPrev(params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
+      // }
     });
   }
 

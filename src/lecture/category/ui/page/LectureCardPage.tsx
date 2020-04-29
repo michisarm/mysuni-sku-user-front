@@ -799,13 +799,14 @@ class LectureCardPage extends Component<Props, State> {
 
     history.replace('/empty');
     setTimeout(() => {
-      if (params.cineroomId) {
-        history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
-          { courseLectureId: queryParam.programLectureId as string }));
-      }
-      else {
-        history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
-      }
+      this.init();
+      // if (params.cineroomId) {
+      //   history.replace(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, params.cubeId, params.lectureCardId,
+      //     { courseLectureId: queryParam.programLectureId as string }));
+      // }
+      // else {
+      //   history.replace(routePaths.lectureCardOverviewPrev(params.collegeId, params.cubeId, params.lectureCardId));
+      // }
     });
   }
 
