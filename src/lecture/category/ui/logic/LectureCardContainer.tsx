@@ -217,14 +217,13 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onOpenStart() {
-    const { typeViewObject, init } = this.props;
+    const { typeViewObject } = this.props;
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
 
       //0416
       window.open(typeViewObject.url, '_blank');
-      if (init) init();
       //this.setState( {openLearningModal: true});
     }
     else {
