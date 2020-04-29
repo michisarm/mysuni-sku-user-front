@@ -154,13 +154,19 @@ class CourseLectureContainer extends Component<Props, State> {
   // componentDidMount()
   // {
   //   //
-  //   if (this.rollBooks[0]) {
-  //     this.init();
-  //   }
+  //   // if (this.rollBooks[0]) {
+  //   //   this.init();
+  //   // }
   // }
   //
   // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  //
+  //   // if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+  //   //   this.findCoursePlan();
+  //   // }
   //   if (this.props !== prevProps) {
+  //     console.log('componentDidUpdate this.props : ', this.props);
+  //     console.log('componentDidUpdate prevProps : ', prevProps);
   //     this.init();
   //   }
   // }
@@ -576,9 +582,6 @@ class CourseLectureContainer extends Component<Props, State> {
   }
 
   testCallback() {
-    const { studentService, student } = this.props;
-    // const { id: studentId } = student!;
-
     if (this.studentData) {
       StudentApi.instance.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
         .then(() => {
@@ -589,7 +592,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
   setExamState(studentData: any) {
     this.setStateName('1', 'Test');
-    console.log('setExamState : ', studentData);
+    // console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (studentData.learningState === LearningState.Progress ||

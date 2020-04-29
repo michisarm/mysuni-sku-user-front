@@ -41,6 +41,7 @@ import LectureOverviewView from '../view/LectureOverviewView';
 import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/dateTimeHelper';
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
+import StudentApi from '../../../shared/present/apiclient/StudentApi';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -397,7 +398,7 @@ class LectureCardPage extends Component<Props, State> {
     studentId = student.id || '';
     rollBookId = rollBooks[0]?.id || '';
 
-    //console.log('lecture card page student : ', student);
+    // console.log('lecture card page student : ', student);
 
     if (student && student.id && studentJoin) {
       if (student.proposalState === ProposalState.Submitted) state = SubState.WaitingForApproval;
@@ -777,6 +778,19 @@ class LectureCardPage extends Component<Props, State> {
     return { width, height };
   }
 
+  testCallback() {
+    const { personalCubeService, studentService } = this.props;
+    const { personalCube } = personalCubeService!;
+    const { student }: StudentService = studentService!;
+
+    if (personalCube.contents.examId) {
+      StudentApi.instance.modifyStudentForExam(student.id, personalCube.contents.examId)
+        .then(() => {
+          if (this.init()) this.init();
+        });
+    }
+  }
+
   onPageRefresh() {
     const { history, match, location } = this.props;
     const { params } = match;
@@ -804,6 +818,7 @@ class LectureCardPage extends Component<Props, State> {
       <LectureOverviewView
         viewObject={viewObject}
         typeViewObject={typeViewObject}
+        onSaveCallback={this.testCallback}
       />
     );
   }

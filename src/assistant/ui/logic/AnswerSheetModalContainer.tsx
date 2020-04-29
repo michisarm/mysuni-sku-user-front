@@ -203,10 +203,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     let correctMultiArea = null; // 멀티 오답 처리
 
                     const answer = answerMap.get(question.questionNo) || '';
-                    console.log('answer onLoad user ::' + answer);
+                    // console.log('answer onLoad user ::' + answer);
 
                     const answerChk = answerChkMap.get(question.questionNo) || '';
-                    console.log('answerChk onLoad ::' + answerChk);
+                    // console.log('answerChk onLoad ::' + answerChk);
 
                     // getter
                     const finichChkVal = localStorage.getItem('finishedChk');

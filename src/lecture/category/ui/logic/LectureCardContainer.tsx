@@ -483,7 +483,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     this.setStateName('1', 'Test');
 
-    console.log('student : ', student);
+    // console.log('student : ', student);
 
     if (viewObject.examId && student) {
       if (student.serviceType && student.serviceType === 'Lecture') {
@@ -629,7 +629,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
 
-    console.log('card container viewObject : ', viewObject);
+    // console.log('card container viewObject : ', viewObject);
 
     return (
       <LectureCardContentWrapperView>
@@ -666,10 +666,10 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
-        <ApplyReferenceModal
-          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
-          handleOk={this.onClickApplyReferentOk}
-        />
+        {/*<ApplyReferenceModal*/}
+        {/*  ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}*/}
+        {/*  handleOk={this.onClickApplyReferentOk}*/}
+        {/*/>*/}
         {
           viewObject && viewObject.examId && (
             <AnswerSheetModal
@@ -685,10 +685,11 @@ class LectureCardContainer extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
-              onSaveCallback={this.testCallback}
+              // onSaveCallback={this.testCallback}
             />
           )
         }
+
         <CubeReportModal
           downloadFileBoxId ={viewObject.reportFileBoxId || typeViewObject.reportFileBoxId}
           ref={reportModal => this.reportModal = reportModal}

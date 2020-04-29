@@ -18,6 +18,7 @@ import LectureExam from '../../../shared/LectureExam';
 interface Props {
   viewObject: any
   typeViewObject: any
+  onSaveCallback:() => void
 }
 
 
@@ -154,7 +155,7 @@ class LectureOverviewView extends Component<Props, State> {
 
   render() {
     //
-    const { viewObject, typeViewObject } = this.props;
+    const { viewObject, typeViewObject, onSaveCallback } = this.props;
 
     if (!viewObject.category) {
       return null;
@@ -174,7 +175,7 @@ class LectureOverviewView extends Component<Props, State> {
             <AnswerSheetModal
               examId={viewObject.examId}
               ref={examModal => this.examModal = examModal}
-              onSaveCallback={this.testCallback}
+              onSaveCallback={onSaveCallback}
             />
           )
         }

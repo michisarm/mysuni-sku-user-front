@@ -59,9 +59,9 @@ export default class PersonalCubeService {
 
     if (personalCube.contents.fileBoxId) {
       const fileBox = await this.personalCubeApi.findFileBox(personalCube.contents.fileBoxId);
-      console.log('findPersonalCube type : ', typeof fileBox);
-      console.log('findPersonalCube length : ', fileBox?.length);
-      if (fileBox === '' || fileBox === null || fileBox === undefined || fileBox.length === 0) {
+      // console.log('findPersonalCube type : ', typeof fileBox);
+      // console.log('findPersonalCube length : ', fileBox?.length);
+      if (fileBox === '' || fileBox === '[]' || fileBox === null || fileBox === undefined || fileBox.length === 0) {
         personalCube.contents.fileBoxId = '';
       }
     }

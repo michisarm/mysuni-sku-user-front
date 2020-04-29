@@ -142,7 +142,7 @@ class SkProfileService {
   @action
   setProfileProp(name: string, value: string | {} | string[] | number)
   {
-    console.log('SkProfileService setProfileProp=', value);
+    // console.log('SkProfileService setProfileProp=', value);
     this.skProfile = _.set(this.skProfile, name, value);
   }
 }

@@ -12,7 +12,7 @@ interface ReportProps {
 export const Report = ({ OnReport, onReportNotReady, viewObject, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
-  console.log('Report viewObject : ', viewObject);
+  // console.log('Report viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -76,8 +76,8 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
-  console.log('Test viewObject : ', viewObject);
-  console.log('type : {0}, name : {1}', type, name);
+  // console.log('Test viewObject : ', viewObject);
+  // console.log('type : {0}, name : {1}', type, name);
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -140,7 +140,7 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-  console.log('Survey viewObject : ', viewObject);
+  // console.log('Survey viewObject : ', viewObject);
   return (
     <div className="trs-box">
       <div className="thumbnail">

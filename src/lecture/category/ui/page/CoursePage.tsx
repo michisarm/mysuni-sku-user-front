@@ -25,6 +25,7 @@ import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
+import StudentApi from '../../../shared/present/apiclient/StudentApi';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
@@ -280,7 +281,7 @@ class CoursePage extends Component<Props, State> {
     reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
     tabState = this.state.tabState || '';
 
-    console.log('course page student : ', student);
+    // console.log('course page student : ', student);
 
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
@@ -416,6 +417,19 @@ class CoursePage extends Component<Props, State> {
     ];
   }
 
+  testCallback() {
+    const { studentService } = this.props;
+    const { student }: StudentService = studentService!;
+    const viewObject = this.getViewObject();
+
+    if (viewObject.examId) {
+      StudentApi.instance.modifyStudentForExam(student.id, viewObject.examId)
+        .then(() => {
+          if (this.init()) this.init();
+        });
+    }
+  }
+
   getReviewId() {
     //
     const { match, programLectureService, courseLectureService } = this.props;
@@ -472,6 +486,7 @@ class CoursePage extends Component<Props, State> {
       <LectureOverviewView
         viewObject={viewObject}
         typeViewObject={typeViewObject}
+        onSaveCallback={this.testCallback}
       />
     );
   }
