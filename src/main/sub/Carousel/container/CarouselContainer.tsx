@@ -30,7 +30,6 @@ class CarouselContainer extends Component<Props, State> {
   AUTO_NEXT_TIME = 5 * 1000;
 
   banners = [
-    img_banner_corona19_20200506.jpg
     // {
     //   type: ContentType.LinkContent,
     //   title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
