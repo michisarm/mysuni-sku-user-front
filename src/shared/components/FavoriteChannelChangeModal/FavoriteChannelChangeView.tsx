@@ -22,7 +22,7 @@ interface Props {
 @reactAutobind
 class FavoriteChannelChangeView extends Component<Props> {
   //
-  color: string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'teal'];
+  color: string [] = ['purple', 'violet', 'yellow', 'orange', 'red', 'green', 'blue', 'marine', 'teal'];
 
 
   isChecked(collegeType: CollegeType, channelId: string) {

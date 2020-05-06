@@ -164,7 +164,7 @@ class CourseContainer extends Component<Props, State> {
         ...this.learnStudentCdo,
         proposalState: ProposalState.Approved,
       };
-      lectureService?.confirmUsageStatisticsByCardId(this.learnStudentCdo)
+      lectureService?.confirmUsageStatisticsByCardId(studentCdo)
         .then((confirmed) => {
           if (onPageRefresh) {
             onPageRefresh();

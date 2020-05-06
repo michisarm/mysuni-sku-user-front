@@ -124,6 +124,13 @@ class LectureCardPage extends Component<Props, State> {
     //
     super(props);
     props.personalCubeService.clearPersonalCube();
+
+    const { cineroomId, collegeId, cubeId, lectureCardId } = this.props.match.params!;
+
+    // console.log('Lecture Card Page : ', cineroomId);
+    // console.log('Lecture Card Page : ', collegeId);
+    // console.log('Lecture Card Page : ', cubeId);
+    // console.log('Lecture Card Page : ', lectureCardId);
   }
 
 
@@ -131,11 +138,14 @@ class LectureCardPage extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+
+    // console.log('Lecture Card Page : componentDidMount');
   }
 
   componentWillUnmount(): void {
     //
     patronInfo.clearWorkspace();
+    // console.log('Lecture Card Page : componentWillUnmount');
   }
 
   setCineroom() {

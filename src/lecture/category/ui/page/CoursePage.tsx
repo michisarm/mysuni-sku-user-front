@@ -92,17 +92,32 @@ class CoursePage extends Component<Props, State> {
     props.coursePlanService.clearCoursePlan();
     props.coursePlanService.clearCoursePlanContents();
     props.lectureService.clearLectureViews();
+
+    // const { cineroomId, collegeId, lectureCardId, coursePlanId, serviceId, serviceType } = this.props.match.params!;
+    //
+    // console.log('Course Page : ', cineroomId);
+    // console.log('Course Page : ', collegeId);
+    // console.log('Course Page : ', lectureCardId);
+    // console.log('Course Page : ', coursePlanId);
+    // console.log('Course Page : ', serviceId);
+    // console.log('Course Page : ', serviceType);
   }
 
   componentDidMount() {
     //
     this.setCineroom();
     this.init();
+    // console.log('Course Page : componentDidMount');
   }
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
+    // console.log('serviceId : ', prevProps.match.params.serviceId, ' - ', this.props.match.params.serviceId);
+    // console.log('serviceType : ', prevProps.match.params.serviceType, ' - ', this.props.match.params.serviceType);
+
+    if (prevProps.match.params.serviceType !== this.props.match.params.serviceType) {
+      window.location.reload();
+    } else if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
       this.init();
     }
   }

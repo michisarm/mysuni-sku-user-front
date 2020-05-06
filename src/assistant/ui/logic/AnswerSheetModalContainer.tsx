@@ -210,11 +210,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
                     // getter
                     const finichChkVal = localStorage.getItem('finishedChk');
-                    console.log('finichChkVal onLoad ::' + finichChkVal);
+                    // console.log('finichChkVal onLoad ::' + finichChkVal);
 
                     // getter
                     const numberOfTrials = localStorage.getItem('numberOfTrials');
-                    console.log('numberOfTrials onLoad ::' + numberOfTrials);
+                    // console.log('numberOfTrials onLoad ::' + numberOfTrials);
 
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:

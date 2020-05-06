@@ -463,7 +463,7 @@ class LectureCardContainer extends Component<Props, State> {
       case CubeType.Experiential:
       case CubeType.Documents:
         if (student && student.id && student.learningState === LearningState.Progress && !viewObject.examId) {
-          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete });
+          subActions.push({ type: LectureSubInfo.ActionType.MarkComplete, onAction: this.onMarkComplete, subType: cubeType });
         }
         break;
       case CubeType.Community:
@@ -666,10 +666,12 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
-        {/*<ApplyReferenceModal*/}
-        {/*  ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}*/}
-        {/*  handleOk={this.onClickApplyReferentOk}*/}
-        {/*/>*/}
+
+        <ApplyReferenceModal
+          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+          handleOk={this.onClickApplyReferentOk}
+        />
+
         {
           viewObject && viewObject.examId && (
             <AnswerSheetModal

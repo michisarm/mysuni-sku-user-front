@@ -47,6 +47,9 @@ export class CategoryModel {
       case '행복':
         color = CategoryColorType.Happiness;
         break;
+      case '반도체':
+        color = CategoryColorType.SemicondDesign;
+        break;
       case '혁신디자인':
         color = CategoryColorType.InnovationDesign;
         break;
