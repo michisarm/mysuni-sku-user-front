@@ -400,7 +400,7 @@ const panes = [
             <div className="belt">
               <div className="label">전체 커리큘럼</div>
               <div className="map">
-                <Image src={`${PUBLIC_URL}/images/all/img-co7.png`} alt="" />
+                <Image src={`${PUBLIC_URL}/images/all/img-co7.svg`} alt="" />
               </div>
             </div>
           </div>

@@ -1,0 +1,251 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1175" height="735" viewBox="0 0 1175 735">
+    <g fill="none" fill-rule="evenodd">
+        <g transform="translate(705 258)">
+            <rect width="470" height="476" fill="#D1ECEE" rx="8"/>
+            <g transform="translate(24 60)">
+                <rect width="204" height="392" fill="#1DA1AD" rx="6"/>
+                <g fill="#FFF" opacity=".597" transform="translate(102 362)">
+                    <circle cx="2" cy="2" r="2"/>
+                    <circle cx="2" cy="10" r="2"/>
+                    <circle cx="2" cy="18" r="2"/>
+                </g>
+                <text fill="#FFF" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                    <tspan x="60.721" y="36">On-line Clinic</tspan>
+                </text>
+                <g transform="translate(16 54)">
+                    <rect width="172" height="42" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="57.556" y="26">구성원 육성</tspan>
+                    </text>
+                </g>
+                <g transform="translate(16 106)">
+                    <rect width="172" height="42" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="49.658" y="26">Performance</tspan>
+                    </text>
+                </g>
+                <g transform="translate(16 158)">
+                    <rect width="172" height="41" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="56.548" y="26">시너지/협업</tspan>
+                    </text>
+                </g>
+                <g transform="translate(16 209)">
+                    <rect width="172" height="41" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="57.556" y="26">건강한 조직</tspan>
+                    </text>
+                </g>
+                <g transform="translate(16 260)">
+                    <rect width="172" height="41" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="62.576" y="26">자기 성장</tspan>
+                    </text>
+                </g>
+                <g transform="translate(16 311)">
+                    <rect width="172" height="41" fill="#FFF" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                        <tspan x="45.172" y="26">비대면 성과 코칭</tspan>
+                    </text>
+                </g>
+            </g>
+            <g transform="translate(242 60)">
+                <rect width="204" height="392" fill="#1DA1AD" rx="6"/>
+                <text fill="#FFF" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                    <tspan x="53.981" y="36">Intensive Clinic</tspan>
+                </text>
+                <rect width="172" height="67" x="16" y="54" fill="#FFF" rx="4"/>
+                <rect width="172" height="67" x="16" y="131" fill="#FFF" rx="4"/>
+                <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="57.314" y="171">Communication</tspan>
+                </text>
+                <rect width="172" height="67" x="16" y="208" fill="#FFF" rx="4"/>
+                <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="67.528" y="93">동기부여/몰입</tspan>
+                </text>
+                <rect width="172" height="67" x="16" y="285" fill="#FFF" rx="4"/>
+                <g fill="#FFF" opacity=".597" transform="translate(101 362)">
+                    <circle cx="2" cy="2" r="2"/>
+                    <circle cx="2" cy="10" r="2"/>
+                    <circle cx="2" cy="18" r="2"/>
+                </g>
+                <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="79.576" y="247">성과 코칭</tspan>
+                </text>
+                <text fill="#222" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="80.42" y="324">갈등관리</tspan>
+                </text>
+                <g transform="translate(22 60)">
+                    <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#0E6871" rx="2"/>
+                    <text fill="#222220" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                        <tspan x="12" y="14">Off</tspan>
+                    </text>
+                </g>
+                <g transform="translate(22 137)">
+                    <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#0E6871" rx="2"/>
+                    <text fill="#222220" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                        <tspan x="12" y="14">Off</tspan>
+                    </text>
+                </g>
+                <g transform="translate(22 214)">
+                    <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#0E6871" rx="2"/>
+                    <text fill="#222220" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                        <tspan x="12" y="14">Off</tspan>
+                    </text>
+                </g>
+                <g transform="translate(22 291)">
+                    <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#0E6871" rx="2"/>
+                    <text fill="#222220" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                        <tspan x="12" y="14">Off</tspan>
+                    </text>
+                </g>
+            </g>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="16" font-weight="bold" letter-spacing="-.4">
+                <tspan x="171.452" y="37">Leadership Clinic</tspan>
+            </text>
+        </g>
+        <g>
+            <path fill="#D8EFFF" d="M8 0h669c4.418 0 8 3.582 8 8v460c0 4.418-3.582 8-8 8H8c-4.418 0-8-3.582-8-8V8c0-4.418 3.582-8 8-8z" transform="translate(0 258)"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="16" font-weight="bold" letter-spacing="-.4" transform="translate(0 258)">
+                <tspan x="255.688" y="37">Leadership Foundation</tspan>
+            </text>
+            <g transform="translate(0 258) translate(24 60)">
+                <rect width="203" height="308" fill="#2987CD" fill-rule="nonzero" rx="6"/>
+                <rect width="171" height="52" x="16" y="54" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="70.502" y="78">Leadership </tspan> <tspan x="56" y="95">Self-Assessment</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="116" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="79.42" y="147">성장추구</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="178" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="73.056" y="209">유연한 사고</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="240" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="73.056" y="271">긍정 마인드</tspan>
+                </text>
+                <text fill="#FFF" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                    <tspan x="51.632" y="36">Leading Myself</tspan>
+                </text>
+            </g>
+            <g transform="translate(0 258) translate(241 60)">
+                <rect width="203" height="308" fill="#2987CD" fill-rule="nonzero" rx="6"/>
+                <rect width="171" height="72" x="16" y="54" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="73.056" y="96">효과적 소통</tspan>
+                </text>
+                <rect width="171" height="72" x="16" y="136" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="66.028" y="178">신뢰구축/공감</tspan>
+                </text>
+                <rect width="171" height="74" x="16" y="218" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="73.056" y="260">개방적 협력</tspan>
+                </text>
+                <text fill="#FFF" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                    <tspan x="50.228" y="36">Leading People</tspan>
+                </text>
+            </g>
+            <g transform="translate(0 258) translate(458 60)">
+                <rect width="203" height="308" fill="#2987CD" fill-rule="nonzero" rx="6"/>
+                <rect width="171" height="52" x="16" y="54" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="77.068" y="85">변화/혁신</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="116" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="77.068" y="147">비전/목표</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="178" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="61.016" y="209">통합적 문제해결</tspan>
+                </text>
+                <rect width="171" height="52" x="16" y="240" fill="#FFF" rx="4"/>
+                <text fill="#000" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12">
+                    <tspan x="61.016" y="271">신속한 의사결정</tspan>
+                </text>
+                <text fill="#FFF" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                    <tspan x="43.598" y="36">Leading Business</tspan>
+                </text>
+            </g>
+            <g transform="translate(0 258) translate(24 382)">
+                <rect width="637" height="70" fill="#FFF" rx="8"/>
+                <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold">
+                    <tspan x="242.877" y="32">심리검사를 통한 자기 이해</tspan> <tspan x="238.366" y="52" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12" font-weight="normal">리더로 성장하는 Starting point</tspan>
+                </text>
+                <g transform="translate(8 8)">
+                    <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#222" rx="4"/>
+                    <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                        <tspan x="13" y="14">Off</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(705)">
+            <rect width="470" height="238" fill="#B3E3F3" rx="8"/>
+            <g fill="#FFF" opacity=".597" transform="translate(233 212)">
+                <circle cx="2" cy="2" r="2"/>
+                <circle cx="2" cy="10" r="2"/>
+                <circle cx="2" cy="18" r="2"/>
+            </g>
+            <rect width="422" height="42" x="24" y="60" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="140.426" y="87">심리학으로 풀어보는 리더십 Talk</tspan>
+            </text>
+            <rect width="422" height="42" x="24" y="112" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="181.302" y="139">문화로 읽는 리더십</tspan>
+            </text>
+            <rect width="422" height="42" x="24" y="164" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="165.161" y="191">Global Guru’s Insight</tspan>
+            </text>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="16" font-weight="bold" letter-spacing="-.4">
+                <tspan x="147.392" y="37">Leadership Insight Café</tspan>
+            </text>
+        </g>
+        <path fill="#BADDF8" d="M8 0h669c4.418 0 8 3.582 8 8v222c0 4.418-3.582 8-8 8H8c-4.418 0-8-3.582-8-8V8c0-4.418 3.582-8 8-8z"/>
+        <g transform="translate(349 144)">
+            <rect width="312" height="70" fill="#FFF" rx="4"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="101.444" y="42">Coaching Expert</tspan>
+            </text>
+            <g transform="translate(8 8)">
+                <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#222" rx="2"/>
+                <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                    <tspan x="13" y="14">Off</tspan>
+                </text>
+            </g>
+        </g>
+        <g transform="translate(24 144)">
+            <rect width="311" height="70" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="77.377" y="31">Deep Change 리더십 이해</tspan> <tspan x="104.876" y="51" font-family="NotoSansCJKkr-Regular, Noto Sans CJK KR" font-size="12" font-weight="normal">실천을 위한 Mindset</tspan>
+            </text>
+        </g>
+        <g transform="translate(349 60)">
+            <rect width="312" height="70" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="73.374" y="31">Deep Change Leadership </tspan> <tspan x="119.242" y="51">Challenges</tspan>
+            </text>
+            <g transform="translate(8 8)">
+                <rect width="41" height="21" x="-.5" y="-.5" fill="#FFF" stroke="#222" rx="2"/>
+                <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="10" font-weight="bold" letter-spacing="-.333">
+                    <tspan x="13" y="14">Off</tspan>
+                </text>
+            </g>
+        </g>
+        <g transform="translate(24 60)">
+            <rect width="311" height="70" fill="#FFF" rx="6"/>
+            <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="14" font-weight="bold" letter-spacing="-.2">
+                <tspan x="84.484" y="41">Deep Change &amp; 리더십</tspan>
+            </text>
+        </g>
+        <text fill="#222" font-family="NotoSansCJKkr-Bold, Noto Sans CJK KR" font-size="16" font-weight="bold" letter-spacing="-.4">
+            <tspan x="236.456" y="37">Deep Change Leadership</tspan>
+        </text>
+    </g>
+</svg>
