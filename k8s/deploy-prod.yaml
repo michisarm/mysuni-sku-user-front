@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user
-        image: dev03/user:0.0.1
+        image: sk-university-dev-registry.cloudzcp.io/sk-university/user-front:236
         ports:
         - containerPort: 80
         imagePullPolicy: Always
