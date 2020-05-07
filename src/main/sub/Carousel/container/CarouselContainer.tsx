@@ -44,21 +44,20 @@ class CarouselContainer extends Component<Props, State> {
     //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00004/cube/CUBE-806/lecture-card/LECTURE-CARD-5td',
     //   imageUrl: '/images/all/img_banner_ESGTalk_20200427.jpg',
     // },
-    // truefree 20200506 코로나 19 배너, 5/7 작업 요청으로 인해 잠시 주석처리
-    // {
-    //   type: ContentType.LinkContent,
-    //   title: <>Webina (Online Conference)<br />&#39;코로나 19 위기와 대응, 그리고 미래&#39;</>,
-    //   description: (
-    //     <>
-    //       코로나 19 사태를 심층 분석하고 우리 사회와 국제 관계에 대해<br />
-    //       미친 영향에 대해 집중 조명하는 특집 온라인 행사를 개최합니다.<br />
-    //       바로가기를 클릭하시어 원하는 세션 별로 신청해주세요. (총 4개)<br />
-    //       <span className="link-tag">바로가기</span>
-    //     </>
-    //   ),
-    //   link: '/lecture/college/CLG00017/channel/CHN0005b',
-    //   imageUrl: '/images/all/img_banner_corona19_20200506.jpg',
-    // },
+    {
+      type: ContentType.LinkContent,
+      title: <>Webina (Online Conference)<br />&#39;코로나 19 위기와 대응, 그리고 미래&#39;</>,
+      description: (
+        <>
+          코로나 19 사태를 심층 분석하고 우리 사회와 국제 관계에 대해<br />
+          미친 영향에 대해 집중 조명하는 특집 온라인 행사를 개최합니다.<br />
+          아래 바로가기를 클릭하여 학습에 참여해주시기 바랍니다.<br />
+          <span className="link-tag">바로가기</span>
+        </>
+      ),
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00017/cube/CUBE-870/lecture-card/LECTURE-CARD-5z7',
+      imageUrl: '/images/all/img_banner_corona19_20200506.jpg',
+    },
     {
       type: ContentType.LinkContent,
       title: <>개정된 핵인싸 과정으로<br/>역량 향상의 씨앗을 심어보세요</>,
@@ -84,6 +83,22 @@ class CarouselContainer extends Component<Props, State> {
       ),
       link: '/lecture/college/CLG00001/channel/CHN0005a',
       imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
+    },
+    {
+      type: ContentType.LinkContent,
+      title: <>4주, 30시간, 동료 신임팀장과 함께하는 Online 학습<br />2020 SK신임팀장 과정</>,
+      description: (
+        <>
+          SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!
+          그룹 이해, 세상의 변화, 리더십 등 팀장님들께 꼭 필요한 맞춤형 컨텐츠를
+          언제 어디서든 쉽고 재미있게 학습할 수 있습니다.
+          특히 동료 신임팀장님들과 함께 진행하는 생방송 라이브 세션도 기대해주세요!
+          아래 바로가기를 클릭하여 학습에 참여해주시기 바랍니다.<br/>
+          <span className="link-tag">바로가기</span>
+        </>
+      ),
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
+      imageUrl: '/images/all/img_banner_NewTeamLeader_20200507.jpg',
     },
     {
       type: ContentType.LinkContent,
