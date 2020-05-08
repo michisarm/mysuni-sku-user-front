@@ -11,6 +11,7 @@ import lectureRoutePaths from 'lecture/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { ContentHeaderTotalTimeItem } from '../../shared';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
+import ContentHeaderStampView from '../view/ContentHeaderStampView';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -71,6 +72,14 @@ class MyLearningContentHeaderContainer extends Component<Props> {
               onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
             />
           }
+        </ContentHeader.Cell>
+        <ContentHeader.Cell>
+          <ContentHeaderStampView
+            stampCount={myLearningSummary.acheiveStampCount}
+            selectedYear={0}
+            yearOptions={[]}
+            onChangeYear={()=>{}}
+          />
         </ContentHeader.Cell>
       </ContentHeader>
     );

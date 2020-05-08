@@ -31,14 +31,16 @@ class ContentHeaderStampView extends Component<Props> {
           </div>
         </Label>
 
-        <div className="year">
-          <Dropdown
-            className="inline tight"
-            value={selectedYear}
-            options={yearOptions}
-            onChange={(e, data) => onChangeYear(Number(data.value))}
-          />
-        </div>
+        {selectedYear !== 0 ?
+          <div className="year">
+            <Dropdown
+              className="inline tight"
+              value={selectedYear}
+              options={yearOptions}
+              onChange={(e, data) => onChangeYear(Number(data.value))}
+            />
+          </div> : ''
+        }
       </div>
     );
   }
