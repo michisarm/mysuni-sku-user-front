@@ -44,20 +44,20 @@ class CarouselContainer extends Component<Props, State> {
     //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00004/cube/CUBE-806/lecture-card/LECTURE-CARD-5td',
     //   imageUrl: '/images/all/img_banner_ESGTalk_20200427.jpg',
     // },
-    {
-      type: ContentType.LinkContent,
-      title: <>Webina (Online Conference)<br />&#39;코로나 19 위기와 대응, 그리고 미래&#39;</>,
-      description: (
-        <>
-          코로나 19 사태를 심층 분석하고 우리 사회와 국제 관계에 대해<br />
-          미친 영향에 대해 집중 조명하는 특집 온라인 행사를 개최합니다.<br />
-          아래 바로가기를 클릭하여 학습에 참여해주시기 바랍니다.<br />
-          <span className="link-tag">바로가기</span>
-        </>
-      ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00017/cube/CUBE-870/lecture-card/LECTURE-CARD-5z7',
-      imageUrl: '/images/all/img_banner_corona19_20200506.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>Webina (Online Conference)<br />&#39;코로나 19 위기와 대응, 그리고 미래&#39;</>,
+    //   description: (
+    //     <>
+    //       코로나 19 사태를 심층 분석하고 우리 사회와 국제 관계에 대해<br />
+    //       미친 영향에 대해 집중 조명하는 특집 온라인 행사를 개최합니다.<br />
+    //       아래 바로가기를 클릭하여 학습에 참여해주시기 바랍니다.<br />
+    //       <span className="link-tag">바로가기</span>
+    //     </>
+    //   ),
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00017/cube/CUBE-870/lecture-card/LECTURE-CARD-5z7',
+    //   imageUrl: '/images/all/img_banner_corona19_20200506.jpg',
+    // },
     {
       type: ContentType.LinkContent,
       title: <>개정된 핵인싸 과정으로<br/>역량 향상의 씨앗을 심어보세요</>,
@@ -116,20 +116,20 @@ class CarouselContainer extends Component<Props, State> {
       link: '/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl',
       imageUrl: '/images/all/img_banner_GlobalCollege_20200506.jpg',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>[UI개선] 동영상 Player가 embed 대신 pop-up 방식으로 변경 됩니다.</>,
-      description: (
-        <>
-          동영상 시청이 끝나고 우측 &#39;Close&#39; 버튼을 누르면, 학습 시간이 바로 반영 됩니다.<br />
-          ※ 자동 이수처리 제외 교육 <br/>
-          &nbsp;&nbsp;&nbsp;&nbsp;- 외부연계과정(링크드인, 코세라 등) 주 1회 반영 <br />
-          &nbsp;&nbsp;&nbsp;&nbsp;- Playlist 과정(AI 101, 머신러닝의 이해와 실습 등)은 주 2회 반영<br />
-        </>
-      ),
-      link: '',
-      imageUrl: '/images/all/img_banner_moviemodal_20200420.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>[UI개선] 동영상 Player가 embed 대신 pop-up 방식으로 변경 됩니다.</>,
+    //   description: (
+    //     <>
+    //       동영상 시청이 끝나고 우측 &#39;Close&#39; 버튼을 누르면, 학습 시간이 바로 반영 됩니다.<br />
+    //       ※ 자동 이수처리 제외 교육 <br/>
+    //       &nbsp;&nbsp;&nbsp;&nbsp;- 외부연계과정(링크드인, 코세라 등) 주 1회 반영 <br />
+    //       &nbsp;&nbsp;&nbsp;&nbsp;- Playlist 과정(AI 101, 머신러닝의 이해와 실습 등)은 주 2회 반영<br />
+    //     </>
+    //   ),
+    //   link: '',
+    //   imageUrl: '/images/all/img_banner_moviemodal_20200420.jpg',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>자기주도 학습의 첫걸음&#44;<br />관심 채널을 내 마음대로!</>,
