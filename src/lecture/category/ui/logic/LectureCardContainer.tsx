@@ -78,6 +78,7 @@ class LectureCardContainer extends Component<Props, State> {
     type: '',
     name: '',
     openLearningModal: false,
+    activeSubAction: false,
   };
 
 
@@ -221,10 +222,10 @@ class LectureCardContainer extends Component<Props, State> {
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.onRegisterStudent(ProposalState.Approved);
-      // 200508 avedpark 동영상링크 학습하기 -> 학습완료
-      if (typeViewObject.mediaType === MediaType.LinkMedia) {
-        this.onMarkComplete();
-      }
+      // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
+      // if (typeViewObject.mediaType === MediaType.LinkMedia) {
+      //   this.onMarkComplete();
+      // }
       //0416
       window.open(typeViewObject.url, '_blank');
       //this.setState( {openLearningModal: true});
