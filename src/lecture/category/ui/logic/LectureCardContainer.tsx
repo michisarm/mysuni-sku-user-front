@@ -403,11 +403,12 @@ class LectureCardContainer extends Component<Props, State> {
 
         // console.log('getMainAction studentJoins : ', studentJoins);
 
-        // if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
-        //   && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
-        //     (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+
         if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
-          && (!studentJoins || !studentJoins.length || studentJoins?.filter(join => (join.proposalState === ProposalState.Submitted)).length === 0)) {
+          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+        // if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
+        //   && (!studentJoins || !studentJoins.length || studentJoins?.filter(join => (join.proposalState === ProposalState.Submitted)).length === 0)) {
 
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }

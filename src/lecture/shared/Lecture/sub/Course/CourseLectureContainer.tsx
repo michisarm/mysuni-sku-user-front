@@ -151,25 +151,29 @@ class CourseLectureContainer extends Component<Props, State> {
     this.init();
   }
 
-  // componentDidMount()
-  // {
-  //   //
-  //   // if (this.rollBooks[0]) {
-  //   //   this.init();
-  //   // }
-  // }
+  componentDidMount()
+  {
+    //
+    // if (this.rollBooks[0]) {
+    //   this.init();
+    // }
+    // this.init();
+  }
   //
   // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
   //
-  //   // if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
-  //   //   this.findCoursePlan();
-  //   // }
   //   if (this.props !== prevProps) {
   //     console.log('componentDidUpdate this.props : ', this.props);
   //     console.log('componentDidUpdate prevProps : ', prevProps);
   //     this.init();
   //   }
   // }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    // console.log('componentDidUpdate this.props : ', this.props);
+    // console.log('componentDidUpdate prevProps : ', prevProps);
+    // console.log('componentDidUpdate prevState : ', prevState);
+  }
 
   async init()
   {
@@ -180,9 +184,9 @@ class CourseLectureContainer extends Component<Props, State> {
       this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
       this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-      console.log('init lectureView : ', lectureView);
-      console.log('init personalCube : ', this.personalCube);
-      console.log('init rollBooks : ', this.rollBooks[0]);
+      // console.log('init lectureView : ', lectureView);
+      // console.log('init personalCube : ', this.personalCube);ß
+      // console.log('init rollBooks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
         this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
@@ -199,7 +203,6 @@ class CourseLectureContainer extends Component<Props, State> {
           const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
 
           const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-
           const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
           const disabled = answerSheetService && answerSheetService.progress && answerSheetService.progress === AnswerProgress.Complete;
@@ -674,8 +677,8 @@ class CourseLectureContainer extends Component<Props, State> {
     const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
-    console.log('lecture container viewObject : ', this.viewObject);
-    console.log('lecture container personalCube : ', this.personalCube);
+    // console.log('lecture container viewObject : ', this.viewObject);
+    // console.log('lecture container personalCube : ', this.personalCube);
 
     return (
       <div>

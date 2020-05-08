@@ -76,8 +76,8 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
-  console.log('Test viewObject : ', viewObject);
-  console.log('type : {0}, name : {1}', type, name);
+  // console.log('Test viewObject : ', viewObject);
+  // console.log('type : {0}, name : {1}', type, name);
   return (
     <div className="trs-box">
       <div className="thumbnail">
