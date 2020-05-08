@@ -153,12 +153,13 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   registerStudent(studentCdo: StudentCdoModel) {
-    const { studentService, lectureCardId } = this.props;
+    const { studentService, lectureCardId, init } = this.props;
     return studentService!.registerStudent(studentCdo)
       .then(() => {
         studentService!.findStudentByRollBookId(studentCdo.rollBookId);
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudentCount(studentCdo.rollBookId);
+        if (init) init();
       });
   }
 
@@ -400,7 +401,7 @@ class LectureCardContainer extends Component<Props, State> {
           };
         }
 
-        console.log('getMainAction studentJoins : ', studentJoins);
+        // console.log('getMainAction studentJoins : ', studentJoins);
 
         // if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
         //   && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
