@@ -41,7 +41,7 @@ export const Buttons = ({ mainAction, subActions, onCancel, state }: ButtonsProp
 
       {
         subActions && subActions.length > 0
-          && subActions.map(subAction => subAction.subType === 'Documents' && (
+          && subActions.map(subAction => ( subAction.subType === 'Documents' || subAction.subType === 'Video' || subAction.subType === 'WebPage' ) && (
             <Button key={subAction.type} className="fix bg blue" onClick={subAction.onAction}>{subAction.type}</Button>
           ))
       }
