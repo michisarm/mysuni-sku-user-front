@@ -77,7 +77,7 @@ class CarouselContainer extends Component<Props, State> {
       description: (
         <>
           Category: AI &#62; AI&#47;DT Literacy 채널에서<br/>
-          AI&#47;DT 기본을 다지는 mySUNI의 엄선된 컨텐츠를 수강해보세요.<br/> 
+          AI&#47;DT 기본을 다지는 mySUNI의 엄선된 컨텐츠를 수강해보세요.<br/>
           시작 전, [학습 안내] 카드를 꼭 읽어주세요~
         </>
       ),
@@ -89,7 +89,7 @@ class CarouselContainer extends Component<Props, State> {
       title: <>2020 SK신임팀장 과정</>,
       description: (
         <>
-          <b>4주, 30시간, 동료 신임팀장과 함께하는 Online 학습</b><br />
+          {/*<b>4주, 30시간, 동료 신임팀장과 함께하는 Online 학습</b><br />*/}
           SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!<br/>
           그룹 이해, 세상의 변화, 리더십 등 팀장님들께 꼭 필요한 맞춤형 컨텐츠를
           언제 어디서든 쉽고 재미있게 학습할 수 있습니다.

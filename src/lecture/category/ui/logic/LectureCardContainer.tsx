@@ -376,7 +376,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   getMainAction() {
-    const { cubeType, typeViewObject, studentJoins } = this.props;
+    const { cubeType, typeViewObject, studentJoins, viewObject } = this.props;
     const applyingPeriod = typeViewObject!.applyingPeriod;
     const today = new Date();
 
@@ -396,14 +396,21 @@ class LectureCardContainer extends Component<Props, State> {
             },
           };
         }
+
+        console.log('getMainAction studentJoins : ', studentJoins);
+
+        // if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
+        //   && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+        //     (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
         if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
-          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
-            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+          && (!studentJoins || !studentJoins.length || studentJoins?.filter(join => (join.proposalState === ProposalState.Submitted)).length === 0)) {
+
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickChangeSeries };
         }
         else {
           if (studentJoins && studentJoins.length
             && studentJoins.filter(join => (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length) {
+          // if (studentJoins && studentJoins.length && studentJoins?.filter(join => (join.proposalState === ProposalState.Canceled)).length === 0) {
             return undefined;
           }
           if (!applyingPeriod) return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
