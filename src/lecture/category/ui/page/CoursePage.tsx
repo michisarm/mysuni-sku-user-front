@@ -465,7 +465,7 @@ class CoursePage extends Component<Props, State> {
 
     // history.replace('/empty');
     // setTimeout(() => {
-    this.init();
+    window.location.reload();
     // if (params.cineroomId) {
     //   history.replace(routePaths.courseOverview(params.cineroomId, params.collegeId, params.coursePlanId, params.serviceType, params.serviceId));
     // }
