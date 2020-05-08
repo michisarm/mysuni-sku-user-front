@@ -78,7 +78,6 @@ class LectureCardContainer extends Component<Props, State> {
     type: '',
     name: '',
     openLearningModal: false,
-    activeSubAction: false,
   };
 
 
