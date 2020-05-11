@@ -96,7 +96,7 @@ class CarouselContainer extends Component<Props, State> {
         </>
       ),
       link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
-      imageUrl: '/images/all/img_banner_NewTeamLeader_20200507.jpg',
+      imageUrl: '/images/all/img_banner_NewTeamLeader_20200508.jpg',
     },
     {
       type: ContentType.LinkContent,
