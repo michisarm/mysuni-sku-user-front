@@ -683,7 +683,7 @@ class LectureCardContainer extends Component<Props, State> {
         />
 
         {
-          cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning && (
+          (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
             <ApplyReferenceModal
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
               handleOk={this.onClickApplyReferentOk}
