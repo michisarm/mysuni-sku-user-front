@@ -675,16 +675,21 @@ class LectureCardContainer extends Component<Props, State> {
                () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
            }*/
         />
+
         <ClassroomModalView
           ref={classroomModal => this.classroomModal = classroomModal}
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
 
-        <ApplyReferenceModal
-          ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
-          handleOk={this.onClickApplyReferentOk}
-        />
+        {
+          (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
+            <ApplyReferenceModal
+              ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+              handleOk={this.onClickApplyReferentOk}
+            />
+          )
+        }
 
         {
           viewObject && viewObject.examId && (
@@ -695,6 +700,7 @@ class LectureCardContainer extends Component<Props, State> {
             />
           )
         }
+
         {
           viewObject && viewObject.surveyId && (
             <SurveyAnswerSheetModal

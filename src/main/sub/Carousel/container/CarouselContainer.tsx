@@ -84,24 +84,20 @@ class CarouselContainer extends Component<Props, State> {
       link: '/lecture/college/CLG00001/channel/CHN0005a',
       imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
     },
-    // truefree 20200508, 5/11에 올려달라고 해서 또 잠시 숨김.. 아 ㅆㅂ
-    // {
-    //   type: ContentType.LinkContent,
-    //   title: <>2020 SK신임팀장 과정</>,
-    //   description: (
-    //     <>
-    //       {/*<b>4주, 30시간, 동료 신임팀장과 함께하는 Online 학습</b><br />*/}
-    //       SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!<br/>
-    //       그룹 이해, 세상의 변화, 리더십 등 팀장님들께 꼭 필요한 맞춤형 컨텐츠를
-    //       언제 어디서든 쉽고 재미있게 학습할 수 있습니다.
-    //       특히 동료 신임팀장님들과 함께 진행하는 생방송 라이브 세션도 기대해주세요!
-    //       아래 바로가기를 클릭하여 학습에 참여해주시기 바랍니다.<br/>
-    //       <span className="link-tag">바로가기</span>
-    //     </>
-    //   ),
-    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
-    //   imageUrl: '/images/all/img_banner_NewTeamLeader_20200507.jpg',
-    // },
+    {
+      type: ContentType.LinkContent,
+      title: <>2020 SK신임팀장 과정</>,
+      description: (
+        <>
+          4주, 30시간, 동료 신임팀장과 함께하는 Online 학습<br />
+          SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!<br/>
+          리더에게 필요한 컨텐츠를 언제 어디서든 쉽고 재미있게 학습할 수 있습니다.<br />
+          동료 신임팀장님들과 함께 진행하는 생방송 라이브 세션도 기대해주세요!
+        </>
+      ),
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
+      imageUrl: '/images/all/img_banner_NewTeamLeader_20200508.jpg',
+    },
     {
       type: ContentType.LinkContent,
       title: <>Global College 핵인싸 과정<br />&#39;국제정세의 현상과 본질 (Series 1)&#39; OPEN !!</>,
