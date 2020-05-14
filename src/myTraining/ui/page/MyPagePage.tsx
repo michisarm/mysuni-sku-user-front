@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import React, {Component} from 'react';
+import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router';
 
-import { ActionLogService } from 'shared/stores';
-import { ContentLayout, Tab, TabItemModel } from 'shared';
+import {ActionLogService} from 'shared/stores';
+import {ContentLayout, Tab, TabItemModel} from 'shared';
 import routePaths from '../../routePaths';
 import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
 import MyPageListContainer from '../logic/MyPageListContainer';
 
+import {ApprovalListBoard} from '../view/ApprovalListBoard';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService
@@ -29,6 +30,7 @@ interface RouteParams {
 enum SubBreadcrumb {
   CompletedList = '학습완료',
   EarnedStampList = '보유스탬프',
+  ApprovalList = '승인관리',
 }
 
 @inject(mobxHelper.injectFrom('shared.actionLogService'))
@@ -37,6 +39,7 @@ enum SubBreadcrumb {
 class MyPagePage extends Component<Props, State> {
   //
   state = {
+    // 시작하는 탭 설정
     subBreadcrumb: SubBreadcrumb.CompletedList,
     completedCount: 0,
     earnedStampCount: 0,
@@ -101,6 +104,17 @@ class MyPagePage extends Component<Props, State> {
           />
         ),
       },
+      {
+        name: MyPageContentType.ApprovalList,
+        item: (
+          <>
+            승인관리
+          </>
+        ),
+        render: () => (
+          <ApprovalListBoard/>
+        )
+      }
     ] as TabItemModel[];
   }
 

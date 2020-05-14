@@ -52,8 +52,9 @@ class ApplyReferenceModal extends React.Component<Props> {
     const { handleOk, memberService } = this.props;
     const { approvalMember } = memberService!;
     handleOk(approvalMember);
-    this.close();
-    // 2020-04-22 김우성 여기까지 
+    //this.close();
+    // issue date : 2020-05-14 승인자 설정 및 승인자 변경하기 this.close() 주석 처리 함.
+    // 2020-04-22 김우성 여기까지
   }
 
   close() {
@@ -87,7 +88,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     return (
       <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
         <Modal.Header className="res">
-          {/*Class Series Detail*/}신청 참조처 설정
+          {/*Class Series Detail*/}승인자 설정
           <span className="sub f12">본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.</span>
         </Modal.Header>
         <Modal.Content>
@@ -124,13 +125,13 @@ class ApplyReferenceModal extends React.Component<Props> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>참조자 변경하기</Button>
+          <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button>
           <ManagerListModalContainer
             ref={managerModal => this.managerModal = managerModal}
             handleOk={this.onClickManagerListOk}
           />
-          <Button className="w190 pop p" onClick={this.onOk}>확인</Button>
-          <Button className="w190 pop d" onClick={this.close}>취소</Button>
+          <Button className="w190 pop d" onClick={this.close}>Cancel</Button>
+          <Button className="w190 pop p" onClick={this.onOk}>OK</Button>
         </Modal.Actions>
       </Modal>
     );
