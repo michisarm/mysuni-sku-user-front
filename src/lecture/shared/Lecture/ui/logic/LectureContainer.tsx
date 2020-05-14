@@ -166,7 +166,7 @@ class LectureContainer extends Component<Props, States> {
     if (model.required && !state) {
       state = '권장과정';
       rating = undefined;
-      date = moment(model.time).format('YYYY.MM.DD') + ' 필수 학습 등록';
+      date = undefined;
     }
     else if (state) {
       rating = undefined;
