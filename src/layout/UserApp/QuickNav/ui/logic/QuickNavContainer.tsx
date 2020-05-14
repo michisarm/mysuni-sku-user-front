@@ -111,6 +111,11 @@ class QuickNavContainer extends Component<Props, State> {
     this.routeNav('/introduction');
   }
 
+  onClickApproval() {
+    //
+    this.routeNav('/my-training/my-page');
+  }
+
   onClickAdminSite() {
     //
     const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
@@ -162,7 +167,7 @@ class QuickNavContainer extends Component<Props, State> {
               <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
               <FavoriteChannelChangeModal
                 trigger={(
-                  <BottomMenuItemView iconName="admin" text="관심 Channel" onClick={this.onClose} />
+                  <BottomMenuItemView iconName="admin" text="관심채널" onClick={this.onClose} />
                 )}
                 favorites={favoriteChannels}
                 onConfirmCallback={this.onConfirmFavorite}
@@ -170,6 +175,9 @@ class QuickNavContainer extends Component<Props, State> {
               <SiteMapModalContainer
                 trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClose} />}
               />
+
+              {/*0513 승인관리 메뉴 추가*/}
+              <BottomMenuItemView iconName="confirm" text="승인관리" onClick={this.onClickApproval}/>
 
               {
                 this.hasAdminRole && (
