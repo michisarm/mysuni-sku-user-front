@@ -5,7 +5,7 @@ import { ClassroomModel } from '../../model';
 
 export default class ClassroomGroupFlowApi {
 
-  URL = '/api/personalCube/classroomgroups/flow';
+  URL = '/api/personalCube/classroomgroups/flow/classroomview';
 
   static instance: ClassroomGroupFlowApi;
 

@@ -19,6 +19,7 @@ class ClassroomModel implements DramaEntity {
   round: number = 0;                                                    // 차수
   enrolling: EnrollingModel = new EnrollingModel();                     // 신청/취소/학습 기간/신청유무
   capacity: number = 0;                                                 // 정원정보
+  studentCount: number = 0;                                             // 승인프로세스 여부
   waitingCapacity: number = 0;                                          // 대기 가능 인원
   capacityClosed: boolean = false;                                      // 정원 마감
   operation: OperationModel = new OperationModel();
@@ -59,6 +60,7 @@ decorate(ClassroomModel, {
   round: observable,
   enrolling: observable,
   capacity: observable,
+  studentCount: observable,
   waitingCapacity: observable,
   capacityClosed: observable,
   operation: observable,

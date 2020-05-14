@@ -126,7 +126,7 @@ class ClassroomModalView extends Component<Props, States> {
                         <Table.Cell>{classroom.round}</Table.Cell>
                         <Table.Cell>{classroom.instructor.name}</Table.Cell>
                         <Table.Cell className="el"><span>{classroom.operation.location}</span></Table.Cell>
-                        <Table.Cell>{classroom.capacity}</Table.Cell>
+                        <Table.Cell>{classroom.studentCount} / {classroom.capacity}</Table.Cell>
                         <Table.Cell>{classroom.enrolling.applyingPeriod.startDate} ~<br />{classroom.enrolling.applyingPeriod.endDate}</Table.Cell>
                         <Table.Cell>{classroom.enrolling.learningPeriod.startDate} ~<br />{classroom.enrolling.learningPeriod.endDate}</Table.Cell>
                         <Table.Cell>
