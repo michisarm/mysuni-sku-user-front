@@ -118,10 +118,19 @@ class ListCardView extends Component<Props> {
             <div className="location">
               { model.cubeTypeName &&  <Field icon="video2" text={model.cubeTypeName} bold />}
             </div>
-            <div className="time">
-              <strong>&nbsp;</strong>
-              {this.getHourMinuteFormat(hour, minute)}
-            </div>
+            {
+              model.cubeTypeName === 'Course' && model.stampCount && (
+                <div className="stamp">Stamp<strong>x{model.stampCount}</strong></div>
+              ) || null
+            }
+            {
+              model.cubeTypeName !== 'Course' && (
+                <div className="time">
+                  <strong>&nbsp;</strong>
+                  {this.getHourMinuteFormat(hour, minute)}
+                </div>
+              ) || null
+            }
           </div>
 
         </div>
