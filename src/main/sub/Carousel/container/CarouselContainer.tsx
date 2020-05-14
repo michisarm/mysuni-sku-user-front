@@ -27,7 +27,7 @@ class CarouselContainer extends Component<Props, State> {
     autoScrolling: false,
   };
 
-  AUTO_NEXT_TIME = 5 * 1000;
+  AUTO_NEXT_TIME = 7 * 1000;
 
   banners = [
     // {
