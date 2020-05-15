@@ -90,22 +90,22 @@ class ApprovalManagerBoard extends Component {
 
                 {approvalStatus !== 'required' ? '' :
 
-                  <>
-                    <ApprovalProcessModal
-                      trigger={(
-                        <Button icon className="left post return">
-                          <Icon className="return"/> 반려
-                        </Button>
-                      )}
-                    />
-                    < ApprovalProcessModal
-                      trigger={(
-                        <Button icon className="left post approval">
-                          <Icon className="approval"/> 승인
-                        </Button>
-                      )}
-                    />
-                  </>
+                <>
+                  <ApprovalProcessModal
+                    trigger={(
+                      <Button icon className="left post return">
+                        <Icon className="return"/> 반려
+                      </Button>
+                    )}
+                  />
+                  < ApprovalProcessModal
+                    trigger={(
+                      <Button icon className="left post approval">
+                        <Icon className="approval"/> 승인
+                      </Button>
+                  )}
+                  />
+                </>
                 }
 
                 {/*Delete 버튼은 승인요청 목록에는 미노출*/}
@@ -221,7 +221,7 @@ class ApprovalManagerBoard extends Component {
               <span className="cell num">17</span>
               <span className="cell name">
                 <a href="/my-training/my-page/ApprovalList/detail">
-                  <span className="ellipsis">홍길동1</span>
+                  <span className="ellipsis">홍길동</span>
                 </a>
               </span>
               <span className="cell title">
@@ -240,7 +240,7 @@ class ApprovalManagerBoard extends Component {
               <span className="cell num">16</span>
               <span className="cell name">
                 <a href="/my-training/my-page/ApprovalList/detail">
-                  <span className="ellipsis">홍길동2</span>
+                  <span className="ellipsis">홍길동</span>
                 </a>
               </span>
               <span className="cell title">
