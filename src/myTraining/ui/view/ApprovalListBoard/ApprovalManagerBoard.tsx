@@ -221,7 +221,7 @@ class ApprovalManagerBoard extends Component {
               <span className="cell num">17</span>
               <span className="cell name">
                 <a href="/my-training/my-page/ApprovalList/detail">
-                  <span className="ellipsis">홍길동</span>
+                  <span className="ellipsis">홍길동1</span>
                 </a>
               </span>
               <span className="cell title">
@@ -240,7 +240,7 @@ class ApprovalManagerBoard extends Component {
               <span className="cell num">16</span>
               <span className="cell name">
                 <a href="/my-training/my-page/ApprovalList/detail">
-                  <span className="ellipsis">홍길동</span>
+                  <span className="ellipsis">홍길동2</span>
                 </a>
               </span>
               <span className="cell title">
