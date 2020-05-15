@@ -107,7 +107,6 @@ class ApprovalManagerBoard extends Component {
               <div className="left-area">
 
                 {approvalStatus !== 'required' ? '' :
-
                   <>
                     <ApprovalProcessModal
                       trigger={(
