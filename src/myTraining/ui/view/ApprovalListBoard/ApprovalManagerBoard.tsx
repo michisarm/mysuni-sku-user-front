@@ -32,20 +32,37 @@ const numOptions = [
 class ApprovalManagerBoard extends Component {
 
   state = {
-    approvalStatus : 'required'
+    approvalStatus : 'required',
+    approvalDateName : '신청일자'
   };
 
   statusChange = (approvalStatus: any) => {
-    console.log( approvalStatus );
+    console.log(' approvalStatus :: ' + approvalStatus );
+
+    let approvalNameVal = '신청일자';
+
+    if (approvalStatus === 'required') {
+      approvalNameVal = '신청일자';
+    } else if (approvalStatus === 'rejected') {
+      approvalNameVal = '반려일자';
+    } else if (approvalStatus === 'approved') {
+      approvalNameVal = '승인일자';
+    } else {
+      approvalNameVal = '신청일자';
+    }
+
+    const approvalDateName = approvalNameVal;
 
     this.setState({
-      approvalStatus
+      approvalStatus,
+      approvalDateName
     });
   };
 
   render(){
 
     const { approvalStatus } = this.state;
+    const approvalDateName = this.state.approvalDateName;
 
     return(
       <Segment className="full">
@@ -153,7 +170,7 @@ class ApprovalManagerBoard extends Component {
                   <Icon className="list-down16" />
                 </a>
               </span>
-              <span className="cell date">신청일자</span>
+              <span className="cell date">{ approvalDateName }</span>
             </div>
 
             {/*목록body*/}
