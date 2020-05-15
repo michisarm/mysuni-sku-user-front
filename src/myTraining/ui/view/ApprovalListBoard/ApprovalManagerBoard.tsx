@@ -107,7 +107,7 @@ class ApprovalManagerBoard extends Component {
               <div className="left-area">
 
                 {approvalStatus !== 'required' ? '' :
-                  <>
+                  <div>
                     <ApprovalProcessModal
                       trigger={(
                         <Button icon className="left post return">
@@ -122,7 +122,7 @@ class ApprovalManagerBoard extends Component {
                         </Button>
                       )}
                     />
-                  </>
+                  </div>
                 }
 
                 {/*Delete 버튼은 승인요청 목록에는 미노출*/}
