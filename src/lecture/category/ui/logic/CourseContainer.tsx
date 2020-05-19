@@ -62,8 +62,8 @@ class CourseContainer extends Component<Props, State> {
   };
 
   componentDidMount() {
-    //
-    this.findCoursePlan();
+    // 이미 CoursePage에서 호출하고 있어서 주석처리
+    // this.findCoursePlan();
     this.findSkProfile();
   }
 
