@@ -218,7 +218,7 @@ class ApplyReferenceModal extends React.Component<Props> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          { approvalShow === true &&  <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button> }
+          { approvalShow === true && <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button> }
           <ManagerListModalContainer
             ref={managerModal => this.managerModal = managerModal}
             handleOk={this.onClickManagerListOk}
