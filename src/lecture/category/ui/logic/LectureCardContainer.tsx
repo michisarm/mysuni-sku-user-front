@@ -350,12 +350,20 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
+
+    // by JSM
+    const objRollBook =  typeof rollBook  === 'string' ?  JSON.parse(rollBook) : rollBook;
+    // if (objRollBook.id === '') return;
+
     let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+
+    // by JSM
+    if (student && (/*student.proposalState === ProposalState.Canceled || */student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
-    if (rollBook && rollBook.id) rollBookId = rollBook.id;
+    if (objRollBook && objRollBook.id) rollBookId = objRollBook.id;
 
     console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
 
@@ -686,6 +694,7 @@ class LectureCardContainer extends Component<Props, State> {
           (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
             <ApplyReferenceModal
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+              classrooms={typeViewObject.classrooms}
               handleOk={this.onClickApplyReferentOk}
             />
           )
