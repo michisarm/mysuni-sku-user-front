@@ -164,10 +164,18 @@ class ApplyReferenceModal extends React.Component<Props> {
 
     // 리더 승인 일 경우
     let approverTypeVal = '';
+    // 승인자 변경하기 활성, 비활성처리
+    let approvalShowVal;
     if ( companyApprover.approverType === 'Leader_Approve') {
       approverTypeVal = '본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.';
+      approvalShowVal = true;
+    } else {
+      approvalShowVal = false;
     }
+    // 승인자 변경하기 활성, 비활성처리
+    const approvalShow = approvalShowVal;
 
+    // 승인자 설정 문구 Leader_Approve 일 경우 만 보인다.
     const approverTypeStr = approverTypeVal;
 
     return (
@@ -210,7 +218,7 @@ class ApplyReferenceModal extends React.Component<Props> {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button>
+          { approvalShow === true &&  <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>승인자 변경하기</Button> }
           <ManagerListModalContainer
             ref={managerModal => this.managerModal = managerModal}
             handleOk={this.onClickManagerListOk}
