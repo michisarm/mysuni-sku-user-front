@@ -33,7 +33,7 @@ class ApprovalManagerBoard extends Component {
 
   state = {
     approvalStatus : 'required',
-    approvalDateName : '신청일자'
+    approvalDateName : '신청일자',
   };
 
   statusChange = (approvalStatus: any) => {
@@ -41,11 +41,11 @@ class ApprovalManagerBoard extends Component {
 
     let approvalNameVal = '신청일자';
 
-    if (approvalStatus === 'required') {
+    if ( approvalStatus === 'required' ) {
       approvalNameVal = '신청일자';
-    } else if (approvalStatus === 'rejected') {
+    } else if ( approvalStatus === 'rejected' ) {
       approvalNameVal = '반려일자';
-    } else if (approvalStatus === 'approved') {
+    } else if ( approvalStatus === 'approved' ) {
       approvalNameVal = '승인일자';
     } else {
       approvalNameVal = '신청일자';
@@ -55,7 +55,7 @@ class ApprovalManagerBoard extends Component {
 
     this.setState({
       approvalStatus,
-      approvalDateName
+      approvalDateName,
     });
   };
 
