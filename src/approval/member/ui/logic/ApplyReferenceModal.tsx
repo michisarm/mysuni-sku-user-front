@@ -9,6 +9,7 @@ import SkProfileModel from '../../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../department/model/DepartmentModel';
 import { DepartmentService, MemberService } from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
+import {ClassroomModel} from '../../../../personalcube/classroom/model';
 
 interface Props {
   skProfileService?: SkProfileService
@@ -16,6 +17,7 @@ interface Props {
   departmentService?: DepartmentService
   trigger?: React.ReactNode
   handleOk: (member: MemberViewModel) => void
+  classrooms: ClassroomModel[]
 }
 
 @inject(mobxHelper.injectFrom(
@@ -49,11 +51,14 @@ class ApplyReferenceModal extends React.Component<Props> {
     this.setState({ open: true });
     // 2020-04-22 김우성
     // 참조자 모달 팝업 막기 위해 onOK 내용 바로 실행
-    const { handleOk, memberService } = this.props;
+    const { handleOk, memberService, classrooms } = this.props;
     const { approvalMember } = memberService!;
-    handleOk(approvalMember);
-    this.close();
-    // 2020-04-22 김우성 여기까지 
+    // by JSM
+    if (this.state.open || !classrooms) {
+      handleOk(approvalMember);
+      this.close();
+    }
+    // 2020-04-22 김우성 여기까지
   }
 
   close() {
@@ -81,58 +86,69 @@ class ApplyReferenceModal extends React.Component<Props> {
   }
 
   render() {
-    const { open } = this.state;
-    const { trigger, memberService } = this.props;
-    const { approvalMember } = memberService!;
+    const {open} = this.state;
+    const {trigger, memberService} = this.props;
+    const {approvalMember} = memberService!;
+
+    // by JSM : 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
+    const memId = approvalMember ? approvalMember.id : '';
+    const creationTime = approvalMember ? approvalMember.creationTime : 0;
+
     return (
-      <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
-        <Modal.Header className="res">
-          {/*Class Series Detail*/}신청 참조처 설정
-          <span className="sub f12">본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.</span>
-        </Modal.Header>
-        <Modal.Content>
-          <div className="scrolling-60vh">
-            <Table className="head-fix ml-extra-01">
-              <colgroup>
-                <col width="20%" />
-                <col width="20%" />
-                <col width="20%" />
-                <col width="10%" />
-                <col width="30%" />
-              </colgroup>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>회사</Table.HeaderCell>
-                  <Table.HeaderCell>부서</Table.HeaderCell>
-                  <Table.HeaderCell>이름</Table.HeaderCell>
-                  <Table.HeaderCell>직위/직책</Table.HeaderCell>
-                  <Table.HeaderCell>이메일</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
+      <div>
+        {
+          memId !== '' && creationTime > 0 &&
+          (
+            <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
+              <Modal.Header className="res">
+                {/*Class Series Detail*/}신청 참조처 설정
+                <span className="sub f12">본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.</span>
+              </Modal.Header>
+              <Modal.Content>
+                <div className="scrolling-60vh">
+                  <Table className="head-fix ml-extra-01">
+                    <colgroup>
+                      <col width="20%"/>
+                      <col width="20%"/>
+                      <col width="20%"/>
+                      <col width="10%"/>
+                      <col width="30%"/>
+                    </colgroup>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>회사</Table.HeaderCell>
+                        <Table.HeaderCell>부서</Table.HeaderCell>
+                        <Table.HeaderCell>이름</Table.HeaderCell>
+                        <Table.HeaderCell>직위/직책</Table.HeaderCell>
+                        <Table.HeaderCell>이메일</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
 
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell><span>{approvalMember.companyName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.departmentName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.name}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.titleName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.email}</span></Table.Cell>
-                </Table.Row>
-
-              </Table.Body>
-            </Table>
-          </div>
-        </Modal.Content>
-        <Modal.Actions className="actions">
-          <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>참조자 변경하기</Button>
-          <ManagerListModalContainer
-            ref={managerModal => this.managerModal = managerModal}
-            handleOk={this.onClickManagerListOk}
-          />
-          <Button className="w190 pop p" onClick={this.onOk}>확인</Button>
-          <Button className="w190 pop d" onClick={this.close}>취소</Button>
-        </Modal.Actions>
-      </Modal>
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell><span>{approvalMember.companyName}</span></Table.Cell>
+                        <Table.Cell><span>{approvalMember.departmentName}</span></Table.Cell>
+                        <Table.Cell><span>{approvalMember.name}</span></Table.Cell>
+                        <Table.Cell><span>{approvalMember.titleName}</span></Table.Cell>
+                        <Table.Cell><span>{approvalMember.email}</span></Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                </div>
+              </Modal.Content>
+              <Modal.Actions className="actions">
+                <Button className="w190 pop p" onClick={this.onClickChangeApplyReference}>참조자 변경하기</Button>
+                <ManagerListModalContainer
+                  ref={managerModal => this.managerModal = managerModal}
+                  handleOk={this.onClickManagerListOk}
+                />
+                <Button className="w190 pop p" onClick={this.onOk}>확인</Button>
+                <Button className="w190 pop d" onClick={this.close}>취소</Button>
+              </Modal.Actions>
+            </Modal>
+          )
+        }
+      </div>
     );
   }
 }
