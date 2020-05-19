@@ -7,12 +7,14 @@ import { SkProfileService } from 'profile/stores';
 import ManagerListModalContainer from './ManagerListModalContainer';
 import SkProfileModel from '../../../../profile/model/SkProfileModel';
 import { DepartmentModel } from '../../../department/model/DepartmentModel';
-import { DepartmentService, MemberService } from '../../../stores';
+import { CompanyApproverModel } from '../../../company/model/CompanyApproverModel';
+import { DepartmentService, MemberService, CompanyApproverService } from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 
 interface Props {
   skProfileService?: SkProfileService
   memberService?: MemberService
+  companyApproverService?: CompanyApproverService
   departmentService?: DepartmentService
   trigger?: React.ReactNode
   handleOk: (member: MemberViewModel) => void
@@ -20,6 +22,7 @@ interface Props {
 
 @inject(mobxHelper.injectFrom(
   'approval.memberService',
+  'approval.companyApproverService',
   'approval.departmentService',
   'profile.skProfileService'
 ))
@@ -38,10 +41,11 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   init() {
     //
-    const { skProfileService, departmentService, memberService } = this.props;
+    const { skProfileService, departmentService, memberService, companyApproverService } = this.props;
     skProfileService!.findSkProfile()
       .then((profile: SkProfileModel) => departmentService!.findDepartmentByCode(profile.departmentCode))
-      .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id));
+      .then((department: DepartmentModel) => memberService!.findApprovalMemberByEmployeeId(department.manager.id))
+      .then((companyApprover: CompanyApproverModel) => companyApproverService!.findCompanyApprover());
   }
 
   onOpenModal() {
@@ -49,8 +53,9 @@ class ApplyReferenceModal extends React.Component<Props> {
     this.setState({ open: true });
     // 2020-04-22 김우성
     // 참조자 모달 팝업 막기 위해 onOK 내용 바로 실행
-    const { handleOk, memberService } = this.props;
+    const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
+    const { companyApprover } = companyApproverService!;
     handleOk(approvalMember);
     //this.close();
     // issue date : 2020-05-14 승인자 설정 및 승인자 변경하기 this.close() 주석 처리 함.
@@ -64,8 +69,9 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   onOk() {
     //
-    const { handleOk, memberService } = this.props;
+    const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
+    const { companyApprover } = companyApproverService!;
     handleOk(approvalMember);
     this.close();
   }
@@ -83,13 +89,92 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   render() {
     const { open } = this.state;
-    const { trigger, memberService } = this.props;
+    const { trigger, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
+    const { companyApprover } = companyApproverService!;
+
+    console.log('render start companyApprover.titleName ::' + companyApprover.titleName);
+    console.log('render start approvalMember.titleName ::' + approvalMember.titleName);
+
+    console.log('render start companyApprover.myApprover ::' + companyApprover.myApprover);
+
+    // 회사명
+    let companyNamVal = '';
+    if ( approvalMember.companyName === '' ) {
+      companyNamVal = companyApprover.companyName;
+    } else {
+      companyNamVal = approvalMember.companyName;
+    }
+    const companyNam = companyNamVal;
+
+
+    // 부서명
+    let departmentNameVal = '';
+    if ( approvalMember.departmentName === '' ) {
+      departmentNameVal = companyApprover.departmentName;
+    } else {
+      departmentNameVal = approvalMember.departmentName;
+    }
+    const departmentName = departmentNameVal;
+
+    // 이름
+    let userNameVal = '';
+    if ( approvalMember.name === '' ) {
+      userNameVal = companyApprover.name;
+    } else {
+      userNameVal = approvalMember.name;
+    }
+    const userName = userNameVal;
+
+    // 직위
+    let titleNameVal = '';
+    if ( approvalMember.titleName === '' ) {
+      titleNameVal = companyApprover.titleName;
+    } else {
+      titleNameVal = approvalMember.titleName;
+    }
+    const titleName = titleNameVal;
+
+    // 직책
+    let dutiesVal = '';
+    if ( approvalMember.dutiesName === '' ) {
+      dutiesVal = companyApprover.dutiesName;
+    } else {
+      dutiesVal = approvalMember.dutiesName;
+    }
+    const dutiesName = dutiesVal;
+
+    // 직위/직책
+    let titleDutiesVal = '';
+    if( dutiesName !== '') {
+      titleDutiesVal = titleName + '/' + dutiesName;
+    }
+    const titleDuties = titleDutiesVal;
+
+    // 이메일
+    let emailVal = '';
+    if ( approvalMember.email === '' ) {
+      emailVal = companyApprover.email;
+    } else {
+      emailVal = approvalMember.email;
+    }
+    const email = emailVal;
+
+    console.log('render start companyApprover.approverType ::' + companyApprover.approverType);
+
+    // 리더 승인 일 경우
+    let approverTypeVal = '';
+    if ( companyApprover.approverType === 'Leader_Approve') {
+      approverTypeVal = '본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.';
+    }
+
+    const approverTypeStr = approverTypeVal;
+
     return (
       <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
         <Modal.Header className="res">
           {/*Class Series Detail*/}승인자 설정
-          <span className="sub f12">본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.</span>
+          <span className="sub f12">{approverTypeStr}</span>
         </Modal.Header>
         <Modal.Content>
           <div className="scrolling-60vh">
@@ -98,8 +183,8 @@ class ApplyReferenceModal extends React.Component<Props> {
                 <col width="20%" />
                 <col width="20%" />
                 <col width="20%" />
-                <col width="10%" />
-                <col width="30%" />
+                <col width="15%" />
+                <col width="25%" />
               </colgroup>
               <Table.Header>
                 <Table.Row>
@@ -113,11 +198,11 @@ class ApplyReferenceModal extends React.Component<Props> {
 
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell><span>{approvalMember.companyName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.departmentName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.name}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.titleName}</span></Table.Cell>
-                  <Table.Cell><span>{approvalMember.email}</span></Table.Cell>
+                  <Table.Cell><span>{companyNam}</span></Table.Cell>
+                  <Table.Cell><span>{departmentName}</span></Table.Cell>
+                  <Table.Cell><span>{userName}</span></Table.Cell>
+                  <Table.Cell><span>{titleDuties}</span></Table.Cell>
+                  <Table.Cell><span>{email}</span></Table.Cell>
                 </Table.Row>
 
               </Table.Body>

@@ -1,7 +1,7 @@
 import { computed, decorate, observable } from 'mobx';
 import { LangStrings } from 'shared/model';
 
-export class ApprovalMemberModel {
+export class CompanyApproverModel {
   id: string = '';
   names: LangStrings = new LangStrings();
   employeeId: string = '';
@@ -24,15 +24,15 @@ export class ApprovalMemberModel {
   photoFileUrl: string = '';
   myApprover: string = '';
 
-  constructor(approvalMemberModel?: ApprovalMemberModel) {
-    if (approvalMemberModel) {
-      const names = new LangStrings(approvalMemberModel.names);
-      const ranks = new LangStrings(approvalMemberModel.ranks);
-      const titles = new LangStrings(approvalMemberModel.titles);
-      const duties = new LangStrings(approvalMemberModel.duties);
-      const companyNames = new LangStrings(approvalMemberModel.companyNames);
-      const departmentNames = new LangStrings(approvalMemberModel.departmentNames);
-      Object.assign(this, { ...approvalMemberModel, names, ranks, titles, duties, companyNames, departmentNames });
+  constructor(companyApproverModel?: CompanyApproverModel) {
+    if (companyApproverModel) {
+      const names = new LangStrings(companyApproverModel.names);
+      const ranks = new LangStrings(companyApproverModel.ranks);
+      const titles = new LangStrings(companyApproverModel.titles);
+      const duties = new LangStrings(companyApproverModel.duties);
+      const companyNames = new LangStrings(companyApproverModel.companyNames);
+      const departmentNames = new LangStrings(companyApproverModel.departmentNames);
+      Object.assign(this, { ...companyApproverModel, names, ranks, titles, duties, companyNames, departmentNames });
     }
   }
 
@@ -86,7 +86,7 @@ export class ApprovalMemberModel {
 
 }
 
-decorate(ApprovalMemberModel, {
+decorate(CompanyApproverModel, {
   id: observable,
   names: observable,
   employeeId: observable,
