@@ -126,8 +126,10 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
     console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
 
-    if(classroom.freeOfCharge.freeOfCharge) {
-      if(classroom.freeOfCharge.approvalProcess) {
+    if(classroom.freeOfCharge.freeOfCharge === true) {
+      console.log('onSelectClassroom if classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
+      if(classroom.freeOfCharge.approvalProcess === true) {
+        console.log('onSelectClassroom if classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
         this.onApplyReference();
       }
     }
