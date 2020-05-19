@@ -121,27 +121,59 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
-    this.onApplyReference();
+    console.log('onSelectClassroom ClassroomModel start :: ');
+
+    console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
+    console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
+
+    if(classroom.freeOfCharge.freeOfCharge) {
+      if(classroom.freeOfCharge.approvalProcess) {
+        this.onApplyReference();
+      }
+    }
+
+    const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 "홍길동" 담당자에게 연락 부탁 드립니다. <br> - 담당자 성명 : 홍길동 <br> - 담당자 이메일 : sk@sk.com';
+
+    if(!classroom.freeOfCharge.freeOfCharge) {
+      reactAlert({ title: '알림', message: messageStr });
+    }
+
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
+
+      console.log('onSelectClassroom if student.id :: ' + student.id);
+      console.log('onSelectClassroom if student :: ' + student);
+
       studentService!.removeStudent(student.rollBookId)
         .then(() => this.setState({ rollBook }, this.onApplyReference ));
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
+
+      console.log('onSelectClassroom else if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
+      console.log('onSelectClassroom else if student :: ' + student);
+
       this.setState({ rollBook }, this.onApplyReference );
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
+
+      console.log('onSelectClassroom if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
+
       if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
         window.open(typeViewObject.siteUrl, '_blank');
       }
       else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
     }
+
+    console.log('onSelectClassroom ClassroomModel end :: ');
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
+
+    console.log('onRegisterStudent proposalState :: ' + proposalState);
+
     const { studentCdo, student } = this.props;
 
     if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
@@ -153,6 +185,9 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   registerStudent(studentCdo: StudentCdoModel) {
+
+    console.log('registerStudent studentCdo :: ' + studentCdo);
+
     const { studentService, lectureCardId, init } = this.props;
     return studentService!.registerStudent(studentCdo)
       .then(() => {
