@@ -156,6 +156,9 @@ class LectureCardContainer extends Component<Props, State> {
           studentService!.removeStudent(student.rollBookId)
             .then(() => this.setState({rollBook}, this.onApplyReference));
         }
+      } else {
+        console.log('onSelectClassroom  student else classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
+        studentService!.removeStudent(student.rollBookId)
       }
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
