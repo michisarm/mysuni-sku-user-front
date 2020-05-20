@@ -121,44 +121,40 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   async onSelectClassroom(classroom: ClassroomModel) {
+
     console.log('onSelectClassroom ClassroomModel start :: ');
+
+    const { viewObject } = this.props;
+
+    console.log('onSelectClassroom ClassroomModel viewObject.operatorName :: ' + viewObject.operatorName);
+    console.log('onSelectClassroom ClassroomModel viewObject.operatorEmail :: ' + viewObject.operatorEmail);
 
     console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
     console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
 
-    if(classroom.freeOfCharge.freeOfCharge === true) {
-      console.log('onSelectClassroom if classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
-      if(classroom.freeOfCharge.approvalProcess === true) {
-        console.log('onSelectClassroom if classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
+    // 유료과정 학습정보, 승인 체크
+    if(classroom.freeOfCharge.freeOfCharge) {
+      if(classroom.freeOfCharge.approvalProcess) {
         this.onApplyReference();
       }
-    }
-
-    const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 "홍길동" 담당자에게 연락 부탁 드립니다. <br> - 담당자 성명 : 홍길동 <br> - 담당자 이메일 : sk@sk.com';
-
-    if(!classroom.freeOfCharge.freeOfCharge) {
-      reactAlert({ title: '알림', message: messageStr });
     }
 
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
-
       console.log('onSelectClassroom if student.id :: ' + student.id);
       console.log('onSelectClassroom if student :: ' + student);
 
-      if(classroom.freeOfCharge.freeOfCharge === true) {
-        console.log('onSelectClassroom  student if classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
-        if (classroom.freeOfCharge.approvalProcess === true) {
-          console.log('onSelectClassroom student if classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
-
+      // 유료과정 학습정보, 승인 체크
+      if(classroom.freeOfCharge.freeOfCharge) {
+        if(classroom.freeOfCharge.approvalProcess) {
           studentService!.removeStudent(student.rollBookId)
-            .then(() => this.setState({rollBook}, this.onApplyReference));
+            .then(() => this.setState({ rollBook }, this.onApplyReference ));
         }
       } else {
-        console.log('onSelectClassroom  student else classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
-        this.setState({ rollBook }, this.onApplyReference );
+        studentService!.removeStudent(student.rollBookId)
+          .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
       }
     }
     else if ((!student || !student.id) && classroom.enrolling.enrollingAvailable) {
@@ -166,7 +162,14 @@ class LectureCardContainer extends Component<Props, State> {
       console.log('onSelectClassroom else if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
       console.log('onSelectClassroom else if student :: ' + student);
 
-      this.setState({ rollBook }, this.onApplyReference );
+      // 유료과정 학습정보, 승인 체크
+      if(classroom.freeOfCharge.freeOfCharge) {
+        if(classroom.freeOfCharge.approvalProcess) {
+          this.setState({ rollBook }, this.onApplyReference );
+        }
+      } else {
+        this.setState({ rollBook }, this.onApplyReferenceEmpty );
+      }
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
@@ -177,6 +180,24 @@ class LectureCardContainer extends Component<Props, State> {
         window.open(typeViewObject.siteUrl, '_blank');
       }
       else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+    } else {
+      const operatorName = viewObject.operatorName;
+      const operatorEmail = viewObject.operatorEmail;
+
+      console.log('operatorName ::' + operatorName);
+      console.log('operatorEmail ::' + operatorEmail);
+
+      // 유료과정 학습정보, 승인 체크
+      if( !classroom.freeOfCharge.freeOfCharge ) {
+        const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
+          ' 담당자에게 연락 부탁 드립니다.' +
+          '<br> - 담당자 성명 : ' + operatorName +
+          '<br> - 담당자 이메일 : ' + operatorEmail;
+
+        if(!classroom.freeOfCharge.freeOfCharge) {
+          reactAlert({ title: '알림', message: messageStr });
+        }
+      }
     }
 
     console.log('onSelectClassroom ClassroomModel end :: ');
@@ -347,6 +368,10 @@ class LectureCardContainer extends Component<Props, State> {
 
   onApplyReference() {
     this.applyReferenceModel.onOpenModal();
+  }
+
+  onApplyReferenceEmpty() {
+    console.log('onApplyReferenceEmpty start ::');
   }
 
   onReport() {
