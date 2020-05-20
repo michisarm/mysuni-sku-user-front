@@ -124,6 +124,11 @@ class LectureCardContainer extends Component<Props, State> {
 
     console.log('onSelectClassroom ClassroomModel start :: ');
 
+    const { viewObject } = this.props;
+
+    console.log('onSelectClassroom ClassroomModel viewObject.operatorName :: ' + viewObject.operatorName);
+    console.log('onSelectClassroom ClassroomModel viewObject.operatorEmail :: ' + viewObject.operatorEmail);
+
     console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
     console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
 
@@ -176,10 +181,22 @@ class LectureCardContainer extends Component<Props, State> {
       }
       else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
     } else {
-      const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 "홍길동" 담당자에게 연락 부탁 드립니다. <br> - 담당자 성명 : 홍길동 <br> - 담당자 이메일 : sk@sk.com';
+      const operatorName = viewObject.operatorName;
+      const operatorEmail = viewObject.operatorEmail;
 
-      if(!classroom.freeOfCharge.freeOfCharge) {
-        reactAlert({ title: '알림', message: messageStr });
+      console.log('operatorName ::' + operatorName);
+      console.log('operatorEmail ::' + operatorEmail);
+
+      // 유료과정 학습정보, 승인 체크
+      if( !classroom.freeOfCharge.freeOfCharge ) {
+        const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
+          ' 담당자에게 연락 부탁 드립니다.' +
+          '<br> - 담당자 성명 : ' + operatorName +
+          '<br> - 담당자 이메일 : ' + operatorEmail;
+
+        if(!classroom.freeOfCharge.freeOfCharge) {
+          reactAlert({ title: '알림', message: messageStr });
+        }
       }
     }
 
