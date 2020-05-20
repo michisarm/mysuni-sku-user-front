@@ -447,15 +447,33 @@ class LectureCardContainer extends Component<Props, State> {
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
     let proposalState = studentCdo.proposalState;
+
+    console.log('getFreeOfChargeOk studentCdo.proposalState : '+ studentCdo.proposalState);
+
+    console.log('getFreeOfChargeOk if student.proposalState :: ' + student?.proposalState );
+
     if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
+
+      console.log('getFreeOfChargeOk if proposalState : '+ proposalState);
     }
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
-    console.log('getFreeOfChargeOk rollBookId : ', rollBookId);
+    console.log('getFreeOfChargeOk rollBookId :: ', rollBookId);
+    console.log('getFreeOfChargeOk proposalState :: ', proposalState);
 
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
+
+    // Submitted으로 디폴트 입력 한다.
+    //proposalState = studentCdo.proposalState;
+
+    console.log('getFreeOfChargeOk end proposalState : '+ proposalState);
+
+    const { viewObject } = this.props;
+    // 이메일 담당자
+    studentCdo.leaderEmails = [viewObject.operatorEmail];
+    console.log('getFreeOfChargeOk end viewObject.operatorEmail : '+ viewObject.operatorEmail);
 
     this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }
