@@ -29,6 +29,13 @@ const numOptions = [
   { key: 'val03', value: 'val03', text: '2차' }
 ];
 
+const termOptions = [
+  { key: 'val01', value: 'val01', text: '최근 1주일' },
+  { key: 'val02', value: 'val02', text: '최근 2주일' },
+  { key: 'val03', value: 'val03', text: '최근 한달' },
+  { key: 'val04', value: 'val04', text: '사용자 지정' },
+];
+
 class ApprovalManagerBoard extends Component {
 
   state = {
@@ -104,66 +111,87 @@ class ApprovalManagerBoard extends Component {
             </div>
             <div className="bottom">
               <div className="left-area">
+                <div className="actions top">
 
-                {approvalStatus !== 'required' ? '' :
+                  {approvalStatus !== 'required' ? '' :
+                  <>
+                    <ApprovalProcessModal
+                      trigger={(
+                        <Button icon className="left post return">
+                          <Icon className="return"/> 반려
+                        </Button>
+                      )}
+                    />
+                    < ApprovalProcessModal
+                      trigger={(
+                        <Button icon className="left post approval">
+                          <Icon className="approval"/> 승인
+                        </Button>
+                      )}
+                    />
 
-                <>
-                  <ApprovalProcessModal
-                    trigger={(
-                      <Button icon className="left post return">
-                        <Icon className="return"/> 반려
+                    {/*0514 엑셀다운로드 추가*/}
+                    <span className="excel-wrap">
+                      <Button icon className="left post excel-down">
+                        <Icon className="excel-down"/> 엑셀 다운로드
                       </Button>
-                    )}
-                  />
-                  < ApprovalProcessModal
-                    trigger={(
-                      <Button icon className="left post approval">
-                        <Icon className="approval"/> 승인
-                      </Button>
-                  )}
-                  />
-                </>
-                }
+                    </span>
+                  </>
+                  }
 
-                {/*Delete 버튼은 승인요청 목록에는 미노출*/}
-                {approvalStatus === 'required' ?
-                  ''
-                  :
-                  <Button icon className="left post delete">
-                    <Icon className="del24"/> Delete
-                  </Button>
-                }
+                  {/*Delete 버튼은 승인요청 목록에는 미노출*/}
+                  {approvalStatus === 'required' ?
+                    ''
+                    :
+                    <Button icon className="left post delete">
+                      <Icon className="del24"/> Delete
+                    </Button>
+                  }
+                </div>
               </div>
 
               <div className="right-area">
 
                 {/*신청현황 모달팝업*/}
-                <ApprovalApplyStatusModal/>
+                {/*0514 신청현황 -> 목록으로 이동*/}
+                {/*<ApprovalApplyStatusModal/>*/}
 
                 <Select
                   placeholder="전체과정"
                   className="ui small-border dropdown selection list-title-sel"
                   options={classOptions}
                 />
+
+                {/*0514 차수선택 => 교육기간으로 변경*/}
+                {/*<Select*/}
+                {/*placeholder="전체차수"*/}
+                {/*className="ui small-border dropdown selection list-num-sel"*/}
+                {/*options={numOptions}*/}
+                {/*/>*/}
+
                 <Select
-                  placeholder="전체차수"
+                  placeholder="교육기간"
                   className="ui small-border dropdown selection list-num-sel"
-                  options={numOptions}
+                  options={termOptions}
                 />
+
               </div>
             </div>
           </div>
 
           {/*목록*/}
-          <div className="confirm-list">
+          {/*0514 조직, 신청현황, 교육금액 컬럼 추가*/}
+          <div className="confirm-list typeA">
             <div className="row thead">
               <span className="cell ck">
                 <Checkbox className="base"/>
               </span>
               <span className="cell num">No</span>
               <span className="cell name">신청자</span>
+              <span className="cell team">조직</span>
               <span className="cell title">과정명</span>
-              <span className="cell class">차수정보</span>
+              <span className="cell class">차수</span>
+              <span className="cell status">신청현황</span>
               <span className="cell term">
                 <a href="#">
                   (차수)교육기간
@@ -171,6 +199,12 @@ class ApprovalManagerBoard extends Component {
                 </a>
               </span>
               <span className="cell date">{ approvalDateName }</span>
+              <span className="cell pay">
+                <a href="#">
+                  인당 교육금액
+                  <Icon className="list-down16"/>
+                </a>
+              </span>
             </div>
 
             {/*목록body*/}
@@ -184,14 +218,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
               <span className="cell class">1</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -203,14 +242,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -222,14 +266,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -241,14 +290,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -260,14 +314,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -279,14 +338,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -298,14 +362,19 @@ class ApprovalManagerBoard extends Component {
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
                 <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -313,18 +382,23 @@ class ApprovalManagerBoard extends Component {
               </span>
               <span className="cell num">13</span>
               <span className="cell name">
-                <a href="#none" target="_blank">
+                <a href="/my-training/my-page/ApprovalList/detail">
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
-                <a href="#none" target="_blank" className="ellipsis">
+                <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -332,18 +406,23 @@ class ApprovalManagerBoard extends Component {
               </span>
               <span className="cell num">12</span>
               <span className="cell name">
-                <a href="#none" target="_blank">
+                <a href="/my-training/my-page/ApprovalList/detail">
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
-                <a href="#none" target="_blank" className="ellipsis">
+                <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
             <div className="row">
               <span className="cell ck">
@@ -351,18 +430,23 @@ class ApprovalManagerBoard extends Component {
               </span>
               <span className="cell num">11</span>
               <span className="cell name">
-                <a href="#none" target="_blank">
+                <a href="/my-training/my-page/ApprovalList/detail">
                   <span className="ellipsis">홍길동</span>
                 </a>
               </span>
+              <span className="cell team">
+                <span className="ellipsis">개발1팀</span>
+              </span>
               <span className="cell title">
-                <a href="#none" target="_blank" className="ellipsis">
+                <a href="/my-training/my-page/ApprovalList/detail" className="ellipsis">
                   AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!AI와 Block chain과의 상관관계는 어떻게 되는가?!
                 </a>
               </span>
-              <span className="cell class">2</span>
-              <span className="cell">2020.02.20~2020.03.20</span>
+              <span className="cell class">1</span>
+              <span className="cell status">21/40</span>
+              <span className="cell term">2020.02.20<br/>~2020.03.20</span>
               <span className="cell date">2019.10.08</span>
+              <span className="cell pay">20,000</span>
             </div>
           </div>
 
