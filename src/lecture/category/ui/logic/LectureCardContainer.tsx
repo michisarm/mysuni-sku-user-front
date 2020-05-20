@@ -137,6 +137,9 @@ class LectureCardContainer extends Component<Props, State> {
       if(classroom.freeOfCharge.approvalProcess) {
         this.onApplyReference();
       }
+    } else {
+      // 무료과정 등록
+      this.getFreeOfChargeOk();
     }
 
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
@@ -432,6 +435,25 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
 
     studentCdo.leaderEmails = [member.email];
+    studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
+
+    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
+  }
+
+  // 무료과정 등록
+  getFreeOfChargeOk() {
+    //
+    const { studentCdo, student } = this.props;
+    const { rollBook } = this.state;
+    let proposalState = studentCdo.proposalState;
+    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
+    let rollBookId = studentCdo.rollBookId;
+    if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
+
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
     this.registerStudent({ ...studentCdo, rollBookId, proposalState });
