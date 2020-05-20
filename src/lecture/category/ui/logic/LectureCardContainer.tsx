@@ -138,6 +138,7 @@ class LectureCardContainer extends Component<Props, State> {
         this.onApplyReference();
       }
     } else {
+      console.log('onSelectClassroom getFreeOfChargeOk  insert :: ');
       // 무료과정 등록
       this.getFreeOfChargeOk();
     }
