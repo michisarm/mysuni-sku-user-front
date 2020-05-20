@@ -452,7 +452,7 @@ class LectureCardContainer extends Component<Props, State> {
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
-    console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
+    console.log('getFreeOfChargeOk rollBookId : ', rollBookId);
 
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
