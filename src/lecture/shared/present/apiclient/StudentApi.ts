@@ -14,6 +14,9 @@ class StudentApi {
 
 
   registerStudent(studentCdo: StudentCdoModel) {
+    console.log('registerStudent proposalState ::' + studentCdo.proposalState);
+    console.log('registerStudent name ::' + studentCdo.name);
+    console.log('registerStudent email ::' + studentCdo.email);
     //
     return axiosApi.post<string>(this.baseUrl + '/flow', studentCdo)
       .then(response => response && response.data);
