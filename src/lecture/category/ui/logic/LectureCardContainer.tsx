@@ -131,6 +131,19 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('onSelectClassroom classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
     console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
     console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
+    console.log('onSelectClassroom classroom.id :: ' + classroom.id);
+
+    const operatorName = viewObject.operatorName;
+    const operatorEmail = viewObject.operatorEmail;
+
+    console.log('reactAlert operatorName ::' + operatorName);
+    console.log('reactAlert operatorEmail ::' + operatorEmail);
+
+    // 알림 메시지
+    const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
+      ' 담당자에게 연락 부탁 드립니다.' +
+      '<br> - 담당자 성명 : ' + operatorName +
+      '<br> - 담당자 이메일 : ' + operatorEmail;
 
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
@@ -141,12 +154,12 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
       if( classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
-        console.log('if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
+        console.log('if if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
 
         studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
-        console.log('else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
+        console.log('if else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
 
         // 과정 등록
         this.getFreeOfChargeOk();
@@ -154,21 +167,8 @@ class LectureCardContainer extends Component<Props, State> {
         studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
 
-        const operatorName = viewObject.operatorName;
-        const operatorEmail = viewObject.operatorEmail;
+        reactAlert({ title: '알림', message: messageStr });
 
-        console.log('if operatorName ::' + operatorName);
-        console.log('if operatorEmail ::' + operatorEmail);
-
-        // 알림 메시지
-        const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
-          ' 담당자에게 연락 부탁 드립니다.' +
-          '<br> - 담당자 성명 : ' + operatorName +
-          '<br> - 담당자 이메일 : ' + operatorEmail;
-
-        if(!classroom.freeOfCharge.freeOfCharge) {
-          reactAlert({ title: '알림', message: messageStr });
-        }
       }
     } else if ((!student || !student.id) && (classroom.enrolling.enrollingAvailable === true) && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
 
@@ -179,30 +179,16 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
       this.setState({ rollBook }, this.onApplyReference );
-    } else {
 
+    } else {
+      console.log(' else 수강신청(false), 무료여부(true), 승인 체크(false) getFreeOfChargeOk onApplyReferenceEmpty :: ');
       // 과정 등록
       this.getFreeOfChargeOk();
 
       // 수강신청(false), 무료여부(true), 승인 체크(false)
       this.setState({ rollBook }, this.onApplyReferenceEmpty );
 
-      const operatorName = viewObject.operatorName;
-      const operatorEmail = viewObject.operatorEmail;
-
-      console.log('else operatorName ::' + operatorName);
-      console.log('else operatorEmail ::' + operatorEmail);
-
-      // 알림 메시지
-      const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
-        ' 담당자에게 연락 부탁 드립니다.' +
-        '<br> - 담당자 성명 : ' + operatorName +
-        '<br> - 담당자 이메일 : ' + operatorEmail;
-
-      if(!classroom.freeOfCharge.freeOfCharge) {
-        reactAlert({ title: '알림', message: messageStr });
-      }
-
+      reactAlert({ title: '알림', message: messageStr });
     }
 
     if (!classroom.enrolling.enrollingAvailable) {
