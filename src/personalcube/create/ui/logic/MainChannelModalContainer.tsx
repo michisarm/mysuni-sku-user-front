@@ -37,7 +37,7 @@ class MainChannelModalContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
-    // this.findAllColleges();
+    this.findAllColleges();
     this.setDefaultSelectedChannel();
   }
 

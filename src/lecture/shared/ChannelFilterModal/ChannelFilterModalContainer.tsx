@@ -55,7 +55,7 @@ class ChannelFilterModalContainer extends Component<Props, State> {
     //
     const { collegeService, collegeLectureCountService } = this.props;
 
-    // collegeService!.findAllColleges();
+    collegeService!.findAllColleges();
     collegeLectureCountService!.findCollegeLectureCounts();
   }
 
