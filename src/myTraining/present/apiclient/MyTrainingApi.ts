@@ -10,7 +10,8 @@ class MyTrainingApi {
   //
   static instance: MyTrainingApi;
 
-  baseUrl = '/api/mytraining/mytraining/mytrainings';
+  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  baseUrl = this.devUrl + '/api/mytraining/mytraining/mytrainings';
 
 
   getOffsetElementList(response: any) {
@@ -23,7 +24,7 @@ class MyTrainingApi {
 
   findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState/filter', myTrainingRdo)
+    return axiosApi.post<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState/filterWithJoinedValue', myTrainingRdo)
       .then(this.getOffsetElementList);
   }
 

@@ -53,10 +53,18 @@ class CategoryMenuContainer extends Component<Props, State> {
     //
     const { collegeLectureCountService } = this.props;
 
-    const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
-
-    if (collegeLectureCounts.length > 0) {
-      this.onActiveCollege({}, collegeLectureCounts[0]);
+    const category = sessionStorage.getItem('category');
+    if (category !== null) {
+      const collegeLectureCounts = JSON.parse(category);
+      if (collegeLectureCounts.length > 0) {
+        this.onActiveCollege({}, collegeLectureCounts[0]);
+      }
+    }
+    else {
+      const collegeLectureCounts = await collegeLectureCountService!.findCollegeLectureCounts();
+      if (collegeLectureCounts.length > 0) {
+        this.onActiveCollege({}, collegeLectureCounts[0]);
+      }
     }
   }
 

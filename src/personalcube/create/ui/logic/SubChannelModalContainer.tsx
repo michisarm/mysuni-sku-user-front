@@ -38,7 +38,7 @@ class SubChannelModalContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     //
-    this.findAllColleges();
+    // this.findAllColleges();
     this.setSelectedCategoryChannels();
   }
 

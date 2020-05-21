@@ -5,6 +5,7 @@ import { DramaEntityObservableModel } from 'shared/model';
 
 class RollBookModel extends DramaEntityObservableModel {
   //
+  id: string = '';
   round: number = 0;
   name: string = '';
   studentCount: number = 0;
@@ -20,6 +21,7 @@ class RollBookModel extends DramaEntityObservableModel {
 }
 
 decorate(RollBookModel, {
+  id: observable,
   round: observable,
   name: observable,
   studentCount: observable,

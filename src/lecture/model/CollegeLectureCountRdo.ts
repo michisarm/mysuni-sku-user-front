@@ -21,10 +21,21 @@ class CollegeLectureCountRdo {
   @observable
   channelCounts: IdNameCount[] = [];
 
+  @observable
+  totalCount: number = 0;
+
 
   constructor(collegeLectureCount?: CollegeLectureCountRdo) {
     //
     if (collegeLectureCount) {
+      if (collegeLectureCount.channelCounts.length > 0) {
+        let totalCount = 0;
+        for (let i = 0; i < collegeLectureCount.channelCounts.length; i++) {
+          totalCount += collegeLectureCount.channelCounts[i].count;
+          collegeLectureCount.totalCount = totalCount;
+        }
+      }
+
       Object.assign(this, { ...collegeLectureCount });
     }
   }

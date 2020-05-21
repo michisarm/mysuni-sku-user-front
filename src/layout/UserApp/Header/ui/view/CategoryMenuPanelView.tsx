@@ -38,6 +38,8 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege, onRouteChannel,
     } = this.props;
 
+    console.log(activeCollege);
+
     return (
       <div className="layer">
         <div className="table-css">
@@ -75,7 +77,7 @@ class CategoryMenuPanelView extends Component<Props> {
                       }}
                       >
                         {activeCollege.name} 전체보기
-                        <span>({activeCollege.collegeCount})</span>
+                        <span>({activeCollege.totalCount})</span>
                       </button>
 
                       { Array.isArray(channels) && (
