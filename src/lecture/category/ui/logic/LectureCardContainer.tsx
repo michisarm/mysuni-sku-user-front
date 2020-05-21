@@ -468,7 +468,7 @@ class LectureCardContainer extends Component<Props, State> {
     // Submitted으로 디폴트 입력 한다.
     proposalState = studentCdo.proposalState;
 
-    console.log('getFreeOfChargeOk end proposalState : '+ proposalState);
+    console.log('getFreeOfChargeOk end proposalState ==> '+ proposalState);
 
     const { viewObject } = this.props;
     // 이메일 담당자
