@@ -466,7 +466,7 @@ class LectureCardContainer extends Component<Props, State> {
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
     // Submitted으로 디폴트 입력 한다.
-    //proposalState = studentCdo.proposalState;
+    proposalState = studentCdo.proposalState;
 
     console.log('getFreeOfChargeOk end proposalState : '+ proposalState);
 
