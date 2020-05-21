@@ -727,6 +727,7 @@ class LectureCardPage extends Component<Props, State> {
       enClosed: boardService!.board!.boardConfig!.enClosed,
       leaderEmails: [],
       url: '',
+      classroomId: '',
     });
   }
 

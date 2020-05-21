@@ -78,6 +78,8 @@ class LectureCardContainer extends Component<Props, State> {
     type: '',
     name: '',
     openLearningModal: false,
+    classroomId: '',
+    approvalProcess: false,
   };
 
 
@@ -132,6 +134,11 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
     console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
     console.log('onSelectClassroom classroom.id :: ' + classroom.id);
+
+    // 차수 선택시 id 값
+    this.state.classroomId = classroom.id;
+    // 차수 선택시 무료(true) 유료(false) 여부
+    this.state.approvalProcess = classroom.freeOfCharge.approvalProcess;
 
     const operatorName = viewObject.operatorName;
     const operatorEmail = viewObject.operatorEmail;
@@ -202,6 +209,30 @@ class LectureCardContainer extends Component<Props, State> {
     // }
 
     console.log('onSelectClassroom ClassroomModel end :: ');
+  }
+
+  registerStudentApprove(studentCdo: StudentCdoModel) {
+    // 차수선택 시 id, freeOfCharge 값 전달
+    console.log('registerStudentApprove studentCdo.proposalState :: ' + studentCdo.proposalState);
+
+    console.log('registerStudentApprove this.state.classroomId :: ' + this.state.classroomId);
+    // 차수 선택 시 ID 값
+    studentCdo.classroomId = this.state.classroomId;
+    // 차수 선택시 무료(true) 유료(false) 여부
+    studentCdo.approvalProcess = this.state.approvalProcess;
+
+    console.log('registerStudentApprove studentCdo.classroomId :: ' + studentCdo.classroomId);
+    console.log('registerStudentApprove studentCdo.approvalProcess :: ' + studentCdo.approvalProcess);
+
+    const { studentService, lectureCardId, init } = this.props;
+
+    return studentService!.registerStudent(studentCdo)
+      .then(() => {
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
+        studentService!.findStudentCount(studentCdo.rollBookId);
+        if (init) init();
+      });
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
@@ -435,7 +466,8 @@ class LectureCardContainer extends Component<Props, State> {
     studentCdo.leaderEmails = [member.email];
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
-    this.registerStudent({ ...studentCdo, rollBookId, proposalState });
+    // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
+    this.registerStudentApprove({ ...studentCdo, rollBookId, proposalState });
   }
 
   // 무료과정 등록

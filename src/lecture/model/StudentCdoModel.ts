@@ -21,6 +21,8 @@ class StudentCdoModel {
 
   // Community용
   enClosed?: boolean;
+  classroomId: string = '';
+  approvalProcess?: boolean;
 
   constructor(student?: StudentCdoModel) {
     //
@@ -43,6 +45,8 @@ decorate(StudentCdoModel, {
   programLectureUsid: observable,
   courseLectureUsid: observable,
   enClosed: observable,
+  classroomId: observable,
+  approvalProcess: observable,
 });
 
 export default StudentCdoModel;

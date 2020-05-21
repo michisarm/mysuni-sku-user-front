@@ -430,6 +430,7 @@ class CourseLectureContainer extends Component<Props, State> {
       leaderEmails: [],
       url: '',
       enClosed: false,
+      classroomId: '',
       //enClosed: boardService!.board!.boardConfig!.enClosed,
     });
   }
