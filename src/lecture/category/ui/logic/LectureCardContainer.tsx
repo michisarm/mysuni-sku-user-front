@@ -191,15 +191,15 @@ class LectureCardContainer extends Component<Props, State> {
       reactAlert({ title: '알림', message: messageStr });
     }
 
-    if (!classroom.enrolling.enrollingAvailable) {
-
-      console.log('onSelectClassroom if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
-
-      if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
-        window.open(typeViewObject.siteUrl, '_blank');
-      }
-      else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-    }
+    // if (!classroom.enrolling.enrollingAvailable) {
+    //
+    //   console.log('onSelectClassroom if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
+    //
+    //   if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
+    //     window.open(typeViewObject.siteUrl, '_blank');
+    //   }
+    //   else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+    // }
 
     console.log('onSelectClassroom ClassroomModel end :: ');
   }
