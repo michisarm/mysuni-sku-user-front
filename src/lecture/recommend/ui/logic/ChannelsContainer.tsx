@@ -71,7 +71,8 @@ class ChannelsContainer extends Component<Props> {
             checked: sameLength ? channels[index].checked :  false,
           })
         )) || []);
-        this.onConfirmChangeFavorite();
+        // 이거 주석했더니 렌더가 한번만 된다..^^;;;
+        // this.onConfirmChangeFavorite();
       }
     }
 
