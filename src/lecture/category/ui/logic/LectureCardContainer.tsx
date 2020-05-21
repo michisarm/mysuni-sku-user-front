@@ -234,7 +234,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   registerStudent(studentCdo: StudentCdoModel) {
 
-    console.log('registerStudent studentCdo :: ' + studentCdo);
+    console.log('registerStudent studentCdo.proposalState :: ' + studentCdo.proposalState);
 
     const { studentService, lectureCardId, init } = this.props;
     return studentService!.registerStudent(studentCdo)
