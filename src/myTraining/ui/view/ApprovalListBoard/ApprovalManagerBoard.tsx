@@ -129,13 +129,6 @@ class ApprovalManagerBoard extends Component {
                         </Button>
                       )}
                     />
-
-                    {/*0514 엑셀다운로드 추가*/}
-                    <span className="excel-wrap">
-                      <Button icon className="left post excel-down">
-                        <Icon className="excel-down"/> 엑셀 다운로드
-                      </Button>
-                    </span>
                   </>
                   }
 
@@ -147,6 +140,14 @@ class ApprovalManagerBoard extends Component {
                       <Icon className="del24"/> Delete
                     </Button>
                   }
+
+                  {/*0514 엑셀다운로드 추가*/}
+                  <span className="excel-wrap">
+                    <Button icon className="left post excel-down">
+                      <Icon className="excel-down"/> 엑셀 다운로드
+                    </Button>
+                  </span>
+
                 </div>
               </div>
 

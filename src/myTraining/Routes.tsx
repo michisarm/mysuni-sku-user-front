@@ -22,7 +22,7 @@ class MainRoutes extends React.Component {
         {/*<Redirect exact from="/my-training/community" to="/my-training/community/MyCommunity" />*/}
         {/*<Route exact path="/my-training/community/:tab" component={MyCommunityPage} />*/}
 
-        <Redirect exact from="/my-training/my-page" to="/my-training/my-page/CompletedList/pages/1" />
+        <Redirect exact from="/my-training/my-page" to="/my-training/my-page/EarnedStampList/pages/1" />
         <Route exact path="/my-training/my-page/:tab" component={MyPage} />
         <Route exact path="/my-training/my-page/:tab/pages/:pageNo" component={MyPage} />
 

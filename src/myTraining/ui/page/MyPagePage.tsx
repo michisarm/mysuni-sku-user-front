@@ -28,7 +28,7 @@ interface RouteParams {
 }
 
 enum SubBreadcrumb {
-  CompletedList = '학습완료',
+  // CompletedList = '학습완료',
   EarnedStampList = '보유스탬프',
   ApprovalList = '승인관리',
 }
@@ -40,7 +40,7 @@ class MyPagePage extends Component<Props, State> {
   //
   state = {
     // 시작하는 탭 설정
-    subBreadcrumb: SubBreadcrumb.CompletedList,
+    subBreadcrumb: SubBreadcrumb.EarnedStampList,
     completedCount: 0,
     earnedStampCount: 0,
   };
@@ -72,22 +72,6 @@ class MyPagePage extends Component<Props, State> {
     const { completedCount, earnedStampCount } = this.state;
 
     return [
-      {
-        name: MyPageContentType.CompletedList,
-        item: (
-          <>
-            학습완료
-            <span className="count">{completedCount > 0 ? `+${completedCount}` : completedCount}</span>
-          </>
-        ),
-        render: () => (
-          <MyPageListContainer
-            contentType={MyPageContentType.CompletedList}
-            onChangeCompletedCount={this.onChangeCompletedCount}
-            onChangeEarnedStampCount={this.onChangeEarnedStampCount}
-          />
-        ),
-      },
       {
         name: MyPageContentType.EarnedStampList,
         item: (
