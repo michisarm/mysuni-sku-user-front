@@ -431,6 +431,7 @@ class CourseLectureContainer extends Component<Props, State> {
       url: '',
       enClosed: false,
       classroomId: '',
+      approvalProcess: false,
       //enClosed: boardService!.board!.boardConfig!.enClosed,
     });
   }

@@ -728,6 +728,7 @@ class LectureCardPage extends Component<Props, State> {
       leaderEmails: [],
       url: '',
       classroomId: '',
+      approvalProcess: false,
     });
   }
 

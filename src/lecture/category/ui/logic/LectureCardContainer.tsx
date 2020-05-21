@@ -253,6 +253,12 @@ class LectureCardContainer extends Component<Props, State> {
 
     console.log('registerStudent studentCdo.proposalState :: ' + studentCdo.proposalState);
 
+    // 차수 선택시 무료(true) 유료(false) 여부
+    studentCdo.approvalProcess = false;
+
+    console.log('registerStudentApprove studentCdo.classroomId :: ' + studentCdo.classroomId);
+    console.log('registerStudentApprove studentCdo.approvalProcess :: ' + studentCdo.approvalProcess);
+
     const { studentService, lectureCardId, init } = this.props;
     return studentService!.registerStudent(studentCdo)
       .then(() => {
