@@ -72,6 +72,7 @@ class MyPagePage extends Component<Props, State> {
     const { completedCount, earnedStampCount } = this.state;
 
     return [
+      // 0521 학습완료탭 삭제
       {
         name: MyPageContentType.EarnedStampList,
         item: (
