@@ -56,7 +56,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
-    handleOk(approvalMember);
+    //handleOk(approvalMember);
     //this.close();
     // issue date : 2020-05-14 승인자 설정 및 승인자 변경하기 this.close() 주석 처리 함.
     // 2020-04-22 김우성 여기까지
