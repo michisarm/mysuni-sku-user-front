@@ -9,9 +9,10 @@ export class AnswerSheetModel {
   examineeName: string = '';
   questionCount: number = 0;
   finished: boolean = false;
+  submitted: boolean = false;
   examId: string = '';
   answers: ItemAnswerModel[] = [];
-  answersChk: ItemAnswerModel[] = [];
+  submitAnswers: ItemAnswerModel[] = [];
 
   constructor(answerSheet?: AnswerSheetModel) {
     if (answerSheet) {
@@ -19,9 +20,9 @@ export class AnswerSheetModel {
         && answerSheet.answers.map(answer => new ItemAnswerModel(answer)) || this.answers;
       Object.assign(this, { ...answerSheet, answers });
 
-      const answersChk = answerSheet.answersChk && answerSheet.answersChk.length
-        && answerSheet.answersChk.map(answer => new ItemAnswerModel(answer)) || this.answers;
-      Object.assign(this, { ...answerSheet, answersChk });
+      const submitAnswers = answerSheet.submitAnswers && answerSheet.submitAnswers.length
+        && answerSheet.submitAnswers.map(answer => new ItemAnswerModel(answer)) || this.submitAnswers;
+      Object.assign(this, { ...answerSheet, submitAnswers });
     }
   }
 
@@ -35,5 +36,7 @@ decorate(AnswerSheetModel, {
   examineeName: observable,
   questionCount: observable,
   finished: observable,
+  submitted: observable,
   answers: observable,
+  submitAnswers: observable,
 });

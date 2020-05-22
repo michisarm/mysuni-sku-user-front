@@ -168,6 +168,8 @@ class LectureCardPage extends Component<Props, State> {
     localStorage.removeItem('finishedChk');
     // remove
     localStorage.removeItem('numberOfTrials');
+    // remove
+    localStorage.removeItem('finishedChkFirst');
 
     this.setState({ loaded: false });
 

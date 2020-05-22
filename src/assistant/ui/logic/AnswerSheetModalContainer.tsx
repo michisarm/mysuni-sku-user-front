@@ -113,9 +113,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     if (finished) {
       // setter
       localStorage.setItem('finishedChk', 'Y');
+      localStorage.setItem('finishedChkFirst', 'Y');
     } else {
       // setter
       localStorage.setItem('finishedChk', 'N');
+      localStorage.setItem('finishedChkFirst', 'N');
     }
   }
 
@@ -166,8 +168,13 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { examPaperService, examinationService, answerSheetService, trigger } = this.props;
     const { examination } = examinationService!;
     const { examPaper } = examPaperService!;
-    const { answerMap, answerChkMap } = answerSheetService!;
+    const { answerMap, answerChkMap, answerSheet } = answerSheetService!;
     const { score, questions } = examPaper!;
+
+    // 제출 여부 체크
+    const submittedChk = answerSheet.submitted;
+    console.log('render submittedChk ::' + submittedChk);
+    console.log('render answerSheet.finished ::' + answerSheet.finished);
 
     return (
       <Modal
@@ -207,6 +214,26 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
                     const answerChk = answerChkMap.get(question.questionNo) || '';
                     // console.log('answerChk onLoad ::' + answerChk);
+
+                    // getter
+                    const finishedChkFirst = localStorage.getItem('finishedChkFirst');
+                    console.log('finishedChkFirst onLoad ::' + finishedChkFirst);
+
+                    console.log('submittedChk first ::' + submittedChk);
+
+                    // 시험, 재응시 최초 화면 진입시 체크 F5
+                    if(submittedChk) {
+                      if(finishedChkFirst === 'N') {
+                        localStorage.setItem('finishedChk', 'N');
+                        console.log('finichChkVal if if ::' + localStorage.getItem('finishedChk'));
+                      } else {
+                        localStorage.setItem('finishedChk', 'Y');
+                        console.log('finichChkVal if else ::' + localStorage.getItem('finishedChk'));
+                      }
+                    } else {
+                      localStorage.setItem('finishedChk', 'N');
+                      console.log('finichChkVal else ::' + localStorage.getItem('finishedChk'));
+                    }
 
                     // getter
                     const finichChkVal = localStorage.getItem('finishedChk');

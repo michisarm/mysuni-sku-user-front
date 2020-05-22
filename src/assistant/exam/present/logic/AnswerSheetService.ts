@@ -34,8 +34,8 @@ export default class AnswerSheetService {
   @computed
   get answerChkMap() {
     const map = new Map<string, string>();
-    if (this.answerSheet && this.answerSheet.answersChk && this.answerSheet.answersChk.length) {
-      this.answerSheet.answersChk.map(answer => {
+    if (this.answerSheet && this.answerSheet.submitAnswers && this.answerSheet.submitAnswers.length) {
+      this.answerSheet.submitAnswers.map(answer => {
         map.set(answer.questionNo, answer.answer);
       });
     }
