@@ -36,8 +36,7 @@ class CarouselContainer extends Component<Props, State> {
       description: (
         <>
           구성원 Deep Change 역량향상에 도움이 되는 Timely한 컨텐츠 제공을 약속 드립니다.<br />
-          <br />
-          갓 오픈한 따끈따끈한, 컨텐츠 지금 만나보실까요?<br/>
+          갓 오픈한 따끈따끈한, 컨텐츠 지금 만나보실까요?<br/><br/>
           <span className="link-tag">바로가기</span>
         </>
       ),
