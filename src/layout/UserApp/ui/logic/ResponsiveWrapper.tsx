@@ -16,10 +16,7 @@ class ResponsiveWrapper extends Component<ResponsiveWrapperProps> {
   render() {
     //
     const { children } = this.props;
-    const filter = 'win16|win32|win64|mac|macintel';
-    if ( filter.indexOf(navigator.platform.toLowerCase()) < 0 ) {
-      this.setState({ isMobile : true });
-    }
+    this.state.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     return (
       <>
