@@ -113,7 +113,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickApproval() {
     //
-    this.routeNav('/my-training/my-page');
+    this.routeNav('/my-training/my-page/ApprovalList/pages/1');
   }
 
   onClickAdminSite() {
