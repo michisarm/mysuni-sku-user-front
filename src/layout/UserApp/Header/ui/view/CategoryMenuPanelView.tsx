@@ -38,8 +38,6 @@ class CategoryMenuPanelView extends Component<Props> {
       onActiveCollege, onRouteChannel,
     } = this.props;
 
-    console.log(activeCollege);
-
     return (
       <div className="layer">
         <div className="table-css">

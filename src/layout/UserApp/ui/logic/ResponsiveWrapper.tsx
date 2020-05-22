@@ -11,16 +11,17 @@ interface ResponsiveWrapperProps {
 @reactAutobind
 class ResponsiveWrapper extends Component<ResponsiveWrapperProps> {
 
-  state = { isMobile : false };
-  //
+  isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   render() {
     //
     const { children } = this.props;
-    this.state.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     return (
       <>
-        { this.state.isMobile ?
+        { this.isMobile() ?
           <>
             <ResponsiveEnvWrapper responsive={Responsive.onlyComputer}>{children}</ResponsiveEnvWrapper>
             <ResponsiveEnvWrapper responsive={Responsive.onlyTablet}>{children}</ResponsiveEnvWrapper>
