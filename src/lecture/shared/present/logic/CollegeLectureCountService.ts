@@ -65,7 +65,29 @@ class CollegeLectureCountService {
       (collegeLectureCounts) => runInAction(() => this._collegeLectureCounts = collegeLectureCounts),
     );
 
+    if (this._collegeLectureCounts.length > 0) {
+      sessionStorage.setItem('category', JSON.stringify(this.collegeLectureCounts));
+    }
+
     return fetched ? this.collegeLectureCountsCachingFetch.inProgressFetching : this.collegeLectureCounts;
+
+    // const category = sessionStorage.getItem('category');
+    // if (category !== null) {
+    //   // this._collegeLectureCounts = JSON.parse(category);
+    //   runInAction(() => this._collegeLectureCounts = JSON.parse(category));
+    //   return this.collegeLectureCountsCachingFetch.inProgressFetching;
+    // } else {
+    //   const fetched = this.collegeLectureCountsCachingFetch.fetch(
+    //     () => this.lectureFlowApi.findCollegeLectureCount(),
+    //     (collegeLectureCounts) => runInAction(() => this._collegeLectureCounts = collegeLectureCounts),
+    //   );
+    //
+    //   if (this._collegeLectureCounts.length > 0) {
+    //     sessionStorage.setItem('category', JSON.stringify(this._collegeLectureCounts));
+    //   }
+    //
+    //   return fetched ? this.collegeLectureCountsCachingFetch.inProgressFetching : this.collegeLectureCounts;
+    // }
   }
 
   // ChannelCounts -----------------------------------------------------------------------------------------------------

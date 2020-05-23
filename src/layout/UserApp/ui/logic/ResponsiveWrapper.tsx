@@ -10,16 +10,28 @@ interface ResponsiveWrapperProps {
 
 @reactAutobind
 class ResponsiveWrapper extends Component<ResponsiveWrapperProps> {
-  //
+
+  isMobile() {
+    return /Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
   render() {
     //
     const { children } = this.props;
 
     return (
       <>
-        <ResponsiveEnvWrapper responsive={Responsive.onlyComputer}>{children}</ResponsiveEnvWrapper>
-        <ResponsiveEnvWrapper responsive={Responsive.onlyTablet}>{children}</ResponsiveEnvWrapper>
-        <ResponsiveEnvWrapper responsive={Responsive.onlyMobile}>{children}</ResponsiveEnvWrapper>
+        { this.isMobile() ?
+          <>
+            <ResponsiveEnvWrapper responsive={Responsive.onlyComputer}>{children}</ResponsiveEnvWrapper>
+            <ResponsiveEnvWrapper responsive={Responsive.onlyTablet}>{children}</ResponsiveEnvWrapper>
+            <ResponsiveEnvWrapper responsive={Responsive.onlyMobile}>{children}</ResponsiveEnvWrapper>
+          </>
+          :
+          <>
+            <ResponsiveEnvWrapper responsive={Responsive.contextType}>{children}</ResponsiveEnvWrapper>
+          </>
+        }
       </>
     );
   }

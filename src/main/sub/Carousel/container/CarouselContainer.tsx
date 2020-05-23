@@ -30,6 +30,19 @@ class CarouselContainer extends Component<Props, State> {
   AUTO_NEXT_TIME = 7 * 1000;
 
   banners = [
+    {
+      type: ContentType.LinkContent,
+      title: <>이번 주 새로운 컨텐츠를 소개 드립니다.</>,
+      description: (
+        <>
+          구성원 Deep Change 역량향상에 도움이 되는 Timely한 컨텐츠 제공을 약속 드립니다.<br />
+          갓 오픈한 따끈따끈한, 컨텐츠 지금 만나보실까요?<br/><br/>
+          <span className="link-tag">바로가기</span>
+        </>
+      ),
+      link: boardRoutePaths.supportNoticePost('NTC-00003f'),
+      imageUrl: '/images/all/img_banner_newcontents_20200523.png',
+    },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
@@ -84,34 +97,34 @@ class CarouselContainer extends Component<Props, State> {
       link: '/lecture/college/CLG00001/channel/CHN0005a',
       imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>2020 SK신임팀장 과정</>,
-      description: (
-        <>
-          4주, 30시간, 동료 신임팀장과 함께하는 Online 학습<br />
-          SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!<br/>
-          리더에게 필요한 컨텐츠를 언제 어디서든 쉽고 재미있게 학습할 수 있습니다.<br />
-          동료 신임팀장님들과 함께 진행하는 생방송 라이브 세션도 기대해주세요!
-        </>
-      ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
-      imageUrl: '/images/all/img_banner_NewTeamLeader_20200508.jpg',
-    },
-    {
-      type: ContentType.LinkContent,
-      title: <>Global College 핵인싸 과정<br />&#39;국제정세의 현상과 본질 (Series 1)&#39; OPEN !!</>,
-      description: (
-        <>
-          국제정세의 현상과 본질을 이해하고,<br />
-          Globality와 지정학적 안목을 높일 수 있는<br />
-          핵인싸 과정! 많은 학습 부탁드려요~<br />
-          &#35;국제정세 &#35;현실과전망 &#35;이슈 및 정치&#47;경제적 리스크
-        </>
-      ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl',
-      imageUrl: '/images/all/img_banner_GlobalCollege_20200506.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>2020 SK신임팀장 과정</>,
+    //   description: (
+    //     <>
+    //       4주, 30시간, 동료 신임팀장과 함께하는 Online 학습<br />
+    //       SK의 신임팀장이 되신 여러분을 진심으로 환영합니다!<br/>
+    //       리더에게 필요한 컨텐츠를 언제 어디서든 쉽고 재미있게 학습할 수 있습니다.<br />
+    //       동료 신임팀장님들과 함께 진행하는 생방송 라이브 세션도 기대해주세요!
+    //     </>
+    //   ),
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-86y/lecture-card/LECTURE-CARD-5z5',
+    //   imageUrl: '/images/all/img_banner_NewTeamLeader_20200508.jpg',
+    // },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>Global College 핵인싸 과정<br />&#39;국제정세의 현상과 본질 (Series 1)&#39; OPEN !!</>,
+    //   description: (
+    //     <>
+    //       국제정세의 현상과 본질을 이해하고,<br />
+    //       Globality와 지정학적 안목을 높일 수 있는<br />
+    //       핵인싸 과정! 많은 학습 부탁드려요~<br />
+    //       &#35;국제정세 &#35;현실과전망 &#35;이슈 및 정치&#47;경제적 리스크
+    //     </>
+    //   ),
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00006/course-plan/COURSE-PLAN-io/Course/C-LECTURE-fl',
+    //   imageUrl: '/images/all/img_banner_GlobalCollege_20200506.jpg',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>[UI개선] 동영상 Player가 embed 대신 pop-up 방식으로 변경 됩니다.</>,

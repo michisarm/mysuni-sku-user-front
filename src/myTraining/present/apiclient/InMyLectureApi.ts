@@ -10,7 +10,8 @@ class InMyLectureApi {
   //
   static instance: InMyLectureApi;
 
-  baseUrl = '/api/mytraining/mytraining/inmylecture';
+  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  baseUrl = this.devUrl + '/api/mytraining/mytraining/inmylecture';
 
 
   addInMyLecture(inMyLectureCdo: InMyLectureCdoModel) {
@@ -32,7 +33,7 @@ class InMyLectureApi {
 
   findInMyLectures(inMyLectureRdo: InMyLectureRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures/filter', inMyLectureRdo)
+    return axiosApi.post<OffsetElementList<InMyLectureModel>>(this.baseUrl + '/myLectures/filterWithJoinedValue', inMyLectureRdo)
       .then(response => response && response.data);
   }
 
