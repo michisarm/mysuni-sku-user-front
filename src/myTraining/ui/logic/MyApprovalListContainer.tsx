@@ -184,7 +184,7 @@ class MyApprovalListContainer extends React.Component<Props> {
 
         <ApprovalListPanelTopLineView
           totalCount={totalCount}
-          searchSelectOptions={SelectType.userStatus}
+          searchSelectOptions={SelectType.userApprovalStatus}
           onChange={this.onChangeSearchSelect}
           searchState={searchState}
         />

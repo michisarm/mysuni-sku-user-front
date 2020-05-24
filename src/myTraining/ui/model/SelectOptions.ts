@@ -213,6 +213,12 @@ const SelectOptions = {
     { key: '4', text: '반려', value: 'Rejected' },
   ],
 
+  userApprovalStatus: [
+    { key: '0', text: '승인요청', value: 'Submitted' },
+    { key: '1', text: '반려', value: 'Rejected' },
+    { key: '2', text: '승인', value: 'Approved' },
+  ],
+
   openType: [
     { key: '0', text: '전체', value: '' },
     { key: '1', text: 'Yes', value: 'FilterOn' },
