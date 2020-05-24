@@ -10,7 +10,9 @@ import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
 import MyPageListContainer from '../logic/MyPageListContainer';
 
-import {ApprovalListBoard} from '../view/ApprovalListBoard';
+import MyApprovalListContainer from '../logic/MyApprovalListContainer';
+
+// import {ApprovalListBoard} from '../view/ApprovalListBoard';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionLogService?: ActionLogService
@@ -97,7 +99,7 @@ class MyPagePage extends Component<Props, State> {
           </>
         ),
         render: () => (
-          <ApprovalListBoard/>
+          <MyApprovalListContainer/>
         )
       }
     ] as TabItemModel[];

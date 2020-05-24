@@ -23,6 +23,8 @@ const routePaths = {
   communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
   communityMyFeed: () => routePaths.communityTab('MyFeed'),
 
+  createPersonalCubeDetail: (personalCubeId: string, cubeType: string) => `/personalcube/create/cubes/cube/${personalCubeId}/${cubeType}`,
+  createSharedDetail: (personalCubeId: string, cubeType: string, cubeState: string) => `/personalcube/create/cubes/shared/${personalCubeId}/${cubeType}/${cubeState}`,
 
   approvalManagerDetailPage: () =>
     `/my-training/my-page/approval`,
