@@ -116,12 +116,26 @@ class MyApprovalListContainer extends React.Component<Props> {
   }
 
   onChangeSearchSelect(e: any, data: any) {
+
+    const { actionLogService, history, pageService, approvalCubeService } = this.props;
+    const proposalState = data.value;
+
     console.log('onChangeSearchSelect proposalState data.value :: ' + data.value);
 
-    const proposalState = data.value;
-    console.log('onChangeSearchSelect proposalState :: ' + proposalState);
+    const approvalStatusStr = data.value;
+    const currentPageNo = this.props.match.params.pageNo;
 
-    this.findApprovalCubes(proposalState, this.getPageNo() - 1);
+    //const cubeStateName: string = data.options.reduce((a: any, b: any) => (a === b.value ? b.text : a), data.value);
+    //actionLogService?.registerClickActionLog({ subAction: cubeStateName });
+
+    approvalCubeService!.clear();
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    approvalCubeService!.changeSearchState(proposalState);
+    if (currentPageNo !== '1') {
+      history.replace(routePaths.currentPage(1));
+    } else {
+      this.findApprovalCubes(proposalState, this.getPageNo() - 1);
+    }
   }
 
   onChangeSearchSelect_org(e: any, data: any) {
