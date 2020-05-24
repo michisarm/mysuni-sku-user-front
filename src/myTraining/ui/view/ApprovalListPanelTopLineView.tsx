@@ -95,43 +95,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
         <Segment className="full">
           <div className="confirm-list-wrap">
             <div className="list-top">
-              {/*<div className="top">*/}
-                {/*<div className="right-area">*/}
-                  {/*<Radio*/}
-                    {/*className="base"*/}
-                    {/*label="승인요청"*/}
-                    {/*name="radioGroup"*/}
-                    {/*value="Submitted"*/}
-                    {/*checked={approvalStatus === 'Submitted'}*/}
-                    {/*onClick={(e: any, data: any) => {*/}
-                      {/*this.statusChange(data.value);*/}
-                    {/*}}*/}
-                    {/*onChange={onChange}*/}
-                  {/*/>*/}
-                  {/*<Radio*/}
-                    {/*className="base"*/}
-                    {/*label="반려"*/}
-                    {/*name="radioGroup"*/}
-                    {/*value="Rejected"*/}
-                    {/*checked={approvalStatus === 'Rejected'}*/}
-                    {/*onClick={(e: any, data: any) => {*/}
-                      {/*this.statusChange(data.value);*/}
-                    {/*}}*/}
-                    {/*onChange={onChange}*/}
-                  {/*/>*/}
-                  {/*<Radio*/}
-                    {/*className="base"*/}
-                    {/*label="승인"*/}
-                    {/*name="radioGroup"*/}
-                    {/*value="Approved"*/}
-                    {/*checked={approvalStatus === 'Approved'}*/}
-                    {/*onClick={(e: any, data: any) => {*/}
-                      {/*this.statusChange(data.value);*/}
-                    {/*}}*/}
-                    {/*onChange={onChange}*/}
-                  {/*/>*/}
-                {/*</div>*/}
-              {/*</div>*/}
+
               <div className="bottom">
                 <div className="left-area">
                   <div className="actions top">
