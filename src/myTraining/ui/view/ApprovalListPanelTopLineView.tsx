@@ -57,19 +57,31 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
   state = {
     approvalStatus : 'Submitted',
-    approvalDateName : '신청일자',
   };
 
   statusChange = (approvalStatus: any) => {
     console.log(' approvalStatus :: ' + approvalStatus );
 
+    this.setState({
+      approvalStatus,
+    });
+  };
+
+  render() {
+    //
+    const { totalCount, searchSelectOptions, onChange, searchState } = this.props;
+    const { approvalStatus } = this.state;
+
+    console.log('render approvalStatus ::' + approvalStatus);
+    console.log('render searchState ::' + searchState);
+
     let approvalNameVal = '신청일자';
 
-    if ( approvalStatus === 'Submitted' ) {
+    if ( searchState === 'Submitted' ) {
       approvalNameVal = '신청일자';
-    } else if ( approvalStatus === 'Rejected' ) {
+    } else if ( searchState === 'Rejected' ) {
       approvalNameVal = '반려일자';
-    } else if ( approvalStatus === 'Approved' ) {
+    } else if ( searchState === 'Approved' ) {
       approvalNameVal = '승인일자';
     } else {
       approvalNameVal = '신청일자';
@@ -77,24 +89,40 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
     const approvalDateName = approvalNameVal;
 
-    this.setState({
-      approvalStatus,
-      approvalDateName,
-    });
-  };
-
-  render() {
-    //
-    const { totalCount, searchSelectOptions, onChange, searchState } = this.props;
-
-    const { approvalStatus } = this.state;
-    const approvalDateName = this.state.approvalDateName;
-
     return (
       <>
         <Segment className="full">
           <div className="confirm-list-wrap">
             <div className="list-top">
+
+              <div className="top">
+                <div className="right-area">
+                  <Radio
+                    className="base"
+                    label="승인요청"
+                    name="radioGroup"
+                    value="Submitted"
+                    checked={searchState === 'Submitted'}
+                    onChange={onChange}
+                  />
+                  <Radio
+                    className="base"
+                    label="반려"
+                    name="radioGroup"
+                    value="Rejected"
+                    checked={searchState === 'Rejected'}
+                    onChange={onChange}
+                  />
+                  <Radio
+                    className="base"
+                    label="승인"
+                    name="radioGroup"
+                    value="Approved"
+                    checked={searchState === 'Approved'}
+                    onChange={onChange}
+                  />
+                </div>
+              </div>
 
               <div className="bottom">
                 <div className="left-area">
