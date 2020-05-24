@@ -63,36 +63,54 @@ class ApprovalListView extends React.Component <Props> {
 
   render() {
     const { approvalCubes, totalCount, handleClickCubeRow } = this.props;
-    return (
-      <div className="create-list-wrap">
-        <Table>
-          <Table.Body>
-            { approvalCubes.map((cube, index) => {
-              const newCube = new ApprovalCubeModel(cube);
-              return (
-                <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
-                  <Table.Cell className="cell ck">
-                    <Checkbox className="base" />
-                  </Table.Cell>
-                  <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
-                  <Table.Cell className="cell name">{cube.memberName}</Table.Cell>
-                  <Table.Cell className="cell team">{cube.memberDepartment}</Table.Cell>
-                  <Table.Cell className="cell title">{cube.cubeName}</Table.Cell>
-                  <Table.Cell className="cell class">{cube.round}</Table.Cell>
-                  <Table.Cell className="cell status">{cube.studentCount}/{cube.capacity}</Table.Cell>
-                  
-                  <Table.Cell className="cell term">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')} ~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</Table.Cell>
-                  <Table.Cell className="cell date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
-                  <Table.Cell className="cell pay">{cube.freeOfCharge.chargeAmount}</Table.Cell>
-                </Table.Row>
-              );
-            })
-          }
-          </Table.Body>
-        </Table>
-      </div>
+    console.log('ApprovalListView totalCount :: ' + totalCount);
+    const noTitle = '승인요청 학습이 없습니다.';
 
-    );
+    if( totalCount < 1 ) {
+      return (
+        <div id="DataTableRow" className="create-list-wrap">
+          <Table>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell className="title">{noTitle}</Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </div>
+
+      );
+    } else {
+      return (
+        <div id="DataTableRow" className="create-list-wrap">
+          <Table>
+            <Table.Body>
+              {approvalCubes.map((cube, index) => {
+                const newCube = new ApprovalCubeModel(cube);
+                return (
+                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
+                    <Table.Cell className="cell ck">
+                      <Checkbox className="base" />
+                    </Table.Cell>
+                    <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
+                    <Table.Cell className="cell name">{cube.memberName}</Table.Cell>
+                    <Table.Cell className="cell team">{cube.memberDepartment}</Table.Cell>
+                    <Table.Cell className="cell title">{cube.cubeName}</Table.Cell>
+                    <Table.Cell className="cell class">{cube.round}</Table.Cell>
+                    <Table.Cell className="cell status">{cube.studentCount}/{cube.capacity}</Table.Cell>
+
+                    <Table.Cell className="cell term">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')} ~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</Table.Cell>
+                    <Table.Cell className="cell date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
+                    <Table.Cell className="cell pay">{cube.freeOfCharge.chargeAmount}</Table.Cell>
+                  </Table.Row>
+                );
+              })
+              }
+            </Table.Body>
+          </Table>
+        </div>
+
+      );
+    }
   }
 }
 

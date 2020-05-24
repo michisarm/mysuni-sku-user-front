@@ -183,14 +183,6 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { approvalCubeOffsetList, searchState } = this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
 
-    if (approvalCubes.length < 1) {
-      return (
-        <NoSuchContentPanel
-          message="승인요청 학습이 없습니다."
-        />
-      );
-    }
-
     return (
       <>
 
