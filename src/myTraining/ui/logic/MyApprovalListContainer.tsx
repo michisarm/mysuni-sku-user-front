@@ -183,6 +183,8 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { approvalCubeOffsetList, searchState } = this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
 
+    console.log('MyApprovalListContainer searchState ::' + searchState);
+
     return (
       <>
 
@@ -198,6 +200,7 @@ class MyApprovalListContainer extends React.Component<Props> {
           approvalCubes={approvalCubeOffsetList.results}
           totalCount={totalCount}
           handleClickCubeRow={this.onClickPersonalCubeRow}
+          searchState={searchState}
         />
 
         { totalCount > approvalCubes.length && (

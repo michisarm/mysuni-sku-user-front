@@ -75,20 +75,6 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
     console.log('render approvalStatus ::' + approvalStatus);
     console.log('render searchState ::' + searchState);
 
-    let approvalNameVal = '신청일자';
-
-    if ( searchState === 'Submitted' ) {
-      approvalNameVal = '신청일자';
-    } else if ( searchState === 'Rejected' ) {
-      approvalNameVal = '반려일자';
-    } else if ( searchState === 'Approved' ) {
-      approvalNameVal = '승인일자';
-    } else {
-      approvalNameVal = '신청일자';
-    }
-
-    const approvalDateName = approvalNameVal;
-
     return (
       <>
         <Segment className="full">
@@ -193,44 +179,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     options={termOptions}
                   /> */}
 
-
-                  <Select
-                    placeholder="전체"
-                    className="small-border m0"
-                    value={searchState}
-                    options={searchSelectOptions}
-                    onClick={(e: any, data: any) => {
-                      this.statusChange(data.value);
-                    }}
-                    onChange={onChange}
-                  />
-
                 </div>
               </div>
             </div>
 
-            {/*목록*/}
-            {/*0514 조직, 신청현황, 교육금액 컬럼 추가*/}
-            <div className="create-list-wrap">
-              <Table>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell className="cell ck">
-                      <Checkbox className="base"/>
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className="cell num">No</Table.HeaderCell>
-                    <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
-                    <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
-                    <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
-                    <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
-                    <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
-                    <Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>
-                    <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
-                    <Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-              </Table>
-            </div>
           </div>
         </Segment>
       </>

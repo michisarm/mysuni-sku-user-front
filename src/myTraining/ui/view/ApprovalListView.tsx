@@ -50,6 +50,7 @@ interface Props {
   approvalCubes: ApprovalCubeModel[]
   totalCount: number
   handleClickCubeRow:(cubeId: string) => void
+  searchState: any
 }
 
 @reactAutobind
@@ -62,14 +63,46 @@ class ApprovalListView extends React.Component <Props> {
   }
 
   render() {
-    const { approvalCubes, totalCount, handleClickCubeRow } = this.props;
+    const { approvalCubes, totalCount, handleClickCubeRow, searchState } = this.props;
     console.log('ApprovalListView totalCount :: ' + totalCount);
+
+    console.log('ApprovalListView searchState :: ' + searchState);
+
+    let approvalNameVal = '신청일자';
+
+    if ( searchState === 'Submitted' ) {
+      approvalNameVal = '신청일자';
+    } else if ( searchState === 'Rejected' ) {
+      approvalNameVal = '반려일자';
+    } else if ( searchState === 'Approved' ) {
+      approvalNameVal = '승인일자';
+    } else {
+      approvalNameVal = '신청일자';
+    }
+
+    const approvalDateName = approvalNameVal;
     const noTitle = '승인요청 학습이 없습니다.';
 
     if( totalCount < 1 ) {
       return (
         <div id="DataTableRow" className="create-list-wrap">
           <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell className="cell ck">
+                  <Checkbox className="base"/>
+                </Table.HeaderCell>
+                <Table.HeaderCell className="cell num">No</Table.HeaderCell>
+                <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
+                <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
+                <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
+                <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
+                <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
+                <Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>
+                <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
+                <Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
             <Table.Body>
               <Table.Row>
                 <Table.Cell className="title">{noTitle}</Table.Cell>
@@ -83,6 +116,22 @@ class ApprovalListView extends React.Component <Props> {
       return (
         <div id="DataTableRow" className="create-list-wrap">
           <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell className="cell ck">
+                  <Checkbox className="base"/>
+                </Table.HeaderCell>
+                <Table.HeaderCell className="cell num">No</Table.HeaderCell>
+                <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
+                <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
+                <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
+                <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
+                <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
+                <Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>
+                <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
+                <Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
             <Table.Body>
               {approvalCubes.map((cube, index) => {
                 const newCube = new ApprovalCubeModel(cube);
