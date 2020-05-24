@@ -181,7 +181,6 @@ class MyApprovalListContainer extends React.Component<Props> {
       <>
 
         { /* 승인 조회  */ }
-
         <ApprovalListPanelTopLineView
           totalCount={totalCount}
           searchSelectOptions={SelectType.userApprovalStatus}
