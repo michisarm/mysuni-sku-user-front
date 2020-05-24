@@ -38,7 +38,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 @reactAutobind
 class MyApprovalListContainer extends React.Component<Props> {
   //
-  PAGE_KEY = 'create';
+  PAGE_KEY = 'Submitted';
   PAGE_SIZE = 20;
 
   componentDidMount() {
@@ -54,10 +54,10 @@ class MyApprovalListContainer extends React.Component<Props> {
     if (currentPageNo === '1') {
       approvalCubeService!.clear();
       pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      this.findPersonalCubes(searchState);
+      this.findApprovalCubes(searchState);
     } else {
       approvalCubeService!.clear();
-      this.findPersonalCubes(searchState, this.getPageNo() - 1);
+      this.findApprovalCubes(searchState, this.getPageNo() - 1);
     }
 
   }
@@ -83,7 +83,7 @@ class MyApprovalListContainer extends React.Component<Props> {
       else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
-      this.findPersonalCubes(searchState, this.getPageNo() - 1);
+      this.findApprovalCubes(searchState, this.getPageNo() - 1);
     }
   }
 
@@ -94,14 +94,14 @@ class MyApprovalListContainer extends React.Component<Props> {
     return parseInt(match.params.pageNo, 10);
   }
 
-  async findPersonalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
-    console.log('findPersonalCubes ::');
+  async findApprovalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
+    console.log('findApprovalCubes ::');
     //
     const { pageService, approvalCubeService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     // const { onChangeCreateCount } = this.props;
 
-    const offsetList = await approvalCubeService!.findPersonalCubesForCreator(page!.nextOffset, page!.limit, proposalState);
+    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, proposalState);
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
     // onChangeCreateCount(offsetList.totalCount);
   }
@@ -129,7 +129,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     if (currentPageNo !== '1') {
       history.replace(routePaths.currentPage(1));
     } else {
-      this.findPersonalCubes(cubeState, this.getPageNo() - 1);
+      this.findApprovalCubes(cubeState, this.getPageNo() - 1);
     }
   }
 

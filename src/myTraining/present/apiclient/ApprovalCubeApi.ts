@@ -10,7 +10,7 @@ export default class ApprovalCubeApi {
   static instance: ApprovalCubeApi;
 
   devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
-  
+
   lectureApprovalURL = this.devUrl + '/api/lecture/studentApproval';
 
   static convertOffsetElementList(response: any): OffsetElementList<ApprovalCubeModel> {
@@ -25,11 +25,11 @@ export default class ApprovalCubeApi {
   }
 
   // Query
-  findPersonalCubesForCreator(offset: number, limit: number, proposalState?: ProposalState) {
+  findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
 
-    console.log('ApprovalCubeApi offset ::' + offset);
-    console.log('ApprovalCubeApi limit ::' + limit);
-    console.log('ApprovalCubeApi proposalState ::' + proposalState);
+    console.log('ApprovalCubeApi findApprovalCubesForSearch offset ::' + offset);
+    console.log('ApprovalCubeApi findApprovalCubesForSearch limit ::' + limit);
+    console.log('ApprovalCubeApi findApprovalCubesForSearch proposalState ::' + proposalState);
 
     //
     const params = {

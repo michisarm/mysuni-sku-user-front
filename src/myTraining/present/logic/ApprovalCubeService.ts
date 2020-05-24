@@ -62,13 +62,13 @@ export default class ApprovalCubeService {
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
-  async findPersonalCubesForCreator(offset: number, limit: number, proposalState?: ProposalState) {
+  async findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
     //
-    console.log('findPersonalCubesForCreator offset ::' + offset);
-    console.log('findPersonalCubesForCreator limit ::' + limit);
-    console.log('findPersonalCubesForCreator proposalState ::' + proposalState);
+    console.log('findApprovalCubesForSearch offset ::' + offset);
+    console.log('findApprovalCubesForSearch limit ::' + limit);
+    console.log('findApprovalCubesForSearch proposalState ::' + proposalState);
 
-    const approvalCubeOffsetList = await this.approvalCubeApi.findPersonalCubesForCreator(offset, limit, proposalState);
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(offset, limit, proposalState);
 
     runInAction(() => {
       this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
