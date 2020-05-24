@@ -89,6 +89,7 @@ class MyApprovalListContainer extends React.Component<Props> {
 
   getPageNo() {
     //
+
     const { match } = this.props;
 
     return parseInt(match.params.pageNo, 10);
@@ -169,7 +170,7 @@ class MyApprovalListContainer extends React.Component<Props> {
 
     return (
       <>
-        
+
         { /* 승인 조회  */ }
 
         <ApprovalListPanelTopLineView

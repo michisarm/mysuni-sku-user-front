@@ -64,6 +64,7 @@ export default class ApprovalCubeService {
   @action
   async findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
     //
+
     console.log('findApprovalCubesForSearch offset ::' + offset);
     console.log('findApprovalCubesForSearch limit ::' + limit);
     console.log('findApprovalCubesForSearch proposalState ::' + proposalState);

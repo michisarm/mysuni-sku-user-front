@@ -26,6 +26,7 @@ export default class ApprovalCubeApi {
 
   // Query
   findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
+    //
 
     console.log('ApprovalCubeApi findApprovalCubesForSearch offset ::' + offset);
     console.log('ApprovalCubeApi findApprovalCubesForSearch limit ::' + limit);
