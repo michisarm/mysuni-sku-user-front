@@ -56,7 +56,7 @@ interface Props {
 class ApprovalListPanelTopLineView extends React.Component<Props> {
 
   state = {
-    approvalStatus : 'required',
+    approvalStatus : 'Submitted',
     approvalDateName : '신청일자',
   };
 
@@ -65,11 +65,11 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
     let approvalNameVal = '신청일자';
 
-    if ( approvalStatus === 'required' ) {
+    if ( approvalStatus === 'Submitted' ) {
       approvalNameVal = '신청일자';
-    } else if ( approvalStatus === 'rejected' ) {
+    } else if ( approvalStatus === 'Rejected' ) {
       approvalNameVal = '반려일자';
-    } else if ( approvalStatus === 'approved' ) {
+    } else if ( approvalStatus === 'Approved' ) {
       approvalNameVal = '승인일자';
     } else {
       approvalNameVal = '신청일자';
@@ -99,10 +99,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 <div className="right-area">
                   <Radio
                     className="base"
-                    label="승인요청(20)"
+                    label="승인요청"
                     name="radioGroup"
-                    value="required"
-                    checked={approvalStatus === 'required'}
+                    value="Submitted"
+                    checked={approvalStatus === 'Submitted'}
                     onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
@@ -110,10 +110,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                   />
                   <Radio
                     className="base"
-                    label="반려(20)"
+                    label="반려"
                     name="radioGroup"
-                    value="rejected"
-                    checked={approvalStatus === 'rejected'}
+                    value="Rejected"
+                    checked={approvalStatus === 'Rejected'}
                     onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
@@ -121,10 +121,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                   />
                   <Radio
                     className="base"
-                    label="승인(20)"
+                    label="승인"
                     name="radioGroup"
-                    value="approved"
-                    checked={approvalStatus === 'approved'}
+                    value="Approved"
+                    checked={approvalStatus === 'Approved'}
                     onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
@@ -136,7 +136,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 <div className="left-area">
                   <div className="actions top">
 
-                    {approvalStatus !== 'required' ? '' :
+                    {approvalStatus !== 'Submitted' ? '' :
                     <>
                       <ApprovalProcessModal
                         trigger={(
@@ -156,7 +156,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     }
 
                     {/*Delete 버튼은 승인요청 목록에는 미노출*/}
-                    {approvalStatus === 'required' ?
+                    {approvalStatus === 'Submitted' ?
                       ''
                       :
                       <Button icon className="left post delete">
