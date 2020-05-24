@@ -103,9 +103,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     name="radioGroup"
                     value="required"
                     checked={approvalStatus === 'required'}
-                    onChange={(e: any, data: any) => {
+                    onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
+                    onChange={onChange}
                   />
                   <Radio
                     className="base"
@@ -113,9 +114,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     name="radioGroup"
                     value="rejected"
                     checked={approvalStatus === 'rejected'}
-                    onChange={(e: any, data: any) => {
+                    onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
+                    onChange={onChange}
                   />
                   <Radio
                     className="base"
@@ -123,9 +125,10 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     name="radioGroup"
                     value="approved"
                     checked={approvalStatus === 'approved'}
-                    onChange={(e: any, data: any) => {
+                    onClick={(e: any, data: any) => {
                       this.statusChange(data.value);
                     }}
+                    onChange={onChange}
                   />
                 </div>
               </div>
@@ -168,7 +171,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                         <Icon className="excel-down"/> 엑셀 다운로드
                       </Button>
                     </span> */}
-                    
+
 
                   </div>
                 </div>
@@ -226,7 +229,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
             </div>
           </div>
         </Segment>
-      </>      
+      </>
     );
   }
 

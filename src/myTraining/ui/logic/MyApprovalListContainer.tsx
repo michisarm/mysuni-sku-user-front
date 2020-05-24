@@ -116,6 +116,15 @@ class MyApprovalListContainer extends React.Component<Props> {
   }
 
   onChangeSearchSelect(e: any, data: any) {
+    console.log('onChangeSearchSelect proposalState data.value :: ' + data.value);
+
+    const proposalState = data.value;
+    console.log('onChangeSearchSelect proposalState :: ' + proposalState);
+
+    this.findApprovalCubes(proposalState, this.getPageNo() - 1);
+  }
+
+  onChangeSearchSelect_org(e: any, data: any) {
     //
     const { actionLogService, history, pageService, approvalCubeService } = this.props;
     const cubeState = data.value;
