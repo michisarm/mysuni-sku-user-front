@@ -77,114 +77,108 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
     return (
       <>
-        <Segment className="full">
-          <div className="confirm-list-wrap">
-            <div className="list-top">
+        <div className="list-top">
+          <div className="top">
+            <div className="right-area">
+              <Radio
+                className="base"
+                label="승인요청"
+                name="radioGroup"
+                value="Submitted"
+                checked={searchState === 'Submitted'}
+                onChange={onChange}
+              />
+              <Radio
+                className="base"
+                label="반려"
+                name="radioGroup"
+                value="Rejected"
+                checked={searchState === 'Rejected'}
+                onChange={onChange}
+              />
+              <Radio
+                className="base"
+                label="승인"
+                name="radioGroup"
+                value="Approved"
+                checked={searchState === 'Approved'}
+                onChange={onChange}
+              />
+            </div>
+          </div>
 
-              <div className="top">
-                <div className="right-area">
-                  <Radio
-                    className="base"
-                    label="승인요청"
-                    name="radioGroup"
-                    value="Submitted"
-                    checked={searchState === 'Submitted'}
-                    onChange={onChange}
-                  />
-                  <Radio
-                    className="base"
-                    label="반려"
-                    name="radioGroup"
-                    value="Rejected"
-                    checked={searchState === 'Rejected'}
-                    onChange={onChange}
-                  />
-                  <Radio
-                    className="base"
-                    label="승인"
-                    name="radioGroup"
-                    value="Approved"
-                    checked={searchState === 'Approved'}
-                    onChange={onChange}
-                  />
-                </div>
-              </div>
+          <div className="bottom">
+            <div className="left-area">
+              <div className="actions top">
 
-              <div className="bottom">
-                <div className="left-area">
-                  <div className="actions top">
-
-                    {approvalStatus !== 'Submitted' ? '' :
-                    <>
-                      <ApprovalProcessModal
-                        trigger={(
-                          <Button icon className="left post return">
-                            <Icon className="return"/> 반려
-                          </Button>
-                        )}
-                      />
-                      < ApprovalProcessModal
-                        trigger={(
-                          <Button icon className="left post approval">
-                            <Icon className="approval"/> 승인
-                          </Button>
-                        )}
-                      />
-                    </>
-                    }
-
-                    {/*Delete 버튼은 승인요청 목록에는 미노출*/}
-                    {approvalStatus === 'Submitted' ?
-                      ''
-                      :
-                      <Button icon className="left post delete">
-                        <Icon className="del24"/> Delete
+                {approvalStatus !== 'Submitted' ? '' :
+                <>
+                  <ApprovalProcessModal
+                    trigger={(
+                      <Button icon className="left post return">
+                        <Icon className="return"/> 반려
                       </Button>
-                    }
-
-                    {/*0514 엑셀다운로드 추가*/}
-                    {/*0521 엑셀다운로드 위치 변경*/}
-                    {/* <span className="excel-wrap">
-                      <Button icon className="left post excel-down">
-                        <Icon className="excel-down"/> 엑셀 다운로드
-                      </Button>
-                    </span> */}
-
-
-                  </div>
-                </div>
-
-                <div className="right-area">
-
-                  {/*신청현황 모달팝업*/}
-                  {/*0514 신청현황 -> 목록으로 이동*/}
-                  {/*<ApprovalApplyStatusModal/>*/}
-
-                  <Select
-                    placeholder="전체과정"
-                    className="ui small-border dropdown selection list-title-sel"
-                    options={classOptions}
+                    )}
                   />
+                  < ApprovalProcessModal
+                    trigger={(
+                      <Button icon className="left post approval">
+                        <Icon className="approval"/> 승인
+                      </Button>
+                    )}
+                  />
+                </>
+                }
 
-                  {/*0514 차수선택 => 교육기간으로 변경*/}
-                  {/*<Select*/}
-                  {/*placeholder="전체차수"*/}
-                  {/*className="ui small-border dropdown selection list-num-sel"*/}
-                  {/*options={numOptions}*/}
-                  {/*/>*/}
+                {/*Delete 버튼은 승인요청 목록에는 미노출*/}
+                {approvalStatus === 'Submitted' ?
+                  ''
+                  :
+                  <Button icon className="left post delete">
+                    <Icon className="del24"/> Delete
+                  </Button>
+                }
 
-                  {/* <Select
-                    placeholder="교육기간"
-                    className="ui small-border dropdown selection list-num-sel"
-                    options={termOptions}
-                  /> */}
+                {/*0514 엑셀다운로드 추가*/}
+                {/*0521 엑셀다운로드 위치 변경*/}
+                {/* <span className="excel-wrap">
+                  <Button icon className="left post excel-down">
+                    <Icon className="excel-down"/> 엑셀 다운로드
+                  </Button>
+                </span> */}
 
-                </div>
+
               </div>
             </div>
 
+            <div className="right-area">
+
+              {/*신청현황 모달팝업*/}
+              {/*0514 신청현황 -> 목록으로 이동*/}
+              {/*<ApprovalApplyStatusModal/>*/}
+
+              <Select
+                placeholder="전체과정"
+                className="ui small-border dropdown selection list-title-sel"
+                options={classOptions}
+              />
+
+              {/*0514 차수선택 => 교육기간으로 변경*/}
+              {/*<Select*/}
+              {/*placeholder="전체차수"*/}
+              {/*className="ui small-border dropdown selection list-num-sel"*/}
+              {/*options={numOptions}*/}
+              {/*/>*/}
+
+              {/* <Select
+                placeholder="교육기간"
+                className="ui small-border dropdown selection list-num-sel"
+                options={termOptions}
+              /> */}
+
+            </div>
           </div>
-        </Segment>
+        </div>
       </>
     );
   }

@@ -85,39 +85,48 @@ class ApprovalListView extends React.Component <Props> {
 
     if( totalCount < 1 ) {
       return (
-        <div id="DataTableRow" className="create-list-wrap">
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell className="cell ck">
-                  <Checkbox className="base"/>
-                </Table.HeaderCell>
-                <Table.HeaderCell className="cell num">No</Table.HeaderCell>
-                <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
-                <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
-                <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
-                <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
-                <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
-                <Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>
-                <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
-                <Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell className="title">{noTitle}</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </div>
 
+        <>
+          {/*해당 콘텐츠 없음*/}
+          <div className="no-cont-wrap">
+            <Icon className="no-contents80"/>
+            <span className="blind">콘텐츠 없음</span>
+            <div className="text">{noTitle}</div>
+          </div>
+
+          {/*<div id="DataTableRow">*/}
+          {/*<Table className="confirm-list typeA">*/}
+          {/*<Table.Header>*/}
+          {/*<Table.Row className="row thead">*/}
+          {/*<Table.HeaderCell className="cell ck">*/}
+          {/*<Checkbox className="base"/>*/}
+          {/*</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell num">No</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell name">신청자</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell team">조직</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell title">과정명</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell class">차수</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>*/}
+          {/*<Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>*/}
+          {/*</Table.Row>*/}
+          {/*</Table.Header>*/}
+          {/*<Table.Body>*/}
+          {/*<Table.Row>*/}
+          {/*<Table.Cell className="title" colSpan="10">{noTitle}</Table.Cell>*/}
+          {/*</Table.Row>*/}
+          {/*</Table.Body>*/}
+          {/*</Table>*/}
+          {/*</div>*/}
+        </>
       );
     } else {
       return (
-        <div id="DataTableRow" className="create-list-wrap">
-          <Table>
+        <div id="DataTableRow">
+          <Table className="confirm-list typeA">
             <Table.Header>
-              <Table.Row>
+              <Table.Row className="row thead">
                 <Table.HeaderCell className="cell ck">
                   <Checkbox className="base"/>
                 </Table.HeaderCell>
@@ -136,7 +145,7 @@ class ApprovalListView extends React.Component <Props> {
               {approvalCubes.map((cube, index) => {
                 const newCube = new ApprovalCubeModel(cube);
                 return (
-                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)}>
+                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)} className="row">
                     <Table.Cell className="cell ck">
                       <Checkbox className="base" />
                     </Table.Cell>

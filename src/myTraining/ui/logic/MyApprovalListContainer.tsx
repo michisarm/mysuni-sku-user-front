@@ -186,8 +186,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     console.log('MyApprovalListContainer searchState ::' + searchState);
 
     return (
-      <>
-
+      <div className="confirm-list-wrap">
         { /* 승인 조회  */ }
         <ApprovalListPanelTopLineView
           totalCount={totalCount}
@@ -208,7 +207,7 @@ class MyApprovalListContainer extends React.Component<Props> {
             onClick={() => this.onClickSeeMore()}
           />
         )}
-      </>
+      </div>
     );
   }
 }
