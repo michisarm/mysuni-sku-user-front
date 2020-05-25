@@ -150,13 +150,13 @@ class ApprovalListView extends React.Component <Props> {
                       <Checkbox className="base" />
                     </Table.Cell>
                     <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
-                    <Table.Cell className="cell name">{cube.memberName}</Table.Cell>
-                    <Table.Cell className="cell team">{cube.memberDepartment}</Table.Cell>
-                    <Table.Cell className="cell title">{cube.cubeName}</Table.Cell>
+                    <Table.Cell className="cell name"><span className="ellipsis">{cube.memberName}</span></Table.Cell>
+                    <Table.Cell className="cell team"><span className="ellipsis">{cube.memberDepartment}</span></Table.Cell>
+                    <Table.Cell className="cell title"><span className="ellipsis">{cube.cubeName}</span></Table.Cell>
                     <Table.Cell className="cell class">{cube.round}</Table.Cell>
                     <Table.Cell className="cell status">{cube.studentCount}/{cube.capacity}</Table.Cell>
 
-                    <Table.Cell className="cell term">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')} ~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</Table.Cell>
+                    <Table.Cell className="cell term">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')}<br/>~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</Table.Cell>
                     <Table.Cell className="cell date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
                     <Table.Cell className="cell pay">{cube.freeOfCharge.chargeAmount}</Table.Cell>
                   </Table.Row>
