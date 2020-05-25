@@ -114,7 +114,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 <div className="left-area">
                   <div className="actions top">
 
-                    {approvalStatus !== 'Submitted' ? '' :
+                    {searchState !== 'Submitted' ? '' :
                     <>
                       <ApprovalProcessModal
                         trigger={(
@@ -134,7 +134,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     }
 
                     {/*Delete 버튼은 승인요청 목록에는 미노출*/}
-                    {approvalStatus === 'Submitted' ?
+                    {searchState === 'Submitted' ?
                       ''
                       :
                       <Button icon className="left post delete">
