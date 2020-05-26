@@ -54,7 +54,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     });
   }
 
-  onConfirm() {
+  async onConfirm() {
     //
     const skProfileService = this.props.skProfileService!;
     const { history } = this.props;
@@ -80,7 +80,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
 
     const skProfileUdo = SkProfileUdo.fromPisAgreement(new PisAgreementModel(skProfile.pisAgreement));
-    skProfileService.modifySkProfile(skProfileUdo);
+    await skProfileService.modifySkProfile(skProfileUdo);
   }
 
   render() {

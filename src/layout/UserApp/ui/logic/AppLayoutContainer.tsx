@@ -25,20 +25,20 @@ class AppLayoutContainer extends Component<Props> {
   }
 
   async findProfile() {
-    if (process.env.NODE_ENV !== 'development') {
-      const { skProfileService } = this.props;
+    //if (process.env.NODE_ENV !== 'development') {
+    const { skProfileService } = this.props;
 
-      skProfileService!.findSkProfile().then(() => {
-        const { skProfile } = skProfileService!;
+    skProfileService!.findSkProfile().then(() => {
+      const { skProfile } = skProfileService!;
 
-        if (!skProfile.pisAgreement.signed) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-        }
-        else if (!skProfile.studySummaryConfigured) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-        }
-      });
-    }
+      if (!skProfile.pisAgreement.signed) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      }
+      else if (!skProfile.studySummaryConfigured) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
+    });
+    //}
   }
 
   render() {
