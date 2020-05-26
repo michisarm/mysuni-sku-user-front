@@ -110,7 +110,8 @@ class MyPageListContainer extends Component<Props, States> {
       onChangeCompletedCount(offsetList.totalCount);
     }
     else {
-      // const completedCount = await myTrainingService!.findAllTabMyTrainingㅈ
+      // const completedCount = await myTrainingService!.findAllTabMyTraining();
+      // onChangeCompletedCount(completedCount.completedCount);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
       onChangeEarnedStampCount(offsetList.totalCount);
     }
