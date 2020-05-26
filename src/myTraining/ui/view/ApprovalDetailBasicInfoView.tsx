@@ -108,33 +108,9 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                   }
                 </dd>
               </dl>
-              <dl className="bl">
-                <dt>승인자 의견</dt>
-                <dd>
-                  <TextArea placeholder="승인자 의견을 입력해주세요"/>
-                </dd>
-              </dl>
+
             </div>
 
-            <div className="buttons border-none">
-
-              {
-                approvalCube.proposalState === 'Submitted' && (
-                  <div>
-                    <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
-                    <Button className="fix line">반려</Button>
-                    <Button className="fix bg">승인</Button>
-                  </div>
-                )
-              }
-              {
-                approvalCube.proposalState !== 'Submitted' && (
-                  <div>
-                    <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
-                  </div>
-                )
-              }
-            </div>
           </Form>
         )}
       </>

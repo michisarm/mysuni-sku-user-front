@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import depot from '@nara.drama/depot';
 import { CubeType } from 'shared/model';
 import { AlertWin, ConfirmWin } from 'shared';
-import { Button, Form, Segment } from 'semantic-ui-react';
+import { Button, Form, Segment, Table, TextArea } from 'semantic-ui-react';
 
 import routePaths from '../../routePaths';
 import { CubeIntroModel } from '../../model';
@@ -79,7 +79,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
         console.log('componentDidMount approvalCube.studentId ::' + approvalCube.studentId);
         console.log('componentDidMount approvalCube.rollBookId ::' + approvalCube.rollBookId);
         console.log('componentDidMount approvalCube.memberName ::' + approvalCube.memberName);
-        
+
         const referenceFileBoxId = approvalCube && approvalCube.contents && approvalCube.contents.fileBoxId;
         this.findFiles('reference', referenceFileBoxId);
       });
@@ -219,7 +219,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
   routeToCreateList() {
     //
-    // this.props.history.push(routePaths.create());
+    this.props.history.push(routePaths.myPageApprovalList());
   }
 
   goToVideo(url: string) {
@@ -254,58 +254,36 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                 <ApprovalDetailBasicInfoView
                   approvalCube ={approvalCube}
                 />
-                {/* <SharedDetailExposureInfoView
-                  personalCube={personalCube}
-                />
+                <>
+                  <div className="result-view">
+                    <dl className="bl">
+                      <dt>승인자 의견</dt>
+                      <dd>
+                        <TextArea placeholder="승인자 의견을 입력해주세요"/>
+                      </dd>
+                    </dl>
+                  </div>
 
-                {
-                  cubeState === 'OpenApproval' ?
-                    <SharedDetailIntroView
-                      cubeIntro={cubeIntro}
-                      cubeType={cubeType}
-                    />
-                    :
-                    <SharedDetailIntroEditContainer
-                      cubeIntro={cubeIntro}
-                    />
-                } */}
-                {/* <SharedTypeDetailView
-                  approvalCube={approvalCube}
-                  cubeType={cubeType}
-                  filesMap={filesMap}
-                  goToVideo={this.goToVideo}
-                /> */}
-                {/* {
-                  cubeState === 'OpenApproval' ?
-                    <div className="buttons editor">
-                      <Button className="fix bg" onClick={this.routeToCreateList}>List</Button>
-                    </div>
-                    :
-                    <div className="buttons">
-                      <Button className="fix line" onClick={this.routeToCreateList}>Cancel</Button>
-                      <Button className="fix bg" onClick={this.handleSave}>Save</Button>
-                    </div>
-                } */}
-                <AlertWin
-                  message={alertMessage}
-                  handleClose={this.handleCloseAlertWin}
-                  open={alertWinOpen}
-                  alertIcon={alertIcon}
-                  title={alertTitle}
-                  type={alertType}
-                  handleOk={this.handleAlertOk}
-                />
-                <ConfirmWin
-                  id={studentId}
-                  message={message}
-                  open={confirmWinOpen}
-                  handleClose={this.handleCloseConfirmWin}
-                  handleOk={this.handleOKConfirmWin}
-                  //handleSaveAndApprove={this.handleSaveAndApprove}
-                  title="저장 안내"
-                  buttonYesName="OK"
-                  buttonNoName="Cancel"
-                />
+                  <div className="buttons border-none">
+
+                    {
+                      approvalCube.proposalState === 'Submitted' && (
+                        <div>
+                          <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
+                          <Button className="fix line">반려</Button>
+                          <Button className="fix bg">승인</Button>
+                        </div>
+                      )
+                    }
+                    {
+                      approvalCube.proposalState !== 'Submitted' && (
+                        <div>
+                          <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
+                        </div>
+                      )
+                    }
+                  </div>
+                </>
               </Form>
             </div>
           </Segment>
