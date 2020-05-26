@@ -78,6 +78,13 @@ export default class ApprovalCubeApi {
       .then(response => response && response.data || null);
   }
 
+  findApprovalCube(studentId: string) {
+    console.log('ApprovalCubeApi findApprovalCube studentId ::' + studentId);
+    //
+    return axios.get<ApprovalCubeModel>(this.lectureApprovalURL + `/${studentId}`)
+      .then(response => response && response.data || null);
+  }
+
   findFileBox(depotIds: string) {
     //
     return axios.get<string>(this.lectureApprovalURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)

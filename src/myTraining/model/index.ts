@@ -8,3 +8,5 @@ export { ApprovalCubeModel } from './ApprovalCubeModel';
 export { default as CubeType } from './CubeType';
 export { default as CubeTypeNameType } from './CubeTypeNameType';
 export { default as ContentsServiceType } from './ContentsServiceType';
+
+export { CubeIntroModel } from './CubeIntroModel';

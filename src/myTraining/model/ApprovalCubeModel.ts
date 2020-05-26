@@ -9,7 +9,7 @@ import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
 import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
-
+import { OperationModel } from './OperationModel';
 
 export class ApprovalCubeModel implements DramaEntity {
   //
@@ -51,8 +51,12 @@ export class ApprovalCubeModel implements DramaEntity {
   capacity: number = 0;
 
   freeOfCharge: FreeOfChargeModel = new FreeOfChargeModel();
+  operation: OperationModel = new OperationModel();
   enrolling: EnrollingModel = new EnrollingModel();                     // 신청/취소/학습 기간/신청유무
   lectureCardId: String = '';
+  cubeType: String = '';
+  proposalState: String = '';
+  remark: String = '';
 
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
@@ -62,9 +66,10 @@ export class ApprovalCubeModel implements DramaEntity {
       const category = approvalCube.category && new CategoryModel(approvalCube.category) || this.category;
       const iconBox = approvalCube.iconBox && new IconBoxModel(approvalCube.iconBox) || this.iconBox;
       const freeOfCharge = approvalCube.freeOfCharge && new FreeOfChargeModel(approvalCube.freeOfCharge) || this.freeOfCharge;
+      const operation = approvalCube.operation && new OperationModel(approvalCube.operation) || this.operation;
       const enrolling = approvalCube.enrolling && new EnrollingModel(approvalCube.enrolling) || this.enrolling;
 
-      Object.assign(this, { ...approvalCube, creator, contents, cubeIntro, category, iconBox, freeOfCharge, enrolling });
+      Object.assign(this, { ...approvalCube, creator, contents, cubeIntro, category, iconBox, freeOfCharge, operation, enrolling });
 
       // UI Model
       const companyCode = patronInfo.getPatronCompanyCode();
@@ -248,7 +253,11 @@ decorate(ApprovalCubeModel, {
   capacity: observable,
 
   freeOfCharge: observable,
+  operation: observable,
   enrolling: observable,
   lectureCardId: observable,
+  cubeType: observable,
+  proposalState: observable,
+  remark: observable,
 });
 

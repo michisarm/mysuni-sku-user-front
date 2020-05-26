@@ -53,14 +53,18 @@ export default class ApprovalCubeService {
     //
     const approvalCube = await this.approvalCubeApi.findPersonalCube(personalCubeId);
 
-    if (approvalCube.contents.fileBoxId) {
-      const fileBox = await this.approvalCubeApi.findFileBox(approvalCube.contents.fileBoxId);
-      // console.log('findPersonalCube type : ', typeof fileBox);
-      // console.log('findPersonalCube length : ', fileBox?.length);
-      if (fileBox === '' || fileBox === '[]' || fileBox === null || fileBox === undefined || fileBox.length === 0) {
-        approvalCube.contents.fileBoxId = '';
-      }
+    if (approvalCube) {
+      return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
     }
+    return null;
+  }
+
+  @action
+  async findApprovalCube(studentId: string) {
+
+    console.log('findApprovalCube studentId ::' +studentId);
+    //
+    const approvalCube = await this.approvalCubeApi.findApprovalCube(studentId);
 
     if (approvalCube) {
       return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
