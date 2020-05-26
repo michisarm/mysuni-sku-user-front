@@ -34,7 +34,7 @@ class AppLayoutContainer extends Component<Props> {
 
       console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
       console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
-      console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
+      console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: ');
 
       if (!skProfile.pisAgreement.signed) {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
