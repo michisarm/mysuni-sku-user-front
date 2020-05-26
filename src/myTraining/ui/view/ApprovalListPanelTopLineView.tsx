@@ -157,6 +157,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 options = {contentsProviderTsx}
                 onChange={(e: any, data: any) => onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)}
                 value={defaultValue && defaultValue}
+                className="ui small-border dropdown selection list-title-sel"
               />
             </div>
           </div>
