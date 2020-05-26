@@ -17,7 +17,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
 
   routeToCreateList() {
     //
-    window.location.replace('/my-training/my-page/ApprovalList/pages/1');
+    window.location.replace('/suni-main/my-training/my-page/ApprovalList/pages/1');
 
     //window.history.go(-1);
     // window.history.back();
