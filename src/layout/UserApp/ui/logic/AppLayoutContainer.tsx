@@ -35,7 +35,9 @@ class AppLayoutContainer extends Component<Props> {
     // skProfileService?.clearSkProfile();
 
     const data = await SkProfileApi.instance.findSkProfile();
+    console.log('data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',JSON.stringify(data));
     const obj = JSON.parse(JSON.stringify(data));
+    console.log('obj >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',obj);
 
     if (!obj.pisAgreement.signed) {
       window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
