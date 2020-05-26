@@ -21,7 +21,7 @@ interface Props {
 class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
-    setTimeout(this.findProfile,500);
+    setTimeout(this.findProfile,1000);
   }
 
   async findProfile() {
@@ -31,8 +31,8 @@ class AppLayoutContainer extends Component<Props> {
     skProfileService!.findSkProfile().then(() => {
       const { skProfile } = skProfileService!;
 
-      //console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
-      //console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
+      console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
+      console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
 
       if (!skProfile.pisAgreement.signed) {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
