@@ -219,6 +219,9 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
   routeToCreateList() {
     //
+    console.log(' routeToCreateList Start ... ::');
+    this.clearAll();
+    console.log(' routeToCreateList End ... ::');
     this.props.history.push(routePaths.myPageApprovalList());
   }
 
