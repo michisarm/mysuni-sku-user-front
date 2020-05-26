@@ -8,6 +8,7 @@ import { SkProfileService } from 'profile/stores';
 import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
+import SkProfileApi from '../../../../profile/present/apiclient/SkProfileApi';
 
 
 interface Props {
@@ -26,18 +27,15 @@ class AppLayoutContainer extends Component<Props> {
 
   async findProfile() {
     if (process.env.NODE_ENV !== 'development') {
-      const { skProfileService } = this.props;
+      const data = await SkProfileApi.instance.findSkProfile();
+      const obj = JSON.parse(JSON.stringify(data));
 
-      skProfileService!.findSkProfile().then(() => {
-        const { skProfile } = skProfileService!;
-
-        if (!skProfile.pisAgreement.signed) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-        }
-        else if (!skProfile.studySummaryConfigured) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-        }
-      });
+      if (!obj.pisAgreement.signed) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      }
+      else if (!obj.studySummaryConfigured) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
     }
   }
 
