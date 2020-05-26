@@ -55,7 +55,7 @@ class SkProfileService {
   @action
   async findSkProfile() {
     //
-    const fetched = this.skProfileCachingFetch.fetch(
+    const fetched = await this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
       (skProfile) => runInAction(() => this.skProfile = new SkProfileModel(skProfile)),
     );

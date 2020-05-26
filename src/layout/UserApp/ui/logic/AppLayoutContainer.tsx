@@ -21,7 +21,8 @@ interface Props {
 class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
-    setTimeout(this.findProfile,1000);
+    this.findProfile();
+    //setTimeout(this.findProfile,1000);
   }
 
   async findProfile() {
