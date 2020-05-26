@@ -28,10 +28,9 @@ class AppLayoutContainer extends Component<Props> {
   async findProfile() {
     //if (process.env.NODE_ENV !== 'development') {
     const { skProfileService } = this.props;
+    skProfileService?.clearSkProfile();
 
-    //skProfileService?.clearSkProfile();
-
-    SkProfileService.instance.findSkProfile().then(() => {
+    skProfileService!.findSkProfile().then(() => {
       const { skProfile } = skProfileService!;
 
       if (!skProfile.pisAgreement.signed) {
@@ -41,17 +40,6 @@ class AppLayoutContainer extends Component<Props> {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
       }
     });
-
-    /*skProfileService!.findSkProfile().then(() => {
-      const { skProfile } = skProfileService!;
-
-      if (!skProfile.pisAgreement.signed) {
-        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-      }
-      else if (!skProfile.studySummaryConfigured) {
-        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-      }
-    });*/
     //}
   }
 
