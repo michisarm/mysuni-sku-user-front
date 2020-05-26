@@ -17,9 +17,9 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
 
   routeToCreateList() {
     //
-    //window.location.replace('/my-training/my-page/ApprovalList/pages/1');
-    
-    window.history.go(-1);
+    window.location.replace('/my-training/my-page/ApprovalList/pages/1');
+
+    //window.history.go(-1);
     // window.history.back();
   }
 
@@ -27,7 +27,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
   {
     const { approvalCube } = this.props;
     const selectedChannels: any = [];
-    
+
     return (
       <>
         <div className="section-tit">
@@ -117,7 +117,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
             </div>
 
             <div className="buttons border-none">
-              
+
               {
                 approvalCube.proposalState === 'Submitted' && (
                   <div>
