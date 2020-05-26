@@ -27,13 +27,14 @@ class AppLayoutContainer extends Component<Props> {
 
   async findProfile() {
     //if (process.env.NODE_ENV !== 'development') {
-    const { skProfileService } = await this.props;
+    const { skProfileService } = this.props;
 
     skProfileService!.findSkProfile().then(() => {
       const { skProfile } = skProfileService!;
 
       console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
       console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
+      console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::');
 
       if (!skProfile.pisAgreement.signed) {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
