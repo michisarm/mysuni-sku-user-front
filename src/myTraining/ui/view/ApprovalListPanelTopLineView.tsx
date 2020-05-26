@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import {
-  Segment, Checkbox, Select, Radio, Button, Icon, Table
+  Segment, Checkbox, Select, Radio, Button, Icon, Table, Form
 } from 'semantic-ui-react';
 
 import { ListPanelTopLine } from 'shared';
@@ -17,6 +17,8 @@ import ApprovalApplyStatusModal from './ApprovalApplyStatusModal';
 import ApprovalActionButtons from './ApprovalActionButtons';
 
 import ApprovalProcessModal from './ApprovalProcessModal';
+
+import IdName from '../../../shared/model/IdName';
 
 const classOptions = [
   { key: 'val01', value: 'val01', text: '전체과정' },
@@ -49,6 +51,10 @@ interface Props {
   searchSelectOptions: any[]
   onChange: (e: any, data: any) => void
   searchState: any
+  setContentsProvider: () => []
+  defaultValue?: string
+  targetProps?: string
+  onSetCubeIntroPropsByJSON: (name: string, value: string) => void
 }
 
 @reactAutobind
@@ -69,11 +75,14 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
   render() {
     //
-    const { totalCount, searchSelectOptions, onChange, searchState } = this.props;
+    const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, totalCount, searchSelectOptions, onChange, searchState, setContentsProvider } = this.props;
     const { approvalStatus } = this.state;
-
+    const contentsProviderTsx = setContentsProvider();
+    
     console.log('render approvalStatus ::' + approvalStatus);
     console.log('render searchState ::' + searchState);
+    //console.log('render onSetCubeIntroPropsByJSON ::' + onSetCubeIntroPropsByJSON);
+    //console.log('render contentsProviderTsx ::' + contentsProviderTsx);
 
     return (
       <>
@@ -139,41 +148,16 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                   </Button>
                 }
 
-                {/*0514 엑셀다운로드 추가*/}
-                {/*0521 엑셀다운로드 위치 변경*/}
-                {/* <span className="excel-wrap">
-                  <Button icon className="left post excel-down">
-                    <Icon className="excel-down"/> 엑셀 다운로드
-                  </Button>
-                </span> */}
               </div>
             </div>
 
             <div className="right-area">
-
-              {/*신청현황 모달팝업*/}
-              {/*0514 신청현황 -> 목록으로 이동*/}
-              {/*<ApprovalApplyStatusModal/>*/}
-
               <Select
-                placeholder="전체과정"
-                className="ui small-border dropdown selection list-title-sel"
-                options={classOptions}
+                placeholder = "과정선택"
+                options = {contentsProviderTsx}
+                onChange={(e: any, data: any) => onSetCubeIntroPropsByJSON(`${targetProps}`, data.value)}
+                value={defaultValue && defaultValue}
               />
-
-              {/*0514 차수선택 => 교육기간으로 변경*/}
-              {/*<Select*/}
-              {/*placeholder="전체차수"*/}
-              {/*className="ui small-border dropdown selection list-num-sel"*/}
-              {/*options={numOptions}*/}
-              {/*/>*/}
-
-              {/* <Select
-                placeholder="교육기간"
-                className="ui small-border dropdown selection list-num-sel"
-                options={termOptions}
-              /> */}
-
             </div>
           </div>
         </div>

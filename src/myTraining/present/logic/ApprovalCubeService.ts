@@ -6,6 +6,8 @@ import { CubeState, ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 
+import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
+
 @autobind
 export default class ApprovalCubeService {
   //
@@ -21,6 +23,12 @@ export default class ApprovalCubeService {
 
   @observable
   searchState: ProposalState = ProposalState.Submitted;
+
+  @observable
+  contentsProvider: ContentsProviderModel = new ContentsProviderModel();
+  
+  @observable
+  contentsProviders: ContentsProviderModel[] = [];
 
   constructor(approvalCubeApi: ApprovalCubeApi) {
     //
@@ -62,14 +70,15 @@ export default class ApprovalCubeService {
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
-  async findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
+  async findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
     //
 
     console.log('findApprovalCubesForSearch offset ::' + offset);
     console.log('findApprovalCubesForSearch limit ::' + limit);
     console.log('findApprovalCubesForSearch proposalState ::' + proposalState);
+    console.log('findApprovalCubesForSearch approvalCube.lectureCardId ::' + approvalCube?.lectureCardId);
 
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(offset, limit, proposalState);
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(offset, limit, proposalState, approvalCube);
 
     runInAction(() => {
       this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
@@ -89,6 +98,13 @@ export default class ApprovalCubeService {
   changeSearchState(proposalState: ProposalState) {
     //
     this.searchState = proposalState;
+  }
+
+  @action
+  async findLectureApprovalSelect() {
+    //
+    const contentsProviders = await this.approvalCubeApi.findLectureApprovalSelect();
+    return runInAction(() => this.contentsProviders = contentsProviders);
   }
 }
 

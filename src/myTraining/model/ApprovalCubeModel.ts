@@ -52,6 +52,7 @@ export class ApprovalCubeModel implements DramaEntity {
 
   freeOfCharge: FreeOfChargeModel = new FreeOfChargeModel();
   enrolling: EnrollingModel = new EnrollingModel();                     // 신청/취소/학습 기간/신청유무
+  lectureCardId: String = '';
 
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
@@ -248,5 +249,6 @@ decorate(ApprovalCubeModel, {
 
   freeOfCharge: observable,
   enrolling: observable,
+  lectureCardId: observable,
 });
 
