@@ -21,13 +21,13 @@ interface Props {
 class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
-    //this.findProfile();
-    setTimeout(this.findProfile,1000);
+    this.findProfile();
+    //setTimeout(this.findProfile,1000);
   }
 
   async findProfile() {
     //if (process.env.NODE_ENV !== 'development') {
-    const { skProfileService } = this.props;
+    const { skProfileService } = await this.props;
 
     skProfileService!.findSkProfile().then(() => {
       const { skProfile } = skProfileService!;
