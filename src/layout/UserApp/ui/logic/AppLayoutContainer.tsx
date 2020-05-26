@@ -20,8 +20,8 @@ interface Props {
 @observer
 class AppLayoutContainer extends Component<Props> {
   //
-  componentDidMount() {
-    this.findProfile();
+  async componentDidMount() {
+    await this.findProfile();
     //setTimeout(this.findProfile,1000);
   }
 
