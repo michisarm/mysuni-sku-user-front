@@ -29,12 +29,10 @@ class AppLayoutContainer extends Component<Props> {
     //if (process.env.NODE_ENV !== 'development') {
     const { skProfileService } = this.props;
 
-    skProfileService!.findSkProfile().then(() => {
-      const { skProfile } = skProfileService!;
+    //skProfileService?.clearSkProfile();
 
-      console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
-      console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
-      console.log(':::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: ');
+    SkProfileService.instance.findSkProfile().then(() => {
+      const { skProfile } = skProfileService!;
 
       if (!skProfile.pisAgreement.signed) {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
@@ -43,6 +41,17 @@ class AppLayoutContainer extends Component<Props> {
         window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
       }
     });
+
+    /*skProfileService!.findSkProfile().then(() => {
+      const { skProfile } = skProfileService!;
+
+      if (!skProfile.pisAgreement.signed) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      }
+      else if (!skProfile.studySummaryConfigured) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
+    });*/
     //}
   }
 
