@@ -4,6 +4,8 @@ import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 import { OffsetElementList, CubeState, ProposalState } from '../../../shared/model';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
+import LectureApprovalRdo from '../../model/LectureApprovalRdo';
+import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
 
 export default class ApprovalCubeApi {
   //
@@ -12,6 +14,7 @@ export default class ApprovalCubeApi {
   devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
 
   lectureApprovalURL = this.devUrl + '/api/lecture/studentApproval';
+  baseUrl = this.devUrl + '/api/lecture/studentApproval';
 
   static convertOffsetElementList(response: any): OffsetElementList<ApprovalCubeModel> {
     //
@@ -25,21 +28,48 @@ export default class ApprovalCubeApi {
   }
 
   // Query
-  findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState) {
+  findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
     //
-
     console.log('ApprovalCubeApi findApprovalCubesForSearch offset ::' + offset);
     console.log('ApprovalCubeApi findApprovalCubesForSearch limit ::' + limit);
     console.log('ApprovalCubeApi findApprovalCubesForSearch proposalState ::' + proposalState);
+    console.log('ApprovalCubeApi findApprovalCubesForSearch lectureCardId ::' + approvalCube?.lectureCardId);
 
-    //
-    const params = {
-      offset,
-      limit,
-      proposalState,
-    };
-    return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-      .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
+    const lectureCardIdStr = approvalCube?.lectureCardId;
+
+    // undefined 처리
+    if ( typeof lectureCardIdStr === 'undefined' ) {
+      console.log('ApprovalCubeApi if lectureCardIdStr ::' + lectureCardIdStr);
+      //
+      const params = {
+        offset,
+        limit,
+        proposalState,
+      };
+
+      console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
+
+      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
+        .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
+    } else {
+      const lectureCardId = lectureCardIdStr;
+      console.log('ApprovalCubeApi else lectureCardId ::' + lectureCardId);
+
+      //
+      const params = {
+        offset,
+        limit,
+        proposalState,
+        lectureCardId,
+      };
+
+      console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
+      console.log('ApprovalCubeApi params.lectureCardId :: ' + params.lectureCardId);
+
+      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
+        .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
+    }
+
   }
 
   findPersonalCube(personalCubeId: string) {
@@ -52,6 +82,13 @@ export default class ApprovalCubeApi {
     //
     return axios.get<string>(this.lectureApprovalURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
       .then(response => response && response.data || null);
+  }
+
+  findLectureApprovalSelect() {
+    console.log('findLectureApprovalSelect ::');
+
+    return axios.get<ContentsProviderModel[]>(this.baseUrl + '/lectures')
+      .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
 }
