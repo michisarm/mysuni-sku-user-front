@@ -163,6 +163,13 @@ class MyApprovalListContainer extends React.Component<Props> {
     const selectContentsProviderType: any = [];
     const { contentsProviders } = this.props.approvalCubeService!;
 
+    selectContentsProviderType.push(
+      {
+        key: '',
+        text: '전체과정',
+        value: '',
+      });
+
     contentsProviders.map((contentsProvider) => {
       selectContentsProviderType.push(
         {
