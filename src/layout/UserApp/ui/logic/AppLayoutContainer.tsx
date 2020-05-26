@@ -21,24 +21,28 @@ interface Props {
 class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
-    this.findProfile();
+    //this.findProfile();
+    setTimeout(this.findProfile,1000);
   }
 
   async findProfile() {
-    if (process.env.NODE_ENV !== 'development') {
-      const { skProfileService } = this.props;
+    //if (process.env.NODE_ENV !== 'development') {
+    const { skProfileService } = this.props;
 
-      skProfileService!.findSkProfile().then(() => {
-        const { skProfile } = skProfileService!;
+    skProfileService!.findSkProfile().then(() => {
+      const { skProfile } = skProfileService!;
 
-        if (!skProfile.pisAgreement.signed) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-        }
-        else if (!skProfile.studySummaryConfigured) {
-          window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-        }
-      });
-    }
+      console.log('skProfile.pisAgreement.signed ::::::::::::: '+skProfile.pisAgreement.signed);
+      console.log('!skProfile.pisAgreement.signed ::::::::::::: '+!skProfile.pisAgreement.signed);
+
+      if (!skProfile.pisAgreement.signed) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      }
+      else if (!skProfile.studySummaryConfigured) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
+    });
+    //}
   }
 
   render() {
