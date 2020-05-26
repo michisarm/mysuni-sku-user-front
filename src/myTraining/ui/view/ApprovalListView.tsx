@@ -145,20 +145,20 @@ class ApprovalListView extends React.Component <Props> {
               {approvalCubes.map((cube, index) => {
                 const newCube = new ApprovalCubeModel(cube);
                 return (
-                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.personalCubeId)} className="row">
+                  <Table.Row key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="row">
                     <Table.Cell className="cell ck">
                       <Checkbox className="base" />
                     </Table.Cell>
                     <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
                     <Table.Cell className="cell name"><span className="ellipsis">{cube.memberName}</span></Table.Cell>
-                    <Table.Cell className="cell team"><span className="ellipsis">{cube.memberDepartment}</span></Table.Cell>
-                    <Table.Cell className="cell title"><span className="ellipsis">{cube.cubeName}</span></Table.Cell>
-                    <Table.Cell className="cell class">{cube.round}</Table.Cell>
-                    <Table.Cell className="cell status">{cube.studentCount}/{cube.capacity}</Table.Cell>
+                    <Table.Cell className="cell team"><a><span className="ellipsis">{cube.memberDepartment}</span></a></Table.Cell>
+                    <Table.Cell className="cell title"><a><span className="ellipsis">{cube.cubeName}</span></a></Table.Cell>
+                    <Table.Cell className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
+                    <Table.Cell className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
 
-                    <Table.Cell className="cell term">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')}<br/>~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</Table.Cell>
-                    <Table.Cell className="cell date">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</Table.Cell>
-                    <Table.Cell className="cell pay">{cube.freeOfCharge.chargeAmount}</Table.Cell>
+                    <Table.Cell className="cell term"><a><span className="ellipsis">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')}<br/>~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</span></a></Table.Cell>
+                    <Table.Cell className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
+                    <Table.Cell className="cell pay"><a><span className="ellipsis">{cube.freeOfCharge.chargeAmount}</span></a></Table.Cell>
                   </Table.Row>
                 );
               })

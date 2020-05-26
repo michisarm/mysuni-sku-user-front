@@ -213,22 +213,19 @@ class MyApprovalListContainer extends React.Component<Props> {
     }
   }
 
-  async onClickPersonalCubeRow(personalCubeId: string) {
+  async onClickApprovalCubeRow(studentId: string) {
+    console.log('onClickApprovalCubeRow studentId ::' + studentId);
     //
     const approvalCubeService = this.props.approvalCubeService!;
     const { history } = this.props;
 
-    const approvalCube = await approvalCubeService.findPersonalCube(personalCubeId);
+    const approvalCube = await approvalCubeService.findApprovalCube(studentId);
 
     const cubeType = approvalCube!.contents.type;
     const cubeState = approvalCube!.cubeState;
 
-    if (cubeState === CubeState.Created) {
-      history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
-    }
-    else {
-      history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
-    }
+    history.push(routePaths.approvalCubesDetail(studentId));
+
   }
 
   render() {
@@ -259,7 +256,7 @@ class MyApprovalListContainer extends React.Component<Props> {
         <ApprovalListView
           approvalCubes={approvalCubeOffsetList.results}
           totalCount={totalCount}
-          handleClickCubeRow={this.onClickPersonalCubeRow}
+          handleClickCubeRow={this.onClickApprovalCubeRow}
           searchState={searchState}
         />
 
