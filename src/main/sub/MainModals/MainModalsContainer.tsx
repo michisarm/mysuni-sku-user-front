@@ -115,12 +115,12 @@ class MainModalsContainer extends Component<{}, State> {
   onCloseWelcome() {
     //
     // this.onClose(PageType.Welcome);
-    this.initFromStorage(PageType.Tutorial);
+    //this.initFromStorage(PageType.Tutorial);
   }
 
   onCloseTutorial() {
     //
-    this.onClose(PageType.Tutorial);
+    //this.onClose(PageType.Tutorial);
     // this.initFromStorage(PageType.SystemGuide);
   }
 
@@ -191,7 +191,8 @@ class MainModalsContainer extends Component<{}, State> {
     //     />
     //   );
     // }
-    
+
+    return null;
   }
 }
 
