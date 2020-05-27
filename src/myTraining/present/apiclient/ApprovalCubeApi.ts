@@ -36,64 +36,6 @@ export default class ApprovalCubeApi {
     return offsetElementList;
   }
 
-  addApprovedLectureSingle() {
-
-    const remark = '승인 테스트 입니다.';
-    const proposalState = 'Approved';
-
-    const idNameApproval = new IdNameApproval();
-    idNameApproval.id = '05526';
-    idNameApproval.name = 'name';
-    const actor = IdNameApproval;
-
-    // const nameValueListApproval = new NameValueListApproval();
-    // nameValueListApproval.nameValues
-
-    const studentArr = '["db1aebb4-ca22-45a4-bdc6-a63171670601"]';
-    const students = studentArr;
-
-    const params = {
-      remark,
-      proposalState,
-      actor,
-      students,
-    };
-
-    console.log('addApprovedLectureSingle params.remark :: ' + params.remark);
-
-    return axios.post<ApprovedResponse>(this.baseUrlApproved, { params })
-      .then(response => response && response.data);
-  }
-
-  addRejectedLectureSingle() {
-
-    const remark = '반려 테스트 입니다.';
-    const proposalState = 'Rejected';
-
-    const idNameApproval = new IdNameApproval();
-    idNameApproval.id = '05526';
-    idNameApproval.name = 'name';
-    const actor = IdNameApproval;
-
-    // const nameValueListApproval = new NameValueListApproval();
-    // nameValueListApproval.nameValues
-
-    const studentArr = '["db1aebb4-ca22-45a4-bdc6-a63171670601"]';
-    const students = studentArr;
-
-    const params = {
-      remark,
-      proposalState,
-      actor,
-      students,
-    };
-
-    console.log('addRejectedLectureSingle params.remark :: ' + params.remark);
-
-    return axios.post<ApprovedResponse>(this.baseUrlRejected, { params })
-      .then(response => response && response.data);
-  }
-
   // Query
   findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
     //
@@ -166,35 +108,14 @@ export default class ApprovalCubeApi {
   }
 
   studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-    console.log('studentRequestOpen studentRequestCdo remark ::' + studentRequestCdo.remark);
-    console.log('studentRequestOpen studentRequestCdo proposalState ::' + studentRequestCdo.proposalState);
-    console.log('studentRequestOpen studentRequestCdo actor.id ::' + studentRequestCdo.actor.id);
-    console.log('studentRequestOpen studentRequestCdo actor.name ::' + studentRequestCdo.actor.name);
-    console.log('studentRequestOpen studentRequestCdo students ::' + studentRequestCdo.students);
-    //
-    const remark = studentRequestCdo.remark;
-    const proposalState = studentRequestCdo.proposalState;
-    const actor = studentRequestCdo.actor;
-    const students = studentRequestCdo.students;
-
-    const params = {
-      remark,
-      proposalState,
-      actor,
-      students,
-    };
-
-    console.log('studentRequestOpen params.remark ::' + params.remark);
-    console.log('studentRequestOpen params.proposalState ::' + params.proposalState);
-    console.log('studentRequestOpen params.actor.id ::' + params.actor.id);
-    console.log('studentRequestOpen params.actor.name ::' + params.actor.name);
-    console.log('studentRequestOpen params.students ::' + params.students);
-
-    const paramJson = JSON.stringify(params);
-
-    console.log('studentRequestOpen paramJson ::' + paramJson);
-
+        
     return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestOpen', studentRequestCdo)
+      .then(response => response && response.data || null);
+  }
+
+  studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+        
+    return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestReject', studentRequestCdo)
       .then(response => response && response.data || null);
   }
 

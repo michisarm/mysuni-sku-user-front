@@ -102,6 +102,11 @@ export default class ApprovalCubeService {
     return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
   }
 
+  async studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
+    //
+    return this.approvalCubeApi.studentRequestReject(studentRequestCdo);
+  }
+
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
   async findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {

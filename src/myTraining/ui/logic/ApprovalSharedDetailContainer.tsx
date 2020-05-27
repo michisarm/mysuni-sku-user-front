@@ -230,23 +230,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     window.open(url);
   }
 
-  // async addRejectedLectureSingle() {
-  //   console.log('addRejectedLectureSingle click ::');
-  //   //
-  //   const { approvalCubeService } = this.props;
-  //   const { approvalCube } = approvalCubeService!;
-  //
-  //   const approvedResponse = await approvalCubeService!.addRejectedLectureSingle();
-  //   console.log('addRejectedLectureSingle approvedResponse.error ::' + approvedResponse.error);
-  //   console.log('addRejectedLectureSingle approvedResponse.message ::' + approvedResponse.message);
-  //
-  //   if(approvedResponse.error) {
-  //     reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
-  //   } else {
-  //     reactAlert({ title: '알림', message: '성공입니다.' });
-  //   }
-  // }
-
   onChangeStudentRequestCdoProps(name: string, value: any) {
     //
     const { approvalCubeService } = this.props;
@@ -272,8 +255,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
     const name = approvalCube.memberName;
     const userId = approvalCube.operation.operator.employeeId;
-    //const students = '["806df7a3-e62b-4f7b-bf85-35da55af2f0c"]';
-
+    
     const studentId = approvalCube.studentId;
     const tempList: string [] = [ ...selectedList ];
     tempList.push(studentId);
@@ -284,25 +266,11 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
     console.log('onChangeSelectedStudentProps => selectedListArr ::' + selectedListArr.selectedList);
 
-    const emptyStr = '"';
-    const studentIdStr = emptyStr+studentId+emptyStr;
-    console.log('studentIdStr :: ' + studentIdStr);
-
-    // concat 사용하기
-    const studentIdArry  = '['+studentIdStr+']';
-    console.log('studentIdArry :: ' + studentIdArry);
-
-    const remarkStr = '';
-
-    console.log('remarkStr :: ' + remarkStr);
-
-    this.onChangeStudentRequestCdoProps('remark', '승인요청 입니다 . 수고하세요.');
+    this.onChangeStudentRequestCdoProps('remark', '승인요청 입니다.');
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Approved);
     const idNameApproval = new IdNameApproval({ id: userId, name });
     this.onChangeStudentRequestCdoProps('actor', idNameApproval);
     this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
-
-    // const approvedResponse = await approvalCubeService!.studentRequestOpen();
 
     if (selectedList && approvalCubeService) {
       const reponseData = approvalCubeService.studentRequestOpen(studentRequest);
@@ -310,22 +278,61 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
       console.log('addApprovedLectureSingle reponseData.error ::' + (await reponseData).error);
       console.log('addApprovedLectureSingle reponseData.message ::' + (await reponseData).message);
 
+      const errorData = (await reponseData).error;
 
-      // if(approvedResponse.error) {
-      //   reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
-      // } else {
-      //   reactAlert({ title: '알림', message: '성공입니다.' });
-      // }
+      if(errorData) {
+        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+      } else {
+        reactAlert({ title: '알림', message: '성공입니다.' });
+      }
     }
 
-    // console.log('addApprovedLectureSingle approvedResponse.error ::' + approvedResponse.error);
-    // console.log('addApprovedLectureSingle approvedResponse.message ::' + approvedResponse.message);
+  }
 
-    // if(approvedResponse.error) {
-    //   reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
-    // } else {
-    //   reactAlert({ title: '알림', message: '성공입니다.' });
-    // }
+  async addRejectedLectureSingle() {
+    console.log('addRejectedLectureSingle click ::');
+    //
+    const { approvalCubeService } = this.props;
+    const { studentRequest } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const { selectedList } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const { approvalCube } = this.props.approvalCubeService!;
+
+    const ApprovedResponse = this.props;
+
+    const name = approvalCube.memberName;
+    const userId = approvalCube.operation.operator.employeeId;
+    
+    const studentId = approvalCube.studentId;
+    const tempList: string [] = [ ...selectedList ];
+    tempList.push(studentId);
+
+    this.onChangeSelectedStudentProps(tempList);
+
+    const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
+
+    console.log('onChangeSelectedStudentProps => selectedListArr ::' + selectedListArr.selectedList);
+
+    this.onChangeStudentRequestCdoProps('remark', '반려 입니다.');
+    this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Rejected);
+    const idNameApproval = new IdNameApproval({ id: userId, name });
+    this.onChangeStudentRequestCdoProps('actor', idNameApproval);
+    this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
+
+    if (selectedList && approvalCubeService) {
+      const reponseData = approvalCubeService.studentRequestReject(studentRequest);
+
+      console.log('addApprovedLectureSingle reponseData.error ::' + (await reponseData).error);
+      console.log('addApprovedLectureSingle reponseData.message ::' + (await reponseData).message);
+
+      const errorData = (await reponseData).error;
+
+      if(errorData) {
+        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+      } else {
+        reactAlert({ title: '알림', message: '성공입니다.' });
+      }
+    }
+
   }
 
   render() {
@@ -390,7 +397,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                       approvalCube.proposalState === 'Submitted' && (
                         <div>
                           <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
-                          {/*<Button className="fix line" onClick={this.addRejectedLectureSingle}>반려</Button>*/}
+                          <Button className="fix line" onClick={this.addRejectedLectureSingle}>반려</Button>
                           <Button className="fix bg" onClick={this.addApprovedLectureSingle}>승인</Button>
                         </div>
                       )
