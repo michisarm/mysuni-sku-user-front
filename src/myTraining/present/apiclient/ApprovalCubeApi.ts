@@ -8,8 +8,10 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
 import LectureApprovalRdo from '../../model/LectureApprovalRdo';
 import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
-import IdNameApproval from '../../../shared/model/IdNameApproval';
+import { IdNameApproval } from '../../../shared/model/IdNameApproval';
 // import { NameValueListApproval } from '../../../shared/model/NameValueListApproval';
+
+import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 
 export default class ApprovalCubeApi {
   //
@@ -161,6 +163,39 @@ export default class ApprovalCubeApi {
 
     return axios.get<ContentsProviderModel[]>(this.lectureApprovalURL + '/lectures')
       .then(response => response && Array.isArray(response.data) && response.data || []);
+  }
+
+  studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
+    console.log('studentRequestOpen studentRequestCdo remark ::' + studentRequestCdo.remark);
+    console.log('studentRequestOpen studentRequestCdo proposalState ::' + studentRequestCdo.proposalState);
+    console.log('studentRequestOpen studentRequestCdo actor.id ::' + studentRequestCdo.actor.id);
+    console.log('studentRequestOpen studentRequestCdo actor.name ::' + studentRequestCdo.actor.name);
+    console.log('studentRequestOpen studentRequestCdo students ::' + studentRequestCdo.students);
+    //
+    const remark = studentRequestCdo.remark;
+    const proposalState = studentRequestCdo.proposalState;
+    const actor = studentRequestCdo.actor;
+    const students = studentRequestCdo.students;
+
+    const params = {
+      remark,
+      proposalState,
+      actor,
+      students,
+    };
+
+    console.log('studentRequestOpen params.remark ::' + params.remark);
+    console.log('studentRequestOpen params.proposalState ::' + params.proposalState);
+    console.log('studentRequestOpen params.actor.id ::' + params.actor.id);
+    console.log('studentRequestOpen params.actor.name ::' + params.actor.name);
+    console.log('studentRequestOpen params.students ::' + params.students);
+
+    const paramJson = JSON.stringify(params);
+
+    console.log('studentRequestOpen paramJson ::' + paramJson);
+
+    return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestOpen', studentRequestCdo)
+      .then(response => response && response.data || null);
   }
 
 }

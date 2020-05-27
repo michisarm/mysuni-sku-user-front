@@ -10,6 +10,8 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 
 import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
 
+import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
+
 @autobind
 export default class ApprovalCubeService {
   //
@@ -27,17 +29,35 @@ export default class ApprovalCubeService {
   approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = { results: [], totalCount: 0 };
 
   @observable
+  studentRequest: StudentRequestCdoModel = {} as StudentRequestCdoModel;
+
+  @observable
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
   contentsProvider: ContentsProviderModel = new ContentsProviderModel();
-  
+
   @observable
   contentsProviders: ContentsProviderModel[] = [];
 
   constructor(approvalCubeApi: ApprovalCubeApi) {
     //
     this.approvalCubeApi = approvalCubeApi;
+  }
+
+  @observable
+  selectedList: string [] = [];
+
+  @action
+  changeStudentRequestProps(name: string, value: any) {
+    //
+    this.studentRequest = _.set(this.studentRequest, name, value);
+  }
+
+  @action
+  changeSelectedStudentProps(selectedList: string []) {
+    //
+    this.selectedList = selectedList;
   }
 
   // ApprovalCube ------------------------------------------------------------------------------------------------------
@@ -77,30 +97,9 @@ export default class ApprovalCubeService {
     return null;
   }
 
-  @action
-  async addRejectedLectureSingle() {
-
-    console.log('addRejectedLectureSingle Start ... ::');
+  async studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
     //
-    const approvedResponse = await this.approvalCubeApi.addRejectedLectureSingle();
-
-    if (approvedResponse) {
-      return runInAction(() => this.approvedResponse = new ApprovedResponse(approvedResponse));
-    }
-    return approvedResponse;
-  }
-
-  @action
-  async addApprovedLectureSingle() {
-
-    console.log('addApprovedLectureSingle Start ::');
-    //
-    const approvedResponse = await this.approvalCubeApi.addApprovedLectureSingle();
-
-    if (approvedResponse) {
-      return runInAction(() => this.approvedResponse = new ApprovedResponse(approvedResponse));
-    }
-    return approvedResponse;
+    return this.approvalCubeApi.studentRequestOpen(studentRequestCdo);
   }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
