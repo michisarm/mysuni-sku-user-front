@@ -6,20 +6,20 @@ import { observer } from 'mobx-react';
 // import moment from 'moment';
 import ModalState from './model/ModalState';
 // import WelcomeModalView from './WelcomeModalView';
-// import SystemGuideModalView from './SystemGuideModalView';
-import TutorialModalView from './TutorialModalView';
+import SystemGuideModalView from './SystemGuideModalView';
+//import TutorialModalView from './TutorialModalView';
 
 
 interface State {
   // welcomeModalState: ModalState
-  tutorialModalState: ModalState
-  // systemGuideModalState: ModalState
+  //tutorialModalState: ModalState
+  systemGuideModalState: ModalState
 }
 
 enum PageType {
   // Welcome = 'welcome',
-  Tutorial = 'tutorial',
-  // SystemGuide = 'systemGuide',
+  //Tutorial = 'tutorial',
+  SystemGuide = 'systemGuide',
 }
 
 @reactAutobind
@@ -33,16 +33,16 @@ class MainModalsContainer extends Component<{}, State> {
 
   state = {
     // welcomeModalState: new ModalState(),
-    tutorialModalState: new ModalState(),
-    // systemGuideModalState: new ModalState(),
+    //tutorialModalState: new ModalState(),
+    systemGuideModalState: new ModalState(),
   };
 
 
   componentDidMount(): void {
     //
     // this.initFromStorage(PageType.Welcome);
-    this.initFromStorage(PageType.Tutorial);
-    // this.initFromStorage(PageType.SystemGuide);
+    // this.initFromStorage(PageType.Tutorial);
+    this.initFromStorage(PageType.SystemGuide);
   }
 
   initFromStorage(pageType: PageType) {
@@ -124,9 +124,9 @@ class MainModalsContainer extends Component<{}, State> {
     // this.initFromStorage(PageType.SystemGuide);
   }
 
-  // onCloseSystemGuide() {
-  //   this.onClose(PageType.SystemGuide);
-  // }
+  onCloseSystemGuide() {
+    this.onClose(PageType.SystemGuide);
+  }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
     //
@@ -137,11 +137,23 @@ class MainModalsContainer extends Component<{}, State> {
     //
     const {
       // welcomeModalState,
-      tutorialModalState,
-      // systemGuideModalState,
+      // tutorialModalState,
+      systemGuideModalState,
     } = this.state;
 
-    return null;
+    if (systemGuideModalState.disabled) {
+      return null;
+    }
+
+    if (systemGuideModalState.open) {
+      return (
+        <SystemGuideModalView
+          modalState={systemGuideModalState}
+          onClose={this.onCloseSystemGuide}
+          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+        />
+      );
+    }
 
     // if (tutorialModalState.disabled
     // && welcomeModalState.disabled
