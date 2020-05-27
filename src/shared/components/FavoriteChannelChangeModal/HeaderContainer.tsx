@@ -73,7 +73,7 @@ class HeaderContainer extends Component<Props, State> {
       <div className="row head">
         <div className="cell v-middle">
           <span className="text01">Channel list</span>
-          <div className="right">
+          {/*<div className="right">
             <div className={classNames('ui h30 search input', { focus, write: searchKey })}>
               <input
                 type="text"
@@ -87,7 +87,7 @@ class HeaderContainer extends Component<Props, State> {
               <Icon className="clear link" onClick={this.onClearSearchKey} />
               <Icon className="search link" onClick={this.onSearch} />
             </div>
-          </div>
+          </div>*/}
         </div>
         <div className="cell v-middle">
           <span className="text01">Selected</span>
