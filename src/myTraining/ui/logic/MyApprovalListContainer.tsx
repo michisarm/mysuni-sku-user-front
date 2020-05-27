@@ -221,11 +221,7 @@ class MyApprovalListContainer extends React.Component<Props> {
 
     const approvalCube = await approvalCubeService.findApprovalCube(studentId);
 
-    const cubeType = approvalCube!.contents.type;
-    const cubeState = approvalCube!.cubeState;
-
     history.push(routePaths.approvalCubesDetail(studentId));
-
   }
 
   render() {
