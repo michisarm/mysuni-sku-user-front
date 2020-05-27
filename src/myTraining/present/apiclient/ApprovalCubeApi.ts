@@ -8,6 +8,8 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
 import LectureApprovalRdo from '../../model/LectureApprovalRdo';
 import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
+import IdNameApproval from '../../../shared/model/IdNameApproval';
+// import { NameValueListApproval } from '../../../shared/model/NameValueListApproval';
 
 export default class ApprovalCubeApi {
   //
@@ -35,9 +37,18 @@ export default class ApprovalCubeApi {
   addApprovedLectureSingle() {
 
     const remark = '승인 테스트 입니다.';
-    const proposalState = '';
-    const actor = '';
-    const students = '';
+    const proposalState = 'Approved';
+
+    const idNameApproval = new IdNameApproval();
+    idNameApproval.id = '05526';
+    idNameApproval.name = 'name';
+    const actor = IdNameApproval;
+
+    // const nameValueListApproval = new NameValueListApproval();
+    // nameValueListApproval.nameValues
+
+    const studentArr = '["db1aebb4-ca22-45a4-bdc6-a63171670601"]';
+    const students = studentArr;
 
     const params = {
       remark,
@@ -55,9 +66,18 @@ export default class ApprovalCubeApi {
   addRejectedLectureSingle() {
 
     const remark = '반려 테스트 입니다.';
-    const proposalState = '';
-    const actor = '';
-    const students = '';
+    const proposalState = 'Rejected';
+
+    const idNameApproval = new IdNameApproval();
+    idNameApproval.id = '05526';
+    idNameApproval.name = 'name';
+    const actor = IdNameApproval;
+
+    // const nameValueListApproval = new NameValueListApproval();
+    // nameValueListApproval.nameValues
+
+    const studentArr = '["db1aebb4-ca22-45a4-bdc6-a63171670601"]';
+    const students = studentArr;
 
     const params = {
       remark,
@@ -94,8 +114,7 @@ export default class ApprovalCubeApi {
 
       console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
 
-      // return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-      return axios.get<OffsetElementList<ApprovalCubeModel>>(`/images/index.html`)
+      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
         .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
     } else {
       const lectureCardId = lectureCardIdStr;
@@ -112,8 +131,7 @@ export default class ApprovalCubeApi {
       console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
       console.log('ApprovalCubeApi params.lectureCardId :: ' + params.lectureCardId);
 
-      // return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-      return axios.get<OffsetElementList<ApprovalCubeModel>>(`/images/index.html`)
+      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
         .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
     }
 
