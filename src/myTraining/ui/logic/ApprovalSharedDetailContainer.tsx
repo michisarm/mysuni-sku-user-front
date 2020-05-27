@@ -261,9 +261,24 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                   <div className="result-view">
                     <dl className="bl">
                       <dt>승인자 의견</dt>
-                      <dd>
-                        <TextArea placeholder="승인자 의견을 입력해주세요"/>
-                      </dd>
+                      {
+                        approvalCube.proposalState === 'Submitted' && (
+                          <div>
+                            <dd>
+                              <textarea id="remark" name="remark" placeholder="승인자 의견을 입력해주세요111" >{approvalCube.remark}</textarea>
+                            </dd>
+                          </div>
+                        )
+                      }
+                      {
+                        approvalCube.proposalState !== 'Submitted' && (
+                          <div>
+                            <dd>
+                              <textarea id="remark" name="remark" placeholder="승인자 의견을 입력해주세요SDS" readOnly={true}>{approvalCube.remark }</textarea>
+                            </dd>
+                          </div>
+                        )
+                      }
                     </dl>
                   </div>
 
