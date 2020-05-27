@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -79,7 +79,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
         console.log('componentDidMount approvalCube.studentId ::' + approvalCube.studentId);
         console.log('componentDidMount approvalCube.rollBookId ::' + approvalCube.rollBookId);
         console.log('componentDidMount approvalCube.memberName ::' + approvalCube.memberName);
-
+        
         const referenceFileBoxId = approvalCube && approvalCube.contents && approvalCube.contents.fileBoxId;
         this.findFiles('reference', referenceFileBoxId);
       });
@@ -230,8 +230,46 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     window.open(url);
   }
 
+  async addRejectedLectureSingle() {
+    console.log('addRejectedLectureSingle click ::');
+    //
+    const { approvalCubeService } = this.props;
+    const { approvalCube } = approvalCubeService!;
+
+    const approvedResponse = await approvalCubeService!.addRejectedLectureSingle();
+    console.log('addRejectedLectureSingle approvedResponse.error ::' + approvedResponse.error);
+    console.log('addRejectedLectureSingle approvedResponse.message ::' + approvedResponse.message);
+
+    if(approvedResponse.error) {
+      reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+    } else {
+      reactAlert({ title: '알림', message: '성공입니다.' });
+    }
+  }
+
+  async addApprovedLectureSingle() {
+    console.log('addApprovedLectureSingle click ::');
+    //
+    const { approvalCubeService } = this.props;
+    const { approvalCube } = approvalCubeService!;
+
+    const approvedResponse = await approvalCubeService!.addApprovedLectureSingle();
+    console.log('addApprovedLectureSingle approvedResponse error ::' + approvedResponse.error);
+    console.log('addApprovedLectureSingle approvedResponse message ::' + approvedResponse.message);
+    
+    if(approvedResponse.error) {
+      reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+    } else {
+      reactAlert({ title: '알림', message: '성공입니다.' });
+    }
+  }
+
   render() {
     const { approvalCube } = this.props.approvalCubeService!;
+
+    console.log('ApprovalSharedDetailContainer approvalCube remark :: ' + approvalCube.remark);
+    console.log('ApprovalSharedDetailContainer approvalCube studentId :: ' + approvalCube.studentId);
+
     // const { cubeIntro } = this.props.cubeIntroService!;
     const { cubeType, cubeState, studentId } = this.props.match.params;
     const {
@@ -288,8 +326,8 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                       approvalCube.proposalState === 'Submitted' && (
                         <div>
                           <Button className="fix line" onClick={this.routeToCreateList}>List</Button>
-                          <Button className="fix line">반려</Button>
-                          <Button className="fix bg">승인</Button>
+                          <Button className="fix line" onClick={this.addRejectedLectureSingle}>반려</Button>
+                          <Button className="fix bg" onClick={this.addApprovedLectureSingle}>승인</Button>
                         </div>
                       )
                     }

@@ -49,6 +49,7 @@ export class ApprovalCubeModel implements DramaEntity {
   round: number = 0;
   studentCount: number = 0;
   capacity: number = 0;
+  remark: String = '';
 
   freeOfCharge: FreeOfChargeModel = new FreeOfChargeModel();
   operation: OperationModel = new OperationModel();
@@ -56,7 +57,7 @@ export class ApprovalCubeModel implements DramaEntity {
   lectureCardId: String = '';
   cubeType: String = '';
   proposalState: String = '';
-  remark: String = '';
+  
 
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
@@ -251,6 +252,7 @@ decorate(ApprovalCubeModel, {
   round: observable,
   studentCount: observable,
   capacity: observable,
+  remark: observable,
 
   freeOfCharge: observable,
   operation: observable,
@@ -258,6 +260,6 @@ decorate(ApprovalCubeModel, {
   lectureCardId: observable,
   cubeType: observable,
   proposalState: observable,
-  remark: observable,
+  
 });
 

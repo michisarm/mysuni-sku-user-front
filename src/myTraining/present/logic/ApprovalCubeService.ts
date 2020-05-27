@@ -6,6 +6,8 @@ import { CubeState, ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 
+import { ApprovedResponse } from '../../model/ApprovedResponse';
+
 import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
 
 @autobind
@@ -17,6 +19,9 @@ export default class ApprovalCubeService {
 
   @observable
   approvalCube: ApprovalCubeModel = new ApprovalCubeModel();
+
+  @observable
+  approvedResponse: ApprovedResponse = new ApprovedResponse();
 
   @observable
   approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = { results: [], totalCount: 0 };
@@ -70,6 +75,32 @@ export default class ApprovalCubeService {
       return runInAction(() => this.approvalCube = new ApprovalCubeModel(approvalCube));
     }
     return null;
+  }
+
+  @action
+  async addRejectedLectureSingle() {
+
+    console.log('addRejectedLectureSingle Start ... ::');
+    //
+    const approvedResponse = await this.approvalCubeApi.addRejectedLectureSingle();
+
+    if (approvedResponse) {
+      return runInAction(() => this.approvedResponse = new ApprovedResponse(approvedResponse));
+    }
+    return approvedResponse;
+  }
+
+  @action
+  async addApprovedLectureSingle() {
+
+    console.log('addApprovedLectureSingle Start ::');
+    //
+    const approvedResponse = await this.approvalCubeApi.addApprovedLectureSingle();
+
+    if (approvedResponse) {
+      return runInAction(() => this.approvedResponse = new ApprovedResponse(approvedResponse));
+    }
+    return approvedResponse;
   }
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
