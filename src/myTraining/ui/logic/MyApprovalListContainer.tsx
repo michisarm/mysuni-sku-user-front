@@ -205,7 +205,6 @@ class MyApprovalListContainer extends React.Component<Props> {
     const approvalStatusStr = data.value;
     const currentPageNo = this.props.match.params.pageNo;
 
-    approvalCubeService!.clear();
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     approvalCubeService!.changeSearchState(proposalState);
     if (currentPageNo !== '1') {

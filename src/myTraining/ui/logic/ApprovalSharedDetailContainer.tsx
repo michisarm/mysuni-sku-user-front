@@ -69,8 +69,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
     console.log('componentDidMount personalCubeId :: ' + studentId);
 
-    this.clearAll();
-
     approvalCubeService.findApprovalCube(studentId)
       .then(() => {
         const { approvalCube } = approvalCubeService;
