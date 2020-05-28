@@ -78,6 +78,12 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
       });
   }
 
+  componentWillUnmount(): void {
+    //
+    const approvalCubeService = this.props.approvalCubeService!;
+    approvalCubeService!.clearApprovalCube();
+  }
+
   clearAll() {
     //
     const {
