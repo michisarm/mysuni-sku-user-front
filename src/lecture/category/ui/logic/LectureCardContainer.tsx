@@ -878,7 +878,7 @@ class LectureCardContainer extends Component<Props, State> {
             <ApplyReferenceModal
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
               classrooms={typeViewObject.classrooms}
-              handleOk={this.onClickApplyReferentOkApproval}
+              handleOk={this.onClickApplyReferentOk}
             />
           )
         }
