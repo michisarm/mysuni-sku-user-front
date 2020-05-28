@@ -20,6 +20,7 @@ import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
+import ApplyReferenceModalApproval from '../../../../approval/member/ui/logic/ApplyReferenceModalApproval';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
@@ -405,7 +406,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onApplyReference() {
-    this.applyReferenceModel.onOpenModal();
+    this.applyReferenceModel.onOpenModalApproval();
   }
 
   onApplyReferenceEmpty() {
@@ -832,7 +833,7 @@ class LectureCardContainer extends Component<Props, State> {
 
         {
           (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
-            <ApplyReferenceModal
+            <ApplyReferenceModalApproval
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
               handleOk={this.onClickApplyReferentOk}
             />

@@ -48,7 +48,7 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
       .then((companyApprover: CompanyApproverModel) => companyApproverService!.findCompanyApprover());
   }
 
-  onOpenModal() {
+  onOpenModalApproval() {
     //
     this.setState({ open: true });
     // 2020-04-22 김우성
@@ -179,7 +179,7 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     const approverTypeStr = approverTypeVal;
 
     return (
-      <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
+      <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModalApproval}>
         <Modal.Header className="res">
           {/*Class Series Detail*/}승인자 설정
           <span className="sub f12">{approverTypeStr}</span>
