@@ -27,10 +27,6 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 
 interface Props extends RouteComponentProps<{ studentId: string, cubeType: string, cubeState: string }> {
   approvalCubeService?: ApprovalCubeService
-  // cubeIntroService?: CubeIntroService
-  // mediaService?: MediaService
-  // boardService?: BoardService
-  // officeWebService?: OfficeWebService
 }
 
 interface States {
@@ -64,7 +60,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
   componentDidMount() {
     //
     const approvalCubeService = this.props.approvalCubeService!;
-    // const cubeIntroService = this.props.cubeIntroService!;
     const { studentId, cubeType } = this.props.match.params;
 
     console.log('componentDidMount personalCubeId :: ' + studentId);
@@ -90,10 +85,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     } = this.props;
 
     approvalCubeService!.clearApprovalCube();
-    // cubeIntroService!.clearCubeIntro();
-    // mediaService!.clearMedia();
-    // boardService!.clearBoard();
-    // officeWebService!.clearOfficeWeb();
   }
 
   findFiles(type: string, fileBoxId: string) {
@@ -106,53 +97,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
         const newMap = new Map(filesMap.set(type, files));
         this.setState({ filesMap: newMap });
       });
-  }
-
-  setOfficeWeb(contentsId: string) {
-    //
-    // const officeWebService = this.props.officeWebService!;
-
-    // officeWebService.findOfficeWeb(contentsId)
-    //   .then(() => {
-    //     const officeWebFileBoxId = officeWebService.officeWeb.fileBoxId;
-
-    //     if (officeWebFileBoxId) {
-    //       this.findFiles('officeweb', officeWebFileBoxId);
-    //     }
-    //   });
-  }
-
-  setMedia(contentsId: string) {
-    //
-    // const mediaService = this.props.mediaService!;
-    // mediaService.findMedia(contentsId);
-  }
-
-  setCommunity(contentsId: string) {
-    //
-    // const boardService = this.props.boardService!;
-    // boardService.findBoard(contentsId);
-  }
-
-  handleAlertOk(type: string) {
-    //
-    this.handleOKConfirmWin();
-    /*const { personalCubeId } = this.props.match.params;
-    if (type === 'approvalRequest') this.handleOKConfirmWin('approvalRequest');*/
-  }
-
-  handleSave() {
-
-    // const { cubeIntro } = this.props.cubeIntroService!;
-    // const cubeIntroObject = CubeIntroModel.isBlank(cubeIntro);
-    // const cubeIntroMessage = '"' + cubeIntroObject + '" 은 필수 입력 항목입니다. 해당 정보를 입력하신 후 저장해주세요.';
-
-    // if ( cubeIntroObject === 'success') {
-    //   this.setState({ confirmWinOpen: true });
-    // }
-    // else {
-    //   this.confirmBlank(cubeIntroMessage);
-    // }
   }
 
   confirmBlank(message: string) {
@@ -179,49 +123,13 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     });
   }
 
-  handleOKConfirmWin() {
-    //
-    // const { cubeIntro } = this.props.cubeIntroService || {} as CubeIntroService;
-    const { studentId, cubeType } = this.props.match.params;
-
-    // if (cubeType === CubeType.Video || cubeType === CubeType.Audio) {
-    //   this.modifyMedia(personalCubeId, cubeIntro);
-    // }
-    // else if (cubeType === CubeType.Community) {
-    //   this.modifyCommunity(personalCubeId, cubeIntro);
-    // }
-    // else if (cubeType === CubeType.Documents || cubeType === CubeType.WebPage) {
-    //   this.modifyOfficeWeb(personalCubeId, cubeIntro);
-    // }
-  }
-
-  modifyCommunity(personalCubeId: string, cubeIntro: CubeIntroModel) {
-    //
-    // const boardService = this.props.boardService!;
-    // const { board } = boardService;
-
-    // Promise.resolve()
-    //   .then(() => boardService.modifyBoardByUser(personalCubeId, cubeIntro, board))
-    //   .then(() => this.routeToCreateList());
-  }
-
-  modifyOfficeWeb(personalCubeId: string, cubeIntro: CubeIntroModel ) {
-    //
-    // const officeWebService = this.props.officeWebService!;
-    // const { officeWeb } = this.props.officeWebService || {} as OfficeWebService;
-
-    // Promise.resolve()
-    //   .then(() => officeWebService.modifyOfficeWebByUser(personalCubeId, cubeIntro, officeWeb))
-    //   .then(() => this.routeToCreateList());
-  }
-
   routeToCreateList() {
     //
     console.log(' routeToCreateList Start ... ::');
     // this.clearAll();
-    window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
+    //window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
     console.log(' routeToCreateList End ... ::');
-    // this.props.history.push(routePaths.myPageApprovalList());
+    this.props.history.push(routePaths.myPageApprovalList());
   }
 
   goToVideo(url: string) {
@@ -264,8 +172,9 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
 
     console.log('onChangeSelectedStudentProps => selectedListArr ::' + selectedListArr.selectedList);
+    console.log('addApprovedLectureSingle approvalCube.remark ::' + approvalCube.remark);
 
-    this.onChangeStudentRequestCdoProps('remark', '승인요청 입니다.');
+    this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Approved);
     const idNameApproval = new IdNameApproval({ id: userId, name });
     this.onChangeStudentRequestCdoProps('actor', idNameApproval);
@@ -283,6 +192,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
+        this.routeToCreateList();
       }
     }
 
@@ -310,8 +220,9 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
 
     console.log('onChangeSelectedStudentProps => selectedListArr ::' + selectedListArr.selectedList);
+    console.log('addRejectedLectureSingle approvalCube.remark ::' + approvalCube.remark);
 
-    this.onChangeStudentRequestCdoProps('remark', '반려 입니다.');
+    this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Rejected);
     const idNameApproval = new IdNameApproval({ id: userId, name });
     this.onChangeStudentRequestCdoProps('actor', idNameApproval);
@@ -329,6 +240,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
+        this.routeToCreateList();
       }
     }
 
