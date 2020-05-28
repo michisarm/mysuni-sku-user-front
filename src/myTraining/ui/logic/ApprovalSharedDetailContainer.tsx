@@ -334,6 +334,17 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
   }
 
+  onChangeApprovalCubeProps(name: string, value: any) {
+    //
+    const { approvalCubeService } = this.props;
+    approvalCubeService!.changeCubeProps(name, value);
+  }
+
+  onChangeRemark(e: any) {
+    const { value } = e.target;
+    this.onChangeApprovalCubeProps('remark', value);
+  }
+
   render() {
     const { approvalCube } = this.props.approvalCubeService!;
 
@@ -373,7 +384,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                         approvalCube.proposalState === 'Submitted' && (
                           <div>
                             <dd>
-                              <textarea id="remark" name="remark" placeholder="승인자 의견을 입력해주세요" >{approvalCube.remark}</textarea>
+                              <textarea placeholder="승인자 의견을 입력해주세요"
+                                value={approvalCube && approvalCube.remark || ''}
+                                onChange={this.onChangeRemark}
+                              />
                             </dd>
                           </div>
                         )
@@ -382,7 +396,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                         approvalCube.proposalState !== 'Submitted' && (
                           <div>
                             <dd>
-                              <textarea id="remark" name="remark" placeholder=" " readOnly={true}>{approvalCube.remark }</textarea>
+                              <textarea placeholder="승인자 의견을 입력해주세요"
+                                value={approvalCube && approvalCube.remark || ''}
+                                readOnly={true}
+                              />
                             </dd>
                           </div>
                         )

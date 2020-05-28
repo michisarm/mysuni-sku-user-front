@@ -49,15 +49,15 @@ export class ApprovalCubeModel implements DramaEntity {
   round: number = 0;
   studentCount: number = 0;
   capacity: number = 0;
-  remark: String = '';
+  remark: string = '';
 
   freeOfCharge: FreeOfChargeModel = new FreeOfChargeModel();
   operation: OperationModel = new OperationModel();
   enrolling: EnrollingModel = new EnrollingModel();                     // 신청/취소/학습 기간/신청유무
-  lectureCardId: String = '';
-  cubeType: String = '';
-  proposalState: String = '';
-  
+  lectureCardId: string = '';
+  cubeType: string = '';
+  proposalState: string = '';
+
 
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
@@ -260,6 +260,6 @@ decorate(ApprovalCubeModel, {
   lectureCardId: observable,
   cubeType: observable,
   proposalState: observable,
-  
+
 });
 
