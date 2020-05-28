@@ -929,3 +929,4 @@ class LectureCardContainer extends Component<Props, State> {
 }
 
 export default LectureCardContainer;
+
