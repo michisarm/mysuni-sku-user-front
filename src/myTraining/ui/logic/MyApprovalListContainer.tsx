@@ -225,12 +225,12 @@ class MyApprovalListContainer extends React.Component<Props> {
     console.log('onClickApprovalCubeRow studentId ::' + studentId);
     //
     // const approvalCubeService = this.props.approvalCubeService!;
-    // const { history } = this.props;
+    const { history } = this.props;
 
     // approvalCubeService!.clear();
-    // history.push(routePaths.approvalCubesDetail(studentId));
+    history.push(routePaths.approvalCubesDetail(studentId));
 
-    window.location.href=`/my-training/my-page/ApprovalList/detail/${studentId}`;
+    // window.location.href=`/my-training/my-page/ApprovalList/detail/${studentId}`;
   }
 
   render() {
