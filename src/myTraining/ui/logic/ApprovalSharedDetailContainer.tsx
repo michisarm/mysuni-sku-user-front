@@ -221,8 +221,9 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     //
     console.log(' routeToCreateList Start ... ::');
     this.clearAll();
+    window.location.replace('/suni-main/my-training/my-page/ApprovalList/pages/1');
     console.log(' routeToCreateList End ... ::');
-    this.props.history.push(routePaths.myPageApprovalList());
+    // this.props.history.push(routePaths.myPageApprovalList());
   }
 
   goToVideo(url: string) {
@@ -255,7 +256,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
     const name = approvalCube.memberName;
     const userId = approvalCube.operation.operator.employeeId;
-    
+
     const studentId = approvalCube.studentId;
     const tempList: string [] = [ ...selectedList ];
     tempList.push(studentId);
@@ -301,7 +302,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
     const name = approvalCube.memberName;
     const userId = approvalCube.operation.operator.employeeId;
-    
+
     const studentId = approvalCube.studentId;
     const tempList: string [] = [ ...selectedList ];
     tempList.push(studentId);

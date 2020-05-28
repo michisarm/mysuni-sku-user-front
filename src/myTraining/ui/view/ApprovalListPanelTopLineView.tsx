@@ -78,7 +78,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
     const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, totalCount, searchSelectOptions, onChange, searchState, setContentsProvider } = this.props;
     const { approvalStatus } = this.state;
     const contentsProviderTsx = setContentsProvider();
-    
+
     console.log('render approvalStatus ::' + approvalStatus);
     console.log('render searchState ::' + searchState);
     //console.log('render onSetCubeIntroPropsByJSON ::' + onSetCubeIntroPropsByJSON);
@@ -137,15 +137,6 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                     )}
                   />
                 </>
-                }
-
-                {/*Delete 버튼은 승인요청 목록에는 미노출*/}
-                {searchState === 'Submitted' ?
-                  ''
-                  :
-                  <Button icon className="left post delete">
-                    <Icon className="del24"/> Delete
-                  </Button>
                 }
 
               </div>
