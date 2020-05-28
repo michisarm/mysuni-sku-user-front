@@ -835,6 +835,7 @@ class LectureCardContainer extends Component<Props, State> {
     console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
     console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
     console.log('render approvalProcessChk :: ' + approvalProcessChk );
+    console.log('=-------------->',cubeType,enrollingAvailableChk, freeOfChargeChk, approvalProcessChk, this.applyReferenceModel, '[', this.applyReferenceModelApproval, ']');
 
     return (
       <LectureCardContentWrapperView>
@@ -875,9 +876,13 @@ class LectureCardContainer extends Component<Props, State> {
 
         {
           ((cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (enrollingAvailableChk === true) && (freeOfChargeChk === false) && (approvalProcessChk === true) &&
-            <ApplyReferenceModalApproval ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval} handleOk={this.onClickApplyReferentOkApproval} />
+              <div className="ApplyReferenceModalApproval">
+                <ApplyReferenceModalApproval ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval} handleOk={this.onClickApplyReferentOkApproval} />
+              </div>
             ||
-            <ApplyReferenceModal ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel} classrooms={typeViewObject.classrooms} handleOk={this.onClickApplyReferentOk} />
+            <div className="ApplyReferenceModal">
+              <ApplyReferenceModal ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel} classrooms={typeViewObject.classrooms} handleOk={this.onClickApplyReferentOk} />
+            </div>
           )
         }
 
