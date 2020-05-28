@@ -3,13 +3,13 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { Button, Modal, Table } from 'semantic-ui-react';
 import { MemberViewModel } from '@nara.drama/approval';
 import { inject, observer } from 'mobx-react';
-import { SkProfileService } from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/profile/stores';
-import ManagerListModalContainer from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/approval/member/ui/logic/ManagerListModalContainer';
-import SkProfileModel from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/profile/model/SkProfileModel';
-import { DepartmentModel } from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/approval/department/model/DepartmentModel';
-import { CompanyApproverModel } from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/approval/company/model/CompanyApproverModel';
-import { DepartmentService, MemberService, CompanyApproverService } from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/approval/stores';
-import { ApprovalMemberModel } from '../../../../../../../../10.git_user_approval_0528_am_01/sku-user-channel-front/src/approval/member/model/ApprovalMemberModel';
+import { SkProfileService } from 'profile/stores';
+import ManagerListModalContainer from './ManagerListModalContainer';
+import SkProfileModel from '../../../../profile/model/SkProfileModel';
+import { DepartmentModel } from '../../../department/model/DepartmentModel';
+import { CompanyApproverModel } from '../../../company/model/CompanyApproverModel';
+import { DepartmentService, MemberService, CompanyApproverService } from '../../../stores';
+import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
 
 interface Props {
   skProfileService?: SkProfileService
@@ -28,7 +28,7 @@ interface Props {
 ))
 @reactAutobind
 @observer
-class ApplyReferenceModalApproval extends React.Component<Props> {
+class ApplyReferenceModal extends React.Component<Props> {
   //
   managerModal: any = null;
 
@@ -56,7 +56,7 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
-    // handleOk(approvalMember);
+    //handleOk(approvalMember);
     //this.close();
     // issue date : 2020-05-14 승인자 설정 및 승인자 변경하기 this.close() 주석 처리 함.
     // 2020-04-22 김우성 여기까지
@@ -231,4 +231,4 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
   }
 }
 
-export default ApplyReferenceModalApproval;
+export default ApplyReferenceModal;
