@@ -876,9 +876,7 @@ class LectureCardContainer extends Component<Props, State> {
 
         {
           ((cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (enrollingAvailableChk === true) && (freeOfChargeChk === false) && (approvalProcessChk === true) &&
-            <ApplyReferenceModalApproval
-              ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval}
-              handleOk={this.onClickApplyReferentOkApproval}/>
+            <ApplyReferenceModalApproval ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval} handleOk={this.onClickApplyReferentOkApproval} />
           )
         }
 
