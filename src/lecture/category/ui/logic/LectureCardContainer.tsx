@@ -169,7 +169,7 @@ class LectureCardContainer extends Component<Props, State> {
         console.log('if if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
 
         studentService!.removeStudent(student.rollBookId)
-          .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
+          .then(() => this.setState({ rollBook }, this.onApplyReferenceApproval ));
       } else {
         console.log('if else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
 
@@ -190,7 +190,7 @@ class LectureCardContainer extends Component<Props, State> {
       console.log('onSelectClassroom else if onApplyReference classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
-      this.setState({ rollBook }, this.onApplyReference );
+      this.setState({ rollBook }, this.onApplyReferenceApproval );
 
     } else {
       console.log(' else 수강신청(false), 무료여부(true), 승인 체크(false) getFreeOfChargeOk onApplyReferenceEmpty :: ');
@@ -202,16 +202,6 @@ class LectureCardContainer extends Component<Props, State> {
 
       reactAlert({ title: '알림', message: messageStr });
     }
-
-    // if (!classroom.enrolling.enrollingAvailable) {
-    //
-    //   console.log('onSelectClassroom if classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
-    //
-    //   if (typeViewObject.siteUrl && typeViewObject.siteUrl.startsWith('http')) {
-    //     window.open(typeViewObject.siteUrl, '_blank');
-    //   }
-    //   else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-    // }
 
     console.log('onSelectClassroom ClassroomModel end :: ');
   }
@@ -813,9 +803,9 @@ class LectureCardContainer extends Component<Props, State> {
     const freeOfChargeChk = classroom.freeOfCharge.freeOfCharge;
     const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
 
-    console.log('render classroom.enrolling.enrollingAvailable :: ' + enrollingAvailableChk );
-    console.log('render classroom.freeOfCharge.freeOfCharge :: ' + freeOfChargeChk );
-    console.log('render classroom.freeOfCharge.approvalProcess :: ' + approvalProcessChk );
+    console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
+    console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
+    console.log('render approvalProcessChk :: ' + approvalProcessChk );
 
     return (
       <LectureCardContentWrapperView>
