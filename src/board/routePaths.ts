@@ -23,6 +23,9 @@ const routePaths = {
   supportQnAPost: (postId: string) =>
     `/board/support/qna-detail/${postId}`,
 
+  supportQnAModifyPost: (postId: string) =>
+    `/board/support/qna-modify/${postId}`,
+
   supportQnANewPost: () =>
     `/board/support-qna`,
 

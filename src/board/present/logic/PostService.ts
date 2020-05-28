@@ -58,6 +58,12 @@ export default class PostService {
   @action
   modifyPost(postId: string, post: PostModel) {
     //
+    return this.postApi.modifyPost(postId, PostModel.modifyNameValueList(post));
+  }
+
+  @action
+  deletePost(postId: string, post: PostModel) {
+    //
     return this.postApi.modifyPost(postId, PostModel.asNameValueList(post));
   }
 
