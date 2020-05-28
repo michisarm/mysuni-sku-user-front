@@ -96,6 +96,12 @@ class MyApprovalListContainer extends React.Component<Props> {
 
   }
 
+  componentWillUnmount(): void {
+    //
+    const approvalCubeService = this.props.approvalCubeService!;
+    approvalCubeService!.clearApprovalCube();
+  }
+
   getPageNo() {
     //
     const { match } = this.props;
