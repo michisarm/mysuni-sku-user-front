@@ -220,7 +220,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
   routeToCreateList() {
     //
     console.log(' routeToCreateList Start ... ::');
-    this.clearAll();
+    // this.clearAll();
     window.location.replace('/suni-main/my-training/my-page/ApprovalList/pages/1');
     console.log(' routeToCreateList End ... ::');
     // this.props.history.push(routePaths.myPageApprovalList());

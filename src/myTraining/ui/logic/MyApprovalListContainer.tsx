@@ -219,9 +219,8 @@ class MyApprovalListContainer extends React.Component<Props> {
     const approvalCubeService = this.props.approvalCubeService!;
     const { history } = this.props;
 
-    approvalCubeService!.clear();
+    // approvalCubeService!.clear();
     history.push(routePaths.approvalCubesDetail(studentId));
-
 
     // window.location.replace('/my-training/my-page/ApprovalList/detail/${studentId}');
   }
