@@ -50,7 +50,7 @@ class ApplyReferenceModal extends React.Component<Props> {
       .then((companyApprover: CompanyApproverModel) => companyApproverService!.findCompanyApprover());
   }
 
-  onOpenModal() {
+  onOpenModalNoData() {
     //
     this.setState({ open: true });
     // 2020-04-22 김우성
@@ -104,7 +104,7 @@ class ApplyReferenceModal extends React.Component<Props> {
         {
           memId !== '' && creationTime > 0 &&
           (
-            <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModal}>
+            <Modal className="base w1000" size="small" trigger={trigger} open={open} onClose={this.close} onOpen={this.onOpenModalNoData}>
               <Modal.Header className="res">
                 {/*Class Series Detail*/}신청 참조처 설정
                 <span className="sub f12">본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.</span>
