@@ -79,8 +79,6 @@ class MyApprovalListContainer extends React.Component<Props> {
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
-    approvalCubeService!.clear();
-
     if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
       const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
