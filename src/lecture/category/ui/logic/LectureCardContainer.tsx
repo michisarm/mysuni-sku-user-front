@@ -20,11 +20,12 @@ import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
+import ApplyReferenceModalApproval from '../../../../approval/member/ui/logic/ApplyReferenceModalApproval';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import {OverviewField} from '../../../../personalcube';
-
+import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
 interface Props {
   studentService?: StudentService
@@ -38,6 +39,7 @@ interface Props {
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
+  classroomService?: ClassroomService
 
   cubeType: CubeType
   viewObject: any
@@ -58,6 +60,7 @@ interface State {
   'lecture.studentService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
+  'personalCube.classroomService',
 ))
 
 @reactAutobind
@@ -69,6 +72,7 @@ class LectureCardContainer extends Component<Props, State> {
   surveyModal: any = null;
   reportModal: any = null;
   applyReferenceModel: any = null;
+  applyReferenceModelApproval: any = null;
   lectureLearningModal: any = null;
   prevViewObjectState: string = '';
 
@@ -164,7 +168,7 @@ class LectureCardContainer extends Component<Props, State> {
         console.log('if if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
 
         studentService!.removeStudent(student.rollBookId)
-          .then(() => this.setState({ rollBook }, this.onApplyReference ));
+          .then(() => this.setState({ rollBook }, this.onApplyReferenceApproval ));
       } else {
         console.log('if else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
 
@@ -185,7 +189,7 @@ class LectureCardContainer extends Component<Props, State> {
       console.log('onSelectClassroom else if onApplyReference classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
-      this.setState({ rollBook }, this.onApplyReference );
+      this.setState({ rollBook }, this.onApplyReferenceApproval );
 
     } else {
       console.log(' else 수강신청(false), 무료여부(true), 승인 체크(false) getFreeOfChargeOk onApplyReferenceEmpty :: ');
@@ -408,6 +412,10 @@ class LectureCardContainer extends Component<Props, State> {
     this.applyReferenceModel.onOpenModal();
   }
 
+  onApplyReferenceApproval() {
+    this.applyReferenceModelApproval.onOpenModal();
+  }
+
   onApplyReferenceEmpty() {
     console.log('onApplyReferenceEmpty start ::');
   }
@@ -456,7 +464,7 @@ class LectureCardContainer extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
-  onClickApplyReferentOk(member: ApprovalMemberModel) {
+  onClickApplyReferentOkApproval(member: ApprovalMemberModel) {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
@@ -466,6 +474,34 @@ class LectureCardContainer extends Component<Props, State> {
     }
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
+
+    studentCdo.leaderEmails = [member.email];
+    studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
+
+    // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
+    this.registerStudentApprove({ ...studentCdo, rollBookId, proposalState });
+  }
+
+  onClickApplyReferentOk(member: ApprovalMemberModel) {
+    //
+    const { studentCdo, student } = this.props;
+    const { rollBook } = this.state;
+
+    // by JSM
+    const objRollBook =  typeof rollBook  === 'string' ?  JSON.parse(rollBook) : rollBook;
+    // if (objRollBook.id === '') return;
+
+    let proposalState = studentCdo.proposalState;
+
+    // by JSM
+    if (student && (/*student.proposalState === ProposalState.Canceled || */student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
+
+    let rollBookId = studentCdo.rollBookId;
+    if (objRollBook && objRollBook.id) rollBookId = objRollBook.id;
 
     console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
 
@@ -790,8 +826,15 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
+    const { classroom } = this.props.classroomService!;
 
-    // console.log('card container viewObject : ', viewObject);
+    const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
+    const freeOfChargeChk = classroom.freeOfCharge.freeOfCharge;
+    const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
+
+    console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
+    console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
+    console.log('render approvalProcessChk :: ' + approvalProcessChk );
 
     return (
       <LectureCardContentWrapperView>
@@ -831,11 +874,10 @@ class LectureCardContainer extends Component<Props, State> {
         />
 
         {
-          (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
-            <ApplyReferenceModal
-              ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
-              handleOk={this.onClickApplyReferentOk}
-            />
+          (enrollingAvailableChk && (freeOfChargeChk === false) && (approvalProcessChk === true) &&
+            <ApplyReferenceModalApproval ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval} handleOk={this.onClickApplyReferentOkApproval} />
+            ||
+            <ApplyReferenceModal ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel} classrooms={typeViewObject.classrooms} handleOk={this.onClickApplyReferentOk} />
           )
         }
 
