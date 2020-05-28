@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
-import {patronInfo} from '@nara.platform/dock';
+
+import React, { Component } from 'react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { patronInfo } from '@nara.platform/dock';
 
 import lectureRoutePaths from 'lecture/routePaths';
-import {PageService} from 'shared/stores';
-import {NoSuchContentPanel} from 'shared';
-import {ChannelModel} from 'college/model';
-import {LectureServiceType} from 'lecture/model';
-import {Lecture, SeeMoreButton} from 'lecture';
+import { PageService } from 'shared/stores';
+import { NoSuchContentPanel } from 'shared';
+import { ChannelModel } from 'college/model';
+import { LectureServiceType } from 'lecture/model';
+import { Lecture, SeeMoreButton } from 'lecture';
 
 import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
@@ -17,8 +18,6 @@ import MyTrainingModel from '../../model/MyTrainingModel';
 import MyPageContentType from '../model/MyPageContentType';
 import LineHeaderContainer from './LineHeaderContainer';
 
-
-import {ApprovalListBoard} from '../view/ApprovalListBoard';
 
 interface States {
   channels: ChannelModel[]
@@ -110,8 +109,8 @@ class MyPageListContainer extends Component<Props, States> {
       onChangeCompletedCount(offsetList.totalCount);
     }
     else {
-      // const completedCount = await myTrainingService!.findAllTabMyTraining();
-      // onChangeCompletedCount(completedCount.completedCount);
+      const completedCount = await myTrainingService!.findAllTabMyTraining();
+      onChangeCompletedCount(completedCount.completedCount);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
       onChangeEarnedStampCount(offsetList.totalCount);
     }
@@ -208,7 +207,6 @@ class MyPageListContainer extends Component<Props, States> {
             onClick={this.onClickSeeMore}
           />
         )}
-
       </>
     );
   }

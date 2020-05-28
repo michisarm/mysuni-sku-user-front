@@ -70,6 +70,26 @@ class PostModel implements DomainEntity {
     };
   }
 
+  static modifyNameValueList(post: PostModel): NameValueList {
+    const modifyNameValues = {
+      nameValues: [
+        {
+          name: 'title',
+          value: String(post.title),
+        },
+        {
+          name: 'contents',
+          value: JSON.stringify(post.contents),
+        },
+        {
+          name: 'category',
+          value: JSON.stringify(post.category),
+        },
+      ],
+    };
+    return modifyNameValues;
+  }
+
   static asNameValueList(post: PostModel): NameValueList {
     const asNameValues = {
       nameValues: [

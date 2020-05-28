@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { reactAutobind, mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -20,7 +20,8 @@ interface Props extends RouteComponentProps<{ postId: string }> {
 }
 
 interface States {
-  confirmWinOpen: boolean
+  isEdit: boolean,
+  confirmWinOpen: boolean,
   filesMap: Map<string, any>
 }
 
@@ -36,6 +37,7 @@ class QnaDetailContainer extends Component<Props, States> {
     //
     super(props);
     this.state = {
+      isEdit: false,
       confirmWinOpen: false,
       filesMap: new Map<string, any>(),
     };
@@ -97,7 +99,7 @@ class QnaDetailContainer extends Component<Props, States> {
     Promise.resolve()
       .then(() => {
         post.deleted = true;
-        if (postService) postService.modifyPost(postId, post);
+        if (postService) postService.deletePost(postId, post);
       });
     this.onClickList();
   }
@@ -109,13 +111,60 @@ class QnaDetailContainer extends Component<Props, States> {
     });
   }
 
+  /*
+  Q&A 수정
+  */
+  modifyQnaDetail() {
+    //
+    const { params } = this.props.match;
+
+    reactConfirm({
+      title: '수정 안내',
+      message: '수정 하시겠습니까?',
+      warning: true,
+      onOk: () => this.handleModifyOKConfirmWin(),
+    });
+  }
+
+  // modifyQnaDetail() {
+  //   //
+  //   this.setState({
+  //     modifyWinOpen: true,
+  //   });
+  // }
+
+  // handleModifyCloseConfirmWin() {
+  //   //
+  //   this.setState({
+  //     modifyWinOpen: false,
+  //   });
+  // }
+
+  handleModifyOKConfirmWin() {
+    //
+    const { postService } = this.props;
+    const { postId } = this.props.match.params;
+    const { post } = this.props.postService || {} as PostService;
+    Promise.resolve()
+      .then(() => {
+        if (postService) postService.modifyPost(postId, post);
+      });
+    this.onClickList();
+    this.setState({isEdit: false});
+  }
+
   onClickList() {
     this.props.history.push(routePaths.supportQnA());
   }
 
+  onClickModify() {
+    const { postId } = this.props.match.params;
+    this.props.history.push(routePaths.supportQnAModifyPost(postId));
+  }
+
   render() {
     //
-    const { confirmWinOpen } = this.state;
+    const { confirmWinOpen, isEdit } = this.state;
     const { post } = this.props.postService!;
     const { category } = this.props.categoryService!;
     const { filesMap } = this.state;
@@ -130,6 +179,7 @@ class QnaDetailContainer extends Component<Props, States> {
             subField={<span className="category">{category.name}</span>}
             onClickList={this.onClickList}
             onClickDelete={this.deleteQnaDetail}
+            // onClickModify={this.onClickModify}
           />
 
           { post.contents && (
@@ -163,6 +213,12 @@ class QnaDetailContainer extends Component<Props, States> {
         <Segment className="full">
           <Container>
             <div className="actions bottom">
+              { isEdit && (
+                <Button icon className="left post edit" onClick={() => this.onClickModify()}>
+                  <Icon className="edit24" /> Edit
+                </Button>
+              )}
+
               <Button icon className="left post delete" onClick={() => this.deleteQnaDetail()}>
                 <Icon className="del24" /> Delete
               </Button>
@@ -170,12 +226,13 @@ class QnaDetailContainer extends Component<Props, States> {
                 <Icon className="list24" /> List
               </Button>
             </div>
+
             <ConfirmWin
-              message="삭제하시겠습니까?"
+              message="삭제 하시겠습니까?"
               open={confirmWinOpen}
               handleClose={this.handleCloseConfirmWin}
               handleOk={this.handleOKConfirmWin}
-              title="삭제안내"
+              title="삭제 안내"
               buttonYesName="OK"
               buttonNoName="Cancel"
             />

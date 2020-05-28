@@ -20,10 +20,12 @@ import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
+import ApplyReferenceModalApproval from '../../../../approval/member/ui/logic/ApplyReferenceModalApproval';
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import {OverviewField} from '../../../../personalcube';
+import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
 
 interface Props {
@@ -38,6 +40,7 @@ interface Props {
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
+  classroomService?: ClassroomService
 
   cubeType: CubeType
   viewObject: any
@@ -58,6 +61,7 @@ interface State {
   'lecture.studentService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
+  'personalCube.classroomService',
 ))
 
 @reactAutobind
@@ -69,6 +73,7 @@ class LectureCardContainer extends Component<Props, State> {
   surveyModal: any = null;
   reportModal: any = null;
   applyReferenceModel: any = null;
+  applyReferenceModelApproval: any = null;
   lectureLearningModal: any = null;
   prevViewObjectState: string = '';
 
@@ -164,7 +169,7 @@ class LectureCardContainer extends Component<Props, State> {
         console.log('if if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
 
         studentService!.removeStudent(student.rollBookId)
-          .then(() => this.setState({ rollBook }, this.onApplyReference ));
+          .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
       } else {
         console.log('if else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
 
@@ -406,6 +411,10 @@ class LectureCardContainer extends Component<Props, State> {
 
   onApplyReference() {
     this.applyReferenceModel.onOpenModal();
+  }
+
+  onApplyReferenceApproval() {
+    this.applyReferenceModelApproval.onOpenModal();
   }
 
   onApplyReferenceEmpty() {
@@ -798,8 +807,15 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
+    const { classroom } = this.props.classroomService!;
 
-    // console.log('card container viewObject : ', viewObject);
+    const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
+    const freeOfChargeChk = classroom.freeOfCharge.freeOfCharge;
+    const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
+
+    console.log('render classroom.enrolling.enrollingAvailable :: ' + enrollingAvailableChk );
+    console.log('render classroom.freeOfCharge.freeOfCharge :: ' + freeOfChargeChk );
+    console.log('render classroom.freeOfCharge.approvalProcess :: ' + approvalProcessChk );
 
     return (
       <LectureCardContentWrapperView>
@@ -837,6 +853,13 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
+
+        {
+          enrollingAvailableChk && (freeOfChargeChk === false) && (approvalProcessChk === true) &&
+          <ApplyReferenceModalApproval ref={applyReferenceModelApproval => this.applyReferenceModelApproval = applyReferenceModelApproval} handleOk={this.onClickApplyReferentOk} />
+          ||
+          <ApplyReferenceModal ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel} classrooms={typeViewObject.classrooms} handleOk={this.onClickApplyReferentOk} />
+        }
 
         {
           (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (

@@ -9,8 +9,6 @@ import Header from '../../Header';
 import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
 import SkProfileApi from '../../../../profile/present/apiclient/SkProfileApi';
-import SkProfileModel from '../../../../profile/model/SkProfileModel';
-import {AnswerProgress} from '../../../../survey/answer/model/AnswerProgress';
 
 
 interface Props {
@@ -25,38 +23,20 @@ class AppLayoutContainer extends Component<Props> {
   //
   componentDidMount() {
     this.findProfile();
-    //setTimeout(this.findProfile,1000);
   }
 
   async findProfile() {
-    //if (process.env.NODE_ENV !== 'development') {
-    const { skProfileService } = this.props;
+    if (process.env.NODE_ENV !== 'development') {
+      const data = await SkProfileApi.instance.findSkProfile();
+      const obj = JSON.parse(JSON.stringify(data));
 
-    // skProfileService?.clearSkProfile();
-
-    const data = await SkProfileApi.instance.findSkProfile();
-    console.log('data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',JSON.stringify(data));
-    const obj = JSON.parse(JSON.stringify(data));
-    console.log('obj >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',obj);
-
-    if (!obj.pisAgreement.signed) {
-      window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      if (!obj.pisAgreement.signed) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      }
+      else if (!obj.studySummaryConfigured) {
+        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
     }
-    else if (!obj.studySummaryConfigured) {
-      window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-    }
-
-    // skProfileService!.findSkProfile().then(() => {
-    //   const { skProfile } = skProfileService!;
-    //
-    //   if (!skProfile.pisAgreement.signed) {
-    //     window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    //   }
-    //   else if (!skProfile.studySummaryConfigured) {
-    //     window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-    //   }
-    // });
-    //}
   }
 
   render() {

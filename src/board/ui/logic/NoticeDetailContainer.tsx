@@ -79,7 +79,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { post } = postService!;
 
     postService.changePostProps('commentFeedbackId', feedbackId);
-    postService.modifyPost(post.id, post)
+    postService.deletePost(post.id, post)
       .then(() => postService!.findPostByPostId(post.id));
   }
 

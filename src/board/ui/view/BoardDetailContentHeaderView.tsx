@@ -8,12 +8,13 @@ import { Button, Icon } from 'semantic-ui-react';
 
 
 interface Props {
-  title: string
-  time: number
-  onClickList: (e: any) => void
-  subField?: React.ReactNode
-  deletable?: boolean
-  onClickDelete?: (e: any) => void
+  title: string,
+  time: number,
+  onClickList: (e: any) => void,
+  subField?: React.ReactNode,
+  deletable?: boolean,
+  onClickDelete?: (e: any) => void,
+  onClickModify?: (e: any) => void,
 }
 
 @reactAutobind
@@ -22,7 +23,7 @@ class BoardDetailContentHeaderView extends Component<Props> {
   //
   render() {
     //
-    const { title, time, subField, deletable, onClickList, onClickDelete } = this.props;
+    const { title, time, subField, deletable, onClickList, onClickDelete, onClickModify } = this.props;
 
     return (
       <div className="title-area">
@@ -33,6 +34,11 @@ class BoardDetailContentHeaderView extends Component<Props> {
             <span className="date">{time && moment(time).format('YYYY.MM.DD HH:MM')}</span>
           </div>
           <div className="actions">
+            { onClickModify && (
+              <Button icon className="left postset edit" onClick={onClickModify}>
+                <Icon name="edit" />Edit
+              </Button>
+            )}
             { deletable && (
               <Button icon className="left postset delete" onClick={onClickDelete}>
                 <Icon name="delete" />Delete
