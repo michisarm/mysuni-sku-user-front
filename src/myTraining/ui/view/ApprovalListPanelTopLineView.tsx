@@ -20,19 +20,6 @@ import ApprovalProcessModal from './ApprovalProcessModal';
 
 import IdName from '../../../shared/model/IdName';
 
-const classOptions = [
-  { key: 'val01', value: 'val01', text: '전체과정' },
-  { key: 'val02', value: 'val02', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val03', value: 'val03', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val04', value: 'val04', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val05', value: 'val05', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val06', value: 'val06', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val07', value: 'val07', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val08', value: 'val08', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val09', value: 'val09', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val10', value: 'val10', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' }
-];
-
 const numOptions = [
   { key: 'val01', value: 'val01', text: '전체차수' },
   { key: 'val02', value: 'val02', text: '1차' },
@@ -78,7 +65,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
     const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, totalCount, searchSelectOptions, onChange, searchState, setContentsProvider } = this.props;
     const { approvalStatus } = this.state;
     const contentsProviderTsx = setContentsProvider();
-
+    
     console.log('render approvalStatus ::' + approvalStatus);
     console.log('render searchState ::' + searchState);
     //console.log('render onSetCubeIntroPropsByJSON ::' + onSetCubeIntroPropsByJSON);
