@@ -22,7 +22,7 @@ class SystemGuideModalView extends Component<Props> {
   render() {
     //
     const { modalState, onClose, onCheckDisable } = this.props;
-    // 20200527 동영상 학습 시간 줄어든 현상 관련 팝업 안내 
+    // 20200527 동영상 학습 시간 줄어든 현상 관련 팝업 안내
     return (
       <Modal className="w824 base" open={modalState.open}>
         <Modal.Content>
@@ -41,21 +41,17 @@ class SystemGuideModalView extends Component<Props> {
                   이에 추가 처리 방안을 재공지 드립니다.<br/>
                 </div>
                 <div className="box2">
-                  <div>1. 학습 시간이 기존보다 줄어든 경우</div>
+                  <div>1. 기&quot;학습완료&quot;나 &quot;학습중&quot; 목록에 중복으로 Count 된 경우 </div>
                   <ul>
-                    <li>- 기존의 학습영상 중 일부가<br />
-                    &quot;학습완료&quot;나 &quot;학습중&quot; 목록에 중복으로 Count되어 정상 처리한 경우<br/>
-                    &#8594; 5월 27일 12:30 처리 완료
-                    </li>
-                    <br/>
-                    <li>- 기존의 학습영상 중에서 영상 크기가 커서 영상을 분리하여 재등록한 컨텐츠들과<br />
-                    별도 수작업 처리 등록 건들에 대한 기 이수자의 학습 인정 시간이<br/> 모두 반영되지 못한 경우<br/>
-                    &#8594; 기존 실제 학습이수 인정 시간을 기준으로 반영함 (5월 28일 20시)
-                    </li>
+                    <li>- 5월 27일 12:30 중복된 시간 제거 처리 완료</li>
                   </ul>
-                  <div>2. 학습시간이 기존보다 늘어난 경우</div>
+                  <div>2. 실제 학습 시간 미반영건(기 학습한 동영상의 변경, 추가 학습 인정 시간 누락)</div>
                   <ul>
-                    <li>- 기존에 학습완료 처리가 되지 못했던 학습 컨텐츠들에 대한<br />학습완료 기능 정상 작동 후 해당 학습시간이 반영되면서 증가</li>
+                    <li>- 5월 28일 20시 학습시간 추가 반영 완료</li>
+                  </ul>
+                  <div>3. 학습을 완료하였으나, &quot;학습완료&quot; 처리가 되지 않은 경우</div>
+                  <ul>
+                    <li>- 학습완료 기능 정상화로 처리 완료</li>
                   </ul>
                 </div>
                 <div className="box3">
