@@ -48,6 +48,9 @@ export default class ApprovalCubeService {
   @observable
   selectedList: string [] = [];
 
+  @observable
+  proposalStateList: string[] = [];
+
   @action
   changeStudentRequestProps(name: string, value: any) {
     //
@@ -58,6 +61,12 @@ export default class ApprovalCubeService {
   changeSelectedStudentProps(selectedList: string []) {
     //
     this.selectedList = selectedList;
+  }
+
+  @action
+  changeSelectedProposalStateProps(selectedList: string []) {
+    //
+    this.proposalStateList = selectedList;
   }
 
   // ApprovalCube ------------------------------------------------------------------------------------------------------

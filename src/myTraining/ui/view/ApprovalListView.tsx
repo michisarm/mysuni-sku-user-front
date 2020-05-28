@@ -5,65 +5,108 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import {
-  Segment, Checkbox, Select, Radio, Button, Icon, Table
+  Checkbox, Icon, Table
 } from 'semantic-ui-react';
-
-import { ListPanelTopLine } from 'shared';
-
-import { SearchFilterType } from 'shared/model';
-import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
-
 import { ApprovalCubeModel, CubeTypeNameType, CubeType } from 'myTraining/model';
-
-import ApprovalApplyStatusModal from './ApprovalApplyStatusModal';
-import ApprovalActionButtons from './ApprovalActionButtons';
-
-import ApprovalProcessModal from './ApprovalProcessModal';
-
-const classOptions = [
-  { key: 'val01', value: 'val01', text: '전체과정' },
-  { key: 'val02', value: 'val02', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val03', value: 'val03', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val04', value: 'val04', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val05', value: 'val05', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val06', value: 'val06', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val07', value: 'val07', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val08', value: 'val08', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val09', value: 'val09', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' },
-  { key: 'val10', value: 'val10', text: 'AI와 Block chain과의 상관관계는 어떻게 되는가?' }
-];
-
-const numOptions = [
-  { key: 'val01', value: 'val01', text: '전체차수' },
-  { key: 'val02', value: 'val02', text: '1차' },
-  { key: 'val03', value: 'val03', text: '2차' }
-];
-
-const termOptions = [
-  { key: 'val01', value: 'val01', text: '최근 1주일' },
-  { key: 'val02', value: 'val02', text: '최근 2주일' },
-  { key: 'val03', value: 'val03', text: '최근 한달' },
-  { key: 'val04', value: 'val04', text: '사용자 지정' },
-];
+import ApprovalCubeService from '../../present/logic/ApprovalCubeService';
 
 interface Props {
-  approvalCubes: ApprovalCubeModel[]
+  approvalCubeService: ApprovalCubeService
   totalCount: number
   handleClickCubeRow:(cubeId: string) => void
   searchState: any
 }
 
+interface States {
+  cubeAll: string
+}
+
 @reactAutobind
 @observer
-class ApprovalListView extends React.Component <Props> {
+class ApprovalListView extends React.Component <Props, States> {
+  constructor(props:Props) {
+    super(props);
+
+    this.state = {
+      cubeAll: 'No',
+    };
+  }
+
   //
   getCubeType(personalCube: ApprovalCubeModel) {
     //
     return CubeTypeNameType[CubeType[personalCube.contents.type]];
   }
 
+  removeInList(index: number, oldList: string []) {
+    //
+    return oldList.slice(0, index).concat(oldList.slice(index + 1));
+  }
+
+  checkOne(cubeId: string) {
+    //
+    //const cubeId = approvalCube && approvalCube.id;
+    //const proposalState = approvalCube && approvalCube.proposalState;
+    const { selectedList, proposalStateList } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const tempList: string [] = [ ...selectedList ];
+    //const tempList1: string [] = [ ...proposalStateList ];
+    if (tempList.indexOf(cubeId) !== -1) {
+      const newTempStudentList = this.removeInList(tempList.indexOf(cubeId), tempList);
+      //const newTempProposalStateList = this.removeInList(tempList.indexOf(cubeId), tempList1);
+      this.onChangeSelectedStudentProps(newTempStudentList);
+      //this.onChangeSelectedProposalStateProps(newTempProposalStateList);
+    } else {
+      tempList.push(cubeId);
+      //tempList1.push(proposalState);
+      this.onChangeSelectedStudentProps(tempList);
+      //this.onChangeSelectedProposalStateProps(tempList1);
+    }
+  }
+
+  checkAll(isChecked: string) {
+    //
+    const { approvalCubeOffsetList } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const { results: approvalCubes } = approvalCubeOffsetList;
+
+    let allList: string [] = [];
+    let allProposalState: string [] = [];
+    if (isChecked === 'Yes') {
+      allList = [];
+      allProposalState = [];
+      this.onChangeSelectedStudentProps(allList);
+      this.onChangeSelectedProposalStateProps(allProposalState);
+      this.setState({ cubeAll: 'No' });
+    } else {
+      approvalCubes.forEach(approvalCube => {
+        allList.push(approvalCube.id);
+      });
+      approvalCubes.forEach(approvalCube => {
+        allProposalState.push(approvalCube.proposalState);
+      });
+      this.onChangeSelectedStudentProps(allList);
+      this.onChangeSelectedProposalStateProps(allProposalState);
+      this.setState({ cubeAll: 'Yes' });
+    }
+  }
+
+  onChangeSelectedStudentProps(selectedList: string []) {
+    //
+    const { approvalCubeService } = this.props;
+    if (approvalCubeService) approvalCubeService.changeSelectedStudentProps(selectedList);
+  }
+
+  onChangeSelectedProposalStateProps(selectedList: string []) {
+    //
+    const { approvalCubeService } = this.props;
+    if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
+  }
+
   render() {
-    const { approvalCubes, totalCount, handleClickCubeRow, searchState } = this.props;
+    const { approvalCubeService, totalCount, handleClickCubeRow, searchState } = this.props;
+    const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
+    const { results: approvalCubes } = approvalCubeOffsetList;
+    const { cubeAll } = this.state;
+
     console.log('ApprovalListView totalCount :: ' + totalCount);
 
     console.log('ApprovalListView searchState :: ' + searchState);
@@ -128,7 +171,15 @@ class ApprovalListView extends React.Component <Props> {
             <Table.Header>
               <Table.Row className="row thead">
                 <Table.HeaderCell className="cell ck">
-                  <Checkbox className="base"/>
+                  <Checkbox
+                    className="base"
+                    checked={
+                      selectedList.length > 0
+                      && selectedList.length === approvalCubes.length
+                    }
+                    value={cubeAll}
+                    onChange={(e: any, data: any) => this.checkAll(data.value)}
+                  />
                 </Table.HeaderCell>
                 <Table.HeaderCell className="cell num">No</Table.HeaderCell>
                 <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
@@ -143,22 +194,26 @@ class ApprovalListView extends React.Component <Props> {
             </Table.Header>
             <Table.Body>
               {approvalCubes.map((cube, index) => {
-                const newCube = new ApprovalCubeModel(cube);
                 return (
-                  <Table.Row className="row">
+                  <Table.Row className="row" key={cube.id}>
                     <Table.Cell className="cell ck">
-                      <Checkbox className="base" />
+                      <Checkbox
+                        className="base"
+                        value={cube.id}
+                        checked={selectedList.includes(cube.id)}
+                        onChange={(e: any, data: any) => this.checkOne(data.value)}
+                      />
                     </Table.Cell>
                     <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell name"><a><span className="ellipsis">{cube.memberName}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell team"><a><span className="ellipsis">{cube.memberDepartment}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell title"><a><span className="ellipsis">{cube.cubeName}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell name"><a><span className="ellipsis">{cube.memberName}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell team"><a><span className="ellipsis">{cube.memberDepartment}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell title"><a><span className="ellipsis">{cube.cubeName}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
 
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')}<br/>~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
-                    <Table.Cell key={index} onClick={() => handleClickCubeRow(cube.studentId)} className="cell pay"><a><span className="ellipsis">{cube.freeOfCharge.chargeAmount}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{moment(cube.enrolling.applyingPeriod.startDate).format('YYYY.MM.DD')}<br/>~ {moment(cube.enrolling.applyingPeriod.endDate).format('YYYY.MM.DD')}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell pay"><a><span className="ellipsis">{cube.freeOfCharge.chargeAmount}</span></a></Table.Cell>
                   </Table.Row>
                 );
               })
