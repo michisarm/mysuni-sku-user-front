@@ -396,10 +396,10 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
                         approvalCube.proposalState !== 'Submitted' && (
                           <div>
                             <dd>
-                             <textarea placeholder=""
+                              <textarea placeholder=" "
                                 value={approvalCube && approvalCube.remark || ''}
                                 readOnly={true}
-                             />
+                              />
                             </dd>
                           </div>
                         )
