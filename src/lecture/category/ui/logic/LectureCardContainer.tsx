@@ -413,6 +413,7 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onApplyReferenceApproval() {
+    console.log(this.applyReferenceModelApproval);
     this.applyReferenceModelApproval.onOpenModal();
   }
 
