@@ -28,7 +28,7 @@ interface Props {
 ))
 @reactAutobind
 @observer
-class ApplyReferenceModal extends React.Component<Props> {
+class ApplyReferenceModalApproval extends React.Component<Props> {
   //
   managerModal: any = null;
 
@@ -231,4 +231,4 @@ class ApplyReferenceModal extends React.Component<Props> {
   }
 }
 
-export default ApplyReferenceModal;
+export default ApplyReferenceModalApproval;
