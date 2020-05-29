@@ -99,9 +99,14 @@ class QnaDetailContainer extends Component<Props, States> {
     Promise.resolve()
       .then(() => {
         post.deleted = true;
-        if (postService) postService.deletePost(postId, post);
+        if (postService) {
+          postService.deletePost(postId, post)
+            .then(() => {
+              window.location.href = process.env.PUBLIC_URL + routePaths.supportQnA();
+            });
+        }
       });
-    this.onClickList();
+    //this.onClickList();
   }
 
   deleteQnaDetail() {
