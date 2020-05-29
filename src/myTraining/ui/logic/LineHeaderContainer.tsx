@@ -1,19 +1,18 @@
 
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import { reactAutobind } from '@nara.platform/accent';
 import moment from 'moment';
 import XLSX from 'xlsx';
-import { observable } from 'mobx';
 
 import { Button, Icon } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { ListPanelTopLine } from 'shared';
 import { ChannelModel } from 'college/model';
 import { ChannelFilterModal } from 'lecture';
-import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import { OffsetElementList } from '../../../shared/model';
+import MyTrainingApi from '../../present/apiclient/MyTrainingApi';
+import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 
 
 interface Props {
@@ -24,16 +23,8 @@ interface Props {
   currentTab: string,
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @reactAutobind
-@observer
 class LineHeaderContainer extends Component<Props> {
-
-  @observable
-  myTraining: MyTrainingModel = new MyTrainingModel();
-
-  @observable
-  myTrainings: OffsetElementList<MyTrainingModel> = new OffsetElementList<MyTrainingModel>();
 
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
@@ -41,19 +32,17 @@ class LineHeaderContainer extends Component<Props> {
   }
 
   async onDownLoadLearningCompletionExcel() {
+    const rdo = MyTrainingRdoModel.newWithState('Completed', 100, 0, []);
+    const response = await MyTrainingApi.instance.fetchAllMyTrainings(rdo);
 
-    const response = await MyTrainingService.instance.fetchAndAddAllMyTrainingsWithState('Completed', 100, 0, []);
-
-    const emptyData: any = '';
     const data: any = [];
-    // data.push({ 테스트용테스트용테스트용테스트용: emptyData });
-    this.myTrainings = new OffsetElementList<MyTrainingModel>({
+    const myTrainings = new OffsetElementList<MyTrainingModel>({
       results: response.results.map((myTraining: MyTrainingModel) => new MyTrainingModel(myTraining)),
       totalCount: response.totalCount,
       empty: response.empty,
     });
 
-    this.myTrainings.results.forEach(value => data.push({
+    myTrainings.results.forEach(value => data.push({
       카테고리: value.category.college.name,
       타이틀: value.name,
       '학습시간(분)': value.learningTime }));
