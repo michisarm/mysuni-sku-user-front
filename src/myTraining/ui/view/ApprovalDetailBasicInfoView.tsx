@@ -15,14 +15,6 @@ interface Props {
 
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
 
-  routeToCreateList() {
-    //
-    window.location.replace('/suni-main/my-training/my-page/ApprovalList/pages/1');
-
-    //window.history.go(-1);
-    // window.history.back();
-  }
-
   render()
   {
     const { approvalCube } = this.props;
@@ -30,9 +22,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
 
     return (
       <>
-        <div className="section-tit">
-          <span className="text1">기본정보</span>
-        </div>
+
         { approvalCube && (
           <Form>
             <div className="result-view">
@@ -40,6 +30,10 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
               <dl className="in">
                 <dt>신청자</dt>
                 <dd>{approvalCube.memberName}</dd>
+              </dl>
+              <dl className="in">
+                <dt>조직</dt>
+                <dd>{approvalCube.memberDepartment}</dd>
               </dl>
               <dl className="bl">
                 <dt>학습정보</dt>
