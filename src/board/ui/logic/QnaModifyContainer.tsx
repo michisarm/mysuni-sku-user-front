@@ -99,16 +99,12 @@ class QnaModifyContainer extends React.Component<Props, States> {
     //
     const { postService, history } = this.props;
     const { post } = postService!;
+    const postId = post.postId;
 
-    console.log('post: >>>', post);
-
-    /*
-    postService!.modifyPost(post.postId, post)
-      .then(
-        (post) => {
-          history.push(routePaths.supportQnAPost(post.postId as string))
-        });
-*/
+    postService!.modifyPost(postId, post)
+      .then(() => {
+        history.push(routePaths.supportQnAPost(postId as string));
+      });
 
     //this.onClose();
 
