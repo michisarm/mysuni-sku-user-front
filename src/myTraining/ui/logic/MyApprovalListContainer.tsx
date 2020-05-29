@@ -228,7 +228,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { history } = this.props;
 
     // approvalCubeService!.clear();
-    history.push(routePaths.approvalCubesDetail(studentId));
+    this.props.history.replace(routePaths.approvalCubesDetail(studentId));
 
     // window.location.href=`/my-training/my-page/ApprovalList/detail/${studentId}`;
   }
@@ -243,6 +243,9 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { defaultValue, targetProps } = this.props;
 
     console.log('MyApprovalListContainer searchState ::' + searchState);
+
+    const { approvalCube } = this.props.approvalCubeService!;
+    console.log('ApprovalSharedDetailContainer approvalCube remark :: ' + approvalCube.remark);
 
     return (
       <div className="confirm-list-wrap">

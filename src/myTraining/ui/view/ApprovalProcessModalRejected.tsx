@@ -31,7 +31,7 @@ interface Props {
   'approvalCube.approvalCubeService'))
 @observer
 @reactAutobind
-class ApprovalProcessModal extends Component<Props> {
+class ApprovalProcessModalRejected extends Component<Props> {
 
   state = {
     open : false
@@ -65,8 +65,8 @@ class ApprovalProcessModal extends Component<Props> {
     console.log('approvalCubeService?.selectedList ::' + selectedList);
   }
   
-  async addApprovedLectureSingle() {
-    console.log('addApprovedLectureSingle click ::');
+  async addRejectedLectureSingle() {
+    console.log('addRejectedLectureSingle click ::');
     //
     const { approvalCubeService } = this.props;
     const { studentRequest } = this.props.approvalCubeService || {} as ApprovalCubeService;
@@ -86,20 +86,20 @@ class ApprovalProcessModal extends Component<Props> {
 
     const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
 
-    console.log('onChangeSelectedStudentProps => selectedListArr ::' + selectedListArr.selectedList);
-    console.log('addApprovedLectureSingle approvalCube.remark ::' + approvalCube.remark);
+    console.log('addRejectedLectureSingle => selectedListArr ::' + selectedListArr.selectedList);
+    console.log('addRejectedLectureSingle approvalCube.remark ::' + approvalCube.remark);
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
-    this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Approved);
+    this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Rejected);
     const idNameApproval = new IdNameApproval({ id: userId, name });
     this.onChangeStudentRequestCdoProps('actor', idNameApproval);
     this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
 
     if (selectedList && approvalCubeService) {
-      const reponseData = approvalCubeService.studentRequestOpen(studentRequest);
+      const reponseData = approvalCubeService.studentRequestReject(studentRequest);
 
-      console.log('addApprovedLectureSingle reponseData.error ::' + (await reponseData).error);
-      console.log('addApprovedLectureSingle reponseData.message ::' + (await reponseData).message);
+      console.log('addRejectedLectureSingle reponseData.error ::' + (await reponseData).error);
+      console.log('addRejectedLectureSingle reponseData.message ::' + (await reponseData).message);
 
       const errorData = (await reponseData).error;
 
@@ -137,17 +137,17 @@ class ApprovalProcessModal extends Component<Props> {
         className="base w700"
         trigger={trigger}
       >
-        <Modal.Header>선택된 결제 승인</Modal.Header>
+        <Modal.Header>선택된 결제 반려</Modal.Header>
         <Form className="base">
           <Modal.Content>
             <div className="scrolling-80vh">
               <div className="content-wrap6">
                 <div className="my-03-01-pop">
                   <div className="text1">
-                    선택된 항목에 대한 결제를 승인하시겠습니까?
+                    선택된 항목에 대한 결제를 반려하시겠습니까?
                   </div>
                   <div className="text2">
-                    작성하신 의견은 결제가 승인되는 신청자에게 동일하게 전송됩니다.
+                    작성하신 의견은 결제가 반려되는 신청자에게 동일하게 전송됩니다.
                   </div>
                   <textarea placeholder="의견을 기재해주세요."
                     value={approvalCube && approvalCube.remark || ''}
@@ -159,7 +159,7 @@ class ApprovalProcessModal extends Component<Props> {
           </Modal.Content>
           <Modal.Actions className="actions2">
             <Button className="pop2 d" onClick={this.onCloseModal}>취소</Button>
-            <Button className="pop2 p" onClick={this.addApprovedLectureSingle}>승인</Button>
+            <Button className="pop2 p" onClick={this.addRejectedLectureSingle}>반려</Button>
           </Modal.Actions>
         </Form>
       </Modal>
@@ -167,4 +167,4 @@ class ApprovalProcessModal extends Component<Props> {
   }
 }
 
-export default ApprovalProcessModal;
+export default ApprovalProcessModalRejected;
