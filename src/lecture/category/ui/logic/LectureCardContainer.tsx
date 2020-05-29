@@ -792,12 +792,32 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
-    const { classroom } = this.props.classroomService!;
+    const { classroom, classrooms } = this.props.classroomService!;
 
-    const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
-    const freeOfChargeChk = classroom.freeOfCharge.freeOfCharge;
-    const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
+    let state: SubState | undefined;
+    let enrollingAvailable: boolean = false;
+    let freeOfCharge: boolean = false;
+    let approvalProcess: boolean = false;
+    
+    const index = classrooms.map(classrooma => classrooma.round).findIndex(round => round);
+    if (index >= 0 && classrooms) {
+      enrollingAvailable = classrooms[index].enrolling.enrollingAvailable;
+      freeOfCharge = classrooms[index].freeOfCharge.freeOfCharge;
+      approvalProcess = classrooms[index].freeOfCharge.approvalProcess;
+    }
+  
+    console.log('render enrollingAvailable :: ' + enrollingAvailable );
+    console.log('render freeOfCharge :: ' + freeOfCharge );
+    console.log('render approvalProcess :: ' + approvalProcess );
 
+    // const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
+    // const approvalProcessChk = classroom.freeOfCharge.freeOfCharge;
+    // const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
+
+    const enrollingAvailableChk = enrollingAvailable;
+    const freeOfChargeChk = freeOfCharge;
+    const approvalProcessChk = approvalProcess;
+    
     console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
     console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
     console.log('render approvalProcessChk :: ' + approvalProcessChk );
