@@ -48,6 +48,16 @@ class MyTrainingService {
   }
 
   @action
+  async fetchAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
+    //
+    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+    const offsetList = await this.myTrainingApi.fetchAllMyTrainings(rdo);
+
+    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    return offsetList;
+  }
+
+  @action
   async findAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
     //
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);

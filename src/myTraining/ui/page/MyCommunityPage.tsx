@@ -217,7 +217,10 @@ class MyCommunityPage extends Component<Props, State> {
     return (
       <Segment className="full">
         <div className="ui tab active">
-          <LineHeaderContainer count={page && page.totalCount || 0} />
+          <LineHeaderContainer
+            count={page && page.totalCount || 0}
+            currentTab={this.props.match.params.tab}
+          />
           {
             list && list.length && type !== Type.MyFeed && (
               <Lecture.Group type={Lecture.GroupType.Community}>
