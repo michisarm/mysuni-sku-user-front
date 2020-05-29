@@ -39,6 +39,7 @@ interface States {
   confirmWinOpen: boolean
 
   filesMap: Map<string, any>
+  cubeAll: string
 }
 
 @inject(mobxHelper.injectFrom(
@@ -55,6 +56,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     alertType: '',
     confirmWinOpen: false,
     filesMap: new Map<string, any>(),
+    cubeAll: 'No',
   };
 
   componentDidMount() {
@@ -63,6 +65,9 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
     const { studentId, cubeType } = this.props.match.params;
 
     console.log('componentDidMount personalCubeId :: ' + studentId);
+
+    // 리스트 삭제
+    this.checkRemoveAll();
 
     approvalCubeService.findApprovalCube(studentId)
       .then(() => {
@@ -132,10 +137,38 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
   routeToCreateList() {
     //
     console.log(' routeToCreateList Start ... ::');
+
+    // 리스트 삭제
+    this.checkRemoveAll();
+    
     // this.clearAll();
     //window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
+    
     console.log(' routeToCreateList End ... ::');
     this.props.history.push(routePaths.myPageApprovalList());
+
+  }
+
+  // 전체 삭제
+  checkRemoveAll() {
+    //
+    const { approvalCubeOffsetList } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const { results: approvalCubes } = approvalCubeOffsetList;
+
+    let allList: string [] = [];
+    let allProposalState: string [] = [];
+    
+    allList = [];
+    allProposalState = [];
+    this.onChangeSelectedStudentProps(allList);
+    this.onChangeSelectedProposalStateProps(allProposalState);
+    this.setState({ cubeAll: 'No' });
+  }
+
+  onChangeSelectedProposalStateProps(selectedList: string []) {
+    //
+    const { approvalCubeService } = this.props;
+    if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
   }
 
   goToVideo(url: string) {
@@ -196,6 +229,8 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
       if(errorData) {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+        // 리스트 삭제
+        this.checkRemoveAll();
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
         this.routeToCreateList();
@@ -244,6 +279,8 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
       if(errorData) {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+        // 리스트 삭제
+        this.checkRemoveAll();
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
         this.routeToCreateList();
@@ -265,6 +302,7 @@ class ApprovalSharedDetailContainer extends React.Component<Props, States> {
 
   render() {
     const { approvalCube } = this.props.approvalCubeService!;
+    const { cubeAll } = this.state;
 
     console.log('ApprovalSharedDetailContainer approvalCube remark :: ' + approvalCube.remark);
     console.log('ApprovalSharedDetailContainer approvalCube studentId :: ' + approvalCube.studentId);
