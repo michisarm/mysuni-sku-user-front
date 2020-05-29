@@ -109,6 +109,8 @@ class ApprovalListView extends React.Component <Props, States> {
 
     console.log('ApprovalListView totalCount :: ' + totalCount);
 
+    console.log('ApprovalListView selectedList :: ' + selectedList);
+
     console.log('ApprovalListView searchState :: ' + searchState);
 
     let approvalNameVal = '신청일자';

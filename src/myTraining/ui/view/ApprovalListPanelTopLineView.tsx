@@ -17,6 +17,7 @@ import ApprovalApplyStatusModal from './ApprovalApplyStatusModal';
 import ApprovalActionButtons from './ApprovalActionButtons';
 
 import ApprovalProcessModal from './ApprovalProcessModal';
+import ApprovalProcessModalRejected from './ApprovalProcessModalRejected';
 
 import IdName from '../../../shared/model/IdName';
 
@@ -109,7 +110,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
                 {searchState !== 'Submitted' ? '' :
                 <>
-                  <ApprovalProcessModal
+                  <ApprovalProcessModalRejected
                     trigger={(
                       <Button icon className="left post return">
                         <Icon className="return"/> 반려
