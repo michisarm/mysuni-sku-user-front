@@ -51,8 +51,9 @@ class MyLearningSummaryContainer extends Component<Props> {
   }
 
   onClickComplete() {
-    //
-    this.props.history.push(myTrainingRoutePaths.myPageCompletedList());
+    // 메인 완료된 학습-> Learning.학습완료 이동
+    // this.props.history.push(myTrainingRoutePaths.myPageCompletedList());
+    this.props.history.push(myTrainingRoutePaths.myPageLearningCompleted());
   }
 
   onClickStamp() {

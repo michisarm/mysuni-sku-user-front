@@ -17,6 +17,10 @@ const routePaths = {
   myPageEarnedStampList: () => routePaths.myPageTab('EarnedStampList'),
   myPageApprovalList: () => routePaths.myPageTab('ApprovalList'),
 
+  myPageLearning: () => '/my-training/learning',
+  myPageLearningTab: (tab: string = 'Completed') => `/my-training/learning/${tab}/pages/1`,
+  myPageLearningCompleted: () => routePaths.myPageLearningTab('Completed'),
+  
   community: () => '/my-training/community',
   communityTab: (tab: string = 'MyCommunity') => `/my-training/community/${tab}`,
   communityMyCommunity: () => routePaths.communityTab('MyCommunity'),
