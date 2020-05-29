@@ -12,6 +12,7 @@ class MyTrainingApi {
 
   devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
   baseUrl = this.devUrl + '/api/mytraining/mytraining/mytrainings';
+  // localUrl = 'http://localhost:8233/mytraining/mytrainings';
 
 
   getOffsetElementList(response: any) {
@@ -25,6 +26,12 @@ class MyTrainingApi {
   findAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
     //
     return axiosApi.post<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState/filterWithJoinedValue', myTrainingRdo)
+      .then(this.getOffsetElementList);
+  }
+
+  fetchAllMyTrainings(myTrainingRdo: MyTrainingRdoModel) {
+    //
+    return axiosApi.post<OffsetElementList<MyTrainingModel>>(this.baseUrl + '/byState/fetchLearningTimeByUser', myTrainingRdo)
       .then(this.getOffsetElementList);
   }
 
