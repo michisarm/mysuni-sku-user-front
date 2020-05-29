@@ -24,7 +24,7 @@ import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalM
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import {OverviewField} from '../../../../personalcube';
-
+import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
 interface Props {
   studentService?: StudentService
@@ -38,6 +38,7 @@ interface Props {
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
+  classroomService?: ClassroomService
 
   cubeType: CubeType
   viewObject: any
@@ -58,6 +59,7 @@ interface State {
   'lecture.studentService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
+  'personalCube.classroomService',
 ))
 
 @reactAutobind
@@ -790,8 +792,24 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
+    const { classroom } = this.props.classroomService!;
 
-    // console.log('card container viewObject : ', viewObject);
+    const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
+    const freeOfChargeChk = classroom.freeOfCharge.freeOfCharge;
+    const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
+
+    console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
+    console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
+    console.log('render approvalProcessChk :: ' + approvalProcessChk );
+
+    let approvalChk = 'N';
+    if(enrollingAvailableChk === true && (freeOfChargeChk === false) && (approvalProcessChk === true) ) {
+      approvalChk = 'Y';
+    }
+
+    console.log('render approvalChk :: ' + approvalChk );
+    const approvalClassChk = approvalChk;
+    console.log('render approvalClassChk :: ' + approvalClassChk );
 
     return (
       <LectureCardContentWrapperView>
@@ -834,6 +852,8 @@ class LectureCardContainer extends Component<Props, State> {
           (cubeType === CubeType.ClassRoomLecture || cubeType === CubeType.ELearning) && (
             <ApplyReferenceModal
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
+              classrooms={typeViewObject.classrooms}
+              approvalClassChk={approvalClassChk}
               handleOk={this.onClickApplyReferentOk}
             />
           )
