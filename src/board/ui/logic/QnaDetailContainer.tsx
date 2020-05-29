@@ -37,7 +37,7 @@ class QnaDetailContainer extends Component<Props, States> {
     //
     super(props);
     this.state = {
-      isEdit: false,
+      isEdit: true,
       confirmWinOpen: false,
       filesMap: new Map<string, any>(),
     };
