@@ -112,7 +112,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         answerSheetService!.saveAnswerSheet()
           .then(()=>{
             answerSheetService!.submitAnswerSheet(answerSheet.id)
-              .then(this.onCloseModal);
+              .then(() => {
+                this.onCloseModal();
+                if (onSaveCallback) onSaveCallback();
+              });
           });
         /*
         answerSheetService!.submitAnswerSheet(answerSheet.id)
@@ -127,7 +130,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
              return answerSheetService!.saveAnswerSheet();
            })
            .then(() => answerSheetService!.submitAnswerSheet(answerSheet.id))
-           .then(this.onCloseModal);
+           .then(() => {
+             this.onCloseModal();
+             if (onSaveCallback) onSaveCallback();
+           });
       }
     }
   }

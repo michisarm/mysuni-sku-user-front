@@ -175,6 +175,11 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  surveyCallback() {
+    const { init } = this.props;
+    if (init) init();
+  }
+
   //
   onClickEnrollment() {
     //
