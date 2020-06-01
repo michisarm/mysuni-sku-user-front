@@ -592,8 +592,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     this.setStateName('1', 'Test');
 
-    // console.log('student : ', student);
-
     if (viewObject.examId && student) {
       if (student.serviceType && student.serviceType === 'Lecture') {
         if (student.learningState === LearningState.Progress || student.learningState === LearningState.HomeworkWaiting) {

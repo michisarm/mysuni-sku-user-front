@@ -107,12 +107,6 @@ class ApprovalListView extends React.Component <Props, States> {
     const { results: approvalCubes } = approvalCubeOffsetList;
     const { cubeAll } = this.state;
 
-    console.log('ApprovalListView totalCount :: ' + totalCount);
-
-    console.log('ApprovalListView selectedList :: ' + selectedList);
-
-    console.log('ApprovalListView searchState :: ' + searchState);
-
     let approvalNameVal = '신청일자';
 
     if ( searchState === 'Submitted' ) {
