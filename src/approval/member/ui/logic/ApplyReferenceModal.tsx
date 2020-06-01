@@ -101,6 +101,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     //
     const { memberService, companyApproverService, approvalClassChk } = this.props;
 
+    console.log('selected memeber: ',approvalMember);
     if (!approvalMember && !approvalMember!.id) return;
 
     if (approvalClassChk === 'Y') {
@@ -114,83 +115,14 @@ class ApplyReferenceModal extends React.Component<Props> {
   }
 
   render() {
-    const {open} = this.state;
-    const {trigger, memberService, companyApproverService, approvalClassChk} = this.props;
-    const {approvalMember} = memberService!;
+    const { open } = this.state;
+    const { trigger, memberService, companyApproverService, approvalClassChk } = this.props;
+    const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
-
-    console.log('render start companyApprover.titleName ::' + companyApprover.titleName);
-    console.log('render start approvalMember.titleName ::' + approvalMember.titleName);
-
-    console.log('render start approvalClassChk ::' + approvalClassChk);
 
     // by JSM : 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
     const memId = approvalMember ? approvalMember.id : '';
     const creationTime = approvalMember ? approvalMember.creationTime : 0;
-
-    // 회사명
-    let companyNamVal = '';
-    if ( approvalMember.companyName === '' ) {
-      companyNamVal = companyApprover.companyName;
-    } else {
-      companyNamVal = approvalMember.companyName;
-    }
-    const companyNam = companyNamVal;
-
-
-    // 부서명
-    let departmentNameVal = '';
-    if ( approvalMember.departmentName === '' ) {
-      departmentNameVal = companyApprover.departmentName;
-    } else {
-      departmentNameVal = approvalMember.departmentName;
-    }
-    const departmentName = departmentNameVal;
-
-    // 이름
-    let userNameVal = '';
-    if ( approvalMember.name === '' ) {
-      userNameVal = companyApprover.name;
-    } else {
-      userNameVal = approvalMember.name;
-    }
-    const userName = userNameVal;
-
-    // 직위
-    let titleNameVal = '';
-    if ( approvalMember.titleName === '' ) {
-      titleNameVal = companyApprover.titleName;
-    } else {
-      titleNameVal = approvalMember.titleName;
-    }
-    const titleName = titleNameVal;
-
-    // 직책
-    let dutiesVal = '';
-    if ( approvalMember.dutiesName === '' ) {
-      dutiesVal = companyApprover.dutiesName;
-    } else {
-      dutiesVal = approvalMember.dutiesName;
-    }
-    const dutiesName = dutiesVal;
-
-    // 직위/직책
-    let titleDutiesVal = '';
-    if( dutiesName !== '') {
-      titleDutiesVal = titleName + '/' + dutiesName;
-    }
-    const titleDuties = titleDutiesVal;
-
-    // 이메일
-    let emailVal = '';
-    if ( approvalMember.email === '' ) {
-      emailVal = companyApprover.email;
-    } else {
-      emailVal = approvalMember.email;
-    }
-    const email = emailVal;
-
-    console.log('render start companyApprover.approverType ::' + companyApprover.approverType);
 
     // 리더 승인 일 경우
     let approverTypeVal = '';
