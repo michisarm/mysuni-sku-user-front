@@ -7,6 +7,7 @@ import { observer } from 'mobx-react';
 import ModalState from './model/ModalState';
 // import WelcomeModalView from './WelcomeModalView';
 import SystemGuideModalView from './SystemGuideModalView';
+import TrustedSiteModalView from './TrustedSiteModalView';
 //import TutorialModalView from './TutorialModalView';
 
 
@@ -14,12 +15,14 @@ interface State {
   // welcomeModalState: ModalState
   //tutorialModalState: ModalState
   systemGuideModalState: ModalState
+  trustedSiteModalState: ModalState
 }
 
 enum PageType {
   // Welcome = 'welcome',
   //Tutorial = 'tutorial',
   SystemGuide = 'systemGuide',
+  TrustedSite = 'trustedSite'
 }
 
 @reactAutobind
@@ -35,6 +38,7 @@ class MainModalsContainer extends Component<{}, State> {
     // welcomeModalState: new ModalState(),
     //tutorialModalState: new ModalState(),
     systemGuideModalState: new ModalState(),
+    trustedSiteModalState: new ModalState()
   };
 
 
@@ -43,6 +47,7 @@ class MainModalsContainer extends Component<{}, State> {
     // this.initFromStorage(PageType.Welcome);
     // this.initFromStorage(PageType.Tutorial);
     this.initFromStorage(PageType.SystemGuide);
+    this.initFromStorage(PageType.TrustedSite);
   }
 
   initFromStorage(pageType: PageType) {
@@ -126,6 +131,11 @@ class MainModalsContainer extends Component<{}, State> {
 
   onCloseSystemGuide() {
     this.onClose(PageType.SystemGuide);
+    this.initFromStorage(PageType.TrustedSite);
+  }
+
+  onCloseTrustedSite() {
+    this.onClose(PageType.TrustedSite);
   }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
@@ -139,9 +149,10 @@ class MainModalsContainer extends Component<{}, State> {
       // welcomeModalState,
       // tutorialModalState,
       systemGuideModalState,
+      trustedSiteModalState
     } = this.state;
 
-    if (systemGuideModalState.disabled) {
+    if (systemGuideModalState.disabled && trustedSiteModalState.disabled) {
       return null;
     }
 
@@ -151,6 +162,14 @@ class MainModalsContainer extends Component<{}, State> {
           modalState={systemGuideModalState}
           onClose={this.onCloseSystemGuide}
           onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+        />
+      );
+    } else if (trustedSiteModalState.open) {
+      return (
+        <TrustedSiteModalView
+          modalState={trustedSiteModalState}
+          onClose={this.onCloseTrustedSite}
+          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.TrustedSite, data.checked)}
         />
       );
     }

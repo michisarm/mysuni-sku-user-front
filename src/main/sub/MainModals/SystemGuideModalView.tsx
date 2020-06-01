@@ -71,7 +71,7 @@ class SystemGuideModalView extends Component<Props> {
         </Modal.Content>
         <Modal.Actions className="actions4">
           <div className="left">
-            <Checkbox label="이창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
+            <Checkbox label="이 창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
           </div>
           <div className="right">
             <Button className="close" onClick={onClose}>Close</Button>
