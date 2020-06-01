@@ -18,6 +18,7 @@ interface Props {
 @reactAutobind
 @observer
 class TrustedSiteModalView extends Component<Props> {
+  PUBLIC_URL = process.env.PUBLIC_URL;
   //
   render() {
     //
@@ -41,15 +42,15 @@ class TrustedSiteModalView extends Component<Props> {
                 </div>
                 <div className="box2">
                   <div>1. mySUNI 접속 상태에서 IE의 [도구] - [인터넷 옵션] 메뉴 실행</div>
-                  <img src="/images/modal/trustedSite/image_001_01.png" width="80%"/>
+                  <img src={`${this.PUBLIC_URL}/images/modal/trustedSite/image_001_01.png`} width="80%"/>
                   <div>2. 인터넷 옵션 창에서 [보안] - [신뢰할 수 있는 사이트] 선택 후 [사이트] 버튼 클릭</div>
-                  <img src="/images/modal/trustedSite/image_002.png" width="80%" />
+                  <img src={`${this.PUBLIC_URL}/images/modal/trustedSite/image_002.png`} width="80%" />
                   <div>3. 추가할 주소에 https://mysuni.sk.com이 입력되어 있음을 확인한 뒤 [추가] 버튼 클릭</div>
-                  <img src="/images/modal/trustedSite/image_003.png" width="80%" />
+                  <img src={`${this.PUBLIC_URL}/images/modal/trustedSite/image_003.png`} width="80%" />
                   <div>4. 신뢰할 수 있는 사이트 목록 하단에 https://mysuni.sk.com이<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;추가 되어 있음을 확인한 뒤 [닫기] 버튼 클릭</div>
-                  <img src="/images/modal/trustedSite/image_004.png" width="80%" />
+                  <img src={`${this.PUBLIC_URL}/images/modal/trustedSite/image_004.png`} width="80%" />
                   <div>5. 인터넷 옵션 창 하단의 [닫기] 버튼 클릭하여 옵션 창 종료</div>
-                  <img src="/images/modal/trustedSite/image_005.png" width="80%" />
+                  <img src={`${this.PUBLIC_URL}/images/modal/trustedSite/image_005.png`} width="80%" />
                 </div>
               </div>
             </div>
@@ -57,7 +58,7 @@ class TrustedSiteModalView extends Component<Props> {
         </Modal.Content>
         <Modal.Actions className="actions4">
           <div className="left">
-            <Checkbox label="이 창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
+            <Checkbox label="이   창 다시보지 않기" className="base" checked={modalState.disableChecked} onClick={onCheckDisable} />
           </div>
           <div className="right">
             <Button className="close" onClick={onClose}>Close</Button>
