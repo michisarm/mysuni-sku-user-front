@@ -54,7 +54,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>(차수)교육기간</Table.HeaderCell>
-                        <Table.Cell>{approvalCube.enrolling.applyingPeriod.startDate} ~ {approvalCube.enrolling.applyingPeriod.endDate}</Table.Cell>
+                        <Table.Cell>{approvalCube.enrolling.learningPeriod.startDate} ~ {approvalCube.enrolling.learningPeriod.endDate}</Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>강의장소</Table.HeaderCell>
