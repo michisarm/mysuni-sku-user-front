@@ -62,7 +62,7 @@ class ApplyReferenceModal extends React.Component<Props> {
 
     console.log('onOpenModal approvalClassChk ::' + approvalClassChk);
 
-    if ( approvalClassChk !== 'Y') {
+    if (approvalClassChk !== 'Y') {
       if ( this.state.open || !classrooms ) {
         handleOk(approvalMember);
         this.close();
@@ -84,8 +84,10 @@ class ApplyReferenceModal extends React.Component<Props> {
     const { companyApprover } = companyApproverService!;
 
     if (approvalClassChk === 'Y') {
+      console.log('company approver ok', companyApprover);
       handleOk(companyApprover);
     } else {
+      console.log('member approver ok', approvalMember);
       handleOk(approvalMember);
     }
 
@@ -286,11 +288,17 @@ class ApplyReferenceModal extends React.Component<Props> {
 
                   <Table.Body>
                     <Table.Row>
+                      <Table.Cell><span>{companyApprover.companyName}</span></Table.Cell>
+                      <Table.Cell><span>{companyApprover.departmentName}</span></Table.Cell>
+                      <Table.Cell><span>{companyApprover.name}</span></Table.Cell>
+                      <Table.Cell><span>{companyApprover.titleName}</span></Table.Cell>
+                      <Table.Cell><span>{companyApprover.email}</span></Table.Cell>
+                      {/*
                       <Table.Cell><span>{companyNam}</span></Table.Cell>
                       <Table.Cell><span>{departmentName}</span></Table.Cell>
                       <Table.Cell><span>{userName}</span></Table.Cell>
                       <Table.Cell><span>{titleDuties}</span></Table.Cell>
-                      <Table.Cell><span>{email}</span></Table.Cell>
+                      <Table.Cell><span>{email}</span></Table.Cell>*/}
                     </Table.Row>
 
                   </Table.Body>
