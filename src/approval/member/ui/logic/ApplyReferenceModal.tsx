@@ -61,7 +61,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     const { companyApprover } = companyApproverService!;
 
     console.log('onOpenModal approvalClassChk ::' + approvalClassChk);
-    
+
     if ( approvalClassChk !== 'Y') {
       if ( this.state.open || !classrooms ) {
         handleOk(approvalMember);
@@ -79,10 +79,16 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   onOk() {
     //
-    const { handleOk, memberService, companyApproverService } = this.props;
+    const { handleOk, memberService, companyApproverService, approvalClassChk } = this.props;
     const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
-    handleOk(approvalMember);
+
+    if (approvalClassChk === 'Y') {
+      handleOk(companyApprover);
+    } else {
+      handleOk(approvalMember);
+    }
+
     this.close();
   }
 
@@ -277,7 +283,7 @@ class ApplyReferenceModal extends React.Component<Props> {
                       <Table.HeaderCell>이메일</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-    
+
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell><span>{companyNam}</span></Table.Cell>
@@ -286,7 +292,7 @@ class ApplyReferenceModal extends React.Component<Props> {
                       <Table.Cell><span>{titleDuties}</span></Table.Cell>
                       <Table.Cell><span>{email}</span></Table.Cell>
                     </Table.Row>
-    
+
                   </Table.Body>
                 </Table>
               </div>
