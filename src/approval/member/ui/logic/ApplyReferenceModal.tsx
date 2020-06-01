@@ -56,11 +56,8 @@ class ApplyReferenceModal extends React.Component<Props> {
     this.setState({ open: true });
     // 2020-04-22 김우성
     // 참조자 모달 팝업 막기 위해 onOK 내용 바로 실행
-    const { handleOk, memberService, classrooms, companyApproverService, approvalClassChk } = this.props;
+    const { handleOk, memberService, classrooms, approvalClassChk } = this.props;
     const { approvalMember } = memberService!;
-    const { companyApprover } = companyApproverService!;
-
-    console.log('onOpenModal approvalClassChk ::' + approvalClassChk);
 
     if (approvalClassChk !== 'Y') {
       if ( this.state.open || !classrooms ) {
@@ -101,8 +98,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     //
     const { memberService, companyApproverService, approvalClassChk } = this.props;
 
-    console.log('selected memeber: ',approvalMember);
-    if (!approvalMember && !approvalMember!.id) return;
+    if (approvalMember != null && approvalMember.id !== '') return;
 
     if (approvalClassChk === 'Y') {
       companyApproverService!.changeCompanyApproverProps(approvalMember);
