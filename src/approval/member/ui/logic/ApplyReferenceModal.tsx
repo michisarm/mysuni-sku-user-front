@@ -101,6 +101,8 @@ class ApplyReferenceModal extends React.Component<Props> {
     //
     const { memberService, companyApproverService, approvalClassChk } = this.props;
 
+    if (!approvalMember) return;
+
     if (approvalClassChk === 'Y') {
       companyApproverService!.changeCompanyApproverProps(approvalMember);
     } else {
