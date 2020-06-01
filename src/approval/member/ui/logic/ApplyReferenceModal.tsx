@@ -99,8 +99,16 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   onClickManagerListOk(approvalMember: ApprovalMemberModel) {
     //
-    const { memberService } = this.props;
-    memberService!.changeApprovalManagerProps(approvalMember);
+    const { memberService, companyApproverService, approvalClassChk } = this.props;
+
+    if (approvalClassChk === 'Y') {
+      companyApproverService!.changeCompanyApproverProps(approvalMember);
+    } else {
+      memberService!.changeApprovalManagerProps(approvalMember);
+    }
+
+
+
   }
 
   render() {
@@ -112,7 +120,6 @@ class ApplyReferenceModal extends React.Component<Props> {
     console.log('render start companyApprover.titleName ::' + companyApprover.titleName);
     console.log('render start approvalMember.titleName ::' + approvalMember.titleName);
 
-    console.log('render start companyApprover.myApprover ::' + companyApprover.myApprover);
     console.log('render start approvalClassChk ::' + approvalClassChk);
 
     // by JSM : 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
@@ -291,12 +298,6 @@ class ApplyReferenceModal extends React.Component<Props> {
                       <Table.Cell><span>{companyApprover.name}</span></Table.Cell>
                       <Table.Cell><span>{companyApprover.titleName}</span></Table.Cell>
                       <Table.Cell><span>{companyApprover.email}</span></Table.Cell>
-                      {/*
-                      <Table.Cell><span>{companyNam}</span></Table.Cell>
-                      <Table.Cell><span>{departmentName}</span></Table.Cell>
-                      <Table.Cell><span>{userName}</span></Table.Cell>
-                      <Table.Cell><span>{titleDuties}</span></Table.Cell>
-                      <Table.Cell><span>{email}</span></Table.Cell>*/}
                     </Table.Row>
 
                   </Table.Body>
