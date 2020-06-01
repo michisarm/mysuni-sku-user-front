@@ -58,7 +58,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>강의장소</Table.HeaderCell>
-                        <Table.Cell>{approvalCube.operation.operator.company}</Table.Cell>
+                        <Table.Cell>{approvalCube.operation.location}</Table.Cell>
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>인당 교육 금액</Table.HeaderCell>
