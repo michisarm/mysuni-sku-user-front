@@ -96,8 +96,6 @@ class ApplyReferenceModalApproval extends React.Component<Props> {
     console.log('render start companyApprover.titleName ::' + companyApprover.titleName);
     console.log('render start approvalMember.titleName ::' + approvalMember.titleName);
 
-    console.log('render start companyApprover.myApprover ::' + companyApprover.myApprover);
-
     // 회사명
     let companyNamVal = '';
     if ( approvalMember.companyName === '' ) {

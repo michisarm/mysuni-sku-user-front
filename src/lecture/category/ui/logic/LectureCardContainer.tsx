@@ -126,16 +126,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   async onSelectClassroom(classroom: ClassroomModel) {
 
-    console.log('onSelectClassroom ClassroomModel start :: ');
-
     const { viewObject } = this.props;
-
-    console.log('onSelectClassroom ClassroomModel viewObject.operatorName :: ' + viewObject.operatorName);
-    console.log('onSelectClassroom ClassroomModel viewObject.operatorEmail :: ' + viewObject.operatorEmail);
-    console.log('onSelectClassroom classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
-    console.log('onSelectClassroom classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
-    console.log('onSelectClassroom classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
-    console.log('onSelectClassroom classroom.id :: ' + classroom.id);
 
     // 차수 선택시 id 값
     this.state.classroomId = classroom.id;
@@ -144,9 +135,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     const operatorName = viewObject.operatorName;
     const operatorEmail = viewObject.operatorEmail;
-
-    console.log('reactAlert operatorName ::' + operatorName);
-    console.log('reactAlert operatorEmail ::' + operatorEmail);
 
     // 알림 메시지
     const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
@@ -158,18 +146,12 @@ class LectureCardContainer extends Component<Props, State> {
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
-      console.log('onSelectClassroom if student.id :: ' + student.id);
-      console.log('onSelectClassroom if student :: ' + student);
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
       if( classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
-        console.log('if if 수강신청(true), 유료여부(false), 승인 체크(true) onApplyReference :: ');
-
         studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
-        console.log('if else 수강신청(false), 무료여부(true), 승인 체크(false) onApplyReferenceEmpty :: ');
-
         // 과정 등록
         this.getFreeOfChargeOk();
 
@@ -180,17 +162,10 @@ class LectureCardContainer extends Component<Props, State> {
 
       }
     } else if ((!student || !student.id) && (classroom.enrolling.enrollingAvailable === true) && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
-
-      console.log('onSelectClassroom else if onApplyReference student :: ' + student);
-      console.log('onSelectClassroom else if onApplyReference classroom.enrolling.enrollingAvailable :: ' + classroom.enrolling.enrollingAvailable);
-      console.log('onSelectClassroom else if onApplyReference classroom.freeOfCharge.freeOfCharge :: ' + classroom.freeOfCharge.freeOfCharge);
-      console.log('onSelectClassroom else if onApplyReference classroom.freeOfCharge.approvalProcess :: ' + classroom.freeOfCharge.approvalProcess);
-
       // 수강신청(true), 유료여부(false), 승인 체크(true)
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
-      console.log(' else 수강신청(false), 무료여부(true), 승인 체크(false) getFreeOfChargeOk onApplyReferenceEmpty :: ');
       // 과정 등록
       this.getFreeOfChargeOk();
 
@@ -209,22 +184,15 @@ class LectureCardContainer extends Component<Props, State> {
     //   }
     //   else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
     // }
-
-    console.log('onSelectClassroom ClassroomModel end :: ');
   }
 
   registerStudentApprove(studentCdo: StudentCdoModel) {
     // 차수선택 시 id, freeOfCharge 값 전달
-    console.log('registerStudentApprove studentCdo.proposalState :: ' + studentCdo.proposalState);
 
-    console.log('registerStudentApprove this.state.classroomId :: ' + this.state.classroomId);
     // 차수 선택 시 ID 값
     studentCdo.classroomId = this.state.classroomId;
     // 차수 선택시 무료(true) 유료(false) 여부
     studentCdo.approvalProcess = this.state.approvalProcess;
-
-    console.log('registerStudentApprove studentCdo.classroomId :: ' + studentCdo.classroomId);
-    console.log('registerStudentApprove studentCdo.approvalProcess :: ' + studentCdo.approvalProcess);
 
     const { studentService, lectureCardId, init } = this.props;
 
@@ -239,8 +207,6 @@ class LectureCardContainer extends Component<Props, State> {
 
   onRegisterStudent(proposalState?: ProposalState) {
 
-    console.log('onRegisterStudent proposalState :: ' + proposalState);
-
     const { studentCdo, student } = this.props;
 
     if ((!student || !student.id) || (student.proposalState !== ProposalState.Canceled && student.proposalState !== ProposalState.Rejected)) {
@@ -252,14 +218,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   registerStudent(studentCdo: StudentCdoModel) {
-
-    console.log('registerStudent studentCdo.proposalState :: ' + studentCdo.proposalState);
-
     // 차수 선택시 무료(true) 유료(false) 여부
     studentCdo.approvalProcess = false;
-
-    console.log('registerStudentApprove studentCdo.classroomId :: ' + studentCdo.classroomId);
-    console.log('registerStudentApprove studentCdo.approvalProcess :: ' + studentCdo.approvalProcess);
 
     const { studentService, lectureCardId, init } = this.props;
     return studentService!.registerStudent(studentCdo)
@@ -411,7 +371,6 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onApplyReferenceEmpty() {
-    console.log('onApplyReferenceEmpty start ::');
   }
 
   onReport() {
@@ -469,8 +428,6 @@ class LectureCardContainer extends Component<Props, State> {
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
-    console.log('onClickApplyReferentOk rollBookId : ', rollBookId);
-
     studentCdo.leaderEmails = [member.email];
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
@@ -485,32 +442,20 @@ class LectureCardContainer extends Component<Props, State> {
     const { rollBook } = this.state;
     let proposalState = studentCdo.proposalState;
 
-    console.log('getFreeOfChargeOk studentCdo.proposalState : '+ studentCdo.proposalState);
-
-    console.log('getFreeOfChargeOk if student.proposalState :: ' + student?.proposalState );
-
     if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
-
-      console.log('getFreeOfChargeOk if proposalState : '+ proposalState);
     }
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
-
-    console.log('getFreeOfChargeOk rollBookId :: ', rollBookId);
-    console.log('getFreeOfChargeOk proposalState :: ', proposalState);
 
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
     // Submitted으로 디폴트 입력 한다.
     proposalState = studentCdo.proposalState;
 
-    console.log('getFreeOfChargeOk end proposalState ==> '+ proposalState);
-
     const { viewObject } = this.props;
     // 이메일 담당자
     studentCdo.leaderEmails = [viewObject.operatorEmail];
-    console.log('getFreeOfChargeOk end viewObject.operatorEmail : '+ viewObject.operatorEmail);
 
     this.registerStudent({ ...studentCdo, rollBookId, proposalState });
   }
@@ -798,17 +743,14 @@ class LectureCardContainer extends Component<Props, State> {
     let enrollingAvailable: boolean = false;
     let freeOfCharge: boolean = false;
     let approvalProcess: boolean = false;
-    
+
     const index = classrooms.map(classrooma => classrooma.round).findIndex(round => round);
     if (index >= 0 && classrooms) {
       enrollingAvailable = classrooms[index].enrolling.enrollingAvailable;
       freeOfCharge = classrooms[index].freeOfCharge.freeOfCharge;
       approvalProcess = classrooms[index].freeOfCharge.approvalProcess;
     }
-  
-    console.log('render enrollingAvailable :: ' + enrollingAvailable );
-    console.log('render freeOfCharge :: ' + freeOfCharge );
-    console.log('render approvalProcess :: ' + approvalProcess );
+
 
     // const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
     // const approvalProcessChk = classroom.freeOfCharge.freeOfCharge;
@@ -817,19 +759,13 @@ class LectureCardContainer extends Component<Props, State> {
     const enrollingAvailableChk = enrollingAvailable;
     const freeOfChargeChk = freeOfCharge;
     const approvalProcessChk = approvalProcess;
-    
-    console.log('render enrollingAvailableChk :: ' + enrollingAvailableChk );
-    console.log('render freeOfChargeChk :: ' + freeOfChargeChk );
-    console.log('render approvalProcessChk :: ' + approvalProcessChk );
 
     let approvalChk = 'N';
     if(enrollingAvailableChk === true && (freeOfChargeChk === false) && (approvalProcessChk === true) ) {
       approvalChk = 'Y';
     }
 
-    console.log('render approvalChk :: ' + approvalChk );
     const approvalClassChk = approvalChk;
-    console.log('render approvalClassChk :: ' + approvalClassChk );
 
     return (
       <LectureCardContentWrapperView>
