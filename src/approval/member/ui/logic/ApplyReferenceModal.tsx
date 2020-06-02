@@ -125,10 +125,11 @@ class ApplyReferenceModal extends React.Component<Props> {
     // 승인자 변경하기 활성, 비활성처리
     let approvalShowVal;
     if ( companyApprover.approverType === 'Leader_Approve') {
-      approverTypeVal = '본 과정의 신청 정보를 함께 안내받을 리더 정보를 설정하여 주시기바랍니다.';
+      approverTypeVal = '본 과정의 승인은 학습자 본인의 리더(부서장)가 진행합니다. 승인요청 받을 리더정보를 확인 후 필요 시 변경해 주시길 바랍니다.';
       approvalShowVal = true;
     } else {
       approvalShowVal = false;
+      approverTypeVal = '본 과정의 승인은 HR담당자가 진행합니다.';
     }
     // 승인자 변경하기 활성, 비활성처리
     const approvalShow = approvalShowVal;
