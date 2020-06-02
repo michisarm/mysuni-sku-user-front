@@ -738,26 +738,14 @@ class LectureCardContainer extends Component<Props, State> {
 
     let state: SubState | undefined;
     let enrollingAvailable: boolean = false;
-    let freeOfCharge: boolean = false;
     let approvalProcess: boolean = false;
 
     const index = classrooms.map(classrooma => classrooma.round).findIndex(round => round);
     if (index >= 0 && classrooms) {
       enrollingAvailable = classrooms[index].enrolling.enrollingAvailable;
-      freeOfCharge = classrooms[index].freeOfCharge.freeOfCharge;
       approvalProcess = classrooms[index].freeOfCharge.approvalProcess;
     }
-
-    const enrollingAvailableChk = enrollingAvailable;
-    const freeOfChargeChk = freeOfCharge;
-    const approvalProcessChk = approvalProcess;
-
-    let approvalChk = 'N';
-    if(enrollingAvailableChk === true && (freeOfChargeChk === false) && (approvalProcessChk === true) ) {
-      approvalChk = 'Y';
-    }
-
-    const approvalClassChk = approvalChk;
+    const approvalClassChk = (enrollingAvailable === true && (approvalProcess === true))?'Y':'N'; // 2020.06.02 유무료 조건 배제
 
     return (
       <LectureCardContentWrapperView>
