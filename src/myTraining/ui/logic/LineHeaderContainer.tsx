@@ -79,7 +79,7 @@ class LineHeaderContainer extends Component<Props> {
         {
           (currentTab === 'Completed' || currentTab === 'CompletedList')  && (
             <div className="right">
-              <span className="excel-wrap-guide">&#8251; my company 학습시간은 제외</span>
+              <span className="excel-wrap-guide">&#8251; 사별 교육시스템에서 이수한 학습정보는 제외(전체 학습시간은 반영)</span>
               <span className="excel-wrap">
                 <Button icon className="left post excel-down" onClick={() => this.onDownLoadLearningCompletionExcel()}>
                   <Icon className="excel-down" />
