@@ -22,7 +22,6 @@ export class CompanyApproverModel {
   displayOrder: string = '';
   retired: boolean = false;
   photoFileUrl: string = '';
-  myApprover: string = '';
 
   constructor(companyApproverModel?: CompanyApproverModel) {
     if (companyApproverModel) {
@@ -107,5 +106,4 @@ decorate(CompanyApproverModel, {
   displayOrder: observable,
   retired: observable,
   photoFileUrl: observable,
-  myApprover: observable,
 });

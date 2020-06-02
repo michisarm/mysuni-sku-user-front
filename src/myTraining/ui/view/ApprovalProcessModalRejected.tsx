@@ -98,13 +98,20 @@ class ApprovalProcessModalRejected extends Component<Props> {
     if (selectedList && approvalCubeService) {
       const reponseData = approvalCubeService.studentRequestReject(studentRequest);
 
-      console.log('addRejectedLectureSingle reponseData.error ::' + (await reponseData).error);
-      console.log('addRejectedLectureSingle reponseData.message ::' + (await reponseData).message);
+      //console.log('addRejectedLectureSingle reponseData.error ::' + (await reponseData).error );
+      //console.log('addRejectedLectureSingle reponseData.message ::' + (await reponseData).message);
 
       const errorData = (await reponseData).error;
 
+      const messageData = (await reponseData).message;
+      const messageTitle = messageData+' <br> 에러 입니다. 관리자에게 문의 하세요.';
+
+      if(errorData === null ) {
+        reactAlert({ title: '알림', message: messageTitle });
+      }
+
       if(errorData) {
-        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+        reactAlert({ title: '알림', message: messageTitle });
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
         this.routeToCreateList();
