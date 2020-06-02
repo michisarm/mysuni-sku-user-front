@@ -431,7 +431,8 @@ class LectureCardContainer extends Component<Props, State> {
     studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
 
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
-    this.registerStudentApprove({ ...studentCdo, rollBookId, proposalState });
+    const approvalProcess: boolean = true;
+    this.registerStudentApprove({ ...studentCdo, rollBookId, proposalState, approvalProcess });
   }
 
   // 무료과정 등록
