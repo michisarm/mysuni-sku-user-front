@@ -96,7 +96,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   @computed
   get state() {
-    if (this.proposalState === ProposalState.Approved) {
+    if (this.proposalState === ProposalState.Submitted) {
+      return '승인대기';
+    } else if (this.proposalState === ProposalState.Approved) {
       if (this.learningState) return LearningStateName[LearningState[this.learningState]];
       if (this.cubeType === CubeType.Community) return '가입완료';
       return '학습예정';
@@ -112,7 +114,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       if (this.proposalState === ProposalState.Submitted) return '';
       if (this.proposalState === ProposalState.Approved) {
         if (!this.learningState && this.startDate) {
-          return moment(this.startDate).format('YYYY.MM.DD') + ' 부터 학습시작';
+          return moment(Number(this.startDate)).format('YYYY.MM.DD') + ' 부터 학습시작';
         }
         if (
           this.learningState === LearningState.Progress || this.learningState === LearningState.Waiting
