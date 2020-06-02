@@ -96,9 +96,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
   @computed
   get state() {
-    if (this.proposalState === ProposalState.Submitted) {
-      return '승인대기';
-    } else if (this.proposalState === ProposalState.Approved) {
+    if (this.proposalState === ProposalState.Approved) {
       if (this.learningState) return LearningStateName[LearningState[this.learningState]];
       if (this.cubeType === CubeType.Community) return '가입완료';
       return '학습예정';
