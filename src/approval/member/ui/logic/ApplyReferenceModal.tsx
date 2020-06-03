@@ -10,7 +10,7 @@ import { DepartmentModel } from '../../../department/model/DepartmentModel';
 import { CompanyApproverModel } from '../../../company/model/CompanyApproverModel';
 import { DepartmentService, MemberService, CompanyApproverService } from '../../../stores';
 import { ApprovalMemberModel } from '../../model/ApprovalMemberModel';
-import {ClassroomModel} from '../../../../personalcube/classroom/model';
+import { ClassroomModel } from '../../../../personalcube/classroom/model';
 
 interface Props {
   skProfileService?: SkProfileService
@@ -20,7 +20,7 @@ interface Props {
   trigger?: React.ReactNode
   handleOk: (member: MemberViewModel) => void
   classrooms: ClassroomModel[]
-  approvalClassChk: string
+  selectedClassRoom: ClassroomModel | null
 }
 
 @inject(mobxHelper.injectFrom(
@@ -56,10 +56,10 @@ class ApplyReferenceModal extends React.Component<Props> {
     this.setState({ open: true });
     // 2020-04-22 김우성
     // 참조자 모달 팝업 막기 위해 onOK 내용 바로 실행
-    const { handleOk, memberService, classrooms, approvalClassChk } = this.props;
+    const { handleOk, memberService, classrooms } = this.props;
     const { approvalMember } = memberService!;
 
-    if (approvalClassChk !== 'Y') {
+    if (!this.isApprovalProcess()) {
       if ( this.state.open || !classrooms ) {
         handleOk(approvalMember);
         this.close();
@@ -76,11 +76,11 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   onOk() {
     //
-    const { handleOk, memberService, companyApproverService, approvalClassChk } = this.props;
+    const { handleOk, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
     const { companyApprover } = companyApproverService!;
 
-    if (approvalClassChk === 'Y') {
+    if (this.isApprovalProcess()) {
       handleOk(companyApprover);
     } else {
       handleOk(approvalMember);
@@ -96,23 +96,25 @@ class ApplyReferenceModal extends React.Component<Props> {
 
   onClickManagerListOk(approvalMember: ApprovalMemberModel) {
     //
-    const { memberService, companyApproverService, approvalClassChk } = this.props;
+    const { memberService, companyApproverService } = this.props;
 
     if (approvalMember == null || approvalMember.id === '') return;
 
-    if (approvalClassChk === 'Y') {
+    if (this.isApprovalProcess()) {
       companyApproverService!.changeCompanyApproverProps(approvalMember);
     } else {
       memberService!.changeApprovalManagerProps(approvalMember);
     }
+  }
 
-
-
+  isApprovalProcess() {
+    const { selectedClassRoom } = this.props;
+    return (selectedClassRoom && selectedClassRoom.enrolling.enrollingAvailable === true && selectedClassRoom.freeOfCharge.approvalProcess === true);
   }
 
   render() {
     const { open } = this.state;
-    const { trigger, memberService, companyApproverService, approvalClassChk } = this.props;
+    const { trigger, memberService, companyApproverService } = this.props;
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
 
@@ -134,7 +136,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     // 승인자 설정 문구 Leader_Approve 일 경우 만 보인다.
     const approverTypeStr = approverTypeVal;
 
-    if ( approvalClassChk !== 'Y') {
+    if (!this.isApprovalProcess()) {
       return (
         <div>
           {
