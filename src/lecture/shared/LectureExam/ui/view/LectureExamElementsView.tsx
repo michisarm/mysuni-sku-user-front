@@ -13,6 +13,10 @@ interface ReportProps {
 export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
+  // console.log('Report viewObject : ', viewObject);
+  // if (passedState !== undefined) {
+  //   alert(passedState);
+  // }
 
   return (
     <div className="trs-box">
@@ -29,6 +33,12 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
           passedState && (
             <span className="state">제출완료</span>
             // <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+          )
+        }
+
+        {
+          !passedState && type === '0' && (
+            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
