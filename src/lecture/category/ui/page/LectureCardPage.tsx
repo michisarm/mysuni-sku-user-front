@@ -628,7 +628,7 @@ class LectureCardPage extends Component<Props, State> {
       cancellationPenalty: classroom.enrolling.cancellationPenalty,
       location: classroom.operation.location,
       learningPeriod: classroom.enrolling.learningPeriod,
-      classrooms: classrooms.length > 1 && classrooms,
+      classrooms: classrooms.length > 0 && classrooms,
       siteUrl,
     };
   }
