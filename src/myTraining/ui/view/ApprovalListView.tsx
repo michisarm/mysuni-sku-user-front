@@ -5,15 +5,16 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import {
+  Button,
   Checkbox, Icon, Table
 } from 'semantic-ui-react';
-import { ApprovalCubeModel, CubeTypeNameType, CubeType } from 'myTraining/model';
 import ApprovalCubeService from '../../present/logic/ApprovalCubeService';
 
 interface Props {
   approvalCubeService: ApprovalCubeService
   totalCount: number
   handleClickCubeRow:(cubeId: string) => void
+  onChangeOrderBy:(orderBy: string, desc?: boolean) => void
   searchState: any
 }
 
@@ -32,12 +33,6 @@ class ApprovalListView extends React.Component <Props, States> {
     };
   }
 
-  //
-  getCubeType(personalCube: ApprovalCubeModel) {
-    //
-    return CubeTypeNameType[CubeType[personalCube.contents.type]];
-  }
-
   removeInList(index: number, oldList: string []) {
     //
     return oldList.slice(0, index).concat(oldList.slice(index + 1));
@@ -45,21 +40,14 @@ class ApprovalListView extends React.Component <Props, States> {
 
   checkOne(cubeId: string) {
     //
-    //const cubeId = approvalCube && approvalCube.id;
-    //const proposalState = approvalCube && approvalCube.proposalState;
-    const { selectedList, proposalStateList } = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const { selectedList } = this.props.approvalCubeService || {} as ApprovalCubeService;
     const tempList: string [] = [ ...selectedList ];
-    //const tempList1: string [] = [ ...proposalStateList ];
     if (tempList.indexOf(cubeId) !== -1) {
       const newTempStudentList = this.removeInList(tempList.indexOf(cubeId), tempList);
-      //const newTempProposalStateList = this.removeInList(tempList.indexOf(cubeId), tempList1);
       this.onChangeSelectedStudentProps(newTempStudentList);
-      //this.onChangeSelectedProposalStateProps(newTempProposalStateList);
     } else {
       tempList.push(cubeId);
-      //tempList1.push(proposalState);
       this.onChangeSelectedStudentProps(tempList);
-      //this.onChangeSelectedProposalStateProps(tempList1);
     }
   }
 
@@ -101,6 +89,11 @@ class ApprovalListView extends React.Component <Props, States> {
     if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
   }
 
+  handleChangeOrderBy(orderBy: string) {
+    const { onChangeOrderBy } = this.props;
+    onChangeOrderBy(orderBy);
+  }
+
   render() {
     const { approvalCubeService, totalCount, handleClickCubeRow, searchState } = this.props;
     const { approvalCubeOffsetList, selectedList } = approvalCubeService!;
@@ -126,38 +119,11 @@ class ApprovalListView extends React.Component <Props, States> {
       return (
 
         <>
-          {/*해당 콘텐츠 없음*/}
           <div className="no-cont-wrap">
             <Icon className="no-contents80"/>
             <span className="blind">콘텐츠 없음</span>
             <div className="text">{noTitle}</div>
           </div>
-
-          {/*<div id="DataTableRow">*/}
-          {/*<Table className="confirm-list typeA">*/}
-          {/*<Table.Header>*/}
-          {/*<Table.Row className="row thead">*/}
-          {/*<Table.HeaderCell className="cell ck">*/}
-          {/*<Checkbox className="base"/>*/}
-          {/*</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell num">No</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell name">신청자</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell team">조직</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell title">과정명</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell class">차수</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>*/}
-          {/*<Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>*/}
-          {/*</Table.Row>*/}
-          {/*</Table.Header>*/}
-          {/*<Table.Body>*/}
-          {/*<Table.Row>*/}
-          {/*<Table.Cell className="title" colSpan="10">{noTitle}</Table.Cell>*/}
-          {/*</Table.Row>*/}
-          {/*</Table.Body>*/}
-          {/*</Table>*/}
-          {/*</div>*/}
         </>
       );
     } else {
@@ -183,9 +149,9 @@ class ApprovalListView extends React.Component <Props, States> {
                 <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
                 <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
                 <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
-                <Table.HeaderCell className="cell term">(차수)교육기간<Icon className="list-down16" /></Table.HeaderCell>
+                <Table.HeaderCell className="cell term">(차수)교육기간 <Button icon className="img-icon" onClick={() => this.handleChangeOrderBy('learningStartDate')}><Icon className="list-down16" /></Button></Table.HeaderCell>
                 <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
-                <Table.HeaderCell className="cell pay">인당 교육금액<Icon className="list-down16"/></Table.HeaderCell>
+                <Table.HeaderCell className="cell pay">인당 교육금액 <Button icon className="img-icon" onClick={() => this.handleChangeOrderBy('chargeAmount')}><Icon className="list-down16" /></Button></Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -207,7 +173,7 @@ class ApprovalListView extends React.Component <Props, States> {
                     <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
                     <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
 
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{cube.enrolling.learningPeriod.startDate}<br/>~ {cube.enrolling.learningPeriod.endDate}</span></a></Table.Cell>
+                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{cube.enrolling.learningPeriod.startDate}<br />~ {cube.enrolling.learningPeriod.endDate}</span></a></Table.Cell>
                     <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
                     <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell pay"><a><span className="ellipsis">{cube.freeOfCharge.chargeAmount}</span></a></Table.Cell>
                   </Table.Row>

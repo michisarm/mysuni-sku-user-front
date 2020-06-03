@@ -14,6 +14,9 @@ export default class CompanyApproverService {
   @observable
   companyApprover: CompanyApproverModel = new CompanyApproverModel();
 
+  @observable
+  originCompanyApprover: CompanyApproverModel = new CompanyApproverModel();
+
   constructor(companyApproverApi: CompanyApproverApi) {
     //
     this.companyApproverApi = companyApproverApi;
@@ -24,7 +27,10 @@ export default class CompanyApproverService {
     //
     const companyApprover = await this.companyApproverApi.findCompanyApprover();
 
-    runInAction(() => this.companyApprover = companyApprover);
+    runInAction(() => {
+      this.companyApprover = companyApprover;
+      this.originCompanyApprover = companyApprover;
+    });
     return companyApprover;
   }
 

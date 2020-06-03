@@ -3,74 +3,38 @@ import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import moment from 'moment';
 import {
-  Segment, Checkbox, Select, Radio, Button, Icon, Table, Form
+  Select, Radio, Button, Icon,
 } from 'semantic-ui-react';
-
-import { ListPanelTopLine } from 'shared';
-import { SearchFilterType } from 'shared/model';
-
-import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
-
-import ApprovalApplyStatusModal from './ApprovalApplyStatusModal';
-import ApprovalActionButtons from './ApprovalActionButtons';
 
 import ApprovalProcessModal from './ApprovalProcessModal';
 import ApprovalProcessModalRejected from './ApprovalProcessModalRejected';
-
-import IdName from '../../../shared/model/IdName';
-
-const numOptions = [
-  { key: 'val01', value: 'val01', text: '전체차수' },
-  { key: 'val02', value: 'val02', text: '1차' },
-  { key: 'val03', value: 'val03', text: '2차' }
-];
-
-const termOptions = [
-  { key: 'val01', value: 'val01', text: '최근 1주일' },
-  { key: 'val02', value: 'val02', text: '최근 2주일' },
-  { key: 'val03', value: 'val03', text: '최근 한달' },
-  { key: 'val04', value: 'val04', text: '사용자 지정' },
-];
+import { ProposalState } from '../../../shared/model';
 
 interface Props {
   totalCount: number
   searchSelectOptions: any[]
-  onChange: (e: any, data: any) => void
   searchState: any
   setContentsProvider: () => []
   defaultValue?: string
   targetProps?: string
   onSetCubeIntroPropsByJSON: (name: string, value: string) => void
+  onExcelDownloadClick: () => void
+  onSearchProposalStateChange: (searchState: ProposalState) => void
 }
 
 @reactAutobind
 @observer
 class ApprovalListPanelTopLineView extends React.Component<Props> {
-
-  state = {
-    approvalStatus : 'Submitted',
-  };
-
-  statusChange = (approvalStatus: any) => {
-    console.log(' approvalStatus :: ' + approvalStatus );
-
-    this.setState({
-      approvalStatus,
-    });
-  };
+  handleSearchProposalStateChange(e:any, data: any) {
+    const { onSearchProposalStateChange } = this.props;
+    onSearchProposalStateChange(data.value);
+  }
 
   render() {
     //
-    const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, totalCount, searchSelectOptions, onChange, searchState, setContentsProvider } = this.props;
-    const { approvalStatus } = this.state;
+    const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, onExcelDownloadClick, searchState, setContentsProvider } = this.props;
     const contentsProviderTsx = setContentsProvider();
-    
-    console.log('render approvalStatus ::' + approvalStatus);
-    console.log('render searchState ::' + searchState);
-    //console.log('render onSetCubeIntroPropsByJSON ::' + onSetCubeIntroPropsByJSON);
-    //console.log('render contentsProviderTsx ::' + contentsProviderTsx);
 
     return (
       <>
@@ -83,7 +47,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 name="radioGroup"
                 value="Submitted"
                 checked={searchState === 'Submitted'}
-                onChange={onChange}
+                onChange={this.handleSearchProposalStateChange}
               />
               <Radio
                 className="base"
@@ -91,7 +55,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 name="radioGroup"
                 value="Rejected"
                 checked={searchState === 'Rejected'}
-                onChange={onChange}
+                onChange={this.handleSearchProposalStateChange}
               />
               <Radio
                 className="base"
@@ -99,7 +63,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 name="radioGroup"
                 value="Approved"
                 checked={searchState === 'Approved'}
-                onChange={onChange}
+                onChange={this.handleSearchProposalStateChange}
               />
             </div>
           </div>
@@ -117,7 +81,7 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                       </Button>
                     )}
                   />
-                  < ApprovalProcessModal
+                  <ApprovalProcessModal
                     trigger={(
                       <Button icon className="left post approval">
                         <Icon className="approval"/> 승인
@@ -126,7 +90,11 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                   />
                 </>
                 }
-
+                <span className="excel-wrap">
+                  <Button icon className="left post excel-down" onClick={onExcelDownloadClick}>
+                    <Icon className="excel-down" /> 엑셀 다운로드
+                  </Button>
+                </span>
               </div>
             </div>
 

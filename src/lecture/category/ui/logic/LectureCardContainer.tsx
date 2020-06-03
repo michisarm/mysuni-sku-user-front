@@ -23,7 +23,6 @@ import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyRefer
 import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
 import { State as EnumState } from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
-import {OverviewField} from '../../../../personalcube';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
 interface Props {
@@ -73,6 +72,7 @@ class LectureCardContainer extends Component<Props, State> {
   applyReferenceModel: any = null;
   lectureLearningModal: any = null;
   prevViewObjectState: string = '';
+  selectedClassRoom: ClassroomModel | null = null;
 
   state = {
     rollBook: new RollBookModel(),
@@ -80,8 +80,6 @@ class LectureCardContainer extends Component<Props, State> {
     type: '',
     name: '',
     openLearningModal: false,
-    classroomId: '',
-    approvalProcess: false,
   };
 
 
@@ -128,10 +126,13 @@ class LectureCardContainer extends Component<Props, State> {
 
     const { viewObject } = this.props;
 
-    // 차수 선택시 id 값
-    this.state.classroomId = classroom.id;
+    // 선택 차수
+    this.selectedClassRoom = classroom;
+
+    /*// 차수 선택시 id 값
+    this.selectedClassroomId = classroom.id;
     // 차수 선택시 무료(true) 유료(false) 여부
-    this.state.approvalProcess = classroom.freeOfCharge.approvalProcess;
+    this.state.approvalProcess = classroom.freeOfCharge.approvalProcess;*/
 
     const operatorName = viewObject.operatorName;
     const operatorEmail = viewObject.operatorEmail;
@@ -148,7 +149,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (student && student.id) {
 
       // 수강신청(true), 유료여부(false), 승인 체크(true)
-      if( classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
+      if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true)) {
         studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
@@ -188,15 +189,16 @@ class LectureCardContainer extends Component<Props, State> {
 
   registerStudentApprove(studentCdo: StudentCdoModel) {
     // 차수선택 시 id, freeOfCharge 값 전달
+    if (this.selectedClassRoom == null) return;
 
     // 차수 선택 시 ID 값
-    studentCdo.classroomId = this.state.classroomId;
+    studentCdo.classroomId = this.selectedClassRoom!.id;
     // 차수 선택시 무료(true) 유료(false) 여부
-    studentCdo.approvalProcess = this.state.approvalProcess;
+    studentCdo.approvalProcess = this.selectedClassRoom!.freeOfCharge.approvalProcess;
 
     const { studentService, lectureCardId, init } = this.props;
 
-    return studentService!.registerStudent(studentCdo)
+    studentService!.registerStudent(studentCdo)
       .then(() => {
         studentService!.findStudentByRollBookId(studentCdo.rollBookId);
         studentService!.findIsJsonStudentByCube(lectureCardId);
@@ -428,11 +430,13 @@ class LectureCardContainer extends Component<Props, State> {
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
-    studentCdo.leaderEmails = [member.email];
-    studentCdo.url = 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname;
-
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
-    this.registerStudentApprove({ ...studentCdo, rollBookId, proposalState });
+    this.registerStudentApprove({ ...studentCdo,
+      rollBookId,
+      proposalState,
+      leaderEmails: [member.email],
+      url: 'https://int.mysuni.sk.com/login?contentUrl=' + window.location.pathname,
+    });
   }
 
   // 무료과정 등록
@@ -735,35 +739,18 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
-    const { classroom, classrooms } = this.props.classroomService!;
+    const { classrooms } = this.props.classroomService!;
 
     let state: SubState | undefined;
     let enrollingAvailable: boolean = false;
-    let freeOfCharge: boolean = false;
     let approvalProcess: boolean = false;
 
     const index = classrooms.map(classrooma => classrooma.round).findIndex(round => round);
     if (index >= 0 && classrooms) {
       enrollingAvailable = classrooms[index].enrolling.enrollingAvailable;
-      freeOfCharge = classrooms[index].freeOfCharge.freeOfCharge;
       approvalProcess = classrooms[index].freeOfCharge.approvalProcess;
     }
-
-
-    // const enrollingAvailableChk  =  classroom.enrolling.enrollingAvailable;
-    // const approvalProcessChk = classroom.freeOfCharge.freeOfCharge;
-    // const approvalProcessChk = classroom.freeOfCharge.approvalProcess;
-
-    const enrollingAvailableChk = enrollingAvailable;
-    const freeOfChargeChk = freeOfCharge;
-    const approvalProcessChk = approvalProcess;
-
-    let approvalChk = 'N';
-    if(enrollingAvailableChk === true && (freeOfChargeChk === false) && (approvalProcessChk === true) ) {
-      approvalChk = 'Y';
-    }
-
-    const approvalClassChk = approvalChk;
+    const approvalClassChk = (enrollingAvailable === true && (approvalProcess === true))?'Y':'N'; // 2020.06.02 유무료 조건 배제
 
     return (
       <LectureCardContentWrapperView>

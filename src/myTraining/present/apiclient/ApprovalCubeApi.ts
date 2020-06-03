@@ -1,15 +1,11 @@
 
-import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
+import { axiosApi as axios } from '@nara.platform/accent';
 
-import { OffsetElementList, CubeState, ProposalState } from '../../../shared/model';
+import { OffsetElementList, ProposalState } from '../../../shared/model';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { ApprovedResponse } from '../../model/ApprovedResponse';
 
-import { PersonalCubeCdoModel } from '../../model/PersonalCubeCdoModel';
-import LectureApprovalRdo from '../../model/LectureApprovalRdo';
 import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
-import { IdNameApproval } from '../../../shared/model/IdNameApproval';
-// import { NameValueListApproval } from '../../../shared/model/NameValueListApproval';
 
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 
@@ -21,9 +17,6 @@ export default class ApprovalCubeApi {
 
   lectureApprovalURL = this.devUrl + '/api/lecture/studentApproval';
   // baseUrl = this.devUrl + '/api/lecture/studentApproval';
-
-  baseUrlApproved = this.devUrl + '/api/lecture/studentApproval/requestOpen';
-  baseUrlRejected = this.devUrl + '/api/lecture/studentApproval/requestReject';
 
   static convertOffsetElementList(response: any): OffsetElementList<ApprovalCubeModel> {
     //
@@ -37,47 +30,19 @@ export default class ApprovalCubeApi {
   }
 
   // Query
-  findApprovalCubesForSearch(offset: number, limit: number, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+  findApprovalCubesForSearch(offset: number, limit: number, orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
     //
-    console.log('ApprovalCubeApi findApprovalCubesForSearch offset ::' + offset);
-    console.log('ApprovalCubeApi findApprovalCubesForSearch limit ::' + limit);
-    console.log('ApprovalCubeApi findApprovalCubesForSearch proposalState ::' + proposalState);
-    console.log('ApprovalCubeApi findApprovalCubesForSearch lectureCardId ::' + approvalCube?.lectureCardId);
+    const lectureCardId = approvalCube?.lectureCardId || '';
+    const params = {
+      offset,
+      limit,
+      orderBy,
+      proposalState,
+      lectureCardId,
+    };
 
-    const lectureCardIdStr = approvalCube?.lectureCardId;
-
-    // undefined 처리
-    if ( typeof lectureCardIdStr === 'undefined' ) {
-      console.log('ApprovalCubeApi if lectureCardIdStr ::' + lectureCardIdStr);
-      //
-      const params = {
-        offset,
-        limit,
-        proposalState,
-      };
-
-      console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
-
-      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-        .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
-    } else {
-      const lectureCardId = lectureCardIdStr;
-      console.log('ApprovalCubeApi else lectureCardId ::' + lectureCardId);
-
-      //
-      const params = {
-        offset,
-        limit,
-        proposalState,
-        lectureCardId,
-      };
-
-      console.log('ApprovalCubeApi params.proposalState :: ' + params.proposalState);
-      console.log('ApprovalCubeApi params.lectureCardId :: ' + params.lectureCardId);
-
-      return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
-        .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
-    }
+    return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
+      .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
 
   }
 
@@ -88,33 +53,22 @@ export default class ApprovalCubeApi {
   }
 
   findApprovalCube(studentId: string) {
-    console.log('ApprovalCubeApi findApprovalCube studentId ::' + studentId);
     //
     return axios.get<ApprovalCubeModel>(this.lectureApprovalURL + `/${studentId}`)
       .then(response => response && response.data || null);
   }
 
-  findFileBox(depotIds: string) {
-    //
-    return axios.get<string>(this.lectureApprovalURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
-      .then(response => response && response.data || null);
-  }
-
   findLectureApprovalSelect() {
-    console.log('findLectureApprovalSelect ::');
-
     return axios.get<ContentsProviderModel[]>(this.lectureApprovalURL + '/lectures')
       .then(response => response && Array.isArray(response.data) && response.data || []);
   }
 
   studentRequestOpen(studentRequestCdo: StudentRequestCdoModel) {
-        
     return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestOpen', studentRequestCdo)
       .then(response => response && response.data || null);
   }
 
   studentRequestReject(studentRequestCdo: StudentRequestCdoModel) {
-        
     return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestReject', studentRequestCdo)
       .then(response => response && response.data || null);
   }
