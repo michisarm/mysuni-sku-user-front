@@ -135,14 +135,8 @@ class LectureCardContainer extends Component<Props, State> {
     // 차수 선택시 무료(true) 유료(false) 여부
     this.state.approvalProcess = classroom.freeOfCharge.approvalProcess;*/
 
-    const operatorName = viewObject.operatorName;
-    const operatorEmail = viewObject.operatorEmail;
-
     // 알림 메시지
-    const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
-      ' 담당자에게 연락 부탁 드립니다.' +
-      '<br> - 담당자 성명 : ' + operatorName +
-      '<br> - 담당자 이메일 : ' + operatorEmail;
+    const messageStr = '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 ''Learning>학습예정''에서 확인하실 수 있습니다.';
 
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
@@ -208,6 +202,11 @@ class LectureCardContainer extends Component<Props, State> {
         studentService!.findStudentCount(studentCdo.rollBookId);
         if (init) init();
       });
+
+    // 알림 메시지
+    const messageStr = '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 ''Learning>학습예정''에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
