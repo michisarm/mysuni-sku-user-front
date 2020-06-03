@@ -166,9 +166,8 @@ class MyApprovalListContainer extends React.Component<Props> {
   }
 
   handleSearchProposalStateChange(proposalState: ProposalState) {
-
-    const { history, pageService, approvalCubeService } = this.props;
-    const currentPageNo = this.props.match.params.pageNo;
+    const { history, pageService, approvalCubeService, match } = this.props;
+    const currentPageNo = match.params.pageNo || 1;
 
     approvalCubeService!.clear();
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
@@ -180,6 +179,16 @@ class MyApprovalListContainer extends React.Component<Props> {
     }
   }
 
+  onChangeOrderBy(orderBy: string, desc: boolean = false) {
+    const { approvalCubeService, pageService } = this.props;
+    const { searchState } = approvalCubeService!;
+    this.orderBy = orderBy;
+
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    approvalCubeService!.clear();
+    this.findApprovalCubes(searchState);
+  }
+
   async onClickApprovalCubeRow(studentId: string) {
     //
     // const approvalCubeService = this.props.approvalCubeService!;
@@ -189,13 +198,6 @@ class MyApprovalListContainer extends React.Component<Props> {
     this.props.history.replace(routePaths.approvalCubesDetail(studentId));
 
     // window.location.href=`/my-training/my-page/ApprovalList/detail/${studentId}`;
-  }
-
-  onChangeOrderBy(orderBy: string, desc: boolean = false) {
-    const { approvalCubeService } = this.props;
-    const { searchState } = approvalCubeService!;
-    this.orderBy = orderBy;
-    this.findApprovalCubes(searchState, 1);
   }
 
   render() {
