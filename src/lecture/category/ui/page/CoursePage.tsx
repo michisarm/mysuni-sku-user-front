@@ -286,6 +286,7 @@ class CoursePage extends Component<Props, State> {
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
     let tabState: string = '';
+    let passedState: boolean = false;
 
     examId = coursePlanContents.testId || '';
     examTitle = this.state.examTitle || '';
@@ -310,6 +311,10 @@ class CoursePage extends Component<Props, State> {
         if (student.learningState === LearningState.Progress) state = SubState.InProgress;
         if (student.learningState === LearningState.Passed) state = SubState.Completed;
         if (student.learningState === LearningState.Missed) state = SubState.Missed;
+      }
+
+      if (student && student.learningState === LearningState.Passed) {
+        passedState = true;
       }
 
       // if (student.learningState === LearningState.Progress) {
@@ -351,6 +356,7 @@ class CoursePage extends Component<Props, State> {
       surveyState,
       surveyCaseId,
       tabState,
+      passedState,
 
       fileBoxId: coursePlanContents.fileBoxId,
       reportFileBoxId,

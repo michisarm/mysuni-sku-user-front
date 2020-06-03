@@ -139,6 +139,7 @@ class CourseLectureContainer extends Component<Props, State> {
       reportFileId: '',
       surveyState: false,
       surveyTitle: '',
+      passedState: false,
       type: '',
       name: '',
       isContent: false,
@@ -594,6 +595,11 @@ class CourseLectureContainer extends Component<Props, State> {
   }
 
   setExamState(studentData: any) {
+
+    if (studentData && studentData.learningState === LearningState.Passed) {
+      this.state.passedState = true;
+    }
+
     this.setStateName('1', 'Test');
     // console.log('setExamState : ', studentData);
     if (studentData) {
@@ -776,6 +782,7 @@ class CourseLectureContainer extends Component<Props, State> {
               onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
               OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
               viewObject={this.viewObject}
+              passedState={this.state.passedState}
               type={this.state.type}
               name={this.state.name}
             />
