@@ -109,7 +109,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
   @computed
   get timeStrByState() {
     if (this.proposalState) {
-      if (this.proposalState === ProposalState.Submitted) return '';
+      if (this.proposalState === ProposalState.Submitted) {
+          return moment(Number(this.time)).format('YYYY.MM.DD') + ' 승인 요청';
+      }
       if (this.proposalState === ProposalState.Approved) {
         if (!this.learningState && this.startDate) {
           return moment(Number(this.startDate)).format('YYYY.MM.DD') + ' 부터 학습시작';
