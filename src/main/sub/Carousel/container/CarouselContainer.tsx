@@ -32,11 +32,11 @@ class CarouselContainer extends Component<Props, State> {
   banners = [
     {
       type: ContentType.LinkContent,
-      title: <>이번 주 새로운 컨텐츠를 소개 드립니다.</>,
+      title: <>이번 주 새로운 콘텐츠를 소개 드립니다.</>,
       description: (
         <>
-          구성원 Deep Change 역량향상에 도움이 되는 Timely한 컨텐츠 제공을 약속 드립니다.<br />
-          갓 오픈한 따끈따끈한, 컨텐츠 지금 만나보실까요?<br/><br/>
+          구성원 Deep Change 역량향상에 도움이 되는 Timely한 콘텐츠 제공을 약속 드립니다.<br />
+          갓 오픈한 따끈따끈한, 콘텐츠 지금 만나보실까요?<br/><br/>
           <span className="link-tag">바로가기</span>
         </>
       ),
