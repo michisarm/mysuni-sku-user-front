@@ -342,6 +342,7 @@ class MyLearningPage extends Component<Props, State> {
           count={page && page.totalCount || 0}
           channels={channels}
           onFilter={this.onFilter}
+          currentTab={this.props.match.params.tab}
         />
 
         <Lecture.Group type={cardType}>

@@ -18,6 +18,7 @@ interface Props {
   OnSurveyNotReady?: () => void
 
   viewObject?: any
+  passedState: boolean
   type?: string
   name?: string
 }
@@ -27,7 +28,7 @@ class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, type, name } = this.props;
+    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name } = this.props;
 
     return (
       <div className="contents trs-box-wrap non-height">
@@ -35,6 +36,7 @@ class LectureExamContainer extends Component<Props> {
           OnReport={onReport}
           onReportNotReady={onReportNotReady}
           viewObject={viewObject}
+          passedState={passedState}
           type={type}
           name={name}
         />

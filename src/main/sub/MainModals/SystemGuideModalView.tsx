@@ -22,7 +22,7 @@ class SystemGuideModalView extends Component<Props> {
   render() {
     //
     const { modalState, onClose, onCheckDisable } = this.props;
-    // 20200527 동영상 학습 시간 줄어든 현상 관련 팝업 안내 
+    // 20200527 동영상 학습 시간 줄어든 현상 관련 팝업 안내
     return (
       <Modal className="w824 base" open={modalState.open}>
         <Modal.Content>
@@ -31,28 +31,27 @@ class SystemGuideModalView extends Component<Props> {
               <div className="system-message">
                 <div className="tit">
                   <Icon className="sk-university-login" />
-                  <span className="blind">mySUNI</span> 시스템 안내
+                  <span className="blind">(재공지) mySUNI</span> 시스템 안내
                 </div>
                 <div className="box1">
                   <div>안녕하세요. mySUNI 시스템 개발 담당자입니다.</div>
-                  먼저 그동안 시스템 불안정으로 인해 불편을 드려 죄송합니다.<br />
-                  가장 기본이 되는 시스템 속도, 안정적인 동영상 표출 및 학습상태 관리(완료처리) 기능 중에서<br />
-                  현재 일부 관계사의 동영상 학습 불안정성(끊김)을 제외하고는<br />
-                  금일(5월 27일)부로 대부분 조치 되었습니다.<br />
-                  <br />
-                  그 중 학습상태를 처리를 원활하게 하기 위해 데이터 최적화 작업을 진행했고,<br />
-                  일부 구성원들의 총 학습시간 정보가 기존과 다르게 표시되고 있습니다.<br />
-                  이에 대한 구성원 여러분의 이해를 구하고자 합니다. 나타나는 현상은 다음과 같습니다.
+                  먼저 기 공지한 내역 중 학습 컨텐츠의 학습 이수시간 반영 정상화 관련
+                  모든 경우에 대해 깔끔하게 처리를 하지 못하여
+                  일부 구성원들 여러분들의 총 학습시간 정보가 잘못 반영된 점에 대해 죄송하다는 말씀을 드립니다.<br/>
+                  이에 추가 처리 방안을 재공지 드립니다.<br/>
                 </div>
                 <div className="box2">
-                  <div>1. 학습 시간이 기존보다 줄어든 경우</div>
+                  <div>1. 기&quot;학습완료&quot;나 &quot;학습중&quot; 목록에 중복으로 Count 된 경우 </div>
                   <ul>
-                    <li>- 기존의 학습 데이터 중 일부 학습 컨텐츠들이<br />학습완료나 학습중 목록에 중복으로 Count되어 정상 조치<br />(원인 : 실제 데이터 중복의 경우와 시스템 기능 오류)</li>
-                    <li>- 학습상태 관리 기능 정상화 후 학습시간 계산 후에는<br />중복 계산된 학습시간만큼 줄어든 현상이 발생합니다.</li>
+                    <li>- 5월 27일 12:30 중복된 시간 제거 처리 완료</li>
                   </ul>
-                  <div>2. 학습시간이 기존보다 늘어난 경우</div>
+                  <div>2. 실제 학습 시간 미반영건(기 학습한 동영상의 변경, 추가 학습 인정 시간 누락)</div>
                   <ul>
-                    <li>- 기존에 학습완료 처리가 되지 못했던 학습 컨텐츠들에 대한<br />학습완료 기능 정상 작동 후 해당 학습시간이 반영되면서 증가</li>
+                    <li>- 5월 28일 20시 학습시간 추가 반영 완료</li>
+                  </ul>
+                  <div>3. 학습을 완료하였으나, &quot;학습완료&quot; 처리가 되지 않은 경우</div>
+                  <ul>
+                    <li>- 학습완료 기능 정상화로 처리 완료</li>
                   </ul>
                 </div>
                 <div className="box3">

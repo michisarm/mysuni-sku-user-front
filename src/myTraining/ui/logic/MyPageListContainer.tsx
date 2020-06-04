@@ -189,6 +189,7 @@ class MyPageListContainer extends Component<Props, States> {
           count={page && page.totalCount || 0}
           channels={channels}
           onFilter={this.onFilter}
+          currentTab={this.props.match.params.tab}
         />
 
         <Lecture.Group type={Lecture.GroupType.ListStamp}>

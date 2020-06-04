@@ -163,6 +163,7 @@ decorate(MyTrainingModel, {
   studentCount: observable,
   passedStudentCount: observable,
   baseUrl: observable,
+  endDate: observable,
 });
 
 export default MyTrainingModel;
