@@ -121,10 +121,6 @@ class LinkedInModalContainer extends Component<Props, State> {
                       학습이력이 <span className="red">LinkedIn profile에 통합 관리</span>됩니다.
                     </div>
                   </li>
-                  <li>
-                    <div className="text1">&#8251; 학습완료에 따른 시간 매주 수요일과 금요일 반영처리 됩니다.
-                    </div>
-                  </li>
                 </ul>
                 <div className="img-box">
                   <ul>
