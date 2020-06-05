@@ -28,6 +28,10 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   targetProps?: string
 }
 
+interface Stats {
+  lectureOptions: any []
+}
+
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'shared.pageService',
@@ -40,6 +44,10 @@ class MyApprovalListContainer extends React.Component<Props> {
   //
   PAGE_KEY = 'Submitted';
   PAGE_SIZE = 20;
+
+  state = {
+    lectureOptions: [],
+  };
 
   componentDidMount() {
     //
@@ -56,7 +64,7 @@ class MyApprovalListContainer extends React.Component<Props> {
       approvalCubeService!.clear();
       this.findApprovalCubes(searchState, this.getPageNo() - 1);
     }
-
+    this.findLectureApprovalSelect();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
@@ -79,9 +87,6 @@ class MyApprovalListContainer extends React.Component<Props> {
       }
       this.findApprovalCubes(searchState, this.getPageNo() - 1);
     }
-
-    this.findLectureApprovalSelect();
-
   }
 
   componentWillUnmount(): void {
@@ -99,17 +104,36 @@ class MyApprovalListContainer extends React.Component<Props> {
   async findApprovalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
     //
     const { pageService, approvalCubeService } = this.props;
-    const { approvalCube, searchOrderBy } = approvalCubeService!;
+    const { approvalCube, searchOrderBy, searchStartDate } = approvalCubeService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube);
+    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube, searchStartDate);
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
   findLectureApprovalSelect() {
     //
     const { approvalCubeService } = this.props;
-    approvalCubeService!.findLectureApprovalSelect();
+    approvalCubeService!.findLectureApprovalSelect()
+      .then(lectures => {
+        const lectureOptions = [];
+        lectureOptions.push(
+          {
+            key: '',
+            text: '전체과정',
+            value: '',
+          });
+
+        const options = lectures.map(lecture =>
+          ({
+            key: lecture.id,
+            text: lecture.name,
+            value: lecture.id,
+          })
+        );
+
+        this.setState({ lectureOptions: lectureOptions.concat(options) });
+      });
   }
 
   onSetCubeIntroPropsByJSON(name: string, value: string) {
@@ -133,31 +157,9 @@ class MyApprovalListContainer extends React.Component<Props> {
     }
   }
 
-  setContentsProvider() {
-    const selectContentsProviderType: any = [];
-    const { contentsProviders } = this.props.approvalCubeService!;
-
-    selectContentsProviderType.push(
-      {
-        key: '',
-        text: '전체과정',
-        value: '',
-      });
-
-    contentsProviders.map((contentsProvider) => {
-      selectContentsProviderType.push(
-        {
-          key: contentsProvider.id,
-          text: contentsProvider.name,
-          value: contentsProvider.id,
-        });
-    });
-    return selectContentsProviderType;
-  }
-
   onClickSeeMore() {
     //
-    const { actionLogService, history, approvalCubeService } = this.props;
+    const { actionLogService, history } = this.props;
 
     actionLogService?.registerClickActionLog({ subAction: 'list more' });
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
@@ -181,6 +183,16 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { approvalCubeService, pageService } = this.props;
     const { searchState } = approvalCubeService!;
     approvalCubeService!.changeSearchOrderBy(orderBy);
+
+    pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+    approvalCubeService!.clear();
+    this.findApprovalCubes(searchState);
+  }
+
+  onSearchStartDateChange(startDate: number) {
+    const { approvalCubeService, pageService } = this.props;
+    const { searchState } = approvalCubeService!;
+    approvalCubeService!.changeSearchStartDate(startDate);
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     approvalCubeService!.clear();
@@ -220,6 +232,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     const { approvalCubeOffsetList, searchState, searchOrderBy } = this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
     const { defaultValue, targetProps } = this.props;
+    const { lectureOptions } = this.state;
 
     return (
       <div className="confirm-list-wrap">
@@ -230,9 +243,10 @@ class MyApprovalListContainer extends React.Component<Props> {
           defaultValue={defaultValue}
           targetProps={targetProps}
           onSetCubeIntroPropsByJSON={this.onSetCubeIntroPropsByJSON}
-          setContentsProvider={this.setContentsProvider}
+          lectures={lectureOptions}
           onExcelDownloadClick={this.onExcelDownload}
           onSearchProposalStateChange={this.onSearchProposalStateChange}
+          onSearchStartDateChange={this.onSearchStartDateChange}
         />
 
         <ApprovalListView
