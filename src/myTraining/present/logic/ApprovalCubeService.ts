@@ -35,10 +35,16 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
+  searchOrderBy: string = '';
+
+  @observable
   contentsProvider: ContentsProviderModel = new ContentsProviderModel();
 
   @observable
   contentsProviders: ContentsProviderModel[] = [];
+
+  @observable
+  approvalCubesExcelWrite: ApprovalCubeModel[] = [];
 
   constructor(approvalCubeApi: ApprovalCubeApi) {
     //
@@ -143,10 +149,26 @@ export default class ApprovalCubeService {
   }
 
   @action
+  changeSearchOrderBy(orderBy: string) {
+    //
+    this.searchOrderBy = orderBy;
+  }
+
+  @action
   async findLectureApprovalSelect() {
     //
     const contentsProviders = await this.approvalCubeApi.findLectureApprovalSelect();
     return runInAction(() => this.contentsProviders = contentsProviders);
+  }
+
+  @action
+  async findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+    //
+    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(orderBy, proposalState, approvalCube);
+
+    return runInAction(() => {
+      this.approvalCubesExcelWrite = approvalCubes || [];
+    });
   }
 }
 

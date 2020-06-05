@@ -43,7 +43,20 @@ export default class ApprovalCubeApi {
 
     return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
       .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
+  }
 
+
+  findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+    //
+    const lectureCardId = approvalCube?.lectureCardId || '';
+    const params = {
+      orderBy,
+      proposalState,
+      lectureCardId,
+    };
+
+    return axios.get<ApprovalCubeModel[]>(this.lectureApprovalURL + `/excel`, { params })
+      .then(response => response && response.data || null);
   }
 
   findPersonalCube(personalCubeId: string) {
@@ -72,6 +85,7 @@ export default class ApprovalCubeApi {
     return axios.post<ApprovedResponse>(this.lectureApprovalURL + '/requestReject', studentRequestCdo)
       .then(response => response && response.data || null);
   }
+
 
 }
 

@@ -77,24 +77,20 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                   <ApprovalProcessModalRejected
                     trigger={(
                       <Button icon className="left post return">
-                        <Icon className="return"/> 반려
+                        <Icon className="return" /> 반려
                       </Button>
                     )}
                   />
                   <ApprovalProcessModal
                     trigger={(
                       <Button icon className="left post approval">
-                        <Icon className="approval"/> 승인
+                        <Icon className="approval" /> 승인
                       </Button>
                     )}
                   />
                 </>
                 }
-                <span className="excel-wrap">
-                  <Button icon className="left post excel-down" onClick={onExcelDownloadClick}>
-                    <Icon className="excel-down" /> 엑셀 다운로드
-                  </Button>
-                </span>
+                <ExcelDownloadButton splitter={searchState === 'Submitted'} onClick={ onExcelDownloadClick } />
               </div>
             </div>
 
@@ -113,6 +109,26 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
     );
   }
 
+}
+
+interface ExcelDownloadButtonProps {
+  splitter: boolean
+  onClick: () => void
+}
+function ExcelDownloadButton(props:ExcelDownloadButtonProps ) {
+  const { onClick, splitter = false } = props;
+  function renderDownloadButton() {
+    return (
+      <Button icon className="left post excel-down" onClick={onClick}>
+        <Icon className="excel-down" /> 엑셀 다운로드
+      </Button>
+    );
+  }
+  return splitter ? (
+    <span className="excel-wrap">
+      {renderDownloadButton()}
+    </span>
+  ) : renderDownloadButton();
 }
 
 export default ApprovalListPanelTopLineView;

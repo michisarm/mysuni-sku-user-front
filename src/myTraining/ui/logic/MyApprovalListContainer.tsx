@@ -5,6 +5,8 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
 import { RouteComponentProps, withRouter } from 'react-router';
+import XLSX from 'xlsx';
+import moment from 'moment';
 
 import { ProposalState } from 'shared/model';
 import { ActionLogService, PageService } from 'shared/stores';
@@ -15,6 +17,8 @@ import routePaths from '../../routePaths';
 import SelectType from '../model/SelectOptions';
 import ApprovalListPanelTopLineView from '../view/ApprovalListPanelTopLineView';
 import ApprovalListView from '../view/ApprovalListView';
+import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
+import { ApprovalCubeXlsxModel } from '../../model/ApprovalCubeXlsxModel';
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   actionLogService?: ActionLogService,
@@ -36,7 +40,6 @@ class MyApprovalListContainer extends React.Component<Props> {
   //
   PAGE_KEY = 'Submitted';
   PAGE_SIZE = 20;
-  orderBy:string = '';
 
   componentDidMount() {
     //
@@ -96,11 +99,10 @@ class MyApprovalListContainer extends React.Component<Props> {
   async findApprovalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
     //
     const { pageService, approvalCubeService } = this.props;
-    const { orderBy } = this;
-    const { approvalCube } = approvalCubeService!;
+    const { approvalCube, searchOrderBy } = approvalCubeService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, orderBy, proposalState, approvalCube);
+    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube);
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
@@ -161,11 +163,7 @@ class MyApprovalListContainer extends React.Component<Props> {
     history.replace(routePaths.currentPage(this.getPageNo() + 1));
   }
 
-  handleExcelDownload() {
-
-  }
-
-  handleSearchProposalStateChange(proposalState: ProposalState) {
+  onSearchProposalStateChange(proposalState: ProposalState) {
     const { history, pageService, approvalCubeService, match } = this.props;
     const currentPageNo = match.params.pageNo || 1;
 
@@ -182,7 +180,7 @@ class MyApprovalListContainer extends React.Component<Props> {
   onChangeOrderBy(orderBy: string, desc: boolean = false) {
     const { approvalCubeService, pageService } = this.props;
     const { searchState } = approvalCubeService!;
-    this.orderBy = orderBy;
+    approvalCubeService!.changeSearchOrderBy(orderBy);
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     approvalCubeService!.clear();
@@ -191,18 +189,35 @@ class MyApprovalListContainer extends React.Component<Props> {
 
   async onClickApprovalCubeRow(studentId: string) {
     //
-    // const approvalCubeService = this.props.approvalCubeService!;
     const { history } = this.props;
+    history.replace(routePaths.approvalCubesDetail(studentId));
+  }
 
-    // approvalCubeService!.clear();
-    this.props.history.replace(routePaths.approvalCubesDetail(studentId));
+  onExcelDownload() {
+    //
+    const { approvalCubeService } = this.props;
+    const { searchState, approvalCube, searchOrderBy } = approvalCubeService!;
 
-    // window.location.href=`/my-training/my-page/ApprovalList/detail/${studentId}`;
+    approvalCubeService!.findApprovalCubesForExcel(searchOrderBy, searchState, approvalCube)
+      .then(() => {
+        const { approvalCubesExcelWrite } = approvalCubeService!;
+        const wbList: ApprovalCubeXlsxModel[] = [];
+        approvalCubesExcelWrite.map((approvalCube, index: number) => {
+          wbList.push(ApprovalCubeModel.asXLSX(approvalCube, index));
+        });
+        const studentExcel = XLSX.utils.json_to_sheet(wbList);
+        const wb = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(wb, studentExcel, 'ApprovalCubes');
+
+        const datetime = moment(new Date().getTime()).format('YYYY.MM.DD_hh_mm_ss');
+        XLSX.writeFile(wb, `${ApprovalCubeModel.getProposalStateName(searchState)}_${datetime}.xlsx`);
+      });
   }
 
   render() {
     //
-    const { approvalCubeOffsetList, searchState } = this.props.approvalCubeService!;
+    const { approvalCubeOffsetList, searchState, searchOrderBy } = this.props.approvalCubeService!;
     const { totalCount, results: approvalCubes } = approvalCubeOffsetList;
     const { defaultValue, targetProps } = this.props;
 
@@ -216,8 +231,8 @@ class MyApprovalListContainer extends React.Component<Props> {
           targetProps={targetProps}
           onSetCubeIntroPropsByJSON={this.onSetCubeIntroPropsByJSON}
           setContentsProvider={this.setContentsProvider}
-          onExcelDownloadClick={this.handleExcelDownload}
-          onSearchProposalStateChange={this.handleSearchProposalStateChange}
+          onExcelDownloadClick={this.onExcelDownload}
+          onSearchProposalStateChange={this.onSearchProposalStateChange}
         />
 
         <ApprovalListView
@@ -225,6 +240,7 @@ class MyApprovalListContainer extends React.Component<Props> {
           totalCount={totalCount}
           handleClickCubeRow={this.onClickApprovalCubeRow}
           onChangeOrderBy={this.onChangeOrderBy}
+          orderBy={searchOrderBy}
           searchState={searchState}
         />
 

@@ -2,14 +2,24 @@
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
+import moment from 'moment';
+import numeral from 'numeral';
 
-import { CategoryModel, CreatorModel, CubeState, IconBoxModel, IdName, NameValueList, SearchFilterType } from 'shared/model';
+import {
+  CategoryModel,
+  CreatorModel,
+  CubeState,
+  IconBoxModel,
+  IdName,
+  SearchFilterType,
+} from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
-import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
 import { FreeOfChargeModel } from './FreeOfChargeModel';
 import { EnrollingModel } from './EnrollingModel';
 import { OperationModel } from './OperationModel';
+import { ApprovalCubeXlsxModel } from './ApprovalCubeXlsxModel';
+
 
 export class ApprovalCubeModel implements DramaEntity {
   //
@@ -57,7 +67,7 @@ export class ApprovalCubeModel implements DramaEntity {
   lectureCardId: string = '';
   cubeType: string = '';
   proposalState: string = '';
-
+  learningState: string = '';
 
   constructor(approvalCube?: ApprovalCubeModel) {
     if (approvalCube) {
@@ -80,143 +90,55 @@ export class ApprovalCubeModel implements DramaEntity {
     }
   }
 
-  static getBlankRequiredField(approvalCubeModel: ApprovalCubeModel) : string {
+  public static getProposalStateName(proposalState: string) {
     //
-    if (!approvalCubeModel.category.channel.name) return '메인채널';
-    if (!approvalCubeModel.subCategories.length) return '서브채널';
-    if (!approvalCubeModel.name) return '강좌정보';
-    if (approvalCubeModel.tags.length > 10) return '태그는 10개까지 입력 가능합니다.';
-    if (approvalCubeModel.contents.type === 'None') return '교육형태';
-    if (approvalCubeModel.subsidiaries.length < 1) return '관계사 공개 범위';
-    return 'success';
+    if (!proposalState) { return ''; }
+
+    if (proposalState === 'Approved') {
+      return '승인';
+    } else if (proposalState === 'Submitted') {
+      return '승인요청';
+    } else if (proposalState === 'Rejected') {
+      return '반려';
+    }
+    return proposalState;
   }
 
-  static asNameValues(cube: ApprovalCubeModel): NameValueList {
-    const asNameValues = {
-      nameValues: [
-        {
-          name: 'name',
-          value: cube.name,
-        },
-        {
-          name: 'category',
-          value: JSON.stringify(cube.category),
-        },
-        {
-          name: 'subCategories',
-          value: JSON.stringify(cube.subCategories),
-        },
-        {
-          name: 'contents',
-          value: JSON.stringify(cube.contents),
-        },
-        {
-          name: 'iconBox',
-          value: JSON.stringify(cube.iconBox),
-        },
-        {
-          name: 'tags',
-          value: JSON.stringify(cube.tags),
-        },
-        {
-          name: 'openRequests',
-          value: JSON.stringify(cube.openRequests),
-        },
-        {
-          name: 'subsidiaries',
-          value: JSON.stringify(cube.subsidiaries),
-        },
-        {
-          name: 'requiredSubsidiaries',
-          value: JSON.stringify(cube.subsidiaries),
-        },
-        {
-          name: 'cubeState',
-          value: cube.cubeState,
-        },
-        {
-          name: 'searchFilter',
-          value: cube.searchFilter,
-        },
-      ],
-    };
+  public static getLearningStateName(learningState: string) {
+    //
+    if (!learningState) { return ''; }
 
-    return asNameValues;
+    if (learningState === 'Progress') {
+      return '결과처리 대기';
+    } else if (learningState === 'Waiting') {
+      return '결과처리 대기';
+    } else if (learningState === 'Passed') {
+      return '이수';
+    } else if (learningState === 'Missed') {
+      return '미이수';
+    } else if (learningState === 'NoShow') {
+      return '불참';
+    }
+    return '';
   }
 
-  static makeChannelsMap(channelList: CategoryModel[]) {
-    const channelListMap = new Map<string, string[]>();
-
-    channelList.map(channel => {
-      if (!channelListMap.get(channel.college.name)) {
-        channelListMap.set(channel.college.name, [channel.channel.name]);
-      } else {
-        const channelList = channelListMap.get(channel.college.name);
-        if (channelList) {
-          channelList.push(channel.channel.name);
-          channelListMap.set(channel.college.name, channelList);
-        }
-      }
-    });
-    return channelListMap;
-  }
-
-  static makeChannelsIdNameMap(channelList: CategoryModel[]) {
-    const channelListMap = new Map<IdName, IdName[]>();
-
-    channelList.map(channel => {
-      if (!channelListMap.get(channel.college)) {
-        channelListMap.set(channel.college, [channel.channel]);
-      } else {
-        const channelList = channelListMap.get(channel.college);
-        if (channelList) {
-          channelList.push(channel.channel);
-          channelListMap.set(channel.college, channelList);
-        }
-      }
-    });
-    return channelListMap;
-  }
-
-  static asCdo(approvalCube: ApprovalCubeModel): PersonalCubeCdoModel {
+  static asXLSX(approvalCube: ApprovalCubeModel, index: number): ApprovalCubeXlsxModel {
     //
     return (
       {
-        audienceKey: 'r2p8-r@nea-m5-c5',
-        name: approvalCube.name,
-        category: approvalCube.category,
-        subCategories: approvalCube.subCategories,
-        iconBox: approvalCube.iconBox,
-        creator: approvalCube.creator,
-        searchFilter: approvalCube.searchFilter,
-        subsidiaries: approvalCube.subsidiaries,
-        requiredSubsidiaries: approvalCube.subsidiaries,
-        contents: approvalCube.contents,
-        cubeIntro: approvalCube.cubeIntro && approvalCube.cubeIntro,
-        tags: approvalCube.tags,
-        cubeState: approvalCube.cubeState,
+        No: index + 1,
+        신청자: approvalCube.memberName,
+        조직: approvalCube.memberDepartment,
+        과정명: approvalCube.cubeName,
+        차수: approvalCube.round,
+        신청상태: ApprovalCubeModel.getProposalStateName(approvalCube.proposalState),
+        학습상태: ApprovalCubeModel.getLearningStateName(approvalCube.learningState),
+        신청현황: approvalCube.studentCount + '/' + approvalCube.capacity,
+        '(차수)교육기간': approvalCube.enrolling.learningPeriod.startDate + '~' + approvalCube.enrolling.learningPeriod.endDate,
+        신청일자: approvalCube.time && moment(approvalCube.time).format('YYYY.MM.DD'),
+        '인당 교육금액': numeral(approvalCube.freeOfCharge.chargeAmount).format('0,0'),
       }
     );
-  }
-
-  static getSubCategoriesGroupByCollege(approvalCube: ApprovalCubeModel): CategoryModel[][] {
-    //
-    const collegeMap: Map<string, CategoryModel[]> = new Map();
-    const subCategories = approvalCube.subCategories;
-
-    subCategories.map((subCategory) => {
-      //
-      const collegeChannels = collegeMap.get(subCategory.college.id);
-
-      if (collegeChannels) {
-        collegeChannels.push(subCategory);
-      }
-      else {
-        collegeMap.set(subCategory.college.id, [subCategory]);
-      }
-    });
-
-    return Array.from(collegeMap.values());
   }
 }
 
