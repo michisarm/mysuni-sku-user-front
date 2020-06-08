@@ -1,29 +1,31 @@
-import React, { Component } from 'react';
-import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import React, {Component} from 'react';
+import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, LearningState, ProposalState } from 'shared/model';
-import { MediaType } from 'personalcube/media/model';
-import { ClassroomModel } from 'personalcube/classroom/model';
-import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
-import { RollBookService, StudentService, LectureService } from 'lecture/stores';
-import { InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-import { AnswerSheetModal, CubeReportModal } from 'assistant';
-import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
-import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import LectureSubInfo, {State as SubState} from '../../../shared/LectureSubInfo';
+import {CubeType, ProposalState} from 'shared/model';
+import {MediaType} from 'personalcube/media/model';
+import {ClassroomModel} from 'personalcube/classroom/model';
+import {LectureServiceType, StudentCdoModel, StudentJoinRdoModel} from 'lecture/model';
+import {LectureService, RollBookService, StudentService} from 'lecture/stores';
+import {InMyLectureCdoModel} from 'myTraining/model';
+import {InMyLectureService} from 'myTraining/stores';
+import {AnswerSheetModal, CubeReportModal} from 'assistant';
+import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
+import {getYearMonthDateHourMinuteSecond} from 'shared/helper/dateTimeHelper';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureExam from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
-import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
-import { State as EnumState } from '../../../shared/LectureSubInfo/model';
+import {ApprovalMemberModel} from '../../../../approval/member/model/ApprovalMemberModel';
+import {State as EnumState} from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
+import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
+
 
 interface Props {
   studentService?: StudentService
@@ -77,6 +79,7 @@ class LectureCardContainer extends Component<Props, State> {
   state = {
     rollBook: new RollBookModel(),
     subTest: String,
+    passedState: false,
     type: '',
     name: '',
     openLearningModal: false,
@@ -245,6 +248,11 @@ class LectureCardContainer extends Component<Props, State> {
           if (init) init();
         });
     }
+  }
+
+  surveyCallback() {
+    const { init } = this.props;
+    if (init) init();
   }
 
   //
@@ -593,6 +601,8 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+    // console.log('viewObject : ', JSON.stringify(viewObject));
+    // console.log('student : ', JSON.stringify(student));
     if (viewObject && viewObject.reportFileBoxId && student && student.proposalState === ProposalState.Approved && student.learningState) {
       if (student.serviceType === 'Lecture') {
         if (student.studentScore.homeworkScore) {
@@ -602,6 +612,10 @@ class LectureCardContainer extends Component<Props, State> {
           });
         } else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
       }
+    }
+
+    if (student && student.learningState === LearningState.Passed) {
+      this.state.passedState = true;
     }
 
     this.setStateName('1', 'Test');
@@ -752,6 +766,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { classrooms } = this.props.classroomService!;
 
 
+    // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
       <LectureCardContentWrapperView>
@@ -817,7 +832,7 @@ class LectureCardContainer extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
-              // onSaveCallback={this.testCallback}
+              onSaveCallback={this.surveyCallback}
             />
           )
         }
@@ -856,6 +871,7 @@ class LectureCardContainer extends Component<Props, State> {
               onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
               OnSurveyNotReady={viewObject.surveyId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
+              passedState={this.state.passedState}
               type={this.state.type}
               name={this.state.name}
             />

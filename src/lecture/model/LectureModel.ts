@@ -46,6 +46,7 @@ class LectureModel extends DramaEntityObservableModel {
   updateTimeForTest: number = 0;
   updateTime: number = 0;
   viewState: string = '';
+  endDate: string = '';
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
@@ -190,6 +191,7 @@ decorate(LectureModel, {
   updateTime: observable,
   updateTimeForTest: observable,
   viewState: observable,
+  endDate: observable,
 });
 
 export default LectureModel;

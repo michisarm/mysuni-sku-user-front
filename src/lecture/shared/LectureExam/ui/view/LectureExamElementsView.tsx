@@ -5,14 +5,19 @@ interface ReportProps {
   OnReport?: () => void
   onReportNotReady?: () => void
   viewObject?: any
+  passedState?: boolean
   type?: string
   name?: string
 }
 
-export const Report = ({ OnReport, onReportNotReady, viewObject, type, name }: ReportProps) => {
+export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
   // console.log('Report viewObject : ', viewObject);
+  // if (passedState !== undefined) {
+  //   alert(passedState);
+  // }
+
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -25,37 +30,44 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, type, name }: R
       <div className="btn-area">
 
         {
-          type === '0' && (
+          passedState && (
+            <span className="state">제출완료</span>
+            // <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+          )
+        }
+
+        {
+          !passedState && type === '0' && (
             <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
-          type === '1' && (
+          !passedState && type === '1' && (
             <button className="ui button trs" style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
           )
         }
 
         {
-          type === '2' && (
+          !passedState && type === '2' && (
             <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
-          type === '3' && (
+          !passedState && type === '3' && (
             <button className="ui button trs" style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
           )
         }
 
         {
-          type === '4' && (
+          !passedState && type === '4' && (
             <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
-          type === '5' && (
+          !passedState && type === '5' && (
             <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
           )
         }

@@ -172,6 +172,8 @@ class LectureOverviewView extends Component<Props, State> {
     const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
+    // console.log('LectureOverview : ', JSON.stringify(viewObject));
+
     return (
       <OverviewField.Wrapper>
         <OverviewField.Description
@@ -216,6 +218,7 @@ class LectureOverviewView extends Component<Props, State> {
               onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
               OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
+              passedState={viewObject.passedState}
               type={viewObject.examType}
               name={viewObject.examName}
             />

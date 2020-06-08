@@ -415,6 +415,16 @@ const SelectOptions = {
     { key: '2', text: 'YES', value: true },
     { key: '3', text: 'NO', value: false },
   ],
+
+  // approval
+  approvalSearchStartDate: [
+    { key: '1', text: '전체', value: '1' },
+    { key: '2', text: '최근 1주일', value: '2' },
+    { key: '3', text: '최근 2주일', value: '3' },
+    { key: '4', text: '최근 1개월', value: '4' },
+    { key: '5', text: '최근 6개월', value: '5' },
+    { key: '6', text: '최근 1년', value: '6' },
+  ],
 };
 
 export default SelectOptions;

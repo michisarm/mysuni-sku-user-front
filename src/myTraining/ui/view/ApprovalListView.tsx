@@ -4,6 +4,7 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import moment from 'moment';
+import numeral from 'numeral';
 import {
   Button,
   Checkbox, Icon, Table
@@ -15,6 +16,7 @@ interface Props {
   totalCount: number
   handleClickCubeRow:(cubeId: string) => void
   onChangeOrderBy:(orderBy: string, desc?: boolean) => void
+  orderBy?: string
   searchState: any
 }
 
@@ -89,9 +91,14 @@ class ApprovalListView extends React.Component <Props, States> {
     if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
   }
 
-  handleChangeOrderBy(orderBy: string) {
+  onChangeOrderBy(orderBy: string) {
     const { onChangeOrderBy } = this.props;
     onChangeOrderBy(orderBy);
+  }
+
+  getOrderByIconColor(iconOrderBy: string) {
+    const { orderBy: currentOrderBy } = this.props;
+    return (iconOrderBy === currentOrderBy) ? 'blue' : 'grey';
   }
 
   render() {
@@ -115,77 +122,76 @@ class ApprovalListView extends React.Component <Props, States> {
     const approvalDateName = approvalNameVal;
     const noTitle = '승인요청 학습이 없습니다.';
 
-    if( totalCount < 1 ) {
-      return (
+    return (
+      <div id="DataTableRow">
+        <Table className="confirm-list typeA">
+          <Table.Header>
+            <Table.Row className="row thead">
+              <Table.HeaderCell className="cell ck">
+                <Checkbox
+                  className="base"
+                  checked={
+                    selectedList.length > 0
+                    && selectedList.length === approvalCubes.length
+                  }
+                  value={cubeAll}
+                  onChange={(e: any, data: any) => this.checkAll(data.value)}
+                />
+              </Table.HeaderCell>
+              <Table.HeaderCell className="cell num">No</Table.HeaderCell>
+              <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
+              <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
+              <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
+              <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
+              <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
+              <Table.HeaderCell className="cell term">(차수)교육기간 <Button icon className="img-icon" onClick={() => this.onChangeOrderBy('learningStartDate')}><Icon name="sort content ascending" size="small" color={this.getOrderByIconColor('learningStartDate')} /></Button></Table.HeaderCell>
+              <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
+              <Table.HeaderCell className="cell pay">인당 교육금액 <Button icon className="img-icon" onClick={() => this.onChangeOrderBy('chargeAmount')}><Icon className="sort content ascending" size="small" color={this.getOrderByIconColor('chargeAmount')} /></Button></Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {
+              (totalCount < 1) && (
+                <Table.Row className="row">
+                  <Table.Cell colSpan="10">
+                    <div className="no-cont-wrap">
+                      <Icon className="no-contents80" />
+                      <span className="blind">콘텐츠 없음</span>
+                      <div className="text">{noTitle}</div>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              )
+            }
+            {approvalCubes.map((cube, index) => {
+              return (
+                <Table.Row className="row" key={cube.id}>
+                  <Table.Cell className="cell ck">
+                    <Checkbox
+                      className="base"
+                      value={cube.id}
+                      checked={selectedList.includes(cube.id)}
+                      onChange={(e: any, data: any) => this.checkOne(data.value)}
+                    />
+                  </Table.Cell>
+                  <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell name"><a><span className="ellipsis">{cube.memberName}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell team"><a><span className="ellipsis">{cube.memberDepartment}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell title"><a><span className="ellipsis">{cube.cubeName}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{cube.enrolling.learningPeriod.startDate}<br />~ {cube.enrolling.learningPeriod.endDate}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
+                  <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell pay"><a><span className="ellipsis">{numeral(cube.freeOfCharge.chargeAmount).format('0,0')}</span></a></Table.Cell>
+                </Table.Row>
+              );
+            })
+            }
+          </Table.Body>
+        </Table>
+      </div>
 
-        <>
-          <div className="no-cont-wrap">
-            <Icon className="no-contents80"/>
-            <span className="blind">콘텐츠 없음</span>
-            <div className="text">{noTitle}</div>
-          </div>
-        </>
-      );
-    } else {
-      return (
-        <div id="DataTableRow">
-          <Table className="confirm-list typeA">
-            <Table.Header>
-              <Table.Row className="row thead">
-                <Table.HeaderCell className="cell ck">
-                  <Checkbox
-                    className="base"
-                    checked={
-                      selectedList.length > 0
-                      && selectedList.length === approvalCubes.length
-                    }
-                    value={cubeAll}
-                    onChange={(e: any, data: any) => this.checkAll(data.value)}
-                  />
-                </Table.HeaderCell>
-                <Table.HeaderCell className="cell num">No</Table.HeaderCell>
-                <Table.HeaderCell className="cell name">신청자</Table.HeaderCell>
-                <Table.HeaderCell className="cell team">조직</Table.HeaderCell>
-                <Table.HeaderCell className="cell title">과정명</Table.HeaderCell>
-                <Table.HeaderCell className="cell class">차수</Table.HeaderCell>
-                <Table.HeaderCell className="cell status">신청현황</Table.HeaderCell>
-                <Table.HeaderCell className="cell term">(차수)교육기간 <Button icon className="img-icon" onClick={() => this.handleChangeOrderBy('learningStartDate')}><Icon className="list-down16" /></Button></Table.HeaderCell>
-                <Table.HeaderCell className="cell date">{ approvalDateName }</Table.HeaderCell>
-                <Table.HeaderCell className="cell pay">인당 교육금액 <Button icon className="img-icon" onClick={() => this.handleChangeOrderBy('chargeAmount')}><Icon className="list-down16" /></Button></Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {approvalCubes.map((cube, index) => {
-                return (
-                  <Table.Row className="row" key={cube.id}>
-                    <Table.Cell className="cell ck">
-                      <Checkbox
-                        className="base"
-                        value={cube.id}
-                        checked={selectedList.includes(cube.id)}
-                        onChange={(e: any, data: any) => this.checkOne(data.value)}
-                      />
-                    </Table.Cell>
-                    <Table.Cell className="cell num">{totalCount - index}</Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell name"><a><span className="ellipsis">{cube.memberName}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell team"><a><span className="ellipsis">{cube.memberDepartment}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell title"><a><span className="ellipsis">{cube.cubeName}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell class"><a><span className="ellipsis">{cube.round}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell status"><a><span className="ellipsis">{cube.studentCount}/{cube.capacity}</span></a></Table.Cell>
-
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell term"><a><span className="ellipsis">{cube.enrolling.learningPeriod.startDate}<br />~ {cube.enrolling.learningPeriod.endDate}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell date"><a><span className="ellipsis">{cube.time && moment(cube.time).format('YYYY.MM.DD')}</span></a></Table.Cell>
-                    <Table.Cell onClick={() => handleClickCubeRow(cube.studentId)} className="cell pay"><a><span className="ellipsis">{cube.freeOfCharge.chargeAmount}</span></a></Table.Cell>
-                  </Table.Row>
-                );
-              })
-              }
-            </Table.Body>
-          </Table>
-        </div>
-
-      );
-    }
+    );
   }
 }
 

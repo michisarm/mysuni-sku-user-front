@@ -15,14 +15,14 @@ interface State {
   // welcomeModalState: ModalState
   //tutorialModalState: ModalState
   systemGuideModalState: ModalState
-  trustedSiteModalState: ModalState
+  //trustedSiteModalState: ModalState
 }
 
 enum PageType {
   // Welcome = 'welcome',
   //Tutorial = 'tutorial',
-  SystemGuide = 'systemGuide',
-  TrustedSite = 'trustedSite'
+  SystemGuide = 'systemGuide'
+  //TrustedSite = 'trustedSite'
 }
 
 @reactAutobind
@@ -37,8 +37,8 @@ class MainModalsContainer extends Component<{}, State> {
   state = {
     // welcomeModalState: new ModalState(),
     //tutorialModalState: new ModalState(),
-    systemGuideModalState: new ModalState(),
-    trustedSiteModalState: new ModalState()
+    systemGuideModalState: new ModalState()
+    //trustedSiteModalState: new ModalState()
   };
 
 
@@ -47,7 +47,7 @@ class MainModalsContainer extends Component<{}, State> {
     // this.initFromStorage(PageType.Welcome);
     // this.initFromStorage(PageType.Tutorial);
     this.initFromStorage(PageType.SystemGuide);
-    this.initFromStorage(PageType.TrustedSite);
+    //this.initFromStorage(PageType.TrustedSite);
   }
 
   initFromStorage(pageType: PageType) {
@@ -131,11 +131,11 @@ class MainModalsContainer extends Component<{}, State> {
 
   onCloseSystemGuide() {
     this.onClose(PageType.SystemGuide);
-    this.initFromStorage(PageType.TrustedSite);
+    //this.initFromStorage(PageType.TrustedSite);
   }
 
-  onCloseTrustedSite(){
-    this.onClose(PageType.TrustedSite);
+  onCloseTrustedSite() {
+    //this.onClose(PageType.TrustedSite);
   }
 
   onCheckNoMoreSee(pageType: PageType, checked: boolean) {
@@ -148,23 +148,26 @@ class MainModalsContainer extends Component<{}, State> {
     const {
       // welcomeModalState,
       // tutorialModalState,
-      systemGuideModalState,
-      trustedSiteModalState
+      systemGuideModalState
+      //trustedSiteModalState
     } = this.state;
 
-    if (systemGuideModalState.disabled && trustedSiteModalState.disabled) {
-      return null;
-    }
+    // 20200604 팝업제거 요청 by 이의연 RF
 
-    if (systemGuideModalState.open) {
-      return (
-        <SystemGuideModalView
-          modalState={systemGuideModalState}
-          onClose={this.onCloseSystemGuide}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
-        />
-      );
-    } else if (trustedSiteModalState.open) {
+    // if (systemGuideModalState.disabled) {
+    //   return null;
+    // }
+
+    // if (systemGuideModalState.open) {
+    //   return (
+    //     <SystemGuideModalView
+    //       modalState={systemGuideModalState}
+    //       onClose={this.onCloseSystemGuide}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //     />
+    //   );
+    // }
+    /*else if (trustedSiteModalState.open) {
       return (
         <TrustedSiteModalView
           modalState={trustedSiteModalState}
@@ -172,7 +175,7 @@ class MainModalsContainer extends Component<{}, State> {
           onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.TrustedSite, data.checked)}
         />
       );
-    }
+    }*/
 
     // if (tutorialModalState.disabled
     // && welcomeModalState.disabled
