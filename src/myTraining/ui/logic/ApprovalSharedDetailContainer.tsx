@@ -107,13 +107,17 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
 
     if (selectedList && approvalCubeService) {
-      const reponseData = approvalCubeService.studentRequestOpen(studentRequest);
-      const errorData = (await reponseData).error;
+      const reponseData = await approvalCubeService.studentRequestOpen(studentRequest);
+      const { error, message } = reponseData;
 
-      if (errorData) {
-        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
-        // 리스트 삭제
-        this.checkRemoveAll();
+      if (error) {
+        if (message) {
+          reactAlert({ title: '알림', message });
+        } else {
+          reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
+          // 리스트 삭제
+          this.checkRemoveAll();
+        }
       } else {
         reactAlert({ title: '알림', message: '성공입니다.' });
         this.routeToCreateList();
