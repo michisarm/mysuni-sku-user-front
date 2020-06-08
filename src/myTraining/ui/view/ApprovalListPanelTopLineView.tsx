@@ -126,13 +126,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-title-sel"
               />
-              <Select
+              {/*<Select
                 placeholder = "교육기간"
                 options = {SelectOptions.approvalSearchStartDate}
                 onChange={this.handleSearchPeriodChange}
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-num-sel"
-              />
+              />*/}
             </div>
           </div>
         </div>
