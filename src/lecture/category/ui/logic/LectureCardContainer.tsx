@@ -144,6 +144,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
+    console.log(rollBook);
+
     if (student && student.id) {
 
       // 수강신청(true), 승인 체크(true)
@@ -165,11 +167,12 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
-      // 과정 등록
-      this.getFreeOfChargeOk();
-
       // 수강신청(false), 승인 체크(false)
-      this.setState({ rollBook }, this.onApplyReferenceEmpty );
+      this.setState({ rollBook }, () => {
+        // 과정 등록
+        this.getFreeOfChargeOk();
+        this.onApplyReferenceEmpty();
+      });
 
       reactAlert({ title: '알림', message: messageStr });
     }
@@ -443,6 +446,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
