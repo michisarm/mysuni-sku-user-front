@@ -144,8 +144,6 @@ class LectureCardContainer extends Component<Props, State> {
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
-    console.log(rollBook);
-
     if (student && student.id) {
 
       // 수강신청(true), 승인 체크(true)
