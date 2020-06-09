@@ -1,23 +1,18 @@
-
 import React from 'react';
-
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-
 import { RouteComponentProps, withRouter } from 'react-router';
 import XLSX from 'xlsx';
 import moment from 'moment';
-
 import { ProposalState } from 'shared/model';
 import { ActionLogService, PageService } from 'shared/stores';
 import { SeeMoreButton } from 'lecture/shared';
 import ApprovalCubeService from '../../present/logic/ApprovalCubeService';
-
 import routePaths from '../../routePaths';
 import SelectType from '../model/SelectOptions';
 import ApprovalListPanelTopLineView from '../view/ApprovalListPanelTopLineView';
 import ApprovalListView from '../view/ApprovalListView';
-import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
+import { ApprovalCubeModel } from '../../model';
 import { ApprovalCubeXlsxModel } from '../../model/ApprovalCubeXlsxModel';
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -104,10 +99,10 @@ class MyApprovalListContainer extends React.Component<Props> {
   async findApprovalCubes(proposalState: ProposalState | undefined, pageNo?: number) {
     //
     const { pageService, approvalCubeService } = this.props;
-    const { approvalCube, searchOrderBy, searchStartDate } = approvalCubeService!;
+    const { approvalCube, searchOrderBy, searchEndDate } = approvalCubeService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
 
-    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube, searchStartDate);
+    const offsetList = await approvalCubeService!.findApprovalCubesForSearch(page!.nextOffset, page!.limit, searchOrderBy, proposalState, approvalCube.lectureCardId, searchEndDate);
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
 
@@ -189,10 +184,10 @@ class MyApprovalListContainer extends React.Component<Props> {
     this.findApprovalCubes(searchState);
   }
 
-  onSearchStartDateChange(startDate: number) {
+  onSearchDateChange(searchDate: number) {
     const { approvalCubeService, pageService } = this.props;
     const { searchState } = approvalCubeService!;
-    approvalCubeService!.changeSearchStartDate(startDate);
+    approvalCubeService!.changeSearchEndDate(searchDate);
 
     pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
     approvalCubeService!.clear();
@@ -246,7 +241,7 @@ class MyApprovalListContainer extends React.Component<Props> {
           lectures={lectureOptions}
           onExcelDownloadClick={this.onExcelDownload}
           onSearchProposalStateChange={this.onSearchProposalStateChange}
-          onSearchStartDateChange={this.onSearchStartDateChange}
+          onSearchDateChange={this.onSearchDateChange}
         />
 
         <ApprovalListView

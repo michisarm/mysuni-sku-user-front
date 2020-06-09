@@ -419,7 +419,7 @@ const SelectOptions = {
   ],
 
   // approval
-  approvalSearchStartDate: [
+  approvalSearchDate: [
     { key: '1', text: '전체', value: '1' },
     { key: '2', text: '최근 1주일', value: '2' },
     { key: '3', text: '최근 2주일', value: '3' },
