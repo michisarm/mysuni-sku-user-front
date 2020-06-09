@@ -217,14 +217,14 @@ class ExposureInfoFormContainer extends React.Component<Props, State> {
                   className="small-border"
                   placeholder="선택하세요"
                   options={SelectOptions.colleges}
-                  value={personalCube.iconBox.iconUrl && personalCube.iconBox.iconUrl.substring(0, 2) || ''}
+                  value={personalCube.iconBox.iconUrl && personalCube.iconBox.iconUrl.substring(0, 3) || ''}
                   onChange={this.onChangeIconUrl}
                 />
               </div>
               <div className="h220">
                 { personalCube.iconBox.iconUrl && (
                   <ImageBox
-                    id={personalCube.iconBox.iconUrl.substring(0, 2) || ''}
+                    id={personalCube.iconBox.iconUrl.substring(0, 3) || ''}
                     defaultSelectId={personalCube.iconBox.iconUrl || ''}
                     options={{ title: 'sk Icon', needTinyImage: true, width: '60px', height: '60px', selectable: true }}
                     vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
