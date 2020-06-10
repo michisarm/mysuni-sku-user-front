@@ -86,6 +86,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     if (finished) {
       answerSheetService!.setAnswerSheetProp('submitAnswers', answerSheet.answers);
     }
+    answerSheetService!.setAnswerSheetProp('submitted', finished);
 
     if (answerSheet.id) {
       answerSheetService!.setAnswerSheetProp('finished', finished);
