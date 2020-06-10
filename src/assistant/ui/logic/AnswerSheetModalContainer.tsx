@@ -233,8 +233,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     // getter
                     const numberOfTrials = localStorage.getItem('numberOfTrials');
 
-                    console.log('numberOfTrials, finichChkVal, answerChk, question.answer:', numberOfTrials, finichChkVal, answerChk, question.answer);
-
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:
                         answerArea = (

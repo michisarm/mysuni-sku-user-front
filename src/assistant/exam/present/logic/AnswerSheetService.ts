@@ -16,6 +16,9 @@ export default class AnswerSheetService {
   @observable
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
 
+  @observable
+  savedSubmitAnswers: ItemAnswerModel[] = [];
+
   constructor(answerSheetApi: AnswerSheetApi) {
     this.answerSheetApi = answerSheetApi;
   }
@@ -34,8 +37,8 @@ export default class AnswerSheetService {
   @computed
   get answerChkMap() {
     const map = new Map<string, string>();
-    if (this.answerSheet && this.answerSheet.submitAnswers && this.answerSheet.submitAnswers.length) {
-      this.answerSheet.submitAnswers.map(answer => {
+    if (this.savedSubmitAnswers && this.savedSubmitAnswers.length) {
+      this.savedSubmitAnswers.map(answer => {
         map.set(answer.questionNo, answer.answer);
       });
     }
@@ -55,6 +58,7 @@ export default class AnswerSheetService {
     const answerSheet = await this.answerSheetApi.findAnswerSheet(examId, examineeId);
     return runInAction(() => {
       this.answerSheet = answerSheet;
+      this.savedSubmitAnswers = [...answerSheet.submitAnswers];
       return answerSheet;
     });
   }
