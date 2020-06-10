@@ -93,7 +93,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       answerSheetService!.modifyAnswerSheet(answerSheet)
         .then(() => {
           if (finished) {
-            answerSheetService!.setAnswerSheetProp('submitAnswers', []);
             this.onCloseModal();
             if (onSaveCallback) onSaveCallback();
           }
@@ -109,7 +108,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
           answerSheetService!.modifyAnswerSheet(answerSheet)
             .then(() => {
               if (finished) {
-                answerSheetService!.setAnswerSheetProp('submitAnswers', []);
                 this.onCloseModal();
                 if (onSaveCallback) onSaveCallback();
               }
