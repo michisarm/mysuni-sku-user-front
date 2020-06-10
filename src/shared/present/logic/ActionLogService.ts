@@ -37,13 +37,13 @@ class ActionLogService {
   }
 
   registerSeenActionLog({ lecture, subAction = '', isEmpty = false }: SeenActionParam) {
-    const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(lecture, subAction);
-    this.registerActionLog(actionLog, isEmpty);
+    /*const actionLog: ActionLogModel = ActionLogModel.fromSeenActionLog(lecture, subAction);
+    this.registerActionLog(actionLog, isEmpty);*/
   }
 
   registerClickActionLog({ subAction, subContext = '', isEmpty = false }: ClickActionParam) {
-    const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(subAction, subContext);
-    this.registerActionLog(actionLog, isEmpty);
+    /*const actionLog: ActionLogModel = ActionLogModel.fromClickActionLog(subAction, subContext);
+    this.registerActionLog(actionLog, isEmpty);*/
   }
 
   registerActionLog(actionLog: ActionLogModel, isEmpty: boolean = false) {
