@@ -86,6 +86,7 @@ export default class AnswerSheetService {
   @action
   clear() {
     //
+    this.savedSubmitAnswers = [];
     this.answerSheet = new AnswerSheetModel();
   }
 }
