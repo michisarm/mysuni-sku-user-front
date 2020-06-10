@@ -2,15 +2,11 @@ import { action, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList } from '@nara.platform/accent';
 
 import _ from 'lodash';
-import { CubeState, ProposalState } from '../../../shared/model';
+import { ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
-
-import { ApprovedResponse } from '../../model/ApprovedResponse';
-
-import { ContentsProviderModel } from '../../../college/model/ContentsProviderModel';
-
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
+import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
 
 @autobind
 export default class ApprovalCubeService {
@@ -23,9 +19,6 @@ export default class ApprovalCubeService {
   approvalCube: ApprovalCubeModel = new ApprovalCubeModel();
 
   @observable
-  approvedResponse: ApprovedResponse = new ApprovedResponse();
-
-  @observable
   approvalCubeOffsetList: OffsetElementList<ApprovalCubeModel> = { results: [], totalCount: 0 };
 
   @observable
@@ -35,10 +28,16 @@ export default class ApprovalCubeService {
   searchState: ProposalState = ProposalState.Submitted;
 
   @observable
-  contentsProvider: ContentsProviderModel = new ContentsProviderModel();
+  searchOrderBy: string = '';
 
   @observable
-  contentsProviders: ContentsProviderModel[] = [];
+  searchEndDate: number = 0;
+
+  @observable
+  lectures: any[] = [];
+
+  @observable
+  approvalCubesExcelWrite: ApprovalCubeModel[] = [];
 
   constructor(approvalCubeApi: ApprovalCubeApi) {
     //
@@ -95,8 +94,6 @@ export default class ApprovalCubeService {
 
   @action
   async findApprovalCube(studentId: string) {
-
-    console.log('findApprovalCube studentId ::' +studentId);
     //
     const approvalCube = await this.approvalCubeApi.findApprovalCube(studentId);
 
@@ -118,9 +115,14 @@ export default class ApprovalCubeService {
 
   // ApprovalCubeOffsetList --------------------------------------------------------------------------------------------
   @action
-  async findApprovalCubesForSearch(offset: number, limit: number, orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+  async findApprovalCubesForSearch(offset: number,
+    limit: number,
+    orderBy: string = '',
+    proposalState: ProposalState = ProposalState.Submitted,
+    lectureCardId: string = '',
+    endDate: number = 0) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(offset, limit, orderBy, proposalState, approvalCube);
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(ApprovalCubeRdoModel.new(offset, limit, orderBy, proposalState, lectureCardId, endDate));
 
     runInAction(() => {
       this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
@@ -143,10 +145,32 @@ export default class ApprovalCubeService {
   }
 
   @action
+  changeSearchOrderBy(orderBy: string) {
+    //
+    this.searchOrderBy = orderBy;
+  }
+
+  @action
+  changeSearchEndDate(endDate: number) {
+    //
+    this.searchEndDate = endDate;
+  }
+
+  @action
   async findLectureApprovalSelect() {
     //
-    const contentsProviders = await this.approvalCubeApi.findLectureApprovalSelect();
-    return runInAction(() => this.contentsProviders = contentsProviders);
+    const lectures = await this.approvalCubeApi.findLectureApprovalSelect();
+    return runInAction(() => this.lectures = lectures);
+  }
+
+  @action
+  async findApprovalCubesForExcel(orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel) {
+    //
+    const approvalCubes = await this.approvalCubeApi.findApprovalCubesForExcel(orderBy, proposalState, approvalCube);
+
+    return runInAction(() => {
+      this.approvalCubesExcelWrite = approvalCubes || [];
+    });
   }
 }
 

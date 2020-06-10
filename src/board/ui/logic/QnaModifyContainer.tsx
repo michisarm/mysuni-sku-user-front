@@ -8,14 +8,14 @@ import { patronInfo } from '@nara.platform/dock';
 import classNames from 'classnames';
 import { Button, Form, Icon, Segment, Select } from 'semantic-ui-react';
 import { depotHelper, AlertWin, ConfirmWin } from 'shared';
-import depot, { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
+import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 
 import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
 
 
-interface Props extends RouteComponentProps<{ postId: string }> {
+interface Props extends RouteComponentProps<{ boardId: string }> {
   boardService?: BoardService,
   categoryService?: CategoryService,
   postService?: PostService,
@@ -29,7 +29,6 @@ interface States {
   write: string
   fieldName: string
   length: number
-  filesMap: Map<string, any>
 }
 
 @inject(mobxHelper.injectFrom(
@@ -49,30 +48,23 @@ class QnaModifyContainer extends React.Component<Props, States> {
     write: '',
     fieldName: '',
     length: 0,
-    filesMap: new Map<string, any>(),
   };
 
 
   componentDidMount(): void {
     //
     const categoryService = this.props.categoryService!;
-    const { postId } = this.props.match.params;
     const postService = this.props.postService!;
     const name = patronInfo.getPatronName() || '';
     const email = patronInfo.getPatronEmail() || '';
 
-    //postService.clearPost();
-
+    postService.clearPost();
     categoryService.findCategoriesByBoardId('QNA')
       .then(() => {
         postService.changePostProps('boardId', 'QNA');
         postService.changePostProps('writer.name', name);
         postService.changePostProps('writer.email', email);
       });
-
-    postService.findPostByPostId(postId)
-      .then(() => this.getFileIds());
-
   }
 
   componentWillUnmount(): void {
@@ -99,14 +91,11 @@ class QnaModifyContainer extends React.Component<Props, States> {
     //
     const { postService, history } = this.props;
     const { post } = postService!;
-    const postId = post.postId;
 
-    postService!.modifyPost(postId, post)
-      .then(() => {
-        history.push(routePaths.supportQnAPost(postId as string));
-      });
+    postService!.registerPost(post)
+      .then((postId) => history.push(routePaths.supportQnAPost(postId as string)));
 
-    //this.onClose();
+    this.onClose();
 
     if (PostModel.isBlank(post) === 'success') {
       this.setState({ confirmWinOpen: true });
@@ -154,27 +143,6 @@ class QnaModifyContainer extends React.Component<Props, States> {
     }
   }
 
-  getFileIds() {
-    //
-    const { post } = this.props.postService!;
-    const referenceFileBoxId = post && post.contents && post.contents.depotId;
-
-    if (referenceFileBoxId) {
-      this.findFiles('reference', referenceFileBoxId);
-    }
-  }
-
-  async findFiles(type: string, fileBoxId: string) {
-    //
-    const { filesMap } = this.state;
-
-    const files = await depot.getDepotFiles(fileBoxId);
-
-    filesMap.set(type, files);
-    const newMap = new Map(filesMap.set(type, files));
-    this.setState({ filesMap: newMap });
-  }
-
   render() {
     //
     const { categorys } = this.props.categoryService!;
@@ -186,7 +154,7 @@ class QnaModifyContainer extends React.Component<Props, States> {
       questionType.push({ key: index, value: data.categoryId, text: data.name });
     });
 
-    //console.log('post : ', JSON.stringify(post));
+    console.log('post : ', post);
 
     return (
       <>
@@ -229,7 +197,6 @@ class QnaModifyContainer extends React.Component<Props, States> {
                   <Select placeholder="분류를 선택해주세요"
                     className="dropdown selection"
                     options={questionType}
-                    value={ post && post.category.id || ''}
                     onChange={(e: any, data: any) => this.onChangePostProps('category', {
                       id: data.value,
                       name: e.target.innerText,

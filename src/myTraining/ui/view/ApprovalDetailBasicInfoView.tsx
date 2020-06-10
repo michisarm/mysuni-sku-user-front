@@ -1,12 +1,9 @@
-
 import React from 'react';
-
-import { Segment, Form, Table, TextArea, Button } from 'semantic-ui-react';
-
-import moment from 'moment';
-import EnumUtil, { CubeStateView } from 'shared/ui/logic/EnumUtil';
+import numeral from 'numeral';
+import { Form, Table } from 'semantic-ui-react';
 
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
+
 
 interface Props {
   approvalCube: ApprovalCubeModel
@@ -15,10 +12,8 @@ interface Props {
 
 class ApprovalDetailBasicInfoView extends React.Component<Props> {
 
-  render()
-  {
+  render() {
     const { approvalCube } = this.props;
-    const selectedChannels: any = [];
 
     return (
       <>
@@ -62,7 +57,7 @@ class ApprovalDetailBasicInfoView extends React.Component<Props> {
                       </Table.Row>
                       <Table.Row>
                         <Table.HeaderCell>인당 교육 금액</Table.HeaderCell>
-                        <Table.Cell>₩{approvalCube.freeOfCharge.chargeAmount}</Table.Cell>
+                        <Table.Cell>₩{numeral(approvalCube.freeOfCharge.chargeAmount).format('0,0')}</Table.Cell>
                       </Table.Row>
                     </Table.Body>
                   </Table>

@@ -1,29 +1,31 @@
-import React, { Component } from 'react';
-import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import React, {Component} from 'react';
+import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import { CubeType, LearningState, ProposalState } from 'shared/model';
-import { MediaType } from 'personalcube/media/model';
-import { ClassroomModel } from 'personalcube/classroom/model';
-import { LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from 'lecture/model';
-import { RollBookService, StudentService, LectureService } from 'lecture/stores';
-import { InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-import { AnswerSheetModal, CubeReportModal } from 'assistant';
-import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
-import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
-import LectureSubInfo, {State as SubState} from '../../../shared/LectureSubInfo';
+import {CubeType, ProposalState} from 'shared/model';
+import {MediaType} from 'personalcube/media/model';
+import {ClassroomModel} from 'personalcube/classroom/model';
+import {LectureServiceType, StudentCdoModel, StudentJoinRdoModel} from 'lecture/model';
+import {LectureService, RollBookService, StudentService} from 'lecture/stores';
+import {InMyLectureCdoModel} from 'myTraining/model';
+import {InMyLectureService} from 'myTraining/stores';
+import {AnswerSheetModal, CubeReportModal} from 'assistant';
+import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
+import {getYearMonthDateHourMinuteSecond} from 'shared/helper/dateTimeHelper';
+import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureExam from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
-import { ApprovalMemberModel } from '../../../../approval/member/model/ApprovalMemberModel';
-import { State as EnumState } from '../../../shared/LectureSubInfo/model';
+import {ApprovalMemberModel} from '../../../../approval/member/model/ApprovalMemberModel';
+import {State as EnumState} from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
+import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
+
 
 interface Props {
   studentService?: StudentService
@@ -51,6 +53,7 @@ interface Props {
 interface State {
   rollBook: RollBookModel
   openLearningModal: boolean
+  selectedClassRoom: ClassroomModel
 }
 
 @inject(mobxHelper.injectFrom(
@@ -72,14 +75,15 @@ class LectureCardContainer extends Component<Props, State> {
   applyReferenceModel: any = null;
   lectureLearningModal: any = null;
   prevViewObjectState: string = '';
-  selectedClassRoom: ClassroomModel | null = null;
 
   state = {
     rollBook: new RollBookModel(),
     subTest: String,
+    passedState: false,
     type: '',
     name: '',
     openLearningModal: false,
+    selectedClassRoom: new ClassroomModel(),
   };
 
 
@@ -127,29 +131,23 @@ class LectureCardContainer extends Component<Props, State> {
     const { viewObject } = this.props;
 
     // 선택 차수
-    this.selectedClassRoom = classroom;
+    this.setState({ selectedClassRoom: classroom });
 
     /*// 차수 선택시 id 값
     this.selectedClassroomId = classroom.id;
     // 차수 선택시 무료(true) 유료(false) 여부
     this.state.approvalProcess = classroom.freeOfCharge.approvalProcess;*/
 
-    const operatorName = viewObject.operatorName;
-    const operatorEmail = viewObject.operatorEmail;
-
     // 알림 메시지
-    const messageStr = '선택하신 강좌로 수강신청이 완료 되었습니다. <br> 관련 문의는 ' + operatorName +
-      ' 담당자에게 연락 부탁 드립니다.' +
-      '<br> - 담당자 성명 : ' + operatorName +
-      '<br> - 담당자 이메일 : ' + operatorEmail;
+    const messageStr = '본 과정은 과정담당자가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은 <br> &#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
 
     const { rollBookService, lectureCardId, student, studentService, typeViewObject } = this.props;
     const rollBook = await rollBookService!.findRollBookByLectureCardIdAndRound(lectureCardId, classroom.round);
 
     if (student && student.id) {
 
-      // 수강신청(true), 유료여부(false), 승인 체크(true)
-      if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true)) {
+      // 수강신청(true), 승인 체크(true)
+      if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.approvalProcess === true)) {
         studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
@@ -162,16 +160,17 @@ class LectureCardContainer extends Component<Props, State> {
         reactAlert({ title: '알림', message: messageStr });
 
       }
-    } else if ((!student || !student.id) && (classroom.enrolling.enrollingAvailable === true) && (classroom.freeOfCharge.freeOfCharge === false) && (classroom.freeOfCharge.approvalProcess === true) ) {
-      // 수강신청(true), 유료여부(false), 승인 체크(true)
+    } else if ((!student || !student.id) && (classroom.enrolling.enrollingAvailable === true) && (classroom.freeOfCharge.approvalProcess === true) ) {
+      // 수강신청(true), 승인 체크(true)
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
-      // 과정 등록
-      this.getFreeOfChargeOk();
-
-      // 수강신청(false), 무료여부(true), 승인 체크(false)
-      this.setState({ rollBook }, this.onApplyReferenceEmpty );
+      // 수강신청(false), 승인 체크(false)
+      this.setState({ rollBook }, () => {
+        // 과정 등록
+        this.getFreeOfChargeOk();
+        this.onApplyReferenceEmpty();
+      });
 
       reactAlert({ title: '알림', message: messageStr });
     }
@@ -189,12 +188,14 @@ class LectureCardContainer extends Component<Props, State> {
 
   registerStudentApprove(studentCdo: StudentCdoModel) {
     // 차수선택 시 id, freeOfCharge 값 전달
-    if (this.selectedClassRoom == null) return;
 
-    // 차수 선택 시 ID 값
-    studentCdo.classroomId = this.selectedClassRoom!.id;
-    // 차수 선택시 무료(true) 유료(false) 여부
-    studentCdo.approvalProcess = this.selectedClassRoom!.freeOfCharge.approvalProcess;
+    const { id, freeOfCharge } = this.state.selectedClassRoom;
+    if (id) {
+      // 차수 선택 시 ID 값
+      studentCdo.classroomId = id;
+      // 차수 선택시 무료(true) 유료(false) 여부
+      studentCdo.approvalProcess = freeOfCharge.approvalProcess;
+    }
 
     const { studentService, lectureCardId, init } = this.props;
 
@@ -205,6 +206,11 @@ class LectureCardContainer extends Component<Props, State> {
         studentService!.findStudentCount(studentCdo.rollBookId);
         if (init) init();
       });
+
+    // 알림 메시지
+    const messageStr = '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
+    reactAlert({ title: '알림', message: messageStr });
+
   }
 
   onRegisterStudent(proposalState?: ProposalState) {
@@ -245,10 +251,21 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  surveyCallback() {
+    const { init } = this.props;
+    if (init) init();
+  }
+
   //
   onClickEnrollment() {
     //
-    this.onApplyReference();
+    const { typeViewObject } = this.props;
+    const isSingleClassroom: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length === 1;
+    if (isSingleClassroom) {
+      this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.onApplyReference);
+    } else {
+      this.onApplyReference();
+    }
   }
 
   onClickChangeSeries() {
@@ -427,6 +444,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
@@ -504,10 +522,11 @@ class LectureCardContainer extends Component<Props, State> {
 
         // console.log('getMainAction studentJoins : ', studentJoins);
 
+        const classroomAvailable: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length;
+        const hasAvailStudentJoins: boolean = (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
+          (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length);
 
-        if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
-          && (!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
-            (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
+        if (classroomAvailable && typeViewObject.classrooms.length > 1 && hasAvailStudentJoins) {
         // if (typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length > 1
         //   && (!studentJoins || !studentJoins.length || studentJoins?.filter(join => (join.proposalState === ProposalState.Submitted)).length === 0)) {
 
@@ -526,6 +545,7 @@ class LectureCardContainer extends Component<Props, State> {
             || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()) {
             return { type: LectureSubInfo.ActionType.Enrollment, onAction: () => reactAlert({ title: '수강신청 기간 안내', message: '수강신청 기간이 아닙니다.' }) };
           }
+
           return { type: LectureSubInfo.ActionType.Enrollment, onAction: this.onClickEnrollment };
         }
 
@@ -583,6 +603,8 @@ class LectureCardContainer extends Component<Props, State> {
         break;
     }
 
+    // console.log('viewObject : ', JSON.stringify(viewObject));
+    // console.log('student : ', JSON.stringify(student));
     if (viewObject && viewObject.reportFileBoxId && student && student.proposalState === ProposalState.Approved && student.learningState) {
       if (student.serviceType === 'Lecture') {
         if (student.studentScore.homeworkScore) {
@@ -592,6 +614,10 @@ class LectureCardContainer extends Component<Props, State> {
           });
         } else subActions.push({ type: LectureSubInfo.ActionType.Report, onAction: this.onReport });
       }
+    }
+
+    if (student && student.learningState === LearningState.Passed) {
+      this.state.passedState = true;
     }
 
     this.setStateName('1', 'Test');
@@ -741,16 +767,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
-    let state: SubState | undefined;
-    let enrollingAvailable: boolean = false;
-    let approvalProcess: boolean = false;
 
-    const index = classrooms.map(classrooma => classrooma.round).findIndex(round => round);
-    if (index >= 0 && classrooms) {
-      enrollingAvailable = classrooms[index].enrolling.enrollingAvailable;
-      approvalProcess = classrooms[index].freeOfCharge.approvalProcess;
-    }
-    const approvalClassChk = (enrollingAvailable === true && (approvalProcess === true))?'Y':'N'; // 2020.06.02 유무료 조건 배제
+    // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
       <LectureCardContentWrapperView>
@@ -794,7 +812,7 @@ class LectureCardContainer extends Component<Props, State> {
             <ApplyReferenceModal
               ref={applyReferenceModel => this.applyReferenceModel = applyReferenceModel}
               classrooms={typeViewObject.classrooms}
-              approvalClassChk={approvalClassChk}
+              selectedClassRoom={this.state.selectedClassRoom}
               handleOk={this.onClickApplyReferentOk}
             />
           )
@@ -816,7 +834,7 @@ class LectureCardContainer extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
-              // onSaveCallback={this.testCallback}
+              onSaveCallback={this.surveyCallback}
             />
           )
         }
@@ -855,6 +873,7 @@ class LectureCardContainer extends Component<Props, State> {
               onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
               OnSurveyNotReady={viewObject.surveyId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
+              passedState={this.state.passedState}
               type={this.state.type}
               name={this.state.name}
             />

@@ -7,6 +7,9 @@ import NotFoundPage from 'layout/NotFoundPage';
 import CollegeLecturesPage from './category/ui/page/CollegeLecturesPage';
 import ChannelLecturesPage from './category/ui/page/ChannelLecturesPage';
 import CoursePage from './category/ui/page/CoursePage';
+
+import CoursePageV2 from './category/ui/page/CoursePageV2';
+
 import LectureCardPage from './category/ui/page/LectureCardPage';
 
 import ChannelsLecturesPage from './recommend/ui/page/ChannelsPage';
@@ -32,6 +35,8 @@ class Routes extends Component {
 
         <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
+
+        <Route exact path="/lecture/cineroomV2/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
 
         <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />

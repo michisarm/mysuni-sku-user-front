@@ -393,6 +393,7 @@ class LectureCardPage extends Component<Props, State> {
     let surveyState: boolean = false;
     let surveyCaseId: string = '';
     let reportFileBoxId: string = '';
+    let passedState: boolean = false;
     let examType: string = '';
     let examName: string = '';
     let studentId: string = '';
@@ -430,6 +431,10 @@ class LectureCardPage extends Component<Props, State> {
       }
 
       if (student.proposalState === ProposalState.Rejected) state = SubState.Rejected;
+
+      if (student && student.learningState === LearningState.Passed) {
+        passedState = true;
+      }
 
       // if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)
       //   && classrooms && classrooms.length) {
@@ -484,6 +489,7 @@ class LectureCardPage extends Component<Props, State> {
       surveyTitle,
       surveyState,
       surveyCaseId,
+      passedState,
       examType,
       examName,
       studentId,
@@ -628,7 +634,7 @@ class LectureCardPage extends Component<Props, State> {
       cancellationPenalty: classroom.enrolling.cancellationPenalty,
       location: classroom.operation.location,
       learningPeriod: classroom.enrolling.learningPeriod,
-      classrooms: classrooms.length > 1 && classrooms,
+      classrooms: classrooms.length > 0 && classrooms,
       siteUrl,
     };
   }
@@ -810,7 +816,6 @@ class LectureCardPage extends Component<Props, State> {
     // const { params } = match;
     // const { search } = location;
     // const queryParam = queryString.parse(search);
-
     this.init();
     // history.replace('/empty');
     // setTimeout(() => {
