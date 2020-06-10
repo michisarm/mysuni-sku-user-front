@@ -440,13 +440,16 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
-    let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
-      proposalState = student.proposalState;
-    }
 
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    let proposalState = studentCdo.proposalState;
+    if (student
+      && student.rollBookId === rollBookId
+      && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
 
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
     this.registerStudentApprove({ ...studentCdo,
