@@ -43,6 +43,19 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00003f'),
       imageUrl: '/images/all/img_banner_newcontents_20200523.png',
     },
+    {
+      type: ContentType.LinkContent,
+      title: <>코로나 이후의 우리는, 세계는 어떻게 바뀔 것인가!</>,
+      description: (
+        <>
+          Post-Corona 시대를 헤쳐 나아가야 하는 구성원분들을 위해<br />
+          미래에 대한 각계 전문가들의 Insight를 mySUNI에 오롯이 담았습니다.<br /><br />
+          <span className="link-tag">Post-Corona Perspectives 채널로 이동</span>
+        </>
+      ),
+      link: '/lecture/college/CLG00017/channel/CHN0005e',
+      imageUrl: '/images/all/img_banner_postCorona_20200611.png',
+    },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
