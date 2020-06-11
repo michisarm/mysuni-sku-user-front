@@ -262,9 +262,10 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
     const isSingleClassroom: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.onApplyReference);
+      this.onSelectClassroom(typeViewObject.classrooms[0]);
+      //this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.re);
     } else {
-      this.onApplyReference();
+      this.onClickChangeSeries();
     }
   }
 
