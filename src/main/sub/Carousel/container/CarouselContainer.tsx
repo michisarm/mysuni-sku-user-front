@@ -45,7 +45,7 @@ class CarouselContainer extends Component<Props, State> {
     },
     {
       type: ContentType.LinkContent,
-      title: <>코로나 이후의 우리는, 세계는 어떻게 바뀔 것인가!</>,
+      title: <>코로나 이후의 우리는,<br />세계는 어떻게 바뀔 것인가!</>,
       description: (
         <>
           Post-Corona 시대를 헤쳐 나아가야 하는 구성원분들을 위해<br />
