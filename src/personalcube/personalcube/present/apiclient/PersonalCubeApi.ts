@@ -14,12 +14,23 @@ export default class PersonalCubeApi {
   //
   static instance: PersonalCubeApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  /*devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
   URL = this.devUrl + '/api/personalCube/personalcubes';
   flowURL = this.devUrl + '/api/personalCube/cubes/flow';
   approvalURL = this.devUrl + '/api/personalCube/approval';
-  depotURL = this.devUrl + '/api/depot/depotFile/multiple';
+  depotURL = this.devUrl + '/api/depot/depotFile/multiple';*/
 
+  serverUrl = '/api/personalCube';
+  devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
+    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
+
+  URL = this.baseUrl + '/personalcubes';
+  flowURL = this.baseUrl + '/cubes/flow';
+  approvalURL = this.baseUrl + '/approval';
+  depotURL = 'http://localhost:8080/depotFile/multiple';
 
   static convertOffsetElementList(response: any): OffsetElementList<PersonalCubeModel> {
     //
