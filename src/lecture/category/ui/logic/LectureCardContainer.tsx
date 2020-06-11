@@ -148,14 +148,14 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 승인 체크(true)
       if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.approvalProcess === true)) {
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
         // 과정 등록
-        this.getFreeOfChargeOk();
-
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
+
+        this.getFreeOfChargeOk();
 
         reactAlert({ title: '알림', message: messageStr });
 
