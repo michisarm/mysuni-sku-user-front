@@ -15,7 +15,9 @@ class LectureApi {
   //
   static instance: LectureApi;
 
-  baseUrl = '/api/lecture/lectures';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_LECTURE_API === undefined || process.env.REACT_APP_LECTURE_API === '' ?
+    '/api/lecture/lectures' : process.env.REACT_APP_LECTURE_API;
 
 
   findAllLectures(lectureRdo: LectureRdoModel) {

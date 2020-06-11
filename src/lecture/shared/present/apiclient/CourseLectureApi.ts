@@ -7,7 +7,9 @@ class CourseLectureApi {
   //
   static instance: CourseLectureApi;
 
-  baseUrl = '/api/lecture/courseLectures';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
+    '/api/lecture/students' : process.env.REACT_APP_STUDENT_API;
 
 
   findCourseLecture(courseLectureId: string) {

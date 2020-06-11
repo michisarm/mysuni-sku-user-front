@@ -10,7 +10,9 @@ class StudentApi {
   //
   static instance: StudentApi;
 
-  baseUrl = '/api/lecture/students';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
+    '/api/lecture/students' : process.env.REACT_APP_STUDENT_API;
 
 
   registerStudent(studentCdo: StudentCdoModel) {

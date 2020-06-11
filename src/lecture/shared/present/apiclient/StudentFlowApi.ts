@@ -7,7 +7,9 @@ class StudentFlowApi {
   //
   static instance: StudentFlowApi;
 
-  baseUrl = '/api/lecture/students/flow';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_STUDENT_FLOW_API === undefined || process.env.REACT_APP_STUDENT_FLOW_API === '' ?
+    '/api/lecture/students/flow' : process.env.REACT_APP_STUDENT_FLOW_API;
 
 
   confirmUsageStatisticsByCardId(studentCdo: StudentCdoModel) {

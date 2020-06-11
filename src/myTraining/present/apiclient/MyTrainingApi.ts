@@ -11,7 +11,7 @@ class MyTrainingApi {
   static instance: MyTrainingApi;
 
   devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
-  baseUrl = this.devUrl + '/api/mytraining/mytraining/mytrainings';
+  baseUrl = '/api/mytraining/mytraining/mytrainings';
   // localUrl = 'http://localhost:8233/mytraining/mytrainings';
 
 
