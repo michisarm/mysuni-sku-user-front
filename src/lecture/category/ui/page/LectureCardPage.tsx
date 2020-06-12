@@ -434,6 +434,8 @@ class LectureCardPage extends Component<Props, State> {
 
       if (student && student.learningState === LearningState.Passed) {
         passedState = true;
+      } else {
+        passedState = false;
       }
 
       // if ((personalCube.contents.type === CubeType.ELearning || personalCube.contents.type === CubeType.ClassRoomLecture)

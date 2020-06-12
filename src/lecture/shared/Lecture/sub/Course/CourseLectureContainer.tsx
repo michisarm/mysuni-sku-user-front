@@ -600,6 +600,8 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
+    } else {
+      this.state.passedState = false;
     }
 
     this.setStateName('1', 'Test');

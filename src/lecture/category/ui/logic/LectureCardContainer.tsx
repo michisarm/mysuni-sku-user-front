@@ -148,14 +148,14 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 승인 체크(true)
       if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.approvalProcess === true)) {
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
         // 과정 등록
-        this.getFreeOfChargeOk();
-
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
+
+        this.getFreeOfChargeOk();
 
         reactAlert({ title: '알림', message: messageStr });
 
@@ -165,11 +165,12 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
-      // 과정 등록
-      this.getFreeOfChargeOk();
-
       // 수강신청(false), 승인 체크(false)
-      this.setState({ rollBook }, this.onApplyReferenceEmpty );
+      this.setState({ rollBook }, () => {
+        // 과정 등록
+        this.getFreeOfChargeOk();
+        this.onApplyReferenceEmpty();
+      });
 
       reactAlert({ title: '알림', message: messageStr });
     }
@@ -261,9 +262,10 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
     const isSingleClassroom: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.onApplyReference);
+      this.onSelectClassroom(typeViewObject.classrooms[0]);
+      //this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.re);
     } else {
-      this.onApplyReference();
+      this.onClickChangeSeries();
     }
   }
 
@@ -439,12 +441,16 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
-    let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
-      proposalState = student.proposalState;
-    }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    let proposalState = studentCdo.proposalState;
+    if (student
+      && student.rollBookId === rollBookId
+      && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
 
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
     this.registerStudentApprove({ ...studentCdo,

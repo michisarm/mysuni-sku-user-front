@@ -1,15 +1,11 @@
-
 import React from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
-
-import { Button, Form, Segment } from 'semantic-ui-react';
-
+import { Button, Segment } from 'semantic-ui-react';
+import { patronInfo } from '@nara.platform/dock';
 import routePaths from '../../routePaths';
-
 import { ApprovalCubeService } from '../../stores';
-
 import ApprovalDetailBasicInfoView from '../view/ApprovalDetailBasicInfoView';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
@@ -65,11 +61,6 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     if (approvalCubeService) approvalCubeService.changeSelectedProposalStateProps(selectedList);
   }
 
-  goToVideo(url: string) {
-    //
-    window.open(url);
-  }
-
   onChangeStudentRequestCdoProps(name: string, value: any) {
     //
     const { approvalCubeService } = this.props;
@@ -86,80 +77,80 @@ class ApprovalSharedDetailContainer extends React.Component<Props> {
     //
     const { approvalCubeService } = this.props;
     const { studentRequest } = this.props.approvalCubeService || {} as ApprovalCubeService;
-    const { selectedList } = this.props.approvalCubeService || {} as ApprovalCubeService;
     const { approvalCube } = this.props.approvalCubeService!;
 
-    const name = approvalCube.memberName;
-    const userId = approvalCube.operation.operator.employeeId;
+    const name = patronInfo.getPatronName() || '';
+    const email = patronInfo.getPatronEmail() || '';
 
     const studentId = approvalCube.studentId;
-    const tempList: string [] = [ ...selectedList ];
-    tempList.push(studentId);
 
-    this.onChangeSelectedStudentProps(tempList);
+    if (!studentId) return;
 
-    const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
+    const newSelectedList: string [] = [ studentId ];
+    this.onChangeSelectedStudentProps(newSelectedList);
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Approved);
-    const idNameApproval = new IdNameApproval({ id: userId, name });
-    this.onChangeStudentRequestCdoProps('actor', idNameApproval);
-    this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
+    this.onChangeStudentRequestCdoProps('actor', new IdNameApproval({ id: email, name }));
+    this.onChangeStudentRequestCdoProps('students', newSelectedList);
 
-    if (selectedList && approvalCubeService) {
-      const reponseData = approvalCubeService.studentRequestOpen(studentRequest);
-      const errorData = (await reponseData).error;
+    const responseData = await approvalCubeService!.studentRequestOpen(studentRequest);
+    const { error, message } = responseData;
 
-      if (errorData) {
+    if (error) {
+      if (message) {
+        reactAlert({ title: '알림', message });
+      } else {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
         // 리스트 삭제
         this.checkRemoveAll();
-      } else {
-        reactAlert({ title: '알림', message: '성공입니다.' });
-        this.routeToCreateList();
       }
+    } else {
+      reactAlert({ title: '알림', message: '성공입니다.' });
+      this.routeToCreateList();
     }
-
   }
 
   async addRejectedLectureSingle() {
     //
     const { approvalCubeService } = this.props;
-    const { studentRequest } = approvalCubeService || {} as ApprovalCubeService;
-    const { selectedList } = approvalCubeService || {} as ApprovalCubeService;
-    const { approvalCube } = approvalCubeService!;
+    const { studentRequest, approvalCube } = approvalCubeService!;
 
-    const name = approvalCube.memberName;
-    const userId = approvalCube.operation.operator.employeeId;
+    const name = patronInfo.getPatronName() || '';
+    const email = patronInfo.getPatronEmail() || '';
 
     const studentId = approvalCube.studentId;
-    const tempList: string [] = [ ...selectedList ];
-    tempList.push(studentId);
 
-    this.onChangeSelectedStudentProps(tempList);
+    if (!studentId) return;
 
-    const selectedListArr = approvalCubeService || {} as ApprovalCubeService;
+    const newSelectedList: string [] = [ studentId ];
+    this.onChangeSelectedStudentProps(newSelectedList);
+
+    if (!approvalCube.remark) {
+      reactAlert({ title: '알림', message: '반려 의견을 입력해주세요.' });
+      return;
+    }
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Rejected);
-    const idNameApproval = new IdNameApproval({ id: userId, name });
-    this.onChangeStudentRequestCdoProps('actor', idNameApproval);
-    this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
+    this.onChangeStudentRequestCdoProps('actor', new IdNameApproval({ id: email, name }));
+    this.onChangeStudentRequestCdoProps('students', newSelectedList);
 
-    if (selectedList && approvalCubeService) {
-      const reponseData = approvalCubeService.studentRequestReject(studentRequest);
-      const errorData = (await reponseData).error;
+    const responseData = await approvalCubeService!.studentRequestReject(studentRequest);
+    const { error, message } = responseData;
 
-      if(errorData) {
+    if (error) {
+      if (message) {
+        reactAlert({ title: '알림', message });
+      } else {
         reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
         // 리스트 삭제
         this.checkRemoveAll();
-      } else {
-        reactAlert({ title: '알림', message: '성공입니다.' });
-        this.routeToCreateList();
       }
+    } else {
+      reactAlert({ title: '알림', message: '성공입니다.' });
+      this.routeToCreateList();
     }
-
   }
 
   onChangeApprovalCubeProps(name: string, value: any) {

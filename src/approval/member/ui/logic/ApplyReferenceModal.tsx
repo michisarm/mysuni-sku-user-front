@@ -184,6 +184,7 @@ class ApplyReferenceModal extends React.Component<Props> {
                   <ManagerListModalContainer
                     ref={managerModal => this.managerModal = managerModal}
                     handleOk={this.onClickManagerListOk}
+                    multiSelect={false}
                   />
                   <Button className="w190 pop p" onClick={this.onOk}>확인</Button>
                   <Button className="w190 pop d" onClick={this.close}>취소</Button>
@@ -239,6 +240,7 @@ class ApplyReferenceModal extends React.Component<Props> {
               <ManagerListModalContainer
                 ref={managerModal => this.managerModal = managerModal}
                 handleOk={this.onClickManagerListOk}
+                multiSelect={false}
               />
               <Button className="w190 pop d" onClick={this.close}>Cancel</Button>
               <Button className="w190 pop p" onClick={this.onOk}>OK</Button>

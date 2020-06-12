@@ -1,17 +1,16 @@
 
 import React from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
+import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 import {
   Select, Radio, Button, Icon,
 } from 'semantic-ui-react';
 import moment from 'moment';
-
 import ApprovalProcessModal from './ApprovalProcessModal';
 import ApprovalProcessModalRejected from './ApprovalProcessModalRejected';
 import { ProposalState } from '../../../shared/model';
 import SelectOptions from '../model/SelectOptions';
+import { ApprovalCubeService } from '../../stores';
 
 interface Props {
   totalCount: number
@@ -23,42 +22,81 @@ interface Props {
   onSetCubeIntroPropsByJSON: (name: string, value: string) => void
   onExcelDownloadClick: () => void
   onSearchProposalStateChange: (searchState: ProposalState) => void
-  onSearchStartDateChange: (startDate: number) => void
+  onSearchDateChange: (startDate: number) => void
+  approvalCubeService?: ApprovalCubeService
 }
 
+interface States {
+  approvalProcessModalRejectedOpen: boolean
+  approvalProcessModalOpen: boolean
+}
+@inject(mobxHelper.injectFrom(
+  'approvalCube.approvalCubeService'))
 @reactAutobind
 @observer
-class ApprovalListPanelTopLineView extends React.Component<Props> {
+class ApprovalListPanelTopLineView extends React.Component<Props, States> {
+  state = {
+    approvalProcessModalRejectedOpen: false,
+    approvalProcessModalOpen: false,
+  };
+
   handleSearchProposalStateChange(e:any, data: any) {
     const { onSearchProposalStateChange } = this.props;
     onSearchProposalStateChange(data.value);
   }
 
   handleSearchPeriodChange(e:any, data: any) {
-    const { onSearchStartDateChange } = this.props;
-    let startDateMoment: moment.Moment = moment(0);
+    const { onSearchDateChange } = this.props;
+    let searchDateMoment: moment.Moment = moment(0);
     const now: moment.Moment = moment().startOf('day');
     switch (data.value) {
-      case '2': startDateMoment = now.subtract(7, 'days');
+      case '2': searchDateMoment = now.add(7, 'days');
         break;
-      case '3': startDateMoment = now.subtract(14, 'days');
+      case '3': searchDateMoment = now.add(14, 'days');
         break;
-      case '4': startDateMoment = now.subtract(1, 'months');
+      case '4': searchDateMoment = now.add(1, 'months');
         break;
-      case '5': startDateMoment = now.subtract(6, 'months');
+      case '5': searchDateMoment = now.add(6, 'months');
         break;
-      case '6': startDateMoment = now.subtract(1, 'years');
+      case '6': searchDateMoment = now.add(1, 'years');
         break;
       case '1':
       default:
         // 전체
     }
-    onSearchStartDateChange(startDateMoment.toDate().getTime());
+    onSearchDateChange(searchDateMoment.toDate().getTime());
+  }
+
+  handleRejectClick() {
+    const { approvalCubeService } = this.props;
+    const { selectedList } = approvalCubeService!;
+
+    if (selectedList.length < 1) {
+      reactAlert({ title: '알림', message: '반려하실 건을 선택해주세요.' });
+      return;
+    }
+
+    this.setState( { approvalProcessModalRejectedOpen: true });
+  }
+
+  handleApproveClick() {
+    const { approvalCubeService } = this.props;
+    const { selectedList } = approvalCubeService!;
+
+    if (selectedList.length < 1) {
+      reactAlert({ title: '알림', message: '승인하실 건을 선택해주세요.' });
+      return;
+    }
+
+    this.setState( { approvalProcessModalOpen: true });
   }
 
   render() {
     //
-    const { defaultValue, targetProps, onSetCubeIntroPropsByJSON, onExcelDownloadClick, searchState, lectures } = this.props;
+    const {
+      defaultValue, targetProps, onSetCubeIntroPropsByJSON, onExcelDownloadClick,
+      searchState, lectures, approvalCubeService,
+    } = this.props;
 
     return (
       <>
@@ -98,19 +136,21 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
 
                 {searchState !== 'Submitted' ? '' :
                 <>
+                  <Button icon className="left post return" onClick={this.handleRejectClick}>
+                    <Icon className="return" /> 반려
+                  </Button>
                   <ApprovalProcessModalRejected
-                    trigger={(
-                      <Button icon className="left post return">
-                        <Icon className="return" /> 반려
-                      </Button>
-                    )}
+                    open={this.state.approvalProcessModalRejectedOpen}
+                    onCloseModal={() => this.setState({ approvalProcessModalRejectedOpen: false })}
+                    approvalCubeService={approvalCubeService}
                   />
+                  <Button icon className="left post approval" onClick={this.handleApproveClick}>
+                    <Icon className="approval" /> 승인
+                  </Button>
                   <ApprovalProcessModal
-                    trigger={(
-                      <Button icon className="left post approval">
-                        <Icon className="approval" /> 승인
-                      </Button>
-                    )}
+                    open={this.state.approvalProcessModalOpen}
+                    onCloseModal={() => this.setState({ approvalProcessModalOpen: false })}
+                    approvalCubeService={approvalCubeService}
                   />
                 </>
                 }
@@ -126,13 +166,13 @@ class ApprovalListPanelTopLineView extends React.Component<Props> {
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-title-sel"
               />
-              {/*<Select
+              <Select
                 placeholder = "교육기간"
-                options = {SelectOptions.approvalSearchStartDate}
+                options = {SelectOptions.approvalSearchDate}
                 onChange={this.handleSearchPeriodChange}
                 value={defaultValue && defaultValue}
                 className="ui small-border dropdown selection list-num-sel"
-              />*/}
+              />
             </div>
           </div>
         </div>

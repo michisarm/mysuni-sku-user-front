@@ -7,6 +7,7 @@ import { ApprovedResponse } from '../../model/ApprovedResponse';
 
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
 import IdName from '../../../shared/model/IdName';
+import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
 
 export default class ApprovalCubeApi {
   //
@@ -29,17 +30,9 @@ export default class ApprovalCubeApi {
   }
 
   // Query
-  findApprovalCubesForSearch(offset: number, limit: number, orderBy: string, proposalState?: ProposalState, approvalCube?: ApprovalCubeModel, startDate?: number) {
+  findApprovalCubesForSearch(approvalCubeRdoModel: ApprovalCubeRdoModel) {
     //
-    const lectureCardId = approvalCube?.lectureCardId || '';
-    const params = {
-      offset,
-      limit,
-      orderBy,
-      proposalState,
-      lectureCardId,
-      startDate,
-    };
+    const params = approvalCubeRdoModel;
 
     return axios.get<OffsetElementList<ApprovalCubeModel>>(this.lectureApprovalURL + `/searchKey`, { params })
       .then((response: any) => ApprovalCubeApi.convertOffsetElementList(response));
