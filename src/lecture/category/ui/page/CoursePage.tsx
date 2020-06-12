@@ -315,6 +315,8 @@ class CoursePage extends Component<Props, State> {
 
       if (student && student.learningState === LearningState.Passed) {
         passedState = true;
+      } else {
+        passedState = false;
       }
 
       // if (student.learningState === LearningState.Progress) {
