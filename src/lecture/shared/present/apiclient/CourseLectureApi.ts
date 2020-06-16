@@ -8,8 +8,8 @@ class CourseLectureApi {
   static instance: CourseLectureApi;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
-    '/api/lecture/students' : process.env.REACT_APP_STUDENT_API;
+  process.env.REACT_APP_COURSE_LECTURE_API === undefined || process.env.REACT_APP_COURSE_LECTURE_API === '' ?
+    '/api/lecture/courseLectures' : process.env.REACT_APP_COURSE_LECTURE_API;
 
 
   findCourseLecture(courseLectureId: string) {
