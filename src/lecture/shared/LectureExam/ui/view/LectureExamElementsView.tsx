@@ -13,10 +13,8 @@ interface ReportProps {
 export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name }: ReportProps) => {
   //
   if (!OnReport) return null;
-  // console.log('Report viewObject : ', viewObject);
-  // if (passedState !== undefined) {
-  //   alert(passedState);
-  // }
+
+  const isMissed = viewObject.state?.toString() === 'Missed' ? true : false;
 
   return (
     <div className="trs-box">
@@ -38,37 +36,37 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 
         {
           !passedState && type === '0' && (
-            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
           !passedState && type === '1' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
           )
         }
 
         {
           !passedState && type === '2' && (
-            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
           !passedState && type === '3' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} style={{ opacity: 0.3 }} onClick={onReportNotReady}><span>과제제출</span></button>
           )
         }
 
         {
           !passedState && type === '4' && (
-            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
         {
           !passedState && type === '5' && (
-            <button className="ui button trs" onClick={OnReport}><span>과제제출</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnReport}><span>과제제출</span></button>
           )
         }
 
@@ -88,8 +86,9 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
   //
   if (!OnTest) return null;
-  // console.log('Test viewObject : ', viewObject);
-  // console.log('type : {0}, name : {1}', type, name);
+
+  const isMissed = viewObject.state?.toString() === 'Missed' ? true : false;
+
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -102,25 +101,25 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
       <div className="btn-area">
         {
           type === '0' && (
-            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnTest}><span>{name}</span></button>
           )
         }
 
         {
           type === '1' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
+            <button className="ui button trs" disabled={isMissed} style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
         {
           type === '2' && (
-            <button className="ui button trs" onClick={OnTest}><span>{name}</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={OnTest}><span>{name}</span></button>
           )
         }
 
         {
           type === '3' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
+            <button className="ui button trs" disabled={isMissed} style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
           )
         }
 
@@ -152,7 +151,9 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-  // console.log('Survey viewObject : ', viewObject);
+
+  const isMissed = viewObject.state?.toString() === 'Missed' ? true : false;
+
   return (
     <div className="trs-box">
       <div className="thumbnail">
@@ -172,13 +173,13 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         {
           !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
             viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
-            <button className="ui button trs" onClick={onSurvey}><span>설문하기</span></button>
+            <button className="ui button trs" disabled={isMissed} onClick={onSurvey}><span>설문하기</span></button>
           )
         }
 
         {
           !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
-            <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+            <button className="ui button trs" disabled={isMissed} style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
           )
         }
 
