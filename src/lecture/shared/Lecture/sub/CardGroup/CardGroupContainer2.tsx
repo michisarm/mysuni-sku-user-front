@@ -78,11 +78,10 @@ class CardGroup2 extends Component<Props> {
     }*/
     else if (type === GroupType.Course) {
       elements = (
-        <div className="contents course-list non-height">
-          <div className="course-box fn-parents open">
-            <div className="bar">
-              {children}
-            </div>
+        // <div className="contents course-list non-height">
+        <div className="ov-paragraph course-area">
+          <div className="course-cont">
+            {children}
           </div>
         </div>
       );

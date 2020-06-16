@@ -228,6 +228,8 @@ class CoursePageV2 extends Component<Props, State> {
     //
     const { match, programLectureService, courseLectureService, commentService } = this.props;
 
+    console.log('match.params.serviceId : ' + match.params.serviceId);
+
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
         lectureCardUsids,

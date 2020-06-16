@@ -188,7 +188,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
       // console.log('init lectureView : ', lectureView);
       // console.log('init personalCube : ', this.personalCube);ß
-      // console.log('init rollBooks : ', this.rollBooks[0]);
+      // console.log('init rollBoo.ks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
         this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
@@ -691,49 +691,17 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     return (
       <div >
-        <div className={`card-box ${className}`}>
+        {/*<div className={`card-box ${className}`}>*/}
+        <div className="course-box fn-parents open">
 
           {/*<Thumbnail image={thumbnail} />*/}
 
-          <Title title={lectureView.name} category={lectureView.category}>
-            <div className="deatil">
-              { lectureView.cubeTypeName && (
-                <Field>
-                  <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />
-                  <span className="channel">{lectureView.category.channel.name}</span>
-                </Field>
-              )}
-              <Field>
-                <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>
-                  {lectureView.learningPeriod && (
-                    <span className="ml17">
-                      학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}
-                    </span>
-                  )}
-                </SubField>
-              </Field>
+          {/*<Title title={lectureView.name} category={lectureView.category} toggle={toggle} open={open}>*/}
+          <div className="bar">
+            <div className="tit">
+              <span className="ellipsis">{lectureView.name}</span>
             </div>
-          </Title>
-
-          {/*<CubeRightInfo*/}
-          {/*  learningType={lectureView.cubeType}*/}
-          {/*  learningState={this.studentData.learningState}*/}
-          {/*  learningTime="11m"*/}
-          {/*/>*/}
-
-          <Buttons>
-            {/*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*/}
-            {
-              lectureView.cubeType === CubeType.Video && (
-                this.state.inProgress !== SubState.Completed ? (
-                  <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>
-                ) : (
-                  <span className="completed-txt">학습완료</span>
-                )
-              )}
-          </Buttons>
-
-          { toggle && (
+            <div className="num">개 강의 구성</div>
             <Button
               icon
               className={classNames({
@@ -746,7 +714,58 @@ class CourseLectureContainer2 extends Component<Props, State> {
             >
               <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
             </Button>
-          )}
+          </div>
+          <div className="deatil">
+            {/*{ lectureView.cubeTypeName && (*/}
+            {/*  <Field>*/}
+            {/*    <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />*/}
+            {/*    <span className="channel">{lectureView.category.channel.name}</span>*/}
+            {/*  </Field>*/}
+            {/*)}*/}
+            {/*<Field>*/}
+            {/*  <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>*/}
+            {/*    {lectureView.learningPeriod && (*/}
+            {/*      <span className="ml17">*/}
+            {/*        학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}*/}
+            {/*      </span>*/}
+            {/*    )}*/}
+            {/*  </SubField>*/}
+            {/*</Field>*/}
+          </div>
+          {/*</Title>*/}
+
+          {/*<CubeRightInfo*/}
+          {/*  learningType={lectureView.cubeType}*/}
+          {/*  learningState={this.studentData.learningState}*/}
+          {/*  learningTime="11m"*/}
+          {/*/>*/}
+
+          {/*<Buttons>*/}
+          {/*  /!*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*!/*/}
+          {/*  {*/}
+          {/*    lectureView.cubeType === CubeType.Video && (*/}
+          {/*      this.state.inProgress !== SubState.Completed ? (*/}
+          {/*        <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>*/}
+          {/*      ) : (*/}
+          {/*        <span className="completed-txt">학습완료</span>*/}
+          {/*      )*/}
+          {/*    )}*/}
+          {/*</Buttons>*/}
+
+          {/*{ toggle && (*/}
+          {/*  <Button*/}
+          {/*    icon*/}
+          {/*    className={classNames({*/}
+          {/*      'img-icon': true,*/}
+          {/*      'fn-more-toggle': true,*/}
+          {/*      'card-open': !open,*/}
+          {/*      'card-close': open,*/}
+          {/*    })}*/}
+          {/*    onClick={this.onToggle}*/}
+          {/*  >*/}
+          {/*    <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />*/}
+          {/*  </Button>*/}
+          {/*)}*/}
 
           {
             this.viewObject && this.personalCube?.contents.examId && (
