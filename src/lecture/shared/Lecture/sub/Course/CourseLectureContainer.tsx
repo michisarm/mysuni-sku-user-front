@@ -13,13 +13,16 @@ import { ProposalState, LearningState } from 'shared/model';
 import { EmployeeModel } from 'profile/model';
 import { PersonalCubeModel, CubeType, ContentsServiceType } from 'personalcube/personalcube/model';
 import { MediaModel, MediaType } from 'personalcube/media/model';
+import ActionEventModel from 'shared/model/ActionEventModel';
+import StudyActionType from 'shared/model/StudyActionType';
+import ActionEventApi from 'shared/present/apiclient/ActionEventApi';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { BoardService } from 'personalcube/community/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 
-import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel } from '../../../../model';
+import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
@@ -27,6 +30,7 @@ import RollBookService from '../../../present/logic/RollBookService';
 import {
   Title, SubField, Buttons, Thumbnail,
 } from '../../../ui/view/LectureElementsView';
+
 
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
@@ -38,6 +42,7 @@ import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../surve
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
+
 
 interface Props {
   rollBookService?: RollBookService,
@@ -56,16 +61,18 @@ interface Props {
   onViewDetail?: (e: any) => void,
   onToggle?: () => void,
   onRefreshLearningState?: () => void,
-  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
+  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel, lectureView: LectureViewModel) => void,
   student?: StudentModel,
   lectureCardId?: string,
+  coursePlanId?: string,
+  serviceType?: LectureServiceType,
   member? : EmployeeModel,
 
   examinationService?: ExaminationService,
   examPaperService?: ExamPaperService,
   // answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
-  surveyFormService?: SurveyFormService
+  surveyFormService?: SurveyFormService,
 }
 
 interface State
@@ -286,6 +293,23 @@ class CourseLectureContainer extends Component<Props, State> {
     return classNameForLearningState;
   }
 
+  publishActionEvent() {
+    const {serviceType, collegeId, lectureCardId, coursePlanId, lectureView } = this.props;
+    const {cubeId, cubeType} = lectureView;
+    
+    let action = StudyActionType.VideoStart;
+    if(cubeType === CubeType.Audio) {
+      action = StudyActionType.AudioStart;
+    }
+    if(collegeId && serviceType && cubeId && lectureCardId) {
+      const menu = 'doLearn';
+      const studyAction: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu});
+      const actionEventApi: ActionEventApi = ActionEventApi.instance;
+      actionEventApi.registerStudyActionLog(studyAction);
+    }
+  } 
+
+
   onToggle() {
     //
     const { open, setOpen } = this.context;
@@ -339,6 +363,7 @@ class CourseLectureContainer extends Component<Props, State> {
     // const { onDoLearn } = this.props;
 
     if (url && url.startsWith('http')) {
+      // this.publishActionEvent();
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
@@ -355,6 +380,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (url && url.startsWith('http'))
     {
+      this.publishActionEvent();
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
@@ -373,7 +399,15 @@ class CourseLectureContainer extends Component<Props, State> {
     {
       //this.onRegisterStudentForVideo(ProposalState.Approved);
       //this.popupLearnModal(url);
-      window.open(url, '_blank');
+      this.publishActionEvent();
+      const win = window.open(url, '_blank');
+      
+      if(win) {
+        win.onbeforeunload = () => {
+          console.log('window is closed');
+        };
+      }
+      
     } else
     {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -439,6 +473,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
   async getMainActionForVideo()
   {
+    console.log('여기야 여기!');
     //collegeId
     const { mediaService } = this.props;
     // const { personalCube } = personalCubeService!;
@@ -485,10 +520,10 @@ class CourseLectureContainer extends Component<Props, State> {
   }
 
   popupLearnModal(url: string) {
-    const { onDoLearn } = this.props;
+    const { onDoLearn, lectureView } = this.props;
     if (onDoLearn) {
       const studentCdo = this.getStudentCdo();
-      onDoLearn(url, studentCdo);
+      onDoLearn(url, studentCdo, lectureView);
     }
   }
 
@@ -600,8 +635,6 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
-    } else {
-      this.state.passedState = false;
     }
 
     this.setStateName('1', 'Test');

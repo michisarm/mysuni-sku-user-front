@@ -7,12 +7,16 @@ import queryString from 'query-string';
 import {Segment} from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
 import {CoursePlanService} from 'course/stores';
+import { CubeType } from 'personalcube/personalcube/model';
 import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
 import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
 import routePaths from '../../../routePaths';
 import {Lecture} from '../../../shared';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import ProposalState from '../../../../shared/model/ProposalState';
+import ActionEventModel from '../../../../shared/model/ActionEventModel';
+import StudyActionType from '../../../../shared/model/StudyActionType';
+import ActionEventApi from '../../../../shared/present/apiclient/ActionEventApi';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService,
@@ -55,7 +59,7 @@ class CourseContainer extends Component<Props, State> {
   lectureLearningModal: any = null;
   learningVideoUrl: string = '';
   learnStudentCdo: StudentCdoModel | null = null;
-
+  lectureView: LectureViewModel = new LectureViewModel();
 
   state = {
     openLearnModal: false,
@@ -146,8 +150,26 @@ class CourseContainer extends Component<Props, State> {
     }
   }
 
+  publishActionEvent() {
+    const { match, lectureCardId } = this.props;
+    const { collegeId, coursePlanId } = match.params;
+    const { serviceType, cubeId, cubeType } = this.lectureView;
+
+    let action = StudyActionType.VideoClose;
+    if(cubeType === CubeType.Audio) {
+      action = StudyActionType.AudioClose;
+    }
+
+    const menu = 'closeLearn';
+    const studyAction: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu});
+    console.log(studyAction);
+    const actionEventApi: ActionEventApi = ActionEventApi.instance;
+    actionEventApi.registerStudyActionLog(studyAction);
+  }
+
   // 학습하기 - 학습 모달창 팝업
-  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
+  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel, lectureView: LectureViewModel):void {
+    this.lectureView = lectureView;
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
@@ -158,6 +180,7 @@ class CourseContainer extends Component<Props, State> {
 
   // 학습 모달창 닫기 - 학습통계정보 저장
   onLearningModalClose() {
+    this.publishActionEvent();
     const { lectureService, onPageRefresh } = this.props;
     if (this.learnStudentCdo) {
       const studentCdo = {
@@ -167,7 +190,7 @@ class CourseContainer extends Component<Props, State> {
       lectureService?.confirmUsageStatisticsByCardId(studentCdo)
         .then((confirmed) => {
           if (onPageRefresh) {
-            onPageRefresh();
+            // onPageRefresh();
           }
         });
     }
@@ -213,6 +236,8 @@ class CourseContainer extends Component<Props, State> {
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
                     onDoLearn={this.onDoLearn}
+                    serviceType={lecture.serviceType}
+                    coursePlanId={params.coursePlanId}
                   />
                 )}
               >
@@ -229,6 +254,8 @@ class CourseContainer extends Component<Props, State> {
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
                     onDoLearn={this.onDoLearn}
+                    serviceType={lecture.serviceType}
+                    coursePlanId={params.coursePlanId}
                   />
                 )}
               </Lecture.CourseSection>
