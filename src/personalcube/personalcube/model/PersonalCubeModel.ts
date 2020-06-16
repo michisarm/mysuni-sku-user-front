@@ -1,13 +1,19 @@
-
 import { decorate, observable } from 'mobx';
 import { DramaEntity, PatronKey } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 
-import { CategoryModel, CreatorModel, CubeState, IconBoxModel, IdName, NameValueList, SearchFilterType } from 'shared/model';
+import {
+  CategoryModel,
+  CreatorModel,
+  CubeState,
+  IconBoxModel,
+  IdName,
+  NameValueList,
+  SearchFilterType,
+} from 'shared/model';
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
-
 
 export class PersonalCubeModel implements DramaEntity {
   //
@@ -33,34 +39,56 @@ export class PersonalCubeModel implements DramaEntity {
 
   openRequests: OpenRequest[] = [];
 
-
   //UI
   required: boolean = false;
 
   constructor(personalCube?: PersonalCubeModel) {
     if (personalCube) {
-      const creator = personalCube.creator && new CreatorModel(personalCube.creator) || this.creator;
-      const contents = personalCube.contents && new CubeContentsModel(personalCube.contents) || this.contents;
-      const cubeIntro = personalCube.cubeIntro && new IdName(personalCube.cubeIntro) || this.cubeIntro;
-      const category = personalCube.category && new CategoryModel(personalCube.category) || this.category;
-      const iconBox = personalCube.iconBox && new IconBoxModel(personalCube.iconBox) || this.iconBox;
+      const creator =
+        (personalCube.creator && new CreatorModel(personalCube.creator)) ||
+        this.creator;
+      const contents =
+        (personalCube.contents &&
+          new CubeContentsModel(personalCube.contents)) ||
+        this.contents;
+      const cubeIntro =
+        (personalCube.cubeIntro && new IdName(personalCube.cubeIntro)) ||
+        this.cubeIntro;
+      const category =
+        (personalCube.category && new CategoryModel(personalCube.category)) ||
+        this.category;
+      const iconBox =
+        (personalCube.iconBox && new IconBoxModel(personalCube.iconBox)) ||
+        this.iconBox;
 
-      Object.assign(this, { ...personalCube, creator, contents, cubeIntro, category, iconBox });
+      Object.assign(this, {
+        ...personalCube,
+        creator,
+        contents,
+        cubeIntro,
+        category,
+        iconBox,
+      });
 
       // UI Model
       const companyCode = patronInfo.getPatronCompanyCode();
 
-      this.required = personalCube.requiredSubsidiaries
-        && personalCube.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
+      this.required =
+        personalCube.requiredSubsidiaries &&
+        personalCube.requiredSubsidiaries.some(
+          subsidiary => subsidiary.id === companyCode
+        );
     }
   }
 
-  static getBlankRequiredField(personalCubeModel: PersonalCubeModel) : string {
+  static getBlankRequiredField(personalCubeModel: PersonalCubeModel): string {
     //
     if (!personalCubeModel.category.channel.name) return '메인채널';
     if (!personalCubeModel.subCategories.length) return '서브채널';
     if (!personalCubeModel.name) return '강좌정보';
-    if (personalCubeModel.tags.length > 10) return '태그는 10개까지 입력 가능합니다.';
+    if (personalCubeModel.tags.length > 10) {
+      return '태그는 10개까지 입력 가능합니다.';
+    }
     if (personalCubeModel.contents.type === 'None') return '교육형태';
     if (personalCubeModel.subsidiaries.length < 1) return '관계사 공개 범위';
     return 'success';
@@ -103,7 +131,7 @@ export class PersonalCubeModel implements DramaEntity {
         },
         {
           name: 'requiredSubsidiaries',
-          value: JSON.stringify(cube.subsidiaries),
+          value: JSON.stringify([]), // user 화면에서는 보내면 안됌 by gon
         },
         {
           name: 'cubeState',
@@ -155,38 +183,37 @@ export class PersonalCubeModel implements DramaEntity {
 
   static asCdo(personalCube: PersonalCubeModel): PersonalCubeCdoModel {
     //
-    return (
-      {
-        audienceKey: 'r2p8-r@nea-m5-c5',
-        name: personalCube.name,
-        category: personalCube.category,
-        subCategories: personalCube.subCategories,
-        iconBox: personalCube.iconBox,
-        creator: personalCube.creator,
-        searchFilter: personalCube.searchFilter,
-        subsidiaries: personalCube.subsidiaries,
-        requiredSubsidiaries: personalCube.subsidiaries,
-        contents: personalCube.contents,
-        cubeIntro: personalCube.cubeIntro && personalCube.cubeIntro,
-        tags: personalCube.tags,
-        cubeState: personalCube.cubeState,
-      }
-    );
+    return {
+      audienceKey: 'r2p8-r@nea-m5-c5',
+      name: personalCube.name,
+      category: personalCube.category,
+      subCategories: personalCube.subCategories,
+      iconBox: personalCube.iconBox,
+      creator: personalCube.creator,
+      searchFilter: personalCube.searchFilter,
+      subsidiaries: personalCube.subsidiaries,
+      requiredSubsidiaries: [], // user 화면에서는 보내면 안됌 by gon
+      contents: personalCube.contents,
+      cubeIntro: personalCube.cubeIntro && personalCube.cubeIntro,
+      tags: personalCube.tags,
+      cubeState: personalCube.cubeState,
+    };
   }
 
-  static getSubCategoriesGroupByCollege(personalCube: PersonalCubeModel): CategoryModel[][] {
+  static getSubCategoriesGroupByCollege(
+    personalCube: PersonalCubeModel
+  ): CategoryModel[][] {
     //
     const collegeMap: Map<string, CategoryModel[]> = new Map();
     const subCategories = personalCube.subCategories;
 
-    subCategories.map((subCategory) => {
+    subCategories.map(subCategory => {
       //
       const collegeChannels = collegeMap.get(subCategory.college.id);
 
       if (collegeChannels) {
         collegeChannels.push(subCategory);
-      }
-      else {
+      } else {
         collegeMap.set(subCategory.college.id, [subCategory]);
       }
     });
@@ -217,4 +244,3 @@ decorate(PersonalCubeModel, {
   openRequests: observable,
   required: observable,
 });
-
