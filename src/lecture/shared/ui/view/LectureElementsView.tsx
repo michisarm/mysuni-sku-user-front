@@ -12,10 +12,10 @@ interface TitleProps {
 }
 
 export const Title = ({ category, title, children }: TitleProps) => (
-  <div className="title-area">
+  <div className="tit">
     {category && category.college.name && <Label className={category.color}>{category.college.name}</Label>}
-    <div className="header">{title}</div>
-    {children}
+    <span className="ellipsis">{title}</span>
+    {/*{children}*/}
   </div>
 );
 
@@ -50,7 +50,7 @@ export const SubField = ({ icon, text, className = '', bold = false, children = 
   <Label className={classNames('onlytext', { bold }, className)}>
     <Icon className={icon} />
     <span>{text}</span>
-    {children}
+    {/*{children}*/}
   </Label>
 );
 

@@ -38,6 +38,7 @@ import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../surve
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
+import CubeRightInfo from '../Course2/CubeRightInfo';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -689,10 +690,10 @@ class CourseLectureContainer extends Component<Props, State> {
     // console.log('lecture container personalCube : ', this.personalCube);
 
     return (
-      <div>
+      <div >
         <div className={`card-box ${className}`}>
 
-          <Thumbnail image={thumbnail} />
+          {/*<Thumbnail image={thumbnail} />*/}
 
           <Title title={lectureView.name} category={lectureView.category}>
             <div className="deatil">
@@ -714,8 +715,14 @@ class CourseLectureContainer extends Component<Props, State> {
             </div>
           </Title>
 
+          {/*<CubeRightInfo*/}
+          {/*  learningType={lectureView.cubeType}*/}
+          {/*  learningState={this.studentData.learningState}*/}
+          {/*  learningTime="11m"*/}
+          {/*/>*/}
+
           <Buttons>
-            <Button className="fix line" onClick={onViewDetail}>상세보기</Button>
+            {/*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*/}
             {
               lectureView.cubeType === CubeType.Video && (
                 this.state.inProgress !== SubState.Completed ? (
