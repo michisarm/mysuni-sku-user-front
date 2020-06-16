@@ -29,6 +29,7 @@ interface Props {
   actionLogService?: ActionLogService,
   model: LectureModel | MyTrainingModel | InMyLectureModel,
   lectureView?: LectureViewModel,
+  lectureViewSize?: number,
   rating?: number,
   thumbnailImage?: string,
   action?: Action | ActionType,

@@ -48,6 +48,7 @@ interface Props {
   mediaService?: MediaService,
   collegeId?: string,
   lectureView: LectureViewModel,
+  lectureViewSize?: number,
   className?: string,
   thumbnailImage?: string,
   action?: Action,

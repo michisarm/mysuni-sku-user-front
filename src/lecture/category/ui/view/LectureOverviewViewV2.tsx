@@ -358,6 +358,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                     <Lecture.Course
                       className="first"
                       lectureView={lecture}
+                      lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
                       thumbnailImage={lecture.baseUrl || undefined}
                       toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
                       onViewDetail={() => this.onViewDetail(lecture)}
