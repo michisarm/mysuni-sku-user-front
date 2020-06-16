@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -16,32 +15,35 @@ import boardRoutePaths from 'board/routePaths';
 
 import SiteMapModalContainer from './SiteMapModalContainer';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
-import { MenuWrapperView, TopMenuItemView, BottomMenuItemView } from '../view/QuickNavElementsView';
-
+import {
+  MenuWrapperView,
+  TopMenuItemView,
+  BottomMenuItemView,
+} from '../view/QuickNavElementsView';
 
 interface Props extends RouteComponentProps {
-  skProfileService?: SkProfileService,
-  notieService?: NotieService,
+  skProfileService?: SkProfileService;
+  notieService?: NotieService;
 }
 
 interface State {
-  active: boolean,
+  active: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'notie.notieService',
-  'profile.skProfileService',
-))
+@inject(mobxHelper.injectFrom('notie.notieService', 'profile.skProfileService'))
 @reactAutobind
 @observer
 class QuickNavContainer extends Component<Props, State> {
   //
-  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
+  hasAdminRole = patronInfo.hasPavilionRole(
+    'SuperManager',
+    'CollegeManager',
+    'CompanyManager'
+  );
 
   state = {
     active: false,
   };
-
 
   componentDidMount() {
     //
@@ -73,7 +75,7 @@ class QuickNavContainer extends Component<Props, State> {
   onClickToggle() {
     //
     this.props.notieService!.hasQuickLearningFeeds();
-    this.setState((prevState) => {
+    this.setState(prevState => {
       //
       const nextActive = !prevState.active;
 
@@ -82,7 +84,6 @@ class QuickNavContainer extends Component<Props, State> {
       }
       return { active: nextActive };
     });
-
   }
 
   onClose() {
@@ -117,11 +118,14 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   onClickAdminSite() {
-    //
-    const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
-
-    if (adminSiteUrl) {
-      window.open(adminSiteUrl);
+    // localAdmin by gon
+    if (window.location.hostname === 'localhost') {
+      window.open('http://localhost:8090');
+    } else {
+      const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
+      if (adminSiteUrl) {
+        window.open(adminSiteUrl);
+      }
     }
   }
 
@@ -132,8 +136,7 @@ class QuickNavContainer extends Component<Props, State> {
 
     if (pathname.startsWith(`${mainRoutePaths.main()}pages`)) {
       history.replace(mainRoutePaths.main());
-    }
-    else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
+    } else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
       history.replace(lectureRoutePaths.recommend());
     }
   }
@@ -144,8 +147,9 @@ class QuickNavContainer extends Component<Props, State> {
     const { active } = this.state;
     const { studySummaryFavoriteChannels } = skProfileService!;
 
-    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
-      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    const favoriteChannels = studySummaryFavoriteChannels.map(
+      channel =>
+        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
 
     return (
@@ -157,33 +161,63 @@ class QuickNavContainer extends Component<Props, State> {
         <MenuWrapperView
           topButtons={
             <>
-              <TopMenuItemView iconName="learning32" notieActive={this.props.notieService!.notieActive} text="Learning" onClick={this.onClickLearning} />
+              <TopMenuItemView
+                iconName="learning32"
+                notieActive={this.props.notieService!.notieActive}
+                text="Learning"
+                onClick={this.onClickLearning}
+              />
               {/*<TopMenuItemView iconName="community32" feedType={this.state.feedType} text="Community" onClick={this.onClickCommunity} />*/}
-              <TopMenuItemView iconName="support32" notieActive={this.props.notieService!.notieActive} text="Support" onClick={this.onClickSupport} />
+              <TopMenuItemView
+                iconName="support32"
+                notieActive={this.props.notieService!.notieActive}
+                text="Support"
+                onClick={this.onClickSupport}
+              />
             </>
           }
           bottomButtons={
             <>
-              <BottomMenuItemView iconName="building" text="mySUNI Introduction" onClick={this.onClickIntroduction} />
+              <BottomMenuItemView
+                iconName="building"
+                text="mySUNI Introduction"
+                onClick={this.onClickIntroduction}
+              />
               <FavoriteChannelChangeModal
-                trigger={(
-                  <BottomMenuItemView iconName="admin" text="관심채널" onClick={this.onClose} />
-                )}
+                trigger={
+                  <BottomMenuItemView
+                    iconName="admin"
+                    text="관심채널"
+                    onClick={this.onClose}
+                  />
+                }
                 favorites={favoriteChannels}
                 onConfirmCallback={this.onConfirmFavorite}
               />
               <SiteMapModalContainer
-                trigger={<BottomMenuItemView iconName="sitemap" text="Site Map" onClick={this.onClose} />}
+                trigger={
+                  <BottomMenuItemView
+                    iconName="sitemap"
+                    text="Site Map"
+                    onClick={this.onClose}
+                  />
+                }
               />
 
               {/*0513 승인관리 메뉴 추가*/}
-              <BottomMenuItemView iconName="confirm" text="승인관리" onClick={this.onClickApproval}/>
+              <BottomMenuItemView
+                iconName="confirm"
+                text="승인관리"
+                onClick={this.onClickApproval}
+              />
 
-              {
-                this.hasAdminRole && (
-                  <BottomMenuItemView iconName="admin24" text="Admin Site" onClick={this.onClickAdminSite} />
-                )
-              }
+              {this.hasAdminRole && (
+                <BottomMenuItemView
+                  iconName="admin24"
+                  text="Admin Site"
+                  onClick={this.onClickAdminSite}
+                />
+              )}
             </>
           }
         />
