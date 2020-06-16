@@ -3,12 +3,12 @@ import ActionEventModel from '../../model/ActionEventModel';
 
 class ActionEventApi {
 
-  STUDY_EVENT_URL: string = '/api/actionlog/events/click';
+  studyUrl: string = '/api/action-log-collector/events/study';
 
   static instance: ActionEventApi;
 
   registerStudyActionLog(actionLog: ActionEventModel) {
-    return axios.post<string>(this.STUDY_EVENT_URL, actionLog)
+    return axios.post<string>(this.studyUrl, actionLog)
       .then(response => response && response.data || null);
   }
 }

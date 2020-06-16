@@ -246,7 +246,7 @@ class LectureCardContainer extends Component<Props, State> {
   
     const studyAction: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, menu});
 
-    console.log(studyAction);
+    // console.log(studyAction);
     const actionEventApi: ActionEventApi = ActionEventApi.instance;
     actionEventApi.registerStudyActionLog(studyAction);
 
@@ -358,8 +358,8 @@ class LectureCardContainer extends Component<Props, State> {
       const win = window.open(typeViewObject.url, '_blank');
       if(win) {
         win.onbeforeunload = () => {
-          const isClose = true;
-          this.publishStudyEvent(isClose);
+          //const isClose = true;
+          // this.publishStudyEvent(isClose);
         };
       }
       //this.setState( {openLearningModal: true});
@@ -558,7 +558,7 @@ class LectureCardContainer extends Component<Props, State> {
           return {
             type: LectureSubInfo.ActionType.LearningStart,
             onAction: () => {
-              console.log('여기도 비디오를 보여주기는 해');
+              //console.log('여기도 비디오를 보여주기는 해');
               if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
                 (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
                 this.onRegisterStudent(ProposalState.Approved);
@@ -608,7 +608,7 @@ class LectureCardContainer extends Component<Props, State> {
         }
       case CubeType.WebPage:
       case CubeType.Experiential:
-        console.log('여기도!!');
+        //console.log('여기도!!');
         return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onOpenStart };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };

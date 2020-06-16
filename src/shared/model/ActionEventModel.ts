@@ -23,11 +23,11 @@ interface ViewEventParams {
 class ActionEventModel {
     context: ContextModel = new ContextModel();
     action?: StudyActionType;
-    serviceType?: LectureServiceType;
-    collegeId?: string;
+    serviceType?: string;
+    college?: string;
     cubeId?: string;
     lectureCardId?: string;
-    coursePlanId?: string;
+    coursePlanId: string = '';
 
     constructor(actionEvent?: ActionEventModel) {
       if(actionEvent) {
@@ -44,13 +44,34 @@ class ActionEventModel {
 
     static fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, path, menu}: StudyEventParams): ActionEventModel {
       const studyAction: ActionEventModel = new ActionEventModel();
+      
+      let actionServiceType: string = '';
+
+      switch(serviceType) {
+        case 'Course':
+          actionServiceType = 'COURSE';
+          break;
+        case 'Card': 
+          actionServiceType = 'CARD';
+          break;
+        case 'Program': 
+          actionServiceType = 'PROGRAM';
+          break;
+        default: 
+          actionServiceType = '';
+      } 
+          
+
       studyAction.setContext(path, menu);
       studyAction.action = action;
-      studyAction.serviceType = serviceType;
-      studyAction.collegeId = collegeId;
+      studyAction.serviceType = actionServiceType;
+      studyAction.college = collegeId;
       studyAction.cubeId = cubeId;
-      studyAction.coursePlanId = coursePlanId;
       studyAction.lectureCardId = lectureCardId;
+
+      if(coursePlanId) {
+        studyAction.coursePlanId = coursePlanId;
+      }
 
       return studyAction;
     }

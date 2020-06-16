@@ -66,6 +66,7 @@ interface Props {
   lectureCardId?: string,
   coursePlanId?: string,
   serviceType?: LectureServiceType,
+  courseServiceType?: LectureServiceType,
   member? : EmployeeModel,
 
   examinationService?: ExaminationService,
@@ -293,10 +294,12 @@ class CourseLectureContainer extends Component<Props, State> {
     return classNameForLearningState;
   }
 
-  publishActionEvent() {
-    const {serviceType, collegeId, lectureCardId, coursePlanId, lectureView } = this.props;
+  publishStudyEvent() {
+    const {courseServiceType, collegeId, lectureCardId, coursePlanId, lectureView } = this.props;
     const {cubeId, cubeType} = lectureView;
-    
+
+    const serviceType = courseServiceType;
+
     let action = StudyActionType.VideoStart;
     if(cubeType === CubeType.Audio) {
       action = StudyActionType.AudioStart;
@@ -380,7 +383,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (url && url.startsWith('http'))
     {
-      this.publishActionEvent();
+      this.publishStudyEvent();
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
@@ -399,15 +402,15 @@ class CourseLectureContainer extends Component<Props, State> {
     {
       //this.onRegisterStudentForVideo(ProposalState.Approved);
       //this.popupLearnModal(url);
-      this.publishActionEvent();
+      // this.publishStudyEvent();
       const win = window.open(url, '_blank');
-      
+    /*
       if(win) {
         win.onbeforeunload = () => {
-          console.log('window is closed');
+          
         };
       }
-      
+    */
     } else
     {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -473,7 +476,6 @@ class CourseLectureContainer extends Component<Props, State> {
 
   async getMainActionForVideo()
   {
-    console.log('여기야 여기!');
     //collegeId
     const { mediaService } = this.props;
     // const { personalCube } = personalCubeService!;

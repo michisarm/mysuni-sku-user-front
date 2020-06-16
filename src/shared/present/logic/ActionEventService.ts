@@ -1,8 +1,8 @@
+
+import ActionEventApi from '../apiclient/ActionEventApi';
+import ActionEventModel from '../../model/ActionEventModel';
 import StudyActionType from '../../model/StudyActionType';
 import { LectureServiceType } from '../../../lecture/model';
-import ActionEventModel from '../../model/ActionEventModel';
-import ActionEventApi from '../apiclient/ActionEventApi';
-
 
 interface StudyEventParams {
   collegeId: string,

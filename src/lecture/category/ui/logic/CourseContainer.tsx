@@ -150,10 +150,10 @@ class CourseContainer extends Component<Props, State> {
     }
   }
 
-  publishActionEvent() {
+  publishStudyEvent() {
     const { match, lectureCardId } = this.props;
-    const { collegeId, coursePlanId } = match.params;
-    const { serviceType, cubeId, cubeType } = this.lectureView;
+    const { collegeId, coursePlanId, serviceType } = match.params;
+    const { cubeId, cubeType } = this.lectureView;
 
     let action = StudyActionType.VideoClose;
     if(cubeType === CubeType.Audio) {
@@ -162,7 +162,7 @@ class CourseContainer extends Component<Props, State> {
 
     const menu = 'closeLearn';
     const studyAction: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu});
-    console.log(studyAction);
+    // console.log(studyAction);
     const actionEventApi: ActionEventApi = ActionEventApi.instance;
     actionEventApi.registerStudyActionLog(studyAction);
   }
@@ -180,7 +180,7 @@ class CourseContainer extends Component<Props, State> {
 
   // 학습 모달창 닫기 - 학습통계정보 저장
   onLearningModalClose() {
-    this.publishActionEvent();
+    this.publishStudyEvent();
     const { lectureService, onPageRefresh } = this.props;
     if (this.learnStudentCdo) {
       const studentCdo = {
@@ -190,7 +190,7 @@ class CourseContainer extends Component<Props, State> {
       lectureService?.confirmUsageStatisticsByCardId(studentCdo)
         .then((confirmed) => {
           if (onPageRefresh) {
-            // onPageRefresh();
+            onPageRefresh();
           }
         });
     }
@@ -238,6 +238,7 @@ class CourseContainer extends Component<Props, State> {
                     onDoLearn={this.onDoLearn}
                     serviceType={lecture.serviceType}
                     coursePlanId={params.coursePlanId}
+                    courseServiceType={params.serviceType}
                   />
                 )}
               >
@@ -256,6 +257,7 @@ class CourseContainer extends Component<Props, State> {
                     onDoLearn={this.onDoLearn}
                     serviceType={lecture.serviceType}
                     coursePlanId={params.coursePlanId}
+                    courseServiceType={params.serviceType}
                   />
                 )}
               </Lecture.CourseSection>
