@@ -1,2 +1,2 @@
 
-export { default } from './CourseLectureContainer';
+export { default } from './CourseLectureContainer2';
