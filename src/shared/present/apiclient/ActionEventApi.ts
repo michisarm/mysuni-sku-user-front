@@ -3,7 +3,7 @@ import ActionEventModel from '../../model/ActionEventModel';
 
 class ActionEventApi {
 
-  STUDY_EVENT_URL: string = '/api/actionlog/events/study';
+  STUDY_EVENT_URL: string = '/api/actionlog/events/click';
 
   static instance: ActionEventApi;
 
