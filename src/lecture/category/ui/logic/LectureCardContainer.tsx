@@ -104,7 +104,7 @@ class LectureCardContainer extends Component<Props, State> {
       } else if (this.props.viewObject.state === EnumState.Waiting && this.props.student?.learningState === 'Failed') {
         reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
       } else if (this.props.viewObject.state === EnumState.Missed) {
-        reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
+        // reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
       } else if (this.prevViewObjectState === EnumState.InProgress && this.props.viewObject.state === EnumState.Completed) {
         reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
       } else if (this.prevViewObjectState === EnumState.Waiting && this.props.viewObject.state === EnumState.Completed) {
@@ -148,14 +148,14 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 승인 체크(true)
       if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.approvalProcess === true)) {
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
         // 과정 등록
-        this.getFreeOfChargeOk();
-
-        studentService!.removeStudent(student.rollBookId)
+        await studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
+
+        this.getFreeOfChargeOk();
 
         reactAlert({ title: '알림', message: messageStr });
 
@@ -165,11 +165,12 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
-      // 과정 등록
-      this.getFreeOfChargeOk();
-
       // 수강신청(false), 승인 체크(false)
-      this.setState({ rollBook }, this.onApplyReferenceEmpty );
+      this.setState({ rollBook }, () => {
+        // 과정 등록
+        this.getFreeOfChargeOk();
+        this.onApplyReferenceEmpty();
+      });
 
       reactAlert({ title: '알림', message: messageStr });
     }
@@ -261,9 +262,10 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
     const isSingleClassroom: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.onApplyReference);
+      this.onSelectClassroom(typeViewObject.classrooms[0]);
+      //this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.re);
     } else {
-      this.onApplyReference();
+      this.onClickChangeSeries();
     }
   }
 
@@ -439,12 +441,16 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
-    let proposalState = studentCdo.proposalState;
-    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
-      proposalState = student.proposalState;
-    }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
+
+    let proposalState = studentCdo.proposalState;
+    if (student
+      && student.rollBookId === rollBookId
+      && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+      proposalState = student.proposalState;
+    }
 
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
     this.registerStudentApprove({ ...studentCdo,
@@ -764,9 +770,6 @@ class LectureCardContainer extends Component<Props, State> {
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
     const { classrooms } = this.props.classroomService!;
-
-
-    // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
       <LectureCardContentWrapperView>

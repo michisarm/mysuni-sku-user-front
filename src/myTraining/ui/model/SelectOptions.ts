@@ -55,6 +55,8 @@ const SelectOptions = {
     { key: '5', text: 'Global', value: 'h6' },
     { key: '6', text: 'Leadership', value: 'h7' },
     { key: '7', text: 'Management', value: 'h8' },
+    { key: '8', text: '반도체', value: '10i' },
+    { key: '9', text: 'SK아카데미', value: '10j' },
   ],
 
   difficulty: [
@@ -417,7 +419,7 @@ const SelectOptions = {
   ],
 
   // approval
-  approvalSearchStartDate: [
+  approvalSearchDate: [
     { key: '1', text: '전체', value: '1' },
     { key: '2', text: '최근 1주일', value: '2' },
     { key: '3', text: '최근 2주일', value: '3' },

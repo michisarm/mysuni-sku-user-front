@@ -67,9 +67,9 @@ export const StateView = ({ state }: StateProp) => {
     st = State.Waiting;
   }
 
-  if (st === State.Missed) {
-    st = State.Waiting;
-  }
+  // if (st === State.Missed) {
+  //   st = State.Waiting;
+  // }
 
 
   return (

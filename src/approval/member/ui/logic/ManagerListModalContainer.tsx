@@ -12,6 +12,7 @@ interface Props {
   skProfileService?: SkProfileService
   trigger?: React.ReactNode
   handleOk: (member: ApprovalMemberModel) => void
+  multiSelect?: boolean
 }
 
 interface States {
@@ -24,6 +25,10 @@ interface States {
 @observer
 @reactAutobind
 class ManagerListModalContainer extends React.Component<Props, States> {
+  public static defaultProps = {
+    multiSelect: true,
+  };
+
   constructor(props: Props) {
     //
     super(props);
@@ -51,7 +56,7 @@ class ManagerListModalContainer extends React.Component<Props, States> {
 
   render() {
     //
-    const { skProfileService } = this.props;
+    const { skProfileService, multiSelect = true } = this.props;
     const { open } = this.state;
     const { skProfile } = skProfileService!;
     const cineroomId = patronInfo.getCineroomId();
@@ -64,7 +69,7 @@ class ManagerListModalContainer extends React.Component<Props, States> {
         companyCode={companyCode && companyCode || ''}
         departmentCode={skProfile.departmentCode}
         showAllCompanies={cineroomId === 'ne1-m2-c2'}
-        multiSelect
+        multiSelect={multiSelect}
       />
     );
   }

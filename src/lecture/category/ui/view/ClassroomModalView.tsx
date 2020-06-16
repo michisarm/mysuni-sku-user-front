@@ -118,6 +118,7 @@ class ClassroomModalView extends Component<Props, States> {
                               (joinRounds && joinRounds.includes(classroom.round))
                               || new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() > today.getTime()
                               || new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() < today.getTime()
+                              || classroom.studentCount >= classroom.capacity
                             }
                             checked={selectedClassroom && selectedClassroom!.id === classroom.id || false}
                             onChange={() => this.setState({ selectedClassroom: classroom })}

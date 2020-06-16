@@ -1,45 +1,23 @@
 import React, {Component} from 'react';
-import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
-
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-
-import depot from '@nara.drama/depot';
-import { CubeType } from 'shared/model';
-import { AlertWin, ConfirmWin } from 'shared';
-
+import { reactAutobind, reactAlert } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { observer } from 'mobx-react';
 import {
-  Modal, Form, TextArea, Button
+  Modal, Form, Button,
 } from 'semantic-ui-react';
-
 import { ApprovalCubeService } from '../../stores';
-
-import routePaths from '../../routePaths';
-
-import { CubeIntroModel } from '../../model';
 import { IdNameApproval } from '../../model/IdNameApproval';
 import { ProposalState } from '../../model/ProposalState';
 
-import { ApprovedResponse } from '../../model/ApprovedResponse';
-
 interface Props {
-  trigger: React.ReactNode
   approvalCubeService?: ApprovalCubeService
+  open: boolean
+  onCloseModal: () => void
 }
 
-@inject(mobxHelper.injectFrom(
-  'approvalCube.approvalCubeService'))
 @observer
 @reactAutobind
 class ApprovalProcessModalRejected extends Component<Props> {
-
-  state = {
-    open : false
-  };
-
-  onCloseModal = () => this.setState({ open : false });
-
-  onOpenModal = () => this.setState({ open : true });
 
   onChangeApprovalCubeProps(name: string, value: any) {
     //
@@ -62,87 +40,59 @@ class ApprovalProcessModalRejected extends Component<Props> {
     //
     const { approvalCubeService } = this.props;
     if (approvalCubeService) approvalCubeService.changeSelectedStudentProps(selectedList);
-    console.log('approvalCubeService?.selectedList ::' + selectedList);
   }
-  
+
   async addRejectedLectureSingle() {
-    console.log('addRejectedLectureSingle click ::');
     //
     const { approvalCubeService } = this.props;
-    const { studentRequest } = this.props.approvalCubeService || {} as ApprovalCubeService;
-    const { selectedList } = this.props.approvalCubeService || {} as ApprovalCubeService;
-    const { approvalCube } = this.props.approvalCubeService!;
+    const { studentRequest, selectedList, approvalCube } = approvalCubeService!;
 
-    const ApprovedResponse = this.props;
+    const name = patronInfo.getPatronName() || '';
+    const email = patronInfo.getPatronEmail() || '';
 
-    const name = approvalCube.memberName;
-    const userId = approvalCube.operation.operator.employeeId;
-
-    const studentId = approvalCube.studentId;
-    const tempList: string [] = [ ...selectedList ];
-    tempList.push(studentId);
-
-    this.onChangeSelectedStudentProps(tempList);
-
-    const selectedListArr = this.props.approvalCubeService || {} as ApprovalCubeService;
-
-    console.log('addRejectedLectureSingle => selectedListArr ::' + selectedListArr.selectedList);
-    console.log('addRejectedLectureSingle approvalCube.remark ::' + approvalCube.remark);
+    if (!approvalCube.remark) {
+      reactAlert({ title: '알림', message: '반려 의견을 입력해주세요.' });
+      return;
+    }
 
     this.onChangeStudentRequestCdoProps('remark', approvalCube.remark);
     this.onChangeStudentRequestCdoProps('proposalState', ProposalState.Rejected);
-    const idNameApproval = new IdNameApproval({ id: userId, name });
-    this.onChangeStudentRequestCdoProps('actor', idNameApproval);
-    this.onChangeStudentRequestCdoProps('students', selectedListArr.selectedList);
+    this.onChangeStudentRequestCdoProps('actor', new IdNameApproval({ id: email, name }));
+    this.onChangeStudentRequestCdoProps('students', [ ...selectedList ]);
 
-    if (selectedList && approvalCubeService) {
-      const reponseData = approvalCubeService.studentRequestReject(studentRequest);
+    const responseData = await approvalCubeService!.studentRequestReject(studentRequest);
+    const { error, message } = responseData;
 
-      //console.log('addRejectedLectureSingle reponseData.error ::' + (await reponseData).error );
-      //console.log('addRejectedLectureSingle reponseData.message ::' + (await reponseData).message);
-
-      const errorData = (await reponseData).error;
-
-      const messageData = (await reponseData).message;
-      const messageTitle = messageData+' <br> 에러 입니다. 관리자에게 문의 하세요.';
-
-      if(errorData === null ) {
-        reactAlert({ title: '알림', message: messageTitle });
-      }
-
-      if(errorData) {
-        reactAlert({ title: '알림', message: messageTitle });
+    if (error) {
+      if (message) {
+        reactAlert({ title: '알림', message });
       } else {
-        reactAlert({ title: '알림', message: '성공입니다.' });
-        this.routeToCreateList();
+        reactAlert({ title: '알림', message: '에러 입니다. 관리자에게 문의 하세요.' });
       }
+    } else {
+      reactAlert({ title: '알림', message: '성공입니다.' });
+      this.routeToCreateList();
     }
 
   }
 
+
   routeToCreateList() {
     //
-    console.log(' routeToCreateList Start ... ::');
     // this.clearAll();
-    window.location.href='/suni-main/my-training/my-page/ApprovalList/pages/1';
-    console.log(' routeToCreateList End ... ::');
+    window.location.href = '/suni-main/my-training/my-page/ApprovalList/pages/1';
   }
 
   render() {
 
     const { approvalCube } = this.props.approvalCubeService!;
-    // console.log('ApprovalSharedDetailContainer approvalCube remark :: ' + approvalCube.remark);
+    const { open, onCloseModal } = this.props;
 
-    const { open } = this.state;
-    const { trigger } = this.props;
-
-    return(
+    return (
       <Modal
         open={open}
-        onClose={this.onCloseModal}
-        onOpen={this.onOpenModal}
+        onClose={onCloseModal}
         className="base w700"
-        trigger={trigger}
       >
         <Modal.Header>선택된 결제 반려</Modal.Header>
         <Form className="base">
@@ -165,7 +115,7 @@ class ApprovalProcessModalRejected extends Component<Props> {
             </div>
           </Modal.Content>
           <Modal.Actions className="actions2">
-            <Button className="pop2 d" onClick={this.onCloseModal}>취소</Button>
+            <Button className="pop2 d" onClick={onCloseModal}>취소</Button>
             <Button className="pop2 p" onClick={this.addRejectedLectureSingle}>반려</Button>
           </Modal.Actions>
         </Form>

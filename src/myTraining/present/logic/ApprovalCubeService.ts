@@ -6,7 +6,7 @@ import { ProposalState } from '../../../shared/model';
 import ApprovalCubeApi from '../apiclient/ApprovalCubeApi';
 import { ApprovalCubeModel } from '../../model/ApprovalCubeModel';
 import { StudentRequestCdoModel } from '../../model/StudentRequestCdoModel';
-import IdName from '../../../shared/model/IdName';
+import ApprovalCubeRdoModel from '../../model/ApprovalCubeRdoModel';
 
 @autobind
 export default class ApprovalCubeService {
@@ -31,7 +31,7 @@ export default class ApprovalCubeService {
   searchOrderBy: string = '';
 
   @observable
-  searchStartDate: number = 0;
+  searchEndDate: number = 0;
 
   @observable
   lectures: any[] = [];
@@ -117,12 +117,12 @@ export default class ApprovalCubeService {
   @action
   async findApprovalCubesForSearch(offset: number,
     limit: number,
-    orderBy: string,
-    proposalState?: ProposalState,
-    approvalCube?: ApprovalCubeModel,
-    startDate: number = 0) {
+    orderBy: string = '',
+    proposalState: ProposalState = ProposalState.Submitted,
+    lectureCardId: string = '',
+    endDate: number = 0) {
     //
-    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(offset, limit, orderBy, proposalState, approvalCube, startDate);
+    const approvalCubeOffsetList = await this.approvalCubeApi.findApprovalCubesForSearch(ApprovalCubeRdoModel.new(offset, limit, orderBy, proposalState, lectureCardId, endDate));
 
     runInAction(() => {
       this.approvalCubeOffsetList.results = this.approvalCubeOffsetList.results.concat(approvalCubeOffsetList.results);
@@ -151,9 +151,9 @@ export default class ApprovalCubeService {
   }
 
   @action
-  changeSearchStartDate(startDate: number) {
+  changeSearchEndDate(endDate: number) {
     //
-    this.searchStartDate = startDate;
+    this.searchEndDate = endDate;
   }
 
   @action
