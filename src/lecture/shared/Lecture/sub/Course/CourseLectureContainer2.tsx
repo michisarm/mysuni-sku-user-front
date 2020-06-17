@@ -698,46 +698,52 @@ class CourseLectureContainer2 extends Component<Props, State> {
           {/*<Thumbnail image={thumbnail} />*/}
 
           {/*<Title title={lectureView.name} category={lectureView.category} toggle={toggle} open={open}>*/}
-          <div className="bar">
-            <div className="tit">
-              <span className="ellipsis">{lectureView.name}</span>
+          {className === 'first' && (
+            <div className="bar">
+              <div className="tit">
+                <span className="ellipsis">{lectureView.name}</span>
+              </div>
+              {
+                lectureViewSize && (
+                  <div className="num">{lectureViewSize}개 강의 구성</div>
+                )
+              }
+              <div className="toggle-btn">
+                <Button
+                  icon
+                  className={classNames({
+                    'img-icon': true,
+                    'fn-more-toggle': true,
+                    'card-open': !open,
+                    'card-close': open,
+                  })}
+                  onClick={this.onToggle}
+                >
+                  <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
+                </Button>
+              </div>
             </div>
-            {
-              lectureViewSize && (
-                <div className="num">{lectureViewSize}개 강의 구성</div>
-              )
-            }
-            <Button
-              icon
-              className={classNames({
-                'img-icon': true,
-                'fn-more-toggle': true,
-                'card-open': !open,
-                'card-close': open,
-              })}
-              onClick={this.onToggle}
-            >
-              <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-            </Button>
-          </div>
-          <div className="deatil">
-            {/*{ lectureView.cubeTypeName && (*/}
-            {/*  <Field>*/}
-            {/*    <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />*/}
-            {/*    <span className="channel">{lectureView.category.channel.name}</span>*/}
-            {/*  </Field>*/}
-            {/*)}*/}
-            {/*<Field>*/}
-            {/*  <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>*/}
-            {/*    {lectureView.learningPeriod && (*/}
-            {/*      <span className="ml17">*/}
-            {/*        학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}*/}
-            {/*      </span>*/}
-            {/*    )}*/}
-            {/*  </SubField>*/}
-            {/*</Field>*/}
-          </div>
-          {/*</Title>*/}
+          )}
+
+          {className === 'included' && (
+            <div className="deatil">
+              {/*{ lectureView.cubeTypeName && (*/}
+              {/*  <Field>*/}
+              {/*    <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />*/}
+              {/*    <span className="channel">{lectureView.category.channel.name}</span>*/}
+              {/*  </Field>*/}
+              {/*)}*/}
+              {/*<Field>*/}
+              {/*  <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>*/}
+              {/*    {lectureView.learningPeriod && (*/}
+              {/*      <span className="ml17">*/}
+              {/*        학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}*/}
+              {/*      </span>*/}
+              {/*    )}*/}
+              {/*  </SubField>*/}
+              {/*</Field>*/}
+            </div>
+          )}
 
           {/*<CubeRightInfo*/}
           {/*  learningType={lectureView.cubeType}*/}
