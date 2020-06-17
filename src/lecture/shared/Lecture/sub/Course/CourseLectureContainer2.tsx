@@ -678,7 +678,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { classNameForLearningState } = this.state;
     const {
       className, lectureView, thumbnailImage, toggle,
-      onViewDetail,
+      onViewDetail, lectureViewSize,
     } = this.props;
     const { open } = this.context;
 
@@ -702,7 +702,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="tit">
               <span className="ellipsis">{lectureView.name}</span>
             </div>
-            <div className="num">개 강의 구성</div>
+            {
+              lectureViewSize && (
+                <div className="num">{lectureViewSize}개 강의 구성</div>
+              )
+            }
             <Button
               icon
               className={classNames({
