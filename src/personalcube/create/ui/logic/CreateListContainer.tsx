@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -15,19 +14,20 @@ import SelectType from '../../model/SelectOptions';
 import CreateListPanelTopLineView from '../view/CreateListPanelTopLineView';
 import CreateListView from '../view/CreateListView';
 
-
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  pageService?: PageService,
-  personalCubeService?: PersonalCubeService
-  onChangeCreateCount: (createCount: number) => void
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  pageService?: PageService;
+  personalCubeService?: PersonalCubeService;
+  onChangeCreateCount: (createCount: number) => void;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.pageService',
-  'personalCube.personalCubeService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.pageService',
+    'personalCube.personalCubeService'
+  )
+)
 @observer
 @reactAutobind
 class CreateListContainer extends React.Component<Props> {
@@ -35,8 +35,24 @@ class CreateListContainer extends React.Component<Props> {
   PAGE_KEY = 'create';
   PAGE_SIZE = 8;
 
-  componentDidMount() {
-    //
+  componentDidMount(): void {
+    // tab click 시 초기화 by gon
+    this.init();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    // tab click 시 초기화 by gon
+    const prevTab = prevProps.match.params.tab;
+    const currentTab = this.props.match.params.tab;
+    if (prevTab === currentTab) {
+      this.getSearchInTab(prevProps);
+    } else {
+      this.init();
+    }
+  }
+
+  // tab click 시 초기화 by gon
+  init() {
     const { pageService, personalCubeService } = this.props;
     const { searchState } = personalCubeService!;
     const currentPageNo = this.props.match.params.pageNo;
@@ -50,25 +66,32 @@ class CreateListContainer extends React.Component<Props> {
       personalCubeService!.clear();
       this.findPersonalCubes(searchState, this.getPageNo() - 1);
     }
-
+    // tab click 시 초기화 by gon
+    // 조회조건 = 전체
+    personalCubeService!.changeSearchState(CubeState.ALL);
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    //
+  // tab click 시 초기화 by gon
+  getSearchInTab(prevProps: Readonly<Props>) {
     const { pageService, personalCubeService } = this.props;
     const { searchState } = personalCubeService!;
     const prevTab = prevProps.match.params.tab;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
-    if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+    if (
+      prevTab === currentTab &&
+      prevProps.match.params.pageNo !== currentPageNo
+    ) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
-      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > this.PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + this.PAGE_SIZE
+          : page!.nextOffset;
       if (currentPageNo === '1') {
         personalCubeService!.clear();
         pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      }
-      else {
+      } else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
       this.findPersonalCubes(searchState, this.getPageNo() - 1);
@@ -87,19 +110,35 @@ class CreateListContainer extends React.Component<Props> {
     const { pageService, personalCubeService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { onChangeCreateCount } = this.props;
-
-    const offsetList = await personalCubeService!.findPersonalCubesForCreator(page!.nextOffset, page!.limit, cubeState);
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    // create list 조회
+    const offsetList = await personalCubeService!.findPersonalCubesForCreator(
+      page!.nextOffset,
+      page!.limit,
+      cubeState
+    );
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      offsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
     onChangeCreateCount(offsetList.totalCount);
   }
 
   onChangeSearchSelect(e: any, data: any) {
     //
-    const { actionLogService, history, pageService, personalCubeService } = this.props;
+    const {
+      actionLogService,
+      history,
+      pageService,
+      personalCubeService,
+    } = this.props;
     const cubeState = data.value;
     const currentPageNo = this.props.match.params.pageNo;
 
-    const cubeStateName: string = data.options.reduce((a: any, b: any) => (a === b.value ? b.text : a), data.value);
+    const cubeStateName: string = data.options.reduce(
+      (a: any, b: any) => (a === b.value ? b.text : a),
+      data.value
+    );
     actionLogService?.registerClickActionLog({ subAction: cubeStateName });
 
     personalCubeService!.clear();
@@ -117,16 +156,21 @@ class CreateListContainer extends React.Component<Props> {
     const personalCubeService = this.props.personalCubeService!;
     const { history } = this.props;
 
-    const personalCube = await personalCubeService.findPersonalCube(personalCubeId);
+    const personalCube = await personalCubeService.findPersonalCube(
+      personalCubeId
+    );
 
     const cubeType = personalCube!.contents.type;
     const cubeState = personalCube!.cubeState;
 
     if (cubeState === CubeState.Created) {
-      history.push(routePaths.createPersonalCubeDetail(personalCubeId, cubeType));
-    }
-    else {
-      history.push(routePaths.createSharedDetail(personalCubeId, cubeType, cubeState));
+      history.push(
+        routePaths.createPersonalCubeDetail(personalCubeId, cubeType)
+      );
+    } else {
+      history.push(
+        routePaths.createSharedDetail(personalCubeId, cubeType, cubeState)
+      );
     }
   }
 
@@ -140,7 +184,10 @@ class CreateListContainer extends React.Component<Props> {
 
   render() {
     //
-    const { personalCubeOffsetList, searchState } = this.props.personalCubeService!;
+    const {
+      personalCubeOffsetList,
+      searchState,
+    } = this.props.personalCubeService!;
     const { totalCount, results: personalCubes } = personalCubeOffsetList;
 
     if (personalCubes.length < 1) {
@@ -167,10 +214,8 @@ class CreateListContainer extends React.Component<Props> {
           handleClickCubeRow={this.onClickPersonalCubeRow}
         />
 
-        { totalCount > personalCubes.length && (
-          <SeeMoreButton
-            onClick={() => this.onClickSeeMore()}
-          />
+        {totalCount > personalCubes.length && (
+          <SeeMoreButton onClick={() => this.onClickSeeMore()} />
         )}
       </>
     );
