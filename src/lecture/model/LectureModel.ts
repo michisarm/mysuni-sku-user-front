@@ -141,7 +141,7 @@ class LectureModel extends DramaEntityObservableModel {
       }
       if (this.viewState === 'Approved') {
         //TODO STARTDATE
-        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
+        return moment(Number(this.creationTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
       }
       if (
         this.viewState === 'Progress' || this.viewState === 'Failed' || this.viewState === 'TestPassed'
