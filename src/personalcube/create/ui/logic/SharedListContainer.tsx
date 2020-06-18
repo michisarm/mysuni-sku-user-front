@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -20,27 +19,28 @@ import { InMyLectureService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import SharedListPanelTopLineView from '../view/SharedListPanelTopLineView';
 
-
-interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  pageService?: PageService,
-  lectureService?: LectureService,
-  inMyLectureService?: InMyLectureService,
-  reviewService?: ReviewService
-  onChangeSharedCount: (sharedCount: number) => void
+interface Props extends RouteComponentProps<{ tab: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  pageService?: PageService;
+  lectureService?: LectureService;
+  inMyLectureService?: InMyLectureService;
+  reviewService?: ReviewService;
+  onChangeSharedCount: (sharedCount: number) => void;
 }
 
 interface States {
-  channels: ChannelModel[]
+  channels: ChannelModel[];
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.pageService',
-  'shared.reviewService',
-  'lecture.lectureService',
-  'myTraining.inMyLectureService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.pageService',
+    'shared.reviewService',
+    'lecture.lectureService',
+    'myTraining.inMyLectureService'
+  )
+)
 @observer
 @reactAutobind
 class SharedListContainer extends React.Component<Props, States> {
@@ -53,32 +53,57 @@ class SharedListContainer extends React.Component<Props, States> {
     channels: [],
   };
 
-
   componentDidMount() {
-    //
-    const { pageService, lectureService } = this.props;
+    // tab click 시 초기화 by gon
+    this.init();
+  }
 
+  componentDidUpdate(prevProps: Readonly<Props>): void {
+    // tab click 시 초기화 by gon
+    const prevTab = prevProps.match.params.tab;
+    const currentTab = this.props.match.params.tab;
+    if (prevTab === currentTab) {
+      this.getSearchInTab(prevProps);
+    } else {
+      this.init();
+    }
+  }
+
+  // tab click 시 초기화 by gon
+  init() {
+    const { pageService, lectureService } = this.props;
     const initialLimit = this.getPageNo() * this.PAGE_SIZE;
     pageService!.initPageMap(this.PAGE_KEY, 0, initialLimit);
     lectureService!.clearLectures();
     this.findSharedLectures();
+    // tab click 시 초기화 by gon
+    this.setState({ channels: [] }, () => {
+      lectureService!.clearLectures();
+      pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+      this.findSharedLectures();
+    });
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    //
+  // tab click 시 초기화 by gon
+  getSearchInTab(prevProps: Readonly<Props>) {
     const { pageService, lectureService } = this.props;
     const prevTab = prevProps.match.params.tab;
     const currentTab = this.props.match.params.tab;
     const currentPageNo = this.props.match.params.pageNo;
 
-    if (prevTab === currentTab && prevProps.match.params.pageNo !== currentPageNo) {
+    if (
+      prevTab === currentTab &&
+      prevProps.match.params.pageNo !== currentPageNo
+    ) {
       const page = pageService!.pageMap.get(this.PAGE_KEY);
-      const offset = page!.limit > this.PAGE_SIZE && page!.nextOffset === 0 ? page!.nextOffset + this.PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > this.PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + this.PAGE_SIZE
+          : page!.nextOffset;
       if (currentPageNo === '1') {
         lectureService!.clearLectures();
         pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-      }
-      else {
+      } else {
         pageService!.initPageMap(this.PAGE_KEY, offset, this.PAGE_SIZE);
       }
       this.findSharedLectures(this.getPageNo() - 1);
@@ -87,12 +112,24 @@ class SharedListContainer extends React.Component<Props, States> {
 
   async findSharedLectures(pageNo?: number) {
     //
-    const { pageService, lectureService, reviewService, inMyLectureService, onChangeSharedCount } = this.props;
+    const {
+      pageService,
+      lectureService,
+      reviewService,
+      inMyLectureService,
+      onChangeSharedCount,
+    } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { channels } = this.state;
-    const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
+    const channelIds = channels.map(
+      (channel: ChannelModel) => channel.channelId
+    );
 
-    const lectureOffsetList = await lectureService!.findSharedLectures(page!.limit, page!.nextOffset, channelIds);
+    const lectureOffsetList = await lectureService!.findSharedLectures(
+      page!.limit,
+      page!.nextOffset,
+      channelIds
+    );
 
     let feedbackIds: string[] = [];
 
@@ -103,7 +140,11 @@ class SharedListContainer extends React.Component<Props, States> {
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(this.PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      this.PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
     onChangeSharedCount(lectureOffsetList.totalCount);
   }
 
@@ -136,7 +177,7 @@ class SharedListContainer extends React.Component<Props, States> {
 
   onFilter(channels: ChannelModel[]) {
     //
-    const { pageService, lectureService  } = this.props;
+    const { pageService, lectureService } = this.props;
 
     this.setState({ channels }, () => {
       lectureService!.clearLectures();
@@ -157,13 +198,32 @@ class SharedListContainer extends React.Component<Props, States> {
     const { model } = data;
     const { history } = this.props;
     const collegeId = model.category.college.id;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
+    if (
+      model.serviceType === LectureServiceType.Program ||
+      model.serviceType === LectureServiceType.Course
+    ) {
+      history.push(
+        lectureRoutePaths.courseOverview(
+          cineroom.id,
+          collegeId,
+          model.coursePlanId,
+          model.serviceType,
+          model.serviceId
+        )
+      );
+    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(
+          cineroom.id,
+          collegeId,
+          model.cubeId,
+          model.serviceId
+        )
+      );
     }
   }
 
@@ -174,12 +234,23 @@ class SharedListContainer extends React.Component<Props, States> {
     actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
-    }
-    else {
-      inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
-        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
+      inMyLectureService!
+        .removeInMyLecture(lecture.id)
+        .then(() =>
+          inMyLectureService!.removeInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
+    } else {
+      inMyLectureService!
+        .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
+        .then(() =>
+          inMyLectureService!.addInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
     }
   }
 
@@ -204,17 +275,27 @@ class SharedListContainer extends React.Component<Props, States> {
 
         <div className="section">
           <Lecture.Group type={Lecture.GroupType.Box}>
-            { lectures.map((lecture, index) => {
-              const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+            {lectures.map((lecture, index) => {
+              const inMyLecture =
+                inMyLectureMap.get(lecture.serviceId) || undefined;
               return (
                 <Lecture
                   key={`lecture-${index}`}
                   model={lecture}
                   rating={this.getRating(lecture)}
                   thumbnailImage={lecture.baseUrl || undefined}
-                  action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                  action={
+                    inMyLecture
+                      ? Lecture.ActionType.Remove
+                      : Lecture.ActionType.Add
+                  }
                   onAction={() => {
-                    reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
+                    reactAlert({
+                      title: '알림',
+                      message: inMyLecture
+                        ? '본 과정이 관심목록에서 제외되었습니다.'
+                        : '본 과정이 관심목록에 추가되었습니다.',
+                    });
                     this.onToggleBookmarkLecture(inMyLecture || lecture);
                   }}
                   onViewDetail={this.onViewDetail}
@@ -223,10 +304,8 @@ class SharedListContainer extends React.Component<Props, States> {
             })}
           </Lecture.Group>
 
-          { this.isContentMore() && (
-            <SeeMoreButton
-              onClick={this.onClickSeeMore}
-            />
+          {this.isContentMore() && (
+            <SeeMoreButton onClick={this.onClickSeeMore} />
           )}
         </div>
       </>
