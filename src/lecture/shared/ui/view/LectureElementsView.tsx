@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import {Button, Icon, Image, Label} from 'semantic-ui-react';
 import { CategoryModel } from 'shared/model';
 
-
 interface TitleProps {
   title: string | React.ReactNode,
   category?: CategoryModel,

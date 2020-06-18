@@ -15,7 +15,7 @@ export enum GroupType {
 }
 
 interface Props {
-  type: GroupType,
+  type: GroupType
 }
 
 export const LearningCardContext = React.createContext({
@@ -80,6 +80,15 @@ class CardGroup2 extends Component<Props> {
       elements = (
         // <div className="contents course-list non-height">
         <div className="ov-paragraph course-area">
+          <div className="title-style">
+            <div className="ui label onlytext bold size24">
+              <i aria-hidden="true" className="course24 icon"/>
+              <span>Course 콘텐츠</span>
+            </div>
+            <div className="title-right">
+              <span>총 <strong>개</strong> 강의 구성</span>
+            </div>
+          </div>
           <div className="course-cont">
             {children}
           </div>

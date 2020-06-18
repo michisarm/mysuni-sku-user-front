@@ -25,14 +25,14 @@ import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 import StudentService from '../../../present/logic/StudentService';
 import RollBookService from '../../../present/logic/RollBookService';
 import {
-  Title, SubField, Buttons, Thumbnail,
-} from '../../../ui/view/LectureElementsView';
+  Cube
+} from '../../../ui/view/LectureElementsView2';
 
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
 import { CourseSectionContext } from '../CourseSection';
 import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgress';
-import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer';
+import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer2';
 import { AnswerSheetModal, CubeReportModal } from '../../../../../assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
@@ -691,144 +691,150 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container personalCube : ', this.personalCube);
 
     return (
-      <div >
-        {/*<div className={`card-box ${className}`}>*/}
-        <div className="course-box fn-parents open">
+      <>
+        {className === 'first' && (
+          <div className="bar">
+            <div className="tit">
+              <span className="ellipsis">{lectureView.name}</span>
+            </div>
+            {
+              lectureViewSize && (
+                <div className="num">{lectureViewSize}개 강의 구성</div>
+              )
+            }
+            <div className="toggle-btn">
+              <Button
+                icon
+                className={classNames({
+                  'img-icon': true,
+                  'fn-more-toggle': true,
+                  'card-open': !open,
+                  'card-close': open,
+                })}
+                onClick={this.onToggle}
+              >
+                <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
+              </Button>
+            </div>
+          </div>
+        )}
 
-          {/*<Thumbnail image={thumbnail} />*/}
+        {className !== 'first' && (
+          <div className="detail">
+            <ul className="step1">
+              { lectureView.cubeTypeName && (
+                <li>
+                  <div className="tit">
+                    <span className="ellipsis">{lectureView.name}</span>
+                  </div>
+                  <div className="right">
+                    <span>{lectureView.cubeTypeName}</span>
+                    <span>{lectureView.learningTime}m</span>
+                    {
+                      lectureView.cubeType === CubeType.Video && (
+                        this.state.inProgress !== SubState.Completed ? (
+                          <a href="#" className="btn-play black" onClick={this.getMainActionForVideo}>
+                            <span className="text">학습하기</span>
+                            <i className="icon play-black24" />
+                          </a>
+                        ) : (
+                          <span className="completed-txt">학습완료</span>
+                        )
+                      )
+                    }
+                  </div>
+                </li>
+              )}
 
-          {/*<Title title={lectureView.name} category={lectureView.category} toggle={toggle} open={open}>*/}
-          {className === 'first' && (
-            <div className="bar">
-              <div className="tit">
-                <span className="ellipsis">{lectureView.name}</span>
-              </div>
               {
-                lectureViewSize && (
-                  <div className="num">{lectureViewSize}개 강의 구성</div>
+                this.viewObject && this.state.isContent && (
+                  <LectureExam
+                    onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
+                    onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
+                    onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
+                    onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
+                    onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
+                    OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
+                    viewObject={this.viewObject}
+                    passedState={this.state.passedState}
+                    type={this.state.type}
+                    name={this.state.name}
+                  />
                 )
               }
-              <div className="toggle-btn">
-                <Button
-                  icon
-                  className={classNames({
-                    'img-icon': true,
-                    'fn-more-toggle': true,
-                    'card-open': !open,
-                    'card-close': open,
-                  })}
-                  onClick={this.onToggle}
-                >
-                  <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-                </Button>
-              </div>
-            </div>
-          )}
+            </ul>
+          </div>
+        )}
 
-          {className === 'included' && (
-            <div className="deatil">
-              {/*{ lectureView.cubeTypeName && (*/}
-              {/*  <Field>*/}
-              {/*    <SubField bold icon={CubeIconType[lectureView.cubeType] || CubeIconType[lectureView.serviceType]} text={lectureView.cubeTypeName} />*/}
-              {/*    <span className="channel">{lectureView.category.channel.name}</span>*/}
-              {/*  </Field>*/}
-              {/*)}*/}
-              {/*<Field>*/}
-              {/*  <SubField icon="date" text={`등록일 : ${moment(lectureView.creationDate).format('YYYY.MM.DD')}`}>*/}
-              {/*    {lectureView.learningPeriod && (*/}
-              {/*      <span className="ml17">*/}
-              {/*        학습기간 : {lectureView.learningPeriod && lectureView.learningPeriod.startDate} ~ {lectureView.learningPeriod && lectureView.learningPeriod.endDate}*/}
-              {/*      </span>*/}
-              {/*    )}*/}
-              {/*  </SubField>*/}
-              {/*</Field>*/}
-            </div>
-          )}
+        {/*<CubeRightInfo*/}
+        {/*  learningType={lectureView.cubeType}*/}
+        {/*  learningState={this.studentData.learningState}*/}
+        {/*  learningTime="11m"*/}
+        {/*/>*/}
 
-          {/*<CubeRightInfo*/}
-          {/*  learningType={lectureView.cubeType}*/}
-          {/*  learningState={this.studentData.learningState}*/}
-          {/*  learningTime="11m"*/}
-          {/*/>*/}
+        {/*<Buttons>*/}
+        {/*  /!*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*!/*/}
+        {/*  {*/}
+        {/*    lectureView.cubeType === CubeType.Video && (*/}
+        {/*      this.state.inProgress !== SubState.Completed ? (*/}
+        {/*        <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>*/}
+        {/*      ) : (*/}
+        {/*        <span className="completed-txt">학습완료</span>*/}
+        {/*      )*/}
+        {/*    )}*/}
+        {/*</Buttons>*/}
 
-          {/*<Buttons>*/}
-          {/*  /!*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*!/*/}
-          {/*  {*/}
-          {/*    lectureView.cubeType === CubeType.Video && (*/}
-          {/*      this.state.inProgress !== SubState.Completed ? (*/}
-          {/*        <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>*/}
-          {/*      ) : (*/}
-          {/*        <span className="completed-txt">학습완료</span>*/}
-          {/*      )*/}
-          {/*    )}*/}
-          {/*</Buttons>*/}
-
-          {/*{ toggle && (*/}
-          {/*  <Button*/}
-          {/*    icon*/}
-          {/*    className={classNames({*/}
-          {/*      'img-icon': true,*/}
-          {/*      'fn-more-toggle': true,*/}
-          {/*      'card-open': !open,*/}
-          {/*      'card-close': open,*/}
-          {/*    })}*/}
-          {/*    onClick={this.onToggle}*/}
-          {/*  >*/}
-          {/*    <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />*/}
-          {/*  </Button>*/}
-          {/*)}*/}
-
-          {
-            this.viewObject && this.personalCube?.contents.examId && (
-              <AnswerSheetModal
-                examId={this.personalCube?.contents.examId}
-                ref={examModal => this.examModal = examModal}
-                onSaveCallback={this.testCallback}
-              />
-            )
-          }
-          {
-            this.viewObject && this.personalCube?.contents.surveyId && (
-              <SurveyAnswerSheetModal
-                surveyId={this.personalCube?.contents.surveyId}
-                surveyCaseId={this.personalCube?.contents.surveyCaseId}
-                ref={surveyModal => this.surveyModal = surveyModal}
-                // onSaveCallback={this.testCallback}
-              />
-            )
-          }
-
-          {
-            this.viewObject && this.viewObject.reportFileBoxId && (
-              <CubeReportModal
-                downloadFileBoxId ={this.viewObject.reportFileBoxId}
-                ref={reportModal => this.reportModal = reportModal}
-                downloadReport = {this.onClickDownloadReport}
-                rollBookId={this.rollBooks[0].id}
-              />
-            )
-          }
-
-        </div>
 
         {
-          this.viewObject && this.state.isContent === true && (
-            <LectureExam
-              onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
-              onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
-              onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
-              onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
-              onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
-              OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
-              viewObject={this.viewObject}
-              passedState={this.state.passedState}
-              type={this.state.type}
-              name={this.state.name}
+          this.viewObject && this.personalCube?.contents.examId && (
+            <AnswerSheetModal
+              examId={this.personalCube?.contents.examId}
+              ref={examModal => this.examModal = examModal}
+              onSaveCallback={this.testCallback}
             />
           )
         }
-      </div>
+        {
+          this.viewObject && this.personalCube?.contents.surveyId && (
+            <SurveyAnswerSheetModal
+              surveyId={this.personalCube?.contents.surveyId}
+              surveyCaseId={this.personalCube?.contents.surveyCaseId}
+              ref={surveyModal => this.surveyModal = surveyModal}
+              // onSaveCallback={this.testCallback}
+            />
+          )
+        }
 
+        {
+          this.viewObject && this.viewObject.reportFileBoxId && (
+            <CubeReportModal
+              downloadFileBoxId ={this.viewObject.reportFileBoxId}
+              ref={reportModal => this.reportModal = reportModal}
+              downloadReport = {this.onClickDownloadReport}
+              rollBookId={this.rollBooks[0].id}
+            />
+          )
+        }
+
+        {/*</div>*/}
+
+        {/*{*/}
+        {/*  this.viewObject && this.state.isContent === true && (*/}
+        {/*    <LectureExam*/}
+        {/*      onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}*/}
+        {/*      onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}*/}
+        {/*      onTest={this.personalCube?.contents.examId ? this.onTest : undefined}*/}
+        {/*      onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}*/}
+        {/*      onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}*/}
+        {/*      OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}*/}
+        {/*      viewObject={this.viewObject}*/}
+        {/*      passedState={this.state.passedState}*/}
+        {/*      type={this.state.type}*/}
+        {/*      name={this.state.name}*/}
+        {/*    />*/}
+        {/*  )*/}
+        {/*}*/}
+      </>
     );
   }
 }
@@ -839,9 +845,9 @@ interface FieldProps {
 }
 
 const Field = ({ children }: FieldProps) => (
-  <div className="item">
+  <li>
     {children}
-  </div>
+  </li>
 );
 
 export default CourseLectureContainer2;
