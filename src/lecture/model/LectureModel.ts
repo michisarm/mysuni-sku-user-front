@@ -141,13 +141,13 @@ class LectureModel extends DramaEntityObservableModel {
       }
       if (this.viewState === 'Approved') {
         //TODO STARTDATE
-        return moment(Number(this.creationTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
+        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
       }
       if (
         this.viewState === 'Progress' || this.viewState === 'Failed' || this.viewState === 'TestPassed'
         || this.viewState === 'Waiting' || this.viewState === 'TestWaiting' || this.viewState === 'HomeworkWaiting'
       ) {
-        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 학습 시작';
+        return moment(Number(this.creationTime)).format('YYYY.MM.DD') + ' 학습 시작';
       }
       if (this.viewState === 'Rejected') {
         return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 수강신청 반려';
