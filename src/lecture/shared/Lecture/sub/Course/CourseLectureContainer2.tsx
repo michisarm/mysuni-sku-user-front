@@ -1,44 +1,37 @@
-
-import React, { Component } from 'react';
-import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
+import React, {Component} from 'react';
+import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
 
 import depot from '@nara.drama/depot';
 
 import classNames from 'classnames';
-import moment from 'moment';
-import { Icon, Button } from 'semantic-ui-react';
+import {Button, Icon} from 'semantic-ui-react';
 
-import { ProposalState, LearningState } from 'shared/model';
-import { EmployeeModel } from 'profile/model';
-import { PersonalCubeModel, CubeType, ContentsServiceType } from 'personalcube/personalcube/model';
-import { MediaModel, MediaType } from 'personalcube/media/model';
-import { PersonalCubeService } from 'personalcube/personalcube/stores';
-import { MediaService } from 'personalcube/media/stores';
-import { BoardService } from 'personalcube/community/stores';
-import { ExamPaperService, ExaminationService } from 'assistant/stores';
-import { SurveyCaseService, SurveyFormService } from 'survey/stores';
+import {LearningState, ProposalState} from 'shared/model';
+import {EmployeeModel} from 'profile/model';
+import {ContentsServiceType, CubeType, PersonalCubeModel} from 'personalcube/personalcube/model';
+import {MediaModel, MediaType} from 'personalcube/media/model';
+import {PersonalCubeService} from 'personalcube/personalcube/stores';
+import {MediaService} from 'personalcube/media/stores';
+import {BoardService} from 'personalcube/community/stores';
+import {ExaminationService, ExamPaperService} from 'assistant/stores';
+import {SurveyCaseService, SurveyFormService} from 'survey/stores';
 
-import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel } from '../../../../model';
-import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
+import {LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel} from '../../../../model';
+import LectureSubInfo, {State as SubState} from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
 import RollBookService from '../../../present/logic/RollBookService';
-import {
-  Cube
-} from '../../../ui/view/LectureElementsView2';
 
 import Action from '../../model/Action';
-import { CubeIconType } from '../../model';
-import { CourseSectionContext } from '../CourseSection';
-import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgress';
+import {CourseSectionContext} from '../CourseSection';
+import {AnswerProgress} from '../../../../../survey/answer/model/AnswerProgress';
 import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer2';
-import { AnswerSheetModal, CubeReportModal } from '../../../../../assistant';
-import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
+import {AnswerSheetModal, CubeReportModal} from '../../../../../assistant';
+import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
-import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
-import CubeRightInfo from '../Course2/CubeRightInfo';
+import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -673,6 +666,41 @@ class CourseLectureContainer2 extends Component<Props, State> {
     depot.downloadDepot(fileBoxId);
   }
 
+  setLearningStateForMedia() {
+    console.log('학습상태 : ', this.state.inProgress);
+
+    switch (this.state.inProgress) {
+      case SubState.InProgress:
+        return (
+          <a href="#" className="btn-play orange">
+            <span className="text" onClick={this.getMainActionForVideo}>학습중</span>
+            <span className="pie-wrapper progress-23">
+              <span className="pie">
+                <span className="left-side" />
+                <span className="right-side" />
+              </span>
+              <div className="shadow" />
+            </span>
+          </a>
+        );
+      case SubState.Completed:
+        return (
+          <a href="#" className="btn-play completed">
+            <span className="text">학습완료</span>
+            <i className="icon play-completed24" />
+          </a>
+        );
+      default:
+        return (
+          <a href="#" className="btn-play black" onClick={this.getMainActionForVideo}>
+            <span className="text">학습하기</span>
+            <i className="icon play-black24" />
+          </a>
+        );
+
+    }
+  }
+
   render() {
     //
     const { classNameForLearningState } = this.state;
@@ -693,30 +721,46 @@ class CourseLectureContainer2 extends Component<Props, State> {
     return (
       <>
         {className === 'first' && (
-          <div className="bar">
-            <div className="tit">
-              <span className="ellipsis">{lectureView.name}</span>
+          !lectureView.cubeId ? (
+            <div className="bar">
+              <div className="tit">
+                <span className="ellipsis">{lectureView.name}</span>
+              </div>
+              {
+                lectureViewSize && (
+                  <div className="num">{lectureViewSize}개 강의 구성</div>
+                )
+              }
+              <div className="toggle-btn">
+                <Button
+                  icon
+                  className={classNames({
+                    'img-icon': true,
+                    'fn-more-toggle': true,
+                    'card-open': !open,
+                    'card-close': open,
+                  })}
+                  onClick={this.onToggle}
+                >
+                  <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
+                </Button>
+              </div>
             </div>
-            {
-              lectureViewSize && (
-                <div className="num">{lectureViewSize}개 강의 구성</div>
-              )
-            }
-            <div className="toggle-btn">
-              <Button
-                icon
-                className={classNames({
-                  'img-icon': true,
-                  'fn-more-toggle': true,
-                  'card-open': !open,
-                  'card-close': open,
-                })}
-                onClick={this.onToggle}
-              >
-                <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-              </Button>
+          ) : (
+            <div className="cube-box">
+              <div className="bar typeA">
+                <div className="tit">
+                  <span className="ellipsis">{lectureView.name}</span>
+                </div>
+                <div className="right">
+                  <span>{lectureView.cubeTypeName}</span>
+                  <span>{lectureView.learningTime}m</span>
+                  {this.setLearningStateForMedia()}
+                  {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
+                </div>
+              </div>
             </div>
-          </div>
+          )
         )}
 
         {className !== 'first' && (
@@ -730,18 +774,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>
                     <span>{lectureView.learningTime}m</span>
-                    {
-                      lectureView.cubeType === CubeType.Video && (
-                        this.state.inProgress !== SubState.Completed ? (
-                          <a href="#" className="btn-play black" onClick={this.getMainActionForVideo}>
-                            <span className="text">학습하기</span>
-                            <i className="icon play-black24" />
-                          </a>
-                        ) : (
-                          <span className="completed-txt">학습완료</span>
-                        )
-                      )
-                    }
+                    {this.setLearningStateForMedia()}
+                    {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
                   </div>
                 </li>
               )}
@@ -818,22 +852,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
         {/*</div>*/}
 
-        {/*{*/}
-        {/*  this.viewObject && this.state.isContent === true && (*/}
-        {/*    <LectureExam*/}
-        {/*      onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}*/}
-        {/*      onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}*/}
-        {/*      onTest={this.personalCube?.contents.examId ? this.onTest : undefined}*/}
-        {/*      onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}*/}
-        {/*      onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}*/}
-        {/*      OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}*/}
-        {/*      viewObject={this.viewObject}*/}
-        {/*      passedState={this.state.passedState}*/}
-        {/*      type={this.state.type}*/}
-        {/*      name={this.state.name}*/}
-        {/*    />*/}
-        {/*  )*/}
-        {/*}*/}
       </>
     );
   }

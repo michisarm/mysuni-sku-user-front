@@ -98,7 +98,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
           <span>Test</span>
         </div>
         <div className="right">
-          <a href="#" className="btn-play black">
+          <a href="#" className="btn-play black" onClick={OnTest}>
             <span className="text">Test</span>
             <i className="icon play-black24" />
           </a>
@@ -174,7 +174,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
         <span>Survey</span>
       </div>
       <div className="right">
-        <a href="#" className="btn-play black">
+        <a href="#" className="btn-play black" onClick={onSurvey}>
           <span className="text">설문하기</span>
           <i className="icon play-black24" />
         </a>
