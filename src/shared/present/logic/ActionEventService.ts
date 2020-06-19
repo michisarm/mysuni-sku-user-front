@@ -5,19 +5,22 @@ import StudyActionType from '../../model/StudyActionType';
 import { LectureServiceType } from '../../../lecture/model';
 
 interface StudyEventParams {
-  collegeId: string,
-  lectureCardId: string,
-  cubeId: string,
   action: StudyActionType,
-  serviceType: LectureServiceType,
-  coursePlanId?: string
+  serviceType?: LectureServiceType,
+  collegeId?: string,
+  cubeId?: string,
+  lectureCardId?: string,
+  coursePlanId?: string,
+  menu: string,
+  path?: string,
+  courseName?: string,
+  cubeName: string
 }
 
 interface ViewEventParams {
-  path: string,
-  menu?: string
+  menu: string,
+  path?: string
 }
-
 
 class ActionEventService {
   
@@ -29,15 +32,17 @@ class ActionEventService {
     this.actionEventApi = actionEventApi;
   }
   
-  registerStudyEvent({collegeId, lectureCardId, cubeId, action, serviceType, coursePlanId}: StudyEventParams) {
-    const studyEvent: ActionEventModel = ActionEventModel.fromStudyEvent({collegeId, lectureCardId, cubeId, action, serviceType, coursePlanId});
-
-    console.log(`study event is here: ${studyEvent}`);
-    const response = this.actionEventApi.registerStudyActionLog(studyEvent);
-    return response;
+  registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName}: StudyEventParams): void {
+    const studyActionLog: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName});
+    console.log(studyActionLog);
+    this.actionEventApi.registerStudyActionLog(studyActionLog);
   }
 
-
+  registerViewActionLog({menu, path}: ViewEventParams): void {
+    const viewActionLog: ActionEventModel = ActionEventModel.fromViewEvent({menu, path});
+    console.log(viewActionLog);
+    this.actionEventApi.registerViewActionLog(viewActionLog);
+  }
 }
 
 Object.defineProperty(ActionEventService, 'instance', {

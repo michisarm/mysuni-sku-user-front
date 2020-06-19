@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
-import { withRouter, RouteComponentProps} from 'react-router-dom';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import depot from '@nara.drama/depot';
 import {CubeType, ProposalState} from 'shared/model';
 import {MediaType} from 'personalcube/media/model';
 import {ClassroomModel} from 'personalcube/classroom/model';
+import {PersonalCubeService} from 'personalcube/personalcube/stores';
 import {LectureServiceType, StudentCdoModel, StudentJoinRdoModel} from 'lecture/model';
 import {LectureService, RollBookService, StudentService} from 'lecture/stores';
+import {ActionEventService} from 'shared/stores';
 import {InMyLectureCdoModel} from 'myTraining/model';
 import {InMyLectureService} from 'myTraining/stores';
 import {AnswerSheetModal, CubeReportModal} from 'assistant';
@@ -21,7 +23,6 @@ import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
-import ActionEventModel from '../../../../shared/model/ActionEventModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import {ApprovalMemberModel} from '../../../../approval/member/model/ApprovalMemberModel';
 
@@ -30,10 +31,11 @@ import LectureLearningModalView from '../view/LectureLearningModalView';
 import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
-import ActionEventApi from '../../../../shared/present/apiclient/ActionEventApi';
+
 
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService?: ActionEventService
   studentService?: StudentService
   lectureService?: LectureService
   rollBookService?: RollBookService
@@ -45,7 +47,9 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
-  classroomService?: ClassroomService
+  classroomService?: ClassroomService,
+  personalCubeService?: PersonalCubeService,
+
 
   cubeType: CubeType
   viewObject: any
@@ -69,11 +73,13 @@ interface RouteParams {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionEventService',
   'lecture.rollBookService',
   'lecture.studentService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
   'personalCube.classroomService',
+  'personalCube.personalCubeService',
 ))
 
 @reactAutobind
@@ -225,30 +231,67 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   publishStudyEvent(isClose?: boolean) {
-    const { match, lectureServiceType, lectureCardId, cubeType } = this.props;
-    const { collegeId, cubeId } = match.params;
+    const {actionEventService, personalCubeService} = this.props;
+    const {match, lectureServiceType, lectureCardId, cubeType, typeViewObject} = this.props;
+    const {collegeId, cubeId} = match.params;
+    
     const serviceType = lectureServiceType;
+    const cubeName = personalCubeService!.personalCube.name;
 
-    let action = StudyActionType.VideoStart;
-    let menu = 'doLearn';
-    if(cubeType === CubeType.Audio) {
-      action = StudyActionType.AudioStart;
-    }
+    let action: StudyActionType = StudyActionType.None;
+    let menu: string = 'LearningStart';
+    let path: string = '';
 
-    if(isClose) {
-      action = StudyActionType.VideoClose;
-      menu = 'closeLearn';
-    }
+    switch(cubeType) {
+      
+      case CubeType.Video: 
+        action = StudyActionType.VideoStart;
+        if(typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          action = StudyActionType.CPLinked;
+          path = typeViewObject.url;
+        }
+        if(isClose) {
+          action = StudyActionType.VideoClose;
+          menu = 'ModalClose';
+        }
 
-    if(isClose && cubeType === CubeType.Audio) {
-      action = StudyActionType.AudioClose;
-    }
+        break;
+      case CubeType.Audio:
+        action = StudyActionType.AudioStart;
+        if(typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          action = StudyActionType.CPLinked;
+          path = typeViewObject.url;
+        }
+        if(isClose) {
+          action = StudyActionType.AudioClose;
+          menu = 'ModalClose';
+        }
+        break;
+
+      case CubeType.WebPage:
+        action = StudyActionType.WebPageLinked;
+        path = typeViewObject.url;
+
+        break;
+      case CubeType.Experiential:
+        action = StudyActionType.Experimential;
+        path = typeViewObject.url;
+
+        break;
+
+      case CubeType.ELearning:
+        action = StudyActionType.ElearningLinked;
+        path = typeViewObject.siteUrl;
   
-    const studyAction: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, menu});
+        break;
+  
+      case CubeType.Documents:
+        action = StudyActionType.DocumnetDownload;
+        menu = 'Download';
 
-    // console.log(studyAction);
-    const actionEventApi: ActionEventApi = ActionEventApi.instance;
-    actionEventApi.registerStudyActionLog(studyAction);
+        break;
+    }
+    actionEventService?.registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, menu, path, cubeName});
 
   }
 
@@ -348,20 +391,17 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
-      // this.publishStudyEvent();
+      this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
       // }
       //0416
-      const win = window.open(typeViewObject.url, '_blank');
-      if(win) {
-        win.onbeforeunload = () => {
-          //const isClose = true;
-          // this.publishStudyEvent(isClose);
-        };
-      }
+      
+      window.open(typeViewObject.url, '_blank');
+
+  
       //this.setState( {openLearningModal: true});
     }
     else {
@@ -372,6 +412,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onDownload() {
     const { typeViewObject } = this.props;
+    this.publishStudyEvent();
     this.onRegisterStudent(ProposalState.Approved);
     depot.downloadDepot(typeViewObject.fileBoxId);
   }
@@ -558,12 +599,14 @@ class LectureCardContainer extends Component<Props, State> {
           return {
             type: LectureSubInfo.ActionType.LearningStart,
             onAction: () => {
-              //console.log('여기도 비디오를 보여주기는 해');
               if ((!studentJoins || !studentJoins.length || !studentJoins.filter(join =>
                 (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
                 this.onRegisterStudent(ProposalState.Approved);
               }
-              if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
+              if (typeViewObject.siteUrl.startsWith('http')) {
+                this.publishStudyEvent();
+                window.open(typeViewObject.siteUrl, '_blank');
+              }
               else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
             },
           };

@@ -8,8 +8,10 @@ enum StudyActionType {
     CPLinked = 'CPLinked',
     DocumnetDownload = 'DocumentDownload',
     WebPageLinked = 'WebPageLinked',
-    ElearningStart = 'ElearningStart',
-    None = 'None',
+    ElearningLinked = 'ElearningLinked',
+    Experimential = 'Experimential',
+    None = ''
+
 }
 
 export default StudyActionType;

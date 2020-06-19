@@ -1,7 +1,7 @@
 
 class ContextModel {
   email: string = '';
-  path: string = window.location.href;
+  path: string = '';
   menu: string = '';
   poc: string = 'web';
 
