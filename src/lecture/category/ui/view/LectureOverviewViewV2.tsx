@@ -348,7 +348,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           description={viewObject.description}
         />
         <>
-          <Lecture.Group type={Lecture.GroupType.Course}>
+          <Lecture.Group
+            type={Lecture.GroupType.Course}
+            totalCourseCount={viewObject.totalCourseCount}
+          >
             <div className="course-box fn-parents open">
               {lectureViews.map((lecture: LectureViewModel, index: number) => (
                 <Lecture.CourseSection

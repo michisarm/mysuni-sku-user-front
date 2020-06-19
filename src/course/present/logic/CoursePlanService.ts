@@ -140,6 +140,14 @@ class CoursePlanService {
     return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents));
   }
 
+  @action
+  async findCoursePlanContentsV2(coursePlanContentsId: string) {
+    //
+    const coursePlanContents = await this.coursePlanApi.findCoursePlanContentsV2(coursePlanContentsId);
+
+    return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents));
+  }
+
   modifyCoursePlanContents(coursePlanContentsId: string, coursePlanContents: CoursePlanContentsModel) {
     //
     this.coursePlanApi.modifyCoursePlanContents(coursePlanContentsId, CoursePlanContentsModel.asNameValues(coursePlanContents));

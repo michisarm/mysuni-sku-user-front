@@ -20,7 +20,6 @@ import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoMo
 import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
-import LectureOverviewView from '../view/LectureOverviewView';
 import LectureOverviewViewV2 from '../view/LectureOverviewViewV2';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
@@ -200,7 +199,7 @@ class CoursePageV2 extends Component<Props, State> {
     collegeService.findCollege(params.collegeId);
 
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
-    await coursePlanService.findCoursePlanContents(coursePlan.contentsId);
+    await coursePlanService.findCoursePlanContentsV2(coursePlan.contentsId);
 
     if (coursePlanService.coursePlanContents.testId) {
       const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
@@ -362,6 +361,7 @@ class CoursePageV2 extends Component<Props, State> {
       passedState,
 
       fileBoxId: coursePlanContents.fileBoxId,
+      totalCourseCount: coursePlanContents.totalCourseCount,
       reportFileBoxId,
       stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
 

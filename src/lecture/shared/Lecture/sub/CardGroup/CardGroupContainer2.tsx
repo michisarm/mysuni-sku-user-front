@@ -16,6 +16,7 @@ export enum GroupType {
 
 interface Props {
   type: GroupType
+  totalCourseCount?: number
 }
 
 export const LearningCardContext = React.createContext({
@@ -36,7 +37,7 @@ class CardGroup2 extends Component<Props> {
 
   render() {
     //
-    const { type, children } = this.props;
+    const { type, children, totalCourseCount } = this.props;
     let elements = null;
 
     if (type === GroupType.Box) {
@@ -85,9 +86,13 @@ class CardGroup2 extends Component<Props> {
               <i aria-hidden="true" className="course24 icon"/>
               <span>Course 콘텐츠</span>
             </div>
-            <div className="title-right">
-              <span>총 <strong>개</strong> 강의 구성</span>
-            </div>
+            {
+              totalCourseCount && (
+                <div className="title-right">
+                  <span>총 <strong>{totalCourseCount} 개</strong> 강의 구성</span>
+                </div>
+              )
+            }
           </div>
           <div className="course-cont">
             {children}

@@ -5,7 +5,8 @@ import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '..
 
 export default class CoursePlanApi {
   URL = '/api/course/coursePlans';
-  coursePlanContentsURL = '/api/course/coursePlanContents';
+  //coursePlanContentsURL = '/api/course/coursePlanContents';
+  coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
 
   static instance: CoursePlanApi;
 
@@ -50,6 +51,12 @@ export default class CoursePlanApi {
   findCoursePlanContents(coursePlanContentsId: string) {
     //
     return axios.get<CoursePlanContentsModel>(this.coursePlanContentsURL + `/${coursePlanContentsId}`)
+      .then(response => response && response.data || null);
+  }
+
+  findCoursePlanContentsV2(coursePlanContentsId: string) {
+    //
+    return axios.get<CoursePlanContentsModel>(this.coursePlanContentsURL + `/v2/${coursePlanContentsId}`)
       .then(response => response && response.data || null);
   }
 
