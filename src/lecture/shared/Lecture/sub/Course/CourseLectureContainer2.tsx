@@ -42,6 +42,7 @@ interface Props {
   collegeId?: string,
   lectureView: LectureViewModel,
   lectureViewSize?: number,
+  lectureViewName?: string,
   className?: string,
   thumbnailImage?: string,
   action?: Action,
@@ -706,7 +707,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { classNameForLearningState } = this.state;
     const {
       className, lectureView, thumbnailImage, toggle,
-      onViewDetail, lectureViewSize,
+      onViewDetail, lectureViewSize, lectureViewName
     } = this.props;
     const { open } = this.context;
 
@@ -724,7 +725,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           !lectureView.cubeId ? (
             <div className="bar">
               <div className="tit">
-                <span className="ellipsis">{lectureView.name}</span>
+                <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
               </div>
               {
                 lectureViewSize && (
@@ -750,7 +751,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="cube-box">
               <div className="bar typeA">
                 <div className="tit">
-                  <span className="ellipsis">{lectureView.name}</span>
+                  <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
                 </div>
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
@@ -769,7 +770,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               { lectureView.cubeTypeName && (
                 <li>
                   <div className="tit">
-                    <span className="ellipsis">{lectureView.name}</span>
+                    <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
                   </div>
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>
