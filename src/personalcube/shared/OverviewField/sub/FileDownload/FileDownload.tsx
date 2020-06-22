@@ -26,19 +26,19 @@ class FileDownload extends Component<Props, State> {
     const { fileBoxIds } = this.props;
     let files: any[] = [];
 
-    const boxIds = fileBoxIds.filter((id) => id);
+    const boxIds = fileBoxIds.filter(id => id);
     if (boxIds.length) {
-      Promise.all(
-        boxIds.map((fileBoxId) => depot.getDepotFiles(fileBoxId))
-      ).then((filesArr) => {
-        if (filesArr.length) {
-          filesArr.map((fileList) => {
-            if (Array.isArray(fileList)) files = files.concat(fileList);
-            else files.push(fileList);
-          });
+      Promise.all(boxIds.map(fileBoxId => depot.getDepotFiles(fileBoxId))).then(
+        filesArr => {
+          if (filesArr.length) {
+            filesArr.map(fileList => {
+              if (Array.isArray(fileList)) files = files.concat(fileList);
+              else files.push(fileList);
+            });
+          }
+          this.setState({ files });
         }
-        this.setState({ files });
-      });
+      );
     }
   }
 
@@ -48,14 +48,14 @@ class FileDownload extends Component<Props, State> {
 
   onDownloadAll() {
     const { files }: State = this.state;
-    const downloadAll = files.map((file) => file.id);
+    const downloadAll = files.map(file => file.id);
     depot.downloadDepotFiles(downloadAll);
   }
 
   render() {
     //
     const { fileBoxIds } = this.props;
-    const boxIds = fileBoxIds.filter((id) => id);
+    const boxIds = fileBoxIds.filter(id => id);
     if (!boxIds || !boxIds.length) return null;
 
     const { files }: State = this.state;

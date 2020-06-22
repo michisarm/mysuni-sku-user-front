@@ -244,4 +244,3 @@ decorate(PersonalCubeModel, {
   openRequests: observable,
   required: observable,
 });
-

@@ -1,14 +1,16 @@
 
 import React, { Component, ReactNode } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import { ActionEventService } from 'shared/stores';
 import TabItemModel from './model/TabItemModel';
 
 
 interface Props {
+  actionEventService?: ActionEventService;
   tabs: TabItemModel[]
   header?: ReactNode
   className?: string
@@ -25,11 +27,16 @@ interface State {
   activeName: string
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionEventService'
+))
 @reactAutobind
 @observer
 class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
+    actionEventService: ActionEventService,
+
     className: 'tab-menu offset0',
     onChangeTab: () => {},
   };
@@ -67,10 +74,16 @@ class TabContainer extends Component<Props, State> {
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
+    this.publishViewEvent(tab.name);
 
     this.setState({ activeName: tab.name });
 
     onChangeTab!(tab);
+  }
+
+  publishViewEvent(menu: string, path?: string) {
+    const {actionEventService} = this.props;
+    actionEventService?.registerViewActionLog({menu, path});
   }
 
   renderItems() {

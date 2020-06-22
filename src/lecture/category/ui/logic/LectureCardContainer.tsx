@@ -1,18 +1,22 @@
 import React, {Component} from 'react';
 import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
+import {withRouter, RouteComponentProps} from 'react-router-dom';
 
 import depot from '@nara.drama/depot';
 import {CubeType, ProposalState} from 'shared/model';
 import {MediaType} from 'personalcube/media/model';
 import {ClassroomModel} from 'personalcube/classroom/model';
+import {PersonalCubeService} from 'personalcube/personalcube/stores';
 import {LectureServiceType, StudentCdoModel, StudentJoinRdoModel} from 'lecture/model';
 import {LectureService, RollBookService, StudentService} from 'lecture/stores';
+import {ActionEventService} from 'shared/stores';
 import {InMyLectureCdoModel} from 'myTraining/model';
 import {InMyLectureService} from 'myTraining/stores';
 import {AnswerSheetModal, CubeReportModal} from 'assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
 import {getYearMonthDateHourMinuteSecond} from 'shared/helper/dateTimeHelper';
+import StudyActionType from 'shared/model/StudyActionType';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
 import LectureExam from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
@@ -21,13 +25,17 @@ import StudentModel from '../../../model/StudentModel';
 import RollBookModel from '../../../model/RollBookModel';
 import ApplyReferenceModal from '../../../../approval/member/ui/logic/ApplyReferenceModal';
 import {ApprovalMemberModel} from '../../../../approval/member/model/ApprovalMemberModel';
+
 import {State as EnumState} from '../../../shared/LectureSubInfo/model';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
 
-interface Props {
+
+
+interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService?: ActionEventService
   studentService?: StudentService
   lectureService?: LectureService
   rollBookService?: RollBookService
@@ -39,7 +47,9 @@ interface Props {
   studentCdo: StudentCdoModel
   studentJoins?: StudentJoinRdoModel[]
   student?: StudentModel
-  classroomService?: ClassroomService
+  classroomService?: ClassroomService,
+  personalCubeService?: PersonalCubeService,
+
 
   cubeType: CubeType
   viewObject: any
@@ -56,12 +66,20 @@ interface State {
   selectedClassRoom: ClassroomModel
 }
 
+interface RouteParams {
+  collegeId: string,
+  cubeId: string,
+  lectureCardId: string
+}
+
 @inject(mobxHelper.injectFrom(
+  'shared.actionEventService',
   'lecture.rollBookService',
   'lecture.studentService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
   'personalCube.classroomService',
+  'personalCube.personalCubeService',
 ))
 
 @reactAutobind
@@ -104,7 +122,7 @@ class LectureCardContainer extends Component<Props, State> {
       } else if (this.props.viewObject.state === EnumState.Waiting && this.props.student?.learningState === 'Failed') {
         reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
       } else if (this.props.viewObject.state === EnumState.Missed) {
-        // reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
+        reactAlert({ title: '알림', message: '합격기준에 미달하였습니다. 재응시해주시기 바랍니다.' });
       } else if (this.prevViewObjectState === EnumState.InProgress && this.props.viewObject.state === EnumState.Completed) {
         reactAlert({ title: '알림', message: '과정이 이수완료되었습니다. 이수내역은 마이페이지 > 학습완료 메뉴에서 확인 가능합니다.' });
       } else if (this.prevViewObjectState === EnumState.Waiting && this.props.viewObject.state === EnumState.Completed) {
@@ -148,14 +166,14 @@ class LectureCardContainer extends Component<Props, State> {
 
       // 수강신청(true), 승인 체크(true)
       if(classroom.enrolling.enrollingAvailable && (classroom.freeOfCharge.approvalProcess === true)) {
-        await studentService!.removeStudent(student.rollBookId)
+        studentService!.removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference ));
       } else {
         // 과정 등록
-        await studentService!.removeStudent(student.rollBookId)
-          .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
-
         this.getFreeOfChargeOk();
+
+        studentService!.removeStudent(student.rollBookId)
+          .then(() => this.setState({ rollBook }, this.onApplyReferenceEmpty ));
 
         reactAlert({ title: '알림', message: messageStr });
 
@@ -165,12 +183,11 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ rollBook }, this.onApplyReference );
 
     } else {
+      // 과정 등록
+      this.getFreeOfChargeOk();
+
       // 수강신청(false), 승인 체크(false)
-      this.setState({ rollBook }, () => {
-        // 과정 등록
-        this.getFreeOfChargeOk();
-        this.onApplyReferenceEmpty();
-      });
+      this.setState({ rollBook }, this.onApplyReferenceEmpty );
 
       reactAlert({ title: '알림', message: messageStr });
     }
@@ -210,6 +227,71 @@ class LectureCardContainer extends Component<Props, State> {
     // 알림 메시지
     const messageStr = '본 과정은 승인권자(본인리더 or HR담당자)가 승인 후 신청완료 됩니다. <br> 승인대기중/승인완료 된 과정은<br>&#39;Learning>학습예정&#39;에서 확인하실 수 있습니다.';
     reactAlert({ title: '알림', message: messageStr });
+
+  }
+
+  publishStudyEvent(isClose?: boolean) {
+    const {actionEventService, personalCubeService} = this.props;
+    const {match, lectureServiceType, lectureCardId, cubeType, typeViewObject} = this.props;
+    const {collegeId, cubeId} = match.params;
+    
+    const serviceType = lectureServiceType;
+    const cubeName = personalCubeService!.personalCube.name;
+
+    let action: StudyActionType = StudyActionType.None;
+    let menu: string = 'LearningStart';
+    let path: string = '';
+
+    switch(cubeType) {
+      
+      case CubeType.Video: 
+        action = StudyActionType.VideoStart;
+        if(typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          action = StudyActionType.CPLinked;
+          path = typeViewObject.url;
+        }
+        if(isClose) {
+          action = StudyActionType.VideoClose;
+          menu = 'ModalClose';
+        }
+
+        break;
+      case CubeType.Audio:
+        action = StudyActionType.AudioStart;
+        if(typeViewObject.mediaType === MediaType.LinkMedia || typeViewObject.mediaType === MediaType.ContentsProviderMedia) {
+          action = StudyActionType.CPLinked;
+          path = typeViewObject.url;
+        }
+        if(isClose) {
+          action = StudyActionType.AudioClose;
+          menu = 'ModalClose';
+        }
+        break;
+
+      case CubeType.WebPage:
+        action = StudyActionType.WebPageLinked;
+        path = typeViewObject.url;
+
+        break;
+      case CubeType.Experiential:
+        action = StudyActionType.Experimential;
+        path = typeViewObject.url;
+
+        break;
+
+      case CubeType.ELearning:
+        action = StudyActionType.ElearningLinked;
+        path = typeViewObject.siteUrl;
+  
+        break;
+  
+      case CubeType.Documents:
+        action = StudyActionType.DocumnetDownload;
+        menu = 'Download';
+
+        break;
+    }
+    actionEventService?.registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, menu, path, cubeName});
 
   }
 
@@ -262,10 +344,9 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
     const isSingleClassroom: boolean = typeViewObject.classrooms && typeViewObject.classrooms.length && typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.onSelectClassroom(typeViewObject.classrooms[0]);
-      //this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.re);
+      this.setState({ selectedClassRoom: typeViewObject.classrooms[0] }, this.onApplyReference);
     } else {
-      this.onClickChangeSeries();
+      this.onApplyReference();
     }
   }
 
@@ -277,6 +358,7 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
+      this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
 
       //0413 window.open -> modal로 변경
@@ -309,13 +391,17 @@ class LectureCardContainer extends Component<Props, State> {
     const { typeViewObject } = this.props;
 
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
+      this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
       // }
       //0416
+      
       window.open(typeViewObject.url, '_blank');
+
+  
       //this.setState( {openLearningModal: true});
     }
     else {
@@ -326,6 +412,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   onDownload() {
     const { typeViewObject } = this.props;
+    this.publishStudyEvent();
     this.onRegisterStudent(ProposalState.Approved);
     depot.downloadDepot(typeViewObject.fileBoxId);
   }
@@ -441,16 +528,12 @@ class LectureCardContainer extends Component<Props, State> {
     //
     const { studentCdo, student } = this.props;
     const { rollBook } = this.state;
-
-    let rollBookId = studentCdo.rollBookId;
-    if (rollBook && rollBook.id) rollBookId = rollBook.id;
-
     let proposalState = studentCdo.proposalState;
-    if (student
-      && student.rollBookId === rollBookId
-      && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
+    if (student && (student.proposalState === ProposalState.Canceled || student.proposalState === ProposalState.Rejected)) {
       proposalState = student.proposalState;
     }
+    let rollBookId = studentCdo.rollBookId;
+    if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
     // this.registerStudent({ ...studentCdo, rollBookId, proposalState });
     this.registerStudentApprove({ ...studentCdo,
@@ -487,6 +570,8 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onLearningModalClose() {
+    const isClose = true;
+    this.publishStudyEvent(isClose);
     const { studentCdo, lectureService, onPageRefresh } = this.props;
     this.setState({ openLearningModal: false });
     const lectureStudentCdo = {
@@ -518,7 +603,10 @@ class LectureCardContainer extends Component<Props, State> {
                 (join.proposalState !== ProposalState.Canceled && join.proposalState !== ProposalState.Rejected)).length)) {
                 this.onRegisterStudent(ProposalState.Approved);
               }
-              if (typeViewObject.siteUrl.startsWith('http')) window.open(typeViewObject.siteUrl, '_blank');
+              if (typeViewObject.siteUrl.startsWith('http')) {
+                this.publishStudyEvent();
+                window.open(typeViewObject.siteUrl, '_blank');
+              }
               else reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
             },
           };
@@ -563,6 +651,7 @@ class LectureCardContainer extends Component<Props, State> {
         }
       case CubeType.WebPage:
       case CubeType.Experiential:
+        //console.log('여기도!!');
         return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onOpenStart };
       case CubeType.Documents:
         return { type: LectureSubInfo.ActionType.Download, onAction: this.onDownload };
@@ -771,6 +860,9 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
+
+    // console.log('LectureCardContainer : ', JSON.stringify(this.state));
+
     return (
       <LectureCardContentWrapperView>
         <LectureSubInfo
@@ -887,4 +979,4 @@ class LectureCardContainer extends Component<Props, State> {
   }
 }
 
-export default LectureCardContainer;
+export default withRouter(LectureCardContainer);

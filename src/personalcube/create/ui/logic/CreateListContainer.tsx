@@ -110,7 +110,6 @@ class CreateListContainer extends React.Component<Props> {
     const { pageService, personalCubeService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     const { onChangeCreateCount } = this.props;
-
     const offsetList = await personalCubeService!.findPersonalCubesForCreator(
       page!.nextOffset,
       page!.limit,
