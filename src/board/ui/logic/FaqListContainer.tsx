@@ -144,7 +144,7 @@ class FaqListContainer extends React.Component<Props, State> {
     if (result.length < 1) {
       return (
         <Segment className="full">
-          <NoSuchContentPanel message="등록된 FAQ가 업습니다." />
+          <NoSuchContentPanel message="등록된 FAQ가 없습니다." />
         </Segment>
       );
     }
