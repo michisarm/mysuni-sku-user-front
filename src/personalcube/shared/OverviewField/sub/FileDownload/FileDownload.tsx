@@ -1,41 +1,38 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import depot from '@nara.drama/depot';
-import { Label, Icon, Button, Modal, Table, Checkbox } from 'semantic-ui-react';
-
+import { Label, Icon, List } from 'semantic-ui-react';
 
 interface Props {
-  fileBoxIds: string[],
+  fileBoxIds: string[];
 }
 
 interface State {
-  open: boolean
-  files: any[]
-  checkedFileIds: string[]
+  files: any[];
 }
 
 @reactAutobind
 class FileDownload extends Component<Props, State> {
-  //
+  // popupDownload 에서 리스트 다운로드로 변경 by gon
   state = {
-    open: false,
     files: [],
-    checkedFileIds: [],
   };
 
+  componentDidMount() {
+    this.init();
+  }
 
   init() {
     const { fileBoxIds } = this.props;
     let files: any[] = [];
 
-    const boxIds = fileBoxIds.filter(id => id);
+    const boxIds = fileBoxIds.filter((id) => id);
     if (boxIds.length) {
       Promise.all(
-        boxIds.map(fileBoxId => depot.getDepotFiles(fileBoxId))
-      ).then(filesArr => {
+        boxIds.map((fileBoxId) => depot.getDepotFiles(fileBoxId))
+      ).then((filesArr) => {
         if (filesArr.length) {
-          filesArr.map(fileList => {
+          filesArr.map((fileList) => {
             if (Array.isArray(fileList)) files = files.concat(fileList);
             else files.push(fileList);
           });
@@ -45,112 +42,61 @@ class FileDownload extends Component<Props, State> {
     }
   }
 
-  show() {
-    this.setState({ open: true }, this.init);
+  onDownloadOne(fileId: string) {
+    depot.downloadDepotFiles([fileId]);
   }
 
-  close() {
-    this.setState({ open: false, checkedFileIds: [], files: []});
-  }
-
-  onDownload() {
-    //
-    const { checkedFileIds } = this.state;
-    if (checkedFileIds && checkedFileIds.length) depot.downloadDepotFiles(checkedFileIds);
-    this.close();
-  }
-
-  onSelectFile(fileId: string) {
-    //
-    let { checkedFileIds }: State = this.state;
-
-    if (checkedFileIds.includes(fileId)) {
-      const index = checkedFileIds.findIndex(checkedId => checkedId === fileId);
-      checkedFileIds =  checkedFileIds.slice(0, index).concat(checkedFileIds.slice(index + 1));
-    }
-    else {
-      checkedFileIds.push(fileId);
-    }
-
-    this.setState({ checkedFileIds });
-  }
-
-  onCheckAll(checked: boolean) {
-    //
+  onDownloadAll() {
     const { files }: State = this.state;
-    if (checked) this.setState({ checkedFileIds: files.map(file => file.id) });
-    else this.setState({ checkedFileIds: []});
+    const downloadAll = files.map((file) => file.id);
+    depot.downloadDepotFiles(downloadAll);
   }
 
   render() {
     //
     const { fileBoxIds } = this.props;
-    const boxIds = fileBoxIds.filter(id => id);
+    const boxIds = fileBoxIds.filter((id) => id);
     if (!boxIds || !boxIds.length) return null;
 
-    const { open, files, checkedFileIds }: State = this.state;
+    const { files }: State = this.state;
 
     return (
-      <div className="download-file">
-        <div className="label-wrap">
-          <Label className="onlytext size24">
-            <Icon className="file2" /><span>Download the learning materials that come with this class.</span>
-          </Label>
-        </div>
-        <div className="btn-wrap">
-          <Modal
-            open={open}
-            onOpen={this.show}
-            onClose={this.close}
-            className="base w700"
-            trigger={<Button icon className="left icon-big-line2"><Icon className="download2" /><span>Download File</span></Button>}
-          >
-            <Modal.Header className="res">
-              Download
-              <span className="sub f12">다운로드 받으실 항목을 선택해 주세요.</span>
-            </Modal.Header>
-            <Modal.Content>
-              <div className="scrolling-60vh">
-                <Table className="head-fix ml-05-p03">
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell scope="col">
-                        <Checkbox
-                          className="black"
-                          checked={checkedFileIds.length === files.length}
-                          onChange={(e, data: any) => this.onCheckAll(data.checked)}
-                        />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell scope="col">File Name</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-
-                  <Table.Body>
-                    {
-                      files && files.length
-                      && files.map((file: any) => (
-                        <Table.Row>
-                          <Table.Cell>
-                            <Checkbox
-                              checked={checkedFileIds.includes(file.id)}
-                              onChange={() => this.onSelectFile(file.id) }
-                            />
-                          </Table.Cell>
-                          <Table.Cell><span>{file.name}</span></Table.Cell>
-                        </Table.Row>
-                      )) || null
-                    }
-                  </Table.Body>
-                </Table>
+      <>
+        {/* 파일다운로드 (선택) */}
+        <div className="ov-paragraph download-area">
+          <h3 className="title-style">
+            <Label className="onlytext bold size24">
+              <Icon className="document24" />
+              <span>참고자료</span>
+            </Label>
+          </h3>
+          <List bulleted>
+            <List.Item>
+              <div className="title">첨부파일</div>
+              <div className="detail">
+                <div className="file-down-wrap">
+                  {(files &&
+                    files.length &&
+                    files.map((file: any) => (
+                      <div className="down">
+                        <a onClick={() => this.onDownloadOne(file.id)}>
+                          <span>{file.name}</span>
+                        </a>
+                      </div>
+                    ))) ||
+                    null}
+                  <div className="all-down">
+                    <a onClick={() => this.onDownloadAll()}>
+                      <Icon className="icon-down-type4" />
+                      <span>전체 다운로드</span>
+                    </a>
+                  </div>
+                </div>
               </div>
-            </Modal.Content>
-            <Modal.Actions className="actions2">
-              <Button className="pop2 d" onClick={this.close}>Cancel</Button>
-              <Button className="pop2 p" onClick={this.onDownload}>Select Download</Button>
-            </Modal.Actions>
-          </Modal>
+            </List.Item>
+          </List>
         </div>
-      </div>
+      </>
     );
   }
 }

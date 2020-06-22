@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -16,15 +15,14 @@ import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import LectureExam from '../../../shared/LectureExam';
 
 interface Props {
-  viewObject: any
-  typeViewObject: any
-  onSaveCallback:() => void
+  viewObject: any;
+  typeViewObject: any;
+  onSaveCallback: () => void;
 }
 
-
 interface State {
-  multiple: boolean,
-  categoryOpen: boolean,
+  multiple: boolean;
+  categoryOpen: boolean;
 }
 
 @reactAutobind
@@ -51,7 +49,10 @@ class LectureOverviewView extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.viewObject !== this.props.viewObject && prevProps.viewObject.subCategories !== this.props.viewObject.subCategories) {
+    if (
+      prevProps.viewObject !== this.props.viewObject &&
+      prevProps.viewObject.subCategories !== this.props.viewObject.subCategories
+    ) {
       this.setMultiple();
     }
   }
@@ -65,7 +66,7 @@ class LectureOverviewView extends Component<Props, State> {
     const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
 
     const categoriesHeight = this.itemRefs
-      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+      .map(itemRef => itemRef.getPanelRef().offsetHeight)
       .reduce((prev, current) => prev + current, 0);
 
     if (categoriesHeight > panelHeight) {
@@ -75,7 +76,7 @@ class LectureOverviewView extends Component<Props, State> {
 
   onToggleCategory() {
     //
-    this.setState((state) => ({
+    this.setState(state => ({
       categoryOpen: !state.categoryOpen,
     }));
   }
@@ -100,15 +101,24 @@ class LectureOverviewView extends Component<Props, State> {
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onReportNotReady() {
-    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    reactAlert({
+      title: 'Report 안내',
+      message: '학습 시작 후 Report 참여 가능합니다.',
+    });
   }
 
   onTestNotReady() {
-    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    reactAlert({
+      title: 'Test 안내',
+      message: '학습 시작 후 Test 참여 가능합니다.',
+    });
   }
 
   OnSurveyNotReady() {
-    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    reactAlert({
+      title: 'Survey 안내',
+      message: '학습 시작 후 Survey 참여 가능합니다.',
+    });
   }
 
   onSurvey() {
@@ -125,7 +135,8 @@ class LectureOverviewView extends Component<Props, State> {
     // const { id: studentId } = student!;
 
     if (viewObject) {
-      StudentApi.instance.modifyStudentForExam(viewObject.studentId, viewObject.examId)
+      StudentApi.instance
+        .modifyStudentForExam(viewObject.studentId, viewObject.examId)
         .then(() => {
           // if (this.init()) this.init();
         });
@@ -140,21 +151,26 @@ class LectureOverviewView extends Component<Props, State> {
       return null;
     }
 
-    const subCategoriesPerMain = viewObject.subCategories.reduce((prev: any, subCategory: any) => {
-      //
-      const subCategories: string[] = prev[subCategory.college.name] || [];
+    const subCategoriesPerMain = viewObject.subCategories.reduce(
+      (prev: any, subCategory: any) => {
+        //
+        const subCategories: string[] = prev[subCategory.college.name] || [];
 
-      subCategories.push(subCategory.channel.name);
-      return {
-        ...prev,
-        [subCategory.college.name]: subCategories,
-      };
-    }, {});
+        subCategories.push(subCategory.channel.name);
+        return {
+          ...prev,
+          [subCategory.college.name]: subCategories,
+        };
+      },
+      {}
+    );
 
-    return Object.entries(subCategoriesPerMain).map(([categoryName, subCategories]: any[], index: number) => (
+    return Object.entries(
+      subCategoriesPerMain
+    ).map(([categoryName, subCategories]: any[], index: number) => (
       <OverviewField.Item
         key={`sub-category-${index}`}
-        ref={(element) => this.setItemsRef(element, index)}
+        ref={element => this.setItemsRef(element, index)}
         title={categoryName}
         content={subCategories.join(' / ')}
       />
@@ -176,82 +192,79 @@ class LectureOverviewView extends Component<Props, State> {
 
     return (
       <OverviewField.Wrapper>
-        <OverviewField.Description
-          description={viewObject.description}
-        />
-
-        {
-          viewObject && viewObject.examId && (
-            <AnswerSheetModal
-              examId={viewObject.examId}
-              ref={examModal => this.examModal = examModal}
-              onSaveCallback={onSaveCallback}
-            />
-          )
-        }
-
+        <OverviewField.Description description={viewObject.description} />
+        {viewObject && viewObject.examId && (
+          <AnswerSheetModal
+            examId={viewObject.examId}
+            ref={examModal => (this.examModal = examModal)}
+            onSaveCallback={onSaveCallback}
+          />
+        )}
         <CubeReportModal
-          downloadFileBoxId ={viewObject.reportFileBoxId}
-          ref={reportModal => this.reportModal = reportModal}
-          downloadReport = {this.onClickDownloadReport}
+          downloadFileBoxId={viewObject.reportFileBoxId}
+          ref={reportModal => (this.reportModal = reportModal)}
+          downloadReport={this.onClickDownloadReport}
           rollBookId={viewObject.rollBookId}
         />
-
-        {
-          viewObject && viewObject.surveyId && (
-            <SurveyAnswerSheetModal
-              surveyId={viewObject.surveyId}
-              surveyCaseId={viewObject.surveyCaseId}
-              ref={surveyModal => this.surveyModal = surveyModal}
-              // onSaveCallback={this.testCallback}
-            />
-          )
-        }
-
-        {
-          viewObject && (
-            <LectureExam
-              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-              onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-              onTest={viewObject.examId ? this.onTest : undefined}
-              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-              OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
-              viewObject={viewObject}
-              passedState={viewObject.passedState}
-              type={viewObject.examType}
-              name={viewObject.examName}
-            />
-          )
-        }
-
-        <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId ]}
-        />
-
+        {viewObject && viewObject.surveyId && (
+          <SurveyAnswerSheetModal
+            surveyId={viewObject.surveyId}
+            surveyCaseId={viewObject.surveyCaseId}
+            ref={surveyModal => (this.surveyModal = surveyModal)}
+            // onSaveCallback={this.testCallback}
+          />
+        )}
+        {viewObject && (
+          <LectureExam
+            onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+            onReportNotReady={
+              viewObject.reportFileBoxId ? this.onReportNotReady : undefined
+            }
+            onTest={viewObject.examId ? this.onTest : undefined}
+            onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+            onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+            OnSurveyNotReady={
+              viewObject.examId ? this.OnSurveyNotReady : undefined
+            }
+            viewObject={viewObject}
+            passedState={viewObject.passedState}
+            type={viewObject.examType}
+            name={viewObject.examName}
+          />
+        )}
+        {/* 첨부파일 UI 변경 by gon */}
+        {viewObject.fileBoxId.length > 0 && (
+          <OverviewField.FileDownload fileBoxIds={[viewObject.fileBoxId]} />
+        )}
         <OverviewField.List
           ref={this.panelRef}
-          className={classNames('sub-category fn-parents', { open: categoryOpen })}
-          header={(
-            <OverviewField.Title
-              icon="category"
-              text="서브채널"
-            />
-          )}
+          className={classNames('sub-category fn-parents', {
+            open: categoryOpen,
+          })}
+          header={<OverviewField.Title icon="category" text="서브채널" />}
         >
           {this.renderSubCategories()}
-          { multiple && (
+          {multiple && (
             <Button
               icon
-              className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
+              className={classNames('right btn-blue fn-more-toggle', {
+                'btn-more': !categoryOpen,
+                'btn-hide': categoryOpen,
+              })}
               onClick={this.onToggleCategory}
             >
-              {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
+              {categoryOpen ? 'hide' : 'more'}{' '}
+              <Icon
+                className={classNames({
+                  more2: !categoryOpen,
+                  hide2: categoryOpen,
+                })}
+              />
             </Button>
           )}
         </OverviewField.List>
-
-        { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (
+        {/* CubeType.ClassRoomLecture 가 비교 시 render 문제로 인식못하는듯 우선수정 by gon */}
+        {cubeType === 'ClassRoomLecture' && typeViewObject.applyingPeriod && (
           <OverviewField.List icon className="period-area">
             <OverviewField.Item
               titleIcon="period"
@@ -261,92 +274,95 @@ class LectureOverviewView extends Component<Props, State> {
             <OverviewField.Item
               titleIcon="cancellation"
               title="취소가능기간"
-              content={(
+              content={
                 <>
                   {this.getPeriodDate(typeViewObject.cancellablePeriod)}
-                  { typeViewObject.cancellationPenalty && (
+                  {typeViewObject.cancellationPenalty && (
                     <div className="info">
                       No Show Penalty : {typeViewObject.cancellationPenalty}
                     </div>
                   )}
                 </>
-              )}
+              }
             />
           </OverviewField.List>
         )}
-
-        {
-          (typeViewObject.classrooms || viewObject.goal || viewObject.applicants
-          || viewObject.organizerName) && (
-            <OverviewField.List
-              icon
-              header={ typeViewObject.classrooms ? (
+        {((typeViewObject.classrooms ||
+          viewObject.goal ||
+          viewObject.applicants ||
+          viewObject.organizerName) && (
+          <OverviewField.List
+            icon
+            header={
+              typeViewObject.classrooms ? (
                 <OverviewField.Table
                   titleIcon="series"
                   titleText="차수정보"
                   classrooms={typeViewObject.classrooms}
                 />
-              ) : null }
-            >
-              {
-                viewObject.goal && (
-                  <OverviewField.Item
-                    titleIcon="goal"
-                    title="학습목표"
-                    content={viewObject.goal}
-                  />
-                ) || null
-              }
-              {
-                viewObject.applicants && (
-                  <OverviewField.Item
-                    titleIcon="target"
-                    title="대상"
-                    content={viewObject.applicants}
-                  />
-                ) || null
-              }
-              {
-                viewObject.organizerName && (
-                  <OverviewField.Item
-                    titleIcon="host"
-                    title="교육기관 출처"
-                    content={viewObject.organizerName}
-                  />
-                )
-              }
-            </OverviewField.List>
-          ) || null
-        }
-        {
-          (typeViewObject.location || viewObject.completionTerms || viewObject.guide)
-          && (
-            <OverviewField.List className="info-box2">
-              { cubeType === CubeType.ClassRoomLecture && (
-                <OverviewField.Item
-                  title="장소"
-                  content={typeViewObject.location}
-                />
-              )}
+              ) : null
+            }
+          >
+            {(viewObject.goal && (
               <OverviewField.Item
-                title="이수조건"
-                content={viewObject.completionTerms}
+                titleIcon="goal"
+                title="학습목표"
+                content={viewObject.goal}
               />
+            )) ||
+              null}
+            {(viewObject.applicants && (
               <OverviewField.Item
-                title="기타안내"
-                className="quill-des"
-                contentHtml={viewObject.guide}
+                titleIcon="target"
+                title="대상"
+                content={viewObject.applicants}
               />
-            </OverviewField.List>
-          ) || null
-        }
+            )) ||
+              null}
+            {viewObject.organizerName && (
+              <OverviewField.Item
+                titleIcon="host"
+                title="교육기관 출처"
+                content={viewObject.organizerName}
+              />
+            )}
+          </OverviewField.List>
+        )) ||
+          null}
+        {((typeViewObject.location ||
+          viewObject.completionTerms ||
+          viewObject.guide) && (
+          <OverviewField.List className="info-box2">
+            {cubeType === CubeType.ClassRoomLecture && (
+              <OverviewField.Item
+                title="장소"
+                content={typeViewObject.location}
+              />
+            )}
+            <OverviewField.Item
+              title="이수조건"
+              content={viewObject.completionTerms}
+            />
+            <OverviewField.Item
+              title="기타안내"
+              className="quill-des"
+              contentHtml={viewObject.guide}
+            />
+          </OverviewField.List>
+        )) ||
+          null}
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={viewObject.tags.map((tag: string, index: number) => (
-              tag && <span key={`tag-${index}`} className="ui label tag">{tag}</span>
-            ))}
+            content={viewObject.tags.map(
+              (tag: string, index: number) =>
+                tag && (
+                  <span key={`tag-${index}`} className="ui label tag">
+                    {tag}
+                  </span>
+                )
+            )}
           />
         </OverviewField.List>
       </OverviewField.Wrapper>
