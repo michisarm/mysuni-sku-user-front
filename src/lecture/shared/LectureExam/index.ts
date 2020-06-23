@@ -1,2 +1,2 @@
 
-export { default } from './ui/logic/LectureExamContainer';
+export { default } from './ui/logic/LectureExamContainer2';

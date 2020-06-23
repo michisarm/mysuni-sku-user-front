@@ -31,29 +31,58 @@ class LectureExamContainer extends Component<Props> {
     const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name } = this.props;
 
     return (
-      <div className="contents trs-box-wrap non-height">
-        <Report
-          OnReport={onReport}
-          onReportNotReady={onReportNotReady}
-          viewObject={viewObject}
-          passedState={passedState}
-          type={type}
-          name={name}
-        />
-        <Test
-          OnTest={onTest}
-          OnTestNotReady={onTestNotReady}
-          viewObject={viewObject}
-          type={type}
-          name={name}
-        />
-        <Survey
-          onSurvey={onSurvey}
-          OnSurveyNotReady={OnSurveyNotReady}
-          viewObject={viewObject}
-          type={type}
-          name={name}
-        />
+      <div className="course-cont">
+        {type === 'box' ? (
+          <div className="cube-box">
+            <Report
+              OnReport={onReport}
+              onReportNotReady={onReportNotReady}
+              viewObject={viewObject}
+              passedState={passedState}
+              type={type}
+              name={name}
+            />
+            <Test
+              OnTest={onTest}
+              OnTestNotReady={onTestNotReady}
+              viewObject={viewObject}
+              type={type}
+              name={name}
+            />
+            <Survey
+              onSurvey={onSurvey}
+              OnSurveyNotReady={OnSurveyNotReady}
+              viewObject={viewObject}
+              type={type}
+              name={name}
+            />
+          </div>
+        ) : (
+          <>
+            <Report
+              OnReport={onReport}
+              onReportNotReady={onReportNotReady}
+              viewObject={viewObject}
+              passedState={passedState}
+              type={type}
+              name={name}
+            />
+            <Test
+              OnTest={onTest}
+              OnTestNotReady={onTestNotReady}
+              viewObject={viewObject}
+              type={type}
+              name={name}
+            />
+            <Survey
+              onSurvey={onSurvey}
+              OnSurveyNotReady={OnSurveyNotReady}
+              viewObject={viewObject}
+              type={type}
+              name={name}
+            />
+          </>
+        )}
       </div>
     );
   }

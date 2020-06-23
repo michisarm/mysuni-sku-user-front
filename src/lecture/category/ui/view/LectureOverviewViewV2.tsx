@@ -441,7 +441,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
               passedState={viewObject.passedState}
-              type={viewObject.examType}
+              type="box"
               name={viewObject.examName}
             />
           )

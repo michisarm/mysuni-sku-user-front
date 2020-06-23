@@ -720,8 +720,46 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     return (
       <>
+
         {className === 'first' && (
-          !lectureView.cubeId ? (
+          lectureView.cubeId && (
+            <div className="cube-box">
+              <div className="bar typeA">
+                <div className="tit">
+                  <span className="ellipsis">{lectureView.name}</span>
+                </div>
+                <div className="right">
+                  <span>{lectureView.cubeTypeName}</span>
+                  <span>{lectureView.learningTime}m</span>
+                  {this.setLearningStateForMedia()}
+                  {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
+                </div>
+              </div>
+
+              {
+                this.viewObject && this.state.isContent && (
+                  <LectureExam
+                    onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
+                    onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
+                    onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
+                    onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
+                    onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
+                    OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
+                    viewObject={this.viewObject}
+                    passedState={this.state.passedState}
+                    type="cube"
+                    name={this.state.name}
+                  />
+                )
+              }
+
+            </div>
+          )
+        )}
+
+
+        {className === 'first' && (
+          !lectureView.cubeId && (
             <div className="bar">
               <div className="tit">
                 <span className="ellipsis">{lectureView.name}</span>
@@ -744,20 +782,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 >
                   <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
                 </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="cube-box">
-              <div className="bar typeA">
-                <div className="tit">
-                  <span className="ellipsis">{lectureView.name}</span>
-                </div>
-                <div className="right">
-                  <span>{lectureView.cubeTypeName}</span>
-                  <span>{lectureView.learningTime}m</span>
-                  {this.setLearningStateForMedia()}
-                  {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
-                </div>
               </div>
             </div>
           )
@@ -791,7 +815,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                     OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
                     viewObject={this.viewObject}
                     passedState={this.state.passedState}
-                    type={this.state.type}
+                    type="detail"
                     name={this.state.name}
                   />
                 )
@@ -799,25 +823,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
             </ul>
           </div>
         )}
-
-        {/*<CubeRightInfo*/}
-        {/*  learningType={lectureView.cubeType}*/}
-        {/*  learningState={this.studentData.learningState}*/}
-        {/*  learningTime="11m"*/}
-        {/*/>*/}
-
-        {/*<Buttons>*/}
-        {/*  /!*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*!/*/}
-        {/*  {*/}
-        {/*    lectureView.cubeType === CubeType.Video && (*/}
-        {/*      this.state.inProgress !== SubState.Completed ? (*/}
-        {/*        <Button className={className1} onClick={this.getMainActionForVideo}>학습하기</Button>*/}
-        {/*      ) : (*/}
-        {/*        <span className="completed-txt">학습완료</span>*/}
-        {/*      )*/}
-        {/*    )}*/}
-        {/*</Buttons>*/}
-
 
         {
           this.viewObject && this.personalCube?.contents.examId && (
@@ -849,8 +854,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
             />
           )
         }
-
-        {/*</div>*/}
 
       </>
     );
