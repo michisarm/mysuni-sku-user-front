@@ -675,7 +675,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       case SubState.InProgress:
         return (
           <a href="#" className="btn-play orange">
-            <span className="text" onClick={this.getMainActionForVideo}>학습중</span>
+            <span className="text" onClick={this.getMainActionForVideo}>학습중({lectureView.sumViewSeconds}%)</span>
             <span className={'pie-wrapper progress-'+lectureView.sumViewSeconds}>
               <span className="pie">
                 <span className="left-side" />
