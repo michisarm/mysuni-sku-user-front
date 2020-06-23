@@ -176,6 +176,15 @@ class LectureService {
     return lectureViews;
   }
 
+  @action
+  async findSubLectureViewsV2(courseId: string, coursePlanId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViewsV2(coursePlanId, lectureCardIds, courseLectureIds);
+
+    runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
+    return lectureViews;
+  }
+
   getSubLectureViews(courseId: string) {
     //
     return this.subLectureViewsMap.get(courseId) || [];

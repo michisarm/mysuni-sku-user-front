@@ -265,7 +265,7 @@ class CoursePageV2 extends Component<Props, State> {
     lectureViews.map(async (lectureView) => {
       if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
         && lectureView.lectureCardUsids && lectureView.lectureCardUsids.length > 0) {
-        await lectureService.findSubLectureViews(lectureView.id, lectureView.coursePlanId, lectureView.lectureCardUsids);
+        await lectureService.findSubLectureViewsV2(lectureView.id, lectureView.coursePlanId, lectureView.lectureCardUsids);
       }
     });
   }

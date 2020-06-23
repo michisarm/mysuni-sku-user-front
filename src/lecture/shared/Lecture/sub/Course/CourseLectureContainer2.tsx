@@ -669,13 +669,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   setLearningStateForMedia() {
     console.log('학습상태 : ', this.state.inProgress);
+    const { lectureView } = this.props;
 
     switch (this.state.inProgress) {
       case SubState.InProgress:
         return (
           <a href="#" className="btn-play orange">
             <span className="text" onClick={this.getMainActionForVideo}>학습중</span>
-            <span className="pie-wrapper progress-23">
+            <span className={'pie-wrapper progress-'+lectureView.sumViewSeconds}>
               <span className="pie">
                 <span className="left-side" />
                 <span className="right-side" />
