@@ -15,10 +15,8 @@ class LectureApi {
   //
   static instance: LectureApi;
 
-  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_LECTURE_API === undefined || process.env.REACT_APP_LECTURE_API === '' ?
+  baseUrl = process.env.REACT_APP_LECTURE_API === undefined || process.env.REACT_APP_LECTURE_API === '' ?
     '/api/lecture/lectures' : process.env.REACT_APP_LECTURE_API;
-
 
   findAllLectures(lectureRdo: LectureRdoModel) {
     //
@@ -61,6 +59,27 @@ class LectureApi {
     });
 
     return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/view`, params)
+      .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
+  }
+
+  findLectureViewsV2(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+    //
+    if ((!lectureCardUsids || lectureCardUsids.length < 1) && (!courseLectureUsids || courseLectureUsids.length < 1 )) {
+      return Promise.resolve([]);
+    }
+
+    const params = new LectureViewRdoModel({
+      coursePlanId,
+      lectureCardIds: lectureCardUsids,
+      courseLectureIds: courseLectureUsids || [],
+    });
+
+    console.log('>>>>>>', process.env.REACT_APP_ENVIRONMENT);
+    console.log('>>>>>>', process.env.REACT_APP_LECTURE_API);
+
+    console.log('>>>>>>', this.baseUrl + `/v2/view`);
+
+    return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/v2/view`, params)
       .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
   }
 

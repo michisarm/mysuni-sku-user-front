@@ -236,7 +236,7 @@ class CoursePageV2 extends Component<Props, State> {
         commentId,
       } = await programLectureService.findProgramLecture(match.params.serviceId);
       commentService.countByFeedbackId(commentId);
-      const lectureViews = await this.findLectureViews(lectureCardUsids, courseLectureUsids);
+      const lectureViews = await this.findLectureViewsV2(lectureCardUsids, courseLectureUsids);
 
       this.findSubLectureViews(lectureViews);
     }
@@ -247,15 +247,15 @@ class CoursePageV2 extends Component<Props, State> {
       } = await courseLectureService.findCourseLecture(match.params.serviceId);
       commentService.countByFeedbackId(commentId);
 
-      this.findLectureViews(lectureCardUsids);
+      this.findLectureViewsV2(lectureCardUsids);
     }
   }
 
-  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[], ) {
+  async findLectureViewsV2(lectureCardUsids: string[], courseLectureUsids?: string[], ) {
     //
     const { match, lectureService } = this.props;
 
-    return lectureService.findLectureViews(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
+    return lectureService.findLectureViewsV2(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
   }
 
   async findSubLectureViews(lectureViews: LectureViewModel[]) {

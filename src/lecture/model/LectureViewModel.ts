@@ -21,6 +21,7 @@ class LectureViewModel extends DramaEntityObservableModel {
   lectureCardUsids: string[] = [];
   learningTime: number = 0;
   learningCardId: string = '';
+  sumViewSeconds: string = '';
 
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
@@ -79,6 +80,7 @@ decorate(LectureViewModel, {
   lectureCardUsids: observable,
   learningTime: observable,
   learningCardId: observable,
+  sumViewSeconds: observable,
 });
 
 export default LectureViewModel;

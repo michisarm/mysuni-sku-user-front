@@ -156,6 +156,15 @@ class LectureService {
     return lectureViews;
   }
 
+  @action
+  async findLectureViewsV2(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViewsV2(coursePlanId, lectureCardUsids, courseLectureUsids);
+
+    runInAction(() => this._lectureViews = lectureViews);
+    return lectureViews;
+  }
+
   // SubLectureViewMap -------------------------------------------------------------------------------------------------
 
   @action
