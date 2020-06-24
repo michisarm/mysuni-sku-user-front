@@ -99,7 +99,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
               <span>Test {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={OnTest}>
+              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
                 <span className="text">시험보기</span>
                 <i className="icon play-black24" />
               </a>
@@ -116,7 +116,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
               <span>Test {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={OnTest}>
+              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
                 <span className="text">시험보기</span>
                 <i className="icon play-black24" />
               </a>
@@ -133,7 +133,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
               <span>Test {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={OnTest}>
+              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
                 <span className="text">시험보기</span>
                 <i className="icon play-black24" />
               </a>
@@ -169,7 +169,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
               <span>Survey {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={onSurvey}>
+              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
                 <span className="text">설문하기</span>
                 <i className="icon play-black24" />
               </a>
@@ -186,7 +186,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
               <span>Survey {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={onSurvey}>
+              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
                 <span className="text">설문하기</span>
                 <i className="icon play-black24" />
               </a>
@@ -203,7 +203,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
               <span>Survey {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={onSurvey}>
+              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
                 <span className="text">설문하기</span>
                 <i className="icon play-black24" />
               </a>
