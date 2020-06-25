@@ -285,8 +285,16 @@ class CourseLectureContainer2 extends Component<Props, State> {
   onToggle() {
     //
     const { open, setOpen } = this.context;
-
     setOpen(!open);
+
+    /*console.log('this.state.inProgress : ' + this.state.inProgress);
+
+    if( this.state.inProgress === LearningState.Progress ) {
+      setOpen(open);
+    } else {
+      setOpen(!open);
+    }*/
+
   }
 
   registerStudentForVideo(studentCdo: StudentCdoModel)
@@ -638,7 +646,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
         } else if (
           studentData.phaseCount === studentData.completePhaseCount
-          && (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials > 2)
+          && (studentData.learningState === LearningState.Failed && studentData.studentScoLectureOverviewViewV2.re.numberOfTrials > 2)
         ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
@@ -668,7 +676,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   setLearningStateForMedia() {
-    console.log('학습상태 : ', this.state.inProgress);
     const { lectureView } = this.props;
 
     switch (this.state.inProgress) {
@@ -749,12 +756,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
                     OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
                     viewObject={this.viewObject}
                     passedState={this.state.passedState}
-                    type="cube"
+                    type={this.state.type}
                     name={this.state.name}
+                    sort="cube"
                   />
                 )
               }
-
             </div>
           )
         )}
@@ -817,8 +824,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
                     OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
                     viewObject={this.viewObject}
                     passedState={this.state.passedState}
-                    type="detail"
+                    type={this.state.type}
                     name={this.state.name}
+                    sort="detail"
                   />
                 )
               }

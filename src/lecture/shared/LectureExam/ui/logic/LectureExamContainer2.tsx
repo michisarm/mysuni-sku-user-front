@@ -21,6 +21,7 @@ interface Props {
   passedState: boolean
   type?: string
   name?: string
+  sort?: string
 }
 
 @reactAutobind
@@ -28,34 +29,39 @@ class LectureExamContainer extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name } = this.props;
+    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name, sort } = this.props;
 
     return (
-      <div className="course-cont">
-        {type === 'box' ? (
-          <div className="cube-box">
-            <Report
-              OnReport={onReport}
-              onReportNotReady={onReportNotReady}
-              viewObject={viewObject}
-              passedState={passedState}
-              type={type}
-              name={name}
-            />
-            <Test
-              OnTest={onTest}
-              OnTestNotReady={onTestNotReady}
-              viewObject={viewObject}
-              type={type}
-              name={name}
-            />
-            <Survey
-              onSurvey={onSurvey}
-              OnSurveyNotReady={OnSurveyNotReady}
-              viewObject={viewObject}
-              type={type}
-              name={name}
-            />
+      <>
+        {sort === 'box' ? (
+          <div className="course-cont">
+            <div className="cube-box">
+              <Report
+                OnReport={onReport}
+                onReportNotReady={onReportNotReady}
+                viewObject={viewObject}
+                passedState={passedState}
+                type={type}
+                name={name}
+                sort={sort}
+              />
+              <Test
+                OnTest={onTest}
+                OnTestNotReady={onTestNotReady}
+                viewObject={viewObject}
+                type={type}
+                name={name}
+                sort={sort}
+              />
+              <Survey
+                onSurvey={onSurvey}
+                OnSurveyNotReady={OnSurveyNotReady}
+                viewObject={viewObject}
+                type={type}
+                name={name}
+                sort={sort}
+              />
+            </div>
           </div>
         ) : (
           <>
@@ -66,6 +72,7 @@ class LectureExamContainer extends Component<Props> {
               passedState={passedState}
               type={type}
               name={name}
+              sort={sort}
             />
             <Test
               OnTest={onTest}
@@ -73,6 +80,7 @@ class LectureExamContainer extends Component<Props> {
               viewObject={viewObject}
               type={type}
               name={name}
+              sort={sort}
             />
             <Survey
               onSurvey={onSurvey}
@@ -80,10 +88,11 @@ class LectureExamContainer extends Component<Props> {
               viewObject={viewObject}
               type={type}
               name={name}
+              sort={sort}
             />
           </>
         )}
-      </div>
+      </>
     );
   }
 }

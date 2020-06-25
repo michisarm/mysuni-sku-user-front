@@ -274,6 +274,7 @@ class LectureContainer2 extends Component<Props, States> {
       lectureView, thumbnailImage, toggle,
       onAction,
     } = this.props;
+
     const { open } = this.state;
 
     return (
