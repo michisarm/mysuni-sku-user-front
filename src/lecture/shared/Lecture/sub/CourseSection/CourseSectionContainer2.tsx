@@ -30,6 +30,7 @@ class CourseSectionContainer extends Component<Props, State> {
   getContextValue() {
     //
     return {
+      // open: this.state.open,
       open: this.state.open,
       setOpen: this.setOpen,
     };

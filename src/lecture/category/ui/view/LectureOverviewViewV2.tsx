@@ -352,45 +352,43 @@ class LectureOverviewViewV2 extends Component<Props, State> {
             type={Lecture.GroupType.Course}
             totalCourseCount={viewObject.totalCourseCount}
           >
-            <div className="course-box fn-parents open">
-              {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-                <Lecture.CourseSection
-                  key={`course-${lectureViewsIndex}`}
-                  lecture={(
-                    <Lecture.Course
-                      className="first"
-                      lectureView={lecture}
-                      lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                      onViewDetail={() => this.onViewDetail(lecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                    />
-                  )}
-                >
-                  {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                    <Lecture.Course
-                      key={`sub-lecture-${index}`}
-                      className="included"
-                      lectureView={subLecture}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                      thumbnailImage={subLecture.baseUrl || undefined}
-                      onViewDetail={() => this.onViewDetail(subLecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                    />
-                  )}
-                </Lecture.CourseSection>
-              ))}
-            </div>
+            {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
+              <Lecture.CourseSection
+                key={`course-${lectureViewsIndex}`}
+                lecture={(
+                  <Lecture.Course
+                    className="first"
+                    lectureView={lecture}
+                    lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
+                    lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
+                    thumbnailImage={lecture.baseUrl || undefined}
+                    toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                    onViewDetail={() => this.onViewDetail(lecture)}
+                    collegeId={params.collegeId}
+                    lectureCardId={lectureCardId}
+                    member={member}
+                    onRefreshLearningState={onRefreshLearningState}
+                    onDoLearn={this.onDoLearn}
+                  />
+                )}
+              >
+                {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                  <Lecture.Course
+                    key={`sub-lecture-${index}`}
+                    className="included"
+                    lectureView={subLecture}
+                    lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
+                    thumbnailImage={subLecture.baseUrl || undefined}
+                    onViewDetail={() => this.onViewDetail(subLecture)}
+                    collegeId={params.collegeId}
+                    lectureCardId={lectureCardId}
+                    member={member}
+                    onRefreshLearningState={onRefreshLearningState}
+                    onDoLearn={this.onDoLearn}
+                  />
+                )}
+              </Lecture.CourseSection>
+            ))}
           </Lecture.Group>
           {
             openLearnModal && (
@@ -441,8 +439,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
               viewObject={viewObject}
               passedState={viewObject.passedState}
-              type="box"
+              type={viewObject.examType}
               name={viewObject.examName}
+              sort="box"
             />
           )
         }

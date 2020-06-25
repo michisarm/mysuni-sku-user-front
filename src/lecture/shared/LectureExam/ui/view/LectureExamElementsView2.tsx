@@ -8,9 +8,10 @@ interface ReportProps {
   passedState?: boolean
   type?: string
   name?: string
+  sort?: string
 }
 
-export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name }: ReportProps) => {
+export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name, sort }: ReportProps) => {
   //
   if (!OnReport) return null;
   // console.log('Report viewObject : ', viewObject);
@@ -21,7 +22,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
   return (
 
     <>
-      { type === 'cube' &&
+      { sort !== 'detail' ?
         (
           <div className="bar typeB">
             <div className="category">
@@ -29,48 +30,72 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
               <span>Report {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={OnReport}>
-                <span className="text">제출하기</span>
-                <i className="icon play-black24" />
-              </a>
+              {
+                passedState && (
+                  <div className="btn-play black">
+                    <span className="text">제출완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
+                  <a href="#" className="btn-play black" onClick={OnReport}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24"/>
+                  </a>
+                )
+              }
+
+              {
+                !passedState && ( type === '1' || type === '3' ) && (
+                  <a href="#" className="btn-play black" onClick={onReportNotReady}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                )
+              }
             </div>
           </div>
-        )
-      }
-
-      { type === 'box' &&
-        (
-          <div className="bar typeB">
-            <div className="category">
-              <i className="icon icon-report24" />
-              <span>Report {name}</span>
-            </div>
-            <div className="right">
-              <a href="#" className="btn-play black" onClick={OnReport}>
-                <span className="text">제출하기</span>
-                <i className="icon play-black24" />
-              </a>
-            </div>
-          </div>
-        )
-      }
-
-      { type === 'detail' &&
-        (
+        ) : (
           <li className="step2">
             <div className="tit trs">
               <i className="icon icon-report24" />
               <span>Report {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={OnReport}>
-                <span className="text">제출하기</span>
-                <i className="icon play-black24" />
-              </a>
+              {
+                passedState && (
+                  <div className="btn-play black">
+                    <span className="text">제출완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
+                  <a href="#" className="btn-play black" onClick={OnReport}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24"/>
+                  </a>
+                )
+              }
+
+              {
+                !passedState && ( type === '1' || type === '3' ) && (
+                  <a href="#" className="btn-play black" onClick={onReportNotReady}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                )
+              }
             </div>
           </li>
         )
       }
+
     </>
   );
 };
@@ -81,9 +106,10 @@ interface TestProps {
   viewObject?: any
   type?: string
   name?: string
+  sort?: string
 }
 
-export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestProps) => {
+export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: TestProps) => {
   //
   if (!OnTest) return null;
   // console.log('Test viewObject : ', viewObject);
@@ -91,7 +117,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
   return (
 
     <>
-      { type === 'cube' &&
+      { sort !== 'detail' ?
         (
           <div className="bar typeB">
             <div className="category">
@@ -99,44 +125,72 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name }: TestPro
               <span>Test {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                <span className="text">시험보기</span>
-                <i className="icon play-black24" />
-              </a>
+
+              {
+                (type === '0' || type === '2') && (
+                  <a href="#" className="btn-play black" onClick={OnTest}>
+                    <span className="text">시험보기</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+
+              {
+                (type === '1' || type === '3') && (
+                  <a href="#" className="btn-play black" onClick={OnTestNotReady}>
+                    <span className="text">시험보기</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                  // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
+                )
+              }
+
+              {
+                (type === '4' || type === '5') && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
             </div>
           </div>
-        )
-      }
-
-      { type === 'box' &&
-        (
-          <div className="bar typeB">
-            <div className="category">
-              <i className="icon icon-test24" />
-              <span>Test {name}</span>
-            </div>
-            <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                <span className="text">시험보기</span>
-                <i className="icon play-black24" />
-              </a>
-            </div>
-          </div>
-        )
-      }
-
-      { type === 'detail' &&
-        (
+        ) : (
           <li className="step2">
             <div className="tit trs">
               <i className="icon icon-test24" />
               <span>Test {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                <span className="text">시험보기</span>
-                <i className="icon play-black24" />
-              </a>
+              {
+                (type === '0' || type === '2') && (
+                  <a href="#" className="btn-play black" onClick={OnTest}>
+                    <span className="text">시험보기</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+
+              {
+                (type === '1' || type === '3') && (
+                  <a href="#" className="btn-play black" onClick={OnTestNotReady}>
+                    <span className="text">시험보기</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                  // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
+                )
+              }
+
+              {
+                (type === '4' || type === '5') && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
             </div>
           </li>
         )
@@ -152,16 +206,17 @@ interface SurveyProps {
   viewObject?: any
   type?: string
   name?: string
+  sort?: string
 }
 
-export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: SurveyProps) => {
+export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sort }: SurveyProps) => {
   //
   if (!onSurvey) return null;
   // console.log('Survey viewObject : ', viewObject);
   return (
 
     <>
-      { type === 'cube' &&
+      { sort !== 'detail' ?
         (
           <div className="bar typeB">
             <div className="category">
@@ -169,48 +224,78 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name }: S
               <span>Survey {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
-                <span className="text">설문하기</span>
-                <i className="icon play-black24" />
-              </a>
+
+              {
+                viewObject.surveyState && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">참여완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
+                  viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
+                  <a href="#" className="btn-play black" onClick={onSurvey}>
+                    <span className="text">설문하기</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+
+              {
+                !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
+                  <a href="#" className="btn-play black" onClick={OnSurveyNotReady}>
+                    <span className="text">설문하기</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                  // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+                )
+              }
+
             </div>
           </div>
-        )
-      }
-
-      { type === 'box' &&
-        (
-          <div className="bar typeB">
-            <div className="category">
-              <i className="icon icon-survey24" />
-              <span>Survey {name}</span>
-            </div>
-            <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
-                <span className="text">설문하기</span>
-                <i className="icon play-black24" />
-              </a>
-            </div>
-          </div>
-        )
-      }
-
-      { type === 'detail' &&
-        (
+        ) : (
           <li className="step2">
             <div className="tit trs">
               <i className="icon icon-survey24" />
               <span>Survey {name}</span>
             </div>
             <div className="right">
-              <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
-                <span className="text">설문하기</span>
-                <i className="icon play-black24" />
-              </a>
+              {
+                viewObject.surveyState && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">참여완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
+                  viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
+                  <a href="#" className="btn-play black" onClick={onSurvey}>
+                    <span className="text">설문하기</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+
+              {
+                !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
+                  <a href="#" className="btn-play black" onClick={OnSurveyNotReady}>
+                    <span className="text">설문하기</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                  // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
+                )
+              }
             </div>
           </li>
         )
       }
+
     </>
   );
 };
