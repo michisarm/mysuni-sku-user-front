@@ -41,7 +41,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 
               {
                 !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
-                  <a href="#" className="btn-play black" onClick={OnReport}>
+                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
                     <span className="text">과제제출</span>
                     <i className="icon play-black24"/>
                   </a>
@@ -50,7 +50,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 
               {
                 !passedState && ( type === '1' || type === '3' ) && (
-                  <a href="#" className="btn-play black" onClick={onReportNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
                     <span className="text">과제제출</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -76,7 +76,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 
               {
                 !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
-                  <a href="#" className="btn-play black" onClick={OnReport}>
+                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
                     <span className="text">과제제출</span>
                     <i className="icon play-black24"/>
                   </a>
@@ -85,7 +85,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 
               {
                 !passedState && ( type === '1' || type === '3' ) && (
-                  <a href="#" className="btn-play black" onClick={onReportNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
                     <span className="text">과제제출</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -128,7 +128,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
 
               {
                 (type === '0' || type === '2') && (
-                  <a href="#" className="btn-play black" onClick={OnTest}>
+                  <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
                     <span className="text">시험보기</span>
                     <i className="icon play-black24" />
                   </a>
@@ -137,7 +137,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
 
               {
                 (type === '1' || type === '3') && (
-                  <a href="#" className="btn-play black" onClick={OnTestNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text">시험보기</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -165,7 +165,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
             <div className="right">
               {
                 (type === '0' || type === '2') && (
-                  <a href="#" className="btn-play black" onClick={OnTest}>
+                  <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
                     <span className="text">시험보기</span>
                     <i className="icon play-black24" />
                   </a>
@@ -174,7 +174,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
 
               {
                 (type === '1' || type === '3') && (
-                  <a href="#" className="btn-play black" onClick={OnTestNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text">시험보기</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -237,7 +237,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               {
                 !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
                   viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
-                  <a href="#" className="btn-play black" onClick={onSurvey}>
+                  <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
                     <span className="text">설문하기</span>
                     <i className="icon play-black24" />
                   </a>
@@ -246,7 +246,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
 
               {
                 !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
-                  <a href="#" className="btn-play black" onClick={OnSurveyNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (OnSurveyNotReady) {OnSurveyNotReady();} e.preventDefault();}}>
                     <span className="text">설문하기</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -275,7 +275,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               {
                 !viewObject.surveyState && (viewObject.state !== undefined || viewObject.state === 'Completed' || viewObject.state === 'InProgress' ||
                   viewObject.state === 'Waiting' || viewObject.state === 'Missed') && (
-                  <a href="#" className="btn-play black" onClick={onSurvey}>
+                  <a href="#" className="btn-play black" onClick={e => {onSurvey(); e.preventDefault();}}>
                     <span className="text">설문하기</span>
                     <i className="icon play-black24" />
                   </a>
@@ -284,7 +284,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
 
               {
                 !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
-                  <a href="#" className="btn-play black" onClick={OnSurveyNotReady}>
+                  <a href="#" className="btn-play black" onClick={e => {if (OnSurveyNotReady) {OnSurveyNotReady();} e.preventDefault();}}>
                     <span className="text">설문하기</span>
                     <i className="icon play-black24-dim" />
                   </a>
