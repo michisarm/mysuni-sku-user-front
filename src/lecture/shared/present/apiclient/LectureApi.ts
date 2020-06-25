@@ -74,11 +74,6 @@ class LectureApi {
       courseLectureIds: courseLectureUsids || [],
     });
 
-    console.log('>>>>>>', process.env.REACT_APP_ENVIRONMENT);
-    console.log('>>>>>>', process.env.REACT_APP_LECTURE_API);
-
-    console.log('>>>>>>', this.baseUrl + `/v2/view`);
-
     return axiosApi.post<LectureViewModel[]>(this.baseUrl + `/v2/view`, params)
       .then(response => (response && response.data && response.data.map((lectureViewModel) => new LectureViewModel(lectureViewModel))) || []);
   }
