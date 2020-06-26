@@ -198,6 +198,7 @@ class LectureOverviewView extends Component<Props, State> {
             examId={viewObject.examId}
             ref={examModal => (this.examModal = examModal)}
             onSaveCallback={onSaveCallback}
+            type={viewObject.examType}
           />
         )}
         <CubeReportModal

@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
+import cx from 'classnames';
 
 import { Modal, List, Button } from 'semantic-ui-react';
 import ExamPaperService from '../../paper/present/logic/ExamPaperService';
@@ -14,57 +15,77 @@ import SingleChoiceView from '../view/SingleChoiceView';
 import MultiChoiceView from '../view/MultiChoiceView';
 
 interface Props {
-  examPaperService?: ExamPaperService
-  examinationService?: ExaminationService
-  answerSheetService?: AnswerSheetService
+  examPaperService?: ExamPaperService;
+  examinationService?: ExaminationService;
+  answerSheetService?: AnswerSheetService;
 
-  examId: string
-  trigger?: React.ReactNode
-  onSaveCallback?:() => void
+  examId: string;
+  type?: string;
+  trigger?: React.ReactNode;
+  onSaveCallback?: () => void;
 }
 
 interface States {
-  open: boolean
+  open: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'assistant.examPaperService',
-  'assistant.examinationService',
-  'assistant.answerSheetService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'assistant.examPaperService',
+    'assistant.examinationService',
+    'assistant.answerSheetService'
+  )
+)
 @observer
 @reactAutobind
 export class AnswerSheetModalContainer extends React.Component<Props, States> {
   //
-  state= {
+  state = {
     open: false,
   };
 
   onOpenModal() {
-    this.setState({
-      open: true,
-    }, this.init);
+    this.setState(
+      {
+        open: true,
+      },
+      this.init
+    );
   }
 
   onCloseModal() {
-    this.setState({
-      open: false,
-    }, this.clear);
+    this.setState(
+      {
+        open: false,
+      },
+      this.clear
+    );
   }
 
-
   async init() {
-    const { examinationService, examPaperService, answerSheetService, examId } = this.props;
+    const {
+      examinationService,
+      examPaperService,
+      answerSheetService,
+      examId,
+    } = this.props;
 
     if (examId) {
-      answerSheetService!.findAnswerSheet(examId, patronInfo.getDenizenId() || '');
+      answerSheetService!.findAnswerSheet(
+        examId,
+        patronInfo.getDenizenId() || ''
+      );
       const examination = await examinationService!.findExamination(examId);
       examPaperService!.findExamPaper(examination.paperId);
     }
   }
 
   clear() {
-    const { examinationService, examPaperService, answerSheetService } = this.props;
+    const {
+      examinationService,
+      examPaperService,
+      answerSheetService,
+    } = this.props;
 
     answerSheetService!.clear();
     examinationService!.clear();
@@ -76,7 +97,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheetService, examPaperService } = this.props;
     const { examPaper } = examPaperService!;
     const { questions } = examPaper!;
-    answerSheetService!.setAnswer(questionNo, answer, questions.map(question => question.questionNo));
+    answerSheetService!.setAnswer(
+      questionNo,
+      answer,
+      questions.map(question => question.questionNo)
+    );
   }
 
   onSaveAnswerSheet(finished: boolean) {
@@ -84,34 +109,38 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheet } = answerSheetService!;
 
     if (finished) {
-      answerSheetService!.setAnswerSheetProp('submitAnswers', answerSheet.answers);
+      answerSheetService!.setAnswerSheetProp(
+        'submitAnswers',
+        answerSheet.answers
+      );
     }
     answerSheetService!.setAnswerSheetProp('submitted', finished);
 
     if (answerSheet.id) {
       answerSheetService!.setAnswerSheetProp('finished', finished);
-      answerSheetService!.modifyAnswerSheet(answerSheet)
-        .then(() => {
-          if (finished) {
-            this.onCloseModal();
-            if (onSaveCallback) onSaveCallback();
-          }
-        });
-    }
-    else {
-      answerSheetService!.setAnswerSheetProp('examineeId', patronInfo.getDenizenId());
+      answerSheetService!.modifyAnswerSheet(answerSheet).then(() => {
+        if (finished) {
+          this.onCloseModal();
+          if (onSaveCallback) onSaveCallback();
+        }
+      });
+    } else {
+      answerSheetService!.setAnswerSheetProp(
+        'examineeId',
+        patronInfo.getDenizenId()
+      );
       answerSheetService!.setAnswerSheetProp('examId', examId);
       answerSheetService!.setAnswerSheetProp('finished', finished);
-      answerSheetService!.registerAnswerSheet(answerSheet)
+      answerSheetService!
+        .registerAnswerSheet(answerSheet)
         .then((answerSheetId: any) => {
           answerSheetService!.setAnswerSheetProp('id', answerSheetId.result);
-          answerSheetService!.modifyAnswerSheet(answerSheet)
-            .then(() => {
-              if (finished) {
-                this.onCloseModal();
-                if (onSaveCallback) onSaveCallback();
-              }
-            });
+          answerSheetService!.modifyAnswerSheet(answerSheet).then(() => {
+            if (finished) {
+              this.onCloseModal();
+              if (onSaveCallback) onSaveCallback();
+            }
+          });
         });
     }
 
@@ -141,11 +170,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     // 자릿수 비교
     if (answerChkArr.length === answerMultiJson.length) {
       // 정답지
-      for ( let i = 0; i < answerChkArr.length; i++ ) {
+      for (let i = 0; i < answerChkArr.length; i++) {
         // 사용자문제지
-        for ( let j = 0; j < answerMultiJson.length; j++ ) {
+        for (let j = 0; j < answerMultiJson.length; j++) {
           // 정답지 사용자 문제지 체크
-          if ( answerChkArr[i] === answerMultiJson[j]) {
+          if (answerChkArr[i] === answerMultiJson[j]) {
             checkCnt++;
           }
         }
@@ -161,13 +190,23 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSubmitClick() {
-    reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+    reactConfirm({
+      title: '알림',
+      message: 'Test를 최종 제출 하시겠습니까?',
+      onOk: () => this.onSaveAnswerSheet(true),
+    });
   }
 
   render() {
     //
     const { open } = this.state;
-    const { examPaperService, examinationService, answerSheetService, trigger } = this.props;
+    const {
+      examPaperService,
+      examinationService,
+      answerSheetService,
+      trigger,
+      type,
+    } = this.props;
     const { examination } = examinationService!;
     const { examPaper } = examPaperService!;
     const { answerMap, answerChkMap, answerSheet } = answerSheetService!;
@@ -193,27 +232,30 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
               <div className="title-area">
                 <div className="title-inner">
                   <div className="sub-info">
-                    합격점 : {examination && examination.successPoint || 0}점 |
-                    객관식 : {score && score.objective || 0}점 |
-                    주관식 : {score && score.subjective || 0}점 |
-                    총 점 : {score && score.total || 0}점
+                    합격점 : {(examination && examination.successPoint) || 0}점
+                    | 객관식 : {(score && score.objective) || 0}점 | 주관식 :{' '}
+                    {(score && score.subjective) || 0}점 | 총 점 :{' '}
+                    {(score && score.total) || 0}점
                   </div>
                 </div>
               </div>
 
               <List as="ol" className="num-list">
-                {
-                  questions && questions.length
-                  && questions.map(question => {
+                {(questions &&
+                  questions.length &&
+                  questions.map((question, idx) => {
                     let answerArea = null;
                     let correctArea = null; // 오답 처리
                     let correctMultiArea = null; // 멀티 오답 처리
 
                     const answer = answerMap.get(question.questionNo) || '';
-                    const answerChk = answerChkMap.get(question.questionNo) || '';
+                    const answerChk =
+                      answerChkMap.get(question.questionNo) || '';
 
                     // getter
-                    const finishedChkFirst = localStorage.getItem('finishedChkFirst');
+                    const finishedChkFirst = localStorage.getItem(
+                      'finishedChkFirst'
+                    );
 
                     // 시험, 재응시 최초 화면 진입시 체크 F5
                     if (submittedChk) {
@@ -230,27 +272,45 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                     const finichChkVal = localStorage.getItem('finishedChk');
 
                     // getter
-                    const numberOfTrials = localStorage.getItem('numberOfTrials');
+                    const numberOfTrials = localStorage.getItem(
+                      'numberOfTrials'
+                    );
 
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:
                         answerArea = (
-                          <ShortAnswerView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)} />
+                          <ShortAnswerView
+                            answer={answer}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                          />
                         );
                         break;
                       case QuestionType.Essay:
                         answerArea = (
-                          <EssayView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)} />
+                          <EssayView
+                            answer={answer}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                          />
                         );
                         break;
                       case QuestionType.MultiChoice:
                         correctArea = 'M';
-                        correctMultiArea = this.onSaveAnswerMultiChoice(answerChk, question.answer);
+                        correctMultiArea = this.onSaveAnswerMultiChoice(
+                          answerChk,
+                          question.answer
+                        );
                         answerArea = (
                           <MultiChoiceView
                             answer={answer}
                             items={question.items}
-                            onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                            type={type}
                           />
                         );
                         break;
@@ -261,35 +321,87 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                             answer={answer}
                             question={question}
                             items={question.items}
-                            onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                            type={type}
                           />
                         );
                         break;
                     }
                     return (
                       <List.Item as="li" key={question.questionNo}>
-                        {numberOfTrials !== '0'&& finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || answerChk === '' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || answerChk !== question.answer && correctArea === 'Y' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || finichChkVal !== 'N' && correctArea === 'M' && correctMultiArea === 'Y' && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        }
-                        <div className="ol-answer">
-                          {answerArea}
-                        </div>
+                        {type === '5' ? (
+                          <div
+                            className={cx('ol-title', {
+                              'exact-answer':
+                                (numberOfTrials !== '0' &&
+                                  finichChkVal !== 'N' &&
+                                  answerChk === question.answer) ||
+                                (finichChkVal !== 'N' &&
+                                  answerChk === question.answer) ||
+                                (finichChkVal !== 'N' &&
+                                  correctArea === 'M' &&
+                                  correctMultiArea === 'Y'),
+                            })}
+                          >
+                            {question.direction}
+                            <span className="q-score">
+                              ({question.allocatedPoint}점)
+                            </span>
+                          </div>
+                        ) : (
+                          <div
+                            className={cx('ol-title', {
+                              'exact-answer':
+                                (numberOfTrials !== '0' &&
+                                  finichChkVal !== 'N' &&
+                                  answerChk === question.answer) ||
+                                (finichChkVal !== 'N' &&
+                                  answerChk === question.answer) ||
+                                (finichChkVal !== 'N' &&
+                                  correctArea === 'M' &&
+                                  correctMultiArea === 'Y'),
+                            })}
+                            dangerouslySetInnerHTML={{
+                              __html: `${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`,
+                            }}
+                          />
+                        )}
+
+                        <div className="ol-answer">{answerArea}</div>
                       </List.Item>
                     );
-                  }) || null
-                }
+                  })) ||
+                  null}
               </List>
             </div>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onCloseModal}>취소</Button>
-          <Button className="w190 pop s" onClick={() => this.onSaveAnswerSheet(false)}>저장</Button>
-          <Button className="w190 pop p" onClick={() => this.onSubmitClick()}>제출</Button>
+          {type === '5' ? (
+            <Button className="w190 pop d" onClick={this.onCloseModal}>
+              완료
+            </Button>
+          ) : (
+            <>
+              <Button className="w190 pop d" onClick={this.onCloseModal}>
+                취소
+              </Button>
+              <Button
+                className="w190 pop s"
+                onClick={() => this.onSaveAnswerSheet(false)}
+              >
+                저장
+              </Button>
+              <Button
+                className="w190 pop p"
+                onClick={() => this.onSubmitClick()}
+              >
+                제출
+              </Button>
+            </>
+          )}
         </Modal.Actions>
       </Modal>
     );
