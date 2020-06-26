@@ -122,7 +122,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
           <div className="bar typeB">
             <div className="category">
               <i className="icon icon-test24" />
-              <span>Test {name}</span>
+              <span>Test {viewObject.examTitle}</span>
             </div>
             <div className="right">
 
@@ -136,12 +136,11 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               }
 
               {
-                (type === '1' || type === '3') && (
+                (type === '1' || type === '3' || type === undefined) && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text">시험보기</span>
                     <i className="icon play-black24-dim" />
                   </a>
-                  // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
                 )
               }
 
@@ -160,7 +159,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
           <li className="step2">
             <div className="tit trs">
               <i className="icon icon-test24" />
-              <span>Test {name}</span>
+              <span>Test {viewObject.examTitle}</span>
             </div>
             <div className="right">
               {
@@ -212,7 +211,6 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sort }: SurveyProps) => {
   //
   if (!onSurvey) return null;
-  // console.log('Survey viewObject : ', viewObject);
   return (
 
     <>

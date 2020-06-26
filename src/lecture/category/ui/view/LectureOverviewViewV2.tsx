@@ -366,6 +366,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                     onViewDetail={() => this.onViewDetail(lecture)}
                     collegeId={params.collegeId}
                     lectureCardId={lectureCardId}
+                    learningState={viewObject.state}
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
                     onDoLearn={this.onDoLearn}

@@ -37,6 +37,7 @@ interface Props {
   onAction?: () => void,
   onViewDetail?: (e: any, data: OnViewDetailData ) => void,
   onToggle?: (openState: boolean) => void,
+  learningState?: string
 }
 
 interface States {
@@ -96,6 +97,13 @@ class LectureContainer2 extends Component<Props, States> {
     hovered: false,
     open: false,
   };
+
+  componentDidUpdate() {
+
+    if( this.props.learningState === 'InProgress' ) {
+      this.state.open = true;
+    }
+  }
 
 
   onHoverIn() {
@@ -272,10 +280,13 @@ class LectureContainer2 extends Component<Props, States> {
     //
     const {
       lectureView, thumbnailImage, toggle,
-      onAction,
+      onAction, learningState
     } = this.props;
 
     const { open } = this.state;
+
+    console.log('lectureCardId : ' + lectureView?.serviceId);
+    console.log('learningState : ' + this.props.learningState);
 
     return (
       <CourseLectureContainer2
@@ -287,6 +298,7 @@ class LectureContainer2 extends Component<Props, States> {
         onAction={onAction}
         onViewDetail={this.onViewDetail}
         onToggle={this.onToggleCourse}
+        learningState={learningState}
       />
     );
   }

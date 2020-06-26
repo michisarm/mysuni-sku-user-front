@@ -13,6 +13,8 @@ export const CourseSectionContext = React.createContext({
 interface Props {
   lecture: React.ReactNode,
   children: React.ReactNode,
+  // learningState?: string,
+  // lectureCardId?: string,
   exam?: any,
 }
 
@@ -26,6 +28,13 @@ class CourseSectionContainer extends Component<Props, State> {
   state = {
     open: false,
   };
+
+  // componentDidUpdate() {
+  //   console.log('learningState : ' + this.props.learningState);
+  //   if( this.props.learningState === 'InProgress' ) {
+  //     this.state.open = true;
+  //   }
+  // }
 
   getContextValue() {
     //

@@ -32,6 +32,7 @@ import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey'
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
+import {dateTimeHelper} from '../../../../../shared';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -61,7 +62,9 @@ interface Props {
   examPaperService?: ExamPaperService,
   // answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
-  surveyFormService?: SurveyFormService
+  surveyFormService?: SurveyFormService,
+
+  learningState?: string
 }
 
 interface State
@@ -101,7 +104,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     thumbnailImage: null,
     action: null,
     toggle: false,
-    open: false,
     onAction: () => {},
     onViewDetail: () => {},
     onToggle: () => {},
@@ -138,7 +140,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       passedState: false,
       type: '',
       name: '',
-      isContent: false,
+      isContent: false
     };
 
   constructor(props: Props)
@@ -170,6 +172,17 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
+
+    // if( this.props.learningState === 'InProgress' ) {
+    //   this.state.openState = true;
+    // }
+    // console.log('this.context.open : ' + this.context.open + ', this.state.openState : ' + this.state.openState);
+    //
+    // if( this.context.open !== this.state.openState) {
+    //   this.context.open = true;
+    //   // this.onToggle();
+    //   console.log('토글토글');
+    // }
   }
 
   async init()
@@ -715,9 +728,17 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { classNameForLearningState } = this.state;
     const {
       className, lectureView, thumbnailImage, toggle,
-      onViewDetail, lectureViewSize, lectureViewName,
+      onViewDetail, lectureViewSize, lectureViewName, learningState
     } = this.props;
     const { open } = this.context;
+    // let openState = this.context.open;
+
+    // if( learningState === SubState.InProgress ) {
+    //   openState = true;
+    //   setOpen(openState);
+    // }
+
+    const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(this.props.lectureView.learningTime);
 
     //Lecture Card가 Video인 경우만 학습하기 버튼이 보이고, 진행상태인 경우 버튼 css적용(fix bg)
     const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
@@ -739,7 +760,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 </div>
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
-                  <span>{lectureView.learningTime}m</span>
+                  <span>{hourMinuteFormat}</span>
                   {this.setLearningStateForMedia()}
                   {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
                 </div>
@@ -806,7 +827,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                   </div>
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>
-                    <span>{lectureView.learningTime}m</span>
+                    <span>{hourMinuteFormat}</span>
                     {this.setLearningStateForMedia()}
                     {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
                   </div>
