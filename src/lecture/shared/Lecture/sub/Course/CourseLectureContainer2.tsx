@@ -152,6 +152,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidMount()
   {
+
+    const {lectureView, learningState} = this.props;
+    const {setOpen} = this.context;
+
+    if (learningState === SubState.InProgress && lectureView.cubeTypeName === 'Course') {
+      setOpen(true);
+    }
+
     //
     // if (this.rollBooks[0]) {
     //   this.init();
@@ -615,6 +623,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   setExamState(studentData: any) {
 
+    console.log('시험정보 세팅');
+    // console.log('studentData : ',studentData);
+    // console.log('serviceType : ' + studentData.serviceType);
+
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
@@ -642,8 +654,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
         } else {
           this.setStateName('1', 'Test');
         }
+        console.log('type : ' + this.state.type + ', name : ' + this.state.name);
       }
       else if (studentData.serviceType === 'Course' || studentData.serviceType === 'Program') {
+
         if (
           studentData.phaseCount === studentData.completePhaseCount
           && (studentData.learningState === LearningState.Progress
@@ -694,8 +708,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
     switch (this.state.inProgress) {
       case SubState.InProgress:
         return (
-          <a href="#" className="btn-play orange">
-            <span className="text" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>학습중({lectureView.sumViewSeconds}%)</span>
+          <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+            <span className="text">학습중({lectureView.sumViewSeconds}%)</span>
             <span className={'pie-wrapper progress-'+lectureView.sumViewSeconds}>
               <span className="pie">
                 <span className="left-side" />
@@ -731,6 +745,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       onViewDetail, lectureViewSize, lectureViewName, learningState
     } = this.props;
     const { open } = this.context;
+
     // let openState = this.context.open;
 
     // if( learningState === SubState.InProgress ) {
@@ -756,7 +771,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="cube-box">
               <div className="bar typeA">
                 <div className="tit">
-                  <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
+                  <a onClick={onViewDetail}>
+                    <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
+                  </a>
                 </div>
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
@@ -792,7 +809,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
           !lectureView.cubeId && (
             <div className="bar">
               <div className="tit">
-                <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
+                <a onClick={onViewDetail}>
+                  <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
+                </a>
               </div>
               {
                 lectureViewSize && (

@@ -170,7 +170,13 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   }
 
   onTestNotReady() {
-    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    const { viewObject } = this.props;
+
+    if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
+      reactAlert({ title: 'Test 안내', message: '과정 이수 완료 후 Test 응시 가능합니다.' });
+    } else {
+      reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    }
   }
 
   OnSurveyNotReady() {

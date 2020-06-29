@@ -14,27 +14,10 @@ interface TitleProps {
 }
 
 export const Title = ({ category, title, children, toggle, onToggle, open }: TitleProps) => (
-  <div className="bar">
-    <div className="tit">
-      {/*{category && category.college.name && <Label className={category.color}>{category.college.name}</Label>}*/}
-      <span className="ellipsis">{title}</span>
-      {/*{children}*/}
-    </div>
-    <div className="num">개 강의 구성</div>
-    { toggle && (
-      <Button
-        icon
-        className={classNames({
-          'img-icon': true,
-          'fn-more-toggle': true,
-          'card-open': !open,
-          'card-close': open,
-        })}
-        onClick={onToggle}
-      >
-        <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
-      </Button>
-    )}
+  <div className="title-area">
+    {category && category.college.name && <Label className={category.color}>{category.college.name}</Label>}
+    <div className="header">{title}</div>
+    {children}
   </div>
 );
 

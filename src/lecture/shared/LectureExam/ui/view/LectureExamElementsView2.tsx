@@ -112,6 +112,7 @@ interface TestProps {
 export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: TestProps) => {
   //
   if (!OnTest) return null;
+
   // console.log('Test viewObject : ', viewObject);
   // console.log('type : {0}, name : {1}', type, name);
   return (
@@ -145,7 +146,16 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               }
 
               {
-                (type === '4' || type === '5') && (
+                type === '4' && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                type === '5' && (
                   <div className="btn-play completed">
                     <span className="text no-link">{name}</span>
                     <i className="icon play-completed24" />

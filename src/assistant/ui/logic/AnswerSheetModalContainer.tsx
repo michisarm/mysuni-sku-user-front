@@ -124,8 +124,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   // MultiChoice 선택 정답 여부 체크
   onSaveAnswerMultiChoice(answerChkStr: string, answerMulti: string) {
     let answerChkArr = [];
-    console.log('onSaveAnswerMultiChoice answerChkStr :: ' + answerChkStr);
-    console.log('onSaveAnswerMultiChoice answerMulti :: ' + answerMulti);
+    // console.log('onSaveAnswerMultiChoice answerChkStr :: ' + answerChkStr);
+    // console.log('onSaveAnswerMultiChoice answerMulti :: ' + answerMulti);
     // 문제지 정답
     answerChkArr = answerChkStr.split(',');
     // 사용자 정답
@@ -153,7 +153,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       chechkMultiYn = 'Y';
     }
 
-    console.log('onSaveAnswerMultiChoice chechkMultiYn :: ' + chechkMultiYn);
+    // console.log('onSaveAnswerMultiChoice chechkMultiYn :: ' + chechkMultiYn);
 
     return chechkMultiYn;
   }
@@ -173,8 +173,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
     // 제출 여부 체크
     const submittedChk = answerSheet.submitted;
-    console.log('render submittedChk ::' + submittedChk);
-    console.log('render answerSheet.finished ::' + answerSheet.finished);
+    // console.log('render submittedChk ::' + submittedChk);
+    // console.log('render answerSheet.finished ::' + answerSheet.finished);
 
     return (
       <Modal
@@ -217,22 +217,22 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
                     // getter
                     const finishedChkFirst = localStorage.getItem('finishedChkFirst');
-                    console.log('finishedChkFirst onLoad ::' + finishedChkFirst);
-
-                    console.log('submittedChk first ::' + submittedChk);
+                    // console.log('finishedChkFirst onLoad ::' + finishedChkFirst);
+                    //
+                    // console.log('submittedChk first ::' + submittedChk);
 
                     // 시험, 재응시 최초 화면 진입시 체크 F5
                     if(submittedChk) {
                       if(finishedChkFirst === 'N') {
                         localStorage.setItem('finishedChk', 'N');
-                        console.log('finichChkVal if if ::' + localStorage.getItem('finishedChk'));
+                        // console.log('finichChkVal if if ::' + localStorage.getItem('finishedChk'));
                       } else {
                         localStorage.setItem('finishedChk', 'Y');
-                        console.log('finichChkVal if else ::' + localStorage.getItem('finishedChk'));
+                        // console.log('finichChkVal if else ::' + localStorage.getItem('finishedChk'));
                       }
                     } else {
                       localStorage.setItem('finishedChk', 'N');
-                      console.log('finichChkVal else ::' + localStorage.getItem('finishedChk'));
+                      // console.log('finichChkVal else ::' + localStorage.getItem('finishedChk'));
                     }
 
                     // getter
@@ -257,7 +257,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                       case QuestionType.MultiChoice:
                         correctArea = 'M';
                         correctMultiArea = this.onSaveAnswerMultiChoice(answerChk, question.answer);
-                        console.log('case QuestionType.MultiChoice correctMultiArea ::' + correctMultiArea);
+                        // console.log('case QuestionType.MultiChoice correctMultiArea ::' + correctMultiArea);
                         answerArea = (
                           <MultiChoiceView
                             answer={answer}
