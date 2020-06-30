@@ -41,13 +41,11 @@ class ActionEventService {
   
   registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName}: StudyEventParams): void {
     const studyActionLog: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName});
-    console.log(studyActionLog);
     this.actionEventApi.registerStudyActionLog(studyActionLog);
   }
 
   registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, cubeName, courseName }: ViewEventParams): void {
     const viewActionLog: ActionEventModel = ActionEventModel.fromViewEvent({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, cubeName, courseName });
-    console.log(viewActionLog);
     this.actionEventApi.registerViewActionLog(viewActionLog);
   }
 }
