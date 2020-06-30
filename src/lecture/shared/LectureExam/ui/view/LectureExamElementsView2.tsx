@@ -27,7 +27,10 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
           <div className="bar typeB">
             <div className="category">
               <i className="icon icon-report24" />
-              <span>Report {name}</span>
+              <span>Report</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{name}</a>
             </div>
             <div className="right">
               {
@@ -59,10 +62,13 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
             </div>
           </div>
         ) : (
-          <li className="step2">
-            <div className="tit trs">
+          <li className="step2 trs">
+            <div className="category">
               <i className="icon icon-report24" />
-              <span>Report {name}</span>
+              <span>Report</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{name}</a>
             </div>
             <div className="right">
               {
@@ -123,14 +129,17 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
           <div className="bar typeB">
             <div className="category">
               <i className="icon icon-test24" />
-              <span>Test {viewObject.examTitle}</span>
+              <span>Test</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{viewObject.examTitle}</a>
             </div>
             <div className="right">
 
               {
                 (type === '0' || type === '2') && (
                   <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                    <span className="text">시험보기</span>
+                    <span className="text">평가응시</span>
                     <i className="icon play-black24" />
                   </a>
                 )
@@ -139,7 +148,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               {
                 (type === '1' || type === '3' || type === undefined) && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
-                    <span className="text">시험보기</span>
+                    <span className="text">평가응시</span>
                     <i className="icon play-black24-dim" />
                   </a>
                 )
@@ -166,16 +175,19 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
             </div>
           </div>
         ) : (
-          <li className="step2">
-            <div className="tit trs">
-              <i className="icon icon-test24" />
-              <span>Test {viewObject.examTitle}</span>
+          <li className="step2 trs">
+            <div className="category">
+              <i className="icon icon-test24"/>
+              <span>Test</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{viewObject.examTitle}</a>
             </div>
             <div className="right">
               {
                 (type === '0' || type === '2') && (
                   <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                    <span className="text">시험보기</span>
+                    <span className="text">평가응시</span>
                     <i className="icon play-black24" />
                   </a>
                 )
@@ -184,7 +196,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               {
                 (type === '1' || type === '3') && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
-                    <span className="text">시험보기</span>
+                    <span className="text">평가응시</span>
                     <i className="icon play-black24-dim" />
                   </a>
                   // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
@@ -229,7 +241,10 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
           <div className="bar typeB">
             <div className="category">
               <i className="icon icon-survey24" />
-              <span>Survey {name}</span>
+              <span>Survey</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{name}</a>
             </div>
             <div className="right">
 
@@ -265,10 +280,13 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
             </div>
           </div>
         ) : (
-          <li className="step2">
-            <div className="tit trs">
+          <li className="step2 trs">
+            <div className="category">
               <i className="icon icon-survey24" />
-              <span>Survey {name}</span>
+              <span>Survey</span>
+            </div>
+            <div className="tit">
+              <a className="ellipsis" href="#">{name}</a>
             </div>
             <div className="right">
               {

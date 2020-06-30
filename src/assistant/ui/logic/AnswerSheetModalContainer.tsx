@@ -159,7 +159,37 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSubmitClick() {
-    reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+    if(this.onCheckAnswer()){
+      console.log('제출');
+      reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+    }
+  }
+
+  onCheckAnswer() {
+    //TODO: Test 제출전 제출항목 체크(미기입여부)
+    const { answerSheetService } = this.props;
+    const { answerSheet } = answerSheetService!;
+    let valueCheck = 0;
+    //console.log(JSON.stringify(answerSheet.answers));
+
+    if(answerSheet && answerSheet.answers.length > 0){
+      answerSheet.answers.map((answer, index) => {
+        //console.log((index+1) + ':::' +answer.answer);
+        if(!answer.answer){
+          valueCheck++;
+        }
+      });
+      //console.log(valueCheck);
+      if(valueCheck > 0){
+        alert('빈 답안을 작성해주세요!');
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      alert('빈 답안을 작성해주세요!');
+      return false;
+    }
   }
 
   render() {

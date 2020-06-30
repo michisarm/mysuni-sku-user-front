@@ -153,10 +153,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
   componentDidMount()
   {
 
-    const {lectureView, learningState} = this.props;
-    const {setOpen} = this.context;
+    const { lectureView } = this.props;
+    const { setOpen } = this.context;
 
-    if (learningState === SubState.InProgress && lectureView.cubeTypeName === 'Course') {
+    if (lectureView.learningState === 'Progress' && lectureView.cubeTypeName === 'Course') {
       setOpen(true);
     }
 
@@ -771,9 +771,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="cube-box">
               <div className="bar typeA">
                 <div className="tit">
-                  <a onClick={onViewDetail}>
-                    <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
-                  </a>
+                  <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
                 </div>
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
@@ -809,9 +807,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           !lectureView.cubeId && (
             <div className="bar">
               <div className="tit">
-                <a onClick={onViewDetail}>
-                  <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
-                </a>
+                <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
               </div>
               {
                 lectureViewSize && (

@@ -22,6 +22,7 @@ class LectureViewModel extends DramaEntityObservableModel {
   learningTime: number = 0;
   learningCardId: string = '';
   sumViewSeconds: string = '';
+  learningState: string = '';
 
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
