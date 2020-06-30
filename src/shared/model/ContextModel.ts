@@ -1,5 +1,6 @@
 
 class ContextModel {
+  logType: string = '';
   email: string = '';
   path: string = '';
   menu: string = '';

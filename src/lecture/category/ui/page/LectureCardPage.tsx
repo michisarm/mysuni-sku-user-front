@@ -27,6 +27,7 @@ import { BoardService } from 'personalcube/community/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
+import { ActionEventService } from 'shared/stores';
 
 import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
@@ -42,6 +43,7 @@ import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/date
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
+
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -64,7 +66,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   examPaperService: ExamPaperService,
   // answerSheetService: AnswerSheetService,
   surveyCaseService: SurveyCaseService,
-  surveyFormService?: SurveyFormService
+  surveyFormService?: SurveyFormService,
+  actionEventService: ActionEventService
 }
 
 interface State {
@@ -104,6 +107,7 @@ interface RouteParams {
   // 'survey.answerSheetService',
   'survey.surveyCaseService',
   'survey.surveyFormService',
+  'shared.actionEventService'
 ))
 @reactAutobind
 @observer
@@ -138,6 +142,7 @@ class LectureCardPage extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+    this.publishViewEvent();
 
     // console.log('Lecture Card Page : componentDidMount');
   }
@@ -237,6 +242,18 @@ class LectureCardPage extends Component<Props, State> {
     await this.searchForExams();
 
     this.setState({ loaded: true });
+  }
+
+  async publishViewEvent() {
+    const {actionEventService, personalCubeService} = this.props;
+    const {match} = this.props;
+    const {collegeId, cubeId, lectureCardId} = match.params;
+    
+    const personalCube = await personalCubeService.findPersonalCube(cubeId);
+    const cubeName = personalCube?.name;
+    const menu = 'CUBE_VIEW';
+
+    actionEventService.registerViewActionLog({menu, collegeId, cubeId, lectureCardId, cubeName});
   }
 
   /*

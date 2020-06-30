@@ -107,17 +107,17 @@ class CourseContainer extends Component<Props, State> {
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
       if (params.cineroomId) {
-        this.publishViewEvent('viewDetail', routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+        // this.publishViewEvent('viewDetail', routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+        //   programLectureId: params.serviceId,
+        // }));
         history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
           programLectureId: params.serviceId,
         }));
       }
       else {
-        this.publishViewEvent('viewDetail', routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+        // this.publishViewEvent('viewDetail', routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
+        //   programLectureId: params.serviceId,
+        // }));
         history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
           programLectureId: params.serviceId,
         }));
@@ -128,17 +128,17 @@ class CourseContainer extends Component<Props, State> {
       if (params.serviceType === LectureServiceType.Program) {
 
         if (params.cineroomId) {
-          this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+          //   programLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
             programLectureId: params.serviceId,
           }));
         }
         else {
-          this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+          //   programLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
             programLectureId: params.serviceId,
           }));
@@ -149,20 +149,20 @@ class CourseContainer extends Component<Props, State> {
         const queryParam = queryString.parse(search);
 
         if (params.cineroomId) {
-          this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+          //   programLectureId: queryParam.programLectureId as string,
+          //   courseLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
             programLectureId: queryParam.programLectureId as string,
             courseLectureId: params.serviceId,
           }));
         }
         else {
-          this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+          //   programLectureId: queryParam.programLectureId as string,
+          //   courseLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
             programLectureId: queryParam.programLectureId as string,
             courseLectureId: params.serviceId,

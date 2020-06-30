@@ -13,6 +13,7 @@ import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
+import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
@@ -41,6 +42,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   examPaperService: ExamPaperService,
   answerSheetService: AnswerSheetService,
   surveyCaseService: SurveyCaseService,
+  actionEventService: ActionEventService
 }
 
 interface State {
@@ -73,6 +75,7 @@ interface RouteParams {
   'assistant.examPaperService',
   'survey.answerSheetService',
   'survey.surveyCaseService',
+  'shared.actionEventService'
 ))
 @reactAutobind
 @observer
@@ -107,6 +110,7 @@ class CoursePage extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+    this.publishViewEvent();
     // console.log('Course Page : componentDidMount');
   }
 
@@ -144,6 +148,18 @@ class CoursePage extends Component<Props, State> {
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     await this.findStudent();
     this.setState({ loaded: true });
+  }
+
+  async publishViewEvent() {
+    const {actionEventService, coursePlanService} = this.props;
+    const {match} = this.props;
+    const {serviceType, collegeId, coursePlanId} = match.params;
+
+    const coursePlan = await coursePlanService.findCoursePlan(coursePlanId);
+    const courseName = coursePlan.name;
+    const menu = 'COURSE_VIEW';
+
+    actionEventService.registerViewActionLog({menu, serviceType, collegeId, coursePlanId, courseName});
   }
 
   /**

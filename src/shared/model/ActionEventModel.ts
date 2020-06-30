@@ -4,21 +4,28 @@ import StudyActionType from './StudyActionType';
 import {LectureServiceType} from '../../lecture/model';
 
 interface StudyEventParams {
+    menu: string,
+    path?: string,
     action: StudyActionType,
     serviceType?: LectureServiceType,
     collegeId?: string,
     cubeId?: string,
     lectureCardId?: string,
     coursePlanId?: string,
-    menu: string,
-    path?: string,
-    courseName?: string,
     cubeName: string,
+    courseName?: string,
 }
 
 interface ViewEventParams {
     menu: string,
-    path?: string
+    path?: string,
+    serviceType?: string,
+    collegeId?: string,
+    cubeId?: string,
+    lectureCardId?: string,
+    coursePlanId?: string,
+    cubeName?: string
+    courseName?: string,
 }
 
 class ActionEventModel {
@@ -29,8 +36,8 @@ class ActionEventModel {
     cubeId?: string;
     lectureCardId?: string;
     coursePlanId?: string;
-    courseName?: string;
     cubeName?: string;
+    courseName?: string;
 
     constructor(actionEvent?: ActionEventModel) {
       if(actionEvent) {
@@ -39,31 +46,40 @@ class ActionEventModel {
       }
     }
 
-    setContext(menu: string, path?: string) {
+    setContext(logType: string, menu: string, path?: string) {
+      this.context.logType = logType;
       this.context.email = process.env.NODE_ENV === 'development' ? window.localStorage.getItem('nara.email') as string : getCookie('tryingLoginId');
       this.context.menu = menu;
       this.context.path = path || window.location.href;
     }
 
-    static fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName}: StudyEventParams): ActionEventModel {
-      const studyActionLog: ActionEventModel = new ActionEventModel();
+    static fromStudyEvent({ menu, path, action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, cubeName, courseName }: StudyEventParams): ActionEventModel {
 
-      studyActionLog.setContext(menu, path);
+      const studyActionLog: ActionEventModel = new ActionEventModel();
+      studyActionLog.setContext('STUDY', menu, path);
       studyActionLog.action = action;
+      studyActionLog.serviceType = serviceType && serviceType.toUpperCase() || '';
       studyActionLog.college = collegeId || '';
       studyActionLog.cubeId = cubeId || '';
       studyActionLog.lectureCardId = lectureCardId || '';
       studyActionLog.coursePlanId = coursePlanId || '';
-      studyActionLog.serviceType = serviceType && serviceType.toUpperCase() || StudyActionType.None.toUpperCase();
-      studyActionLog.courseName = courseName || '';
       studyActionLog.cubeName = cubeName;
-      
+      studyActionLog.courseName = courseName || '';
+
       return studyActionLog;
     }
 
-    static fromViewEvent({menu, path}: ViewEventParams): ActionEventModel {
+    static fromViewEvent({menu, path, serviceType, collegeId, coursePlanId, cubeId, lectureCardId, cubeName, courseName }: ViewEventParams): ActionEventModel {
+
       const viewActionLog: ActionEventModel = new ActionEventModel();
-      viewActionLog.setContext(menu, path);
+      viewActionLog.setContext('VIEW', menu, path);
+      viewActionLog.serviceType = serviceType && serviceType.toUpperCase() || '';
+      viewActionLog.college = collegeId || '';
+      viewActionLog.cubeId = cubeId || '';
+      viewActionLog.coursePlanId = coursePlanId || '';
+      viewActionLog.lectureCardId = lectureCardId || '';
+      viewActionLog.cubeName = cubeName || '';
+      viewActionLog.courseName = courseName || '';
 
       return viewActionLog;
     }

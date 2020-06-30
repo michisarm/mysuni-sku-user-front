@@ -19,7 +19,14 @@ interface StudyEventParams {
 
 interface ViewEventParams {
   menu: string,
-  path?: string
+  path?: string,
+  serviceType?: string,
+  collegeId?: string,
+  cubeId?: string,
+  lectureCardId?: string,
+  coursePlanId?: string,
+  cubeName?: string,
+  courseName?: string
 }
 
 class ActionEventService {
@@ -38,8 +45,8 @@ class ActionEventService {
     this.actionEventApi.registerStudyActionLog(studyActionLog);
   }
 
-  registerViewActionLog({menu, path}: ViewEventParams): void {
-    const viewActionLog: ActionEventModel = ActionEventModel.fromViewEvent({menu, path});
+  registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, cubeName, courseName }: ViewEventParams): void {
+    const viewActionLog: ActionEventModel = ActionEventModel.fromViewEvent({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, cubeName, courseName });
     console.log(viewActionLog);
     this.actionEventApi.registerViewActionLog(viewActionLog);
   }

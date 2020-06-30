@@ -1,5 +1,6 @@
 
 import React, { Component, ReactNode } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 
@@ -9,8 +10,8 @@ import { ActionEventService } from 'shared/stores';
 import TabItemModel from './model/TabItemModel';
 
 
-interface Props {
-  actionEventService?: ActionEventService;
+interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService?: ActionEventService
   tabs: TabItemModel[]
   header?: ReactNode
   className?: string
@@ -21,6 +22,14 @@ interface Props {
   renderItems?: (props: any) => React.ReactNode
   renderContent?: (props: any) => React.ReactNode
   onChangeTab?: (tab: TabItemModel) => void
+}
+
+interface RouteParams {
+  collegeId: string,
+  serviceType?: string,
+  cubeId?: string
+  lectureCardId?: string,
+  coursePlanId?: string,
 }
 
 interface State {
@@ -35,8 +44,6 @@ interface State {
 class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
-    actionEventService: ActionEventService,
-
     className: 'tab-menu offset0',
     onChangeTab: () => {},
   };
@@ -64,17 +71,21 @@ class TabContainer extends Component<Props, State> {
 
     if(prevProps.defaultActiveName !== this.props.defaultActiveName){
       if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
-        this.onClickTab(tabs[0]);
+        this.changeActiveName(tabs[0]);
       } else { // 20200527 탭 이동 정상화
-        this.onClickTab(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
-      }
+        this.changeActiveName(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
+      } 
     }
+  }
+
+  changeActiveName(tab: TabItemModel) {
+    this.setState({ activeName: tab.name });
   }
 
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
-    this.publishViewEvent(tab.name);
+    this.publishViewEvent(`tab_${tab.name}`);
 
     this.setState({ activeName: tab.name });
 
@@ -83,7 +94,10 @@ class TabContainer extends Component<Props, State> {
 
   publishViewEvent(menu: string, path?: string) {
     const {actionEventService} = this.props;
-    actionEventService?.registerViewActionLog({menu, path});
+    const {match} = this.props;
+    const {collegeId, serviceType, cubeId, lectureCardId, coursePlanId} = match.params;
+    
+    actionEventService?.registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId});
   }
 
   renderItems() {
@@ -165,4 +179,4 @@ class TabContainer extends Component<Props, State> {
   }
 }
 
-export default TabContainer;
+export default withRouter(TabContainer);
