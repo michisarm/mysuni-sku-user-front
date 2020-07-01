@@ -139,7 +139,42 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSubmitClick() {
+
+    /*if(this.onCheckSurvey()){
+      console.log('설문제출');
+      reactConfirm({ title: '알림', message: '설문을 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+    }*/
     reactConfirm({ title: '알림', message: '설문을 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+
+  }
+
+  onCheckSurvey() {
+    const { answerSheetService } = this.props;
+    const { answerSheet } = answerSheetService!;
+    let valueCheck = 0;
+    //console.log('1>>>>>>>> ',JSON.stringify(answerSheet));
+    //console.log('2>>>>>>>> ',JSON.stringify(answerSheet.evaluationSheet));
+    //console.log('2>>>>>>>> ',JSON.stringify(answerSheet.evaluationSheet.answers));
+
+    if(answerSheet && answerSheet.evaluationSheet && answerSheet.evaluationSheet.answers.length > 0){
+      answerSheet.evaluationSheet.answers.map((answer, index) => {
+        //console.log(answer.answerItem);
+        //console.log(answer.answerItem.itemNumbers);
+        if(!answer.answerItem.itemNumbers || answer.answerItem.itemNumbers[0] === ''){
+          valueCheck++;
+        }
+      });
+      //console.log(valueCheck);
+      if(valueCheck > 0){
+        alert('빈 설문을 작성해주세요!');
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      alert('빈 설문을 작성해주세요!');
+      return false;
+    }
   }
 
   render() {

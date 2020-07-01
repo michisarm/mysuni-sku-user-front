@@ -159,14 +159,16 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSubmitClick() {
-    if(this.onCheckAnswer()){
-      console.log('제출');
+
+    /*if(this.onCheckAnswer()){
+      console.log('시험제출');
       reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
-    }
+    }*/
+    reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+
   }
 
   onCheckAnswer() {
-    //TODO: Test 제출전 제출항목 체크(미기입여부)
     const { answerSheetService } = this.props;
     const { answerSheet } = answerSheetService!;
     let valueCheck = 0;

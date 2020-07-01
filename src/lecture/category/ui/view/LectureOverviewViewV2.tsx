@@ -14,13 +14,13 @@ import classNames from 'classnames';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import queryString from 'query-string';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import LectureExam from '../../../shared/LectureExam';
+import {LectureExam2} from '../../../shared/LectureExam';
 
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
 import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
 import {CoursePlanService} from '../../../../course/stores';
 import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
-import {Lecture} from '../../../shared';
+import {Lecture2} from '../../../shared';
 import LectureLearningModalView from './LectureLearningModalView';
 import routePaths from '../../../routePaths';
 
@@ -354,15 +354,15 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           description={viewObject.description}
         />
         <>
-          <Lecture.Group
-            type={Lecture.GroupType.Course}
+          <Lecture2.Group
+            type={Lecture2.GroupType.Course}
             totalCourseCount={viewObject.totalCourseCount}
           >
             {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-              <Lecture.CourseSection
+              <Lecture2.CourseSection
                 key={`course-${lectureViewsIndex}`}
                 lecture={(
-                  <Lecture.Course
+                  <Lecture2.Course
                     className="first"
                     lectureView={lecture}
                     lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
@@ -380,7 +380,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                 )}
               >
                 {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                  <Lecture.Course
+                  <Lecture2.Course
                     key={`sub-lecture-${index}`}
                     className="included"
                     lectureView={subLecture}
@@ -394,9 +394,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                     onDoLearn={this.onDoLearn}
                   />
                 )}
-              </Lecture.CourseSection>
+              </Lecture2.CourseSection>
             ))}
-          </Lecture.Group>
+          </Lecture2.Group>
           {
             openLearnModal && (
               <LectureLearningModalView
@@ -437,7 +437,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
         {
           viewObject && (
-            <LectureExam
+            <LectureExam2
               onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
               onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
               onTest={viewObject.examId ? this.onTest : undefined}

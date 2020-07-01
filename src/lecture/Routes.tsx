@@ -33,11 +33,11 @@ class Routes extends Component {
 
         <Route exact path="/lecture/college/:collegeId/channel/:channelId" component={ChannelLecturesPage} />
 
-        <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
-        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePage} />
+        <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
 
-        <Route exact path="/lecture/collegeV2/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
-        <Route exact path="/lecture/cineroomV2/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
+        {/*<Route exact path="/lecture/collegeV2/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
+        <Route exact path="/lecture/cineroomV2/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />*/}
 
         <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />

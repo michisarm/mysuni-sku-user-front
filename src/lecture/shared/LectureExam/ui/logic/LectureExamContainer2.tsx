@@ -25,7 +25,7 @@ interface Props {
 }
 
 @reactAutobind
-class LectureExamContainer extends Component<Props> {
+class LectureExamContainer2 extends Component<Props> {
   //
   render() {
     //
@@ -97,5 +97,5 @@ class LectureExamContainer extends Component<Props> {
   }
 }
 
-export default LectureExamContainer;
+export default LectureExamContainer2;
 

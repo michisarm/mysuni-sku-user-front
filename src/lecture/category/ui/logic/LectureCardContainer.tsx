@@ -14,7 +14,7 @@ import {AnswerSheetModal, CubeReportModal} from 'assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
 import {getYearMonthDateHourMinuteSecond} from 'shared/helper/dateTimeHelper';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
+import {LectureExam} from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';

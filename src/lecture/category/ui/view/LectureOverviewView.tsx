@@ -13,7 +13,7 @@ import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import LectureExam from '../../../shared/LectureExam';
+import { LectureExam } from '../../../shared/LectureExam';
 
 interface Props {
   viewObject: any

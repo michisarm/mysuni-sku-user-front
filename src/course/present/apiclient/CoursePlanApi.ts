@@ -5,8 +5,8 @@ import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '..
 
 export default class CoursePlanApi {
   URL = '/api/course/coursePlans';
-  // coursePlanContentsURL = '/api/course/coursePlanContents';
-  coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
+  coursePlanContentsURL = '/api/course/coursePlanContents';
+  //coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
 
   static instance: CoursePlanApi;
 
