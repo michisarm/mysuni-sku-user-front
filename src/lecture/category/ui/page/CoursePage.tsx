@@ -153,13 +153,14 @@ class CoursePage extends Component<Props, State> {
   async publishViewEvent() {
     const {actionEventService, coursePlanService} = this.props;
     const {match} = this.props;
-    const {serviceType, collegeId, coursePlanId} = match.params;
+    const {serviceType, collegeId, coursePlanId, serviceId} = match.params;
 
     const coursePlan = await coursePlanService.findCoursePlan(coursePlanId);
     const courseName = coursePlan.name;
     const menu = 'COURSE_VIEW';
+    const lectureCardId = serviceId;
 
-    actionEventService.registerViewActionLog({menu, serviceType, collegeId, coursePlanId, courseName});
+    actionEventService.registerViewActionLog({menu, serviceType, collegeId, coursePlanId, lectureCardId, courseName});
   }
 
   /**

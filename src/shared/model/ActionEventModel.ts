@@ -25,7 +25,7 @@ interface ViewEventParams {
     lectureCardId?: string,
     coursePlanId?: string,
     cubeName?: string
-    courseName?: string,
+    courseName?: string
 }
 
 class ActionEventModel {

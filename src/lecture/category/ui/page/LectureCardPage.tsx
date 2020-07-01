@@ -252,8 +252,9 @@ class LectureCardPage extends Component<Props, State> {
     const personalCube = await personalCubeService.findPersonalCube(cubeId);
     const cubeName = personalCube?.name;
     const menu = 'CUBE_VIEW';
+    const serviceType = 'CARD';
 
-    actionEventService.registerViewActionLog({menu, collegeId, cubeId, lectureCardId, cubeName});
+    actionEventService.registerViewActionLog({menu, serviceType, collegeId, cubeId, lectureCardId, cubeName});
   }
 
   /*
