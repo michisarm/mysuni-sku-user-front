@@ -20,7 +20,7 @@ interface StudyEventParams {
 interface ViewEventParams {
   menu: string,
   path?: string,
-  serviceType?: string,
+  serviceType?: LectureServiceType,
   collegeId?: string,
   cubeId?: string,
   lectureCardId?: string,

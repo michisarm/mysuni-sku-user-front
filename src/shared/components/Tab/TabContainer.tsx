@@ -7,7 +7,9 @@ import { observer, inject } from 'mobx-react';
 import classNames from 'classnames';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
 import { ActionEventService } from 'shared/stores';
+import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
+
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -26,7 +28,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 
 interface RouteParams {
   collegeId: string,
-  serviceType?: string,
+  serviceType?: LectureServiceType,
   cubeId?: string
   lectureCardId?: string,
   coursePlanId?: string,
@@ -95,8 +97,10 @@ class TabContainer extends Component<Props, State> {
   publishViewEvent(menu: string, path?: string) {
     const {actionEventService} = this.props;
     const {match} = this.props;
-    const {collegeId, serviceType, cubeId, lectureCardId, coursePlanId} = match.params;
+    const {collegeId, cubeId, lectureCardId, coursePlanId} = match.params;
+    let { serviceType } = match.params;
     
+    if(cubeId) serviceType = LectureServiceType.Card;
     actionEventService?.registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId});
   }
 
