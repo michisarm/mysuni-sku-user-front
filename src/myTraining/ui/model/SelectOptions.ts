@@ -56,6 +56,7 @@ const SelectOptions = {
     { key: '6', text: 'Leadership', value: 'h7' },
     { key: '7', text: 'Management', value: 'h8' },
     { key: '8', text: '반도체', value: '10i' },
+    { key: '10', text: '에너지솔루션', value: '10k' },
     { key: '9', text: 'SK아카데미', value: '10j' },
   ],
 
