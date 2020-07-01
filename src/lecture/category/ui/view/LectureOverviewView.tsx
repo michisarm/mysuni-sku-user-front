@@ -234,8 +234,12 @@ class LectureOverviewView extends Component<Props, State> {
           />
         )}
         {/* 첨부파일 UI 변경 by gon */}
-        {viewObject.fileBoxId.length > 0 && (
-          <OverviewField.FileDownload fileBoxIds={[viewObject.fileBoxId]} />
+        {viewObject && (
+          <>
+            {viewObject.fileBoxId && viewObject.fileBoxId.length > 0 && (
+              <OverviewField.FileDownload fileBoxIds={[viewObject.fileBoxId]} />
+            )}
+          </>
         )}
         <OverviewField.List
           ref={this.panelRef}

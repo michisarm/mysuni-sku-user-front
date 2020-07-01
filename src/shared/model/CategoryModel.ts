@@ -1,4 +1,4 @@
-import { decorate, observable } from 'mobx';
+import {decorate, observable} from 'mobx';
 import IdName from './IdName';
 import CategoryColorType from './CategoryColorType';
 
@@ -53,6 +53,8 @@ export class CategoryModel {
       case '혁신디자인':
         color = CategoryColorType.InnovationDesign;
         break;
+      case '에너지솔루션':
+        color = CategoryColorType.EnergySolution;
     }
     return color;
   }
