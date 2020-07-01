@@ -189,15 +189,20 @@ class MyLearningSummaryModal extends Component<Props> {
                         <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.semiconductorCollegeTime)}</span>
                       </li>
                       <li>
-                        <span className="name b10">SK경영</span>
-                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.skManagementCollegeTime)}</span>
-                      </li>
-                      <li>
-                        <span className="name b11">SK아카데미</span>
+                        <span className="name b10">SK아카데미</span>
                         <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.skAcademyCollegeTime)}</span>
                       </li>
                       <li>
+                        <span className="name b11">SK경영</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.skManagementCollegeTime)}</span>
+                      </li>
+                      <li>
                         <span className="name b12">Life Style</span>
+                        <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.lifeStyleCollegeTime)}</span>
+                      </li>
+                      {/*0701 에너지솔루션추가*/}
+                      <li>
+                        <span className="name b13">에너지솔루션</span>
                         <span className="time">{timeToHourMinutePaddingFormat(myLearningSummary.lifeStyleCollegeTime)}</span>
                       </li>
 
