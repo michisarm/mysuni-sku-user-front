@@ -58,7 +58,7 @@ class ActionEventModel {
       const studyActionLog: ActionEventModel = new ActionEventModel();
       studyActionLog.setContext('STUDY', menu, path);
       studyActionLog.action = action;
-      studyActionLog.serviceType = serviceType && serviceType.toUpperCase() || '';
+      studyActionLog.serviceType = serviceType && serviceType.toUpperCase() || undefined;
       studyActionLog.college = collegeId || '';
       studyActionLog.cubeId = cubeId || '';
       studyActionLog.lectureCardId = lectureCardId || '';
@@ -73,7 +73,7 @@ class ActionEventModel {
 
       const viewActionLog: ActionEventModel = new ActionEventModel();
       viewActionLog.setContext('VIEW', menu, path);
-      viewActionLog.serviceType = serviceType && serviceType.toUpperCase() || '';
+      viewActionLog.serviceType = serviceType && serviceType.toUpperCase() || undefined;
       viewActionLog.college = collegeId || '';
       viewActionLog.cubeId = cubeId || '';
       viewActionLog.coursePlanId = coursePlanId || '';
