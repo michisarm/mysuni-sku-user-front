@@ -122,6 +122,7 @@ i.icon.balloon.mypage::before { content: ''; display: block; width: 100%; height
 i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height: 100%; background: url("./media/icon-balloon-logout.svg") 0 0 no-repeat !important; background-size: 100% auto; }
 /* 20200427 정답 UI 추가 */
 .test-modal .content .ol-title.exact-answer::before { content: ''; display: block; position: absolute; width: 8.25rem; height: 8.25rem; top: -3.425rem; left: -2.825rem; z-index: 0; background:url("./media/img_correct.png") center no-repeat; background-size: 100% auto; }
+.test-modal .content .ol-title.wrong-answer::before { content: ''; display: block; position: absolute; width: 8.25rem; height: 8.25rem; top: -3.425rem; left: -2.825rem; z-index: 0; background:url("./media/img_incorrect.png") center no-repeat; background-size: 100% auto; }
 /* 20200508 feedback 이미지 뷰어 컴포넌트 스타일 추가 - TODO 향후 수정 필요 */
 .single-image-view-modal {
   position: fixed;
