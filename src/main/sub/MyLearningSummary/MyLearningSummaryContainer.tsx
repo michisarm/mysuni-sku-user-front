@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -10,18 +9,23 @@ import { ActionLogService } from 'shared/stores';
 import { ContentHeader } from 'shared';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
-import { HeaderWrapperView, ItemWrapper, HeaderItemView } from './MyLearningSummaryElementsView';
-
+import {
+  HeaderWrapperView,
+  ItemWrapper,
+  HeaderItemView,
+} from './MyLearningSummaryElementsView';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
-  myLearningSummaryService?: MyLearningSummaryService
+  actionLogService?: ActionLogService;
+  myLearningSummaryService?: MyLearningSummaryService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'myTraining.myLearningSummaryService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'myTraining.myLearningSummaryService'
+  )
+)
 @observer
 @reactAutobind
 class MyLearningSummaryContainer extends Component<Props> {
@@ -78,41 +82,45 @@ class MyLearningSummaryContainer extends Component<Props> {
     //
     const { myLearningSummaryService } = this.props;
     const { myLearningSummary } = myLearningSummaryService!;
-    const { hour, minute } = this.getHourMinute(myLearningSummary.totalLearningTime);
-    let total:any = null;
+    const { hour, minute } = this.getHourMinute(
+      myLearningSummary.totalLearningTime
+    );
+    let total: any = null;
 
     if (hour < 1 && minute < 1) {
       total = (
         <span className="div">
-          <span className="t1">00</span><span className="t2">h</span> <span className="t1">00</span><span className="t2">m</span>
+          <span className="t1">00</span>
+          <span className="t2">h</span> <span className="t1">00</span>
+          <span className="t2">m</span>
         </span>
       );
-    }
-    else if (hour < 1) {
+    } else if (hour < 1) {
       total = (
         <span className="div">
-          <span className="t1">{minute}</span><span className="t2">m</span>
+          <span className="t1">{minute}</span>
+          <span className="t2">m</span>
         </span>
       );
-    }
-    else if (minute < 1) {
+    } else if (minute < 1) {
       total = (
         <span className="div">
-          <span className="t1">{hour}</span><span className="t2">h</span>
+          <span className="t1">{hour}</span>
+          <span className="t2">h</span>
         </span>
       );
-    }
-    else {
+    } else {
       total = (
         <span className="div">
-          <span className="t1">{hour}</span><span className="t2">h</span> <span className="t1">{minute}</span><span className="t2">m</span>
+          <span className="t1">{hour}</span>
+          <span className="t2">h</span> <span className="t1">{minute}</span>
+          <span className="t2">m</span>
         </span>
       );
     }
 
     return (
       <HeaderWrapperView>
-
         <ItemWrapper>
           <span className="text01">My Learning</span>
           <Button
@@ -127,8 +135,11 @@ class MyLearningSummaryContainer extends Component<Props> {
 
         <ItemWrapper>
           <MyLearningSummaryModal
-            trigger={(
-              <Button className="btn-complex48" onClick={() => this.onClickLearningSummary('총 학습시간')}>
+            trigger={
+              <Button
+                className="btn-complex48"
+                onClick={() => this.onClickLearningSummary('총 학습시간')}
+              >
                 <span className="i">
                   <Icon className="time48" />
                   <span className="blind">total time</span>
@@ -138,14 +149,20 @@ class MyLearningSummaryContainer extends Component<Props> {
                   {total}
                 </span>
               </Button>
-            )}
+            }
           />
         </ItemWrapper>
 
         <ItemWrapper>
           <ContentHeader.ChartItem
-            universityTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime || 0}
-            myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime || 0}
+            universityTime={
+              myLearningSummary.suniLearningTime -
+                myLearningSummary.myCompanyInSuniLearningTime || 0
+            }
+            myCompanyTime={
+              myLearningSummary.myCompanyLearningTime +
+                myLearningSummary.myCompanyInSuniLearningTime || 0
+            }
           />
         </ItemWrapper>
 
@@ -166,7 +183,6 @@ class MyLearningSummaryContainer extends Component<Props> {
             onClick={this.onClickStamp}
           />
         </ItemWrapper>
-
       </HeaderWrapperView>
     );
   }

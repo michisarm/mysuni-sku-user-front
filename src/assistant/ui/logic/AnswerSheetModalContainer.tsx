@@ -333,17 +333,29 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                       <List.Item as="li" key={question.questionNo}>
                         {type === '5' ? (
                           <div
-                            className={cx('ol-title', {
-                              'exact-answer':
-                                (numberOfTrials !== '0' &&
-                                  finichChkVal !== 'N' &&
-                                  answerChk === question.answer) ||
-                                (finichChkVal !== 'N' &&
-                                  answerChk === question.answer) ||
-                                (finichChkVal !== 'N' &&
-                                  correctArea === 'M' &&
-                                  correctMultiArea === 'Y'),
-                            })}
+                            // className={cx('ol-title', {
+                            //   'exact-answer':
+                            //     (numberOfTrials !== '0' &&
+                            //       finichChkVal !== 'N' &&
+                            //       answerChk === question.answer) ||
+                            //     (finichChkVal !== 'N' &&
+                            //       answerChk === question.answer) ||
+                            //     (finichChkVal !== 'N' &&
+                            //       correctArea === 'M' &&
+                            //       correctMultiArea === 'Y'),
+                            // })}
+                            className={`ol-title ${
+                              (numberOfTrials !== '0' &&
+                                finichChkVal !== 'N' &&
+                                answerChk === question.answer) ||
+                              (finichChkVal !== 'N' &&
+                                answerChk === question.answer) ||
+                              (finichChkVal !== 'N' &&
+                                correctArea === 'M' &&
+                                correctMultiArea === 'Y')
+                                ? 'exact-answer'
+                                : 'wrong-answer'
+                            }`}
                           >
                             {question.direction}
                             <span className="q-score">
@@ -352,17 +364,29 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           </div>
                         ) : (
                           <div
-                            className={cx('ol-title', {
-                              'exact-answer':
-                                (numberOfTrials !== '0' &&
-                                  finichChkVal !== 'N' &&
-                                  answerChk === question.answer) ||
-                                (finichChkVal !== 'N' &&
-                                  answerChk === question.answer) ||
-                                (finichChkVal !== 'N' &&
-                                  correctArea === 'M' &&
-                                  correctMultiArea === 'Y'),
-                            })}
+                            // className={cx('ol-title', {
+                            //   'exact-answer':
+                            //     (numberOfTrials !== '0' &&
+                            //       finichChkVal !== 'N' &&
+                            //       answerChk === question.answer) ||
+                            //     (finichChkVal !== 'N' &&
+                            //       answerChk === question.answer) ||
+                            //     (finichChkVal !== 'N' &&
+                            //       correctArea === 'M' &&
+                            //       correctMultiArea === 'Y'),
+                            // })}
+                            className={`ol-title ${
+                              (numberOfTrials !== '0' &&
+                                finichChkVal !== 'N' &&
+                                answerChk === question.answer) ||
+                              (finichChkVal !== 'N' &&
+                                answerChk === question.answer) ||
+                              (finichChkVal !== 'N' &&
+                                correctArea === 'M' &&
+                                correctMultiArea === 'Y')
+                                ? 'exact-answer'
+                                : 'wrong-answer'
+                            }`}
                             dangerouslySetInnerHTML={{
                               __html: `${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`,
                             }}
