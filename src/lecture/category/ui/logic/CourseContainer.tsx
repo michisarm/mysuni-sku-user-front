@@ -1,55 +1,64 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
+import React, { Component } from 'react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
-import {Segment} from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
-import {CoursePlanService} from 'course/stores';
-import {ActionEventService} from 'shared/stores';
+import { CoursePlanService } from 'course/stores';
+import { ActionEventService } from 'shared/stores';
 import { CubeType } from 'personalcube/personalcube/model';
-import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
-import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
+import {
+  LectureServiceType,
+  LectureViewModel,
+  StudentCdoModel,
+} from '../../../model';
+import {
+  CourseLectureService,
+  LectureService,
+  ProgramLectureService,
+} from '../../../stores';
 import routePaths from '../../../routePaths';
-import {Lecture} from '../../../shared';
+import { Lecture } from '../../../shared';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import ProposalState from '../../../../shared/model/ProposalState';
 import StudyActionType from '../../../../shared/model/StudyActionType';
 
-
 interface Props extends RouteComponentProps<RouteParams> {
-  actionEventService?: ActionEventService,
-  skProfileService?: SkProfileService,
-  lectureService?: LectureService,
-  programLectureService?: ProgramLectureService,
-  courseLectureService?:  CourseLectureService,
-  coursePlanService?: CoursePlanService,
-  lectureCardId : string,
-  onRefreshLearningState?: () => void,
-  onPageRefresh?:() => void,
+  actionEventService?: ActionEventService;
+  skProfileService?: SkProfileService;
+  lectureService?: LectureService;
+  programLectureService?: ProgramLectureService;
+  courseLectureService?: CourseLectureService;
+  coursePlanService?: CoursePlanService;
+  lectureCardId: string;
+  onRefreshLearningState?: () => void;
+  onPageRefresh?: () => void;
 }
 
 interface RouteParams {
-  cineroomId: string,
-  collegeId: string,
-  coursePlanId: string,
-  serviceType: LectureServiceType,
-  serviceId: string
+  cineroomId: string;
+  collegeId: string;
+  coursePlanId: string;
+  serviceType: LectureServiceType;
+  serviceId: string;
 }
 
 interface State {
-  openLearnModal: boolean
+  openLearnModal: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionEventService',
-  'profile.skProfileService',
-  'lecture.lectureService',
-  'lecture.programLectureService',
-  'lecture.courseLectureService',
-  'course.coursePlanService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionEventService',
+    'profile.skProfileService',
+    'lecture.lectureService',
+    'lecture.programLectureService',
+    'lecture.courseLectureService',
+    'course.coursePlanService'
+  )
+)
 @reactAutobind
 @observer
 class CourseContainer extends Component<Props, State> {
@@ -75,7 +84,10 @@ class CourseContainer extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+    if (
+      prevProps.match.params.coursePlanId !==
+      this.props.match.params.coursePlanId
+    ) {
       this.findCoursePlan();
     }
   }
@@ -84,15 +96,16 @@ class CourseContainer extends Component<Props, State> {
     //
     const { match, coursePlanService } = this.props;
 
-    const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
+    const coursePlan = await coursePlanService!.findCoursePlan(
+      match.params.coursePlanId
+    );
 
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
     }
   }
 
-  async findSkProfile()
-  {
+  async findSkProfile() {
     const { skProfileService } = this.props;
     await skProfileService!.findSkProfile();
   }
@@ -110,38 +123,66 @@ class CourseContainer extends Component<Props, State> {
         // this.publishViewEvent('viewDetail', routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
         //   programLectureId: params.serviceId,
         // }));
-        history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
-      }
-      else {
+        history.push(
+          routePaths.courseOverview(
+            params.cineroomId,
+            params.collegeId,
+            coursePlanId,
+            serviceType,
+            serviceId,
+            {
+              programLectureId: params.serviceId,
+            }
+          )
+        );
+      } else {
         // this.publishViewEvent('viewDetail', routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
         //   programLectureId: params.serviceId,
         // }));
-        history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+        history.push(
+          routePaths.courseOverviewPrev(
+            params.collegeId,
+            coursePlanId,
+            serviceType,
+            serviceId,
+            {
+              programLectureId: params.serviceId,
+            }
+          )
+        );
       }
-    }
-    else if (serviceType === LectureServiceType.Card) {
+    } else if (serviceType === LectureServiceType.Card) {
       // Program -> Card
       if (params.serviceType === LectureServiceType.Program) {
-
         if (params.cineroomId) {
           // this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
           //   programLectureId: params.serviceId,
           // }));
-          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
-        }
-        else {
+          history.push(
+            routePaths.lectureCardOverview(
+              params.cineroomId,
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: params.serviceId,
+              }
+            )
+          );
+        } else {
           // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
           //   programLectureId: params.serviceId,
           // }));
-          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
+          history.push(
+            routePaths.lectureCardOverviewPrev(
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: params.serviceId,
+              }
+            )
+          );
         }
       }
       // Course -> Card
@@ -153,27 +194,46 @@ class CourseContainer extends Component<Props, State> {
           //   programLectureId: queryParam.programLectureId as string,
           //   courseLectureId: params.serviceId,
           // }));
-          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
-        }
-        else {
+          history.push(
+            routePaths.lectureCardOverview(
+              params.cineroomId,
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: queryParam.programLectureId as string,
+                courseLectureId: params.serviceId,
+              }
+            )
+          );
+        } else {
           // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
           //   programLectureId: queryParam.programLectureId as string,
           //   courseLectureId: params.serviceId,
           // }));
-          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
+          history.push(
+            routePaths.lectureCardOverviewPrev(
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: queryParam.programLectureId as string,
+                courseLectureId: params.serviceId,
+              }
+            )
+          );
         }
       }
     }
   }
 
   publishStudyEvent() {
-    const { actionEventService, coursePlanService, match, lectureCardId } = this.props;
+    const {
+      actionEventService,
+      coursePlanService,
+      match,
+      lectureCardId,
+    } = this.props;
     const { collegeId, coursePlanId, serviceType } = match.params;
     const { cubeId, cubeType, name } = this.lectureView;
 
@@ -183,7 +243,7 @@ class CourseContainer extends Component<Props, State> {
     let action = StudyActionType.None;
     const menu = 'ModalClose';
 
-    switch(cubeType) {
+    switch (cubeType) {
       case CubeType.Video: {
         action = StudyActionType.VideoClose;
         break;
@@ -195,18 +255,31 @@ class CourseContainer extends Component<Props, State> {
       }
     }
 
-    actionEventService?.registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, courseName, cubeName});
+    actionEventService?.registerStudyActionLog({
+      action,
+      serviceType,
+      collegeId,
+      cubeId,
+      lectureCardId,
+      coursePlanId,
+      menu,
+      courseName,
+      cubeName,
+    });
   }
 
   publishViewEvent(menu: string, path?: string) {
-    const {actionEventService} = this.props;
-    actionEventService?.registerViewActionLog({menu, path});
+    const { actionEventService } = this.props;
+    actionEventService?.registerViewActionLog({ menu, path });
   }
 
-
   // 학습하기 - 학습 모달창 팝업
-  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel, lectureView?: LectureViewModel):void {
-    if(lectureView) this.lectureView = lectureView;
+  onDoLearn(
+    videoUrl: string,
+    studentCdo: StudentCdoModel,
+    lectureView?: LectureViewModel
+  ): void {
+    if (lectureView) this.lectureView = lectureView;
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
@@ -224,8 +297,9 @@ class CourseContainer extends Component<Props, State> {
         ...this.learnStudentCdo,
         proposalState: ProposalState.Approved,
       };
-      lectureService?.confirmUsageStatisticsByCardId(studentCdo)
-        .then((confirmed) => {
+      lectureService
+        ?.confirmUsageStatisticsByCardId(studentCdo)
+        .then(confirmed => {
           if (onPageRefresh) {
             onPageRefresh();
           }
@@ -260,14 +334,16 @@ class CourseContainer extends Component<Props, State> {
             {lectureViews.map((lecture: LectureViewModel, index: number) => (
               <Lecture.CourseSection
                 key={`course-${index}`}
-                lecture={(
+                lecture={
                   <Lecture.Course
                     className="first"
                     lectureView={lecture}
                     thumbnailImage={lecture.baseUrl || undefined}
-                    toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                    toggle={
+                      lecture.serviceType === LectureServiceType.Program ||
+                      lecture.serviceType === LectureServiceType.Course
+                    }
                     onViewDetail={() => this.onViewDetail(lecture)}
-
                     collegeId={params.collegeId}
                     lectureCardId={lectureCardId}
                     member={member}
@@ -277,16 +353,16 @@ class CourseContainer extends Component<Props, State> {
                     coursePlanId={params.coursePlanId}
                     courseServiceType={params.serviceType}
                   />
-                )}
+                }
               >
-                {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                111111111111111111111111
+                {getSubLectureViews(lecture.id).map((subLecture, index) => (
                   <Lecture.Course
                     key={`sub-lecture-${index}`}
                     className="included"
                     lectureView={subLecture}
                     thumbnailImage={subLecture.baseUrl || undefined}
                     onViewDetail={() => this.onViewDetail(subLecture)}
-
                     collegeId={params.collegeId}
                     lectureCardId={lectureCardId}
                     member={member}
@@ -296,20 +372,20 @@ class CourseContainer extends Component<Props, State> {
                     coursePlanId={params.coursePlanId}
                     courseServiceType={params.serviceType}
                   />
-                )}
+                ))}
               </Lecture.CourseSection>
             ))}
           </Lecture.Group>
         </Segment>
-        {
-          openLearnModal && (
-            <LectureLearningModalView
-              ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
-              videoUrl={this.learningVideoUrl}
-              onClose={this.onLearningModalClose}
-            />
-          )
-        }
+        {openLearnModal && (
+          <LectureLearningModalView
+            ref={lectureLearningModal =>
+              (this.lectureLearningModal = lectureLearningModal)
+            }
+            videoUrl={this.learningVideoUrl}
+            onClose={this.onLearningModalClose}
+          />
+        )}
       </>
     );
   }

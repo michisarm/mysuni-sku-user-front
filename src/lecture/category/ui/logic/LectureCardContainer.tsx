@@ -1220,7 +1220,6 @@ class LectureCardContainer extends Component<Props, State> {
                () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
            }*/
         />
-
         {/* 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon */}
         {openDownloadModal && (
           <OverviewField.FileDownloadPop
@@ -1233,7 +1232,6 @@ class LectureCardContainer extends Component<Props, State> {
           classrooms={typeViewObject.classrooms}
           onOk={this.onSelectClassroom}
         />
-
         {(cubeType === CubeType.ClassRoomLecture ||
           cubeType === CubeType.ELearning) && (
           <ApplyReferenceModal
@@ -1245,7 +1243,6 @@ class LectureCardContainer extends Component<Props, State> {
             handleOk={this.onClickApplyReferentOk}
           />
         )}
-
         {viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}
@@ -1253,7 +1250,6 @@ class LectureCardContainer extends Component<Props, State> {
             onSaveCallback={this.testCallback}
           />
         )}
-
         {viewObject && viewObject.surveyId && (
           <SurveyAnswerSheetModal
             surveyId={viewObject.surveyId}
@@ -1262,7 +1258,6 @@ class LectureCardContainer extends Component<Props, State> {
             onSaveCallback={this.surveyCallback}
           />
         )}
-
         <CubeReportModal
           downloadFileBoxId={
             viewObject.reportFileBoxId || typeViewObject.reportFileBoxId
@@ -1271,7 +1266,6 @@ class LectureCardContainer extends Component<Props, State> {
           downloadReport={this.onClickDownloadReport}
           rollBookId={studentCdo.rollBookId}
         />
-
         {// 0413 window.open => modal view로 변경
         openLearningModal && typeViewObject && typeViewObject.videoUrl && (
           <LectureLearningModalView
@@ -1282,9 +1276,7 @@ class LectureCardContainer extends Component<Props, State> {
             onClose={this.onLearningModalClose}
           />
         )}
-
         {children}
-
         {viewObject && viewObject.tabState === 'list' && (
           <LectureExam
             onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
