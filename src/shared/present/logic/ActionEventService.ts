@@ -41,7 +41,6 @@ class ActionEventService {
   
   registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName}: StudyEventParams): void {
     const studyActionLog: ActionEventModel = ActionEventModel.fromStudyEvent({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName});
-    console.log(studyActionLog);
     this.actionEventApi.registerStudyActionLog(studyActionLog);
   }
 
