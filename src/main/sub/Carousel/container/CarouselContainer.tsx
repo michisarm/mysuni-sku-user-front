@@ -45,17 +45,30 @@ class CarouselContainer extends Component<Props, State> {
     },
     {
       type: ContentType.LinkContent,
-      title: <>코로나 이후의 우리는,<br />세계는 어떻게 바뀔 것인가!</>,
+      title: <>문과용 해례본: </>,
       description: (
         <>
-          Post-Corona 시대를 헤쳐 나아가야 하는 구성원분들을 위해<br />
-          미래에 대한 각계 전문가들의 Insight를 mySUNI에 오롯이 담았습니다.<br /><br />
-          <span className="link-tag">Post-Corona Perspectives 채널로 이동</span>
+          에너지역량 뿐만 아니라, AI/DT역량도 축적해야겠죠.<br />
+          환경에서 고객까지 고려하여 융합하는 코스를 에너지솔루션칼리지에서 마련했습니다.<br />
+          자, 그럼 Deep Change 준비 되셨나요?
         </>
       ),
-      link: '/lecture/college/CLG00017/channel/CHN0005e',
-      imageUrl: '/images/all/img_banner_postCorona_20200611.png',
+      link: mainRoutePaths.introductionCollege('에너지솔루션'),
+      imageUrl: '/images/all/img_banner_energy_solution_college_20200702.jpg',
     },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>코로나 이후의 우리는,<br />세계는 어떻게 바뀔 것인가!</>,
+    //   description: (
+    //     <>
+    //       Post-Corona 시대를 헤쳐 나아가야 하는 구성원분들을 위해<br />
+    //       미래에 대한 각계 전문가들의 Insight를 mySUNI에 오롯이 담았습니다.<br /><br />
+    //       <span className="link-tag">Post-Corona Perspectives 채널로 이동</span>
+    //     </>
+    //   ),
+    //   link: '/lecture/college/CLG00017/channel/CHN0005e',
+    //   imageUrl: '/images/all/img_banner_postCorona_20200611.png',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>SV위원회와 함께하는<br />&#39;ESG Talk Concert!&#39;에 생중계로 함께하세요!</>,
@@ -97,19 +110,19 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00003c'),
       imageUrl: '/images/all/img_banner_required_20200427.jpg',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>AI&#47;DT 끝판왕 말고 첫판왕!<br />이제는 쉽고 빠르게 AI&#47;DT Literacy 채널에서 만나보세요~</>,
-      description: (
-        <>
-          Category: AI &#62; AI&#47;DT Literacy 채널에서<br/>
-          AI&#47;DT 기본을 다지는 mySUNI의 엄선된 컨텐츠를 수강해보세요.<br/>
-          시작 전, [학습 안내] 카드를 꼭 읽어주세요~
-        </>
-      ),
-      link: '/lecture/college/CLG00001/channel/CHN0005a',
-      imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>AI&#47;DT 끝판왕 말고 첫판왕!<br />이제는 쉽고 빠르게 AI&#47;DT Literacy 채널에서 만나보세요~</>,
+    //   description: (
+    //     <>
+    //       Category: AI &#62; AI&#47;DT Literacy 채널에서<br/>
+    //       AI&#47;DT 기본을 다지는 mySUNI의 엄선된 컨텐츠를 수강해보세요.<br/>
+    //       시작 전, [학습 안내] 카드를 꼭 읽어주세요~
+    //     </>
+    //   ),
+    //   link: '/lecture/college/CLG00001/channel/CHN0005a',
+    //   imageUrl: '/images/all/img_banner_AIDT_Literacy_20200427.png',
+    // },
     // {
     //   type: ContentType.LinkContent,
     //   title: <>2020 SK신임팀장 과정</>,
