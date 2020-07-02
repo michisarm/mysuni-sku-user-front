@@ -355,7 +355,6 @@ class CourseContainer extends Component<Props, State> {
                   />
                 }
               >
-                111111111111111111111111
                 {getSubLectureViews(lecture.id).map((subLecture, index) => (
                   <Lecture.Course
                     key={`sub-lecture-${index}`}
