@@ -253,18 +253,18 @@ class MyLearningSummaryModal extends Component<Props> {
                         </span>
                       </li>
                       <li>
-                        <span className="name b13">에너지솔루션</span>
-                        <span className="time">
-                          {timeToHourMinutePaddingFormat(
-                            myLearningSummary.energySolutionCollegeTime
-                          )}
-                        </span>
-                      </li>
-                      <li>
                         <span className="name b9">반도체</span>
                         <span className="time">
                           {timeToHourMinutePaddingFormat(
                             myLearningSummary.semiconductorCollegeTime
+                          )}
+                        </span>
+                      </li>
+                      <li>
+                        <span className="name b13">에너지솔루션</span>
+                        <span className="time">
+                          {timeToHourMinutePaddingFormat(
+                            myLearningSummary.energySolutionCollegeTime
                           )}
                         </span>
                       </li>
