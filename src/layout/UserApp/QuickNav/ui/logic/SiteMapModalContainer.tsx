@@ -50,11 +50,11 @@ class SiteMapModalContainer extends Component<Props, State> {
         name: 'Management',
         path: lectureRoutePaths.collegeLectures('CLG00008'),
       },
+      { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
       {
         name: '에너지솔루션',
         path: lectureRoutePaths.collegeLectures('CLG0001c'),
       },
-      { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
       {
         name: 'SK아카데미',
         path: lectureRoutePaths.collegeLectures('CLG00018'),
