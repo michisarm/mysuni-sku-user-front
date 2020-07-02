@@ -87,11 +87,33 @@ class TabContainer extends Component<Props, State> {
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
-    this.publishViewEvent(`tab_${tab.name}`);
+    
+    const pageName = this.findPageName();
+    const menu = pageName && `tab_${pageName}_${tab.name}` || `tab_${tab.name}`;
+    this.publishViewEvent(menu);
 
     this.setState({ activeName: tab.name });
 
     onChangeTab!(tab);
+  }
+
+  findPageName() {
+    const {match} = this.props;
+    const {coursePlanId, cubeId} = match.params;
+
+    let pageName = '';
+    const path = window.location.href;
+    const splitedPath = path.split('/');
+
+    if(path === 'https://mysuni.sk.com/suni-main/pages/1') pageName = 'main';
+    if(splitedPath.includes('learning')) pageName = 'learning';
+    // if(splitedPath.includes('my-page')) pageName = 'my-page';
+    // if(splitedPath.includes('introduction')) pageName = 'introduction';
+    // if(splitedPath.includes('create')) pageName = 'create';
+    if(coursePlanId) pageName = 'course';
+    if(cubeId) pageName = 'cube';
+
+    return pageName;
   }
 
   publishViewEvent(menu: string, path?: string) {
