@@ -176,16 +176,13 @@ export const Test = ({
         )}
         {type === '4' && <span className="state">{name}</span>}
         {type === '5' && (
-          <>
-            {/* // <button
-          //   className="ui button trs"
-          //   disabled={isMissed}
-          //   onClick={OnTest}
-          // >
-          // <span>{name}</span>
-          // </button> */}
-            <span className="state">{name}</span>
-          </>
+          <button
+            className="ui button trs"
+            disabled={isMissed}
+            onClick={OnTest}
+          >
+            <span>{name}</span>
+          </button>
         )}
       </div>
     </div>

@@ -356,7 +356,7 @@ class LectureCardContainer extends Component<Props, State> {
         action = StudyActionType.DocumnetDownload;
         menu = 'Download';
 
-        if(isClose) menu = 'DownloadModalClose';
+        if (isClose) menu = 'DownloadModalClose';
         break;
     }
     actionEventService?.registerStudyActionLog({
@@ -1249,6 +1249,7 @@ class LectureCardContainer extends Component<Props, State> {
         {viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}
+            type={this.state.type}
             ref={examModal => (this.examModal = examModal)}
             onSaveCallback={this.testCallback}
           />
