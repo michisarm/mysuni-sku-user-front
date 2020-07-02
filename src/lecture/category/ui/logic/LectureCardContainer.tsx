@@ -356,6 +356,7 @@ class LectureCardContainer extends Component<Props, State> {
         action = StudyActionType.DocumnetDownload;
         menu = 'Download';
 
+        if(isClose) menu = 'DownloadModalClose';
         break;
     }
     actionEventService?.registerStudyActionLog({
@@ -503,6 +504,7 @@ class LectureCardContainer extends Component<Props, State> {
   onDownload() {
     // request download file to nara
     // depot.downloadDepot(typeViewObject.fileBoxId);
+    this.publishStudyEvent();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -511,6 +513,7 @@ class LectureCardContainer extends Component<Props, State> {
       // 학습진행 등록
       this.onRegisterStudent(ProposalState.Approved);
     }
+    this.publishStudyEvent(true);
     this.setState({ openDownloadModal: false });
   }
 

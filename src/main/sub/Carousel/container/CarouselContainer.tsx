@@ -36,7 +36,7 @@ class CarouselContainer extends Component<Props, State> {
       description: (
         <>
           구성원 Deep Change 역량향상에 도움이 되는 Timely한 콘텐츠 제공을 약속 드립니다.<br />
-          갓 오픈한 따끈따끈한, 콘텐츠 지금 만나보실까요?<br/><br/>
+          갓 오픈한 따끈따끈한, 콘텐츠 지금 만나보실까요?<br /><br />
           <span className="link-tag">바로가기</span>
         </>
       ),
@@ -99,12 +99,12 @@ class CarouselContainer extends Component<Props, State> {
     // },
     {
       type: ContentType.LinkContent,
-      title: <>개정된 핵인싸 과정으로<br/>역량 향상의 씨앗을 심어보세요</>,
+      title: <>개정된 핵인싸 과정으로<br />역량 향상의 씨앗을 심어보세요</>,
       description: (
         <>
-          전사 차원의 Human Capital 육성 방향에 따라 <br/>
-          핵인싸 과정이 전면 개편 되었습니다.<br/>
-          핵인싸 과정 이수로 역량도 업글하시고, SK 인싸 되세요~!<br/>
+          전사 차원의 Human Capital 육성 방향에 따라 <br />
+          핵인싸 과정이 전면 개편 되었습니다.<br />
+          핵인싸 과정 이수로 역량도 업글하시고, SK 인싸 되세요~!<br />
         </>
       ),
       link: boardRoutePaths.supportNoticePost('NTC-00003c'),
