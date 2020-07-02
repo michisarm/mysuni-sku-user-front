@@ -13,13 +13,16 @@ import { ProposalState, LearningState } from 'shared/model';
 import { EmployeeModel } from 'profile/model';
 import { PersonalCubeModel, CubeType, ContentsServiceType } from 'personalcube/personalcube/model';
 import { MediaModel, MediaType } from 'personalcube/media/model';
+import StudyActionType from 'shared/model/StudyActionType';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
 import { BoardService } from 'personalcube/community/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
+import { CoursePlanService } from 'course/stores';
+import { ActionEventService } from 'shared/stores';
 
-import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel } from '../../../../model';
+import { LectureViewModel, StudentModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, LectureServiceType } from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
@@ -27,6 +30,7 @@ import RollBookService from '../../../present/logic/RollBookService';
 import {
   Title, SubField, Buttons, Thumbnail,
 } from '../../../ui/view/LectureElementsView';
+
 
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
@@ -39,12 +43,15 @@ import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
 
+
 interface Props {
+  actionEventService?: ActionEventService,
   rollBookService?: RollBookService,
   boardService: BoardService,
   personalCubeService?: PersonalCubeService,
   studentService?: StudentService,
   mediaService?: MediaService,
+  coursePlanService?: CoursePlanService,
   collegeId?: string,
   lectureView: LectureViewModel,
   className?: string,
@@ -56,16 +63,19 @@ interface Props {
   onViewDetail?: (e: any) => void,
   onToggle?: () => void,
   onRefreshLearningState?: () => void,
-  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
+  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel, lectureView?: LectureViewModel) => void,
   student?: StudentModel,
   lectureCardId?: string,
+  coursePlanId?: string,
+  serviceType?: LectureServiceType,
+  courseServiceType?: LectureServiceType,
   member? : EmployeeModel,
 
   examinationService?: ExaminationService,
   examPaperService?: ExamPaperService,
   // answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
-  surveyFormService?: SurveyFormService
+  surveyFormService?: SurveyFormService,
 }
 
 interface State
@@ -82,11 +92,13 @@ interface State
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionEventService',
   'lecture.rollBookService',
   'personalCube.boardService',
   'personalCube.personalCubeService',
   'lecture.studentService',
   'personalCube.mediaService',
+  'course.coursePlanService',
 
   'assistant.examinationService',
   'assistant.examPaperService',
@@ -116,6 +128,7 @@ class CourseLectureContainer extends Component<Props, State> {
     personalCubeService: PersonalCubeService,
     studentService: StudentService,
     mediaService: MediaService,
+    coursePlanService: CoursePlanService,
   };
 
   examModal: any = null;
@@ -286,6 +299,45 @@ class CourseLectureContainer extends Component<Props, State> {
     return classNameForLearningState;
   }
 
+  publishStudyEvent(isCPLinked?: boolean, url?: string) {
+    const {actionEventService, coursePlanService} = this.props;
+    const {collegeId, lectureCardId, coursePlanId, lectureView, courseServiceType} = this.props;
+    const {cubeId, cubeType, name} = lectureView;
+
+    const serviceType = courseServiceType;
+    const courseName = coursePlanService!.coursePlan.name;
+    const cubeName = name;
+
+    let action = StudyActionType.None;
+    const menu = 'LearningStart';
+    let path = '';
+
+    switch(cubeType) {
+      case CubeType.Video: 
+        action = StudyActionType.VideoStart;
+        if(isCPLinked && url) 
+        {
+          action = StudyActionType.CPLinked;
+          path = url;
+        } 
+      
+        break;
+      
+      case CubeType.Audio: 
+        action = StudyActionType.AudioStart;
+        if(isCPLinked && url) 
+        {
+          action = StudyActionType.CPLinked;
+          path = url;
+        }
+       
+        break;
+    }
+    
+    actionEventService?.registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, path, courseName, cubeName});
+    
+  } 
+
   onToggle() {
     //
     const { open, setOpen } = this.context;
@@ -339,6 +391,7 @@ class CourseLectureContainer extends Component<Props, State> {
     // const { onDoLearn } = this.props;
 
     if (url && url.startsWith('http')) {
+      // this.publishActionEvent();
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
@@ -355,6 +408,7 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (url && url.startsWith('http'))
     {
+      this.publishStudyEvent();
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
@@ -373,7 +427,9 @@ class CourseLectureContainer extends Component<Props, State> {
     {
       //this.onRegisterStudentForVideo(ProposalState.Approved);
       //this.popupLearnModal(url);
+      this.publishStudyEvent(true, url);
       window.open(url, '_blank');
+    
     } else
     {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -485,10 +541,10 @@ class CourseLectureContainer extends Component<Props, State> {
   }
 
   popupLearnModal(url: string) {
-    const { onDoLearn } = this.props;
+    const { onDoLearn, lectureView } = this.props;
     if (onDoLearn) {
       const studentCdo = this.getStudentCdo();
-      onDoLearn(url, studentCdo);
+      onDoLearn(url, studentCdo, lectureView);
     }
   }
 
@@ -600,8 +656,6 @@ class CourseLectureContainer extends Component<Props, State> {
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
-    } else {
-      this.state.passedState = false;
     }
 
     this.setStateName('1', 'Test');

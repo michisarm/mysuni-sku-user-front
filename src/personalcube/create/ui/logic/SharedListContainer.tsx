@@ -124,7 +124,7 @@ class SharedListContainer extends React.Component<Props, States> {
     const channelIds = channels.map(
       (channel: ChannelModel) => channel.channelId
     );
-
+    // shared list 조회
     const lectureOffsetList = await lectureService!.findSharedLectures(
       page!.limit,
       page!.nextOffset,

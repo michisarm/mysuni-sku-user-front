@@ -31,6 +31,7 @@ import { BoardService } from 'personalcube/community/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
+import { ActionEventService } from 'shared/stores';
 
 import { InMyLectureCdoModel } from 'myTraining/model';
 import routePaths from '../../../routePaths';
@@ -77,6 +78,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   // answerSheetService: AnswerSheetService,
   surveyCaseService: SurveyCaseService;
   surveyFormService?: SurveyFormService;
+  actionEventService: ActionEventService;
 }
 
 interface State {
@@ -116,7 +118,8 @@ interface RouteParams {
     'assistant.examPaperService',
     // 'survey.answerSheetService',
     'survey.surveyCaseService',
-    'survey.surveyFormService'
+    'survey.surveyFormService',
+    'shared.actionEventService'
   )
 )
 @reactAutobind
@@ -156,6 +159,7 @@ class LectureCardPage extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+    this.publishViewEvent();
 
     // console.log('Lecture Card Page : componentDidMount');
   }
@@ -282,6 +286,26 @@ class LectureCardPage extends Component<Props, State> {
     await this.searchForExams();
 
     this.setState({ loaded: true });
+  }
+
+  async publishViewEvent() {
+    const { actionEventService, personalCubeService } = this.props;
+    const { match } = this.props;
+    const { collegeId, cubeId, lectureCardId } = match.params;
+
+    const personalCube = await personalCubeService.findPersonalCube(cubeId);
+    const cubeName = personalCube?.name;
+    const menu = 'CUBE_VIEW';
+    const serviceType = LectureServiceType.Card;
+
+    actionEventService.registerViewActionLog({
+      menu,
+      serviceType,
+      collegeId,
+      cubeId,
+      lectureCardId,
+      cubeName,
+    });
   }
 
   /*

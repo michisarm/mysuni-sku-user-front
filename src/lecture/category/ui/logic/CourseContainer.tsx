@@ -7,14 +7,19 @@ import queryString from 'query-string';
 import {Segment} from 'semantic-ui-react';
 import SkProfileService from 'profile/present/logic/SkProfileService';
 import {CoursePlanService} from 'course/stores';
+import {ActionEventService} from 'shared/stores';
+import { CubeType } from 'personalcube/personalcube/model';
 import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
 import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
 import routePaths from '../../../routePaths';
 import {Lecture} from '../../../shared';
 import LectureLearningModalView from '../view/LectureLearningModalView';
 import ProposalState from '../../../../shared/model/ProposalState';
+import StudyActionType from '../../../../shared/model/StudyActionType';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService?: ActionEventService,
   skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
@@ -38,6 +43,7 @@ interface State {
 }
 
 @inject(mobxHelper.injectFrom(
+  'shared.actionEventService',
   'profile.skProfileService',
   'lecture.lectureService',
   'lecture.programLectureService',
@@ -55,7 +61,7 @@ class CourseContainer extends Component<Props, State> {
   lectureLearningModal: any = null;
   learningVideoUrl: string = '';
   learnStudentCdo: StudentCdoModel | null = null;
-
+  lectureView: LectureViewModel = new LectureViewModel();
 
   state = {
     openLearnModal: false,
@@ -101,11 +107,17 @@ class CourseContainer extends Component<Props, State> {
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
       if (params.cineroomId) {
+        // this.publishViewEvent('viewDetail', routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+        //   programLectureId: params.serviceId,
+        // }));
         history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
           programLectureId: params.serviceId,
         }));
       }
       else {
+        // this.publishViewEvent('viewDetail', routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
+        //   programLectureId: params.serviceId,
+        // }));
         history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
           programLectureId: params.serviceId,
         }));
@@ -116,11 +128,17 @@ class CourseContainer extends Component<Props, State> {
       if (params.serviceType === LectureServiceType.Program) {
 
         if (params.cineroomId) {
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+          //   programLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
             programLectureId: params.serviceId,
           }));
         }
         else {
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+          //   programLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
             programLectureId: params.serviceId,
           }));
@@ -131,12 +149,20 @@ class CourseContainer extends Component<Props, State> {
         const queryParam = queryString.parse(search);
 
         if (params.cineroomId) {
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
+          //   programLectureId: queryParam.programLectureId as string,
+          //   courseLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
             programLectureId: queryParam.programLectureId as string,
             courseLectureId: params.serviceId,
           }));
         }
         else {
+          // this.publishViewEvent('viewDetail', routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
+          //   programLectureId: queryParam.programLectureId as string,
+          //   courseLectureId: params.serviceId,
+          // }));
           history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
             programLectureId: queryParam.programLectureId as string,
             courseLectureId: params.serviceId,
@@ -146,8 +172,41 @@ class CourseContainer extends Component<Props, State> {
     }
   }
 
+  publishStudyEvent() {
+    const { actionEventService, coursePlanService, match, lectureCardId } = this.props;
+    const { collegeId, coursePlanId, serviceType } = match.params;
+    const { cubeId, cubeType, name } = this.lectureView;
+
+    const courseName = coursePlanService!.coursePlan.name;
+    const cubeName = name;
+
+    let action = StudyActionType.None;
+    const menu = 'ModalClose';
+
+    switch(cubeType) {
+      case CubeType.Video: {
+        action = StudyActionType.VideoClose;
+        break;
+      }
+
+      case CubeType.Audio: {
+        action = StudyActionType.AudioClose;
+        break;
+      }
+    }
+
+    actionEventService?.registerStudyActionLog({action, serviceType, collegeId, cubeId, lectureCardId, coursePlanId, menu, courseName, cubeName});
+  }
+
+  publishViewEvent(menu: string, path?: string) {
+    const {actionEventService} = this.props;
+    actionEventService?.registerViewActionLog({menu, path});
+  }
+
+
   // 학습하기 - 학습 모달창 팝업
-  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
+  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel, lectureView?: LectureViewModel):void {
+    if(lectureView) this.lectureView = lectureView;
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
@@ -158,6 +217,7 @@ class CourseContainer extends Component<Props, State> {
 
   // 학습 모달창 닫기 - 학습통계정보 저장
   onLearningModalClose() {
+    this.publishStudyEvent();
     const { lectureService, onPageRefresh } = this.props;
     if (this.learnStudentCdo) {
       const studentCdo = {
@@ -213,6 +273,9 @@ class CourseContainer extends Component<Props, State> {
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
                     onDoLearn={this.onDoLearn}
+                    serviceType={lecture.serviceType}
+                    coursePlanId={params.coursePlanId}
+                    courseServiceType={params.serviceType}
                   />
                 )}
               >
@@ -229,6 +292,9 @@ class CourseContainer extends Component<Props, State> {
                     member={member}
                     onRefreshLearningState={onRefreshLearningState}
                     onDoLearn={this.onDoLearn}
+                    serviceType={lecture.serviceType}
+                    coursePlanId={params.coursePlanId}
+                    courseServiceType={params.serviceType}
                   />
                 )}
               </Lecture.CourseSection>

@@ -1,14 +1,19 @@
 
 import React, { Component, ReactNode } from 'react';
-import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
 
 import classNames from 'classnames';
 import { Menu, Segment, Sticky } from 'semantic-ui-react';
+import { ActionEventService } from 'shared/stores';
+import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
 
 
-interface Props {
+
+interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService?: ActionEventService
   tabs: TabItemModel[]
   header?: ReactNode
   className?: string
@@ -21,10 +26,21 @@ interface Props {
   onChangeTab?: (tab: TabItemModel) => void
 }
 
+interface RouteParams {
+  collegeId: string,
+  serviceType?: LectureServiceType,
+  cubeId?: string
+  lectureCardId?: string,
+  coursePlanId?: string,
+}
+
 interface State {
   activeName: string
 }
 
+@inject(mobxHelper.injectFrom(
+  'shared.actionEventService'
+))
 @reactAutobind
 @observer
 class TabContainer extends Component<Props, State> {
@@ -57,20 +73,35 @@ class TabContainer extends Component<Props, State> {
 
     if(prevProps.defaultActiveName !== this.props.defaultActiveName){
       if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
-        this.onClickTab(tabs[0]);
+        this.changeActiveName(tabs[0]);
       } else { // 20200527 탭 이동 정상화
-        this.onClickTab(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
-      }
+        this.changeActiveName(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
+      } 
     }
+  }
+
+  changeActiveName(tab: TabItemModel) {
+    this.setState({ activeName: tab.name });
   }
 
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
+    this.publishViewEvent(`tab_${tab.name}`);
 
     this.setState({ activeName: tab.name });
 
     onChangeTab!(tab);
+  }
+
+  publishViewEvent(menu: string, path?: string) {
+    const {actionEventService} = this.props;
+    const {match} = this.props;
+    const {collegeId, cubeId, lectureCardId, coursePlanId} = match.params;
+    let { serviceType } = match.params;
+    
+    if(cubeId) serviceType = LectureServiceType.Card;
+    actionEventService?.registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId});
   }
 
   renderItems() {
@@ -152,4 +183,4 @@ class TabContainer extends Component<Props, State> {
   }
 }
 
-export default TabContainer;
+export default withRouter(TabContainer);
