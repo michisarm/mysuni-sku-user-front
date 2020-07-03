@@ -48,7 +48,7 @@ class ActionEventModel {
 
     setContext(logType: string, menu: string, path?: string) {
       this.context.logType = logType;
-      this.context.email = process.env.NODE_ENV === 'development' ? window.localStorage.getItem('nara.email') as string : getCookie('tryingLoginId');
+      this.context.email = getCookie('tryingLoginId') || window.sessionStorage.getItem('email') as string || window.localStorage.getItem('nara.email') as string;
       this.context.menu = menu;
       this.context.path = path || window.location.href;
     }

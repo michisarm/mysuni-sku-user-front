@@ -128,7 +128,7 @@ class MyLearningPage extends Component<Props> {
     );
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     const notieService = this.props.notieService!;
     const { history, actionLogService } = this.props;
@@ -150,6 +150,8 @@ class MyLearningPage extends Component<Props> {
       case MyLearningContentType.Enrolled:
         notieService.readNotie('Learning_Waiting');
     }
+
+    return routePaths.learningTab(tab.name);
   }
 
   render() {

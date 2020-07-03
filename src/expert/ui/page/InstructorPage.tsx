@@ -66,12 +66,14 @@ class InstructorPage extends Component<Props, State> {
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     const { history, match } = this.props;
     const { params } = match;
 
     history.push(routePaths.instructorTab(params.instructorId, tab.name));
+
+    return routePaths.instructorTab(params.instructorId, tab.name);
   }
 
   onChangeLecturesCount(lecturesCount: number) {

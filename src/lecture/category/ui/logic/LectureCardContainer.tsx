@@ -356,7 +356,7 @@ class LectureCardContainer extends Component<Props, State> {
         action = StudyActionType.DocumnetDownload;
         menu = 'Download';
 
-        if (isClose) menu = 'DownloadModalClose';
+        if (isClose) menu = 'DownloadClose';
         break;
     }
     actionEventService?.registerStudyActionLog({

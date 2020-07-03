@@ -11,7 +11,6 @@ import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
 
 
-
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService
   tabs: TabItemModel[]
@@ -23,7 +22,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   large?: boolean
   renderItems?: (props: any) => React.ReactNode
   renderContent?: (props: any) => React.ReactNode
-  onChangeTab?: (tab: TabItemModel) => void
+  onChangeTab?: (tab: TabItemModel) => any
 }
 
 interface RouteParams {
@@ -47,7 +46,7 @@ class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
     className: 'tab-menu offset0',
-    onChangeTab: () => {},
+    onChangeTab: () => {}
   };
 
   state = {
@@ -90,11 +89,13 @@ class TabContainer extends Component<Props, State> {
     
     const pageName = this.findPageName();
     const menu = pageName && `tab_${pageName}_${tab.name}` || `tab_${tab.name}`;
-    this.publishViewEvent(menu);
 
     this.setState({ activeName: tab.name });
 
-    onChangeTab!(tab);
+    const routePath = onChangeTab!(tab);
+    if(routePath) this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
+    
+    else this.publishViewEvent(menu);
   }
 
   findPageName() {
@@ -107,9 +108,11 @@ class TabContainer extends Component<Props, State> {
 
     if(path === 'https://mysuni.sk.com/suni-main/pages/1') pageName = 'main';
     if(splitedPath.includes('learning')) pageName = 'learning';
-    // if(splitedPath.includes('my-page')) pageName = 'my-page';
-    // if(splitedPath.includes('introduction')) pageName = 'introduction';
-    // if(splitedPath.includes('create')) pageName = 'create';
+    if(splitedPath.includes('my-page')) pageName = 'my-page';
+    if(splitedPath.includes('introduction')) pageName = 'introduction';
+    if(splitedPath.includes('create')) pageName   = 'create';
+    if(splitedPath.includes('instructor')) pageName = 'instructor';
+    if(splitedPath.includes('board')) pageName = 'board';
     if(coursePlanId) pageName = 'course';
     if(cubeId) pageName = 'cube';
 
