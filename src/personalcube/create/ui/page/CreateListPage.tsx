@@ -70,11 +70,13 @@ class CreateListPage extends Component<Props, State> {
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     const { actionLogService, history } = this.props;
     actionLogService?.registerClickActionLog({ subAction: tab.name });
     history.push(routePaths.createTab(tab.name));
+
+    return routePaths.createTab(tab.name);
   }
 
   onChangeCreateCount(createCount: number) {

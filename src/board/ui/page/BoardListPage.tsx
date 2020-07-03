@@ -38,9 +38,11 @@ export class BoardListPage extends React.Component<Props> {
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     this.props.history.push(routePaths.supportTab(tab.name));
+    
+    return routePaths.supportTab(tab.name);
   }
 
   render() {

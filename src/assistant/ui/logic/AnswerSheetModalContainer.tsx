@@ -197,6 +197,44 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     });
   }
 
+  onSetScoring(
+    questionType: string,
+    answer: string,
+    numberOfTrials: string | null,
+    finichChkVal: string | null,
+    answerChk: string,
+    correctArea: string | null,
+    correctMultiArea: string | null
+  ) {
+    const { answerSheetService } = this.props;
+    const { answerSheet } = answerSheetService!;
+    // 제출 여부 체크
+    const submittedChk = answerSheet.submitted;
+
+    let rtnClass = '';
+    if (submittedChk) {
+      if (
+        questionType !== QuestionType.ShortAnswer &&
+        questionType !== QuestionType.Essay
+      ) {
+        if (
+          (numberOfTrials !== '0' &&
+            finichChkVal !== 'N' &&
+            answerChk === answer) ||
+          (finichChkVal !== 'N' && answerChk === answer) ||
+          (finichChkVal !== 'N' &&
+            correctArea === 'M' &&
+            correctMultiArea === 'Y')
+        ) {
+          rtnClass = 'exact-answer';
+        } else {
+          rtnClass = 'wrong-answer';
+        }
+      }
+    }
+    return rtnClass;
+  }
+
   render() {
     //
     const { open } = this.state;
@@ -333,22 +371,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                       <List.Item as="li" key={question.questionNo}>
                         {type === '5' ? (
                           <div
-                            className={`ol-title ${
-                              question.questionType !==
-                                QuestionType.ShortAnswer &&
-                              question.questionType !== QuestionType.Essay
-                                ? (numberOfTrials !== '0' &&
-                                    finichChkVal !== 'N' &&
-                                    answerChk === question.answer) ||
-                                  (finichChkVal !== 'N' &&
-                                    answerChk === question.answer) ||
-                                  (finichChkVal !== 'N' &&
-                                    correctArea === 'M' &&
-                                    correctMultiArea === 'Y')
-                                  ? 'exact-answer'
-                                  : 'wrong-answer'
-                                : ''
-                            }`}
+                            className={`ol-title ${this.onSetScoring(
+                              question.questionType,
+                              question.answer,
+                              numberOfTrials,
+                              finichChkVal,
+                              answerChk,
+                              correctArea,
+                              correctMultiArea
+                            )}`}
                           >
                             {question.direction}
                             <span className="q-score">
@@ -357,22 +388,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                           </div>
                         ) : (
                           <div
-                            className={`ol-title ${
-                              question.questionType !==
-                                QuestionType.ShortAnswer &&
-                              question.questionType !== QuestionType.Essay
-                                ? (numberOfTrials !== '0' &&
-                                    finichChkVal !== 'N' &&
-                                    answerChk === question.answer) ||
-                                  (finichChkVal !== 'N' &&
-                                    answerChk === question.answer) ||
-                                  (finichChkVal !== 'N' &&
-                                    correctArea === 'M' &&
-                                    correctMultiArea === 'Y')
-                                  ? 'exact-answer'
-                                  : 'wrong-answer'
-                                : ''
-                            }`}
+                            className={`ol-title ${this.onSetScoring(
+                              question.questionType,
+                              question.answer,
+                              numberOfTrials,
+                              finichChkVal,
+                              answerChk,
+                              correctArea,
+                              correctMultiArea
+                            )}`}
                             dangerouslySetInnerHTML={{
                               __html: `${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`,
                             }}
