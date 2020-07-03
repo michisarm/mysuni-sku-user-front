@@ -223,8 +223,8 @@ class LectureCardContainer extends Component<Props, State> {
           .removeStudent(student.rollBookId)
           .then(() => this.setState({ rollBook }, this.onApplyReference));
       } else {
-        // 과정 등록
-        this.getFreeOfChargeOk();
+        // 과정 등록 flow api 호출
+        this.getFreeOfChargeOk(rollBook);
 
         studentService!
           .removeStudent(student.rollBookId)
@@ -241,7 +241,7 @@ class LectureCardContainer extends Component<Props, State> {
       this.setState({ rollBook }, this.onApplyReference);
     } else {
       // 과정 등록
-      this.getFreeOfChargeOk();
+      this.getFreeOfChargeOk(rollBook);
 
       // 수강신청(false), 승인 체크(false)
       this.setState({ rollBook }, this.onApplyReferenceEmpty);
@@ -685,10 +685,10 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   // 무료과정 등록
-  getFreeOfChargeOk() {
+  getFreeOfChargeOk(rollBook: RollBookModel) {
     //
     const { studentCdo, student } = this.props;
-    const { rollBook } = this.state;
+    // const { rollBook } = this.state;
     let proposalState = studentCdo.proposalState;
 
     if (
@@ -1193,6 +1193,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     return (
       <LectureCardContentWrapperView>
+        {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
         <LectureSubInfo
           required={viewObject.required}
           level={viewObject.difficultyLevel}
