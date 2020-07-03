@@ -117,33 +117,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { questions } = surveyForm!;
     const { answerMap } = answerSheetService!;
     let rtn = true;
-    if (questions && questions.length) {
-      questions.map(question => {
-        const answer =
-          answerMap.get(question.sequence.toSequenceString()) ||
-          new AnswerItemModel();
-        const answerItems = question.answerItems;
-        // 필수체크 아니고 전체설문 응답으로 바꾸면 optional 풀어
-        if (!question.optional) {
-          switch (question.questionItemType) {
-            case QuestionItemType.Choice:
-              if (answerItems instanceof ChoiceQuestionItems) {
-                if (answer.itemNumbers.length === 0) rtn = false;
-                if (answerItems.multipleChoice) {
-                  if (answer.itemNumbers.length < 2) rtn = false;
-                }
-              }
-              break;
-            case QuestionItemType.Criterion: // 척도? 가 뭐냐.. 이거 어떻게 쓰는거야 ㅡㅡ;
-              if (answer.criteriaItem!) rtn = false;
-              break;
-            case QuestionItemType.Essay:
-              if (answer.sentence === '') rtn = false;
-              break;
-          }
-        }
-      });
-    }
     return rtn;
   }
 
