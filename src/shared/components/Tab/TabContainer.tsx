@@ -93,9 +93,9 @@ class TabContainer extends Component<Props, State> {
     this.setState({ activeName: tab.name });
 
     const routePath = onChangeTab!(tab);
-    const path = `${window.location.origin}${routePath}`;
-
-    this.publishViewEvent(menu, path);
+    if(routePath) this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
+    
+    else this.publishViewEvent(menu);
   }
 
   findPageName() {
