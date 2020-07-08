@@ -1193,37 +1193,6 @@ class LectureCardContainer extends Component<Props, State> {
 
     return (
       <LectureCardContentWrapperView>
-        {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
-        <LectureSubInfo
-          required={viewObject.required}
-          level={viewObject.difficultyLevel}
-          clazz={{
-            learningTime: viewObject.learningTime,
-            capacity: typeViewObject ? typeViewObject.capacity : 0,
-            cubeType,
-            passedStudentCount: viewObject.rollBooksPassedStudentCount,
-            studentCount: viewObject.rollBooksStudentCount,
-          }}
-          operator={{
-            instructor: viewObject.instructorName,
-            name: viewObject.operatorName,
-            company: viewObject.operatorCompany,
-            email: viewObject.operatorEmail,
-          }}
-          state={viewObject.state}
-          mainAction={this.getMainAction()}
-          subActions={this.getSubActions()}
-          onCancel={this.getOnCancel()}
-          onBookmark={
-            inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark
-          }
-          onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
-          // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-          /* onDownloadReport={
-             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
-               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
-           }*/
-        />
         {/* 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon */}
         {openDownloadModal && (
           <OverviewField.FileDownloadPop
@@ -1282,6 +1251,38 @@ class LectureCardContainer extends Component<Props, State> {
           />
         )}
         {children}
+        {/* 구조상 버튼을 가려서 children 아래로 이동 */}
+        {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
+        <LectureSubInfo
+          required={viewObject.required}
+          level={viewObject.difficultyLevel}
+          clazz={{
+            learningTime: viewObject.learningTime,
+            capacity: typeViewObject ? typeViewObject.capacity : 0,
+            cubeType,
+            passedStudentCount: viewObject.rollBooksPassedStudentCount,
+            studentCount: viewObject.rollBooksStudentCount,
+          }}
+          operator={{
+            instructor: viewObject.instructorName,
+            name: viewObject.operatorName,
+            company: viewObject.operatorCompany,
+            email: viewObject.operatorEmail,
+          }}
+          state={viewObject.state}
+          mainAction={this.getMainAction()}
+          subActions={this.getSubActions()}
+          onCancel={this.getOnCancel()}
+          onBookmark={
+            inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark
+          }
+          onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
+          // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+          /* onDownloadReport={
+             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+           }*/
+        />
         {viewObject && viewObject.tabState === 'list' && (
           <LectureExam
             onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
