@@ -98,7 +98,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const initialLimit = pageNo.current * PAGE_SIZE;
     pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
 
-    findLectures();
+    findLectures(true);
 
     // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
     return () => {
@@ -159,29 +159,29 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
     }
 
-    findLectures();
+    findLectures(match.params.pageNo === '1');
 
-  }, [order, match.params.pageNo, yPos]);
+  }, [order, match.params.pageNo]);
 
-  const findLectures = () => {
+  const findLectures = (clear: boolean) => {
     //
     switch (contentType) {
       case ContentType.Required:
-        if (match.params.pageNo === '1') { lectureService!.clearLectures(); }
+        if (clear) { lectureService!.clearLectures(); }
         findRequiredLectures(getPageNo() - 1);
         break;
 
       case ContentType.New:
-        if (match.params.pageNo === '1') { newLectureService!.clearLectures(); }
+        if (clear) { newLectureService!.clearLectures(); }
         findNewLectures(getPageNo() - 1);
         break;
 
       case ContentType.Popular:
-        if (match.params.pageNo === '1') { popularLectureService!.clearLectures(); }
+        if (clear) { popularLectureService!.clearLectures(); }
         findPopularLectures(getPageNo() - 1);
         break;
       case ContentType.Recommend:
-        if (match.params.pageNo === '1') { recommendLectureService!.clearLectures(); }
+        if (clear) { recommendLectureService!.clearLectures(); }
         findRecommendLectures(getPageNo() - 1);
         break;
     }
