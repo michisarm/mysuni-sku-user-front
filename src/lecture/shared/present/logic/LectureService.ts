@@ -38,10 +38,12 @@ class LectureService {
   // @observable
   // _recommendLectures: RecommendLectureRdo[] = [];
 
+  // 추천과정 리스트
   @observable
   _recommendLectureListRdo: RecommendLectureListRdo = new RecommendLectureListRdo();
 
 
+  // 추천과정
   @observable
   recommendLecture: RecommendLectureRdo = new RecommendLectureRdo();
 
@@ -51,6 +53,7 @@ class LectureService {
   @observable
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
+  // 권장과정
   @observable
   requiredLecturesCount: number = 0;
 
@@ -63,7 +66,8 @@ class LectureService {
   @computed
   get lectures(): LectureModel[] {
     //
-    return (this._lectures as IObservableArray).peek();
+    const lectures = this._lectures as IObservableArray;
+    return lectures.peek();
   }
 
   @computed
@@ -127,11 +131,29 @@ class LectureService {
     return lectureOffsetElementList;
   }
 
+  // 권장과정
   @action
-  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = []) {
+  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], fromMain: boolean = false) {
     //
     const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+
+    // use session storage : modified by JSM
+    if (fromMain) {
+      window.sessionStorage.setItem('RequiredLearningList', JSON.stringify(lectureOffsetElementList));
+    }
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+
+    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    return lectureOffsetElementList;
+  }
+
+  // use session storage : modified by JSM
+  @action
+  async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
+    //
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(lectures);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
 

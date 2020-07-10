@@ -29,6 +29,16 @@ class LectureFilterRdoModel {
       channelIds,
     });
   }
+
+  static newLectures(limit: number, offset: number, order: OrderByType=OrderByType.Time, channelIds: string[] = []) {
+    //
+    return new LectureFilterRdoModel({
+      orderBy: order,
+      limit,
+      offset,
+      channelIds,
+    });
+  }
 }
 
 decorate(LectureFilterRdoModel, {

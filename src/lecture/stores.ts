@@ -11,6 +11,9 @@ import LectureCountService from './category/present/logic/LectureCountService';
 import AnswerSheetService from '../survey/answer/present/logic/AnswerSheetService';
 import SurveyCaseService from '../survey/event/present/logic/SurveyCaseService';
 import SurveyFormService from '../survey/form/present/logic/SurveyFormService';
+import NewLectureService from './shared/present/logic/NewLectureService';
+import PopularLectureService from './shared/present/logic/PopularLectureService';
+import RecommendLectureService from './shared/present/logic/RecommendLectureService';
 
 
 export default {
@@ -27,11 +30,23 @@ export default {
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
   },
+  newLecture: {
+    newLectureService: NewLectureService.instance,
+  },
+  popularLecture: {
+    popularLectureService: PopularLectureService.instance,
+  },
+  recommendLecture: {
+    recommendLectureService: RecommendLectureService.instance,
+  },
 };
 
 export {
   LectureCardService,
   LectureService,
+  NewLectureService,
+  PopularLectureService,
+  RecommendLectureService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,

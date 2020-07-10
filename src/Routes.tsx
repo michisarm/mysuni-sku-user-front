@@ -13,6 +13,8 @@ const MyTrainingRoutes = lazy(() => import('./myTraining/Routes'));
 const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
 
+const CertificationRoutes = lazy(() => import('./certification/Routes'));
+
 
 class Routes extends PureComponent {
   //
@@ -30,6 +32,7 @@ class Routes extends PureComponent {
                 render={() => (
                   <AppLayout>
                     <Switch>
+                      <Route path="/certification" component={CertificationRoutes} />
                       <Route path="/personalcube" component={PersonalCubeRoutes} />
                       <Route path="/lecture" component={LectureRoutes} />
                       <Route path="/my-training" component={MyTrainingRoutes} />

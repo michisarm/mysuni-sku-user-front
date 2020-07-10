@@ -1,6 +1,6 @@
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { CubeType } from 'shared/model';
+import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
@@ -58,10 +58,25 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
+  async findAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = [], fromMain: boolean = false) {
     //
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
+
+    // use session storage : modified by JSM
+    if (fromMain) {
+      window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
+    }
+
+    runInAction(() => this._myTrainings = offsetList.results);
+    return offsetList;
+  }
+
+  // use session storage : modified by JSM
+  @action
+  async setMyTrainingsWithState(lectures: OffsetElementList<MyTrainingModel>) {
+    //
+    const offsetList = lectures;
 
     runInAction(() => this._myTrainings = offsetList.results);
     return offsetList;

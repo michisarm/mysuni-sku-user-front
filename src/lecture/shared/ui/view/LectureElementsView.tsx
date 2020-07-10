@@ -27,15 +27,17 @@ interface FieldProps {
   text: string,
   bold?: boolean,
   subField?: React.ReactNode,
+  children?: React.ReactNode
 }
 
-export const Field = ({ icon, text, bold, subField }: FieldProps) => (
+export const Field = ({ icon, text, bold, subField, children }: FieldProps) => (
   <div className="li">
     <Label className={`onlytext ${bold ? 'bold' : ''}`}>
       <Icon className={icon} />
       <span>{text}</span>
     </Label>
     {subField}
+    {children}
   </div>
 );
 

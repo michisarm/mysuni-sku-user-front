@@ -26,7 +26,7 @@ interface State {
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    id: 'djpaek@sk.com',
+    id: 'skcc.hug01@sk.com',
   };
 
   // TODO: 삭제해야
@@ -36,7 +36,7 @@ class BreadcrumbView extends Component<Props, State> {
     postData.append('grant_type', 'password');
     postData.append('scope', 'client');
     postData.append('username', this.state.id);
-    postData.append('password', 'SKCC.07874');
+    postData.append('password', '1');
 
     const config = {
       headers: {
