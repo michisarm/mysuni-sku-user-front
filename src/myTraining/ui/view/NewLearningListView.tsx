@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {runInAction} from 'mobx';
 import {RouteComponentProps, withRouter} from 'react-router';
@@ -49,7 +49,9 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const lectures = useRef<LectureModel[] | null>(null);
   const curOrder = useRef('');  // 컴포넌트 렌더링에 관여하지 않는다.
   const pageNo = useRef(1);
-  const yPos = useRef(0);
+
+  // const yPos = useRef(0);
+  const [yPos, setYPos] = useState(0);
 
   const fromMain = useRef(false);
   const refresh = useRef(false);
@@ -126,20 +128,20 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     if (fromMain.current) {
       fromMain.current = false;
       window.sessionStorage.setItem('from_main', '');
-      yPos.current = 0;
+      setYPos(0);
       return; // () => {};
     }
     // Refresh 처리
     else if (refresh.current) {
       refresh.current = false;
-      yPos.current = 0;
+      setYPos(0);
       return;
     }
     // 상세보기 후 히스토리백 원상복귀
     else if (fromBack.current) {
       fromBack.current = false;
       const ypos = (window.sessionStorage.getItem('y_pos'));
-      yPos.current = ypos && ypos.length > 0 ? parseInt(ypos) : 0;
+      setYPos(ypos && ypos.length > 0 ? parseInt(ypos) : 0);
       return;
     }
 
@@ -152,7 +154,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
         // return () => {};
       }
       curOrder.current = order;
-      yPos.current = 0;
+      setYPos(0);
       window.scrollTo(0, 0);
     }
     // Refresh : 같은 페이지
@@ -186,7 +188,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
         findRecommendLectures(getPageNo() - 1);
         break;
     }
-  }, [order, match.params.pageNo]);
+  }, [order, match.params.pageNo, yPos]);
 
   const getPageNo = () => {
     return parseInt(match.params.pageNo, 10);
@@ -282,7 +284,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   const onClickSeeMore = () => {
     //
-    yPos.current = window.scrollY;
+    setYPos(window.scrollY);
     history.replace(routePaths.currentPage(getPageNo() + 1));
   };
 
@@ -320,7 +322,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   };
 
   const setScrollY = () => {
-    runInAction(() => window.scrollTo(0, yPos.current));
+    runInAction(() => window.scrollTo(0, yPos));
   };
 
   return (
