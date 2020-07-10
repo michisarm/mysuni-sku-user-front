@@ -1,25 +1,25 @@
+import React, {useEffect} from 'react';
+import {mobxHelper, reactAlert} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router';
+import {patronInfo} from '@nara.platform/dock';
 
-import React, { useEffect } from 'react';
-import {  mobxHelper, reactAlert } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
-
-import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
-import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
+import {Button, Icon} from 'semantic-ui-react';
+import {ActionLogService} from 'shared/stores';
+import {ReviewService} from '@nara.drama/feedback';
+import {CubeType} from 'shared/model';
+import {NoSuchContentPanel} from 'shared';
 
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
-import { LectureModel, LectureServiceType } from 'lecture/model';
-import { LectureService } from 'lecture/stores';
-import { Lecture } from 'lecture';
-import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-import { ContentWrapper } from '../MyLearningContentElementsView';
+import {LectureModel, LectureServiceType} from 'lecture/model';
+import {LectureService} from 'lecture/stores';
+import {Lecture} from 'lecture';
+import {InMyLectureCdoModel, InMyLectureModel, MyTrainingModel} from 'myTraining/model';
+import {InMyLectureService} from 'myTraining/stores';
+import {ContentWrapper} from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
+import OrderByType from '../../../../lecture/model/OrderByType';
 
 
 interface Props extends RouteComponentProps {
@@ -59,7 +59,7 @@ const RequiredLearning : React.FC<Props> = (Props) => {
     }
 
     // 서버로부터 가져오기
-    lectureService!.findPagingRequiredLectures(PAGE_SIZE, 0, [], true);
+    lectureService!.findPagingRequiredLectures(PAGE_SIZE, 0, [], OrderByType.Time, true);
   };
 
   const getInMyLecture = (serviceId: string) => {

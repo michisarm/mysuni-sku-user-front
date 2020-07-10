@@ -195,6 +195,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
 

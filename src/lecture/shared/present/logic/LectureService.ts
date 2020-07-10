@@ -133,7 +133,7 @@ class LectureService {
 
   // 권장과정
   @action
-  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], fromMain: boolean = false) {
+  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], orderBy: OrderByType = OrderByType.Time, fromMain: boolean = false) {
     //
     const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
