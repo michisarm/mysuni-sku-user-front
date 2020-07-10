@@ -6,7 +6,7 @@ import {mobxHelper, reactAlert} from '@nara.platform/accent';
 import {patronInfo} from '@nara.platform/dock';
 import {ReviewService} from '@nara.drama/feedback';
 import {ActionLogService, PageService} from 'shared/stores';
-import {NewLectureService, PopularLectureService, RecommendLectureService} from 'lecture/stores';
+import {LectureService, NewLectureService, PopularLectureService, RecommendLectureService} from 'lecture/stores';
 import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
 import {InMyLectureCdoModel, InMyLectureModel} from 'myTraining/model';
 import {InMyLectureService} from 'myTraining/stores';
@@ -24,6 +24,7 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
+  lectureService?: LectureService,
   newLectureService?: NewLectureService,
   popularLectureService?: PopularLectureService,
   recommendLectureService?: RecommendLectureService,
@@ -39,7 +40,7 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 
 const NewLearningListView : React.FC<Props> = (Props) => {
   //
-  const { contentType, order, /*onChangeSharedCount,*/ pageService, reviewService, inMyLectureService, match, history,
+  const { contentType, order, pageService, reviewService, inMyLectureService, lectureService, match, history,
     newLectureService, popularLectureService, recommendLectureService, actionLogService, setNewOrder, showTotalCount } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
@@ -97,22 +98,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const initialLimit = pageNo.current * PAGE_SIZE;
     pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
 
-    switch (contentType) {
-      case ContentType.New:
-        newLectureService!.clearLectures();
-        findNewLectures(getPageNo() - 1);
-        break;
-
-      case ContentType.Popular:
-        popularLectureService!.clearLectures();
-        findPopularLectures(getPageNo() - 1);
-        break;
-
-      case ContentType.Recommend:
-        recommendLectureService!.clearLectures();
-        findRecommendLectures(getPageNo() - 1);
-        break;
-    }
+    findLectures();
 
     // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
     return () => {
@@ -173,7 +159,18 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
     }
 
+    findLectures();
+
+  }, [order, match.params.pageNo, yPos]);
+
+  const findLectures = () => {
+    //
     switch (contentType) {
+      case ContentType.Required:
+        if (match.params.pageNo === '1') { lectureService!.clearLectures(); }
+        findRequiredLectures(getPageNo() - 1);
+        break;
+
       case ContentType.New:
         if (match.params.pageNo === '1') { newLectureService!.clearLectures(); }
         findNewLectures(getPageNo() - 1);
@@ -188,10 +185,35 @@ const NewLearningListView : React.FC<Props> = (Props) => {
         findRecommendLectures(getPageNo() - 1);
         break;
     }
-  }, [order, match.params.pageNo, yPos]);
+  };
 
   const getPageNo = () => {
     return parseInt(match.params.pageNo, 10);
+  };
+
+  const findRequiredLectures = async (pageNo: number) => {
+    //
+    const page = pageService!.pageMap.get(PAGE_KEY);
+
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
+    const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
+
+    lectures.current = lectureService!.lectures;
+
+    let feedbackIds: string[] = [];
+
+    if (lectureOffsetList.results.length > 0) {
+      feedbackIds = lectureOffsetList.results.map((lecture: LectureModel) => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
+
+    inMyLectureService!.findAllInMyLectures();
+
+    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    // onChangeSharedCount(lectureOffsetList.totalCount);
+
+    showTotalCount(lectureOffsetList.totalCount);
+    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findNewLectures = async (pageNo?: number) => {
@@ -363,6 +385,7 @@ export default inject(mobxHelper.injectFrom(
   'shared.pageService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
+  'lecture.lectureService',
   'newLecture.newLectureService',
   'popularLecture.popularLectureService',
   'recommendLecture.recommendLectureService',

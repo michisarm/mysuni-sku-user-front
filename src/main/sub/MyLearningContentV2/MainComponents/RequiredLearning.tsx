@@ -86,6 +86,7 @@ const RequiredLearning : React.FC<Props> = (Props) => {
     //
     actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
+    window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.newLearningTab(CONTENT_TYPE));
   };
 
