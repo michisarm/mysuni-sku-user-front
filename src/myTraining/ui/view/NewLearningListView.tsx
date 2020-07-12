@@ -47,12 +47,11 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const PAGE_KEY = 'lecture.' + contentType;
   const PAGE_SIZE = 16;
 
+  const [yPos, setYPos] = useState(0);
+
   const lectures = useRef<LectureModel[] | null>(null);
   const curOrder = useRef('');  // 컴포넌트 렌더링에 관여하지 않는다.
   const pageNo = useRef(1);
-
-  // const yPos = useRef(0);
-  const [yPos, setYPos] = useState(0);
 
   const fromMain = useRef(false);
   const refresh = useRef(false);
@@ -137,7 +136,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
         match.params.pageNo = '1';
         pageNo.current = 1;
         history.replace(routePaths.currentPage(1));
-        // return () => {};
       }
       curOrder.current = order;
       setYPos(0);
@@ -161,7 +159,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
     findLectures(match.params.pageNo === '1');
 
-  }, [order, match.params.pageNo]);
+  }, [order, yPos, match.params.pageNo]);
 
   const findLectures = (clear: boolean) => {
     //
@@ -196,7 +194,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
+    // const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
 
     lectures.current = lectureService!.lectures;
@@ -211,10 +209,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findNewLectures = async (pageNo?: number) => {
@@ -237,16 +233,15 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findPopularLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(lectureFilterRdo);
 
@@ -262,16 +257,15 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findRecommendLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(lectureFilterRdo);
 
@@ -287,10 +281,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const getRating = (lecture: LectureModel) => {
@@ -344,10 +336,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     return page && page.pageNo < page.totalPages;
   };
 
-  const setScrollY = () => {
-    runInAction(() => window.scrollTo(0, yPos));
-  };
-
   return (
     <div className="section">
       { lectures && lectures.current && lectures.current.length > 0 ?
@@ -372,7 +360,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
             })}
           </Lecture.Group>
           { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
-          { setScrollY()}
+          { window.scrollTo(0, yPos) }
         </>
         :
         <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
