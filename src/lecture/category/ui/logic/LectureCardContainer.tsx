@@ -1250,7 +1250,6 @@ class LectureCardContainer extends Component<Props, State> {
             onClose={this.onLearningModalClose}
           />
         )}
-        {children}
         {/* 구조상 버튼을 가려서 children 아래로 이동 */}
         {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
         <LectureSubInfo
@@ -1283,6 +1282,10 @@ class LectureCardContainer extends Component<Props, State> {
                () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
            }*/
         />
+
+        {/* 200713 children-SubInfo 위치 변경 */}
+        {children}
+
         {viewObject && viewObject.tabState === 'list' && (
           <LectureExam
             onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
