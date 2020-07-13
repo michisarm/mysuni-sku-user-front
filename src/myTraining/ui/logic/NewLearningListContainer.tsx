@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
-import {inject, observer} from 'mobx-react';
 import {Radio, Segment} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
-import {mobxHelper} from '@nara.platform/accent';
-import {NewLectureService, PopularLectureService, RecommendLectureService} from '../../../lecture/stores';
 import {OrderType} from '../page/NewLearningPage';
 import NewLearningListView from '../view/NewLearningListView';
 
 
 interface Props extends RouteComponentProps {
-  newLectureService?: NewLectureService,
-  popularLectureService?: PopularLectureService,
-  recommendLectureService?: RecommendLectureService,
   contentType: string,
 }
 
@@ -36,11 +30,6 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
   const setNewOrder = (order: OrderType) => {
     window.sessionStorage.setItem('order_type', order);
     setOrder(order);
-  };
-
-  const moveToScrollY = (ypos: number) => {
-    //
-    window.scrollTo(0, ypos);
   };
 
   return (
@@ -68,7 +57,6 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
       </div>
 
       <NewLearningListView
-        moveToScrollY={moveToScrollY}
         setNewOrder={setNewOrder}
         showTotalCount={showTotalCount}
         contentType={contentType}

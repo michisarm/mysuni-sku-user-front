@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
-import {runInAction} from 'mobx';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {mobxHelper, reactAlert} from '@nara.platform/accent';
 import {patronInfo} from '@nara.platform/dock';
@@ -33,7 +32,6 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   order: string,
   totalCount: number,
 
-  moveToScrollY: (ypos: number) => void,
   setNewOrder: (order: OrderType) => void,
   showTotalCount: (count: number) => void,
 }
@@ -42,7 +40,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   //
   const { contentType, order, pageService, reviewService, inMyLectureService, lectureService,
     newLectureService, popularLectureService, recommendLectureService, actionLogService,
-    moveToScrollY, setNewOrder, showTotalCount, match, history } = Props;
+    setNewOrder, showTotalCount, match, history } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
   const PAGE_KEY = 'lecture.' + contentType;
@@ -335,6 +333,21 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
     return page && page.pageNo < page.totalPages;
+  };
+
+  const sleep = (milliseconds: number) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  };
+
+  const moveToScrollY = (ypos: number) => {
+    //
+    for (let i = 0; i < 100; i++) {
+      window.scrollTo(0, ypos);
+      if (window.scrollY === ypos) {
+        break;
+      }
+      sleep(20);
+    }
   };
 
   return (
