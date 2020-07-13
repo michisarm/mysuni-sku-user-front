@@ -33,15 +33,16 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   order: string,
   totalCount: number,
 
-  // onChangeSharedCount: (sharedCount: number) => void,
+  moveToScrollY: (ypos: number) => void,
   setNewOrder: (order: OrderType) => void,
   showTotalCount: (count: number) => void,
 }
 
 const NewLearningListView : React.FC<Props> = (Props) => {
   //
-  const { contentType, order, pageService, reviewService, inMyLectureService, lectureService, match, history,
-    newLectureService, popularLectureService, recommendLectureService, actionLogService, setNewOrder, showTotalCount } = Props;
+  const { contentType, order, pageService, reviewService, inMyLectureService, lectureService,
+    newLectureService, popularLectureService, recommendLectureService, actionLogService,
+    moveToScrollY, setNewOrder, showTotalCount, match, history } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
   const PAGE_KEY = 'lecture.' + contentType;
@@ -360,7 +361,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
             })}
           </Lecture.Group>
           { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
-          { window.scrollTo(0, yPos) }
+          { moveToScrollY(yPos) }
         </>
         :
         <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
