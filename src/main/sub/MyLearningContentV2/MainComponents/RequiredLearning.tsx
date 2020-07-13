@@ -49,7 +49,7 @@ const RequiredLearning : React.FC<Props> = (Props) => {
     lectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRequiredLearningList = window.sessionStorage.getItem('RequiredLearningList');
+    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RequiredLearningList');
     if (savedRequiredLearningList) {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       if (requiredMain.totalCount > PAGE_SIZE - 1) {

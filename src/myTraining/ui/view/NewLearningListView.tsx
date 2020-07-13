@@ -61,8 +61,12 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
 
+    fromMain.current = window.sessionStorage.getItem('from_main') !== null && window.sessionStorage.getItem('from_main') === 'TRUE';
+    refresh.current = window.sessionStorage.getItem('page_moved') !== null && window.sessionStorage.getItem('page_moved') !== 'TRUE';
+    fromBack.current = !fromMain.current && !refresh.current;
+
     // 메인 페이지로부터 이동
-    if (window.sessionStorage.getItem('from_main') === 'TRUE') {
+    if (fromMain.current) {
       fromMain.current = true;
       history.replace(routePaths.currentPage(1));
       match.params.pageNo = '1';
@@ -73,18 +77,18 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       curOrder.current = OrderType.New;
     }
     // 리프레시 시 호출됨
-    else if (window.sessionStorage.getItem('page_moved') !== 'TRUE') {
+    else if (refresh.current) {
+      refresh.current = true;
       curOrder.current = order;
       setNewOrder(order === OrderType.New ? OrderType.New : OrderType.Popular);
-      refresh.current = true;
     }
     // (인기순) 상세보기 페이지로부터 이동
-    else {
+    else {  // fromBack.current === true
+      fromBack.current = true;
       // y Position 설정
       const preOrder = window.sessionStorage.getItem('order_type');
       setNewOrder(preOrder === OrderType.New ? OrderType.New : OrderType.Popular);
       curOrder.current = preOrder!;
-      fromBack.current = true;
     }
 
     window.sessionStorage.setItem('page_moved', '');
@@ -113,7 +117,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       fromMain.current = false;
       window.sessionStorage.setItem('from_main', '');
       setYPos(0);
-      return; // () => {};
+      return;
     }
     // Refresh 처리
     else if (refresh.current) {
@@ -125,7 +129,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     else if (fromBack.current) {
       fromBack.current = false;
       const ypos = (window.sessionStorage.getItem('y_pos'));
-      setYPos(ypos && ypos.length > 0 ? parseInt(ypos) : 0);
+      setYPos(ypos && ypos != null && ypos.length > 0 ? parseInt(ypos) : 0);
       return;
     }
 
@@ -298,8 +302,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   const onClickSeeMore = () => {
     //
-    setYPos(window.scrollY);
     history.replace(routePaths.currentPage(getPageNo() + 1));
+    setYPos(window.scrollY);
   };
 
   const onViewDetail = (e: any, data: any) => {
@@ -314,6 +318,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     else if (model.serviceType === LectureServiceType.Card) {
       history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
+
+    window.sessionStorage.setItem('y_pos', window.scrollY.toString());
   };
 
   const onToggleBookmarkLecture = (lecture: LectureModel | InMyLectureModel) => {
@@ -337,17 +343,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   const sleep = (milliseconds: number) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
-  };
-
-  const moveToScrollY = (ypos: number) => {
-    //
-    for (let i = 0; i < 100; i++) {
-      window.scrollTo(0, ypos);
-      if (window.scrollY === ypos) {
-        break;
-      }
-      sleep(20);
-    }
   };
 
   return (
@@ -374,7 +369,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
             })}
           </Lecture.Group>
           { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
-          { moveToScrollY(yPos) }
+          { window.scrollTo(0, yPos) }
         </>
         :
         <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />

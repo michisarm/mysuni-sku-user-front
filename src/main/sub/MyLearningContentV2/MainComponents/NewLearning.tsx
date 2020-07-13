@@ -54,7 +54,7 @@ const NewLearning : React.FC<Props> = (Props) => {
     newLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedNewLearningList = window.sessionStorage.getItem('NewLearningList');
+    const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
     if (savedNewLearningList) {
       const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
       if (newMain.totalCount > PAGE_SIZE - 1) {

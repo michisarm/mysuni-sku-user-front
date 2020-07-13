@@ -51,7 +51,7 @@ const RecommendLearning : React.FC<Props> = (Props) => {
     recommendLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRecommendLearningList = window.sessionStorage.getItem('RecommendLearningList');
+    const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('RecommendLearningList');
     if (savedRecommendLearningList) {
       const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
       if (recommendMain.totalCount > PAGE_SIZE - 1) {
