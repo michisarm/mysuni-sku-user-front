@@ -52,7 +52,7 @@ class CarouselContainer extends Component<Props, State> {
           동기, 멘토와 함께하는 7일간의 온라인 Live 학습! 이제 시작해볼까요?
         </>
       ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-9ev/lecture-card/LECTURE-CARD-74j',
+      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-9ej/lecture-card/LECTURE-CARD-748',
       imageUrl: '/images/all/img_banner_newComers_20200713.jpg',
     },
     {
