@@ -1,12 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
-import {runInAction} from 'mobx';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {mobxHelper, reactAlert} from '@nara.platform/accent';
 import {patronInfo} from '@nara.platform/dock';
 import {ReviewService} from '@nara.drama/feedback';
 import {ActionLogService, PageService} from 'shared/stores';
-import {NewLectureService, PopularLectureService, RecommendLectureService} from 'lecture/stores';
+import {LectureService, NewLectureService, PopularLectureService, RecommendLectureService} from 'lecture/stores';
 import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
 import {InMyLectureCdoModel, InMyLectureModel} from 'myTraining/model';
 import {InMyLectureService} from 'myTraining/stores';
@@ -24,6 +23,7 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   pageService?: PageService,
   reviewService?: ReviewService,
   inMyLectureService?: InMyLectureService,
+  lectureService?: LectureService,
   newLectureService?: NewLectureService,
   popularLectureService?: PopularLectureService,
   recommendLectureService?: RecommendLectureService,
@@ -32,15 +32,15 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   order: string,
   totalCount: number,
 
-  // onChangeSharedCount: (sharedCount: number) => void,
   setNewOrder: (order: OrderType) => void,
   showTotalCount: (count: number) => void,
 }
 
 const NewLearningListView : React.FC<Props> = (Props) => {
   //
-  const { contentType, order, /*onChangeSharedCount,*/ pageService, reviewService, inMyLectureService, match, history,
-    newLectureService, popularLectureService, recommendLectureService, actionLogService, setNewOrder, showTotalCount } = Props;
+  const { contentType, order, pageService, reviewService, inMyLectureService, lectureService,
+    newLectureService, popularLectureService, recommendLectureService, actionLogService,
+    setNewOrder, showTotalCount, match, history } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
   const PAGE_KEY = 'lecture.' + contentType;
@@ -51,7 +51,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const lectures = useRef<LectureModel[] | null>(null);
   const curOrder = useRef('');  // 컴포넌트 렌더링에 관여하지 않는다.
   const pageNo = useRef(1);
-  // const yPos = useRef(0);
 
   const fromMain = useRef(false);
   const refresh = useRef(false);
@@ -62,8 +61,12 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
 
+    fromMain.current = window.sessionStorage.getItem('from_main') !== null && window.sessionStorage.getItem('from_main') === 'TRUE';
+    refresh.current = window.sessionStorage.getItem('page_moved') !== null && window.sessionStorage.getItem('page_moved') !== 'TRUE';
+    fromBack.current = !fromMain.current && !refresh.current;
+
     // 메인 페이지로부터 이동
-    if (window.sessionStorage.getItem('from_main') === 'TRUE') {
+    if (fromMain.current) {
       fromMain.current = true;
       history.replace(routePaths.currentPage(1));
       match.params.pageNo = '1';
@@ -74,18 +77,18 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       curOrder.current = OrderType.New;
     }
     // 리프레시 시 호출됨
-    else if (window.sessionStorage.getItem('page_moved') !== 'TRUE') {
+    else if (refresh.current) {
+      refresh.current = true;
       curOrder.current = order;
       setNewOrder(order === OrderType.New ? OrderType.New : OrderType.Popular);
-      refresh.current = true;
     }
     // (인기순) 상세보기 페이지로부터 이동
-    else {
+    else {  // fromBack.current === true
+      fromBack.current = true;
       // y Position 설정
       const preOrder = window.sessionStorage.getItem('order_type');
       setNewOrder(preOrder === OrderType.New ? OrderType.New : OrderType.Popular);
       curOrder.current = preOrder!;
-      fromBack.current = true;
     }
 
     window.sessionStorage.setItem('page_moved', '');
@@ -97,29 +100,13 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const initialLimit = pageNo.current * PAGE_SIZE;
     pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
 
-    switch (contentType) {
-      case ContentType.New:
-        newLectureService!.clearLectures();
-        findNewLectures(getPageNo() - 1);
-        break;
-
-      case ContentType.Popular:
-        popularLectureService!.clearLectures();
-        findPopularLectures(getPageNo() - 1);
-        break;
-
-      case ContentType.Recommend:
-        recommendLectureService!.clearLectures();
-        findRecommendLectures(getPageNo() - 1);
-        break;
-    }
+    findLectures(true);
 
     // 페이지 닫힐 때 호출됨: history back을 위한 y position 설정
     return () => {
       window.sessionStorage.setItem('page_moved', 'TRUE');
       window.sessionStorage.setItem('order_type', curOrder.current);
       window.sessionStorage.setItem('y_pos', window.scrollY.toString());
-      setYPos(window.scrollY);
     };
 
   }, []);
@@ -130,7 +117,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       fromMain.current = false;
       window.sessionStorage.setItem('from_main', '');
       setYPos(0);
-      return; // () => {};
+      return;
     }
     // Refresh 처리
     else if (refresh.current) {
@@ -142,7 +129,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     else if (fromBack.current) {
       fromBack.current = false;
       const ypos = (window.sessionStorage.getItem('y_pos'));
-      setYPos(ypos && ypos.length > 0 ? parseInt(ypos) : 0);
+      setYPos(ypos && ypos != null && ypos.length > 0 ? parseInt(ypos) : 0);
       return;
     }
 
@@ -152,7 +139,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
         match.params.pageNo = '1';
         pageNo.current = 1;
         history.replace(routePaths.currentPage(1));
-        // return () => {};
       }
       curOrder.current = order;
       setYPos(0);
@@ -174,25 +160,61 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
     }
 
+    findLectures(match.params.pageNo === '1');
+
+  }, [order, yPos, match.params.pageNo]);
+
+  const findLectures = (clear: boolean) => {
+    //
+    const pgNo = getPageNo() - 1;
     switch (contentType) {
+      case ContentType.Required:
+        if (clear) { lectureService!.clearLectures(); }
+        findRequiredLectures(pgNo);
+        break;
+
       case ContentType.New:
-        if (match.params.pageNo === '1') { newLectureService!.clearLectures(); }
-        findNewLectures(getPageNo() - 1);
+        if (clear) { newLectureService!.clearLectures(); }
+        findNewLectures(pgNo);
         break;
 
       case ContentType.Popular:
-        if (match.params.pageNo === '1') { popularLectureService!.clearLectures(); }
-        findPopularLectures(getPageNo() - 1);
+        if (clear) { popularLectureService!.clearLectures(); }
+        findPopularLectures(pgNo);
         break;
       case ContentType.Recommend:
-        if (match.params.pageNo === '1') { recommendLectureService!.clearLectures(); }
-        findRecommendLectures(getPageNo() - 1);
+        if (clear) { recommendLectureService!.clearLectures(); }
+        findRecommendLectures(pgNo);
         break;
     }
-  }, [order, yPos, match.params.pageNo]);
+  };
 
   const getPageNo = () => {
     return parseInt(match.params.pageNo, 10);
+  };
+
+  const findRequiredLectures = async (pageNo: number) => {
+    //
+    const page = pageService!.pageMap.get(PAGE_KEY);
+
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
+    // const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
+    const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
+
+    lectures.current = lectureService!.lectures;
+
+    let feedbackIds: string[] = [];
+
+    if (lectureOffsetList.results.length > 0) {
+      feedbackIds = lectureOffsetList.results.map((lecture: LectureModel) => lecture.reviewId);
+      reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
+    }
+
+    inMyLectureService!.findAllInMyLectures();
+
+    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+
+    showTotalCount(lectureOffsetList.totalCount);
   };
 
   const findNewLectures = async (pageNo?: number) => {
@@ -215,16 +237,15 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findPopularLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(lectureFilterRdo);
 
@@ -240,16 +261,15 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const findRecommendLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
+    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(lectureFilterRdo);
 
@@ -265,10 +285,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     inMyLectureService!.findAllInMyLectures();
 
     pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-    // onChangeSharedCount(lectureOffsetList.totalCount);
 
     showTotalCount(lectureOffsetList.totalCount);
-    // setLectureCnt(lectureOffsetList.results.length);
   };
 
   const getRating = (lecture: LectureModel) => {
@@ -285,8 +303,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   const onClickSeeMore = () => {
     //
-    setYPos(window.scrollY);
     history.replace(routePaths.currentPage(getPageNo() + 1));
+    setYPos(window.scrollY);
   };
 
   const onViewDetail = (e: any, data: any) => {
@@ -301,6 +319,8 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     else if (model.serviceType === LectureServiceType.Card) {
       history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
     }
+
+    window.sessionStorage.setItem('y_pos', window.scrollY.toString());
   };
 
   const onToggleBookmarkLecture = (lecture: LectureModel | InMyLectureModel) => {
@@ -320,10 +340,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
     return page && page.pageNo < page.totalPages;
-  };
-
-  const setScrollY = () => {
-    runInAction(() => window.scrollTo(0, yPos));
   };
 
   return (
@@ -364,6 +380,7 @@ export default inject(mobxHelper.injectFrom(
   'shared.pageService',
   'shared.reviewService',
   'myTraining.inMyLectureService',
+  'lecture.lectureService',
   'newLecture.newLectureService',
   'popularLecture.popularLectureService',
   'recommendLecture.recommendLectureService',

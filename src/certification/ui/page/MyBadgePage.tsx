@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import React, {useEffect, useState} from 'react';
+import {mobxHelper} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps, withRouter} from 'react-router';
 
 import {ActionLogService} from 'shared/stores';
 import {ContentLayout, Tab, TabItemModel} from 'shared';
@@ -10,19 +10,14 @@ import MyBadgeContentType from '../model/MyBadgeContentType';
 
 import AllBadgeListContainer from '../logic/AllBadgeListContainer';
 import EarnedBadgeListContainer from '../logic/EarnedBadgeListContainer';
+import BadgeService from '../../present/logic/BadgeService';
 
 
-interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService
-}
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  actionLogService?: ActionLogService,
+  badgeService?: BadgeService,
 
-interface State {
-  subBreadcrumb: string
-}
-
-interface RouteParams {
-  tab: string
-  pageNo: string
+  profileMemberName: string,
 }
 
 enum SubBreadcrumb {
@@ -31,39 +26,31 @@ enum SubBreadcrumb {
   EarnedBadgeList = 'My Badge',
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
-@observer
-@reactAutobind
-class MyBadgePage extends Component<Props, State> {
+const MyBadgePage : React.FC<Props> = (Props) => {
   //
-  state = {
-    subBreadcrumb: SubBreadcrumb.AllBadgeList
-  };
+  const { badgeService, profileMemberName, history, match } = Props;
 
+  const { params } = match;
 
-  componentDidMount(): void {
+  const [subBreadcrumb, setSubBreadcrumb] = useState(SubBreadcrumb.AllBadgeList);
+
+  // lectureService 변경  실행
+  useEffect(() => {
     //
-    this.setSubBreadcrumb();
-  }
+    setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+  }, []);
 
-  componentDidUpdate(prevProps: Readonly<Props>): void {
+  useEffect(() => {
     //
-    if (prevProps.location.key !== this.props.location.key) {
-      this.setSubBreadcrumb();
+    if (subBreadcrumb !== match.params.tab) {
+      setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
     }
-  }
 
-  setSubBreadcrumb() {
-    //
-    const { match } = this.props;
+    badgeService?.getCountOfBadges();
 
-    this.setState({
-      subBreadcrumb: (SubBreadcrumb as any)[match.params.tab] || '',
-    });
-  }
+  }, [match.params.tab]);
 
-
-  getTabs() {
+  const getTabs = () => {
     //
     return [
       {
@@ -71,12 +58,12 @@ class MyBadgePage extends Component<Props, State> {
         item: (
           <>
             Badge List
-            <span className="count">+24</span>
+            <span className="count">{badgeService?.totalCount}</span>
           </>
         ),
         render: () => (
           <>
-            <AllBadgeListContainer/>
+            <AllBadgeListContainer badgeCount={badgeService?.totalCount} />
           </>
         )
       },
@@ -85,7 +72,7 @@ class MyBadgePage extends Component<Props, State> {
         item: (
           <>
             도전중 Badge
-            <span className="count">+24</span>
+            <span className="count">{badgeService?.challengingCount}</span>
           </>
         ),
         render: () => (
@@ -99,43 +86,42 @@ class MyBadgePage extends Component<Props, State> {
         item: (
           <>
             My Badge
-            <span className="count">+24</span>
+            <span className="count">{badgeService?.earnedCount}</span>
           </>
         ),
         render: () => (
-          <EarnedBadgeListContainer/>
+          <EarnedBadgeListContainer
+            profileMemberName={profileMemberName}
+            badgeCount={badgeService?.earnedCount}
+          />
         )
       }
     ];
-  }
+  };
 
+  const onChangeTab = (tab: TabItemModel) => {
+    history.push(routePaths.badgeTab(tab.name));
+  };
 
-  onChangeTab(tab: TabItemModel) {
-    //this.props.actionLogService?.registerClickActionLog({ subAction: (SubBreadcrumb as any)[tab.name] });
-    this.props.history.push(routePaths.badgeTab(tab.name));
-  }
+  return (
+    <ContentLayout
+      breadcrumb={[
+        { text: 'Certification'},
+        { text: subBreadcrumb },
+      ]}
+    >
 
-  render() {
-    //
-    const { params } = this.props.match;
-    const { subBreadcrumb } = this.state;
+      <Tab
+        tabs={getTabs()}
+        defaultActiveName={params.tab}
+        onChangeTab={onChangeTab}
+      />
+    </ContentLayout>
+  );
+};
 
-    return (
-      <ContentLayout
-        breadcrumb={[
-          { text: 'Certification'},
-          { text: subBreadcrumb },
-        ]}
-      >
+export default inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'badge.badgeService',
+))(withRouter(observer(MyBadgePage)));
 
-        <Tab
-          tabs={this.getTabs()}
-          defaultActiveName={params.tab}
-          onChangeTab={this.onChangeTab}
-        />
-      </ContentLayout>
-    );
-  }
-}
-
-export default MyBadgePage;
