@@ -47,3 +47,11 @@ spec:
             host: user-service
             port:
               number: 80
+    - match:
+        - uri:
+            prefix: /file
+        route:
+          - destination:
+              host: user-service
+              port:
+                number: 80
