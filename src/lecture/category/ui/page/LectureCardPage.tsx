@@ -677,11 +677,10 @@ class LectureCardPage extends Component<Props, State> {
       // 차수가 하나인 경우
       if (classrooms.length === 1) {
         classroom = classrooms[0];
-        // 20200714 e-learning 학습하기 버튼 완료후에도 보이게 변경
         // 수강신청 가능 유무(e-learnning case)
-        // if (!classroom.enrolling.enrollingAvailable) {
-        siteUrl = classroom.operation.siteUrl;
-        // }
+        if (!classroom.enrolling.enrollingAvailable) {
+          siteUrl = classroom.operation.siteUrl;
+        }
       }
       // 차수가 여러개인 경우
       else {
@@ -793,7 +792,11 @@ class LectureCardPage extends Component<Props, State> {
         .findIndex(round => round === studentJoin.round);
       if (index >= 0) {
         classroom = classrooms[index];
-        if (studentJoin.learningState === LearningState.Progress) {
+        // 20200714 e-learning 학습하기 버튼 완료후에도 보이게 변경
+        if (
+          studentJoin.learningState === LearningState.Progress ||
+          studentJoin.learningState === LearningState.Passed
+        ) {
           siteUrl = classrooms[index].operation.siteUrl;
         }
       }

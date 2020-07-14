@@ -426,7 +426,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (init) init();
   }
 
-  //
+  // 신청하기
   onClickEnrollment() {
     //
     const { typeViewObject } = this.props;
