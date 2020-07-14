@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { ActionType, State, Level } from '../../model';
@@ -17,33 +16,31 @@ import {
   Report,
 } from '../view/LectureSubInfoElementsView';
 
-
-
 interface Props {
   /** required stamp 여부 */
-  required?: boolean
+  required?: boolean;
   /** 빨간버튼 */
-  mainAction?: Action
+  mainAction?: Action;
   /** 파란버튼 */
-  subActions?: Action[]
+  subActions?: Action[];
   /** level */
-  level: Level
+  level: Level;
   /** 상태 */
-  state?: State
+  state?: State;
   /** 수강정보 */
-  clazz: Class
+  clazz: Class;
   /** 담당자 및 강사*/
-  operator: Operator
+  operator: Operator;
   /** 취소버튼 액션 */
-  onCancel?: () => void
+  onCancel?: () => void;
   /** 북마크 액션 */
-  onBookmark?: () => void
+  onBookmark?: () => void;
   /** 삭제 액션 */
-  onRemove?: () => void
+  onRemove?: () => void;
   /** 설문 액션*/
-  onSurvey?: () => void
+  onSurvey?: () => void;
   /** 과제 다운로드 액션*/
-  onDownloadReport?: () => void
+  onDownloadReport?: () => void;
 }
 
 @reactAutobind
@@ -64,8 +61,18 @@ class LectureSubInfoContainer extends Component<Props> {
   render() {
     //
     const {
-      required, mainAction, subActions, state, level, clazz, operator,
-      onCancel, onBookmark, onRemove, onSurvey, onDownloadReport,
+      required,
+      mainAction,
+      subActions,
+      state,
+      level,
+      clazz,
+      operator,
+      onCancel,
+      onBookmark,
+      onRemove,
+      onSurvey,
+      onDownloadReport,
     } = this.props;
     return (
       <div className="sub-info-wrap">
@@ -78,16 +85,16 @@ class LectureSubInfoContainer extends Component<Props> {
               onCancel={onCancel}
               state={state}
             />
+            {/* 레벨 */}
             <StateView state={state} />
             <LevelView level={level} />
+            {/* 학습시간 ~ 인원 */}
             <ClassView clazz={clazz} />
+            {/* 강사 담당자  */}
             <OperatorView operator={operator} />
           </div>
-
-          <FootButtons
-            onBookmark={onBookmark}
-            onRemove={onRemove}
-          />
+          {/* 스크랩 url 복사 */}
+          <FootButtons onBookmark={onBookmark} onRemove={onRemove} />
         </div>
         <Survey onSurvey={onSurvey} />
         <Report onDownloadReport={onDownloadReport} />
@@ -97,4 +104,3 @@ class LectureSubInfoContainer extends Component<Props> {
 }
 
 export default LectureSubInfoContainer;
-
