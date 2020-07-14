@@ -1,20 +1,33 @@
 
-import React from 'react';
+import React, {FunctionComponent} from 'react';
+import {Badge} from '../../shared/Badge';
 
-const BadgeListContainer: React.FC = () => {
+interface BadgeListContainerProps {
+  badges: any,
+  badgeStyle: string
+}
+
+
+const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) => {
   //
+  const { badges } = Props;
+
+
   return (
     <div className="badge-list">
       <ul>
-        <li>
-          <a href="#" className="badge s280 basic">
-            <span className="college">
-              <img src="/images/all/icon-chanel-64-px.svg" alt="" />
-            </span>
-            <span className="part">분야명</span>
-            <span className="title">뱃지명</span>
-          </a>
-        </li>
+        {badges.map( (badge: any, index: number) => {
+          return (
+            <li key={index}>
+              <Badge
+                badgeLevel={badge.difficultyLevel}
+                iconUrl={badge.iconUrl}
+                mainCategory={badge.mainCategoryName}
+                name={badge.name}
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

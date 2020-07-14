@@ -1,15 +1,20 @@
 
-import React, {useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {Select} from 'semantic-ui-react';
 
 import {ListPanelTopLine} from 'shared';
 
 import SelectOptions from '../model/SelectOptions';
 
+interface LineHeaderProps {
+  totalCount: number
+}
 
 
-const LineHeaderContainer: React.FC = () => {
+const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   //
+  const { totalCount } = Props;
+
   const [ sortOption, setSortOption ] = useState('All');
 
   const onChangeSorting = (e: any, data: any) => {
@@ -19,15 +24,17 @@ const LineHeaderContainer: React.FC = () => {
 
 
   return (
-    <ListPanelTopLine count={22}>
+    <ListPanelTopLine count={totalCount}>
       <div className="right-wrap">
-        <Select
-          className="s160 small-border"
-          placeholder="전체"
-          value={sortOption}
-          options={SelectOptions.difficultyLevel}
-          onChange={onChangeSorting}
-        />
+        { totalCount > 0 && (
+          <Select
+            className="s160 small-border"
+            placeholder="전체"
+            value={sortOption}
+            options={SelectOptions.difficultyLevel}
+            onChange={onChangeSorting}
+          />
+        )}
       </div>
     </ListPanelTopLine>
   );
