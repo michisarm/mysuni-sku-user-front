@@ -2,8 +2,8 @@ import {action, computed, IObservableArray, observable, runInAction} from 'mobx'
 import {autobind} from '@nara.platform/accent';
 import {OffsetElementList} from 'shared/model';
 import BadgeApi from '../apiclient/BadgeApi';
-import BadgeFilterRdoModel from "../../../badge/model/BadgeFilterRdoModel";
-import BadgeModel from "../../../badge/model/BadgeModel";
+import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
+import BadgeModel from '../../ui/model/BadgeModel';
 
 
 @autobind
@@ -24,16 +24,16 @@ class BadgeService {
   _totalCount: number = 0;
 
   @action
-  clearLectures() {
+  clearBadges() {
     //
     return runInAction(() => this._badge = []);
   }
 
   @action
-  async findPagingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
+  async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
     //
     // 신규과정 학습정보 가져오기
-    const response = await this.badgeApi.findBadges(badgeFilterRdo);
+    const response = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
     const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
 
     // use session storage : modified by JSM
@@ -48,9 +48,23 @@ class BadgeService {
     return badgeOffsetElementList;
   }
 
+  @action
+  async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
+    //
+    // 신규과정 학습정보 가져오기
+    const response = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
+    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
+    this._totalCount = badgeOffsetElementList.totalCount;
+
+    runInAction(() => this._badge = this._badge.concat(badgeOffsetElementList.results));
+    return badgeOffsetElementList;
+  }
+
   // use session storage : modified by JSM
   @action
-  async setPagingBadges(badge: OffsetElementList<BadgeModel>) {
+  async setPagingChallengingBadges(badge: OffsetElementList<BadgeModel>) {
     //
     const badgeOffsetElementList = new OffsetElementList<BadgeModel>(badge);
 
@@ -62,7 +76,7 @@ class BadgeService {
   }
 
   @computed
-  get newLectures() {
+  get badges() {
     //
     return (this._badge as IObservableArray).peek();
   }

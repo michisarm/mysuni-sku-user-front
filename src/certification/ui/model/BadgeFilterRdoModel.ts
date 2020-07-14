@@ -3,6 +3,7 @@ import { decorate, observable } from 'mobx';
 
 class BadgeFilterRdoModel {
   //
+  patronKey: string = '';
   categoryId: string = '';
   difficultyLevel: string = '';
   limit: number = 0;
@@ -15,9 +16,21 @@ class BadgeFilterRdoModel {
     }
   }
 
-  static new(categoryId: string, difficultyLevel: string, limit: number, offset: number) {
+  static challenging(patronKey: string, difficultyLevel: string, limit: number, offset: number) {
     //
     return new BadgeFilterRdoModel({
+      patronKey,
+      categoryId: '',
+      difficultyLevel,
+      limit,
+      offset,
+    });
+  }
+
+  static all(categoryId: string, difficultyLevel: string, limit: number, offset: number) {
+    //
+    return new BadgeFilterRdoModel({
+      patronKey: '',
       categoryId,
       difficultyLevel,
       limit,

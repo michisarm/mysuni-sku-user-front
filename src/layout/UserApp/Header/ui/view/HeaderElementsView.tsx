@@ -3,7 +3,6 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
-import personalCubePaths from 'personalcube/routePaths';
 import lecturePaths from 'lecture/routePaths';
 import myTrainingPaths from 'myTraining/routePaths';
 import certificationPaths from 'certification/routePaths';

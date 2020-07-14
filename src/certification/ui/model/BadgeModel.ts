@@ -1,7 +1,5 @@
 
 import { computed, decorate, observable } from 'mobx';
-import {CategoryModel} from "../../../shared/model";
-import {patronInfo} from "@nara.platform/dock/src/snap/snap";
 
 
 class BadgeModel {
@@ -11,6 +9,7 @@ class BadgeModel {
   name: string = '';
   iconUrl: string = '';
   autoIssued: boolean = false;
+
   certiAdminCategory: {
     certiAdminCategory: string,
     certiAdminCategoryName: string,
@@ -18,6 +17,7 @@ class BadgeModel {
     certiAdminCategory: '',
     certiAdminCategoryName:''
   };
+
   certiAdminSubcategory: {
     certiAdminSubcategory: string,
     certiAdminSubcategoryName: string,
