@@ -49,7 +49,7 @@ spec:
               number: 80
     - match:
         - uri:
-            prefix: /file
+            prefix: /files
         route:
           - destination:
               host: user-service

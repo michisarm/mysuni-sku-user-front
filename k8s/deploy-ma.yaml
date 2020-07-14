@@ -51,7 +51,7 @@ spec:
           - name: user-front-persistent-storage
             mountPath: /usr/share/nginx/html/profile
           - name: user-front-persistent-storage
-            mountPath: /usr/share/nginx/html/file
+            mountPath: /usr/share/nginx/html/files
           - mountPath: /etc/localtime
             name: timezone-config
       volumes:
