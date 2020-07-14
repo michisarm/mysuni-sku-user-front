@@ -1,11 +1,18 @@
 
 import React from 'react';
 
+import {NoSuchContentPanel} from 'shared';
+
 import BadgeCategoryContainer from './BadgeCategoryContainer';
 import LineHeaderContainer from './LineHeaderContainer';
 import BadgeListContainer from './BadgeListContainer';
 
-import {SeeMoreButton} from '../../shared';
+import {SeeMoreButton} from '../../shared/Badge';
+
+import BadgeStyle from '../model/BadgeStyle';
+
+// 샘플데이터
+import SampleBadge from '../model/SampleBadge';
 
 
 const AllBadgeListContainer: React.FC = () => {
@@ -18,13 +25,30 @@ const AllBadgeListContainer: React.FC = () => {
 
   return (
     <>
-      All Badge List
-      {/*<BadgeCategoryContainer/>*/}
-      {/*<LineHeaderContainer />*/}
-      {/*<BadgeListContainer/>*/}
-      {/*<SeeMoreButton*/}
-      {/*onClick={onClickSeeMore}*/}
-      {/*/>*/}
+      <BadgeCategoryContainer/>
+
+      <LineHeaderContainer
+        totalCount={SampleBadge.totalCount}
+      />
+
+      {SampleBadge.totalCount > 0 ? (
+        <>
+          {/*Badge List*/}
+          <BadgeListContainer
+            badges={SampleBadge.results}
+            badgeStyle={BadgeStyle.List}
+          />
+
+          < SeeMoreButton
+            onClick={onClickSeeMore}
+          />
+        </>
+      ) : (
+        <>
+          <NoSuchContentPanel message="등록된 Badge List가 없습니다."/>
+        </>
+      )
+      }
     </>
   );
 };
