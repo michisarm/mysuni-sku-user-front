@@ -4,7 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 // for Test by JSM
-import {badgeData, challengingBadgeData} from './badgeData';
+import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData} from './badgeData';
 import BadgeCountModel from '../../ui/model/BadgeCountModel';
 
 
@@ -31,6 +31,11 @@ class BadgeApi {
 
     // for Test by JSM : 테스트 후 지울 것
     return <OffsetElementList<BadgeModel>>(badgeData);
+  }
+
+  // for Test by JSM : 테스트 후 지울 것
+  findPagingMainChallengingBadges(inMyLectureRdo: BadgeFilterRdoModel) {
+    return <OffsetElementList<BadgeModel>>(mainBadgeData);
   }
 
   findPagingChallengingBadges(inMyLectureRdo: BadgeFilterRdoModel) {
@@ -65,7 +70,7 @@ class BadgeApi {
 
 
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(badgeData);
+    return <OffsetElementList<BadgeModel>>(myBadgeData);
   }
 
   getCountOfBadges() {
