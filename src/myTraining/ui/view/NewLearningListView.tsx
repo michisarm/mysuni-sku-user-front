@@ -166,24 +166,25 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   const findLectures = (clear: boolean) => {
     //
+    const pgNo = getPageNo() - 1;
     switch (contentType) {
       case ContentType.Required:
         if (clear) { lectureService!.clearLectures(); }
-        findRequiredLectures(getPageNo() - 1);
+        findRequiredLectures(pgNo);
         break;
 
       case ContentType.New:
         if (clear) { newLectureService!.clearLectures(); }
-        findNewLectures(getPageNo() - 1);
+        findNewLectures(pgNo);
         break;
 
       case ContentType.Popular:
         if (clear) { popularLectureService!.clearLectures(); }
-        findPopularLectures(getPageNo() - 1);
+        findPopularLectures(pgNo);
         break;
       case ContentType.Recommend:
         if (clear) { recommendLectureService!.clearLectures(); }
-        findRecommendLectures(getPageNo() - 1);
+        findRecommendLectures(pgNo);
         break;
     }
   };
@@ -339,10 +340,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const isContentMore = () => {
     const page = pageService!.pageMap.get(PAGE_KEY);
     return page && page.pageNo < page.totalPages;
-  };
-
-  const sleep = (milliseconds: number) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
   };
 
   return (

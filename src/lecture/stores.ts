@@ -31,7 +31,7 @@ export default {
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
   },
-  challengingBadge: {
+  badge: {
     badgeService: BadgeService.instance,
   },
   newLecture: {

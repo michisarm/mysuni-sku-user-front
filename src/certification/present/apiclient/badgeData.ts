@@ -3,7 +3,7 @@ import BadgeModel from '../../ui/model/BadgeModel';
 
 export const badgeData: OffsetElementList<BadgeModel> = {
   'empty': false,
-  'totalCount': 3,
+  'totalCount': 18,
   'results': [
     {
       'id': 1,
@@ -269,6 +269,7 @@ export const badgeData: OffsetElementList<BadgeModel> = {
       'challengeState': 'Challenged',
       'issueState': '',
     },
+    /*
     {
       'id': 13,
       'badgeId': 'BADGE-13',
@@ -335,29 +336,6 @@ export const badgeData: OffsetElementList<BadgeModel> = {
       'challengeState': 'Challenged',
       'issueState': '',
     },
-
-    {
-      'id': 15,
-      'badgeId': 'BADGE-15',
-      'name': 'Badge Name 15',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
-      'certiAdminCategory': {
-        'certiAdminCategory': '인증관리주체분류',
-        'certiAdminCategoryName': '인증관리주체명'
-      },
-      'certiAdminSubcategory': {
-        'certiAdminSubcategory': '인증관리주체하위분류',
-        'certiAdminSubcategoryName': '인증관리주체하위분류명'
-      },
-      'mainCategoryId': 'Category1',
-      'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
-    },
     {
       'id': 16,
       'badgeId': 'BADGE-16',
@@ -380,7 +358,6 @@ export const badgeData: OffsetElementList<BadgeModel> = {
       'challengeState': 'Challenged',
       'issueState': '',
     },
-
     {
       'id': 17,
       'badgeId': 'BADGE-16',
@@ -403,6 +380,29 @@ export const badgeData: OffsetElementList<BadgeModel> = {
       'challengeState': 'Challenged',
       'issueState': '',
     },
+    {
+      'id': 18,
+      'badgeId': 'BADGE-18',
+      'name': 'Badge Name 18',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
+      'difficultyLevel': 'Basic',
+      'learningCompleted': false,
+      'challengeState': 'Challenged',
+      'issueState': '',
+    },
+    */
   ]
 };
 

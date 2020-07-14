@@ -13,6 +13,7 @@ import BadgeModel from '../../../../certification/ui/model/BadgeModel';
 import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterRdoModel';
 import {Badge} from '../../../../certification/shared/Badge';
 
+
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
   badgeService?: BadgeService,
@@ -109,5 +110,5 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
 
 export default inject(mobxHelper.injectFrom(
   'shared.actionLogService',
-  'challengingBadge.badgeService',
+  'badge.badgeService',
 ))(withRouter(observer(ChallengingBadge)));
