@@ -9,6 +9,7 @@ import routePaths from '../../routePaths';
 import MyBadgeContentType from '../model/MyBadgeContentType';
 
 import AllBadgeListContainer from '../logic/AllBadgeListContainer';
+import ChallengingBadgeContainer from '../logic/ChallengingBadgeContainer';
 import EarnedBadgeListContainer from '../logic/EarnedBadgeListContainer';
 import BadgeService from '../../present/logic/BadgeService';
 
@@ -76,9 +77,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           </>
         ),
         render: () => (
-          <>
-            도전중 Badge List
-          </>
+          <ChallengingBadgeContainer/>
         )
       },
       {
