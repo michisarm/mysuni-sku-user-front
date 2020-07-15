@@ -51,7 +51,7 @@ class BadgeApi {
   findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      // patronKey: badgeFilterRdo.patronKey,
+      patronKey: badgeFilterRdo.patronKey,
       difficultyLevel: badgeFilterRdo.difficultyLevel,
       limit: badgeFilterRdo.limit,
       offset: badgeFilterRdo.offset,
@@ -67,7 +67,7 @@ class BadgeApi {
   findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      // patronKey: badgeFilterRdo.patronKey,
+      patronKey: badgeFilterRdo.patronKey,
       difficultyLevel: badgeFilterRdo.difficultyLevel,
       issueState: badgeFilterRdo.issueState,
       limit: badgeFilterRdo.limit,
