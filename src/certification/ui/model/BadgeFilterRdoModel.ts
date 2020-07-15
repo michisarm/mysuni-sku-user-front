@@ -1,9 +1,9 @@
 import { decorate, observable } from 'mobx';
-
+import { patronInfo } from '@nara.platform/dock';
 
 class BadgeFilterRdoModel {
   //
-  // strPatronKey: string = '';
+  patronKey: string = '';
   categoryId: string = '';
   difficultyLevel: string = '';
   limit: number = 0;
@@ -20,7 +20,7 @@ class BadgeFilterRdoModel {
   static all(categoryId: string, difficultyLevel: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      // strPatronKey: '',
+      patronKey: patronInfo.getPatronId()!,
       categoryId,
       difficultyLevel,
       limit,
@@ -32,7 +32,7 @@ class BadgeFilterRdoModel {
   static challenging(difficultyLevel: string, limit: number, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      // strPatronKey,
+      patronKey: patronInfo.getPatronId()!,
       categoryId: '',
       difficultyLevel,
       limit,
@@ -44,7 +44,7 @@ class BadgeFilterRdoModel {
   static earned(difficultyLevel: string, issueState: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      // strPatronKey,
+      patronKey: patronInfo.getPatronId()!,
       categoryId: '',
       difficultyLevel,
       limit,
