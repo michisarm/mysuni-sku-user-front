@@ -4,14 +4,14 @@ import {Badge} from '../../shared/Badge';
 
 interface BadgeListContainerProps {
   badges: any,
-  badgeStyle: string
+  badgeStyle: string,  // List: link, Detail: no link
+  badgeSize: string,   // Large, Small
 }
 
 
 const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) => {
   //
-  const { badges } = Props;
-
+  const { badges, badgeStyle, badgeSize } = Props;
 
   return (
     <div className="badge-list">
@@ -24,6 +24,8 @@ const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) =
                 iconUrl={badge.iconUrl}
                 mainCategory={badge.mainCategoryName}
                 name={badge.name}
+                badgeStyle={badgeStyle}
+                badgeSize={badgeSize}
               />
             </li>
           );

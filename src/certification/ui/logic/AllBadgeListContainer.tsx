@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {RouteComponentProps, withRouter} from 'react-router';
@@ -12,9 +12,11 @@ import LineHeaderContainer from './LineHeaderContainer';
 import BadgeListContainer from './BadgeListContainer';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
+import BadgeSize from '../model/BadgeSize';
 
 // 샘플데이터
-import SampleBadge from '../model/SampleBadge';
+import {badgeData} from '../../present/apiclient/badgeData';
+import {categoryData} from '../../present/apiclient/categoryData';
 
 
 
@@ -38,20 +40,39 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     alert('더보기');
   };
 
+  const [ categorySelection, setCategorySelection ] = useState();
+
+  const onClickBadgeCategory = (e: any, categoryId: any) => {
+
+    // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
+    if ( categorySelection === categoryId ) {
+      // 선택해제 및 전체보기
+      setCategorySelection('');
+    } else {
+      setCategorySelection(categoryId);
+    }
+  };
+
   return (
     <>
-      <BadgeCategoryContainer/>
-
-      <LineHeaderContainer
-        totalCount={SampleBadge.totalCount}
+      {/*Badge Category*/}
+      <BadgeCategoryContainer
+        categories={categoryData.results}
+        categorySelection={categorySelection}
+        onClickBadgeCategory={onClickBadgeCategory}
       />
 
-      {SampleBadge.totalCount > 0 ? (
+      <LineHeaderContainer
+        totalCount={badgeData.totalCount}
+      />
+
+      {badgeData.totalCount > 0 ? (
         <>
           {/*Badge List*/}
           <BadgeListContainer
-            badges={SampleBadge.results}
+            badges={badgeData.results}
             badgeStyle={BadgeStyle.List}
+            badgeSize={BadgeSize.Large}
           />
           < SeeMoreButton onClick={onClickSeeMore} />
         </>

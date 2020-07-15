@@ -10,6 +10,8 @@ import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {ContentWrapper} from '../../../main/sub/MyLearningContentV2/MyLearningContentElementsView';
 import {Badge, SeeMoreButton} from '../../shared/Badge';
 import {NoSuchContentPanel} from '../../../shared';
+import BadgeStyle from '../model/BadgeStyle';
+import BadgeSize from '../model/BadgeSize';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -99,6 +101,8 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
                     iconUrl={badge.iconUrl}
                     mainCategory={badge.mainCategoryName}
                     name={badge.name}
+                    badgeStyle={BadgeStyle.List}
+                    badgeSize={BadgeSize.Large}
                   />
                 </li>
               );
