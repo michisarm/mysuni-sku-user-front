@@ -7,11 +7,11 @@ import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
-import {ContentWrapper} from '../../../main/sub/MyLearningContentV2/MyLearningContentElementsView';
 import {Badge, SeeMoreButton} from '../../shared/Badge';
 import {NoSuchContentPanel} from '../../../shared';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import LineHeaderContainer from './LineHeaderContainer';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -31,6 +31,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageNo = useRef(1);
+  const difficultyLevel = useRef('');
 
   // // lectureService 변경  실행
   // useEffect(() => {
@@ -77,6 +78,10 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
     return parseInt(match.params.pageNo, 10);
   };
 
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    difficultyLevel.current = diffLevel;
+  };
+
   // see more button 클릭
   const onClickSeeMore = () => {
     //
@@ -89,8 +94,13 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   };
 
   return (
-    <ContentWrapper className="badge-scrolling">
-      {badges.length > 0 ?
+    <>
+      <LineHeaderContainer
+        totalCount={badgeService?.earnedCount}
+        onSelectDifficultyLevel={onSelectDifficultyLevel}
+      />
+
+      {badges.length > 0 ? (
         <div className="badge-list">
           <ul>
             {badges.map( (badge: any, index: number) => {
@@ -110,7 +120,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
           </ul>
           { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
         </div>
-        :
+      ) : (
         <NoSuchContentPanel message={(
           <>
             <div className="text">도전중인 Badge가 없습니다.<br/>등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
@@ -125,8 +135,8 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
           </>
         )}
         />
-    }
-    </ContentWrapper>
+      )}
+    </>
   );
 };
 

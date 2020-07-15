@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {RouteComponentProps, withRouter} from 'react-router';
@@ -15,9 +15,7 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 
 // 샘플데이터
-import {badgeData} from '../../present/apiclient/badgeData';
 import {categoryData} from '../../present/apiclient/categoryData';
-
 
 
 interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
@@ -30,9 +28,14 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { pageService, badgeService, badgeCount } = Props;
+  const { badges } = badgeService!;
 
   const CONTENT_TYPE = 'Badge';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
+
+  const [ categorySelection, setCategorySelection ] = useState();
+
+  const difficultyLevel = useRef('');
 
   // see more button 클릭
   const onClickSeeMore = () => {
@@ -40,10 +43,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     alert('더보기');
   };
 
-  const [ categorySelection, setCategorySelection ] = useState();
-
   const onClickBadgeCategory = (e: any, categoryId: any) => {
-
     // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
     if ( categorySelection === categoryId ) {
       // 선택해제 및 전체보기
@@ -51,6 +51,10 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     } else {
       setCategorySelection(categoryId);
     }
+  };
+
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    difficultyLevel.current = diffLevel;
   };
 
   return (
@@ -63,14 +67,15 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       />
 
       <LineHeaderContainer
-        totalCount={badgeData.totalCount}
+        totalCount={badgeService?.badgeCount}
+        onSelectDifficultyLevel={onSelectDifficultyLevel}
       />
 
-      {badgeData.totalCount > 0 ? (
+      {badges.length > 0 ? (
         <>
           {/*Badge List*/}
           <BadgeListContainer
-            badges={badgeData.results}
+            badges={badges}
             badgeStyle={BadgeStyle.List}
             badgeSize={BadgeSize.Large}
           />

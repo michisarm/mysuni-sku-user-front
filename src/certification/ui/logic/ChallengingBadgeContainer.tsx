@@ -1,34 +1,48 @@
 
-import React from 'react';
+import React, {useRef} from 'react';
+import {inject, observer} from 'mobx-react';
+import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
 import {Button, Icon} from 'semantic-ui-react';
-
+import {RouteComponentProps, withRouter} from 'react-router';
+import BadgeService from '../../present/logic/BadgeService';
+import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
 
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+''
 
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  badgeService?: BadgeService,
+  pageService?: PageService,
 
-// 샘플데이터
-import {challengingBadgeData} from '../../present/apiclient/badgeData';
+  badgeCount: number | undefined,
+}
 
-
-
-const ChallengingBadgeContainer: React.FC = () => {
+const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
+  const { badgeService, pageService, badgeCount, history, match, } = Props;
+  const { badges } = badgeService!;
+
+  const difficultyLevel = useRef('');
+
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    difficultyLevel.current = diffLevel;
+  };
 
   return (
     <>
       <LineHeaderContainer
-        totalCount={challengingBadgeData.totalCount}
+        totalCount={badgeService?.challengingCount}
+        onSelectDifficultyLevel={onSelectDifficultyLevel}
       />
 
-
-      {challengingBadgeData.totalCount > 0 ? (
+      {badges.length > 0 ? (
         <>
           <ChallengeBoxContainer
-            badges={challengingBadgeData.results}
+            badges={badges}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />
@@ -53,4 +67,7 @@ const ChallengingBadgeContainer: React.FC = () => {
   );
 };
 
-export default ChallengingBadgeContainer;
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+  'shared.pageService',
+))(withRouter(observer(ChallengingBadgeContainer)));

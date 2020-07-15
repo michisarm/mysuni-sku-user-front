@@ -21,7 +21,7 @@ class BadgeService {
   _badge: BadgeModel[] = [];
 
   @observable
-  _totalCount: number = 0;
+  _badgeCount: number = 0;
 
   @observable
   _challengingCount: number = 0;
@@ -44,7 +44,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
-      this._totalCount = badgeOffsetElementList.totalCount;
+      this._badgeCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
 
@@ -114,12 +114,12 @@ class BadgeService {
     const countInfo = await this.badgeApi.getCountOfBadges();
     runInAction(() => {
       if (countInfo && countInfo !== null) {
-        this._totalCount = countInfo.totalCount;
+        this._badgeCount = countInfo.totalCount;
         this._challengingCount = countInfo.challengedCount;
         this._earnedCount = countInfo.issuedCount;
       }
       else {
-        this._totalCount = 0;
+        this._badgeCount = 0;
         this._challengingCount = 0;
         this._earnedCount = 0;
       }
@@ -134,7 +134,7 @@ class BadgeService {
   async countTotalBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
     //
     const count = await this.badgeApi.getTotalBadgeCount(badgeFilterRdo);
-    runInAction(() => { this._totalCount = count && count !== null ? count : 0; });
+    runInAction(() => { this._badgeCount = count && count !== null ? count : 0; });
 
     return count;
   }
@@ -166,18 +166,18 @@ class BadgeService {
   }
 
   @computed
-  get totalCount() {
-    return this._totalCount;
+  get badgeCount() {
+    return this._badgeCount ? this._badgeCount : 0;
   }
 
   @computed
   get challengingCount() {
-    return this._challengingCount;
+    return this._challengingCount ? this._challengingCount : 0;
   }
 
   @computed
   get earnedCount() {
-    return this._earnedCount;
+    return this._earnedCount ? this._earnedCount : 0;
   }
 }
 

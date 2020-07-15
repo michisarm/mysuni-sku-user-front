@@ -6,27 +6,27 @@ import {ListPanelTopLine} from 'shared';
 
 import SelectOptions from '../model/SelectOptions';
 
-interface LineHeaderProps {
-  totalCount: number
-}
 
+interface LineHeaderProps {
+  totalCount: number | undefined,
+  onSelectDifficultyLevel: (level: string) => void,
+}
 
 const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   //
-  const { totalCount } = Props;
-
   const [ sortOption, setSortOption ] = useState('All');
+
+  const { totalCount, onSelectDifficultyLevel } = Props;
 
   const onChangeSorting = (e: any, data: any) => {
     if ( sortOption === data.value ) return;
-    setSortOption(data.value);
+    onSelectDifficultyLevel(data.value);
   };
 
-
   return (
-    <ListPanelTopLine count={totalCount}>
+    <ListPanelTopLine count={totalCount!}>
       <div className="right-wrap">
-        { totalCount > 0 && (
+        { totalCount! > 0 && (
           <Select
             className="s160 small-border"
             placeholder="전체"

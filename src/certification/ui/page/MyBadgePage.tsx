@@ -58,12 +58,12 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             Badge List
-            <span className="count">{badgeService?.totalCount}</span>
+            <span className="count">{badgeService?.badgeCount}</span>
           </>
         ),
         render: () => (
           <>
-            <AllBadgeListContainer badgeCount={badgeService?.totalCount} />
+            <AllBadgeListContainer badgeCount={badgeService?.badgeCount} />
           </>
         )
       },
