@@ -14,12 +14,14 @@ interface LineHeaderProps {
 
 const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   //
-  const [ sortOption, setSortOption ] = useState('All');
+  const [ sortOption, setSortOption ] = useState('');
 
   const { totalCount, onSelectDifficultyLevel } = Props;
 
   const onChangeSorting = (e: any, data: any) => {
     if ( sortOption === data.value ) return;
+
+    setSortOption(data.value);
     onSelectDifficultyLevel(data.value);
   };
 

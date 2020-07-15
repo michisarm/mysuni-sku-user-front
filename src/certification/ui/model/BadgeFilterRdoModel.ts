@@ -3,7 +3,7 @@ import { decorate, observable } from 'mobx';
 
 class BadgeFilterRdoModel {
   //
-  patronKey: string = '';
+  // strPatronKey: string = '';
   categoryId: string = '';
   difficultyLevel: string = '';
   limit: number = 0;
@@ -17,10 +17,10 @@ class BadgeFilterRdoModel {
     }
   }
 
-  static all(categoryId: string, difficultyLevel: string, limit: number, offset: number) {
+  static all(categoryId: string, difficultyLevel: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey: '',
+      // strPatronKey: '',
       categoryId,
       difficultyLevel,
       limit,
@@ -29,10 +29,10 @@ class BadgeFilterRdoModel {
     });
   }
 
-  static challenging(patronKey: string, difficultyLevel: string, limit: number, offset: number) {
+  static challenging(difficultyLevel: string, limit: number, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey,
+      // strPatronKey,
       categoryId: '',
       difficultyLevel,
       limit,
@@ -41,10 +41,10 @@ class BadgeFilterRdoModel {
     });
   }
 
-  static earned(patronKey: string, difficultyLevel: string, issueState: string, limit: number=0, offset: number=0) {
+  static earned(difficultyLevel: string, issueState: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey,
+      // strPatronKey,
       categoryId: '',
       difficultyLevel,
       limit,

@@ -1,5 +1,5 @@
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
@@ -12,6 +12,7 @@ import ChallengeBoxContainer from './ChallengeBoxContainer';
 
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import routePaths from "../../../personalcube/routePaths";
 ''
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -26,10 +27,30 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   const { badgeService, pageService, badgeCount, history, match, } = Props;
   const { badges } = badgeService!;
 
-  const difficultyLevel = useRef('');
+  const PAGE_KEY = 'badge.challenging';
+  const PAGE_SIZE = 12;
+
+  const pageKey = useRef<string>(PAGE_KEY);
+
+  const [difficultyLevel, setDifficultyLevel] = useState<string>('');
+
+  useEffect(() => {
+    //
+    pageKey.current = PAGE_KEY;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+  }, []);
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
-    difficultyLevel.current = diffLevel;
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 페이지키 재설정 및 초기화
+    pageKey.current = pageKey.current + '.' +  difficultyLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    //
+    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
   };
 
   return (

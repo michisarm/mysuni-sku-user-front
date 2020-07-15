@@ -51,7 +51,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
     //   }
     // }
 
-    badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('patronKey', 'Basic', PAGE_SIZE, 0), true);
+    badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0), true);
   };
 
   const onViewAll = () => {

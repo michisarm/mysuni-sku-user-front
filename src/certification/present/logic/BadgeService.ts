@@ -4,6 +4,7 @@ import {OffsetElementList} from 'shared/model';
 import BadgeApi from '../apiclient/BadgeApi';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
+import CategoryModel from '../../ui/model/CategoryModel';
 
 
 @autobind
@@ -18,6 +19,12 @@ class BadgeService {
   }
 
   @observable
+  _category: CategoryModel[] = [];
+
+  @observable
+  _categoryCount: number = 0;
+
+  @observable
   _badge: BadgeModel[] = [];
 
   @observable
@@ -28,6 +35,38 @@ class BadgeService {
 
   @observable
   _earnedCount: number = 0;
+
+  @action
+  clearCategories() {
+    //
+    return runInAction(() => this._category = []);
+  }
+
+  @action
+  async findAllCategories() {
+    //
+    // 모든 뱃지 정보 가져오기
+    const response = await this.badgeApi.findAllCategories();
+    const categoryOffsetElementList = new OffsetElementList<CategoryModel>(response);
+
+    categoryOffsetElementList.results = categoryOffsetElementList.results.map((category) => new CategoryModel(category));
+    runInAction(() => {
+      this._categoryCount = categoryOffsetElementList.totalCount;
+      this._category = this._category.concat(categoryOffsetElementList.results);
+    });
+
+    return categoryOffsetElementList;
+  }
+
+  @computed
+  get categories() {
+    return (this._category as IObservableArray).peek();
+  }
+
+  @computed
+  get categoryCount() {
+    return this._categoryCount ? this._categoryCount : 0;
+  }
 
   @action
   clearBadges() {

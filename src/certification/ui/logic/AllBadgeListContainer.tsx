@@ -1,11 +1,12 @@
-
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {NoSuchContentPanel} from 'shared';
+import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
+import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 
 import BadgeCategoryContainer from './BadgeCategoryContainer';
 import LineHeaderContainer from './LineHeaderContainer';
@@ -13,9 +14,6 @@ import BadgeListContainer from './BadgeListContainer';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-
-// 샘플데이터
-import {categoryData} from '../../present/apiclient/categoryData';
 
 
 interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
@@ -27,25 +25,85 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { pageService, badgeService, badgeCount } = Props;
-  const { badges } = badgeService!;
+  const { pageService, badgeService, badgeCount, history, match } = Props;
+  const { categories, badges } = badgeService!;
 
-  const CONTENT_TYPE = 'Badge';
+  const PAGE_KEY = 'badge.all';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
-  const [ categorySelection, setCategorySelection ] = useState();
+  const pageKey = useRef<string>('');
 
-  const difficultyLevel = useRef('');
+  const [categorySelection, setCategorySelection] = useState<string>('');
+  const [difficultyLevel, setDifficultyLevel] = useState<string>('');
+
+  useEffect(() => {
+    //
+    pageKey.current = PAGE_KEY;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
+
+    badgeService!.clearCategories();
+    badgeService!.findAllCategories();
+
+  }, []);
+
+  useEffect(() => {
+
+    const page = pageService!.pageMap.get(pageKey.current);
+
+    if (getPageNo() > 1) {
+      const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
+        page!.nextOffset + PAGE_SIZE : page!.nextOffset;
+      pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
+    }
+    else {
+      badgeService!.clearBadges();
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    }
+
+    findMyContent(getPageNo() - 1);
+
+  }, [categorySelection, difficultyLevel, match.params.pageNo]);
+
+  const findMyContent = async (pageNo: number) => {
+    //
+    const page = pageService!.pageMap.get(pageKey.current);
+
+    const badgeOffsetList = await badgeService!.findPagingAllBadges(BadgeFilterRdoModel
+      .all(categorySelection, difficultyLevel, page!.limit, page!.nextOffset));
+
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+
+  };
+
+  const getPageNo = () => {
+    return parseInt(match.params.pageNo, 10);
+  };
+
+  const isContentMore = () => {
+    const page = pageService!.pageMap.get(pageKey.current);
+    return page && page.pageNo < page.totalPages;
+  };
 
   // see more button 클릭
   const onClickSeeMore = () => {
     //
+    // history.replace(routePaths.currentPage(getPageNo() + 1));
     alert('더보기');
   };
 
   const onClickBadgeCategory = (e: any, categoryId: any) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 페이지키 재설정 및 초기화
+    pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
     // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
-    if ( categorySelection === categoryId ) {
+    if (categorySelection === categoryId) {
       // 선택해제 및 전체보기
       setCategorySelection('');
     } else {
@@ -54,14 +112,23 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
-    difficultyLevel.current = diffLevel;
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 페이지키 재설정 및 초기화
+    pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    // 난이도 변경
+    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
   };
 
   return (
     <>
       {/*Badge Category*/}
       <BadgeCategoryContainer
-        categories={categoryData.results}
+        categories={categories}
         categorySelection={categorySelection}
         onClickBadgeCategory={onClickBadgeCategory}
       />
@@ -71,7 +138,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
         onSelectDifficultyLevel={onSelectDifficultyLevel}
       />
 
-      {badges.length > 0 ? (
+      {badges.length > 0 ?
         <>
           {/*Badge List*/}
           <BadgeListContainer
@@ -79,13 +146,12 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
             badgeStyle={BadgeStyle.List}
             badgeSize={BadgeSize.Large}
           />
-          < SeeMoreButton onClick={onClickSeeMore} />
+          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
         </>
-      ) : (
+        :
         <>
           <NoSuchContentPanel message="등록된 Badge List가 없습니다."/>
         </>
-      )
       }
     </>
   );
