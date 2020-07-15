@@ -18,25 +18,23 @@ interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService,
 }
 
-@inject(mobxHelper.injectFrom('profile.skProfileService'))
-class MyLearningContentContainer extends Component<Props> {
+const MyLearningContentContainer : React.FC<Props> = (Props) => {
+  const { skProfileService } = Props;
+  const { profileMemberName } = skProfileService!;
 
-  render() {
-    //
-    const profileMemberName = this.props.skProfileService!.profileMemberName;
+  return (
+    <>
+      <InProgressLearning profileMemberName={profileMemberName} />
+      <ChallengingBadge profileMemberName={profileMemberName} />
+      <MainBanner />
+      <RequiredLearning />
+      <NewLearning />
+      <PopularLearning profileMemberName={profileMemberName} />
+      <RecommendLearning profileMemberName={profileMemberName} />
+    </>
+  );
+};
 
-    return (
-      <>
-        <InProgressLearning profileMemberName={profileMemberName} />
-        <ChallengingBadge profileMemberName={profileMemberName} />
-        <MainBanner />
-        <RequiredLearning />
-        <NewLearning />
-        <PopularLearning profileMemberName={profileMemberName} />
-        <RecommendLearning profileMemberName={profileMemberName} />
-      </>
-    );
-  }
-}
-
-export default withRouter(MyLearningContentContainer);
+export default inject(mobxHelper.injectFrom(
+  'profile.skProfileService'
+))(withRouter(MyLearningContentContainer));
