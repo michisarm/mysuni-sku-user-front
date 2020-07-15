@@ -3,9 +3,11 @@ import {axiosApi} from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
+import CategoryModel from '../../ui/model/CategoryModel';
+
 // for Test by JSM
-import {badgeData, challengingBadgeData} from './badgeData';
-import BadgeCountModel from '../../ui/model/BadgeCountModel';
+import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData} from './badgeData';
+import {categoryData} from './categoryData';
 
 
 class BadgeApi {
@@ -16,56 +18,67 @@ class BadgeApi {
   baseUrl = process.env.REACT_APP_BADGE_LECTURE_API  === undefined || process.env.REACT_APP_BADGE_LECTURE_API  === '' ?
     this.serverUrl : process.env.REACT_APP_BADGE_LECTURE_API ;
 
-  findPagingAllBadges(inMyLectureRdo: BadgeFilterRdoModel) {
+  findAllCategories() {
+    //
+    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/categoris')
+    //   .then(response => response && response.data);
+
+    // for Test by JSM : 테스트 후 지울 것
+    return <OffsetElementList<CategoryModel>>(categoryData);
+  }
+
+  findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      categoryId: inMyLectureRdo.categoryId,
-      difficultyLevel: inMyLectureRdo.difficultyLevel,
-      limit: inMyLectureRdo.limit,
-      offset: inMyLectureRdo.offset,
+      categoryId: badgeFilterRdo.categoryId,
+      difficultyLevel: badgeFilterRdo.difficultyLevel,
+      limit: badgeFilterRdo.limit,
+      offset: badgeFilterRdo.offset,
     };
 
     // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures', {params})
     //   .then(response => response && response.data);
 
-
     // for Test by JSM : 테스트 후 지울 것
     return <OffsetElementList<BadgeModel>>(badgeData);
   }
 
-  findPagingChallengingBadges(inMyLectureRdo: BadgeFilterRdoModel) {
+  // for Test by JSM : 테스트 후 지울 것
+  findPagingMainChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
+    return <OffsetElementList<BadgeModel>>(mainBadgeData);
+  }
+
+  findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      patronKey: inMyLectureRdo.patronKey,
-      difficultyLevel: inMyLectureRdo.difficultyLevel,
-      limit: inMyLectureRdo.limit,
-      offset: inMyLectureRdo.offset,
+      patronKey: badgeFilterRdo.patronKey,
+      difficultyLevel: badgeFilterRdo.difficultyLevel,
+      limit: badgeFilterRdo.limit,
+      offset: badgeFilterRdo.offset,
     };
 
     // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/challenging', {params})
     //   .then(response => response && response.data);
 
-
     // for Test by JSM : 테스트 후 지울 것
     return <OffsetElementList<BadgeModel>>(challengingBadgeData);
   }
 
-  findPagingEarnedBadges(inMyLectureRdo: BadgeFilterRdoModel) {
+  findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      patronKey: inMyLectureRdo.patronKey,
-      difficultyLevel: inMyLectureRdo.difficultyLevel,
-      issueState: inMyLectureRdo.issueState,
-      limit: inMyLectureRdo.limit,
-      offset: inMyLectureRdo.offset,
+      patronKey: badgeFilterRdo.patronKey,
+      difficultyLevel: badgeFilterRdo.difficultyLevel,
+      issueState: badgeFilterRdo.issueState,
+      limit: badgeFilterRdo.limit,
+      offset: badgeFilterRdo.offset,
     };
 
     // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/earned', {params})
     //   .then(response => response && response.data);
 
-
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(badgeData);
+    return <OffsetElementList<BadgeModel>>(myBadgeData);
   }
 
   getCountOfBadges() {
@@ -82,13 +95,13 @@ class BadgeApi {
   }
 
   /*
-  getTotalBadgeCount(inMyLectureRdo: BadgeFilterRdoModel): number {
+  getTotalBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //
     // const params = {
-    //   categoryId: inMyLectureRdo.categoryId,
-    //   difficultyLevel: inMyLectureRdo.difficultyLevel,
-    //   limit: inMyLectureRdo.limit,
-    //   offset: inMyLectureRdo.offset,
+    //   categoryId: badgeFilterRdo.categoryId,
+    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
+    //   limit: badgeFilterRdo.limit,
+    //   offset: badgeFilterRdo.offset,
     // };
     //
     // return axiosApi.get<number>(this.baseUrl + '/totalCount', {params})
@@ -97,13 +110,13 @@ class BadgeApi {
     // for Test by JSM : 테스트 후 지울 것
     return 14;
   }
-  getChallengingBadgeCount(inMyLectureRdo: BadgeFilterRdoModel): number {
+  getChallengingBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //
     // const params = {
-    //   patronKey: inMyLectureRdo.patronKey,
-    //   difficultyLevel: inMyLectureRdo.difficultyLevel,
-    //   limit: inMyLectureRdo.limit,
-    //   offset: inMyLectureRdo.offset,
+    //   patronKey: badgeFilterRdo.patronKey,
+    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
+    //   limit: badgeFilterRdo.limit,
+    //   offset: badgeFilterRdo.offset,
     // };
     //
     // return axiosApi.get<number>(this.baseUrl + '/challengingCount', {params})
@@ -112,13 +125,13 @@ class BadgeApi {
     // for Test by JSM : 테스트 후 지울 것
     return 16;
   }
-  getEarnedBadgeCount(inMyLectureRdo: BadgeFilterRdoModel): number {
+  getEarnedBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //
     // const params = {
-    //   patronKey: inMyLectureRdo.patronKey,
-    //   difficultyLevel: inMyLectureRdo.difficultyLevel,
-    //   limit: inMyLectureRdo.limit,
-    //   offset: inMyLectureRdo.offset,
+    //   patronKey: badgeFilterRdo.patronKey,
+    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
+    //   limit: badgeFilterRdo.limit,
+    //   offset: badgeFilterRdo.offset,
     // };
     //
     // return axiosApi.get<number>(this.baseUrl + '/earnedCount', {params})

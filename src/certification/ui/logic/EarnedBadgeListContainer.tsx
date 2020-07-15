@@ -1,15 +1,18 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Icon} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
+import {MyTrainingService} from '../../../myTraining/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
-import {ContentWrapper} from '../../../main/sub/MyLearningContentV2/MyLearningContentElementsView';
 import {Badge, SeeMoreButton} from '../../shared/Badge';
 import {NoSuchContentPanel} from '../../../shared';
+import BadgeStyle from '../model/BadgeStyle';
+import BadgeSize from '../model/BadgeSize';
+import LineHeaderContainer from './LineHeaderContainer';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -25,70 +28,88 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   const { badgeService, pageService, profileMemberName, badgeCount, history, match, } = Props;
   const { badges } = badgeService!;
 
-  const PAGE_KEY = 'badge.Earned';
+  const PAGE_KEY = 'badge.earned';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
-  const pageNo = useRef(1);
+  const pageKey = useRef<string>('');
 
-  // // lectureService 변경  실행
-  // useEffect(() => {
-  //   //
-  //   pageNo.current = getPageNo();
-  //
-  //   const initialLimit = pageNo.current * PAGE_SIZE;
-  //   pageService!.initPageMap(PAGE_KEY, 0, initialLimit);
-  //
-  //   // findMyContent();
-  // }, []);
+  const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
-  // lectureService 변경  실행
+  useEffect(() => {
+    //
+    pageKey.current = PAGE_KEY;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+  }, []);
+
   useEffect(() => {
 
-    const page = pageService!.pageMap.get(PAGE_KEY);
+    const page = pageService!.pageMap.get(pageKey.current);
 
     if (getPageNo() > 1) {
       const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
         page!.nextOffset + PAGE_SIZE : page!.nextOffset;
-      pageService!.initPageMap(PAGE_KEY, offset, PAGE_SIZE);
+      pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
+      badgeService!.clearBadges();
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
     findMyContent(getPageNo() - 1);
 
-  }, [badgeCount]);
+  }, [difficultyLevel, match.params.pageNo]);
 
   const findMyContent = async (pageNo: number) => {
     //
-    const page = pageService!.pageMap.get(PAGE_KEY);
+    const page = pageService!.pageMap.get(pageKey.current);
 
-    badgeService!.clearBadges();
-    badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel
-      .earned('patronKey', 'Basic', '', page!.limit, page!.nextOffset));
+    const badgeOffsetList = await badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel
+      .earned(difficultyLevel, '', page!.limit, page!.nextOffset));
 
-    pageService!.setTotalCountAndPageNo(PAGE_KEY, badgeCount!, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
 
   };
 
   const getPageNo = () => {
+    //
     return parseInt(match.params.pageNo, 10);
+  };
+
+  const isContentMore = () => {
+    const page = pageService!.pageMap.get(pageKey.current);
+    return page && page.pageNo < page.totalPages;
   };
 
   // see more button 클릭
   const onClickSeeMore = () => {
     //
-    history.replace(routePaths.currentPage(getPageNo() + 1));
+    // history.replace(routePaths.currentPage(getPageNo() + 1));
+    alert('더보기');
   };
 
-  const isContentMore = () => {
-    const page = pageService!.pageMap.get(PAGE_KEY);
-    return page && page.pageNo < page.totalPages;
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+    
+    // 페이지키 재설정 및 초기화
+    pageKey.current = pageKey.current + '.' +  difficultyLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    // 난이도 변경
+    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
   };
 
   return (
-    <ContentWrapper className="badge-scrolling">
-      {badges.length > 0 ?
+    <>
+      <LineHeaderContainer
+        totalCount={badgeService?.earnedCount}
+        onSelectDifficultyLevel={onSelectDifficultyLevel}
+      />
+
+      {badges.length > 0 ? (
         <div className="badge-list">
           <ul>
             {badges.map( (badge: any, index: number) => {
@@ -99,14 +120,16 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
                     iconUrl={badge.iconUrl}
                     mainCategory={badge.mainCategoryName}
                     name={badge.name}
+                    badgeStyle={BadgeStyle.List}
+                    badgeSize={BadgeSize.Large}
                   />
                 </li>
               );
             })}
           </ul>
-          { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
+          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
         </div>
-        :
+      ) : (
         <NoSuchContentPanel message={(
           <>
             <div className="text">도전중인 Badge가 없습니다.<br/>등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
@@ -121,8 +144,8 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
           </>
         )}
         />
-    }
-    </ContentWrapper>
+      )}
+    </>
   );
 };
 

@@ -12,6 +12,8 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import BadgeModel from '../../../../certification/ui/model/BadgeModel';
 import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterRdoModel';
 import {Badge} from '../../../../certification/shared/Badge';
+import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
+import BadgeSize from '../../../../certification/ui/model/BadgeSize';
 
 
 interface Props extends RouteComponentProps {
@@ -49,7 +51,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
     //   }
     // }
 
-    badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('patronKey', 'Basic', PAGE_SIZE, 0), true);
+    badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0), true);
   };
 
   const onViewAll = () => {
@@ -82,6 +84,8 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
                     iconUrl={badge.iconUrl}
                     mainCategory={badge.mainCategoryName}
                     name={badge.name}
+                    badgeStyle={BadgeStyle.List}
+                    badgeSize={BadgeSize.Large}
                   />
                 </li>
               );
