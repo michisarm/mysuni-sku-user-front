@@ -16,7 +16,7 @@ interface BadgeContentWrapperProps {
 export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = ({ badgeLevel, badgeStyle, badgeSize, children, onViewDetail }) => (
   <>
     { badgeStyle === 'List' ? (
-      <a href="#" className={ classNames('badge', badgeLevel, badgeSize)} onClick={onViewDetail}>
+      <a className={ classNames('badge', badgeLevel, badgeSize)} onClick={onViewDetail}>
         {children}
       </a>
     ) : (
