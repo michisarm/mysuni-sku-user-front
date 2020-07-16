@@ -1,50 +1,47 @@
 import React from 'react';
-import {Button, Icon, Label, Segment} from 'semantic-ui-react';
-
+import {Button, Icon} from 'semantic-ui-react';
 import {OverviewField} from 'personalcube';
 import {Badge} from '../../shared/Badge';
 import {BadgeContentHeader, BadgeInformation, BadgeTitle, BadgeOverview} from '../view/BadgeContentElementView';
-
-
-
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeDetailModel from '../model/BadgeDetailModel';
 
 
-
-interface BadgeContentProps {
-  badge: any,
+interface Props {
+  badgeDetail: BadgeDetailModel,
   children: React.ReactNode
 }
 
-const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) => {
+const BadgeContentContainer: React.FC<Props> = (Props) => {
+  const { badgeDetail, children } = Props;
   //
   return (
     <>
-      {console.log(badge)}
+      {console.log(badgeDetail)}
       {/*상단*/}
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
         <Badge
-          badgeId={badge.badgeId}
-          badgeLevel={badge.difficultyLevel}
-          iconUrl={badge.iconUrl}
-          mainCategory={badge.mainCategoryName}
-          name={badge.name}
+          badgeId={badgeDetail.badgeId}
+          badgeLevel={badgeDetail.difficultyLevel}
+          iconUrl={badgeDetail.iconUrl}
+          mainCategory={badgeDetail.mainCategoryName}
+          name={badgeDetail.name}
           badgeStyle={BadgeStyle.Detail}
           badgeSize={BadgeSize.Large}
         />
         {/*뱃지 타이틀*/}
         <BadgeTitle
-          college={badge.mainCategoryName}
-          name={badge.name}
+          college={badgeDetail.mainCategoryName}
+          name={badgeDetail.name}
         />
         {/*뱃지 메타정보1*/}
         <BadgeInformation
-          certiAdminCategoryName={badge.certiAdminCategory.certiAdminCategoryName}
-          certiAdminSubCategoryName={badge.certiAdminSubcategory.certiAdminSubcategoryName}
-          difficultyLevel={badge.difficultyLevel}
-          learningTime={badge.learningTime}
+          certiAdminCategoryName={badgeDetail.certiAdminCategory.certiAdminCategoryName}
+          certiAdminSubCategoryName={badgeDetail.certiAdminSubcategory.certiAdminSubcategoryName}
+          difficultyLevel={badgeDetail.difficultyLevel}
+          learningTime={badgeDetail.learningTime}
         />
 
         <div className="status">
@@ -59,15 +56,15 @@ const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) =
         <OverviewField.List>
           <OverviewField.Item
             title="인증내용"
-            content={badge.description}
+            content={badgeDetail.description}
           />
           <OverviewField.Item
             title="획득 조건"
-            content={badge.obtainTerms}
+            content={badgeDetail.obtainTerms}
           />
           <OverviewField.Item
             title="자격증명"
-            content={badge.qualification}
+            content={badgeDetail.qualification}
           />
         </OverviewField.List>
 
@@ -78,7 +75,7 @@ const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) =
             title="담당자"
             content={
               <div className="host-line">
-                {badge.badgeOperator.badgeOperatorName} ({badge.badgeOperator.badgeOperatorCompany})
+                {badgeDetail.badgeOperator.badgeOperatorName} ({badgeDetail.badgeOperator.badgeOperatorCompany})
                 <Button icon className="right btn-blue">
                   문의하기
                   <Icon className="arrow-b-16"/>
@@ -107,7 +104,7 @@ const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) =
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={badge.tags}
+            content={badgeDetail.tags}
           />
         </OverviewField.List>
 
