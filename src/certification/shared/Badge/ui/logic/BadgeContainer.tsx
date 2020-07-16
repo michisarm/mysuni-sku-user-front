@@ -22,6 +22,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
+    window.scrollTo(0,0);
   };
 
   return (
