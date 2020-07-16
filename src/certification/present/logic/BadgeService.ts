@@ -5,6 +5,7 @@ import BadgeApi from '../apiclient/BadgeApi';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
+import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 
 
 @autobind
@@ -26,6 +27,9 @@ class BadgeService {
 
   @observable
   _badge: BadgeModel[] = [];
+
+  @observable
+  _badgeDetail: BadgeDetailModel = new BadgeDetailModel();
 
   @observable
   _badgeCount: number = 0;
@@ -180,6 +184,28 @@ class BadgeService {
     });
 
     return badgeOffsetElementList;
+  }
+
+  @computed
+  get linkedBadges() {
+    return this.badges;
+  }
+
+  @action
+  async findBadgeDetailInfo(badgeId: string) {
+    //
+    const response = await this.badgeApi.findBadgeDetailInformation(badgeId);
+
+    runInAction( () => {
+      this._badgeDetail = new BadgeDetailModel(response);
+    });
+
+    return this._badgeDetail;
+  }
+
+  @computed
+  get badgeDetailInfo() {
+    return this._badgeDetail;
   }
 
   /*

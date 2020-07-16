@@ -4,10 +4,11 @@ import { OffsetElementList } from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
-
 // for Test by JSM
 import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData, linkedBadgeData} from './badgeData';
 import {categoryData} from './categoryData';
+import {badgeDetailData} from './badgeDetailData';
+import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 
 
 class BadgeApi {
@@ -103,6 +104,15 @@ class BadgeApi {
 
     // for Test : 테스트 후 지울 것
     return <OffsetElementList<BadgeModel>>(linkedBadgeData);
+  }
+
+  findBadgeDetailInformation(badgeId: string) {
+
+    // return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}`)
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <BadgeDetailModel>badgeDetailData;
   }
 
   /*

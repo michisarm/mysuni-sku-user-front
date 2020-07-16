@@ -1,18 +1,21 @@
 
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import {Button, Icon, Image} from 'semantic-ui-react';
+import {inject, observer} from 'mobx-react';
+import {mobxHelper} from '@nara.platform/accent';
+import {RouteComponentProps, withRouter} from 'react-router';
 import {Badge} from '../../shared/Badge';
 import {ChallengeBadgeTitle, ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 
-interface ChallengeBoxProps {
+interface Props extends RouteComponentProps {
   badges: any,
   badgeStyle: string,
   badgeSize: string,
 }
 
-const ChallengeBoxContainer: FunctionComponent<ChallengeBoxProps> = (Props) => {
+const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   //
   const { badges, badgeStyle, badgeSize } = Props;
 
@@ -68,7 +71,7 @@ const ChallengeBoxContainer: FunctionComponent<ChallengeBoxProps> = (Props) => {
                 <ul>
 
                   {/*학습정보 반복*/}
-                  <li className="class-card">
+                  <li className="class-card" key="123">
                     <a href="#">
                       <span className="class-icon">
                         <Image src="/images/all/icon-chanel-64-px.svg"/>
@@ -81,7 +84,7 @@ const ChallengeBoxContainer: FunctionComponent<ChallengeBoxProps> = (Props) => {
                       </span>
                     </a>
                   </li>
-                  <li className="class-card completed">
+                  <li className="class-card completed" key="124">
                     <a href="#">
                       <span className="class-icon">
                         <Image src="/images/all/icon-chanel-64-px.svg"/>
@@ -109,4 +112,4 @@ const ChallengeBoxContainer: FunctionComponent<ChallengeBoxProps> = (Props) => {
   );
 };
 
-export default ChallengeBoxContainer;
+export default withRouter(ChallengeBoxContainer);

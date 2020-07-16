@@ -9,6 +9,7 @@ import SelectOptions from '../model/SelectOptions';
 
 interface LineHeaderProps {
   totalCount: number | undefined,
+  countMessage?: string,
   onSelectDifficultyLevel: (level: string) => void,
 }
 
@@ -16,7 +17,7 @@ const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   //
   const [ sortOption, setSortOption ] = useState('');
 
-  const { totalCount, onSelectDifficultyLevel } = Props;
+  const { totalCount, onSelectDifficultyLevel, countMessage } = Props;
 
   const onChangeSorting = (e: any, data: any) => {
     if ( sortOption === data.value ) return;
@@ -26,7 +27,10 @@ const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   };
 
   return (
-    <ListPanelTopLine count={totalCount!}>
+    <ListPanelTopLine
+      count={totalCount!}
+      countMessage={countMessage}
+    >
       <div className="right-wrap">
         { totalCount! > 0 && (
           <Select

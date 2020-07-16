@@ -8,7 +8,6 @@ import {ContentLayout} from 'shared';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 
-
 // Component
 import BadgeContentContainer from '../logic/BadgeContentContainer';
 import LinkedBadgeListContainer from '../logic/LinkedBadgeListContainer';

@@ -19,6 +19,7 @@ interface Props {
   renderItems?: (props: any) => React.ReactNode
   renderContent?: (props: any) => React.ReactNode
   onChangeTab?: (tab: TabItemModel) => void
+  topOfContents?: React.ReactNode
 }
 
 interface State {
@@ -107,7 +108,7 @@ class TabContainer extends Component<Props, State> {
 
   renderContent(tab: TabItemModel) {
     //
-    const { renderContent } = this.props;
+    const { renderContent, topOfContents } = this.props;
     const { activeName } = this.state;
 
     if (typeof renderContent === 'function') {
@@ -115,11 +116,15 @@ class TabContainer extends Component<Props, State> {
     }
 
     return (
-      <Segment className="full" key={`tab-content-${tab.name}`}>
-        <div className={classNames('ui tab', { active: tab.name === activeName })}>
-          {tab.render({ tab, active: tab.name === activeName })}
-        </div>
-      </Segment>
+      <>
+        {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
+        {topOfContents}
+        <Segment className="full" key={`tab-content-${tab.name}`}>
+          <div className={classNames('ui tab', { active: tab.name === activeName })}>
+            {tab.render({ tab, active: tab.name === activeName })}
+          </div>
+        </Segment>
+      </>
     );
   }
 
