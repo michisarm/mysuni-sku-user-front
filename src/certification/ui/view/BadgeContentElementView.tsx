@@ -1,5 +1,5 @@
 import React from 'react';
-import {Segment} from 'semantic-ui-react';
+import {Icon, Label, Segment} from 'semantic-ui-react';
 
 
 interface Props {
@@ -73,4 +73,23 @@ export const BadgeOverview: React.FC<BadgeOverviewProps> = ({children}) => (
       {children}
     </div>
   </Segment>
+);
+
+
+interface LinkedBadgeProps {
+  children: React.ReactNode
+}
+
+export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) => (
+  <div className="relation-badge-area">
+    <Segment className="full">
+      <h3 className="title-style">
+        <Label className="onlytext bold size24">
+          <Icon className="series"/>
+          <span>연관 Badge</span>
+        </Label>
+      </h3>
+      {children}
+    </Segment>
+  </div>
 );

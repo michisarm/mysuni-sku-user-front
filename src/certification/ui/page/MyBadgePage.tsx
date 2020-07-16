@@ -77,7 +77,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           </>
         ),
         render: () => (
-          <ChallengingBadgeContainer/>
+          <ChallengingBadgeContainer badgeCount={badgeService?.challengingCount}/>
         )
       },
       {

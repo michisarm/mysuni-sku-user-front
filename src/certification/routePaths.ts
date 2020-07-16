@@ -6,7 +6,7 @@ const routePaths = {
   badgeChallengingBadgeList: () => routePaths.badgeTab('ChallengingBadgeList'),
   badgeEarnedBadgeList: () => routePaths.badgeTab('EarnedBadgeList'),
 
-  BadgeDetailPage: (badgeId: string) => `/certification/badge/badge-detail/${badgeId}`,
+  badgeDetailPage: (badgeId: string) => `/certification/badge/badge-detail/${badgeId}`,
 
   currentPage: (pageNo: number) =>
     `./${pageNo}`,

@@ -1,10 +1,13 @@
 
 import React, {FunctionComponent} from 'react';
+import {RouteComponentProps, withRouter} from 'react-router';
+import certificationRoutePaths from '../../../../routePaths';
 
 import {BadgeContentWrapper, CollegeIcon, MainCategory, Title} from '../view/BadgeView';
 
 
-interface BadgeProps {
+interface Props extends RouteComponentProps {
+  badgeId: string,
   badgeLevel: string,
   iconUrl: string,
   mainCategory: string,
@@ -13,14 +16,18 @@ interface BadgeProps {
   badgeSize: string,  // Large, Small
 }
 
-const BadgeContainer: FunctionComponent<BadgeProps> = (Props) => {
+const BadgeContainer: FunctionComponent<Props> = (Props) => {
   //
-  const { badgeLevel, iconUrl, mainCategory, name, badgeStyle, badgeSize } = Props;
+  const { badgeId, badgeLevel, iconUrl, mainCategory, name, badgeStyle, badgeSize, history } = Props;
 
+  const onViewDetail = () => {
+    history.push(certificationRoutePaths.badgeDetailPage(badgeId));
+  };
 
   return (
     // 스타일 지정: badge level + badge type
     <BadgeContentWrapper
+      onViewDetail={onViewDetail}
       badgeLevel={badgeLevel.toLowerCase()}
       badgeStyle={badgeStyle}
       badgeSize={badgeSize}
@@ -38,4 +45,4 @@ const BadgeContainer: FunctionComponent<BadgeProps> = (Props) => {
   );
 };
 
-export default BadgeContainer;
+export default withRouter(BadgeContainer);

@@ -167,6 +167,20 @@ class BadgeService {
     return countInfo.code;
   }
 
+  // PSJ - 연관 뱃지 목록
+  @action
+  async findLinkedBadges(badgeId: string) {
+    //
+    const response = await this.badgeApi.findLikedBadges(badgeId);
+    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
+    runInAction( () => {
+      this._badge = this._badge.concat(badgeOffsetElementList.results);
+    });
+
+    return badgeOffsetElementList;
+  }
 
   /*
   @action

@@ -80,6 +80,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
               return (
                 <li key={index}>
                   <Badge
+                    badgeId={badge.badgeId}
                     badgeLevel={badge.difficultyLevel}
                     iconUrl={badge.iconUrl}
                     mainCategory={badge.mainCategoryName}

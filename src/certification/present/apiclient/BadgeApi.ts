@@ -6,7 +6,7 @@ import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 
 // for Test by JSM
-import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData} from './badgeData';
+import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData, linkedBadgeData} from './badgeData';
 import {categoryData} from './categoryData';
 
 
@@ -92,6 +92,17 @@ class BadgeApi {
       challengedCount: 14,
       issuedCount: 16,
     };
+  }
+
+  // PSJ 연관뱃지
+
+  findLikedBadges(badgeId: string) {
+
+    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + `/badges/${badgeId}/links`)
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <OffsetElementList<BadgeModel>>(linkedBadgeData);
   }
 
   /*

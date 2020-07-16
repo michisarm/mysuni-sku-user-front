@@ -26,6 +26,7 @@ const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) =
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
         <Badge
+          badgeId={badge.badgeId}
           badgeLevel={badge.difficultyLevel}
           iconUrl={badge.iconUrl}
           mainCategory={badge.mainCategoryName}
@@ -91,8 +92,6 @@ const BadgeContentContainer: React.FC<BadgeContentProps> = ({badge, children}) =
             content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
           />
         </OverviewField.List>
-
-        {children}
 
         {/*학습정보*/}
         <OverviewField.List icon>

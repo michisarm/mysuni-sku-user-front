@@ -30,6 +30,7 @@ const ChallengeBoxContainer: FunctionComponent<ChallengeBoxProps> = (Props) => {
 
               {/*Badge ui*/}
               <Badge
+                badgeId={badge.badgeId}
                 badgeLevel={badge.difficultyLevel}
                 iconUrl={badge.iconUrl}
                 mainCategory={badge.mainCategoryName}

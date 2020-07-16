@@ -52,6 +52,19 @@ class BadgeFilterRdoModel {
       issueState,
     });
   }
+
+  static linked(difficultyLevel: string, issueState: string, limit: number=12, offset: number=0) {
+    //
+    return new BadgeFilterRdoModel({
+      patronKey: patronInfo.getPatronId()!,
+      categoryId: '',
+      difficultyLevel,
+      limit,
+      offset,
+      issueState,
+    });
+  }
+
 }
 
 decorate(BadgeFilterRdoModel, {

@@ -1,33 +1,69 @@
 
-import React from 'react';
-import {Button, Icon} from 'semantic-ui-react';
-import {RouteComponentProps, withRouter} from 'react-router';
+import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
-import {PageService} from 'shared/stores';
-
+import {Button, Icon} from 'semantic-ui-react';
+import {RouteComponentProps, withRouter} from 'react-router';
 import BadgeService from '../../present/logic/BadgeService';
+import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
+
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-
-// 샘플데이터
-import {challengingBadgeData} from '../../present/apiclient/badgeData';
+import routePaths from '../../../personalcube/routePaths';
 
 
-const ChallengingBadgeContainer: React.FC = () => {
+interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
+  badgeService?: BadgeService,
+  pageService?: PageService,
+
+  badgeCount: number | undefined,
+}
+
+const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
+  const { badgeService, pageService, badgeCount, history, match, } = Props;
+  const { badges } = badgeService!;
+
+  const PAGE_KEY = 'badge.challenging';
+  const PAGE_SIZE = 12;
+
+  const pageKey = useRef<string>(PAGE_KEY);
+
+  const [difficultyLevel, setDifficultyLevel] = useState<string>('');
+
+  useEffect(() => {
+    //
+    pageKey.current = PAGE_KEY;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+  }, []);
+
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 페이지키 재설정 및 초기화
+    pageKey.current = pageKey.current + '.' +  difficultyLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    //
+    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+  };
 
   return (
     <>
-      <LineHeaderContainer totalCount={challengingBadgeData.totalCount}/>
+      <LineHeaderContainer
+        totalCount={badgeService?.challengingCount}
+        onSelectDifficultyLevel={onSelectDifficultyLevel}
+      />
 
-      {challengingBadgeData.totalCount > 0 ? (
+      {badges.length > 0 ? (
         <>
           <ChallengeBoxContainer
-            badges={challengingBadgeData.results}
+            badges={badges}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />
@@ -52,4 +88,7 @@ const ChallengingBadgeContainer: React.FC = () => {
   );
 };
 
-export default ChallengingBadgeContainer;
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+  'shared.pageService',
+))(withRouter(observer(ChallengingBadgeContainer)));
