@@ -214,7 +214,23 @@ class BadgeService {
       }
     });
 
-    return countInfo.code;
+    return this._badgeCount;
+  }
+
+  @action
+  async getCountOfIssuedBadges() {
+    //
+    const count = await this.badgeApi.getCountOfIssuedBadges();
+    runInAction(() => {
+      if (count && count !== null) {
+        this._earnedCount = count;
+      }
+      else {
+        this._earnedCount = 0;
+      }
+    });
+
+    return this._earnedCount;
   }
 
   // PSJ - 연관 뱃지 목록

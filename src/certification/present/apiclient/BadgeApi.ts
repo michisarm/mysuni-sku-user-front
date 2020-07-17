@@ -1,6 +1,7 @@
 
 import {axiosApi} from '@nara.platform/accent';
-import { OffsetElementList } from 'shared/model';
+import {patronInfo} from '@nara.platform/dock';
+import {OffsetElementList} from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
@@ -95,6 +96,19 @@ class BadgeApi {
       challengedCount: 12,
       issuedCount: 16,
     };
+  }
+
+  getCountOfIssuedBadges() {
+    //
+    // const params = {
+    //   patronKeyString: patronInfo.getPatronId()!,
+    //   issueState: 'issued',
+    // };
+    //
+    // return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
+    //   .then(response => response.data.valueOf());
+
+    return 16;
   }
 
   // PSJ 연관뱃지
