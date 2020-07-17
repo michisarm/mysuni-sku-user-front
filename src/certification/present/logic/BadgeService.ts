@@ -6,6 +6,7 @@ import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
+import BadgeCompModel from '../../ui/model/BadgeCompModel';
 
 
 @autobind
@@ -32,6 +33,9 @@ class BadgeService {
   _badgeDetail: BadgeDetailModel = new BadgeDetailModel();
 
   @observable
+  _badgeComposition: BadgeCompModel[] = [];
+
+  @observable
   _badgeCount: number = 0;
 
   @observable
@@ -55,6 +59,7 @@ class BadgeService {
 
     categoryOffsetElementList.results = categoryOffsetElementList.results.map((category) => new CategoryModel(category));
     runInAction(() => {
+      this.clearCategories();
       this._categoryCount = categoryOffsetElementList.totalCount;
       this._category = this._category.concat(categoryOffsetElementList.results);
     });
@@ -78,6 +83,43 @@ class BadgeService {
     return runInAction(() => this._badge = []);
   }
 
+  @computed
+  get badges() {
+    //
+    return (this._badge as IObservableArray).peek();
+  }
+
+  @computed
+  get badgeCount() {
+    return this._badgeCount ? this._badgeCount : 0;
+  }
+
+  @computed
+  get challengingCount() {
+    return this._challengingCount ? this._challengingCount : 0;
+  }
+
+  @computed
+  get earnedCount() {
+    return this._earnedCount ? this._earnedCount : 0;
+  }
+
+  @action
+  clearBadgeComposition() {
+    //
+    return runInAction(() => this._badgeComposition = []);
+  }
+
+  @computed
+  get badgeComposition() {
+    return (this._badgeComposition as IObservableArray).peek();
+  }
+
+  @computed
+  get badgeCompostionCount() {
+    return this._badgeComposition ? this._badgeComposition.length : 0;
+  }
+
   @action
   async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
@@ -87,6 +129,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
+      this.clearBadges();
       this._badgeCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
@@ -113,6 +156,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
+      this.clearBadges();
       this._challengingCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
@@ -128,6 +172,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
+      this.clearBadges();
       this._challengingCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
@@ -144,6 +189,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
+      this.clearBadges();
       this._earnedCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
@@ -180,6 +226,7 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction( () => {
+      this.clearBadges();
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
 
@@ -206,6 +253,22 @@ class BadgeService {
   @computed
   get badgeDetailInfo() {
     return this._badgeDetail;
+  }
+
+  // 뱃지 구성 학습 목록
+  @action
+  async findBadgeComposition(badgeId: string) {
+    //
+    const response = await this.badgeApi.findBadgeComposition(badgeId);
+    const badgeOffsetElementList = new OffsetElementList<BadgeCompModel>(response);
+
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((learning) => new BadgeCompModel(learning));
+    runInAction( () => {
+      this.clearBadgeComposition();
+      this._badgeComposition = this._badgeComposition.concat(badgeOffsetElementList.results);
+    });
+
+    return badgeOffsetElementList;
   }
 
   /*
@@ -237,27 +300,6 @@ class BadgeService {
     return count;
   }
   */
-
-  @computed
-  get badges() {
-    //
-    return (this._badge as IObservableArray).peek();
-  }
-
-  @computed
-  get badgeCount() {
-    return this._badgeCount ? this._badgeCount : 0;
-  }
-
-  @computed
-  get challengingCount() {
-    return this._challengingCount ? this._challengingCount : 0;
-  }
-
-  @computed
-  get earnedCount() {
-    return this._earnedCount ? this._earnedCount : 0;
-  }
 }
 
 BadgeService.instance = new BadgeService(BadgeApi.instance);

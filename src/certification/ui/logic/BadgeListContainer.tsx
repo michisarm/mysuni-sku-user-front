@@ -21,11 +21,7 @@ const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) =
           return (
             <li key={index}>
               <Badge
-                badgeId={badge.badgeId}
-                badgeLevel={badge.difficultyLevel}
-                iconUrl={badge.iconUrl}
-                mainCategory={badge.mainCategoryName}
-                name={badge.name}
+                badge={badge}
                 badgeStyle={badgeStyle}
                 badgeSize={badgeSize}
               />

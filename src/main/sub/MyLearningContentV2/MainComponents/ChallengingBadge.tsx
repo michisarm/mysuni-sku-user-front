@@ -38,9 +38,6 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
   }, []);
 
   const findMyContent = async () => {
-    // use session storage : modified by JSM
-    badgeService!.clearBadges();
-
     // // 세션 스토리지에 정보가 있는 경우 가져오기
     // const savedChallengingBadgeList = window.navigator.onLine && window.sessionStorage.getItem('ChallengingBadgeList');
     // if (savedChallengingBadgeList) {
@@ -76,15 +73,11 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
       {badges.length > 0 ?
         <div className="scrolling">
           <ul className="belt">
-            {badges.map( (badge: any, index: number) => {
+            {badges.map( (badge: BadgeModel, index: number) => {
               return (
                 <li key={index}>
                   <Badge
-                    badgeId={badge.badgeId}
-                    badgeLevel={badge.difficultyLevel}
-                    iconUrl={badge.iconUrl}
-                    mainCategory={badge.mainCategoryName}
-                    name={badge.name}
+                    badge={badge}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Large}
                   />

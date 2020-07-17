@@ -9,6 +9,8 @@ import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData, linkedBadge
 import {categoryData} from './categoryData';
 import {badgeDetailData} from './badgeDetailData';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
+import {badgeCompData} from './badgeCompData';
+import BadgeCompModel from '../../ui/model/BadgeCompModel';
 
 
 class BadgeApi {
@@ -90,7 +92,7 @@ class BadgeApi {
       code: '200',
       message: 'success',
       totalCount: 18,
-      challengedCount: 14,
+      challengedCount: 12,
       issuedCount: 16,
     };
   }
@@ -115,6 +117,18 @@ class BadgeApi {
     return <BadgeDetailModel>badgeDetailData;
   }
 
+  findBadgeComposition(badgeId: string) {
+    //
+    const params = {
+      badgeId,
+    };
+
+    // return axiosApi.get<OffsetElementList<BadgeCompModel>>(this.baseUrl + `/courseset/lectures`, {params})
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <OffsetElementList<BadgeCompModel>>badgeCompData;
+  }
   /*
   getTotalBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //

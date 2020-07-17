@@ -1,24 +1,27 @@
 
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
+import {inject} from 'mobx-react';
+import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
-
 import {BadgeContentWrapper, CollegeIcon, MainCategory, Title} from '../view/BadgeView';
+import BadgeService from '../../../../present/logic/BadgeService';
+import BadgeModel from '../../../../ui/model/BadgeModel';
+import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 
 
 interface Props extends RouteComponentProps {
-  badgeId: string,
-  badgeLevel: string,
-  iconUrl: string,
-  mainCategory: string,
-  name: string,
+  badgeService?: BadgeService,
+
+  badge: BadgeModel | BadgeDetailModel,
   badgeStyle: string,  // List, Detail
   badgeSize: string,  // Large, Small
 }
 
 const BadgeContainer: FunctionComponent<Props> = (Props) => {
   //
-  const { badgeId, badgeLevel, iconUrl, mainCategory, name, badgeStyle, badgeSize, history } = Props;
+  const { badgeService, badge, badgeStyle, badgeSize, history } = Props;
+  const {  badgeId, difficultyLevel, iconUrl, mainCategoryName, name } = badge;
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
@@ -29,7 +32,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
     // 스타일 지정: badge level + badge type
     <BadgeContentWrapper
       onViewDetail={onViewDetail}
-      badgeLevel={badgeLevel.toLowerCase()}
+      badgeLevel={difficultyLevel.toLowerCase()}
       badgeStyle={badgeStyle}
       badgeSize={badgeSize}
     >
@@ -37,7 +40,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
       <CollegeIcon iconUrl={iconUrl} />
 
       {/*카테고리명*/}
-      <MainCategory mainCategory={mainCategory} />
+      <MainCategory mainCategory={mainCategoryName} />
 
       {/*뱃지명*/}
       <Title name={name} />
@@ -46,4 +49,6 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
   );
 };
 
-export default withRouter(BadgeContainer);
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+))(withRouter(BadgeContainer));

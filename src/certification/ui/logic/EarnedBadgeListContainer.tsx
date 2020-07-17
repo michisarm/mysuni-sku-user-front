@@ -40,6 +40,10 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
     pageKey.current = PAGE_KEY;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
+    return (() => {
+      window.scrollTo(0, 0);
+    });
+
   }, []);
 
   useEffect(() => {
@@ -52,7 +56,6 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
@@ -117,11 +120,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
               return (
                 <li key={index}>
                   <Badge
-                    badgeId={badge.badgeId}
-                    badgeLevel={badge.difficultyLevel}
-                    iconUrl={badge.iconUrl}
-                    mainCategory={badge.mainCategoryName}
-                    name={badge.name}
+                    badge={badge}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Large}
                   />

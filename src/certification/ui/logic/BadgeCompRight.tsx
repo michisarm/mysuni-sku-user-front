@@ -1,20 +1,35 @@
-import React from 'react';
-import {Icon, Image} from "semantic-ui-react";
+import React, {useEffect, useState} from 'react';
+import {inject} from 'mobx-react';
+import {Icon, Image} from 'semantic-ui-react';
+import {mobxHelper} from '@nara.platform/accent';
 import classNames from 'classnames';
+import {RouteComponentProps, withRouter} from 'react-router';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
+import BadgeService from '../../present/logic/BadgeService';
+import BadgeModel from '../model/BadgeModel';
 
-import {learningData} from '../../present/apiclient/learningData';
 
+interface Props extends RouteComponentProps {
+  badgeService?: BadgeService,
 
-interface Props {
-  badgeId: string,
-  mainCategoryName: string,
-  name: string
+  badge: BadgeModel,
 }
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
   //
-  const { mainCategoryName, name } = Props;
+  const { badgeService, badge } = Props;
+  const { badgeComposition } = badgeService!;
+  const { badgeId, mainCategoryName, name } = badge;
+
+  useEffect(() => {
+    //
+    findMyContent(badgeId);
+  }, []);
+
+  const findMyContent = async (id: string) => {
+    //
+    const compList = await badgeService!.findBadgeComposition(badgeId);
+  };
 
   return (
     <div className="right-area">
@@ -25,7 +40,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
       {/*Badge 구성학습 목록*/}
       <div className="challenge-list">
         <ul>
-          { learningData.map((learning, index) => {
+          { badgeComposition.map((learning, index) => {
             return (
               <li className={classNames('class-card')} key={`learning-${index}`}>
                 <a href="#">
@@ -43,7 +58,9 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
         </ul>
       </div>
     </div>
-  )
+  );
 };
 
-export default BadgeCompRight;
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+))(withRouter(BadgeCompRight));

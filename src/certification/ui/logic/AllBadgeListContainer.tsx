@@ -41,6 +41,10 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
 
+    return (() => {
+      window.scrollTo(0, 0);
+    });
+
   }, []);
 
   useEffect(() => {
@@ -60,8 +64,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
-      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
     findMyContent(getPageNo() - 1);

@@ -23,11 +23,7 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
         <Badge
-          badgeId={badgeDetail.badgeId}
-          badgeLevel={badgeDetail.difficultyLevel}
-          iconUrl={badgeDetail.iconUrl}
-          mainCategory={badgeDetail.mainCategoryName}
-          name={badgeDetail.name}
+          badge={badgeDetail}
           badgeStyle={BadgeStyle.Detail}
           badgeSize={BadgeSize.Large}
         />

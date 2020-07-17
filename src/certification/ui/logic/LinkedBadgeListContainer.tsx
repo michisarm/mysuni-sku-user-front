@@ -12,6 +12,7 @@ import {LinkedBadgeListWrapper} from '../view/BadgeContentElementView';
 
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeModel from '../model/BadgeModel';
 
 
 interface Props extends RouteComponentProps {
@@ -38,7 +39,6 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
-    badgeService!.clearBadges();
     findMyContent();
   },[]);
 
@@ -58,15 +58,11 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
 
         {badges.length > 0 ? (
           <ul>
-            {badges.map((badge: any, index: number) => {
+            {badges.map((badge: BadgeModel, index: number) => {
               return (
                 <li key={`linked-badge-${index}`}>
                   <Badge
-                    badgeId={badge.badgeId}
-                    badgeLevel={badge.difficultyLevel}
-                    iconUrl={badge.iconUrl}
-                    mainCategory={badge.mainCategoryName}
-                    name={badge.name}
+                    badge={badge}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
                   />

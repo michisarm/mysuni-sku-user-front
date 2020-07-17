@@ -1,14 +1,11 @@
 
 import React from 'react';
-import {Icon, Image} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {Badge} from '../../shared/Badge';
-import {ChallengeBadgeTitle, ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
-
+import {ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
-
-// 샘플
-import {learningData} from '../../present/apiclient/learningData';
+import BadgeModel from '../model/BadgeModel';
+import BadgeCompRight from './BadgeCompRight';
 
 interface Props extends RouteComponentProps {
   badges: any,
@@ -23,18 +20,14 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   return (
     <div className="challenge-wrap">
 
-      {badges.map( (badge: any, index: number) => (
+      {badges.map( (badge: BadgeModel, index: number) => (
         <>
           <div className="challenge-badge" key={`challenge-badge-${index}`}>
             <div className="left-area">
 
               {/*Badge ui*/}
               <Badge
-                badgeId={badge.badgeId}
-                badgeLevel={badge.difficultyLevel}
-                iconUrl={badge.iconUrl}
-                mainCategory={badge.mainCategoryName}
-                name={badge.name}
+                badge={badge}
                 badgeStyle={badgeStyle}
                 badgeSize={badgeSize}
               />
@@ -57,37 +50,8 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
                   Badge 도전 학습 모두 완료 시<br/>자동으로 Badge가 발급됩니다.
                 </span>
               </ChallengeBadgeStatus>
-
             </div>
-
-            {/*오른쪽 - 학습정보*/}
-            <div className="right-area">
-
-              {/*분야 및 Badge명*/}
-              <ChallengeBadgeTitle mainCategoryName={badge.mainCategoryName} name={badge.name}/>
-
-              {/*Badge 구성학습 목록*/}
-              <div className="challenge-list">
-                <ul>
-                  { learningData.map((learning, index) => {
-                    return (
-                      <li className="class-card" key={`learning-${index}`}>
-                        <a href="#">
-                          <span className="class-icon">
-                            <Image src={learning.iconBox.iconUrl} alt={learning.name}/>
-                          </span>
-                          <span className="title">{learning.name}</span>
-                          <span className="time">
-                            <Icon className="card-time16"/> {learning.learningTime}
-                          </span>
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-            </div>
+            <BadgeCompRight badge={badge} />
           </div>
           <hr className="dividing"/>
         </>

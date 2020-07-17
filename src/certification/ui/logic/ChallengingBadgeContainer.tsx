@@ -39,6 +39,11 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     //
     pageKey.current = PAGE_KEY;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    return (() => {
+      window.scrollTo(0, 0);
+    });
+
   }, []);
 
   useEffect(() => {
@@ -51,7 +56,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
