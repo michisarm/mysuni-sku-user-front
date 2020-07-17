@@ -225,7 +225,7 @@ class CourseLectureContainer extends Component<Props, State> {
       this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(
         lectureView.serviceId
       );
-
+      // alert(lectureView.serviceId);
       // console.log('init lectureView : ', lectureView);
       // console.log('init personalCube : ', this.personalCube);ß
       // console.log('init rollBooks : ', this.rollBooks[0]);
@@ -609,6 +609,7 @@ class CourseLectureContainer extends Component<Props, State> {
     return null;
   }
 
+  // 학습하기 - 학습 모달창 팝업
   popupLearnModal(url: string) {
     const { onDoLearn, lectureView } = this.props;
     if (onDoLearn) {
@@ -878,7 +879,6 @@ class CourseLectureContainer extends Component<Props, State> {
       <div>
         <div className={`card-box ${className}`}>
           <Thumbnail image={thumbnail} />
-
           <Title title={lectureView.name} category={lectureView.category}>
             <div className="deatil">
               {lectureView.cubeTypeName && (
@@ -917,7 +917,6 @@ class CourseLectureContainer extends Component<Props, State> {
               </Field>
             </div>
           </Title>
-
           <Buttons>
             <Button className="fix line" onClick={onViewDetail}>
               상세보기
@@ -934,7 +933,6 @@ class CourseLectureContainer extends Component<Props, State> {
                 <span className="completed-txt">학습완료</span>
               ))}
           </Buttons>
-
           {toggle && (
             <Button
               icon
@@ -954,7 +952,6 @@ class CourseLectureContainer extends Component<Props, State> {
               />
             </Button>
           )}
-
           {this.viewObject && this.personalCube?.contents.examId && (
             <AnswerSheetModal
               examId={this.personalCube?.contents.examId}
@@ -971,7 +968,6 @@ class CourseLectureContainer extends Component<Props, State> {
               // onSaveCallback={this.testCallback}
             />
           )}
-
           {this.viewObject && this.viewObject.reportFileBoxId && (
             <CubeReportModal
               downloadFileBoxId={this.viewObject.reportFileBoxId}

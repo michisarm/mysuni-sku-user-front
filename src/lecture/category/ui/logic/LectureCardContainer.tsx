@@ -451,6 +451,15 @@ class LectureCardContainer extends Component<Props, State> {
   onClickPlay() {
     const { typeViewObject } = this.props;
 
+    // 20200717 video 멀티 시청불가~! = return true
+    if (this.handleMultiVideo()) {
+      reactAlert({
+        title: '알림',
+        message: '먼저 시작한 학습을 완료 후 시청할 수 있습니다.',
+      });
+      return;
+    }
+
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
@@ -462,6 +471,47 @@ class LectureCardContainer extends Component<Props, State> {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
+  }
+  // 20200717 video 멀티 시청불가~! = return true
+  handleMultiVideo() {
+    function nvl(str: any, dvalue: any) {
+      if (typeof str === 'undefined' || str === null || str === '') {
+        str = dvalue;
+      }
+      return str;
+    }
+    const { lectureCardId } = this.props;
+    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
+    const term = nvl(localStorage.getItem('liveLectureCardIdTime'), 0);
+    let rtnLive = false;
+    const after2Min = new Date();
+    after2Min.setMinutes(after2Min.getMinutes() + 2);
+    const nowTime = new Date().getTime();
+    // console.log('1.lectureCardId', lectureCardId);
+    if (
+      nvl(liveLectureCardId, 0) === 0 ||
+      liveLectureCardId === lectureCardId ||
+      (liveLectureCardId !== lectureCardId && term < nowTime)
+    ) {
+      localStorage.removeItem('liveLectureCardId');
+      localStorage.removeItem('liveLectureCardIdTime');
+      localStorage.setItem('liveLectureCardId', lectureCardId);
+      localStorage.setItem(
+        'liveLectureCardIdTime',
+        after2Min.getTime().toString()
+      );
+      // console.log(
+      //   '2.local.liveLectureCardId',
+      //   localStorage.getItem('liveLectureCardId')
+      // );
+      // console.log(
+      //   '2.local.liveLectureCardIdTime',
+      //   localStorage.getItem('liveLectureCardIdTime')
+      // );
+    } else {
+      rtnLive = true;
+    }
+    return rtnLive;
   }
 
   onLearningStart() {
@@ -717,13 +767,28 @@ class LectureCardContainer extends Component<Props, State> {
   onLearningModalClose() {
     const isClose = true;
     this.publishStudyEvent(isClose);
-    const { studentCdo, lectureService, onPageRefresh } = this.props;
+    const {
+      studentCdo,
+      lectureService,
+      onPageRefresh,
+      lectureCardId,
+    } = this.props;
+
+    // 동영상 close click 시 lectureCardId 가 같다면
+    // 20200717 video 멀티 시청불가~! 해제
+    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
+    // console.log('3.lectureCardId', lectureCardId);
+    // console.log('3.liveLectureCardId', liveLectureCardId);
+    if (lectureCardId === liveLectureCardId) {
+      localStorage.removeItem('liveLectureCardId');
+      localStorage.removeItem('liveLectureCardIdTime');
+    }
+
     this.setState({ openLearningModal: false });
     const lectureStudentCdo = {
       ...studentCdo,
       proposalState: ProposalState.Approved,
     };
-
     lectureService
       ?.confirmUsageStatisticsByCardId(lectureStudentCdo)
       .then(confirmed => {
@@ -1250,7 +1315,6 @@ class LectureCardContainer extends Component<Props, State> {
             onClose={this.onLearningModalClose}
           />
         )}
-        {/* 구조상 버튼을 가려서 children 아래로 이동 */}
         {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
         <LectureSubInfo
           required={viewObject.required}

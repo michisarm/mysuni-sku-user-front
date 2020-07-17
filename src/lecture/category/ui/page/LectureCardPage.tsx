@@ -213,7 +213,7 @@ class LectureCardPage extends Component<Props, State> {
       skProfileService.findSkProfile(),
       rollBookService!.findAllLecturesByLectureCardId(params.lectureCardId),
     ]);
-
+    // alert('LectureCardPage.216:' + params.lectureCardId);
     promises.then(async ([personalCube, skProfile, rollbooks]) => {
       //
       if (personalCube) {
