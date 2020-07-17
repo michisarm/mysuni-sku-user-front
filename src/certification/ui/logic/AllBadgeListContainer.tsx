@@ -7,13 +7,11 @@ import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
-
 import LineHeaderContainer from './LineHeaderContainer';
 import BadgeListContainer from './BadgeListContainer';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-import BadgeCountText from '../model/BadgeCountText';
 
 
 interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
@@ -27,12 +25,13 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { pageService, badgeService, badgeCount, categorySelection, history, match } = Props;
-  const { badges } = badgeService!;
+  const { categories, badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
+  const prevCategory = useRef<string>('');
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
@@ -45,6 +44,13 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
+
+    if (categorySelection !== prevCategory.current) {
+      prevCategory.current = categorySelection;
+      // 페이지키 재설정 및 초기화
+      pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    }
 
     const page = pageService!.pageMap.get(pageKey.current);
 
@@ -96,11 +102,12 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     history.replace(routePaths.currentPage(1));
 
     // 페이지키 재설정 및 초기화
-    pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+    diffLevel = diffLevel === '전체' ? '': diffLevel;
+    pageKey.current = PAGE_KEY + categorySelection + diffLevel;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
     // 난이도 변경
-    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+    setDifficultyLevel(diffLevel);
   };
 
   return (
@@ -108,7 +115,6 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       <LineHeaderContainer
         totalCount={badgeService?.badgeCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
-        countMessage={BadgeCountText.AllBadgeList}
       />
 
       {badges.length > 0 ?

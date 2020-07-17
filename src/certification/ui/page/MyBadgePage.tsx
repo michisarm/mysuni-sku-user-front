@@ -38,11 +38,13 @@ const MyBadgePage : React.FC<Props> = (Props) => {
   const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
   const [categorySelection, setCategorySelection] = useState<string>('');
 
-
   // lectureService 변경  실행
   useEffect(() => {
     //
     setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+
+    badgeService!.clearCategories();
+    badgeService!.findAllCategories();
   }, []);
 
   useEffect(() => {
@@ -54,13 +56,6 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     badgeService?.getCountOfBadges();
 
   }, [match.params.tab]);
-
-  useEffect(() => {
-    //
-    badgeService!.clearCategories();
-    badgeService!.findAllCategories();
-
-  }, []);
 
   const getTabs = () => {
     //

@@ -5,7 +5,6 @@ import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
-import {MyTrainingService} from '../../../myTraining/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {Badge, SeeMoreButton} from '../../shared/Badge';
