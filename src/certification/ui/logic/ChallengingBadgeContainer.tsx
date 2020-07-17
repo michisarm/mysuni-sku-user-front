@@ -5,14 +5,16 @@ import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
 import {Button, Icon} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
+import routePaths from '../../../personalcube/routePaths';
 import BadgeService from '../../present/logic/BadgeService';
 import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
-
+import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
+import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-import routePaths from '../../../personalcube/routePaths';
+
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -28,7 +30,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   const { badges } = badgeService!;
 
   const PAGE_KEY = 'badge.challenging';
-  const PAGE_SIZE = 12;
+  const PAGE_SIZE = 8;
 
   const pageKey = useRef<string>(PAGE_KEY);
 
@@ -39,6 +41,53 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     pageKey.current = PAGE_KEY;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
   }, []);
+
+  useEffect(() => {
+
+    const page = pageService!.pageMap.get(pageKey.current);
+
+    if (getPageNo() > 1) {
+      const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
+        page!.nextOffset + PAGE_SIZE : page!.nextOffset;
+      pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
+    }
+    else {
+      badgeService!.clearBadges();
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    }
+
+    findMyContent(getPageNo() - 1);
+
+  }, [difficultyLevel, match.params.pageNo]);
+
+  const findMyContent = async (pageNo: number) => {
+    //
+    const page = pageService!.pageMap.get(pageKey.current);
+
+    const badgeOffsetList = await badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel
+      .earned(difficultyLevel, '', page!.limit, page!.nextOffset));
+
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+
+  };
+
+  const getPageNo = () => {
+    //
+    return parseInt(match.params.pageNo, 10);
+  };
+
+  const isContentMore = () => {
+    const page = pageService!.pageMap.get(pageKey.current);
+    return page && page.pageNo < page.totalPages;
+  };
+
+  // see more button 클릭
+  const onClickSeeMore = () => {
+    //
+    // history.replace(routePaths.currentPage(getPageNo() + 1));
+    alert('더보기');
+  };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
     // 페이지 변경(초기화)
@@ -67,6 +116,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />
+          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
         </>
       ) : (
         <NoSuchContentPanel message={(
