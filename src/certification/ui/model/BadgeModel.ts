@@ -1,7 +1,4 @@
 
-import { computed, decorate, observable } from 'mobx';
-
-
 class BadgeModel {
   //
   id: number = -1;
@@ -15,7 +12,7 @@ class BadgeModel {
     certiAdminCategoryName: string,
   } = {
     certiAdminCategory: '',
-    certiAdminCategoryName:''
+    certiAdminCategoryName:'',
   };
 
   certiAdminSubcategory: {
@@ -23,7 +20,7 @@ class BadgeModel {
     certiAdminSubcategoryName: string,
   } = {
     certiAdminSubcategory: '',
-    certiAdminSubcategoryName:''
+    certiAdminSubcategoryName:'',
   };
 
   mainCategoryId: string = '';
@@ -40,34 +37,6 @@ class BadgeModel {
       Object.assign(this, { ...badge });
     }
   }
-
-  // @computed
-  // get getBadgeName() {
-  //   return this.name;
-  // }
-  //
-  // @computed
-  // get getBadgeType() {
-  //   return this.badgeType;
-  // }
-  //
-  // @computed
-  // get getIconUrl() {
-  //   return this.iconUrl;
-  // }
 }
-
-decorate(BadgeModel, {
-  id: observable,
-  badgeId: observable,
-  name: observable,
-  iconUrl: observable,
-  certiAdminCategory: observable,
-  certiAdminSubcategory: observable,
-  mainCategoryId: observable,
-  mainCategoryName: observable,
-  badgeType: observable,
-  difficultyLevel: observable,
-});
 
 export default BadgeModel;

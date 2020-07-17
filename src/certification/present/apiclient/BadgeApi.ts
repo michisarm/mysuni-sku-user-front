@@ -1,13 +1,17 @@
 
 import {axiosApi} from '@nara.platform/accent';
-import { OffsetElementList } from 'shared/model';
+import {patronInfo} from '@nara.platform/dock';
+import {OffsetElementList} from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
-
 // for Test by JSM
-import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData} from './badgeData';
+import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData, linkedBadgeData} from './badgeData';
 import {categoryData} from './categoryData';
+import {badgeDetailData} from './badgeDetailData';
+import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
+import {badgeCompData} from './badgeCompData';
+import BadgeCompModel from '../../ui/model/BadgeCompModel';
 
 
 class BadgeApi {
@@ -89,11 +93,56 @@ class BadgeApi {
       code: '200',
       message: 'success',
       totalCount: 18,
-      challengedCount: 14,
+      challengedCount: 12,
       issuedCount: 16,
     };
   }
 
+  getCountOfIssuedBadges() {
+    //
+    // const params = {
+    //   patronKeyString: patronInfo.getPatronId()!,
+    //   issueState: 'issued',
+    // };
+    //
+    // return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
+    //   .then(response => response.data.valueOf());
+
+    return 16;
+  }
+
+  // PSJ 연관뱃지
+
+  findLikedBadges(badgeId: string) {
+
+    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + `/badges/${badgeId}/links`)
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <OffsetElementList<BadgeModel>>(linkedBadgeData);
+  }
+
+  findBadgeDetailInformation(badgeId: string) {
+
+    // return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}`)
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <BadgeDetailModel>badgeDetailData;
+  }
+
+  findBadgeComposition(badgeId: string) {
+    //
+    const params = {
+      badgeId,
+    };
+
+    // return axiosApi.get<OffsetElementList<BadgeCompModel>>(this.baseUrl + `/courseset/lectures`, {params})
+    //   .then(response => response && response.data);
+
+    // for Test : 테스트 후 지울 것
+    return <OffsetElementList<BadgeCompModel>>badgeCompData;
+  }
   /*
   getTotalBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //

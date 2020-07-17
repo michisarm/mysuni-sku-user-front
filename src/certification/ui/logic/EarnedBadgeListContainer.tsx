@@ -5,13 +5,13 @@ import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
-import {MyTrainingService} from '../../../myTraining/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {Badge, SeeMoreButton} from '../../shared/Badge';
 import {NoSuchContentPanel} from '../../../shared';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeCountText from '../model/BadgeCountText';
 import LineHeaderContainer from './LineHeaderContainer';
 
 
@@ -40,6 +40,10 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
     pageKey.current = PAGE_KEY;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
+    return (() => {
+      window.scrollTo(0, 0);
+    });
+
   }, []);
 
   useEffect(() => {
@@ -52,7 +56,6 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
@@ -107,6 +110,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
       <LineHeaderContainer
         totalCount={badgeService?.earnedCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
+        countMessage={BadgeCountText.EarnedBadgeList}
       />
 
       {badges.length > 0 ? (
@@ -116,13 +120,11 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
               return (
                 <li key={index}>
                   <Badge
-                    badgeLevel={badge.difficultyLevel}
-                    iconUrl={badge.iconUrl}
-                    mainCategory={badge.mainCategoryName}
-                    name={badge.name}
+                    badge={badge}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Large}
                   />
+                  <div className="badge-name">{badge.name}</div>
                 </li>
               );
             })}

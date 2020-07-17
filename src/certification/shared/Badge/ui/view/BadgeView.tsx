@@ -7,15 +7,16 @@ const blankImage = '/images/all/icon-chanel-64-px.svg';
 
 
 interface BadgeContentWrapperProps {
+  onViewDetail?: () => void,
   badgeLevel: string,
   badgeStyle: string,
   badgeSize: string,
 }
 
-export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = ({ badgeLevel, badgeStyle, badgeSize, children }) => (
+export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = ({ badgeLevel, badgeStyle, badgeSize, children, onViewDetail }) => (
   <>
     { badgeStyle === 'List' ? (
-      <a href="#" className={ classNames('badge', badgeLevel, badgeSize)}>
+      <a className={ classNames('badge', badgeLevel, badgeSize)} onClick={onViewDetail}>
         {children}
       </a>
     ) : (

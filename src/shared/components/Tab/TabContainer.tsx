@@ -19,6 +19,7 @@ interface Props {
   renderItems?: (props: any) => React.ReactNode
   renderContent?: (props: any) => React.ReactNode
   onChangeTab?: (tab: TabItemModel) => void
+  topOfContents?: React.ReactNode
 }
 
 interface State {
@@ -58,10 +59,14 @@ class TabContainer extends Component<Props, State> {
     if(prevProps.defaultActiveName !== this.props.defaultActiveName){
       if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
         this.onClickTab(tabs[0]);
-      } else { // 20200527 탭 이동 정상화
-        this.onClickTab(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
+      } else { // 20200716 탭 이동 (by JSM)
+        this.setPreviousTab(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
       }
     }
+  }
+
+  setPreviousTab(tab: TabItemModel) {
+    this.setState({ activeName: tab.name });
   }
 
   onClickTab(tab: TabItemModel) {
@@ -107,7 +112,7 @@ class TabContainer extends Component<Props, State> {
 
   renderContent(tab: TabItemModel) {
     //
-    const { renderContent } = this.props;
+    const { renderContent, topOfContents } = this.props;
     const { activeName } = this.state;
 
     if (typeof renderContent === 'function') {
@@ -115,11 +120,15 @@ class TabContainer extends Component<Props, State> {
     }
 
     return (
-      <Segment className="full" key={`tab-content-${tab.name}`}>
-        <div className={classNames('ui tab', { active: tab.name === activeName })}>
-          {tab.render({ tab, active: tab.name === activeName })}
-        </div>
-      </Segment>
+      <>
+        {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
+        {topOfContents}
+        <Segment className="full" key={`tab-content-${tab.name}`}>
+          <div className={classNames('ui tab', { active: tab.name === activeName })}>
+            {tab.render({ tab, active: tab.name === activeName })}
+          </div>
+        </Segment>
+      </>
     );
   }
 

@@ -576,7 +576,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'badgeId': 'BADGE-4',
       'name': '도전중 Badge 4',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -598,7 +598,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'badgeId': 'BADGE-5',
       'name': '도전중 Badge 5',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -1176,5 +1176,100 @@ export const myBadgeData: OffsetElementList<BadgeModel> = {
       'issueState': '',
     },
     */
+  ]
+};
+
+export const linkedBadgeData: OffsetElementList<BadgeModel> = {
+  'empty': false,
+  'totalCount': 16,
+  'results': [
+    {
+      'id': 1,
+      'badgeId': 'BADGE-1',
+      'name': 'Linked Badge 1',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
+      'difficultyLevel': 'Basic',
+      'learningCompleted': false,
+      'challengeState': 'Challenged',
+      'issueState': '',
+    },
+    {
+      'id': 2,
+      'badgeId': 'BADGE-2',
+      'name': 'Linked Badge 2',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': false,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
+      'difficultyLevel': 'Intermediate',
+      'learningCompleted': false,
+      'challengeState': 'Challenged',
+      'issueState': '',
+    },
+    {
+      'id': 3,
+      'badgeId': 'BADGE-3',
+      'name': 'Linked Badge 3',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
+      'difficultyLevel': 'Advanced',
+      'learningCompleted': false,
+      'challengeState': 'Challenged',
+      'issueState': '',
+    },
+    {
+      'id': 4,
+      'badgeId': 'BADGE-4',
+      'name': 'Linked Badge 4',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
+      'difficultyLevel': 'Basic',
+      'learningCompleted': false,
+      'challengeState': 'Challenged',
+      'issueState': '',
+    },
   ]
 };

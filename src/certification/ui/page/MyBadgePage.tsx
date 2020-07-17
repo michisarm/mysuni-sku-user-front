@@ -9,7 +9,9 @@ import routePaths from '../../routePaths';
 import MyBadgeContentType from '../model/MyBadgeContentType';
 
 import AllBadgeListContainer from '../logic/AllBadgeListContainer';
+import ChallengingBadgeContainer from '../logic/ChallengingBadgeContainer';
 import EarnedBadgeListContainer from '../logic/EarnedBadgeListContainer';
+import BadgeCategoryContainer from '../logic/BadgeCategoryContainer';
 import BadgeService from '../../present/logic/BadgeService';
 
 
@@ -29,15 +31,20 @@ enum SubBreadcrumb {
 const MyBadgePage : React.FC<Props> = (Props) => {
   //
   const { badgeService, profileMemberName, history, match } = Props;
+  const { categories } = badgeService!;
 
   const { params } = match;
 
-  const [subBreadcrumb, setSubBreadcrumb] = useState(SubBreadcrumb.AllBadgeList);
+  const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
+  const [categorySelection, setCategorySelection] = useState<string>('');
 
   // lectureService 변경  실행
   useEffect(() => {
     //
     setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+
+    badgeService!.clearCategories();
+    badgeService!.findAllCategories();
   }, []);
 
   useEffect(() => {
@@ -52,19 +59,24 @@ const MyBadgePage : React.FC<Props> = (Props) => {
 
   const getTabs = () => {
     //
+    const badgeCount = badgeService!.badgeCount;
+    const challengingCount = badgeService!.challengingCount;
+    const earnedCount = badgeService!.earnedCount;
+
     return [
       {
         name: MyBadgeContentType.AllBadgeList,
         item: (
           <>
             Badge List
-            <span className="count">{badgeService?.badgeCount}</span>
+            { badgeCount > 0 && <span className="count">+{badgeCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
-          <>
-            <AllBadgeListContainer badgeCount={badgeService?.badgeCount} />
-          </>
+          <AllBadgeListContainer
+            badgeCount={badgeService?.badgeCount}
+            categorySelection={categorySelection}
+          />
         )
       },
       {
@@ -72,13 +84,11 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             도전중 Badge
-            <span className="count">{badgeService?.challengingCount}</span>
+            { challengingCount > 0 && <span className="count">+{challengingCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
-          <>
-            도전중 Badge List
-          </>
+          <ChallengingBadgeContainer badgeCount={badgeService?.challengingCount}/>
         )
       },
       {
@@ -86,7 +96,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             My Badge
-            <span className="count">{badgeService?.earnedCount}</span>
+            {earnedCount > 0 && <span className="count">+{earnedCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
@@ -103,6 +113,22 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     history.push(routePaths.badgeTab(tab.name));
   };
 
+
+  // 카테고리 선택
+  const onClickBadgeCategory = (e: any, categoryId: any) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
+    if (categorySelection === categoryId) {
+      // 선택해제 및 전체보기
+      setCategorySelection('');
+    } else {
+      setCategorySelection(categoryId);
+    }
+  };
+
   return (
     <ContentLayout
       breadcrumb={[
@@ -110,11 +136,19 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         { text: subBreadcrumb },
       ]}
     >
-
       <Tab
         tabs={getTabs()}
         defaultActiveName={params.tab}
         onChangeTab={onChangeTab}
+        topOfContents={
+          (params.tab === MyBadgeContentType.AllBadgeList) && (
+            <BadgeCategoryContainer
+              categories={categories}
+              categorySelection={categorySelection}
+              onClickBadgeCategory={onClickBadgeCategory}
+            />
+          )
+        }
       />
     </ContentLayout>
   );

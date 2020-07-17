@@ -7,8 +7,6 @@ import routePaths from '../../../personalcube/routePaths';
 import {PageService} from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
-
-import BadgeCategoryContainer from './BadgeCategoryContainer';
 import LineHeaderContainer from './LineHeaderContainer';
 import BadgeListContainer from './BadgeListContainer';
 import {SeeMoreButton} from '../../shared/Badge';
@@ -21,19 +19,20 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   badgeService?: BadgeService,
 
   badgeCount: number | undefined,
+  categorySelection: string,
 }
 
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { pageService, badgeService, badgeCount, history, match } = Props;
+  const { pageService, badgeService, badgeCount, categorySelection, history, match } = Props;
   const { categories, badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
+  const prevCategory = useRef<string>('');
 
-  const [categorySelection, setCategorySelection] = useState<string>('');
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
   useEffect(() => {
@@ -42,12 +41,20 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
 
-    badgeService!.clearCategories();
-    badgeService!.findAllCategories();
+    return (() => {
+      window.scrollTo(0, 0);
+    });
 
   }, []);
 
   useEffect(() => {
+
+    if (categorySelection !== prevCategory.current) {
+      prevCategory.current = categorySelection;
+      // 페이지키 재설정 및 초기화
+      pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    }
 
     const page = pageService!.pageMap.get(pageKey.current);
 
@@ -57,8 +64,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
-      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
     findMyContent(getPageNo() - 1);
@@ -93,46 +99,22 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     alert('더보기');
   };
 
-  const onClickBadgeCategory = (e: any, categoryId: any) => {
-    // 페이지 변경(초기화)
-    match.params.pageNo = '1';
-    history.replace(routePaths.currentPage(1));
-
-    // 페이지키 재설정 및 초기화
-    pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
-
-    // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
-    if (categorySelection === categoryId) {
-      // 선택해제 및 전체보기
-      setCategorySelection('');
-    } else {
-      setCategorySelection(categoryId);
-    }
-  };
-
   const onSelectDifficultyLevel = (diffLevel: string) => {
     // 페이지 변경(초기화)
     match.params.pageNo = '1';
     history.replace(routePaths.currentPage(1));
 
     // 페이지키 재설정 및 초기화
-    pageKey.current = PAGE_KEY + categorySelection + difficultyLevel;
+    diffLevel = diffLevel === '전체' ? '': diffLevel;
+    pageKey.current = PAGE_KEY + categorySelection + diffLevel;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
 
     // 난이도 변경
-    setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+    setDifficultyLevel(diffLevel);
   };
 
   return (
     <>
-      {/*Badge Category*/}
-      <BadgeCategoryContainer
-        categories={categories}
-        categorySelection={categorySelection}
-        onClickBadgeCategory={onClickBadgeCategory}
-      />
-
       <LineHeaderContainer
         totalCount={badgeService?.badgeCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
