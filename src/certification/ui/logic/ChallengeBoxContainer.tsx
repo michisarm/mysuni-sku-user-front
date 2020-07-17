@@ -1,13 +1,14 @@
 
 import React from 'react';
-import {Button, Icon, Image} from 'semantic-ui-react';
-import {inject, observer} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
+import {Icon, Image} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {Badge} from '../../shared/Badge';
 import {ChallengeBadgeTitle, ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
+
+// 샘플
+import {learningData} from '../../present/apiclient/learningData';
 
 interface Props extends RouteComponentProps {
   badges: any,
@@ -18,10 +19,6 @@ interface Props extends RouteComponentProps {
 const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   //
   const { badges, badgeStyle, badgeSize } = Props;
-
-  const handleCloseAlertWin = () => {
-    alert('1');
-  };
 
   return (
     <div className="challenge-wrap">
@@ -46,7 +43,10 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
               <ChallengeBadgeStatus>
 
                 {/*학습완료x, 뱃지발급 버튼 누른 경우*/}
-                <ChallengeBoxCompanionModal/>
+                { (badge.autoIssued) && (
+                  // 발급요청 버튼은 수동발급인 경우에만 노출, 반려시 재노출
+                  <ChallengeBoxCompanionModal/>
+                )}
 
                 {/*데이터 확인 후 수정할 것*/}
                 <span className="number">
@@ -69,35 +69,21 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
               {/*Badge 구성학습 목록*/}
               <div className="challenge-list">
                 <ul>
-
-                  {/*학습정보 반복*/}
-                  <li className="class-card" key="123">
-                    <a href="#">
-                      <span className="class-icon">
-                        <Image src="/images/all/icon-chanel-64-px.svg"/>
-                      </span>
-                      <span className="title">
-                        Machine learning Complete for Calculus – Deep Learning
-                      </span>
-                      <span className="time">
-                        <Icon className="card-time16"/> 1h 30m
-                      </span>
-                    </a>
-                  </li>
-                  <li className="class-card completed" key="124">
-                    <a href="#">
-                      <span className="class-icon">
-                        <Image src="/images/all/icon-chanel-64-px.svg"/>
-                      </span>
-                      <span className="title">
-                        Machine learning Complete for Calculus – Deep Learning
-                      </span>
-                      <span className="time">
-                        <Icon className="card-time16"/> 1h 30m
-                      </span>
-                    </a>
-                  </li>
-
+                  { learningData.map((learning, index) => {
+                    return (
+                      <li className="class-card" key={`learning-${index}`}>
+                        <a href="#">
+                          <span className="class-icon">
+                            <Image src={learning.iconBox.iconUrl} alt={learning.name}/>
+                          </span>
+                          <span className="title">{learning.name}</span>
+                          <span className="time">
+                            <Icon className="card-time16"/> {learning.learningTime}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 

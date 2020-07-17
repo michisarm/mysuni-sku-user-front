@@ -576,7 +576,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'badgeId': 'BADGE-4',
       'name': '도전중 Badge 4',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -598,7 +598,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'badgeId': 'BADGE-5',
       'name': '도전중 Badge 5',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'

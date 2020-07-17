@@ -16,7 +16,6 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 
 
-
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   badgeService?: BadgeService,
   pageService?: PageService,
