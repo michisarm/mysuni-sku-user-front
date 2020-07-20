@@ -21,7 +21,7 @@ interface Props extends RouteComponentProps {
 const BadgeContainer: FunctionComponent<Props> = (Props) => {
   //
   const { badgeService, badge, badgeStyle, badgeSize, history } = Props;
-  const {  badgeId, difficultyLevel, iconUrl, mainCategoryName, name } = badge;
+  const { badgeId, difficultyLevel, iconUrl, mainCategoryName, name } = badge;
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));

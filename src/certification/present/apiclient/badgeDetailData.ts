@@ -43,3 +43,4 @@ export const badgeDetailData: BadgeDetailModel = {
   'badgeState': 'Created',
   'difficultyLevel': 'Basic',
 };
+

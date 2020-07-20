@@ -27,7 +27,10 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
     //
     const badgeInfo = await badgeService!.findBadgeDetailInfo(id);
     setBadgeDetail(badgeInfo);
+
+    console.log( badgeInfo);
   };
+
 
   // 뱃지 상세정보 호출
 
@@ -35,13 +38,10 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
     <ContentLayout
       className="no-padding"
       breadcrumb={[
-        { text: '123'},
-        { text: '456'},
+        { text: badgeService!.badgeDetailInfo.mainCategoryName},
       ]}
     >
-      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo}>
-        <div>학습정보</div>
-      </BadgeContentContainer>
+      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo} />
 
       {/*연관 Badge*/}
       <LinkedBadgeListContainer badgeId={match.params.badgeId}/>

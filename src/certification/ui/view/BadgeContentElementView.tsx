@@ -1,5 +1,14 @@
 import React from 'react';
-import {Icon, Label, Segment} from 'semantic-ui-react';
+import {Button, Icon, Label, Segment} from 'semantic-ui-react';
+import classNames from 'classnames';
+import {dateTimeHelper} from 'shared';
+import moment from 'moment';
+
+import IssueState from '../../shared/Badge/ui/model/IssueState';
+import IssueStateTypeName from '../../shared/Badge/ui/model/IssueStateNameType';
+
+import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
+import ChallengeStateName from '../../shared/Badge/ui/model/ChallengeStateName';
 
 
 interface Props {
@@ -35,32 +44,37 @@ interface BadgeInfoProps {
   learningTime: number
 }
 
-export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryName, certiAdminSubCategoryName, difficultyLevel, learningTime}) => (
-  <div className="info">
-    <div>
-      <span className="detail admin">
-        <span>인증/관리 주체</span>
-        <span>{certiAdminCategoryName}</span>
-      </span>
+export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryName, certiAdminSubCategoryName, difficultyLevel, learningTime}) => {
+  //
+  const learningTimeFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
+
+  return (
+    <div className="info">
+      <div>
+        <span className="detail admin">
+          <span>인증/관리 주체</span>
+          <span>{certiAdminCategoryName}</span>
+        </span>
+      </div>
+      <div>
+        <span className="detail design">
+          <span>설계 주체</span>
+          <span>{certiAdminSubCategoryName}</span>
+        </span>
+      </div>
+      <div>
+        <span className="detail level">
+          <span>Level</span>
+          <span>{difficultyLevel}</span>
+        </span>
+        <span className="detail period">
+          <span>총 학습시간</span>
+          <span>{learningTimeFormat}</span>
+        </span>
+      </div>
     </div>
-    <div>
-      <span className="detail design">
-        <span>설계 주체</span>
-        <span>{certiAdminSubCategoryName}</span>
-      </span>
-    </div>
-    <div>
-      <span className="detail level">
-        <span>Level</span>
-        <span>{difficultyLevel}</span>
-      </span>
-      <span className="detail period">
-        <span>총 학습시간</span>
-        <span>{learningTime}</span>
-      </span>
-    </div>
-  </div>
-);
+  );
+};
 
 
 interface BadgeOverviewProps {
@@ -93,3 +107,41 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) =
     </Segment>
   </div>
 );
+
+
+interface BadgeStatusProps {
+  badgeState: ChallengeState | undefined,
+  challengeState?: string,
+  learningCompleted?: boolean,
+  issueState?: string,
+  issueStateTime?: number,
+  creationTime?: number,
+  onClickButton: () => void,
+}
+
+export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, challengeState, learningCompleted, issueState, issueStateTime, onClickButton}) => {
+
+  const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
+
+  return (
+    <div className="status">
+      { (badgeState === ChallengeState.WaitForChallenge || badgeState === ChallengeState.Challenging || badgeState === ChallengeState.ReadyForRequest) && (
+        <>
+          <Button className="fix bg" onClick={onClickButton}>{ChallengeStateName[ChallengeState[badgeState]]}</Button>
+          <span className="txt">Badge획득에 도전 해보세요</span>
+        </>
+      )}
+
+      {/*발급요청 완료, 획득 완료*/}
+      { badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested && (
+        <>
+          <div className={ classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black' )}>
+            {IssueStateTypeName[issueState as IssueState]}
+          </div>
+          <span className="txt">{issueStateTimeFormat} {(badgeState === ChallengeState.Requested) ? '발급 요청' : '획득'}</span>
+        </>
+      )}
+
+    </div>
+  );
+};

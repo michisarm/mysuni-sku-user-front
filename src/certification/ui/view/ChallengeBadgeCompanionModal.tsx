@@ -1,5 +1,5 @@
 
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import {Modal, Button} from 'semantic-ui-react';
 
 
@@ -12,8 +12,7 @@ const ChallengeBadgeCompanionModal = () => {
   };
 
   return (
-    <Fragment>
-
+    <>
       <Button className="fix line">발급요청</Button>
 
       <Modal
@@ -32,7 +31,7 @@ const ChallengeBadgeCompanionModal = () => {
           <Button className="pop2 p" onClick={modalClose}>Confirm</Button>
         </Modal.Actions>
       </Modal>
-    </Fragment>
+    </>
   );
 };
 

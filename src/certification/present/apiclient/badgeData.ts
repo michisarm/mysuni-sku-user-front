@@ -525,14 +525,14 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'difficultyLevel': 'Basic',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': '',
+      'issueState': 'Issued',
     },
     {
       'id': 2,
       'badgeId': 'BADGE-2',
       'name': '도전중 Badge 2',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': false,
+      'autoIssued': true,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -547,7 +547,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'difficultyLevel': 'Intermediate',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': '',
+      'issueState': 'RequestRejected',
     },
     {
       'id': 3,

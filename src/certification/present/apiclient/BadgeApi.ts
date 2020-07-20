@@ -24,7 +24,7 @@ class BadgeApi {
 
   findAllCategories() {
     //
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/categoris')
+    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/categories')
     //   .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
