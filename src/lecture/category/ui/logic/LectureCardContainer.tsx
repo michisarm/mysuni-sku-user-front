@@ -1265,6 +1265,7 @@ class LectureCardContainer extends Component<Props, State> {
             onClose={value => this.onDownloadModalClose(value)}
           />
         )}
+        {/* 차수세부내용 */}
         <ClassroomModalView
           ref={classroomModal => (this.classroomModal = classroomModal)}
           classrooms={typeViewObject.classrooms}
