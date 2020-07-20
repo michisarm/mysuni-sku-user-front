@@ -62,6 +62,14 @@ class CoursePlanService {
   @observable
   channelsMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
 
+  @observable
+  preCourseSet: CoursePlanModel[] = [];
+
+  @observable
+  preCourseIdSet: string[] = [];
+
+
+
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
@@ -280,6 +288,31 @@ class CoursePlanService {
   setCourseSet(courseSet: CoursePlanModel) {
     //
     this.courseSet = [...this.courseSet].concat([courseSet]);
+  }
+
+  @action
+  async findAllPrecedenceCourseList( coursePlanId: string) {
+    const precedenceSet = await this.coursePlanApi.findAllPrecedenceCourseList( coursePlanId );
+    if (precedenceSet) {
+      return precedenceSet.results;
+      /*return runInAction( () => {
+        this.preCourseSet = precedenceSet.results.map(result => new CoursePlanModel(result));
+      });*/
+    } else {
+      return null;
+    }
+  }
+
+  @action
+  async findAllPreCourseIdList( coursePlanId: string) {
+    const preCourseIdSet = await this.coursePlanApi.findAllPreCourseIdList( coursePlanId );
+    if (preCourseIdSet) {
+      console.log( 'preCourseIdSet : ', preCourseIdSet );
+      this.preCourseIdSet = preCourseIdSet;
+      return preCourseIdSet;
+    } else {
+      return null;
+    }
   }
 }
 

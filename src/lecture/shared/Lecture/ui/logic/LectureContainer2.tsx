@@ -10,6 +10,7 @@ import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';
+import PreCourse from '../../sub/PreCourse';
 import CourseSection from '../../sub/CourseSection';
 
 import Action from '../../model/Action';
@@ -73,6 +74,8 @@ class LectureContainer2 extends Component<Props, States> {
   static ActionType = ActionType;
 
   static contextType = LearningCardContext;
+
+  static PreCourse = PreCourse;
 
   static defaultProps = {
     rating: null,

@@ -57,6 +57,8 @@ class LectureService {
   @observable
   requiredLecturesCount: number = 0;
 
+
+
   constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
@@ -86,6 +88,13 @@ class LectureService {
     //
     return (this._lectureViews as IObservableArray).peek();
   }
+
+
+  // @computed
+  // get preLectureViews() {
+  //   //
+  //   return (this._preLectureViews as IObservableArray).peek();
+  // }
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 

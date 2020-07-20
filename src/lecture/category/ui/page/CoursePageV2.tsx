@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
@@ -11,12 +11,18 @@ import { ContentLayout, Tab } from 'shared';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
-import { ExamPaperService, ExaminationService } from 'assistant/stores';
+import { ExaminationService, ExamPaperService } from 'assistant/stores';
 import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
-import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
+import {
+  CourseLectureModel,
+  LectureServiceType,
+  LectureViewModel,
+  StudentCdoModel,
+  StudentJoinRdoModel
+} from '../../../model';
 import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
@@ -197,10 +203,8 @@ class CoursePageV2 extends Component<Props, State> {
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
     await coursePlanService.findCoursePlanContentsV2(coursePlan.contentsId);
-
     if (coursePlanService.coursePlanContents.testId) {
       const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
       const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
@@ -220,14 +224,61 @@ class CoursePageV2 extends Component<Props, State> {
 
       this.state.surveyState = disabled;
       this.state.surveyTitle =  title.ko;
+
     }
+    this.setPreCourseModel();
+  }
+
+  async setPreCourseModel() {
+    console.log('선수코스 세팅 시작!');
+    const { match, coursePlanService, courseLectureService } = this.props;
+    const { setPreLectureViews, preLectureViews } = courseLectureService;
+    const { params } = match;
+
+    // coursePlan ... 코스 이름...
+    const preCoursePlanSet = await coursePlanService.findAllPrecedenceCourseList(params.coursePlanId);
+    const preCoursePlanIdSet = await coursePlanService.findAllPreCourseIdList(params.coursePlanId);
+    // const preCourseLectureSet : CourseLectureModel[] = [];
+
+    // if( preCoursePlanSet && preCoursePlanIdSet ) setPreLectureViews(preCoursePlanSet, preCoursePlanIdSet);
+
+    const preLectureViewSet : LectureViewModel[] = [];
+
+    if (preCoursePlanSet) {
+      preCoursePlanSet.forEach( (preCourse ) => {
+        // console.log('preCourse.coursePlanId : ', preCourse.coursePlanId);
+        if ( preCoursePlanIdSet ) {
+          preCoursePlanIdSet.forEach( (preCourseId) => {
+
+            courseLectureService.findCourseLectureByCoursePlanId( preCourseId ).then( (courseLecture) => {
+              if ( courseLecture ) {
+                if ( preCourse.coursePlanId === courseLecture.coursePlanId ) {
+                  const preLectureView = new LectureViewModel();
+                  preLectureView.serviceType = LectureServiceType.Course;
+                  preLectureView.serviceId = courseLecture.usid;
+                  preLectureView.coursePlanId = courseLecture.coursePlanId;
+                  preLectureView.name = preCourse.name;
+                  preLectureView.category = preCourse.category;
+
+                  preLectureViewSet.push( preLectureView );
+                }
+              }
+            });
+          });
+        }
+      });
+    }
+
+    setPreLectureViews(preLectureViewSet);
+    console.log('preLectureViews : ', preLectureViews);
+    // return preLectureViewSet;
+
+
   }
 
   async findProgramOrCourseLecture() {
     //
     const { match, programLectureService, courseLectureService, commentService } = this.props;
-
-    // console.log('match.params.serviceId : ' + match.params.serviceId);
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
@@ -504,7 +555,7 @@ class CoursePageV2 extends Component<Props, State> {
   renderOverview() {
     //
     const { serviceId } = this.props.match.params!;
-    const { coursePlanService } = this.props;
+    const { coursePlanService, courseLectureService } = this.props;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
@@ -518,6 +569,7 @@ class CoursePageV2 extends Component<Props, State> {
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}
         onPageRefresh={this.onPageRefresh}
+        courseLectureService={courseLectureService}
       />
     );
   }
