@@ -6,7 +6,7 @@ export default class CubeIntroApi {
 
   // URL = '/api/personalCube/cubeintros';
 
-  serverUrl = '/api/personalCube/cubeintros';
+  serverUrl = '/api/personalCube';
   devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
     this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
 
