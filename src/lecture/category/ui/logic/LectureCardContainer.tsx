@@ -115,8 +115,18 @@ class LectureCardContainer extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    //
     this.findInMyLecture();
+    // ie일 경우 localStorage 가 정상동작하지 않는다. setItem 한번 해줘야 다른탭에서 읽을 수 있어.
+    const agent = navigator.userAgent.toLowerCase();
+    if (
+      (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) ||
+      agent.indexOf('msie') != -1
+    ) {
+      // ie일 경우
+      localStorage.setItem('unused_key', 'unused_key');
+    } else {
+      // ie가 아닐 경우
+    }
   }
 
   componentDidUpdate(prevProps: any, prevState: any) {
@@ -482,6 +492,10 @@ class LectureCardContainer extends Component<Props, State> {
     }
     const { lectureCardId } = this.props;
     const liveLectureCardId = localStorage.getItem('liveLectureCardId');
+    // console.log(
+    //   '1.local.liveLectureCardId',
+    //   localStorage.getItem('liveLectureCardId')
+    // );
     const term = nvl(localStorage.getItem('liveLectureCardIdTime'), 0);
     let rtnLive = false;
     const after2Min = new Date();
