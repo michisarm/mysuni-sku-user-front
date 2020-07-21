@@ -1,5 +1,4 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 
@@ -21,9 +20,8 @@ import { CriterionQuestionItems } from '../../form/model/CriterionQuestionItems'
 import { ChoiceQuestionItems } from '../../form/model/ChoiceQuestionItems';
 import CriterionView from '../view/CriterionView';
 import { AnswerProgress } from '../../answer/model/AnswerProgress';
-import { LectureServiceType } from '../../../lecture/model';
 
-interface Props extends RouteComponentProps<RouteParams> {
+interface Props {
   surveyCaseService?: SurveyCaseService
   surveyFormService?: SurveyFormService
   answerSheetService?: AnswerSheetService
@@ -32,16 +30,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   surveyCaseId: string
   trigger?: React.ReactNode
   onSaveCallback?:() => void
-  // serviceId: string
-  // serviceType: string
-}
-
-interface RouteParams {
-  cineroomId: string,
-  collegeId: string,
-  coursePlanId: string,
-  serviceType: LectureServiceType,
-  serviceId: string
+  serviceId?: string
+  serviceType?: string
 }
 
 interface States {
@@ -98,8 +88,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSaveAnswerSheet(finished: boolean) {
-    const { answerSheetService, surveyCaseService, onSaveCallback, match } = this.props;
-    const { serviceId, serviceType } = match.params;
+    const { answerSheetService, surveyCaseService, onSaveCallback, serviceId, serviceType } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
     if (!finished) {
@@ -110,7 +99,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         }); // .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
-        answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId, serviceType)
+        answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId!, serviceType!)
           .then((answerSheetId) => {
             answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
             return answerSheetService!.saveAnswerSheet();
@@ -136,7 +125,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
          */
       } else {
          answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
-         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId, serviceType)
+         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId!, serviceType!)
            .then((res) => {
              answerSheet.id = res;
              answerSheetService!.changeAnswerSheetProp('id', res);
@@ -311,5 +300,4 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 }
 
-export default withRouter(AnswerSheetModalContainer);
-// export default AnswerSheetModalContainer;
+export default AnswerSheetModalContainer;

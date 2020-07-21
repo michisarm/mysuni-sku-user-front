@@ -764,6 +764,8 @@ class CourseLectureContainer extends Component<Props, State> {
                 surveyCaseId={this.personalCube?.contents.surveyCaseId}
                 ref={surveyModal => this.surveyModal = surveyModal}
                 // onSaveCallback={this.testCallback}
+                serviceId={lectureView.serviceId}
+                serviceType={lectureView.serviceType}
               />
             )
           }

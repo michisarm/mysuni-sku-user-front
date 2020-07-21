@@ -457,6 +457,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
+              serviceId={params.serviceId}
+              serviceType={params.serviceType}
             />
           )
         }

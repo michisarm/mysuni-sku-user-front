@@ -762,7 +762,7 @@ class LectureCardContainer extends Component<Props, State> {
 
   render() {
     //
-    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children } = this.props;
+    const { inMyLectureService, viewObject, cubeType, typeViewObject, studentCdo, children, lectureServiceId, lectureServiceType } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal } = this.state;
     const { classrooms } = this.props.classroomService!;
@@ -835,6 +835,8 @@ class LectureCardContainer extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               onSaveCallback={this.surveyCallback}
+              serviceId={lectureServiceId}
+              serviceType={lectureServiceType}
             />
           )
         }
