@@ -1,6 +1,5 @@
 
 import React, {FunctionComponent} from 'react';
-import {Image} from 'semantic-ui-react';
 import classNames from 'classnames';
 
 const blankImage = '/images/all/icon-chanel-64-px.svg';
@@ -28,13 +27,15 @@ export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = 
 );
 
 
-interface CollegeIconProps {
-  iconUrl: string
+interface CollegeProps {
+  iconUrl: string,
+  mainCategory: string,
 }
 
-export const CollegeIcon: FunctionComponent<CollegeIconProps> = ({ iconUrl }) => (
+export const College: FunctionComponent<CollegeProps> = ({ iconUrl, mainCategory }) => (
   <span className="college">
-    <Image src={ iconUrl || blankImage} alt="" />
+    <img src={ iconUrl || blankImage} alt="" />
+    <span>{mainCategory}</span>
   </span>
 );
 
@@ -56,6 +57,8 @@ interface TitleProps {
 
 export const Title: FunctionComponent<TitleProps> = ({ name }) => (
   <span className="title">
-    {name}
+    <span className="cell">
+      <span>{name}</span>
+    </span>
   </span>
 );

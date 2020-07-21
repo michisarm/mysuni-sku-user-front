@@ -14,6 +14,7 @@ import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 
 
+
 interface Props {
   badgeDetail: BadgeDetailModel,
 }
@@ -26,7 +27,6 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   const [ successModal, setSuccessModal ] = useState(false);
 
   const [ badgeState, setBadgeState ] = useState();
-  const [ onClickAction, setOnClickAction ] = useState();
 
 
   useEffect( () => {
@@ -48,35 +48,41 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   // 상태 정의
   const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
     //
-    if ( challengeState === 'Canceled') {
+    if ( challengeState === 'Canceled' ) {
       // 도전 대기
       setBadgeState(ChallengeState.WaitForChallenge);
+    }
 
-    } else if ( challengeState === 'Challenged') {
-
+    if ( challengeState === 'Challenged' ) {
       if ( issueState === IssueState.Issued ) {
         // 획득 완료
         setBadgeState(ChallengeState.Issued);
-
-      } else if ( issueState === IssueState.Requested ) {
-
-        // 발급 요청 완료
+      }
+      if ( issueState === IssueState.Requested ) {
+        // 발급요청중
         setBadgeState(ChallengeState.Requested);
-
-      } else {
-        // 발급 요청 가능 상태
+      }
+      if ( issueState === IssueState.Requested && learningCompleted ) {
+        // 발급요청가능
         setBadgeState(ChallengeState.ReadyForRequest);
       }
-
+      if ( !learningCompleted ) {
+        // 진행 중 => 도전취소 버튼 노출
+        setBadgeState(ChallengeState.Challenging);
+      }
     }
   };
-
 
 
   /***********************************************************/
   // 도전하기 버튼 클릭 ( getAction response )
   const onClickChallenge = () => {
     setBadgeState(ChallengeState.Challenging);
+
+  };
+
+  const onClickChallengeCancel = () => {
+    alert('1');
   };
 
 
@@ -106,7 +112,7 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
         {/*뱃지 상태*/}
         <BadgeStatus
           badgeState={badgeState}
-          onClickButton={onClickAction}
+          onClickButton={onClickChallenge}
           issueStateTime={studentData01.issueStateTime}
         />
 

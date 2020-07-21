@@ -14,9 +14,9 @@ export const studentData01 = {
   'learningCompleted': false,
   'additionTermsMailSent': true,
   'missionCompleted': false,
-  'issueState': 'Canceled',
-  'issueStateTime': 1595118459000,
-  'creationTime': 2020
+  'issueState': '',
+  'issueStateTime': 0,
+  'creationTime': 0
 };
 
 export const studentData02 = {

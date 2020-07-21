@@ -6,8 +6,8 @@ import 'semantic-ui-less/semantic.less';
 import '@nara.drama/approval/lib/snap.css';
 
 import './style/css/main.12bb7fc7.chunk.css';
-// 0709 PSJ
-import './style/css/2.dc1e7bd5.chunk.css';
+// 0721 badge layout 변경
+import './style/css/2.6a3c6d3d.chunk.css';
 
 
 import './style/app.css';
