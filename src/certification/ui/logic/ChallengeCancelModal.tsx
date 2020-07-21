@@ -4,12 +4,13 @@ import {Modal, Button} from 'semantic-ui-react';
 
 interface Props {
   cancelModal: boolean,
-  onCancel: () => void
+  onClickCancel: () => void,
+  onAction: () => void
 }
 
 const ChallengeCancelModal: React.FC<Props> = (Props) => {
   //
-  const { cancelModal, onCancel } = Props;
+  const { cancelModal, onClickCancel, onAction } = Props;
 
   return (
     <Modal open={cancelModal} className="base w380">
@@ -23,8 +24,8 @@ const ChallengeCancelModal: React.FC<Props> = (Props) => {
         </div>
       </Modal.Content>
       <Modal.Actions className="actions2">
-        <Button className="pop2 d" onClick={onCancel}>취소</Button>
-        <Button className="pop2 p">확인</Button>
+        <Button className="pop2 d" onClick={onClickCancel}>취소</Button>
+        <Button className="pop2 p" onClick={onAction}>확인</Button>
       </Modal.Actions>
     </Modal>
   );

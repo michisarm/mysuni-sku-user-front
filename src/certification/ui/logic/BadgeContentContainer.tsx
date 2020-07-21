@@ -8,11 +8,20 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
+import LectureOverviewViewV2 from '../../../lecture/category/ui/view/LectureOverviewViewV2';
 
 import {studentData01, studentData02, studentData03} from '../../present/apiclient/studentData';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 
+
+export enum ChallengeDescription {
+  WaitForChallenge= 'Badge획득에 도전 해보세요.',
+  Challenging= '',
+  ReadyForRequest= 'Badge획득 도전이 완료되었습니다.',
+  Requested= '발급 요청',
+  Issued= '획득',
+}
 
 interface Props {
   badgeDetail: BadgeDetailModel,
@@ -26,57 +35,100 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   const [ successModal, setSuccessModal ] = useState(false);
 
   const [ badgeState, setBadgeState ] = useState();
-  const [ onClickAction, setOnClickAction ] = useState();
 
 
   useEffect( () => {
+    // 페이지 진입 시 상태처리
     getBadgeState( studentData01.challengeState, studentData01.learningCompleted, studentData01.issueState);
-  });
+  }, []);
 
-
-  // 도전취소 버튼 클릭
-  const onControlChallengeCancel = () => {
-    setCancelModal(!cancelModal);
-  };
-
-  // 성공 모달 닫기
-  const onControlSuccessModal = () => {
-    setSuccessModal(!successModal);
-  };
 
 
   // 상태 정의
   const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
     //
-    if ( challengeState === 'Canceled') {
+    if ( challengeState === 'Canceled' ) {
       // 도전 대기
       setBadgeState(ChallengeState.WaitForChallenge);
+    }
 
-    } else if ( challengeState === 'Challenged') {
-
+    if ( challengeState === 'Challenged' ) {
       if ( issueState === IssueState.Issued ) {
         // 획득 완료
         setBadgeState(ChallengeState.Issued);
-
-      } else if ( issueState === IssueState.Requested ) {
-
-        // 발급 요청 완료
+      }
+      if ( issueState === IssueState.Requested ) {
+        // 발급요청중
         setBadgeState(ChallengeState.Requested);
-
-      } else {
-        // 발급 요청 가능 상태
-        setBadgeState(ChallengeState.ReadyForRequest);
       }
 
+      if ( (issueState !== IssueState.Issued && issueState !== IssueState.Requested) && learningCompleted ) {
+        // 발급요청가능
+        setBadgeState(ChallengeState.ReadyForRequest);
+      }
+      if ( (issueState !== IssueState.Issued && issueState !== IssueState.Requested) && !learningCompleted ) {
+        // 진행 중 => 도전취소 버튼 노출
+        setBadgeState(ChallengeState.Challenging);
+      }
+    }
+  };
+
+  // 상태에 따른 버튼 이벤트
+  const getAction = () => {
+    switch( badgeState ) {
+      case ChallengeState.WaitForChallenge:
+        onClickChallenge();
+        break;
+      case ChallengeState.Challenging:
+        onChangeCancleModal();
+        break;
+      case ChallengeState.ReadyForRequest:
+        onClickRequest();
+        break;
     }
   };
 
 
-
   /***********************************************************/
-  // 도전하기 버튼 클릭 ( getAction response )
+  // 도전하기 버튼 클릭
   const onClickChallenge = () => {
+    //
     setBadgeState(ChallengeState.Challenging);
+
+    // API 호출
+
+  };
+
+  // 도전취소 -> 안내모달
+  const onChangeCancleModal = () => {
+    setCancelModal(!cancelModal);
+  };
+
+  // 안내모달 - [취소] 클릭
+  const onClickChallengeCancel = () => {
+    // 도전 대기 상태
+    setBadgeState(ChallengeState.WaitForChallenge);
+
+    // API 호출 및 취소 처리
+
+    // 모달 닫기
+    setCancelModal(!cancelModal);
+  };
+
+  // 발급요청
+  const onClickRequest = () => {
+    // API 호출
+    // 자동발급 뱃지일 경우 바로 발급
+
+    // 수동뱃지일 경우 추가발급조건 확인
+
+    // 성공 후 상태 변경
+    setBadgeState(ChallengeState.Requested);
+  };
+
+  // 성공 모달 닫기
+  const onControlSuccessModal = () => {
+    setSuccessModal(!successModal);
   };
 
 
@@ -106,12 +158,13 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
         {/*뱃지 상태*/}
         <BadgeStatus
           badgeState={badgeState}
-          onClickButton={onClickAction}
+          onClickButton={getAction}
           issueStateTime={studentData01.issueStateTime}
+          description={ChallengeDescription[badgeState as ChallengeState]}
         />
 
         {/*도전 취소 확인 팝업*/}
-        <ChallengeCancelModal cancelModal={cancelModal} onCancel={onControlChallengeCancel}/>
+        <ChallengeCancelModal cancelModal={cancelModal} onClickCancel={onChangeCancleModal} onAction={onClickChallengeCancel}/>
 
         {/*자동발급 뱃지 & 뱃지획득 시*/}
         <ChallengeSuccessModal badge={badgeDetail} successModal={successModal} onCloseSuccessModal={onControlSuccessModal}/>
@@ -166,7 +219,7 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="list24"
             title="Learning Path"
-            content="학습목록 course-cont"
+            content="학습정보 course-cont"
           />
         </OverviewField.List>
 

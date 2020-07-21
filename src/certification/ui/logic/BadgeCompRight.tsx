@@ -4,6 +4,7 @@ import {Icon, Image} from 'semantic-ui-react';
 import {mobxHelper} from '@nara.platform/accent';
 import classNames from 'classnames';
 import {RouteComponentProps, withRouter} from 'react-router';
+import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeModel from '../model/BadgeModel';
@@ -49,7 +50,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
                   </span>
                   <span className="title">{learning.name}</span>
                   <span className="time">
-                    <Icon className="card-time16"/> {learning.learningTime}
+                    <Icon className="card-time16"/> {dateTimeHelper.timeToHourMinuteFormat(learning.learningTime)}
                   </span>
                 </a>
               </li>

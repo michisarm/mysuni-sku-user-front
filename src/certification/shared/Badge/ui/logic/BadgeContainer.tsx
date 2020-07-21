@@ -4,7 +4,7 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {inject} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
-import {BadgeContentWrapper, CollegeIcon, MainCategory, Title} from '../view/BadgeView';
+import {BadgeContentWrapper, College, Title} from '../view/BadgeView';
 import BadgeService from '../../../../present/logic/BadgeService';
 import BadgeModel from '../../../../ui/model/BadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
@@ -36,11 +36,8 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
       badgeStyle={badgeStyle}
       badgeSize={badgeSize}
     >
-      {/*사용자 정의 아이콘 or College Icon*/}
-      <CollegeIcon iconUrl={iconUrl} />
-
-      {/*카테고리명*/}
-      <MainCategory mainCategory={mainCategoryName} />
+      {/*College, Category*/}
+      <College iconUrl={iconUrl} mainCategory={mainCategoryName}/>
 
       {/*뱃지명*/}
       <Title name={name} />

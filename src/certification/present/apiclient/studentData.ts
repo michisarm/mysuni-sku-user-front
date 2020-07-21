@@ -1,5 +1,4 @@
 
-// 미도전 상태
 export const studentData01 = {
   'id': '00403972-1389-4ef7-9524-d5364b5f04a4',
   'patronKeyString': 'patron_key_string',
@@ -10,13 +9,13 @@ export const studentData01 = {
     'department': '수강자소속조직명',
     'email': '수강자이메일'
   },
-  'challengeState': 'Canceled',
-  'learningCompleted': false,
+  'challengeState': 'Challenged',
+  'learningCompleted': true,
   'additionTermsMailSent': true,
   'missionCompleted': false,
-  'issueState': 'Canceled',
+  'issueState': '',
   'issueStateTime': 1595118459000,
-  'creationTime': 2020
+  'creationTime': 0
 };
 
 export const studentData02 = {

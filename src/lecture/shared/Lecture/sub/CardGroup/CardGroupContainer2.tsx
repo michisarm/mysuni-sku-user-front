@@ -12,6 +12,7 @@ export enum GroupType {
   List = 'List',
   ListStamp = 'ListStamp',
   Community = 'Community',
+  PreCourse = 'PreCourse',
 }
 
 interface Props {
@@ -79,8 +80,7 @@ class CardGroup2 extends Component<Props> {
     }*/
     else if (type === GroupType.Course) {
       elements = (
-        // <div className="contents course-list non-height">
-        <div className="ov-paragraph course-area">
+        <>
           <div className="title-style">
             <div className="ui label onlytext bold size24">
               <i aria-hidden="true" className="course24 icon"/>
@@ -97,7 +97,22 @@ class CardGroup2 extends Component<Props> {
           <div className="course-cont">
             {children}
           </div>
-        </div>
+        </>
+      );
+    }
+    else if (type === GroupType.PreCourse) {
+      elements = (
+        <>
+          <div className="title-style">
+            <div className="ui label onlytext bold size24">
+              <i aria-hidden="true" className="course24 icon"/>
+              <span>선수 과정 안내</span>
+            </div>
+          </div>
+          <div className="course-cont pre-course">
+            {children}
+          </div>
+        </>
       );
     }
     else if (type === GroupType.Community) {
