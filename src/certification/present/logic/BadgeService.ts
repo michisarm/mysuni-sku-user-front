@@ -141,11 +141,11 @@ class BadgeService {
   async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
     //
     // 도전 뱃지 정보 가져오기
-    // const response = fromMain await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
+    const response = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
     // 테스트 후 아랫줄 제거 (윗 줄 실행되어야 함)
-    const response = fromMain ? await this.badgeApi.findPagingMainChallengingBadges(badgeFilterRdo) :
-      await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
+    // const response = fromMain ? await this.badgeApi.findPagingMainChallengingBadges(badgeFilterRdo) :
+    //   await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
     const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
 

@@ -64,9 +64,13 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
       <div className="section-head">
         <strong><span className="ellipsis">{profileMemberName}</span>님의 도전중인 Badge</strong>
         <div className="right">
-          <Button icon className="right btn-blue" onClick={onViewAll}>
-            View All <Icon className="morelink"/>
-          </Button>
+          {
+            badges.length > 0 && (
+              <Button icon className="right btn-blue" onClick={onViewAll}>
+                View All <Icon className="morelink"/>
+              </Button>
+            )
+          }
         </div>
       </div>
 

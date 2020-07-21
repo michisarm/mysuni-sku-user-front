@@ -7,45 +7,44 @@ import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
+import BannerModel from "../../../../shared/model/BannerModel";
 
 
-class LectureFlowApi {
+class ArrangeApi {
   //
-  static instance: LectureFlowApi;
+  static instance: ArrangeApi;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_LECTURE_FLOW_API === undefined || process.env.REACT_APP_LECTURE_FLOW_API === '' ?
-    '/api/arrange' : process.env.REACT_APP_LECTURE_FLOW_API;
+  process.env.REACT_APP_ARRANGE_API === undefined || process.env.REACT_APP_ARRANGE_API === '' ?
+    '/api/arrange' : process.env.REACT_APP_ARRANGE_API;
 
+  /*
+  findShowingBanners(language: string='ko') {
 
-  findAllRecommendLectures(lectureRdo: LectureRdoModel) {
-    //
-    const params = lectureRdo;
-    return axiosApi.get<RecommendLectureListRdo>(this.baseUrl + '/recommend', { params })
-      .then(response => response && new RecommendLectureListRdo(response.data) || new RecommendLectureListRdo());
+    // return this.respBanner;
+
+    const params = {
+      //language,
+      limit: 8,
+      offset: 0,
+      company: 'SKCC',
+    };
+
+    return axiosApi.get<BannerModel>(this.baseUrl + '/arranges/banners', {params})
+      .then(response => response && response.data &&
+        response.data.bannerList.length > 0 && new BannerModel(response.data) || null);
   }
+  */
 
-  findCollegeLectureCount() {
-    //
-    return axiosApi.get<CollegeLectureCountRdo[]>(this.baseUrl + '/college')
-      .then(response => response && Array.isArray(response.data) && response.data.map((collegeLectureCount) =>
-        new CollegeLectureCountRdo(collegeLectureCount)
-      ) || []);
-  }
-
-  findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
-    //
-    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
-      .then(response => response && response.data);
-  }
+  /********************************************************************************************************/
 
   /**
    * 권장과정 갯수 조회 API
    */
-  countRequiredLectures() {
-    return axiosApi.post<number>(this.baseUrl + '/requiredCount')
-      .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
-  }
+  // countRequiredLectures() {
+  //   return axiosApi.post<number>(this.baseUrl + '/requiredCount')
+  //     .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
+  // }
 
   /********************************************************************************************************/
 
@@ -87,10 +86,8 @@ class LectureFlowApi {
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arranges/menus/RQD', {params})
       .then(response => response && response.data);
   }
-
-  /********************************************************************************************************/
 }
 
-LectureFlowApi.instance = new LectureFlowApi();
+ArrangeApi.instance = new ArrangeApi();
 
-export default LectureFlowApi;
+export default ArrangeApi;

@@ -1,4 +1,3 @@
-
 import React, {useState} from 'react';
 import {Modal, Button} from 'semantic-ui-react';
 

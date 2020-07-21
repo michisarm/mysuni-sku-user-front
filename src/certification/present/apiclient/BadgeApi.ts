@@ -14,14 +14,17 @@ import {badgeCompData} from './badgeCompData';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 
 
+/***** 뱃지 관리 api 모음 클래스 *****/
 class BadgeApi {
   //
   static instance: BadgeApi;
 
-  serverUrl = '/api/badge';
-  baseUrl = process.env.REACT_APP_BADGE_LECTURE_API  === undefined || process.env.REACT_APP_BADGE_LECTURE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_BADGE_LECTURE_API ;
+  // .env 파일 설정에 따른 로컬 또는 서버 호출 path 정의
+  serverUrl = '/api/arrange';
+  baseUrl = process.env.REACT_APP_ARRANGE_API  === undefined || process.env.REACT_APP_ARRANGE_API  === '' ?
+    this.serverUrl : process.env.REACT_APP_ARRANGE_API ;
 
+  // 뱃지 관련 카테고리 정보 가져오기
   findAllCategories() {
     //
     // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/categories')
@@ -31,6 +34,7 @@ class BadgeApi {
     return <OffsetElementList<CategoryModel>>(categoryData);
   }
 
+  // 뱃지 정보 가져오기 (파라미터 : 카테고리, 난이도, 시작 위치, 갯수)
   findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
@@ -55,13 +59,13 @@ class BadgeApi {
   findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      patronKey: badgeFilterRdo.patronKey,
+      patronKeyString: badgeFilterRdo.patronKey,
       difficultyLevel: badgeFilterRdo.difficultyLevel,
       limit: badgeFilterRdo.limit,
       offset: badgeFilterRdo.offset,
     };
 
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/challenging', {params})
+    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
     //   .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
@@ -71,7 +75,7 @@ class BadgeApi {
   findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     const params = {
-      patronKey: badgeFilterRdo.patronKey,
+      patronKeyString: badgeFilterRdo.patronKey,
       difficultyLevel: badgeFilterRdo.difficultyLevel,
       issueState: badgeFilterRdo.issueState,
       limit: badgeFilterRdo.limit,
@@ -162,7 +166,7 @@ class BadgeApi {
   getChallengingBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //
     // const params = {
-    //   patronKey: badgeFilterRdo.patronKey,
+    //   patronKeyString: badgeFilterRdo.patronKey,
     //   difficultyLevel: badgeFilterRdo.difficultyLevel,
     //   limit: badgeFilterRdo.limit,
     //   offset: badgeFilterRdo.offset,
@@ -177,7 +181,7 @@ class BadgeApi {
   getEarnedBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
     //
     // const params = {
-    //   patronKey: badgeFilterRdo.patronKey,
+    //   patronKeyString: badgeFilterRdo.patronKey,
     //   difficultyLevel: badgeFilterRdo.difficultyLevel,
     //   limit: badgeFilterRdo.limit,
     //   offset: badgeFilterRdo.offset,

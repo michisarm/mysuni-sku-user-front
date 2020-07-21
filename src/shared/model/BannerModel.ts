@@ -4,8 +4,9 @@ import { decorate, observable } from 'mobx';
 
 class BannerModel {
   //
-  code: string = '';        // 응답 코드
-  message: string = '';     // 응답 메시지
+  /*
+  // code: string = '';        // 응답 코드
+  // message: string = '';     // 응답 메시지
   id: number = 0;           //
   language: number = 0;     //
   area: number = 0;         //
@@ -15,12 +16,13 @@ class BannerModel {
   endDate: string = '';     //
   state: string = '';       //
   name: string = '';        //
-  intervalTime: number = 7; // 배너 인터벌 타임 (초)
   isUse: string = '';       //
   creatorId: string = '';   // 생성자 이메일
   creatorName: string = ''; // 생성자 이름
   creationTime: string = '';// 생성일
   totalCount: number = 0;   // 검색된 배너 총 개수
+  */
+  intervalTime: number = 7; // 배너 인터벌 타임 (초)
   bannerList: {             // List<object> : 검색된 배너 목록
     id: number;             // 배너 고유 식별 ID
     language: number;       // 적용되어 있는 배너의 언어
@@ -45,7 +47,7 @@ class BannerModel {
 }
 
 decorate(BannerModel, {
-  totalCount: observable,
+  // totalCount: observable,
   bannerList: observable,
 });
 

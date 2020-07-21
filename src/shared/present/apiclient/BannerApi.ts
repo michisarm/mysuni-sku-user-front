@@ -9,9 +9,10 @@ class BannerApi {
   static instance: BannerApi;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-            process.env.REACT_APP_ROLL_BOOK_API === undefined || process.env.REACT_APP_ROLL_BOOK_API === '' ?
-    '/api/banners' : process.env.REACT_APP_ROLL_BOOK_API;
+            process.env.REACT_APP_ARRANGE_API === undefined || process.env.REACT_APP_ARRANGE_API === '' ?
+    '/api/arrange' : process.env.REACT_APP_ARRANGE_API;
 
+  /*
   respBanner: BannerModel = new BannerModel({
     'code': '200',     // 응답 코드
     'message': 'banner list',   // 응답 메시지
@@ -108,20 +109,17 @@ class BannerApi {
       },
     ]
   });
+  */
 
-  findShowingBanners(language: string='ko'): BannerModel {
-
-    return this.respBanner;
-
-    /*
+  findShowingBanners(company: string | undefined) {
+    //
     const params = {
-      language,
+      company,
     };
 
-    return axiosApi.get<BannerModel>(this.baseUrl, {params})
+    return axiosApi.get<BannerModel>(this.baseUrl + '/arranges/banners', {params})
       .then(response => response && response.data &&
         response.data.bannerList.length > 0 && new BannerModel(response.data) || null);
-    */
   }
 }
 
