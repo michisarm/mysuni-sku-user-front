@@ -8,7 +8,7 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
-import LectureOverviewViewV2 from '../../../lecture/category/ui/view/LectureOverviewViewV2';
+import BadgeLectureContainer from './BadgeLectureContainer';
 
 import {studentData01, studentData02, studentData03} from '../../present/apiclient/studentData';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
@@ -219,7 +219,8 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="list24"
             title="Learning Path"
-            content="학습정보 course-cont"
+            content="학습정보"
+            // content={<BadgeLectureContainer/>}
           />
         </OverviewField.List>
 
