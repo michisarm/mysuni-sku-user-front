@@ -40,17 +40,6 @@ export const College: FunctionComponent<CollegeProps> = ({ iconUrl, mainCategory
 );
 
 
-interface MainCategoryProps {
-  mainCategory: string,
-}
-
-export const MainCategory: FunctionComponent<MainCategoryProps> = ({ mainCategory }) => (
-  <span className="part">
-    {mainCategory}
-  </span>
-);
-
-
 interface TitleProps {
   name: string
 }
