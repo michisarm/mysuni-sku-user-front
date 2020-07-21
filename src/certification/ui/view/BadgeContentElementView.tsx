@@ -111,16 +111,13 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) =
 
 interface BadgeStatusProps {
   badgeState: ChallengeState | undefined,
-  challengeState?: string,
-  learningCompleted?: boolean,
-  issueState?: string,
   issueStateTime?: number,
-  creationTime?: number,
   onClickButton: () => void,
+  description?: string
 }
 
-export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, challengeState, learningCompleted, issueState, issueStateTime, onClickButton}) => {
-
+export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateTime, onClickButton, description}) => {
+  //
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
   return (
@@ -128,7 +125,17 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, challengeSt
       { (badgeState === ChallengeState.WaitForChallenge || badgeState === ChallengeState.Challenging || badgeState === ChallengeState.ReadyForRequest) && (
         <>
           <Button className="fix bg" onClick={onClickButton}>{ChallengeStateName[ChallengeState[badgeState]]}</Button>
-          <span className="txt">Badge획득에 도전 해보세요</span>
+          { badgeState === ChallengeState.Challenging && (
+            <>
+              <span className="ing">
+                <span>진행중</span>
+                <span className="num">
+                  <b>03</b>/12
+                </span>
+              </span>
+            </>
+          )}
+          <span className="txt">{description}</span>
         </>
       )}
 
@@ -136,9 +143,9 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, challengeSt
       { badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested && (
         <>
           <div className={ classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black' )}>
-            {IssueStateTypeName[issueState as IssueState]}
+            {ChallengeStateName[badgeState as ChallengeState]}
           </div>
-          <span className="txt">{issueStateTimeFormat} {(badgeState === ChallengeState.Requested) ? '발급 요청' : '획득'}</span>
+          <span className="txt">{issueStateTimeFormat} {description}</span>
         </>
       )}
 
