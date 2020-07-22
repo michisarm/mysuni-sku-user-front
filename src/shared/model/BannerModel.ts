@@ -23,7 +23,7 @@ class BannerModel {
   totalCount: number = 0;   // 검색된 배너 총 개수
   */
   intervalTime: number = 7; // 배너 인터벌 타임 (초)
-  bannerList: {             // List<object> : 검색된 배너 목록
+  results: {             // List<object> : 검색된 배너 목록
     id: number;             // 배너 고유 식별 ID
     language: number;       // 적용되어 있는 배너의 언어
     originId: number;       // 최초 작성시 현재 배너의 ID이며, 수정 시 수정전 ID
@@ -48,7 +48,7 @@ class BannerModel {
 
 decorate(BannerModel, {
   // totalCount: observable,
-  bannerList: observable,
+  results: observable,
 });
 
 export default BannerModel;

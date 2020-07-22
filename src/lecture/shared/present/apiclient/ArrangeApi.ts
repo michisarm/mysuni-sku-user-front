@@ -7,7 +7,7 @@ import RecommendLectureListRdo from '../../../model/RecommendLectureListRdo';
 import CollegeLectureCountRdo from '../../../model/CollegeLectureCountRdo';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
-import BannerModel from "../../../../shared/model/BannerModel";
+import BannerModel from '../../../../shared/model/BannerModel';
 
 
 class ArrangeApi {
@@ -16,35 +16,22 @@ class ArrangeApi {
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
   process.env.REACT_APP_ARRANGE_API === undefined || process.env.REACT_APP_ARRANGE_API === '' ?
-    '/api/arrange' : process.env.REACT_APP_ARRANGE_API;
-
-  /*
-  findShowingBanners(language: string='ko') {
-
-    // return this.respBanner;
-
-    const params = {
-      //language,
-      limit: 8,
-      offset: 0,
-      company: 'SKCC',
-    };
-
-    return axiosApi.get<BannerModel>(this.baseUrl + '/arranges/banners', {params})
-      .then(response => response && response.data &&
-        response.data.bannerList.length > 0 && new BannerModel(response.data) || null);
-  }
-  */
+    '/api/lecture/lectures/flow' : process.env.REACT_APP_ARRANGE_API;
 
   /********************************************************************************************************/
 
-  /**
-   * 권장과정 갯수 조회 API
-   */
-  // countRequiredLectures() {
-  //   return axiosApi.post<number>(this.baseUrl + '/requiredCount')
-  //     .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
-  // }
+  // 권장과정 조회
+  findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
+    //
+    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
+      .then(response => response && response.data);
+  }
+
+  // 권장과정 갯수 조회 API
+  countRequiredLectures() {
+    return axiosApi.post<number>(this.baseUrl + '/requiredCount')
+      .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
+  }
 
   /********************************************************************************************************/
 

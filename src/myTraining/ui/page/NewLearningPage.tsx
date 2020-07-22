@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {inject} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
@@ -14,17 +14,13 @@ export enum ContentType {
   Required = 'Required'
 }
 
-export enum OrderType {
-  New = 'New',
-  Popular = 'Popular',
-}
-
 export enum ContentTypeText {
   New = '신규학습 과정',
   Popular = '인기학습 과정',
   Required = '권장학습 과정',
   Recommend = '추천학습 과정',
 }
+
 // enum ContentTypeName {
 //   New = 'mySUNI ${month}월 ${week}주 신규 학습 과정',
 //   Popular = '학습자들의 평가가 좋은 인기 과정입니다.',

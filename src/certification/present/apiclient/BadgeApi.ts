@@ -20,18 +20,18 @@ class BadgeApi {
   static instance: BadgeApi;
 
   // .env 파일 설정에 따른 로컬 또는 서버 호출 path 정의
-  serverUrl = '/api/arrange';
-  baseUrl = process.env.REACT_APP_ARRANGE_API  === undefined || process.env.REACT_APP_ARRANGE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_ARRANGE_API ;
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_BADGE_API === undefined || process.env.REACT_APP_BADGE_API === '' ?
+    '/api/badge' : process.env.REACT_APP_BADGE_API;
 
   // 뱃지 관련 카테고리 정보 가져오기
   findAllCategories() {
     //
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/categories')
-    //   .then(response => response && response.data);
+    return axiosApi.get<CategoryModel[]>(this.baseUrl + '/categories')
+      .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<CategoryModel>>(categoryData);
+    // return <OffsetElementList<CategoryModel>>(categoryData);
   }
 
   // 뱃지 정보 가져오기 (파라미터 : 카테고리, 난이도, 시작 위치, 갯수)
@@ -44,16 +44,11 @@ class BadgeApi {
       offset: badgeFilterRdo.offset,
     };
 
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures', {params})
-    //   .then(response => response && response.data);
+    return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures/flow', {params})
+      .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(badgeData);
-  }
-
-  // for Test by JSM : 테스트 후 지울 것
-  findPagingMainChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
-    return <OffsetElementList<BadgeModel>>(mainBadgeData);
+    // return <OffsetElementList<BadgeModel>>(badgeData);
   }
 
   findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
@@ -69,7 +64,12 @@ class BadgeApi {
     //   .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(challengingBadgeData);
+    if (badgeFilterRdo.limit === 4) {
+      return <OffsetElementList<BadgeModel>>(mainBadgeData);
+    }
+    else {
+      return <OffsetElementList<BadgeModel>>(challengingBadgeData);
+    }
   }
 
   findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {

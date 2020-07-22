@@ -38,6 +38,11 @@ class SkProfileService {
   }
 
   @computed
+  get profileMemberCompanyCode() {
+    return this.skProfile.member.companyCode;
+  }
+
+  @computed
   get studySummaryFavoriteChannels() {
     //
     const { favoriteChannels } = this.studySummary;

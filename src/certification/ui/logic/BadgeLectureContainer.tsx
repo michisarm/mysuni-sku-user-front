@@ -1,16 +1,42 @@
-
+/*
 import React from 'react';
 import LectureLearningModalView from "../../../lecture/category/ui/view/LectureOverviewViewV2";
 import {AnswerSheetModal, CubeReportModal} from "../../../assistant";
 import {AnswerSheetModal as SurveyAnswerSheetModal} from "../../../survey";
 import {LectureExam2} from "../../../lecture/shared/LectureExam";
-import {OverviewField} from "../../../personalcube/shared/OverviewField";
-import {Lecture2} from "../../../lecture/shared/Lecture/ui/logic/LectureContainer2";
 import {LectureServiceType, LectureViewModel} from "../../../lecture/model";
+import {RouteComponentProps} from "react-router";
+import SkProfileService from "../../../profile/present/logic/SkProfileService";
+import {CourseLectureService, LectureService, ProgramLectureService} from "../../../lecture/stores";
+import {CoursePlanService} from "../../../course/stores";
+import {Lecture2} from "../../../lecture/shared/Lecture";
 
 
-const BadgeLectureContainer = () => {
+interface Props extends RouteComponentProps<{ badgeId: string }> {
+  viewObject: any,
+  typeViewObject: any,
+  onSaveCallback:() => void,
+  skProfileService?: SkProfileService,
+  lectureService?: LectureService,
+  programLectureService?: ProgramLectureService,
+  courseLectureService:  CourseLectureService,
+  coursePlanService?: CoursePlanService,
+  lectureCardId : string,
+  onRefreshLearningState?: () => void,
+  onPageRefresh?:() => void,
+}
+
+const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
+  const { viewObject, typeViewObject, onSaveCallback, skProfileService, lectureService, lectureCardId,
+    match, onRefreshLearningState, courseLectureService, } = Props;
+
+  const { params } = match;
+  const { skProfile } = skProfileService!;
+  const { member } = skProfile;
+  const { lectureViews, getSubLectureViews } = lectureService!;
+  const { preLectureViews } = courseLectureService;
+
   return (
     <div className="course-cont">
       <>
@@ -29,13 +55,13 @@ const BadgeLectureContainer = () => {
                   lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
                   thumbnailImage={lecture.baseUrl || undefined}
                   toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                  onViewDetail={() => this.onViewDetail(lecture)}
+                  onViewDetail={() => onViewDetail(lecture)}
                   collegeId={params.collegeId}
                   lectureCardId={lectureCardId}
                   learningState={viewObject.state}
                   member={member}
                   onRefreshLearningState={onRefreshLearningState}
-                  onDoLearn={this.onDoLearn}
+                  onDoLearn={onDoLearn}
                 />
               )}
             >
@@ -46,12 +72,12 @@ const BadgeLectureContainer = () => {
                   lectureView={subLecture}
                   lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
                   thumbnailImage={subLecture.baseUrl || undefined}
-                  onViewDetail={() => this.onViewDetail(subLecture)}
+                  onViewDetail={() => onViewDetail(subLecture)}
                   collegeId={params.collegeId}
                   lectureCardId={lectureCardId}
                   member={member}
                   onRefreshLearningState={onRefreshLearningState}
-                  onDoLearn={this.onDoLearn}
+                  onDoLearn={onDoLearn}
                 />
               )}
             </Lecture2.CourseSection>
@@ -60,9 +86,9 @@ const BadgeLectureContainer = () => {
         {
           openLearnModal && (
             <LectureLearningModalView
-              ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
-              videoUrl={this.learningVideoUrl}
-              onClose={this.onLearningModalClose}
+              ref={lectureLearningModal => lectureLearningModal = lectureLearningModal }
+              videoUrl={learningVideoUrl}
+              onClose={onLearningModalClose}
             />
           )
         }
@@ -71,7 +97,7 @@ const BadgeLectureContainer = () => {
         viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}
-            ref={examModal => this.examModal = examModal}
+            ref={examModal => examModal = examModal}
             onSaveCallback={onSaveCallback}
           />
         )
@@ -79,8 +105,8 @@ const BadgeLectureContainer = () => {
 
       <CubeReportModal
         downloadFileBoxId ={viewObject.reportFileBoxId}
-        ref={reportModal => this.reportModal = reportModal}
-        downloadReport = {this.onClickDownloadReport}
+        ref={reportModal => reportModal = reportModal}
+        downloadReport = {onClickDownloadReport}
         rollBookId={viewObject.rollBookId}
       />
 
@@ -89,8 +115,8 @@ const BadgeLectureContainer = () => {
           <SurveyAnswerSheetModal
             surveyId={viewObject.surveyId}
             surveyCaseId={viewObject.surveyCaseId}
-            ref={surveyModal => this.surveyModal = surveyModal}
-            // onSaveCallback={this.testCallback}
+            ref={surveyModal => surveyModal = surveyModal}
+            // onSaveCallback={testCallback}
           />
         )
       }
@@ -98,12 +124,12 @@ const BadgeLectureContainer = () => {
       {
         viewObject && (
           <LectureExam2
-            onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-            onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-            onTest={viewObject.examId ? this.onTest : undefined}
-            onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-            onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-            OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
+            onReport={viewObject.reportFileBoxId ? onReport : undefined}
+            onReportNotReady={viewObject.reportFileBoxId ? onReportNotReady : undefined}
+            onTest={viewObject.examId ? onTest : undefined}
+            onTestNotReady={viewObject.examId ? onTestNotReady : undefined}
+            onSurvey={viewObject.surveyId ? onSurvey : undefined}
+            OnSurveyNotReady={viewObject.examId ? OnSurveyNotReady : undefined}
             viewObject={viewObject}
             passedState={viewObject.passedState}
             type={viewObject.examType}
@@ -117,3 +143,4 @@ const BadgeLectureContainer = () => {
 };
 
 export default BadgeLectureContainer;
+*/

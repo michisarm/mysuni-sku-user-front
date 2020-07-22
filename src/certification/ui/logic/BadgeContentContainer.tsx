@@ -8,8 +8,7 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
-import BadgeLectureContainer from './BadgeLectureContainer';
-
+// import BadgeLectureContainer from './BadgeLectureContainer';
 import {studentData01, studentData02, studentData03} from '../../present/apiclient/studentData';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';

@@ -54,17 +54,15 @@ class BadgeService {
   async findAllCategories() {
     //
     // 모든 뱃지 정보 가져오기
-    const response = await this.badgeApi.findAllCategories();
-    const categoryOffsetElementList = new OffsetElementList<CategoryModel>(response);
+    const categoryList: CategoryModel[] = await this.badgeApi.findAllCategories();
 
-    categoryOffsetElementList.results = categoryOffsetElementList.results.map((category) => new CategoryModel(category));
     runInAction(() => {
       this.clearCategories();
-      this._categoryCount = categoryOffsetElementList.totalCount;
-      this._category = this._category.concat(categoryOffsetElementList.results);
+      this._categoryCount = categoryList.length;
+      this._category = this._category.concat(categoryList);
     });
 
-    return categoryOffsetElementList;
+    return categoryList;
   }
 
   @computed
