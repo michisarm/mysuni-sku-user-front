@@ -130,13 +130,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //
     const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
 
-    const categoriesHeight = this.itemRefs
-      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
-      .reduce((prev, current) => prev + current, 0);
+    if (this.itemRefs) {
+      const categoriesHeight = this.itemRefs
+        .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+        .reduce((prev, current) => prev + current, 0);
 
-    if (categoriesHeight > panelHeight) {
-      this.setState({ multiple: true });
+      if (categoriesHeight > panelHeight) {
+        this.setState({ multiple: true });
+      }
     }
+
   }
 
   onToggleCategory() {
@@ -454,6 +457,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
+              serviceId={params.serviceId}
+              serviceType={params.serviceType}
             />
           )
         }
