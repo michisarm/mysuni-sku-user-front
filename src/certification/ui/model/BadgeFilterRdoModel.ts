@@ -41,7 +41,7 @@ class BadgeFilterRdoModel {
     });
   }
 
-  static earned(difficultyLevel: string, issueState: string, limit: number=12, offset: number=0) {
+  static earned(difficultyLevel: string, issueState: string, limit: number=-1, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
       patronKey: patronInfo.getPatronId()!,

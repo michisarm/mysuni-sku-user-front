@@ -6,12 +6,13 @@ import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 // for Test by JSM
-import {badgeData, challengingBadgeData, mainBadgeData, myBadgeData, linkedBadgeData} from './badgeData';
-import {categoryData} from './categoryData';
+import {challengingBadgeData, mainBadgeData, linkedBadgeData} from './badgeData';
 import {badgeDetailData} from './badgeDetailData';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import {badgeCompData} from './badgeCompData';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
+import MyBadgeModel from '../../ui/model/MyBadgeModel';
+import BadgeCountModel from '../../ui/model/BadgeCountModel';
 
 
 /***** 뱃지 관리 api 모음 클래스 *****/
@@ -60,16 +61,8 @@ class BadgeApi {
       offset: badgeFilterRdo.offset,
     };
 
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
-    //   .then(response => response && response.data);
-
-    // for Test by JSM : 테스트 후 지울 것
-    if (badgeFilterRdo.limit === 4) {
-      return <OffsetElementList<BadgeModel>>(mainBadgeData);
-    }
-    else {
-      return <OffsetElementList<BadgeModel>>(challengingBadgeData);
-    }
+    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
+      .then(response => response && response.data);
   }
 
   findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
@@ -78,28 +71,20 @@ class BadgeApi {
       patronKeyString: badgeFilterRdo.patronKey,
       difficultyLevel: badgeFilterRdo.difficultyLevel,
       issueState: badgeFilterRdo.issueState,
-      limit: badgeFilterRdo.limit,
-      offset: badgeFilterRdo.offset,
+      // limit: badgeFilterRdo.limit,
+      // offset: badgeFilterRdo.offset,
     };
 
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/earned', {params})
-    //   .then(response => response && response.data);
+    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
+      .then(response => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(myBadgeData);
+    // return <OffsetElementList<MyBadgeModel>>(myBadgeData);
   }
 
   getCountOfBadges() {
-    // return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/tab/counts')
-    //   .then(response => response && response.dataa);
-
-    return {
-      code: '200',
-      message: 'success',
-      totalCount: 18,
-      challengedCount: 12,
-      issuedCount: 16,
-    };
+    return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab/counts')
+      .then(response => response && response.data);
   }
 
   getCountOfIssuedBadges() {
@@ -119,11 +104,11 @@ class BadgeApi {
 
   findLikedBadges(badgeId: string) {
 
-    // return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + `/badges/${badgeId}/links`)
+    // return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + `/badges/${badgeId}/links`)
     //   .then(response => response && response.data);
 
     // for Test : 테스트 후 지울 것
-    return <OffsetElementList<BadgeModel>>(linkedBadgeData);
+    return <OffsetElementList<MyBadgeModel>>(linkedBadgeData);
   }
 
   findBadgeDetailInformation(badgeId: string) {
@@ -147,53 +132,6 @@ class BadgeApi {
     // for Test : 테스트 후 지울 것
     return <OffsetElementList<BadgeCompModel>>badgeCompData;
   }
-  /*
-  getTotalBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
-    //
-    // const params = {
-    //   categoryId: badgeFilterRdo.categoryId,
-    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
-    //   limit: badgeFilterRdo.limit,
-    //   offset: badgeFilterRdo.offset,
-    // };
-    //
-    // return axiosApi.get<number>(this.baseUrl + '/totalCount', {params})
-    //   .then(response => response.data.valueOf());
-
-    // for Test by JSM : 테스트 후 지울 것
-    return 14;
-  }
-  getChallengingBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
-    //
-    // const params = {
-    //   patronKeyString: badgeFilterRdo.patronKey,
-    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
-    //   limit: badgeFilterRdo.limit,
-    //   offset: badgeFilterRdo.offset,
-    // };
-    //
-    // return axiosApi.get<number>(this.baseUrl + '/challengingCount', {params})
-    //   .then(response => response.data.valueOf());
-
-    // for Test by JSM : 테스트 후 지울 것
-    return 16;
-  }
-  getEarnedBadgeCount(badgeFilterRdo: BadgeFilterRdoModel): number {
-    //
-    // const params = {
-    //   patronKeyString: badgeFilterRdo.patronKey,
-    //   difficultyLevel: badgeFilterRdo.difficultyLevel,
-    //   limit: badgeFilterRdo.limit,
-    //   offset: badgeFilterRdo.offset,
-    // };
-    //
-    // return axiosApi.get<number>(this.baseUrl + '/earnedCount', {params})
-    //   .then(response => response.data.valueOf());
-
-    // for Test by JSM : 테스트 후 지울 것
-    return 18;
-  }
-  */
 }
 
 BadgeApi.instance = new BadgeApi();

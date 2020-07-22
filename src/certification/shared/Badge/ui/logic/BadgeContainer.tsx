@@ -6,7 +6,7 @@ import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
 import {BadgeContentWrapper, College, Title} from '../view/BadgeView';
 import BadgeService from '../../../../present/logic/BadgeService';
-import BadgeModel from '../../../../ui/model/BadgeModel';
+import BadgeModel from '../../../../ui/model/MyBadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 
 

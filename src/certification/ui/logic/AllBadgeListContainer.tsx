@@ -20,11 +20,12 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 
   badgeCount: number | undefined,
   categorySelection: string,
+  resetBadgeCount: (count: number) => void,
 }
 
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { pageService, badgeService, badgeCount, categorySelection, history, match } = Props;
+  const { pageService, badgeService, badgeCount, categorySelection, resetBadgeCount, history, match } = Props;
   const { categories, badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
@@ -38,6 +39,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;
+    badgeService!.clearBadges();
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
 
@@ -81,6 +83,9 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
       pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
 
+    if (badgeCount !== badgeOffsetList.totalCount) {
+      resetBadgeCount(badgeOffsetList.totalCount);
+    }
   };
 
   const getPageNo = () => {
@@ -95,8 +100,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   // see more button 클릭
   const onClickSeeMore = () => {
     //
-    // history.replace(routePaths.currentPage(getPageNo() + 1));
-    alert('더보기');
+    history.replace(routePaths.currentPage(getPageNo() + 1));
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {

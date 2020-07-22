@@ -31,9 +31,7 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
     console.log( badgeInfo);
   };
 
-
   // 뱃지 상세정보 호출
-
   return (
     <ContentLayout
       className="no-padding"

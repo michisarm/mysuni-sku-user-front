@@ -21,12 +21,13 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
 
   badgeCount: number | undefined,
+  resetChallengeCount: (count: number) => void;
 }
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, badgeCount, history, match, } = Props;
-  const { badges } = badgeService!;
+  const { badgeService, pageService, badgeCount, resetChallengeCount, history, match, } = Props;
+  const { myBadges } = badgeService!;
 
   const PAGE_KEY = 'badge.challenging';
   const PAGE_SIZE = 8;
@@ -38,7 +39,9 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;
+    badgeService!.clearMyBadges();
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
 
     return (() => {
       window.scrollTo(0, 0);
@@ -73,6 +76,9 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
       pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
 
+    if (badgeCount !== badgeOffsetList.totalCount) {
+      resetChallengeCount(badgeOffsetList.totalCount);
+    }
   };
 
   const getPageNo = () => {
@@ -88,8 +94,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   // see more button 클릭
   const onClickSeeMore = () => {
     //
-    // history.replace(routePaths.currentPage(getPageNo() + 1));
-    alert('더보기');
+    history.replace(routePaths.currentPage(getPageNo() + 1));
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
@@ -112,10 +117,10 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         onSelectDifficultyLevel={onSelectDifficultyLevel}
       />
 
-      {badges.length > 0 ? (
+      {myBadges.length > 0 ? (
         <>
           <ChallengeBoxContainer
-            badges={badges}
+            badges={myBadges}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />

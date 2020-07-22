@@ -12,7 +12,7 @@ import {LinkedBadgeListWrapper} from '../view/BadgeContentElementView';
 
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
-import BadgeModel from '../model/BadgeModel';
+import BadgeModel from '../model/MyBadgeModel';
 
 
 interface Props extends RouteComponentProps {
@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps {
 const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { badgeService, pageService, badgeId, history } = Props;
-  const { badges } = badgeService!;
+  const { myBadges } = badgeService!;
 
   const PAGE_KEY = 'badge.linked';
   const PAGE_SIZE = 4;  // 연관뱃지 4개만 노출
@@ -45,20 +45,16 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   const findMyContent = async () => {
     //
     const page = pageService!.pageMap.get(pageKey.current);
-
     const badgeOffsetList = await badgeService!.findLinkedBadges(badgeId);
   };
 
-
   return (
     <LinkedBadgeListWrapper>
-
       {/*연관 Badge 목록*/}
       <div className="list">
-
-        {badges.length > 0 ? (
+        {myBadges.length > 0 ? (
           <ul>
-            {badges.map((badge: BadgeModel, index: number) => {
+            {myBadges.map((badge: BadgeModel, index: number) => {
               return (
                 <li key={`linked-badge-${index}`}>
                   <Badge

@@ -37,6 +37,9 @@ const MyBadgePage : React.FC<Props> = (Props) => {
 
   const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
   const [categorySelection, setCategorySelection] = useState<string>('');
+  const [badgeCount, setBadgeCount] = useState(0);
+  const [challengeCount, setChallengeCount] = useState(0);
+  const [earnedCount, setEarnedCount] = useState(0);
 
   // lectureService 변경  실행
   useEffect(() => {
@@ -44,6 +47,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
 
     badgeService!.clearCategories();
+    badgeService?.getCountOfBadges();
     badgeService!.findAllCategories();
   }, []);
 
@@ -52,10 +56,19 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     if (subBreadcrumb !== match.params.tab) {
       setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
     }
-
-    badgeService?.getCountOfBadges();
-
   }, [match.params.tab]);
+
+  const resetBadgeCount = (count: number) => {
+    setBadgeCount(count);
+  };
+
+  const resetChallengeCount = (count: number) => {
+    setChallengeCount(count);
+  };
+
+  const resetEarnedCount = (count: number) => {
+    setEarnedCount(count);
+  };
 
   const getTabs = () => {
     //
@@ -76,6 +89,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           <AllBadgeListContainer
             badgeCount={badgeService?.badgeCount}
             categorySelection={categorySelection}
+            resetBadgeCount={resetBadgeCount}
           />
         )
       },
@@ -88,7 +102,10 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           </>
         ),
         render: () => (
-          <ChallengingBadgeContainer badgeCount={badgeService?.challengingCount}/>
+          <ChallengingBadgeContainer
+            badgeCount={badgeService?.challengingCount}
+            resetChallengeCount={resetChallengeCount}
+          />
         )
       },
       {
@@ -103,6 +120,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           <EarnedBadgeListContainer
             profileMemberName={profileMemberName}
             badgeCount={badgeService?.earnedCount}
+            resetEarnedCount={resetEarnedCount}
           />
         )
       }

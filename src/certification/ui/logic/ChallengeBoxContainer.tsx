@@ -4,7 +4,7 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {Badge} from '../../shared/Badge';
 import {ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
-import BadgeModel from '../model/BadgeModel';
+import BadgeModel from '../model/MyBadgeModel';
 import BadgeCompRight from './BadgeCompRight';
 
 interface Props extends RouteComponentProps {

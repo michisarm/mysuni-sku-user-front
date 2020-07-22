@@ -9,7 +9,7 @@ import {ActionLogService} from '../../../../shared/stores';
 import BadgeService from '../../../../certification/present/logic/BadgeService';
 import {ContentWrapper} from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
-import BadgeModel from '../../../../certification/ui/model/BadgeModel';
+import BadgeModel from '../../../../certification/ui/model/MyBadgeModel';
 import BadgeFilterRdoModel from '../../../../certification/ui/model/BadgeFilterRdoModel';
 import {Badge} from '../../../../certification/shared/Badge';
 import BadgeStyle from '../../../../certification/ui/model/BadgeStyle';
@@ -30,7 +30,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
   const CONTENT_TYPE = 'Badge';
   const PAGE_SIZE = 4;  // 도전 뱃지는 4개
 
-  const { badges } = badgeService!;
+  const { myBadges } = badgeService!;
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -65,7 +65,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
         <strong><span className="ellipsis">{profileMemberName}</span>님의 도전중인 Badge</strong>
         <div className="right">
           {
-            badges.length > 0 && (
+            myBadges.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
                 View All <Icon className="morelink"/>
               </Button>
@@ -74,10 +74,10 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
         </div>
       </div>
 
-      {badges.length > 0 ?
+      {myBadges.length > 0 ?
         <div className="scrolling">
           <ul className="belt">
-            {badges.map( (badge: BadgeModel, index: number) => {
+            {myBadges.map( (badge: BadgeModel, index: number) => {
               return (
                 <li key={index}>
                   <Badge

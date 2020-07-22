@@ -7,7 +7,7 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeModel from '../model/BadgeModel';
+import BadgeModel from '../model/MyBadgeModel';
 
 
 interface Props extends RouteComponentProps {

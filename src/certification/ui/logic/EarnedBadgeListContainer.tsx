@@ -21,15 +21,16 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
   profileMemberName: string,
   badgeCount: number | undefined,
+  resetEarnedCount: (count: number) => void;
 }
 
 const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, profileMemberName, badgeCount, history, match, } = Props;
-  const { badges } = badgeService!;
+  const { badgeService, pageService, profileMemberName, badgeCount, resetEarnedCount, history, match, } = Props;
+  const { myBadges } = badgeService!;
 
-  const PAGE_KEY = 'badge.earned';
-  const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
+  // const PAGE_KEY = 'badge.earned';
+  // const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
 
@@ -37,15 +38,19 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
 
   useEffect(() => {
     //
-    pageKey.current = PAGE_KEY;
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    // pageKey.current = PAGE_KEY;
+    badgeService!.clearMyBadges();
+    // pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    // pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
+
+    findMyContent();
 
     return (() => {
       window.scrollTo(0, 0);
     });
-
   }, []);
 
+  /*
   useEffect(() => {
 
     const page = pageService!.pageMap.get(pageKey.current);
@@ -62,19 +67,24 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
     findMyContent(getPageNo() - 1);
 
   }, [difficultyLevel, match.params.pageNo]);
+  */
 
-  const findMyContent = async (pageNo: number) => {
+  const findMyContent = async (/*pageNo: number*/) => {
     //
-    const page = pageService!.pageMap.get(pageKey.current);
+    // const page = pageService!.pageMap.get(pageKey.current);
 
     const badgeOffsetList = await badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel
-      .earned(difficultyLevel, '', page!.limit, page!.nextOffset));
+      .earned(difficultyLevel, ''/*, page!.limit, page!.nextOffset*/));
 
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
-      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    // pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
+    //   pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
 
+    if (badgeCount !== badgeOffsetList.totalCount) {
+      resetEarnedCount(badgeOffsetList.totalCount);
+    }
   };
 
+  /*
   const getPageNo = () => {
     //
     return parseInt(match.params.pageNo, 10);
@@ -88,11 +98,12 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   // see more button 클릭
   const onClickSeeMore = () => {
     //
-    // history.replace(routePaths.currentPage(getPageNo() + 1));
-    alert('더보기');
+    history.replace(routePaths.currentPage(getPageNo() + 1));
   };
+  */
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
+    /*
     // 페이지 변경(초기화)
     match.params.pageNo = '1';
     history.replace(routePaths.currentPage(1));
@@ -100,6 +111,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
     // 페이지키 재설정 및 초기화
     pageKey.current = pageKey.current + '.' +  difficultyLevel;
     pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    */
 
     // 난이도 변경
     setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
@@ -113,10 +125,10 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.EarnedBadgeList}
       />
 
-      {badges.length > 0 ? (
+      {myBadges.length > 0 ? (
         <div className="badge-list">
           <ul>
-            {badges.map( (badge: any, index: number) => {
+            {myBadges.map( (badge: any, index: number) => {
               return (
                 <li key={index}>
                   <Badge
@@ -129,7 +141,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
               );
             })}
           </ul>
-          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
+          {/*{ isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }*/}
         </div>
       ) : (
         <NoSuchContentPanel message={(

@@ -1,7 +1,7 @@
 
 import React, {FunctionComponent} from 'react';
 import {Badge} from '../../shared/Badge';
-import BadgeModel from '../model/BadgeModel';
+import BadgeModel from '../model/MyBadgeModel';
 
 
 interface BadgeListContainerProps {
