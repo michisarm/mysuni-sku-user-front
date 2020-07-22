@@ -5,9 +5,6 @@ import {OffsetElementList} from 'shared/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
-// for Test by JSM
-import {challengingBadgeData, mainBadgeData, linkedBadgeData} from './badgeData';
-import {badgeDetailData} from './badgeDetailData';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import {badgeCompData} from './badgeCompData';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
@@ -104,20 +101,20 @@ class BadgeApi {
 
   findLikedBadges(badgeId: string) {
 
-    // return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + `/badges/${badgeId}/links`)
-    //   .then(response => response && response.data);
+    return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links`)
+      .then(response => response && response.data);
 
-    // for Test : 테스트 후 지울 것
-    return <OffsetElementList<MyBadgeModel>>(linkedBadgeData);
+    // // for Test : 테스트 후 지울 것
+    // return <OffsetElementList<MyBadgeModel>>(linkedBadgeData);
   }
 
   findBadgeDetailInformation(badgeId: string) {
 
-    // return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}`)
-    //   .then(response => response && response.data);
+    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/view`)
+      .then(response => response && response.data);
 
-    // for Test : 테스트 후 지울 것
-    return <BadgeDetailModel>badgeDetailData;
+    // // for Test : 테스트 후 지울 것
+    // return <BadgeDetailModel>badgeDetailData;
   }
 
   findBadgeComposition(badgeId: string) {

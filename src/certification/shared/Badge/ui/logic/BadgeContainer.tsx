@@ -6,14 +6,15 @@ import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
 import {BadgeContentWrapper, College, Title} from '../view/BadgeView';
 import BadgeService from '../../../../present/logic/BadgeService';
-import BadgeModel from '../../../../ui/model/MyBadgeModel';
+import BadgeModel from '../../../../ui/model/BadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
+import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
 
-  badge: BadgeModel | BadgeDetailModel,
+  badge: BadgeModel | MyBadgeModel | BadgeDetailModel,
   badgeStyle: string,  // List, Detail
   badgeSize: string,  // Large, Small
 }
@@ -32,7 +33,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
     // 스타일 지정: badge level + badge type
     <BadgeContentWrapper
       onViewDetail={onViewDetail}
-      badgeLevel={difficultyLevel.toLowerCase()}
+      badgeLevel={difficultyLevel}
       badgeStyle={badgeStyle}
       badgeSize={badgeSize}
     >

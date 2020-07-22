@@ -2,10 +2,10 @@
 class BadgeDetailModel {
   //
   id: string = '';
-  patronKeyString: string = '';
+  cineroomId: string = '';
   badgeId: string = '';
   name: string = '';
-  tags: string[]=[];
+  tags: string = '';
   iconUrl: string = '';
   learningTime: number = -1;
   creationTime: number = -1;
@@ -51,6 +51,16 @@ class BadgeDetailModel {
     creatorName: '',
   };
 
+  designAdmin: {
+    designAdminId: string,
+    designAdminName: string,
+    designAdminType: string,
+  } = {
+    designAdminId: '',
+    designAdminName: '',
+    designAdminType: '',
+  };
+
   openRequest: {
     openRequesterId: string,
     openRequestTime: number,
@@ -65,6 +75,22 @@ class BadgeDetailModel {
   badgeType: string = '';
   badgeState: string = '';
   difficultyLevel: string = '';
+
+  subCategories: {
+    id: number,
+    categoryId: string,
+    name: string,
+    parentId: string,
+    parentName: string,
+    iconUrl: string,
+  } = {
+    id: -1,
+    categoryId: '',
+    name: '',
+    parentId: '',
+    parentName: '',
+    iconUrl: '',
+  };
 
   constructor(onebadge?: BadgeDetailModel) {
     //

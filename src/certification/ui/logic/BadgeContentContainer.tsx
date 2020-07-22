@@ -246,9 +246,7 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
             titleIcon="tag2"
             title="태그"
             content={
-              badgeDetail.tags.map((tag:string, index:number) => (
-                <Label as="span" className="tag" key={`label-tag-${index}`}>{tag}</Label>
-              ))
+              <Label as="span" className="tag">{badgeDetail.tags}</Label>
             }
           />
         </OverviewField.List>
