@@ -12,6 +12,7 @@ import BadgeListContainer from './BadgeListContainer';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeCountText from '../model/BadgeCountText';
 
 
 interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
@@ -122,6 +123,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       <LineHeaderContainer
         totalCount={badgeService?.badgeCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
+        countMessage={BadgeCountText.AllBadgeList}
       />
 
       {badges.length > 0 ?

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Icon} from 'semantic-ui-react';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import {OverviewField} from 'personalcube';
 import {Badge} from '../../shared/Badge';
 import {BadgeContentHeader, BadgeInformation, BadgeTitle, BadgeOverview, BadgeStatus} from '../view/BadgeContentElementView';
@@ -46,8 +46,8 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   // 상태 정의
   const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
     //
-    if ( challengeState === 'Canceled' ) {
-      // 도전 대기
+    if ( challengeState !== 'Challenged' ) {
+      // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
     }
 
@@ -60,7 +60,6 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
         // 발급요청중
         setBadgeState(ChallengeState.Requested);
       }
-
       if ( (issueState !== IssueState.Issued && issueState !== IssueState.Requested) && learningCompleted ) {
         // 발급요청가능
         setBadgeState(ChallengeState.ReadyForRequest);
@@ -105,6 +104,7 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
 
   // 안내모달 - [취소] 클릭
   const onClickChallengeCancel = () => {
+
     // 도전 대기 상태
     setBadgeState(ChallengeState.WaitForChallenge);
 
@@ -118,11 +118,26 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   const onClickRequest = () => {
     // API 호출
     // 자동발급 뱃지일 경우 바로 발급
+    console.log( 'auto Issued : ' + badgeDetail.autoIssued );
+    const autoIssuedBadge  = badgeDetail.autoIssued;
 
-    // 수동뱃지일 경우 추가발급조건 확인
+    if ( autoIssuedBadge ) {
+      // 뱃지 자동발급 요청 /api/badge/students/issue-state
 
-    // 성공 후 상태 변경
-    setBadgeState(ChallengeState.Requested);
+      // 응답:success
+      setSuccessModal(!successModal);
+
+      // 획득완료
+      setBadgeState(ChallengeState.Issued);
+
+
+    } else {
+      // 수동뱃지일 경우 추가발급조건 확인
+
+      // 추가발급 조건 충족
+      // 성공 후 상태 변경
+      setBadgeState(ChallengeState.Requested);
+    }
   };
 
   // 성공 모달 닫기
@@ -206,11 +221,13 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
               </div>
             }
           />
-          <OverviewField.Item
-            titleIcon="addinfo"
-            title="추가 발급 조건"
-            content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
-          />
+          { badgeDetail.additionTermsExist && (
+            <OverviewField.Item
+              titleIcon="addinfo"
+              title="추가 발급 조건"
+              content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
+            />
+          )}
         </OverviewField.List>
 
         {/*학습정보*/}
@@ -228,7 +245,11 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={badgeDetail.tags}
+            content={
+              badgeDetail.tags.map((tag:string, index:number) => (
+                <Label as="span" className="tag" key={`label-tag-${index}`}>{tag}</Label>
+              ))
+            }
           />
         </OverviewField.List>
 

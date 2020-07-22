@@ -22,6 +22,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   profileMemberName: string,
   badgeCount: number | undefined,
   resetEarnedCount: (count: number) => void;
+  countMessage?: string,
 }
 
 const EarnedBadgeListContainer: React.FC<Props> = (Props) => {

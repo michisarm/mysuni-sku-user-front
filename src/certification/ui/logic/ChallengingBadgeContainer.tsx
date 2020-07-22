@@ -6,6 +6,7 @@ import {NoSuchContentPanel} from 'shared';
 import {Button, Icon} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import routePaths from '../../../personalcube/routePaths';
+import BadgeRoutePaths from '../../routePaths';
 import BadgeService from '../../present/logic/BadgeService';
 import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
@@ -14,6 +15,7 @@ import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeCountText from '../model/BadgeCountText';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -21,6 +23,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
 
   badgeCount: number | undefined,
+  countMessage?: string,
   resetChallengeCount: (count: number) => void;
 }
 
@@ -71,7 +74,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(pageKey.current);
 
     const badgeOffsetList = await badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel
-      .earned(difficultyLevel, '', page!.limit, page!.nextOffset));
+      .challenging(difficultyLevel, page!.limit, page!.nextOffset));
 
     pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
       pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
@@ -110,11 +113,18 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
   };
 
+  const moveToBadgeList = () => {
+    // Badge List 탭으로 이동
+    history.push(BadgeRoutePaths.badgeTab());
+  };
+
+
   return (
     <>
       <LineHeaderContainer
         totalCount={badgeService?.challengingCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
+        countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
       {myBadges.length > 0 ? (
@@ -134,6 +144,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
+              onClick={moveToBadgeList}
             >
               Badge List 바로가기 <Icon className="morelink"/>
             </Button>

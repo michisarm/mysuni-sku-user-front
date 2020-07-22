@@ -5,7 +5,7 @@ class BadgeDetailModel {
   patronKeyString: string = '';
   badgeId: string = '';
   name: string = '';
-  tags: string = '';
+  tags: string[]=[];
   iconUrl: string = '';
   learningTime: number = -1;
   creationTime: number = -1;

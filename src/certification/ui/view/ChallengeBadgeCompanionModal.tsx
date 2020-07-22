@@ -2,21 +2,22 @@ import React, {useState} from 'react';
 import {Modal, Button} from 'semantic-ui-react';
 
 
-const ChallengeBadgeCompanionModal = () => {
+interface Props {
+  open: boolean,
+  onAction: () => void,
+  onClick: () => void,
+}
+const ChallengeBadgeCompanionModal: React.FC<Props> = (Props) => {
   //
-  const [ modalOpen, setModalOpen ] = useState(false);
-
-  const modalClose = () => {
-    setModalOpen(false);
-  };
+  const { open, onAction, onClick } = Props;
 
   return (
     <>
-      <Button className="fix line">발급요청</Button>
+      <Button className="fix line" onClick={onAction}>발급요청</Button>
 
       <Modal
         className="base w380"
-        open={modalOpen}
+        open={open}
       >
         <Modal.Header>Badge 발급 안내</Modal.Header>
         <Modal.Content>
@@ -27,7 +28,7 @@ const ChallengeBadgeCompanionModal = () => {
           </div>
         </Modal.Content>
         <Modal.Actions className="actions2">
-          <Button className="pop2 p" onClick={modalClose}>Confirm</Button>
+          <Button className="pop2 p" onClick={onClick}>Confirm</Button>
         </Modal.Actions>
       </Modal>
     </>

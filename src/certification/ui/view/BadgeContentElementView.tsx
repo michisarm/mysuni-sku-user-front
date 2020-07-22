@@ -140,7 +140,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateT
       )}
 
       {/*발급요청 완료, 획득 완료*/}
-      { badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested && (
+      { (badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested) && (
         <>
           <div className={ classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black' )}>
             {ChallengeStateName[badgeState as ChallengeState]}
