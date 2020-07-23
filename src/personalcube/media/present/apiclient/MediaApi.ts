@@ -13,7 +13,7 @@ export default class MediaApi {
     this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
 
   URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl + '/medias';
+    this.serverUrl : this.devUrl;
 
   static instance: MediaApi;
 
