@@ -21,12 +21,11 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 
   badgeCount: number | undefined,
   categorySelection: string,
-  resetBadgeCount: (count: number) => void,
 }
 
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { pageService, badgeService, badgeCount, categorySelection, resetBadgeCount, history, match } = Props;
+  const { pageService, badgeService, badgeCount, categorySelection, history, match } = Props;
   const { categories, badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
@@ -83,10 +82,6 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
 
     pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
       pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-
-    if (badgeCount !== badgeOffsetList.totalCount) {
-      resetBadgeCount(badgeOffsetList.totalCount);
-    }
   };
 
   const getPageNo = () => {

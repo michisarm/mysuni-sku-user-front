@@ -37,6 +37,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
 
   const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
   const [categorySelection, setCategorySelection] = useState<string>('');
+
   const [badgeCount, setBadgeCount] = useState(0);
   const [challengeCount, setChallengeCount] = useState(0);
   const [earnedCount, setEarnedCount] = useState(0);
@@ -46,8 +47,12 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     //
     setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
 
+    badgeService?.getCountOfBadges().then(() => {
+      setBadgeCount(badgeService.badgeCount);
+      setChallengeCount(badgeService.challengingCount);
+      setEarnedCount(badgeService.earnedCount);
+    });
     badgeService!.clearCategories();
-    badgeService?.getCountOfBadges();
     badgeService!.findAllCategories();
   }, []);
 
@@ -58,38 +63,21 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     }
   }, [match.params.tab]);
 
-  const resetBadgeCount = (count: number) => {
-    setBadgeCount(count);
-  };
-
-  const resetChallengeCount = (count: number) => {
-    setChallengeCount(count);
-  };
-
-  const resetEarnedCount = (count: number) => {
-    setEarnedCount(count);
-  };
-
   const getTabs = () => {
     //
-    const badgeCount = badgeService!.badgeCount;
-    const challengingCount = badgeService!.challengingCount;
-    const earnedCount = badgeService!.earnedCount;
-
     return [
       {
         name: MyBadgeContentType.AllBadgeList,
         item: (
           <>
             Badge List
-            { badgeCount > 0 && <span className="count">+{badgeCount}</span> || <span className="count">0</span> }
+            { <span className="count">+{badgeCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
           <AllBadgeListContainer
             badgeCount={badgeService?.badgeCount}
             categorySelection={categorySelection}
-            resetBadgeCount={resetBadgeCount}
           />
         )
       },
@@ -98,13 +86,12 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             도전중 Badge
-            { challengingCount > 0 && <span className="count">+{challengingCount}</span> || <span className="count">0</span> }
+            { <span className="count">+{challengeCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
           <ChallengingBadgeContainer
             badgeCount={badgeService?.challengingCount}
-            resetChallengeCount={resetChallengeCount}
           />
         )
       },
@@ -113,14 +100,13 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             My Badge
-            {earnedCount > 0 && <span className="count">+{earnedCount}</span> || <span className="count">0</span> }
+            { <span className="count">+{earnedCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
           <EarnedBadgeListContainer
             profileMemberName={profileMemberName}
             badgeCount={badgeService?.earnedCount}
-            resetEarnedCount={resetEarnedCount}
           />
         )
       }

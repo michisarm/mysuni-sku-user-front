@@ -24,12 +24,11 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
   badgeCount: number | undefined,
   countMessage?: string,
-  resetChallengeCount: (count: number) => void;
 }
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, badgeCount, resetChallengeCount, history, match, } = Props;
+  const { badgeService, pageService, badgeCount, history, match, } = Props;
   const { myBadges } = badgeService!;
 
   const PAGE_KEY = 'badge.challenging';
@@ -78,10 +77,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
 
     pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
       pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-
-    if (badgeCount !== badgeOffsetList.totalCount) {
-      resetChallengeCount(badgeOffsetList.totalCount);
-    }
   };
 
   const getPageNo = () => {

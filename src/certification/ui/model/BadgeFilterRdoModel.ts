@@ -17,6 +17,10 @@ class BadgeFilterRdoModel {
     }
   }
 
+  static getPatonKey() {
+    return patronInfo.getPatronId()!;
+  }
+
   static all(categoryId: string, difficultyLevel: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({

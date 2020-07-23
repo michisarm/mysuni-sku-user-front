@@ -234,8 +234,6 @@ class BadgeService {
         this._earnedCount = 0;
       }
     });
-
-    return this._badgeCount;
   }
 
   @action

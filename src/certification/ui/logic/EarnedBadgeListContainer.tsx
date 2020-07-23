@@ -21,13 +21,12 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
   profileMemberName: string,
   badgeCount: number | undefined,
-  resetEarnedCount: (count: number) => void;
   countMessage?: string,
 }
 
 const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, profileMemberName, badgeCount, resetEarnedCount, history, match, } = Props;
+  const { badgeService, pageService, profileMemberName, badgeCount, history, match, } = Props;
   const { myBadges } = badgeService!;
 
   // const PAGE_KEY = 'badge.earned';
@@ -40,49 +39,45 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     //
     // pageKey.current = PAGE_KEY;
-    badgeService!.clearMyBadges();
+
     // pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     // pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
 
-    findMyContent();
+    // findMyContent();
 
     return (() => {
       window.scrollTo(0, 0);
     });
   }, []);
 
-  /*
   useEffect(() => {
 
-    const page = pageService!.pageMap.get(pageKey.current);
+    // const page = pageService!.pageMap.get(pageKey.current);
+    //
+    // if (getPageNo() > 1) {
+    //   const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
+    //     page!.nextOffset + PAGE_SIZE : page!.nextOffset;
+    //   pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
+    // }
+    // else {
+    //   pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    // }
+    //
+    // findMyContent(getPageNo() - 1);
 
-    if (getPageNo() > 1) {
-      const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
-        page!.nextOffset + PAGE_SIZE : page!.nextOffset;
-      pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
-    }
-    else {
-      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
-    }
+    findMyContent();
 
-    findMyContent(getPageNo() - 1);
-
-  }, [difficultyLevel, match.params.pageNo]);
-  */
+  }, [difficultyLevel/*, match.params.pageNo*/]);
 
   const findMyContent = async (/*pageNo: number*/) => {
     //
     // const page = pageService!.pageMap.get(pageKey.current);
 
     const badgeOffsetList = await badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel
-      .earned(difficultyLevel, ''/*, page!.limit, page!.nextOffset*/));
+      .earned(difficultyLevel, 'Issued'/*, page!.limit, page!.nextOffset*/));
 
     // pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
     //   pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-
-    if (badgeCount !== badgeOffsetList.totalCount) {
-      resetEarnedCount(badgeOffsetList.totalCount);
-    }
   };
 
   /*

@@ -80,7 +80,11 @@ class BadgeApi {
   }
 
   getCountOfBadges() {
-    return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab/counts')
+    const params = {
+      patronKeyString: BadgeFilterRdoModel.getPatonKey(),
+    };
+
+    return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab/counts', {params})
       .then(response => response && response.data);
   }
 
