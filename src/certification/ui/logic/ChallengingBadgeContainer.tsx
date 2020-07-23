@@ -32,9 +32,10 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   const { myBadges } = badgeService!;
 
   const PAGE_KEY = 'badge.challenging';
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 4;
 
   const pageKey = useRef<string>(PAGE_KEY);
+  const refresh = useRef<boolean>(false);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
@@ -42,8 +43,13 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     //
     pageKey.current = PAGE_KEY;
     badgeService!.clearMyBadges();
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
-    pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(pageNo - 1);
+
+    refresh.current = true;
 
     return (() => {
       window.scrollTo(0, 0);
@@ -52,6 +58,12 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
+    // 새로고침 / 이전 페이지로 이동 시 : 페이지 번호에 따라 처리되었으므로 리턴
+    if (refresh.current) {
+      // window.scrollTo(0, 0);
+      refresh.current = false;
+      return;
+    }
 
     const page = pageService!.pageMap.get(pageKey.current);
 
@@ -62,6 +74,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     }
     else {
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+      badgeService!.clearMyBadges();
     }
 
     findMyContent(getPageNo() - 1);
@@ -75,8 +88,8 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     const badgeOffsetList = await badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel
       .challenging(difficultyLevel, page!.limit, page!.nextOffset));
 
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
-      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
   };
 
   const getPageNo = () => {

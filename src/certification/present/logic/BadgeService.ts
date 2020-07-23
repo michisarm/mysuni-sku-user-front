@@ -60,11 +60,12 @@ class BadgeService {
   @action
   async findAllCategories() {
     //
+    this.clearCategories();
+
     // 모든 뱃지 정보 가져오기
     const categoryList: CategoryModel[] = await this.badgeApi.findAllCategories();
 
     runInAction(() => {
-      this.clearCategories();
       this._categoryCount = categoryList.length;
       this._category = this._category.concat(categoryList);
     });
@@ -145,8 +146,6 @@ class BadgeService {
   @action
   async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    this.clearBadges();
-
     // 모든 뱃지 정보 가져오기
     const response = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
     const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
@@ -163,8 +162,6 @@ class BadgeService {
   @action
   async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
     //
-    this.clearMyBadges();
-
     // 도전 뱃지 정보 가져오기
     const response = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
     const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
@@ -203,8 +200,6 @@ class BadgeService {
   @action
   async findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    this.clearMyBadges();
-
     // 도전 뱃지 정보 가져오기
     const response = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
     const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
@@ -295,14 +290,15 @@ class BadgeService {
   @action
   async findBadgeComposition(badgeId: string) {
     //
-    const response = await this.badgeApi.findBadgeComposition(badgeId);
-    const badgeOffsetElementList = new OffsetElementList<BadgeCompModel>(response);
+    this.clearBadgeComposition();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((learning) => new BadgeCompModel(learning));
-    runInAction( () => {
-      this.clearBadgeComposition();
-      this._badgeComposition = this._badgeComposition.concat(badgeOffsetElementList.results);
-    });
+    const badgeOffsetElementList = await this.badgeApi.findBadgeComposition(badgeId);
+
+    if (badgeOffsetElementList && badgeOffsetElementList.length > 0) {
+      runInAction(() => {
+        this._badgeComposition = this._badgeComposition.concat(badgeOffsetElementList);
+      });
+    }
 
     return badgeOffsetElementList;
   }
