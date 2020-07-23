@@ -22,6 +22,9 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
   const { badgeComposition } = badgeService!;
   const { badgeId, mainCategoryName, name } = badge;
 
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+
   useEffect(() => {
     //
     findMyContent(badgeId);
@@ -46,7 +49,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
               <li className={classNames('class-card')} key={`learning-${index}`}>
                 <a href="#">
                   <span className="class-icon">
-                    <Image src={learning.iconBox.iconUrl} alt={learning.name}/>
+                    <Image src={learning.iconBox && (domainPath + learning.iconBox?.iconUrl)} />
                   </span>
                   <span className="title">{learning.name}</span>
                   <span className="time">
