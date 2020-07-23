@@ -52,9 +52,12 @@ const MyBadgePage : React.FC<Props> = (Props) => {
       setChallengeCount(badgeService.challengingCount);
       setEarnedCount(badgeService.earnedCount);
     });
-    badgeService!.clearCategories();
-    badgeService!.findAllCategories();
-  }, []);
+
+    if (match.params.tab === 'AllBadgeList') {
+      badgeService!.clearCategories();
+      badgeService!.findAllCategories();
+    }
+  }, [match.params.tab]);
 
   useEffect(() => {
     //
@@ -76,7 +79,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         ),
         render: () => (
           <AllBadgeListContainer
-            badgeCount={badgeService?.badgeCount}
+            badgeCount={badgeCount}
             categorySelection={categorySelection}
           />
         )
@@ -91,7 +94,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         ),
         render: () => (
           <ChallengingBadgeContainer
-            badgeCount={badgeService?.challengingCount}
+            badgeCount={challengeCount}
           />
         )
       },
@@ -106,7 +109,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         render: () => (
           <EarnedBadgeListContainer
             profileMemberName={profileMemberName}
-            badgeCount={badgeService?.earnedCount}
+            badgeCount={earnedCount}
           />
         )
       }

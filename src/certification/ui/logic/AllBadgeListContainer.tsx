@@ -26,13 +26,14 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
 const AllBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { pageService, badgeService, badgeCount, categorySelection, history, match } = Props;
-  const { categories, badges } = badgeService!;
+  const { badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
   const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
   const prevCategory = useRef<string>('');
+  const refresh = useRef<boolean>(false);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
@@ -40,8 +41,16 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     //
     pageKey.current = PAGE_KEY;
     badgeService!.clearBadges();
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
-    pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(pageNo - 1);
+
+    // pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    // pageService!.setTotalCount(pageKey.current, badgeCount ? badgeCount : 0);
+
+    refresh.current = true;
 
     return (() => {
       window.scrollTo(0, 0);
@@ -50,6 +59,12 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
+    // 새로고침 / 이전 페이지로 이동 시 : 페이지 번호에 따라 처리되었으므로 리턴
+    if (refresh.current) {
+      // window.scrollTo(0, 0);
+      refresh.current = false;
+      return;
+    }
 
     if (categorySelection !== prevCategory.current) {
       prevCategory.current = categorySelection;
@@ -66,12 +81,27 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+      badgeService!.clearBadges();
+      pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
     }
 
     findMyContent(getPageNo() - 1);
 
   }, [categorySelection, difficultyLevel, match.params.pageNo]);
+
+  const onSelectDifficultyLevel = (diffLevel: string) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 페이지키 재설정 및 초기화
+    diffLevel = diffLevel === '전체' ? '': diffLevel;
+    pageKey.current = PAGE_KEY + categorySelection + diffLevel;
+    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+
+    // 난이도 변경
+    setDifficultyLevel(diffLevel);
+  };
 
   const findMyContent = async (pageNo: number) => {
     //
@@ -80,8 +110,11 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     const badgeOffsetList = await badgeService!.findPagingAllBadges(BadgeFilterRdoModel
       .all(categorySelection, difficultyLevel, page!.limit, page!.nextOffset));
 
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
-      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+
+    // pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
+    //   pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   };
 
   const getPageNo = () => {
@@ -97,20 +130,6 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   const onClickSeeMore = () => {
     //
     history.replace(routePaths.currentPage(getPageNo() + 1));
-  };
-
-  const onSelectDifficultyLevel = (diffLevel: string) => {
-    // 페이지 변경(초기화)
-    match.params.pageNo = '1';
-    history.replace(routePaths.currentPage(1));
-
-    // 페이지키 재설정 및 초기화
-    diffLevel = diffLevel === '전체' ? '': diffLevel;
-    pageKey.current = PAGE_KEY + categorySelection + diffLevel;
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
-
-    // 난이도 변경
-    setDifficultyLevel(diffLevel);
   };
 
   return (

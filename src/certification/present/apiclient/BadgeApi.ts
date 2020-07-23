@@ -105,7 +105,7 @@ class BadgeApi {
 
   findLikedBadges(badgeId: string) {
 
-    return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links`)
+    return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links/User`)
       .then(response => response && response.data);
 
     // // for Test : 테스트 후 지울 것
@@ -127,11 +127,11 @@ class BadgeApi {
       badgeId,
     };
 
-    // return axiosApi.get<OffsetElementList<BadgeCompModel>>(this.baseUrl + `/courseset/lectures`, {params})
-    //   .then(response => response && response.data);
+    return axiosApi.get<BadgeCompModel[]>(this.baseUrl + `/courseset/flow/lectures`, {params})
+      .then(response => response && response.data);
 
     // for Test : 테스트 후 지울 것
-    return <OffsetElementList<BadgeCompModel>>badgeCompData;
+    // return <OffsetElementList<BadgeCompModel>>badgeCompData;
   }
 }
 

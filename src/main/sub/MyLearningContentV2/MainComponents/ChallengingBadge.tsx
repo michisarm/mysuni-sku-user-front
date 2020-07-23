@@ -48,6 +48,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
     //   }
     // }
 
+    badgeService!.clearMyBadges();
     badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel.challenging('', PAGE_SIZE, 0), true);
   };
 
