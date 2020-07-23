@@ -977,7 +977,7 @@ export const challengingBadgeData: OffsetElementList<MyBadgeModel> = {
     {
       'id': 1,
       'badgeId': 'BADGE-1',
-      'name': '도전중 Badge 1',
+      'name': '도전중 / 자동 / 미완료',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
       'autoIssued': true,
       'certiAdminCategory': {
@@ -994,14 +994,14 @@ export const challengingBadgeData: OffsetElementList<MyBadgeModel> = {
       'difficultyLevel': 'Basic',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': 'Issued',
+      'issueState': '',
     },
     {
       'id': 2,
       'badgeId': 'BADGE-2',
-      'name': '도전중 Badge 2',
+      'name': '도전중 / 수동 / 미완료',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -1016,34 +1016,12 @@ export const challengingBadgeData: OffsetElementList<MyBadgeModel> = {
       'difficultyLevel': 'Intermediate',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': 'RequestRejected',
+      'issueState': '',
     },
     {
       'id': 3,
       'badgeId': 'BADGE-3',
-      'name': '도전중 Badge 3',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
-      'certiAdminCategory': {
-        'certiAdminCategory': '인증관리주체분류',
-        'certiAdminCategoryName': '인증관리주체명'
-      },
-      'certiAdminSubcategory': {
-        'certiAdminSubcategory': '인증관리주체하위분류',
-        'certiAdminSubcategoryName': '인증관리주체하위분류명'
-      },
-      'mainCategoryId': 'Category1',
-      'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
-    },
-    {
-      'id': 4,
-      'badgeId': 'BADGE-4',
-      'name': '도전중 Badge 4',
+      'name': '도전중/수동/발급요청',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
       'autoIssued': false,
       'certiAdminCategory': {
@@ -1057,8 +1035,30 @@ export const challengingBadgeData: OffsetElementList<MyBadgeModel> = {
       'mainCategoryId': 'Category1',
       'mainCategoryName': '메인카테고리명',
       'badgeType': 'Knowledge',
+      'difficultyLevel': 'Advanced',
+      'learningCompleted': true,
+      'challengeState': 'Challenged',
+      'issueState': 'Requested',
+    },
+    {
+      'id': 4,
+      'badgeId': 'BADGE-4',
+      'name': '도전중 Badge 4',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
       'difficultyLevel': 'Basic',
-      'learningCompleted': false,
+      'learningCompleted': true,
       'challengeState': 'Challenged',
       'issueState': '',
     },

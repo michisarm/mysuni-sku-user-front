@@ -9,6 +9,7 @@ import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 import MyBadgeModel from '../../ui/model/MyBadgeModel';
 import BadgeCountModel from '../../ui/model/BadgeCountModel';
+import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
 
 
 /***** 뱃지 관리 api 모음 클래스 *****/
@@ -117,7 +118,7 @@ class BadgeApi {
       .then(response => response && response.data);
 
     // // for Test : 테스트 후 지울 것
-    // return <BadgeDetailModel>badgeDetailData;
+    //return <BadgeDetailModel>badgeDetailData;
   }
 
   findBadgeComposition(badgeId: string) {
@@ -132,6 +133,28 @@ class BadgeApi {
 
     // for Test : 테스트 후 지울 것
     // return <OffsetElementList<BadgeCompModel>>badgeCompData;
+  }
+
+
+  // 뱃지 수강 정보 조회
+  findBadgeStudentInfo(id: string) {
+    //
+    return axiosApi.get<BadgeStudentModel>(this.baseUrl + `/students/${id}`)
+      .then(response => response && response.data);
+
+  }
+
+  // 도전하기
+  challengeBadge(studentInfo: { name: string, company: string, department: string, email: string }, badgeId: string, challengeState: string) {
+    //
+    const params = {
+      studentInfo,
+      badgeId,
+      challengeState
+    };
+
+    return axiosApi.post<string>(this.baseUrl + '/students',{params})
+      .then(response => response && response.data);
   }
 }
 
