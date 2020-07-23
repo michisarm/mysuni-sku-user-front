@@ -43,18 +43,18 @@ class CarouselContainer extends Component<Props, State> {
       link: boardRoutePaths.supportNoticePost('NTC-00003f'),
       imageUrl: '/images/all/img_banner_newcontents_20200523.png',
     },
-    {
-      type: ContentType.LinkContent,
-      title: <>SK 구성원이 되신 여러분 환영합니다!</>,
-      description: (
-        <>
-          SK의 구성원으로서의 첫 여정이 드디어 시작되었습니다.<br />
-          동기, 멘토와 함께하는 7일간의 온라인 Live 학습! 이제 시작해볼까요?
-        </>
-      ),
-      link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-9ej/lecture-card/LECTURE-CARD-748',
-      imageUrl: '/images/all/img_banner_newComers_20200713.jpg',
-    },
+    // {
+    //   type: ContentType.LinkContent,
+    //   title: <>SK 구성원이 되신 여러분 환영합니다!</>,
+    //   description: (
+    //     <>
+    //       SK의 구성원으로서의 첫 여정이 드디어 시작되었습니다.<br />
+    //       동기, 멘토와 함께하는 7일간의 온라인 Live 학습! 이제 시작해볼까요?
+    //     </>
+    //   ),
+    //   link: '/lecture/cineroom/ne1-m2-c2/college/CLG00018/cube/CUBE-9ej/lecture-card/LECTURE-CARD-748',
+    //   imageUrl: '/images/all/img_banner_newComers_20200713.jpg',
+    // },
     {
       type: ContentType.LinkContent,
       title: <>문과용 해례본: </>,
