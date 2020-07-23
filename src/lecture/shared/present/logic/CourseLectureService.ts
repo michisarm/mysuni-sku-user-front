@@ -24,7 +24,7 @@ class CourseLectureService {
   preLectureViews: LectureViewModel[] = [];
 
   @computed
-  get _preLectureViews() {
+  get getPreLectureViews() {
     //
     return (this.preLectureViews as IObservableArray).peek();
   }
@@ -48,7 +48,7 @@ class CourseLectureService {
 
   @action
   async findCourseLectureByCoursePlanId(coursePlanId: string) {
-    const courseLecture = await this.courseLectureApi.findCourseLectureByCoursePlanId(
+    const courseLecture: CourseLectureModel = await this.courseLectureApi.findCourseLectureByCoursePlanId(
       coursePlanId
     );
     // console.log('courseLecture : ', courseLecture);
@@ -62,7 +62,7 @@ class CourseLectureService {
   ) {
     // console.log('preLectureViewSet : ', preLectureViewSet);
     // runInAction(() => (this.preLectureViews = preLectureViewSet));
-    [...this.preLectureViews] = preLectureViewSet;
+    this.preLectureViews = preLectureViewSet;
     // console.log('preLectureViews : ', this);
     return preLectureViewSet;
 
