@@ -121,6 +121,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
     }
+
+    // 렌더시 화면 최상으로 이동
+    window.scrollTo(0, 0);
   }
 
   setItemsRef(element: any, index: number) {

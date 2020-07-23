@@ -76,7 +76,7 @@ class StudentApi {
     return axiosApi.put(this.baseUrl + `/flow/courseworkProcess/${studentId}/${fileBoxId}`);
   }
 
-  isPreCoursePassed(lectureCardIds: string[]) {
+  findPreCourseStudentList(lectureCardIds: string[]) {
     // return axiosApi.get<number>(this.baseUrl + `/flow/isPreCoursePassed?lectureCardIds=${lectureCardIds}`);
     return axiosApi.get<StudentModel[]>(this.baseUrl + `/flow/preCourseList?lectureCardIds=${lectureCardIds}`)
       .then(response => response && response.data);

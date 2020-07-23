@@ -217,9 +217,8 @@ class StudentService {
   }
 
   @action
-  async isPreCoursePassed(lectureCardIds: string[]) {
-    return this.studentApi.isPreCoursePassed(lectureCardIds);
-    // return this.studentApi.isPreCoursePassed(lectureCardIds);
+  async findPreCourseStudentList(lectureCardIds: string[]) {
+    return this.studentApi.findPreCourseStudentList(lectureCardIds);
   }
 }
 

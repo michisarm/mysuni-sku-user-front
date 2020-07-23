@@ -273,7 +273,7 @@ class CoursePageV2 extends Component<Props, State> {
 
       // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
       let isPreCoursePassed = true;
-      const preCourseList = await studentService.isPreCoursePassed(preCourseUsids);
+      const preCourseList = await studentService.findPreCourseStudentList(preCourseUsids);
       // console.log('preCourseList : ', preCourseList);
       preCourseList.forEach( (preCourse, index) => {
         preCoursePlanSet.forEach( preCoursePlan => {
