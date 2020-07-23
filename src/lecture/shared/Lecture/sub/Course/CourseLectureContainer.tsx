@@ -38,7 +38,6 @@ import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../surve
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
-import CubeRightInfo from '../Course2/CubeRightInfo';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -690,7 +689,7 @@ class CourseLectureContainer extends Component<Props, State> {
     // console.log('lecture container personalCube : ', this.personalCube);
 
     return (
-      <div >
+      <div>
         <div className={`card-box ${className}`}>
 
           {/*<Thumbnail image={thumbnail} />*/}
