@@ -1,4 +1,4 @@
-
+/*
 import {OffsetElementList} from '../../../shared/model';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 
@@ -316,3 +316,4 @@ export const badgeCompData: OffsetElementList<BadgeCompModel> = {
     }
   ]
 };
+*/

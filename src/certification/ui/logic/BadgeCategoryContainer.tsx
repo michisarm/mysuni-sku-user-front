@@ -11,6 +11,9 @@ interface BadgeCategoryProps {
 
 const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ( { categories, categorySelection, onClickBadgeCategory} ) => {
   //
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+
   return (
     <div className="badge-category">
       <ul>
@@ -22,7 +25,7 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ( { catego
             <Button className="fn-click" onClick={(e) => onClickBadgeCategory(e, category.categoryId)}>
               <span className="icon">
                 <span>
-                  <Image src={category.iconUrl}/>
+                  <Image src={domainPath + category.iconUrl}/>
                 </span>
               </span>
               <span className="title">

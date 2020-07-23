@@ -28,7 +28,8 @@ const MainBanner : React.FC<Props> = (Props) => {
   const { profileMemberCompanyCode } = skProfileService!;
 
   const DEFAULT_BANNER_INTERVAL = 7000;
-
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
 
   // myTrainingService 변경  실행
   useEffect(() => {
@@ -90,7 +91,6 @@ const MainBanner : React.FC<Props> = (Props) => {
     });
   };
 
-
   return (
     banners.length > 0 ?
       <MainBannerWrapper>
@@ -99,7 +99,7 @@ const MainBanner : React.FC<Props> = (Props) => {
           { banners.map( (banner, index) => (
             <div className="swiper-slide" key={`main-banner-${index}`}>
               <Image
-                src={banner.imageUrl}
+                src={domainPath + banner.imageUrl}
                 alt={banner.imageAlt}
                 title={banner.name}
                 as="a"

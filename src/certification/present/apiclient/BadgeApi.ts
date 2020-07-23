@@ -6,7 +6,6 @@ import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
-import {badgeCompData} from './badgeCompData';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 import MyBadgeModel from '../../ui/model/MyBadgeModel';
 import BadgeCountModel from '../../ui/model/BadgeCountModel';
@@ -125,9 +124,10 @@ class BadgeApi {
     //
     const params = {
       badgeId,
+      // patronKeyString: BadgeFilterRdoModel.getPatonKey(),
     };
 
-    return axiosApi.get<BadgeCompModel[]>(this.baseUrl + `/courseset/flow/lectures`, {params})
+    return axiosApi.get<BadgeCompModel[]>(this.baseUrl + '/courseset/flow/lectures', {params})
       .then(response => response && response.data);
 
     // for Test : 테스트 후 지울 것
