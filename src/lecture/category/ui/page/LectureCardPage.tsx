@@ -1038,11 +1038,16 @@ class LectureCardPage extends Component<Props, State> {
   renderComment() {
     //
     const { lectureCard } = this.props.lectureCardService;
+    const studentCdo = this.getStudentCdo();
 
     return this.renderBaseContentWith(
       <LectureCommentsContainer
         reviewFeedbackId={lectureCard.reviewId}
         commentFeedbackId={lectureCard.commentId}
+        name={studentCdo.name}
+        email={studentCdo.email}
+        companyName={studentCdo.company}
+        departmentName={studentCdo.department}
       />
     );
   }

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -8,22 +7,21 @@ import depot, { DepotFileViewModel } from '@nara.drama/depot';
 import { CommentList } from '@nara.drama/feedback';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import ReactQuill from 'react-quill';
+import { SkProfileService } from 'profile/stores';
 import routePaths from '../../routePaths';
 import { PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 
-
 interface Props extends RouteComponentProps<{ postId: string }> {
   postService?: PostService;
+  skProfileService?: SkProfileService;
 }
 
 interface State {
-  filesMap: Map<string, any>
+  filesMap: Map<string, any>;
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.postService',
-))
+@inject(mobxHelper.injectFrom('board.postService', 'profile.skProfileService'))
 @observer
 @reactAutobind
 class NoticeDetailContainer extends React.Component<Props, State> {
@@ -31,7 +29,6 @@ class NoticeDetailContainer extends React.Component<Props, State> {
   state = {
     filesMap: new Map<string, any>(),
   };
-
 
   constructor(props: Props) {
     //
@@ -42,10 +39,9 @@ class NoticeDetailContainer extends React.Component<Props, State> {
   componentDidMount() {
     //
     const { postId } = this.props.match.params;
-    const postService = this.props.postService!;
-
-    postService.findPostByPostId(postId)
-      .then(() => this.getFileIds());
+    const { postService, skProfileService } = this.props;
+    skProfileService!.findSkProfile();
+    postService!.findPostByPostId(postId).then(() => this.getFileIds());
   }
 
   onClickList() {
@@ -79,15 +75,17 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     const { post } = postService!;
 
     postService.changePostProps('commentFeedbackId', feedbackId);
-    postService.deletePost(post.id, post)
+    postService
+      .deletePost(post.id, post)
       .then(() => postService!.findPostByPostId(post.id));
   }
 
   render() {
     //
-    const { post } = this.props.postService!;
+    const { postService, skProfileService } = this.props;
+    const { post } = postService!;
     const { filesMap } = this.state;
-
+    const { member } = skProfileService!.skProfile;
     return (
       <>
         <div className="post-view">
@@ -97,7 +95,7 @@ class NoticeDetailContainer extends React.Component<Props, State> {
             onClickList={this.onClickList}
           />
 
-          { post.contents && (
+          {post.contents && (
             <div className="content-area">
               <div className="content-inner">
                 <ReactQuill
@@ -107,22 +105,31 @@ class NoticeDetailContainer extends React.Component<Props, State> {
                 />
               </div>
               <div className="file">
-                <span>첨부파일 : </span><br />
-                {
-                  filesMap && filesMap.get('reference')
-                  && filesMap.get('reference').map((foundedFile: DepotFileViewModel, index: number) => (
-                    <div>
-                      <a href="#" className="link" key={index}>
-                        <span className="ellipsis" onClick={() => depot.downloadDepotFile(foundedFile.id)}>
-                          {'    ' + foundedFile.name + '     '}
-                        </span><br />
-                      </a>
-                      <br />
-                    </div>
-                  )
-                  ) || '-'
-                }
-              </div><br />
+                <span>첨부파일 : </span>
+                <br />
+                {(filesMap &&
+                  filesMap.get('reference') &&
+                  filesMap
+                    .get('reference')
+                    .map((foundedFile: DepotFileViewModel, index: number) => (
+                      <div>
+                        <a href="#" className="link" key={index}>
+                          <span
+                            className="ellipsis"
+                            onClick={() =>
+                              depot.downloadDepotFile(foundedFile.id)
+                            }
+                          >
+                            {'    ' + foundedFile.name + '     '}
+                          </span>
+                          <br />
+                        </a>
+                        <br />
+                      </div>
+                    ))) ||
+                  '-'}
+              </div>
+              <br />
             </div>
           )}
         </div>
@@ -130,9 +137,13 @@ class NoticeDetailContainer extends React.Component<Props, State> {
         <Segment className="full">
           <div className="comment-area">
             <CommentList
-              feedbackId={post && post.commentFeedbackId || ''}
+              feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
+              name={member.name}
+              email={member.email}
+              companyName={member.company}
+              departmentName={member.department}
             />
           </div>
           <div className="actions bottom">

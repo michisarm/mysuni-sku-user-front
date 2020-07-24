@@ -284,10 +284,18 @@ class CourseContainer extends Component<Props, State> {
       reactAlert({
         title: '알림',
         message: '먼저 시작한 학습을 완료 후 시청할 수 있습니다.',
+        // onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
       });
-      return;
+    } else {
+      this.playVideo(videoUrl, studentCdo, lectureView);
     }
+  }
 
+  playVideo(
+    videoUrl: string,
+    studentCdo: StudentCdoModel,
+    lectureView?: LectureViewModel
+  ) {
     if (lectureView) this.lectureView = lectureView;
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;

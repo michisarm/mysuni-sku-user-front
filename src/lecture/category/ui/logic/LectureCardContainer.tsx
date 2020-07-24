@@ -459,17 +459,20 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickPlay() {
-    const { typeViewObject } = this.props;
-
     // 20200717 video 멀티 시청불가~! = return true
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
         message: '먼저 시작한 학습을 완료 후 시청할 수 있습니다.',
+        // onClose: () => this.playVideo(),
       });
-      return;
+    } else {
+      this.playVideo();
     }
+  }
 
+  playVideo() {
+    const { typeViewObject } = this.props;
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
@@ -482,6 +485,7 @@ class LectureCardContainer extends Component<Props, State> {
       console.warn('[UserFront] Url is empty.');
     }
   }
+
   // 20200717 video 멀티 시청불가~! = return true
   handleMultiVideo() {
     function nvl(str: any, dvalue: any) {
