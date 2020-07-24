@@ -38,17 +38,19 @@ const MyBadgePage : React.FC<Props> = (Props) => {
   const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
   const [categorySelection, setCategorySelection] = useState<string>('');
 
-  const [badgeCount, setBadgeCount] = useState(0);
+  const [totBadgeCount, setTotBadgeCount] = useState(0);
   const [challengeCount, setChallengeCount] = useState(0);
   const [earnedCount, setEarnedCount] = useState(0);
 
   // lectureService 변경  실행
   useEffect(() => {
     //
-    setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+    if (subBreadcrumb !== match.params.tab) {
+      setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+    }
 
     badgeService?.getCountOfBadges().then(() => {
-      setBadgeCount(badgeService.badgeCount);
+      setTotBadgeCount(badgeService.badgeCount);
       setChallengeCount(badgeService.challengingCount);
       setEarnedCount(badgeService.earnedCount);
     });
@@ -59,12 +61,24 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     }
   }, [match.params.tab]);
 
-  useEffect(() => {
-    //
-    if (subBreadcrumb !== match.params.tab) {
-      setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
+  const onChangeTab = (tab: TabItemModel) => {
+    history.push(routePaths.badgeTab(tab.name));
+  };
+
+  // 카테고리 선택
+  const onClickBadgeCategory = (e: any, categoryId: any) => {
+    // 페이지 변경(초기화)
+    match.params.pageNo = '1';
+    history.replace(routePaths.currentPage(1));
+
+    // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
+    if (categorySelection === categoryId) {
+      // 선택해제 및 전체보기
+      setCategorySelection('');
+    } else {
+      setCategorySelection(categoryId);
     }
-  }, [match.params.tab]);
+  };
 
   const getTabs = () => {
     //
@@ -74,12 +88,11 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         item: (
           <>
             Badge List
-            { <span className="count">+{badgeCount}</span> || <span className="count">0</span> }
+            { <span className="count">+{totBadgeCount}</span> || <span className="count">0</span> }
           </>
         ),
         render: () => (
           <AllBadgeListContainer
-            badgeCount={badgeCount}
             categorySelection={categorySelection}
           />
         )
@@ -114,26 +127,6 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         )
       }
     ];
-  };
-
-  const onChangeTab = (tab: TabItemModel) => {
-    history.push(routePaths.badgeTab(tab.name));
-  };
-
-
-  // 카테고리 선택
-  const onClickBadgeCategory = (e: any, categoryId: any) => {
-    // 페이지 변경(초기화)
-    match.params.pageNo = '1';
-    history.replace(routePaths.currentPage(1));
-
-    // 선택된 Category 정보를 가져오되, 동일한 카테고리일 경우 toggle 처리되어야 함
-    if (categorySelection === categoryId) {
-      // 선택해제 및 전체보기
-      setCategorySelection('');
-    } else {
-      setCategorySelection(categoryId);
-    }
   };
 
   return (
