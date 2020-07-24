@@ -27,6 +27,18 @@ export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = 
 );
 
 
+interface CertificationOrgProps {
+  certiAdminCategoryIcon: string,
+  certiAdminCategoryName: string,
+}
+
+export const CertificationOrg: FunctionComponent<CertificationOrgProps> = ({ certiAdminCategoryIcon, certiAdminCategoryName }) => (
+  <span className="issuing">
+    <img src={certiAdminCategoryIcon} alt={`발급기관: ${certiAdminCategoryName}`}/>
+  </span>
+);
+
+
 interface CollegeProps {
   iconUrl: string,
   mainCategory: string,
