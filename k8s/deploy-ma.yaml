@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user
+  namespace: gdi-skuniv-app-ma
   labels:
     app: user
 spec:
@@ -49,16 +50,18 @@ spec:
         volumeMounts:
           - name: user-front-persistent-storage
             mountPath: /usr/share/nginx/html/profile
+          - name: user-front-persistent-storage
+            mountPath: /usr/share/nginx/html/files
           - mountPath: /etc/localtime
             name: timezone-config
       volumes:
         - name: user-front-persistent-storage
           persistentVolumeClaim:
-            claimName: nara-pvc-1
+            claimName: nara-pvc-ma
         - hostPath:
             path: /usr/share/zoneinfo/Asia/Seoul
           name: timezone-config
       imagePullSecrets:
-      - name: user-secret
+      - name: harbor-pull-secret
   strategy:
     type: RollingUpdate
