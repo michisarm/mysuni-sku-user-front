@@ -50,6 +50,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   const onSelectDifficultyLevel = (diffLevel: string) => {
     // 난이도 변경
     setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+
   };
 
   return (

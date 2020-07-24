@@ -16,11 +16,15 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
   //
   const { badgeService, history, match } = Props;
 
-  const [badgeDetail, setBadgeDetail] = useState();
+  const [ badgeDetail, setBadgeDetail] = useState();
+
+  const [ badgeStudentId, setbadgeStudentId ] = useState();
+
 
   useEffect(() => {
     //
     findMyContent(match.params.badgeId);
+
   }, [match.params.badgeId]);
 
   const findMyContent = async (id: string) => {
@@ -28,8 +32,19 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
     const badgeInfo = await badgeService!.findBadgeDetailInfo(id);
     setBadgeDetail(badgeInfo);
 
-    console.log( badgeInfo);
+    setbadgeStudentId(badgeInfo.id);  // 수강정보 호출 parameter
   };
+
+  useEffect(() => {
+    //
+    findBadgeStudent();
+  },[]);
+
+  const findBadgeStudent = async () => {
+    //
+    const badgeStudentInfo = await badgeService!.findBadgeStudentInfo(badgeStudentId);
+  };
+
 
   // 뱃지 상세정보 호출
   return (
@@ -39,7 +54,7 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
         { text: badgeService!.badgeDetailInfo.mainCategoryName},
       ]}
     >
-      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo} />
+      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo} badgeStudentInfo={badgeService!.badgeStudentInfo} />
 
       {/*연관 Badge*/}
       <LinkedBadgeListContainer badgeId={match.params.badgeId}/>

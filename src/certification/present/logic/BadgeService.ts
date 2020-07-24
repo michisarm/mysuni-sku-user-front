@@ -8,6 +8,7 @@ import MyBadgeModel from '../../ui/model/MyBadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
+import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
 
 
 @autobind
@@ -50,6 +51,9 @@ class BadgeService {
 
   @observable
   _earnedCount: number = 0;
+
+  @observable
+  _badgeStudent: BadgeStudentModel = new BadgeStudentModel();
 
   @action
   clearCategories() {
@@ -301,6 +305,34 @@ class BadgeService {
     }
 
     return badgeOffsetElementList;
+  }
+
+  // 뱃지 수강정보
+  @action
+  async findBadgeStudentInfo(id: string) {
+    //
+    const response = await this.badgeApi.findBadgeStudentInfo(id);
+
+    runInAction( () => {
+      this._badgeStudent = new BadgeStudentModel(response);
+    });
+
+    return this._badgeStudent;
+  }
+
+  @computed
+  get badgeStudentInfo() {
+    return this._badgeStudent;
+  }
+
+  // 도전하기
+  @action
+  async challengeBadge(studentInfo: any, badgeId: string, challengeState: string) {
+    //
+    const response = await this.badgeApi.challengeBadge(studentInfo, badgeId, challengeState);
+    console.log(response);
+    return response;
+
   }
 
   /*
