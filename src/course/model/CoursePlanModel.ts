@@ -36,6 +36,7 @@ export class CoursePlanModel implements DramaEntity {
 
   //UI
   required: boolean = false;
+  courseLectureId?: string = '';
 
   constructor(coursePlan?: CoursePlanModel) {
     if (coursePlan) {

@@ -15,7 +15,12 @@ export const ContentWrapper: FunctionComponent<ContentWrapperProps> = ({ childre
   </div>
 );
 
-export const TabsView: FunctionComponent = ({ children }) => (
+
+interface TabsViewProps {
+  children: React.ReactNode,
+}
+
+export const TabsView: FunctionComponent<TabsViewProps> = ({ children }) => (
   <Segment className="full">
     <div className="ui tab-menu">
       <div className="cont-inner">
@@ -39,7 +44,11 @@ export const BadgeWrapper: FunctionComponent<BadgeWrapperProps> = ({ children, c
   </div>
 );
 
-export const MainBannerWrapper: FunctionComponent = ({ children }) => (
+interface MainBannerProps {
+  children: React.ReactNode,
+}
+
+export const MainBannerWrapper: FunctionComponent<MainBannerProps> = ({ children }) => (
   <div className="middle-swiper">
     <Segment className="full">
       <div className="swiper-section type2">

@@ -30,6 +30,8 @@ interface Props {
   surveyCaseId: string
   trigger?: React.ReactNode
   onSaveCallback?:() => void
+  serviceId: string
+  serviceType: string
 }
 
 interface States {
@@ -86,7 +88,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSaveAnswerSheet(finished: boolean) {
-    const { answerSheetService, surveyCaseService, onSaveCallback } = this.props;
+    const { answerSheetService, surveyCaseService, onSaveCallback, serviceId, serviceType } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
     if (!finished) {
@@ -97,7 +99,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
         }); // .then(this.onCloseModal);
       } else {
         answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
-        answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
+        answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId, serviceType)
           .then((answerSheetId) => {
             answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
             return answerSheetService!.saveAnswerSheet();
@@ -123,7 +125,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
          */
       } else {
          answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
-         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
+         answerSheetService!.openAnswerSheet(surveyCase.id, surveyCase.roundPart.round, serviceId, serviceType)
            .then((res) => {
              answerSheet.id = res;
              answerSheetService!.changeAnswerSheetProp('id', res);

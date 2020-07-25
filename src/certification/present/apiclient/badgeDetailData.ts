@@ -1,3 +1,4 @@
+/*
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 
 export const badgeDetailData: BadgeDetailModel = {
@@ -5,7 +6,7 @@ export const badgeDetailData: BadgeDetailModel = {
   'patronKeyString': 'patron_key_string',
   'badgeId': 'BADGE-1',
   'name': '뱃지이름',
-  'tags': '태그',
+  'tags': ['태그',],
   'iconUrl': '/images/all/icon-chanel-64-px.svg',
   'learningTime': 60,
   'creationTime': 2020,
@@ -43,3 +44,4 @@ export const badgeDetailData: BadgeDetailModel = {
   'badgeState': 'Created',
   'difficultyLevel': 'Basic',
 };
+*/

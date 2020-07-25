@@ -16,32 +16,45 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
   //
   const { badgeService, history, match } = Props;
 
-  const [badgeDetail, setBadgeDetail] = useState();
+  const [ badgeDetail, setBadgeDetail] = useState();
+
+  const [ badgeStudentId, setbadgeStudentId ] = useState();
+
 
   useEffect(() => {
     //
     findMyContent(match.params.badgeId);
+
   }, [match.params.badgeId]);
 
   const findMyContent = async (id: string) => {
     //
     const badgeInfo = await badgeService!.findBadgeDetailInfo(id);
     setBadgeDetail(badgeInfo);
+
+    setbadgeStudentId(badgeInfo.id);  // 수강정보 호출 parameter
   };
 
-  // 뱃지 상세정보 호출
+  useEffect(() => {
+    //
+    findBadgeStudent();
+  },[]);
 
+  const findBadgeStudent = async () => {
+    //
+    const badgeStudentInfo = await badgeService!.findBadgeStudentInfo(badgeStudentId);
+  };
+
+
+  // 뱃지 상세정보 호출
   return (
     <ContentLayout
       className="no-padding"
       breadcrumb={[
-        { text: '123'},
-        { text: '456'},
+        { text: badgeService!.badgeDetailInfo.mainCategoryName},
       ]}
     >
-      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo}>
-        <div>학습정보</div>
-      </BadgeContentContainer>
+      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo} badgeStudentInfo={badgeService!.badgeStudentInfo} />
 
       {/*연관 Badge*/}
       <LinkedBadgeListContainer badgeId={match.params.badgeId}/>

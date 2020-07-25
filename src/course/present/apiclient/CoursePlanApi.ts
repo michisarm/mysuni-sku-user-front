@@ -6,7 +6,8 @@ import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '..
 export default class CoursePlanApi {
   URL = '/api/course/coursePlans';
   coursePlanContentsURL = '/api/course/coursePlanContents';
-  //coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
+  // URL = 'http://localhost:8111/coursePlans';
+  // coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
 
   static instance: CoursePlanApi;
 
@@ -63,6 +64,18 @@ export default class CoursePlanApi {
   modifyCoursePlanContents(coursePlanContentsId: string, nameValues: NameValueList) {
     //
     return axios.put<string>(this.coursePlanContentsURL + `/${coursePlanContentsId}`, nameValues);
+  }
+
+  findAllPrecedenceCourseList(coursePlanId: string) {
+    return axios.get<OffsetElementList<CoursePlanModel>>(this.URL + `/precedenceCourseList/${coursePlanId}` )
+      .then(response => response && response.data || null);
+
+  }
+
+  findAllPreCourseIdList(coursePlanId: string) {
+    return axios.get<string[]>(this.URL + `/preCourseIdList/${coursePlanId}` )
+      .then(response => response && response.data || null);
+
   }
 
 }

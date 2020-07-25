@@ -1,24 +1,195 @@
-import React from 'react';
-import {Button, Icon} from 'semantic-ui-react';
+import React, {useEffect, useState} from 'react';
+import {inject, observer} from 'mobx-react';
+import {mobxHelper} from '@nara.platform/accent';
+import {RouteComponentProps, withRouter} from 'react-router';
+import {Button, Icon, Label} from 'semantic-ui-react';
 import {OverviewField} from 'personalcube';
 import {Badge} from '../../shared/Badge';
-import {BadgeContentHeader, BadgeInformation, BadgeTitle, BadgeOverview} from '../view/BadgeContentElementView';
+import {BadgeContentHeader, BadgeInformation, BadgeTitle, BadgeOverview, BadgeStatus} from '../view/BadgeContentElementView';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
+import BadgeStudentModel from '../model/BadgeStudentModel';
+import ChallengeCancelModal from './ChallengeCancelModal';
+import ChallengeSuccessModal from './ChallengeSuccessModal';
+// import BadgeLectureContainer from './BadgeLectureContainer';
+import {studentData} from '../../present/apiclient/studentData';
+import IssueState from '../../shared/Badge/ui/model/IssueState';
+import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
+import BadgeService from '../../present/logic/BadgeService';
 
+export enum ChallengeDescription {
+  WaitForChallenge= 'Badge획득에 도전 해보세요.',
+  Challenging= '',
+  ReadyForRequest= 'Badge획득 도전이 완료되었습니다.',
+  Requested= '발급 요청',
+  Issued= '획득',
+}
 
-interface Props {
+interface Props extends RouteComponentProps {
   badgeDetail: BadgeDetailModel,
-  children: React.ReactNode
+  badgeStudentInfo: BadgeStudentModel,
+
+  badgeService?: BadgeService,
 }
 
 const BadgeContentContainer: React.FC<Props> = (Props) => {
-  const { badgeDetail, children } = Props;
+  //
+  const { badgeDetail, badgeStudentInfo, badgeService } = Props;
+
+  const [ cancelModal, setCancelModal ] = useState(false);
+  const [ successModal, setSuccessModal ] = useState(false);
+
+  const [ badgeState, setBadgeState ] = useState();
+
+  const [ learningCount, plusLearningCount ] = useState(0);
+
+  // 학습 카운트 정보
+  const LEARNING_TOTAL_COUNT = 9;
+
+
+  //console.log( badgeStudentInfo );
+
+  useEffect( () => {
+
+    // 현재 도전 상태 확인
+    getBadgeState(
+      badgeStudentInfo.challengeState.challengeState,
+      badgeStudentInfo.learningCompleted,
+      badgeStudentInfo.issueState
+    );
+
+  }, [
+    badgeStudentInfo.challengeState.challengeState,
+    badgeStudentInfo.learningCompleted,
+    badgeStudentInfo.issueState
+  ]);
+
+
+  const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
+    //
+    if ( challengeState !== 'Challenged' ) {
+      // 도전 대기 - 최초도전 or 도전취소
+      setBadgeState(ChallengeState.WaitForChallenge);
+    }
+    if ( challengeState === 'Challenged' ) {
+      if ( issueState === IssueState.Issued ) {
+        // 획득 완료
+        setBadgeState(ChallengeState.Issued);
+      }
+      if ( issueState === IssueState.Requested ) {
+        // 발급요청중
+        setBadgeState(ChallengeState.Requested);
+      }
+      if ( (issueState !== IssueState.Issued && issueState !== IssueState.Requested) && learningCompleted ) {
+        // 발급요청가능
+        setBadgeState(ChallengeState.ReadyForRequest);
+      }
+      if ( (issueState !== IssueState.Issued && issueState !== IssueState.Requested) && !learningCompleted ) {
+        // 진행 중 => 도전취소 버튼 노출
+        setBadgeState(ChallengeState.Challenging);
+      }
+    }
+  };
+
+  // 상태에 따른 버튼 이벤트
+  const getAction = () => {
+    switch( badgeState ) {
+      case ChallengeState.WaitForChallenge:
+        onClickChallenge();
+        break;
+      case ChallengeState.Challenging:
+        onChangeCancleModal();
+        break;
+      case ChallengeState.ReadyForRequest:
+        onClickRequest();
+        break;
+    }
+  };
+
+
+  /* Button Actions */
+  // 도전하기 버튼 클릭
+  const onClickChallenge = () => {
+    //
+    if ( badgeStudentInfo.challengeState.challengeState !== 'Challenged' ) {
+
+      // API 호출
+      const result = badgeService!.challengeBadge(
+        badgeStudentInfo.studentInfo, badgeDetail.badgeId, badgeStudentInfo.challengeState.challengeState
+      );
+      if ( result ) {
+        setBadgeState(ChallengeState.Challenging);
+      }
+    }
+  };
+
+  // 도전취소 -> 안내모달
+  const onChangeCancleModal = () => {
+    setCancelModal(!cancelModal);
+  };
+
+
+  // 샘플 - 학습하기
+  const learningDoIt = () => {
+    if ( LEARNING_TOTAL_COUNT === learningCount ) {
+
+      setBadgeState(ChallengeState.ReadyForRequest);
+
+      // 학습완료 상태 만들기
+
+    } else {
+      plusLearningCount( learningCount + 1);
+    }
+  };
+
+  // 안내모달 - [취소] 클릭
+  const onClickChallengeCancel = () => {
+
+    // 도전 대기 상태
+    setBadgeState(ChallengeState.WaitForChallenge);
+
+    // API 호출 및 취소 처리
+
+    // 모달 닫기
+    setCancelModal(!cancelModal);
+  };
+
+  // 발급요청
+  const onClickRequest = () => {
+    // API 호출
+    // 자동발급 뱃지일 경우 바로 발급
+    const autoIssuedBadge  = badgeDetail.autoIssued;
+
+    if ( autoIssuedBadge ) {
+      // 뱃지 자동발급 요청 /api/badge/students/issue-state
+
+      // 응답:success
+      setSuccessModal(!successModal);
+
+      // 획득완료
+      setBadgeState(ChallengeState.Issued);
+
+    } else {
+      // 수동뱃지일 경우 추가발급조건 확인
+      const missionCompleted = badgeStudentInfo.missionCompleted;
+
+      if ( missionCompleted ) {
+        // 발급요청
+        setBadgeState(ChallengeState.Requested);
+      }
+    }
+  };
+
+  // 성공 모달 닫기
+  const onControlSuccessModal = () => {
+    setSuccessModal(!successModal);
+  };
+
+
   //
   return (
     <>
-      {console.log(badgeDetail)}
       {/*상단*/}
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
@@ -39,11 +210,26 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           difficultyLevel={badgeDetail.difficultyLevel}
           learningTime={badgeDetail.learningTime}
         />
+        {/*뱃지 상태*/}
+        <BadgeStatus
+          badgeState={badgeState}
+          onClickButton={getAction}
+          issueStateTime={studentData.issueStateTime}
+          description={ChallengeDescription[badgeState as ChallengeState]}
+          learningTotalCount={LEARNING_TOTAL_COUNT}
+          learningCompleted={learningCount}
+          onClickSample={learningDoIt}
+        />
 
-        <div className="status">
-          <Button className="fix bg">도전하기</Button>
-        </div>
+        {/*도전 취소 확인 팝업*/}
+        <ChallengeCancelModal cancelModal={cancelModal} onClickCancel={onChangeCancleModal} onAction={onClickChallengeCancel}/>
+
+        {/*자동발급 뱃지 & 뱃지획득 시*/}
+        <ChallengeSuccessModal badge={badgeDetail} successModal={successModal} onCloseSuccessModal={onControlSuccessModal}/>
+
       </BadgeContentHeader>
+
+
 
       {/*하단 - 그외 메타정보 및 학습 정보 */}
       <BadgeOverview>
@@ -79,11 +265,13 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
               </div>
             }
           />
-          <OverviewField.Item
-            titleIcon="addinfo"
-            title="추가 발급 조건"
-            content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
-          />
+          { badgeDetail.additionTermsExist && (
+            <OverviewField.Item
+              titleIcon="addinfo"
+              title="추가 발급 조건"
+              content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
+            />
+          )}
         </OverviewField.List>
 
         {/*학습정보*/}
@@ -91,7 +279,8 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="list24"
             title="Learning Path"
-            content="학습목록 course-cont"
+            content="학습정보"
+            // content={<BadgeLectureContainer/>}
           />
         </OverviewField.List>
 
@@ -100,7 +289,9 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={badgeDetail.tags}
+            content={
+              <Label as="span" className="tag">{badgeDetail.tags}</Label>
+            }
           />
         </OverviewField.List>
 
@@ -109,4 +300,6 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   );
 };
 
-export default BadgeContentContainer;
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+))(withRouter(observer(BadgeContentContainer)));

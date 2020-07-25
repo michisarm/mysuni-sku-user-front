@@ -3,7 +3,7 @@ import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import {Button, Icon, Segment} from 'semantic-ui-react';
+import {Button, Icon} from 'semantic-ui-react';
 import {AnswerSheetModal, CubeReportModal} from 'assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
 
@@ -33,11 +33,12 @@ interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
-  courseLectureService?:  CourseLectureService,
+  courseLectureService:  CourseLectureService,
   coursePlanService?: CoursePlanService,
   lectureCardId : string,
   onRefreshLearningState?: () => void,
   onPageRefresh?:() => void,
+  isPreCoursePassed?: boolean
 }
 
 interface RouteParams {
@@ -120,6 +121,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
     }
+
+    // 렌더시 화면 최상으로 이동
+    window.scrollTo(0, 0);
   }
 
   setItemsRef(element: any, index: number) {
@@ -130,13 +134,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //
     const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
 
-    const categoriesHeight = this.itemRefs
-      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
-      .reduce((prev, current) => prev + current, 0);
+    if (this.itemRefs) {
+      const categoriesHeight = this.itemRefs
+        .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+        .reduce((prev, current) => prev + current, 0);
 
-    if (categoriesHeight > panelHeight) {
-      this.setState({ multiple: true });
+      if (categoriesHeight > panelHeight) {
+        this.setState({ multiple: true });
+      }
     }
+
   }
 
   onToggleCategory() {
@@ -202,6 +209,17 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           // if (this.init()) this.init();
         });
     }
+  }
+
+  onPreCourseViewDetail(lecture: LectureViewModel) {
+    const { coursePlanId, serviceId, serviceType } = lecture;
+    const { match, history } = this.props;
+    const { params } = match;
+
+    history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+      courseLectureId: params.serviceId,
+    }));
+
   }
 
   onViewDetail(lecture: LectureViewModel) {
@@ -332,12 +350,15 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       lectureCardId,
       match,
       onRefreshLearningState,
+      courseLectureService,
+      isPreCoursePassed,
     } = this.props;
 
     const { params } = match;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
     const { lectureViews, getSubLectureViews } = lectureService!;
+    const { preLectureViews } = courseLectureService;
 
     if (!viewObject.category) {
       return null;
@@ -347,6 +368,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const cubeType = viewObject.cubeType;
 
     // console.log('LectureOverview : ', JSON.stringify(viewObject));
+    const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
 
     return (
       <OverviewField.Wrapper>
@@ -354,49 +376,71 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           description={viewObject.description}
         />
         <>
-          <Lecture2.Group
-            type={Lecture2.GroupType.Course}
-            totalCourseCount={viewObject.totalCourseCount}
-          >
-            {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-              <Lecture2.CourseSection
-                key={`course-${lectureViewsIndex}`}
-                lecture={(
-                  <Lecture2.Course
-                    className="first"
-                    lectureView={lecture}
-                    lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
-                    lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
-                    thumbnailImage={lecture.baseUrl || undefined}
-                    toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                    onViewDetail={() => this.onViewDetail(lecture)}
-                    collegeId={params.collegeId}
-                    lectureCardId={lectureCardId}
-                    learningState={viewObject.state}
-                    member={member}
-                    onRefreshLearningState={onRefreshLearningState}
-                    onDoLearn={this.onDoLearn}
-                  />
-                )}
+          <div className="ov-paragraph course-area">
+
+            {/*선수코스*/}
+            {isPreCourse && (
+              <Lecture2.Group
+                type={Lecture2.GroupType.PreCourse}
               >
-                {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                  <Lecture2.Course
-                    key={`sub-lecture-${index}`}
-                    className="included"
-                    lectureView={subLecture}
-                    lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                    thumbnailImage={subLecture.baseUrl || undefined}
-                    onViewDetail={() => this.onViewDetail(subLecture)}
-                    collegeId={params.collegeId}
-                    lectureCardId={lectureCardId}
-                    member={member}
-                    onRefreshLearningState={onRefreshLearningState}
-                    onDoLearn={this.onDoLearn}
+                {preLectureViews.map((preLectureView: LectureViewModel) => (
+                  <Lecture2.PreCourse
+                    lectureView={preLectureView}
+                    lectureViewName={preLectureView.name}
+                    onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
                   />
-                )}
-              </Lecture2.CourseSection>
-            ))}
-          </Lecture2.Group>
+                ))}
+              </Lecture2.Group>
+            )}
+
+
+            <Lecture2.Group
+              type={Lecture2.GroupType.Course}
+              totalCourseCount={viewObject.totalCourseCount}
+            >
+              {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
+                <Lecture2.CourseSection
+                  key={`course-${lectureViewsIndex}`}
+                  lecture={(
+                    <Lecture2.Course
+                      className="first"
+                      lectureView={lecture}
+                      lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
+                      lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
+                      thumbnailImage={lecture.baseUrl || undefined}
+                      toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                      onViewDetail={() => this.onViewDetail(lecture)}
+                      collegeId={params.collegeId}
+                      lectureCardId={lectureCardId}
+                      learningState={viewObject.state}
+                      member={member}
+                      onRefreshLearningState={onRefreshLearningState}
+                      onDoLearn={this.onDoLearn}
+                      isPreCoursePassed={isPreCoursePassed}
+                    />
+                  )}
+                >
+                  {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                    <Lecture2.Course
+                      key={`sub-lecture-${index}`}
+                      className="included"
+                      lectureView={subLecture}
+                      lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
+                      thumbnailImage={subLecture.baseUrl || undefined}
+                      onViewDetail={() => this.onViewDetail(subLecture)}
+                      collegeId={params.collegeId}
+                      lectureCardId={lectureCardId}
+                      member={member}
+                      onRefreshLearningState={onRefreshLearningState}
+                      onDoLearn={this.onDoLearn}
+                      isPreCoursePassed={isPreCoursePassed}
+                    />
+                  )}
+                </Lecture2.CourseSection>
+              ))}
+            </Lecture2.Group>
+          </div>
+
           {
             openLearnModal && (
               <LectureLearningModalView
@@ -431,6 +475,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
+              serviceId={params.serviceId}
+              serviceType={params.serviceType}
             />
           )
         }

@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Label } from 'semantic-ui-react';
-import { patronInfo } from '@nara.platform/dock';
-import { CommentService } from '@nara.drama/feedback';
+import React, {Component} from 'react';
+import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router-dom';
+import {Label} from 'semantic-ui-react';
+import {patronInfo} from '@nara.platform/dock';
+import {CommentService} from '@nara.drama/feedback';
 
-import { CubeType, LearningState, ProposalState } from 'shared/model';
-import { ContentLayout, Tab } from 'shared';
-import { CollegeService } from 'college/stores';
-import { SkProfileService } from 'profile/stores';
-import { CoursePlanService } from 'course/stores';
-import { ExamPaperService, ExaminationService } from 'assistant/stores';
-import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
-import { InMyLectureCdoModel } from 'myTraining/model';
+import {CubeType, LearningState, ProposalState} from 'shared/model';
+import {ContentLayout, Tab} from 'shared';
+import {CollegeService} from 'college/stores';
+import {SkProfileService} from 'profile/stores';
+import {CoursePlanService} from 'course/stores';
+import {ExaminationService, ExamPaperService} from 'assistant/stores';
+import {AnswerSheetService, SurveyCaseService} from 'survey/stores';
+import {InMyLectureCdoModel} from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
-import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
-import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
+import {LectureServiceType, LectureViewModel, StudentCdoModel, StudentJoinRdoModel,} from '../../../model';
+import {CourseLectureService, LectureService, ProgramLectureService, StudentService} from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewViewV2 from '../view/LectureOverviewViewV2';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
 import CourseContainer from '../logic/CourseContainer';
-import { State as SubState } from '../../../shared/LectureSubInfo';
-import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
+import {State as SubState} from '../../../shared/LectureSubInfo';
+import {AnswerProgress} from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -86,6 +86,9 @@ class CoursePageV2 extends Component<Props, State> {
     tabState: '',
   };
 
+  // 선수코스 학습 완료 여부
+  isPreCoursePassed: boolean = true;
+
   constructor(props: Props) {
     //
     super(props);
@@ -102,6 +105,7 @@ class CoursePageV2 extends Component<Props, State> {
     // console.log('Course Page : ', serviceId);
     // console.log('Course Page : ', serviceType);
   }
+
 
   componentDidMount() {
     //
@@ -143,6 +147,7 @@ class CoursePageV2 extends Component<Props, State> {
     this.findProgramOrCourseLecture();
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     await this.findStudent();
+    await this.setPreCourseModel();
     this.setState({ loaded: true });
   }
 
@@ -193,14 +198,13 @@ class CoursePageV2 extends Component<Props, State> {
     //
     const {
       match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService,
+      courseLectureService,
     } = this.props;
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
-
     const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
     await coursePlanService.findCoursePlanContentsV2(coursePlan.contentsId);
-
     if (coursePlanService.coursePlanContents.testId) {
       const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
       const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
@@ -220,14 +224,79 @@ class CoursePageV2 extends Component<Props, State> {
 
       this.state.surveyState = disabled;
       this.state.surveyTitle =  title.ko;
+
     }
+
+  }
+
+  // 선수코스 세팅..
+  async setPreCourseModel() {
+    console.log('선수코스 세팅 시작!');
+    const { match, coursePlanService, courseLectureService, studentService } = this.props;
+    const { params } = match;
+
+    // course_plan 테이블
+    const preCoursePlanSet = await coursePlanService.findAllPrecedenceCourseList(params.coursePlanId);
+
+    if (preCoursePlanSet) {
+      const preLectureViewSet : LectureViewModel[] = [];
+      const preCourseUsids : string[] = [];
+
+      for (let i = 0; i < preCoursePlanSet.length; i++) {
+        const preCourse = preCoursePlanSet[i];
+
+        // 밑에 주석 지우면 안됨!!! 에러남!!! course_lecture 테이블
+        // eslint-disable-next-line no-await-in-loop
+        const courseLecture = await courseLectureService.findCourseLectureByCoursePlanId(preCourse.coursePlanId);
+
+        if (courseLecture) {
+          // course_plan, course_lecture 테이블 정보 취합하여 LectureViewModel 에 세팅
+          // course_plan 은 sku-course 프로젝트에서, course_lecutre 는 sku-lecture 프로젝트에서 따로 가져옴..ㅂㄷㅂㄷ
+          if (preCourse.coursePlanId === courseLecture.coursePlanId) {
+            const preLectureView = new LectureViewModel();
+            preLectureView.serviceType = LectureServiceType.Course;
+            preLectureView.serviceId = courseLecture.usid;
+            preLectureView.coursePlanId = courseLecture.coursePlanId;
+            preLectureView.name = preCourse.name;
+            preLectureView.category = preCourse.category;
+
+            preLectureViewSet.push(preLectureView);
+            preCourseUsids.push( courseLecture.usid);
+
+            preCourse.courseLectureId = courseLecture.usid;
+          }
+        }
+      }
+
+      courseLectureService.setPreLectureViews(preLectureViewSet);
+      // console.log('preLectureViews : ', courseLectureService.getPreLectureViews);
+
+      // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
+      let isPreCoursePassed = true;
+      const preCourseList = await studentService.findPreCourseStudentList(preCourseUsids);
+      // console.log('preCourseList : ', preCourseList);
+      preCourseList.forEach( (preCourse, index) => {
+        preCoursePlanSet.forEach( preCoursePlan => {
+          if ( preCoursePlan.courseLectureId === preCourse.lectureUsid ) {
+            // console.log( 'preCourseInfo : ', preCoursePlan.courseLectureId, preCoursePlan.required, preCourse.learningState );
+            if ( preCoursePlan.required ) {
+              if ( preCourse.learningState !== 'Passed' ) {
+                isPreCoursePassed = false;
+              }
+            }
+          }
+        });
+      });
+
+      this.isPreCoursePassed = isPreCoursePassed;
+      // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
+    }
+
   }
 
   async findProgramOrCourseLecture() {
     //
     const { match, programLectureService, courseLectureService, commentService } = this.props;
-
-    // console.log('match.params.serviceId : ' + match.params.serviceId);
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
@@ -504,7 +573,7 @@ class CoursePageV2 extends Component<Props, State> {
   renderOverview() {
     //
     const { serviceId } = this.props.match.params!;
-    const { coursePlanService } = this.props;
+    const { coursePlanService, courseLectureService } = this.props;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
@@ -518,6 +587,8 @@ class CoursePageV2 extends Component<Props, State> {
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}
         onPageRefresh={this.onPageRefresh}
+        courseLectureService={courseLectureService}
+        isPreCoursePassed={this.isPreCoursePassed}
       />
     );
   }

@@ -32,8 +32,8 @@ class BannerService {
     imageVersion: string;   // 이미지 버전 0: base64, 1: url
     isUse: string;          // 사용 유무 0: 사용안함, 1: 사용
     creatorId: string;      // 생성자 이메일
-    creatorName: string;    // 생성자 이름
-    creationTime: string;  // 생성일
+    creatorName: string;    // 생성
+    creationTime: string;   // 생성일
   }[] = [];
 
   @observable
@@ -47,13 +47,13 @@ class BannerService {
   @computed
   get banners() {
     //
-    return (this._bannerInfo.bannerList as IObservableArray).peek();
+    return (this._bannerInfo.results as IObservableArray).peek();
   }
 
   @computed
   get bannersCount() {
     //
-    return this._bannerInfo.bannerList.length;
+    return this._bannerInfo.results.length;
   }
 
   @computed
@@ -63,22 +63,22 @@ class BannerService {
 
   @action
   clear() {
-    this._bannerInfo.bannerList = [];
-    this._bannerInfo.code = '';
-    this._bannerInfo.message = '';
-    this._bannerInfo.totalCount = 0;
+    this._bannerInfo.results = [];
+    // this._bannerInfo.code = '';
+    // this._bannerInfo.message = '';
+    // this._bannerInfo.totalCount = 0;
     this._bannerInfo.intervalTime = 7;
   }
 
   @action
-  async findShowingBanners(lang: string='ko', searchKey: string='배너') {
+  async findShowingBanners(company: string='') {
     //
-    const bannerInfo: BannerModel | null = await this.bannerApi.findShowingBanners(lang);
+    const bannerInfo = await this.bannerApi.findShowingBanners(company);
 
-    if (bannerInfo && bannerInfo.bannerList.length > 0) {
+    if (bannerInfo && bannerInfo.results.length > 0) {
       runInAction(() => {
         this._bannerInfo = Object.assign( Object.create( Object.getPrototypeOf(bannerInfo)), bannerInfo);
-        this._banners = this._bannerInfo.bannerList;
+        this._banners = this._bannerInfo.results;
         this._intervalTime = this._bannerInfo.intervalTime;
       });
     }

@@ -6,6 +6,7 @@ import { Image } from 'semantic-ui-react';
 import { MainBannerWrapper } from '../MyLearningContentElementsView';
 import { BannerService } from '../../../../shared/stores';
 import MainBannerModal from './MainBannerModal';
+import {SkProfileService} from '../../../../profile/stores';
 
 enum AnchorTargetType {
   self = '_self',
@@ -15,17 +16,20 @@ enum AnchorTargetType {
 }
 
 interface Props {
+  skProfileService?: SkProfileService,
   bannerService?: BannerService,
 }
 
 
 const MainBanner : React.FC<Props> = (Props) => {
   //
-  const { bannerService } = Props;
+  const { bannerService, skProfileService } = Props;
   const { banners, intervalTime } = bannerService!;
+  const { profileMemberCompanyCode } = skProfileService!;
 
   const DEFAULT_BANNER_INTERVAL = 7000;
-
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
 
   // myTrainingService 변경  실행
   useEffect(() => {
@@ -35,7 +39,7 @@ const MainBanner : React.FC<Props> = (Props) => {
   const getShowingBanners = async () => {
     //
     bannerService!.clear();
-    bannerService!.findShowingBanners();
+    bannerService!.findShowingBanners(profileMemberCompanyCode);
   };
 
   const params = {
@@ -87,7 +91,6 @@ const MainBanner : React.FC<Props> = (Props) => {
     });
   };
 
-
   return (
     banners.length > 0 ?
       <MainBannerWrapper>
@@ -96,13 +99,13 @@ const MainBanner : React.FC<Props> = (Props) => {
           { banners.map( (banner, index) => (
             <div className="swiper-slide" key={`main-banner-${index}`}>
               <Image
-                src={banner.imageUrl}
+                src={domainPath + banner.imageUrl}
                 alt={banner.imageAlt}
                 title={banner.name}
                 as="a"
                 target={banner.target}
                 href={
-                  (banner.target === AnchorTargetType.blank || banner.target === AnchorTargetType.self ) ?
+                  (banner.target === AnchorTargetType.blank || banner.target === AnchorTargetType.self) ?
                     banner.targetUrl
                     :
                     undefined
@@ -131,4 +134,5 @@ const MainBanner : React.FC<Props> = (Props) => {
 
 export default inject(mobxHelper.injectFrom(
   'shared.bannerService',
+  'profile.skProfileService',
 ))(observer(MainBanner));

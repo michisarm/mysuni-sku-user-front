@@ -40,6 +40,8 @@ class BadgeCompModel {
   'learningPeriod': string = '';
   'lectureCardUsids': string[] = [];
   'learningCardId': string = '';
+  'sumViewSeconds': number = 0;
+  'learningState': string = '';
 
   constructor(badgeComp?: BadgeCompModel) {
     //

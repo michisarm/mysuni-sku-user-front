@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import myTrainingRoutePaths from 'myTraining/routePaths';
+import certificationRoutePaths from 'certification/routePaths';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Icon, Image } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
@@ -16,18 +17,22 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearni
 import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
+import BadgeService from '../../../certification/present/logic/BadgeService';
 
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
   skProfileService?: SkProfileService,
   myLearningSummaryService?: MyLearningSummaryService,
+
+  badgeService?: BadgeService
 }
 
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'profile.skProfileService',
   'myTraining.myLearningSummaryService',
+  'badge.badgeService'
 ))
 @observer
 @reactAutobind
@@ -40,8 +45,10 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   init() {
     //
-    const { myLearningSummaryService } = this.props;
+    const { myLearningSummaryService, badgeService } = this.props;
     myLearningSummaryService!.findMyLearningSummary();
+
+    badgeService!.getCountOfBadges();
   }
 
   getHourMinute(minuteTime: number) {
@@ -66,6 +73,11 @@ class MyLearningSummaryContainer extends Component<Props> {
     this.props.history.push(myTrainingRoutePaths.myPageEarnedStampList());
   }
 
+  onClickBadge() {
+    //
+    this.props.history.push(certificationRoutePaths.badgeEarnedBadgeList());
+  }
+
   onClickLearningSummary(text: string) {
     const { actionLogService } = this.props;
     actionLogService?.registerClickActionLog({ subAction: text });
@@ -87,7 +99,7 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   render() {
     //
-    const { myLearningSummaryService, skProfileService } = this.props;
+    const { myLearningSummaryService, skProfileService, badgeService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
@@ -176,8 +188,8 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
             <HeaderItemView
               label="My Badge"
-              count={myLearningSummary.acheiveStampCount}
-              onClick={this.onClickStamp}
+              count={badgeService!.earnedCount}
+              onClick={this.onClickBadge}
             />
           </ItemWrapper>
 

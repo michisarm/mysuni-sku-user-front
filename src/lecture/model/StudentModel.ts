@@ -18,6 +18,7 @@ class StudentModel extends DramaEntityObservableModel {
   studentScore: StudentScoreModel = new StudentScoreModel();
   creationTime: number = 0;
   updateTime: number = 0;
+  lectureUsid: string = '';
   programLectureUsid: string = '';
   courseLectureUsid: string = '';
   joinRequests: JoinRequestModel[] = [];
@@ -63,6 +64,7 @@ decorate(StudentModel, {
   studentScore: observable,
   creationTime: observable,
   updateTime: observable,
+  lectureUsid: observable,
   programLectureUsid: observable,
   courseLectureUsid: observable,
   joinRequests: observable,

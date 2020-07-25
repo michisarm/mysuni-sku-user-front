@@ -1,6 +1,6 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
-import { LearningState } from 'shared/model';
+import {LearningState } from 'shared/model';
 import _ from 'lodash';
 import StudentApi from '../apiclient/StudentApi';
 import StudentCdoModel from '../../../model/StudentCdoModel';
@@ -214,6 +214,11 @@ class StudentService {
   @action
   clearForVideo() {
     this._studentForVideo = new StudentModel();
+  }
+
+  @action
+  async findPreCourseStudentList(lectureCardIds: string[]) {
+    return this.studentApi.findPreCourseStudentList(lectureCardIds);
   }
 }
 

@@ -14,7 +14,7 @@ import lectureRoutePaths from 'lecture/routePaths';
 import {Lecture, SeeMoreButton} from 'lecture/shared';
 import routePaths from 'personalcube/routePaths';
 import {NoSuchContentPanel} from 'shared';
-import {ContentType, OrderType} from '../page/NewLearningPage';
+import {ContentType} from '../page/NewLearningPage';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 
 
@@ -32,7 +32,7 @@ interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
   order: string,
   totalCount: number,
 
-  setNewOrder: (order: OrderType) => void,
+  setNewOrder: (order: OrderByType) => void,
   showTotalCount: (count: number) => void,
 }
 
@@ -70,24 +70,24 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       fromMain.current = true;
       history.replace(routePaths.currentPage(1));
       match.params.pageNo = '1';
-      if (order === OrderType.Popular) {
-        setNewOrder(OrderType.New);
+      if (order === OrderByType.Popular) {
+        setNewOrder(OrderByType.New);
         return () => {};
       }
-      curOrder.current = OrderType.New;
+      curOrder.current = OrderByType.New;
     }
     // 리프레시 시 호출됨
     else if (refresh.current) {
       refresh.current = true;
       curOrder.current = order;
-      setNewOrder(order === OrderType.New ? OrderType.New : OrderType.Popular);
+      setNewOrder(order === OrderByType.New ? OrderByType.New : OrderByType.Popular);
     }
     // (인기순) 상세보기 페이지로부터 이동
     else {  // fromBack.current === true
       fromBack.current = true;
       // y Position 설정
       const preOrder = window.sessionStorage.getItem('order_type');
-      setNewOrder(preOrder === OrderType.New ? OrderType.New : OrderType.Popular);
+      setNewOrder(preOrder === OrderByType.New ? OrderByType.New : OrderByType.Popular);
       curOrder.current = preOrder!;
     }
 
@@ -197,7 +197,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
-    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
+    // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     // const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
 
@@ -221,7 +221,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
-    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
+    // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await newLectureService!.findPagingNewLectures(lectureFilterRdo);
 
@@ -245,7 +245,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
-    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
+    // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(lectureFilterRdo);
 
@@ -269,7 +269,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
-    // const orderBy = order === OrderType.New ? OrderByType.Time : OrderByType.Popular;
+    // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(lectureFilterRdo);
 

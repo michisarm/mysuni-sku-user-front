@@ -1,18 +1,18 @@
 
 class BadgeModel {
   //
-  id: number = -1;
+  id: string = '';
+  cineroomId: string = '';
   badgeId: string = '';
   name: string = '';
-  iconUrl: string = '';
-  autoIssued: boolean = false;
+  badgeType: string = '';
 
   certiAdminCategory: {
     certiAdminCategory: string,
     certiAdminCategoryName: string,
   } = {
     certiAdminCategory: '',
-    certiAdminCategoryName:'',
+    certiAdminCategoryName: ''
   };
 
   certiAdminSubcategory: {
@@ -20,21 +20,68 @@ class BadgeModel {
     certiAdminSubcategoryName: string,
   } = {
     certiAdminSubcategory: '',
-    certiAdminSubcategoryName:'',
+    certiAdminSubcategoryName: ''
   };
 
   mainCategoryId: string = '';
   mainCategoryName: string = '';
-  badgeType: string = '';
   difficultyLevel: string = '';
-  learningCompleted: boolean = false;
-  challengeState: string = '';
-  issueState: string = '';
+  autoIssued: boolean = false;
+  additionTermsExist: boolean = false;
+  iconUrl: string = '';
+  learningTime: number = -1;
+  qualification: string = '';
+  obtainTerms: string = '';
+  description: string = '';
 
-  constructor(badge?: BadgeModel) {
+  badgeOperator: {
+    badgeOperatorId: string,
+    badgeOperatorName: string,
+    badgeOperatorCompany: string,
+  } = {
+    badgeOperatorId: '',
+    badgeOperatorName: '',
+    badgeOperatorCompany: '',
+  };
+
+  tags: string = '';
+  searchable: boolean = false;
+
+  designAdmin: {
+    designAdminId: string,
+    designAdminName: string,
+    designAdminType: string,
+  } = {
+    designAdminId: '',
+    designAdminName: '',
+    designAdminType: '',
+  };
+
+  openRequest: {
+    openRequesterId: string,
+    openRequestTime: number,
+  } = {
+    openRequesterId: '',
+    openRequestTime: -1,
+  };
+
+  openResponseTime: number = -1;
+  badgeState: string = '';
+
+  creator: {
+    creatorId: string,
+    creatorName: string,
+  } = {
+    creatorId: '',
+    creatorName: '',
+  };
+
+  creationTime: number = -1;
+
+  constructor(onebadge?: BadgeModel) {
     //
-    if (badge) {
-      Object.assign(this, { ...badge });
+    if (onebadge) {
+      Object.assign(this, {...onebadge});
     }
   }
 }

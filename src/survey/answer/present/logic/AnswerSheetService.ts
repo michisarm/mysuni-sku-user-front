@@ -44,7 +44,9 @@ export default class AnswerSheetService {
 
 
   @action
-  openAnswerSheet(surveyCaseId: string, round: number) {
+  openAnswerSheet(surveyCaseId: string, round: number, serviceId: string, serviceType: string) {
+    this.answerSheet.serviceId = serviceId;
+    this.answerSheet.serviceType = serviceType;
     return this.responseApi.openAnswerSheet(surveyCaseId, round, this.answerSheet);
   }
 
