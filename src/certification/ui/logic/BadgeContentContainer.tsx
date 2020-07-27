@@ -12,7 +12,7 @@ import BadgeDetailModel from '../model/BadgeDetailModel';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
-// import BadgeLectureContainer from './BadgeLectureContainer';
+import BadgeLectureContainer2 from './BadgeLectureContainer2';
 import {studentData} from '../../present/apiclient/studentData';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
@@ -42,28 +42,22 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
 
   const [ badgeState, setBadgeState ] = useState();
 
+  // 테스트 용
   const [ learningCount, plusLearningCount ] = useState(0);
 
   // 학습 카운트 정보
   const LEARNING_TOTAL_COUNT = 9;
 
-
-  //console.log( badgeStudentInfo );
-
   useEffect( () => {
 
     // 현재 도전 상태 확인
     getBadgeState(
-      badgeStudentInfo.challengeState.challengeState,
+      badgeStudentInfo.challengeState,
       badgeStudentInfo.learningCompleted,
-      badgeStudentInfo.issueState
+      badgeStudentInfo.issueState,
     );
 
-  }, [
-    badgeStudentInfo.challengeState.challengeState,
-    badgeStudentInfo.learningCompleted,
-    badgeStudentInfo.issueState
-  ]);
+  }, []);
 
 
   const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
@@ -109,18 +103,25 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
 
 
   /* Button Actions */
+
   // 도전하기 버튼 클릭
   const onClickChallenge = () => {
     //
-    if ( badgeStudentInfo.challengeState.challengeState !== 'Challenged' ) {
+    if ( badgeStudentInfo.challengeState !== 'Challenged' ) {
 
-      // API 호출
-      const result = badgeService!.challengeBadge(
-        badgeStudentInfo.studentInfo, badgeDetail.badgeId, badgeStudentInfo.challengeState.challengeState
-      );
-      if ( result ) {
+      // API 호출, 미도전 -> 도전으로 변경
+      badgeService!.challengeBadge(
+        badgeStudentInfo.studentInfo, badgeStudentInfo.badgeId, badgeStudentInfo.challengeState
+      ).then( (response) => {
+
+        console.log( response );
+        console.log( typeof response );
+        console.log( badgeStudentInfo.id );
+
+        // 성공
         setBadgeState(ChallengeState.Challenging);
-      }
+
+      });
     }
   };
 
@@ -146,31 +147,37 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
   // 안내모달 - [취소] 클릭
   const onClickChallengeCancel = () => {
 
-    // 도전 대기 상태
-    setBadgeState(ChallengeState.WaitForChallenge);
-
-    // API 호출 및 취소 처리
-
-    // 모달 닫기
-    setCancelModal(!cancelModal);
+    badgeService!.cancelChallengeBadge(badgeStudentInfo.id)
+      .then(() => {
+        // 도전 대기 상태
+        setBadgeState(ChallengeState.WaitForChallenge);
+      }).then(() => {
+        // 모달 닫기
+        setCancelModal(!cancelModal);
+      });
   };
+
 
   // 발급요청
   const onClickRequest = () => {
     // API 호출
     // 자동발급 뱃지일 경우 바로 발급
     const autoIssuedBadge  = badgeDetail.autoIssued;
+    console.log(`자동발급 : ${autoIssuedBadge}`);
 
     if ( autoIssuedBadge ) {
-      // 뱃지 자동발급 요청 /api/badge/students/issue-state
 
-      // 응답:success
-      setSuccessModal(!successModal);
-
-      // 획득완료
-      setBadgeState(ChallengeState.Issued);
+      // 뱃지 자동발급 요청
+      badgeService!.requestAutoIssued()
+        .then(() => {
+          // 응답:success
+          setSuccessModal(!successModal);
+          // 획득완료
+          setBadgeState(ChallengeState.Issued);
+        });
 
     } else {
+
       // 수동뱃지일 경우 추가발급조건 확인
       const missionCompleted = badgeStudentInfo.missionCompleted;
 
@@ -279,8 +286,8 @@ const BadgeContentContainer: React.FC<Props> = (Props) => {
           <OverviewField.Item
             titleIcon="list24"
             title="Learning Path"
-            content="학습정보"
-            // content={<BadgeLectureContainer/>}
+            //content="학습정보"
+            content={<BadgeLectureContainer2/>}
           />
         </OverviewField.List>
 

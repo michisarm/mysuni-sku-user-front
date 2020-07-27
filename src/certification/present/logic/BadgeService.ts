@@ -313,6 +313,8 @@ class BadgeService {
     //
     const response = await this.badgeApi.findBadgeStudentInfo(id);
 
+    console.log( response );
+
     runInAction( () => {
       this._badgeStudent = new BadgeStudentModel(response);
     });
@@ -330,10 +332,70 @@ class BadgeService {
   async challengeBadge(studentInfo: any, badgeId: string, challengeState: string) {
     //
     const response = await this.badgeApi.challengeBadge(studentInfo, badgeId, challengeState);
-    console.log(response);
-    return response;
 
+    return response;
   }
+
+  // 도전취소
+  @action
+  async cancelChallengeBadge(id: string) {
+    //
+    const response = await this.badgeApi.cancelChallengeBadge(id);
+
+    return response;
+  }
+
+  // 뱃지 자동발급 요청
+  @action
+  async requestAutoIssued() {
+    //
+    const response = await this.badgeApi.requestAutoIssued();
+
+    return response;
+  }
+
+
+  // 획득뱃지 개수
+  @action
+  async earnedBadgeCount(issueState: string) {
+    //
+    const response = await this.badgeApi.earnedBadgeCount(issueState);
+  }
+
+
+
+
+
+
+  /*
+  @action
+  async countTotalBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
+    //
+    const count = await this.badgeApi.getTotalBadgeCount(badgeFilterRdo);
+    runInAction(() => { this._badgeCount = count && count !== null ? count : 0; });
+
+    return count;
+  }
+
+  @action
+  async countChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
+    //
+    const count = await this.badgeApi.getChallengingBadgeCount(badgeFilterRdo);
+    runInAction(() => { this._challengingCount = count && count !== null ? count : 0; });
+
+    return count;
+  }
+
+  @action
+  async countEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
+    //
+    const count = await this.badgeApi.getEarnedBadgeCount(badgeFilterRdo);
+    // @ts-ignore
+    runInAction(() => { this._earnedCount = count && count !== null ? count : 0; });
+
+    return count;
+  }
+  */
 }
 
 BadgeService.instance = new BadgeService(BadgeApi.instance);

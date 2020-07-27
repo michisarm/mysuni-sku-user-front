@@ -3,10 +3,6 @@ import {Button, Icon, Label, Segment} from 'semantic-ui-react';
 import classNames from 'classnames';
 import {dateTimeHelper} from 'shared';
 import moment from 'moment';
-
-import IssueState from '../../shared/Badge/ui/model/IssueState';
-import IssueStateTypeName from '../../shared/Badge/ui/model/IssueStateNameType';
-
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import ChallengeStateName from '../../shared/Badge/ui/model/ChallengeStateName';
 

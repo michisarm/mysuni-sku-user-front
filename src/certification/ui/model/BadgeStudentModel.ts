@@ -17,11 +17,7 @@ class BadgeStudentModel {
     email: '',
   };
 
-  challengeState: {
-    challengeState: string,
-  } = {
-    challengeState: '',
-  };
+  challengeState: string = '';
 
   challengeStateTime: number = 0;
   learningCompleted: boolean = false;
