@@ -334,36 +334,6 @@ class BadgeService {
     return response;
 
   }
-
-  /*
-  @action
-  async countTotalBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getTotalBadgeCount(badgeFilterRdo);
-    runInAction(() => { this._badgeCount = count && count !== null ? count : 0; });
-
-    return count;
-  }
-
-  @action
-  async countChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getChallengingBadgeCount(badgeFilterRdo);
-    runInAction(() => { this._challengingCount = count && count !== null ? count : 0; });
-
-    return count;
-  }
-
-  @action
-  async countEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel = new BadgeFilterRdoModel()) {
-    //
-    const count = await this.badgeApi.getEarnedBadgeCount(badgeFilterRdo);
-    // @ts-ignore
-    runInAction(() => { this._earnedCount = count && count !== null ? count : 0; });
-
-    return count;
-  }
-  */
 }
 
 BadgeService.instance = new BadgeService(BadgeApi.instance);
