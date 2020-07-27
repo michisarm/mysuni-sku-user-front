@@ -1,9 +1,9 @@
 import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
 import {autobind} from '@nara.platform/accent';
 import {OffsetElementList} from 'shared/model';
-import LectureFlowApi from '../apiclient/LectureFlowApi';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
+import ArrangeApi from '../apiclient/ArrangeApi';
 
 
 @autobind
@@ -11,10 +11,10 @@ class NewLectureService {
   //
   static instance: NewLectureService;
 
-  private lectureFlowApi: LectureFlowApi;
+  private arrangeApi: ArrangeApi;
 
-  constructor(lectureFlowApi: LectureFlowApi) {
-    this.lectureFlowApi = lectureFlowApi;
+  constructor(arrangeApi: ArrangeApi) {
+    this.arrangeApi = arrangeApi;
   }
 
   @observable
@@ -33,7 +33,7 @@ class NewLectureService {
   async findPagingNewLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
     //
     // 신규과정 학습정보 가져오기
-    const response = await this.lectureFlowApi.findNewLectures(lectureFilterRdo);
+    const response = await this.arrangeApi.findNewLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     // use session storage : modified by JSM
@@ -73,6 +73,6 @@ class NewLectureService {
   }
 }
 
-NewLectureService.instance = new NewLectureService(LectureFlowApi.instance);
+NewLectureService.instance = new NewLectureService(ArrangeApi.instance);
 
 export default NewLectureService;

@@ -6,6 +6,7 @@ import {NoSuchContentPanel} from 'shared';
 import {Button, Icon} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import routePaths from '../../../personalcube/routePaths';
+import BadgeRoutePaths from '../../routePaths';
 import BadgeService from '../../present/logic/BadgeService';
 import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
@@ -14,6 +15,7 @@ import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
+import BadgeCountText from '../model/BadgeCountText';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -21,24 +23,33 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
 
   badgeCount: number | undefined,
+  countMessage?: string,
 }
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
   const { badgeService, pageService, badgeCount, history, match, } = Props;
-  const { badges } = badgeService!;
+  const { myBadges } = badgeService!;
 
   const PAGE_KEY = 'badge.challenging';
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = 4;
 
   const pageKey = useRef<string>(PAGE_KEY);
+  const refresh = useRef<boolean>(false);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
   useEffect(() => {
     //
     pageKey.current = PAGE_KEY;
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    badgeService!.clearMyBadges();
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(pageNo - 1);
+
+    refresh.current = true;
 
     return (() => {
       window.scrollTo(0, 0);
@@ -47,6 +58,12 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
+    // 새로고침 / 이전 페이지로 이동 시 : 페이지 번호에 따라 처리되었으므로 리턴
+    if (refresh.current) {
+      // window.scrollTo(0, 0);
+      refresh.current = false;
+      return;
+    }
 
     const page = pageService!.pageMap.get(pageKey.current);
 
@@ -57,6 +74,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     }
     else {
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+      badgeService!.clearMyBadges();
     }
 
     findMyContent(getPageNo() - 1);
@@ -68,11 +86,10 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(pageKey.current);
 
     const badgeOffsetList = await badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel
-      .earned(difficultyLevel, '', page!.limit, page!.nextOffset));
+      .challenging(difficultyLevel, page!.limit, page!.nextOffset));
 
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount,
-      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
-
+    pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
   };
 
   const getPageNo = () => {
@@ -88,8 +105,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   // see more button 클릭
   const onClickSeeMore = () => {
     //
-    // history.replace(routePaths.currentPage(getPageNo() + 1));
-    alert('더보기');
+    history.replace(routePaths.currentPage(getPageNo() + 1));
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
@@ -105,17 +121,24 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
   };
 
+  const moveToBadgeList = () => {
+    // Badge List 탭으로 이동
+    history.push(BadgeRoutePaths.badgeTab());
+  };
+
+
   return (
     <>
       <LineHeaderContainer
         totalCount={badgeService?.challengingCount}
         onSelectDifficultyLevel={onSelectDifficultyLevel}
+        countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {badges.length > 0 ? (
+      {myBadges.length > 0 ? (
         <>
           <ChallengeBoxContainer
-            badges={badges}
+            badges={myBadges}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />
@@ -129,6 +152,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
+              onClick={moveToBadgeList}
             >
               Badge List 바로가기 <Icon className="morelink"/>
             </Button>

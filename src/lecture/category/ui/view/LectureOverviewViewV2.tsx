@@ -38,6 +38,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureCardId : string,
   onRefreshLearningState?: () => void,
   onPageRefresh?:() => void,
+  isPreCoursePassed?: boolean
 }
 
 interface RouteParams {
@@ -120,6 +121,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
     }
+
+    // 렌더시 화면 최상으로 이동
+    window.scrollTo(0, 0);
   }
 
   setItemsRef(element: any, index: number) {
@@ -130,13 +134,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //
     const { offsetHeight: panelHeight } = this.panelRef.current.getPanelRef();
 
-    const categoriesHeight = this.itemRefs
-      .map((itemRef) => itemRef.getPanelRef().offsetHeight)
-      .reduce((prev, current) => prev + current, 0);
+    if (this.itemRefs) {
+      const categoriesHeight = this.itemRefs
+        .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+        .reduce((prev, current) => prev + current, 0);
 
-    if (categoriesHeight > panelHeight) {
-      this.setState({ multiple: true });
+      if (categoriesHeight > panelHeight) {
+        this.setState({ multiple: true });
+      }
     }
+
   }
 
   onToggleCategory() {
@@ -204,6 +211,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     }
   }
 
+  onPreCourseViewDetail(lecture: LectureViewModel) {
+    const { coursePlanId, serviceId, serviceType } = lecture;
+    const { match, history } = this.props;
+    const { params } = match;
+
+    history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+      courseLectureId: params.serviceId,
+    }));
+
+  }
 
   onViewDetail(lecture: LectureViewModel) {
     //
@@ -334,6 +351,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       match,
       onRefreshLearningState,
       courseLectureService,
+      isPreCoursePassed,
     } = this.props;
 
     const { params } = match;
@@ -350,10 +368,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const cubeType = viewObject.cubeType;
 
     // console.log('LectureOverview : ', JSON.stringify(viewObject));
-    // console.log('preLectureViews : ', preLectureViews.length);
-    // if (preLectureViews.length > 0) {
-    //   console.log('preLectureViews : ', preLectureViews);
-    // }
+    const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
 
     return (
       <OverviewField.Wrapper>
@@ -364,12 +379,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           <div className="ov-paragraph course-area">
 
             {/*선수코스*/}
-            {preLectureViews && (
+            {isPreCourse && (
               <Lecture2.Group
                 type={Lecture2.GroupType.PreCourse}
               >
-                {preLectureViews.map((preLectureView: LectureViewModel, preLectureViewsIndex: number) => (
-                  <Lecture2.PreCourse lectureView={preLectureView} />
+                {preLectureViews.map((preLectureView: LectureViewModel) => (
+                  <Lecture2.PreCourse
+                    lectureView={preLectureView}
+                    lectureViewName={preLectureView.name}
+                    onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
+                  />
                 ))}
               </Lecture2.Group>
             )}
@@ -387,7 +406,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       className="first"
                       lectureView={lecture}
                       lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
+                      lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
                       thumbnailImage={lecture.baseUrl || undefined}
                       toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
                       onViewDetail={() => this.onViewDetail(lecture)}
@@ -397,6 +416,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       member={member}
                       onRefreshLearningState={onRefreshLearningState}
                       onDoLearn={this.onDoLearn}
+                      isPreCoursePassed={isPreCoursePassed}
                     />
                   )}
                 >
@@ -413,6 +433,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       member={member}
                       onRefreshLearningState={onRefreshLearningState}
                       onDoLearn={this.onDoLearn}
+                      isPreCoursePassed={isPreCoursePassed}
                     />
                   )}
                 </Lecture2.CourseSection>
@@ -454,6 +475,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
+              serviceId={params.serviceId}
+              serviceType={params.serviceType}
             />
           )
         }

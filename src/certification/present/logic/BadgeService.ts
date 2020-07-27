@@ -4,9 +4,11 @@ import {OffsetElementList} from 'shared/model';
 import BadgeApi from '../apiclient/BadgeApi';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
+import MyBadgeModel from '../../ui/model/MyBadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
 import BadgeDetailModel from '../../ui/model/BadgeDetailModel';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
+import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
 
 
 @autobind
@@ -30,6 +32,12 @@ class BadgeService {
   _badge: BadgeModel[] = [];
 
   @observable
+  _myBadge: MyBadgeModel[] = [];
+
+  @observable
+  _myBadgeCount: number = 0;
+
+  @observable
   _badgeDetail: BadgeDetailModel = new BadgeDetailModel();
 
   @observable
@@ -44,6 +52,9 @@ class BadgeService {
   @observable
   _earnedCount: number = 0;
 
+  @observable
+  _badgeStudent: BadgeStudentModel = new BadgeStudentModel();
+
   @action
   clearCategories() {
     //
@@ -53,18 +64,17 @@ class BadgeService {
   @action
   async findAllCategories() {
     //
-    // 모든 뱃지 정보 가져오기
-    const response = await this.badgeApi.findAllCategories();
-    const categoryOffsetElementList = new OffsetElementList<CategoryModel>(response);
+    this.clearCategories();
 
-    categoryOffsetElementList.results = categoryOffsetElementList.results.map((category) => new CategoryModel(category));
+    // 모든 뱃지 정보 가져오기
+    const categoryList: CategoryModel[] = await this.badgeApi.findAllCategories();
+
     runInAction(() => {
-      this.clearCategories();
-      this._categoryCount = categoryOffsetElementList.totalCount;
-      this._category = this._category.concat(categoryOffsetElementList.results);
+      this._categoryCount = categoryList.length;
+      this._category = this._category.concat(categoryList);
     });
 
-    return categoryOffsetElementList;
+    return categoryList;
   }
 
   @computed
@@ -77,12 +87,6 @@ class BadgeService {
     return this._categoryCount ? this._categoryCount : 0;
   }
 
-  @action
-  clearBadges() {
-    //
-    return runInAction(() => this._badge = []);
-  }
-
   @computed
   get badges() {
     //
@@ -92,6 +96,29 @@ class BadgeService {
   @computed
   get badgeCount() {
     return this._badgeCount ? this._badgeCount : 0;
+  }
+
+  @action
+  clearBadges() {
+    //
+    return runInAction(() => this._badge = []);
+  }
+
+  @computed
+  get myBadges() {
+    //
+    return (this._myBadge as IObservableArray).peek();
+  }
+
+  @computed
+  get myBadgeCount() {
+    return this._myBadgeCount ? this._myBadgeCount : 0;
+  }
+
+  @action
+  clearMyBadges() {
+    //
+    return runInAction(() => this._myBadge = []);
   }
 
   @computed
@@ -129,7 +156,6 @@ class BadgeService {
 
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
     runInAction(() => {
-      this.clearBadges();
       this._badgeCount = badgeOffsetElementList.totalCount;
       this._badge = this._badge.concat(badgeOffsetElementList.results);
     });
@@ -142,23 +168,17 @@ class BadgeService {
     //
     // 도전 뱃지 정보 가져오기
     const response = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
-
-    // 테스트 후 아랫줄 제거 (윗 줄 실행되어야 함)
-    // const response = fromMain ? await this.badgeApi.findPagingMainChallengingBadges(badgeFilterRdo) :
-    //   await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
-
-    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
 
     // // use session storage (사용할 거면 풀 것) : modified by JSM
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
     runInAction(() => {
-      this.clearBadges();
       this._challengingCount = badgeOffsetElementList.totalCount;
-      this._badge = this._badge.concat(badgeOffsetElementList.results);
+      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
     });
 
     return badgeOffsetElementList;
@@ -166,15 +186,16 @@ class BadgeService {
 
   // use session storage : modified by JSM
   @action
-  async setPagingChallengingBadges(badge: OffsetElementList<BadgeModel>) {
+  async setPagingChallengingBadges(badge: OffsetElementList<MyBadgeModel>) {
     //
-    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(badge);
+    this.clearMyBadges();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
+    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(badge);
+
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
     runInAction(() => {
-      this.clearBadges();
       this._challengingCount = badgeOffsetElementList.totalCount;
-      this._badge = this._badge.concat(badgeOffsetElementList.results);
+      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
     });
 
     return badgeOffsetElementList;
@@ -185,13 +206,12 @@ class BadgeService {
     //
     // 도전 뱃지 정보 가져오기
     const response = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
-    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
+    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
     runInAction(() => {
-      this.clearBadges();
       this._earnedCount = badgeOffsetElementList.totalCount;
-      this._badge = this._badge.concat(badgeOffsetElementList.results);
+      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
     });
 
     return badgeOffsetElementList;
@@ -213,8 +233,6 @@ class BadgeService {
         this._earnedCount = 0;
       }
     });
-
-    return this._badgeCount;
   }
 
   @action
@@ -237,16 +255,17 @@ class BadgeService {
   @action
   async findLinkedBadges(badgeId: string) {
     //
-    const response = await this.badgeApi.findLikedBadges(badgeId);
-    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+    this.clearMyBadges();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
-    runInAction( () => {
-      this.clearBadges();
-      this._badge = this._badge.concat(badgeOffsetElementList.results);
-    });
+    const linkedBadges: MyBadgeModel[] = await this.badgeApi.findLikedBadges(badgeId);
 
-    return badgeOffsetElementList;
+    if (linkedBadges && linkedBadges.length > 0) {
+      runInAction(() => {
+        this._myBadge = this._myBadge.concat(linkedBadges);
+      });
+    }
+
+    return linkedBadges;
   }
 
   @computed
@@ -275,16 +294,45 @@ class BadgeService {
   @action
   async findBadgeComposition(badgeId: string) {
     //
-    const response = await this.badgeApi.findBadgeComposition(badgeId);
-    const badgeOffsetElementList = new OffsetElementList<BadgeCompModel>(response);
+    this.clearBadgeComposition();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((learning) => new BadgeCompModel(learning));
-    runInAction( () => {
-      this.clearBadgeComposition();
-      this._badgeComposition = this._badgeComposition.concat(badgeOffsetElementList.results);
-    });
+    const badgeOffsetElementList = await this.badgeApi.findBadgeComposition(badgeId);
+
+    if (badgeOffsetElementList && badgeOffsetElementList.length > 0) {
+      runInAction(() => {
+        this._badgeComposition = this._badgeComposition.concat(badgeOffsetElementList);
+      });
+    }
 
     return badgeOffsetElementList;
+  }
+
+  // 뱃지 수강정보
+  @action
+  async findBadgeStudentInfo(id: string) {
+    //
+    const response = await this.badgeApi.findBadgeStudentInfo(id);
+
+    runInAction( () => {
+      this._badgeStudent = new BadgeStudentModel(response);
+    });
+
+    return this._badgeStudent;
+  }
+
+  @computed
+  get badgeStudentInfo() {
+    return this._badgeStudent;
+  }
+
+  // 도전하기
+  @action
+  async challengeBadge(studentInfo: any, badgeId: string, challengeState: string) {
+    //
+    const response = await this.badgeApi.challengeBadge(studentInfo, badgeId, challengeState);
+    console.log(response);
+    return response;
+
   }
 
   /*

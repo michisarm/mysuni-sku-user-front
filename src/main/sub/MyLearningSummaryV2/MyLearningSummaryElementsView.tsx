@@ -5,13 +5,13 @@ import { Table, Icon } from 'semantic-ui-react';
 
 export const HeaderWrapperView: FunctionComponent = ({ children }) => (
   <div className="main-info-box">
-    <Table>
-      <Table.Body>
-        <Table.Row>
+    <table>
+      <tbody>
+        <tr>
           {children}
-        </Table.Row>
-      </Table.Body>
-    </Table>
+        </tr>
+      </tbody>
+    </table>
   </div>
 );
 
@@ -28,7 +28,7 @@ export const ItemWrapper: FunctionComponent<ItemWrapperProps> = ({ children, onC
 
 interface HeaderItemViewProps {
   label: string
-  count?: number
+  count?: number,
   onClick: () => void,
 }
 

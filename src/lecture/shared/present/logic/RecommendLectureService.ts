@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
+import ArrangeApi from '../apiclient/ArrangeApi';
 
 
 @autobind
@@ -11,10 +12,10 @@ class RecommendLectureService {
   //
   static instance: RecommendLectureService;
 
-  private lectureFlowApi: LectureFlowApi;
+  private arrangeApi: ArrangeApi;
 
-  constructor(lectureFlowApi: LectureFlowApi) {
-    this.lectureFlowApi = lectureFlowApi;
+  constructor(arrangeApi: ArrangeApi) {
+    this.arrangeApi = arrangeApi;
   }
 
   @observable
@@ -33,7 +34,7 @@ class RecommendLectureService {
   async findPagingRecommendLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
     //
     // LRS 추천 학습정보 가져오기
-    const response = await this.lectureFlowApi.findRecommendLectures(lectureFilterRdo);
+    const response = await this.arrangeApi.findRecommendLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     // use session storage : modified by JSM
@@ -73,6 +74,6 @@ class RecommendLectureService {
   }
 }
 
-RecommendLectureService.instance = new RecommendLectureService(LectureFlowApi.instance);
+RecommendLectureService.instance = new RecommendLectureService(ArrangeApi.instance);
 
 export default RecommendLectureService;

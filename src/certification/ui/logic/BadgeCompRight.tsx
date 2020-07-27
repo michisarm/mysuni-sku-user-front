@@ -7,7 +7,8 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeModel from '../model/BadgeModel';
+import BadgeModel from '../model/MyBadgeModel';
+import BadgeCompModel from '../model/BadgeCompModel';
 
 
 interface Props extends RouteComponentProps {
@@ -22,6 +23,11 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
   const { badgeComposition } = badgeService!;
   const { badgeId, mainCategoryName, name } = badge;
 
+  const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
+
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+
   useEffect(() => {
     //
     findMyContent(badgeId);
@@ -29,7 +35,8 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
 
   const findMyContent = async (id: string) => {
     //
-    const compList = await badgeService!.findBadgeComposition(badgeId);
+    const list = await badgeService!.findBadgeComposition(badgeId);
+    setCompList(list);
   };
 
   return (
@@ -41,12 +48,12 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
       {/*Badge 구성학습 목록*/}
       <div className="challenge-list">
         <ul>
-          { badgeComposition.map((learning, index) => {
+          { compList.map((learning, index) => {
             return (
               <li className={classNames('class-card')} key={`learning-${index}`}>
                 <a href="#">
                   <span className="class-icon">
-                    <Image src={learning.iconBox.iconUrl} alt={learning.name}/>
+                    <Image src={learning.iconBox && (domainPath + learning.iconBox?.iconUrl)} />
                   </span>
                   <span className="title">{learning.name}</span>
                   <span className="time">

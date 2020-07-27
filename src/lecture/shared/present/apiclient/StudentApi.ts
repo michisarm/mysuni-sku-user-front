@@ -75,6 +75,13 @@ class StudentApi {
   modifyStudentForCoursework(studentId: string, fileBoxId: string) {
     return axiosApi.put(this.baseUrl + `/flow/courseworkProcess/${studentId}/${fileBoxId}`);
   }
+
+  findPreCourseStudentList(lectureCardIds: string[]) {
+    // return axiosApi.get<number>(this.baseUrl + `/flow/isPreCoursePassed?lectureCardIds=${lectureCardIds}`);
+    return axiosApi.get<StudentModel[]>(this.baseUrl + `/flow/preCourseList?lectureCardIds=${lectureCardIds}`)
+      .then(response => response && response.data);
+
+  }
 }
 
 StudentApi.instance = new StudentApi();

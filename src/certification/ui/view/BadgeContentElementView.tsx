@@ -113,10 +113,13 @@ interface BadgeStatusProps {
   badgeState: ChallengeState | undefined,
   issueStateTime?: number,
   onClickButton: () => void,
-  description?: string
+  description?: string,
+  learningTotalCount?: number,
+  learningCompleted?: number,
+  onClickSample: () => void,
 }
 
-export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateTime, onClickButton, description}) => {
+export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted, onClickSample}) => {
   //
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
@@ -130,9 +133,10 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateT
               <span className="ing">
                 <span>진행중</span>
                 <span className="num">
-                  <b>03</b>/12
+                  <b>{learningCompleted}</b>/{learningTotalCount}
                 </span>
               </span>
+              <Button onClick={onClickSample}>샘플 학습하기</Button>
             </>
           )}
           <span className="txt">{description}</span>
@@ -140,7 +144,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateT
       )}
 
       {/*발급요청 완료, 획득 완료*/}
-      { badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested && (
+      { (badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested) && (
         <>
           <div className={ classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black' )}>
             {ChallengeStateName[badgeState as ChallengeState]}

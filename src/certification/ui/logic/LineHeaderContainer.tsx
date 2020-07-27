@@ -1,5 +1,5 @@
 
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Select} from 'semantic-ui-react';
 
 import {ListPanelTopLine} from 'shared';
@@ -8,6 +8,8 @@ import SelectOptions from '../model/SelectOptions';
 
 
 interface LineHeaderProps {
+  curCategory?: string | undefined,
+  curDiffLevel?: string | undefined,
   totalCount: number | undefined,
   countMessage?: string,
   onSelectDifficultyLevel: (level: string) => void,
@@ -17,7 +19,13 @@ const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
   //
   const [ sortOption, setSortOption ] = useState('');
 
-  const { totalCount, onSelectDifficultyLevel, countMessage } = Props;
+  const { curCategory, curDiffLevel, totalCount, onSelectDifficultyLevel, countMessage } = Props;
+
+  useEffect(() => {
+    if (curCategory !== undefined && curDiffLevel && curDiffLevel !== '') {
+      setSortOption('');
+    }
+  }, [curCategory]);
 
   const onChangeSorting = (e: any, data: any) => {
     if ( sortOption === data.value ) return;
@@ -32,15 +40,13 @@ const LineHeaderContainer: FunctionComponent<LineHeaderProps> = (Props) => {
       countMessage={countMessage}
     >
       <div className="right-wrap">
-        { totalCount! > 0 && (
-          <Select
-            className="s160 small-border"
-            placeholder="전체"
-            value={sortOption}
-            options={SelectOptions.difficultyLevel}
-            onChange={onChangeSorting}
-          />
-        )}
+        <Select
+          className="s160 small-border"
+          placeholder="전체"
+          value={sortOption}
+          options={SelectOptions.difficultyLevel}
+          onChange={onChangeSorting}
+        />
       </div>
     </ListPanelTopLine>
   );

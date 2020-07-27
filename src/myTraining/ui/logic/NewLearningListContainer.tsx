@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Radio, Segment} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
-import {OrderType} from '../page/NewLearningPage';
 import NewLearningListView from '../view/NewLearningListView';
+import {OrderByType} from '../../../lecture/model';
 
 
 interface Props extends RouteComponentProps {
@@ -14,7 +14,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
   const { contentType } = Props;
 
   const [totalCount, setTotalCount] = useState(0);
-  const [order, setOrder] = useState(OrderType.New);
+  const [order, setOrder] = useState(OrderByType.New);
 
   const showTotalCount = (count: number) => {
     setTotalCount(count);
@@ -27,7 +27,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
     setOrder(data.value);
   };
 
-  const setNewOrder = (order: OrderType) => {
+  const setNewOrder = (order: OrderByType) => {
     window.sessionStorage.setItem('order_type', order);
     setOrder(order);
   };
@@ -41,16 +41,16 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
             label="최신순"
             className="base"
             name="list-sort"
-            value={OrderType.New}
-            checked={window.sessionStorage.getItem('order_type')===OrderType.New}
+            value={OrderByType.New}
+            checked={window.sessionStorage.getItem('order_type')===OrderByType.New}
             onChange={onChangeSorting}
           />
           <Radio
             label="인기순"
             className="base"
             name="list-sort"
-            value={OrderType.Popular}
-            checked={window.sessionStorage.getItem('order_type')===OrderType.Popular}
+            value={OrderByType.Popular}
+            checked={window.sessionStorage.getItem('order_type')===OrderByType.Popular}
             onChange={onChangeSorting}
           />
         </div>
@@ -60,7 +60,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         setNewOrder={setNewOrder}
         showTotalCount={showTotalCount}
         contentType={contentType}
-        order={window.sessionStorage.getItem('order_type') === OrderType.New ? OrderType.New : OrderType.Popular}
+        order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
         totalCount={totalCount}
       />
 

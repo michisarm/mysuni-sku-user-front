@@ -1,7 +1,8 @@
 import {OffsetElementList} from 'shared/model';
 import BadgeModel from '../../ui/model/BadgeModel';
+import MyBadgeModel from '../../ui/model/MyBadgeModel';
 
-export const mainBadgeData: OffsetElementList<BadgeModel> = {
+export const mainBadgeData: OffsetElementList<MyBadgeModel> = {
   'empty': false,
   'totalCount': 4,
   'results': [
@@ -101,11 +102,11 @@ export const badgeData: OffsetElementList<BadgeModel> = {
   'totalCount': 18,
   'results': [
     {
-      'id': 1,
-      'badgeId': 'BADGE-1',
-      'name': 'Badge Name 1',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-1',
+      name: 'Badge Name 1',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -116,18 +117,44 @@ export const badgeData: OffsetElementList<BadgeModel> = {
       },
       'mainCategoryId': 'Category1',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 2,
-      'badgeId': 'BADGE-2',
-      'name': 'Badge Name 2',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': false,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-2',
+      name: 'Badge Name 2',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -136,20 +163,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category2',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 3,
-      'badgeId': 'BADGE-3',
-      'name': 'Badge Name 3',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-3',
+      name: 'Badge Name 3',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -158,20 +211,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category3',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 4,
-      'badgeId': 'BADGE-4',
-      'name': 'Badge Name 4',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-4',
+      name: 'Badge Name 4',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -180,20 +259,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category4',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 5,
-      'badgeId': 'BADGE-5',
-      'name': 'Badge Name 5',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-5',
+      name: 'Badge Name 5',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -202,20 +307,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category5',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 6,
-      'badgeId': 'BADGE-6',
-      'name': 'Badge Name 6',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-6',
+      name: 'Badge Name 6',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -224,20 +355,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category6',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 7,
-      'badgeId': 'BADGE-7',
-      'name': 'Badge Name 7',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-7',
+      name: 'Badge Name 7',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -246,20 +403,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category7',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 8,
-      'badgeId': 'BADGE-8',
-      'name': 'Badge Name 8',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-8',
+      name: 'Badge Name 8',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -268,20 +451,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category8',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 9,
-      'badgeId': 'BADGE-9',
-      'name': 'Badge Name 9',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-9',
+      name: 'Badge Name 9',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -290,20 +499,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category9',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 10,
-      'badgeId': 'BADGE-10',
-      'name': 'Badge Name 10',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-10',
+      name: 'Badge Name 10',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -312,20 +547,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category10',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 11,
-      'badgeId': 'BADGE-11',
-      'name': 'Badge Name 11',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-11',
+      name: 'Badge Name 11',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -334,20 +595,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category11',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 12,
-      'badgeId': 'BADGE-12',
-      'name': 'Badge Name 12',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-12',
+      name: 'Badge Name 12',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -356,21 +643,47 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category12',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     /*
     {
-      'id': 13,
-      'badgeId': 'BADGE-13',
-      'name': 'Badge Name 13',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-13',
+      name: 'Badge Name 13',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -379,20 +692,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category13',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 14,
-      'badgeId': 'BADGE-14',
-      'name': 'Badge Name 14',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-14',
+      name: 'Badge Name 14',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -401,20 +740,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category14',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 15,
-      'badgeId': 'BADGE-15',
-      'name': 'Badge Name 15',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-15',
+      name: 'Badge Name 15',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -423,20 +788,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category15',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 16,
-      'badgeId': 'BADGE-16',
-      'name': 'Badge Name 16',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-16',
+      name: 'Badge Name 16',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -445,20 +836,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category16',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Intermediate',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 17,
-      'badgeId': 'BADGE-16',
-      'name': 'Badge Name 16',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-17',
+      name: 'Badge Name 17',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -467,20 +884,46 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category17',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     {
-      'id': 18,
-      'badgeId': 'BADGE-18',
-      'name': 'Badge Name 18',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      id: 'id',
+      cineroomId: 'rbs-r@ne1-m2-cu1',
+      badgeId: 'BADGE-18',
+      name: 'Badge Name 18',
+      badgeType: 'Knowledge',
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -489,26 +932,52 @@ export const badgeData: OffsetElementList<BadgeModel> = {
         'certiAdminSubcategory': '인증관리주체하위분류',
         'certiAdminSubcategoryName': '인증관리주체하위분류명'
       },
-      'mainCategoryId': 'Category1',
+      'mainCategoryId': 'Category18',
       'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Basic',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
+      difficultyLevel: 'Basic',
+      autoIssued: false,
+      additionTermsExist: false,
+      iconUrl: '/images/all/icon-chanel-64-px.svg',
+      learningTime: 0,
+      qualification: '',
+      obtainTerms: '',
+      description: '',
+      badgeOperator: {
+        badgeOperatorId: '',
+        badgeOperatorName: '',
+        badgeOperatorCompany: ''
+      },
+      tags: '',
+      searchable: false,
+      designAdmin: {
+        designAdminId: 'designAdminId',
+        designAdminName: 'designAdminName',
+        designAdminType: 'designAdminType'
+      },
+      openRequest: {
+        openRequesterId: '',
+        openRequestTime: 0
+      },
+      openResponseTime: 0,
+      badgeState: 'Created',
+      creator: {
+        creatorId: '',
+        creatorName: ''
+      },
+      creationTime: 1594738799000,
     },
     */
   ]
 };
 
-export const challengingBadgeData: OffsetElementList<BadgeModel> = {
+export const challengingBadgeData: OffsetElementList<MyBadgeModel> = {
   'empty': false,
   'totalCount': 14,
   'results': [
     {
       'id': 1,
       'badgeId': 'BADGE-1',
-      'name': '도전중 Badge 1',
+      'name': '도전중 / 자동 / 미완료',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
       'autoIssued': true,
       'certiAdminCategory': {
@@ -525,14 +994,14 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'difficultyLevel': 'Basic',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': 'Issued',
+      'issueState': '',
     },
     {
       'id': 2,
       'badgeId': 'BADGE-2',
-      'name': '도전중 Badge 2',
+      'name': '도전중 / 수동 / 미완료',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
+      'autoIssued': false,
       'certiAdminCategory': {
         'certiAdminCategory': '인증관리주체분류',
         'certiAdminCategoryName': '인증관리주체명'
@@ -547,34 +1016,12 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'difficultyLevel': 'Intermediate',
       'learningCompleted': false,
       'challengeState': 'Challenged',
-      'issueState': 'RequestRejected',
+      'issueState': '',
     },
     {
       'id': 3,
       'badgeId': 'BADGE-3',
-      'name': '도전중 Badge 3',
-      'iconUrl': '/images/all/icon-chanel-64-px.svg',
-      'autoIssued': true,
-      'certiAdminCategory': {
-        'certiAdminCategory': '인증관리주체분류',
-        'certiAdminCategoryName': '인증관리주체명'
-      },
-      'certiAdminSubcategory': {
-        'certiAdminSubcategory': '인증관리주체하위분류',
-        'certiAdminSubcategoryName': '인증관리주체하위분류명'
-      },
-      'mainCategoryId': 'Category1',
-      'mainCategoryName': '메인카테고리명',
-      'badgeType': 'Knowledge',
-      'difficultyLevel': 'Advanced',
-      'learningCompleted': false,
-      'challengeState': 'Challenged',
-      'issueState': '',
-    },
-    {
-      'id': 4,
-      'badgeId': 'BADGE-4',
-      'name': '도전중 Badge 4',
+      'name': '도전중/수동/발급요청',
       'iconUrl': '/images/all/icon-chanel-64-px.svg',
       'autoIssued': false,
       'certiAdminCategory': {
@@ -588,8 +1035,30 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
       'mainCategoryId': 'Category1',
       'mainCategoryName': '메인카테고리명',
       'badgeType': 'Knowledge',
+      'difficultyLevel': 'Advanced',
+      'learningCompleted': true,
+      'challengeState': 'Challenged',
+      'issueState': 'Requested',
+    },
+    {
+      'id': 4,
+      'badgeId': 'BADGE-4',
+      'name': '도전중 Badge 4',
+      'iconUrl': '/images/all/icon-chanel-64-px.svg',
+      'autoIssued': true,
+      'certiAdminCategory': {
+        'certiAdminCategory': '인증관리주체분류',
+        'certiAdminCategoryName': '인증관리주체명'
+      },
+      'certiAdminSubcategory': {
+        'certiAdminSubcategory': '인증관리주체하위분류',
+        'certiAdminSubcategoryName': '인증관리주체하위분류명'
+      },
+      'mainCategoryId': 'Category1',
+      'mainCategoryName': '메인카테고리명',
+      'badgeType': 'Knowledge',
       'difficultyLevel': 'Basic',
-      'learningCompleted': false,
+      'learningCompleted': true,
       'challengeState': 'Challenged',
       'issueState': '',
     },
@@ -818,7 +1287,7 @@ export const challengingBadgeData: OffsetElementList<BadgeModel> = {
   ]
 };
 
-export const myBadgeData: OffsetElementList<BadgeModel> = {
+export const myBadgeData: OffsetElementList<MyBadgeModel> = {
   'empty': false,
   'totalCount': 16,
   'results': [
@@ -1179,9 +1648,9 @@ export const myBadgeData: OffsetElementList<BadgeModel> = {
   ]
 };
 
-export const linkedBadgeData: OffsetElementList<BadgeModel> = {
+export const linkedBadgeData: OffsetElementList<MyBadgeModel> = {
   'empty': false,
-  'totalCount': 16,
+  'totalCount': 4,
   'results': [
     {
       'id': 1,

@@ -57,8 +57,6 @@ class LectureService {
   @observable
   requiredLecturesCount: number = 0;
 
-
-
   constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
@@ -142,7 +140,7 @@ class LectureService {
 
   // 권장과정
   @action
-  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], orderBy: OrderByType = OrderByType.Time, fromMain: boolean = false) {
+  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], orderBy: OrderByType = OrderByType.New, fromMain: boolean = false) {
     //
     const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);

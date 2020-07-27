@@ -38,81 +38,32 @@ const MyBadgePage : React.FC<Props> = (Props) => {
   const [subBreadcrumb, setSubBreadcrumb] = useState<string>(SubBreadcrumb.AllBadgeList);
   const [categorySelection, setCategorySelection] = useState<string>('');
 
+  const [totBadgeCount, setTotBadgeCount] = useState(0);
+  const [challengeCount, setChallengeCount] = useState(0);
+  const [earnedCount, setEarnedCount] = useState(0);
+
   // lectureService 변경  실행
-  useEffect(() => {
-    //
-    setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
-
-    badgeService!.clearCategories();
-    badgeService!.findAllCategories();
-  }, []);
-
   useEffect(() => {
     //
     if (subBreadcrumb !== match.params.tab) {
       setSubBreadcrumb((SubBreadcrumb as any)[match.params.tab] || '');
     }
 
-    badgeService?.getCountOfBadges();
+    badgeService?.getCountOfBadges().then(() => {
+      setTotBadgeCount(badgeService.badgeCount);
+      setChallengeCount(badgeService.challengingCount);
+      setEarnedCount(badgeService.earnedCount);
+    });
 
+    if (match.params.tab === 'AllBadgeList') {
+      badgeService!.clearCategories();
+      badgeService!.findAllCategories();
+    }
   }, [match.params.tab]);
-
-  const getTabs = () => {
-    //
-    const badgeCount = badgeService!.badgeCount;
-    const challengingCount = badgeService!.challengingCount;
-    const earnedCount = badgeService!.earnedCount;
-
-    return [
-      {
-        name: MyBadgeContentType.AllBadgeList,
-        item: (
-          <>
-            Badge List
-            { badgeCount > 0 && <span className="count">+{badgeCount}</span> || <span className="count">0</span> }
-          </>
-        ),
-        render: () => (
-          <AllBadgeListContainer
-            badgeCount={badgeService?.badgeCount}
-            categorySelection={categorySelection}
-          />
-        )
-      },
-      {
-        name: MyBadgeContentType.ChallengingBadgeList,
-        item: (
-          <>
-            도전중 Badge
-            { challengingCount > 0 && <span className="count">+{challengingCount}</span> || <span className="count">0</span> }
-          </>
-        ),
-        render: () => (
-          <ChallengingBadgeContainer badgeCount={badgeService?.challengingCount}/>
-        )
-      },
-      {
-        name: MyBadgeContentType.EarnedBadgeList,
-        item: (
-          <>
-            My Badge
-            {earnedCount > 0 && <span className="count">+{earnedCount}</span> || <span className="count">0</span> }
-          </>
-        ),
-        render: () => (
-          <EarnedBadgeListContainer
-            profileMemberName={profileMemberName}
-            badgeCount={badgeService?.earnedCount}
-          />
-        )
-      }
-    ];
-  };
 
   const onChangeTab = (tab: TabItemModel) => {
     history.push(routePaths.badgeTab(tab.name));
   };
-
 
   // 카테고리 선택
   const onClickBadgeCategory = (e: any, categoryId: any) => {
@@ -127,6 +78,55 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     } else {
       setCategorySelection(categoryId);
     }
+  };
+
+  const getTabs = () => {
+    //
+    return [
+      {
+        name: MyBadgeContentType.AllBadgeList,
+        item: (
+          <>
+            Badge List
+            { <span className="count">+{totBadgeCount}</span> || <span className="count">0</span> }
+          </>
+        ),
+        render: () => (
+          <AllBadgeListContainer
+            categorySelection={categorySelection}
+          />
+        )
+      },
+      {
+        name: MyBadgeContentType.ChallengingBadgeList,
+        item: (
+          <>
+            도전중 Badge
+            { <span className="count">+{challengeCount}</span> || <span className="count">0</span> }
+          </>
+        ),
+        render: () => (
+          <ChallengingBadgeContainer
+            badgeCount={challengeCount}
+          />
+        )
+      },
+      {
+        name: MyBadgeContentType.EarnedBadgeList,
+        item: (
+          <>
+            My Badge
+            { <span className="count">+{earnedCount}</span> || <span className="count">0</span> }
+          </>
+        ),
+        render: () => (
+          <EarnedBadgeListContainer
+            profileMemberName={profileMemberName}
+            badgeCount={earnedCount}
+          />
+        )
+      }
+    ];
   };
 
   return (

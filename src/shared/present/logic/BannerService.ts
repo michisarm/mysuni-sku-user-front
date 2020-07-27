@@ -47,13 +47,13 @@ class BannerService {
   @computed
   get banners() {
     //
-    return (this._bannerInfo.bannerList as IObservableArray).peek();
+    return (this._bannerInfo.results as IObservableArray).peek();
   }
 
   @computed
   get bannersCount() {
     //
-    return this._bannerInfo.bannerList.length;
+    return this._bannerInfo.results.length;
   }
 
   @computed
@@ -63,7 +63,7 @@ class BannerService {
 
   @action
   clear() {
-    this._bannerInfo.bannerList = [];
+    this._bannerInfo.results = [];
     // this._bannerInfo.code = '';
     // this._bannerInfo.message = '';
     // this._bannerInfo.totalCount = 0;
@@ -75,10 +75,10 @@ class BannerService {
     //
     const bannerInfo = await this.bannerApi.findShowingBanners(company);
 
-    if (bannerInfo && bannerInfo.bannerList.length > 0) {
+    if (bannerInfo && bannerInfo.results.length > 0) {
       runInAction(() => {
         this._bannerInfo = Object.assign( Object.create( Object.getPrototypeOf(bannerInfo)), bannerInfo);
-        this._banners = this._bannerInfo.bannerList;
+        this._banners = this._bannerInfo.results;
         this._intervalTime = this._bannerInfo.intervalTime;
       });
     }
