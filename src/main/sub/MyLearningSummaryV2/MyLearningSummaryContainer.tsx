@@ -18,6 +18,7 @@ import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import BadgeService from '../../../certification/present/logic/BadgeService';
+import IssueState from '../../../certification/shared/Badge/ui/model/IssueState';
 
 
 interface Props extends RouteComponentProps {
@@ -49,6 +50,7 @@ class MyLearningSummaryContainer extends Component<Props> {
     myLearningSummaryService!.findMyLearningSummary();
 
     badgeService!.getCountOfBadges();
+
   }
 
   getHourMinute(minuteTime: number) {
