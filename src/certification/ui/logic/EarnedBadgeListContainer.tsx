@@ -12,6 +12,7 @@ import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
 import LineHeaderContainer from './LineHeaderContainer';
+import BadgeRoutePaths from '../../routePaths';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -24,7 +25,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
 const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService } = Props;
+  const { badgeService, history } = Props;
   const { myBadges } = badgeService!;
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
@@ -50,7 +51,11 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   const onSelectDifficultyLevel = (diffLevel: string) => {
     // 난이도 변경
     setDifficultyLevel(diffLevel === '전체' ? '': diffLevel);
+  };
 
+  const moveToBadgeList = () => {
+    // Badge List 탭으로 이동
+    history.push(BadgeRoutePaths.badgeTab());
   };
 
   return (
@@ -86,6 +91,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
+              onClick={moveToBadgeList}
             >
               <span className="border">Badge List 바로가기</span>
               <Icon className="morelink"/>

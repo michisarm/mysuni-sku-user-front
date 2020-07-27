@@ -313,6 +313,8 @@ class BadgeService {
     //
     const response = await this.badgeApi.findBadgeStudentInfo(id);
 
+    console.log( response );
+
     runInAction( () => {
       this._badgeStudent = new BadgeStudentModel(response);
     });
@@ -330,10 +332,40 @@ class BadgeService {
   async challengeBadge(studentInfo: any, badgeId: string, challengeState: string) {
     //
     const response = await this.badgeApi.challengeBadge(studentInfo, badgeId, challengeState);
-    console.log(response);
-    return response;
 
+    return response;
   }
+
+  // 도전취소
+  @action
+  async cancelChallengeBadge(id: string) {
+    //
+    const response = await this.badgeApi.cancelChallengeBadge(id);
+
+    return response;
+  }
+
+  // 뱃지 자동발급 요청
+  @action
+  async requestAutoIssued() {
+    //
+    const response = await this.badgeApi.requestAutoIssued();
+
+    return response;
+  }
+
+
+  // 획득뱃지 개수
+  @action
+  async earnedBadgeCount(issueState: string) {
+    //
+    const response = await this.badgeApi.earnedBadgeCount(issueState);
+  }
+
+
+
+
+
 
   /*
   @action

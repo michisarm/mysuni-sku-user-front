@@ -290,6 +290,7 @@ class CoursePageV2 extends Component<Props, State> {
 
       this.isPreCoursePassed = isPreCoursePassed;
       // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
+      console.log('선수코스 세팅 종료!');
     }
 
   }

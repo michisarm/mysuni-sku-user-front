@@ -11,7 +11,7 @@ interface Props {
 class MainBannerModal extends Component<Props> {
   //
   state = {
-    open: this.props.modalOpen
+    open: this.props.modalOpen,
   };
 
   closeMainBannerModal = () => {

@@ -2,6 +2,7 @@
 import {axiosApi} from '@nara.platform/accent';
 import {patronInfo} from '@nara.platform/dock';
 import {OffsetElementList} from 'shared/model';
+import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
@@ -102,7 +103,6 @@ class BadgeApi {
   }
 
   // PSJ 연관뱃지
-
   findLikedBadges(badgeId: string) {
 
     return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links/User`)
@@ -156,6 +156,52 @@ class BadgeApi {
     return axiosApi.post<string>(this.baseUrl + '/students',{params})
       .then(response => response && response.data);
   }
+
+  // 도전취소
+  cancelChallengeBadge(id: string) {
+    //
+    const params = {
+      id,
+      challengeState: 'Canceled',
+    };
+
+    return axiosApi.patch(this.baseUrl + `/students/${id}/challenge-state`, {params})
+      .then(response => response && response.data);
+  }
+
+  // 뱃지 자동발급 요청
+  requestAutoIssued() {
+    //
+    const params = {
+
+    };
+
+    return axiosApi.post(this.baseUrl + '/students/issue-state', {params})
+      .then(response => response && response.data);
+  }
+
+  // 획득뱃지 카운트
+  earnedBadgeCount(issueState: string) {
+    //
+    const params = {
+      patronKeyString: BadgeFilterRdoModel.getPatonKey(),
+      issueState,
+    };
+
+    return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
+      .then(response => response && response.data);
+  }
+
+  /********************************************************************************************************************/
+  // 뱃지 상세 정보를 위한 api
+
+  findCubeIntro(cubeIntroId: string) {
+    //
+    return axiosApi.get<CubeIntroModel>(this.baseUrl + `/${cubeIntroId}`)
+      .then(response => response && response.data || null);
+  }
+
+
 }
 
 BadgeApi.instance = new BadgeApi();

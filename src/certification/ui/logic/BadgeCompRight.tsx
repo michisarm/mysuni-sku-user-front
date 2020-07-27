@@ -50,7 +50,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
         <ul>
           { compList.map((learning, index) => {
             return (
-              <li className={classNames('class-card')} key={`learning-${index}`}>
+              <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
                 <a href="#">
                   <span className="class-icon">
                     <Image src={learning.iconBox && (domainPath + learning.iconBox?.iconUrl)} />
