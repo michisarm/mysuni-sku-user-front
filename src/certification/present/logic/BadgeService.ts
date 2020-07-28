@@ -53,7 +53,7 @@ class BadgeService {
   _earnedCount: number = 0;
 
   @observable
-  _badgeStudent: BadgeStudentModel[] = [];
+  _badgeStudent: BadgeStudentModel = new BadgeStudentModel();
 
   @action
   clearCategories() {
@@ -150,7 +150,7 @@ class BadgeService {
   @action
   clearBadgeStudentInfo() {
     //
-    return runInAction(() => this._badgeStudent = []);
+    return runInAction(() => this._badgeStudent = new BadgeStudentModel());
   }
 
   @action
@@ -284,11 +284,13 @@ class BadgeService {
     //
     const response = await this.badgeApi.findBadgeDetailInformation(badgeId);
 
-    runInAction( () => {
-      this._badgeDetail = new BadgeDetailModel(response);
-    });
+    if (response) {
+      runInAction(() => {
+        this._badgeDetail = new BadgeDetailModel(response);
+      });
+    }
 
-    return this._badgeDetail;
+    return response;
   }
 
   @computed
@@ -302,7 +304,7 @@ class BadgeService {
     //
     this.clearBadgeComposition();
 
-    const badgeOffsetElementList = await this.badgeApi.findBadgeComposition(badgeId);
+    const badgeOffsetElementList: BadgeCompModel[] = await this.badgeApi.findBadgeComposition(badgeId);
 
     if (badgeOffsetElementList && badgeOffsetElementList.length > 0) {
       runInAction(() => {
@@ -313,21 +315,19 @@ class BadgeService {
     return badgeOffsetElementList;
   }
 
-  // 뱃지 수강정보
+  // 뱃지 수강정보 (박팀장 확인 필요)
   @action
   async findBadgeStudentInfo(badgeId: string) {
     //
     this.clearBadgeStudentInfo();
 
-    const studentOffsetElementList = await this.badgeApi.findBadgeStudentInfo(badgeId);
+    const studentOffsetElementList: BadgeStudentModel = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    if ( studentOffsetElementList && typeof studentOffsetElementList === 'object') {
+    if (studentOffsetElementList) {
       runInAction(() => {
-        this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results[0]);
+        this._badgeStudent = studentOffsetElementList;
       });
     }
-
-    console.log( studentOffsetElementList );
 
     return studentOffsetElementList;
   }
