@@ -1,17 +1,16 @@
-
 import React from 'react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {inject} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
-import {ContentLayout} from 'shared';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { inject } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { ContentLayout } from 'shared';
 import NewLearningListContainer from '../logic/NewLearningListContainer';
-import {SkProfileService} from '../../../profile/stores';
+import { SkProfileService } from '../../../profile/stores';
 
 export enum ContentType {
   New = 'New',
   Popular = 'Popular',
   Recommend = 'Recommend',
-  Required = 'Required'
+  Required = 'Required',
 }
 
 export enum ContentTypeText {
@@ -34,12 +33,11 @@ enum ContentTypeDesc {
   Required = '',
 }
 
-interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
-  skProfileService?: SkProfileService,
+interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
+  skProfileService?: SkProfileService;
 }
 
-const NewLearningPage : React.FC<Props> = (Props) => {
-
+const NewLearningPage: React.FC<Props> = Props => {
   const { skProfileService } = Props;
 
   const { params } = Props.match;
@@ -48,7 +46,7 @@ const NewLearningPage : React.FC<Props> = (Props) => {
 
   const today = new Date();
   const month = today.getMonth() + 1;
-  const week = Math.ceil((today.getDate() + 6 - today.getDay())/7);
+  const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
 
   const getContentTypeTitle = () => {
     switch (contentType) {
@@ -76,12 +74,7 @@ const NewLearningPage : React.FC<Props> = (Props) => {
   const contentTypeText = ContentTypeText[contentType];
 
   return (
-    <ContentLayout
-      breadcrumb={[
-        { text: `${contentTypeText}`},
-      ]}
-    >
-
+    <ContentLayout breadcrumb={[{ text: `${contentTypeText}` }]}>
       <div className="ma-title">
         <div className="inner">
           <h2>{contentTypeTitle}</h2>
@@ -90,11 +83,10 @@ const NewLearningPage : React.FC<Props> = (Props) => {
       </div>
 
       <NewLearningListContainer contentType={contentType} />
-
     </ContentLayout>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-))(withRouter(NewLearningPage));
+export default inject(mobxHelper.injectFrom('profile.skProfileService'))(
+  withRouter(NewLearningPage)
+);
