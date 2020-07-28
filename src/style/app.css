@@ -200,3 +200,9 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .ui.modal.org .org-body .right-area .chart .ui.table.float-header {
   border: 0
 }
+
+/* 2020.07.28 동영상 배너 */
+.popup-banner-video .video iframe {
+  width: 100%;
+  height: 395px;
+}

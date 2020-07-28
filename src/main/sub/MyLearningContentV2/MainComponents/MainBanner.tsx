@@ -122,9 +122,9 @@ const MainBanner : React.FC<Props> = (Props) => {
           <div className="swiper-button-next"/>
         </div>
 
-        { clickedBanner.modalOpen &&
+        { clickedBanner.modalOpen && (
           <MainBannerModal includeUrl={clickedBanner.targetUrl} bannerTitle={clickedBanner.name} modalOpen={clickedBanner.modalOpen} onClose={onCloseBannerModal}/>
-        }
+        )}
 
       </MainBannerWrapper>
       :

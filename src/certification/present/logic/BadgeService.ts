@@ -53,7 +53,7 @@ class BadgeService {
   _earnedCount: number = 0;
 
   @observable
-  _badgeStudent: BadgeStudentModel = new BadgeStudentModel();
+  _badgeStudent: BadgeStudentModel[] = [];
 
   @action
   clearCategories() {
@@ -145,6 +145,12 @@ class BadgeService {
   @computed
   get badgeCompostionCount() {
     return this._badgeComposition ? this._badgeComposition.length : 0;
+  }
+
+  @action
+  clearBadgeStudentInfo() {
+    //
+    return runInAction(() => this._badgeStudent = []);
   }
 
   @action
@@ -309,17 +315,21 @@ class BadgeService {
 
   // 뱃지 수강정보
   @action
-  async findBadgeStudentInfo(id: string) {
+  async findBadgeStudentInfo(badgeId: string) {
     //
-    const response = await this.badgeApi.findBadgeStudentInfo(id);
+    this.clearBadgeStudentInfo();
 
-    console.log( response );
+    const studentOffsetElementList = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    runInAction( () => {
-      this._badgeStudent = new BadgeStudentModel(response);
-    });
+    if ( studentOffsetElementList && typeof studentOffsetElementList === 'object') {
+      runInAction(() => {
+        this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results[0]);
+      });
+    }
 
-    return this._badgeStudent;
+    console.log( studentOffsetElementList );
+
+    return studentOffsetElementList;
   }
 
   @computed

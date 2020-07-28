@@ -177,7 +177,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
         ) : (
           <li className="step2 trs">
             <div className="category">
-              <i className="icon icon-test24"/>
+              <i className="icon icon-test24" />
               <span>Test</span>
             </div>
             <div className="tit">

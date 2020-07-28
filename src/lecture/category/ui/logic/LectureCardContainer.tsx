@@ -767,7 +767,6 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
-
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (

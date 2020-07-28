@@ -1,9 +1,7 @@
-
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { UserApp, AppLayout } from './shared';
-
 
 const MainRoutes = lazy(() => import('./main/Routes'));
 const ProfileRoutes = lazy(() => import('./profile/Routes'));
@@ -14,7 +12,7 @@ const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
 
 const CertificationRoutes = lazy(() => import('./certification/Routes'));
-
+const PreviewRoutes = lazy(() => import('./preview/Routes'));
 
 class Routes extends PureComponent {
   //
@@ -26,14 +24,20 @@ class Routes extends PureComponent {
           <Suspense fallback="">
             <Switch>
               <Route path="/profile" component={ProfileRoutes} />
-
+              <Route path="/preview" component={PreviewRoutes} />
               <Route
                 path="/"
                 render={() => (
                   <AppLayout>
                     <Switch>
-                      <Route path="/certification" component={CertificationRoutes} />
-                      <Route path="/personalcube" component={PersonalCubeRoutes} />
+                      <Route
+                        path="/certification"
+                        component={CertificationRoutes}
+                      />
+                      <Route
+                        path="/personalcube"
+                        component={PersonalCubeRoutes}
+                      />
                       <Route path="/lecture" component={LectureRoutes} />
                       <Route path="/my-training" component={MyTrainingRoutes} />
                       <Route path="/board" component={BoardRoutes} />
