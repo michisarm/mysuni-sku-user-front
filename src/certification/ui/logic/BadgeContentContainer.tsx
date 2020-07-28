@@ -5,7 +5,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Button, Icon, Label } from 'semantic-ui-react';
 import { OverviewField } from 'personalcube';
 import { Badge } from '../../shared/Badge';
-import BadgeService from '../../present/logic/BadgeService';
 import {
   BadgeContentHeader,
   BadgeInformation,
@@ -19,11 +18,11 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
-import { studentData } from '../../present/apiclient/studentData';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import BadgeLectureContainer2 from './BadgeLectureContainer2';
 import BadgeStudentModel from '../model/BadgeStudentModel';
+import {BadgeService} from '../../../lecture/stores';
 
 
 export enum ChallengeDescription {
@@ -257,7 +256,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         <BadgeStatus
           badgeState={badgeState}
           onClickButton={getAction}
-          issueStateTime={studentData.issueStateTime}
+          issueStateTime={studentInfo?.issueStateTime}
           description={ChallengeDescription[badgeState as ChallengeState]}
           learningTotalCount={LEARNING_TOTAL_COUNT}
           learningCompleted={learningCount}
@@ -328,8 +327,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             titleIcon="list24"
             title="Learning Path"
             //content="학습정보"
-            content={<BadgeLectureContainer2 />}
-            // content={<BadgeLectureContainer badgeId={badgeId} />}
+            // content={<BadgeLectureContainer2 />}
+            content={<BadgeLectureContainer badgeId={badgeId} />}
           />
         </OverviewField.List>
 

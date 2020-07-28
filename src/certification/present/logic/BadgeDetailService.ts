@@ -1,18 +1,18 @@
 import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
 import {autobind} from '@nara.platform/accent';
-import BadgeDetailApi from "../apiclient/BadgeDetailApi";
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
-import {CoursePlanContentsModel, CoursePlanModel} from "../../../course/model";
-import {LectureApi} from "../../../lecture/shared";
-import LectureViewModel from "../../../lecture/model/LectureViewModel";
-import CourseLectureApi from "../../../lecture/shared/present/apiclient/CourseLectureApi";
-import {CourseLectureModel} from "../../../lecture/model";
-import CoursePlanApi from "../../../course/present/apiclient/CoursePlanApi";
-import PersonalCubeApi from "../../../personalcube/personalcube/present/apiclient/PersonalCubeApi";
-import {PersonalCubeModel} from "../../../personalcube/personalcube/model";
-import StudentApi from "../../../lecture/shared/present/apiclient/StudentApi";
-import StudentModel from "../../../lecture/model/StudentModel";
-import StudentJoinRdoModel from "../../../lecture/model/StudentJoinRdoModel";
+import {CoursePlanContentsModel, CoursePlanModel} from '../../../course/model';
+import {LectureApi} from '../../../lecture/shared';
+import LectureViewModel from '../../../lecture/model/LectureViewModel';
+import CourseLectureApi from '../../../lecture/shared/present/apiclient/CourseLectureApi';
+import {CourseLectureModel} from '../../../lecture/model';
+import CoursePlanApi from '../../../course/present/apiclient/CoursePlanApi';
+import PersonalCubeApi from '../../../personalcube/personalcube/present/apiclient/PersonalCubeApi';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import StudentApi from '../../../lecture/shared/present/apiclient/StudentApi';
+import StudentModel from '../../../lecture/model/StudentModel';
+import StudentJoinRdoModel from '../../../lecture/model/StudentJoinRdoModel';
+import BadgeApi from '../apiclient/BadgeApi';
 
 
 @autobind
@@ -20,13 +20,10 @@ class BadgeDetailService {
   //
   static instance: BadgeDetailService;
 
-  private badgeDetailApi: BadgeDetailApi;
-
-  constructor(badgeDetailApi: BadgeDetailApi) {
-    this.badgeDetailApi = badgeDetailApi;
-  }
-
   /** 뱃지를 구성하는 (Course & Cube) 정보 리스트 조회 ****************************************************************/
+
+  private badgeApi: BadgeApi = BadgeApi.instance;
+
 
   // 뱃지를 구성하는 (Course & Cube) 정보 리스트
   @observable
@@ -52,7 +49,7 @@ class BadgeDetailService {
 
     // BadgeCompModel이 코스일 경우 :
     // coursePlanId, lectureCardUsids[] 정보를 이용하여 해당 코스의 lecture 정보를 구한다.
-    const compList: BadgeCompModel[] = await this.badgeDetailApi.findBadgeComposition(badgeId);
+    const compList: BadgeCompModel[] = await this.badgeApi.findBadgeComposition(badgeId);
 
     if (compList && compList.length > 0) {
       runInAction(() => {
@@ -390,6 +387,6 @@ class BadgeDetailService {
   /********************************************************************************************************************/
 }
 
-BadgeDetailService.instance = new BadgeDetailService(BadgeDetailApi.instance);
+BadgeDetailService.instance = new BadgeDetailService();
 
 export default BadgeDetailService;

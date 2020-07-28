@@ -87,7 +87,7 @@ export const BadgeOverview: React.FC<BadgeOverviewProps> = ({children}) => (
 
 
 interface LinkedBadgeProps {
-  children: React.ReactNode
+  children: React.ReactNode | any,
 }
 
 export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) => (
@@ -107,7 +107,7 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) =
 
 interface BadgeStatusProps {
   badgeState: ChallengeState | undefined,
-  issueStateTime?: number,
+  issueStateTime?: number | undefined,
   onClickButton: () => void,
   description?: string,
   learningTotalCount?: number,
@@ -115,8 +115,9 @@ interface BadgeStatusProps {
   onClickSample: () => void,
 }
 
-export const BadgeStatus: React.FC<BadgeStatusProps> = ({badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted, onClickSample}) => {
+export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   //
+  const {badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted, onClickSample} = BadgeStatusProps;
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
   return (

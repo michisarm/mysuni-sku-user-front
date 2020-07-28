@@ -2,42 +2,16 @@ import React, {useEffect, useState} from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
-
-import LectureLearningModalView from '../../../lecture/category/ui/view/LectureOverviewViewV2';
-import { AnswerSheetModal, CubeReportModal } from '../../../assistant';
-import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../survey';
-import { LectureExam2 } from '../../../lecture/shared/LectureExam';
-import { LectureServiceType, LectureViewModel } from '../../../lecture/model';
-import SkProfileService from '../../../profile/present/logic/SkProfileService';
-import {
-  CourseLectureService,
-  LectureService,
-  ProgramLectureService,
-} from '../../../lecture/stores';
-import { CoursePlanService } from '../../../course/stores';
-import { Lecture2 } from '../../../lecture/shared/Lecture';
-
-import BadgeDetailService from '../../present/logic/BadgeDetailService';
 import BadgeCompData from '../model/BadgeCompData';
 import BadgeCompModel from '../model/BadgeCompModel';
+import {BadgeDetailService} from '../../../lecture/stores';
 
-interface Props extends RouteComponentProps<{ badgeId: string }> {
+
+interface Props extends RouteComponentProps {
   //
   badgeDetailService?: BadgeDetailService;
 
   badgeId: string;
-
-  // viewObject: any,
-  // typeViewObject: any,
-  // onSaveCallback:() => void,
-  // skProfileService?: SkProfileService,
-  // lectureService?: LectureService,
-  // programLectureService?: ProgramLectureService,
-  // courseLectureService:  CourseLectureService,
-  // coursePlanService?: CoursePlanService,
-  // lectureCardId : string,
-  // onRefreshLearningState?: () => void,
-  // onPageRefresh?:() => void,
 }
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
@@ -68,6 +42,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
         response.map((data: BadgeCompModel) => {
           const compData = new BadgeCompData();
           // 공통
+          compData.compType = data.serviceType;
           compData.id = data.id;
           compData.patronKeyString = data.patronKey.keyString;
           compData.name = data.name;
@@ -98,119 +73,196 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
   return (
     <div className="course-cont">
-      {badgeCompList.length > 0 ? (
+      { badgeCompList && badgeCompList.length > 0 ? (
         <div>학습정보 표시</div>
       ) : (
         <div>학습정보가 존재하지 않습니다.</div>
       )}
     </div>
-    /*
-        <div>
-          <>
-            <Lecture2.Group
-              type={Lecture2.GroupType.Course}
-              totalCourseCount={viewObject.totalCourseCount}
-            >
-              {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-                <Lecture2.CourseSection
-                  key={`course-${lectureViewsIndex}`}
-                  lecture={(
-                    <Lecture2.Course
-                      className="first"
-                      lectureView={lecture}
-                      lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+lecture.name}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                      onViewDetail={() => onViewDetail(lecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      learningState={viewObject.state}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={onDoLearn}
-                    />
-                  )}
-                >
-                  {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                    <Lecture2.Course
-                      key={`sub-lecture-${index}`}
-                      className="included"
-                      lectureView={subLecture}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                      thumbnailImage={subLecture.baseUrl || undefined}
-                      onViewDetail={() => onViewDetail(subLecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={onDoLearn}
-                    />
-                  )}
-                </Lecture2.CourseSection>
-              ))}
-            </Lecture2.Group>
-            {
-              openLearnModal && (
-                <LectureLearningModalView
-                  ref={lectureLearningModal => lectureLearningModal = lectureLearningModal }
-                  videoUrl={learningVideoUrl}
-                  onClose={onLearningModalClose}
-                />
-              )
-            }
-          </>
-          {
-            viewObject && viewObject.examId && (
-              <AnswerSheetModal
-                examId={viewObject.examId}
-                ref={examModal => examModal = examModal}
-                onSaveCallback={onSaveCallback}
-              />
-            )
-          }
-          <CubeReportModal
-            downloadFileBoxId ={viewObject.reportFileBoxId}
-            ref={reportModal => reportModal = reportModal}
-            downloadReport = {onClickDownloadReport}
-            rollBookId={viewObject.rollBookId}
-          />
-          {
-            viewObject && viewObject.surveyId && (
-              <SurveyAnswerSheetModal
-                surveyId={viewObject.surveyId}
-                surveyCaseId={viewObject.surveyCaseId}
-                ref={surveyModal => surveyModal = surveyModal}
-                // onSaveCallback={testCallback}
-              />
-            )
-          }
-          {
-            viewObject && (
-              <LectureExam2
-                onReport={viewObject.reportFileBoxId ? onReport : undefined}
-                onReportNotReady={viewObject.reportFileBoxId ? onReportNotReady : undefined}
-                onTest={viewObject.examId ? onTest : undefined}
-                onTestNotReady={viewObject.examId ? onTestNotReady : undefined}
-                onSurvey={viewObject.surveyId ? onSurvey : undefined}
-                OnSurveyNotReady={viewObject.examId ? OnSurveyNotReady : undefined}
-                viewObject={viewObject}
-                passedState={viewObject.passedState}
-                type={viewObject.examType}
-                name={viewObject.examName}
-                sort="box"
-              />
-            )
-          }
-        </div>
-        :
-        <div>학습정보가 존재하지 않습니다.</div>
-      }
-    </div>
-    */
+
+  // <>
+  //   {/*Course 콘텐츠 총 09개 강의 구성 => Badge 상세에는 필요 없음*/}
+  //   <Lecture2.Group
+  //     type={Lecture2.GroupType.Course}
+  //   >
+  //
+  //   {/*course-box, fn-parents, open*/}
+  //   {/*<Lecture2.CourseSection*/}
+  //   {/*lecture={(*/}
+  //   {/*// cube-box or bar step1 결정*/}
+  //   {/*<Lecture2.Course/>*/}
+  //   {/*)}*/}
+  //   {/*>*/}
+  //   {/*123*/}
+  //   {/*</Lecture2.CourseSection>*/}
+  //
+  //   {/*Cube*/}
+  //   <div className="course-box fn-parents">
+  //     <div className="cube-box">
+  //       <div className="bar typeA">
+  //         <div className="tit">
+  //           <span className="ellipsis">0. CUBE</span>
+  //         </div>
+  //         <div className="right">
+  //           <span>Video</span>
+  //           <span>10m</span>
+  //
+  //           {/*setLearningStateForMedia 호출*/}
+  //           <a href="#" className="btn-play black">
+  //             <span className="text">학습하기</span>
+  //             <Icon className="play-black24"/>
+  //           </a>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  //
+  //
+  //   {/*Course*/}
+  //   <div className="course-box fn-parents open">
+  //     <div className="bar">
+  //       <div className="tit">
+  //         <span className="ellipsis">1. COURSE-1</span>
+  //       </div>
+  //       <div className="num">03개 강의 구성</div>
+  //       <div className="toggle-btn">
+  //         <Button icon className="img-icon fn-more-toggle">
+  //           <Icon className="arrow-down s24"/>
+  //           <span className="blind">open</span>
+  //         </Button>
+  //       </div>
+  //     </div>
+  //
+  //     <div className="detail">
+  //       <ul className="step1">
+  //         <li>
+  //           <div className="tit">
+  //             <span className="ellipsis">1.1 COURSE-1 &gt; CUBE-1</span>
+  //           </div>
+  //           <div className="right">
+  //             <span>Document</span>
+  //             <span>30m</span>
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">학습하기</span>
+  //               <Icon className="play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //
+  //         <li>
+  //           <div className="tit">
+  //             <span className="ellipsis">1.2 COURSE-1 &gt; CUBE-2</span>
+  //           </div>
+  //           <div className="right">
+  //             <span>Video</span>
+  //             <span>30m</span>
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">학습하기</span>
+  //               <Icon className="play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //
+  //         {/*Test, Report, Survey - step2*/}
+  //         <li className="step2 trs">
+  //           <div className="category">
+  //             <Icon className="icon-test24" />
+  //             <span>Test</span>
+  //           </div>
+  //           <div className="tit">
+  //             <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
+  //           </div>
+  //           <div className="right">
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">평가응시</span>
+  //               <Icon className="icon play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //         <li className="step2 trs">
+  //           <div className="category">
+  //             <Icon className="icon-report24" />
+  //             <span>Report</span>
+  //           </div>
+  //           <div className="tit">
+  //             <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
+  //           </div>
+  //           <div className="right">
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">과제제출</span>
+  //               <Icon className="icon play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //         <li className="step2 trs">
+  //           <div className="category">
+  //             <Icon className="icon-survey24" />
+  //             <span>Survey</span>
+  //           </div>
+  //           <div className="tit">
+  //             <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
+  //           </div>
+  //           <div className="right">
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">설문하기</span>
+  //               <Icon className="icon play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //         {/********************/}
+  //
+  //         <li>
+  //           <div className="tit">
+  //             <span className="ellipsis">1.3 COURSE-1 &gt; CUBE-3</span>
+  //           </div>
+  //           <div className="right">
+  //             <span>Video</span>
+  //             <span>1h 30m</span>
+  //             <a href="#" className="btn-play black">
+  //               <span className="text">학습하기</span>
+  //               <Icon className="play-black24"/>
+  //             </a>
+  //           </div>
+  //         </li>
+  //       </ul>
+  //     </div>
+  //   </div>
+  //
+  //   <div className="course-box fn-parents">
+  //     <div className="bar">
+  //       <div className="tit">
+  //         <span className="ellipsis">2. COURSE-2</span>
+  //       </div>
+  //       <div className="num">01개 강의 구성</div>
+  //       <div className="toggle-btn">
+  //         <Button icon className="img-icon fn-more-toggle">
+  //           <Icon className="arrow-down s24"/>
+  //           <span className="blind">open</span>
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   </div>
+  //
+  //   <div className="course-box fn-parents">
+  //     <div className="bar">
+  //       <div className="tit">
+  //         <span className="ellipsis">3. COURSE-3</span>
+  //       </div>
+  //       <div className="num">01개 강의 구성</div>
+  //       <div className="toggle-btn">
+  //         <Button icon className="img-icon fn-more-toggle">
+  //           <Icon className="arrow-down s24"/>
+  //           <span className="blind">open</span>
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   </div>
+  //
+  // </Lecture2.Group>
+  // </>
   );
 };
 
-export default inject(mobxHelper.injectFrom('badgeDetail.badgeDetailService'))(
-  withRouter(observer(BadgeLectureContainer))
-);
+export default inject(mobxHelper.injectFrom(
+  'badgeDetail.badgeDetailService'
+))(withRouter(observer(BadgeLectureContainer)));
