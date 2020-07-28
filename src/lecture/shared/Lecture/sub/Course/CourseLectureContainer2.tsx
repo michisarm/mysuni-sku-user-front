@@ -9,7 +9,7 @@ import {Button, Icon} from 'semantic-ui-react';
 
 import {LearningState, ProposalState} from 'shared/model';
 import {EmployeeModel} from 'profile/model';
-import {ContentsServiceType, CubeType, PersonalCubeModel} from 'personalcube/personalcube/model';
+import {ContentsServiceType, PersonalCubeModel} from 'personalcube/personalcube/model';
 import {MediaModel, MediaType} from 'personalcube/media/model';
 import {PersonalCubeService} from 'personalcube/personalcube/stores';
 import {MediaService} from 'personalcube/media/stores';
@@ -33,6 +33,7 @@ import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
 import {dateTimeHelper} from '../../../../../shared';
+import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -713,37 +714,70 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   setLearningStateForMedia() {
-    const { lectureView } = this.props;
+    const { lectureView, onViewDetail } = this.props;
 
-    switch (this.state.inProgress) {
-      case SubState.InProgress:
-        return (
-          <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-            <span className="text">학습중({lectureView.sumViewSeconds}%)</span>
-            <span className={'pie-wrapper progress-'+lectureView.sumViewSeconds}>
-              <span className="pie">
-                <span className="left-side" />
-                <span className="right-side" />
+    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio ) {
+      switch (this.state.inProgress) {
+        case SubState.InProgress:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습중({lectureView.sumViewSeconds}%)</span>
+              <span className={'pie-wrapper progress-' + lectureView.sumViewSeconds}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
               </span>
-              <div className="shadow" />
-            </span>
-          </a>
-        );
-      case SubState.Completed:
-        return (
-          <a href="#" className="btn-play completed">
-            <span className="text">학습완료</span>
-            <i className="icon play-completed24" />
-          </a>
-        );
-      default:
-        return (
-          <a href="#" className="btn-play black" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-            <span className="text">학습하기</span>
-            <i className="icon play-black24" />
-          </a>
-        );
+            </a>
+          );
+        case SubState.Completed:
+          return (
+            <a href="#" className="btn-play completed">
+              <span className="text">학습완료</span>
+              <i className="icon play-completed24" />
+            </a>
+          );
+        default:
+          return (
+            <a href="#" className="btn-play black" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습하기</span>
+              <i className="icon play-black24" />
+            </a>
+          );
 
+      }
+    } else {
+      switch (this.state.inProgress) {
+        case SubState.InProgress:
+          return (
+            <a href="#" className="btn-play orange" onClick={onViewDetail}>
+              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+              <span className={'pie-wrapper progress-' + 100}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.Completed:
+          return (
+            <a href="#" className="btn-play completed">
+              <span className="text">학습완료</span>
+              <i className="icon play-completed24" />
+            </a>
+          );
+        default:
+          return (
+            <a href="#" className="btn-play black" onClick={onViewDetail}>
+              <span className="text">학습하기</span>
+              <i className="icon play-black24" />
+            </a>
+          );
+
+      }
     }
   }
 
@@ -766,9 +800,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(this.props.lectureView.learningTime);
 
     //Lecture Card가 Video인 경우만 학습하기 버튼이 보이고, 진행상태인 경우 버튼 css적용(fix bg)
-    const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
-    const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
-      `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
+    // const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
+    // const thumbnail = this.state.inProgress !== SubState.Completed ? thumbnailImage :
+    //   `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
     // console.log('lecture container viewObject : ', this.viewObject);
     // console.log('lecture container personalCube : ', this.personalCube);
@@ -787,7 +821,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
                   <span>{lectureView.cubeTypeName}</span>
                   <span>{hourMinuteFormat}</span>
                   {this.setLearningStateForMedia()}
-                  {/*TODO: 미디어 타입이 아닌 경우 학습상태*/}
                 </div>
               </div>
 

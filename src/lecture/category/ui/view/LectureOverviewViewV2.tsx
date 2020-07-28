@@ -213,12 +213,15 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   onPreCourseViewDetail(lecture: LectureViewModel) {
     const { coursePlanId, serviceId, serviceType } = lecture;
-    const { match, history } = this.props;
+    const { match } = this.props;
     const { params } = match;
 
-    history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
-      courseLectureId: params.serviceId,
-    }));
+    // history.push 로 하면 가끔 에러남...
+    // history.push(routePaths.preCourseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
+    //   postCourseLectureId: params.serviceId,
+    // }));
+
+    window.location.href = `/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
 
   }
 
@@ -439,6 +442,25 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                 </Lecture2.CourseSection>
               ))}
             </Lecture2.Group>
+
+            {
+              viewObject && (
+                <LectureExam2
+                  onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+                  onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
+                  onTest={viewObject.examId ? this.onTest : undefined}
+                  onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+                  onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+                  OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
+                  viewObject={viewObject}
+                  passedState={viewObject.passedState}
+                  type={viewObject.examType}
+                  name={viewObject.examName}
+                  sort="box"
+                />
+              )
+            }
+
           </div>
 
           {
@@ -481,23 +503,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           )
         }
 
-        {
-          viewObject && (
-            <LectureExam2
-              onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-              onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-              onTest={viewObject.examId ? this.onTest : undefined}
-              onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-              onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-              OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
-              viewObject={viewObject}
-              passedState={viewObject.passedState}
-              type={viewObject.examType}
-              name={viewObject.examName}
-              sort="box"
-            />
-          )
-        }
 
         <OverviewField.FileDownload
           fileBoxIds={[ viewObject.fileBoxId ]}

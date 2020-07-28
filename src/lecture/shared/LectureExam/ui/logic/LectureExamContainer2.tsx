@@ -45,6 +45,9 @@ class LectureExamContainer2 extends Component<Props> {
                 name={name}
                 sort={sort}
               />
+            </div>
+
+            <div className="cube-box">
               <Test
                 OnTest={onTest}
                 OnTestNotReady={onTestNotReady}
@@ -53,6 +56,8 @@ class LectureExamContainer2 extends Component<Props> {
                 name={name}
                 sort={sort}
               />
+            </div>
+            <div className="cube-box">
               <Survey
                 onSurvey={onSurvey}
                 OnSurveyNotReady={OnSurveyNotReady}
