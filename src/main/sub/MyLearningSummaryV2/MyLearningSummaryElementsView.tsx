@@ -62,12 +62,13 @@ export const AdditionalToolsMyLearning: FunctionComponent = ({ children }) => (
         <div>
           {children}
         </div>
-        <div>
-          <a href="#">
-            <Icon className="add24"/>
-            <span>Add Personal Learning</span>
-          </a>
-        </div>
+        {/*APL 2차 개발*/}
+        {/*<div>*/}
+        {/*<a href="#">*/}
+        {/*<Icon className="add24"/>*/}
+        {/*<span>Add Personal Learning</span>*/}
+        {/*</a>*/}
+        {/*</div>*/}
       </div>
       <div className="right">
         <a href="/board/support/Q&A" className="contact-us">
