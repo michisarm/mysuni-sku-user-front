@@ -148,6 +148,12 @@ class BadgeService {
   }
 
   @action
+  clearBadgeStudentInfo() {
+    //
+    return runInAction(() => this._badgeStudent = new BadgeStudentModel());
+  }
+
+  @action
   async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
     // 모든 뱃지 정보 가져오기
@@ -278,11 +284,13 @@ class BadgeService {
     //
     const response = await this.badgeApi.findBadgeDetailInformation(badgeId);
 
-    runInAction( () => {
-      this._badgeDetail = new BadgeDetailModel(response);
-    });
+    if (response) {
+      runInAction(() => {
+        this._badgeDetail = new BadgeDetailModel(response);
+      });
+    }
 
-    return this._badgeDetail;
+    return response;
   }
 
   @computed
@@ -296,7 +304,7 @@ class BadgeService {
     //
     this.clearBadgeComposition();
 
-    const badgeOffsetElementList = await this.badgeApi.findBadgeComposition(badgeId);
+    const badgeOffsetElementList: BadgeCompModel[] = await this.badgeApi.findBadgeComposition(badgeId);
 
     if (badgeOffsetElementList && badgeOffsetElementList.length > 0) {
       runInAction(() => {
@@ -307,19 +315,21 @@ class BadgeService {
     return badgeOffsetElementList;
   }
 
-  // 뱃지 수강정보
+  // 뱃지 수강정보 (박팀장 확인 필요)
   @action
-  async findBadgeStudentInfo(id: string) {
+  async findBadgeStudentInfo(badgeId: string) {
     //
-    const response = await this.badgeApi.findBadgeStudentInfo(id);
+    this.clearBadgeStudentInfo();
 
-    console.log( response );
+    const studentOffsetElementList: BadgeStudentModel = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    runInAction( () => {
-      this._badgeStudent = new BadgeStudentModel(response);
-    });
+    if (studentOffsetElementList) {
+      runInAction(() => {
+        this._badgeStudent = studentOffsetElementList;
+      });
+    }
 
-    return this._badgeStudent;
+    return studentOffsetElementList;
   }
 
   @computed

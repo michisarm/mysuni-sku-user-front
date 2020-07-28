@@ -15,6 +15,7 @@ import NewLectureService from './shared/present/logic/NewLectureService';
 import PopularLectureService from './shared/present/logic/PopularLectureService';
 import RecommendLectureService from './shared/present/logic/RecommendLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
+import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
 
 
 export default {
@@ -31,9 +32,6 @@ export default {
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
   },
-  badge: {
-    badgeService: BadgeService.instance,
-  },
   newLecture: {
     newLectureService: NewLectureService.instance,
   },
@@ -43,12 +41,17 @@ export default {
   recommendLecture: {
     recommendLectureService: RecommendLectureService.instance,
   },
+  badge: {
+    badgeService: BadgeService.instance,
+  },
+  badgeDetail: {
+    badgeDetailService: BadgeDetailService.instance,
+  },
 };
 
 export {
   LectureCardService,
   LectureService,
-  BadgeService,
   NewLectureService,
   PopularLectureService,
   RecommendLectureService,
@@ -61,4 +64,6 @@ export {
   AnswerSheetService,
   SurveyCaseService,
   SurveyFormService,
+  BadgeService,
+  BadgeDetailService,
 };

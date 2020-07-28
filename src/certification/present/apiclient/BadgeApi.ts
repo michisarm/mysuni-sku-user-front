@@ -1,8 +1,7 @@
-
-import {axiosApi} from '@nara.platform/accent';
-import {patronInfo} from '@nara.platform/dock';
-import {OffsetElementList} from 'shared/model';
-import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
+import { axiosApi } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { OffsetElementList } from 'shared/model';
+import { CubeIntroModel } from '../../../personalcube/cubeintro/model';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
 import CategoryModel from '../../ui/model/CategoryModel';
@@ -12,22 +11,25 @@ import MyBadgeModel from '../../ui/model/MyBadgeModel';
 import BadgeCountModel from '../../ui/model/BadgeCountModel';
 import BadgeStudentModel from '../../ui/model/BadgeStudentModel';
 
-
 /***** 뱃지 관리 api 모음 클래스 *****/
 class BadgeApi {
   //
   static instance: BadgeApi;
 
   // .env 파일 설정에 따른 로컬 또는 서버 호출 path 정의
-  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_BADGE_API === undefined || process.env.REACT_APP_BADGE_API === '' ?
-    '/api/badge' : process.env.REACT_APP_BADGE_API;
+  baseUrl =
+    process.env.REACT_APP_ENVIRONMENT === undefined ||
+    process.env.REACT_APP_ENVIRONMENT === 'server' ||
+    process.env.REACT_APP_BADGE_API === undefined ||
+    process.env.REACT_APP_BADGE_API === ''
+      ? '/api/badge'
+      : process.env.REACT_APP_BADGE_API;
 
   // 뱃지 관련 카테고리 정보 가져오기
   findAllCategories() {
     //
     return axiosApi.get<CategoryModel[]>(this.baseUrl + '/categories')
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
     // return <OffsetElementList<CategoryModel>>(categoryData);
@@ -43,8 +45,8 @@ class BadgeApi {
       offset: badgeFilterRdo.offset,
     };
 
-    return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures/flow', {params})
-      .then(response => response && response.data);
+    return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures/flow', { params })
+      .then((response) => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
     // return <OffsetElementList<BadgeModel>>(badgeData);
@@ -59,8 +61,8 @@ class BadgeApi {
       offset: badgeFilterRdo.offset,
     };
 
-    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
-      .then(response => response && response.data);
+    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students',{ params })
+      .then((response) => response && response.data);
   }
 
   findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
@@ -73,8 +75,8 @@ class BadgeApi {
       // offset: badgeFilterRdo.offset,
     };
 
-    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students', {params})
-      .then(response => response && response.data);
+    return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students',{ params })
+      .then((response) => response && response.data);
 
     // for Test by JSM : 테스트 후 지울 것
     // return <OffsetElementList<MyBadgeModel>>(myBadgeData);
@@ -85,8 +87,8 @@ class BadgeApi {
       patronKeyString: BadgeFilterRdoModel.getPatonKey(),
     };
 
-    return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab-count', {params})
-      .then(response => response && response.data);
+    return axiosApi.get<BadgeCountModel>(this.baseUrl + '/mybadges/flow/tab-count', { params })
+      .then((response) => response && response.data);
   }
 
   getCountOfIssuedBadges() {
@@ -104,18 +106,16 @@ class BadgeApi {
 
   // PSJ 연관뱃지
   findLikedBadges(badgeId: string) {
-
     return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links/User`)
-      .then(response => response && response.data);
+      .then((response) => response && response.data);
 
     // // for Test : 테스트 후 지울 것
     // return <OffsetElementList<MyBadgeModel>>(linkedBadgeData);
   }
 
   findBadgeDetailInformation(badgeId: string) {
-
-    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/view`)
-      .then(response => response && response.data);
+    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/detail`)
+      .then((response) => response && response.data);
 
     // // for Test : 테스트 후 지울 것
     //return <BadgeDetailModel>badgeDetailData;
@@ -123,38 +123,37 @@ class BadgeApi {
 
   findBadgeComposition(badgeId: string) {
     //
-    const params = {
-      badgeId,
-      // patronKeyString: BadgeFilterRdoModel.getPatonKey(),
-    };
-
-    return axiosApi.get<BadgeCompModel[]>(this.baseUrl + '/courseset/flow/lectures', {params})
-      .then(response => response && response.data);
-
-    // for Test : 테스트 후 지울 것
-    // return <OffsetElementList<BadgeCompModel>>badgeCompData;
+    return axiosApi.get<BadgeCompModel[]>(this.baseUrl + `/badges/flow/${badgeId}/lectures`)
+      .then((response) => response && response.data);
   }
-
 
   // 뱃지 수강 정보 조회
   findBadgeStudentInfo(id: string) {
     //
     return axiosApi.get<BadgeStudentModel>(this.baseUrl + `/students/${id}`)
-      .then(response => response && response.data);
-
+      .then((response) => response && response.data);
   }
 
   // 도전하기
-  challengeBadge(studentInfo: { name: string, company: string, department: string, email: string }, badgeId: string, challengeState: string) {
+  challengeBadge(
+    studentInfo: {
+      name: string;
+      company: string;
+      department: string;
+      email: string;
+    },
+    badgeId: string,
+    challengeState: string
+  ) {
     //
     const params = {
       studentInfo,
       badgeId,
-      challengeState
+      challengeState,
     };
 
-    return axiosApi.post<string>(this.baseUrl + '/students',{params})
-      .then(response => response && response.data);
+    return axiosApi.post<string>(this.baseUrl + '/students', { params })
+      .then((response) => response && response.data);
   }
 
   // 도전취소
@@ -165,19 +164,17 @@ class BadgeApi {
       challengeState: 'Canceled',
     };
 
-    return axiosApi.patch(this.baseUrl + `/students/${id}/challenge-state`, {params})
-      .then(response => response && response.data);
+    return axiosApi.patch(this.baseUrl + `/students/${id}/challenge-state`, { params })
+      .then((response) => response && response.data);
   }
 
   // 뱃지 자동발급 요청
   requestAutoIssued() {
     //
-    const params = {
+    const params = {};
 
-    };
-
-    return axiosApi.post(this.baseUrl + '/students/issue-state', {params})
-      .then(response => response && response.data);
+    return axiosApi.post(this.baseUrl + '/students/issue-request', { params })
+      .then((response) => response && response.data);
   }
 
   // 획득뱃지 카운트
@@ -188,8 +185,8 @@ class BadgeApi {
       issueState,
     };
 
-    return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
-      .then(response => response && response.data);
+    return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', { params })
+      .then((response) => response && response.data);
   }
 
   /********************************************************************************************************************/
@@ -198,10 +195,8 @@ class BadgeApi {
   findCubeIntro(cubeIntroId: string) {
     //
     return axiosApi.get<CubeIntroModel>(this.baseUrl + `/${cubeIntroId}`)
-      .then(response => response && response.data || null);
+      .then((response) => (response && response.data) || null);
   }
-
-
 }
 
 BadgeApi.instance = new BadgeApi();
