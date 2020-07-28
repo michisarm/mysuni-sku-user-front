@@ -18,7 +18,6 @@ class BadgeStudentModel {
   };
 
   challengeState: string = '';
-
   challengeStateTime: number = 0;
   learningCompleted: boolean = false;
   learningCompletedTime: number = 0;

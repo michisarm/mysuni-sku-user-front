@@ -36,24 +36,25 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
     <Segment className="full">
       <div className="sort-reult">
         <div className="section-count">총 <span>{totalCount}개</span>의 리스트가 있습니다.</div>
-        <div className="comments-sort">
-          <Radio
-            label="최신순"
-            className="base"
-            name="list-sort"
-            value={OrderByType.New}
-            checked={window.sessionStorage.getItem('order_type')===OrderByType.New}
-            onChange={onChangeSorting}
-          />
-          <Radio
-            label="인기순"
-            className="base"
-            name="list-sort"
-            value={OrderByType.Popular}
-            checked={window.sessionStorage.getItem('order_type')===OrderByType.Popular}
-            onChange={onChangeSorting}
-          />
-        </div>
+        {/*20.07.28 기능삭제*/}
+        {/*<div className="comments-sort">*/}
+        {/*<Radio*/}
+        {/*label="최신순"*/}
+        {/*className="base"*/}
+        {/*name="list-sort"*/}
+        {/*value={OrderByType.New}*/}
+        {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.New}*/}
+        {/*onChange={onChangeSorting}*/}
+        {/*/>*/}
+        {/*<Radio*/}
+        {/*label="인기순"*/}
+        {/*className="base"*/}
+        {/*name="list-sort"*/}
+        {/*value={OrderByType.Popular}*/}
+        {/*checked={window.sessionStorage.getItem('order_type')===OrderByType.Popular}*/}
+        {/*onChange={onChangeSorting}*/}
+        {/*/>*/}
+        {/*</div>*/}
       </div>
 
       <NewLearningListView

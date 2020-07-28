@@ -114,7 +114,7 @@ class BadgeApi {
 
   findBadgeDetailInformation(badgeId: string) {
 
-    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/view`)
+    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/detail`)
       .then(response => response && response.data);
 
     // // for Test : 테스트 후 지울 것
@@ -137,9 +137,17 @@ class BadgeApi {
 
 
   // 뱃지 수강 정보 조회
-  findBadgeStudentInfo(id: string) {
+  findBadgeStudentInfo(badgeId: string) {
     //
-    return axiosApi.get<BadgeStudentModel>(this.baseUrl + `/students/${id}`)
+    const params = {
+      patronKeyString: BadgeFilterRdoModel.getPatonKey(),
+      badgeId,
+    };
+
+    // return axiosApi.get<BadgeStudentModel[]>(this.baseUrl + `/students/${id}`)
+    //   .then(response => response && response.data);
+
+    return axiosApi.get<OffsetElementList<BadgeStudentModel>>(this.baseUrl + '/students', {params})
       .then(response => response && response.data);
 
   }
@@ -153,8 +161,10 @@ class BadgeApi {
       challengeState
     };
 
-    return axiosApi.post<string>(this.baseUrl + '/students',{params})
-      .then(response => response && response.data);
+    console.log( params );
+
+    // return axiosApi.post<string>(this.baseUrl + '/students',{params})
+    //   .then(response => response && response.data);
   }
 
   // 도전취소
@@ -165,7 +175,7 @@ class BadgeApi {
       challengeState: 'Canceled',
     };
 
-    return axiosApi.patch(this.baseUrl + `/students/${id}/challenge-state`, {params})
+    return axiosApi.put(this.baseUrl + '/students/', {params})
       .then(response => response && response.data);
   }
 

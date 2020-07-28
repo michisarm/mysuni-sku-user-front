@@ -6,7 +6,6 @@ import {ContentLayout} from 'shared';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeContentContainer from '../logic/BadgeContentContainer';
 import LinkedBadgeListContainer from '../logic/LinkedBadgeListContainer';
-import BadgeDetailModel from '../model/BadgeDetailModel';
 
 
 interface Props extends RouteComponentProps<{ badgeId: string }> {
@@ -18,8 +17,6 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
   const { badgeService, history, match } = Props;
 
   const [ badgeDetail, setBadgeDetail ] = useState();
-
-  const [ badgeStudentId, setBadgeStudentId ] = useState();
 
 
   useEffect(() => {
@@ -35,25 +32,9 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
 
     setBadgeDetail(badgeInfo);
 
-    if ( badgeInfo.id ) {
-      await findBadgeStudent(badgeInfo.id);
-    }
-  };
-
-  // 뱃지에 대한 수강정보 호출
-  const findBadgeStudent = async (id: string) => {
-    //
-    console.log(id);
-
-    const badgeStudentInfo = await badgeService!.findBadgeStudentInfo(badgeService!.badgeDetailInfo.id);
-
-    console.log( '수강정보 : ');
-    console.log( badgeStudentInfo );
-
   };
 
 
-  // 뱃지 상세정보 호출
   return (
     <ContentLayout
       className="no-padding"
@@ -61,7 +42,7 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
         { text: badgeService!.badgeDetailInfo.mainCategoryName},
       ]}
     >
-      <BadgeContentContainer badgeDetail={badgeService!.badgeDetailInfo} badgeStudentInfo={badgeService!.badgeStudentInfo} />
+      <BadgeContentContainer badgeId={match.params.badgeId} badgeDetail={badgeService!.badgeDetailInfo} />
 
       {/*연관 Badge*/}
       <LinkedBadgeListContainer badgeId={match.params.badgeId}/>
