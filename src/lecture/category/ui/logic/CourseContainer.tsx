@@ -283,7 +283,7 @@ class CourseContainer extends Component<Props, State> {
     if (this.handleMultiVideo(lectureView)) {
       reactAlert({
         title: '알림',
-        message: '먼저 시작한 학습을 완료 후 시청할 수 있습니다.',
+        message: '동일 시간대에 1개의 학습만 진행해 주십시오.',
         // onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
       });
     } else {
