@@ -1,7 +1,14 @@
 // operator-linebreak warning 때문에 eslint 비활성화
 /* eslint-disable */
 import React, { Component } from 'react';
-import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import {
+  mobxHelper,
+  reactAlert,
+  reactAutobind,
+  getCookie,
+  setCookie,
+  deleteCookie,
+} from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -116,17 +123,6 @@ class LectureCardContainer extends Component<Props, State> {
 
   componentDidMount(): void {
     this.findInMyLecture();
-    // ie일 경우 localStorage 가 정상동작하지 않는다. setItem 한번 해줘야 다른탭에서 읽을 수 있어.
-    const agent = navigator.userAgent.toLowerCase();
-    if (
-      (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) ||
-      agent.indexOf('msie') != -1
-    ) {
-      // ie일 경우
-      localStorage.setItem('unused_key', 'unused_key');
-    } else {
-      // ie가 아닐 경우
-    }
   }
 
   componentDidUpdate(prevProps: any, prevState: any) {
@@ -463,8 +459,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
-        message: '먼저 시작한 학습을 완료 후 시청할 수 있습니다.',
-        // onClose: () => this.playVideo(),
+        message: '동일 시간대에 1개의 학습만 진행해 주십시오.',
+        onClose: () => this.playVideo(),
       });
     } else {
       this.playVideo();
@@ -495,37 +491,28 @@ class LectureCardContainer extends Component<Props, State> {
       return str;
     }
     const { lectureCardId } = this.props;
-    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
-    // console.log(
-    //   '1.local.liveLectureCardId',
-    //   localStorage.getItem('liveLectureCardId')
-    // );
-    const term = nvl(localStorage.getItem('liveLectureCardIdTime'), 0);
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
     let rtnLive = false;
     const after2Min = new Date();
     after2Min.setMinutes(after2Min.getMinutes() + 2);
     const nowTime = new Date().getTime();
-    // console.log('1.lectureCardId', lectureCardId);
+    console.log('1.lectureCardId', lectureCardId);
+    console.log('1.liveLectureCardId', liveLectureCardId);
     if (
       nvl(liveLectureCardId, 0) === 0 ||
       liveLectureCardId === lectureCardId ||
       (liveLectureCardId !== lectureCardId && term < nowTime)
     ) {
-      localStorage.removeItem('liveLectureCardId');
-      localStorage.removeItem('liveLectureCardIdTime');
-      localStorage.setItem('liveLectureCardId', lectureCardId);
-      localStorage.setItem(
-        'liveLectureCardIdTime',
-        after2Min.getTime().toString()
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
+      setCookie('liveLectureCardId', lectureCardId);
+      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
+      console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
+      console.log(
+        '2.local.liveLectureCardIdTime',
+        getCookie('liveLectureCardIdTime')
       );
-      // console.log(
-      //   '2.local.liveLectureCardId',
-      //   localStorage.getItem('liveLectureCardId')
-      // );
-      // console.log(
-      //   '2.local.liveLectureCardIdTime',
-      //   localStorage.getItem('liveLectureCardIdTime')
-      // );
     } else {
       rtnLive = true;
     }
@@ -794,12 +781,12 @@ class LectureCardContainer extends Component<Props, State> {
 
     // 동영상 close click 시 lectureCardId 가 같다면
     // 20200717 video 멀티 시청불가~! 해제
-    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
-    // console.log('3.lectureCardId', lectureCardId);
-    // console.log('3.liveLectureCardId', liveLectureCardId);
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    console.log('3.lectureCardId', lectureCardId);
+    console.log('3.liveLectureCardId', liveLectureCardId);
     if (lectureCardId === liveLectureCardId) {
-      localStorage.removeItem('liveLectureCardId');
-      localStorage.removeItem('liveLectureCardIdTime');
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
     }
 
     this.setState({ openLearningModal: false });

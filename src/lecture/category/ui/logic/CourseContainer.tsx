@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import {
+  mobxHelper,
+  reactAlert,
+  reactAutobind,
+  getCookie,
+  setCookie,
+  deleteCookie,
+} from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -284,7 +291,7 @@ class CourseContainer extends Component<Props, State> {
       reactAlert({
         title: '알림',
         message: '동일 시간대에 1개의 학습만 진행해 주십시오.',
-        // onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
+        onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
       });
     } else {
       this.playVideo(videoUrl, studentCdo, lectureView);
@@ -314,33 +321,28 @@ class CourseContainer extends Component<Props, State> {
       return str;
     }
     const lectureCardId = lectureView.serviceId;
-    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
-    const term = nvl(localStorage.getItem('liveLectureCardIdTime'), 0);
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
     let rtnLive = false;
     const after2Min = new Date();
     after2Min.setMinutes(after2Min.getMinutes() + 2);
     const nowTime = new Date().getTime();
-    // console.log('1.lectureCardId', lectureCardId);
+    console.log('1.lectureCardId', lectureCardId);
+    console.log('1.liveLectureCardId', liveLectureCardId);
     if (
       nvl(liveLectureCardId, 0) === 0 ||
       liveLectureCardId === lectureCardId ||
       (liveLectureCardId !== lectureCardId && term < nowTime)
     ) {
-      localStorage.removeItem('liveLectureCardId');
-      localStorage.removeItem('liveLectureCardIdTime');
-      localStorage.setItem('liveLectureCardId', lectureCardId);
-      localStorage.setItem(
-        'liveLectureCardIdTime',
-        after2Min.getTime().toString()
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
+      setCookie('liveLectureCardId', lectureCardId);
+      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
+      console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
+      console.log(
+        '2.local.liveLectureCardIdTime',
+        getCookie('liveLectureCardIdTime')
       );
-      // console.log(
-      //   '2.local.liveLectureCardId',
-      //   localStorage.getItem('liveLectureCardId')
-      // );
-      // console.log(
-      //   '2.local.liveLectureCardIdTime',
-      //   localStorage.getItem('liveLectureCardIdTime')
-      // );
     } else {
       rtnLive = true;
     }
@@ -354,12 +356,12 @@ class CourseContainer extends Component<Props, State> {
 
     // 동영상 close click 시 lectureCardId 가 같다면
     // 20200717 video 멀티 시청불가~! 해제
-    const liveLectureCardId = localStorage.getItem('liveLectureCardId');
-    // console.log('3.lectureCardId', this.lectureView.serviceId);
-    // console.log('3.liveLectureCardId', liveLectureCardId);
+    const liveLectureCardId = getCookie('liveLectureCardId');
+    console.log('3.lectureCardId', this.lectureView.serviceId);
+    console.log('3.liveLectureCardId', liveLectureCardId);
     if (this.lectureView.serviceId === liveLectureCardId) {
-      localStorage.removeItem('liveLectureCardId');
-      localStorage.removeItem('liveLectureCardIdTime');
+      deleteCookie('liveLectureCardId');
+      deleteCookie('liveLectureCardIdTime');
     }
 
     if (this.learnStudentCdo) {
