@@ -18,13 +18,13 @@ class BadgeFilterRdoModel {
   }
 
   static getPatonKey() {
-    return patronInfo.getPatronId()!;
+    return patronInfo.getDenizenId()!;
   }
 
   static all(categoryId: string, difficultyLevel: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey: patronInfo.getPatronId()!,
+      patronKey: patronInfo.getDenizenId()!,
       categoryId,
       difficultyLevel,
       limit,
@@ -36,7 +36,7 @@ class BadgeFilterRdoModel {
   static challenging(difficultyLevel: string, limit: number, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey: patronInfo.getPatronId()!,
+      patronKey: patronInfo.getDenizenId()!,
       categoryId: '',
       difficultyLevel,
       limit,
@@ -48,7 +48,7 @@ class BadgeFilterRdoModel {
   static earned(difficultyLevel: string, issueState: string, limit: number=-1, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey: patronInfo.getPatronId()!,
+      patronKey: patronInfo.getDenizenId()!,
       categoryId: '',
       difficultyLevel,
       limit,
@@ -60,7 +60,7 @@ class BadgeFilterRdoModel {
   static linked(difficultyLevel: string, issueState: string, limit: number=12, offset: number=0) {
     //
     return new BadgeFilterRdoModel({
-      patronKey: patronInfo.getPatronId()!,
+      patronKey: patronInfo.getDenizenId()!,
       categoryId: '',
       difficultyLevel,
       limit,

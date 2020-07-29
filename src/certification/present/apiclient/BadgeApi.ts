@@ -94,7 +94,7 @@ class BadgeApi {
   getCountOfIssuedBadges() {
     //
     // const params = {
-    //   patronKeyString: patronInfo.getPatronId()!,
+    //   patronKeyString: patronInfo.getDenizenId()!,
     //   issueState: 'issued',
     // };
     //

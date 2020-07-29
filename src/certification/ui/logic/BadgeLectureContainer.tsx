@@ -2,9 +2,16 @@ import React, {useEffect, useState} from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
+import {Button, Icon} from 'semantic-ui-react';
+import classNames from 'classnames';
 import BadgeCompData from '../model/BadgeCompData';
 import BadgeCompModel from '../model/BadgeCompModel';
 import {BadgeDetailService} from '../../../lecture/stores';
+import {Lecture2} from '../../../lecture/shared/Lecture';
+import BadgeModel from '../model/MyBadgeModel';
+import {Badge} from '../../shared/Badge';
+import BadgeCubeData from '../model/BadgeCubeData';
+import BadgeCourseData from '../model/BadgeCourseData';
 
 
 interface Props extends RouteComponentProps {
@@ -19,6 +26,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   const { badgeDetailService, badgeId, } = Props;
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
+  const [opened, setOpened] = useState(false);
 
   // const { viewObject, typeViewObject, onSaveCallback, skProfileService, lectureService, lectureCardId,
   //   match, onRefreshLearningState, courseLectureService, } = Props;
@@ -49,20 +57,23 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           // 코스정보
           if (data.serviceType === 'COURSE') {
             // 코스정보 생성
-            compData.coursePlanId = data.coursePlanId;
-            compData.cubeCount = data.lectureCardUsids.length;
+            compData.course = new BadgeCourseData();
+            compData.course.coursePlanId = data.coursePlanId;
+            compData.course.isOpened = false;
+            compData.course.cubeCount = data.lectureCardUsids.length;
             data.lectureCardUsids.map((id: string) => {
-              compData.lectureCardIds = compData.lectureCardIds.concat(id);
+              compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
           }
           // (학습)카드정보
           else {
-            compData.cubeId = data.cubeId;
-            compData.learningCardId = data.learningCardId;
-            compData.cubeType = data.cubeType;
-            compData.learningTime = data.learningTime; // 학습시간(분)
-            compData.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
-            compData.learningState = data.learningState;
+            compData.cube = new BadgeCubeData();
+            compData.cube.cubeId = data.cubeId;
+            compData.cube.learningCardId = data.learningCardId;
+            compData.cube.cubeType = data.cubeType;
+            compData.cube.learningTime = data.learningTime; // 학습시간(분)
+            compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
+            compData.cube.learningState = data.learningState;
           }
           compList = compList.concat(compData);
         });
@@ -71,195 +82,81 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     });
   };
 
-  return (
-    <div className="course-cont">
-      { badgeCompList && badgeCompList.length > 0 ? (
-        <div>학습정보 표시</div>
-      ) : (
-        <div>학습정보가 존재하지 않습니다.</div>
-      )}
-    </div>
+  const showCourseInfo = (course: BadgeCourseData) => {
+    course.isOpened = !course.isOpened;
+    setOpened(!opened);
+  };
 
-  // <>
-  //   {/*Course 콘텐츠 총 09개 강의 구성 => Badge 상세에는 필요 없음*/}
-  //   <Lecture2.Group
-  //     type={Lecture2.GroupType.Course}
-  //   >
-  //
-  //   {/*course-box, fn-parents, open*/}
-  //   {/*<Lecture2.CourseSection*/}
-  //   {/*lecture={(*/}
-  //   {/*// cube-box or bar step1 결정*/}
-  //   {/*<Lecture2.Course/>*/}
-  //   {/*)}*/}
-  //   {/*>*/}
-  //   {/*123*/}
-  //   {/*</Lecture2.CourseSection>*/}
-  //
-  //   {/*Cube*/}
-  //   <div className="course-box fn-parents">
-  //     <div className="cube-box">
-  //       <div className="bar typeA">
-  //         <div className="tit">
-  //           <span className="ellipsis">0. CUBE</span>
-  //         </div>
-  //         <div className="right">
-  //           <span>Video</span>
-  //           <span>10m</span>
-  //
-  //           {/*setLearningStateForMedia 호출*/}
-  //           <a href="#" className="btn-play black">
-  //             <span className="text">학습하기</span>
-  //             <Icon className="play-black24"/>
-  //           </a>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  //
-  //
-  //   {/*Course*/}
-  //   <div className="course-box fn-parents open">
-  //     <div className="bar">
-  //       <div className="tit">
-  //         <span className="ellipsis">1. COURSE-1</span>
-  //       </div>
-  //       <div className="num">03개 강의 구성</div>
-  //       <div className="toggle-btn">
-  //         <Button icon className="img-icon fn-more-toggle">
-  //           <Icon className="arrow-down s24"/>
-  //           <span className="blind">open</span>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //
-  //     <div className="detail">
-  //       <ul className="step1">
-  //         <li>
-  //           <div className="tit">
-  //             <span className="ellipsis">1.1 COURSE-1 &gt; CUBE-1</span>
-  //           </div>
-  //           <div className="right">
-  //             <span>Document</span>
-  //             <span>30m</span>
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">학습하기</span>
-  //               <Icon className="play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //
-  //         <li>
-  //           <div className="tit">
-  //             <span className="ellipsis">1.2 COURSE-1 &gt; CUBE-2</span>
-  //           </div>
-  //           <div className="right">
-  //             <span>Video</span>
-  //             <span>30m</span>
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">학습하기</span>
-  //               <Icon className="play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //
-  //         {/*Test, Report, Survey - step2*/}
-  //         <li className="step2 trs">
-  //           <div className="category">
-  //             <Icon className="icon-test24" />
-  //             <span>Test</span>
-  //           </div>
-  //           <div className="tit">
-  //             <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
-  //           </div>
-  //           <div className="right">
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">평가응시</span>
-  //               <Icon className="icon play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //         <li className="step2 trs">
-  //           <div className="category">
-  //             <Icon className="icon-report24" />
-  //             <span>Report</span>
-  //           </div>
-  //           <div className="tit">
-  //             <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
-  //           </div>
-  //           <div className="right">
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">과제제출</span>
-  //               <Icon className="icon play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //         <li className="step2 trs">
-  //           <div className="category">
-  //             <Icon className="icon-survey24" />
-  //             <span>Survey</span>
-  //           </div>
-  //           <div className="tit">
-  //             <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
-  //           </div>
-  //           <div className="right">
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">설문하기</span>
-  //               <Icon className="icon play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //         {/********************/}
-  //
-  //         <li>
-  //           <div className="tit">
-  //             <span className="ellipsis">1.3 COURSE-1 &gt; CUBE-3</span>
-  //           </div>
-  //           <div className="right">
-  //             <span>Video</span>
-  //             <span>1h 30m</span>
-  //             <a href="#" className="btn-play black">
-  //               <span className="text">학습하기</span>
-  //               <Icon className="play-black24"/>
-  //             </a>
-  //           </div>
-  //         </li>
-  //       </ul>
-  //     </div>
-  //   </div>
-  //
-  //   <div className="course-box fn-parents">
-  //     <div className="bar">
-  //       <div className="tit">
-  //         <span className="ellipsis">2. COURSE-2</span>
-  //       </div>
-  //       <div className="num">01개 강의 구성</div>
-  //       <div className="toggle-btn">
-  //         <Button icon className="img-icon fn-more-toggle">
-  //           <Icon className="arrow-down s24"/>
-  //           <span className="blind">open</span>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   </div>
-  //
-  //   <div className="course-box fn-parents">
-  //     <div className="bar">
-  //       <div className="tit">
-  //         <span className="ellipsis">3. COURSE-3</span>
-  //       </div>
-  //       <div className="num">01개 강의 구성</div>
-  //       <div className="toggle-btn">
-  //         <Button icon className="img-icon fn-more-toggle">
-  //           <Icon className="arrow-down s24"/>
-  //           <span className="blind">open</span>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   </div>
-  //
-  // </Lecture2.Group>
-  // </>
+  return (
+    <Lecture2.Group
+      type={Lecture2.GroupType.Course}
+    >
+      {badgeCompList.length > 0 ?
+        (badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
+          badgeComp.compType === 'COURSE' && badgeComp.course ?
+            <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')}>
+              <div className="bar">
+                <div className="tit">
+                  <span className="ellipsis">{badgeComp.name}</span>
+                </div>
+                <div className="num">{badgeComp.course.cubeCount}개 강의 구성</div>
+                <div className="toggle-btn">
+                  <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
+                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-down' : 'arrow-up')}/>
+                    <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
+                  </Button>
+                </div>
+              </div>
+              {badgeComp.course.cubeCount > 0 ?
+                <div className="detail">
+                  <ul className="step1">
+                    {badgeComp.course.cubeData.map((cube: BadgeCubeData, index: number) => (
+                      <li>
+                        <div className="tit">
+                          <span className="ellipsis">{cube.name}</span>
+                        </div>
+                        <div className="right">
+                          <span>{cube.cubeType}</span>
+                          <span>{cube.learningTime}m</span>
+                          <a href="#" className="btn-play black">
+                            <span className="text">학습하기</span>
+                            <Icon className="play-black24"/>
+                          </a>
+                        </div>
+                      </li>
+
+
+                    ))}
+                  </ul>
+                </div>
+                :
+                null}
+            </div>
+            :
+            <div className="course-box fn-parents">
+              <div className="cube-box">
+                <div className="bar typeA">
+                  <div className="tit">
+                    <span className="ellipsis">{badgeComp.name}</span>
+                  </div>
+                  <div className="right">
+                    <span>{badgeComp.cube!.cubeType}</span>
+                    <span>{badgeComp.cube!.learningTime}m</span>
+
+                    {/*setLearningStateForMedia 호출*/}
+                    <a href="#" className="btn-play black">
+                      <span className="text">학습하기</span>
+                      <Icon className="play-black24"/>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        )))
+        :
+            <div>학습정보가 존재하지 않습니다.</div>
+        }
+    </Lecture2.Group>
   );
 };
 

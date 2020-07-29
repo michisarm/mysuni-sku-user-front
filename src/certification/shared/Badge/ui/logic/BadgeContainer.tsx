@@ -5,7 +5,6 @@ import {inject} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
 import {BadgeContentWrapper, CertificationOrg, College, Title} from '../view/BadgeView';
-import BadgeService from '../../../../present/logic/BadgeService';
 import BadgeModel from '../../../../ui/model/BadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
@@ -17,8 +16,6 @@ enum certiAdminCategoryIcon {
 }
 
 interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
-
   badge: BadgeModel | MyBadgeModel | BadgeDetailModel,
   badgeStyle: string,  // List, Detail
   badgeSize: string,  // Large, Small
@@ -26,7 +23,7 @@ interface Props extends RouteComponentProps {
 
 const BadgeContainer: FunctionComponent<Props> = (Props) => {
   //
-  const { badgeService, badge, badgeStyle, badgeSize, history } = Props;
+  const { badge, badgeStyle, badgeSize, history } = Props;
   const { badgeId, difficultyLevel, iconUrl, mainCategoryName, name, certiAdminCategory } = badge;
 
   const onViewDetail = () => {
@@ -63,6 +60,4 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(withRouter(BadgeContainer));
+export default withRouter(BadgeContainer);

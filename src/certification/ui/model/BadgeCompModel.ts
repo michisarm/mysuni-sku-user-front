@@ -1,3 +1,4 @@
+import {DatePeriod} from '../../../shared/model';
 
 class BadgeCompModel {
   //
@@ -37,7 +38,7 @@ class BadgeCompModel {
 
   'creationDate': number = 0;
   'learningTime': number = 0;
-  'learningPeriod': string = '';
+  'learningPeriod': DatePeriod = new DatePeriod();
   'lectureCardUsids': string[] = [];
   'learningCardId': string = '';
   'sumViewSeconds': number = 0;

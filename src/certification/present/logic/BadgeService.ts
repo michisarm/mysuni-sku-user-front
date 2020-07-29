@@ -329,7 +329,7 @@ class BadgeService {
       });
     }
 
-    if ( studentOffsetElementList.empty ) {
+    if (!studentOffsetElementList || studentOffsetElementList.empty) {
       return null;
     } else {
       return studentOffsetElementList.results[0];
