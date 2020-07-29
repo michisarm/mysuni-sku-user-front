@@ -128,10 +128,19 @@ class BadgeApi {
   }
 
   // 뱃지 수강 정보 조회
-  findBadgeStudentInfo(id: string) {
+  findBadgeStudentInfo(badgeId: string) {
     //
-    return axiosApi.get<BadgeStudentModel>(this.baseUrl + `/students/${id}`)
-      .then((response) => response && response.data);
+    const params = {
+      patronKeyString: BadgeFilterRdoModel.getPatonKey(),
+      badgeId,
+    };
+
+    // return axiosApi.get<BadgeStudentModel[]>(this.baseUrl + `/students/${id}`)
+    //   .then(response => response && response.data);
+
+    return axiosApi.get<OffsetElementList<BadgeStudentModel>>(this.baseUrl + '/students', {params})
+      .then(response => response && response.data);
+
   }
 
   // 도전하기
