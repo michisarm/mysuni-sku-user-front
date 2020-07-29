@@ -1,3 +1,6 @@
+import BadgeCourseData from './BadgeCourseData';
+import BadgeCubeData from './BadgeCubeData';
+
 class BadgeCompData {
   //
   compType: string = ''; // 'COURSE' | 'CUBE'
@@ -8,17 +11,10 @@ class BadgeCompData {
   name: string = '';
 
   // Course Data
-  coursePlanId: string = '';
-  cubeCount: number = 0;
-  lectureCardIds: string[] = [];
+  course: BadgeCourseData | null = null;
 
   // Cube Data
-  cubeId: string = '';
-  learningCardId: string = '';
-  cubeType: string = '';
-  learningTime: number = 0; // 학습시간(분)
-  sumViewSeconds: number = 0; // 진행율(%)
-  learningState: string = '';
+  cube: BadgeCubeData | null = null;
 
   constructor(data?: BadgeCompData) {
     //
