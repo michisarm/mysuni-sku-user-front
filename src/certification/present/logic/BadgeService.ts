@@ -321,17 +321,20 @@ class BadgeService {
     //
     this.clearBadgeStudentInfo();
 
-    const studentOffsetElementList = await this.badgeApi.findBadgeStudentInfo(badgeId);
+    const studentOffsetElementList: OffsetElementList<BadgeStudentModel> = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
     if ( studentOffsetElementList && typeof studentOffsetElementList === 'object') {
       runInAction(() => {
-        this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results[0]);
+        this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results);
       });
     }
 
-    console.log( studentOffsetElementList );
+    if ( studentOffsetElementList.empty ) {
+      return null;
+    } else {
+      return studentOffsetElementList.results[0];
+    }
 
-    return studentOffsetElementList;
   }
 
   @computed
