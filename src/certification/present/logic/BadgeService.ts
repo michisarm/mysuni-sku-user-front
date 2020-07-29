@@ -53,7 +53,7 @@ class BadgeService {
   _earnedCount: number = 0;
 
   @observable
-  _badgeStudent: BadgeStudentModel = new BadgeStudentModel();
+  _badgeStudent: BadgeStudentModel[] = [];
 
   @action
   clearCategories() {
@@ -150,7 +150,7 @@ class BadgeService {
   @action
   clearBadgeStudentInfo() {
     //
-    return runInAction(() => this._badgeStudent = new BadgeStudentModel());
+    return runInAction(() => this._badgeStudent = []);
   }
 
   @action
@@ -321,13 +321,15 @@ class BadgeService {
     //
     this.clearBadgeStudentInfo();
 
-    const studentOffsetElementList: BadgeStudentModel = await this.badgeApi.findBadgeStudentInfo(badgeId);
+    const studentOffsetElementList = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    if (studentOffsetElementList) {
+    if ( studentOffsetElementList && typeof studentOffsetElementList === 'object') {
       runInAction(() => {
-        this._badgeStudent = studentOffsetElementList;
+        this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results[0]);
       });
     }
+
+    console.log( studentOffsetElementList );
 
     return studentOffsetElementList;
   }
