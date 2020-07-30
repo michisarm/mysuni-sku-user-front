@@ -8,6 +8,7 @@ import { Icon, Label, Dropdown } from 'semantic-ui-react';
 
 interface Props {
   stampCount: number,
+  onClickItem?: () => void,
 }
 
 @reactAutobind
@@ -16,17 +17,19 @@ class ContentHeaderStampView extends Component<Props> {
   //
   render() {
     //
-    const { stampCount } = this.props;
+    const { stampCount, onClickItem } = this.props;
 
     return (
       <div className="cell-inner">
         <div className="stamp-wrap">
           <Label className="stamp">
-            <div><span className="text1">My Stamp</span></div>
-            <div>
-              <Icon className="stamp35" /><span className="text2">x</span>
-              <span className="text3">{stampCount || 0}</span>
-            </div>
+            <a href="#" onClick={onClickItem}>
+              <span><span className="text1">My Stamp</span></span>
+              <span>
+                <Icon className="stamp35" /><span className="text2">x</span>
+                <span className="text3">{stampCount || 0}</span>
+              </span>
+            </a>
           </Label>
         </div>
       </div>

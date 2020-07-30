@@ -1,46 +1,63 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {mobxHelper, reactAlert} from '@nara.platform/accent';
-import {patronInfo} from '@nara.platform/dock';
-import {ReviewService} from '@nara.drama/feedback';
-import {ActionLogService, PageService} from 'shared/stores';
-import {LectureService, NewLectureService, PopularLectureService, RecommendLectureService} from 'lecture/stores';
-import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
-import {InMyLectureCdoModel, InMyLectureModel} from 'myTraining/model';
-import {InMyLectureService} from 'myTraining/stores';
-import {CubeType} from 'shared/model';
+import React, { useEffect, useRef, useState } from 'react';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { ReviewService } from '@nara.drama/feedback';
+import { ActionLogService, PageService } from 'shared/stores';
+import {
+  LectureService,
+  NewLectureService,
+  PopularLectureService,
+  RecommendLectureService,
+} from 'lecture/stores';
+import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+import { CubeType } from 'shared/model';
 import lectureRoutePaths from 'lecture/routePaths';
-import {Lecture, SeeMoreButton} from 'lecture/shared';
+import { Lecture, SeeMoreButton } from 'lecture/shared';
 import routePaths from 'personalcube/routePaths';
-import {NoSuchContentPanel} from 'shared';
-import {ContentType} from '../page/NewLearningPage';
+import { NoSuchContentPanel } from 'shared';
+import { ContentType } from '../page/NewLearningPage';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 
+interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
+  actionLogService?: ActionLogService;
+  pageService?: PageService;
+  reviewService?: ReviewService;
+  inMyLectureService?: InMyLectureService;
+  lectureService?: LectureService;
+  newLectureService?: NewLectureService;
+  popularLectureService?: PopularLectureService;
+  recommendLectureService?: RecommendLectureService;
 
-interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
-  actionLogService?: ActionLogService,
-  pageService?: PageService,
-  reviewService?: ReviewService,
-  inMyLectureService?: InMyLectureService,
-  lectureService?: LectureService,
-  newLectureService?: NewLectureService,
-  popularLectureService?: PopularLectureService,
-  recommendLectureService?: RecommendLectureService,
+  contentType: string;
+  order: string;
+  totalCount: number;
 
-  contentType: string,
-  order: string,
-  totalCount: number,
-
-  setNewOrder: (order: OrderByType) => void,
-  showTotalCount: (count: number) => void,
+  setNewOrder: (order: OrderByType) => void;
+  showTotalCount: (count: number) => void;
 }
 
-const NewLearningListView : React.FC<Props> = (Props) => {
+const NewLearningListView: React.FC<Props> = Props => {
   //
-  const { contentType, order, pageService, reviewService, inMyLectureService, lectureService,
-    newLectureService, popularLectureService, recommendLectureService, actionLogService,
-    setNewOrder, showTotalCount, match, history } = Props;
+  const {
+    contentType,
+    order,
+    pageService,
+    reviewService,
+    inMyLectureService,
+    lectureService,
+    newLectureService,
+    popularLectureService,
+    recommendLectureService,
+    actionLogService,
+    setNewOrder,
+    showTotalCount,
+    match,
+    history,
+  } = Props;
   const { inMyLectureMap } = inMyLectureService!;
 
   const PAGE_KEY = 'lecture.' + contentType;
@@ -49,7 +66,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
   const [yPos, setYPos] = useState(0);
 
   const lectures = useRef<LectureModel[] | null>(null);
-  const curOrder = useRef('');  // 컴포넌트 렌더링에 관여하지 않는다.
+  const curOrder = useRef(''); // 컴포넌트 렌더링에 관여하지 않는다.
   const pageNo = useRef(1);
 
   const fromMain = useRef(false);
@@ -61,8 +78,12 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     /***** 상세보기 후 히스토리백 원상복귀 & 메인에서 전체보기 클릭 시 처리 *****/
 
-    fromMain.current = window.sessionStorage.getItem('from_main') !== null && window.sessionStorage.getItem('from_main') === 'TRUE';
-    refresh.current = window.sessionStorage.getItem('page_moved') !== null && window.sessionStorage.getItem('page_moved') !== 'TRUE';
+    fromMain.current =
+      window.sessionStorage.getItem('from_main') !== null &&
+      window.sessionStorage.getItem('from_main') === 'TRUE';
+    refresh.current =
+      window.sessionStorage.getItem('page_moved') !== null &&
+      window.sessionStorage.getItem('page_moved') !== 'TRUE';
     fromBack.current = !fromMain.current && !refresh.current;
 
     // 메인 페이지로부터 이동
@@ -80,14 +101,19 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     else if (refresh.current) {
       refresh.current = true;
       curOrder.current = order;
-      setNewOrder(order === OrderByType.New ? OrderByType.New : OrderByType.Popular);
+      setNewOrder(
+        order === OrderByType.New ? OrderByType.New : OrderByType.Popular
+      );
     }
     // (인기순) 상세보기 페이지로부터 이동
-    else {  // fromBack.current === true
+    else {
+      // fromBack.current === true
       fromBack.current = true;
       // y Position 설정
       const preOrder = window.sessionStorage.getItem('order_type');
-      setNewOrder(preOrder === OrderByType.New ? OrderByType.New : OrderByType.Popular);
+      setNewOrder(
+        preOrder === OrderByType.New ? OrderByType.New : OrderByType.Popular
+      );
       curOrder.current = preOrder!;
     }
 
@@ -108,7 +134,6 @@ const NewLearningListView : React.FC<Props> = (Props) => {
       window.sessionStorage.setItem('order_type', curOrder.current);
       window.sessionStorage.setItem('y_pos', window.scrollY.toString());
     };
-
   }, []);
 
   useEffect(() => {
@@ -128,7 +153,7 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     // 상세보기 후 히스토리백 원상복귀
     else if (fromBack.current) {
       fromBack.current = false;
-      const ypos = (window.sessionStorage.getItem('y_pos'));
+      const ypos = window.sessionStorage.getItem('y_pos');
       setYPos(ypos && ypos != null && ypos.length > 0 ? parseInt(ypos) : 0);
       return;
     }
@@ -152,16 +177,16 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     if (getPageNo() > 1) {
-      const offset = page!.limit > PAGE_SIZE && page!.nextOffset === 0 ?
-        page!.nextOffset + PAGE_SIZE : page!.nextOffset;
+      const offset =
+        page!.limit > PAGE_SIZE && page!.nextOffset === 0
+          ? page!.nextOffset + PAGE_SIZE
+          : page!.nextOffset;
       pageService!.initPageMap(PAGE_KEY, offset, PAGE_SIZE);
-    }
-    else {
+    } else {
       pageService!.initPageMap(PAGE_KEY, 0, PAGE_SIZE);
     }
 
     findLectures(match.params.pageNo === '1');
-
   }, [order, yPos, match.params.pageNo]);
 
   const findLectures = (clear: boolean) => {
@@ -169,21 +194,29 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const pgNo = getPageNo() - 1;
     switch (contentType) {
       case ContentType.Required:
-        if (clear) { lectureService!.clearLectures(); }
+        if (clear) {
+          lectureService!.clearLectures();
+        }
         findRequiredLectures(pgNo);
         break;
 
       case ContentType.New:
-        if (clear) { newLectureService!.clearLectures(); }
+        if (clear) {
+          newLectureService!.clearLectures();
+        }
         findNewLectures(pgNo);
         break;
 
       case ContentType.Popular:
-        if (clear) { popularLectureService!.clearLectures(); }
+        if (clear) {
+          popularLectureService!.clearLectures();
+        }
         findPopularLectures(pgNo);
         break;
       case ContentType.Recommend:
-        if (clear) { recommendLectureService!.clearLectures(); }
+        if (clear) {
+          recommendLectureService!.clearLectures();
+        }
         findRecommendLectures(pgNo);
         break;
     }
@@ -199,20 +232,29 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     // const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await lectureService!.findPagingRequiredLectures(page!.limit, page!.nextOffset);
+    const lectureOffsetList = await lectureService!.findPagingRequiredLectures(
+      page!.limit,
+      page!.nextOffset
+    );
 
     lectures.current = lectureService!.lectures;
 
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map((lecture: LectureModel) => lecture.reviewId);
+      feedbackIds = lectureOffsetList.results.map(
+        (lecture: LectureModel) => lecture.reviewId
+      );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
 
     showTotalCount(lectureOffsetList.totalCount);
   };
@@ -222,21 +264,32 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await newLectureService!.findPagingNewLectures(lectureFilterRdo);
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+      page!.limit,
+      page!.nextOffset /*, orderBy*/
+    );
+    const lectureOffsetList = await newLectureService!.findPagingNewLectures(
+      lectureFilterRdo
+    );
 
     lectures.current = newLectureService!.newLectures;
 
     let feedbackIds: string[] = [];
 
     if (lectureOffsetList.results.length > 0) {
-      feedbackIds = lectureOffsetList.results.map((lecture: LectureModel) => lecture.reviewId);
+      feedbackIds = lectureOffsetList.results.map(
+        (lecture: LectureModel) => lecture.reviewId
+      );
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
 
     showTotalCount(lectureOffsetList.totalCount);
   };
@@ -246,8 +299,13 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(lectureFilterRdo);
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+      page!.limit,
+      page!.nextOffset /*, orderBy*/
+    );
+    const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(
+      lectureFilterRdo
+    );
 
     lectures.current = popularLectureService!.popularLectures;
 
@@ -260,7 +318,11 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
 
     showTotalCount(lectureOffsetList.totalCount);
   };
@@ -270,8 +332,13 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(lectureFilterRdo);
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+      page!.limit,
+      page!.nextOffset /*, orderBy*/
+    );
+    const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(
+      lectureFilterRdo
+    );
 
     lectures.current = recommendLectureService!.recommendLectures;
 
@@ -284,7 +351,11 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
     inMyLectureService!.findAllInMyLectures();
 
-    pageService!.setTotalCountAndPageNo(PAGE_KEY, lectureOffsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
+    pageService!.setTotalCountAndPageNo(
+      PAGE_KEY,
+      lectureOffsetList.totalCount,
+      pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1
+    );
 
     showTotalCount(lectureOffsetList.totalCount);
   };
@@ -311,29 +382,61 @@ const NewLearningListView : React.FC<Props> = (Props) => {
     //
     const { model } = data;
     const collegeId = model.category.college.id;
-    const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
+    const cineroom =
+      patronInfo.getCineroomByPatronId(model.servicePatronKeyString) ||
+      patronInfo.getCineroomByDomain(model)!;
 
-    if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, collegeId, model.coursePlanId, model.serviceType, model.serviceId));
-    }
-    else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, collegeId, model.cubeId, model.serviceId));
+    if (
+      model.serviceType === LectureServiceType.Program ||
+      model.serviceType === LectureServiceType.Course
+    ) {
+      history.push(
+        lectureRoutePaths.courseOverview(
+          cineroom.id,
+          collegeId,
+          model.coursePlanId,
+          model.serviceType,
+          model.serviceId
+        )
+      );
+    } else if (model.serviceType === LectureServiceType.Card) {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(
+          cineroom.id,
+          collegeId,
+          model.cubeId,
+          model.serviceId
+        )
+      );
     }
 
     window.sessionStorage.setItem('y_pos', window.scrollY.toString());
   };
 
-  const onToggleBookmarkLecture = (lecture: LectureModel | InMyLectureModel) => {
+  const onToggleBookmarkLecture = (
+    lecture: LectureModel | InMyLectureModel
+  ) => {
     //
     actionLogService?.registerSeenActionLog({ lecture, subAction: '아이콘' });
 
     if (lecture instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(lecture.id)
-        .then(() => inMyLectureService!.removeInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
-    }
-    else {
-      inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
-        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
+      inMyLectureService!
+        .removeInMyLecture(lecture.id)
+        .then(() =>
+          inMyLectureService!.removeInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
+    } else {
+      inMyLectureService!
+        .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
+        .then(() =>
+          inMyLectureService!.addInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
     }
   };
 
@@ -344,20 +447,30 @@ const NewLearningListView : React.FC<Props> = (Props) => {
 
   return (
     <div className="section">
-      { lectures && lectures.current && lectures.current.length > 0 ?
+      {lectures && lectures.current && lectures.current.length > 0 ? (
         <>
           <Lecture.Group type={Lecture.GroupType.Box}>
             {lectures.current?.map((lecture: any, index: any) => {
-              const inMyLecture = inMyLectureMap.get(lecture.serviceId) || undefined;
+              const inMyLecture =
+                inMyLectureMap.get(lecture.serviceId) || undefined;
               return (
                 <Lecture
                   key={`lecture-${index}`}
                   model={lecture}
                   rating={getRating(lecture)}
                   thumbnailImage={lecture.baseUrl || undefined}
-                  action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
+                  action={
+                    inMyLecture
+                      ? Lecture.ActionType.Remove
+                      : Lecture.ActionType.Add
+                  }
                   onAction={() => {
-                    reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                    reactAlert({
+                      title: '알림',
+                      message: inMyLecture
+                        ? '본 과정이 관심목록에서 제외되었습니다.'
+                        : '본 과정이 관심목록에 추가되었습니다.',
+                    });
                     onToggleBookmarkLecture(inMyLecture || lecture);
                   }}
                   onViewDetail={onViewDetail}
@@ -365,23 +478,25 @@ const NewLearningListView : React.FC<Props> = (Props) => {
               );
             })}
           </Lecture.Group>
-          { isContentMore() && ( <SeeMoreButton onClick={onClickSeeMore} /> ) }
-          { window.scrollTo(0, yPos) }
+          {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
+          {window.scrollTo(0, yPos)}
         </>
-        :
+      ) : (
         <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
-      }
+      )}
     </div>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'shared.pageService',
-  'shared.reviewService',
-  'myTraining.inMyLectureService',
-  'lecture.lectureService',
-  'newLecture.newLectureService',
-  'popularLecture.popularLectureService',
-  'recommendLecture.recommendLectureService',
-))(withRouter(observer(NewLearningListView)));
+export default inject(
+  mobxHelper.injectFrom(
+    'shared.actionLogService',
+    'shared.pageService',
+    'shared.reviewService',
+    'myTraining.inMyLectureService',
+    'lecture.lectureService',
+    'newLecture.newLectureService',
+    'popularLecture.popularLectureService',
+    'recommendLecture.recommendLectureService'
+  )
+)(withRouter(observer(NewLearningListView)));

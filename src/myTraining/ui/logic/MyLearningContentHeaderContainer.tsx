@@ -15,6 +15,8 @@ import MyLearningSummaryService from '../../present/logic/MyLearningSummaryServi
 import ContentHeaderStampView from '../view/ContentHeaderStampView';
 import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 
+import BadgeRoutePaths from '../../../certification/routePaths';
+import MyTrainingRoutePaths from '../../routePaths';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -43,6 +45,20 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     const { myLearningSummaryService } = this.props;
 
     myLearningSummaryService!.findMyLearningSummary();
+  }
+
+  onClickMyBadge() {
+    //
+    const { history } = this.props;
+
+    history.push( BadgeRoutePaths.badgeEarnedBadgeList() );
+  }
+
+  onClickMyStamp() {
+    //
+    const { history } = this.props;
+
+    history.push( MyTrainingRoutePaths.myPageEarnedStampList() );
   }
 
   render() {
@@ -84,6 +100,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
         <ContentHeader.Cell>
           <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
+            onClickItem={this.onClickMyStamp}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell>
@@ -92,6 +109,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
             selectedYear={0}
             yearOptions={[]}
             onChangeYear={()=>{}}
+            onClickItem={this.onClickMyBadge}
           />
         </ContentHeader.Cell>
       </ContentHeader>

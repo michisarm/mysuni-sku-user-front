@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router';
 
 import moment from 'moment';
 import { ContentHeader } from 'shared';
@@ -15,8 +16,11 @@ import ContentHeaderLearningSummaryView from '../view/ContentHeaderLearningSumma
 import ContentHeaderStampView from '../view/ContentHeaderStampView';
 import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 
+import BadgeRoutePaths from '../../../certification/routePaths';
+import MyTrainingRoutePaths from '../../routePaths';
 
-interface Props {
+
+interface Props extends RouteComponentProps {
   skProfileService? : SkProfileService
   myLearningSummaryService? : MyLearningSummaryService,
   badgeService? : BadgeService,
@@ -77,6 +81,21 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
     this.setState({ selectedYear });
   }
 
+  onClickMyBadge() {
+    //
+    const { history } = this.props;
+
+    history.push( BadgeRoutePaths.badgeEarnedBadgeList() );
+  }
+
+  onClickMyStamp() {
+    //
+    const { history } = this.props;
+
+    history.push( MyTrainingRoutePaths.myPageEarnedStampList() );
+  }
+
+
   render() {
     //
     const { yearOptions } = MyPageContentHeaderContainer;
@@ -109,6 +128,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
         <ContentHeader.Cell>
           <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
+            onClickItem={this.onClickMyStamp}
           />
         </ContentHeader.Cell>
 
@@ -118,6 +138,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
             selectedYear={selectedYear}
             yearOptions={yearOptions}
             onChangeYear={this.onChangeYear}
+            onClickItem={this.onClickMyBadge}
           />
         </ContentHeader.Cell>
       </ContentHeader>
@@ -125,4 +146,4 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
   }
 }
 
-export default MyPageContentHeaderContainer;
+export default withRouter(MyPageContentHeaderContainer);
