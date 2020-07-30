@@ -22,6 +22,11 @@ export default class AnswerSheetService {
   @observable
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
 
+  @action
+  setAnswerSheet(sheet: AnswerSheetModel) {
+    this.answerSheet = sheet;
+  }
+
   @observable
   evaluationSheet: EvaluationSheetModel = new EvaluationSheetModel();
 

@@ -14,6 +14,11 @@ export default class SurveyCaseService {
   @observable
   surveyCase: SurveyCaseModel = new SurveyCaseModel();
 
+  @action
+  setSurveyCase(surveyCase: SurveyCaseModel) {
+    this.surveyCase = surveyCase;
+  }
+
   @observable
   roundPart: RoundPartModel = new RoundPartModel();
 

@@ -50,6 +50,11 @@ class LectureService {
   @observable
   _lectureViews: LectureViewModel[] = [];
 
+  @action
+  setLectureViews(views: any) {
+    this._lectureViews = views;
+  }
+
   @observable
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 

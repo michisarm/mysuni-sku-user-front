@@ -15,6 +15,11 @@ class CourseLectureService {
   @observable
   courseLecture: CourseLectureModel = new CourseLectureModel();
 
+  @action
+  setCourseLecture(lecture: CourseLectureModel) {
+    this.courseLecture = lecture;
+  }
+
   // 선수코스
   @observable
   preLectureView: LectureViewModel = new LectureViewModel();
