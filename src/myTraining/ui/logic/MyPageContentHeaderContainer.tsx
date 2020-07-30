@@ -7,16 +7,19 @@ import moment from 'moment';
 import { ContentHeader } from 'shared';
 import { SkProfileService } from 'profile/stores';
 import { MyLearningSummaryService } from 'myTraining/stores';
+import { BadgeService } from 'certification/stores';
 import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 
 import FavoriteChannelContainer from './FavoriteChannelContainer';
 import ContentHeaderLearningSummaryView from '../view/ContentHeaderLearningSummaryView';
 import ContentHeaderStampView from '../view/ContentHeaderStampView';
+import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 
 
 interface Props {
   skProfileService? : SkProfileService
-  myLearningSummaryService? : MyLearningSummaryService
+  myLearningSummaryService? : MyLearningSummaryService,
+  badgeService? : BadgeService,
 }
 
 interface State {
@@ -25,7 +28,8 @@ interface State {
 
 @inject(mobxHelper.injectFrom(
   'profile.skProfileService',
-  'myTraining.myLearningSummaryService'
+  'myTraining.myLearningSummaryService',
+  'badge.badgeService',
 ))
 @observer
 @reactAutobind
@@ -76,10 +80,11 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
   render() {
     //
     const { yearOptions } = MyPageContentHeaderContainer;
-    const { skProfileService, myLearningSummaryService } = this.props;
+    const { skProfileService, myLearningSummaryService, badgeService } = this.props;
     const { selectedYear } = this.state;
     const { skProfile } = skProfileService!;
     const { myLearningSummary } = myLearningSummaryService!;
+    const myBadgeCount = badgeService!.earnedCount;
 
     return (
       <ContentHeader
@@ -104,6 +109,12 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
         <ContentHeader.Cell>
           <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
+          />
+        </ContentHeader.Cell>
+
+        <ContentHeader.Cell>
+          <ContentHeaderBadgeView
+            badgeCount={myBadgeCount}
             selectedYear={selectedYear}
             yearOptions={yearOptions}
             onChangeYear={this.onChangeYear}

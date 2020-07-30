@@ -21,9 +21,9 @@ import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import BadgeLectureContainer2 from './BadgeLectureContainer2';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import {BadgeService} from '../../../lecture/stores';
+import boardRoutePaths from '../../../board/routePaths';
 
 
 export enum ChallengeDescription {
@@ -46,7 +46,7 @@ interface Props extends RouteComponentProps {
 
 const BadgeContentContainer: React.FC<Props> = Props => {
   //
-  const { badgeService, skProfileService, badgeId, badgeDetail } = Props;
+  const { badgeService, skProfileService, badgeId, badgeDetail, history } = Props;
 
   const [cancelModal, setCancelModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -265,6 +265,31 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     setSuccessModal(!successModal);
   };
 
+  // tag list
+  const getTagsList = (tags: string) => {
+    //
+    let tagList = new Array();
+    let tagHtml = '';
+
+    if ( tags.indexOf(',') !== -1 ) {
+      tagList = tags.split(',');
+    } else {
+      tagList.push(tags);
+    }
+
+    tagList.map((tag, index) => {
+      tagHtml += '<span class="ui label tag" id="tag-' + index + '">' + tag + '</span>';
+    });
+
+    return tagHtml;
+  };
+
+  const onClickSupport = () => {
+    // Q&A 작성 화면으로 이동
+    history.push( boardRoutePaths.supportQnANewPost() );
+  };
+
+
   //
   return (
     <>
@@ -344,7 +369,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
               <div className="host-line">
                 {badgeDetail.badgeOperator.badgeOperatorName} (
                 {badgeDetail.badgeOperator.badgeOperatorCompany})
-                <Button icon className="right btn-blue">
+                <Button icon className="right btn-blue" onClick={onClickSupport}>
                   문의하기
                   <Icon className="arrow-b-16" />
                 </Button>
@@ -376,15 +401,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={
-              <Label as="span" className="tag">
-                {badgeDetail.tags}
-              </Label>
-            }
+            contentHtml={getTagsList(badgeDetail.tags)}
           />
         </OverviewField.List>
       </BadgeOverview>
-      {/*<Label as="span" className="tag"></Label>*/}
     </>
   );
 };
