@@ -20,12 +20,16 @@ export default class PersonalCubeApi {
   approvalURL = this.devUrl + '/api/personalCube/approval';
   depotURL = this.devUrl + '/api/depot/depotFile/multiple';*/
 
-  serverUrl = '/api/personalCube';
-  devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+  // serverUrl = '/api/personalCube';
+  // devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
+  //   this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+  //
+  // baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+  //   this.serverUrl : this.devUrl;
 
-  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl;
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_PERSONAL_CUBE_API === undefined || process.env.REACT_APP_PERSONAL_CUBE_API === '' ?
+    '/api/personalCube' : process.env.REACT_APP_PERSONAL_CUBE_API;
 
   URL = this.baseUrl + '/personalcubes';
   flowURL = this.baseUrl + '/cubes/flow';

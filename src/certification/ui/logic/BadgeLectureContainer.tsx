@@ -12,6 +12,7 @@ import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
 import {LectureViewModel} from '../../../lecture/model';
 import {CoursePlanContentsModel} from '../../../course/model';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 
 
 interface Props extends RouteComponentProps {
@@ -61,10 +62,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
             compData.course.cubeCount = data.lectureCardUsids.length;
-            getCourseTRS(compData.course);
             data.lectureCardUsids.map((id: string) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
+            getCourseTRS(compData.course);
           }
           // (학습)카드정보
           else {
@@ -76,6 +77,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.cube.learningTime = data.learningTime; // 학습시간(분)
             compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
             compData.cube.learningState = data.learningState;
+            getCubeTRS(compData.cube);
           }
           compList = compList.concat(compData);
         });
@@ -104,8 +106,24 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       });
   };
 
-  const getCubeTRS = (cube: LectureViewModel) => {
-
+  const getCubeTRS = (cube: BadgeCubeData) => {
+    badgeDetailService!.findPersonalCube(cube.cubeId)
+      .then((response: PersonalCubeModel) => {
+        if (response) {
+          if (response.contents.examId && response.contents.examId.length > 0) {
+            cube.test = true;
+            cube.test_name = response.contents.examTitle;
+          }
+          if (response.contents.fileBoxId && response.contents.fileBoxId.length > 0) {
+            cube.report = true;
+            cube.report_name = response.contents.examTitle;
+          }
+          if (response.contents.surveyId && response.contents.surveyId.length > 0) {
+            cube.survey = true;
+            cube.survey_name = cube.name;
+          }
+        }
+      });
   };
 
   const showCourseInfo = (course: BadgeCourseData) => {
@@ -124,8 +142,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               cubeData.learningCardId = lecture.learningCardId;
               cubeData.cubeType = lecture.cubeType;
               cubeData.learningTime = lecture.learningTime;
+              // 진행율(%)
               cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
               cubeData.learningState = lecture.learningState;
+              getCubeTRS(cubeData);
               course.cubeData = course.cubeData.concat(cubeData);
             });
           }
@@ -308,6 +328,66 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   </div>
                 </div>
               </div>
+              { badgeComp.cube && (badgeComp.cube.test || badgeComp.cube.test || badgeComp.cube.test) ?
+                <>
+                  <div className="detail">
+                    <ul className="step1">
+                      { badgeComp.cube && badgeComp.cube.test && (
+                        <li className="step2 trs">
+                          <div className="category">
+                            <Icon className="icon-test24"/>
+                            <span>Test</span>
+                          </div>
+                          <div className="tit">
+                            <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
+                          </div>
+                          <div className="right">
+                            <a href="#" className="btn-play black">
+                              <span className="text">평가응시</span>
+                              <Icon className="icon play-black24"/>
+                            </a>
+                          </div>
+                        </li>
+                      )}
+                      { badgeComp.cube && badgeComp.cube.report && (
+                        <li className="step2 trs">
+                          <div className="category">
+                            <Icon className="icon-report24"/>
+                            <span>Test</span>
+                          </div>
+                          <div className="tit">
+                            <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
+                          </div>
+                          <div className="right">
+                            <a href="#" className="btn-play black">
+                              <span className="text">과제제출</span>
+                              <Icon className="icon play-black24"/>
+                            </a>
+                          </div>
+                        </li>
+                      )}
+                      { badgeComp.cube && badgeComp.cube.survey && (
+                        <li className="step2 trs">
+                          <div className="category">
+                            <Icon className="icon-survey24"/>
+                            <span>Test</span>
+                          </div>
+                          <div className="tit">
+                            <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
+                          </div>
+                          <div className="right">
+                            <a href="#" className="btn-play black">
+                              <span className="text">설문하기</span>
+                              <Icon className="icon play-black24"/>
+                            </a>
+                          </div>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </>
+                :
+                null }
             </div>
         ))
         :
