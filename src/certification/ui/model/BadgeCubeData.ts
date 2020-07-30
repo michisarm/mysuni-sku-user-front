@@ -9,9 +9,13 @@ class BadgeCubeData {
   learningState: string = '';
 
   // TRS for Course
-  test: string = '';
-  report: string = '';
-  survey: string = '';
+  test: boolean = true;
+  report: boolean = true;
+  survey: boolean = true;
+
+  test_name: string = '';
+  report_name: string = '';
+  survey_name: string = '';
 
   constructor(data?: BadgeCubeData) {
     //

@@ -8,10 +8,9 @@ import BadgeCompData from '../model/BadgeCompData';
 import BadgeCompModel from '../model/BadgeCompModel';
 import {BadgeDetailService} from '../../../lecture/stores';
 import {Lecture2} from '../../../lecture/shared/Lecture';
-import BadgeModel from '../model/MyBadgeModel';
-import {Badge} from '../../shared/Badge';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
+import {LectureViewModel} from '../../../lecture/model';
 
 
 interface Props extends RouteComponentProps {
@@ -40,7 +39,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     // 배지 구성 학습 리스트 조회하기
     getBadgeCompLectures(badgeId);
-  }, []);
+  }, [badgeId]);
 
   // 뱃지 구성 학습 리스트 조회하기
   const getBadgeCompLectures = (badgeId: string) => {
@@ -53,11 +52,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           compData.compType = data.serviceType;
           compData.id = data.id;
           compData.patronKeyString = data.patronKey.keyString;
-          compData.name = data.name;
           // 코스정보
           if (data.serviceType === 'COURSE') {
             // 코스정보 생성
             compData.course = new BadgeCourseData();
+            compData.course.name = data.name;
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
             compData.course.cubeCount = data.lectureCardUsids.length;
@@ -68,6 +67,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           // (학습)카드정보
           else {
             compData.cube = new BadgeCubeData();
+            compData.cube.name = data.name;
             compData.cube.cubeId = data.cubeId;
             compData.cube.learningCardId = data.learningCardId;
             compData.cube.cubeType = data.cubeType;
@@ -83,8 +83,32 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   };
 
   const showCourseInfo = (course: BadgeCourseData) => {
+    //
     course.isOpened = !course.isOpened;
-    setOpened(!opened);
+    course.cubeData = [];
+
+    if (course.isOpened) {
+      badgeDetailService!.findLectureViewsV2(course.coursePlanId, course.lectureCardIds)
+        .then((response: LectureViewModel[] | null) => {
+          if (response) {
+            response.map((lecture: LectureViewModel) => {
+              const cubeData = new BadgeCubeData();
+              cubeData.cubeId = lecture.cubeId;
+              cubeData.name = lecture.name;
+              cubeData.learningCardId = lecture.learningCardId;
+              cubeData.cubeType = lecture.cubeType;
+              cubeData.learningTime = lecture.learningTime;
+              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
+              cubeData.learningState = lecture.learningState;
+              course.cubeData = course.cubeData.concat(cubeData);
+            });
+          }
+          setOpened(!opened);
+        });
+    }
+    else {
+      setOpened(!opened);
+    }
   };
 
   return (
@@ -92,12 +116,12 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       type={Lecture2.GroupType.Course}
     >
       {badgeCompList.length > 0 ?
-        (badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
+        badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
             <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')}>
               <div className="bar">
                 <div className="tit">
-                  <span className="ellipsis">{badgeComp.name}</span>
+                  <span className="ellipsis">{badgeComp.course.name}</span>
                 </div>
                 <div className="num">{badgeComp.course.cubeCount}개 강의 구성</div>
                 <div className="toggle-btn">
@@ -107,37 +131,146 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   </Button>
                 </div>
               </div>
-              {badgeComp.course.cubeCount > 0 ?
-                <div className="detail">
-                  <ul className="step1">
-                    {badgeComp.course.cubeData.map((cube: BadgeCubeData, index: number) => (
-                      <li>
-                        <div className="tit">
-                          <span className="ellipsis">{cube.name}</span>
-                        </div>
-                        <div className="right">
-                          <span>{cube.cubeType}</span>
-                          <span>{cube.learningTime}m</span>
-                          <a href="#" className="btn-play black">
-                            <span className="text">학습하기</span>
-                            <Icon className="play-black24"/>
-                          </a>
-                        </div>
-                      </li>
-
-
-                    ))}
-                  </ul>
-                </div>
-                :
-                null}
+              <div className="detail">
+                <ul className="step1">
+                  {badgeComp.course.cubeData.length > 0 ?
+                    badgeComp.course.cubeData.map((cube: BadgeCubeData) =>
+                      <>
+                        <li>
+                          <div className="tit">
+                            <span className="ellipsis">{cube.name}</span>
+                          </div>
+                          <div className="right">
+                            <span>{cube.cubeType}</span>
+                            <span>{cube.learningTime}m</span>
+                            <a href="#" className="btn-play black">
+                              <span className="text">{cube.learningState}</span>
+                              <Icon className="play-black24"/>
+                            </a>
+                          </div>
+                        </li>
+                        { cube.test && (
+                          <li className="step2 trs">
+                            <div className="category">
+                              <Icon className="icon-test24"/>
+                              <span>Test</span>
+                            </div>
+                            <div className="tit">
+                              <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
+                            </div>
+                            <div className="right">
+                              <a href="#" className="btn-play black">
+                                <span className="text">평가응시</span>
+                                <Icon className="icon play-black24"/>
+                              </a>
+                            </div>
+                          </li>
+                        )}
+                        { cube.report && (
+                          <li className="step2 trs">
+                            <div className="category">
+                              <Icon className="icon-report24"/>
+                              <span>Test</span>
+                            </div>
+                            <div className="tit">
+                              <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
+                            </div>
+                            <div className="right">
+                              <a href="#" className="btn-play black">
+                                <span className="text">과제제출</span>
+                                <Icon className="icon play-black24"/>
+                              </a>
+                            </div>
+                          </li>
+                        )}
+                        { cube.survey && (
+                          <li className="step2 trs">
+                            <div className="category">
+                              <Icon className="icon-survey24"/>
+                              <span>Test</span>
+                            </div>
+                            <div className="tit">
+                              <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
+                            </div>
+                            <div className="right">
+                              <a href="#" className="btn-play black">
+                                <span className="text">설문하기</span>
+                                <Icon className="icon play-black24"/>
+                              </a>
+                            </div>
+                          </li>
+                        )}
+                      </>
+                    )
+                    :
+                    null
+                  }
+                  {badgeComp.course && badgeComp.course.test ?
+                    <li className="step1 trs">
+                      <div className="category">
+                        <Icon className="icon-test24"/>
+                        <span>Test</span>
+                      </div>
+                      <div className="tit">
+                        <a className="ellipsis" href="#">{badgeComp.course.name} Test</a>
+                      </div>
+                      <div className="right">
+                        <a href="#" className="btn-play black">
+                          <span className="text">평가응시</span>
+                          <Icon className="icon play-black24"/>
+                        </a>
+                      </div>
+                    </li>
+                    :
+                    null
+                  }
+                  {badgeComp.course && badgeComp.course.report ?
+                    <li className="step1 trs">
+                      <div className="category">
+                        <Icon className="icon-report24"/>
+                        <span>Test</span>
+                      </div>
+                      <div className="tit">
+                        <a className="ellipsis" href="#">{badgeComp.course.name} Report</a>
+                      </div>
+                      <div className="right">
+                        <a href="#" className="btn-play black">
+                          <span className="text">과제제출</span>
+                          <Icon className="icon play-black24"/>
+                        </a>
+                      </div>
+                    </li>
+                    :
+                    null
+                  }
+                  {badgeComp.course && badgeComp.course.survey ?
+                    <li className="step1 trs">
+                      <div className="category">
+                        <Icon className="icon-survey24"/>
+                        <span>Test</span>
+                      </div>
+                      <div className="tit">
+                        <a className="ellipsis" href="#">{badgeComp.course.name} Survey</a>
+                      </div>
+                      <div className="right">
+                        <a href="#" className="btn-play black">
+                          <span className="text">설문하기</span>
+                          <Icon className="icon play-black24"/>
+                        </a>
+                      </div>
+                    </li>
+                    :
+                    null
+                  }
+                </ul>
+              </div>
             </div>
             :
             <div className="course-box fn-parents">
               <div className="cube-box">
                 <div className="bar typeA">
                   <div className="tit">
-                    <span className="ellipsis">{badgeComp.name}</span>
+                    <span className="ellipsis">{badgeComp.cube!.name}</span>
                   </div>
                   <div className="right">
                     <span>{badgeComp.cube!.cubeType}</span>
@@ -145,17 +278,17 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
                     {/*setLearningStateForMedia 호출*/}
                     <a href="#" className="btn-play black">
-                      <span className="text">학습하기</span>
+                      <span className="text">{badgeComp.cube!.learningState}</span>
                       <Icon className="play-black24"/>
                     </a>
                   </div>
                 </div>
               </div>
             </div>
-        )))
+        ))
         :
             <div>학습정보가 존재하지 않습니다.</div>
-        }
+      }
     </Lecture2.Group>
   );
 };

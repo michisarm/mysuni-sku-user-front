@@ -2,16 +2,21 @@ import BadgeCubeData from './BadgeCubeData';
 
 class BadgeCourseData {
   // Course Data
-  coursePlanId: string = '';
-  isOpened: boolean = false;
+  name: string = '';
   cubeCount: number = 0;
+  coursePlanId: string = '';
   lectureCardIds: string[] = [];
   cubeData: BadgeCubeData[] = [];
+  isOpened: boolean = false;
 
   // TRS for Course
-  test: string = '';
-  report: string = '';
-  survey: string = '';
+  test: boolean = true;
+  report: boolean = true;
+  survey: boolean = true;
+
+  test_name: string = '';
+  report_name: string = '';
+  survey_name: string = '';
 
   constructor(data?: BadgeCourseData) {
     //

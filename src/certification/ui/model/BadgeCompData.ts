@@ -8,7 +8,6 @@ class BadgeCompData {
   // 공통
   id: string = '';
   patronKeyString: string = '';
-  name: string = '';
 
   // Course Data
   course: BadgeCourseData | null = null;
