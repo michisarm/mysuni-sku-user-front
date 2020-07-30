@@ -24,6 +24,7 @@ import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import {BadgeService} from '../../../lecture/stores';
 import boardRoutePaths from '../../../board/routePaths';
+import BadgeCompModel from '../model/BadgeCompModel';
 
 
 export enum ChallengeDescription {
@@ -155,10 +156,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 구성학습 카운트 정보
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    const badgeLearningInfo = await badgeService!.findBadgeComposition(badgeId);
+    const badgeLearningInfo: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
 
     let cnt = 0;
-    badgeLearningInfo.map((item, index) => {
+    badgeLearningInfo.map((item) => {
       if ( item.learningState === 'Passed' ) { cnt++; }
     });
 

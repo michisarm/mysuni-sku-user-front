@@ -200,7 +200,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                               <span>Test</span>
                             </div>
                             <div className="tit">
-                              <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
+                              <a className="ellipsis" href="#">{cube.test_name}</a>
                             </div>
                             <div className="right">
                               <a href="#" className="btn-play black">
@@ -217,7 +217,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                               <span>Test</span>
                             </div>
                             <div className="tit">
-                              <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
+                              <a className="ellipsis" href="#">{cube.report_name}</a>
                             </div>
                             <div className="right">
                               <a href="#" className="btn-play black">
@@ -234,7 +234,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                               <span>Test</span>
                             </div>
                             <div className="tit">
-                              <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
+                              <a className="ellipsis" href="#">{cube.survey_name}</a>
                             </div>
                             <div className="right">
                               <a href="#" className="btn-play black">
@@ -256,7 +256,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         <span>Test</span>
                       </div>
                       <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.name} Test</a>
+                        <a className="ellipsis" href="#">{badgeComp.course.test_name}</a>
                       </div>
                       <div className="right">
                         <a href="#" className="btn-play black">
@@ -275,7 +275,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         <span>Test</span>
                       </div>
                       <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.name} Report</a>
+                        <a className="ellipsis" href="#">{badgeComp.course.report_name}</a>
                       </div>
                       <div className="right">
                         <a href="#" className="btn-play black">
@@ -294,7 +294,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         <span>Test</span>
                       </div>
                       <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.name} Survey</a>
+                        <a className="ellipsis" href="#">{badgeComp.course.survey_name}</a>
                       </div>
                       <div className="right">
                         <a href="#" className="btn-play black">
