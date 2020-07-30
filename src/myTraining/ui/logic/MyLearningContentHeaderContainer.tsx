@@ -81,21 +81,26 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          <ContentHeaderTotalTimeItem
-            minute={myLearningSummary.totalLearningTime}
-          />
-          { (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0 || myLearningSummary.myCompanyInSuniLearningTime > 0) ?
-            <>
-              {/*<ContentHeader.ChartItem*/}
-              {/*universityTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime}*/}
-              {/*myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}*/}
-              {/*/>*/}
-            </>
-            :
+          { myLearningSummary.totalLearningTime !== 0 && (
+            <ContentHeaderTotalTimeItem
+              minute={myLearningSummary.totalLearningTime}
+            />
+          )}
+          { myLearningSummary.totalLearningTime === 0 && (
             <ContentHeader.WaitingItem
               onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
             />
-          }
+          )}
+          {/*{ (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0 || myLearningSummary.myCompanyInSuniLearningTime > 0) ?*/}
+          {/*<ContentHeader.ChartItem*/}
+          {/*universityTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime}*/}
+          {/*myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}*/}
+          {/*/>*/}
+          {/*:*/}
+          {/*<ContentHeader.WaitingItem*/}
+          {/*onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}*/}
+          {/*/>*/}
+          {/*}*/}
         </ContentHeader.Cell>
         <ContentHeader.Cell>
           <ContentHeaderStampView
