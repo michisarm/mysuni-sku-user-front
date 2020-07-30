@@ -333,13 +333,13 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   <div className="detail">
                     <ul className="step1">
                       { badgeComp.cube && badgeComp.cube.test && (
-                        <li className="step2 trs">
+                        <li className="step1 trs">
                           <div className="category">
                             <Icon className="icon-test24"/>
                             <span>Test</span>
                           </div>
                           <div className="tit">
-                            <a className="ellipsis" href="#">1.2 CUBE-2 Test</a>
+                            <a className="ellipsis" href="#">{badgeComp.cube.test_name}</a>
                           </div>
                           <div className="right">
                             <a href="#" className="btn-play black">
@@ -350,13 +350,13 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         </li>
                       )}
                       { badgeComp.cube && badgeComp.cube.report && (
-                        <li className="step2 trs">
+                        <li className="step1 trs">
                           <div className="category">
                             <Icon className="icon-report24"/>
                             <span>Test</span>
                           </div>
                           <div className="tit">
-                            <a className="ellipsis" href="#">1.2 CUBE-2 Report</a>
+                            <a className="ellipsis" href="#">{badgeComp.cube.report_name}</a>
                           </div>
                           <div className="right">
                             <a href="#" className="btn-play black">
@@ -367,13 +367,13 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         </li>
                       )}
                       { badgeComp.cube && badgeComp.cube.survey && (
-                        <li className="step2 trs">
+                        <li className="step1 trs">
                           <div className="category">
                             <Icon className="icon-survey24"/>
                             <span>Test</span>
                           </div>
                           <div className="tit">
-                            <a className="ellipsis" href="#">1.2 CUBE-2 Survey</a>
+                            <a className="ellipsis" href="#">{badgeComp.cube.survey_name}</a>
                           </div>
                           <div className="right">
                             <a href="#" className="btn-play black">
