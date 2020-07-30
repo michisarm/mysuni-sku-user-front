@@ -60,6 +60,13 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
     history.push(certificationRoutes.badgeChallengingBadgeList());
   };
 
+  // Badge List로 이동
+  const onClickLink = () => {
+    //
+    history.push(certificationRoutes.badgeAllBadgeList());
+  };
+
+
   return (
     <ContentWrapper className="badge-scrolling">
       <div className="section-head">
@@ -99,6 +106,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
+              onClick={onClickLink}
             >
               <span className="border">Badge List 바로가기</span>
               <Icon className="morelink"/>
