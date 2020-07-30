@@ -112,12 +112,11 @@ interface BadgeStatusProps {
   description?: string,
   learningTotalCount?: number,
   learningCompleted?: number,
-  onClickSample: () => void,
 }
 
 export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   //
-  const {badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted, onClickSample} = BadgeStatusProps;
+  const {badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted} = BadgeStatusProps;
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
   return (
@@ -133,7 +132,6 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
                   <b>{learningCompleted}</b>/{learningTotalCount}
                 </span>
               </span>
-              <Button onClick={onClickSample}>샘플 학습하기</Button>
             </>
           )}
           <span className="txt">{description}</span>

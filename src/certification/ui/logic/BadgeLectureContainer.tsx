@@ -112,9 +112,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   };
 
   return (
-    <Lecture2.Group
-      type={Lecture2.GroupType.Course}
-    >
+    <div className="course-cont">
       {badgeCompList.length > 0 ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
@@ -289,7 +287,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
         :
             <div>학습정보가 존재하지 않습니다.</div>
       }
-    </Lecture2.Group>
+    </div>
   );
 };
 

@@ -144,45 +144,47 @@ class BadgeApi {
   }
 
   // 도전하기
-  challengeBadge(
-    studentInfo: {
-      name: string;
-      company: string;
-      department: string;
-      email: string;
-    },
-    badgeId: string,
-    challengeState: string
-  ) {
+  challengeBadge(id: string | null, studentInfo: { name: string, company: string, department: string, email: string, }, badgeId: string, challengeState: string) {
     //
     const params = {
+      id,
       studentInfo,
       badgeId,
       challengeState,
     };
 
-    return axiosApi.post<string>(this.baseUrl + '/students', { params })
+    return axiosApi.post(this.baseUrl + '/students', params)
       .then((response) => response && response.data);
   }
 
   // 도전취소
-  cancelChallengeBadge(id: string) {
+  cancelChallengeBadge(badgeStudentId: string, challengeState: string) {
     //
     const params = {
-      id,
-      challengeState: 'Canceled',
+      challengeState,
     };
 
-    return axiosApi.patch(this.baseUrl + `/students/${id}/challenge-state`, { params })
+    return axiosApi.patch(this.baseUrl + `/students/${badgeStudentId}/challenge-state`, params)
       .then((response) => response && response.data);
   }
 
-  // 뱃지 자동발급 요청
+  // 수동 뱃지발급 요청
+  requestManualIssued(badgeStudentId: string, issueState: string) {
+    //
+    const params = {
+      issueState
+    };
+
+    return axiosApi.patch(this.baseUrl + `/students/flow/${badgeStudentId}/issue-request`, params)
+      .then((response) => response && response.data);
+  }
+
+  // 자동 뱃지발급 요청
   requestAutoIssued() {
     //
     const params = {};
 
-    return axiosApi.post(this.baseUrl + '/students/issue-request', { params })
+    return axiosApi.post(this.baseUrl + '/students/issue-request', params)
       .then((response) => response && response.data);
   }
 
@@ -194,7 +196,7 @@ class BadgeApi {
       issueState,
     };
 
-    return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', { params })
+    return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
       .then((response) => response && response.data);
   }
 

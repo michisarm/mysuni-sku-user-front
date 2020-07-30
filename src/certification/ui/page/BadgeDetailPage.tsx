@@ -29,6 +29,7 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
   const findMyContent = async (id: string) => {
     //
     const badgeInfo = await badgeService!.findBadgeDetailInfo(id);
+    console.log( badgeInfo );
 
     setBadgeDetail(badgeInfo);
 

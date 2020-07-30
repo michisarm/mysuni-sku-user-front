@@ -9,6 +9,8 @@ import BadgeCompModel from '../model/BadgeCompModel';
 import {Badge} from '../../shared/Badge';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
+import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
+import BadgeStudentModel from '../model/BadgeStudentModel';
 
 
 interface Props extends RouteComponentProps {
@@ -24,6 +26,14 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   const { badgeService, badge, badgeStyle, badgeSize } = Props;
   const { badgeId } = badge;
 
+  const [ studentInfo, setBadgeStudentInfo ] = useState();
+
+  // 학습 카운트 정보
+  const [badgeLearningCount, setBadgeLearningCount] = useState({
+    isCount: 0,
+    totalCount: 0
+  });
+
   const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
@@ -35,37 +45,60 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     findMyContent(badgeId);
   }, []);
 
+  useEffect(() => {
+
+    // 구성학습 정보 조회
+    findBadgeLearningInfo(badgeId);
+
+  }, []);
+
+
+  // Badge 수강정보 조회
   const findMyContent = async (badgeId: string) => {
     //
-    const list = await badgeService!.findBadgeStudentInfo(badgeId);
+    const badgeStudentInfo = await badgeService!.findBadgeStudentInfo(badgeId);
+    console.log( badgeStudentInfo );
+
+    setBadgeStudentInfo(badgeStudentInfo);
+
   };
 
+  // 구성학습 카운트 조회
+  const findBadgeLearningInfo = async (badgeId: string) => {
+    //
+    const badgeLearningInfo = await badgeService!.findBadgeComposition(badgeId);
+
+    let cnt = 0;
+    badgeLearningInfo.map((item, index) => {
+      if ( item.learningState === 'Passed' ) { cnt++; }
+    });
+
+    setBadgeLearningCount({
+      isCount: cnt,
+      totalCount: badgeLearningInfo.length,
+    });
+  };
 
   const [ requestModal, setRequestModal ] = useState(false);
 
   // 발급요청
   const onClickRequestBadge = (learningCompleted: boolean) => {
     //
-    if ( !learningCompleted ) {
-      setRequestModal(!requestModal);
-    } else {
-      //
-      // 추가발급조건 확인 -> missionCompleted 관련 데이터가 없음
+    // if ( !learningCompleted ) {
+    //   setRequestModal(!requestModal);
+    // } else {
+    //
+    // 추가발급조건 확인 -> missionCompleted 관련 데이터가 없음
+    console.log('발급요청: ');
+    console.log( studentInfo );
+    console.log( typeof studentInfo );
 
-    }
+    // }
   };
 
   const onHandleChangeModal = () => {
     setRequestModal(!requestModal);
   };
-
-  // const getBadgeState = (challengeState: string, learningCompleted: string, issueState: string) => {
-  //
-  //
-  // };
-
-
-
 
   return (
     <div className="left-area">
@@ -75,15 +108,13 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         badgeStyle={badgeStyle}
         badgeSize={badgeSize}
       />
-      {badge.badgeId}
-
       {/*Status info*/}
       <ChallengeBadgeStatus>
 
         { badge.issueState === IssueState.Requested && (
           <span className="status">
             <span className="number">
-              <b>발급 요청중</b>
+              <b>{IssueStateNameType.Requested}</b>
             </span>
             <span className="txt mt2">발급요청일표시 발급 요청</span>
           </span>
@@ -102,7 +133,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
             <span className="number">
               <span className="ing-txt">진행중</span>
-              <span><b>3</b>/11</span>
+              <span><b>{badgeLearningCount.isCount}</b>/{badgeLearningCount.totalCount}</span>
             </span>
 
             {/*자동발급*/}

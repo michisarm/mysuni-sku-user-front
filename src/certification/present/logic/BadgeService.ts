@@ -344,23 +344,28 @@ class BadgeService {
 
   // 도전하기
   @action
-  async challengeBadge(studentInfo: any, badgeId: string, challengeState: string) {
+  async challengeBadge(id: string | null, studentInfo: {name: string, email: string, company: string, department: string}, badgeId: string, challengeState: string) {
     //
-    const response = await this.badgeApi.challengeBadge(studentInfo, badgeId, challengeState);
-
+    const response = await this.badgeApi.challengeBadge(id, studentInfo, badgeId, challengeState);
     return response;
   }
 
   // 도전취소
   @action
-  async cancelChallengeBadge(id: string) {
+  async cancelChallengeBadge(badgeStudentId: string, challengeState: string) {
     //
-    const response = await this.badgeApi.cancelChallengeBadge(id);
-
+    const response = await this.badgeApi.cancelChallengeBadge(badgeStudentId, challengeState);
     return response;
   }
 
-  // 뱃지 자동발급 요청
+  // 수동뱃지 발급 요청
+  @action
+  async requestManualIssued(badgeStudentId: string, issueState: string) {
+    //
+    const response = await this.badgeApi.requestManualIssued(badgeStudentId, issueState);
+  }
+
+  // 자동뱃지 발급 요청
   @action
   async requestAutoIssued() {
     //
