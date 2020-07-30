@@ -4,12 +4,17 @@ import { NameValueList } from 'shared/model';
 import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '../../model';
 
 export default class CoursePlanApi {
-  URL = '/api/course/coursePlans';
-  coursePlanContentsURL = '/api/course/coursePlanContents';
-  // URL = 'http://localhost:8111/coursePlans';
-  // coursePlanContentsURL = 'http://localhost:8111/coursePlanContents';
-
+  //
   static instance: CoursePlanApi;
+
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_API === undefined || process.env.REACT_APP_COURSE_PLAN_API === '' ?
+    '/api/course/coursePlans' : process.env.REACT_APP_COURSE_PLAN_API;
+
+  coursePlanContentsURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
+    '/api/course/coursePlanContents' : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
+
 
   registerCoursePlan(coursePlan: CoursePlanModel) {
     //

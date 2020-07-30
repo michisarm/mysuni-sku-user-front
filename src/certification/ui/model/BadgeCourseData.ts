@@ -10,9 +10,9 @@ class BadgeCourseData {
   isOpened: boolean = false;
 
   // TRS for Course
-  test: boolean = true;
-  report: boolean = true;
-  survey: boolean = true;
+  test: boolean = false;
+  report: boolean = false;
+  survey: boolean = false;
 
   test_name: string = '';
   report_name: string = '';

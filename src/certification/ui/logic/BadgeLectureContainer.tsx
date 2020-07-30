@@ -11,6 +11,7 @@ import {Lecture2} from '../../../lecture/shared/Lecture';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
 import {LectureViewModel} from '../../../lecture/model';
+import {CoursePlanContentsModel} from '../../../course/model';
 
 
 interface Props extends RouteComponentProps {
@@ -60,6 +61,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
             compData.course.cubeCount = data.lectureCardUsids.length;
+            getCourseTRS(compData.course);
             data.lectureCardUsids.map((id: string) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
@@ -80,6 +82,30 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       }
       setBadgeCompList(compList);
     });
+  };
+
+  const getCourseTRS = (course: BadgeCourseData) => {
+    badgeDetailService!.findCoursePlanContentsV2(course.coursePlanId)
+      .then((response: CoursePlanContentsModel) => {
+        if (response) {
+          if (response.testId && response.testId.length > 0) {
+            course.test = true;
+            course.test_name = response.examTitle;
+          }
+          if (response.fileBoxId && response.fileBoxId.length > 0) {
+            course.report = true;
+            course.report_name = response.examTitle;
+          }
+          if (response.surveyId && response.surveyId.length > 0) {
+            course.survey = true;
+            course.survey_name = course.name;
+          }
+        }
+      });
+  };
+
+  const getCubeTRS = (cube: LectureViewModel) => {
+
   };
 
   const showCourseInfo = (course: BadgeCourseData) => {
@@ -124,7 +150,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                 <div className="num">{badgeComp.course.cubeCount}개 강의 구성</div>
                 <div className="toggle-btn">
                   <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
-                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-down' : 'arrow-up')}/>
+                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
                     <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
                   </Button>
                 </div>
