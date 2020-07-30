@@ -418,6 +418,10 @@ class BadgeService {
   */
 }
 
-BadgeService.instance = new BadgeService(BadgeApi.instance);
+Object.defineProperty(BadgeService, 'instance',{
+  value: new BadgeService(BadgeApi.instance),
+  writable: false,
+  configurable: false,
+});
 
 export default BadgeService;

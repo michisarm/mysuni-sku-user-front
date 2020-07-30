@@ -10,6 +10,7 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Icon, Image } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
+import { BadgeService } from 'certification/stores';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
 import { FavoriteChannelChangeModal } from 'shared';
@@ -17,7 +18,6 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearni
 import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
-import BadgeService from '../../../certification/present/logic/BadgeService';
 import IssueState from '../../../certification/shared/Badge/ui/model/IssueState';
 
 
