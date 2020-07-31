@@ -22,7 +22,7 @@ import SurveyCaseModel from '../../../survey/event/model/SurveyCaseModel';
 import CourseLectureModel from '../../../lecture/model/CourseLectureModel';
 import LectureViewModel from '../../../lecture/model/LectureViewModel';
 
-/*
+
 const tempData = {
   'coursePlan': {
     'id': 'f4c96ac6-eb00-4a5d-a615-137f1af97d97',
@@ -703,7 +703,7 @@ const tempData = {
     'count': 0
   }
 };
-*/
+
 
 @autobind
 class CoursePlanService {
@@ -806,7 +806,7 @@ class CoursePlanService {
   @action
   async findCoursePlan(coursePlanId: string) {
     //
-    const courseData: any = await this.coursePlanApi.findCoursePlan(coursePlanId);
+    const courseData: any = tempData; //await this.coursePlanApi.findCoursePlan(coursePlanId);
 
     return runInAction(() => {
       if (courseData) {

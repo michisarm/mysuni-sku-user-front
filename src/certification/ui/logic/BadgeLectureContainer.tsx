@@ -86,8 +86,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     });
   };
 
-  const getCourseTRS = (course: BadgeCourseData) => {
-    badgeDetailService!.findCoursePlanContentsV2(course.coursePlanId)
+  const getCourseTRS = async (course: BadgeCourseData) => {
+    await badgeDetailService!.findCoursePlanContentsV2(course.coursePlanId)
       .then((response: CoursePlanContentsModel) => {
         if (response) {
           if (response.testId && response.testId.length > 0) {
@@ -106,8 +106,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       });
   };
 
-  const getCubeTRS = (cube: BadgeCubeData) => {
-    badgeDetailService!.findPersonalCube(cube.cubeId)
+  const getCubeTRS = async (cube: BadgeCubeData) => {
+    await badgeDetailService!.findPersonalCube(cube.cubeId)
       .then((response: PersonalCubeModel) => {
         if (response) {
           if (response.contents.examId && response.contents.examId.length > 0) {

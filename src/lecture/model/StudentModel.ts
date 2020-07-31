@@ -37,9 +37,14 @@ class StudentModel extends DramaEntityObservableModel {
 
   constructor(student?: StudentModel) {
     //
-    super();
+    super(student);
+
     if (student) {
-      Object.assign(this, { ...student });
+      //
+      // Object.assign(this, { ...student });
+      Object.assign(this, JSON.parse(JSON.stringify(student)));
+
+      //
       this.studentScore = student.studentScore && new StudentScoreModel(student.studentScore) || this.studentScore;
       this.joinRequests = student.joinRequests && student.joinRequests.length
         && student.joinRequests.map(request => new JoinRequestModel(request)) || this.joinRequests;
