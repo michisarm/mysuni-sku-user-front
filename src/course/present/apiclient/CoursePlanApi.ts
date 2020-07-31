@@ -2,6 +2,7 @@
 import { axiosApi as axios, OffsetElementList } from '@nara.platform/accent';
 import { NameValueList } from 'shared/model';
 import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '../../model';
+import {CoursePlanCustomModel} from '../../model/CoursePlanCustomModel';
 
 export default class CoursePlanApi {
   //
@@ -80,6 +81,14 @@ export default class CoursePlanApi {
   findAllPreCourseIdList(coursePlanId: string) {
     return axios.get<string[]>(this.URL + `/preCourseIdList/${coursePlanId}` )
       .then(response => response && response.data || null);
+
+  }
+
+  findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
+    axios.get<any>('http://ma.mysuni.sk.com/api/lecture/students/flow/studentInfoView?serviceId=P-LECTURE-23&lectureCardIds=LECTURE-CARD-1yq,LECTURE-CARD-1yr,LECTURE-CARD-1ys&courseLectureIds=C-LECTURE-2w,C-LECTURE-2u')
+      .then(response => response && response.data);
+    // return axios.get<CoursePlanCustomModel>(`http://ma.mysuni.sk.com/api/lecture/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,  )
+    //   .then(response => response && response.data || null);
 
   }
 

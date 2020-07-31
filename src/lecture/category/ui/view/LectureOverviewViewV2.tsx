@@ -232,6 +232,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { params } = match;
     const { search } = location;
 
+    console.log('lecture : ', lecture);
+
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
       if (params.cineroomId) {
@@ -424,6 +426,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                   )}
                 >
                   {getSubLectureViews(lecture.id).map((subLecture, index) =>
+
                     <Lecture2.Course
                       key={`sub-lecture-${index}`}
                       className="included"
@@ -503,11 +506,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           )
         }
 
-
-        <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId ]}
-        />
-
         <OverviewField.List
           ref={this.panelRef}
           className={classNames('sub-category fn-parents', { open: categoryOpen })}
@@ -529,6 +527,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
             </Button>
           )}
         </OverviewField.List>
+
+        <OverviewField.FileDownload
+          fileBoxIds={[ viewObject.fileBoxId ]}
+        />
 
         { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (
           <OverviewField.List icon className="period-area">

@@ -58,6 +58,11 @@ class LectureService {
   @observable
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
+  @action
+  setSubLectureViews(courseId: string, lectureViews: LectureViewModel[]) {
+    runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
+  }
+
   // 권장과정
   @observable
   requiredLecturesCount: number = 0;
@@ -199,6 +204,11 @@ class LectureService {
     return lectureViews;
   }
 
+  findLectureViewsFromJson(lectures: string) {
+    runInAction( () => this._lectureViews = JSON.parse(lectures));
+    console.log('lectureViews : ', this.lectureViews);
+  }
+
   // SubLectureViewMap -------------------------------------------------------------------------------------------------
 
   @action
@@ -221,7 +231,12 @@ class LectureService {
 
   getSubLectureViews(courseId: string) {
     //
+
+    if (this.subLectureViewsMap.get(courseId)) {
+      console.log( 'subLectureViewsMap.get : ', courseId, (this.subLectureViewsMap.get(courseId) as IObservableArray).peek());
+    }
     return this.subLectureViewsMap.get(courseId) || [];
+
   }
 
   @action

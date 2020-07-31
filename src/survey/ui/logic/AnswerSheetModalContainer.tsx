@@ -184,6 +184,9 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { open } = this.state;
     const { surveyFormService, answerSheetService, trigger } = this.props;
     const { surveyForm } = surveyFormService!;
+    if (!surveyForm) {
+      return null;
+    }
     const { answerMap, answerSheet } = answerSheetService!;
     const { questions, criterionList } = surveyForm!;
     const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;

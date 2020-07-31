@@ -8,6 +8,7 @@ import StudentJoinRdoModel from '../../../model/StudentJoinRdoModel';
 import StudentCountRdoModel from '../../../model/StudentCountRdoModel';
 import StudentModel from '../../../model/StudentModel';
 import StudentInfoModel from '../../../model/StudentInfoModel';
+import StudentFlowApi from '../apiclient/StudentFlowApi';
 
 
 const students = {
@@ -412,6 +413,14 @@ class StudentService {
     return student;
   }
 
+  @action
+  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
+    const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds);
+    console.log(`studentInfo = ${studentInfo}`);
+    this._studentInfo = new StudentInfoModel(studentInfo);
+    return this._studentInfo;
+  }
+
   // Student ----------------------------------------------------------------------------------------------------------
 
   registerStudent(studentCdo: StudentCdoModel) {
@@ -474,18 +483,18 @@ class StudentService {
   @action
   async findStudentForVideo(studentId: string, round?: number) {
     //
-    // const student = await this.studentApi.findStudent(studentId);
-    //
-    // runInAction(() => {
-    //   this._studentForVideo = new StudentModel(student);
-    //   if (round) this._studentForVideo.round = round;
-    // });
-    //
-    // return student;
+    const student = await this.studentApi.findStudent(studentId);
 
-    this._studentInfo = new StudentInfoModel(students);
+    runInAction(() => {
+      this._studentForVideo = new StudentModel(student);
+      if (round) this._studentForVideo.round = round;
+    });
 
-    return this._studentInfo.findByLectureUsid(studentId) || new StudentModel();
+    return student;
+
+    // this._studentInfo = new StudentInfoModel(students);
+    //
+    // return this._studentInfo.findByLectureUsid(studentId) || new StudentModel();
   }
 
   @action

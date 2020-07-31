@@ -34,6 +34,8 @@ import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/Answe
 import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
 import {dateTimeHelper} from '../../../../../shared';
 import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
+import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
+import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -126,7 +128,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   viewObject: any = null;
   studentData: any = StudentModel;
 
-  personalCube: PersonalCubeModel | null = {} as PersonalCubeModel;
+  personalCube: PersonalCubeModel | null | undefined = {} as PersonalCubeModel;
   classNameForLearningState: string  = '';
   studentForVideoObj: StudentModel | null = {} as StudentModel;
   rollBooks: RollBookModel[] = [];
@@ -200,16 +202,20 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService } = this.props;
     const { getStudentForVideo } = studentService!;
 
-    if (lectureView && lectureView.cubeId) {
-      this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
-      this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
-      // console.log('init lectureView : ', lectureView);
-      // console.log('init personalCube : ', this.personalCube);ß
-      // console.log('init rollBoo.ks : ', this.rollBooks[0]);
+    if (lectureView && lectureView.cubeId) {
+      // this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
+      // this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
+
+      this.personalCube = lectureView.personalCube;
+      this.rollBooks = lectureView.rollBooks;
+
+      console.log('init lectureView : ', lectureView);
+      console.log('init personalCube : ', this.personalCube);
+      console.log('init rollBoo.ks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
-        this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
+        // this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
 
         if (this.personalCube?.contents.examId)
         {
@@ -219,8 +225,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
         }
 
         if (this.personalCube?.contents.surveyCaseId) {
-          const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
-          const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+          // const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+          // const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+          const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
+          const surveyCase = lectureView.surveyForm  === null ? new SurveyFormModel() : lectureView.surveyForm;
+
+          // console.log('surveyCase : ', surveyCase);
 
           const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
           const title = JSON.parse(JSON.stringify(obj.langStringMap));
@@ -242,12 +252,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.setExamState(this.studentData);
       }
 
-      getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
-      {
-        this.studentForVideoObj = studentForVideo;
-        const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
-        this.setState({ classNameForLearningState: classNameForLearningStateTemp });
-      });
+      // getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
+      // {
+      //   this.studentForVideoObj = studentForVideo;
+      //   const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+      //   this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      // });
     }
 
     // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
@@ -405,7 +415,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       {
         //this.onRegisterStudentForVideo(ProposalState.Approved);
         //this.popupLearnModal(url);
-        window.open(url, '_blank');
+        const a = window.open('http://www.naver.com', '_blank');
       } else
       {
         reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });

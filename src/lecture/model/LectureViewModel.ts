@@ -1,8 +1,11 @@
 
 import { computed, decorate, observable } from 'mobx';
 import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBoxModel } from 'shared/model';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import {CubeType, CubeTypeNameType, PersonalCubeModel} from 'personalcube/personalcube/model';
 import LectureServiceType from './LectureServiceType';
+import RollBookModel from './RollBookModel';
+import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
+import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
@@ -11,6 +14,7 @@ class LectureViewModel extends DramaEntityObservableModel {
   serviceType: LectureServiceType = LectureServiceType.Program;
   coursePlanId: string = '';
   cubeId: string = '';
+  // cube: PersonalCubeModel = new PersonalCubeModel();
 
   name: string = '';
   cubeType: CubeType = CubeType.None;
@@ -26,6 +30,12 @@ class LectureViewModel extends DramaEntityObservableModel {
 
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
+
+  personalCube?: PersonalCubeModel = new PersonalCubeModel();
+  rollBooks: RollBookModel[] = [];
+
+  answerSheet: AnswerSheetModel = new AnswerSheetModel();
+  surveyForm: SurveyFormModel = new SurveyFormModel();
 
   constructor(lectureView?: LectureViewModel) {
     //

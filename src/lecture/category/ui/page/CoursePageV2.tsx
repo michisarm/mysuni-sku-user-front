@@ -144,10 +144,10 @@ class CoursePageV2 extends Component<Props, State> {
     //
     this.setState({ loaded: false });
     await this.findBaseInfo();
-    this.findProgramOrCourseLecture();
-    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
-    await this.findStudent();
-    await this.setPreCourseModel();
+    // this.findProgramOrCourseLecture();
+    // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    // await this.findStudent();
+    // await this.setPreCourseModel();
     this.setState({ loaded: true });
   }
 
@@ -197,35 +197,45 @@ class CoursePageV2 extends Component<Props, State> {
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService,
-      courseLectureService,
+      match, collegeService, coursePlanService, answerSheetService, surveyCaseService,
+      courseLectureService, lectureService
     } = this.props;
     const { params } = match;
 
-    collegeService.findCollege(params.collegeId);
-    const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
-    await coursePlanService.findCoursePlanContentsV2(coursePlan.contentsId);
-    if (coursePlanService.coursePlanContents.testId) {
-      const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
-      const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+    coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId);
 
-      this.state.examTitle = examPaper.title;
-    }
-
-    if (coursePlanService.coursePlanContents.surveyCaseId) {
-      await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
-      const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
-
-      const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-      const title = JSON.parse(JSON.stringify(obj.langStringMap));
-
-      const { answerSheet } = answerSheetService!;
-      const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
-
-      this.state.surveyState = disabled;
-      this.state.surveyTitle =  title.ko;
-
-    }
+    // if (coursePlanService.coursePlanContents.testId) {
+    //
+    //   const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
+    //   const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+    //
+    //   this.state.examTitle = examPaper.title;
+    // }
+    //
+    // collegeService.findCollege(params.collegeId);
+    // const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
+    // await coursePlanService.findCoursePlanContentsV2(coursePlan.contentsId);
+    // if (coursePlanService.coursePlanContents.testId) {
+    //   const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
+    //   const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+    //
+    //   this.state.examTitle = examPaper.title;
+    // }
+    //
+    // if (coursePlanService.coursePlanContents.surveyCaseId) {
+    //   await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
+    //   const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+    //
+    //   const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+    //   const title = JSON.parse(JSON.stringify(obj.langStringMap));
+    //
+    //   const { answerSheet } = answerSheetService!;
+    //   const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+    //
+    //   this.state.surveyState = disabled;
+    //   this.state.surveyTitle =  title.ko;
+    //
+    // }
 
   }
 
@@ -350,6 +360,10 @@ class CoursePageV2 extends Component<Props, State> {
     });
   }
 
+  checkNullValue(value: any) {
+    return value !== null ? value : '';
+  }
+
   getViewObject() {
     //
     const {
@@ -370,14 +384,25 @@ class CoursePageV2 extends Component<Props, State> {
     let tabState: string = '';
     let passedState: boolean = false;
 
+    // console.log('coursePlanContents : ', coursePlanContents);
+
     examId = coursePlanContents.testId || '';
     examTitle = this.state.examTitle || '';
     surveyId = coursePlanContents.surveyId || '';
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
-    reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    reportFileBoxId = coursePlan.reportFileBox ? coursePlan.reportFileBox.fileBoxId : '';
     tabState = this.state.tabState || '';
+
+    // examId = this.checkNullValue(coursePlanContents.testId);
+    // examTitle = this.checkNullValue(this.state.examTitle);
+    // surveyId = this.checkNullValue(coursePlanContents.surveyId);
+    // surveyTitle = this.checkNullValue(this.state.surveyTitle);
+    // surveyState = this.state.surveyState || false;
+    // surveyCaseId = this.checkNullValue(coursePlanContents.surveyCaseId);
+    // reportFileBoxId = this.checkNullValue(coursePlan.reportFileBox.fileBoxId);
+    // tabState = this.checkNullValue(this.state.tabState);
 
     // console.log('course page student : ', student);
 

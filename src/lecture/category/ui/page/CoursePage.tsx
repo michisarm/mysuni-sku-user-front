@@ -294,7 +294,7 @@ class CoursePage extends Component<Props, State> {
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
-    reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    reportFileBoxId = coursePlan.reportFileBox ? coursePlan.reportFileBox.fileBoxId : '';
     tabState = this.state.tabState || '';
 
     // console.log('course page student : ', student);

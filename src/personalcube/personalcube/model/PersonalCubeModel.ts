@@ -7,6 +7,7 @@ import { CategoryModel, CreatorModel, CubeState, IconBoxModel, IdName, NameValue
 import { CubeContentsModel } from './CubeContentsModel';
 import { PersonalCubeCdoModel } from './PersonalCubeCdoModel';
 import { OpenRequest } from './OpenRequest';
+import {ExaminationModel} from '../../../assistant/exam/model/ExaminationModel';
 
 
 export class PersonalCubeModel implements DramaEntity {
@@ -32,6 +33,8 @@ export class PersonalCubeModel implements DramaEntity {
   time: number = 0;
 
   openRequests: OpenRequest[] = [];
+
+  exam: ExaminationModel = new ExaminationModel();
 
 
   //UI
