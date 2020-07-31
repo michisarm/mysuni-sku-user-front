@@ -21,12 +21,12 @@ import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
 import SurveyCaseModel from '../../../survey/event/model/SurveyCaseModel';
 import CourseLectureModel from '../../../lecture/model/CourseLectureModel';
 import LectureViewModel from '../../../lecture/model/LectureViewModel';
+import ProgramLectureService from '../../../lecture/shared/present/logic/ProgramLectureService';
+import StudentService from '../../../lecture/shared/present/logic/StudentService';
 import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
 import {ProgramLectureModel} from '../../../lecture/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import SubLectureViewModel from '../../../lecture/model/SubLectureViewModel';
-import ProgramLectureService from '../../../lecture/shared/present/logic/ProgramLectureService';
-import StudentService from '../../../lecture/shared/present/logic/StudentService';
 
 
 
@@ -133,87 +133,86 @@ class CoursePlanService {
     // axiosApi.get<any>('http://ma.mysuni.sk.com/api/lecture/students/flow/studentInfoView?serviceId=P-LECTURE-23&lectureCardIds=LECTURE-CARD-1yq,LECTURE-CARD-1yr,LECTURE-CARD-1ys&courseLectureIds=C-LECTURE-2w,C-LECTURE-2u')
     //   .then(response => response && response.data);
 
-    await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
+    // const studentInfo = await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
+    //
+    // return studentInfo;
 
-    // await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId).then((courseData) => {
-    //
-    //   // const tempStr = JSON.stringify(response);
-    //   // const resultJson = JSON.parse(tempStr);
-    //
-    //   return runInAction(() => {
-    //     if (courseData) {
-    //       const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
-    //       const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
-    //       const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
-    //       const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
-    //
-    //       const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
-    //       const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
-    //
-    //       let serviceId: string = '';
-    //       let lectureCardIds: string[] = [];
-    //       let courseLectureIds: string[] = [];
-    //
-    //
-    //       console.log('courseLecture : ', courseLecture);
-    //       console.log('programLecture : ', programLecture);
-    //
-    //       if ( courseData.courseLecture.coursePlanId ) {
-    //         serviceId = courseLecture.usid;
-    //         lectureCardIds = courseLecture.lectureCardUsids;
-    //       } else {
-    //         serviceId = programLecture.usid;
-    //         lectureCardIds = programLecture.lectureCardUsids;
-    //         courseLectureIds = programLecture.courseLectureUsids;
-    //       }
-    //
-    //       console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
-    //
-    //       courseData.lectureViews.map(lectureView => {
-    //         lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
-    //         lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
-    //         lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
-    //       });
-    //       const lectureViews: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.lectureViews));
-    //
-    //       const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
-    //       const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
-    //
-    //       courseData.subLectureViews.map(subLecture => {
-    //         subLecture.lectureViews.map(lectureView => {
-    //           lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
-    //           lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
-    //           lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
-    //         });
-    //       });
-    //       const subLectureViews: SubLectureViewModel[] = JSON.parse(JSON.stringify(courseData.subLectureViews));
-    //
-    //
-    //       this.coursePlan = new CoursePlanModel(coursePlan);
-    //       this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
-    //       this.answerSheetService.setAnswerSheet(answerSheet);
-    //       this.surveyFormService.setSurveyForm(surveyForm);
-    //       this.courseLectureService.setCourseLecture(courseLecture);
-    //       this.programLectureService.setProgramLecture(programLecture);
-    //       this.lectureService.setLectureViews(lectureViews);
-    //       this.reviewService.reviewSummary = reviewSummary;
-    //       this.commentService.commentCount = commentCountRdo;
-    //       for (let i = 0; i < subLectureViews.length; i++) {
-    //         const subLectureView = subLectureViews[i];
-    //         this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
-    //       }
-    //
-    //       console.log('lectureViews : ', lectureViews);
-    //       // console.log('subLectureViewsMap : ', this.lectureService.subLectureViewsMap);
-    //       console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
-    //       this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
-    //
-    //     }
-    //
-    //
-    //     return courseData;
-    //   });
-    // });
+    const courseData: any = await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
+
+    // const tempStr = JSON.stringify(response);
+    // const resultJson = JSON.parse(tempStr);
+
+    runInAction(() => {
+      if (courseData) {
+        const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
+        const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
+        const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
+        const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
+
+        const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
+        const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
+
+        let serviceId: string = '';
+        let lectureCardIds: string[] = [];
+        let courseLectureIds: string[] = [];
+
+
+        console.log('courseLecture : ', courseLecture);
+        console.log('programLecture : ', programLecture);
+
+        if ( courseData.courseLecture.coursePlanId ) {
+          serviceId = courseLecture.usid;
+          lectureCardIds = courseLecture.lectureCardUsids;
+        } else {
+          serviceId = programLecture.usid;
+          lectureCardIds = programLecture.lectureCardUsids;
+          courseLectureIds = programLecture.courseLectureUsids;
+        }
+
+        console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
+
+        courseData.lectureViews.map((lectureView: any) => {
+          lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
+          lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
+          lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
+        });
+        const lectureViews: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.lectureViews));
+
+        const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
+        const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
+
+        courseData.subLectureViews.map((subLecture: any) => {
+          subLecture.lectureViews.map((lectureView: any) => {
+            lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
+            lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
+            lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
+          });
+        });
+        const subLectureViews: SubLectureViewModel[] = JSON.parse(JSON.stringify(courseData.subLectureViews));
+
+
+        this.coursePlan = new CoursePlanModel(coursePlan);
+        this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
+        this.answerSheetService.setAnswerSheet(answerSheet);
+        this.surveyFormService.setSurveyForm(surveyForm);
+        this.courseLectureService.setCourseLecture(courseLecture);
+        this.programLectureService.setProgramLecture(programLecture);
+        this.lectureService.setLectureViews(lectureViews);
+        this.reviewService.reviewSummary = reviewSummary;
+        this.commentService.commentCount = commentCountRdo;
+        for (let i = 0; i < subLectureViews.length; i++) {
+          const subLectureView = subLectureViews[i];
+          this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
+        }
+
+        console.log('lectureViews : ', lectureViews);
+        // console.log('subLectureViewsMap : ', this.lectureService.subLectureViewsMap);
+        console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
+        this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+      }
+    });
+
+    return courseData;
   }
 
   @action

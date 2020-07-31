@@ -60,27 +60,6 @@ class StudentInfoModel {
   get numberOfTrials() {
     return this.student?.studentScore.numberOfTrials || 0;
   }
-
-  public findByLectureUsid(lectureId: string): StudentModel | null {
-    //
-    if (this.lecture) {
-      this.lecture.lectures.map((info: StudentModel) =>
-        info.lectureUsid === lectureId && info
-      );
-    }
-
-    if (this.course) {
-      this.course.courses.map((courseInfo: StudentCubeModel) => {
-        if (courseInfo) {
-          courseInfo.lectures.map((info: StudentModel) =>
-            info.lectureUsid === lectureId && info
-          );
-        }
-      });
-    }
-
-    return null;
-  }
 }
 
 // decorate(StudentInfoModel, {

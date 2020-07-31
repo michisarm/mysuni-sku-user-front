@@ -1,7 +1,6 @@
 import {CommentCountRdoModel, ReviewSummaryModel} from '@nara.drama/feedback';
 import {CoursePlanModel} from './CoursePlanModel';
 import {CoursePlanContentsModel} from './CoursePlanContentsModel';
-import SurveyCaseModel from '../../survey/event/model/SurveyCaseModel';
 import CourseLectureModel from '../../lecture/model/CourseLectureModel';
 import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
 import LectureViewModel from '../../lecture/model/LectureViewModel';
