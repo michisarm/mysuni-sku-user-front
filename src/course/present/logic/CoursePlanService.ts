@@ -129,18 +129,8 @@ class CoursePlanService {
 
   @action
   async findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
-    // return axiosApi.get<any>(this.baseUrl + `/studentInfoView?serviceId=${serviceId}&lectureCardIds=${lectureCardIds}&courseLectureIds=${courseLectureIds}` )
-    // axiosApi.get<any>('http://ma.mysuni.sk.com/api/lecture/students/flow/studentInfoView?serviceId=P-LECTURE-23&lectureCardIds=LECTURE-CARD-1yq,LECTURE-CARD-1yr,LECTURE-CARD-1ys&courseLectureIds=C-LECTURE-2w,C-LECTURE-2u')
-    //   .then(response => response && response.data);
-
-    // const studentInfo = await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
     //
-    // return studentInfo;
-
     const courseData: any = await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
-
-    // const tempStr = JSON.stringify(response);
-    // const resultJson = JSON.parse(tempStr);
 
     runInAction(() => {
       if (courseData) {
@@ -151,25 +141,6 @@ class CoursePlanService {
 
         const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
         const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
-
-        let serviceId: string = '';
-        let lectureCardIds: string[] = [];
-        let courseLectureIds: string[] = [];
-
-
-        console.log('courseLecture : ', courseLecture);
-        console.log('programLecture : ', programLecture);
-
-        if ( courseData.courseLecture.coursePlanId ) {
-          serviceId = courseLecture.usid;
-          lectureCardIds = courseLecture.lectureCardUsids;
-        } else {
-          serviceId = programLecture.usid;
-          lectureCardIds = programLecture.lectureCardUsids;
-          courseLectureIds = programLecture.courseLectureUsids;
-        }
-
-        console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
 
         courseData.lectureViews.map((lectureView: any) => {
           lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
@@ -190,7 +161,6 @@ class CoursePlanService {
         });
         const subLectureViews: SubLectureViewModel[] = JSON.parse(JSON.stringify(courseData.subLectureViews));
 
-
         this.coursePlan = new CoursePlanModel(coursePlan);
         this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
         this.answerSheetService.setAnswerSheet(answerSheet);
@@ -205,9 +175,19 @@ class CoursePlanService {
           this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
         }
 
-        console.log('lectureViews : ', lectureViews);
-        // console.log('subLectureViewsMap : ', this.lectureService.subLectureViewsMap);
-        console.log('serviceId : ', serviceId, 'lectureCardIds : ', lectureCardIds, 'courseLectureIds : ', courseLectureIds);
+        let serviceId: string = '';
+        let lectureCardIds: string[] = [];
+        let courseLectureIds: string[] = [];
+
+        if ( courseData.courseLecture.coursePlanId ) {
+          serviceId = courseLecture.usid;
+          lectureCardIds = courseLecture.lectureCardUsids;
+        } else {
+          serviceId = programLecture.usid;
+          lectureCardIds = programLecture.lectureCardUsids;
+          courseLectureIds = programLecture.courseLectureUsids;
+        }
+
         this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
       }
     });

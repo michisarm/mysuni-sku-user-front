@@ -315,7 +315,7 @@ class BadgeService {
     return badgeOffsetElementList;
   }
 
-  // 뱃지 수강정보 (박팀장 확인 필요)
+  // 뱃지 수강정보
   @action
   async findBadgeStudentInfo(badgeId: string) {
     //

@@ -78,7 +78,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   }, []);
 
 
-  // 뱃지에 대한 수강정보 호출 (박팀장 확인 필요)
+  // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
     //
     const badgeStudentInfo: BadgeStudentModel | null = await badgeService!.findBadgeStudentInfo(badgeId);

@@ -22,31 +22,37 @@ class StudentService {
   @observable
   _studentInfo: StudentInfoModel | null = null;
 
-  @computed
-  get StudentInfos() {
-    return this._studentInfo;
-  }
-
   @action
-  getStudentInfo(lectureId: string): StudentModel | null {
+  getLectureInfo(lectureId: string): StudentModel | null {
     //
-    if (this._studentInfo && this._studentInfo.lecture) {
-      this._studentInfo.lecture.lectures.map((info: StudentModel) =>
-        info.lectureUsid === lectureId && info
-      );
-    }
+    let lecture: StudentModel | null = null;
 
-    if (this._studentInfo && this._studentInfo.course) {
-      this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
-        if (courseInfo) {
-          courseInfo.lectures.map((info: StudentModel) =>
-            info.lectureUsid === lectureId && info
-          );
+    if (this._studentInfo && this._studentInfo.lecture) {
+      this._studentInfo.lecture.lectures.map((info: StudentModel) => {
+        if (info.lectureUsid === lectureId) {
+          lecture = new StudentModel(info);
         }
       });
     }
 
-    return null;
+    if (this._studentInfo && this._studentInfo.course && !lecture) {
+      this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
+        if (courseInfo && !lecture) {
+          courseInfo.lectures.map((info: StudentModel) => {
+            if (info.lectureUsid === lectureId) {
+              lecture = new StudentModel(info);
+            }
+          });
+        }
+      });
+    }
+
+    return lecture;
+  }
+
+  @computed
+  get StudentInfos() {
+    return this._studentInfo;
   }
 
   @observable
@@ -125,10 +131,16 @@ class StudentService {
 
   @action
   async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
+    //
+    this._studentInfo = null;
+
     const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds);
-    console.log(`studentInfo = ${studentInfo}`);
-    this._studentInfo = new StudentInfoModel(studentInfo);
-    return this._studentInfo;
+
+    if (studentInfo) {
+      this._studentInfo = new StudentInfoModel(studentInfo);
+    }
+
+    return studentInfo;
   }
 
   // Student ----------------------------------------------------------------------------------------------------------
