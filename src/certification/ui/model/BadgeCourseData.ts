@@ -2,6 +2,8 @@ import BadgeCubeData from './BadgeCubeData';
 
 class BadgeCourseData {
   // Course Data
+  serviceId: string = '';
+
   name: string = '';
   cubeCount: number = 0;
   coursePlanId: string = '';

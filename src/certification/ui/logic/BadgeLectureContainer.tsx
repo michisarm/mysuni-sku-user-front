@@ -6,25 +6,28 @@ import {Button, Icon} from 'semantic-ui-react';
 import classNames from 'classnames';
 import BadgeCompData from '../model/BadgeCompData';
 import BadgeCompModel from '../model/BadgeCompModel';
-import {BadgeDetailService} from '../../../lecture/stores';
-import {Lecture2} from '../../../lecture/shared/Lecture';
+import {BadgeDetailService, StudentService} from '../../../lecture/stores';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
 import {LectureViewModel} from '../../../lecture/model';
 import {CoursePlanContentsModel} from '../../../course/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import {CoursePlanService} from '../../../course/stores';
+import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel';
 
 
 interface Props extends RouteComponentProps {
   //
+  coursePlanService? : CoursePlanService;
   badgeDetailService?: BadgeDetailService;
+  studentService?: StudentService;
 
   badgeId: string;
 }
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeDetailService, badgeId, } = Props;
+  const { coursePlanService, badgeDetailService, badgeId, } = Props;
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [opened, setOpened] = useState(false);
@@ -58,6 +61,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           if (data.serviceType === 'COURSE') {
             // 코스정보 생성
             compData.course = new BadgeCourseData();
+            compData.course.serviceId = data.serviceId;
             compData.course.name = data.name;
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
@@ -126,6 +130,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       });
   };
 
+  /*
+  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
     //
     course.isOpened = !course.isOpened;
@@ -155,6 +161,37 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     else {
       setOpened(!opened);
     }
+  };
+  */
+
+  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
+  const showCourseInfo = async (course: BadgeCourseData) => {
+    //
+    course.isOpened = !course.isOpened;
+    course.cubeData = [];
+
+    if (course.isOpened) {
+      await coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
+        .then((response: CoursePlanCustomModel | null) => {
+          if (response && response.lectureViews) {
+            response.lectureViews.map((lecture: LectureViewModel) => {
+              const cubeData = new BadgeCubeData();
+              cubeData.cubeId = lecture.cubeId;
+              cubeData.name = lecture.name;
+              cubeData.learningCardId = lecture.learningCardId;
+              cubeData.cubeType = lecture.cubeType;
+              cubeData.learningTime = lecture.learningTime;
+              // 진행율(%)
+              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
+              cubeData.learningState = lecture.learningState;
+              getCubeTRS(cubeData);
+              course.cubeData = course.cubeData.concat(cubeData);
+            });
+          }
+          setOpened(!opened);
+        });
+    }
+    setOpened(!opened);
   };
 
   return (
@@ -247,7 +284,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                       </>
                     )
                     :
-                    null
+                    <div>코스 정보가 존재하지 않습니다.</div>
                   }
                   {badgeComp.course && badgeComp.course.test ?
                     <li className="step1 trs">
@@ -398,5 +435,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'badgeDetail.badgeDetailService'
+  'course.coursePlanService',
+  'badgeDetail.badgeDetailService',
+  'lecture.studentService',
 ))(withRouter(observer(BadgeLectureContainer)));
