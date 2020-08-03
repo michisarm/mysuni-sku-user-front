@@ -25,7 +25,7 @@ const BadgeListContainer: FunctionComponent<BadgeListContainerProps> = (Props) =
                 badgeStyle={badgeStyle}
                 badgeSize={badgeSize}
               />
-              <div className="badge-name">{badge.name}</div>
+              <div className="badge-name"><span>{badge.name}</span></div>
             </li>
           );
         })}

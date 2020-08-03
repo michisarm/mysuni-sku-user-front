@@ -12,7 +12,7 @@ import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 enum certiAdminCategoryIcon {
   mySUNI = '/static/media/logo_badge.svg',
   Subsidiary = '/static/media/logo_badge.svg',
-  Etc = '/static/media/logo_badge.svg',
+  Third = '/static/media/logo78x25.9e42a9b0.svg',
 }
 
 interface Props extends RouteComponentProps {

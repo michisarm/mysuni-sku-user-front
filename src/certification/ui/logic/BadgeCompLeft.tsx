@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {inject} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
+import {mobxHelper, reactAlert} from '@nara.platform/accent';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
@@ -33,6 +33,9 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     isCount: 0,
     totalCount: 0
   });
+
+  const [ requestModal, setRequestModal ] = useState(false);
+
 
   const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
 
@@ -79,21 +82,27 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     });
   };
 
-  const [ requestModal, setRequestModal ] = useState(false);
 
   // 발급요청
   const onClickRequestBadge = (learningCompleted: boolean) => {
     //
-    // if ( !learningCompleted ) {
-    //   setRequestModal(!requestModal);
-    // } else {
-    //
-    // 추가발급조건 확인 -> missionCompleted 관련 데이터가 없음
-    console.log('발급요청: ');
-    console.log( studentInfo );
-    console.log( typeof studentInfo );
+    if (!badge.autoIssued) {
 
-    // }
+      // learningCompleted가 변경되는 시점 확인 필요
+      if (badgeLearningCount.isCount < badgeLearningCount.totalCount ) {
+        setRequestModal(!requestModal);
+      } else {
+        // 발급요청 API call
+
+        console.log( studentInfo );
+
+        badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
+          .then((response) => {
+            console.log( response );
+          });
+
+      }
+    }
   };
 
   const onHandleChangeModal = () => {

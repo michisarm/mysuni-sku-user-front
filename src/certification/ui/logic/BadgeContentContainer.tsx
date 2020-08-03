@@ -387,7 +387,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         </OverviewField.List>
 
         {/*학습정보*/}
-        <OverviewField.List icon>
+        <OverviewField.List icon className="course-area">
           <OverviewField.Item
             titleIcon="list24"
             title="Learning Path"
