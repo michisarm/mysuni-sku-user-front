@@ -53,18 +53,12 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [opened, setOpened] = useState(false);
 
-  // const { viewObject, typeViewObject, onSaveCallback, skProfileService, lectureService, lectureCardId,
-  //   match, onRefreshLearningState, courseLectureService, } = Props;
-
-  // const { params } = match;
-  // const { skProfile } = skProfileService!;
-  // const { member } = skProfile;
-  // const { lectureViews, getSubLectureViews } = lectureService!;
-  // const { preLectureViews } = courseLectureService;
-
   useEffect(() => {
     // 배지 구성 학습 리스트 조회하기
     getBadgeCompLectures(badgeId);
+    setTimeout(() => {
+      setOpened(!opened);
+    }, 500);
   }, [badgeId]);
 
   // 뱃지 구성 학습 리스트 조회하기
@@ -108,8 +102,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
         });
       }
       setBadgeCompList(compList);
-      console.log(compList);
-
     });
   };
 

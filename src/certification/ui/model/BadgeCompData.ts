@@ -15,7 +15,7 @@ class BadgeCompData {
   // Cube Data
   cube: BadgeCubeData | null = null;
 
-  constructor(data?: BadgeCompData) {
+  constructor(data?: BadgeCompData | null) {
     //
     if (data) {
       Object.assign(this, data);
