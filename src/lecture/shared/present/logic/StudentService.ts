@@ -23,7 +23,7 @@ class StudentService {
   _studentInfo: StudentInfoModel | null = null;
 
   @action
-  getLectureInfo(lectureId: string): StudentModel | null {
+  getLectureInfo(lectureId: string): StudentModel {
     //
     let lecture: StudentModel | null = null;
 
@@ -35,7 +35,7 @@ class StudentService {
       });
     }
 
-    if (this._studentInfo && this._studentInfo.course && !lecture) {
+    if (this._studentInfo && this._studentInfo.course) {
       this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
         if (courseInfo && !lecture) {
           courseInfo.lectures.map((info: StudentModel) => {
@@ -47,6 +47,7 @@ class StudentService {
       });
     }
 
+    // @ts-ignore
     return lecture;
   }
 

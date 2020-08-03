@@ -6,6 +6,9 @@ import LectureServiceType from './LectureServiceType';
 import RollBookModel from './RollBookModel';
 import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
 import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
+import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
+import { CubeIntroModel } from '../../personalcube/cubeintro/model';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
@@ -32,10 +35,14 @@ class LectureViewModel extends DramaEntityObservableModel {
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
   personalCube?: PersonalCubeModel = new PersonalCubeModel();
+  cubeIntro?: CubeIntroModel = new CubeIntroModel();
   rollBooks: RollBookModel[] = [];
 
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
   surveyForm: SurveyFormModel = new SurveyFormModel();
+
+  examination: ExaminationModel = new ExaminationModel();
+  examPaper: ExamPaperModel = new ExamPaperModel();
 
   constructor(lectureView?: LectureViewModel) {
     //

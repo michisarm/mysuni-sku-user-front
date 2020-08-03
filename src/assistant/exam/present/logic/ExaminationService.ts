@@ -28,6 +28,14 @@ export default class ExaminationService {
   }
 
   @action
+  setExamination(examination: ExaminationModel) {
+    return runInAction(() => {
+      this.examination = examination;
+      return examination;
+    });
+  }
+
+  @action
   clear() {
     //
     this.examination = new ExaminationModel();
