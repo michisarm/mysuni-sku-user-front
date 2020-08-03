@@ -10,6 +10,8 @@ class BadgeCourseData {
   lectureCardIds: string[] = [];
   cubeData: BadgeCubeData[] = [];
   isOpened: boolean = false;
+  learningState: string = '';
+
 
   // TRS for Course
   test: boolean = false;

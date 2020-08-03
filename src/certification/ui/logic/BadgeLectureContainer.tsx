@@ -20,6 +20,8 @@ import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel
 
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
+import TRSContainer from './TRSContainer';
+
 
 
 enum StateDefault {
@@ -68,6 +70,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       if (response.length > 0) {
         response.map((data: BadgeCompModel) => {
           const compData = new BadgeCompData();
+          //console.log( data );
           // 공통
           compData.compType = data.serviceType;
           compData.id = data.id;
@@ -81,6 +84,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
             compData.course.cubeCount = data.lectureCardUsids.length;
+            compData.course.learningState = data.learningState;
             data.lectureCardUsids.map((id: string) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
@@ -102,6 +106,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
         });
       }
       setBadgeCompList(compList);
+
+      //console.log( compList );
     });
   };
 
@@ -129,6 +135,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     await badgeDetailService!.findPersonalCube(cube.cubeId)
       .then((response: PersonalCubeModel) => {
         if (response) {
+          //console.log( response );
           if (response.contents.examId && response.contents.examId.length > 0) {
             cube.test = true;
             cube.test_name = response.contents.examTitle;
@@ -167,6 +174,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               cubeData.learningState = lecture.learningState;
               getCubeTRS(cubeData);
               course.cubeData = course.cubeData.concat(cubeData);
+
+              console.log( course.cubeData );
             });
           }
         })
@@ -216,6 +225,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
     //
+    console.log( cube );
+
     // 버튼 스타일
     let styleName = 'black';
     switch( cube.learningState ) {
@@ -280,6 +291,9 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                 </div>
                 <div className="num">
                   {badgeComp.course.cubeCount}개 강의 구성
+                  {badgeComp.course.learningState === BadgeLectureState.Passed && (
+                    <span className="completed">{BadgeLectureStateName.Passed}</span>
+                  )}
                 </div>
                 <div className="toggle-btn">
                   <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
@@ -418,6 +432,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                     :
                     null
                   }
+
+                  {/*parentType: COURSE or CUBE*/}
+                  {/*subDepth: COURSE > CUBE에 대한 TRS*/}
+                  <TRSContainer parentType="COURSE" subDepth={true} />
+
                 </ul>
               </div>
             </div>
@@ -489,6 +508,9 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                         </div>
                       </div>
                     )}
+
+                    <TRSContainer parentType="CUBE" />
+
                   </>
                   :
                   null }

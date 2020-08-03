@@ -14,6 +14,8 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ( { catego
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
     window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
 
+  console.log( categories );
+
   return (
     <div className="badge-category">
       <ul>

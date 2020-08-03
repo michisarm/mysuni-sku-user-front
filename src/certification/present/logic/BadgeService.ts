@@ -379,13 +379,15 @@ class BadgeService {
   async requestManualIssued(badgeStudentId: string, issueState: string) {
     //
     const response = await this.badgeApi.requestManualIssued(badgeStudentId, issueState);
+
+    return response;
   }
 
   // 자동뱃지 발급 요청
   @action
-  async requestAutoIssued() {
+  async requestAutoIssued(List: any[]) {
     //
-    const response = await this.badgeApi.requestAutoIssued();
+    const response: boolean = await this.badgeApi.requestAutoIssued(List);
 
     return response;
   }
