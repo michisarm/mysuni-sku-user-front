@@ -20,6 +20,7 @@ export interface CoursePlanCustomModel {
   reviewSummary: ReviewSummaryModel
   commentCountRdo: CommentCountRdoModel
   subLectureViews:  SubLectureViewModel[]
+  preCourseLectures: LectureViewModel[]
   // reviewSummary:
   // commentCountRdo:
 }

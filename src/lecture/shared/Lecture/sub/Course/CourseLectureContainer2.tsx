@@ -164,7 +164,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
       setOpen(true);
     }
 
-    this.getStudentInfoView();
+    setTimeout(() => {
+      this.getStudentInfoView();
+    },500);
 
     //
     // if (this.rollBooks[0]) {
@@ -184,7 +186,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
 
-    
+
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
