@@ -92,7 +92,7 @@ class BadgeDetailModel {
     iconUrl: '',
   };
 
-  constructor(onebadge?: BadgeDetailModel) {
+  constructor(onebadge?: BadgeDetailModel | null) {
     //
     if (onebadge) {
       Object.assign(this, {...onebadge});

@@ -16,7 +16,7 @@ const BadgePreviewPage: React.FC<Props> = Props => {
   //
   const { badgeService, match } = Props;
 
-  const [badgeDetail, setBadgeDetail] = useState<BadgeDetailModel>(
+  const [badgeDetail, setBadgeDetail] = useState<BadgeDetailModel | null>(
     new BadgeDetailModel()
   );
 
@@ -29,8 +29,14 @@ const BadgePreviewPage: React.FC<Props> = Props => {
 
   const findMyContent = async (id: string) => {
     //
-    const badgeInfo = await badgeService!.findBadgeDetailInfo(id);
-    setBadgeDetail(badgeInfo);
+    const badgeInfo: BadgeDetailModel | null = await badgeService!.findBadgeDetailInfo(id);
+
+    if (badgeInfo) {
+      setBadgeDetail(badgeInfo);
+    }
+    else {
+      setBadgeDetail(new BadgeDetailModel());
+    }
   };
 
   console.log(badgeDetail);
@@ -40,19 +46,19 @@ const BadgePreviewPage: React.FC<Props> = Props => {
       <ul>
         <li>
           <Badge
-            badge={badgeDetail}
+            badge={badgeDetail!}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Large}
           />
-          <div className="badge-name">{badgeDetail.name}</div>
+          <div className="badge-name">{badgeDetail!.name}</div>
         </li>
         <li>
           <Badge
-            badge={badgeDetail}
+            badge={badgeDetail!}
             badgeStyle={BadgeStyle.Detail}
             badgeSize={BadgeSize.Small}
           />
-          <div className="badge-name">{badgeDetail.name}</div>
+          <div className="badge-name">{badgeDetail!.name}</div>
         </li>
       </ul>
     </div>

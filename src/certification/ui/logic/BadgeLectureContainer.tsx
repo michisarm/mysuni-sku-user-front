@@ -130,7 +130,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       });
   };
 
-  /*
   // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
     //
@@ -138,40 +137,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     course.cubeData = [];
 
     if (course.isOpened) {
-      badgeDetailService!.findLectureViewsV2(course.coursePlanId, course.lectureCardIds)
-        .then((response: LectureViewModel[] | null) => {
-          if (response) {
-            response.map((lecture: LectureViewModel) => {
-              const cubeData = new BadgeCubeData();
-              cubeData.cubeId = lecture.cubeId;
-              cubeData.name = lecture.name;
-              cubeData.learningCardId = lecture.learningCardId;
-              cubeData.cubeType = lecture.cubeType;
-              cubeData.learningTime = lecture.learningTime;
-              // 진행율(%)
-              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
-              cubeData.learningState = lecture.learningState;
-              getCubeTRS(cubeData);
-              course.cubeData = course.cubeData.concat(cubeData);
-            });
-          }
-          setOpened(!opened);
-        });
-    }
-    else {
-      setOpened(!opened);
-    }
-  };
-  */
-
-  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
-  const showCourseInfo = async (course: BadgeCourseData) => {
-    //
-    course.isOpened = !course.isOpened;
-    course.cubeData = [];
-
-    if (course.isOpened) {
-      await coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
+      coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
         .then((response: CoursePlanCustomModel | null) => {
           if (response && response.lectureViews) {
             response.lectureViews.map((lecture: LectureViewModel) => {
@@ -188,11 +154,49 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               course.cubeData = course.cubeData.concat(cubeData);
             });
           }
-          setOpened(!opened);
-        });
+        })
+        .catch((error) => {})
+        .finally(() => setOpened(!opened));
     }
-    setOpened(!opened);
+    else {
+      setOpened(!opened);
+    }
   };
+
+  /*
+  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
+  const showCourseInfo = (course: BadgeCourseData) => {
+    //
+    course.isOpened = !course.isOpened;
+    course.cubeData = [];
+
+    if (course.isOpened) {
+      coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
+        .then((response: CoursePlanCustomModel | null) => {
+          if (response && response.lectureViews) {
+            response.lectureViews.map((lecture: LectureViewModel) => {
+              const cubeData = new BadgeCubeData();
+              cubeData.cubeId = lecture.cubeId;
+              cubeData.name = lecture.name;
+              cubeData.learningCardId = lecture.learningCardId;
+              cubeData.cubeType = lecture.cubeType;
+              cubeData.learningTime = lecture.learningTime;
+              // 진행율(%)
+              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
+              cubeData.learningState = lecture.learningState;
+              getCubeTRS(cubeData);
+              course.cubeData = course.cubeData.concat(cubeData);
+            });
+          }
+        })
+        .catch((error) => {})
+        .finally(() => setOpened(!opened));
+    }
+    else {
+      setOpened(!opened);
+    }
+  };
+  */
 
   return (
     <div className="course-cont">

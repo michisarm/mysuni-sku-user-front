@@ -13,6 +13,8 @@ import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
+import {OffsetElementList} from '../../../shared/model';
+import BadgeModel from '../model/BadgeModel';
 
 
 interface Props extends RouteComponentProps<{ type: string, pageNo: string }> {
@@ -102,13 +104,14 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(pageKey.current);
 
-    const badgeOffsetList = await badgeService!.findPagingAllBadges(BadgeFilterRdoModel
-      .all(categorySelection, difficultyLevel, page!.limit, page!.nextOffset));
+    const badgeOffsetList: OffsetElementList<BadgeModel> | null = await badgeService!
+      .findPagingAllBadges(BadgeFilterRdoModel.all(categorySelection, difficultyLevel, page!.limit, page!.nextOffset));
 
-    pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
-
-    setBadgeCount(badgeOffsetList.totalCount);
+    if (badgeOffsetList) {
+      pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+      pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+      setBadgeCount(badgeOffsetList.totalCount);
+    }
   };
 
   const getPageNo = () => {

@@ -85,11 +85,9 @@ export default class CoursePlanApi {
   }
 
   findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
-    return axios.get<CoursePlanCustomModel>(`http://ma.mysuni.sk.com/api/lecture/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,  )
+    return axios.get<CoursePlanCustomModel>(`http://ma.mysuni.sk.com/api/lecture/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,)
       .then(response => response && response.data || null);
-
   }
-
 }
 
 Object.defineProperty(CoursePlanApi, 'instance', {

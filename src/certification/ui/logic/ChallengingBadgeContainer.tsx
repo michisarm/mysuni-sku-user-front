@@ -16,6 +16,8 @@ import {SeeMoreButton} from '../../shared/Badge';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
+import {OffsetElementList} from '../../../shared/model';
+import MyBadgeModel from '../model/MyBadgeModel';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -85,11 +87,13 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     //
     const page = pageService!.pageMap.get(pageKey.current);
 
-    const badgeOffsetList = await badgeService!.findPagingChallengingBadges(BadgeFilterRdoModel
-      .challenging(difficultyLevel, page!.limit, page!.nextOffset));
+    const badgeOffsetList: OffsetElementList<MyBadgeModel> | null = await badgeService!
+      .findPagingChallengingBadges(BadgeFilterRdoModel.challenging(difficultyLevel, page!.limit, page!.nextOffset));
 
-    pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
-    pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+    if (badgeOffsetList) {
+      pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
+      pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+    }
   };
 
   const getPageNo = () => {

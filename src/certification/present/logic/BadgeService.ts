@@ -58,6 +58,7 @@ class BadgeService {
   @action
   clearCategories() {
     //
+    this._categoryCount = 0;
     return runInAction(() => this._category = []);
   }
 
@@ -99,8 +100,16 @@ class BadgeService {
   }
 
   @action
+  clearMyBadges() {
+    //
+    this._myBadgeCount = 0;
+    return runInAction(() => this._myBadge = []);
+  }
+
+  @action
   clearBadges() {
     //
+    this._badgeCount = 0;
     return runInAction(() => this._badge = []);
   }
 
@@ -116,14 +125,22 @@ class BadgeService {
   }
 
   @action
-  clearMyBadges() {
+  clearChallengingBadges() {
     //
+    this._challengingCount = 0;
     return runInAction(() => this._myBadge = []);
   }
 
   @computed
   get challengingCount() {
     return this._challengingCount ? this._challengingCount : 0;
+  }
+
+  @action
+  clearEarnedBadges() {
+    //
+    this._earnedCount = 0;
+    return runInAction(() => this._myBadge = []);
   }
 
   @computed
@@ -156,15 +173,17 @@ class BadgeService {
   @action
   async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    // 모든 뱃지 정보 가져오기
-    const response = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
-    const badgeOffsetElementList = new OffsetElementList<BadgeModel>(response);
+    this.clearBadges();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new BadgeModel(badge));
-    runInAction(() => {
-      this._badgeCount = badgeOffsetElementList.totalCount;
-      this._badge = this._badge.concat(badgeOffsetElementList.results);
-    });
+    // 모든 뱃지 정보 가져오기
+    const badgeOffsetElementList: OffsetElementList<BadgeModel> | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
+
+    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+      runInAction(() => {
+        this._badgeCount = badgeOffsetElementList.totalCount;
+        this._badge = this._badge.concat(badgeOffsetElementList.results);
+      });
+    }
 
     return badgeOffsetElementList;
   }
@@ -172,20 +191,22 @@ class BadgeService {
   @action
   async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
     //
+    this.clearChallengingBadges();
+
     // 도전 뱃지 정보 가져오기
-    const response = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
-    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
+    const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null  = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
     // // use session storage (사용할 거면 풀 것) : modified by JSM
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
-    runInAction(() => {
-      this._challengingCount = badgeOffsetElementList.totalCount;
-      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
-    });
+    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+      runInAction(() => {
+        this._challengingCount = badgeOffsetElementList.totalCount;
+        this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
+      });
+    }
 
     return badgeOffsetElementList;
   }
@@ -194,11 +215,11 @@ class BadgeService {
   @action
   async setPagingChallengingBadges(badge: OffsetElementList<MyBadgeModel>) {
     //
-    this.clearMyBadges();
+    this.clearChallengingBadges();
 
     const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(badge);
-
     badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
+
     runInAction(() => {
       this._challengingCount = badgeOffsetElementList.totalCount;
       this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
@@ -210,15 +231,17 @@ class BadgeService {
   @action
   async findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    // 도전 뱃지 정보 가져오기
-    const response = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
-    const badgeOffsetElementList = new OffsetElementList<MyBadgeModel>(response);
+    this.clearEarnedBadges();
 
-    badgeOffsetElementList.results = badgeOffsetElementList.results.map((badge) => new MyBadgeModel(badge));
-    runInAction(() => {
-      this._earnedCount = badgeOffsetElementList.totalCount;
-      this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
-    });
+    // 마이 뱃지 정보 가져오기
+    const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
+
+    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+      runInAction(() => {
+        this._earnedCount = badgeOffsetElementList.totalCount;
+        this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
+      });
+    }
 
     return badgeOffsetElementList;
   }
@@ -282,13 +305,11 @@ class BadgeService {
   @action
   async findBadgeDetailInfo(badgeId: string) {
     //
-    const response = await this.badgeApi.findBadgeDetailInformation(badgeId);
+    const response: BadgeDetailModel | null = await this.badgeApi.findBadgeDetailInformation(badgeId);
 
-    if (response) {
-      runInAction(() => {
-        this._badgeDetail = new BadgeDetailModel(response);
-      });
-    }
+    runInAction(() => {
+      this._badgeDetail = new BadgeDetailModel(response);
+    });
 
     return response;
   }
@@ -321,20 +342,15 @@ class BadgeService {
     //
     this.clearBadgeStudentInfo();
 
-    const studentOffsetElementList: OffsetElementList<BadgeStudentModel> = await this.badgeApi.findBadgeStudentInfo(badgeId);
+    const studentOffsetElementList: OffsetElementList<BadgeStudentModel> | null = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    if ( studentOffsetElementList && typeof studentOffsetElementList === 'object') {
+    if (studentOffsetElementList && typeof studentOffsetElementList === 'object') {
       runInAction(() => {
         this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results);
       });
     }
 
-    if (!studentOffsetElementList || studentOffsetElementList.empty) {
-      return null;
-    } else {
-      return studentOffsetElementList.results[0];
-    }
-
+    return !studentOffsetElementList || studentOffsetElementList.empty ? null : studentOffsetElementList.results[0];
   }
 
   @computed
