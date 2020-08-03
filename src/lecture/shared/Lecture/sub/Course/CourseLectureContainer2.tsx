@@ -164,6 +164,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
       setOpen(true);
     }
 
+    this.getStudentInfoView();
+
     //
     // if (this.rollBooks[0]) {
     //   this.init();
@@ -181,6 +183,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
   // }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+
+    
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
@@ -200,7 +204,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   async init()
   {
     const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService } = this.props;
-    const { getStudentForVideo } = studentService!;
+    const { getStudentForVideo, getLectureInfo } = studentService!;
 
 
     if (lectureView && lectureView.cubeId) {
@@ -210,18 +214,22 @@ class CourseLectureContainer2 extends Component<Props, State> {
       this.personalCube = lectureView.personalCube;
       this.rollBooks = lectureView.rollBooks;
 
-      console.log('init lectureView : ', lectureView);
-      console.log('init personalCube : ', this.personalCube);
-      console.log('init rollBoo.ks : ', this.rollBooks[0]);
+      // console.log('init lectureView : ', lectureView);
+      // console.log('init personalCube : ', this.personalCube);
+      // console.log('init rollBoo.ks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
         // this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
 
         if (this.personalCube?.contents.examId)
         {
-          const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
-          const examPaper = await examPaperService!.findExamPaper(examination.paperId);
-          this.state.examTitle = examPaper.title;
+          // const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
+          // const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+          examinationService?.setExamination(lectureView.examination);
+          const examPaper = examPaperService?.setExamPaper(lectureView.examPaper);
+          if (examPaper) {
+            this.state.examTitle = examPaper.title;
+          }
         }
 
         if (this.personalCube?.contents.surveyCaseId) {
@@ -242,7 +250,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
         if (this.personalCube?.cubeIntro.id)
         {
-          const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
+          // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
+          const cubeIntro = lectureView.cubeIntro;
           if (cubeIntro?.reportFileBox.fileBoxId) {
             this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
           }
@@ -251,6 +260,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.viewObject = this.getViewObject();
         this.setExamState(this.studentData);
       }
+
+      // const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
+      // if ( studentLecture ) {
+      //   this.studentForVideoObj = studentLecture;
+      //   const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+      //   this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      // }
 
       // getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
       // {
@@ -262,6 +278,19 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
     // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
+  }
+
+  getStudentInfoView() {
+
+    const { studentService, lectureView } = this.props;
+    const { getLectureInfo } = studentService!;
+
+    const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
+    if ( studentLecture ) {
+      this.studentForVideoObj = studentLecture;
+      const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+      this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+    }
   }
 
   getStudentJoin() {

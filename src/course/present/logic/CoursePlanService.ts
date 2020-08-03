@@ -151,6 +151,7 @@ class CoursePlanService {
 
         const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
         const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
+        const preCourseLectures: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.preCourseLectures));
 
         courseData.subLectureViews.map((subLecture: any) => {
           subLecture.lectureViews.map((lectureView: any) => {
@@ -174,6 +175,7 @@ class CoursePlanService {
           const subLectureView = subLectureViews[i];
           this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
         }
+        this.courseLectureService.setPreLectureViews(preCourseLectures);
 
         let serviceId: string = '';
         let lectureCardIds: string[] = [];
@@ -196,7 +198,7 @@ class CoursePlanService {
   }
 
   @action
-  setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
+  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
     return this.studentService.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
   }
 
