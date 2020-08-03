@@ -36,6 +36,7 @@ import {dateTimeHelper} from '../../../../../shared';
 import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
+import StudentInfoModel from '../../../../model/StudentInfoModel';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -164,6 +165,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       setOpen(true);
     }
 
+    // this.getStudentInfoView();
     setTimeout(() => {
       this.getStudentInfoView();
     },500);
@@ -848,6 +850,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container viewObject : ', this.viewObject);
     // console.log('lecture container personalCube : ', this.personalCube);
 
+
+    const { _studentInfo } = this.props.studentService!;
+    const studentInfo = _studentInfo ? _studentInfo : {} as StudentInfoModel;
+
+    // console.log('studentInfo ----------------->', studentInfo);
     return (
       <>
 
@@ -986,7 +993,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             />
           )
         }
-
+        {/*<div><span>test</span><span>{studentInfo && studentInfo.student && studentInfo.student.company ||'' }</span></div>*/}
       </>
     );
   }

@@ -175,7 +175,6 @@ class CoursePlanService {
           const subLectureView = subLectureViews[i];
           this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
         }
-        // this.courseLectureService.setPreLectureViews(preCourseLectures);
         this.courseLectureService.setPreLectureViews(preCourseLectures);
 
         let serviceId: string = '';

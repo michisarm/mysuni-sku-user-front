@@ -48,6 +48,8 @@ interface Props {
   init?:() => void
   loaded: boolean
   onPageRefresh?:() => void
+
+  studentId?: string | undefined;
 }
 
 interface State {

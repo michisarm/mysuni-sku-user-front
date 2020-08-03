@@ -22,7 +22,6 @@ class StudentService {
   @observable
   _studentInfo: StudentInfoModel | null = null;
 
-  @action
   getLectureInfo(lectureId: string): StudentModel {
     //
     let lecture: StudentModel | null = null;
@@ -138,7 +137,9 @@ class StudentService {
     const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds);
 
     if (studentInfo) {
-      this._studentInfo = new StudentInfoModel(studentInfo);
+      return runInAction(() => {
+        this._studentInfo = new StudentInfoModel(studentInfo);
+      });
     }
 
     return studentInfo;

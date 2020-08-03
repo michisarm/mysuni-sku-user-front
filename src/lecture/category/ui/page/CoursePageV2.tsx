@@ -202,7 +202,7 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId);
+    const studentInfo = coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId);
 
     // if (coursePlanService.coursePlanContents.testId) {
     //
@@ -434,7 +434,10 @@ class CoursePageV2 extends Component<Props, State> {
       //   console.log('Course Page Waiting : ', SubState.Waiting);
       //   state = SubState.Waiting;
       // }
+
+      console.log('student info  gget~~~~~~~~~~~~~~~~~');
     }
+    console.log('----', student, coursePlan.coursePlanId, state);
 
     return {
       // Sub info
@@ -684,6 +687,7 @@ class CoursePageV2 extends Component<Props, State> {
         init={this.init}
         loaded={this.state.loaded}
         onPageRefresh={this.onPageRefresh}
+        studentId={student.id}
       >
         {courseContent}
       </LectureCardContainer>

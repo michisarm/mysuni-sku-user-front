@@ -568,6 +568,7 @@ class CoursePage extends Component<Props, State> {
         init={this.init}
         loaded={this.state.loaded}
         onPageRefresh={this.onPageRefresh}
+        studentId=''
       >
         {courseContent}
       </LectureCardContainer>
