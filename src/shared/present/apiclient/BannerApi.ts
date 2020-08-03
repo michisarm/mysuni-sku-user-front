@@ -18,7 +18,7 @@ class BannerApi {
       company: 'SKCC',
     };
 
-    return axiosApi.get<BannerModel>(this.baseUrl + '/arranges/banners', {params})
+    return axiosApi.get<BannerModel>(this.baseUrl + '/banners', {params})
       .then(response => response && response.data);
   }
 }
