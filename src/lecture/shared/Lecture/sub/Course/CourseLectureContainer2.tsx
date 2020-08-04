@@ -166,6 +166,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
       setOpen(true);
     }
 
+    this.init();
+
     // console.log('CourseLectureContainer render completed');
     // this.getStudentInfoView();
     // setTimeout(() => {
@@ -304,6 +306,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
       this.studentData = studentLecture;
       lectureView.sumViewSeconds = studentLecture.durationViewSeconds;
       this.setExamState(this.studentData);
+    } else {
+      this.setExamState();
     }
   }
 
@@ -683,7 +687,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
-  setExamState(studentData: any) {
+  setExamState(studentData?: any) {
 
     // console.log('시험정보 세팅');
     // console.log('studentData : ',studentData);
