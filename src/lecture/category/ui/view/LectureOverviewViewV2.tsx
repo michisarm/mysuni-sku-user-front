@@ -382,7 +382,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { member } = skProfile;
     const { lectureViews, getSubLectureViews } = lectureService!;
     const { preLectureViews } = courseLectureService;
-    const { getLectureInfo } = studentService;
 
     if (!viewObject.category) {
       return null;
@@ -441,7 +440,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onRefreshLearningState={onRefreshLearningState}
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
-                      student={getLectureInfo(lecture.serviceId)}
                       studentInfo={studentInfo}
                     />
                   )}

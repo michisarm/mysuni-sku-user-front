@@ -212,8 +212,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   async init()
   {
-    const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService, student, studentInfo } = this.props;
-    const { getStudentForVideo, getLectureInfo } = studentService!;
+    const { lectureView, examinationService, examPaperService, studentInfo } = this.props;
 
 
     if (lectureView && lectureView.cubeId) {
@@ -303,6 +302,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
       this.setState({ classNameForLearningState: classNameForLearningStateTemp });
       this.studentData = studentLecture;
+      lectureView.sumViewSeconds = studentLecture.durationViewSeconds;
       this.setExamState(this.studentData);
     }
   }
@@ -433,8 +433,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   {
     const { isPreCoursePassed } = this.props;
 
-    console.log( 'isPreCoursePassed : ', isPreCoursePassed );
-
     if (isPreCoursePassed) {
       if (url && url.startsWith('http')) {
         this.onRegisterStudentForVideo(ProposalState.Approved);
@@ -456,9 +454,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (isPreCoursePassed) {
       if (url && url.startsWith('http'))
       {
-        //this.onRegisterStudentForVideo(ProposalState.Approved);
-        //this.popupLearnModal(url);
-        const a = window.open('http://www.naver.com', '_blank');
+        this.onRegisterStudentForVideo(ProposalState.Approved);
+        this.popupLearnModal(url);
+        // const a = window.open('http://www.naver.com', '_blank');
       } else
       {
         reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -862,9 +860,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container viewObject : ', this.viewObject);
     // console.log('lecture container personalCube : ', this.personalCube);
 
-
-    const { _studentInfo, StudentInfos } = this.props.studentService!;
-    const studentInfo = _studentInfo ? _studentInfo : {} as StudentInfoModel;
 
     // console.log('CourseLectureContainer2 render ----------------->', studentInfo);
     return (
