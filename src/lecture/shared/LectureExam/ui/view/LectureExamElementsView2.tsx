@@ -132,7 +132,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               <span>Test</span>
             </div>
             <div className="tit">
-              <a className="ellipsis" href="#">{viewObject.examTitle}</a>
+              <span className="ellipsis">{viewObject.examTitle}</span>
             </div>
             <div className="right">
 
@@ -165,10 +165,10 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
 
               {
                 type === '5' && (
-                  <div className="btn-play completed">
+                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text no-link">{name}</span>
-                    <i className="icon play-completed24" />
-                  </div>
+                    <i className="icon play-black24-dim" />
+                  </a>
                 )
               }
 
@@ -181,7 +181,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               <span>Test</span>
             </div>
             <div className="tit">
-              <a className="ellipsis" href="#">{viewObject.examTitle}</a>
+              <span className="ellipsis">{viewObject.examTitle}</span>
             </div>
             <div className="right">
               {
@@ -204,11 +204,20 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               }
 
               {
-                (type === '4' || type === '5') && (
+                (type === '4') && (
                   <div className="btn-play completed">
                     <span className="text no-link">{name}</span>
                     <i className="icon play-completed24" />
                   </div>
+                )
+              }
+
+              {
+                type === '5' && (
+                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
                 )
               }
 
@@ -244,7 +253,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               <span>Survey</span>
             </div>
             <div className="tit">
-              <a className="ellipsis" href="#">{name}</a>
+              <span className="ellipsis">{name}</span>
             </div>
             <div className="right">
 
@@ -286,7 +295,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               <span>Survey</span>
             </div>
             <div className="tit">
-              <a className="ellipsis" href="#">{name}</a>
+              <span className="ellipsis">{name}</span>
             </div>
             <div className="right">
               {

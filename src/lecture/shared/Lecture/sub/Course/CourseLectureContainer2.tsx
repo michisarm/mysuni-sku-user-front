@@ -192,7 +192,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
-    if (prevProps.studentInfo !== this.props.studentInfo) {
+    if (this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) {
 
       this.init();
     }
@@ -304,7 +304,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
       this.setState({ classNameForLearningState: classNameForLearningStateTemp });
       this.studentData = studentLecture;
-      lectureView.sumViewSeconds = studentLecture.durationViewSeconds;
+
+
+
       this.setExamState(this.studentData);
     } else {
       this.setExamState();
@@ -715,7 +717,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
         } else if (studentData.learningState === LearningState.Passed) {
           this.setStateName('5', '이수');
-        } else if (studentData.learningState === LearningState.TestPassed) {
+        } else if (studentData.learningState === LearningState.TestWaiting) {
           this.setStateName('5', '결과대기');
         } else {
           this.setStateName('1', 'Test');
@@ -770,6 +772,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     depot.downloadDepot(fileBoxId);
   }
 
+  getDuration() {
+    return this.studentData && this.studentData.durationViewSeconds !== null ? this.studentData.durationViewSeconds : '0';
+  }
+
   setLearningStateForMedia() {
     const { lectureView, onViewDetail } = this.props;
 
@@ -778,8 +784,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
         case SubState.InProgress:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-              <span className="text">학습중({lectureView.sumViewSeconds}%)</span>
-              <span className={'pie-wrapper progress-' + lectureView.sumViewSeconds}>
+              <span className="text">학습중({this.getDuration()}%)</span>
+              <span className={'pie-wrapper progress-' + this.getDuration()}>
                 <span className="pie">
                   <span className="left-side" />
                   <span className="right-side" />
