@@ -1,11 +1,18 @@
 
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {inject} from 'mobx-react';
+import {mobxHelper} from '@nara.platform/accent';
 import {Icon} from 'semantic-ui-react';
 import classNames from 'classnames';
 import {TRSContainerWrapper} from '../view/BadgeLectureElementView';
 
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
+import BadgeCubeData from '../model/BadgeCubeData';
+import BadgeCourseData from '../model/BadgeCourseData';
+import {CoursePlanContentsModel} from '../../../course/model';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import {BadgeDetailService} from '../../../lecture/stores';
 
 
 enum StateDefault {
@@ -22,12 +29,14 @@ enum StateDefaultName {
   Survey = '설문참여',
 }
 
-
 interface Props {
+  badgeDetailService?: BadgeDetailService;
+  badgeCourse?: BadgeCourseData,
+  badgeCourseCube?: BadgeCubeData,
+  badgeCube?: BadgeCubeData,
   parentType: string,
-  subDepth?: boolean
+  subDepth?: boolean,
 }
-
 
 // sample
 const data = {
@@ -36,10 +45,81 @@ const data = {
 };
 
 
-
 const TRSContainer: React.FC<Props> = (Props) => {
   //
-  const { parentType, subDepth } = Props;
+  const { badgeDetailService, badgeCourse, badgeCourseCube, badgeCube, parentType, subDepth } = Props;
+
+  const [test, setTest] = useState(false);
+  const [testTitle, setTestTitle] = useState('');
+  const [testState, setTestState] = useState('');
+  const [report, setReport] = useState(false);
+  const [reportTitle, setReportTitle] = useState('');
+  const [reportState, setReportState] = useState('');
+  const [survey, setSurvey] = useState(false);
+  const [surveyTitle, setSurveyTitle] = useState('');
+  const [surveyState, setSurveyState] = useState('');
+
+  const type = useRef('');
+  const state = useRef('');
+
+  useEffect(() => {
+    if (parentType === 'COURSE') {
+      if (subDepth) {
+        setCubeTRS(badgeCourseCube!);
+      }
+      else {
+        setCourseTRS(badgeCourse!);
+      }
+    }
+    else {  // CUBE
+      setCubeTRS(badgeCube!);
+    }
+
+  },[]);
+
+  const setCourseTRS = (course: BadgeCourseData) => {
+    badgeDetailService!.findCoursePlanContentsV2(course.coursePlanId)
+      .then((response: CoursePlanContentsModel) => {
+        if (response) {
+          if (response.testId && response.testId.length > 0) {
+            setTest(true);
+            setTestTitle(response.examTitle);
+            setTestState(StateDefault.Test);
+          }
+          if (response.fileBoxId && response.fileBoxId.length > 0) {
+            setReport(true);
+            setReportTitle(response.examTitle);
+            setReportState(StateDefault.Report);
+          }
+          if (response.surveyId && response.surveyId.length > 0) {
+            setSurvey(true);
+            setSurveyTitle(course.name);
+            setSurveyState(StateDefault.Survey);
+          }
+        }
+      });
+  };
+
+  const setCubeTRS = (cube: BadgeCubeData) => {
+    badgeDetailService!.findPersonalCube(cube.cubeId)
+      .then((response: PersonalCubeModel) => {
+        if (response) {
+          //console.log( response );
+          if (response.contents.examId && response.contents.examId.length > 0) {
+            setTest(true);
+            setTestTitle(response.contents.examTitle);
+          }
+          if (response.contents.fileBoxId && response.contents.fileBoxId.length > 0) {
+            setReport(true);
+            setReportTitle(response.contents.examTitle);
+          }
+          if (response.contents.surveyId && response.contents.surveyId.length > 0) {
+            setSurvey(true);
+            setSurveyTitle(cube.name);
+          }
+        }
+      });
+  };
 
   // TRS 상태 및 이벤트 - onClick 이벤트 필요
   const setTRSState = (state: string) => {
@@ -64,21 +144,60 @@ const TRSContainer: React.FC<Props> = (Props) => {
     );
   };
 
-
   return (
-    <TRSContainerWrapper parentType={parentType} subDepth={subDepth}>
-      <div className="category">
-        <Icon className={classNames(`icon-${data.type.toLowerCase()}24`)}/>
-        <span>{data.type}</span>
-      </div>
-      <div className="tit">
-        <a href="#" className="ellipsis">제목제목</a>
-      </div>
-      <div className="right">
-        {setTRSState(data.state)}
-      </div>
-    </TRSContainerWrapper>
+    <>
+      {test ?
+        <TRSContainerWrapper parentType={parentType} subDepth={subDepth}>
+          <div className="category">
+            <Icon className={classNames(`icon-${data.type.toLowerCase()}24`)}/>
+            <span>Test</span>
+          </div>
+          <div className="tit">
+            <a href="#" className="ellipsis">{testTitle}</a>
+          </div>
+          <div className="right">
+            {setTRSState(testState)}
+          </div>
+        </TRSContainerWrapper>
+        :
+        null
+      }
+      {report ?
+        <TRSContainerWrapper parentType={parentType} subDepth={subDepth}>
+          <div className="category">
+            <Icon className={classNames(`icon-${data.type.toLowerCase()}24`)}/>
+            <span>Report</span>
+          </div>
+          <div className="tit">
+            <a href="#" className="ellipsis">{reportTitle}</a>
+          </div>
+          <div className="right">
+            {setTRSState(reportState)}
+          </div>
+        </TRSContainerWrapper>
+        :
+        null
+      }
+      {survey ?
+        <TRSContainerWrapper parentType={parentType} subDepth={subDepth}>
+          <div className="category">
+            <Icon className={classNames(`icon-${data.type.toLowerCase()}24`)}/>
+            <span>Survey</span>
+          </div>
+          <div className="tit">
+            <a href="#" className="ellipsis">{surveyTitle}</a>
+          </div>
+          <div className="right">
+            {setTRSState(surveyState)}
+          </div>
+        </TRSContainerWrapper>
+        :
+        null
+      }
+    </>
   );
 };
 
-export default TRSContainer;
+export default inject(mobxHelper.injectFrom(
+  'badgeDetail.badgeDetailService',
+))(TRSContainer);

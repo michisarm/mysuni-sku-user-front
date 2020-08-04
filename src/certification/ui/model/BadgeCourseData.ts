@@ -1,5 +1,6 @@
 import BadgeCubeData from './BadgeCubeData';
 
+
 class BadgeCourseData {
   // Course Data
   serviceId: string = '';
@@ -17,10 +18,6 @@ class BadgeCourseData {
   test: boolean = false;
   report: boolean = false;
   survey: boolean = false;
-
-  test_name: string = '';
-  report_name: string = '';
-  survey_name: string = '';
 
   constructor(data?: BadgeCourseData) {
     //
