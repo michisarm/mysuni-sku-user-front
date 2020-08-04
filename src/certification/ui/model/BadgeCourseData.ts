@@ -1,4 +1,6 @@
 import BadgeCubeData from './BadgeCubeData';
+import {CubeIntroModel} from '../../../myTraining/model';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 
 
 class BadgeCourseData {
@@ -12,7 +14,6 @@ class BadgeCourseData {
   cubeData: BadgeCubeData[] = [];
   isOpened: boolean = false;
   learningState: string = '';
-
 
   // TRS for Course
   test: boolean = false;

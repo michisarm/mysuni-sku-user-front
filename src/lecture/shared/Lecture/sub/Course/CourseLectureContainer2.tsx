@@ -208,7 +208,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   async init()
   {
     const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService } = this.props;
-    const { getStudentForVideo, getLectureInfo } = studentService!;
+    const { getStudentForVideo, getStudentInfo } = studentService!;
 
 
     if (lectureView && lectureView.cubeId) {
@@ -265,7 +265,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.setExamState(this.studentData);
       }
 
-      // const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
+      // const studentLecture: StudentModel = getStudentInfo(lectureView.serviceId);
       // if ( studentLecture ) {
       //   this.studentForVideoObj = studentLecture;
       //   const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
@@ -287,9 +287,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
   getStudentInfoView() {
 
     const { studentService, lectureView } = this.props;
-    const { getLectureInfo } = studentService!;
+    const { getStudentInfo } = studentService!;
 
-    const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
+    const studentLecture: StudentModel = getStudentInfo(lectureView.serviceId);
     if ( studentLecture ) {
       this.studentForVideoObj = studentLecture;
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);

@@ -18,6 +18,13 @@ import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
 import TRSContainer from './TRSContainer';
+import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
+import {ContentsServiceType, PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import RollBookModel from '../../../lecture/model/RollBookModel';
+import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
+import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
+import {ExaminationModel} from '../../../assistant/exam/model/ExaminationModel';
+import {ExamPaperModel} from '../../../assistant/paper/model/ExamPaperModel';
 
 
 enum StateDefault {
@@ -54,9 +61,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     // 배지 구성 학습 리스트 조회하기
     getBadgeCompLectures(badgeId);
-    setTimeout(() => {
-      setOpened(!opened);
-    }, 500);
   }, [badgeId]);
 
   // 뱃지 구성 학습 리스트 조회하기
@@ -73,7 +77,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           compData.patronKeyString = data.patronKey.keyString;
           // 코스정보
           if (data.serviceType === 'COURSE') {
-            // 코스정보 생성
             compData.course = new BadgeCourseData();
             compData.course.serviceId = data.serviceId;
             compData.course.name = data.name;
@@ -85,7 +88,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
           }
-          // (학습)카드정보
+          // (학습)카드 정보
           else {
             compData.cube = new BadgeCubeData();
             compData.cube.name = data.name;
@@ -105,6 +108,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     });
   };
 
+  /*
   // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
     //
@@ -137,9 +141,9 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       setOpened(!opened);
     }
   };
+  */
 
-  /*
-  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
+  // 코스를 구성하는 렉쳐(큐브)들의 정보 한번에 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
     //
     course.isOpened = !course.isOpened;
@@ -154,12 +158,29 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               cubeData.cubeId = lecture.cubeId;
               cubeData.name = lecture.name;
               cubeData.learningCardId = lecture.learningCardId;
+              // 학습하기 방식 결정
               cubeData.cubeType = lecture.cubeType;
               cubeData.learningTime = lecture.learningTime;
               // 진행율(%)
               cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
+              // 진행상태
               cubeData.learningState = lecture.learningState;
-              getCubeTRS(cubeData);
+
+              // 코스 내 큐브에만 해당
+              cubeData.cubeIntro = new CubeIntroModel(lecture.cubeIntro);
+              cubeData.personalCube = new PersonalCubeModel(lecture.personalCube);
+
+              cubeData.rollBooks = [];
+              lecture.rollBooks.map((rollBook: RollBookModel) => {
+                cubeData.rollBooks = cubeData.rollBooks.concat(rollBook);
+              });
+
+              cubeData.answerSheet = new AnswerSheetModel(lecture.answerSheet);
+              cubeData.surveyForm = new SurveyFormModel(lecture.surveyForm);
+
+              cubeData.examination = new ExaminationModel(lecture.examination);
+              cubeData.examPaper = new ExamPaperModel(lecture.examPaper);
+
               course.cubeData = course.cubeData.concat(cubeData);
             });
           }
@@ -171,7 +192,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       setOpened(!opened);
     }
   };
-  */
 
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
@@ -309,4 +329,5 @@ export default inject(mobxHelper.injectFrom(
   'course.coursePlanService',
   'badgeDetail.badgeDetailService',
   'lecture.studentService',
+
 ))(withRouter(observer(BadgeLectureContainer)));

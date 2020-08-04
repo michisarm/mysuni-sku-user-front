@@ -22,24 +22,24 @@ class StudentService {
   @observable
   _studentInfo: StudentInfoModel | null = null;
 
-  getLectureInfo(lectureId: string): StudentModel {
+  getStudentInfo(lectureId: string): StudentModel {
     //
-    let lecture: StudentModel | null = null;
+    let student: StudentModel | null = null;
 
     if (this._studentInfo && this._studentInfo.lecture) {
       this._studentInfo.lecture.lectures.map((info: StudentModel) => {
         if (info.lectureUsid === lectureId) {
-          lecture = new StudentModel(info);
+          student = new StudentModel(info);
         }
       });
     }
 
     if (this._studentInfo && this._studentInfo.course) {
       this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
-        if (courseInfo && !lecture) {
+        if (courseInfo && !student) {
           courseInfo.lectures.map((info: StudentModel) => {
             if (info.lectureUsid === lectureId) {
-              lecture = new StudentModel(info);
+              student = new StudentModel(info);
             }
           });
         }
@@ -47,11 +47,11 @@ class StudentService {
     }
 
     // @ts-ignore
-    return lecture;
+    return student;
   }
 
   @computed
-  get StudentInfos() {
+  get studentInfo() {
     return this._studentInfo;
   }
 
