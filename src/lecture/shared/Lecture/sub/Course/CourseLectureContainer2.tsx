@@ -168,6 +168,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // this.getStudentInfoView();
     setTimeout(() => {
       this.getStudentInfoView();
+
+      // for Test by JSM
+      const command = this.getCommandFromUrl('command');
+      const contentType = this.getCommandFromUrl('contentType');
+      const contentId = this.getCommandFromUrl('contentId');
+      if (command === '학습하기') {
+        this.getMainActionForVideo();
+      }
     },500);
 
     //
@@ -282,6 +290,16 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     // this.studentForVideoObj = await getStudentForVideo(lectureView.serviceId);
     // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
+  }
+
+  getCommandFromUrl(variable: string): string | null {
+    const query = window.location.search.substring(1);
+    const vars = query.split('&"');
+    for (let i=0; i<vars.length; i++) {
+      const pair = vars[i].split('=');
+      if (pair[0] === variable) { return pair[1]; }
+    }
+    return null;
   }
 
   getStudentInfoView() {

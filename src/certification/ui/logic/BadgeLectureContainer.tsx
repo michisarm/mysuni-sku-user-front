@@ -19,7 +19,7 @@ import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
 import TRSContainer from './TRSContainer';
 import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
-import {ContentsServiceType, PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import RollBookModel from '../../../lecture/model/RollBookModel';
 import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
@@ -103,8 +103,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
         });
       }
       setBadgeCompList(compList);
-
-      //console.log( compList );
     });
   };
 

@@ -179,7 +179,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
 
     if (cubeContents.examId && cubeContents.examId.length > 0) {
       setExam(true);
-      examTitle.current = cubeContents.examTitle;
+      examTitle.current = cube.examPaper === null ? '' : cube.examPaper.title;
       examState.current = StateDefault.Test;
       setExamState(studentService!.student);
     }
@@ -350,7 +350,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
         vo_state = SubState.InProgress;
       }
     }
-   
+
     return {
       // Sub info
       vo_state,
