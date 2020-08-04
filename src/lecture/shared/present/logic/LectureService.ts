@@ -232,9 +232,9 @@ class LectureService {
   getSubLectureViews(courseId: string) {
     //
 
-    if (this.subLectureViewsMap.get(courseId)) {
-      console.log( 'subLectureViewsMap.get : ', courseId, (this.subLectureViewsMap.get(courseId) as IObservableArray).peek());
-    }
+    // if (this.subLectureViewsMap.get(courseId)) {
+    //   console.log( 'subLectureViewsMap.get : ', courseId, (this.subLectureViewsMap.get(courseId) as IObservableArray).peek());
+    // }
     return this.subLectureViewsMap.get(courseId) || [];
 
   }

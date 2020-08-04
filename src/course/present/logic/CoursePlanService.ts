@@ -27,6 +27,7 @@ import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
 import {ProgramLectureModel} from '../../../lecture/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import SubLectureViewModel from '../../../lecture/model/SubLectureViewModel';
+import { CourseLectureIdsModel } from '../../model/CourseLectureIdsModel';
 
 
 
@@ -96,7 +97,8 @@ class CoursePlanService {
   @observable
   preCourseIdSet: string[] = [];
 
-
+  @observable
+  courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
@@ -177,20 +179,20 @@ class CoursePlanService {
         }
         this.courseLectureService.setPreLectureViews(preCourseLectures);
 
-        let serviceId: string = '';
-        let lectureCardIds: string[] = [];
-        let courseLectureIds: string[] = [];
+        // let serviceId: string = '';
+        // let lectureCardIds: string[] = [];
+        // let courseLectureIds: string[] = [];
 
         if ( courseData.courseLecture.coursePlanId ) {
-          serviceId = courseLecture.usid;
-          lectureCardIds = courseLecture.lectureCardUsids;
+          this.courseIdsSet.serviceId = courseLecture.usid;
+          this.courseIdsSet.lectureCardIds = courseLecture.lectureCardUsids;
         } else {
-          serviceId = programLecture.usid;
-          lectureCardIds = programLecture.lectureCardUsids;
-          courseLectureIds = programLecture.courseLectureUsids;
+          this.courseIdsSet.serviceId = programLecture.usid;
+          this.courseIdsSet.lectureCardIds = programLecture.lectureCardUsids;
+          this.courseIdsSet.courseLectureIds = programLecture.courseLectureUsids;
         }
 
-        this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+        // this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
       }
     });
 
@@ -198,8 +200,10 @@ class CoursePlanService {
   }
 
   @action
-  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
-    return this.studentService.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+  async setStudentInfo() {
+    return runInAction(() => {
+      return this.studentService.setStudentInfo(this.courseIdsSet.serviceId, this.courseIdsSet.lectureCardIds, this.courseIdsSet.courseLectureIds);
+    });
   }
 
   @action

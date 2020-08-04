@@ -26,6 +26,7 @@ import CourseContainer from '../logic/CourseContainer';
 import {State as SubState} from '../../../shared/LectureSubInfo';
 import {AnswerProgress} from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
+import StudentInfoModel from '../../../model/StudentInfoModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService,
@@ -88,6 +89,8 @@ class CoursePageV2 extends Component<Props, State> {
 
   // 선수코스 학습 완료 여부
   isPreCoursePassed: boolean = true;
+
+  studentInfo: StudentInfoModel = new StudentInfoModel();
 
   constructor(props: Props) {
     //
@@ -194,6 +197,11 @@ class CoursePageV2 extends Component<Props, State> {
     else studentService!.clear();
   }
 
+  async findStudentInfo() {
+    const { coursePlanService } = this.props;
+    return coursePlanService.setStudentInfo();
+  }
+
   async findBaseInfo() {
     //
     const {
@@ -202,7 +210,10 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    const studentInfo = coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId);
+    coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId).then(
+      () => this.findStudentInfo()
+    );
+
 
     // if (coursePlanService.coursePlanContents.testId) {
     //
@@ -435,9 +446,9 @@ class CoursePageV2 extends Component<Props, State> {
       //   state = SubState.Waiting;
       // }
 
-      console.log('student info  gget~~~~~~~~~~~~~~~~~');
+      // console.log('student info  gget~~~~~~~~~~~~~~~~~');
     }
-    console.log('----', student, coursePlan.coursePlanId, state);
+    // console.log('----', student.lectureUsid, coursePlan.coursePlanId, state);
 
     return {
       // Sub info
@@ -592,31 +603,33 @@ class CoursePageV2 extends Component<Props, State> {
     // });
   }
 
-  renderList() {
-    //
-    const { serviceId } = this.props.match.params!;
-    const { coursePlanService } = this.props;
-    this.state.tabState = 'list';
-
-    return this.renderBaseContentWith(
-
-      <CourseContainer
-        lectureCardId={serviceId}
-        onRefreshLearningState={this.onRefreshLearningState}
-        coursePlanService={coursePlanService}
-        onPageRefresh={this.onPageRefresh}
-      />
-    );
-  }
+  // renderList() {
+  //   //
+  //   const { serviceId } = this.props.match.params!;
+  //   const { coursePlanService } = this.props;
+  //   this.state.tabState = 'list';
+  //
+  //   return this.renderBaseContentWith(
+  //
+  //     <CourseContainer
+  //       lectureCardId={serviceId}
+  //       onRefreshLearningState={this.onRefreshLearningState}
+  //       coursePlanService={coursePlanService}
+  //       onPageRefresh={this.onPageRefresh}
+  //     />
+  //   );
+  // }
 
   renderOverview() {
     //
     const { serviceId } = this.props.match.params!;
-    const { coursePlanService, courseLectureService } = this.props;
+    const { coursePlanService, courseLectureService, studentService } = this.props;
+    const { StudentInfos } = studentService;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
 
+    // console.log('renderOverview -------->', StudentInfos);
     return this.renderBaseContentWith(
       <LectureOverviewViewV2
         viewObject={viewObject}
@@ -628,6 +641,8 @@ class CoursePageV2 extends Component<Props, State> {
         onPageRefresh={this.onPageRefresh}
         courseLectureService={courseLectureService}
         isPreCoursePassed={this.isPreCoursePassed}
+        studentService={studentService}
+        studentInfo={StudentInfos}
       />
     );
   }

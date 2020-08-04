@@ -22,9 +22,15 @@ class StudentService {
   @observable
   _studentInfo: StudentInfoModel | null = null;
 
+  @action
   getLectureInfo(lectureId: string): StudentModel {
     //
+
     let lecture: StudentModel | null = null;
+
+    if (this._studentInfo && this._studentInfo.student) {
+      this.student = new StudentModel(this._studentInfo.student);
+    }
 
     if (this._studentInfo && this._studentInfo.lecture) {
       this._studentInfo.lecture.lectures.map((info: StudentModel) => {
