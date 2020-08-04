@@ -13,15 +13,11 @@ import {BadgeDetailService, StudentService} from '../../../lecture/stores';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
 import {LectureViewModel} from '../../../lecture/model';
-import {CoursePlanContentsModel} from '../../../course/model';
-import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import {CoursePlanService} from '../../../course/stores';
 import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel';
-
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
 import TRSContainer from './TRSContainer';
-
 
 
 enum StateDefault {
@@ -88,7 +84,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             data.lectureCardUsids.map((id: string) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
-            getCourseTRS(compData.course);
           }
           // (학습)카드정보
           else {
@@ -100,7 +95,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.cube.learningTime = data.learningTime; // 학습시간(분)
             compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
             compData.cube.learningState = data.learningState;
-            getCubeTRS(compData.cube);
           }
           compList = compList.concat(compData);
         });
@@ -109,47 +103,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
       //console.log( compList );
     });
-  };
-
-  const getCourseTRS = async (course: BadgeCourseData) => {
-    await badgeDetailService!.findCoursePlanContentsV2(course.coursePlanId)
-      .then((response: CoursePlanContentsModel) => {
-        if (response) {
-          if (response.testId && response.testId.length > 0) {
-            course.test = true;
-            course.test_name = response.examTitle;
-          }
-          if (response.fileBoxId && response.fileBoxId.length > 0) {
-            course.report = true;
-            course.report_name = response.examTitle;
-          }
-          if (response.surveyId && response.surveyId.length > 0) {
-            course.survey = true;
-            course.survey_name = course.name;
-          }
-        }
-      });
-  };
-
-  const getCubeTRS = async (cube: BadgeCubeData) => {
-    await badgeDetailService!.findPersonalCube(cube.cubeId)
-      .then((response: PersonalCubeModel) => {
-        if (response) {
-          //console.log( response );
-          if (response.contents.examId && response.contents.examId.length > 0) {
-            cube.test = true;
-            cube.test_name = response.contents.examTitle;
-          }
-          if (response.contents.fileBoxId && response.contents.fileBoxId.length > 0) {
-            cube.report = true;
-            cube.report_name = response.contents.examTitle;
-          }
-          if (response.contents.surveyId && response.contents.surveyId.length > 0) {
-            cube.survey = true;
-            cube.survey_name = cube.name;
-          }
-        }
-      });
   };
 
   // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
@@ -172,10 +125,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               // 진행율(%)
               cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
               cubeData.learningState = lecture.learningState;
-              getCubeTRS(cubeData);
+              // 큐브 정보를 코스에 추가
               course.cubeData = course.cubeData.concat(cubeData);
-
-              console.log( course.cubeData );
             });
           }
         })
@@ -278,7 +229,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     );
   };
 
-
   return (
     <div className="course-cont">
       {badgeCompList.length > 0 ?
@@ -318,125 +268,15 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                             {setLearningStateForMedia(cube)}
                           </div>
                         </li>
-
-                        { cube.test && (
-                          <li className="step2 trs">
-                            <div className="category">
-                              <Icon className="icon-test24"/>
-                              <span>Test</span>
-                            </div>
-                            <div className="tit">
-                              <a className="ellipsis" href="#">{cube.test_name}</a>
-                            </div>
-                            <div className="right">
-                              <a href="#" className="btn-play black">
-                                <span className="text">평가응시</span>
-                                <Icon className="icon play-black24"/>
-                              </a>
-                            </div>
-                          </li>
-                        )}
-                        { cube.report && (
-                          <li className="step2 trs">
-                            <div className="category">
-                              <Icon className="icon-report24"/>
-                              <span>Test</span>
-                            </div>
-                            <div className="tit">
-                              <a className="ellipsis" href="#">{cube.report_name}</a>
-                            </div>
-                            <div className="right">
-                              <a href="#" className="btn-play black">
-                                <span className="text">과제제출</span>
-                                <Icon className="icon play-black24"/>
-                              </a>
-                            </div>
-                          </li>
-                        )}
-                        { cube.survey && (
-                          <li className="step2 trs">
-                            <div className="category">
-                              <Icon className="icon-survey24"/>
-                              <span>Test</span>
-                            </div>
-                            <div className="tit">
-                              <a className="ellipsis" href="#">{cube.survey_name}</a>
-                            </div>
-                            <div className="right">
-                              <a href="#" className="btn-play black">
-                                <span className="text">설문하기</span>
-                                <Icon className="icon play-black24"/>
-                              </a>
-                            </div>
-                          </li>
-                        )}
+                        {/*subDepth: COURSE > CUBE TRS*/}
+                        <TRSContainer parentType="COURSE" subDepth={true} badgeCourseCube={cube} />
                       </Fragment>
                     )
                     :
                     <div>코스 정보가 존재하지 않습니다.</div>
                   }
-                  {badgeComp.course && badgeComp.course.test ?
-                    <li className="step1 trs">
-                      <div className="category">
-                        <Icon className="icon-test24"/>
-                        <span>Test</span>
-                      </div>
-                      <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.test_name}</a>
-                      </div>
-                      <div className="right">
-                        <a href="#" className="btn-play black">
-                          <span className="text">평가응시</span>
-                          <Icon className="icon play-black24"/>
-                        </a>
-                      </div>
-                    </li>
-                    :
-                    null
-                  }
-                  {badgeComp.course && badgeComp.course.report ?
-                    <li className="step1 trs">
-                      <div className="category">
-                        <Icon className="icon-report24"/>
-                        <span>Report</span>
-                      </div>
-                      <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.report_name}</a>
-                      </div>
-                      <div className="right">
-                        <a href="#" className="btn-play black">
-                          <span className="text">과제제출</span>
-                          <Icon className="icon play-black24"/>
-                        </a>
-                      </div>
-                    </li>
-                    :
-                    null
-                  }
-                  {badgeComp.course && badgeComp.course.survey ?
-                    <li className="step1 trs">
-                      <div className="category">
-                        <Icon className="icon-survey24"/>
-                        <span>Survey</span>
-                      </div>
-                      <div className="tit">
-                        <a className="ellipsis" href="#">{badgeComp.course.survey_name}</a>
-                      </div>
-                      <div className="right">
-                        <a href="#" className="btn-play black">
-                          <span className="text">설문하기</span>
-                          <Icon className="icon play-black24"/>
-                        </a>
-                      </div>
-                    </li>
-                    :
-                    null
-                  }
-
-                  {/*parentType: COURSE or CUBE*/}
-                  {/*subDepth: COURSE > CUBE에 대한 TRS*/}
-                  <TRSContainer parentType="COURSE" subDepth={true} />
-
+                  {/*subDepth: COURSE TRS*/}
+                  <TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />
                 </ul>
               </div>
             </div>
@@ -454,66 +294,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                     {setLearningStateForMedia(badgeComp.cube!)}
                   </div>
                 </div>
-
-                { badgeComp.cube && (badgeComp.cube.test || badgeComp.cube.report || badgeComp.cube.survey) ?
-                  <>
-                    { badgeComp.cube && badgeComp.cube.test && (
-                      <div className="bar typeB">
-                        <div className="category">
-                          <Icon className="icon-test24"/>
-                          <span>Test</span>
-                        </div>
-                        <div className="tit">
-                          <a href="#" className="ellipsis">{badgeComp.cube.test_name}</a>
-                        </div>
-                        <div className="right">
-                          <a href="#" className="btn-play black">
-                            <span className="text">평가응시</span>
-                            <Icon className="icon play-black24"/>
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                    { badgeComp.cube && badgeComp.cube.report && (
-                      <div className="bar typeB">
-                        <div className="category">
-                          <Icon className="icon-report24"/>
-                          <span>Report</span>
-                        </div>
-                        <div className="tit">
-                          <a href="#" className="ellipsis">{badgeComp.cube.report_name}</a>
-                        </div>
-                        <div className="right">
-                          <a href="#" className="btn-play black">
-                            <span className="text">과제제출</span>
-                            <Icon className="icon play-black24"/>
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                    { badgeComp.cube && badgeComp.cube.survey && (
-                      <div className="bar typeB">
-                        <div className="category">
-                          <Icon className="icon-survey24"/>
-                          <span>Report</span>
-                        </div>
-                        <div className="tit">
-                          <a href="#" className="ellipsis">{badgeComp.cube.survey_name}</a>
-                        </div>
-                        <div className="right">
-                          <a href="#" className="btn-play black">
-                            <span className="text">설문하기</span>
-                            <Icon className="icon play-black24"/>
-                          </a>
-                        </div>
-                      </div>
-                    )}
-
-                    <TRSContainer parentType="CUBE" />
-
-                  </>
-                  :
-                  null }
+                <TRSContainer parentType="CUBE" badgeCube={badgeComp.cube!} />
               </div>
             </Fragment>
         ))
