@@ -12,7 +12,6 @@ import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 
-
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
 
@@ -26,7 +25,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   const { badgeService, badge, badgeStyle, badgeSize } = Props;
   const { badgeId } = badge;
 
-  const [ studentInfo, setBadgeStudentInfo ] = useState();
+  const [ studentInfo, setBadgeStudentInfo ] = useState<BadgeStudentModel | null>();
 
   // 학습 카운트 정보
   const [badgeLearningCount, setBadgeLearningCount] = useState({
@@ -35,12 +34,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   });
 
   const [ requestModal, setRequestModal ] = useState(false);
-
-
-  const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
-
-  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
 
 
   useEffect(() => {
@@ -96,7 +89,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
         console.log( studentInfo );
 
-        badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
+        badgeService!.requestManualIssued(studentInfo!.id, IssueState.Requested)
           .then((response) => {
             console.log( response );
           });
@@ -117,6 +110,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         badgeStyle={badgeStyle}
         badgeSize={badgeSize}
       />
+
       {/*Status info*/}
       <ChallengeBadgeStatus>
 
@@ -125,7 +119,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
             <span className="number">
               <b>{IssueStateNameType.Requested}</b>
             </span>
-            <span className="txt mt2">발급요청일표시 발급 요청</span>
+            <span className="txt mt2">2020.07.30</span>
           </span>
         )}
 
@@ -158,6 +152,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   );
 };
 
-export default inject(mobxHelper.injectFrom(
+export default  inject(mobxHelper.injectFrom(
   'badge.badgeService',
 ))(withRouter(BadgeCompLeft));

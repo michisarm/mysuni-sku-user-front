@@ -35,12 +35,12 @@ export const BadgeTitle: React.FC<BadgeTitleProps> = ({college, name}) => (
 
 interface BadgeInfoProps {
   certiAdminCategoryName: string,
-  certiAdminSubCategoryName: string,
+  designAdminName: string,
   difficultyLevel: string,
   learningTime: number
 }
 
-export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryName, certiAdminSubCategoryName, difficultyLevel, learningTime}) => {
+export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryName, designAdminName, difficultyLevel, learningTime}) => {
   //
   const learningTimeFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
 
@@ -55,7 +55,7 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryNa
       <div>
         <span className="detail design">
           <span>설계 주체</span>
-          <span>{certiAdminSubCategoryName}</span>
+          <span>{designAdminName}</span>
         </span>
       </div>
       <div>

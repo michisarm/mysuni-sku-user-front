@@ -24,8 +24,6 @@ const BadgeLectureContainer2: React.FC = () => {
         {/*</Lecture2.CourseSection>*/}
 
 
-
-
         {/*Cube*/}
         <div className="course-box fn-parents">
           <div className="cube-box">

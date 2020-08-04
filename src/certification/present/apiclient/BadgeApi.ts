@@ -191,11 +191,13 @@ class BadgeApi {
   }
 
   // 자동 뱃지발급 요청
-  requestAutoIssued() {
+  requestAutoIssued(List: any[]) {
     //
-    const params = {};
+    const params = {
+      List
+    };
 
-    return axiosApi.post(this.baseUrl + '/students/issue-request', params)
+    return axiosApi.post(this.baseUrl + '/students/issue-state', params)
       .then((response) => response && response.data || null)
       .catch((error) => null);
   }

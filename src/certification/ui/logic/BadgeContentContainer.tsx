@@ -219,24 +219,25 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
   };
 
-
   // 발급요청
   const onClickRequest = () => {
     //
-    console.log( badgeDetail );
-    console.log( studentInfo );
+    if ( studentInfo === undefined ) return;
 
     // 자동발급 뱃지일 경우 바로 발급
     const autoIssuedBadge = badgeDetail.autoIssued;
-    console.log(`자동발급 : ${autoIssuedBadge}`);
 
     if (autoIssuedBadge) {
-      // 뱃지 자동발급 요청- parameter: badgeStudentId, learningCompleted, issueState
-      badgeService!.requestAutoIssued().then(() => {
-        // 응답:success
-        setSuccessModal(!successModal);
-        // 획득완료
-        setBadgeState(ChallengeState.Issued);
+
+      const List: any[] = [{ id: studentInfo!.id, learningCompleted: true, issueState: 'Issued'}];
+
+      badgeService!.requestAutoIssued(List).then((response) => {
+
+        // 뱃지 발급 팝업 띄우기
+        if ( response ) {
+          setSuccessModal(!successModal);
+          setBadgeState(IssueState.Issued);
+        }
       });
     }
 
@@ -279,7 +280,9 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
 
     tagList.map((tag, index) => {
-      tagHtml += '<span class="ui label tag" id="tag-' + index + '">' + tag + '</span>';
+      if ( tag !== '' ) {
+        tagHtml += '<span class="ui label tag" id="tag-' + index + '">' + tag + '</span>';
+      }
     });
 
     return tagHtml;
@@ -312,8 +315,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           certiAdminCategoryName={
             badgeDetail.certiAdminCategory.certiAdminCategoryName
           }
-          certiAdminSubCategoryName={
-            badgeDetail.certiAdminSubcategory.certiAdminSubcategoryName
+          designAdminName={
+            badgeDetail.designAdmin.designAdminName
           }
           difficultyLevel={badgeDetail.difficultyLevel}
           learningTime={badgeDetail.learningTime}
@@ -327,6 +330,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           learningTotalCount={badgeLearningCount.totalCount}
           learningCompleted={badgeLearningCount.isCount}
         />
+        <Button className="fix bg" onClick={onClickRequest}>발급요청</Button>
 
         {/*도전 취소 확인 팝업*/}
         <ChallengeCancelModal
@@ -381,7 +385,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             <OverviewField.Item
               titleIcon="addinfo"
               title="추가 발급 조건"
-              content="v0.1 API에 관련 내용 없음. 추가발급 여부만 있음 boolean"
+              contentHtml="해당 Badge는 학습 이수 외에도 추가 미션이 있습니다.<br/>학습 이수 완료 후, 발급 요청하시면 담당자가 추가 미션에 대해 안내 드릴 예정입니다."
             />
           )}
         </OverviewField.List>
