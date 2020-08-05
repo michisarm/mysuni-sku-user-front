@@ -49,6 +49,7 @@ interface State {
   examTitle: string,
   surveyTitle: string,
   tabState: string,
+  isPreCoursePassed: boolean,
 }
 
 interface RouteParams {
@@ -85,6 +86,7 @@ class CoursePageV2 extends Component<Props, State> {
     surveyState: false,
     surveyTitle: '',
     tabState: '',
+    isPreCoursePassed: true,
   };
 
   // 선수코스 학습 완료 여부
@@ -125,8 +127,6 @@ class CoursePageV2 extends Component<Props, State> {
     } else if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
       this.init();
     }
-
-
 
   }
 
@@ -285,8 +285,9 @@ class CoursePageV2 extends Component<Props, State> {
             }
           }
         }
-        this.isPreCoursePassed = isPreCoursePassed;
-        console.log('isPreCoursePassed : ', this.isPreCoursePassed);
+
+        this.setState({isPreCoursePassed});
+        // coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
       }
     }
   }
@@ -607,7 +608,7 @@ class CoursePageV2 extends Component<Props, State> {
         coursePlanService={coursePlanService}
         onPageRefresh={this.onPageRefresh}
         courseLectureService={courseLectureService}
-        isPreCoursePassed={this.isPreCoursePassed}
+        isPreCoursePassed={this.state.isPreCoursePassed}
         studentService={studentService}
         studentInfo={StudentInfos}
       />

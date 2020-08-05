@@ -136,6 +136,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
   studentForVideoObj: StudentModel | null = {} as StudentModel;
   rollBooks: RollBookModel[] = [];
 
+
+
   state =
     {
       classNameForLearningState: 'fix line' || 'fix bg',
@@ -193,13 +195,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
     if (this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) {
-
       this.init();
     }
 
     if (this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
+      console.log('course lecture init');
       this.init();
     }
+
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
@@ -216,14 +219,20 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // }
   }
 
+  isPreCoursePassed: boolean | undefined;
+
   async init()
   {
-    const { lectureView, examinationService, examPaperService, studentInfo } = this.props;
+    const { lectureView, examinationService, examPaperService, studentInfo, isPreCoursePassed } = this.props;
 
+
+    console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
 
     if (lectureView && lectureView.cubeId) {
 
-      if (studentInfo !== null) this.getStudentInfoView();
+      if (studentInfo !== null) {
+        this.getStudentInfoView();
+      }
 
       // this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
       // this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
@@ -529,8 +538,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // const { personalCube } = personalCubeService!;
 
     const { service, contents } = this.personalCube!.contents;
-
-    console.log('clicked isPreCoursePassed : ', isPreCoursePassed);
 
     if (isPreCoursePassed) {
       //Video, Audio
