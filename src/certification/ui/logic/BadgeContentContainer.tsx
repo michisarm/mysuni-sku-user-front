@@ -28,6 +28,7 @@ import BadgeCompModel from '../model/BadgeCompModel';
 
 
 export enum ChallengeDescription {
+  None = 'none',
   WaitForChallenge = 'Badge획득에 도전 해보세요.',
   Challenging = '',
   ReadyForRequest = 'Badge획득 도전이 완료되었습니다.',
@@ -89,6 +90,13 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
     else {
 
+      // 구성학습 카운트 조회 시 학습완료count = 총학습개수 => 발급요청 상태로 변경
+      // if ( badgeDetail.autoIssued && badgeStudentInfo.learningCompleted ) {
+      //   //setSuccessModal(!successModal);
+      //   setBadgeState(ChallengeState.ReadyForRequest);
+      //   return;
+      // }
+
       setStudentInfo(badgeStudentInfo);
 
       // 수강 정보 조합 => Badge 상태
@@ -99,6 +107,32 @@ const BadgeContentContainer: React.FC<Props> = Props => {
       );
     }
   };
+
+
+  // 구성학습 카운트 정보
+  const findBadgeLearningInfo = async (badgeId: string) => {
+    //
+    const badgeLearningInfo: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
+
+    let cnt = 0;
+    badgeLearningInfo.map((item) => {
+      if ( item.learningState === 'Passed' ) { cnt++; }
+    });
+
+    setBadgeLearningCount({
+      isCount: cnt,
+      totalCount: badgeLearningInfo.length,
+    });
+
+    // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
+    // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
+    // 내일 협의 후 결정
+    // 발급 요청 버튼 클릭 시 learningCompleted: true (이수처리) 필요 할 수 있음
+    if ( cnt === badgeLearningInfo.length ) {
+      setBadgeState(ChallengeState.ReadyForRequest);
+    }
+  };
+
 
   const getBadgeState = (
     challengeState: string,
@@ -153,25 +187,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
   };
 
-  // 구성학습 카운트 정보
-  const findBadgeLearningInfo = async (badgeId: string) => {
-    //
-    const badgeLearningInfo: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
-
-    let cnt = 0;
-    badgeLearningInfo.map((item) => {
-      if ( item.learningState === 'Passed' ) { cnt++; }
-    });
-
-    setBadgeLearningCount({
-      isCount: cnt,
-      totalCount: badgeLearningInfo.length,
-    });
-  };
-
 
   /* Button Actions */
-
   // 도전하기 버튼 클릭
   const onClickChallenge = () => {
     //
@@ -190,7 +207,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     badgeService!.challengeBadge(retryBadgeStudentId, myStudentInfo, badgeId, ChallengeState.Challenged)
       .then( (response) => {
         if ( response ) {
-          findBadgeStudent(badgeId);
+          //findBadgeStudent(badgeId);
+          setBadgeState(ChallengeState.Challenging);
         }
       });
   };
@@ -206,60 +224,72 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     if (studentInfo) {
       badgeService!.cancelChallengeBadge(studentInfo.id, ChallengeState.Canceled)
         .then((response) => {
-
           if ( response ) {
             setBadgeState(ChallengeState.WaitForChallenge);
           } else {
             reactAlert({title: '도전 취소 실패', message: '도전을 취소하지 못하였습니다.'});
           }
-
         }).then( () => {
           setCancelModal(!cancelModal);
         });
     }
   };
 
+
   // 발급요청
   const onClickRequest = () => {
     //
     if ( studentInfo === undefined ) return;
 
-    // 자동발급 뱃지일 경우 바로 발급
     const autoIssuedBadge = badgeDetail.autoIssued;
 
     if (autoIssuedBadge) {
-
-      const List: any[] = [{ id: studentInfo!.id, learningCompleted: true, issueState: 'Issued'}];
-
-      badgeService!.requestAutoIssued(List).then((response) => {
-
-        // 뱃지 발급 팝업 띄우기
-        if ( response ) {
-          setSuccessModal(!successModal);
-          setBadgeState(IssueState.Issued);
-        }
-      });
+      // 자동발급 요청
+      onClickRequestAutoIssue();
+    } else {
+      // 수동발급 요청
+      onClickRequestManualIssue();
     }
 
-    // 수동발급 뱃지
-    if (!autoIssuedBadge) {
-      //
-      if ( badgeDetail.additionTermsExist && studentInfo ) {
-        //
-        const missionCompleted = studentInfo.missionCompleted;
+  };
 
-        if ( missionCompleted ) {
+  // 자동발급
+  const onClickRequestAutoIssue = () => {
+    //
+    const List: any[] = [{ id: studentInfo!.id, learningCompleted: true, issueState: 'Issued'}];
 
-          badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested).then(
-            () => {
-              setBadgeState(ChallengeState.Requested);
-            });
+    badgeService!.requestAutoIssued(List).then((response) => {
 
-        } else {
-          reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
-        }
+      // 뱃지 발급 팝업 띄우기
+      if ( response ) {
+        setSuccessModal(!successModal);
+        setBadgeState(IssueState.Issued);
       }
+    });
+  };
+
+  // 수동발급 요청
+  const onClickRequestManualIssue = () => {
+    //
+    if ( studentInfo ) {
+      //
+      const missionCompleted = studentInfo.missionCompleted;
+
+      if ( badgeDetail.additionTermsExist && !missionCompleted ) {
+        reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
+        return;
+      }
+
+      badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
+        .then((response) => {
+          if ( response ) {
+            setBadgeState(ChallengeState.Requested);
+          } else {
+            reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
+          }
+        });
     }
+
   };
 
   // 성공 모달 닫기
@@ -310,6 +340,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           college={badgeDetail.mainCategoryName}
           name={badgeDetail.name}
         />
+
         {/*뱃지 메타정보1*/}
         <BadgeInformation
           certiAdminCategoryName={
@@ -330,7 +361,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           learningTotalCount={badgeLearningCount.totalCount}
           learningCompleted={badgeLearningCount.isCount}
         />
-        <Button className="fix bg" onClick={onClickRequest}>발급요청</Button>
 
         {/*도전 취소 확인 팝업*/}
         <ChallengeCancelModal
