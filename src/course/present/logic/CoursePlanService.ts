@@ -106,6 +106,10 @@ class CoursePlanService {
   @observable
   courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
+  @observable
+  isPreCoursePassed: boolean = true;
+
+
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
     this.coursePlanFlowApi = coursePlanFlowApi;
@@ -117,6 +121,16 @@ class CoursePlanService {
   }
 
   // CoursePlans -------------------------------------------------------------------------------------------------------
+  //
+  // @action
+  // setIsPreCoursePassed(isPreCoursePassed: boolean) {
+  //   return runInAction(() => this.isPreCoursePassed = isPreCoursePassed);
+  // }
+  //
+  // @action
+  // get getIsPreCoursePassed() {
+  //   return this.isPreCoursePassed;
+  // }
 
   @computed
   get getPreCourseSet() {

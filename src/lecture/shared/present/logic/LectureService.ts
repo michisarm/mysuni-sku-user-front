@@ -60,6 +60,7 @@ class LectureService {
 
   @action
   setSubLectureViews(courseId: string, lectureViews: LectureViewModel[]) {
+    console.log('courseId : ', courseId, 'lectureViews, ', lectureViews);
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
   }
 
@@ -235,6 +236,7 @@ class LectureService {
     // if (this.subLectureViewsMap.get(courseId)) {
     //   console.log( 'subLectureViewsMap.get : ', courseId, (this.subLectureViewsMap.get(courseId) as IObservableArray).peek());
     // }
+
     return this.subLectureViewsMap.get(courseId) || [];
 
   }
