@@ -226,7 +226,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { lectureView, examinationService, examPaperService, studentInfo, isPreCoursePassed } = this.props;
 
 
-    console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
+    // console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
 
     if (lectureView && lectureView.cubeId) {
 

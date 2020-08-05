@@ -120,7 +120,7 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
   if (!OnTest) return null;
 
   // console.log('Test viewObject : ', viewObject);
-  // console.log('type : {0}, name : {1}', type, name);
+  console.log('type : ', type, 'name : ', name);
   return (
 
     <>
