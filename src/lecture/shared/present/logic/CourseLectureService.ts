@@ -3,6 +3,7 @@ import { autobind } from '@nara.platform/accent';
 import CourseLectureModel from '../../../model/CourseLectureModel';
 import CourseLectureApi from '../apiclient/CourseLectureApi';
 import LectureViewModel from '../../../model/LectureViewModel';
+import StudentModel from '../../../model/StudentModel';
 
 
 @autobind
@@ -27,6 +28,10 @@ class CourseLectureService {
   // 선수코스
   @observable
   preLectureViews: LectureViewModel[] = [];
+
+  // 선수코스 학습정보
+  @observable
+  preLectureStudents: StudentModel[] = [];
 
   @computed
   get getPreLectureViews() {
@@ -70,7 +75,21 @@ class CourseLectureService {
     this.preLectureViews = preLectureViewSet;
     // console.log('preLectureViews : ', this);
     return preLectureViewSet;
+  }
 
+  @action
+  setPreLectureStudents(
+    preLectureStudents: StudentModel[]
+  ) {
+    return runInAction(() =>
+      (this.preLectureStudents = preLectureStudents));
+
+  }
+
+  @computed
+  get getPreLectureStudents() {
+    //
+    return (this.preLectureStudents as IObservableArray).peek();
   }
 }
 

@@ -10,6 +10,7 @@ class StudentInfoModel {
   student: StudentModel | null = null;
   lecture: StudentCubeModel | null = null;
   course: StudentCourseModel | null = null;
+  preCourses: StudentModel | null = null;
 
   //UI
   round: number = 0;
@@ -52,6 +53,11 @@ class StudentInfoModel {
       }
       else {
         this.course = new StudentCourseModel();
+      }
+      if (studentInfo.preCourseList) {
+        if(studentInfo.preCourseList.length > 0) {
+          this.preCourses = studentInfo.preCourseList;
+        }
       }
     }
   }

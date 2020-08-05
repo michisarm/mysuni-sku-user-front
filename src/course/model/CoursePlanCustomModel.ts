@@ -22,6 +22,7 @@ export interface CoursePlanCustomModel {
   reviewSummary: ReviewSummaryModel
   commentCountRdo: CommentCountRdoModel
   subLectureViews:  SubLectureViewModel[]
+  preCourseSet: CoursePlanModel[]
   preCourseLectures: LectureViewModel[]
   examination: ExaminationModel
   examPaper: ExamPaperModel

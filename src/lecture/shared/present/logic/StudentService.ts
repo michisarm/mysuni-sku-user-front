@@ -136,11 +136,11 @@ class StudentService {
   }
 
   @action
-  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
+  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[], preCourseLectureIds: string[]) {
     //
     this._studentInfo = null;
 
-    const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds);
+    const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds, preCourseLectureIds);
 
     if (studentInfo) {
       return runInAction(() => {
