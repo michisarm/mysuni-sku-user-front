@@ -69,7 +69,7 @@ interface Props {
   surveyFormService?: SurveyFormService,
 
   learningState?: string
-  isPreCoursePassed?: boolean
+  isPreCoursePassed?:  boolean
   studentInfo?: StudentInfoModel | null
 }
 

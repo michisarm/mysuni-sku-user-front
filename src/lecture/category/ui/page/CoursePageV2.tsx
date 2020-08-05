@@ -126,6 +126,8 @@ class CoursePageV2 extends Component<Props, State> {
       this.init();
     }
 
+
+
   }
 
   componentWillUnmount(): void {
@@ -149,7 +151,7 @@ class CoursePageV2 extends Component<Props, State> {
     // this.findProgramOrCourseLecture();
     // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     // await this.findStudent();
-    // await this.setPreCourseModel();
+    // await this.getPreCourseModel();
     this.setState({ loaded: true });
   }
 
@@ -248,38 +250,40 @@ class CoursePageV2 extends Component<Props, State> {
   }
 
   // 선수코스 세팅..
-  setPreCourseModel() {
+  getPreCourseModel() {
     console.log('선수코스 세팅 시작!');
-    const { match, coursePlanService, courseLectureService, studentService, history } = this.props;
+    const { match, coursePlanService, studentService, history } = this.props;
     const { location } = history;
 
     // console.log('location : ', location);
+    let isPreCoursePassed = true;
 
     if (!location.search.match('postCourseLectureId')) {
       // course_plan 테이블
 
       // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
-      let isPreCoursePassed = true;
-      const preCoursePlanSet = coursePlanService.preCourseSet;
-      const preCourseStudentList = studentService.StudentInfos!.preCourses;
-      // @ts-ignore
-      for (let i = 0; i < preCourseStudentList.length; i++) {
+      console.log(studentService.StudentInfos);
+      if(coursePlanService.preCourseSet && studentService.StudentInfos!.preCourses) {
+        const preCoursePlanSet = coursePlanService.preCourseSet;
+        const preCourseStudentList = studentService.StudentInfos!.preCourses;
         // @ts-ignore
-        const preCourse = preCourseStudentList[i];
-        for (let j = 0; j < preCoursePlanSet.length; j++) {
-          const preCoursePlan = preCoursePlanSet[j];
-          if (preCoursePlan.courseLectureId === preCourse.lectureUsid) {
-            // console.log( 'preCourseInfo : ', preCoursePlan.courseLectureId, preCoursePlan.required, preCourse.learningState );
-            if (preCoursePlan.required && preCourse.learningState !== 'Passed') {
-              isPreCoursePassed = false;
+        for (let i = 0; i < preCourseStudentList.length; i++) {
+          // @ts-ignore
+          const preCourse = preCourseStudentList[i];
+          for (let j = 0; j < preCoursePlanSet.length; j++) {
+            const preCoursePlan = preCoursePlanSet[j];
+            if (preCoursePlan.courseLectureId === preCourse.lectureUsid) {
+              // console.log( 'preCourseInfo : ', preCoursePlan.courseLectureId, preCoursePlan.required, preCourse.learningState );
+              if (preCoursePlan.required && preCourse.learningState !== 'Passed') {
+                isPreCoursePassed = false;
+              }
             }
           }
         }
+        coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
+        // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
       }
-      this.isPreCoursePassed = isPreCoursePassed;
-      // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
     }
-    console.log('선수코스 세팅 종료!');
   }
 
 
@@ -340,7 +344,7 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
-    const { student, StudentInfos } = studentService!;
+    const { student } = studentService!;
 
     let state: SubState | undefined;
     let examId: string = '';

@@ -54,9 +54,9 @@ class StudentInfoModel {
       else {
         this.course = new StudentCourseModel();
       }
-      if (studentInfo.preCourseList) {
-        if(studentInfo.preCourseList.length > 0) {
-          this.preCourses = studentInfo.preCourseList;
+      if (studentInfo.preCourses) {
+        if(studentInfo.preCourses.length > 0) {
+          this.preCourses = studentInfo.preCourses;
         }
       }
     }

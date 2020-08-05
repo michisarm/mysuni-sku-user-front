@@ -106,6 +106,9 @@ class CoursePlanService {
   @observable
   courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
+  @observable
+  isPreCoursePassed: boolean = true;
+
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
@@ -118,6 +121,11 @@ class CoursePlanService {
   }
 
   // CoursePlans -------------------------------------------------------------------------------------------------------
+
+  @action
+  setIsPreCoursePassed(isPreCoursePassed: boolean) {
+    return runInAction(() => this.isPreCoursePassed = isPreCoursePassed);
+  }
 
   @action
   async findAllCoursePlan() {
@@ -161,7 +169,7 @@ class CoursePlanService {
 
         const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
         const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
-        const preCourseSet: CoursePlanModel[] = JSON.parse(JSON.stringify(courseData.preCourseSet));
+        const preCourseSet: CoursePlanModel[] = JSON.parse(JSON.stringify(courseData.precedenceCourse));
         const preCourseLectures: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.preCourseLectures));
 
         courseData.subLectureViews.map((subLecture: any) => {
