@@ -686,7 +686,7 @@ class CourseLectureContainer extends Component<Props, State> {
       `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
     // console.log('lecture container viewObject : ', this.viewObject);
-    // console.log('lecture container personalCube : ', this.personalCube);
+    // console.log('CourseLectureContainer : ', lectureView);
 
     return (
       <div>

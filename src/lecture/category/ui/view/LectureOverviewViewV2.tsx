@@ -248,7 +248,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { params } = match;
     const { search } = location;
 
-    console.log('lecture : ', lecture);
+    // console.log('lecture : ', lecture);
 
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
@@ -390,8 +390,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { multiple, categoryOpen, openLearnModal } = this.state;
     const cubeType = viewObject.cubeType;
 
-    // console.log('LectureOverview : ', JSON.stringify(viewObject));
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
+
+    // console.log('LectureOverviewViewV2 : ', viewObject);
 
     return (
       <OverviewField.Wrapper>

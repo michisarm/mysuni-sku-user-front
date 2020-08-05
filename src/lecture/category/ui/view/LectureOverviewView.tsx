@@ -19,6 +19,8 @@ interface Props {
   viewObject: any
   typeViewObject: any
   onSaveCallback:() => void
+  serviceId: string
+  serviceType: string
 }
 
 
@@ -172,7 +174,7 @@ class LectureOverviewView extends Component<Props, State> {
     const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
-    // console.log('LectureOverview : ', JSON.stringify(viewObject));
+    // console.log('LectureOverviewView : ', typeViewObject);
 
     return (
       <OverviewField.Wrapper>
