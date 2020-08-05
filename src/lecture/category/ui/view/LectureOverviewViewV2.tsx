@@ -392,7 +392,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
 
-    // console.log('LectureOverviewViewV2 : ', viewObject);
+    console.log('LectureOverviewViewV2 : ', params.serviceId);
+    console.log('LectureOverviewViewV2 : ', params.serviceType);
 
     return (
       <OverviewField.Wrapper>

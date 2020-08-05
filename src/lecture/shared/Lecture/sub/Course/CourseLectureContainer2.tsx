@@ -873,7 +873,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container viewObject : ', this.viewObject);
     // console.log('lecture container personalCube : ', this.personalCube);
 
-    // console.log('CourseLectureContainer2 : ', lectureView);
+    console.log('CourseLectureContainer2 : ', lectureView.serviceId);
+    console.log('CourseLectureContainer2 : ', lectureView.serviceType);
 
     // console.log('CourseLectureContainer2 render ----------------->', studentInfo);
     return (

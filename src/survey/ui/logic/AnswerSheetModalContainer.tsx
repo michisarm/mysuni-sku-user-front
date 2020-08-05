@@ -92,6 +92,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
 
+    console.log('finished : ', finished);
     console.log('serviceId : ', serviceId);
     console.log('serviceType : ', serviceType);
 
