@@ -483,7 +483,7 @@ class CoursePage extends Component<Props, State> {
 
   renderList() {
     //
-    const { serviceId } = this.props.match.params!;
+    const { serviceId, serviceType } = this.props.match.params!;
     const { coursePlanService } = this.props;
     this.state.tabState = 'list';
 
@@ -500,6 +500,7 @@ class CoursePage extends Component<Props, State> {
 
   renderOverview() {
     //
+    const { serviceId, serviceType } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
@@ -509,6 +510,8 @@ class CoursePage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        serviceId={serviceId}
+        serviceType={serviceType}
       />
     );
   }

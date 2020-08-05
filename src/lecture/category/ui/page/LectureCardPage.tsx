@@ -185,6 +185,9 @@ class LectureCardPage extends Component<Props, State> {
 
         await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
 
+        // console.log('mediaService : ', mediaService);
+        // console.log('contents : ', contents);
+
         if (service.type === ContentsServiceType.Classroom) {
           await classroomService.findClassrooms(personalCube.personalCubeId);
         }
@@ -831,6 +834,8 @@ class LectureCardPage extends Component<Props, State> {
 
   renderOverview() {
     //
+    // const { servic, serviceType } = this.props.match.params!;
+    const parmas = this.props.match;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
 
@@ -839,6 +844,8 @@ class LectureCardPage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        serviceId={parmas.params.lectureCardId}
+        serviceType={parmas.params.cubeId}
       />
     );
   }

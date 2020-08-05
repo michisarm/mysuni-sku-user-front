@@ -91,6 +91,10 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheetService, surveyCaseService, onSaveCallback, serviceId, serviceType } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
+
+    // console.log('serviceId : ', serviceId);
+    // console.log('serviceType : ', serviceType);
+
     if (!finished) {
       if (answerSheet.id && answerSheet.id.length) {
         answerSheetService!.saveAnswerSheet().then(() => {
