@@ -69,7 +69,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     }
     //
     showBadges();
-  }, [categorySelection, difficultyLevel]);
+  }, [categorySelection, difficultyLevel, match.params.pageNo]);
 
   const showBadges = () => {
     //
