@@ -9,7 +9,7 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
-  mySUNI = '/static/media/logo-badge.png',
+  mySUNI = '/static/media/logo_badge.svg',
   Subsidiary = '/static/media/logo_badge.svg',
   Third = '/static/media/logo78x25.9e42a9b0.svg',
 }
