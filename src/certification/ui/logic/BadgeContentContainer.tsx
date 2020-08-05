@@ -396,7 +396,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             titleIcon="list24"
             title="Learning Path"
             //content="학습정보"
-            // content={<BadgeLectureContainer2 />}
             content={<BadgeLectureContainer badgeId={badgeId} />}
           />
         </OverviewField.List>
