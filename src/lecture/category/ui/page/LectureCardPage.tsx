@@ -190,10 +190,10 @@ class LectureCardPage extends Component<Props, State> {
         }
         else if (service.type === ContentsServiceType.Media) {
           mediaService.findMedia(contents.id).then((media) => {
-            if (media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
+            if (media && media.mediaType === MediaType.ContentsProviderMedia && media.mediaContents.contentsProvider.isLinkedInType) {
               this.setState({ linkedInOpen: true });
             }
-            if (media.mediaType === MediaType.InternalMedia) {
+            if (media && media.mediaType === MediaType.InternalMedia) {
               const studentCdo = {
                 ...this.getStudentCdo(),
                 proposalState: ProposalState.Approved,
@@ -645,7 +645,7 @@ class LectureCardPage extends Component<Props, State> {
     let url = '';
     let videoUrl = '';
 
-    switch (media.mediaType) {
+    switch (media && media.mediaType) {
       case MediaType.ContentsProviderMedia:
         url = media.mediaContents.contentsProvider.url;
         break;
@@ -669,12 +669,12 @@ class LectureCardPage extends Component<Props, State> {
     }
 
     return {
-      mediaType: media.mediaType,
+      mediaType: media && media.mediaType,
       url,
       videoUrl,
       learningPeriod: {
-        startDate: media.learningPeriod.startDateDot,
-        endDate: media.learningPeriod.endDateDot,
+        startDate: media && media.learningPeriod.startDateDot,
+        endDate: media && media.learningPeriod.endDateDot,
       },
     };
   }

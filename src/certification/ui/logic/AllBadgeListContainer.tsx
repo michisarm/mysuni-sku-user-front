@@ -30,7 +30,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   const { badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
-  const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
+  const PAGE_SIZE = 8;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
   const prevCategory = useRef<string>('');
@@ -42,10 +42,17 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   useEffect(() => {
     //
     // 페이지 변경(초기화)
-    history.replace(routePaths.currentPage(1));
+    //history.replace(routePaths.currentPage(1));
 
     pageKey.current = PAGE_KEY;
-    pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+    badgeService!.clearBadges();
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(getPageNo() - 1);
+
+    refresh.current = true;
 
     return (() => {
       window.scrollTo(0, 0);
@@ -54,6 +61,12 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   }, []);
 
   useEffect(() => {
+    // 새로고침 / 이전 페이지로 이동 시 : 페이지 번호에 따라 처리되었으므로 리턴
+    if (refresh.current) {
+      // window.scrollTo(0, 0);
+      refresh.current = false;
+      return;
+    }
     //
     showBadges();
   }, [categorySelection, difficultyLevel]);
@@ -79,8 +92,8 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
       pageService!.initPageMap(pageKey.current, offset, PAGE_SIZE);
     }
     else {
-      badgeService!.clearBadges();
       pageService!.initPageMap(pageKey.current, 0, PAGE_SIZE);
+      badgeService!.clearBadges();
     }
 
     findMyContent(getPageNo() - 1);
