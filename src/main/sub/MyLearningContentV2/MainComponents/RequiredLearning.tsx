@@ -161,6 +161,7 @@ const RequiredLearning : React.FC<Props> = (Props) => {
           {lectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
             const inMyLecture = getInMyLecture(learning.serviceId);
+            console.log(learning);
 
             return (
               <Lecture

@@ -243,7 +243,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
     //
-    console.log( cube );
+    //console.log( cube );
 
     // 버튼 스타일
     let styleName = 'black';
@@ -296,6 +296,32 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     );
   };
 
+  const setCourseLearningState = (badgeComp: BadgeCompData) => {
+    //
+    const learningState = badgeComp.course!.learningState;
+
+    let styleName = 'black';
+    switch( learningState ) {
+      case BadgeLectureState.Progress:
+        styleName = 'orange';
+        break;
+      case BadgeLectureState.Passed:
+        styleName = 'completed';
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <a href="#" className={classNames('btn-play', styleName )} onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
+        <span className="text">
+          {(learningState === null) ? StateDefaultName.Learning : BadgeLectureStateName[badgeComp.course!.learningState as BadgeLectureState]}
+        </span>
+        <Icon className={`play-${styleName}24`}/>
+      </a>
+    );
+  };
+
   return (
     <div className="course-cont">
       {badgeCompList.length > 0 ?
@@ -307,17 +333,22 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
                   {/*<span className="ellipsis">{(index + 1) + '. ' + badgeComp.course.name}</span>*/}
                 </div>
-                <div className="num">
-                  {badgeComp.course.cubeCount}개 강의 구성
-                  {badgeComp.course.learningState === BadgeLectureState.Passed && (
-                    <span className="completed">{BadgeLectureStateName.Passed}</span>
-                  )}
-                </div>
-                <div className="toggle-btn">
-                  <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
-                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
-                    <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
-                  </Button>
+
+                <div className="right">
+                  <span className="num">
+                    {badgeComp.course.cubeCount}개 강의 구성
+                  </span>
+
+                  {/*코스의 학습상태 */}
+                  {setCourseLearningState(badgeComp)}
+
+                  {/*Learning Path 기능 변경으로 사용안함*/}
+                  <div className="toggle-btn">
+                    <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
+                      <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
+                      <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
               {/*

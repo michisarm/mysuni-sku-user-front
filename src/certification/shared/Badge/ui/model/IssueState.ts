@@ -1,5 +1,6 @@
 
 enum IssueState {
+  None= 'None',
   Requested= 'Requested',
   RequestCanceled= 'RequestCanceled',
   RequestRejected= 'RequestRejected',

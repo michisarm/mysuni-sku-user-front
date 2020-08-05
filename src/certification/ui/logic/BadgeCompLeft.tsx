@@ -77,21 +77,23 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
 
   // 발급요청
-  const onClickRequestBadge = (learningCompleted: boolean) => {
+  const onClickRequestBadge = (id: string) => {
     //
     if (!badge.autoIssued) {
-
-      // learningCompleted가 변경되는 시점 확인 필요
+      //
       if (badgeLearningCount.isCount < badgeLearningCount.totalCount ) {
         setRequestModal(!requestModal);
       } else {
         // 발급요청 API call
 
-        console.log( studentInfo );
-
-        badgeService!.requestManualIssued(studentInfo!.id, IssueState.Requested)
+        badgeService!.requestManualIssued(id, IssueState.Requested)
           .then((response) => {
             console.log( response );
+            if ( response ) {
+              findMyContent(badgeId);
+            } else {
+              reactAlert({title: '발급 요청 실패', message: 'Badge 발급 요청을 실패했습니다.'});
+            }
           });
 
       }
@@ -129,7 +131,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
             { !badge.autoIssued && (
               <ChallengeBoxCompanionModal
                 open={requestModal}
-                onAction={() => onClickRequestBadge(badge.learningCompleted)}
+                onAction={() => onClickRequestBadge(studentInfo!.id)}
                 onClick={onHandleChangeModal}
               />
             )}
