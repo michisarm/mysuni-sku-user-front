@@ -9,6 +9,9 @@ import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
+import BadgeCourseData from '../model/BadgeCourseData';
+import lectureRoutePaths from '../../../lecture/routePaths';
+import BadgeCubeData from '../model/BadgeCubeData';
 
 
 interface Props extends RouteComponentProps {
@@ -19,7 +22,7 @@ interface Props extends RouteComponentProps {
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge } = Props;
+  const { badgeService, badge, history } = Props;
   const { badgeComposition } = badgeService!;
   const { badgeId, mainCategoryName, name } = badge;
 
@@ -39,6 +42,47 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
     setCompList(list);
   };
 
+  // 코스 페이지로 이동
+  const moveToCoursePage = (course: BadgeCourseData, e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+  };
+
+  // 코스/큐 페이지로 이동
+  const moveToOverviewPage = (data: BadgeCompModel, e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const keyStr = data.patronKey.keyString;
+    const cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+    const collegeId = data.category.college.id;
+
+    if (data.serviceType === 'COURSE') {
+      history.push(
+        lectureRoutePaths.courseOverview(
+          cineroomId,
+          collegeId,
+          data.coursePlanId,
+          data.serviceType,
+          data.serviceId
+        )
+      );
+    }
+    else {
+      history.push(
+        lectureRoutePaths.lectureCardOverview(
+          cineroomId,
+          collegeId,
+          data.cubeId,
+          data.serviceId
+        )
+      );
+    }
+  };
+
   return (
     <div className="right-area">
 
@@ -51,7 +95,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
           { compList.map((learning, index) => {
             return (
               <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
-                <a href="#">
+                <a href="#" onClick={(e) => moveToOverviewPage(learning, e)}>
                   <span className="class-icon">
                     <Image src={learning.iconBox && (domainPath + learning.iconBox?.iconUrl)} />
                   </span>
