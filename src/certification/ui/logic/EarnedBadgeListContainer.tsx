@@ -3,7 +3,6 @@ import {Button, Icon} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
-import {PageService} from '../../../shared/stores';
 import BadgeService from '../../present/logic/BadgeService';
 import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {Badge} from '../../shared/Badge';
@@ -23,6 +22,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   countMessage?: string,
 }
 
+// 페이징 처리없이 모두 표시한다.
 const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { badgeService, history } = Props;

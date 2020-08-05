@@ -173,7 +173,7 @@ class BadgeService {
   @action
   async findPagingAllBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    this.clearBadges();
+    //this.clearBadges();
 
     // 모든 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<BadgeModel> | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
@@ -191,7 +191,7 @@ class BadgeService {
   @action
   async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
     //
-    this.clearChallengingBadges();
+    //this.clearChallengingBadges();
 
     // 도전 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null  = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
@@ -231,7 +231,7 @@ class BadgeService {
   @action
   async findPagingEarnedBadges(badgeFilterRdo: BadgeFilterRdoModel) {
     //
-    this.clearEarnedBadges();
+    //this.clearEarnedBadges();
 
     // 마이 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null = await this.badgeApi.findPagingEarnedBadges(badgeFilterRdo);
