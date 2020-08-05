@@ -210,7 +210,9 @@ class CoursePageV2 extends Component<Props, State> {
     const { params } = match;
 
     coursePlanService.findAllCoursePlanInfo(params.coursePlanId, params.serviceId).then(
-      () => this.findStudentInfo()
+      () => this.findStudentInfo().then(
+        () => this.getPreCourseModel()
+      )
     );
 
 
@@ -252,7 +254,7 @@ class CoursePageV2 extends Component<Props, State> {
   // 선수코스 세팅..
   getPreCourseModel() {
     console.log('선수코스 세팅 시작!');
-    const { match, coursePlanService, studentService, history } = this.props;
+    const { match, coursePlanService, courseLectureService, studentService, history } = this.props;
     const { location } = history;
 
     // console.log('location : ', location);
@@ -263,25 +265,28 @@ class CoursePageV2 extends Component<Props, State> {
 
       // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
       console.log(studentService.StudentInfos);
-      if(coursePlanService.preCourseSet && studentService.StudentInfos!.preCourses) {
-        const preCoursePlanSet = coursePlanService.preCourseSet;
+      if(courseLectureService.getPreLectureViews && studentService.StudentInfos!.preCourses) {
+        const preLectureViews = courseLectureService.getPreLectureViews;
         const preCourseStudentList = studentService.StudentInfos!.preCourses;
+        console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
         // @ts-ignore
         for (let i = 0; i < preCourseStudentList.length; i++) {
           // @ts-ignore
           const preCourse = preCourseStudentList[i];
-          for (let j = 0; j < preCoursePlanSet.length; j++) {
-            const preCoursePlan = preCoursePlanSet[j];
-            if (preCoursePlan.courseLectureId === preCourse.lectureUsid) {
-              // console.log( 'preCourseInfo : ', preCoursePlan.courseLectureId, preCoursePlan.required, preCourse.learningState );
-              if (preCoursePlan.required && preCourse.learningState !== 'Passed') {
+          for (let j = 0; j < preLectureViews.length; j++) {
+            const preLectureView = preLectureViews[j];
+            console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
+            if (preLectureView.serviceId === preCourse.lectureUsid) {
+              if (preLectureView.required && preCourse.learningState !== 'Passed') {
+                console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
                 isPreCoursePassed = false;
+                break;
               }
             }
           }
         }
-        coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
-        // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
+        this.isPreCoursePassed = isPreCoursePassed;
+        console.log('isPreCoursePassed : ', this.isPreCoursePassed);
       }
     }
   }
