@@ -30,7 +30,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   const { badges } = badgeService!;
 
   const PAGE_KEY = 'badge.all';
-  const PAGE_SIZE = 8;  // 페이지 당 12개씩 보기(추가)
+  const PAGE_SIZE = 12;  // 페이지 당 12개씩 보기(추가)
 
   const pageKey = useRef<string>('');
   const prevCategory = useRef<string>('');
@@ -142,7 +142,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     const nextPage = getPageNo() + 1;
     match.params.pageNo = nextPage.toString();
     history.replace(routePaths.currentPage(nextPage));
-    showBadges();
+    //showBadges();
   };
 
   return (

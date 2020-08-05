@@ -16,20 +16,26 @@ class ArrangeApi {
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
   process.env.REACT_APP_ARRANGE_API === undefined || process.env.REACT_APP_ARRANGE_API === '' ?
-    '/api/lecture/lectures/flow' : process.env.REACT_APP_ARRANGE_API;
+    '/api/arrange/user/flow' : process.env.REACT_APP_ARRANGE_API;
+
+  // baseUrl = '/api/lecture/lectures/flow'; // + '/arrange/NEW|POP|RQD'
 
   /********************************************************************************************************/
+
+  reqLectureUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_LECTURE_FLOW_API === undefined || process.env.REACT_APP_LECTURE_FLOW_API === '' ?
+    '/api/lecture/lectures/flow' : process.env.REACT_APP_LECTURE_FLOW_API;
 
   // 권장과정 조회
   findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<LectureModel>>(this.baseUrl + '/required', lectureFilterRdo)
+    return axiosApi.post<OffsetElementList<LectureModel>>(this.reqLectureUrl + '/required', lectureFilterRdo)
       .then(response => response && response.data);
   }
 
   // 권장과정 갯수 조회 API
   countRequiredLectures() {
-    return axiosApi.post<number>(this.baseUrl + '/requiredCount')
+    return axiosApi.post<number>(this.reqLectureUrl + '/requiredCount')
       .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
   }
 
@@ -44,7 +50,7 @@ class ArrangeApi {
       orderBy: lectureFilterRdo.orderBy,
     };
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arranges/menus/NEW', {params})
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/NEW', {params})
       .then(response => response && response.data);
   }
 
@@ -57,7 +63,7 @@ class ArrangeApi {
       orderBy: lectureFilterRdo.orderBy,
     };
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arranges/menus/POP', {params})
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/POP', {params})
       .then(response => response && response.data);
   }
 
@@ -70,7 +76,7 @@ class ArrangeApi {
       orderBy: lectureFilterRdo.orderBy,
     };
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arranges/menus/RQD', {params})
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/RQD', {params})
       .then(response => response && response.data);
   }
 }
