@@ -133,7 +133,6 @@ class LectureCardPage extends Component<Props, State> {
     // console.log('Lecture Card Page : ', lectureCardId);
   }
 
-
   componentDidMount() {
     //
     this.setCineroom();
