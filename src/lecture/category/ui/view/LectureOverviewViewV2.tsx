@@ -40,6 +40,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentService: StudentService,
   lectureCardId : string,
   onRefreshLearningState?: () => void,
+  onPageInit:() => void,
   onPageRefresh?:() => void,
   isPreCoursePassed: boolean,
   studentInfo: StudentInfoModel | null
@@ -331,6 +332,11 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     });
   }
 
+  handleLectureInitRequest() {
+    const { onPageInit } = this.props;
+    if (onPageInit) onPageInit();
+  }
+
   renderSubCategories() {
     //
     const { viewObject } = this.props;
@@ -373,7 +379,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       onRefreshLearningState,
       courseLectureService,
       isPreCoursePassed,
-      studentService,
       studentInfo,
     } = this.props;
 
@@ -443,6 +448,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
                       studentInfo={studentInfo}
+                      onLectureInitRequest={this.handleLectureInitRequest}
                     />
                   )}
                 >
@@ -462,6 +468,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
                       studentInfo={studentInfo}
+                      onLectureInitRequest={this.handleLectureInitRequest}
                     />
                   )}
                 </Lecture2.CourseSection>

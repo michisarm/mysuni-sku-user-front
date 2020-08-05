@@ -588,6 +588,10 @@ class CoursePageV2 extends Component<Props, State> {
     return reviewId;
   }
 
+  onPageInit() {
+    this.init();
+  }
+
   onPageRefresh() {
     // const { history, match } = this.props;
     // const { params } = match;
@@ -718,6 +722,7 @@ class CoursePageV2 extends Component<Props, State> {
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}
+        onPageInit={this.onPageInit}
         onPageRefresh={this.onPageRefresh}
         courseLectureService={courseLectureService}
         isPreCoursePassed={this.state.isPreCoursePassed}

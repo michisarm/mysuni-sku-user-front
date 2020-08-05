@@ -71,6 +71,7 @@ interface Props {
   learningState?: string
   isPreCoursePassed?:  boolean
   studentInfo?: StudentInfoModel | null
+  onLectureInitRequest?: () => void
 }
 
 interface State
@@ -194,12 +195,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
-    if (this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) {
-      this.init();
-    }
-
-    if (this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
-      console.log('course lecture init');
+    if ((this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) ||
+      this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
       this.init();
     }
 
@@ -684,10 +681,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   testCallback() {
+    const { onLectureInitRequest } = this.props;
     if (this.studentData) {
       StudentApi.instance.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
         .then(() => {
-          if (this.init()) this.init();
+          // if (this.init()) this.init();
+          if (onLectureInitRequest) onLectureInitRequest();
         });
     }
   }
