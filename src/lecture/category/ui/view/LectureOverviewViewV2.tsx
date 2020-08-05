@@ -25,6 +25,8 @@ import LectureLearningModalView from './LectureLearningModalView';
 import routePaths from '../../../routePaths';
 
 import ProposalState from '../../../../shared/model/ProposalState';
+import StudentService from '../../../shared/present/logic/StudentService';
+import StudentInfoModel from '../../../model/StudentInfoModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
   viewObject: any,
@@ -35,10 +37,12 @@ interface Props extends RouteComponentProps<RouteParams> {
   programLectureService?: ProgramLectureService,
   courseLectureService:  CourseLectureService,
   coursePlanService?: CoursePlanService,
+  studentService: StudentService,
   lectureCardId : string,
   onRefreshLearningState?: () => void,
   onPageRefresh?:() => void,
-  isPreCoursePassed?: boolean
+  isPreCoursePassed?: boolean,
+  studentInfo: StudentInfoModel | null
 }
 
 interface RouteParams {
@@ -104,6 +108,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
       this.findCoursePlan();
     }
+
+    // console.log('LectureOverviewView render completed');
   }
 
   async findSkProfile()
@@ -111,6 +117,16 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { skProfileService } = this.props;
     await skProfileService!.findSkProfile();
   }
+  //
+  // async findStudentInfo() {
+  //   const { studentService, coursePlanService } = this.props;
+  //   const { courseIdsSet } = coursePlanService!;
+  //   const { setStudentInfo } = studentService;
+  //
+  //   if ( courseIdsSet.serviceId !== null && courseIdsSet.serviceId !== '' ) {
+  //     await setStudentInfo(courseIdsSet.serviceId, courseIdsSet.lectureCardIds, courseIdsSet.courseLectureIds);
+  //   }
+  // }
 
   async findCoursePlan() {
     //
@@ -357,6 +373,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       onRefreshLearningState,
       courseLectureService,
       isPreCoursePassed,
+      studentService,
+      studentInfo,
     } = this.props;
 
     const { params } = match;
@@ -422,6 +440,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onRefreshLearningState={onRefreshLearningState}
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
+                      studentInfo={studentInfo}
                     />
                   )}
                 >
@@ -440,6 +459,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onRefreshLearningState={onRefreshLearningState}
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
+                      studentInfo={studentInfo}
                     />
                   )}
                 </Lecture2.CourseSection>

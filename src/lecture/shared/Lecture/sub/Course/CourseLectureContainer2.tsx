@@ -70,6 +70,7 @@ interface Props {
 
   learningState?: string
   isPreCoursePassed?: boolean
+  studentInfo?: StudentInfoModel | null
 }
 
 interface State
@@ -97,6 +98,7 @@ interface State
   // 'survey.answerSheetService',
   'survey.surveyCaseService',
   'survey.surveyFormService',
+  'lecture.studentService',
 ))
 @reactAutobind
 @observer
@@ -152,31 +154,25 @@ class CourseLectureContainer2 extends Component<Props, State> {
   {
     //
     super(props);
-    this.init();
   }
 
   componentDidMount()
   {
 
-    const { lectureView } = this.props;
+    const { lectureView, studentService } = this.props;
     const { setOpen } = this.context;
 
     if (lectureView.learningState === 'Progress' && lectureView.cubeTypeName === 'Course') {
       setOpen(true);
     }
 
-    // this.getStudentInfoView();
-    setTimeout(() => {
-      this.getStudentInfoView();
+    this.init();
 
-      // for Test by JSM
-      const command = this.getCommandFromUrl('command');
-      const contentType = this.getCommandFromUrl('contentType');
-      const contentId = this.getCommandFromUrl('contentId');
-      if (command === '학습하기') {
-        this.getMainActionForVideo();
-      }
-    },500);
+    // console.log('CourseLectureContainer render completed');
+    // this.getStudentInfoView();
+    // setTimeout(() => {
+    //   this.getStudentInfoView();
+    // },500);
 
     //
     // if (this.rollBooks[0]) {
@@ -195,8 +191,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
   // }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
+    if (prevProps.studentInfo !== this.props.studentInfo) {
 
-
+      this.init();
+    }
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
@@ -215,11 +214,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   async init()
   {
-    const { personalCubeService, rollBookService, studentService, lectureView, examinationService, examPaperService, surveyFormService } = this.props;
-    const { getStudentForVideo, getStudentInfo } = studentService!;
+    const { lectureView, examinationService, examPaperService, studentInfo } = this.props;
 
 
     if (lectureView && lectureView.cubeId) {
+
+      if (studentInfo !== null) this.getStudentInfoView();
+
       // this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
       // this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
 
@@ -228,10 +229,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
       // console.log('init lectureView : ', lectureView);
       // console.log('init personalCube : ', this.personalCube);
-      // console.log('init rollBoo.ks : ', this.rollBooks[0]);
+      // console.log('init rollBooks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
-        // this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
+        //this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
 
         if (this.personalCube?.contents.examId)
         {
@@ -269,16 +270,16 @@ class CourseLectureContainer2 extends Component<Props, State> {
           }
         }
 
-        this.viewObject = this.getViewObject();
-        this.setExamState(this.studentData);
-      }
+        // if ( student ) {
+        //   this.studentData = student;
+        //   this.studentForVideoObj = student;
+        //   const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+        //   this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+        // }
 
-      // const studentLecture: StudentModel = getStudentInfo(lectureView.serviceId);
-      // if ( studentLecture ) {
-      //   this.studentForVideoObj = studentLecture;
-      //   const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
-      //   this.setState({ classNameForLearningState: classNameForLearningStateTemp });
-      // }
+        this.viewObject = this.getViewObject();
+        // this.setExamState(this.studentData);
+      }
 
       // getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
       // {
@@ -292,26 +293,21 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // this.classNameForLearningState = this.setClassNameForLearningState(this.studentForVideoObj);
   }
 
-  getCommandFromUrl(variable: string): string | null {
-    const query = window.location.search.substring(1);
-    const vars = query.split('&"');
-    for (let i=0; i<vars.length; i++) {
-      const pair = vars[i].split('=');
-      if (pair[0] === variable) { return pair[1]; }
-    }
-    return null;
-  }
-
   getStudentInfoView() {
 
     const { studentService, lectureView } = this.props;
-    const { getStudentInfo } = studentService!;
+    const { getLectureInfo } = studentService!;
 
-    const studentLecture: StudentModel = getStudentInfo(lectureView.serviceId);
+    const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
     if ( studentLecture ) {
       this.studentForVideoObj = studentLecture;
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
       this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      this.studentData = studentLecture;
+      lectureView.sumViewSeconds = studentLecture.durationViewSeconds;
+      this.setExamState(this.studentData);
+    } else {
+      this.setExamState();
     }
   }
 
@@ -441,8 +437,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   {
     const { isPreCoursePassed } = this.props;
 
-    console.log( 'isPreCoursePassed : ', isPreCoursePassed );
-
     if (isPreCoursePassed) {
       if (url && url.startsWith('http')) {
         this.onRegisterStudentForVideo(ProposalState.Approved);
@@ -464,9 +458,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (isPreCoursePassed) {
       if (url && url.startsWith('http'))
       {
-        //this.onRegisterStudentForVideo(ProposalState.Approved);
-        //this.popupLearnModal(url);
-        const a = window.open('http://www.naver.com', '_blank');
+        this.onRegisterStudentForVideo(ProposalState.Approved);
+        this.popupLearnModal(url);
+        // const a = window.open('http://www.naver.com', '_blank');
       } else
       {
         reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
@@ -633,7 +627,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         state = SubState.InProgress;
       }
     }
-
+    // console.log('getViewObject>>>>');
     return {
       // Sub info
       state,
@@ -693,7 +687,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
-  setExamState(studentData: any) {
+  setExamState(studentData?: any) {
 
     // console.log('시험정보 세팅');
     // console.log('studentData : ',studentData);
@@ -762,6 +756,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
         }
       }
     }
+
+    // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
   }
 
   setStateName(type: string, name: string) {
@@ -869,10 +865,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container personalCube : ', this.personalCube);
 
 
-    const { _studentInfo } = this.props.studentService!;
-    const studentInfo = _studentInfo ? _studentInfo : {} as StudentInfoModel;
-
-    // console.log('studentInfo ----------------->', studentInfo);
+    // console.log('CourseLectureContainer2 render ----------------->', studentInfo);
     return (
       <>
 
@@ -889,7 +882,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                   {this.setLearningStateForMedia()}
                 </div>
               </div>
-
+              {/*{console.log('render >>>>>', this.viewObject, this.state.isContent)}*/}
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam

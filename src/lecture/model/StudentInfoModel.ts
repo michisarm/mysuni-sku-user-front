@@ -1,4 +1,4 @@
-import { computed } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import StudentModel from './StudentModel';
 import StudentCubeModel from './StudentCubeModel';
 import StudentCourseModel from './StudentCourseModel';
@@ -62,10 +62,10 @@ class StudentInfoModel {
   }
 }
 
-// decorate(StudentInfoModel, {
-//   student: observable,
-//   cubes: observable,
-//   courses: observable,
-// });
+decorate(StudentInfoModel, {
+  student: observable,
+  lecture: observable,
+  course: observable,
+});
 
 export default StudentInfoModel;

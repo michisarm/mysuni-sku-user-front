@@ -27,6 +27,10 @@ import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
 import {ProgramLectureModel} from '../../../lecture/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import SubLectureViewModel from '../../../lecture/model/SubLectureViewModel';
+import { CourseLectureIdsModel } from '../../model/CourseLectureIdsModel';
+import { ExaminationModel } from '../../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../../assistant/paper/model/ExamPaperModel';
+import { ExaminationService, ExamPaperService } from '../../../assistant/stores';
 
 
 
@@ -40,9 +44,12 @@ class CoursePlanService {
 
   answerSheetService: AnswerSheetService = AnswerSheetService.instance;
   surveyCaseService: SurveyCaseService = SurveyCaseService.instance;
-  courseLectureService: CourseLectureService = CourseLectureService.instance;
-
   surveyFormService: SurveyFormService = SurveyFormService.instance;
+
+  examinationService: ExaminationService = ExaminationService.instance;
+  examPaperService: ExamPaperService = ExamPaperService.instance;
+
+  courseLectureService: CourseLectureService = CourseLectureService.instance;
   programLectureService: ProgramLectureService = ProgramLectureService.instance;
 
   lectureService: LectureService = LectureService.instance;  //  lectureViews(LectureViewModel[])
@@ -96,7 +103,8 @@ class CoursePlanService {
   @observable
   preCourseIdSet: string[] = [];
 
-
+  @observable
+  courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
@@ -138,6 +146,8 @@ class CoursePlanService {
         const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
         const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
         const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
+        const examination: ExaminationModel = JSON.parse(JSON.stringify(courseData.examination));
+        const examPaper: ExamPaperModel= JSON.parse(JSON.stringify(courseData.examPaper));
 
         const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
         const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
@@ -166,31 +176,34 @@ class CoursePlanService {
         this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
         this.answerSheetService.setAnswerSheet(answerSheet);
         this.surveyFormService.setSurveyForm(surveyForm);
+        this.examinationService.setExamination(examination);
+        this.examPaperService.setExamPaper(examPaper);
         this.courseLectureService.setCourseLecture(courseLecture);
         this.programLectureService.setProgramLecture(programLecture);
         this.lectureService.setLectureViews(lectureViews);
         this.reviewService.reviewSummary = reviewSummary;
         this.commentService.commentCount = commentCountRdo;
+
         for (let i = 0; i < subLectureViews.length; i++) {
           const subLectureView = subLectureViews[i];
           this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
         }
         this.courseLectureService.setPreLectureViews(preCourseLectures);
 
-        let serviceId: string = '';
-        let lectureCardIds: string[] = [];
-        let courseLectureIds: string[] = [];
+        // let serviceId: string = '';
+        // let lectureCardIds: string[] = [];
+        // let courseLectureIds: string[] = [];
 
         if ( courseData.courseLecture.coursePlanId ) {
-          serviceId = courseLecture.usid;
-          lectureCardIds = courseLecture.lectureCardUsids;
+          this.courseIdsSet.serviceId = courseLecture.usid;
+          this.courseIdsSet.lectureCardIds = courseLecture.lectureCardUsids;
         } else {
-          serviceId = programLecture.usid;
-          lectureCardIds = programLecture.lectureCardUsids;
-          courseLectureIds = programLecture.courseLectureUsids;
+          this.courseIdsSet.serviceId = programLecture.usid;
+          this.courseIdsSet.lectureCardIds = programLecture.lectureCardUsids;
+          this.courseIdsSet.courseLectureIds = programLecture.courseLectureUsids;
         }
 
-        this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+        // this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
       }
     });
 
@@ -198,8 +211,10 @@ class CoursePlanService {
   }
 
   @action
-  async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[]) {
-    return this.studentService.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+  async setStudentInfo() {
+    return runInAction(() => {
+      return this.studentService.setStudentInfo(this.courseIdsSet.serviceId, this.courseIdsSet.lectureCardIds, this.courseIdsSet.courseLectureIds);
+    });
   }
 
   @action

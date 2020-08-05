@@ -9,6 +9,7 @@ import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
 import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
 import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
 import { CubeIntroModel } from '../../personalcube/cubeintro/model';
+import StudentModel from './StudentModel';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
@@ -43,6 +44,8 @@ class LectureViewModel extends DramaEntityObservableModel {
 
   examination: ExaminationModel = new ExaminationModel();
   examPaper: ExamPaperModel = new ExamPaperModel();
+
+  student: StudentModel = new StudentModel();
 
   constructor(lectureView?: LectureViewModel) {
     //

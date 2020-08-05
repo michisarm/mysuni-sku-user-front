@@ -7,6 +7,8 @@ import LectureViewModel from '../../lecture/model/LectureViewModel';
 import SubLectureViewModel from '../../lecture/model/SubLectureViewModel';
 import ProgramLectureModel from '../../lecture/model/ProgramLectureModel';
 import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
+import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
 
 export interface CoursePlanCustomModel {
   coursePlan: CoursePlanModel
@@ -21,6 +23,8 @@ export interface CoursePlanCustomModel {
   commentCountRdo: CommentCountRdoModel
   subLectureViews:  SubLectureViewModel[]
   preCourseLectures: LectureViewModel[]
+  examination: ExaminationModel
+  examPaper: ExamPaperModel
   // reviewSummary:
   // commentCountRdo:
 }

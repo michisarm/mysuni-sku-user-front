@@ -43,8 +43,8 @@ const MainBanner : React.FC<Props> = (Props) => {
   };
 
   const params = {
-    loop: false,
-    effect: 'fade',
+    loop: true,
+    //effect: 'fade',
     autoplay: {
       delay: DEFAULT_BANNER_INTERVAL,
       disableOnInteraction: false
