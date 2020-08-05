@@ -90,8 +90,6 @@ class CoursePageV2 extends Component<Props, State> {
   // 선수코스 학습 완료 여부
   isPreCoursePassed: boolean = true;
 
-  studentInfo: StudentInfoModel = new StudentInfoModel();
-
   constructor(props: Props) {
     //
     super(props);
@@ -127,6 +125,9 @@ class CoursePageV2 extends Component<Props, State> {
     } else if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
       this.init();
     }
+
+
+
   }
 
   componentWillUnmount(): void {
@@ -150,15 +151,14 @@ class CoursePageV2 extends Component<Props, State> {
     // this.findProgramOrCourseLecture();
     // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     // await this.findStudent();
-    // await this.setPreCourseModel();
+    // await this.getPreCourseModel();
     this.setState({ loaded: true });
   }
 
   /**
    * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
    */
-  async onRefreshLearningState()
-  {
+  async onRefreshLearningState() {
     await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     this.findStudent();
   }
@@ -193,8 +193,7 @@ class CoursePageV2 extends Component<Props, State> {
 
       if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
-    }
-    else studentService!.clear();
+    } else studentService!.clear();
   }
 
   async findStudentInfo() {
@@ -251,80 +250,43 @@ class CoursePageV2 extends Component<Props, State> {
   }
 
   // 선수코스 세팅..
-  async setPreCourseModel() {
+  getPreCourseModel() {
     console.log('선수코스 세팅 시작!');
-    const { match, coursePlanService, courseLectureService, studentService, history } = this.props;
-    const { params } = match;
+    const { match, coursePlanService, studentService, history } = this.props;
     const { location } = history;
 
     // console.log('location : ', location);
+    let isPreCoursePassed = true;
 
     if (!location.search.match('postCourseLectureId')) {
       // course_plan 테이블
-      const preCoursePlanSet = await coursePlanService.findAllPrecedenceCourseList(params.coursePlanId);
 
-      if (preCoursePlanSet) {
-        const preLectureViewSet : LectureViewModel[] = [];
-        const preCourseUsids : string[] = [];
-
-        for (let i = 0; i < preCoursePlanSet.length; i++) {
-          const preCourse = preCoursePlanSet[i];
-
-          // 밑에 주석 지우면 안됨!!! 에러남!!! course_lecture 테이블
-          // eslint-disable-next-line no-await-in-loop
-          const courseLecture = await courseLectureService.findCourseLectureByCoursePlanId(preCourse.coursePlanId);
-
-          if (courseLecture) {
-            // course_plan, course_lecture 테이블 정보 취합하여 LectureViewModel 에 세팅
-            // course_plan 은 sku-course 프로젝트에서, course_lecutre 는 sku-lecture 프로젝트에서 따로 가져옴..ㅂㄷㅂㄷ
-            if (preCourse.coursePlanId === courseLecture.coursePlanId) {
-              const preLectureView = new LectureViewModel();
-              preLectureView.serviceType = LectureServiceType.Course;
-              preLectureView.serviceId = courseLecture.usid;
-              preLectureView.coursePlanId = courseLecture.coursePlanId;
-              preLectureView.name = preCourse.name;
-              preLectureView.category = preCourse.category;
-
-              preLectureViewSet.push(preLectureView);
-              preCourseUsids.push( courseLecture.usid);
-
-              preCourse.courseLectureId = courseLecture.usid;
-            }
-          }
-        }
-
-        courseLectureService.setPreLectureViews(preLectureViewSet);
-        // console.log('preLectureViews : ', courseLectureService.getPreLectureViews);
-
-        // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
-        let isPreCoursePassed = true;
-        const preCourseList = await studentService.findPreCourseStudentList(preCourseUsids);
-        // console.log('preCourseList : ', preCourseList);
-        for (let i = 0; i < preCourseList.length; i++) {
-          const preCourse = preCourseList[i];
+      // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
+      console.log(studentService.StudentInfos);
+      if(coursePlanService.preCourseSet && studentService.StudentInfos!.preCourses) {
+        const preCoursePlanSet = coursePlanService.preCourseSet;
+        const preCourseStudentList = studentService.StudentInfos!.preCourses;
+        // @ts-ignore
+        for (let i = 0; i < preCourseStudentList.length; i++) {
+          // @ts-ignore
+          const preCourse = preCourseStudentList[i];
           for (let j = 0; j < preCoursePlanSet.length; j++) {
             const preCoursePlan = preCoursePlanSet[j];
-            if ( preCoursePlan.courseLectureId === preCourse.lectureUsid ) {
+            if (preCoursePlan.courseLectureId === preCourse.lectureUsid) {
               // console.log( 'preCourseInfo : ', preCoursePlan.courseLectureId, preCoursePlan.required, preCourse.learningState );
-              if ( preCoursePlan.required ) {
-                if ( preCourse.learningState !== 'Passed' ) {
-                  isPreCoursePassed = false;
-                }
+              if (preCoursePlan.required && preCourse.learningState !== 'Passed') {
+                isPreCoursePassed = false;
               }
             }
           }
         }
-
-        this.isPreCoursePassed = isPreCoursePassed;
+        coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
         // console.log('isPreCoursePassed : ', this.isPreCoursePassed);
       }
-    } else {
-      console.log('연계 선수코스 가져올 수 없음.');
     }
-
-    console.log('선수코스 세팅 종료!');
-
   }
+
+
 
   async findProgramOrCourseLecture() {
     //

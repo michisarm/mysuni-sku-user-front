@@ -41,7 +41,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   lectureCardId : string,
   onRefreshLearningState?: () => void,
   onPageRefresh?:() => void,
-  isPreCoursePassed?: boolean,
+  isPreCoursePassed: boolean,
   studentInfo: StudentInfoModel | null
 }
 

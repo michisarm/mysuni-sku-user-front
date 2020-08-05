@@ -106,6 +106,9 @@ class CoursePlanService {
   @observable
   courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
+  @observable
+  isPreCoursePassed: boolean = true;
+
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
@@ -118,6 +121,11 @@ class CoursePlanService {
   }
 
   // CoursePlans -------------------------------------------------------------------------------------------------------
+
+  @action
+  setIsPreCoursePassed(isPreCoursePassed: boolean) {
+    return runInAction(() => this.isPreCoursePassed = isPreCoursePassed);
+  }
 
   @action
   async findAllCoursePlan() {
@@ -161,6 +169,7 @@ class CoursePlanService {
 
         const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
         const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
+        const preCourseSet: CoursePlanModel[] = JSON.parse(JSON.stringify(courseData.precedenceCourse));
         const preCourseLectures: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.preCourseLectures));
 
         courseData.subLectureViews.map((subLecture: any) => {
@@ -188,12 +197,14 @@ class CoursePlanService {
           const subLectureView = subLectureViews[i];
           this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
         }
+        this.preCourseSet = preCourseSet;
         this.courseLectureService.setPreLectureViews(preCourseLectures);
 
         // let serviceId: string = '';
         // let lectureCardIds: string[] = [];
         // let courseLectureIds: string[] = [];
 
+        // 코스 학습정보를 가져오기 위한 id 취합
         if ( courseData.courseLecture.coursePlanId ) {
           this.courseIdsSet.serviceId = courseLecture.usid;
           this.courseIdsSet.lectureCardIds = courseLecture.lectureCardUsids;
@@ -203,6 +214,14 @@ class CoursePlanService {
           this.courseIdsSet.courseLectureIds = programLecture.courseLectureUsids;
         }
 
+        // 선수코스 학습정보를 가져오기 위한 id 취합
+        const preCourseIds: string[] = [];
+        if (courseData.preCourseLectures) {
+          for ( let i = 0; i < preCourseLectures.length; i++ ) {
+            preCourseIds.push(preCourseLectures[i].serviceId);
+          }
+          this.courseIdsSet.preLectureCardIds = preCourseIds;
+        }
         // this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
       }
     });
@@ -213,7 +232,7 @@ class CoursePlanService {
   @action
   async setStudentInfo() {
     return runInAction(() => {
-      return this.studentService.setStudentInfo(this.courseIdsSet.serviceId, this.courseIdsSet.lectureCardIds, this.courseIdsSet.courseLectureIds);
+      return this.studentService.setStudentInfo(this.courseIdsSet.serviceId, this.courseIdsSet.lectureCardIds, this.courseIdsSet.courseLectureIds, this.courseIdsSet.preLectureCardIds);
     });
   }
 
