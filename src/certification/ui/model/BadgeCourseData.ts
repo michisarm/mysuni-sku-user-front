@@ -1,11 +1,11 @@
 import BadgeCubeData from './BadgeCubeData';
-import {CubeIntroModel} from '../../../myTraining/model';
-import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 
 
 class BadgeCourseData {
   // Course Data
+  cineroomId: string = '';
   serviceId: string = '';
+  collegeId: string = '';
 
   name: string = '';
   cubeCount: number = 0;
@@ -14,6 +14,7 @@ class BadgeCourseData {
   cubeData: BadgeCubeData[] = [];
   isOpened: boolean = false;
   learningState: string = '';
+  serviceType: string = '';
 
   // TRS for Course
   test: boolean = false;

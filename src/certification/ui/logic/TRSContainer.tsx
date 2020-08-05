@@ -52,7 +52,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
   const { coursePlanService, studentService, lectureService, badgeDetailService,
     badgeCourse, badgeCourseCube, badgeCube, parentType, subDepth } = Props;
 
-  const { getStudentForVideo, getStudentInfo } = studentService!;
+  const { getStudentForVideo, getLectureInfo } = studentService!;
 
   const [exam, setExam] = useState(false);
   const examTitle = useRef('');

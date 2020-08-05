@@ -25,6 +25,7 @@ import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
 import {ExaminationModel} from '../../../assistant/exam/model/ExaminationModel';
 import {ExamPaperModel} from '../../../assistant/paper/model/ExamPaperModel';
+import lectureRoutePaths from '../../../lecture/routePaths';
 
 
 enum StateDefault {
@@ -53,7 +54,7 @@ interface Props extends RouteComponentProps {
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, } = Props;
+  const { coursePlanService, badgeDetailService, badgeId, history, } = Props;
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [opened, setOpened] = useState(false);
@@ -78,12 +79,16 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           // 코스정보
           if (data.serviceType === 'COURSE') {
             compData.course = new BadgeCourseData();
+            const keyStr = data.patronKey.keyString;
+            compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+            compData.course.collegeId = data.category.college.id;
             compData.course.serviceId = data.serviceId;
             compData.course.name = data.name;
             compData.course.coursePlanId = data.coursePlanId;
             compData.course.isOpened = false;
             compData.course.cubeCount = data.lectureCardUsids.length;
             compData.course.learningState = data.learningState;
+            compData.course.serviceType = 'Course';
             data.lectureCardUsids.map((id: string) => {
               compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
             });
@@ -91,6 +96,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           // (학습)카드 정보
           else {
             compData.cube = new BadgeCubeData();
+            const keyStr = data.patronKey.keyString;
+            compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+            compData.cube.collegeId = data.category.college.id;
+            compData.cube.lectureCardId = data.serviceId;
             compData.cube.name = data.name;
             compData.cube.cubeId = data.cubeId;
             compData.cube.learningCardId = data.learningCardId;
@@ -98,6 +107,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             compData.cube.learningTime = data.learningTime; // 학습시간(분)
             compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
             compData.cube.learningState = data.learningState;
+            compData.cube.serviceType = 'cube';
           }
           compList = compList.concat(compData);
         });
@@ -153,7 +163,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
           if (response && response.lectureViews) {
             response.lectureViews.map((lecture: LectureViewModel) => {
               const cubeData = new BadgeCubeData();
+              const keyStr = lecture.cubeIntro!.patronKey.keyString;
+              cubeData.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+              cubeData.collegeId = lecture.personalCube!.category.college.id;
               cubeData.cubeId = lecture.cubeId;
+              cubeData.lectureCardId = lecture.serviceId;
               cubeData.name = lecture.name;
               cubeData.learningCardId = lecture.learningCardId;
               // 학습하기 방식 결정
@@ -163,6 +177,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
               // 진행상태
               cubeData.learningState = lecture.learningState;
+
+              cubeData.serviceType = 'cube';
 
               // 코스 내 큐브에만 해당
               cubeData.cubeIntro = new CubeIntroModel(lecture.cubeIntro);
@@ -189,6 +205,39 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     else {
       setOpened(!opened);
     }
+  };
+
+  // 코스 페이지로 이동
+  const moveToCoursePage = (course: BadgeCourseData, e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    history.push(
+      lectureRoutePaths.courseOverview(
+        course.cineroomId,
+        course.collegeId,
+        course.coursePlanId,
+        course.serviceType,
+        course.serviceId
+      )
+    );
+  };
+
+  // 큐브 페이지로 이동
+  const moveToCubePage = (cube: BadgeCubeData, e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    history.push(
+      lectureRoutePaths.lectureCardOverview(
+        cube.cineroomId,
+        cube.collegeId,
+        cube.cubeId,
+        cube.lectureCardId
+      )
+    );
   };
 
   // Cube 상태 및 스타일 - PSJ
@@ -255,7 +304,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
               <div className="bar">
                 <div className="tit">
-                  <span className="ellipsis">{badgeComp.course.name}</span>
+                  <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
+                  {/*<span className="ellipsis">{(index + 1) + '. ' + badgeComp.course.name}</span>*/}
                 </div>
                 <div className="num">
                   {badgeComp.course.cubeCount}개 강의 구성
@@ -270,14 +320,15 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   </Button>
                 </div>
               </div>
+
               <div className="detail">
                 <ul className="step1">
                   {badgeComp.course.cubeData.length > 0 ?
-                    badgeComp.course.cubeData.map((cube: BadgeCubeData, index: number) =>
+                    badgeComp.course.cubeData.map((cube: BadgeCubeData, index2: number) =>
                       <Fragment key={`cube-${index}`}>
                         <li>
                           <div className="tit">
-                            <span className="ellipsis">{cube.name}</span>
+                            <span className="ellipsis">{(index + 1) + '-' + (index2 + 1) + '. ' + cube.name}</span>
                           </div>
                           <div className="right">
                             <span>{CubeTypeNameType[cube.cubeType as CubeType]}</span>
@@ -294,9 +345,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                     <div>코스 정보가 존재하지 않습니다.</div>
                   }
                   {/*subDepth: COURSE TRS*/}
-                  <TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />
+                  {/*<TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />*/}
                 </ul>
               </div>
+
             </div>
             :
             <Fragment key={`cube-${index}`}>
@@ -304,7 +356,8 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
               <div className="cube-box">
                 <div className="bar typeA">
                   <div className="tit">
-                    <a href="#" className="ellipsis">{badgeComp.cube!.name}</a>
+                    {/*<a href="#" className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>*/}
+                    <a href="#" onClick={(e) => moveToCubePage(badgeComp.cube!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.cube!.name}</a>
                   </div>
                   <div className="right">
                     <span>{CubeTypeNameType[badgeComp.cube!.cubeType as CubeType]}</span>
@@ -312,7 +365,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                     {setLearningStateForMedia(badgeComp.cube!)}
                   </div>
                 </div>
-                <TRSContainer parentType="CUBE" badgeCube={badgeComp.cube!} />
+                {/*<TRSContainer parentType="CUBE" badgeCube={badgeComp.cube!} />*/}
               </div>
             </Fragment>
         ))
