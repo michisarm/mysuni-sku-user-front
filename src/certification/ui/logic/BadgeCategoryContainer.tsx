@@ -26,7 +26,7 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ( { catego
             <Button className="fn-click" onClick={(e) => onClickBadgeCategory(e, category.categoryId)}>
               <span className="icon">
                 <span>
-                  <Image src={category.iconUrl && (domainPath + category.iconUrl)} alt={category.name}/>
+                  <Image src={domainPath + category.iconUrl} alt={category.name}/>
                 </span>
               </span>
               <span className="title">

@@ -1,7 +1,6 @@
 
 import React, {FunctionComponent, useEffect} from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
-import {inject} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
 import {BadgeContentWrapper, CertificationOrg, College, Title} from '../view/BadgeView';
@@ -25,6 +24,9 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
   //
   const { badge, badgeStyle, badgeSize, history } = Props;
   const { badgeId, difficultyLevel, iconUrl, mainCategoryName, name, certiAdminCategory } = badge;
+
+  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
+    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
@@ -51,7 +53,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
       />
 
       {/*College, Category*/}
-      <College iconUrl={iconUrl} mainCategory={mainCategoryName}/>
+      <College iconUrl={domainPath + iconUrl} mainCategory={mainCategoryName}/>
 
       {/*뱃지명*/}
       <Title name={name} />
