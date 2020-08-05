@@ -320,7 +320,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   </Button>
                 </div>
               </div>
-
+              {/*
               <div className="detail">
                 <ul className="step1">
                   {badgeComp.course.cubeData.length > 0 ?
@@ -333,11 +333,14 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                           <div className="right">
                             <span>{CubeTypeNameType[cube.cubeType as CubeType]}</span>
                             <span>{dateTimeHelper.timeToHourMinuteFormat(cube.learningTime)}</span>
+
                             {/*상태호출*/}
+              {/*
                             {setLearningStateForMedia(cube)}
                           </div>
                         </li>
                         {/*subDepth: COURSE > CUBE TRS*/}
+              {/*}
                         <TRSContainer parentType="COURSE" subDepth={true} badgeCourseCube={cube} />
                       </Fragment>
                     )
@@ -345,10 +348,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                     <div>코스 정보가 존재하지 않습니다.</div>
                   }
                   {/*subDepth: COURSE TRS*/}
-                  {/*<TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />*/}
+              {/*<TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />*/}
+              {/*
                 </ul>
               </div>
-
+              */}
             </div>
             :
             <Fragment key={`cube-${index}`}>
