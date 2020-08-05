@@ -1,5 +1,5 @@
 
-import { action, observable, runInAction } from 'mobx';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind, OffsetElementList, axiosApi } from '@nara.platform/accent';
 import {ReviewService, CommentService, CommentCountRdoModel, ReviewSummaryModel} from '@nara.drama/feedback';
 import _ from 'lodash';
@@ -106,10 +106,6 @@ class CoursePlanService {
   @observable
   courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
 
-  @observable
-  isPreCoursePassed: boolean = true;
-
-
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
     this.coursePlanFlowApi = coursePlanFlowApi;
@@ -122,9 +118,10 @@ class CoursePlanService {
 
   // CoursePlans -------------------------------------------------------------------------------------------------------
 
-  @action
-  setIsPreCoursePassed(isPreCoursePassed: boolean) {
-    return runInAction(() => this.isPreCoursePassed = isPreCoursePassed);
+  @computed
+  get getPreCourseSet() {
+    //
+    return (this.preCourseSet as IObservableArray).peek();
   }
 
   @action

@@ -196,6 +196,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
       this.init();
     }
+
+    if (this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
+      this.init();
+    }
     // console.log('componentDidUpdate this.props : ', this.props);
     // console.log('componentDidUpdate prevProps : ', prevProps);
     // console.log('componentDidUpdate prevState : ', prevState);
@@ -304,8 +308,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
       this.setState({ classNameForLearningState: classNameForLearningStateTemp });
       this.studentData = studentLecture;
-
-
 
       this.setExamState(this.studentData);
     } else {
@@ -437,40 +439,30 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   onClickPlayForVideo(url : string)
   {
-    const { isPreCoursePassed } = this.props;
-
-    if (isPreCoursePassed) {
-      if (url && url.startsWith('http')) {
-        this.onRegisterStudentForVideo(ProposalState.Approved);
-        this.popupLearnModal(url);
-        //window.open(url, '_blank');
-      } else {
-        reactAlert({title: '알림', message: '잘못 된 URL 정보입니다.'});
-        console.warn('[UserFront] Url is empty.');
-      }
+    if (url && url.startsWith('http')) {
+      this.onRegisterStudentForVideo(ProposalState.Approved);
+      this.popupLearnModal(url);
+      //window.open(url, '_blank');
     } else {
-      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
+      reactAlert({title: '알림', message: '잘못 된 URL 정보입니다.'});
+      console.warn('[UserFront] Url is empty.');
     }
   }
 
   onClickPlayForOpen(url : string)
   {
-    const { isPreCoursePassed } = this.props;
 
-    if (isPreCoursePassed) {
-      if (url && url.startsWith('http'))
-      {
-        this.onRegisterStudentForVideo(ProposalState.Approved);
-        this.popupLearnModal(url);
-        // const a = window.open('http://www.naver.com', '_blank');
-      } else
-      {
-        reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
-        console.warn('[UserFront] Url is empty.');
-      }
-    } else {
-      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
+    if (url && url.startsWith('http'))
+    {
+      this.onRegisterStudentForVideo(ProposalState.Approved);
+      this.popupLearnModal(url);
+      // const a = window.open('http://www.naver.com', '_blank');
+    } else
+    {
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+      console.warn('[UserFront] Url is empty.');
     }
+
 
   }
 
@@ -533,41 +525,45 @@ class CourseLectureContainer2 extends Component<Props, State> {
   async getMainActionForVideo()
   {
     //collegeId
-    const { mediaService } = this.props;
+    const { mediaService, isPreCoursePassed } = this.props;
     // const { personalCube } = personalCubeService!;
 
     const { service, contents } = this.personalCube!.contents;
 
-    //Video, Audio
-    if (service.type  === ContentsServiceType.Media)
-    {
-      const media = await mediaService!.findMedia(contents.id);
+    console.log('clicked isPreCoursePassed : ', isPreCoursePassed);
 
-      //통계처리
-      // if (media.mediaType === MediaType.InternalMedia) {
-      //   const studentCdo = {
-      //     ...this.getStudentCdo(),
-      //     proposalState: ProposalState.Approved,
-      //   };
-      //
-      //   lectureService.confirmUsageStatisticsByCardId(studentCdo)
-      //     .then((confirmed) => {
-      //       if (confirmed) {
-      //         history.replace('/empty');
-      //         setTimeout(() => history.replace(routePaths.lectureCardOverview(collegeId, lectureView.cubeId, lectureView.serviceId)));
-      //       }
-      //     });
-      // }
+    if (isPreCoursePassed) {
+      //Video, Audio
+      if (service.type === ContentsServiceType.Media) {
+        const media = await mediaService!.findMedia(contents.id);
 
-      const url = this.getMediaUrl(media);
+        //통계처리
+        // if (media.mediaType === MediaType.InternalMedia) {
+        //   const studentCdo = {
+        //     ...this.getStudentCdo(),
+        //     proposalState: ProposalState.Approved,
+        //   };
+        //
+        //   lectureService.confirmUsageStatisticsByCardId(studentCdo)
+        //     .then((confirmed) => {
+        //       if (confirmed) {
+        //         history.replace('/empty');
+        //         setTimeout(() => history.replace(routePaths.lectureCardOverview(collegeId, lectureView.cubeId, lectureView.serviceId)));
+        //       }
+        //     });
+        // }
 
-      //외부 영상, CP사 영상
-      if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia)
-      {
-        return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onClickPlayForOpen(url) };
-      } else {
-        return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlayForVideo(url) };
+        const url = this.getMediaUrl(media);
+
+        //외부 영상, CP사 영상
+        if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia) {
+          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onClickPlayForOpen(url) };
+        } else {
+          return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlayForVideo(url) };
+        }
       }
+    }  else {
+      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
     }
     // else if (service.type === ContentsServiceType.Community)
     // {
