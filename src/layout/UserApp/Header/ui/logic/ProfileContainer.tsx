@@ -55,6 +55,7 @@ class ProfileContainer extends Component<Props, State> {
 
   onLogout() {
     localStorage.clear();
+    sessionStorage.clear();
     window.location.href = '/api/checkpoint/sso/logout';
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }

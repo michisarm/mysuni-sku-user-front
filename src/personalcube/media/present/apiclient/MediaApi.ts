@@ -5,7 +5,15 @@ import { InternalMediaConnectionModel } from '../../model/InternalMediaConnectio
 
 export default class MediaApi {
 
-  URL = '/api/personalCube/medias';
+  // URL = '/api/personalCube/medias';
+
+  serverUrl = '/api/personalCube/medias';
+  // serverUrl = 'http://localhost:8222';
+  devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
+    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
 
   static instance: MediaApi;
 

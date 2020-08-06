@@ -12,7 +12,9 @@ class LectureFlowApi {
   //
   static instance: LectureFlowApi;
 
-  baseUrl = '/api/lecture/lectures/flow';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_LECTURE_FLOW_API === undefined || process.env.REACT_APP_LECTURE_FLOW_API === '' ?
+    '/api/lecture/lectures/flow' : process.env.REACT_APP_LECTURE_FLOW_API;
 
 
   findAllRecommendLectures(lectureRdo: LectureRdoModel) {

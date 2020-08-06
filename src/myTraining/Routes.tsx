@@ -7,8 +7,10 @@ import NotFoundPage from 'layout/NotFoundPage';
 import MyTrainingPage from './ui/page/MyLearningPage';
 // import MyCommunityPage from './ui/page/MyCommunityPage';
 import MyPage from './ui/page/MyPagePage';
-import ApprovalManagerDetailPage from './ui/page/ApprovalManagerDetailPage';
+//import ApprovalManagerDetailPage from './ui/page/ApprovalManagerDetailPage';
 import ApprovalSharedDetailContainer from './ui/logic/ApprovalSharedDetailContainer';
+// 고도화
+import NewLearningPage from './ui/page/NewLearningPage';
 
 class MainRoutes extends React.Component {
   //
@@ -28,6 +30,10 @@ class MainRoutes extends React.Component {
         <Route exact path="/my-training/my-page/:tab/pages/:pageNo" component={MyPage} />
 
         <Route exact path="/my-training/my-page/ApprovalList/detail/:studentId" component={ApprovalSharedDetailContainer} />
+
+        {/*/by JSM*/}
+        <Route exact path="/my-training/new-learning/:type" component={NewLearningPage} />
+        <Route exact path="/my-training/new-learning/:type/pages/:pageNo" component={NewLearningPage} />
 
         <Route component={NotFoundPage} />
       </Switch>

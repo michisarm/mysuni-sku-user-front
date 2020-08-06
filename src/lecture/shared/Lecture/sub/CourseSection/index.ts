@@ -1,3 +1,3 @@
 
-export { default } from './CourseSectionContainer';
-export * from './CourseSectionContainer';
+export { default } from './CourseSectionContainer2';
+export * from './CourseSectionContainer2';

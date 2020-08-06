@@ -1,7 +1,4 @@
-
-
 const SelectOptions = {
-
   learningType: [
     { key: '1', text: 'Classroom', value: 'ClassRoomLecture' },
     { key: '2', text: 'E-learning', value: 'ELearning' },
@@ -98,15 +95,12 @@ const SelectOptions = {
     { key: 'Cube', content: 'Course 관리', active: true },
   ],
 
-
   approveSections: [
     { key: 'Home', content: 'HOME', link: true },
     { key: 'Learning', content: 'Learning 관리', link: true },
     { key: 'Approve', content: '승인 관리', active: true },
     { key: 'Cube/Course', content: 'Cube/Course 승인 관리', active: true },
   ],
-
-
 
   recruitmentType: [
     { key: '1', text: '수강신청', value: 'PublicEnrolling' },
@@ -170,20 +164,32 @@ const SelectOptions = {
     { key: '12', text: '55', value: '55' },
   ],
 
-
   // Quill.js
   formats: [
     'header',
-    'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
-    'link', 'image', 'video',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'video',
   ],
 
   modules: {
     toolbar: [
-      [{ header: [1, 2, 3, false]}],
+      [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
       ['link', 'image', 'video'],
       ['clean'],
     ],
@@ -195,8 +201,16 @@ const SelectOptions = {
   ],
 
   categoryB: [
-    { key: '1', text: '1Depth Select 선택된 정보에 따른 Channel 정보1', value: '1Depth Select 선택된 정보에 따른 Channel 정보1' },
-    { key: '2', text: '1Depth Select 선택된 정보에 따른 Channel 정보2', value: '1Depth Select 선택된 정보에 따른 Channel 정보2' },
+    {
+      key: '1',
+      text: '1Depth Select 선택된 정보에 따른 Channel 정보1',
+      value: '1Depth Select 선택된 정보에 따른 Channel 정보1',
+    },
+    {
+      key: '2',
+      text: '1Depth Select 선택된 정보에 따른 Channel 정보2',
+      value: '1Depth Select 선택된 정보에 따른 Channel 정보2',
+    },
   ],
 
   status: [
@@ -338,9 +352,14 @@ const SelectOptions = {
 
   modulesForCreateNotice: {
     toolbar: [
-      [{ header: [1, 2, 3, false]}],
+      [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
       ['link', 'image', 'video'],
       ['clean'],
     ],
@@ -431,4 +450,3 @@ const SelectOptions = {
 };
 
 export default SelectOptions;
-

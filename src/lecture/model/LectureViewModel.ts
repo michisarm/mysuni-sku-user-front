@@ -1,8 +1,15 @@
 
 import { computed, decorate, observable } from 'mobx';
 import { CategoryModel, DatePeriod, DramaEntityObservableModel, IconBoxModel } from 'shared/model';
-import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
+import {CubeType, CubeTypeNameType, PersonalCubeModel} from 'personalcube/personalcube/model';
 import LectureServiceType from './LectureServiceType';
+import RollBookModel from './RollBookModel';
+import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
+import AnswerSheetModel from '../../survey/answer/model/AnswerSheetModel';
+import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
+import { CubeIntroModel } from '../../personalcube/cubeintro/model';
+import StudentModel from './StudentModel';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
@@ -11,6 +18,7 @@ class LectureViewModel extends DramaEntityObservableModel {
   serviceType: LectureServiceType = LectureServiceType.Program;
   coursePlanId: string = '';
   cubeId: string = '';
+  // cube: PersonalCubeModel = new PersonalCubeModel();
 
   name: string = '';
   cubeType: CubeType = CubeType.None;
@@ -21,9 +29,24 @@ class LectureViewModel extends DramaEntityObservableModel {
   lectureCardUsids: string[] = [];
   learningTime: number = 0;
   learningCardId: string = '';
+  sumViewSeconds: string = '';
+  learningState: string = '';
+  required: number = 0;
 
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
+
+  personalCube?: PersonalCubeModel = new PersonalCubeModel();
+  cubeIntro?: CubeIntroModel = new CubeIntroModel();
+  rollBooks: RollBookModel[] = [];
+
+  answerSheet: AnswerSheetModel = new AnswerSheetModel();
+  surveyForm: SurveyFormModel = new SurveyFormModel();
+
+  examination: ExaminationModel = new ExaminationModel();
+  examPaper: ExamPaperModel = new ExamPaperModel();
+
+  student: StudentModel = new StudentModel();
 
   constructor(lectureView?: LectureViewModel) {
     //
@@ -79,6 +102,7 @@ decorate(LectureViewModel, {
   lectureCardUsids: observable,
   learningTime: observable,
   learningCardId: observable,
+  sumViewSeconds: observable,
 });
 
 export default LectureViewModel;

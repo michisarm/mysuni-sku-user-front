@@ -71,10 +71,12 @@ class CourseContentHeaderContainer extends Component<Props> {
         <LectureContentHeader.RightCell>
           <LectureContentHeader.StampItem value={coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0} />
           {
-            <LectureContentHeader.StarRatingItem
-              value={reviewSummary.average}
-              max={reviewSummary.maxStarCount}
-            />
+            reviewSummary && reviewSummary.average && (
+              <LectureContentHeader.StarRatingItem
+                value={reviewSummary.average}
+                max={reviewSummary.maxStarCount}
+              />
+            )
           }
         </LectureContentHeader.RightCell>
       </LectureContentHeader>

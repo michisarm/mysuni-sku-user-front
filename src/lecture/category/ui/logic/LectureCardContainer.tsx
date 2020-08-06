@@ -36,7 +36,7 @@ import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import StudyActionType from 'shared/model/StudyActionType';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
+import { LectureExam } from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
@@ -72,6 +72,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   init?: () => void;
   loaded: boolean;
   onPageRefresh?: () => void;
+
+  studentId?: string | undefined;
 }
 
 interface State {
@@ -459,7 +461,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
-        message: '현재 다른 과정을 학습하고 있습니다.<br>2개 이상의 Contents를 동시에 학습할 경우, 본인에게 실제 학습 여부를 확인하여 이수를 취소할 수도 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>2개 이상의 Contents를 동시에 학습할 경우, 본인에게 실제 학습 여부를 확인하여 이수를 취소할 수도 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
@@ -724,6 +727,7 @@ class LectureCardContainer extends Component<Props, State> {
     ) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
@@ -1254,11 +1258,15 @@ class LectureCardContainer extends Component<Props, State> {
       typeViewObject,
       studentCdo,
       children,
+      lectureServiceId,
+      lectureServiceType,
     } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
+    console.log('LectureCardContainer : ', lectureServiceId);
+    console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
@@ -1301,6 +1309,8 @@ class LectureCardContainer extends Component<Props, State> {
             surveyCaseId={viewObject.surveyCaseId}
             ref={surveyModal => (this.surveyModal = surveyModal)}
             onSaveCallback={this.surveyCallback}
+            serviceId={lectureServiceId}
+            serviceType={lectureServiceType}
           />
         )}
         <CubeReportModal

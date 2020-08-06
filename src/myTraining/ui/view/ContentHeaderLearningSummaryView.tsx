@@ -102,22 +102,22 @@ class ContentHeaderLearningSummaryView extends Component<Props> {
           />
         </div>
 
-        <div className="chart-wrap">
-          <div className="ui pie w56" data-value={this.getChartValue()}>
-            <span className="left" />
-            <span className="right" />
-          </div>
-          <div className="ui list">
-            <dl className="item sk">
-              <dt>mySUNI</dt>
-              <dd>{timeToHourMinutePaddingFormat(mySuniLearningTime)}</dd>
-            </dl>
-            <dl className="item my">
-              <dt>My company</dt>
-              <dd>{timeToHourMinutePaddingFormat(myCompanyLearningTime)}</dd>
-            </dl>
-          </div>
-        </div>
+        {/*<div className="chart-wrap">*/}
+        {/*<div className="ui pie w56" data-value={this.getChartValue()}>*/}
+        {/*<span className="left" />*/}
+        {/*<span className="right" />*/}
+        {/*</div>*/}
+        {/*<div className="ui list">*/}
+        {/*<dl className="item sk">*/}
+        {/*<dt>mySUNI</dt>*/}
+        {/*<dd>{timeToHourMinutePaddingFormat(mySuniLearningTime)}</dd>*/}
+        {/*</dl>*/}
+        {/*<dl className="item my">*/}
+        {/*<dt>My company</dt>*/}
+        {/*<dd>{timeToHourMinutePaddingFormat(myCompanyLearningTime)}</dd>*/}
+        {/*</dl>*/}
+        {/*</div>*/}
+        {/*</div>*/}
       </>
     );
   }

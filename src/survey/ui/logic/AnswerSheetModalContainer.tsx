@@ -37,6 +37,8 @@ interface Props {
   surveyCaseId: string;
   trigger?: React.ReactNode;
   onSaveCallback?: () => void;
+  serviceId: string;
+  serviceType: string;
 }
 
 interface States {
@@ -152,9 +154,15 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       answerSheetService,
       surveyCaseService,
       onSaveCallback,
+      serviceId,
+      serviceType,
     } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
+
+    console.log('finished : ', finished);
+    console.log('serviceId : ', serviceId);
+    console.log('serviceType : ', serviceType);
 
     if (!finished) {
       if (answerSheet.id && answerSheet.id.length) {
@@ -168,7 +176,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
           surveyCase.id
         );
         answerSheetService!
-          .openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
+          .openAnswerSheet(
+            surveyCase.id,
+            surveyCase.roundPart.round,
+            serviceId,
+            serviceType
+          )
           .then(answerSheetId => {
             answerSheetService!.changeAnswerSheetProp('id', answerSheetId);
             return answerSheetService!.saveAnswerSheet();
@@ -203,6 +216,8 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       answerSheetService,
       surveyCaseService,
       onSaveCallback,
+      serviceId,
+      serviceType,
     } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
@@ -216,7 +231,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     } else {
       answerSheetService!.changeAnswerSheetProp('surveyCaseId', surveyCase.id);
       answerSheetService!
-        .openAnswerSheet(surveyCase.id, surveyCase.roundPart.round)
+        .openAnswerSheet(
+          surveyCase.id,
+          surveyCase.roundPart.round,
+          serviceId,
+          serviceType
+        )
         .then(res => {
           answerSheet.id = res;
           answerSheetService!.changeAnswerSheetProp('id', res);
@@ -239,6 +259,9 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { open } = this.state;
     const { surveyFormService, answerSheetService, trigger } = this.props;
     const { surveyForm } = surveyFormService!;
+    if (!surveyForm) {
+      return null;
+    }
     const { answerMap, answerSheet } = answerSheetService!;
     const { questions, criterionList } = surveyForm!;
     const disabled =

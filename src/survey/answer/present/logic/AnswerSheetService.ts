@@ -22,6 +22,16 @@ export default class AnswerSheetService {
   @observable
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
 
+  @action
+  setAnswerSheet(answerSheet: AnswerSheetModel) {
+    runInAction(() => {
+      this.answerSheet = answerSheet;
+      if (answerSheet && answerSheet.evaluationSheet) {
+        this.evaluationSheet = answerSheet.evaluationSheet;
+      }
+    });
+  }
+
   @observable
   evaluationSheet: EvaluationSheetModel = new EvaluationSheetModel();
 
@@ -44,7 +54,9 @@ export default class AnswerSheetService {
 
 
   @action
-  openAnswerSheet(surveyCaseId: string, round: number) {
+  openAnswerSheet(surveyCaseId: string, round: number, serviceId: string, serviceType: string) {
+    this.answerSheet.serviceId = serviceId;
+    this.answerSheet.serviceType = serviceType;
     return this.responseApi.openAnswerSheet(surveyCaseId, round, this.answerSheet);
   }
 
@@ -70,6 +82,7 @@ export default class AnswerSheetService {
       }
     });
   }
+
 
   @action
   async saveAnswerSheet() {

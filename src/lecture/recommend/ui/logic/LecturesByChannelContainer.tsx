@@ -16,7 +16,7 @@ import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
-import Lecture from '../../../shared/Lecture';
+import {Lecture} from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../../../category/ui/view/ChannelLecturesContentWrapperView';
 import LectureServiceType from '../../../model/LectureServiceType';
 

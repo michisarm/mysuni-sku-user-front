@@ -91,6 +91,14 @@ export default class PersonalCubeService {
     return null;
   }
 
+  findPersonalCubeFromJson(cube: string) {
+
+    const personalCube = JSON.parse(cube);
+    runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
+
+    return null;
+  }
+
   @action
   changeCubeProps(name: string, value: string | {} | string[]) {
     //
