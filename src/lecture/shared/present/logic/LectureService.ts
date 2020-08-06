@@ -153,7 +153,7 @@ class LectureService {
   @action
   async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], orderBy: OrderByType = OrderByType.New, fromMain: boolean = false) {
     //
-    const response = await this.lectureFlowApi.findRequiredLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
+    const response = await this.lectureFlowApi.findRqdLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     // use session storage : modified by JSM

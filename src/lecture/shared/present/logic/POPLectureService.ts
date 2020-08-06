@@ -30,15 +30,15 @@ class POPLectureService {
   }
 
   @action
-  async findPagingPopularLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+  async findPagingPopLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
     //
     // 인기과정 학습정보 가져오기
-    const response = await this.arrangeApi.findPopularLectures(lectureFilterRdo);
+    const response = await this.arrangeApi.findPopLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     // use session storage : modified by JSM
     if (fromMain) {
-      window.sessionStorage.setItem('PopularLearningList', JSON.stringify(lectureOffsetElementList));
+      window.sessionStorage.setItem('PopLearningList', JSON.stringify(lectureOffsetElementList));
     }
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
