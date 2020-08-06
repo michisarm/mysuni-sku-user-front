@@ -35,8 +35,8 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
             <div className="right">
               {
                 passedState && (
-                  <div className="btn-play black">
-                    <span className="text">제출완료</span>
+                  <div className="btn-play completed">
+                    <span className="text no-link">제출완료</span>
                     <i className="icon play-completed24" />
                   </div>
                 )
@@ -55,7 +55,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
                 !passedState && ( type === '1' || type === '3' ) && (
                   <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
                     <span className="text">과제제출</span>
-                    <i className="icon play-black24-dim" />
+                    <i className="icon play-black24" />
                   </a>
                 )
               }
@@ -73,8 +73,8 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
             <div className="right">
               {
                 passedState && (
-                  <div className="btn-play black">
-                    <span className="text">제출완료</span>
+                  <div className="btn-play completed">
+                    <span className="text no-link">제출완료</span>
                     <i className="icon play-completed24" />
                   </div>
                 )
@@ -93,7 +93,7 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
                 !passedState && ( type === '1' || type === '3' ) && (
                   <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
                     <span className="text">과제제출</span>
-                    <i className="icon play-black24-dim" />
+                    <i className="icon play-black24" />
                   </a>
                 )
               }
@@ -151,7 +151,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
                 (type === '1' || type === '3' || type === undefined) && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text">평가응시</span>
-                    <i className="icon play-black24-dim" />
+                    <i className="icon play-black24" />
                   </a>
                 )
               }
@@ -167,9 +167,9 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
 
               {
                 (type === '5' && name === '이수') && (
-                  <a href="#" className="btn-play black" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
-                    <span className="text no-link">{name}</span>
-                    <i className="icon play-black24-dim" />
+                  <a href="#" className="btn-play completed" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
+                    <span className="text no-link">Pass</span>
+                    <i className="icon play-completed24" />
                   </a>
                 )
               }
@@ -208,7 +208,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
                 (type === '1' || type === '3') && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
                     <span className="text">평가응시</span>
-                    <i className="icon play-black24-dim" />
+                    <i className="icon play-black24" />
                   </a>
                   // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
                 )
@@ -225,9 +225,9 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
 
               {
                 (type === '5' && name === '이수') && (
-                  <a href="#" className="btn-play black" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
-                    <span className="text no-link">{name}</span>
-                    <i className="icon play-black24-dim" />
+                  <a href="#" className="btn-play completed" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
+                    <span className="text no-link">Pass</span>
+                    <i className="icon play-completed24" />
                   </a>
                 )
               }

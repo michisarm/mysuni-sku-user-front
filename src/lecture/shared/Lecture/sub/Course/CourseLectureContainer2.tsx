@@ -956,7 +956,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         )}
 
         {className !== 'first' && (
-          <div className="detail">
+          <>
             <ul className="step1">
               { lectureView.cubeTypeName && (
                 <li>
@@ -992,7 +992,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 )
               }
             </ul>
-          </div>
+          </>
         )}
 
         {
