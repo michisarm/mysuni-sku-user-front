@@ -23,8 +23,13 @@ export default class AnswerSheetService {
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
 
   @action
-  setAnswerSheet(sheet: AnswerSheetModel) {
-    this.answerSheet = sheet;
+  setAnswerSheet(answerSheet: AnswerSheetModel) {
+    runInAction(() => {
+      this.answerSheet = answerSheet;
+      if (answerSheet && answerSheet.evaluationSheet) {
+        this.evaluationSheet = answerSheet.evaluationSheet;
+      }
+    });
   }
 
   @observable
@@ -77,6 +82,7 @@ export default class AnswerSheetService {
       }
     });
   }
+
 
   @action
   async saveAnswerSheet() {

@@ -128,9 +128,9 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
     // 내일 협의 후 결정
     // 발급 요청 버튼 클릭 시 learningCompleted: true (이수처리) 필요 할 수 있음
-    if ( cnt === badgeLearningInfo.length ) {
-      setBadgeState(ChallengeState.ReadyForRequest);
-    }
+    // if ( cnt === badgeLearningInfo.length ) {
+    //   setBadgeState(ChallengeState.ReadyForRequest);
+    // }
   };
 
 
@@ -140,6 +140,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     issueState: string
   ) => {
     //
+
     if (challengeState !== 'Challenged') {
       // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
@@ -207,8 +208,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     badgeService!.challengeBadge(retryBadgeStudentId, myStudentInfo, badgeId, ChallengeState.Challenged)
       .then( (response) => {
         if ( response ) {
-          //findBadgeStudent(badgeId);
-          setBadgeState(ChallengeState.Challenging);
+          findBadgeStudent(badgeId);
+          //setBadgeState(ChallengeState.Challenging);
         }
       });
   };
@@ -340,6 +341,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           college={badgeDetail.mainCategoryName}
           name={badgeDetail.name}
         />
+        <span>{`autoIssued: ${badgeDetail.autoIssued}`}</span>
 
         {/*뱃지 메타정보1*/}
         <BadgeInformation

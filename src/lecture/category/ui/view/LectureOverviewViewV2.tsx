@@ -40,6 +40,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentService: StudentService,
   lectureCardId : string,
   onRefreshLearningState?: () => void,
+  onPageInit:() => void,
   onPageRefresh?:() => void,
   isPreCoursePassed: boolean,
   studentInfo: StudentInfoModel | null
@@ -192,6 +193,14 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
   }
 
+  onAlreadyPassed() {
+    reactAlert({ title: 'Test 안내', message: '이미 통과한 시험입니다.' });
+  }
+
+  onTestWaiting() {
+    reactAlert({ title: 'Test 안내', message: '시험 결과를 기다리고 있습니다.' });
+  }
+
   onTestNotReady() {
     const { viewObject } = this.props;
 
@@ -229,7 +238,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   onPreCourseViewDetail(lecture: LectureViewModel) {
     const { coursePlanId, serviceId, serviceType } = lecture;
-    const { match } = this.props;
+    const { match, history } = this.props;
     const { params } = match;
 
     // history.push 로 하면 가끔 에러남...
@@ -237,7 +246,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //   postCourseLectureId: params.serviceId,
     // }));
 
-    window.location.href = `/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
+    window.location.href = `/suni-main/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
 
   }
 
@@ -331,6 +340,11 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     });
   }
 
+  handleLectureInitRequest() {
+    const { onPageInit } = this.props;
+    if (onPageInit) onPageInit();
+  }
+
   renderSubCategories() {
     //
     const { viewObject } = this.props;
@@ -373,10 +387,11 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       onRefreshLearningState,
       courseLectureService,
       isPreCoursePassed,
-      studentService,
       studentInfo,
+      history,
     } = this.props;
 
+    const { location } = history;
     const { params } = match;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
@@ -391,8 +406,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const cubeType = viewObject.cubeType;
 
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
+    const hasNotPostCourse = !location.search.match('postCourseLectureId');
 
-    // console.log('LectureOverviewViewV2 : ', viewObject);
+    // console.log('LectureOverviewViewV2 : ', params.serviceId);
+    // console.log('LectureOverviewViewV2 : ', params.serviceType);
 
     return (
       <OverviewField.Wrapper>
@@ -403,7 +420,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           <div className="ov-paragraph course-area">
 
             {/*선수코스*/}
-            {isPreCourse && (
+            {(isPreCourse && hasNotPostCourse) && (
               <Lecture2.Group
                 type={Lecture2.GroupType.PreCourse}
               >
@@ -429,7 +446,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                     <Lecture2.Course
                       className="first"
                       lectureView={lecture}
-                      lectureViewSize={(getSubLectureViews(lecture.id).length + 1)}
+                      lectureViewSize={(getSubLectureViews(lecture.id).length)}
                       lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
                       thumbnailImage={lecture.baseUrl || undefined}
                       toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
@@ -442,6 +459,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
                       studentInfo={studentInfo}
+                      onLectureInitRequest={this.handleLectureInitRequest}
                     />
                   )}
                 >
@@ -461,6 +479,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       onDoLearn={this.onDoLearn}
                       isPreCoursePassed={isPreCoursePassed}
                       studentInfo={studentInfo}
+                      onLectureInitRequest={this.handleLectureInitRequest}
                     />
                   )}
                 </Lecture2.CourseSection>
@@ -474,6 +493,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                   onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                   onTest={viewObject.examId ? this.onTest : undefined}
                   onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+                  onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
+                  onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
                   onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
                   OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
                   viewObject={viewObject}

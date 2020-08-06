@@ -7,10 +7,10 @@ export default class OfficeApi {
 
   serverUrl = '/api/personalCube/officewebs';
   devUrl = process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === undefined || process.env.REACT_APP_DEV_PERSONAL_CUBE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API ;
+    this.serverUrl : process.env.REACT_APP_DEV_PERSONAL_CUBE_API + '/officewebs' ;
 
   URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
-    this.serverUrl : this.devUrl + '/officewebs';
+    this.serverUrl : this.devUrl;
 
   static instance: OfficeApi;
 

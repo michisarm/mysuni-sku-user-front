@@ -165,7 +165,7 @@ class LectureOverviewView extends Component<Props, State> {
 
   render() {
     //
-    const { viewObject, typeViewObject, onSaveCallback } = this.props;
+    const { viewObject, typeViewObject, onSaveCallback, serviceId, serviceType } = this.props;
 
     if (!viewObject.category) {
       return null;
@@ -174,7 +174,8 @@ class LectureOverviewView extends Component<Props, State> {
     const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
-    // console.log('LectureOverviewView : ', typeViewObject);
+    console.log('LectureOverviewView : ', serviceId);
+    console.log('LectureOverviewView : ', serviceType);
 
     return (
       <OverviewField.Wrapper>
@@ -206,8 +207,8 @@ class LectureOverviewView extends Component<Props, State> {
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
               // onSaveCallback={this.testCallback}
-              serviceId={viewObject.surveyId}
-              serviceType={viewObject.surveyCaseId}
+              serviceId={serviceId}
+              serviceType={serviceType}
             />
           )
         }
