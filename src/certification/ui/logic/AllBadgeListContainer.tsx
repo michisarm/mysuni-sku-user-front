@@ -123,8 +123,8 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
     if (badgeOffsetList) {
       pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
       pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
-      setBadgeCount(badgeOffsetList.totalCount);
     }
+    setBadgeCount(badgeService!.badgeCount);
   };
 
   const getPageNo = () => {

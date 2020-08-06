@@ -16,13 +16,13 @@ class BadgeApi {
   static instance: BadgeApi;
 
   // .env 파일 설정에 따른 로컬 또는 서버 호출 path 정의
-  baseUrl =
-    process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server' ||
-    process.env.REACT_APP_BADGE_API === undefined ||
-    process.env.REACT_APP_BADGE_API === ''
-      ? '/api/badge'
-      : process.env.REACT_APP_BADGE_API;
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_BADGE_API === undefined || process.env.REACT_APP_BADGE_API === '' ?
+    '/api/badge' : process.env.REACT_APP_BADGE_API;
+
+  badgeUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_BADGE_API === undefined || process.env.REACT_APP_BADGE_API === '' ?
+    '/api/arrange' : process.env.REACT_APP_BANNER_API;
 
   // 뱃지 관련 카테고리 정보 가져오기
   findAllCategories() {
@@ -45,7 +45,7 @@ class BadgeApi {
       offset: badgeFilterRdo.offset,
     };
 
-    return axiosApi.get<OffsetElementList<BadgeModel>>(this.baseUrl + '/lectures/flow', { params })
+    return axiosApi.get<OffsetElementList<BadgeModel>>(this.badgeUrl + '/badges/flow/user', { params })
       .then((response) => response && response.data || null)
       .catch((error) => null);
 
