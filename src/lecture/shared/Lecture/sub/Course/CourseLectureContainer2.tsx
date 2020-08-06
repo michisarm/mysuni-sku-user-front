@@ -752,7 +752,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
         } else if (
           studentData.phaseCount === studentData.completePhaseCount
-          && (studentData.learningState === LearningState.Failed && studentData.studentScoLectureOverviewViewV2.re.numberOfTrials > 2)
+          && (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials > 2)
         ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
@@ -776,6 +776,15 @@ class CourseLectureContainer2 extends Component<Props, State> {
   setStateName(type: string, name: string) {
     this.state.type = type;
     this.state.name = name;
+  }
+
+  checkPreCourseOnViewDetail(lecture: LectureViewModel) {
+    const { isPreCoursePassed, onViewDetail } = this.props;
+    if (isPreCoursePassed) {
+      if (onViewDetail) onViewDetail(lecture);
+    } else {
+      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
+    }
   }
 
   onClickDownloadReport(fileBoxId: string) {
@@ -825,7 +834,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       switch (this.state.inProgress) {
         case SubState.InProgress:
           return (
-            <a href="#" className="btn-play orange" onClick={onViewDetail}>
+            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
               <span className={'pie-wrapper progress-' + 100}>
                 <span className="pie">
@@ -845,7 +854,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         default:
           return (
-            <a href="#" className="btn-play black" onClick={onViewDetail}>
+            <a href="#" className="btn-play black" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습하기</span>
               <i className="icon play-black24" />
             </a>
@@ -881,8 +890,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('lecture container viewObject : ', this.viewObject);
     // console.log('lecture container personalCube : ', this.personalCube);
 
-    console.log('CourseLectureContainer2 : ', lectureView.serviceId);
-    console.log('CourseLectureContainer2 : ', lectureView.serviceType);
+    // console.log('CourseLectureContainer2 : ', lectureView.serviceId);
+    // console.log('CourseLectureContainer2 : ', lectureView.serviceType);
 
     // console.log('CourseLectureContainer2 render ----------------->', studentInfo);
     return (

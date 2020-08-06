@@ -10,7 +10,7 @@ class StudentInfoModel {
   student: StudentModel | null = null;
   lecture: StudentCubeModel | null = null;
   course: StudentCourseModel | null = null;
-  preCourses: StudentModel | null = null;
+  preCourses: StudentModel[] | null = null;
 
   //UI
   round: number = 0;
