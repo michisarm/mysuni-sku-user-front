@@ -246,7 +246,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //   postCourseLectureId: params.serviceId,
     // }));
 
-    window.location.href = `/suni-main/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
+    window.location.href = `/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
 
   }
 
@@ -388,8 +388,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       courseLectureService,
       isPreCoursePassed,
       studentInfo,
+      history,
     } = this.props;
 
+    const { location } = history;
     const { params } = match;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
@@ -404,9 +406,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const cubeType = viewObject.cubeType;
 
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
+    const hasNotPostCourse = !location.search.match('postCourseLectureId');
 
-    console.log('LectureOverviewViewV2 : ', params.serviceId);
-    console.log('LectureOverviewViewV2 : ', params.serviceType);
+    // console.log('LectureOverviewViewV2 : ', params.serviceId);
+    // console.log('LectureOverviewViewV2 : ', params.serviceType);
 
     return (
       <OverviewField.Wrapper>
@@ -417,7 +420,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           <div className="ov-paragraph course-area">
 
             {/*선수코스*/}
-            {isPreCourse && (
+            {(isPreCourse && hasNotPostCourse) && (
               <Lecture2.Group
                 type={Lecture2.GroupType.PreCourse}
               >
