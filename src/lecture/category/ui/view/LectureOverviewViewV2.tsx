@@ -246,7 +246,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //   postCourseLectureId: params.serviceId,
     // }));
 
-    window.location.href = `/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
+    window.location.href = `/suni-main/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
 
   }
 
