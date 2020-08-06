@@ -41,7 +41,9 @@ class POPLectureService {
       window.sessionStorage.setItem('PopLearningList', JSON.stringify(lectureOffsetElementList));
     }
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    if (!lectureOffsetElementList.empty) {
+      lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    }
     this._totalCount = lectureOffsetElementList.totalCount;
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
