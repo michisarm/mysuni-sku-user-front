@@ -1,40 +1,45 @@
-import React, {useEffect} from 'react';
-import {mobxHelper, reactAlert} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {patronInfo} from '@nara.platform/dock';
-import {Button, Icon} from 'semantic-ui-react';
-import {ActionLogService} from 'shared/stores';
-import {ReviewService} from '@nara.drama/feedback';
-import {CubeType} from 'shared/model';
-import {NoSuchContentPanel} from 'shared';
-import lectureRoutePaths from 'lecture/routePaths';
-import myTrainingRoutes from 'myTraining/routePaths';
-import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
-import {LectureService} from 'lecture/stores';
-import {Lecture} from 'lecture';
-import {InMyLectureCdoModel, InMyLectureModel, MyTrainingModel} from 'myTraining/model';
-import {InMyLectureService} from 'myTraining/stores';
-import {ContentWrapper} from '../MyLearningContentElementsView';
-import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
+import React, { useEffect} from 'react';
+import {  mobxHelper, reactAlert } from '@nara.platform/accent';
+import { observer, inject } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { patronInfo } from '@nara.platform/dock';
+
+import { Button, Icon } from 'semantic-ui-react';
+import { ActionLogService } from 'shared/stores';
+import { ReviewService } from '@nara.drama/feedback';
+import { CubeType } from 'shared/model';
+import { NoSuchContentPanel } from 'shared';
+
+import lectureRoutePaths from 'lecture/routePaths';
+import { LRSLectureService } from 'lecture/stores';
+import { LectureModel, LectureServiceType } from 'lecture/model';
+import { Lecture } from 'lecture';
+import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+import myTrainingRoutes from '../../../../myTraining/routePaths';
+import { ContentWrapper } from '../MyLearningContentElementsView';
+import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
+import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
   reviewService?: ReviewService,
-  lectureService?: LectureService,
+  lrsLectureService?: LRSLectureService,
   inMyLectureService?: InMyLectureService,
+
+  profileMemberName: string,
 }
 
-const RequiredLearning : React.FC<Props> = (Props) => {
+const LRSLearning : React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, lectureService, inMyLectureService, history } = Props;
+  const { actionLogService, reviewService, lrsLectureService, inMyLectureService, profileMemberName, history } = Props;
 
-  const CONTENT_TYPE = 'Required';
-  const CONTENT_TYPE_NAME = '권장과정';
+  const CONTENT_TYPE = 'Recommend';
+  const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
 
-  const { lectures } = lectureService!;
+  const { lrsLectures } = lrsLectureService!;
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -43,20 +48,19 @@ const RequiredLearning : React.FC<Props> = (Props) => {
 
   const findMyContent = async () => {
     // use session storage : modified by JSM
-    lectureService!.clearLectures();
+    lrsLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RequiredLearningList');
-    if (savedRequiredLearningList) {
-      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
-      if (requiredMain.totalCount > PAGE_SIZE - 1) {
-        lectureService!.setPagingRequiredLectures(requiredMain);
+    const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
+    if (savedRecommendLearningList) {
+      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
+      if (recommendMain.totalCount > PAGE_SIZE - 1) {
+        lrsLectureService!.setPagingLrsLectures(recommendMain);
         return;
       }
     }
 
-    // 서버로부터 가져오기
-    lectureService!.findPagingRequiredLectures(PAGE_SIZE, 0, [], OrderByType.New, true);
+    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -84,7 +88,7 @@ const RequiredLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.newLearningTab(CONTENT_TYPE));
+    history.push(myTrainingRoutes.learningLrsLecture());
   };
 
   const onViewDetail = (e: any, data: any) => {
@@ -144,10 +148,10 @@ const RequiredLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!</strong>
+        <strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>
         <div className="right">
           {
-            lectures.length > 0 && (
+            lrsLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
                 View all <Icon className="morelink"/>
               </Button>
@@ -156,12 +160,11 @@ const RequiredLearning : React.FC<Props> = (Props) => {
         </div>
       </div>
 
-      {lectures.length > 0 ?
+      {lrsLectures.length > 0 && lrsLectures[0] ?
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {lectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
+          {lrsLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
             const inMyLecture = getInMyLecture(learning.serviceId);
-            console.log(learning);
 
             return (
               <Lecture
@@ -192,6 +195,6 @@ const RequiredLearning : React.FC<Props> = (Props) => {
 export default inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'shared.reviewService',
-  'lecture.lectureService',
+  'lrsLecture.lrsLectureService',
   'myTraining.inMyLectureService',
-))(withRouter(observer(RequiredLearning)));
+))(withRouter(observer(LRSLearning)));

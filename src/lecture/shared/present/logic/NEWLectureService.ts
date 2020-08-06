@@ -7,9 +7,9 @@ import ArrangeApi from '../apiclient/ArrangeApi';
 
 
 @autobind
-class NewLectureService {
+class NEWLectureService {
   //
-  static instance: NewLectureService;
+  static instance: NEWLectureService;
 
   private arrangeApi: ArrangeApi;
 
@@ -73,6 +73,6 @@ class NewLectureService {
   }
 }
 
-NewLectureService.instance = new NewLectureService(ArrangeApi.instance);
+NEWLectureService.instance = new NEWLectureService(ArrangeApi.instance);
 
-export default NewLectureService;
+export default NEWLectureService;

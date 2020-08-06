@@ -66,7 +66,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.EarnedBadgeList}
       />
 
-      {myBadges.length > 0 ? (
+      {myBadges.length > 0 && myBadges[0] ? (
         <div className="badge-list">
           <ul>
             {myBadges.map( (badge: any, index: number) => {

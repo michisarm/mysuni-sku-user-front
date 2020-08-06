@@ -283,7 +283,7 @@ class CollegeLecturesContainer extends Component<Props, State> {
           )
         }
       >
-        {lectures && lectures.length > 0 ?
+        {lectures && lectures.length > 0 && lectures[0] ?
           <>
             <Lecture.Group type={Lecture.GroupType.Box}>
               {lectures.map((lecture: LectureModel, index: number) => {

@@ -1,6 +1,5 @@
-
-import React, {useEffect, useState} from 'react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { useEffect} from 'react';
+import {  mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
@@ -14,7 +13,7 @@ import { NoSuchContentPanel } from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
-import { NewLectureService } from 'lecture/stores';
+import { POPLectureService} from 'lecture/stores';
 import { Lecture } from 'lecture';
 import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
@@ -26,23 +25,21 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
   reviewService?: ReviewService,
-  newLectureService?: NewLectureService,
+  popLectureService?: POPLectureService,
   inMyLectureService?: InMyLectureService,
+
+  profileMemberName: string,
 }
 
-const NewLearning : React.FC<Props> = (Props) => {
+const POPLearning : React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, newLectureService, inMyLectureService, history } = Props;
+  const { actionLogService, reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
 
-  const CONTENT_TYPE = 'New';
-  const CONTENT_TYPE_NAME = '신규과정';
+  const CONTENT_TYPE = 'Popular';
+  const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
 
-  const today = new Date();
-  const month = useState(today.getMonth() + 1);
-  const week = useState(Math.ceil((today.getDate() + 6 - today.getDay())/7));
-
-  const { newLectures } = newLectureService!;
+  const { popLectures } = popLectureService!;
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -51,19 +48,19 @@ const NewLearning : React.FC<Props> = (Props) => {
 
   const findMyContent = async () => {
     // use session storage : modified by JSM
-    newLectureService!.clearLectures();
+    popLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
-    if (savedNewLearningList) {
-      const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
-      if (newMain.totalCount > PAGE_SIZE - 1) {
-        newLectureService!.setPagingNewLectures(newMain);
+    const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopularLearningList');
+    if (savedPopularLearningList) {
+      const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
+      if (popularMain.totalCount > PAGE_SIZE - 1) {
+        popLectureService!.setPagingPopLectures(popularMain);
         return;
       }
     }
 
-    newLectureService!.findPagingNewLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    popLectureService!.findPagingPopularLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -88,11 +85,10 @@ const NewLearning : React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    console.log( CONTENT_TYPE_NAME );
     actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.learningNew());
+    history.push(myTrainingRoutes.learningPopLecture());
   };
 
   const onViewDetail = (e: any, data: any) => {
@@ -152,10 +148,10 @@ const NewLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>mySUNI {month}월 {week}주 신규 학습 과정</strong>
+        <strong>학습자들의 평가가 좋은 인기 과정입니다.</strong>
         <div className="right">
           {
-            newLectures.length > 0 && (
+            popLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
                 View all <Icon className="morelink"/>
               </Button>
@@ -164,9 +160,9 @@ const NewLearning : React.FC<Props> = (Props) => {
         </div>
       </div>
 
-      {newLectures.length > 0 ?
+      {popLectures.length > 0 && popLectures[0]?
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {newLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
+          {popLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
             const inMyLecture = getInMyLecture(learning.serviceId);
 
@@ -188,7 +184,24 @@ const NewLearning : React.FC<Props> = (Props) => {
         </Lecture.Group>
         :
         <NoSuchContentPanel message={(
-          <div className="text">{CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.</div>
+          <>
+            <div className="text">진행중인 학습 과정이 없습니다.</div>
+            <Button
+              icon
+              as="a"
+              className="right btn-blue2"
+              onClick={ () => {
+                onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
+                history.push('/lecture/recommend');
+              }}
+            >
+              <span className="border">
+                <span className="ellipsis">{profileMemberName}</span>
+                님에게 추천하는 학습 과정 보기
+              </span>
+              <Icon className="morelink"/>
+            </Button>
+          </>
         )}
         />
       }
@@ -199,6 +212,6 @@ const NewLearning : React.FC<Props> = (Props) => {
 export default inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'shared.reviewService',
-  'newLecture.newLectureService',
+  'popLecture.popLectureService',
   'myTraining.inMyLectureService',
-))(withRouter(observer(NewLearning)));
+))(withRouter(observer(POPLearning)));

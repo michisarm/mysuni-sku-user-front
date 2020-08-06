@@ -29,7 +29,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
   const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+    '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
 
   useEffect(() => {
     //
@@ -97,7 +97,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
               <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
                 <a href="#" onClick={(e) => moveToOverviewPage(learning, e)}>
                   <span className="class-icon">
-                    <Image src={learning.iconBox && (domainPath + learning.iconBox?.iconUrl)} />
+                    <Image src={domainPath + learning.iconBox?.iconUrl} />
                   </span>
                   <span className="title">{learning.name}</span>
                   <span className="time">

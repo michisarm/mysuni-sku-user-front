@@ -82,7 +82,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
         </div>
       </div>
 
-      {myBadges.length > 0 ?
+      {myBadges.length > 0 && myBadges[0] ?
         <div className="scrolling">
           <ul className="belt">
             {myBadges.map( (badge: BadgeModel, index: number) => {

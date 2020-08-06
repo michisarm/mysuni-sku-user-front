@@ -1,66 +1,64 @@
-
-import React, { useEffect} from 'react';
-import {  mobxHelper, reactAlert } from '@nara.platform/accent';
-import { observer, inject } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { patronInfo } from '@nara.platform/dock';
-
-import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
-import { ReviewService } from '@nara.drama/feedback';
-import { CubeType } from 'shared/model';
-import { NoSuchContentPanel } from 'shared';
-
+import React, {useEffect} from 'react';
+import {mobxHelper, reactAlert} from '@nara.platform/accent';
+import {inject, observer} from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router';
+import {patronInfo} from '@nara.platform/dock';
+import {Button, Icon} from 'semantic-ui-react';
+import {ActionLogService} from 'shared/stores';
+import {ReviewService} from '@nara.drama/feedback';
+import {CubeType} from 'shared/model';
+import {NoSuchContentPanel} from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
-import { RecommendLectureService } from 'lecture/stores';
-import { LectureModel, LectureServiceType } from 'lecture/model';
-import { Lecture } from 'lecture';
-import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-import myTrainingRoutes from '../../../../myTraining/routePaths';
-import { ContentWrapper } from '../MyLearningContentElementsView';
-import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
+import myTrainingRoutes from 'myTraining/routePaths';
+import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
+import {LectureService} from 'lecture/stores';
+import {Lecture} from 'lecture';
+import {InMyLectureCdoModel, InMyLectureModel, MyTrainingModel} from 'myTraining/model';
+import {InMyLectureService} from 'myTraining/stores';
+import {ContentWrapper} from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
+import RQDLectureService from '../../../../lecture/shared/present/logic/RQDLectureService';
+import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
+
 
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService,
   reviewService?: ReviewService,
-  recommendLectureService?: RecommendLectureService,
+  rqdLectureService?: RQDLectureService,
   inMyLectureService?: InMyLectureService,
-
-  profileMemberName: string,
 }
 
-const RecommendLearning : React.FC<Props> = (Props) => {
+const RQDLearning : React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, recommendLectureService, inMyLectureService, profileMemberName, history } = Props;
+  const { actionLogService, reviewService, rqdLectureService, inMyLectureService, history } = Props;
 
-  const CONTENT_TYPE = 'Recommend';
-  const CONTENT_TYPE_NAME = '추천과정';
+  const CONTENT_TYPE = 'Required';
+  const CONTENT_TYPE_NAME = '권장과정';
   const PAGE_SIZE = 8;
 
-  const { recommendLectures } = recommendLectureService!;
+  const { rqdLectures } = rqdLectureService!;
 
-  // // lectureService 변경  실행
+  // // rqdLectureService 변경  실행
   useEffect(() => {
     findMyContent();
   }, []);
 
   const findMyContent = async () => {
     // use session storage : modified by JSM
-    recommendLectureService!.clearLectures();
+    rqdLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('RecommendLearningList');
-    if (savedRecommendLearningList) {
-      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
-      if (recommendMain.totalCount > PAGE_SIZE - 1) {
-        recommendLectureService!.setPagingRecommendLectures(recommendMain);
+    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
+    if (savedRequiredLearningList) {
+      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
+      if (requiredMain.totalCount > PAGE_SIZE - 1) {
+        rqdLectureService!.setPagingRqdLectures(requiredMain);
         return;
       }
     }
 
-    recommendLectureService!.findPagingRecommendLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    // 서버로부터 가져오기
+    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -88,7 +86,7 @@ const RecommendLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
-    history.push(myTrainingRoutes.learningRecommend());
+    history.push(myTrainingRoutes.learningRqdLecture());
   };
 
   const onViewDetail = (e: any, data: any) => {
@@ -148,10 +146,10 @@ const RecommendLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>
+        <strong>SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!</strong>
         <div className="right">
           {
-            recommendLectures.length > 0 && (
+            rqdLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
                 View all <Icon className="morelink"/>
               </Button>
@@ -160,11 +158,12 @@ const RecommendLearning : React.FC<Props> = (Props) => {
         </div>
       </div>
 
-      {recommendLectures.length > 0 ?
+      {rqdLectures.length > 0 && rqdLectures[0] ?
         <Lecture.Group type={Lecture.GroupType.Line}>
-          {recommendLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
+          {rqdLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
             const inMyLecture = getInMyLecture(learning.serviceId);
+            console.log(learning);
 
             return (
               <Lecture
@@ -195,6 +194,6 @@ const RecommendLearning : React.FC<Props> = (Props) => {
 export default inject(mobxHelper.injectFrom(
   'shared.actionLogService',
   'shared.reviewService',
-  'recommendLecture.recommendLectureService',
+  'rqdLecture.rqdLectureService',
   'myTraining.inMyLectureService',
-))(withRouter(observer(RecommendLearning)));
+))(withRouter(observer(RQDLearning)));

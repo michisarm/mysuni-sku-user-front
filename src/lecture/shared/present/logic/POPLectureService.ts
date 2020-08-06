@@ -7,9 +7,9 @@ import ArrangeApi from '../apiclient/ArrangeApi';
 
 
 @autobind
-class PopularLectureService {
+class POPLectureService {
   //
-  static instance: PopularLectureService;
+  static instance: POPLectureService;
 
   private arrangeApi: ArrangeApi;
 
@@ -50,7 +50,7 @@ class PopularLectureService {
 
   // use session storage : modified by JSM
   @action
-  async setPagingPopularLectures(lectures: OffsetElementList<LectureModel>) {
+  async setPagingPopLectures(lectures: OffsetElementList<LectureModel>) {
     //
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(lectures);
 
@@ -62,7 +62,7 @@ class PopularLectureService {
   }
 
   @computed
-  get popularLectures() {
+  get popLectures() {
     //
     return (this._lectures as IObservableArray).peek();
   }
@@ -73,6 +73,6 @@ class PopularLectureService {
   }
 }
 
-PopularLectureService.instance = new PopularLectureService(ArrangeApi.instance);
+POPLectureService.instance = new POPLectureService(ArrangeApi.instance);
 
-export default PopularLectureService;
+export default POPLectureService;

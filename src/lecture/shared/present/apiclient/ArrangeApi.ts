@@ -22,21 +22,17 @@ class ArrangeApi {
 
   /********************************************************************************************************/
 
-  reqLectureUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_LECTURE_FLOW_API === undefined || process.env.REACT_APP_LECTURE_FLOW_API === '' ?
-    '/api/lecture/lectures/flow' : process.env.REACT_APP_LECTURE_FLOW_API;
-
   // 권장과정 조회
-  findRequiredLectures(lectureFilterRdo: LectureFilterRdoModel) {
+  findRqdLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
-    return axiosApi.post<OffsetElementList<LectureModel>>(this.reqLectureUrl + '/required', lectureFilterRdo)
-      .then(response => response && response.data);
-  }
+    const params = {
+      offset: lectureFilterRdo.offset,
+      limit: lectureFilterRdo.limit,
+      orderBy: lectureFilterRdo.orderBy,
+    };
 
-  // 권장과정 갯수 조회 API
-  countRequiredLectures() {
-    return axiosApi.post<number>(this.reqLectureUrl + '/requiredCount')
-      .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/RQD', {params})
+      .then(response => response && response.data);
   }
 
   /********************************************************************************************************/
@@ -68,15 +64,16 @@ class ArrangeApi {
   }
 
   // LRS 추천과정 조회
-  findRecommendLectures(lectureFilterRdo: LectureFilterRdoModel) {
+  findLrsLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
     const params = {
       offset: lectureFilterRdo.offset,
       limit: lectureFilterRdo.limit,
       orderBy: lectureFilterRdo.orderBy,
+      email: lectureFilterRdo.email,
     };
 
-    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/RQD', {params})
+    return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/LRS', {params})
       .then(response => response && response.data);
   }
 }
