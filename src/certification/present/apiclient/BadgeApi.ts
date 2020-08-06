@@ -21,8 +21,8 @@ class BadgeApi {
     '/api/badge' : process.env.REACT_APP_BADGE_API;
 
   badgeUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_BADGE_API === undefined || process.env.REACT_APP_BADGE_API === '' ?
-    '/api/arrange' : process.env.REACT_APP_BANNER_API;
+  process.env.REACT_APP_BADGE_LIST_API === undefined || process.env.REACT_APP_BADGE_LIST_API === '' ?
+    '/api/arrange' : process.env.REACT_APP_BADGE_LIST_API;
 
   // 뱃지 관련 카테고리 정보 가져오기
   findAllCategories() {
