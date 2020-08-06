@@ -51,7 +51,7 @@ class ArrangeApi {
   }
 
   // 인기과정 조회
-  findPopularLectures(lectureFilterRdo: LectureFilterRdoModel) {
+  findPopLectures(lectureFilterRdo: LectureFilterRdoModel) {
     //
     const params = {
       offset: lectureFilterRdo.offset,

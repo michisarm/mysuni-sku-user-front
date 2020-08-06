@@ -51,7 +51,7 @@ const POPLearning : React.FC<Props> = (Props) => {
     popLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopularLearningList');
+    const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
     if (savedPopularLearningList) {
       const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
       if (popularMain.totalCount > PAGE_SIZE - 1) {
@@ -60,7 +60,7 @@ const POPLearning : React.FC<Props> = (Props) => {
       }
     }
 
-    popLectureService!.findPagingPopularLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
   };
 
   const getInMyLecture = (serviceId: string) => {

@@ -198,7 +198,7 @@ const NewLearningListView: React.FC<Props> = Props => {
         if (clear) {
           rqdLectureService!.clearLectures();
         }
-        findRequiredLectures(pgNo);
+        findRqdLectures(pgNo);
         break;
 
       case ContentType.New:
@@ -212,7 +212,7 @@ const NewLearningListView: React.FC<Props> = Props => {
         if (clear) {
           popLectureService!.clearLectures();
         }
-        findPopularLectures(pgNo);
+        findPopLectures(pgNo);
         break;
       case ContentType.Recommend:
         if (clear) {
@@ -227,7 +227,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     return parseInt(match.params.pageNo, 10);
   };
 
-  const findRequiredLectures = async (pageNo: number) => {
+  const findRqdLectures = async (pageNo: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
@@ -287,7 +287,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
-  const findPopularLectures = async (pageNo?: number) => {
+  const findPopLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
@@ -296,7 +296,7 @@ const NewLearningListView: React.FC<Props> = Props => {
       page!.limit,
       page!.nextOffset /*, orderBy*/
     );
-    const lectureOffsetList = await popLectureService!.findPagingPopularLectures(
+    const lectureOffsetList = await popLectureService!.findPagingPopLectures(
       lectureFilterRdo
     );
 
