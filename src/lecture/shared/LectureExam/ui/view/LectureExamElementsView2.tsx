@@ -300,7 +300,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
                 !viewObject.surveyState && viewObject.state === undefined && viewObject.state !== 'Completed' && viewObject.state !== 'InProgress' && viewObject.state !== 'Waiting' && viewObject.state !== 'Missed' && (
                   <a href="#" className="btn-play black" onClick={e => {if (OnSurveyNotReady) {OnSurveyNotReady();} e.preventDefault();}}>
                     <span className="text">설문하기</span>
-                    <i className="icon play-black24-dim" />
+                    <i className="icon play-black24" />
                   </a>
                   // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnSurveyNotReady}><span>설문하기</span></button>
                 )
