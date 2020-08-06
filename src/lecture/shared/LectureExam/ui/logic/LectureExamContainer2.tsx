@@ -12,6 +12,10 @@ interface Props {
   onTest?: () => void
   /** 테스트 비활성화 시 */
   onTestNotReady?: () => void
+  /** 이수한 테스트 비활성화 시 */
+  onAlreadyPassed?: () => void
+  /** 결과대기 비활성화 시 */
+  onTestWaiting?: () => void
   /** 설문 액션*/
   onSurvey?: () => void
   /** 설문 비활성화 시 **/
@@ -29,7 +33,7 @@ class LectureExamContainer2 extends Component<Props> {
   //
   render() {
     //
-    const { onReport, onReportNotReady, onTest, onTestNotReady, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name, sort } = this.props;
+    const { onReport, onReportNotReady, onTest, onTestNotReady, onAlreadyPassed, onTestWaiting, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name, sort } = this.props;
 
     // console.log('viewObject : ', viewObject);
 
@@ -53,6 +57,8 @@ class LectureExamContainer2 extends Component<Props> {
               <Test
                 OnTest={onTest}
                 OnTestNotReady={onTestNotReady}
+                onAlreadyPassed={onAlreadyPassed}
+                onTestWaiting={onTestWaiting}
                 viewObject={viewObject}
                 type={type}
                 name={name}
@@ -84,6 +90,8 @@ class LectureExamContainer2 extends Component<Props> {
             <Test
               OnTest={onTest}
               OnTestNotReady={onTestNotReady}
+              onAlreadyPassed={onAlreadyPassed}
+              onTestWaiting={onTestWaiting}
               viewObject={viewObject}
               type={type}
               name={name}

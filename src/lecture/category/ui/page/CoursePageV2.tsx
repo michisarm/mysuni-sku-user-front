@@ -272,7 +272,7 @@ class CoursePageV2 extends Component<Props, State> {
       // course_plan 테이블
 
       // 선수코스 학습 상태 및 필수/선택 에 따라 현재 코스 학습 가능 여부를 판단.
-      console.log(studentService.StudentInfos);
+      // console.log(studentService.StudentInfos);
       if(courseLectureService.getPreLectureViews && studentService.StudentInfos!.preCourses) {
         const preLectureViews = courseLectureService.getPreLectureViews;
         const preCourseStudentList = studentService.StudentInfos!.preCourses;
@@ -296,6 +296,10 @@ class CoursePageV2 extends Component<Props, State> {
 
         this.setState({isPreCoursePassed});
         // coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
+      } else {
+        const preLectureViews = courseLectureService.getPreLectureViews;
+        if( preLectureViews ) isPreCoursePassed = false;
+        this.setState({isPreCoursePassed});
       }
     }
   }

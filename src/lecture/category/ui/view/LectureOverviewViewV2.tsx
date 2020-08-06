@@ -193,6 +193,14 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
   }
 
+  onAlreadyPassed() {
+    reactAlert({ title: 'Test 안내', message: '이미 통과한 시험입니다.' });
+  }
+
+  onTestWaiting() {
+    reactAlert({ title: 'Test 안내', message: '시험 결과를 기다리고 있습니다.' });
+  }
+
   onTestNotReady() {
     const { viewObject } = this.props;
 
@@ -230,7 +238,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   onPreCourseViewDetail(lecture: LectureViewModel) {
     const { coursePlanId, serviceId, serviceType } = lecture;
-    const { match } = this.props;
+    const { match, history } = this.props;
     const { params } = match;
 
     // history.push 로 하면 가끔 에러남...
@@ -238,7 +246,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //   postCourseLectureId: params.serviceId,
     // }));
 
-    window.location.href = `/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
+    window.location.href = `/suni-main/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
 
   }
 
@@ -482,6 +490,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                   onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                   onTest={viewObject.examId ? this.onTest : undefined}
                   onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+                  onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
+                  onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
                   onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
                   OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
                   viewObject={viewObject}

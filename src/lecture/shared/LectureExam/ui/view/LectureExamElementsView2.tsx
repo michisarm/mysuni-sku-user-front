@@ -109,13 +109,15 @@ export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, ty
 interface TestProps {
   OnTest?: () => void
   OnTestNotReady?: () => void
+  onAlreadyPassed?: () => void
+  onTestWaiting?: () => void
   viewObject?: any
   type?: string
   name?: string
   sort?: string
 }
 
-export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: TestProps) => {
+export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, viewObject, type, name, sort }: TestProps) => {
   //
   if (!OnTest) return null;
 
@@ -164,8 +166,17 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               }
 
               {
-                type === '5' && (
-                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
+                (type === '5' && name === '이수') && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                )
+              }
+
+              {
+                (type === '5' && name === '결과대기') && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onTestWaiting) {onTestWaiting();} e.preventDefault();}}>
                     <span className="text no-link">{name}</span>
                     <i className="icon play-black24-dim" />
                   </a>
@@ -213,8 +224,17 @@ export const Test = ({ OnTest, OnTestNotReady, viewObject, type, name, sort }: T
               }
 
               {
-                type === '5' && (
-                  <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
+                (type === '5' && name === '이수') && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
+                    <span className="text no-link">{name}</span>
+                    <i className="icon play-black24-dim" />
+                  </a>
+                )
+              }
+
+              {
+                (type === '5' && name === '결과대기') && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onTestWaiting) {onTestWaiting();} e.preventDefault();}}>
                     <span className="text no-link">{name}</span>
                     <i className="icon play-black24-dim" />
                   </a>
