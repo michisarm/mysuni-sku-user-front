@@ -341,8 +341,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           college={badgeDetail.mainCategoryName}
           name={badgeDetail.name}
         />
-        <span>{`autoIssued: ${badgeDetail.autoIssued}`}</span>
-
         {/*뱃지 메타정보1*/}
         <BadgeInformation
           certiAdminCategoryName={
