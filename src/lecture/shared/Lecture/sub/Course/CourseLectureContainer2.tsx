@@ -37,6 +37,7 @@ import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
+import { LectureExam2 } from '../../../LectureExam';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -664,6 +665,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
 
+  onAlreadyPassed() {
+    reactAlert({ title: 'Test 안내', message: '이미 통과한 시험입니다.' });
+  }
+
+  onTestWaiting() {
+    reactAlert({ title: 'Test 안내', message: '시험결과를 기다리고 있습니다.' });
+  }
+
   onTestNotReady() {
     reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
@@ -895,11 +904,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
               {/*{console.log('render >>>>>', this.viewObject, this.state.isContent)}*/}
               {
                 this.viewObject && this.state.isContent && (
-                  <LectureExam
+                  <LectureExam2
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
                     onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
                     onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={this.personalCube?.contents.examId ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={this.personalCube?.contents.examId ? this.onTestWaiting : undefined}
                     onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
                     OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
                     viewObject={this.viewObject}
@@ -945,7 +956,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         )}
 
         {className !== 'first' && (
-          <div className="detail">
+          <>
             <ul className="step1">
               { lectureView.cubeTypeName && (
                 <li>
@@ -963,11 +974,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
               {
                 this.viewObject && this.state.isContent && (
-                  <LectureExam
+                  <LectureExam2
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.personalCube?.contents.examId ? this.onReportNotReady : undefined}
                     onTest={this.personalCube?.contents.examId ? this.onTest : undefined}
                     onTestNotReady={this.personalCube?.contents.examId ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={this.personalCube?.contents.examId ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={this.personalCube?.contents.examId ? this.onTestWaiting : undefined}
                     onSurvey={this.personalCube?.contents.surveyId ? this.onSurvey : undefined}
                     OnSurveyNotReady={this.personalCube?.contents.surveyId ? this.OnSurveyNotReady : undefined}
                     viewObject={this.viewObject}
@@ -979,7 +992,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 )
               }
             </ul>
-          </div>
+          </>
         )}
 
         {
