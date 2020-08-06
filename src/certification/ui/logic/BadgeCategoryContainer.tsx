@@ -21,7 +21,7 @@ interface BadgeCategoryProps {
 const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ( { categories, categorySelection, onClickBadgeCategory} ) => {
   //
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+    '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL + '/suni-main';
 
   console.log( categories );
 

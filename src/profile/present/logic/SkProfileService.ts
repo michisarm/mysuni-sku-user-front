@@ -38,6 +38,11 @@ class SkProfileService {
   }
 
   @computed
+  get profileMemberEmail() {
+    return this.skProfile.member.email;
+  }
+
+  @computed
   get profileMemberCompanyCode() {
     return this.skProfile.member.companyCode;
   }

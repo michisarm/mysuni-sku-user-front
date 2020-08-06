@@ -68,7 +68,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   const getBadgeCompLectures = (badgeId: string) => {
     let compList: BadgeCompData[] = [];
     badgeDetailService!.findBadgeCompList(badgeId).then((response: BadgeCompModel[]) => {
-      if (response.length > 0) {
+      if (response.length > 0 && response[0] ) {
         response.map((data: BadgeCompModel) => {
           const compData = new BadgeCompData();
           //console.log( data );
@@ -271,7 +271,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     }
 
     return (
-      <a href="#" className={classNames('btn-play', styleName)}>
+      <a href="#" className={classNames('btn-play', styleName)} onClick={(e) => moveToCubePage(cube!, e)}>
         <span className="text">
           {stateName}{
             cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) ?
@@ -324,7 +324,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
   return (
     <div className="course-cont">
-      {badgeCompList.length > 0 ?
+      {badgeCompList.length > 0 && badgeCompList[0] ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
             <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>

@@ -37,7 +37,7 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
     <LinkedBadgeListWrapper>
       {/*연관 Badge 목록*/}
       <div className="list">
-        {myBadges.length > 0 ? (
+        {myBadges.length > 0 && myBadges[0] ? (
           <ul>
             {myBadges.map((badge: MyBadgeModel, index: number) => {
               return (

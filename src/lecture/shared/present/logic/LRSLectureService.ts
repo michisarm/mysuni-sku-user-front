@@ -8,9 +8,9 @@ import ArrangeApi from '../apiclient/ArrangeApi';
 
 
 @autobind
-class RecommendLectureService {
+class LRSLectureService {
   //
-  static instance: RecommendLectureService;
+  static instance: LRSLectureService;
 
   private arrangeApi: ArrangeApi;
 
@@ -27,19 +27,20 @@ class RecommendLectureService {
   @action
   clearLectures() {
     //
+    this._totalCount = 0;
     return runInAction(() => this._lectures = []);
   }
 
   @action
-  async findPagingRecommendLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+  async findPagingLrsLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
     //
     // LRS 추천 학습정보 가져오기
-    const response = await this.arrangeApi.findRecommendLectures(lectureFilterRdo);
+    const response = await this.arrangeApi.findLrsLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
     // use session storage : modified by JSM
     if (fromMain) {
-      window.sessionStorage.setItem('RecommendLearningList', JSON.stringify(lectureOffsetElementList));
+      window.sessionStorage.setItem('LrsLearningList', JSON.stringify(lectureOffsetElementList));
     }
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
@@ -51,19 +52,19 @@ class RecommendLectureService {
 
   // use session storage : modified by JSM
   @action
-  async setPagingRecommendLectures(lectures: OffsetElementList<LectureModel>) {
+  async setPagingLrsLectures(lectures: OffsetElementList<LectureModel>) {
     //
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(lectures);
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
-    this._totalCount = lectureOffsetElementList.totalCount;
+    //this._totalCount = lectureOffsetElementList.totalCount;
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;
   }
 
   @computed
-  get recommendLectures() {
+  get lrsLectures() {
     //
     return (this._lectures as IObservableArray).peek();
   }
@@ -74,6 +75,6 @@ class RecommendLectureService {
   }
 }
 
-RecommendLectureService.instance = new RecommendLectureService(ArrangeApi.instance);
+LRSLectureService.instance = new LRSLectureService(ArrangeApi.instance);
 
-export default RecommendLectureService;
+export default LRSLectureService;

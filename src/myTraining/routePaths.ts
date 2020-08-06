@@ -30,9 +30,10 @@ const routePaths = {
 
   // by JSM
   newLearningTab: (tab: string) => `/my-training/new-learning/${tab}/pages/1`,
-  learningNew: () => routePaths.newLearningTab('New'),
-  learningPopular: () => routePaths.newLearningTab('Popular'),
-  learningRecommend: () => routePaths.newLearningTab('Recommend'),
+  learningRqdLecture: () => routePaths.newLearningTab('Required'),
+  learningNewLecture: () => routePaths.newLearningTab('New'),
+  learningPopLecture: () => routePaths.newLearningTab('Popular'),
+  learningLrsLecture: () => routePaths.newLearningTab('Recommend'),
 
 
   createPersonalCubeDetail: (personalCubeId: string, cubeType: string) => `/personalcube/create/cubes/cube/${personalCubeId}/${cubeType}`,
