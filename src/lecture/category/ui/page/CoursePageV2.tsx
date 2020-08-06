@@ -293,14 +293,16 @@ class CoursePageV2 extends Component<Props, State> {
             }
           }
         }
-
-        this.setState({isPreCoursePassed});
-        // coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
-      } else {
+      } else if(courseLectureService.getPreLectureViews && !studentService.StudentInfos!.preCourses) {
         const preLectureViews = courseLectureService.getPreLectureViews;
-        if( preLectureViews ) isPreCoursePassed = false;
-        this.setState({isPreCoursePassed});
+        for (let j = 0; j < preLectureViews.length; j++) {
+          const preLectureView = preLectureViews[j];
+          if (preLectureView.required) isPreCoursePassed = false;
+          break;
+        }
       }
+
+      this.setState({isPreCoursePassed});
     }
   }
 
