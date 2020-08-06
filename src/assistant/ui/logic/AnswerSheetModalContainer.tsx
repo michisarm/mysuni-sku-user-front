@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAutobind, reactConfirm } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
+import cx from 'classnames';
 
 import { Modal, List, Button } from 'semantic-ui-react';
 import ExamPaperService from '../../paper/present/logic/ExamPaperService';
@@ -14,57 +15,77 @@ import SingleChoiceView from '../view/SingleChoiceView';
 import MultiChoiceView from '../view/MultiChoiceView';
 
 interface Props {
-  examPaperService?: ExamPaperService
-  examinationService?: ExaminationService
-  answerSheetService?: AnswerSheetService
+  examPaperService?: ExamPaperService;
+  examinationService?: ExaminationService;
+  answerSheetService?: AnswerSheetService;
 
-  examId: string
-  trigger?: React.ReactNode
-  onSaveCallback?:() => void
+  examId: string;
+  type?: string;
+  trigger?: React.ReactNode;
+  onSaveCallback?: () => void;
 }
 
 interface States {
-  open: boolean
+  open: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'assistant.examPaperService',
-  'assistant.examinationService',
-  'assistant.answerSheetService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'assistant.examPaperService',
+    'assistant.examinationService',
+    'assistant.answerSheetService'
+  )
+)
 @observer
 @reactAutobind
 export class AnswerSheetModalContainer extends React.Component<Props, States> {
   //
-  state= {
+  state = {
     open: false,
   };
 
   onOpenModal() {
-    this.setState({
-      open: true,
-    }, this.init);
+    this.setState(
+      {
+        open: true,
+      },
+      this.init
+    );
   }
 
   onCloseModal() {
-    this.setState({
-      open: false,
-    }, this.clear);
+    this.setState(
+      {
+        open: false,
+      },
+      this.clear
+    );
   }
 
-
   async init() {
-    const { examinationService, examPaperService, answerSheetService, examId } = this.props;
+    const {
+      examinationService,
+      examPaperService,
+      answerSheetService,
+      examId,
+    } = this.props;
 
     if (examId) {
-      answerSheetService!.findAnswerSheet(examId, patronInfo.getDenizenId() || '');
+      answerSheetService!.findAnswerSheet(
+        examId,
+        patronInfo.getDenizenId() || ''
+      );
       const examination = await examinationService!.findExamination(examId);
       examPaperService!.findExamPaper(examination.paperId);
     }
   }
 
   clear() {
-    const { examinationService, examPaperService, answerSheetService } = this.props;
+    const {
+      examinationService,
+      examPaperService,
+      answerSheetService,
+    } = this.props;
 
     answerSheetService!.clear();
     examinationService!.clear();
@@ -76,37 +97,50 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     const { answerSheetService, examPaperService } = this.props;
     const { examPaper } = examPaperService!;
     const { questions } = examPaper!;
-    answerSheetService!.setAnswer(questionNo, answer, questions.map(question => question.questionNo));
+    answerSheetService!.setAnswer(
+      questionNo,
+      answer,
+      questions.map(question => question.questionNo)
+    );
   }
 
   onSaveAnswerSheet(finished: boolean) {
     const { answerSheetService, onSaveCallback, examId } = this.props;
     const { answerSheet } = answerSheetService!;
 
+    if (finished) {
+      answerSheetService!.setAnswerSheetProp(
+        'submitAnswers',
+        answerSheet.answers
+      );
+    }
+    answerSheetService!.setAnswerSheetProp('submitted', finished);
+
     if (answerSheet.id) {
       answerSheetService!.setAnswerSheetProp('finished', finished);
-      answerSheetService!.modifyAnswerSheet(answerSheet)
-        .then(() => {
-          if (finished) {
-            this.onCloseModal();
-            if (onSaveCallback) onSaveCallback();
-          }
-        });
-    }
-    else {
-      answerSheetService!.setAnswerSheetProp('examineeId', patronInfo.getDenizenId());
+      answerSheetService!.modifyAnswerSheet(answerSheet).then(() => {
+        if (finished) {
+          this.onCloseModal();
+          if (onSaveCallback) onSaveCallback();
+        }
+      });
+    } else {
+      answerSheetService!.setAnswerSheetProp(
+        'examineeId',
+        patronInfo.getDenizenId()
+      );
       answerSheetService!.setAnswerSheetProp('examId', examId);
       answerSheetService!.setAnswerSheetProp('finished', finished);
-      answerSheetService!.registerAnswerSheet(answerSheet)
+      answerSheetService!
+        .registerAnswerSheet(answerSheet)
         .then((answerSheetId: any) => {
           answerSheetService!.setAnswerSheetProp('id', answerSheetId.result);
-          answerSheetService!.modifyAnswerSheet(answerSheet)
-            .then(() => {
-              if (finished) {
-                this.onCloseModal();
-                if (onSaveCallback) onSaveCallback();
-              }
-            });
+          answerSheetService!.modifyAnswerSheet(answerSheet).then(() => {
+            if (finished) {
+              this.onCloseModal();
+              if (onSaveCallback) onSaveCallback();
+            }
+          });
         });
     }
 
@@ -124,8 +158,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   // MultiChoice 선택 정답 여부 체크
   onSaveAnswerMultiChoice(answerChkStr: string, answerMulti: string) {
     let answerChkArr = [];
-    // console.log('onSaveAnswerMultiChoice answerChkStr :: ' + answerChkStr);
-    // console.log('onSaveAnswerMultiChoice answerMulti :: ' + answerMulti);
+
     // 문제지 정답
     answerChkArr = answerChkStr.split(',');
     // 사용자 정답
@@ -135,13 +168,13 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     let checkCnt = 0;
 
     // 자릿수 비교
-    if(answerChkArr.length === answerMultiJson.length) {
+    if (answerChkArr.length === answerMultiJson.length) {
       // 정답지
-      for ( let i = 0; i < answerChkArr.length; i++ ) {
+      for (let i = 0; i < answerChkArr.length; i++) {
         // 사용자문제지
-        for ( let j = 0; j < answerMultiJson.length; j++ ) {
+        for (let j = 0; j < answerMultiJson.length; j++) {
           // 정답지 사용자 문제지 체크
-          if( answerChkArr[i] === answerMultiJson[j]) {
+          if (answerChkArr[i] === answerMultiJson[j]) {
             checkCnt++;
           }
         }
@@ -149,55 +182,90 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     }
 
     // 정답지와 사용자 정답 갯수 체크
-    if(answerChkArr.length === checkCnt) {
+    if (answerChkArr.length === checkCnt) {
       chechkMultiYn = 'Y';
     }
-
-    // console.log('onSaveAnswerMultiChoice chechkMultiYn :: ' + chechkMultiYn);
 
     return chechkMultiYn;
   }
 
   onSubmitClick() {
-
-    /*if(this.onCheckAnswer()){
-      console.log('시험제출');
+    if(this.onCheckAnswer()){
       reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
-    }*/
-    reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
-
+    }
   }
 
   onCheckAnswer() {
     const { answerSheetService } = this.props;
     const { answerSheet } = answerSheetService!;
     let valueCheck = 0;
-    //console.log(JSON.stringify(answerSheet.answers));
 
-    if(answerSheet && answerSheet.answers.length > 0){
+    if (answerSheet && answerSheet.answers.length > 0) {
       answerSheet.answers.map((answer, index) => {
-        //console.log((index+1) + ':::' +answer.answer);
-        if(!answer.answer){
+        if (!answer.answer) {
           valueCheck++;
         }
       });
-      //console.log(valueCheck);
-      if(valueCheck > 0){
+      if (valueCheck > 0) {
         alert('빈 답안을 작성해주세요!');
         return false;
-      }else{
+      } else {
         return true;
       }
-    }else{
+    } else {
       alert('빈 답안을 작성해주세요!');
       return false;
     }
   }
 
+  onSetScoring(
+    questionType: string,
+    answer: string,
+    numberOfTrials: string | null,
+    finichChkVal: string | null,
+    answerChk: string,
+    correctArea: string | null,
+    correctMultiArea: string | null
+  ) {
+    const { answerSheetService } = this.props;
+    const { answerSheet } = answerSheetService!;
+    // 제출 여부 체크
+    const submittedChk = answerSheet.submitted;
+
+    let rtnClass = '';
+    if (submittedChk) {
+      if (
+        questionType !== QuestionType.ShortAnswer &&
+        questionType !== QuestionType.Essay
+      ) {
+        if (
+          (numberOfTrials !== '0' &&
+            finichChkVal !== 'N' &&
+            answerChk === answer) ||
+          (finichChkVal !== 'N' && answerChk === answer) ||
+          (finichChkVal !== 'N' &&
+            correctArea === 'M' &&
+            correctMultiArea === 'Y')
+        ) {
+          rtnClass = 'exact-answer';
+        } else {
+          rtnClass = 'wrong-answer';
+        }
+      }
+    }
+    return rtnClass;
+  }
+
   render() {
     //
     const { open } = this.state;
-    const { examPaperService, examinationService, answerSheetService, trigger } = this.props;
+    const {
+      examPaperService,
+      examinationService,
+      answerSheetService,
+      trigger,
+      type,
+    } = this.props;
     const { examination } = examinationService!;
     const { examPaper } = examPaperService!;
     const { answerMap, answerChkMap, answerSheet } = answerSheetService!;
@@ -205,8 +273,6 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
 
     // 제출 여부 체크
     const submittedChk = answerSheet.submitted;
-    // console.log('render submittedChk ::' + submittedChk);
-    // console.log('render answerSheet.finished ::' + answerSheet.finished);
 
     return (
       <Modal
@@ -225,76 +291,85 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
               <div className="title-area">
                 <div className="title-inner">
                   <div className="sub-info">
-                    합격점 : {examination && examination.successPoint || 0}점 |
-                    객관식 : {score && score.objective || 0}점 |
-                    주관식 : {score && score.subjective || 0}점 |
-                    총 점 : {score && score.total || 0}점
+                    합격점 : {(examination && examination.successPoint) || 0}점
+                    | 객관식 : {(score && score.objective) || 0}점 | 주관식 :{' '}
+                    {(score && score.subjective) || 0}점 | 총 점 :{' '}
+                    {(score && score.total) || 0}점
                   </div>
                 </div>
               </div>
 
               <List as="ol" className="num-list">
-                {
-                  questions && questions.length
-                  && questions.map(question => {
+                {(questions &&
+                  questions.length &&
+                  questions.map((question, idx) => {
                     let answerArea = null;
                     let correctArea = null; // 오답 처리
                     let correctMultiArea = null; // 멀티 오답 처리
 
                     const answer = answerMap.get(question.questionNo) || '';
-                    // console.log('answer onLoad user ::' + answer);
-
-                    const answerChk = answerChkMap.get(question.questionNo) || '';
-                    // console.log('answerChk onLoad ::' + answerChk);
+                    const answerChk =
+                      answerChkMap.get(question.questionNo) || '';
 
                     // getter
-                    const finishedChkFirst = localStorage.getItem('finishedChkFirst');
-                    // console.log('finishedChkFirst onLoad ::' + finishedChkFirst);
-                    //
-                    // console.log('submittedChk first ::' + submittedChk);
+                    const finishedChkFirst = localStorage.getItem(
+                      'finishedChkFirst'
+                    );
 
                     // 시험, 재응시 최초 화면 진입시 체크 F5
-                    if(submittedChk) {
-                      if(finishedChkFirst === 'N') {
+                    if (submittedChk) {
+                      if (finishedChkFirst === 'N') {
                         localStorage.setItem('finishedChk', 'N');
-                        // console.log('finichChkVal if if ::' + localStorage.getItem('finishedChk'));
                       } else {
                         localStorage.setItem('finishedChk', 'Y');
-                        // console.log('finichChkVal if else ::' + localStorage.getItem('finishedChk'));
                       }
                     } else {
                       localStorage.setItem('finishedChk', 'N');
-                      // console.log('finichChkVal else ::' + localStorage.getItem('finishedChk'));
                     }
 
                     // getter
                     const finichChkVal = localStorage.getItem('finishedChk');
-                    // console.log('finichChkVal onLoad ::' + finichChkVal);
 
                     // getter
-                    const numberOfTrials = localStorage.getItem('numberOfTrials');
-                    // console.log('numberOfTrials onLoad ::' + numberOfTrials);
+                    const numberOfTrials = localStorage.getItem(
+                      'numberOfTrials'
+                    );
 
                     switch (question.questionType) {
                       case QuestionType.ShortAnswer:
                         answerArea = (
-                          <ShortAnswerView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)} />
+                          <ShortAnswerView
+                            answer={answer}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                          />
                         );
                         break;
                       case QuestionType.Essay:
                         answerArea = (
-                          <EssayView answer={answer} onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)} />
+                          <EssayView
+                            answer={answer}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                          />
                         );
                         break;
                       case QuestionType.MultiChoice:
                         correctArea = 'M';
-                        correctMultiArea = this.onSaveAnswerMultiChoice(answerChk, question.answer);
-                        // console.log('case QuestionType.MultiChoice correctMultiArea ::' + correctMultiArea);
+                        correctMultiArea = this.onSaveAnswerMultiChoice(
+                          answerChk,
+                          question.answer
+                        );
                         answerArea = (
                           <MultiChoiceView
                             answer={answer}
                             items={question.items}
-                            onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                            type={type}
                           />
                         );
                         break;
@@ -305,35 +380,83 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                             answer={answer}
                             question={question}
                             items={question.items}
-                            onSetAnswer={(value) => this.onSetAnswer(question.questionNo, value)}
+                            onSetAnswer={value =>
+                              this.onSetAnswer(question.questionNo, value)
+                            }
+                            type={type}
                           />
                         );
                         break;
                     }
                     return (
                       <List.Item as="li" key={question.questionNo}>
-                        {numberOfTrials !== '0'&& finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || finichChkVal !== 'N' && answerChk === question.answer && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || answerChk === '' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || answerChk !== question.answer && correctArea === 'Y' && <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || finichChkVal !== 'N' && correctArea === 'M' && correctMultiArea === 'Y' && <div className="ol-title exact-answer" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        || <div className="ol-title" dangerouslySetInnerHTML={{__html:`${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`}}/>
-                        }
-                        <div className="ol-answer">
-                          {answerArea}
-                        </div>
+                        {type === '5' ? (
+                          <div
+                            className={`ol-title ${this.onSetScoring(
+                              question.questionType,
+                              question.answer,
+                              numberOfTrials,
+                              finichChkVal,
+                              answerChk,
+                              correctArea,
+                              correctMultiArea
+                            )}`}
+                          >
+                            {question.direction}
+                            <span className="q-score">
+                              ({question.allocatedPoint}점)
+                            </span>
+                          </div>
+                        ) : (
+                          <div
+                            className={`ol-title ${this.onSetScoring(
+                              question.questionType,
+                              question.answer,
+                              numberOfTrials,
+                              finichChkVal,
+                              answerChk,
+                              correctArea,
+                              correctMultiArea
+                            )}`}
+                            dangerouslySetInnerHTML={{
+                              __html: `${question.direction} <span className="q-score">(${question.allocatedPoint}점)</span>`,
+                            }}
+                          />
+                        )}
+
+                        <div className="ol-answer">{answerArea}</div>
                       </List.Item>
                     );
-                  }) || null
-                }
+                  })) ||
+                null}
               </List>
             </div>
           </div>
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onCloseModal}>취소</Button>
-          <Button className="w190 pop s" onClick={() => this.onSaveAnswerSheet(false)}>저장</Button>
-          <Button className="w190 pop p" onClick={() => this.onSubmitClick()}>제출</Button>
+          {type === '5' ? (
+            <Button className="w190 pop d" onClick={this.onCloseModal}>
+              완료
+            </Button>
+          ) : (
+            <>
+              <Button className="w190 pop d" onClick={this.onCloseModal}>
+                취소
+              </Button>
+              <Button
+                className="w190 pop s"
+                onClick={() => this.onSaveAnswerSheet(false)}
+              >
+                저장
+              </Button>
+              <Button
+                className="w190 pop p"
+                onClick={() => this.onSubmitClick()}
+              >
+                제출
+              </Button>
+            </>
+          )}
         </Modal.Actions>
       </Modal>
     );
