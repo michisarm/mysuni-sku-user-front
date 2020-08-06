@@ -163,7 +163,7 @@ class CoursePlanService {
       if (courseData) {
         const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
         const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
-        const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
+        // const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
         const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
         const examination: ExaminationModel = JSON.parse(JSON.stringify(courseData.examination));
         const examPaper: ExamPaperModel= JSON.parse(JSON.stringify(courseData.examPaper));
@@ -194,7 +194,7 @@ class CoursePlanService {
 
         this.coursePlan = new CoursePlanModel(coursePlan);
         this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
-        this.answerSheetService.setAnswerSheet(answerSheet);
+        // this.answerSheetService.setAnswerSheet(answerSheet);
         this.surveyFormService.setSurveyForm(surveyForm);
         this.examinationService.setExamination(examination);
         this.examPaperService.setExamPaper(examPaper);
