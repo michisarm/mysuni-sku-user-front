@@ -271,7 +271,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
     }
 
     return (
-      <a href="#" className={classNames('btn-play', styleName)}>
+      <a href="#" className={classNames('btn-play', styleName)} onClick={(e) => moveToCubePage(cube!, e)}>
         <span className="text">
           {stateName}{
             cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) ?
