@@ -1,7 +1,6 @@
 import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import LectureFlowApi from '../apiclient/LectureFlowApi';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
@@ -16,6 +15,29 @@ class LRSLectureService {
 
   constructor(arrangeApi: ArrangeApi) {
     this.arrangeApi = arrangeApi;
+  }
+
+  _title: string | null = '';
+  _profileName: string | null = '';
+
+  @action
+  setProfileName(name: string) {
+    if (name && name.length > 0) {
+      this._profileName = name;
+    }
+    else {
+      this._profileName = '학습자';
+    }
+  }
+
+  @computed
+  get Title() {
+    if (this._title && this._title.length > 0) {
+      return this._title;
+    }
+    else {
+      return `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
+    }
   }
 
   @observable
@@ -38,7 +60,6 @@ class LRSLectureService {
     const response = await this.arrangeApi.findLrsLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem('LrsLearningList', JSON.stringify(lectureOffsetElementList));
     }
@@ -47,12 +68,12 @@ class LRSLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
+    this._title = lectureOffsetElementList.title;
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingLrsLectures(lectures: OffsetElementList<LectureModel>) {
     //

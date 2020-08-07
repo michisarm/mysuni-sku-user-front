@@ -59,7 +59,7 @@ class TabContainer extends Component<Props, State> {
     if(prevProps.defaultActiveName !== this.props.defaultActiveName){
       if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
         this.onClickTab(tabs[0]);
-      } else { // 20200716 탭 이동 (by JSM)
+      } else { // 20200716 탭 이동
         this.setPreviousTab(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
       }
     }

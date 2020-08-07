@@ -5,6 +5,8 @@ import { mobxHelper } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import NewLearningListContainer from '../logic/NewLearningListContainer';
 import { SkProfileService } from '../../../profile/stores';
+import { RQDLectureService, POPLectureService,NEWLectureService, LRSLectureService } from '../../../lecture/stores';
+
 
 export enum ContentType {
   New = 'New',
@@ -20,12 +22,6 @@ export enum ContentTypeText {
   Recommend = '추천학습 과정',
 }
 
-// enum ContentTypeName {
-//   New = 'mySUNI ${month}월 ${week}주 신규 학습 과정',
-//   Popular = '학습자들의 평가가 좋은 인기 과정입니다.',
-//   Recommend = 'mySUNI가 ${profileMemberName}님을 위해 추천하는 과정입니다.',
-// }
-
 enum ContentTypeDesc {
   New = '최근 1개월 내 등록된 전체 학습 과정입니다.',
   Popular = '사용자들의 많이 수강하는 상위 RANK의 전체 학습과정입니다.',
@@ -35,29 +31,29 @@ enum ContentTypeDesc {
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   skProfileService?: SkProfileService;
+  rqdLectureService?: RQDLectureService;
+  newLectureService?: NEWLectureService;
+  popLectureService?: POPLectureService;
+  lrsLectureService?: LRSLectureService;
 }
 
 const NewLearningPage: React.FC<Props> = Props => {
-  const { skProfileService } = Props;
+  const { skProfileService, rqdLectureService, newLectureService, popLectureService, lrsLectureService } = Props;
 
   const { params } = Props.match;
   const contentType = params.type as ContentType;
   const { profileMemberName } = skProfileService!;
 
-  const today = new Date();
-  const month = today.getMonth() + 1;
-  const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
-
   const getContentTypeTitle = () => {
     switch (contentType) {
       case ContentType.New:
-        return `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+        return newLectureService?.Title;
       case ContentType.Popular:
-        return '학습자들의 평가가 좋은 인기 과정입니다.';
+        return popLectureService?.Title;
       case ContentType.Recommend:
         return `mySUNI가 ${profileMemberName}님을 위해 추천하는 과정입니다.`;
       case ContentType.Required:
-        return 'SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!';
+        return rqdLectureService?.Title;
       default:
         return '알 수 없는 학습과정입니다.';
     }
@@ -87,6 +83,10 @@ const NewLearningPage: React.FC<Props> = Props => {
   );
 };
 
-export default inject(mobxHelper.injectFrom('profile.skProfileService'))(
-  withRouter(NewLearningPage)
-);
+export default inject(mobxHelper.injectFrom(
+  'profile.skProfileService',
+  'rqdLecture.rqdLectureService',
+  'newLecture.newLectureService',
+  'popLecture.popLectureService',
+  'lrsLecture.lrsLectureService',
+))(withRouter(NewLearningPage));

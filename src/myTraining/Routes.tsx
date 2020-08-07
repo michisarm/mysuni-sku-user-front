@@ -31,7 +31,6 @@ class MainRoutes extends React.Component {
 
         <Route exact path="/my-training/my-page/ApprovalList/detail/:studentId" component={ApprovalSharedDetailContainer} />
 
-        {/*/by JSM*/}
         <Route exact path="/my-training/new-learning/:type" component={NewLearningPage} />
         <Route exact path="/my-training/new-learning/:type/pages/:pageNo" component={NewLearningPage} />
 
