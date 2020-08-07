@@ -41,6 +41,8 @@ const LRSLearning : React.FC<Props> = (Props) => {
 
   const { lrsLectures } = lrsLectureService!;
 
+  lrsLectureService?.setProfileName(profileMemberName);
+
   // // lectureService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -147,7 +149,9 @@ const LRSLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>
+        {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
+        <strong>{lrsLectureService?.Title}</strong>
+        {/*<strong>{lrsLectureService?.Title}</strong>*/}
         <div className="right">
           {
             lrsLectures.length > 0 && (

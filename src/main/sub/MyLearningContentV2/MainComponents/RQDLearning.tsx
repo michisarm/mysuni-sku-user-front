@@ -145,7 +145,7 @@ const RQDLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!</strong>
+        <strong>{rqdLectureService!.Title}</strong>
         <div className="right">
           {
             rqdLectures.length > 0 && (

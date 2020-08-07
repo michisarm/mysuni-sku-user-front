@@ -147,7 +147,7 @@ const POPLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>학습자들의 평가가 좋은 인기 과정입니다.</strong>
+        <strong>{popLectureService!.Title}</strong>
         <div className="right">
           {
             popLectures.length > 0 && (

@@ -17,6 +17,17 @@ class POPLectureService {
     this.arrangeApi = arrangeApi;
   }
 
+  _title: string | null = '';
+  @computed
+  get Title() {
+    if (this._title && this._title.length > 0) {
+      return this._title;
+    }
+    else {
+      return '학습자들의 평가가 좋은 인기 과정입니다.';
+    }
+  }
+
   @observable
   _lectures: LectureModel[] = [];
 
@@ -44,6 +55,7 @@ class POPLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
+    this._title = lectureOffsetElementList.title;
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;

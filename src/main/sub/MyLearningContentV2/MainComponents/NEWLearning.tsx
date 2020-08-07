@@ -37,10 +37,6 @@ const NEWLearning : React.FC<Props> = (Props) => {
   const CONTENT_TYPE_NAME = '신규과정';
   const PAGE_SIZE = 8;
 
-  const today = new Date();
-  const month = useState(today.getMonth() + 1);
-  const week = useState(Math.ceil((today.getDate() + 6 - today.getDay())/7));
-
   const { newLectures } = newLectureService!;
 
   // // lectureService 변경  실행
@@ -150,7 +146,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>mySUNI {month}월 {week}주 신규 학습 과정</strong>
+        <strong>{newLectureService?.Title}</strong>
         <div className="right">
           {
             newLectures.length > 0 && (

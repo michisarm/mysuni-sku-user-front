@@ -40,6 +40,7 @@ class LineHeaderContainer extends Component<Props> {
       results: response.results.map((myTraining: MyTrainingModel) => new MyTrainingModel(myTraining)),
       totalCount: response.totalCount,
       empty: response.empty,
+      title: null,
     });
 
     myTrainings.results.forEach(value => data.push({
