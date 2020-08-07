@@ -53,8 +53,8 @@ class CourseContentHeaderContainer extends Component<Props> {
 
     // console.log('coursePlan.category : ', coursePlan.category);
 
-    console.log( 'reviewSummary && reviewSummary.average : ',  reviewSummary && reviewSummary.average);
-    console.log( 'reviewSummary && reviewSummary.average != null : ',  reviewSummary && reviewSummary.average != null);
+    // console.log( 'reviewSummary && reviewSummary.average : ',  reviewSummary && reviewSummary.average);
+    // console.log( 'reviewSummary && reviewSummary.average != null : ',  reviewSummary && reviewSummary.average != null);
 
     if (!coursePlan.category) {
       return null;
@@ -64,8 +64,8 @@ class CourseContentHeaderContainer extends Component<Props> {
     // console.log('coursePlan.stamp.stampCount : ', coursePlan.stamp.stampCount);
     //
     // console.log('reviewSummary : ', reviewSummary);
-    console.log('reviewSummary.average : ', reviewSummary.average);
-    console.log('reviewSummary.maxStarCount : ', reviewSummary.maxStarCount);
+    // console.log('reviewSummary.average : ', reviewSummary.average);
+    // console.log('reviewSummary.maxStarCount : ', reviewSummary.maxStarCount);
 
     return (
       <LectureContentHeader>
