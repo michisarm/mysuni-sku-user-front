@@ -401,8 +401,6 @@ class CoursePageV2 extends Component<Props, State> {
         passedState = true;
       }
 
-
-
       // if (student.learningState === LearningState.Progress) {
       //   if (student.phaseCount !== student.completePhaseCount) {
       //     state = SubState.Waiting;
@@ -415,6 +413,8 @@ class CoursePageV2 extends Component<Props, State> {
       }
 
       // console.log('student info  gget~~~~~~~~~~~~~~~~~');
+    } else {
+      this.setExamState();
     }
 
     examId = coursePlanContents.testId || '';
