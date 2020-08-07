@@ -27,8 +27,6 @@ const routePaths = {
   communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
   communityMyFeed: () => routePaths.communityTab('MyFeed'),
 
-
-  // by JSM
   newLearningTab: (tab: string) => `/my-training/new-learning/${tab}/pages/1`,
   learningRqdLecture: () => routePaths.newLearningTab('Required'),
   learningNewLecture: () => routePaths.newLearningTab('New'),

@@ -11,12 +11,12 @@ import LectureCountService from './category/present/logic/LectureCountService';
 import AnswerSheetService from '../survey/answer/present/logic/AnswerSheetService';
 import SurveyCaseService from '../survey/event/present/logic/SurveyCaseService';
 import SurveyFormService from '../survey/form/present/logic/SurveyFormService';
+import RQDLectureService from './shared/present/logic/RQDLectureService';
 import NEWLectureService from './shared/present/logic/NEWLectureService';
 import POPLectureService from './shared/present/logic/POPLectureService';
 import LRSLectureService from './shared/present/logic/LRSLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
 import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
-import RQDLectureService from './shared/present/logic/RQDLectureService';
 
 
 export default {
@@ -56,6 +56,7 @@ export default {
 export {
   LectureCardService,
   LectureService,
+  RQDLectureService,
   NEWLectureService,
   POPLectureService,
   LRSLectureService,

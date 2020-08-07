@@ -44,7 +44,6 @@ const RQDLearning : React.FC<Props> = (Props) => {
   }, []);
 
   const findMyContent = async () => {
-    // use session storage : modified by JSM
     rqdLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
@@ -146,7 +145,7 @@ const RQDLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!</strong>
+        <strong>{rqdLectureService!.Title}</strong>
         <div className="right">
           {
             rqdLectures.length > 0 && (

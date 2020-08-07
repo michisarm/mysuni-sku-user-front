@@ -63,7 +63,6 @@ class MyTrainingService {
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
@@ -72,7 +71,6 @@ class MyTrainingService {
     return offsetList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setMyTrainingsWithState(lectures: OffsetElementList<MyTrainingModel>) {
     //

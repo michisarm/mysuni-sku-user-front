@@ -3,7 +3,6 @@ import { axiosApi } from '@nara.platform/accent';
 import BannerModel from '../../model/BannerModel';
 
 
-// by JSM
 class BannerApi {
   //
   static instance: BannerApi;

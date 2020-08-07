@@ -47,7 +47,6 @@ const POPLearning : React.FC<Props> = (Props) => {
   }, []);
 
   const findMyContent = async () => {
-    // use session storage : modified by JSM
     popLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
@@ -148,7 +147,7 @@ const POPLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>학습자들의 평가가 좋은 인기 과정입니다.</strong>
+        <strong>{popLectureService!.Title}</strong>
         <div className="right">
           {
             popLectures.length > 0 && (
