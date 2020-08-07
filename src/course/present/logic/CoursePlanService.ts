@@ -201,7 +201,7 @@ class CoursePlanService {
         this.courseLectureService.setCourseLecture(courseLecture);
         this.programLectureService.setProgramLecture(programLecture);
         this.lectureService.setLectureViews(lectureViews);
-        this.reviewService.reviewSummary = reviewSummary;
+        this.reviewService.reviewSummary = new ReviewSummaryModel(reviewSummary);
         this.commentService.commentCount = commentCountRdo;
 
         for (let i = 0; i < subLectureViews.length; i++) {
