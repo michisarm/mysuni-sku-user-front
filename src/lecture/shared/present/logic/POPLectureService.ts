@@ -36,7 +36,6 @@ class POPLectureService {
     const response = await this.arrangeApi.findPopLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem('PopLearningList', JSON.stringify(lectureOffsetElementList));
     }
@@ -50,7 +49,6 @@ class POPLectureService {
     return lectureOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingPopLectures(lectures: OffsetElementList<LectureModel>) {
     //

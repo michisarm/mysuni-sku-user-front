@@ -199,7 +199,7 @@ class BadgeService {
     // 도전 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null  = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
-    // // use session storage (사용할 거면 풀 것) : modified by JSM
+    // // use session storage (사용할 거면 풀 것) : by JSM
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
@@ -214,7 +214,6 @@ class BadgeService {
     return badgeOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingChallengingBadges(badge: OffsetElementList<MyBadgeModel>) {
     //
@@ -265,22 +264,6 @@ class BadgeService {
         this._earnedCount = 0;
       }
     });
-  }
-
-  @action
-  async getCountOfIssuedBadges() {
-    //
-    const count = await this.badgeApi.getCountOfIssuedBadges();
-    runInAction(() => {
-      if (count && count !== null) {
-        this._earnedCount = count;
-      }
-      else {
-        this._earnedCount = 0;
-      }
-    });
-
-    return this._earnedCount;
   }
 
   // PSJ - 연관 뱃지 목록

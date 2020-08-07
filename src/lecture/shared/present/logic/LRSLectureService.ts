@@ -38,7 +38,6 @@ class LRSLectureService {
     const response = await this.arrangeApi.findLrsLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem('LrsLearningList', JSON.stringify(lectureOffsetElementList));
     }
@@ -52,7 +51,6 @@ class LRSLectureService {
     return lectureOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingLrsLectures(lectures: OffsetElementList<LectureModel>) {
     //

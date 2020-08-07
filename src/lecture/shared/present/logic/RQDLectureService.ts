@@ -36,7 +36,6 @@ class RQDLectureService {
     const response = await this.arrangeApi.findRqdLectures(lectureFilterRdo);
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem('RqdLearningList', JSON.stringify(lectureOffsetElementList));
     }
@@ -50,7 +49,6 @@ class RQDLectureService {
     return lectureOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingRqdLectures(lectures: OffsetElementList<LectureModel>) {
     //

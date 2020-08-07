@@ -49,7 +49,6 @@ const NEWLearning : React.FC<Props> = (Props) => {
   }, []);
 
   const findMyContent = async () => {
-    // use session storage : modified by JSM
     newLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기

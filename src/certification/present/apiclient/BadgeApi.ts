@@ -30,9 +30,6 @@ class BadgeApi {
     return axiosApi.get<CategoryModel[]>(this.baseUrl + '/categories')
       .then((response) => response && response.data || [])
       .catch((error) => []);
-
-    // for Test by JSM : 테스트 후 지울 것
-    // return <OffsetElementList<CategoryModel>>(categoryData);
   }
 
   // 뱃지 정보 가져오기 (파라미터 : 카테고리, 난이도, 시작 위치, 갯수)
@@ -48,9 +45,6 @@ class BadgeApi {
     return axiosApi.get<OffsetElementList<BadgeModel>>(this.badgeUrl + '/badges/flow/user', { params })
       .then((response) => response && response.data || null)
       .catch((error) => null);
-
-    // for Test by JSM : 테스트 후 지울 것
-    // return <OffsetElementList<BadgeModel>>(badgeData);
   }
 
   findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel) {
@@ -80,9 +74,6 @@ class BadgeApi {
     return axiosApi.get<OffsetElementList<MyBadgeModel>>(this.baseUrl + '/mybadges/flow/students',{ params })
       .then((response) => response && response.data || null)
       .catch((error) => null);
-
-    // for Test by JSM : 테스트 후 지울 것
-    // return <OffsetElementList<MyBadgeModel>>(myBadgeData);
   }
 
   getCountOfBadges() {
@@ -95,36 +86,17 @@ class BadgeApi {
       .catch((error) => null);
   }
 
-  getCountOfIssuedBadges() {
-    //
-    // const params = {
-    //   patronKeyString: patronInfo.getDenizenId()!,
-    //   issueState: 'issued',
-    // };
-    //
-    // return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
-    //   .then(response => response.data.valueOf());
-
-    return 16;
-  }
-
   // PSJ 연관뱃지
   findLikedBadges(badgeId: string) {
     return axiosApi.get<MyBadgeModel[]>(this.baseUrl + `/badges/${badgeId}/links/User`)
       .then((response) => response && response.data || [])
       .catch((error) => []);
-
-    // // for Test : 테스트 후 지울 것
-    // return <OffsetElementList<MyBadgeModel>>(linkedBadgeData);
   }
 
   findBadgeDetailInformation(badgeId: string) {
     return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}/detail`)
       .then((response) => response && response.data || null)
       .catch((error) => null);
-
-    // // for Test : 테스트 후 지울 것
-    //return <BadgeDetailModel>badgeDetailData;
   }
 
   findBadgeComposition(badgeId: string) {
@@ -141,9 +113,6 @@ class BadgeApi {
       patronKeyString: BadgeFilterRdoModel.getPatonKey(),
       badgeId,
     };
-
-    // return axiosApi.get<BadgeStudentModel[]>(this.baseUrl + `/students/${id}`)
-    //   .then(response => response && response.data);
 
     return axiosApi.get<OffsetElementList<BadgeStudentModel>>(this.baseUrl + '/students', {params})
       .then(response => response && response.data || null)
@@ -211,8 +180,8 @@ class BadgeApi {
     };
 
     return axiosApi.get<number>(this.baseUrl + '/mybadges/students/count', {params})
-      .then((response) => response && response.data || -1)
-      .catch((error) => -1);
+      .then((response) => response && response.data || 0)
+      .catch((error) => 0);
   }
 
   /********************************************************************************************************************/
