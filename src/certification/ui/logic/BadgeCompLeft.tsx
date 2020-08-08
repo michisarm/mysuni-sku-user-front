@@ -161,7 +161,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         badgeStyle={badgeStyle}
         badgeSize={badgeSize}
       />
-
       {/*Status info*/}
       <ChallengeBadgeStatus>
         { badgeState === IssueState.Requested && (
@@ -190,12 +189,10 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
                 onClick={onHandleChangeModal}
               />
             }
-
             <span className="number">
               <span className="ing-txt">진행중</span>
               <span><b>{learningCount}</b>/{passedCount}</span>
             </span>
-
             {/*자동발급*/}
             { badge.autoIssued && (
               <span className="txt">
@@ -206,12 +203,10 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         )}
       </ChallengeBadgeStatus>
 
-
     </div>
   );
 };
 
 export default inject(mobxHelper.injectFrom(
   'badge.badgeService',
-  'badgeDetail.badgeDetailService',
 ))(withRouter(BadgeCompLeft));

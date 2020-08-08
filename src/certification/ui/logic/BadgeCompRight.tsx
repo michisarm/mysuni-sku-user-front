@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {inject} from 'mobx-react';
 import {Icon, Image} from 'semantic-ui-react';
-import {mobxHelper} from '@nara.platform/accent';
 import classNames from 'classnames';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
-import BadgeService from '../../present/logic/BadgeService';
 import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
 import lectureRoutePaths from '../../../lecture/routePaths';
