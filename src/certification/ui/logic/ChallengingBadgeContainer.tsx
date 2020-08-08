@@ -11,8 +11,8 @@ import BadgeService from '../../present/logic/BadgeService';
 import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
-import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {SeeMoreButton} from '../../shared/Badge';
+import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
@@ -130,7 +130,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     history.push(BadgeRoutePaths.badgeTab());
   };
 
-
   return (
     <>
       <LineHeaderContainer
@@ -139,31 +138,32 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {myBadges.length > 0 ? (
-        <>
-          <ChallengeBoxContainer
-            badges={myBadges}
-            badgeStyle={BadgeStyle.Detail}
-            badgeSize={BadgeSize.Small}
-          />
-          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
-        </>
-      ) : (
-        <NoSuchContentPanel message={(
+      {myBadges.length > 0 ?
+        myBadges.map( (badge: MyBadgeModel, index: number) =>
           <>
-            <div className="text">도전중인 Badge가 없습니다.<br/>새로운 Badge에 도전해보시겠습니까?</div>
-            <Button
-              icon
-              as="a"
-              className="right btn-blue2"
-              onClick={moveToBadgeList}
-            >
-              Badge List 바로가기 <Icon className="morelink"/>
-            </Button>
+            <ChallengeBoxContainer
+              myBadge={badge}
+              badgeStyle={BadgeStyle.Detail}
+              badgeSize={BadgeSize.Small}
+            />
+            { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
           </>
+        ) : (
+          <NoSuchContentPanel message={(
+            <>
+              <div className="text">도전중인 Badge가 없습니다.<br/>새로운 Badge에 도전해보시겠습니까?</div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={moveToBadgeList}
+              >
+                Badge List 바로가기 <Icon className="morelink"/>
+              </Button>
+            </>
+          )}
+          />
         )}
-        />
-      )}
 
     </>
   );

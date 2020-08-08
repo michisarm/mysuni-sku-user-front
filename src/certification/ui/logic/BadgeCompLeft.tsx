@@ -13,7 +13,7 @@ import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
-import BadgeCompModel from '../model/BadgeCompModel';
+
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
@@ -21,27 +21,25 @@ interface Props extends RouteComponentProps {
   badge: MyBadgeModel,
   badgeStyle: string,
   badgeSize: string,
+
+  learningCount: number,
+  passedCount: number,
+  passedAll: boolean,
 }
 
 const BadgeCompLeft: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge, badgeStyle, badgeSize } = Props;
+  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll } = Props;
   const { badgeId } = badge;
 
   const [ studentInfo, setBadgeStudentInfo ] = useState<BadgeStudentModel | null>();
   const [ badgeState, setBadgeState ] = useState();
-
-  // 학습 카운트 정보
-  const [passedCount, setPassedCount] = useState<number>(0);
-  const [learningCount, setLearningCount] = useState<number>(0);
 
   const [ requestModal, setRequestModal ] = useState(false);
   const [ successModal, setSuccessModal ] = useState(false);
 
   useEffect(() => {
     //
-    // 뱃지 구성학습 정보 조회
-    findBadgeLearningInfo(badgeId);
     // 뱃지 수강정보 조회
     getBadgeStudentInfo(badgeId);
   }, []);
@@ -64,21 +62,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     }
   };
 
-  // 뱃지 구성학습 (카운트) 조회
-  const findBadgeLearningInfo = async (badgeId: string) => {
-    //
-    const badgeComp: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
-
-    setLearningCount(badgeComp ? badgeComp.length : 0);
-
-    let cnt = 0;
-    badgeComp.map((learning, index) => {
-      if ( learning.learningState === 'Passed' ) { cnt++; }
-    });
-
-    setPassedCount(cnt);
-  };
-
   const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
     //
     if (challengeState === 'Challenged') {
@@ -96,7 +79,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
       }
       // 일단 진행 중
       else {
-        setBadgeState(learningCount === passedCount ?
+        setBadgeState(passedAll ?
           // 진행 중이지만 모든 학습이 완료되었다고 판단될 경우 발급 요청
           ChallengeState.ReadyForRequest :
           // 진행 중 => 도전취소 버튼 노출
@@ -194,7 +177,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
             {/*수동발급*/}
             { badge.autoIssued ? (
               // 자동발급뱃지이지만 학습이수처리 이상으로 자동발급이 안된 경우
-              (!studentInfo?.learningCompleted && learningCount === passedCount) && (
+              (!studentInfo?.learningCompleted && passedAll) && (
                 <>
                   <Button className="fix line" onClick={() => onClickRequestBadge(badge.badgeId)}>발급요청</Button>
                   <span className="txt txt2">자동으로 Badge 발급이 되지 않은 경우, 발급요청 버튼을 클릭해주세요.</span>
@@ -228,7 +211,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   );
 };
 
-export default  inject(mobxHelper.injectFrom(
+export default inject(mobxHelper.injectFrom(
   'badge.badgeService',
   'badgeDetail.badgeDetailService',
 ))(withRouter(BadgeCompLeft));

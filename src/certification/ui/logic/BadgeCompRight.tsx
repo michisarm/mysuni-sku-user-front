@@ -9,45 +9,21 @@ import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
 import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
-import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
 
 
 interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
-
   badge: MyBadgeModel,
+  compLearnings: BadgeCompModel[],
 }
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge, history } = Props;
-  const { badgeComposition } = badgeService!;
-  const { badgeId, mainCategoryName, name } = badge;
-
-  const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
+  const { badge, compLearnings, history } = Props;
+  const { mainCategoryName, name } = badge;
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
     '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
-
-  useEffect(() => {
-    //
-    findMyContent(badgeId);
-  }, []);
-
-  const findMyContent = async (id: string) => {
-    //
-    const list = await badgeService!.findBadgeComposition(badgeId);
-    setCompList(list);
-  };
-
-  // 코스 페이지로 이동
-  const moveToCoursePage = (course: BadgeCourseData, e: any) => {
-    if (e) {
-      e.preventDefault();
-    }
-
-  };
 
   // 코스/큐 페이지로 이동
   const moveToOverviewPage = (data: BadgeCompModel, e: any) => {
@@ -91,7 +67,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
       {/*Badge 구성학습 목록*/}
       <div className="challenge-list">
         <ul>
-          { compList.map((learning, index) => {
+          { compLearnings && compLearnings.map((learning, index) => {
             return (
               <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
                 <a href="#" onClick={(e) => moveToOverviewPage(learning, e)}>
@@ -112,6 +88,4 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-))(withRouter(BadgeCompRight));
+export default withRouter(BadgeCompRight);
