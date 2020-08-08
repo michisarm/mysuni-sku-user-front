@@ -6,18 +6,19 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {Button} from 'semantic-ui-react';
 import {ChallengeBadgeStatus} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeModel from '../model/MyBadgeModel';
+import MyBadgeModel from '../model/MyBadgeModel';
 import {Badge} from '../../shared/Badge';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
+import BadgeCompModel from '../model/BadgeCompModel';
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
 
-  badge: BadgeModel,
+  badge: MyBadgeModel,
   badgeStyle: string,
   badgeSize: string,
 }
@@ -31,35 +32,22 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   const [ badgeState, setBadgeState ] = useState();
 
   // 학습 카운트 정보
-  const [badgeLearningCount, setBadgeLearningCount] = useState({
-    isCount: 0,
-    totalCount: 0
-  });
+  const [passedCount, setPassedCount] = useState<number>(0);
+  const [learningCount, setLearningCount] = useState<number>(0);
 
   const [ requestModal, setRequestModal ] = useState(false);
   const [ successModal, setSuccessModal ] = useState(false);
 
-
   useEffect(() => {
     //
-    // 뱃지 수강정보 조회
-    findMyContent(badgeId);
-
-    // 구성학습 정보 조회
+    // 뱃지 구성학습 정보 조회
     findBadgeLearningInfo(badgeId);
-
+    // 뱃지 수강정보 조회
+    getBadgeStudentInfo(badgeId);
   }, []);
 
-  useEffect(() => {
-
-    // 뱃지 수강정보 조회
-    findMyContent(badgeId);
-
-  }, [badgeState]);
-
-
   // Badge 수강정보 조회
-  const findMyContent = async (badgeId: string) => {
+  const getBadgeStudentInfo = async (badgeId: string) => {
     //
     const badgeStudentInfo: BadgeStudentModel | null = await badgeService!.findBadgeStudentInfo(badgeId);
 
@@ -67,7 +55,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
       setBadgeStudentInfo(badgeStudentInfo);
 
-      // 수강 정보 조합 => Badge 상태
+      // 먼저 수강 정보로 Badge 상태 설정
       getBadgeState(
         badgeStudentInfo.challengeState,
         badgeStudentInfo.learningCompleted,
@@ -76,66 +64,50 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     }
   };
 
-  // 구성학습 카운트 조회
+  // 뱃지 구성학습 (카운트) 조회
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    const badgeLearningInfo = await badgeService!.findBadgeComposition(badgeId);
+    const badgeComp: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
+
+    setLearningCount(badgeComp ? badgeComp.length : 0);
 
     let cnt = 0;
-    badgeLearningInfo.map((item, index) => {
-      if ( item.learningState === 'Passed' ) { cnt++; }
+    badgeComp.map((learning, index) => {
+      if ( learning.learningState === 'Passed' ) { cnt++; }
     });
 
-    setBadgeLearningCount({
-      isCount: cnt,
-      totalCount: badgeLearningInfo.length,
-    });
+    setPassedCount(cnt);
   };
 
-  const getBadgeState = (
-    challengeState: string,
-    learningCompleted: boolean,
-    issueState: string
-  ) => {
+  const getBadgeState = (challengeState: string, learningCompleted: boolean, issueState: string) => {
     //
-
-    if (challengeState !== 'Challenged') {
+    if (challengeState === 'Challenged') {
+      // 발급 완료
+      if (issueState === IssueState.Issued) {
+        setBadgeState(ChallengeState.Issued);
+      }
+      // 발급 요청 중
+      else if (issueState === IssueState.Requested) {
+        setBadgeState(ChallengeState.Requested);
+      }
+      // 발급 요청
+      else if (learningCompleted) {
+        setBadgeState(ChallengeState.ReadyForRequest);
+      }
+      // 일단 진행 중
+      else {
+        setBadgeState(learningCount === passedCount ?
+          // 진행 중이지만 모든 학습이 완료되었다고 판단될 경우 발급 요청
+          ChallengeState.ReadyForRequest :
+          // 진행 중 => 도전취소 버튼 노출
+          ChallengeState.Challenging);
+      }
+    }
+    else {
       // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
     }
-    if (challengeState === 'Challenged') {
-      if (issueState === IssueState.Issued) {
-        // 획득 완료
-        setBadgeState(ChallengeState.Issued);
-      }
-      if (issueState === IssueState.Requested) {
-        // 발급요청중
-        setBadgeState(ChallengeState.Requested);
-      }
-      if (
-        issueState !== IssueState.Issued &&
-        issueState !== IssueState.Requested &&
-        learningCompleted
-      ) {
-        // 발급요청가능
-        setBadgeState(ChallengeState.ReadyForRequest);
-      }
-      if (
-        issueState !== IssueState.Issued &&
-        issueState !== IssueState.Requested &&
-        !learningCompleted
-      ) {
-        if ( badgeLearningCount.isCount === badgeLearningCount.totalCount ) {
-          setBadgeState(ChallengeState.ReadyForRequest);
-        } else {
-          // 진행 중 => 도전취소 버튼 노출
-          setBadgeState(ChallengeState.Challenging);
-        }
-      }
-    }
   };
-
-
 
   // 발급요청
   const onClickRequestBadge = (id: string) => {
@@ -217,33 +189,28 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
             <span className="txt mt2">{moment(studentInfo?.issueStateTime).format('YYYY.MM.DD')} 발급 요청</span>
           </span>
         )}
-
         { (badgeState !== IssueState.Issued && badgeState !== IssueState.Requested) && (
           <>
             {/*수동발급*/}
-            { !badge.autoIssued && (
+            { badge.autoIssued ? (
+              // 자동발급뱃지이지만 학습이수처리 이상으로 자동발급이 안된 경우
+              (!studentInfo?.learningCompleted && learningCount === passedCount) && (
+                <>
+                  <Button className="fix line" onClick={() => onClickRequestBadge(badge.badgeId)}>발급요청</Button>
+                  <span className="txt txt2">자동으로 Badge 발급이 되지 않은 경우, 발급요청 버튼을 클릭해주세요.</span>
+                </>
+              ))
+              :
               <ChallengeBoxCompanionModal
                 open={requestModal}
                 onAction={() => onClickRequestBadge(studentInfo!.id)}
                 onClick={onHandleChangeModal}
               />
-            )}
-
-            {/*자동발급뱃지이지만 학습이수처리 이상으로 자동발급이 안된 경우*/}
-            { badge.autoIssued && (
-              <>
-                { (badgeLearningCount.isCount === badgeLearningCount.totalCount && !studentInfo?.learningCompleted) && (
-                  <>
-                    <Button className="fix line" onClick={() => onClickRequestBadge(badge.badgeId)}>발급요청</Button>
-                    <span className="txt txt2">자동으로 Badge 발급이 되지 않은 경우, 발급요청 버튼을 클릭해주세요.</span>
-                  </>
-                )}
-              </>
-            )}
+            }
 
             <span className="number">
               <span className="ing-txt">진행중</span>
-              <span><b>{badgeLearningCount.isCount}</b>/{badgeLearningCount.totalCount}</span>
+              <span><b>{learningCount}</b>/{passedCount}</span>
             </span>
 
             {/*자동발급*/}

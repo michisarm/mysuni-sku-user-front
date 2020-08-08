@@ -7,17 +7,16 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeModel from '../model/MyBadgeModel';
+import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
-import BadgeCubeData from '../model/BadgeCubeData';
 
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
 
-  badge: BadgeModel,
+  badge: MyBadgeModel,
 }
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
