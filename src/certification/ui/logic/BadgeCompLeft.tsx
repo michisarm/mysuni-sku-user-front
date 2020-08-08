@@ -103,7 +103,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         setRequestModal(!requestModal);
         return;
       }
-      if (!studentInfo?.missionCompleted ) {
+      else if (!studentInfo?.missionCompleted ) {
         reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
         return;
       }
@@ -118,7 +118,9 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
           } else {
             setBadgeState(ChallengeState.Requested);
           }
-        } else {
+          getBadgeStudentInfo(badge.badgeId);
+        }
+        else {
           reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
         }
       });

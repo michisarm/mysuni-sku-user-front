@@ -35,8 +35,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
     const badgeComp: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
-
-
+    
     // 구성 학습 정보 설정
     setCompLearnings(badgeComp);
 

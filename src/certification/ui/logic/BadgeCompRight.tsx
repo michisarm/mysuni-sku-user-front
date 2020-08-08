@@ -1,26 +1,40 @@
 import React, {useEffect, useState} from 'react';
+import {inject} from 'mobx-react';
 import {Icon, Image} from 'semantic-ui-react';
+import {mobxHelper} from '@nara.platform/accent';
 import classNames from 'classnames';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
+import BadgeService from '../../present/logic/BadgeService';
 import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
+import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
 
 
 interface Props extends RouteComponentProps {
+  badgeService?: BadgeService,
+
   badge: MyBadgeModel,
   compLearnings: BadgeCompModel[],
 }
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
   //
-  const { badge, compLearnings, history } = Props;
-  const { mainCategoryName, name } = badge;
+  const { badgeService, badge, compLearnings, history } = Props;
+  const { badgeId, mainCategoryName, name } = badge;
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
     '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
+
+  // 코스 페이지로 이동
+  const moveToCoursePage = (course: BadgeCourseData, e: any) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+  };
 
   // 코스/큐 페이지로 이동
   const moveToOverviewPage = (data: BadgeCompModel, e: any) => {
@@ -85,4 +99,6 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
   );
 };
 
-export default withRouter(BadgeCompRight);
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+))(withRouter(BadgeCompRight));

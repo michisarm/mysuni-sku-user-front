@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
@@ -30,14 +29,15 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, badgeCount, history, match, } = Props;
-  const { myBadges } = badgeService!;
+  const { badgeService, pageService, history, match, } = Props;
 
   const PAGE_KEY = 'badge.challenging';
   const PAGE_SIZE = 4;
 
   const pageKey = useRef<string>(PAGE_KEY);
   const refresh = useRef<boolean>(false);
+
+  const [myBadges, setMyBadges] = useState<MyBadgeModel[]>([]);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
@@ -93,6 +93,8 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     if (badgeOffsetList) {
       pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
       pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+
+      setMyBadges(badgeService!.myBadges);
     }
   };
 
@@ -146,7 +148,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
               badgeStyle={BadgeStyle.Detail}
               badgeSize={BadgeSize.Small}
             />
-            { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
           </>
         ) : (
           <NoSuchContentPanel message={(
@@ -164,6 +165,8 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
           )}
           />
         )}
+
+      { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
 
     </>
   );
