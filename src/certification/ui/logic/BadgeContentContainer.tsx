@@ -77,7 +77,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   useEffect(() => {
 
     // 수강정보 조회
-    findBadgeStudent(badgeId);
+    //findBadgeStudent(badgeId);
 
   }, [badgeState]);
 
@@ -237,6 +237,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         .then((response) => {
           if ( response ) {
             setBadgeState(ChallengeState.WaitForChallenge);
+            findBadgeStudent(badgeId);
           } else {
             reactAlert({title: '도전 취소 실패', message: '도전을 취소하지 못하였습니다.'});
           }
@@ -272,6 +273,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           } else {
             setBadgeState(ChallengeState.Requested);
           }
+          findBadgeStudent(badgeId);
         } else {
           reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
         }

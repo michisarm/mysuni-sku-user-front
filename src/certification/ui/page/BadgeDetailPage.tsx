@@ -23,7 +23,7 @@ const BadgeDetailPage: React.FC<Props> = (Props) => {
     //
     findMyContent(match.params.badgeId);
 
-  }, [match.params.badgeId]);
+  }, []);
 
 
   const findMyContent = async (id: string) => {
