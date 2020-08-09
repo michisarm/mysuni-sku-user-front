@@ -7,40 +7,26 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import {dateTimeHelper} from 'shared';
 import {ChallengeBadgeTitle} from '../view/ChallengeBoxElementsView';
 import BadgeService from '../../present/logic/BadgeService';
-import BadgeModel from '../model/MyBadgeModel';
+import MyBadgeModel from '../model/MyBadgeModel';
 import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeCourseData from '../model/BadgeCourseData';
 import lectureRoutePaths from '../../../lecture/routePaths';
-import BadgeCubeData from '../model/BadgeCubeData';
 
 
 interface Props extends RouteComponentProps {
   badgeService?: BadgeService,
 
-  badge: BadgeModel,
+  badge: MyBadgeModel,
+  compLearnings: BadgeCompModel[],
 }
 
 const BadgeCompRight: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge, history } = Props;
-  const { badgeComposition } = badgeService!;
+  const { badgeService, badge, compLearnings, history } = Props;
   const { badgeId, mainCategoryName, name } = badge;
-
-  const [ compList, setCompList ] = useState<BadgeCompModel[]>([]);
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
     '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
-
-  useEffect(() => {
-    //
-    findMyContent(badgeId);
-  }, []);
-
-  const findMyContent = async (id: string) => {
-    //
-    const list = await badgeService!.findBadgeComposition(badgeId);
-    setCompList(list);
-  };
 
   // 코스 페이지로 이동
   const moveToCoursePage = (course: BadgeCourseData, e: any) => {
@@ -92,7 +78,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
       {/*Badge 구성학습 목록*/}
       <div className="challenge-list">
         <ul>
-          { compList.map((learning, index) => {
+          { compLearnings && compLearnings.map((learning, index) => {
             return (
               <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
                 <a href="#" onClick={(e) => moveToOverviewPage(learning, e)}>

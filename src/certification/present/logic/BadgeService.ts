@@ -184,9 +184,9 @@ class BadgeService {
         this._badge = this._badge.concat(badgeOffsetElementList.results);
       });
     }
-    else {
-      this._badgeCount = 0;
-    }
+    // else {
+    //   this._badgeCount = 0;
+    // }
 
     return badgeOffsetElementList;
   }
@@ -204,12 +204,15 @@ class BadgeService {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
 
-    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+    if (badgeOffsetElementList) {
       runInAction(() => {
         this._challengingCount = badgeOffsetElementList.totalCount;
         this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
       });
     }
+    // else {
+    //   this._challengingCount = 0;
+    // }
 
     return badgeOffsetElementList;
   }
@@ -330,7 +333,7 @@ class BadgeService {
 
     const studentOffsetElementList: OffsetElementList<BadgeStudentModel> | null = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    if (studentOffsetElementList && typeof studentOffsetElementList === 'object') {
+    if (studentOffsetElementList && studentOffsetElementList.results) {
       runInAction(() => {
         this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results);
       });
@@ -377,7 +380,6 @@ class BadgeService {
 
     return response;
   }
-
 
   // 획득뱃지 개수
   @action
