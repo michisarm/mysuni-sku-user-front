@@ -15,7 +15,7 @@ class Description extends Component<Props> {
     const { description } = this.props;
 
     return (
-      <div className="class-guide-txt" dangerouslySetInnerHTML={{ __html: description }} />
+      <div className="class-guide-txt fn-parents" dangerouslySetInnerHTML={{ __html: description }} />
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef, useState} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
@@ -11,8 +10,8 @@ import BadgeService from '../../present/logic/BadgeService';
 import {PageService} from '../../../shared/stores';
 import LineHeaderContainer from './LineHeaderContainer';
 import ChallengeBoxContainer from './ChallengeBoxContainer';
-import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import {SeeMoreButton} from '../../shared/Badge';
+import BadgeFilterRdoModel from '../model/BadgeFilterRdoModel';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import BadgeCountText from '../model/BadgeCountText';
@@ -30,14 +29,15 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, badgeCount, history, match, } = Props;
-  const { myBadges } = badgeService!;
+  const { badgeService, pageService, history, match, } = Props;
 
   const PAGE_KEY = 'badge.challenging';
   const PAGE_SIZE = 4;
 
   const pageKey = useRef<string>(PAGE_KEY);
   const refresh = useRef<boolean>(false);
+
+  const [myBadges, setMyBadges] = useState<MyBadgeModel[]>([]);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
 
@@ -93,6 +93,8 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     if (badgeOffsetList) {
       pageService!.initPageMap(pageKey.current, (pageNo - 1) * PAGE_SIZE, PAGE_SIZE);
       pageService!.setTotalCountAndPageNo(pageKey.current, badgeOffsetList.totalCount, pageNo + 1);
+
+      setMyBadges(badgeService!.myBadges);
     }
   };
 
@@ -130,7 +132,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     history.push(BadgeRoutePaths.badgeTab());
   };
 
-
   return (
     <>
       <LineHeaderContainer
@@ -139,31 +140,33 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {myBadges.length > 0 ? (
-        <>
-          <ChallengeBoxContainer
-            badges={myBadges}
-            badgeStyle={BadgeStyle.Detail}
-            badgeSize={BadgeSize.Small}
-          />
-          { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
-        </>
-      ) : (
-        <NoSuchContentPanel message={(
+      {myBadges.length > 0 ?
+        myBadges.map( (badge: MyBadgeModel, index: number) =>
           <>
-            <div className="text">도전중인 Badge가 없습니다.<br/>새로운 Badge에 도전해보시겠습니까?</div>
-            <Button
-              icon
-              as="a"
-              className="right btn-blue2"
-              onClick={moveToBadgeList}
-            >
-              Badge List 바로가기 <Icon className="morelink"/>
-            </Button>
+            <ChallengeBoxContainer
+              myBadge={badge}
+              badgeStyle={BadgeStyle.Detail}
+              badgeSize={BadgeSize.Small}
+            />
           </>
+        ) : (
+          <NoSuchContentPanel message={(
+            <>
+              <div className="text">도전중인 Badge가 없습니다.<br/>새로운 Badge에 도전해보시겠습니까?</div>
+              <Button
+                icon
+                as="a"
+                className="right btn-blue2"
+                onClick={moveToBadgeList}
+              >
+                Badge List 바로가기 <Icon className="morelink"/>
+              </Button>
+            </>
+          )}
+          />
         )}
-        />
-      )}
+
+      { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
 
     </>
   );
