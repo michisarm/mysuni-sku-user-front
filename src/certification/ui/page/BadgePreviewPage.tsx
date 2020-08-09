@@ -29,17 +29,17 @@ const BadgePreviewPage: React.FC<Props> = Props => {
 
   const findMyContent = async (id: string) => {
     //
-    const badgeInfo: BadgeDetailModel | null = await badgeService!.findBadgeDetailInfo(id);
+    const badgeInfo: BadgeDetailModel | null = await badgeService!.findBadgeDetailInfo(
+      id
+    );
 
     if (badgeInfo) {
       setBadgeDetail(badgeInfo);
-    }
-    else {
+    } else {
       setBadgeDetail(new BadgeDetailModel());
     }
   };
 
-  console.log(badgeDetail);
   // 뱃지 미리보기 호출
   return (
     <div className="badge-list">
