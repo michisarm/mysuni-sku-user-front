@@ -107,8 +107,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //
     const components: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
 
-    setLearningCount(components.length);
-
     let compList: BadgeCompData[] = [];
     let passCount = 0;
     if (components.length > 0 && components[0] ) {
@@ -160,8 +158,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         compList = compList.concat(compData);
       });
     }
-    setPassedCount(passCount);
     setBadgeCompList(compList);
+
+    setPassedCount(passCount);
+    setLearningCount(components.length);
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
