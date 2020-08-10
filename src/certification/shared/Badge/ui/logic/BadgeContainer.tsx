@@ -1,9 +1,13 @@
-
-import React, {FunctionComponent, useEffect} from 'react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {mobxHelper} from '@nara.platform/accent';
+import React, { FunctionComponent, useEffect } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { mobxHelper } from '@nara.platform/accent';
 import certificationRoutePaths from '../../../../routePaths';
-import {BadgeContentWrapper, CertificationOrg, College, Title} from '../view/BadgeView';
+import {
+  BadgeContentWrapper,
+  CertificationOrg,
+  College,
+  Title,
+} from '../view/BadgeView';
 import BadgeModel from '../../../../ui/model/BadgeModel';
 import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
@@ -23,27 +27,39 @@ enum CategoryImageURL {
 }
 
 interface Props extends RouteComponentProps {
-  badge: BadgeModel | MyBadgeModel | BadgeDetailModel,
-  badgeStyle: string,  // List, Detail
-  badgeSize: string,  // Large, Small
+  badge: BadgeModel | MyBadgeModel | BadgeDetailModel;
+  badgeStyle: string; // List, Detail
+  badgeSize: string; // Large, Small
 }
 
-const BadgeContainer: FunctionComponent<Props> = (Props) => {
+const BadgeContainer: FunctionComponent<Props> = Props => {
   //
   const { badge, badgeStyle, badgeSize, history } = Props;
-  const { badgeId, difficultyLevel, iconUrl, mainCategoryName, name, certiAdminCategory } = badge;
+  const {
+    badgeId,
+    difficultyLevel,
+    iconUrl,
+    mainCategoryName,
+    name,
+    certiAdminCategory,
+  } = badge;
 
-  const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
+  const domainPath =
+    process.env.REACT_APP_ENVIRONMENT === undefined ||
+    process.env.REACT_APP_ENVIRONMENT === 'server'
+      ? '' /*window.location.protocol + '//' + window.location.host*/
+      : process.env.REACT_APP_PUBLIC_URL;
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   };
 
   // 인증주체(mySUNI, Subsidiary, Etc...) 아이콘
   const getCertiAdminIcon = (certiAdminCategory: string) => {
-    return certiAdminCategoryIcon[certiAdminCategory as keyof typeof certiAdminCategoryIcon];
+    return certiAdminCategoryIcon[
+      certiAdminCategory as keyof typeof certiAdminCategoryIcon
+    ];
   };
 
   return (
@@ -56,19 +72,26 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
     >
       {/*인증관리주체*/}
       <CertificationOrg
-        certiAdminCategoryIcon={getCertiAdminIcon(certiAdminCategory.certiAdminCategory)}
+        certiAdminCategoryIcon={getCertiAdminIcon(
+          certiAdminCategory.certiAdminCategory
+        )}
         certiAdminCategoryName={certiAdminCategory.certiAdminCategoryName}
       />
 
       {/*College, Category*/}
       <College
-        iconUrl={iconUrl ? domainPath + iconUrl : CategoryImageURL[badge.mainCategoryId as keyof typeof CategoryImageURL]}
+        iconUrl={
+          iconUrl
+            ? domainPath + iconUrl
+            : CategoryImageURL[
+                badge.mainCategoryId as keyof typeof CategoryImageURL
+              ]
+        }
         mainCategory={mainCategoryName}
       />
 
       {/*뱃지명*/}
       <Title name={name} />
-
     </BadgeContentWrapper>
   );
 };
