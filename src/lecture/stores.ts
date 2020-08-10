@@ -11,9 +11,10 @@ import LectureCountService from './category/present/logic/LectureCountService';
 import AnswerSheetService from '../survey/answer/present/logic/AnswerSheetService';
 import SurveyCaseService from '../survey/event/present/logic/SurveyCaseService';
 import SurveyFormService from '../survey/form/present/logic/SurveyFormService';
-import NewLectureService from './shared/present/logic/NewLectureService';
-import PopularLectureService from './shared/present/logic/PopularLectureService';
-import RecommendLectureService from './shared/present/logic/RecommendLectureService';
+import RQDLectureService from './shared/present/logic/RQDLectureService';
+import NEWLectureService from './shared/present/logic/NEWLectureService';
+import POPLectureService from './shared/present/logic/POPLectureService';
+import LRSLectureService from './shared/present/logic/LRSLectureService';
 import BadgeService from '../certification/present/logic/BadgeService';
 import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
 
@@ -32,14 +33,17 @@ export default {
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
   },
+  rqdLecture: {
+    rqdLectureService: RQDLectureService.instance,
+  },
   newLecture: {
-    newLectureService: NewLectureService.instance,
+    newLectureService: NEWLectureService.instance,
   },
-  popularLecture: {
-    popularLectureService: PopularLectureService.instance,
+  popLecture: {
+    popLectureService: POPLectureService.instance,
   },
-  recommendLecture: {
-    recommendLectureService: RecommendLectureService.instance,
+  lrsLecture: {
+    lrsLectureService: LRSLectureService.instance,
   },
   badge: {
     badgeService: BadgeService.instance,
@@ -52,9 +56,10 @@ export default {
 export {
   LectureCardService,
   LectureService,
-  NewLectureService,
-  PopularLectureService,
-  RecommendLectureService,
+  RQDLectureService,
+  NEWLectureService,
+  POPLectureService,
+  LRSLectureService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,

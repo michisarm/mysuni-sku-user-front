@@ -19,7 +19,6 @@ class Routes extends React.Component {
         <Redirect exact from="/introduction" to="/introduction/MySuni" />
         <Route exact path="/introduction/:tab" component={IntroductionPage} />
         <Route exact path="/empty" render={() => <div style={{ minHeight: 1000 }} />} />
-        // by JSM
         <Route exact path="/favorite/channel/change" component={FavoriteChannel} />
         <Route component={NotFoundPage} />
       </Switch>

@@ -8,7 +8,6 @@ class MainNoticeApi {
   //
   static instance: MainNoticeApi;
 
-  // by JSM
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
   process.env.REACT_APP_POST_API === undefined || process.env.REACT_APP_POST_API === '' ?
     '/api/board/posts' : process.env.REACT_APP_POST_API;

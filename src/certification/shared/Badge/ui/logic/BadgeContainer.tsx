@@ -26,7 +26,7 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
   const { badgeId, difficultyLevel, iconUrl, mainCategoryName, name, certiAdminCategory } = badge;
 
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+    '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));

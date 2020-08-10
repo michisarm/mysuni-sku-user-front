@@ -324,14 +324,19 @@ class CoursePageV2 extends Component<Props, State> {
             }
           }
         }
-
-        this.setState({ isPreCoursePassed });
-        // coursePlanService.setIsPreCoursePassed(isPreCoursePassed);
-      } else {
+      } else if (
+        courseLectureService.getPreLectureViews &&
+        !studentService.StudentInfos!.preCourses
+      ) {
         const preLectureViews = courseLectureService.getPreLectureViews;
-        if (preLectureViews) isPreCoursePassed = false;
-        this.setState({ isPreCoursePassed });
+        for (let j = 0; j < preLectureViews.length; j++) {
+          const preLectureView = preLectureViews[j];
+          if (preLectureView.required) isPreCoursePassed = false;
+          break;
+        }
       }
+
+      this.setState({ isPreCoursePassed });
     }
   }
 
@@ -474,11 +479,13 @@ class CoursePageV2 extends Component<Props, State> {
         student.phaseCount !== student.completePhaseCount &&
         student.learningState === LearningState.Progress
       ) {
-        console.log('Course Page Waiting : ', SubState.Waiting);
-        state = SubState.Waiting;
+        console.log('Course Page Waiting : ', SubState.InProgress);
+        state = SubState.InProgress;
       }
 
       // console.log('student info  gget~~~~~~~~~~~~~~~~~');
+    } else {
+      this.setExamState();
     }
 
     examId = coursePlanContents.testId || '';
@@ -777,7 +784,7 @@ class CoursePageV2 extends Component<Props, State> {
         } else if (
           studentData.phaseCount === studentData.completePhaseCount &&
           studentData.learningState === LearningState.Failed &&
-          studentData.studentScoLectureOverviewViewV2.re.numberOfTrials > 2
+            studentData.studentScore.numberOfTrials > 2
         ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });

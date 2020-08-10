@@ -73,7 +73,7 @@ class TabContainer extends Component<Props, State> {
       ) {
         this.onClickTab(tabs[0]);
       } else {
-        // 20200716 탭 이동 (by JSM)
+        // 20200716 탭 이동
         this.setPreviousTab(
           tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]
         );

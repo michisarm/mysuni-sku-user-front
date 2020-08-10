@@ -6,12 +6,12 @@ import { RouteComponentProps, withRouter } from 'react-router';
 
 import { SkProfileService } from 'profile/stores';
 import InProgressLearning from './MainComponents/InProgressLearning';
-import RequiredLearning from './MainComponents/RequiredLearning';
+import RequiredLearning from './MainComponents/RQDLearning';
 import ChallengingBadge from './MainComponents/ChallengingBadge';
 import MainBanner from './MainComponents/MainBanner';
-import NewLearning from './MainComponents/NewLearning';
-import PopularLearning from './MainComponents/PopularLearning';
-import RecommendLearning from './MainComponents/RecommendLearning';
+import NewLearning from './MainComponents/NEWLearning';
+import PopularLearning from './MainComponents/POPLearning';
+import RecommendLearning from './MainComponents/LRSLearning';
 
 
 interface Props extends RouteComponentProps {
@@ -20,7 +20,7 @@ interface Props extends RouteComponentProps {
 
 const MyLearningContentContainer : React.FC<Props> = (Props) => {
   const { skProfileService } = Props;
-  const { profileMemberName } = skProfileService!;
+  const { profileMemberName, profileMemberEmail } = skProfileService!;
 
   return (
     <>

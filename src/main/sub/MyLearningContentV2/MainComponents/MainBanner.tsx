@@ -29,7 +29,7 @@ const MainBanner : React.FC<Props> = (Props) => {
 
   const DEFAULT_BANNER_INTERVAL = 7000;
   const domainPath = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server'?
-    window.location.protocol + '//' + window.location.host : 'http://ma.mysuni.sk.com';
+    '' /*window.location.protocol + '//' + window.location.host*/ : process.env.REACT_APP_PUBLIC_URL;
 
   // myTrainingService 변경  실행
   useEffect(() => {

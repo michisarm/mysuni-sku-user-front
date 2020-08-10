@@ -1,7 +1,13 @@
 import { decorate, observable } from 'mobx';
 import { DenizenKey } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 import OrderByType from './OrderByType';
+import SkProfileService from '../../profile/present/logic/SkProfileService';
 
+
+interface Props {
+  skProfileService?: SkProfileService,
+}
 
 class LectureFilterRdoModel {
   //
@@ -11,6 +17,7 @@ class LectureFilterRdoModel {
   offset: number = 0;
   limit: number = 0;
   channelIds?: string[];
+  email?: string = patronInfo.getPatronEmail();
 
 
   constructor(lectureRdo?: LectureFilterRdoModel) {

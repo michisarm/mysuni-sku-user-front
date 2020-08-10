@@ -69,14 +69,18 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     // 수강정보 조회
     findBadgeStudent(badgeId);
 
-  }, []);
-
-  useEffect(() => {
-
     // 구성학습 정보 조회
     findBadgeLearningInfo(badgeId);
 
   }, []);
+
+  useEffect(() => {
+
+    // 수강정보 조회
+    //findBadgeStudent(badgeId);
+
+  }, [badgeState]);
+
 
 
   // 뱃지에 대한 수강정보 호출
@@ -124,13 +128,14 @@ const BadgeContentContainer: React.FC<Props> = Props => {
       totalCount: badgeLearningInfo.length,
     });
 
+
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
     // 내일 협의 후 결정
     // 발급 요청 버튼 클릭 시 learningCompleted: true (이수처리) 필요 할 수 있음
-    if ( cnt === badgeLearningInfo.length ) {
-      setBadgeState(ChallengeState.ReadyForRequest);
-    }
+    // if ( cnt === badgeLearningInfo.length ) {
+    //   setBadgeState(ChallengeState.ReadyForRequest);
+    // }
   };
 
 
@@ -140,6 +145,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     issueState: string
   ) => {
     //
+
     if (challengeState !== 'Challenged') {
       // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
@@ -166,8 +172,13 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         issueState !== IssueState.Requested &&
         !learningCompleted
       ) {
-        // 진행 중 => 도전취소 버튼 노출
-        setBadgeState(ChallengeState.Challenging);
+
+        if ( badgeDetail.autoIssued && badgeLearningCount.isCount === badgeLearningCount.totalCount ) {
+          setBadgeState(ChallengeState.ReadyForRequest);
+        } else {
+          // 진행 중 => 도전취소 버튼 노출
+          setBadgeState(ChallengeState.Challenging);
+        }
       }
     }
   };
@@ -207,8 +218,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     badgeService!.challengeBadge(retryBadgeStudentId, myStudentInfo, badgeId, ChallengeState.Challenged)
       .then( (response) => {
         if ( response ) {
-          //findBadgeStudent(badgeId);
-          setBadgeState(ChallengeState.Challenging);
+          findBadgeStudent(badgeId);
+          //setBadgeState(ChallengeState.Challenging);
         }
       });
   };
@@ -226,6 +237,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         .then((response) => {
           if ( response ) {
             setBadgeState(ChallengeState.WaitForChallenge);
+            findBadgeStudent(badgeId);
           } else {
             reactAlert({title: '도전 취소 실패', message: '도전을 취소하지 못하였습니다.'});
           }
@@ -242,14 +254,38 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     if ( studentInfo === undefined ) return;
 
     const autoIssuedBadge = badgeDetail.autoIssued;
+    const missionCompleted = studentInfo.missionCompleted;
 
-    if (autoIssuedBadge) {
-      // 자동발급 요청
-      onClickRequestAutoIssue();
-    } else {
-      // 수동발급 요청
-      onClickRequestManualIssue();
+    // 수동발급 뱃지 & 추가미션 미완료
+    if (!autoIssuedBadge ) {
+      if (badgeDetail.additionTermsExist && !missionCompleted ) {
+        reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
+        return;
+      }
     }
+
+    badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
+      .then((response) => {
+        if ( response ) {
+          if ( autoIssuedBadge ) {
+            setSuccessModal(!successModal);
+            setBadgeState(IssueState.Issued);
+          } else {
+            setBadgeState(ChallengeState.Requested);
+          }
+          findBadgeStudent(badgeId);
+        } else {
+          reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
+        }
+      });
+
+    // if (autoIssuedBadge) {
+    //   // 자동발급 요청
+    //   onClickRequestAutoIssue();
+    // } else {
+    //   // 수동발급 요청
+    //   onClickRequestManualIssue();
+    // }
 
   };
 
@@ -327,6 +363,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   //
   return (
     <>
+
       {/*상단*/}
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
@@ -340,7 +377,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           college={badgeDetail.mainCategoryName}
           name={badgeDetail.name}
         />
-
         {/*뱃지 메타정보1*/}
         <BadgeInformation
           certiAdminCategoryName={

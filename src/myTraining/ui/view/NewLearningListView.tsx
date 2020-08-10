@@ -7,9 +7,9 @@ import { ReviewService } from '@nara.drama/feedback';
 import { ActionLogService, PageService } from 'shared/stores';
 import {
   LectureService,
-  NewLectureService,
-  PopularLectureService,
-  RecommendLectureService,
+  NEWLectureService,
+  POPLectureService,
+  LRSLectureService,
 } from 'lecture/stores';
 import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
@@ -21,16 +21,17 @@ import routePaths from 'personalcube/routePaths';
 import { NoSuchContentPanel } from 'shared';
 import { ContentType } from '../page/NewLearningPage';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
+import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
   pageService?: PageService;
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
-  lectureService?: LectureService;
-  newLectureService?: NewLectureService;
-  popularLectureService?: PopularLectureService;
-  recommendLectureService?: RecommendLectureService;
+  rqdLectureService?: RQDLectureService;
+  newLectureService?: NEWLectureService;
+  popLectureService?: POPLectureService;
+  lrsLectureService?: LRSLectureService;
 
   contentType: string;
   order: string;
@@ -48,10 +49,10 @@ const NewLearningListView: React.FC<Props> = Props => {
     pageService,
     reviewService,
     inMyLectureService,
-    lectureService,
+    rqdLectureService,
     newLectureService,
-    popularLectureService,
-    recommendLectureService,
+    popLectureService,
+    lrsLectureService,
     actionLogService,
     setNewOrder,
     showTotalCount,
@@ -195,9 +196,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     switch (contentType) {
       case ContentType.Required:
         if (clear) {
-          lectureService!.clearLectures();
+          rqdLectureService!.clearLectures();
         }
-        findRequiredLectures(pgNo);
+        findRqdLectures(pgNo);
         break;
 
       case ContentType.New:
@@ -209,15 +210,15 @@ const NewLearningListView: React.FC<Props> = Props => {
 
       case ContentType.Popular:
         if (clear) {
-          popularLectureService!.clearLectures();
+          popLectureService!.clearLectures();
         }
-        findPopularLectures(pgNo);
+        findPopLectures(pgNo);
         break;
       case ContentType.Recommend:
         if (clear) {
-          recommendLectureService!.clearLectures();
+          lrsLectureService!.clearLectures();
         }
-        findRecommendLectures(pgNo);
+        findLrsLectures(pgNo);
         break;
     }
   };
@@ -226,18 +227,15 @@ const NewLearningListView: React.FC<Props> = Props => {
     return parseInt(match.params.pageNo, 10);
   };
 
-  const findRequiredLectures = async (pageNo: number) => {
+  const findRqdLectures = async (pageNo: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    // const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
-    const lectureOffsetList = await lectureService!.findPagingRequiredLectures(
-      page!.limit,
-      page!.nextOffset
-    );
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
+    const lectureOffsetList = await rqdLectureService!.findPagingRqdLectures(lectureFilterRdo);
 
-    lectures.current = lectureService!.lectures;
+    lectures.current = rqdLectureService!.rqdLectures;
 
     let feedbackIds: string[] = [];
 
@@ -264,13 +262,8 @@ const NewLearningListView: React.FC<Props> = Props => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
-      page!.limit,
-      page!.nextOffset /*, orderBy*/
-    );
-    const lectureOffsetList = await newLectureService!.findPagingNewLectures(
-      lectureFilterRdo
-    );
+    const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset /*, orderBy*/);
+    const lectureOffsetList = await newLectureService!.findPagingNewLectures(lectureFilterRdo);
 
     lectures.current = newLectureService!.newLectures;
 
@@ -294,7 +287,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
-  const findPopularLectures = async (pageNo?: number) => {
+  const findPopLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
@@ -303,11 +296,11 @@ const NewLearningListView: React.FC<Props> = Props => {
       page!.limit,
       page!.nextOffset /*, orderBy*/
     );
-    const lectureOffsetList = await popularLectureService!.findPagingPopularLectures(
+    const lectureOffsetList = await popLectureService!.findPagingPopLectures(
       lectureFilterRdo
     );
 
-    lectures.current = popularLectureService!.popularLectures;
+    lectures.current = popLectureService!.popLectures;
 
     let feedbackIds: string[] = [];
 
@@ -327,24 +320,23 @@ const NewLearningListView: React.FC<Props> = Props => {
     showTotalCount(lectureOffsetList.totalCount);
   };
 
-  const findRecommendLectures = async (pageNo?: number) => {
+  const findLrsLectures = async (pageNo?: number) => {
     //
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(
       page!.limit,
-      page!.nextOffset /*, orderBy*/
+      page!.nextOffset,
+      /*, orderBy*/
     );
-    const lectureOffsetList = await recommendLectureService!.findPagingRecommendLectures(
-      lectureFilterRdo
-    );
+    const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(lectureFilterRdo);
 
-    lectures.current = recommendLectureService!.recommendLectures;
+    lectures.current = lrsLectureService!.lrsLectures;
 
     let feedbackIds: string[] = [];
 
-    if (lectureOffsetList.results.length > 0) {
+    if (lectureOffsetList.results && lectureOffsetList.results.length > 0) {
       feedbackIds = lectureOffsetList.results.map(lecture => lecture.reviewId);
       reviewService!.findReviewSummariesByFeedbackIds(feedbackIds);
     }
@@ -447,7 +439,7 @@ const NewLearningListView: React.FC<Props> = Props => {
 
   return (
     <div className="section">
-      {lectures && lectures.current && lectures.current.length > 0 ? (
+      {lectures && lectures.current && lectures.current.length > 0 && lectures.current[0] ? (
         <>
           <Lecture.Group type={Lecture.GroupType.Box}>
             {lectures.current?.map((lecture: any, index: any) => {
@@ -494,9 +486,9 @@ export default inject(
     'shared.pageService',
     'shared.reviewService',
     'myTraining.inMyLectureService',
-    'lecture.lectureService',
+    'rqdLecture.rqdLectureService',
     'newLecture.newLectureService',
-    'popularLecture.popularLectureService',
-    'recommendLecture.recommendLectureService'
+    'popLecture.popLectureService',
+    'lrsLecture.lrsLectureService'
   )
 )(withRouter(observer(NewLearningListView)));

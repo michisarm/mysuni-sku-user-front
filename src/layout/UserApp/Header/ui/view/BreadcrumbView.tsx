@@ -27,7 +27,8 @@ interface State {
 class BreadcrumbView extends Component<Props, State> {
   //
   state = {
-    id: 'skcc.05526@sk.com',
+    id: 'skcc.hug01@sk.com',
+    // id: 'SKCC.SKCC08@sk.com'
   };
 
   // TODO: 삭제해야

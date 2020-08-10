@@ -64,7 +64,11 @@ class CourseSectionContainer extends Component<Props, State> {
       <CourseSectionContext.Provider value={this.getContextValue()}>
         <div className={classNames('course-box', 'fn-parents', { open })}>
           {lecture}
-          {open && children}
+          {open && (
+            <div className="detail">
+              {children}
+            </div>
+          )}
           {exam}
         </div>
       </CourseSectionContext.Provider>

@@ -106,6 +106,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title ? posts.title : null,
       });
       return posts;
     });
@@ -131,6 +132,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title,
       });
       return posts;
     });
@@ -145,6 +147,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title,
       });
       return posts;
     });
@@ -159,6 +162,7 @@ export default class PostService {
         results: faqPosts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: faqPosts.totalCount,
         empty: !!faqPosts.totalCount,
+        title: faqPosts.title,
       });
       return faqPosts;
     });
@@ -173,6 +177,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title,
       });
       return posts;
     });
@@ -187,6 +192,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title,
       });
       return posts;
     });
@@ -201,6 +207,7 @@ export default class PostService {
         results: posts.results.map((post: PostModel) => new PostModel(post)),
         totalCount: posts.totalCount,
         empty: !!posts.totalCount,
+        title: posts.title,
       });
       return posts;
     });

@@ -178,12 +178,15 @@ class BadgeService {
     // 모든 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<BadgeModel> | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
 
-    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+    if (badgeOffsetElementList) {
       runInAction(() => {
         this._badgeCount = badgeOffsetElementList.totalCount;
         this._badge = this._badge.concat(badgeOffsetElementList.results);
       });
     }
+    // else {
+    //   this._badgeCount = 0;
+    // }
 
     return badgeOffsetElementList;
   }
@@ -196,22 +199,24 @@ class BadgeService {
     // 도전 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null  = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
-    // // use session storage (사용할 거면 풀 것) : modified by JSM
+    // // use session storage (사용할 거면 풀 것) : by JSM
     // if (fromMain) {
     //   window.sessionStorage.setItem('ChallengingBadgeList', JSON.stringify(badgeOffsetElementList));
     // }
 
-    if (badgeOffsetElementList && badgeOffsetElementList.results) {
+    if (badgeOffsetElementList) {
       runInAction(() => {
         this._challengingCount = badgeOffsetElementList.totalCount;
         this._myBadge = this._myBadge.concat(badgeOffsetElementList.results);
       });
     }
+    // else {
+    //   this._challengingCount = 0;
+    // }
 
     return badgeOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingChallengingBadges(badge: OffsetElementList<MyBadgeModel>) {
     //
@@ -262,22 +267,6 @@ class BadgeService {
         this._earnedCount = 0;
       }
     });
-  }
-
-  @action
-  async getCountOfIssuedBadges() {
-    //
-    const count = await this.badgeApi.getCountOfIssuedBadges();
-    runInAction(() => {
-      if (count && count !== null) {
-        this._earnedCount = count;
-      }
-      else {
-        this._earnedCount = 0;
-      }
-    });
-
-    return this._earnedCount;
   }
 
   // PSJ - 연관 뱃지 목록
@@ -344,7 +333,7 @@ class BadgeService {
 
     const studentOffsetElementList: OffsetElementList<BadgeStudentModel> | null = await this.badgeApi.findBadgeStudentInfo(badgeId);
 
-    if (studentOffsetElementList && typeof studentOffsetElementList === 'object') {
+    if (studentOffsetElementList && studentOffsetElementList.results) {
       runInAction(() => {
         this._badgeStudent = this._badgeStudent.concat(studentOffsetElementList.results);
       });
@@ -391,7 +380,6 @@ class BadgeService {
 
     return response;
   }
-
 
   // 획득뱃지 개수
   @action

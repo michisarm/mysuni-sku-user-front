@@ -61,6 +61,8 @@ export const StateView = ({ state }: StateProp) => {
   //
   if (!state) return null;
 
+  console.log('sub state : ', state);
+
   let st = state;
 
   if (st === State.Failed) {

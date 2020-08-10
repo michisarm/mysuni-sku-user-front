@@ -209,14 +209,13 @@ class LectureService {
     fromMain: boolean = false
   ) {
     //
-    const response = await this.lectureFlowApi.findRequiredLectures(
+    const response = await this.lectureFlowApi.findRqdLectures(
       LectureFilterRdoModel.new(limit, offset, channelIds)
     );
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response
     );
 
-    // use session storage : modified by JSM
     if (fromMain) {
       window.sessionStorage.setItem(
         'RequiredLearningList',
@@ -237,7 +236,6 @@ class LectureService {
     return lectureOffsetElementList;
   }
 
-  // use session storage : modified by JSM
   @action
   async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
     //
