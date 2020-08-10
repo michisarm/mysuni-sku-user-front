@@ -14,8 +14,6 @@ import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
   mySUNI = '/static/media/logo_badge.svg',
-  Subsidiary = '/static/media/logo_badge.svg',
-  Third = '/static/media/logo78x25.9e42a9b0.svg',
 }
 
 enum CategoryImageURL {
@@ -42,6 +40,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     mainCategoryName,
     name,
     certiAdminCategory,
+    certiAdminSubcategory,
   } = badge;
 
   const domainPath =
@@ -56,10 +55,18 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   };
 
   // 인증주체(mySUNI, Subsidiary, Etc...) 아이콘
-  const getCertiAdminIcon = (certiAdminCategory: string) => {
-    return certiAdminCategoryIcon[
-      certiAdminCategory as keyof typeof certiAdminCategoryIcon
-    ];
+  const getCertiAdminIcon = (
+    certiAdminCategory: string,
+    certiAdminSubcategory: string
+  ) => {
+    const language = 'kr';
+
+    if (certiAdminCategory !== 'mySUNI') {
+      const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
+      return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
+    } else {
+      return certiAdminCategoryIcon.mySUNI;
+    }
   };
 
   return (
@@ -73,7 +80,8 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
       {/*인증관리주체*/}
       <CertificationOrg
         certiAdminCategoryIcon={getCertiAdminIcon(
-          certiAdminCategory.certiAdminCategory
+          certiAdminCategory.certiAdminCategory,
+          certiAdminSubcategory.certiAdminSubcategory
         )}
         certiAdminCategoryName={certiAdminCategory.certiAdminCategoryName}
       />
@@ -84,7 +92,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
           iconUrl
             ? domainPath + iconUrl
             : CategoryImageURL[
-              badge.mainCategoryId as keyof typeof CategoryImageURL
+                badge.mainCategoryId as keyof typeof CategoryImageURL
             ]
         }
         mainCategory={mainCategoryName}
