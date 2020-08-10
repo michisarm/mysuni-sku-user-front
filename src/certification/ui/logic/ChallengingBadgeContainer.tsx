@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, Fragment} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
@@ -142,13 +142,13 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
 
       {myBadges.length > 0 ?
         myBadges.map( (badge: MyBadgeModel, index: number) =>
-          <>
+          <Fragment key={`container-${index}`}>
             <ChallengeBoxContainer
               myBadge={badge}
               badgeStyle={BadgeStyle.Detail}
               badgeSize={BadgeSize.Small}
             />
-          </>
+          </Fragment>
         ) : (
           <NoSuchContentPanel message={(
             <>
