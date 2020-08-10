@@ -25,11 +25,12 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
   badgeCount: number | undefined,
   countMessage?: string,
+  resetTotBadgeCount: () => void;
 }
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, history, match, } = Props;
+  const { badgeService, pageService, resetTotBadgeCount, history, match, } = Props;
 
   const PAGE_KEY = 'badge.challenging';
   const PAGE_SIZE = 4;
@@ -116,6 +117,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   };
 
   const refreshChallengingContainer = () => {
+    resetTotBadgeCount();
     setUseCount(useCount + 1);
   };
 

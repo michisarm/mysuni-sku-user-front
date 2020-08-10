@@ -83,8 +83,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
   useEffect(() => {
 
-    // 수강정보 조회
-    findBadgeStudent(badgeId);
+    if (learningCount > 0) {
+      // 수강정보 조회
+      findBadgeStudent(badgeId);
+    }
 
   }, [badgeId, learningCount, passedCount]);
 
