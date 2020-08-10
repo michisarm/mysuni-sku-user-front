@@ -100,11 +100,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     if ( id === undefined || id === null ) return;
 
     if ( !badge.autoIssued ) {
-      // if (!studentInfo?.learningCompleted) {
-      //   // 학습 미완료 상태에서 발급요청 버튼 누름
-      //   setRequestModal(!requestModal);
-      //   return;
-      // }
       if (!studentInfo?.missionCompleted ) {
         reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
         return;
@@ -187,7 +182,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
             {/*자동발급 완료 팝업*/}
             <ChallengeSuccessModal
-              // badge={badgeDetail}
               badge={badgeService!.badgeDetailInfo}
               successModal={successModal}
               onCloseSuccessModal={onControlSuccessModal}
