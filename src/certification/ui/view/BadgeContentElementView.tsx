@@ -119,8 +119,6 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   const {badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted} = BadgeStatusProps;
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
-  console.log(`badgeState : ${badgeState}`);
-
   return (
     <div className="status">
       { (badgeState === ChallengeState.WaitForChallenge || badgeState === ChallengeState.Challenging || badgeState === ChallengeState.ReadyForRequest) && (
