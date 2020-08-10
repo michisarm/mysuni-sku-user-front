@@ -96,6 +96,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     }
   };
 
+
   // 발급요청
   const onClickRequestBadge = (id: string) => {
     //
