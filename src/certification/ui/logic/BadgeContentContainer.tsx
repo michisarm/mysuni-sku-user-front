@@ -172,8 +172,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         issueState !== IssueState.Requested &&
         !learningCompleted
       ) {
-
-        if ( badgeDetail.autoIssued && badgeLearningCount.isCount === badgeLearningCount.totalCount ) {
+        // isCount가 0일 경우 진행한 학습이 없음
+        if ( badgeDetail.autoIssued && (badgeLearningCount.isCount !== 0 && badgeLearningCount.isCount === badgeLearningCount.totalCount) ) {
           setBadgeState(ChallengeState.ReadyForRequest);
         } else {
           // 진행 중 => 도전취소 버튼 노출
