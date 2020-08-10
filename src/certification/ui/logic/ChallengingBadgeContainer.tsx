@@ -147,6 +147,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
               myBadge={badge}
               badgeStyle={BadgeStyle.Detail}
               badgeSize={BadgeSize.Small}
+              // onIssuedBadgeRefresh={onIssuedBadgeRefresh}
             />
           </Fragment>
         ) : (

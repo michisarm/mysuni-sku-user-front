@@ -14,6 +14,7 @@ import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
+import CertificationRoutePaths from '../../routePaths';
 
 
 interface Props extends RouteComponentProps {
@@ -26,11 +27,12 @@ interface Props extends RouteComponentProps {
   learningCount: number,
   passedCount: number,
   passedAll: boolean,
+  // onIssuedBadgeRefresh: () => void,
 }
 
 const BadgeCompLeft: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll } = Props;
+  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll, history } = Props;
   const { badgeId } = badge;
 
   const [ studentInfo, setBadgeStudentInfo ] = useState<BadgeStudentModel | null>();
@@ -100,6 +102,10 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     if ( id === undefined || id === null ) return;
 
     if ( !badge.autoIssued ) {
+      if ( !badge.learningCompleted ) {
+        setRequestModal(!requestModal);
+        return;
+      }
       if (!studentInfo?.missionCompleted ) {
         reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
         return;
@@ -112,11 +118,11 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
           if ( badge.autoIssued ) {
             // success popup
             setSuccessModal(!successModal);
-            setBadgeState(IssueState.Issued);
+
           } else {
             setBadgeState(ChallengeState.Requested);
           }
-          getBadgeStudentInfo(badge.badgeId);
+          //getBadgeStudentInfo(badge.badgeId);
         }
         else {
           reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
@@ -131,6 +137,14 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   // 성공 모달 닫기
   const onControlSuccessModal = () => {
     setSuccessModal(!successModal);
+    setBadgeState(IssueState.Issued);
+    //getBadgeStudentInfo(badge.badgeId);
+
+    // 발급 완료 후, 획득 뱃지 목록으로 이동(임시)
+    history.push(CertificationRoutePaths.badgeEarnedBadgeList());
+
+    //onIssuedBadgeRefresh();
+    //setBadgeState(IssueState.Issued);
   };
 
   return (
