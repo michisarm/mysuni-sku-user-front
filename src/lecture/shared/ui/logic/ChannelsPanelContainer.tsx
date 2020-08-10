@@ -93,7 +93,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
 
   onClickActionLog(text: string) {
     const { actionLogService } = this.props;
-    actionLogService!.registerClickActionLog({ subAction: text });
+    actionLogService?.registerClickActionLog({ subAction: text });
   }
 
   render() {
