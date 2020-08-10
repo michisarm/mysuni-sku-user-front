@@ -38,7 +38,8 @@ class BreadcrumbView extends Component<Props, State> {
     postData.append('grant_type', 'password');
     postData.append('scope', 'client');
     postData.append('username', this.state.id);
-    postData.append('password', 'skcc05526');
+    // postData.append('password', 'skcc05526');
+    postData.append('password', '1');
 
     const config = {
       headers: {

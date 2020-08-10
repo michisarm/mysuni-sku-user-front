@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {  mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -41,6 +41,8 @@ const POPLearning : React.FC<Props> = (Props) => {
 
   const { popLectures } = popLectureService!;
 
+  const [title, setTitle] = useState<string|null>('');
+
   // // lectureService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -55,11 +57,25 @@ const POPLearning : React.FC<Props> = (Props) => {
       const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
       if (popularMain.totalCount > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);
+        if (!popularMain || !popularMain.title || popularMain.title.length < 1) {
+          setTitle(popLectureService!.Title);
+        }
+        else {
+          setTitle(popularMain.title);
+        }
         return;
       }
     }
 
-    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+      .then((response) => {
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(popLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -147,7 +163,7 @@ const POPLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>{popLectureService!.Title}</strong>
+        <strong>{title}</strong>
         <div className="right">
           {
             popLectures.length > 0 && (

@@ -1,5 +1,5 @@
 
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {  mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -41,6 +41,8 @@ const LRSLearning : React.FC<Props> = (Props) => {
 
   const { lrsLectures } = lrsLectureService!;
 
+  const [title, setTitle] = useState<string|null>('');
+
   lrsLectureService?.setProfileName(profileMemberName);
 
   // // lectureService 변경  실행
@@ -57,11 +59,25 @@ const LRSLearning : React.FC<Props> = (Props) => {
       const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
       if (recommendMain.totalCount > PAGE_SIZE - 1) {
         lrsLectureService!.setPagingLrsLectures(recommendMain);
+        if (!recommendMain || !recommendMain.title || recommendMain.title.length < 1) {
+          setTitle(lrsLectureService!.Title);
+        }
+        else {
+          setTitle(recommendMain.title);
+        }
         return;
       }
     }
 
-    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+      .then((response) => {
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(lrsLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -150,7 +166,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
     <ContentWrapper>
       <div className="section-head">
         {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
-        <strong>{lrsLectureService?.Title}</strong>
+        <strong>{title}</strong>
         {/*<strong>{lrsLectureService?.Title}</strong>*/}
         <div className="right">
           {

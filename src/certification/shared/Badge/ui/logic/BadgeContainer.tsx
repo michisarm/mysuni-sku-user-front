@@ -84,8 +84,8 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
           iconUrl
             ? domainPath + iconUrl
             : CategoryImageURL[
-                badge.mainCategoryId as keyof typeof CategoryImageURL
-              ]
+              badge.mainCategoryId as keyof typeof CategoryImageURL
+            ]
         }
         mainCategory={mainCategoryName}
       />

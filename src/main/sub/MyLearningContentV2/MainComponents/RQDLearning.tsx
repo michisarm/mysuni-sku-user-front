@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {mobxHelper, reactAlert} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
 import {RouteComponentProps, withRouter} from 'react-router';
@@ -11,7 +11,6 @@ import {NoSuchContentPanel} from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
-import {LectureService} from 'lecture/stores';
 import {Lecture} from 'lecture';
 import {InMyLectureCdoModel, InMyLectureModel, MyTrainingModel} from 'myTraining/model';
 import {InMyLectureService} from 'myTraining/stores';
@@ -38,6 +37,8 @@ const RQDLearning : React.FC<Props> = (Props) => {
 
   const { rqdLectures } = rqdLectureService!;
 
+  const [title, setTitle] = useState<string|null>('');
+
   // // rqdLectureService 변경  실행
   useEffect(() => {
     findMyContent();
@@ -52,12 +53,26 @@ const RQDLearning : React.FC<Props> = (Props) => {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       if (requiredMain.totalCount > PAGE_SIZE - 1) {
         rqdLectureService!.setPagingRqdLectures(requiredMain);
+        if (!requiredMain || !requiredMain.title || requiredMain.title.length < 1) {
+          setTitle(rqdLectureService!.Title);
+        }
+        else {
+          setTitle(requiredMain.title);
+        }
         return;
       }
     }
 
     // 서버로부터 가져오기
-    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+      .then((response) => {
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(rqdLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -145,7 +160,7 @@ const RQDLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>{rqdLectureService!.Title}</strong>
+        <strong>{title}</strong>
         <div className="right">
           {
             rqdLectures.length > 0 && (

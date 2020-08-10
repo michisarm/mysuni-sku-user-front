@@ -20,17 +20,19 @@ interface Props extends RouteComponentProps {
 
 const MyLearningContentContainer : React.FC<Props> = (Props) => {
   const { skProfileService } = Props;
-  const { profileMemberName, profileMemberEmail } = skProfileService!;
+  const { skProfile } = skProfileService!;
+  const { member } = skProfile;
+
 
   return (
     <>
-      <InProgressLearning profileMemberName={profileMemberName} />
-      <ChallengingBadge profileMemberName={profileMemberName} />
+      <InProgressLearning profileMemberName={member.name} />
+      <ChallengingBadge profileMemberName={member.name} />
       <MainBanner />
       <RequiredLearning />
       <NewLearning />
-      <PopularLearning profileMemberName={profileMemberName} />
-      <RecommendLearning profileMemberName={profileMemberName} />
+      <PopularLearning profileMemberName={member.name} />
+      <RecommendLearning profileMemberName={member.name} />
     </>
   );
 };
