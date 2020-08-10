@@ -152,7 +152,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
           <Fragment key={`container-${index}`}>
             <ChallengeBoxContainer
               myBadge={badge}
-              badgeStyle={BadgeStyle.Detail}
+              badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
               refreshChallengingContainer={refreshChallengingContainer}
             />

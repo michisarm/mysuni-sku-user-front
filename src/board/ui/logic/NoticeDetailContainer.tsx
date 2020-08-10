@@ -140,10 +140,10 @@ class NoticeDetailContainer extends React.Component<Props, State> {
               feedbackId={(post && post.commentFeedbackId) || ''}
               getFeedbackId={this.getFeedbackId}
               hideCamera
-              name={member.name}
-              email={member.email}
-              companyName={member.company}
-              departmentName={member.department}
+              // name={member.name}
+              // email={member.email}
+              // companyName={member.company}
+              // departmentName={member.department}
             />
           </div>
           <div className="actions bottom">

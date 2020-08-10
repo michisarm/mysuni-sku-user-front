@@ -14,7 +14,6 @@ import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
-import CertificationRoutePaths from '../../routePaths';
 
 
 interface Props extends RouteComponentProps {
