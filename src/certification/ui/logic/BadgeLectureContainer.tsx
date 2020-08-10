@@ -58,10 +58,10 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
   const [opened, setOpened] = useState(false);
 
-  useEffect(() => {
-    // 배지 구성 학습 리스트 조회하기
-    //getBadgeCompLectures(badgeId);
-  }, [badgeId]);
+  // useEffect(() => {
+  //   // 배지 구성 학습 리스트 조회하기
+  //   //getBadgeCompLectures(badgeId);
+  // }, [badgeId]);
 
   /*
   // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
