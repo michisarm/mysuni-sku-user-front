@@ -15,12 +15,12 @@ interface Props extends RouteComponentProps {
   myBadge: MyBadgeModel,
   badgeStyle: string,
   badgeSize: string,
-  // onIssuedBadgeRefresh: () => void,
+  refreshChallengingContainer: () => void,
 }
 
 const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, myBadge, badgeStyle, badgeSize } = Props;
+  const { badgeService, myBadge, badgeStyle, badgeSize, refreshChallengingContainer } = Props;
 
   const [compLearnings, setCompLearnings] = useState<BadgeCompModel[]>([]);
 
@@ -70,7 +70,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
             learningCount={learningCount}
             passedCount={passedCount}
             passedAll={learningCount > 0 && learningCount === passedCount}
-            // onIssuedBadgeRefresh={onIssuedBadgeRefresh}
+            refreshChallengingContainer={refreshChallengingContainer}
           />
 
           {/*도전중 뱃지별 학습리스트*/}

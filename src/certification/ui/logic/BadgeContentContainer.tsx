@@ -63,8 +63,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [studentInfo, setStudentInfo] = useState<BadgeStudentModel>();
 
   // 학습 카운트 정보
-  const passedCount = useRef(0);
-  const learningCount = useRef(0);
+  const [learningCount, setLearningCount] = useState(0);
+  const [passedCount, setPassedCount] = useState(0);
+
+  //const passedCount = useRef(0);
+  //const learningCount = useRef(0);
 
   // const [badgeLearningCount, setBadgeLearningCount] = useState({
   //   isCount: 0,
@@ -73,47 +76,36 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
   useEffect(() => {
 
-    // 수강정보 조회
-    findBadgeStudent(badgeId);
-
     // 구성학습 정보 조회
-    //findBadgeLearningInfo(badgeId);
+    findBadgeLearningInfo(badgeId);
 
   }, []);
 
   useEffect(() => {
 
     // 수강정보 조회
-    findBadgeLearningInfo(badgeId);
+    findBadgeStudent(badgeId);
 
-  }, [badgeId]);
+  }, [badgeId, learningCount, passedCount]);
 
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
     //
-    const badgeStudentInfo: BadgeStudentModel | null = await badgeService!.findBadgeStudentInfo(badgeId);
-
-    if (badgeStudentInfo === null) {
-      setBadgeState(ChallengeState.WaitForChallenge);
-    }
-    else {
-
-      // 구성학습 카운트 조회 시 학습완료count = 총학습개수 => 발급요청 상태로 변경
-      // if ( badgeDetail.autoIssued && badgeStudentInfo.learningCompleted ) {
-      //   //setSuccessModal(!successModal);
-      //   setBadgeState(ChallengeState.ReadyForRequest);
-      //   return;
-      // }
-
-      setStudentInfo(badgeStudentInfo);
-
-      // 수강 정보 조합 => Badge 상태
-      getBadgeState(
-        badgeStudentInfo.challengeState,
-        badgeStudentInfo.learningCompleted,
-        badgeStudentInfo.issueState
-      );
-    }
+    await badgeService!.findBadgeStudentInfo(badgeId)
+      .then((response: BadgeStudentModel | null) => {
+        if (response === null) {
+          setBadgeState(ChallengeState.WaitForChallenge);
+        }
+        else {
+          setStudentInfo(response);
+          // 수강 정보 조합 => Badge 상태
+          getBadgeState(
+            response.challengeState,
+            response.learningCompleted,
+            response.issueState
+          );
+        }
+      });
   };
 
   // 뱃지 구성 학습 리스트 조회하기
@@ -121,13 +113,16 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //
     const components: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
 
-    learningCount.current = components.length;
+    setLearningCount(components.length);
 
     let compList: BadgeCompData[] = [];
+    let passCount = 0;
     if (components.length > 0 && components[0] ) {
       components.map((data: BadgeCompModel) => {
         // 학습완료 카운트
-        if (data.learningState === 'Passed') { passedCount.current++; }
+        if (data.learningState === 'Passed') {
+          passCount++;
+        }
 
         const compData = new BadgeCompData();
         //console.log( data );
@@ -171,6 +166,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         compList = compList.concat(compData);
       });
     }
+    setPassedCount(passCount);
     setBadgeCompList(compList);
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
@@ -189,12 +185,13 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     issueState: string
   ) => {
     //
+    if (learningCount < 1) return;
 
     if (challengeState !== 'Challenged') {
       // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
     }
-    if (challengeState === 'Challenged') {
+    else {  //if (challengeState === 'Challenged') {
       if (issueState === IssueState.Issued) {
         // 획득 완료
         setBadgeState(ChallengeState.Issued);
@@ -217,7 +214,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         !learningCompleted
       ) {
 
-        if ( badgeDetail.autoIssued && learningCount.current > 0 && learningCount.current === passedCount.current ) {
+        if ( /*badgeDetail.autoIssued && */learningCount > 0 && learningCount === passedCount ) {
           setBadgeState(ChallengeState.ReadyForRequest);
         } else {
           // 진행 중 => 도전취소 버튼 노출
@@ -437,8 +434,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           onClickButton={getAction}
           issueStateTime={studentInfo?.issueStateTime}
           description={ChallengeDescription[badgeState as ChallengeState]}
-          learningTotalCount={learningCount.current}
-          learningCompleted={passedCount.current}
+          learningTotalCount={learningCount}
+          learningCompleted={passedCount}
         />
 
         {/*도전 취소 확인 팝업*/}

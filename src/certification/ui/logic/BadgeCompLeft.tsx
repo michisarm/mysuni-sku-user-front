@@ -27,12 +27,12 @@ interface Props extends RouteComponentProps {
   learningCount: number,
   passedCount: number,
   passedAll: boolean,
-  // onIssuedBadgeRefresh: () => void,
+  refreshChallengingContainer: () => void,
 }
 
 const BadgeCompLeft: React.FC<Props> = (Props) => {
   //
-  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll, history } = Props;
+  const { badgeService, badge, badgeStyle, badgeSize, learningCount, passedCount, passedAll, refreshChallengingContainer, history } = Props;
   const { badgeId } = badge;
 
   const [ studentInfo, setBadgeStudentInfo ] = useState<BadgeStudentModel | null>();
@@ -141,9 +141,9 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     //getBadgeStudentInfo(badge.badgeId);
 
     // 발급 완료 후, 획득 뱃지 목록으로 이동(임시)
-    history.push(CertificationRoutePaths.badgeEarnedBadgeList());
+    //history.push(CertificationRoutePaths.badgeEarnedBadgeList());
 
-    //onIssuedBadgeRefresh();
+    refreshChallengingContainer();
     //setBadgeState(IssueState.Issued);
   };
 
