@@ -103,10 +103,12 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
     if ( !badge.autoIssued ) {
       if ( !badge.learningCompleted ) {
-        setRequestModal(!requestModal);
-        return;
+        if ( !passedAll ) {
+          setRequestModal(!requestModal);
+          return;
+        }
       }
-      if (!studentInfo?.missionCompleted ) {
+      if ( badge.additionTermsExist && !studentInfo?.missionCompleted ) {
         reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
         return;
       }
@@ -121,6 +123,8 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
           } else {
             setBadgeState(ChallengeState.Requested);
+
+            getBadgeStudentInfo(badge.badgeId);
           }
           //getBadgeStudentInfo(badge.badgeId);
         }

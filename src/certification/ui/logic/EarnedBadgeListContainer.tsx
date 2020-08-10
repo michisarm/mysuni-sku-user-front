@@ -86,7 +86,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
       ) : (
         <NoSuchContentPanel message={(
           <>
-            <div className="text">도전중인 Badge가 없습니다.<br/>등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
+            <div className="text">획득한 Badge가 없습니다.<br/>등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.</div>
             <Button
               icon
               as="a"

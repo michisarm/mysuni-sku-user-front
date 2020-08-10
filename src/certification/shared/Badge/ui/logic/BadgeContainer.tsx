@@ -13,7 +13,7 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
-  mySUNI = '/static/media/logo_badge.svg',
+  mySUNI = '/static/media/logo-badge.svg',
 }
 
 enum CategoryImageURL {
@@ -57,13 +57,19 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   // 인증주체(mySUNI, Subsidiary, Etc...) 아이콘
   const getCertiAdminIcon = (
     certiAdminCategory: string,
-    certiAdminSubcategory: string
+    certiAdminSubcategory: string,
+    iconUrl: string,
   ) => {
     const language = 'kr';
 
     if (certiAdminCategory !== 'mySUNI') {
-      const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
-      return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
+      // iconUrl 이 있는 경우 우선 노출
+      if ( iconUrl ) {
+        return domainPath + iconUrl;
+      } else {
+        const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
+        return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
+      }
     } else {
       return certiAdminCategoryIcon.mySUNI;
     }
@@ -78,25 +84,27 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
       badgeSize={badgeSize}
     >
       {/*인증관리주체*/}
+      {/*직접 등록한 아이콘 우선 노출*/}
       <CertificationOrg
         certiAdminCategoryIcon={getCertiAdminIcon(
           certiAdminCategory.certiAdminCategory,
-          certiAdminSubcategory.certiAdminSubcategory
+          certiAdminSubcategory.certiAdminSubcategory,
+          iconUrl,
         )}
         certiAdminCategoryName={certiAdminCategory.certiAdminCategoryName}
       />
 
       {/*College, Category*/}
-      <College
-        iconUrl={
-          iconUrl
-            ? domainPath + iconUrl
-            : CategoryImageURL[
-                badge.mainCategoryId as keyof typeof CategoryImageURL
-            ]
-        }
-        mainCategory={mainCategoryName}
-      />
+      {/*<College*/}
+      {/*iconUrl={*/}
+      {/*iconUrl*/}
+      {/*? domainPath + iconUrl*/}
+      {/*: CategoryImageURL[*/}
+      {/*badge.mainCategoryId as keyof typeof CategoryImageURL*/}
+      {/*]*/}
+      {/*}*/}
+      {/*mainCategory={mainCategoryName}*/}
+      {/*/>*/}
 
       {/*뱃지명*/}
       <Title name={name} />

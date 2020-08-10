@@ -44,6 +44,18 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryNa
   //
   const learningTimeFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
 
+  // Level
+  const getDifficultyLevel = (level: string) => {
+    //
+    let levelHtml = '';
+    const num = Number(level.charAt(level.length - 1));
+    for ( let i = 0; i < num; i++ ) {
+      levelHtml += '<span class="star"></span>';
+    }
+
+    return levelHtml;
+  };
+
   return (
     <div className="info">
       <div>
@@ -61,7 +73,7 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryNa
       <div>
         <span className="detail level">
           <span>Level</span>
-          <span>{difficultyLevel}</span>
+          <span dangerouslySetInnerHTML={{__html: getDifficultyLevel(difficultyLevel)}}/>
         </span>
         <span className="detail period">
           <span>총 학습시간</span>

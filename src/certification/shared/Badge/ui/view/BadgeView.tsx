@@ -4,6 +4,12 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 
 const blankImage = `${getPublicUrl()}/images/all/icon-chanel-64-px.svg`;
 
+enum BadgeDifficultyLevel {
+  Level1 = 'basic',
+  Level2 = 'intermediate',
+  Level3 = 'advanced',
+}
+
 interface BadgeContentWrapperProps {
   onViewDetail?: () => void;
   badgeLevel: string;
@@ -21,13 +27,13 @@ export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = 
   <>
     {badgeStyle === 'List' ? (
       <a
-        className={classNames('badge', badgeLevel, badgeSize)}
+        className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}
         onClick={onViewDetail}
       >
         {children}
       </a>
     ) : (
-      <div className={classNames('badge', badgeLevel, badgeSize)}>
+      <div className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}>
         {children}
       </div>
     )}
