@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -23,6 +23,16 @@ const MyLearningContentContainer : React.FC<Props> = (Props) => {
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
 
+  const [memName, setMemName] = useState('');
+
+  useEffect(() => {
+    setMemName(member.name);
+    if (memName.length < 1) {
+      setTimeout(() => {
+        setMemName(skProfileService!.skProfile.member.name);
+      }, 200);
+    }
+  }, []);
 
   return (
     <>
