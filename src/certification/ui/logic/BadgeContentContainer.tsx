@@ -66,14 +66,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [learningCount, setLearningCount] = useState(0);
   const [passedCount, setPassedCount] = useState(0);
 
-  //const passedCount = useRef(0);
-  //const learningCount = useRef(0);
-
-  // const [badgeLearningCount, setBadgeLearningCount] = useState({
-  //   isCount: 0,
-  //   totalCount: 0
-  // });
-
   useEffect(() => {
 
     // 구성학습 정보 조회
@@ -88,7 +80,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
       findBadgeStudent(badgeId);
     }
 
-  }, [badgeId, learningCount, passedCount]);
+  }, [badgeId, learningCount]);
 
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
@@ -179,7 +171,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //   setBadgeState(ChallengeState.ReadyForRequest);
     // }
   };
-
 
   const getBadgeState = (
     challengeState: string,
@@ -289,7 +280,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
   };
 
-
   // 발급요청
   const onClickRequest = () => {
     //
@@ -367,7 +357,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           }
         });
     }
-
   };
 
   // 성공 모달 닫기
