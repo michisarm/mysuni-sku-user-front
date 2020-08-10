@@ -14,6 +14,14 @@ enum certiAdminCategoryIcon {
   Third = '/static/media/logo78x25.9e42a9b0.svg',
 }
 
+enum CategoryImageURL {
+  BDGCAT_AIDT = '/static/media/AI_DT.png',
+  BDGCAT_JOB = '/static/media/job.png',
+  BDGCAT_BIZ = '/static/media/biz.png',
+  BDGCAT_HAPPY = '/static/media/happiness.png',
+  BDGCAT_BM = '/static/media/BM_design.png',
+}
+
 interface Props extends RouteComponentProps {
   badge: BadgeModel | MyBadgeModel | BadgeDetailModel,
   badgeStyle: string,  // List, Detail
@@ -53,7 +61,10 @@ const BadgeContainer: FunctionComponent<Props> = (Props) => {
       />
 
       {/*College, Category*/}
-      <College iconUrl={domainPath + iconUrl} mainCategory={mainCategoryName}/>
+      <College
+        iconUrl={iconUrl ? domainPath + iconUrl : CategoryImageURL[badge.mainCategoryId as keyof typeof CategoryImageURL]}
+        mainCategory={mainCategoryName}
+      />
 
       {/*뱃지명*/}
       <Title name={name} />
