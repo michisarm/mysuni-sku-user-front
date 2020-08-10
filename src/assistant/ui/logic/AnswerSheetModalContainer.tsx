@@ -190,8 +190,12 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onSubmitClick() {
-    if(this.onCheckAnswer()){
-      reactConfirm({ title: '알림', message: 'Test를 최종 제출 하시겠습니까?', onOk: () => this.onSaveAnswerSheet(true) });
+    if (this.onCheckAnswer()) {
+      reactConfirm({
+        title: '알림',
+        message: 'Test를 최종 제출 하시겠습니까?',
+        onOk: () => this.onSaveAnswerSheet(true),
+      });
     }
   }
 
@@ -428,7 +432,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
                       </List.Item>
                     );
                   })) ||
-                null}
+                  null}
               </List>
             </div>
           </div>

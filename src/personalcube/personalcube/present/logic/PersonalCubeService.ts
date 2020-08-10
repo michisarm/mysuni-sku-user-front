@@ -17,11 +17,13 @@ export default class PersonalCubeService {
   personalCube: PersonalCubeModel = new PersonalCubeModel();
 
   @observable
-  personalCubeOffsetList: OffsetElementList<PersonalCubeModel> = { results: [], totalCount: 0 };
+  personalCubeOffsetList: OffsetElementList<PersonalCubeModel> = {
+    results: [],
+    totalCount: 0,
+  };
 
   @observable
   searchState: CubeState = CubeState.ALL;
-
 
   constructor(personalCubeApi: PersonalCubeApi) {
     //
@@ -39,12 +41,17 @@ export default class PersonalCubeService {
   @action
   registerCube(personalCube: PersonalCubeModel) {
     //
-    return this.personalCubeApi.registerCube(PersonalCubeModel.asCdo(personalCube));
+    return this.personalCubeApi.registerCube(
+      PersonalCubeModel.asCdo(personalCube)
+    );
   }
 
   modifyPersonalCube(personalCubeId: string, personalCube: PersonalCubeModel) {
     //
-    return this.personalCubeApi.modifyPersonalCube(personalCubeId, PersonalCubeModel.asNameValues(personalCube));
+    return this.personalCubeApi.modifyPersonalCube(
+      personalCubeId,
+      PersonalCubeModel.asNameValues(personalCube)
+    );
   }
 
   removePersonalCube(personalCubeId: string) {
@@ -55,19 +62,31 @@ export default class PersonalCubeService {
   @action
   async findPersonalCube(personalCubeId: string) {
     //
-    const personalCube = await this.personalCubeApi.findPersonalCube(personalCubeId);
+    const personalCube = await this.personalCubeApi.findPersonalCube(
+      personalCubeId
+    );
 
     if (personalCube.contents.fileBoxId) {
-      const fileBox = await this.personalCubeApi.findFileBox(personalCube.contents.fileBoxId);
+      const fileBox = await this.personalCubeApi.findFileBox(
+        personalCube.contents.fileBoxId
+      );
       // console.log('findPersonalCube type : ', typeof fileBox);
       // console.log('findPersonalCube length : ', fileBox?.length);
-      if (fileBox === '' || fileBox === '[]' || fileBox === null || fileBox === undefined || fileBox.length === 0) {
+      if (
+        fileBox === '' ||
+        fileBox === '[]' ||
+        fileBox === null ||
+        fileBox === undefined ||
+        fileBox.length === 0
+      ) {
         personalCube.contents.fileBoxId = '';
       }
     }
 
     if (personalCube) {
-      return runInAction(() => this.personalCube = new PersonalCubeModel(personalCube));
+      return runInAction(
+        () => (this.personalCube = new PersonalCubeModel(personalCube))
+      );
     }
     return null;
   }
@@ -91,27 +110,45 @@ export default class PersonalCubeService {
   @action
   async findAllPersonalCubes(offset: number, limit: number) {
     //
-    const personalCubes = await this.personalCubeApi.findAllPersonalCubes(offset, limit);
+    const personalCubes = await this.personalCubeApi.findAllPersonalCubes(
+      offset,
+      limit
+    );
 
-    runInAction(() => this.personalCubeOffsetList = personalCubes);
+    runInAction(() => (this.personalCubeOffsetList = personalCubes));
     return personalCubes;
   }
 
+  // create list 조회
   @action
-  async findPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
+  async findPersonalCubesForCreator(
+    offset: number,
+    limit: number,
+    cubeState?: CubeState
+  ) {
     //
-    const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(offset, limit, cubeState);
+    const personalCubeOffsetList = await this.personalCubeApi.findPersonalCubesForCreator(
+      offset,
+      limit,
+      cubeState
+    );
 
     runInAction(() => {
-      this.personalCubeOffsetList.results = this.personalCubeOffsetList.results.concat(personalCubeOffsetList.results);
-      this.personalCubeOffsetList.totalCount = personalCubeOffsetList.totalCount;
+      this.personalCubeOffsetList.results = this.personalCubeOffsetList.results.concat(
+        personalCubeOffsetList.results
+      );
+      this.personalCubeOffsetList.totalCount =
+        personalCubeOffsetList.totalCount;
     });
     return personalCubeOffsetList;
   }
 
   @action
   clear() {
-    this.personalCubeOffsetList = { results: [], totalCount: 0 } as OffsetElementList<PersonalCubeModel>;
+    this.personalCubeOffsetList = {
+      results: [],
+      totalCount: 0,
+    } as OffsetElementList<PersonalCubeModel>;
   }
 
   // SearchState --------------------------------------------------------------------------------------------

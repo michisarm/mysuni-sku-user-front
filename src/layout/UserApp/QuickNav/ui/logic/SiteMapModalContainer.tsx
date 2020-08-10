@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -14,16 +13,15 @@ import { CollegeLectureCountService } from 'lecture/stores';
 // import { CollegeLectureCountService, CollegeLectureCountRdo } from 'lecture';
 import SiteMapView, { SiteMap } from '../view/SiteMapView';
 
-
 interface Props extends RouteComponentProps {
-  trigger: React.ReactNode,
-  collegeLectureCountService?: CollegeLectureCountService,
+  trigger: React.ReactNode;
+  collegeLectureCountService?: CollegeLectureCountService;
 }
 
 interface State {
-  open: boolean,
-  topSiteMaps: SiteMap[]
-  bottomSiteMaps: SiteMap[]
+  open: boolean;
+  topSiteMaps: SiteMap[];
+  bottomSiteMaps: SiteMap[];
 }
 
 @inject(mobxHelper.injectFrom('lecture.collegeLectureCountService'))
@@ -39,14 +37,33 @@ class SiteMapModalContainer extends Component<Props, State> {
       { name: 'DT', path: lectureRoutePaths.collegeLectures('CLG00002') },
       { name: '행복', path: lectureRoutePaths.collegeLectures('CLG00003') },
       { name: 'SV', path: lectureRoutePaths.collegeLectures('CLG00004') },
-      { name: '혁신디자인', path: lectureRoutePaths.collegeLectures('CLG00005') },
+      {
+        name: '혁신디자인',
+        path: lectureRoutePaths.collegeLectures('CLG00005'),
+      },
       { name: 'Global', path: lectureRoutePaths.collegeLectures('CLG00006') },
-      { name: 'Leadership', path: lectureRoutePaths.collegeLectures('CLG00007') },
-      { name: 'Management', path: lectureRoutePaths.collegeLectures('CLG00008') },
+      {
+        name: 'Leadership',
+        path: lectureRoutePaths.collegeLectures('CLG00007'),
+      },
+      {
+        name: 'Management',
+        path: lectureRoutePaths.collegeLectures('CLG00008'),
+      },
       { name: '반도체', path: lectureRoutePaths.collegeLectures('CLG00019') },
-      { name: 'SK아카데미', path: lectureRoutePaths.collegeLectures('CLG00018') },
+      {
+        name: '에너지솔루션',
+        path: lectureRoutePaths.collegeLectures('CLG0001c'),
+      },
+      {
+        name: 'SK아카데미',
+        path: lectureRoutePaths.collegeLectures('CLG00018'),
+      },
       { name: 'SK경영', path: lectureRoutePaths.collegeLectures('CLG00017') },
-      { name: 'Life Style', path: lectureRoutePaths.collegeLectures('CLG0001a') },
+      {
+        name: 'Life Style',
+        path: lectureRoutePaths.collegeLectures('CLG0001a'),
+      },
     ],
   };
 
@@ -76,12 +93,18 @@ class SiteMapModalContainer extends Component<Props, State> {
     },
     {
       name: 'Recommend',
-      items: [
-        { name: 'Recommend', path: lectureRoutePaths.recommend() },
-      ],
+      items: [{ name: 'Recommend', path: lectureRoutePaths.recommend() }],
     },
     {
-      name: <span><br /><br />Community<br />(서비스 예정)</span>,
+      name: (
+        <span>
+          <br />
+          <br />
+          Community
+          <br />
+          (서비스 예정)
+        </span>
+      ),
       items: [],
       // items: [
       //   { name: 'My Community', path: myPageRoutePaths.communityMyCommunity() },
@@ -97,7 +120,10 @@ class SiteMapModalContainer extends Component<Props, State> {
       items: [
         { name: 'mySUNI 소개', path: mainRoutePaths.introductionMySuni() },
         { name: 'College 소개', path: mainRoutePaths.introductionCollege() },
-        { name: '인증제도 소개', path: mainRoutePaths.introductionCertification() },
+        {
+          name: '인증제도 소개',
+          path: mainRoutePaths.introductionCertification(),
+        },
       ],
     },
     {
@@ -130,7 +156,6 @@ class SiteMapModalContainer extends Component<Props, State> {
     bottomSiteMaps: [],
   };
 
-
   // componentDidMount() {
   //   //
   //   this.setSiteMapWithCount();
@@ -145,20 +170,22 @@ class SiteMapModalContainer extends Component<Props, State> {
 
     const categorySiteMap = {
       ...baseCategoryItems,
-      items: baseCategoryItems.items.map((item) => {
+      items: baseCategoryItems.items.map(item => {
         //
-        const college = colleges.find((college: any) => college.name === item.name);
+        const college = colleges.find(
+          (college: any) => college.name === item.name
+        );
 
         return {
           ...item,
           path: college && lectureRoutePaths.collegeLectures(college.collegeId),
-          count: college && college.collegeCount || 0,
+          count: (college && college.collegeCount) || 0,
         };
       }),
     };
 
-    const topSiteMaps = [ categorySiteMap, ...baseTopSiteMaps ];
-    const bottomSiteMaps = [ ...baseBottomSiteMaps ];
+    const topSiteMaps = [categorySiteMap, ...baseTopSiteMaps];
+    const bottomSiteMaps = [...baseBottomSiteMaps];
 
     this.setState({
       topSiteMaps,
@@ -195,12 +222,19 @@ class SiteMapModalContainer extends Component<Props, State> {
     const { open, topSiteMaps, bottomSiteMaps } = this.state;
 
     return (
-      <Modal className="base w1000" trigger={trigger} open={open} onOpen={this.onOpen} onClose={this.onClose}>
+      <Modal
+        className="base w1000"
+        trigger={trigger}
+        open={open}
+        onOpen={this.onOpen}
+        onClose={this.onClose}
+      >
         <Modal.Header>
           mySUNI Site Map
           <div className="right-btn">
             <Button icon className="btn-blue2" onClick={this.onClickHome}>
-              <Icon className="homelink" />Home
+              <Icon className="homelink" />
+              Home
             </Button>
           </div>
         </Modal.Header>
@@ -212,7 +246,9 @@ class SiteMapModalContainer extends Component<Props, State> {
           />
         </Modal.Content>
         <Modal.Actions className="actions">
-          <Button className="w190 pop d" onClick={this.onClose}>Close</Button>
+          <Button className="w190 pop d" onClick={this.onClose}>
+            Close
+          </Button>
         </Modal.Actions>
       </Modal>
     );

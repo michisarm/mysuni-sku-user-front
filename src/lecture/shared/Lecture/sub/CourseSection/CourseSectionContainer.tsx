@@ -1,23 +1,20 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
-
 
 export const CourseSectionContext = React.createContext({
   open: false,
   setOpen: (open: boolean) => {},
 });
 
-
 interface Props {
-  lecture: React.ReactNode,
-  children: React.ReactNode,
-  exam?: any,
+  lecture: React.ReactNode;
+  children: React.ReactNode;
+  exam?: any;
 }
 
 interface State {
-  open: boolean,
+  open: boolean;
 }
 
 @reactAutobind
@@ -40,7 +37,7 @@ class CourseSectionContainer extends Component<Props, State> {
   }
 
   onToggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       open: !prevState.open,
     }));
   }

@@ -13,11 +13,22 @@ import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExamPaperService, ExaminationService } from 'assistant/stores';
 import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
+import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 
 import routePaths from '../../../routePaths';
-import { LectureViewModel, LectureServiceType, StudentCdoModel, StudentJoinRdoModel } from '../../../model';
-import { CourseLectureService, LectureService, ProgramLectureService, StudentService } from '../../../stores';
+import {
+  LectureViewModel,
+  LectureServiceType,
+  StudentCdoModel,
+  StudentJoinRdoModel,
+} from '../../../model';
+import {
+  CourseLectureService,
+  LectureService,
+  ProgramLectureService,
+  StudentService,
+} from '../../../stores';
 import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer';
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewView from '../view/LectureOverviewView';
@@ -28,52 +39,56 @@ import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  skProfileService: SkProfileService,
-  collegeService: CollegeService,
-  courseLectureService: CourseLectureService,
-  programLectureService: ProgramLectureService,
-  lectureService: LectureService,
-  studentService: StudentService,
-  commentService: CommentService,
+  skProfileService: SkProfileService;
+  collegeService: CollegeService;
+  courseLectureService: CourseLectureService;
+  programLectureService: ProgramLectureService;
+  lectureService: LectureService;
+  studentService: StudentService;
+  commentService: CommentService;
 
-  coursePlanService: CoursePlanService,
-  examinationService: ExaminationService,
-  examPaperService: ExamPaperService,
-  answerSheetService: AnswerSheetService,
-  surveyCaseService: SurveyCaseService,
+  coursePlanService: CoursePlanService;
+  examinationService: ExaminationService;
+  examPaperService: ExamPaperService;
+  answerSheetService: AnswerSheetService;
+  surveyCaseService: SurveyCaseService;
+  actionEventService: ActionEventService;
 }
 
 interface State {
-  loaded: boolean,
-  examTitle: string,
-  surveyTitle: string,
-  tabState: string,
+  loaded: boolean;
+  examTitle: string;
+  surveyTitle: string;
+  tabState: string;
 }
 
 interface RouteParams {
-  cineroomId: string
-  collegeId: string,
-  lectureCardId: string,
-  coursePlanId: string,
-  serviceId: string,
-  serviceType: LectureServiceType,
+  cineroomId: string;
+  collegeId: string;
+  lectureCardId: string;
+  coursePlanId: string;
+  serviceId: string;
+  serviceType: LectureServiceType;
 }
 
-@inject(mobxHelper.injectFrom(
-  'college.collegeService',
-  'profile.skProfileService',
-  'lecture.courseLectureService',
-  'lecture.programLectureService',
-  'lecture.lectureService',
-  'lecture.studentService',
-  'shared.commentService',
+@inject(
+  mobxHelper.injectFrom(
+    'college.collegeService',
+    'profile.skProfileService',
+    'lecture.courseLectureService',
+    'lecture.programLectureService',
+    'lecture.lectureService',
+    'lecture.studentService',
+    'shared.commentService',
 
-  'course.coursePlanService',
-  'assistant.examinationService',
-  'assistant.examPaperService',
-  'survey.answerSheetService',
-  'survey.surveyCaseService',
-))
+    'course.coursePlanService',
+    'assistant.examinationService',
+    'assistant.examPaperService',
+    'survey.answerSheetService',
+    'survey.surveyCaseService',
+    'shared.actionEventService'
+  )
+)
 @reactAutobind
 @observer
 class CoursePage extends Component<Props, State> {
@@ -107,6 +122,7 @@ class CoursePage extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+    this.publishViewEvent();
     // console.log('Course Page : componentDidMount');
   }
 
@@ -115,9 +131,13 @@ class CoursePage extends Component<Props, State> {
     // console.log('serviceId : ', prevProps.match.params.serviceId, ' - ', this.props.match.params.serviceId);
     // console.log('serviceType : ', prevProps.match.params.serviceType, ' - ', this.props.match.params.serviceType);
 
-    if (prevProps.match.params.serviceType !== this.props.match.params.serviceType) {
+    if (
+      prevProps.match.params.serviceType !== this.props.match.params.serviceType
+    ) {
       window.location.reload();
-    } else if (prevProps.match.params.serviceId !== this.props.match.params.serviceId) {
+    } else if (
+      prevProps.match.params.serviceId !== this.props.match.params.serviceId
+    ) {
       this.init();
     }
   }
@@ -137,21 +157,45 @@ class CoursePage extends Component<Props, State> {
   }
 
   async init() {
-    //
+    const { skProfileService } = this.props;
+    skProfileService!.findSkProfile();
     this.setState({ loaded: false });
     await this.findBaseInfo();
     this.findProgramOrCourseLecture();
-    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+    await this.props.studentService!.findIsJsonStudent(
+      this.props.match.params.serviceId
+    );
     await this.findStudent();
     this.setState({ loaded: true });
+  }
+
+  async publishViewEvent() {
+    const { actionEventService, coursePlanService } = this.props;
+    const { match } = this.props;
+    const { serviceType, collegeId, coursePlanId, serviceId } = match.params;
+
+    const coursePlan = await coursePlanService.findCoursePlan(coursePlanId);
+    const courseName = coursePlan.name;
+    const menu = 'COURSE_VIEW';
+    const lectureCardId = serviceId;
+
+    actionEventService.registerViewActionLog({
+      menu,
+      serviceType,
+      collegeId,
+      coursePlanId,
+      lectureCardId,
+      courseName,
+    });
   }
 
   /**
    * Course Lecture or Prgrame Lecture 내 Video learning 을 Play한 경우 Lecture의 학습상태를 변경함.
    */
-  async onRefreshLearningState()
-  {
-    await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
+  async onRefreshLearningState() {
+    await this.props.studentService!.findIsJsonStudent(
+      this.props.match.params.serviceId
+    );
     this.findStudent();
   }
 
@@ -161,9 +205,7 @@ class CoursePage extends Component<Props, State> {
   }
 
   getStudentJoin() {
-    const {
-      studentService,
-    } = this.props;
+    const { studentService } = this.props;
     const { studentJoins }: StudentService = studentService!;
 
     if (studentJoins && studentJoins.length) {
@@ -175,9 +217,7 @@ class CoursePage extends Component<Props, State> {
   }
 
   async findStudent() {
-    const {
-      studentService,
-    } = this.props;
+    const { studentService } = this.props;
     const { studentJoins }: StudentService = studentService!;
 
     if (studentJoins && studentJoins.length) {
@@ -185,60 +225,87 @@ class CoursePage extends Component<Props, State> {
 
       if (studentJoin) await studentService!.findStudent(studentJoin.studentId);
       else studentService!.clear();
-    }
-    else studentService!.clear();
+    } else studentService!.clear();
   }
 
   async findBaseInfo() {
     //
     const {
-      match, collegeService, coursePlanService, examinationService, examPaperService, answerSheetService, surveyCaseService,
+      match,
+      collegeService,
+      coursePlanService,
+      examinationService,
+      examPaperService,
+      answerSheetService,
+      surveyCaseService,
     } = this.props;
     const { params } = match;
 
     collegeService.findCollege(params.collegeId);
 
-    const coursePlan = await coursePlanService.findCoursePlan(params.coursePlanId);
+    const coursePlan = await coursePlanService.findCoursePlan(
+      params.coursePlanId
+    );
     await coursePlanService.findCoursePlanContents(coursePlan.contentsId);
 
     if (coursePlanService.coursePlanContents.testId) {
-      const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
-      const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+      const examination = await ExaminationService.instance.findExamination(
+        coursePlanService.coursePlanContents.testId
+      );
+      const examPaper = await ExamPaperService.instance.findExamPaper(
+        examination.paperId
+      );
 
       this.state.examTitle = examPaper.title;
     }
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
-      await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
-      const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+      await AnswerSheetService.instance.findAnswerSheet(
+        coursePlanService.coursePlanContents.surveyCaseId
+      );
+      const surveyCase = await surveyCaseService!.findSurveyCase(
+        coursePlanService.coursePlanContents.surveyCaseId
+      );
 
-      const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+      const obj = JSON.parse(JSON.stringify(surveyCase.titles));
       const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
       const { answerSheet } = answerSheetService!;
-      const disabled = answerSheet && answerSheet.progress && answerSheet.progress === AnswerProgress.Complete;
+      const disabled =
+        answerSheet &&
+        answerSheet.progress &&
+        answerSheet.progress === AnswerProgress.Complete;
 
       this.state.surveyState = disabled;
-      this.state.surveyTitle =  title.ko;
+      this.state.surveyTitle = title.ko;
     }
   }
 
   async findProgramOrCourseLecture() {
     //
-    const { match, programLectureService, courseLectureService, commentService } = this.props;
+    const {
+      match,
+      programLectureService,
+      courseLectureService,
+      commentService,
+    } = this.props;
 
     if (match.params.serviceType === LectureServiceType.Program) {
       const {
         lectureCardUsids,
         courseLectureUsids,
         commentId,
-      } = await programLectureService.findProgramLecture(match.params.serviceId);
+      } = await programLectureService.findProgramLecture(
+        match.params.serviceId
+      );
       commentService.countByFeedbackId(commentId);
-      const lectureViews = await this.findLectureViews(lectureCardUsids, courseLectureUsids);
+      const lectureViews = await this.findLectureViews(
+        lectureCardUsids,
+        courseLectureUsids
+      );
 
       this.findSubLectureViews(lectureViews);
-    }
-    else {
+    } else {
       const {
         lectureCardUsids,
         commentId,
@@ -249,21 +316,36 @@ class CoursePage extends Component<Props, State> {
     }
   }
 
-  async findLectureViews(lectureCardUsids: string[], courseLectureUsids?: string[], ) {
+  async findLectureViews(
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
     //
     const { match, lectureService } = this.props;
 
-    return lectureService.findLectureViews(match.params.coursePlanId, lectureCardUsids, courseLectureUsids);
+    return lectureService.findLectureViews(
+      match.params.coursePlanId,
+      lectureCardUsids,
+      courseLectureUsids
+    );
   }
 
   async findSubLectureViews(lectureViews: LectureViewModel[]) {
     //
     const { lectureService } = this.props;
 
-    lectureViews.map(async (lectureView) => {
-      if (lectureView.serviceType === LectureServiceType.Program || lectureView.serviceType === LectureServiceType.Course
-        && lectureView.lectureCardUsids && lectureView.lectureCardUsids.length > 0) {
-        await lectureService.findSubLectureViews(lectureView.id, lectureView.coursePlanId, lectureView.lectureCardUsids);
+    lectureViews.map(async lectureView => {
+      if (
+        lectureView.serviceType === LectureServiceType.Program ||
+        (lectureView.serviceType === LectureServiceType.Course &&
+          lectureView.lectureCardUsids &&
+          lectureView.lectureCardUsids.length > 0)
+      ) {
+        await lectureService.findSubLectureViews(
+          lectureView.id,
+          lectureView.coursePlanId,
+          lectureView.lectureCardUsids
+        );
       }
     });
   }
@@ -271,7 +353,9 @@ class CoursePage extends Component<Props, State> {
   getViewObject() {
     //
     const {
-      coursePlanService, studentService, courseLectureService,
+      coursePlanService,
+      studentService,
+      courseLectureService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
@@ -302,19 +386,29 @@ class CoursePage extends Component<Props, State> {
     if (student && student.id) {
       if (student.proposalState === ProposalState.Approved) {
         if (
-          student.learningState === LearningState.Waiting || student.learningState === LearningState.HomeworkWaiting
-          || student.learningState === LearningState.TestWaiting
-          || student.learningState === LearningState.TestPassed || student.learningState === LearningState.Failed
+          student.learningState === LearningState.Waiting ||
+          student.learningState === LearningState.HomeworkWaiting ||
+          student.learningState === LearningState.TestWaiting ||
+          student.learningState === LearningState.TestPassed ||
+          student.learningState === LearningState.Failed
         ) {
           state = SubState.InProgress;
         }
-        if (student.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (student.learningState === LearningState.Passed) state = SubState.Completed;
-        if (student.learningState === LearningState.Missed) state = SubState.Missed;
+        if (student.learningState === LearningState.Progress) {
+          state = SubState.InProgress;
+        }
+        if (student.learningState === LearningState.Passed) {
+          state = SubState.Completed;
+        }
+        if (student.learningState === LearningState.Missed) {
+          state = SubState.Missed;
+        }
       }
 
       if (student && student.learningState === LearningState.Passed) {
         passedState = true;
+      } else {
+        passedState = false;
       }
 
       // if (student.learningState === LearningState.Progress) {
@@ -334,7 +428,7 @@ class CoursePage extends Component<Props, State> {
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: coursePlan.learningTime,
-      rollBooksPassedStudentCount: courseLecture.passedStudentCount,  // Todo
+      rollBooksPassedStudentCount: courseLecture.passedStudentCount, // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,
@@ -360,7 +454,7 @@ class CoursePage extends Component<Props, State> {
 
       fileBoxId: coursePlanContents.fileBoxId,
       reportFileBoxId,
-      stamp: coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0,
+      stamp: (coursePlan.stamp.stampReady && coursePlan.stamp.stampCount) || 0,
 
       //etc
       category: coursePlan.category,
@@ -376,9 +470,7 @@ class CoursePage extends Component<Props, State> {
 
   getTypeViewObject(): any {
     //
-    const {
-      coursePlanService,
-    } = this.props;
+    const { coursePlanService } = this.props;
     const { coursePlanContents } = coursePlanService!;
 
     return {
@@ -389,7 +481,10 @@ class CoursePage extends Component<Props, State> {
 
   getInMyLectureCdo(viewObject: any): InMyLectureCdoModel {
     const {
-      coursePlanService, programLectureService, courseLectureService, match,
+      coursePlanService,
+      programLectureService,
+      courseLectureService,
+      match,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { programLecture } = programLectureService!;
@@ -407,9 +502,18 @@ class CoursePage extends Component<Props, State> {
       requiredSubsidiaries: coursePlan.courseOpen.requiredSubsidiaries,
       cubeId: '',
       courseSetJson: coursePlanContents.courseSet,
-      courseLectureUsids: match.params.serviceType === 'Program' ? programLecture.courseLectureUsids : [],
-      lectureCardUsids: match.params.serviceType === 'Program' ? programLecture.lectureCardUsids || [] : courseLecture!.lectureCardUsids || [],
-      reviewId: match.params.serviceType === 'Program' ? programLecture!.reviewId || '' : courseLecture!.reviewId || '',
+      courseLectureUsids:
+        match.params.serviceType === 'Program'
+          ? programLecture.courseLectureUsids
+          : [],
+      lectureCardUsids:
+        match.params.serviceType === 'Program'
+          ? programLecture.lectureCardUsids || []
+          : courseLecture!.lectureCardUsids || [],
+      reviewId:
+        match.params.serviceType === 'Program'
+          ? programLecture!.reviewId || ''
+          : courseLecture!.reviewId || '',
       baseUrl: coursePlan.iconBox.baseUrl,
       servicePatronKeyString: coursePlan.patronKey.keyString,
     });
@@ -427,10 +531,9 @@ class CoursePage extends Component<Props, State> {
         item: (
           <>
             Comments
-            {
-              commentCount && commentCount.count > 0 && <span className="count">+{commentCount.count}</span>
-              || <span className="count">{commentCount.count}</span>
-            }
+            {(commentCount && commentCount.count > 0 && (
+              <span className="count">+{commentCount.count}</span>
+            )) || <span className="count">{commentCount.count}</span>}
           </>
         ),
         render: this.renderComments,
@@ -444,7 +547,8 @@ class CoursePage extends Component<Props, State> {
     const viewObject = this.getViewObject();
 
     if (viewObject.examId) {
-      StudentApi.instance.modifyStudentForExam(student.id, viewObject.examId)
+      StudentApi.instance
+        .modifyStudentForExam(student.id, viewObject.examId)
         .then(() => {
           if (this.init()) this.init();
         });
@@ -458,8 +562,7 @@ class CoursePage extends Component<Props, State> {
 
     if (match.params.serviceType === LectureServiceType.Program) {
       reviewId = programLectureService.programLecture.reviewId;
-    }
-    else {
+    } else {
       reviewId = courseLectureService.courseLecture.reviewId;
     }
     return reviewId;
@@ -488,7 +591,6 @@ class CoursePage extends Component<Props, State> {
     this.state.tabState = 'list';
 
     return this.renderBaseContentWith(
-
       <CourseContainer
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
@@ -517,9 +619,14 @@ class CoursePage extends Component<Props, State> {
   }
 
   renderComments() {
-    //
-    const { programLectureService, courseLectureService, match } = this.props;
+    const {
+      programLectureService,
+      courseLectureService,
+      match,
+      skProfileService,
+    } = this.props;
     const { params } = match;
+    const { member } = skProfileService!.skProfile;
     this.state.tabState = 'comments';
 
     let reviewFeedbackId = '';
@@ -530,8 +637,7 @@ class CoursePage extends Component<Props, State> {
 
       reviewFeedbackId = programLecture.reviewId;
       commentFeedbackId = programLecture.commentId;
-    }
-    else {
+    } else {
       const { courseLecture } = courseLectureService;
 
       reviewFeedbackId = courseLecture.reviewId;
@@ -542,6 +648,10 @@ class CoursePage extends Component<Props, State> {
       <LectureCommentsContainer
         reviewFeedbackId={reviewFeedbackId}
         commentFeedbackId={commentFeedbackId}
+        name={member.name}
+        email={member.email}
+        companyName={member.company}
+        departmentName={member.department}
       />
     );
   }
@@ -589,8 +699,17 @@ class CoursePage extends Component<Props, State> {
       <ContentLayout
         className="channel"
         breadcrumb={[
-          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${coursePlan.category.channel.name} Channel`, path: routePaths.channelLectures(college.collegeId, coursePlan.category.channel.id) },
+          {
+            text: `${college.name} College`,
+            path: routePaths.collegeLectures(college.collegeId),
+          },
+          {
+            text: `${coursePlan.category.channel.name} Channel`,
+            path: routePaths.channelLectures(
+              college.collegeId,
+              coursePlan.category.channel.id
+            ),
+          },
         ]}
       >
         <CourseContentHeaderContainer
@@ -604,7 +723,9 @@ class CoursePage extends Component<Props, State> {
           tabs={this.getTabs()}
           header={
             <div className="cont-inner summary">
-              <Label className={coursePlan.category.color}>{coursePlan.category.college.name}</Label>
+              <Label className={coursePlan.category.color}>
+                {coursePlan.category.college.name}
+              </Label>
               <span className="detail-tit">{coursePlan.name}</span>
             </div>
           }

@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { ContentLayout, Tab, TabItemModel } from 'shared';
-import { ActionLogService } from 'shared/stores';
+import { ActionLogService, ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
 import { LectureService } from 'lecture/stores';
 
@@ -20,14 +20,17 @@ import MyTrainingService from '../../present/logic/MyTrainingService';
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   actionLogService?: ActionLogService,
+  actionEventService: ActionEventService,
   notieService?: NotieService,
   lectureService: LectureService,
   inMyLectureService: InMyLectureService,
   myTrainingService: MyTrainingService,
+  
 }
 
 @inject(mobxHelper.injectFrom(
   'shared.actionLogService',
+  'shared.actionEventService',
   'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
@@ -40,6 +43,7 @@ class MyLearningPage extends Component<Props> {
   componentDidMount(): void {
     //
     this.getNoties();
+    this.publishViewEvent();
   }
 
   getNoties() {
@@ -50,6 +54,13 @@ class MyLearningPage extends Component<Props> {
 
     //권장과정 갯수 조회
     lectureService!.countRequiredLectures();
+  }
+
+  publishViewEvent() {
+    const {actionEventService} = this.props;
+    const menu = `LEARNING_VIEW`;
+
+    actionEventService.registerViewActionLog({menu});
   }
 
   getTabs() {
@@ -117,7 +128,7 @@ class MyLearningPage extends Component<Props> {
     );
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     const notieService = this.props.notieService!;
     const { history, actionLogService } = this.props;
@@ -139,6 +150,8 @@ class MyLearningPage extends Component<Props> {
       case MyLearningContentType.Enrolled:
         notieService.readNotie('Learning_Waiting');
     }
+
+    return routePaths.learningTab(tab.name);
   }
 
   render() {

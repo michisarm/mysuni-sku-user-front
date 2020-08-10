@@ -535,6 +535,42 @@ const panes = [
         </div>
         </div>
       </Tab.Pane>,
+  },{
+    menuItem: '에너지솔루션', render: () =>
+      <Tab.Pane>
+        <div className="ui attached tab full segment active" data-tab="colleges11">
+          <div className="college-cont-title energy">
+            <div className="belt">
+              <div className="panopto">
+                <iframe
+                  title="video type"
+                  src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=260511f9-c00b-436c-87db-abe5004db668"
+                  width="436" height="245"
+                  style={{padding: '0px', border: '0px'}}
+                  frameBorder="0"
+                  allowFullScreen
+                  allow="autoplay" />
+              </div>
+
+              <div className="label">에너지솔루션 College</div>
+              <div className="strong">“에너지와 AI/DT가 만나 Deep Change가 시작되는 곳”</div>
+              <div className="normal">
+                에너지 역량과 AI/DT 역량의 융합을 통해 새로운 에너지솔루션 비즈니스를 준비합니다.<br/>
+                융합을 위한 공감대 형성부터 고객 가치 창출 및 플랫폼 비즈니스로의 확장을<br/>
+                위한 과정들을 통해 Deep Change를 위한 Human Capital Pool을 확보하는<br/>
+                것을 목표로 두고 있습니다.
+              </div>
+            </div>
+          </div>
+          <div className="college-cont-map energy">
+            <div className="belt">
+              <div className="map">
+                <Image src={`${PUBLIC_URL}/images/all/in-02-01-c-11.svg`} alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Tab.Pane>
   },
   {
     menuItem: 'SK아카데미', render: () =>
@@ -613,7 +649,7 @@ const panes = [
 
         </div>
       </Tab.Pane>,
-  },
+  }
 ];
 
 interface Props extends RouteComponentProps {

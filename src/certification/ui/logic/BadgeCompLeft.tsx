@@ -13,6 +13,7 @@ import ChallengeBoxCompanionModal from '../view/ChallengeBadgeCompanionModal';
 import IssueStateNameType from '../../shared/Badge/ui/model/IssueStateNameType';
 import BadgeStudentModel from '../model/BadgeStudentModel';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
+import ChallengeSuccessModal from './ChallengeSuccessModal';
 
 
 interface Props extends RouteComponentProps {
@@ -37,6 +38,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
   const [ requestModal, setRequestModal ] = useState(false);
   const [ successModal, setSuccessModal ] = useState(false);
+
 
   useEffect(() => {
     //
@@ -98,12 +100,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
     if ( id === undefined || id === null ) return;
 
     if ( !badge.autoIssued ) {
-      if (!studentInfo?.learningCompleted) {
-        // 학습 미완료 상태에서 발급요청 버튼 누름
-        setRequestModal(!requestModal);
-        return;
-      }
-      else if (!studentInfo?.missionCompleted ) {
+      if (!studentInfo?.missionCompleted ) {
         reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
         return;
       }
@@ -113,6 +110,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
       .then((response) => {
         if ( response ) {
           if ( badge.autoIssued ) {
+            // success popup
             setSuccessModal(!successModal);
             setBadgeState(IssueState.Issued);
           } else {
@@ -124,26 +122,6 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
           reactAlert({title:'요청 실패', message: '뱃지 발급 요청을 실패했습니다.'});
         }
       });
-
-    // if (!badge.autoIssued) {
-    //   //
-    //   if (badgeLearningCount.isCount < badgeLearningCount.totalCount ) {
-    //     setRequestModal(!requestModal);
-    //   } else {
-    //     // 발급요청 API call
-    //
-    //     badgeService!.requestManualIssued(id, IssueState.Requested)
-    //       .then((response) => {
-    //         console.log( response );
-    //         if ( response ) {
-    //           findMyContent(badgeId);
-    //         } else {
-    //           reactAlert({title: '발급 요청 실패', message: 'Badge 발급 요청을 실패했습니다.'});
-    //         }
-    //       });
-    //
-    //   }
-    // }
   };
 
   const onHandleChangeModal = () => {
@@ -201,6 +179,13 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
                 Badge 도전 학습 모두 완료 시<br/>자동으로 Badge가 발급됩니다.
               </span>
             )}
+
+            {/*자동발급 완료 팝업*/}
+            <ChallengeSuccessModal
+              badge={badgeService!.badgeDetailInfo}
+              successModal={successModal}
+              onCloseSuccessModal={onControlSuccessModal}
+            />
           </>
         )}
       </ChallengeBadgeStatus>

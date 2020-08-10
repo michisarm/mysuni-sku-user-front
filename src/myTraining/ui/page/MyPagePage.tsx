@@ -105,10 +105,12 @@ class MyPagePage extends Component<Props, State> {
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     this.props.actionLogService?.registerClickActionLog({ subAction: (SubBreadcrumb as any)[tab.name] });
     this.props.history.push(routePaths.myPageTab(tab.name));
+
+    return routePaths.myPageTab(tab.name);
   }
 
   onChangeCompletedCount(completedCount: number) {
