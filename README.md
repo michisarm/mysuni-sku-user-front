@@ -1,5 +1,21 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Code autoformat 적용
+
+1. ESLint, Prettier - Code formatter 설치
+2. git 에서 .prettierrc 파일 pull
+3. vscode : settings.json 에 아래추가
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "[javascript]": {
+   "editor.defaultFormatter": "esbenp.prettier-vscode"
+   },
+   "editor.formatOnSave": true,
+   "javascript.format.enable": false,
+   저장 시 자동 format
+4. IntelliJ : Settings - Languages & Frameworks - JavaScript - Code Quality Tools - ESLint
+   Enable = 체크해줌
+   Ctrl + Alt + Shift + P 눌러서 format 하고 저장
+
 ## Available Scripts
 
 In the project directory, you can run:

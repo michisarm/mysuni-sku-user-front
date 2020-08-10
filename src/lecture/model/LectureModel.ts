@@ -1,4 +1,3 @@
-
 import { computed, decorate, observable } from 'mobx';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -14,7 +13,6 @@ import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import moment from 'moment';
 import LectureServiceType from './LectureServiceType';
 import { CourseSetModel } from '../../course/model/CourseSetModel';
-
 
 class LectureModel extends DramaEntityObservableModel {
   //
@@ -50,11 +48,9 @@ class LectureModel extends DramaEntityObservableModel {
 
   reviewSummary: ReviewSummaryModel = new ReviewSummaryModel();
 
-
   // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
-
 
   constructor(lecture?: LectureModel) {
     //
@@ -69,10 +65,16 @@ class LectureModel extends DramaEntityObservableModel {
       // UI Model
       const companyCode = patronInfo.getPatronCompanyCode();
 
-      this.required = lecture.requiredSubsidiaries
-        && lecture.requiredSubsidiaries.some((subsidiary) => subsidiary.id === companyCode);
+      this.required =
+        lecture.requiredSubsidiaries &&
+        lecture.requiredSubsidiaries.some(
+          subsidiary => subsidiary.id === companyCode
+        );
 
-      this.cubeTypeName = LectureModel.getCubeTypeName(lecture.cubeType, this.serviceType);
+      this.cubeTypeName = LectureModel.getCubeTypeName(
+        lecture.cubeType,
+        this.serviceType
+      );
 
       this.reviewSummary = lecture.reviewSummary;
     }
@@ -84,11 +86,9 @@ class LectureModel extends DramaEntityObservableModel {
 
     if (serviceType === 'PROGRAM') {
       return LectureServiceType.Program;
-    }
-    else if (serviceType === 'COURSE') {
+    } else if (serviceType === 'COURSE') {
       return LectureServiceType.Course;
-    }
-    else {
+    } else {
       return LectureServiceType.Card;
     }
   }
@@ -97,11 +97,9 @@ class LectureModel extends DramaEntityObservableModel {
     //
     if (serviceType === LectureServiceType.Program) {
       return CubeTypeNameType.Program;
-    }
-    else if (serviceType === LectureServiceType.Course) {
+    } else if (serviceType === LectureServiceType.Course) {
       return CubeTypeNameType.Course;
-    }
-    else {
+    } else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
   }
@@ -134,23 +132,41 @@ class LectureModel extends DramaEntityObservableModel {
   get timeStrByState() {
     if (this.viewState) {
       if (this.viewState === 'NoShow' || this.viewState === 'Missed') {
-        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 이수 실패';
+        return (
+          moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
+          ' 이수 실패'
+        );
       }
       if (this.viewState === 'Passed') {
-        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 학습 완료';
+        return (
+          moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') +
+          ' 학습 완료'
+        );
       }
       if (this.viewState === 'Approved') {
         //TODO STARTDATE
-        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 부터 학습시작';
+        return (
+          moment(Number(this.creationTime)).format('YYYY.MM.DD') +
+          ' 부터 학습시작'
+        );
       }
       if (
-        this.viewState === 'Progress' || this.viewState === 'Failed' || this.viewState === 'TestPassed'
-        || this.viewState === 'Waiting' || this.viewState === 'TestWaiting' || this.viewState === 'HomeworkWaiting'
+        this.viewState === 'Progress' ||
+        this.viewState === 'Failed' ||
+        this.viewState === 'TestPassed' ||
+        this.viewState === 'Waiting' ||
+        this.viewState === 'TestWaiting' ||
+        this.viewState === 'HomeworkWaiting'
       ) {
-        return moment(Number(this.updateTimeForTest)).format('YYYY.MM.DD') + ' 학습 시작';
+        return (
+          moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 학습 시작'
+        );
       }
       if (this.viewState === 'Rejected') {
-        return moment(Number(this.updateTime)).format('YYYY.MM.DD') + ' 수강신청 반려';
+        return (
+          moment(Number(this.updateTime)).format('YYYY.MM.DD') +
+          ' 수강신청 반려'
+        );
       }
     }
     return '';
@@ -158,7 +174,7 @@ class LectureModel extends DramaEntityObservableModel {
 
   @computed
   get rating() {
-    return this.reviewSummary && this.reviewSummary.average || 0;
+    return (this.reviewSummary && this.reviewSummary.average) || 0;
   }
 }
 

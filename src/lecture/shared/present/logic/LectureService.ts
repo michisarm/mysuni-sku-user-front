@@ -1,4 +1,10 @@
-import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  IObservableArray,
+  observable,
+  runInAction,
+} from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
 import LectureApi from '../apiclient/LectureApi';
@@ -16,7 +22,6 @@ import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
 
-
 @autobind
 class LectureService {
   //
@@ -27,7 +32,6 @@ class LectureService {
   private lectureFlowApi: LectureFlowApi;
 
   private studentFlowApi: StudentFlowApi;
-
 
   @observable
   _lectures: LectureModel[] = [];
@@ -41,7 +45,6 @@ class LectureService {
   // 추천과정 리스트
   @observable
   _recommendLectureListRdo: RecommendLectureListRdo = new RecommendLectureListRdo();
-
 
   // 추천과정
   @observable
@@ -68,7 +71,11 @@ class LectureService {
   @observable
   requiredLecturesCount: number = 0;
 
-  constructor(lectureApi: LectureApi, lectureFlowApi: LectureFlowApi, studentFlowApi: StudentFlowApi) {
+  constructor(
+    lectureApi: LectureApi,
+    lectureFlowApi: LectureFlowApi,
+    studentFlowApi: StudentFlowApi
+  ) {
     this.lectureApi = lectureApi;
     this.lectureFlowApi = lectureFlowApi;
     this.studentFlowApi = studentFlowApi;
@@ -84,7 +91,8 @@ class LectureService {
   @computed
   get recommendLectures() {
     //
-    return (this._recommendLectureListRdo.recommendLectureRdos as IObservableArray).peek();
+    return (this._recommendLectureListRdo
+      .recommendLectureRdos as IObservableArray).peek();
   }
 
   @computed
@@ -98,7 +106,6 @@ class LectureService {
     return (this._lectureViews as IObservableArray).peek();
   }
 
-
   // @computed
   // get preLectureViews() {
   //   //
@@ -110,70 +117,142 @@ class LectureService {
   @action
   clearLectures() {
     //
-    return runInAction(() => this._lectures = []);
+    return runInAction(() => (this._lectures = []));
   }
 
   @action
-  async findPagingCollegeLectures(collegeId: string, limit: number, offset: number, orderBy: OrderByType) {
+  async findPagingCollegeLectures(
+    collegeId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
     //
-    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureApi.findAllLectures(
+      LectureRdoModel.newWithCollege(collegeId, limit, offset, orderBy)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
   @action
-  async findPagingChannelLectures(channelId: string, limit: number, offset: number, orderBy: OrderByType) {
+  async findPagingChannelLectures(
+    channelId: string,
+    limit: number,
+    offset: number,
+    orderBy: OrderByType
+  ) {
     //
-    const response = await this.lectureApi.findAllLectures(LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureApi.findAllLectures(
+      LectureRdoModel.newWithChannel(channelId, limit, offset, orderBy)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
   @action
   async findPagingCommunityLectures(limit: number, offset: number) {
     //
-    const response = await this.lectureApi.findAllCommunityLectures(CommunityLectureRdoModel.new(limit, offset));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureApi.findAllCommunityLectures(
+      CommunityLectureRdoModel.new(limit, offset)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
   // 권장과정
   @action
-  async findPagingRequiredLectures(limit: number, offset: number, channelIds: string[] = [], orderBy: OrderByType = OrderByType.New, fromMain: boolean = false) {
+  async findPagingRequiredLectures(
+    limit: number,
+    offset: number,
+    channelIds: string[] = [],
+    orderBy: OrderByType = OrderByType.New,
+    fromMain: boolean = false
+  ) {
     //
-    const response = await this.lectureFlowApi.findRqdLectures(LectureFilterRdoModel.new(limit, offset, channelIds));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureFlowApi.findRqdLectures(
+      LectureFilterRdoModel.new(limit, offset, channelIds)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
     if (fromMain) {
-      window.sessionStorage.setItem('RequiredLearningList', JSON.stringify(lectureOffsetElementList));
+      window.sessionStorage.setItem(
+        'RequiredLearningList',
+        JSON.stringify(lectureOffsetElementList)
+      );
     }
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
   @action
   async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
     //
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(lectures);
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      lectures
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
@@ -182,47 +261,81 @@ class LectureService {
   @action
   clearLectureViews() {
     //
-    return runInAction(() => this._lectureViews = []);
+    return runInAction(() => (this._lectureViews = []));
   }
 
   @action
-  async findLectureViews(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  async findLectureViews(
+    coursePlanId: string,
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(coursePlanId, lectureCardUsids, courseLectureUsids);
+    const lectureViews = await this.lectureApi.findLectureViews(
+      coursePlanId,
+      lectureCardUsids,
+      courseLectureUsids
+    );
 
-    runInAction(() => this._lectureViews = lectureViews);
+    runInAction(() => (this._lectureViews = lectureViews));
     return lectureViews;
   }
 
   @action
-  async findLectureViewsV2(coursePlanId: string, lectureCardUsids: string[], courseLectureUsids?: string[]) {
+  async findLectureViewsV2(
+    coursePlanId: string,
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
     //
-    const lectureViews = await this.lectureApi.findLectureViewsV2(coursePlanId, lectureCardUsids, courseLectureUsids);
+    const lectureViews = await this.lectureApi.findLectureViewsV2(
+      coursePlanId,
+      lectureCardUsids,
+      courseLectureUsids
+    );
 
-    runInAction(() => this._lectureViews = lectureViews);
+    runInAction(() => (this._lectureViews = lectureViews));
     return lectureViews;
   }
 
   findLectureViewsFromJson(lectures: string) {
-    runInAction( () => this._lectureViews = JSON.parse(lectures));
+    runInAction(() => (this._lectureViews = JSON.parse(lectures)));
     console.log('lectureViews : ', this.lectureViews);
   }
 
   // SubLectureViewMap -------------------------------------------------------------------------------------------------
 
   @action
-  async findSubLectureViews(courseId: string, coursePlanId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
+  async findSubLectureViews(
+    courseId: string,
+    coursePlanId: string,
+    lectureCardIds: string[],
+    courseLectureIds?: string[]
+  ) {
     //
-    const lectureViews = await this.lectureApi.findLectureViews(coursePlanId, lectureCardIds, courseLectureIds);
+    const lectureViews = await this.lectureApi.findLectureViews(
+      coursePlanId,
+      lectureCardIds,
+      courseLectureIds
+    );
 
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
     return lectureViews;
   }
 
   @action
-  async findSubLectureViewsV2(courseId: string, coursePlanId: string, lectureCardIds: string[], courseLectureIds?: string[]) {
+  async findSubLectureViewsV2(
+    courseId: string,
+    coursePlanId: string,
+    lectureCardIds: string[],
+    courseLectureIds?: string[]
+  ) {
     //
-    const lectureViews = await this.lectureApi.findLectureViewsV2(coursePlanId, lectureCardIds, courseLectureIds);
+    const lectureViews = await this.lectureApi.findLectureViewsV2(
+      coursePlanId,
+      lectureCardIds,
+      courseLectureIds
+    );
 
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
     return lectureViews;
@@ -236,73 +349,154 @@ class LectureService {
     // }
 
     return this.subLectureViewsMap.get(courseId) || [];
-
   }
 
   @action
-  async findAllLecturesByInstructorId(instructorId: string, limit: number, offset: number) {
+  async findAllLecturesByInstructorId(
+    instructorId: string,
+    limit: number,
+    offset: number
+  ) {
     //
-    const response = await this.lectureApi.findAllLecturesByInstructorId(InstructorRdoModel.new(instructorId, limit, offset));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureApi.findAllLecturesByInstructorId(
+      InstructorRdoModel.new(instructorId, limit, offset)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
     return lectureOffsetElementList;
   }
 
+  // shared list 조회
   @action
-  async findSharedLectures(limit: number, offset: number, channelIds: string[] = []) {
+  async findSharedLectures(
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
-    const response = await this.lectureApi.findAllSharedLectures(SharedRdoModel.newShared(limit, offset, channelIds));
-    const lectureOffsetElementList = new OffsetElementList<LectureModel>(response);
+    const response = await this.lectureApi.findAllSharedLectures(
+      SharedRdoModel.newShared(limit, offset, channelIds)
+    );
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      response
+    );
 
-    lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
 
-    runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
+    // add totalLectureCount by gon
+    runInAction(() => {
+      this._lectures = this._lectures.concat(lectureOffsetElementList.results);
+      this.totalLectureCount = lectureOffsetElementList.totalCount;
+    });
     return lectureOffsetElementList;
   }
 
   @action
   async findPagingRecommendLectures(
-    channelLimit: number, limit: number, channelId?: string, orderBy?: OrderByType
+    channelLimit: number,
+    limit: number,
+    channelId?: string,
+    orderBy?: OrderByType
   ) {
     //
-    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, 0, limit, 0, channelId, orderBy);
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
+    const lectureRdo = LectureRdoModel.newRecommend(
+      channelLimit,
+      0,
+      limit,
+      0,
+      channelId,
+      orderBy
+    );
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
+      lectureRdo
+    );
 
-    runInAction(() => this._recommendLectureListRdo = recommendLectureListRdo);
+    runInAction(
+      () => (this._recommendLectureListRdo = recommendLectureListRdo)
+    );
     return recommendLectureListRdo;
   }
 
   @action
   async addFindPagingRecommendLectures(
-    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+    channelLimit: number,
+    channelOffset: number,
+    limit: number,
+    offset: number,
+    channelId?: string,
+    orderBy?: OrderByType
   ) {
     //
-    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
+    const lectureRdo = LectureRdoModel.newRecommend(
+      channelLimit,
+      channelOffset,
+      limit,
+      offset,
+      channelId,
+      orderBy
+    );
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
+      lectureRdo
+    );
 
     runInAction(() => {
-      this._recommendLectureListRdo.totalCount = recommendLectureListRdo.totalCount;
-      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos
-        .concat(recommendLectureListRdo.recommendLectureRdos);
+      this._recommendLectureListRdo.totalCount =
+        recommendLectureListRdo.totalCount;
+      this._recommendLectureListRdo.recommendLectureRdos = this._recommendLectureListRdo.recommendLectureRdos.concat(
+        recommendLectureListRdo.recommendLectureRdos
+      );
     });
     return recommendLectureListRdo;
   }
 
   @action
   async addPagingRecommendLectures(
-    channelLimit: number, channelOffset: number, limit: number, offset: number, channelId?: string, orderBy?: OrderByType
+    channelLimit: number,
+    channelOffset: number,
+    limit: number,
+    offset: number,
+    channelId?: string,
+    orderBy?: OrderByType
   ) {
     //
-    const lectureRdo = LectureRdoModel.newRecommend(channelLimit, channelOffset, limit, offset, channelId, orderBy);
-    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(lectureRdo);
+    const lectureRdo = LectureRdoModel.newRecommend(
+      channelLimit,
+      channelOffset,
+      limit,
+      offset,
+      channelId,
+      orderBy
+    );
+    const recommendLectureListRdo = await this.lectureFlowApi.findAllRecommendLectures(
+      lectureRdo
+    );
 
-    if (recommendLectureListRdo.recommendLectureRdos && recommendLectureListRdo.recommendLectureRdos.length === 1) {
+    if (
+      recommendLectureListRdo.recommendLectureRdos &&
+      recommendLectureListRdo.recommendLectureRdos.length === 1
+    ) {
       const recommendLecture = recommendLectureListRdo.recommendLectureRdos[0];
 
-      runInAction(() => this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(recommendLecture.lectures.results));
+      runInAction(
+        () =>
+          (this.recommendLecture.lectures.results = this.recommendLecture.lectures.results.concat(
+            recommendLecture.lectures.results
+          ))
+      );
       return recommendLecture.lectures;
     }
     return null;
@@ -323,8 +517,7 @@ class LectureService {
    * 권장과정 갯수 조회
    */
   @action
-  async countRequiredLectures()
-  {
+  async countRequiredLectures() {
     const count = await this.lectureFlowApi.countRequiredLectures();
 
     runInAction(() => {
@@ -333,6 +526,10 @@ class LectureService {
   }
 }
 
-LectureService.instance = new LectureService(LectureApi.instance, LectureFlowApi.instance, StudentFlowApi.instance);
+LectureService.instance = new LectureService(
+  LectureApi.instance,
+  LectureFlowApi.instance,
+  StudentFlowApi.instance
+);
 
 export default LectureService;

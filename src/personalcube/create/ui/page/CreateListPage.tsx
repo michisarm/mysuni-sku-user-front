@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -12,23 +11,20 @@ import CreateProfileContainer from '../logic/CreateProfileContainer';
 import CreateListContainer from '../logic/CreateListContainer';
 import SharedListContainer from '../logic/SharedListContainer';
 
-
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService,
+  actionLogService?: ActionLogService;
 }
 
 interface State {
-  createCount: number
-  sharedCount: number
+  createCount: number;
+  sharedCount: number;
 }
 
 interface RouteParams {
-  tab: string
+  tab: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+@inject(mobxHelper.injectFrom('shared.actionLogService'))
 @observer
 @reactAutobind
 class CreateListPage extends Component<Props, State> {
@@ -37,7 +33,6 @@ class CreateListPage extends Component<Props, State> {
     createCount: 0,
     sharedCount: 0,
   };
-
 
   getTabs() {
     //
@@ -49,13 +44,13 @@ class CreateListPage extends Component<Props, State> {
         item: (
           <>
             Create
-            <span className="count">{createCount > 0 ? `+${createCount}` : createCount}</span>
+            <span className="count">
+              {createCount > 0 ? `+${createCount}` : createCount}
+            </span>
           </>
         ),
         render: () => (
-          <CreateListContainer
-            onChangeCreateCount={this.onChangeCreateCount}
-          />
+          <CreateListContainer onChangeCreateCount={this.onChangeCreateCount} />
         ),
       },
       {
@@ -63,23 +58,25 @@ class CreateListPage extends Component<Props, State> {
         item: (
           <>
             Shared
-            <span className="count">{sharedCount > 0 ? `+${sharedCount}` : sharedCount}</span>
+            <span className="count">
+              {sharedCount > 0 ? `+${sharedCount}` : sharedCount}
+            </span>
           </>
         ),
         render: () => (
-          <SharedListContainer
-            onChangeSharedCount={this.onChangeSharedCount}
-          />
+          <SharedListContainer onChangeSharedCount={this.onChangeSharedCount} />
         ),
       },
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     const { actionLogService, history } = this.props;
     actionLogService?.registerClickActionLog({ subAction: tab.name });
     history.push(routePaths.createTab(tab.name));
+
+    return routePaths.createTab(tab.name);
   }
 
   onChangeCreateCount(createCount: number) {
@@ -98,15 +95,12 @@ class CreateListPage extends Component<Props, State> {
     return (
       <ContentLayout
         className="create"
-        breadcrumb={[
-          { text: 'Create' },
-          { text: `${params.tab}` },
-        ]}
+        breadcrumb={[{ text: 'Create' }, { text: `${params.tab}` }]}
       >
         <CreateProfileContainer />
 
         <Tab
-          allMounted
+          allMounted // true 이면 map 돌려서 tab 세팅
           tabs={this.getTabs()}
           defaultActiveName={params.tab}
           onChangeTab={this.onChangeTab}

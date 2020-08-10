@@ -57,9 +57,11 @@ class UserMainPage extends Component<Props> {
     ] as TabItemModel[];
   }
 
-  onChangeTab(tab: TabItemModel) {
+  onChangeTab(tab: TabItemModel): string {
     //
     this.props.history.push(routePaths.introductionTab(tab.name));
+
+    return routePaths.introductionTab(tab.name);
   }
 
   renderTabContent(props : any) {

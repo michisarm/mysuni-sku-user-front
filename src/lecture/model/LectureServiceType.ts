@@ -2,7 +2,7 @@
 enum LectureServiceType {
   Card = 'Card',
   Course = 'Course',
-  Program = 'Program',
+  Program = 'Program'
 }
 
 export default LectureServiceType;
