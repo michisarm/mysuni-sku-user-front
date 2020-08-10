@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -25,6 +25,9 @@ import BadgeStudentModel from '../model/BadgeStudentModel';
 import {BadgeService} from '../../../lecture/stores';
 import boardRoutePaths from '../../../board/routePaths';
 import BadgeCompModel from '../model/BadgeCompModel';
+import BadgeCompData from '../model/BadgeCompData';
+import BadgeCourseData from '../model/BadgeCourseData';
+import BadgeCubeData from '../model/BadgeCubeData';
 
 
 export enum ChallengeDescription {
@@ -53,16 +56,20 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [cancelModal, setCancelModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [badgeState, setBadgeState] = useState();
 
   // 뱃지 수강 정보
   const [studentInfo, setStudentInfo] = useState<BadgeStudentModel>();
 
   // 학습 카운트 정보
-  const [badgeLearningCount, setBadgeLearningCount] = useState({
-    isCount: 0,
-    totalCount: 0
-  });
+  const passedCount = useRef(0);
+  const learningCount = useRef(0);
+
+  // const [badgeLearningCount, setBadgeLearningCount] = useState({
+  //   isCount: 0,
+  //   totalCount: 0
+  // });
 
   useEffect(() => {
 
@@ -70,18 +77,16 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     findBadgeStudent(badgeId);
 
     // 구성학습 정보 조회
-    findBadgeLearningInfo(badgeId);
+    //findBadgeLearningInfo(badgeId);
 
   }, []);
 
   useEffect(() => {
 
     // 수강정보 조회
-    //findBadgeStudent(badgeId);
+    findBadgeLearningInfo(badgeId);
 
-  }, [badgeState]);
-
-
+  }, [badgeId]);
 
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
@@ -89,7 +94,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     const badgeStudentInfo: BadgeStudentModel | null = await badgeService!.findBadgeStudentInfo(badgeId);
 
     if (badgeStudentInfo === null) {
-
       setBadgeState(ChallengeState.WaitForChallenge);
     }
     else {
@@ -112,22 +116,62 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     }
   };
 
-
-  // 구성학습 카운트 정보
+  // 뱃지 구성 학습 리스트 조회하기
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    const badgeLearningInfo: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
+    const components: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
 
-    let cnt = 0;
-    badgeLearningInfo.map((item) => {
-      if ( item.learningState === 'Passed' ) { cnt++; }
-    });
+    learningCount.current = components.length;
 
-    setBadgeLearningCount({
-      isCount: cnt,
-      totalCount: badgeLearningInfo.length,
-    });
+    let compList: BadgeCompData[] = [];
+    if (components.length > 0 && components[0] ) {
+      components.map((data: BadgeCompModel) => {
+        // 학습완료 카운트
+        if (data.learningState === 'Passed') { passedCount.current++; }
 
+        const compData = new BadgeCompData();
+        //console.log( data );
+        // 공통
+        compData.compType = data.serviceType;
+        compData.id = data.id;
+        compData.patronKeyString = data.patronKey.keyString;
+        // 코스정보
+        if (data.serviceType === 'COURSE') {
+          compData.course = new BadgeCourseData();
+          const keyStr = data.patronKey.keyString;
+          compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+          compData.course.collegeId = data.category.college.id;
+          compData.course.serviceId = data.serviceId;
+          compData.course.name = data.name;
+          compData.course.coursePlanId = data.coursePlanId;
+          compData.course.isOpened = false;
+          compData.course.cubeCount = data.lectureCardUsids.length;
+          compData.course.learningState = data.learningState;
+          compData.course.serviceType = 'Course';
+          data.lectureCardUsids.map((id: string) => {
+            compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
+          });
+        }
+        // (학습)카드 정보
+        else {
+          compData.cube = new BadgeCubeData();
+          const keyStr = data.patronKey.keyString;
+          compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+          compData.cube.collegeId = data.category.college.id;
+          compData.cube.lectureCardId = data.serviceId;
+          compData.cube.name = data.name;
+          compData.cube.cubeId = data.cubeId;
+          compData.cube.learningCardId = data.learningCardId;
+          compData.cube.cubeType = data.cubeType;
+          compData.cube.learningTime = data.learningTime; // 학습시간(분)
+          compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
+          compData.cube.learningState = data.learningState;
+          compData.cube.serviceType = 'cube';
+        }
+        compList = compList.concat(compData);
+      });
+    }
+    setBadgeCompList(compList);
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
@@ -173,7 +217,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         !learningCompleted
       ) {
 
-        if ( badgeDetail.autoIssued && badgeLearningCount.isCount === badgeLearningCount.totalCount ) {
+        if ( badgeDetail.autoIssued && learningCount.current > 0 && learningCount.current === passedCount.current ) {
           setBadgeState(ChallengeState.ReadyForRequest);
         } else {
           // 진행 중 => 도전취소 버튼 노출
@@ -197,7 +241,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         break;
     }
   };
-
 
   /* Button Actions */
   // 도전하기 버튼 클릭
@@ -394,8 +437,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           onClickButton={getAction}
           issueStateTime={studentInfo?.issueStateTime}
           description={ChallengeDescription[badgeState as ChallengeState]}
-          learningTotalCount={badgeLearningCount.totalCount}
-          learningCompleted={badgeLearningCount.isCount}
+          learningTotalCount={learningCount.current}
+          learningCompleted={passedCount.current}
         />
 
         {/*도전 취소 확인 팝업*/}
@@ -462,7 +505,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             titleIcon="list24"
             title="Learning Path"
             //content="학습정보"
-            content={<BadgeLectureContainer badgeId={badgeId} />}
+            content={
+              <BadgeLectureContainer
+                badgeId={badgeId}
+                badgeCompList={badgeCompList}
+              />}
           />
         </OverviewField.List>
 

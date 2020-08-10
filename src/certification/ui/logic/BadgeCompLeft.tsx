@@ -193,7 +193,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
             }
             <span className="number">
               <span className="ing-txt">진행중</span>
-              <span><b>{learningCount}</b>/{passedCount}</span>
+              <span><b>{passedCount}</b>/{learningCount}</span>
             </span>
             {/*자동발급*/}
             { badge.autoIssued && (

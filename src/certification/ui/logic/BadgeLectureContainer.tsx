@@ -17,7 +17,6 @@ import {CoursePlanService} from '../../../course/stores';
 import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel';
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
-import TRSContainer from './TRSContainer';
 import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import RollBookModel from '../../../lecture/model/RollBookModel';
@@ -50,71 +49,19 @@ interface Props extends RouteComponentProps {
   studentService?: StudentService;
 
   badgeId: string;
+  badgeCompList: BadgeCompData[];
 }
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, history, } = Props;
+  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history, } = Props;
 
-  const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
     // 배지 구성 학습 리스트 조회하기
-    getBadgeCompLectures(badgeId);
+    //getBadgeCompLectures(badgeId);
   }, [badgeId]);
-
-  // 뱃지 구성 학습 리스트 조회하기
-  const getBadgeCompLectures = (badgeId: string) => {
-    let compList: BadgeCompData[] = [];
-    badgeDetailService!.findBadgeCompList(badgeId).then((response: BadgeCompModel[]) => {
-      if (response.length > 0 && response[0] ) {
-        response.map((data: BadgeCompModel) => {
-          const compData = new BadgeCompData();
-          //console.log( data );
-          // 공통
-          compData.compType = data.serviceType;
-          compData.id = data.id;
-          compData.patronKeyString = data.patronKey.keyString;
-          // 코스정보
-          if (data.serviceType === 'COURSE') {
-            compData.course = new BadgeCourseData();
-            const keyStr = data.patronKey.keyString;
-            compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.course.collegeId = data.category.college.id;
-            compData.course.serviceId = data.serviceId;
-            compData.course.name = data.name;
-            compData.course.coursePlanId = data.coursePlanId;
-            compData.course.isOpened = false;
-            compData.course.cubeCount = data.lectureCardUsids.length;
-            compData.course.learningState = data.learningState;
-            compData.course.serviceType = 'Course';
-            data.lectureCardUsids.map((id: string) => {
-              compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
-            });
-          }
-          // (학습)카드 정보
-          else {
-            compData.cube = new BadgeCubeData();
-            const keyStr = data.patronKey.keyString;
-            compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.cube.collegeId = data.category.college.id;
-            compData.cube.lectureCardId = data.serviceId;
-            compData.cube.name = data.name;
-            compData.cube.cubeId = data.cubeId;
-            compData.cube.learningCardId = data.learningCardId;
-            compData.cube.cubeType = data.cubeType;
-            compData.cube.learningTime = data.learningTime; // 학습시간(분)
-            compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
-            compData.cube.learningState = data.learningState;
-            compData.cube.serviceType = 'cube';
-          }
-          compList = compList.concat(compData);
-        });
-      }
-      setBadgeCompList(compList);
-    });
-  };
 
   /*
   // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기

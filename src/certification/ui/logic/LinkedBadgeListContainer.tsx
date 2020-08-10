@@ -1,5 +1,5 @@
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
@@ -23,23 +23,27 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   const { badgeService, badgeId } = Props;
   const { myBadges } = badgeService!;
 
+  const [linkedBadges, setLinkedBadges] = useState<MyBadgeModel[]>([]);
+
   useEffect(() => {
     //
     findMyContent();
-  }, []);
+  }, [badgeId]);
 
   const findMyContent = async () => {
     //
-    const badgeOffsetList = await badgeService!.findLinkedBadges(badgeId);
+    const badgeList = await badgeService!.findLinkedBadges(badgeId);
+
+    setLinkedBadges(badgeList);
   };
 
   return (
     <LinkedBadgeListWrapper>
       {/*연관 Badge 목록*/}
       <div className="list">
-        {myBadges.length > 0 && myBadges[0] ? (
+        {linkedBadges.length > 0 && linkedBadges[0] ? (
           <ul>
-            {myBadges.map((badge: MyBadgeModel, index: number) => {
+            {linkedBadges.map((badge: MyBadgeModel, index: number) => {
               return (
                 <li key={`linked-badge-${index}`}>
                   <Badge
