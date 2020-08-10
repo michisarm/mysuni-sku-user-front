@@ -28,7 +28,7 @@ class BreadcrumbView extends Component<Props, State> {
   //
   state = {
     // id: 'skcc.hug01@sk.com',
-    id: 'SKCC.SKCC07@sk.com'
+    id: 'SKCC.SKCC07@sk.com',
   };
 
   // TODO: 삭제해야
@@ -97,7 +97,8 @@ class BreadcrumbView extends Component<Props, State> {
 
   onClickBreadcrumb(menuName: string) {
     const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: menuName });
+
+    actionLogService!.registerClickActionLog({ subAction: menuName });
   }
 
   renderItem(value: BreadcrumbValue, index: number) {
