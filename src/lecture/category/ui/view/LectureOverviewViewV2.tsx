@@ -45,7 +45,6 @@ interface Props extends RouteComponentProps<RouteParams> {
   onPageRefresh?:() => void,
   isPreCoursePassed: boolean,
   studentInfo: StudentInfoModel | null
-  surveyCase: SurveyCaseModel | null
 }
 
 interface RouteParams {
@@ -395,7 +394,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       isPreCoursePassed,
       studentInfo,
       history,
-      surveyCase,
     } = this.props;
 
     const { location } = history;
