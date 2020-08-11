@@ -34,10 +34,10 @@ class LectureCommentsContainer extends Component<Props, State> {
         <CommentList
           feedbackId={commentFeedbackId}
           hideCamera
-          // name={name}
-          // email={email}
-          // companyName={companyName}
-          // departmentName={departmentName}
+          name={name}
+          email={email}
+          companyName={companyName}
+          departmentName={departmentName}
         />
       </div>
     );
