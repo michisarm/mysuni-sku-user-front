@@ -169,7 +169,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     issueState: string
   ) => {
     //
-    if (learningCount < 1) return;
+    //if (learningCount < 1) return;
 
     if (challengeState !== 'Challenged') {
       // 도전 대기 - 최초도전 or 도전취소

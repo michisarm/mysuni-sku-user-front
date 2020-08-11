@@ -28,8 +28,6 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
       ? '' /*window.location.protocol + '//' + window.location.host*/
       : process.env.REACT_APP_PUBLIC_URL + '/suni-main';
 
-  console.log(categories);
-
   return (
     <div className="badge-category">
       <ul>
