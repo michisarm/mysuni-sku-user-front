@@ -51,7 +51,8 @@ export const CertificationOrg: FunctionComponent<CertificationOrgProps> = ({
 }) => (
   <span className="issuing">
     <img
-      src={`${getPublicUrl()}${certiAdminCategoryIcon}`}
+      // src={`${getPublicUrl()}${certiAdminCategoryIcon}`}
+      src={certiAdminCategoryIcon}
       alt={`발급기관: ${certiAdminCategoryName}`}
     />
   </span>
