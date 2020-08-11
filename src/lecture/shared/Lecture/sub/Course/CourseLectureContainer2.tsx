@@ -251,9 +251,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
           // const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
           // const examPaper = await examPaperService!.findExamPaper(examination.paperId);
           examinationService?.setExamination(lectureView.examination);
-          const examPaper = examPaperService?.setExamPaper(lectureView.examPaper);
+          const examPaper = lectureView.examPaper;
           if (examPaper) {
             this.state.examTitle = examPaper.title;
+            this.setState({examTitle:examPaper.title});
           }
         }
 

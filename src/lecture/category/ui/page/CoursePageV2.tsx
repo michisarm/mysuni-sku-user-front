@@ -258,7 +258,9 @@ class CoursePageV2 extends Component<Props, State> {
         'examPaperService.examPaper.title : ',
         examPaperService.examPaper.title
       );
-      this.state.examTitle = examPaperService.examPaper.title;
+      const examTitle = examPaperService.examPaper.title;
+      this.state.examTitle = examTitle;
+      this.setState({examTitle});
     }
     //
     // collegeService.findCollege(params.collegeId);
@@ -358,6 +360,7 @@ class CoursePageV2 extends Component<Props, State> {
       coursePlanService,
       answerSheetService,
       surveyFormService,
+      examPaperService,
     } = this.props;
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
@@ -381,6 +384,17 @@ class CoursePageV2 extends Component<Props, State> {
           const surveyForm: SurveyFormModel = response;
           this.setState({ surveyTitle: surveyForm.titles.langStringMap.get('ko') });
         });
+    }
+
+    if (coursePlanService.coursePlanContents.testId) {
+
+      console.log(
+        'examPaperService.examPaper.title : ',
+        examPaperService.examPaper.title
+      );
+      const examTitle = examPaperService.examPaper.title;
+      this.state.examTitle = examTitle;
+      this.setState({examTitle});
     }
   }
 
