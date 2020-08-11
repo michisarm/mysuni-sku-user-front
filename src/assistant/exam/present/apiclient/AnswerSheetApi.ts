@@ -4,9 +4,9 @@ import { AnswerSheetModel } from '../../model/AnswerSheetModel';
 
 export default class AnswerSheetApi {
 
-  // URL = '/api/assistant/v1/answersheets';
+  URL = '/api/assistant/v1/answersheets';
 
-  URL = 'http://ma.mysuni.sk.com/api/assistant/v1/answersheets';
+  // URL = 'http://ma.mysuni.sk.com/api/assistant/v1/answersheets';
 
   static instance: AnswerSheetApi;
 
