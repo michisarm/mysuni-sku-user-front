@@ -13,7 +13,7 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
-  mySUNI = '/static/media/logo-badge.svg',
+  mySUNI = '/static/media/logo_badge.svg',
 }
 
 enum CategoryImageURL {
@@ -58,16 +58,16 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   const getCertiAdminIcon = (
     certiAdminCategory: string,
     certiAdminSubcategory: string,
-    iconUrl: string,
+    iconUrl: string
   ) => {
     const language = 'kr';
 
     if (certiAdminCategory !== 'mySUNI') {
       // iconUrl 이 있는 경우 우선 노출
-      if ( iconUrl ) {
+      if (iconUrl) {
         return iconUrl;
       } else {
-        const admin = (certiAdminCategory === 'Third') ? 'pp' : 'sub';
+        const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
         return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
       }
     } else {
@@ -89,23 +89,21 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
         certiAdminCategoryIcon={getCertiAdminIcon(
           certiAdminCategory.certiAdminCategory,
           certiAdminSubcategory.certiAdminSubcategory,
-          iconUrl,
+          iconUrl
         )}
         certiAdminCategoryName={certiAdminCategory.certiAdminCategoryName}
       />
-
       {/*College, Category*/}
-      {/*<College*/}
-      {/*iconUrl={*/}
-      {/*iconUrl*/}
-      {/*? domainPath + iconUrl*/}
-      {/*: CategoryImageURL[*/}
-      {/*badge.mainCategoryId as keyof typeof CategoryImageURL*/}
-      {/*]*/}
-      {/*}*/}
-      {/*mainCategory={mainCategoryName}*/}
-      {/*/>*/}
-
+      <College
+        iconUrl={
+          iconUrl
+            ? domainPath + iconUrl
+            : CategoryImageURL[
+                badge.mainCategoryId as keyof typeof CategoryImageURL
+            ]
+        }
+        mainCategory={mainCategoryName}
+      />
       {/*뱃지명*/}
       <Title name={name} />
     </BadgeContentWrapper>
