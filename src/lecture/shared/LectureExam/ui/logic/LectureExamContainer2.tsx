@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Report, Test, Survey } from '../view/LectureExamElementsView2';
+import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 
 interface Props {
   /** 과제 액션*/

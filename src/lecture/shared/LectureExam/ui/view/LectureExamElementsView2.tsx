@@ -1,5 +1,6 @@
 
 import React from 'react';
+import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 
 interface ReportProps {
   OnReport?: () => void
@@ -122,7 +123,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
   if (!OnTest) return null;
 
   // console.log('Test viewObject : ', viewObject);
-  console.log('type : ', type, 'name : ', name);
+  // console.log('type : ', type, 'name : ', name);
   return (
 
     <>
@@ -262,6 +263,9 @@ interface SurveyProps {
 export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sort }: SurveyProps) => {
   //
   if (!onSurvey) return null;
+
+  console.log('Survey viewObject : ', viewObject.surveyState);
+
   return (
 
     <>
@@ -273,7 +277,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               <span>Survey</span>
             </div>
             <div className="tit">
-              <span className="ellipsis">{name}</span>
+              <span className="ellipsis">{viewObject.surveyTitle}</span>
             </div>
             <div className="right">
 
@@ -315,7 +319,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
               <span>Survey</span>
             </div>
             <div className="tit">
-              <span className="ellipsis">{name}</span>
+              <span className="ellipsis">{viewObject.surveyTitle}</span>
             </div>
             <div className="right">
               {

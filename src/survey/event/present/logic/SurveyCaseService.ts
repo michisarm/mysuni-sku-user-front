@@ -16,7 +16,7 @@ export default class SurveyCaseService {
 
   @action
   setSurveyCase(surveyCase: SurveyCaseModel) {
-    this.surveyCase = surveyCase;
+    this.surveyCase = new SurveyCaseModel(surveyCase);
   }
 
   @computed

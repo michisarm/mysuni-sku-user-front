@@ -38,6 +38,7 @@ import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetMode
 import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
 import { LectureExam2 } from '../../../LectureExam';
+import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -260,16 +261,20 @@ class CourseLectureContainer2 extends Component<Props, State> {
           // const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
           // const surveyCase = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
           const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
-          const surveyCase = lectureView.surveyForm  === null ? new SurveyFormModel() : lectureView.surveyForm;
+          const surveyCase = lectureView.surveyCase  === null ? new SurveyCaseModel() : new SurveyCaseModel(lectureView.surveyCase);
 
           // console.log('surveyCase : ', surveyCase);
 
-          const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-          const title = JSON.parse(JSON.stringify(obj.langStringMap));
+          // const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+          // const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
           const disabled = answerSheetService && answerSheetService.progress && answerSheetService.progress === AnswerProgress.Complete;
           this.state.surveyState = disabled;
-          this.state.surveyTitle =  title.ko;
+          if (surveyCase && surveyCase.titles && surveyCase.titles.langStringMap) {
+            // @ts-ignore
+            this.state.surveyTitle = surveyCase.titles.langStringMap.get('ko');
+          }
+          // console.log('surveyCase.title : ', surveyCase.titles.langStringMap.get('ko'));
         }
 
         if (this.personalCube?.cubeIntro.id)
@@ -871,6 +876,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       className, lectureView, thumbnailImage, toggle,
       onViewDetail, lectureViewSize, lectureViewName, learningState
     } = this.props;
+
     const { open } = this.context;
 
     // let openState = this.context.open;
@@ -881,6 +887,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // }
 
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(this.props.lectureView.learningTime);
+
+    // const surveyCase: SurveyCaseModel = JSON.parse(JSON.stringify(lectureView.surveyCase));
+    const temp: SurveyCaseModel = JSON.parse(JSON.stringify(lectureView.surveyCase));
+    const surveyCase = lectureView.surveyCase  === null ? new SurveyCaseModel() : temp;
 
     //Lecture Card가 Video인 경우만 학습하기 버튼이 보이고, 진행상태인 경우 버튼 css적용(fix bg)
     // const className1 = lectureView.cubeType === CubeType.Video ? classNameForLearningState : 'fix line';
