@@ -69,8 +69,8 @@ class ArrangeApi {
     const params = {
       offset: lectureFilterRdo.offset,
       limit: lectureFilterRdo.limit,
-      orderBy: lectureFilterRdo.orderBy,
       email: lectureFilterRdo.email,
+      orderBy: lectureFilterRdo.orderBy,
     };
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/LRS', {params})
