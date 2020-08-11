@@ -15,11 +15,13 @@ import {Lecture, SeeMoreButton} from 'lecture/shared';
 import routePaths from 'personalcube/routePaths';
 import {NoSuchContentPanel} from 'shared';
 import {ContentType} from '../page/NewLearningPage';
-import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
+import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
+import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
   actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
   pageService?: PageService;
   reviewService?: ReviewService;
   inMyLectureService?: InMyLectureService;
@@ -42,6 +44,7 @@ const NewLearningListView: React.FC<Props> = Props => {
   const {
     contentType,
     order,
+    skProfileService,
     pageService,
     reviewService,
     inMyLectureService,
@@ -331,9 +334,10 @@ const NewLearningListView: React.FC<Props> = Props => {
     const page = pageService!.pageMap.get(PAGE_KEY);
 
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
-    const lectureFilterRdo = LectureFilterRdoModel.newLectures(
+    const lectureFilterRdo = LectureFilterRdoModel.lrsLectures(
       page!.limit,
       page!.nextOffset,
+      skProfileService!.skProfile.member.email,
       /*, orderBy*/
     );
     const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(lectureFilterRdo);
@@ -494,6 +498,7 @@ export default inject(
     'shared.actionLogService',
     'shared.pageService',
     'shared.reviewService',
+    'profile.skProfileService',
     'myTraining.inMyLectureService',
     'rqdLecture.rqdLectureService',
     'newLecture.newLectureService',
