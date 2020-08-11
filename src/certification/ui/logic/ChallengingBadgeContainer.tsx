@@ -41,7 +41,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   const [myBadges, setMyBadges] = useState<MyBadgeModel[]>([]);
 
   const [difficultyLevel, setDifficultyLevel] = useState<string>('');
-  const [useCount, setUseCount] = useState<number>(0);
 
   useEffect(() => {
     //
@@ -83,7 +82,7 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
 
     findMyContent(getPageNo() - 1);
 
-  }, [difficultyLevel, match.params.pageNo, useCount]);
+  }, [difficultyLevel, match.params.pageNo]);
 
   const findMyContent = async (pageNo: number) => {
     //
@@ -127,8 +126,6 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     findMyContent(pageNo - 1);
 
     refresh.current = true;
-
-    // setUseCount(useCount + 1);
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {
