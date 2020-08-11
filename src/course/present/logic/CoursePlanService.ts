@@ -164,11 +164,16 @@ class CoursePlanService {
         const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
         const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
         // const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
-        const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
+        const surveyCase: SurveyCaseModel = JSON.parse(JSON.stringify(courseData.surveyCase));
+        // const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
         const examination: ExaminationModel = JSON.parse(JSON.stringify(courseData.examination));
-        const examPaper: ExamPaperModel= JSON.parse(JSON.stringify(courseData.examPaper));
 
-        const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
+        let examPaper: ExamPaperModel = new ExamPaperModel();
+        if(courseData.examPaper) examPaper = JSON.parse(JSON.stringify(courseData.examPaper));
+
+        let courseLecture: CourseLectureModel = new CourseLectureModel();
+        if(courseData.courseLecture) courseLecture = JSON.parse(JSON.stringify(courseData.courseLecture));
+
         const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
 
         courseData.lectureViews.map((lectureView: any) => {
@@ -195,7 +200,8 @@ class CoursePlanService {
         this.coursePlan = new CoursePlanModel(coursePlan);
         this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
         // this.answerSheetService.setAnswerSheet(answerSheet);
-        this.surveyFormService.setSurveyForm(surveyForm);
+        this.surveyCaseService.setSurveyCase(surveyCase);
+        // this.surveyFormService.setSurveyForm(surveyForm);
         this.examinationService.setExamination(examination);
         this.examPaperService.setExamPaper(examPaper);
         this.courseLectureService.setCourseLecture(courseLecture);
@@ -263,7 +269,7 @@ class CoursePlanService {
       if (courseData) {
         const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
         const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
-        const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
+        // const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
         const surveyCase: SurveyCaseModel = JSON.parse(JSON.stringify(courseData.surveyCase));
         const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
         const lectureViews: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.lectureViews));
@@ -272,7 +278,7 @@ class CoursePlanService {
 
         this.coursePlan = new CoursePlanModel(coursePlan);
         this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
-        this.answerSheetService.setAnswerSheet(answerSheet);
+        // this.answerSheetService.setAnswerSheet(answerSheet);
         this.surveyCaseService.setSurveyCase(surveyCase);
         this.courseLectureService.setCourseLecture(courseLecture);
         this.lectureService.setLectureViews(lectureViews);

@@ -9,12 +9,13 @@ import ProgramLectureModel from '../../lecture/model/ProgramLectureModel';
 import {SurveyFormModel} from '../../survey/form/model/SurveyFormModel';
 import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
 import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
+import SurveyCaseModel from '../../survey/event/model/SurveyCaseModel';
 
 export interface CoursePlanCustomModel {
   coursePlan: CoursePlanModel
   coursePlanContents: CoursePlanContentsModel
   answerSheet: AnswerSheetModel
-  // surveyCase: SurveyCaseModel
+  surveyCase: SurveyCaseModel
   surveyForm: SurveyFormModel
   courseLecture: CourseLectureModel
   programLecture: ProgramLectureModel

@@ -27,6 +27,7 @@ import routePaths from '../../../routePaths';
 import ProposalState from '../../../../shared/model/ProposalState';
 import StudentService from '../../../shared/present/logic/StudentService';
 import StudentInfoModel from '../../../model/StudentInfoModel';
+import SurveyCaseModel from '../../../../survey/event/model/SurveyCaseModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
   viewObject: any,
@@ -109,6 +110,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
       this.findCoursePlan();
     }
+    //
+    // if (prevProps.surveyCase?.id !== this.props.surveyCase?.id) {
+    //     //   this.props.onPageInit();
+    //     // }
 
     // console.log('LectureOverviewView render completed');
   }

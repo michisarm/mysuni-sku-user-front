@@ -75,11 +75,12 @@ export default class AnswerSheetService {
   @action
   async findAnswerSheet(surveyCaseId: string) {
     const answerSheet = await this.answerSheetApi.findAnswerSheet(surveyCaseId);
-    runInAction(() => {
+    return runInAction(() => {
       this.answerSheet = answerSheet;
       if (answerSheet && answerSheet.evaluationSheet) {
         this.evaluationSheet = answerSheet.evaluationSheet;
       }
+      return this.answerSheet;
     });
   }
 
