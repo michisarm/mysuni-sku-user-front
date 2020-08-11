@@ -19,7 +19,6 @@ class LectureFilterRdoModel {
   channelIds?: string[];
   email?: string = patronInfo.getPatronEmail();
 
-
   constructor(lectureRdo?: LectureFilterRdoModel) {
     //
     if (lectureRdo) {
@@ -53,6 +52,7 @@ class LectureFilterRdoModel {
       orderBy: order,
       limit,
       offset,
+      email,
       channelIds,
     });
   }
