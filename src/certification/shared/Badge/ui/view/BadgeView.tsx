@@ -67,7 +67,7 @@ export const College: FunctionComponent<CollegeProps> = ({
   mainCategory,
 }) => (
   <span className="college">
-    <img src={iconUrl || blankImage} alt="" />
+    <img src={`${getPublicUrl()}${iconUrl}`} alt="" />
     <span>{mainCategory}</span>
   </span>
 );
