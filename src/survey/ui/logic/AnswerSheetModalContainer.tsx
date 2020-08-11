@@ -87,9 +87,11 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       surveyCaseId,
     } = this.props;
 
+    console.log('surveyId : ', surveyId, ' surveyCaseId : ', surveyCaseId);
+
     if (surveyId && surveyCaseId) {
       answerSheetService!.findAnswerSheet(surveyCaseId);
-      // surveyCaseService!.findSurveyCase(surveyCaseId);
+      surveyCaseService!.findSurveyCase(surveyCaseId);
       surveyFormService!.findSurveyForm(surveyId);
     }
   }
@@ -102,7 +104,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     } = this.props;
 
     answerSheetService!.clear();
-    // surveyCaseService!.clear();
+    surveyCaseService!.clear();
     surveyFormService!.clear();
   }
 

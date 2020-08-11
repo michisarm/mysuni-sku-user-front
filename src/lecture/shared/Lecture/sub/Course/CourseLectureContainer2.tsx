@@ -259,6 +259,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         }
 
         if (this.personalCube?.contents.surveyCaseId) {
+          console.log('personalCube surveyCaseId : ', this.personalCube?.contents.surveyCaseId);
           const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
           const surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
           // const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;

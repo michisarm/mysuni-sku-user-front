@@ -358,13 +358,12 @@ class CoursePageV2 extends Component<Props, State> {
   async findSurveyAnswerSheet() {
     const {
       coursePlanService,
-      answerSheetService,
       surveyFormService,
       examPaperService,
     } = this.props;
 
     if (coursePlanService.coursePlanContents.surveyCaseId) {
-      await answerSheetService
+      await AnswerSheetService.instance
         .findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId)
         .then((response) => {
           // console.log('answerSheet : ', response);
