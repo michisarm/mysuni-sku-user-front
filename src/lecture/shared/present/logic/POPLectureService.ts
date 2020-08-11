@@ -18,6 +18,17 @@ class POPLectureService {
   }
 
   _title: string | null = '';
+
+  @action
+  setTitle(title: string | null) {
+    if (title && title.length > 0) {
+      this._title = title;
+    }
+    else {
+      this._title = '학습자들의 평가가 좋은 인기 과정입니다.';
+    }
+  }
+
   @computed
   get Title() {
     if (this._title && this._title.length > 0) {

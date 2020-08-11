@@ -3,15 +3,17 @@ import {Radio, Segment} from 'semantic-ui-react';
 import {RouteComponentProps, withRouter} from 'react-router';
 import NewLearningListView from '../view/NewLearningListView';
 import {OrderByType} from '../../../lecture/model';
+import {ContentType} from '../page/NewLearningPage';
 
 
 interface Props extends RouteComponentProps {
   contentType: string,
+  setPageTitle: (contentType: ContentType) => void;
 }
 
 const NewLearningListContainer : React.FC<Props> = (Props) => {
   //
-  const { contentType } = Props;
+  const { contentType, setPageTitle } = Props;
 
   const [totalCount, setTotalCount] = useState(0);
   const [order, setOrder] = useState(OrderByType.New);
@@ -63,6 +65,7 @@ const NewLearningListContainer : React.FC<Props> = (Props) => {
         contentType={contentType}
         order={window.sessionStorage.getItem('order_type') === OrderByType.New ? OrderByType.New : OrderByType.Popular}
         totalCount={totalCount}
+        setPageTitle={setPageTitle}
       />
 
     </Segment>

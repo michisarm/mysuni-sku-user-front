@@ -18,6 +18,17 @@ class RQDLectureService {
   }
 
   _title: string | null = '';
+
+  @action
+  setTitle(title: string | null) {
+    if (title && title.length > 0) {
+      this._title = title;
+    }
+    else {
+      this._title = 'SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!';
+    }
+  }
+
   @computed
   get Title() {
     if (this._title && this._title.length > 0) {

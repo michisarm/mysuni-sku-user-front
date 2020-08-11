@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -9,24 +9,17 @@ import { RQDLectureService, POPLectureService,NEWLectureService, LRSLectureServi
 
 
 export enum ContentType {
+  Required = 'Required',
   New = 'New',
   Popular = 'Popular',
   Recommend = 'Recommend',
-  Required = 'Required',
 }
 
 export enum ContentTypeText {
+  Required = '권장학습 과정',
   New = '신규학습 과정',
   Popular = '인기학습 과정',
-  Required = '권장학습 과정',
   Recommend = '추천학습 과정',
-}
-
-enum ContentTypeDesc {
-  New = '최근 1개월 내 등록된 전체 학습 과정입니다.',
-  Popular = '사용자들의 많이 수강하는 상위 RANK의 전체 학습과정입니다.',
-  Recommend = 'LRS에서 제공하는 추천 학습 과정입니다.',
-  Required = '',
 }
 
 interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
@@ -38,34 +31,34 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
 }
 
 const NewLearningPage: React.FC<Props> = Props => {
-  const { skProfileService, rqdLectureService, newLectureService, popLectureService, lrsLectureService } = Props;
+  const { rqdLectureService, newLectureService, popLectureService, lrsLectureService } = Props;
 
   const { params } = Props.match;
   const contentType = params.type as ContentType;
-  const { profileMemberName } = skProfileService!;
 
-  const getContentTypeTitle = () => {
+  const [title, setTitle] = useState<string | undefined>('');
+
+  // 페이지 타이틀 설정
+  const setPageTitle = (contentType: ContentType) => {
     switch (contentType) {
-      case ContentType.New:
-        return newLectureService?.Title;
-      case ContentType.Popular:
-        return popLectureService?.Title;
-      case ContentType.Recommend:
-        return `mySUNI가 ${profileMemberName}님을 위해 추천하는 과정입니다.`;
       case ContentType.Required:
-        return rqdLectureService?.Title;
+        setTitle(rqdLectureService?.Title);
+        break;
+      case ContentType.New:
+        setTitle(newLectureService?.Title);
+        break;
+      case ContentType.Popular:
+        setTitle(popLectureService?.Title);
+        break;
+      case ContentType.Recommend:
+        setTitle(lrsLectureService?.Title);
+        break;
       default:
-        return '알 수 없는 학습과정입니다.';
+        setTitle('알 수 없는 학습과정입니다.');
+        break;
     }
   };
 
-  const getContentTypeDesc = () => {
-    return ContentTypeDesc[contentType];
-  };
-
-  // 페이지 타이틀
-  const contentTypeTitle = getContentTypeTitle();
-  const contentTypeDesc = getContentTypeDesc();
   // Breadcrumb
   const contentTypeText = ContentTypeText[contentType];
 
@@ -73,12 +66,13 @@ const NewLearningPage: React.FC<Props> = Props => {
     <ContentLayout breadcrumb={[{ text: `${contentTypeText}` }]}>
       <div className="ma-title">
         <div className="inner">
-          <h2>{contentTypeTitle}</h2>
-          {/*<p>{contentTypeDesc}</p>*/}
+          <h2>{title}</h2>
         </div>
       </div>
-
-      <NewLearningListContainer contentType={contentType} />
+      <NewLearningListContainer
+        contentType={contentType}
+        setPageTitle={setPageTitle}
+      />
     </ContentLayout>
   );
 };

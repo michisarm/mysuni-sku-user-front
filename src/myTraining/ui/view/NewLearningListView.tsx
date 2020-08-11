@@ -1,25 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { inject, observer } from 'mobx-react';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
-import { patronInfo } from '@nara.platform/dock';
-import { ReviewService } from '@nara.drama/feedback';
-import { ActionLogService, PageService } from 'shared/stores';
-import {
-  LectureService,
-  NEWLectureService,
-  POPLectureService,
-  LRSLectureService,
-} from 'lecture/stores';
-import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
-import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
-import { CubeType } from 'shared/model';
+import React, {useEffect, useRef, useState} from 'react';
+import {inject, observer} from 'mobx-react';
+import {RouteComponentProps, withRouter} from 'react-router';
+import {mobxHelper, reactAlert} from '@nara.platform/accent';
+import {patronInfo} from '@nara.platform/dock';
+import {ReviewService} from '@nara.drama/feedback';
+import {ActionLogService, PageService} from 'shared/stores';
+import {LRSLectureService, NEWLectureService, POPLectureService,} from 'lecture/stores';
+import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
+import {InMyLectureCdoModel, InMyLectureModel} from 'myTraining/model';
+import {InMyLectureService} from 'myTraining/stores';
+import {CubeType} from 'shared/model';
 import lectureRoutePaths from 'lecture/routePaths';
-import { Lecture, SeeMoreButton } from 'lecture/shared';
+import {Lecture, SeeMoreButton} from 'lecture/shared';
 import routePaths from 'personalcube/routePaths';
-import { NoSuchContentPanel } from 'shared';
-import { ContentType } from '../page/NewLearningPage';
+import {NoSuchContentPanel} from 'shared';
+import {ContentType} from '../page/NewLearningPage';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 
@@ -39,6 +34,7 @@ interface Props extends RouteComponentProps<{ type: string; pageNo: string }> {
 
   setNewOrder: (order: OrderByType) => void;
   showTotalCount: (count: number) => void;
+  setPageTitle: (contentType: ContentType) => void;
 }
 
 const NewLearningListView: React.FC<Props> = Props => {
@@ -56,6 +52,7 @@ const NewLearningListView: React.FC<Props> = Props => {
     actionLogService,
     setNewOrder,
     showTotalCount,
+    setPageTitle,
     match,
     history,
   } = Props;
@@ -235,6 +232,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset/*, orderBy*/);
     const lectureOffsetList = await rqdLectureService!.findPagingRqdLectures(lectureFilterRdo);
 
+    rqdLectureService!.setTitle(lectureOffsetList.title);
+    setPageTitle(ContentType.Required);
+
     lectures.current = rqdLectureService!.rqdLectures;
 
     let feedbackIds: string[] = [];
@@ -264,6 +264,9 @@ const NewLearningListView: React.FC<Props> = Props => {
     // const orderBy = order === OrderByType.New ? OrderByType.New : OrderByType.Popular;
     const lectureFilterRdo = LectureFilterRdoModel.newLectures(page!.limit, page!.nextOffset /*, orderBy*/);
     const lectureOffsetList = await newLectureService!.findPagingNewLectures(lectureFilterRdo);
+
+    newLectureService!.setTitle(lectureOffsetList.title);
+    setPageTitle(ContentType.New);
 
     lectures.current = newLectureService!.newLectures;
 
@@ -300,6 +303,9 @@ const NewLearningListView: React.FC<Props> = Props => {
       lectureFilterRdo
     );
 
+    popLectureService!.setTitle(lectureOffsetList.title);
+    setPageTitle(ContentType.Popular);
+
     lectures.current = popLectureService!.popLectures;
 
     let feedbackIds: string[] = [];
@@ -331,6 +337,9 @@ const NewLearningListView: React.FC<Props> = Props => {
       /*, orderBy*/
     );
     const lectureOffsetList = await lrsLectureService!.findPagingLrsLectures(lectureFilterRdo);
+
+    lrsLectureService!.setTitle(lectureOffsetList.title);
+    setPageTitle(ContentType.Recommend);
 
     lectures.current = lrsLectureService!.lrsLectures;
 

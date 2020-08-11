@@ -69,6 +69,7 @@ const POPLearning : React.FC<Props> = (Props) => {
 
     popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
       .then((response) => {
+        popLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(popLectureService!.Title);
         }

@@ -18,15 +18,14 @@ class LRSLectureService {
   }
 
   _title: string | null = '';
-  _profileName: string | null = '';
 
   @action
-  setProfileName(name: string) {
-    if (name && name.length > 0) {
-      this._profileName = name;
+  setTitle(title: string | null) {
+    if (title && title.length > 0) {
+      this._title = title;
     }
     else {
-      this._profileName = '학습자';
+      this._title = `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
     }
   }
 
@@ -37,6 +36,18 @@ class LRSLectureService {
     }
     else {
       return `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
+    }
+  }
+
+  _profileName: string | null = '';
+
+  @action
+  setProfileName(name: string) {
+    if (name && name.length > 0) {
+      this._profileName = name;
+    }
+    else {
+      this._profileName = '학습자';
     }
   }
 

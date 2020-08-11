@@ -18,6 +18,21 @@ class NEWLectureService {
   }
 
   _title: string | null = '';
+
+  @action
+  setTitle(title: string | null) {
+    if (title && title.length > 0) {
+      this._title = title;
+    }
+    else {
+      const today = new Date();
+      const month = today.getMonth() + 1;
+      const week = Math.ceil((today.getDate() + 6 - today.getDay()) / 7);
+
+      this._title = `mySUNI ${month}월 ${week}주 신규 학습 과정`;
+    }
+  }
+
   @computed
   get Title() {
     const today = new Date();

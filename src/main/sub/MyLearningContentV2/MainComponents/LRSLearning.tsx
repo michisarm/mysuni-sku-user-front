@@ -71,6 +71,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
 
     lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
       .then((response) => {
+        lrsLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(lrsLectureService!.Title);
         }

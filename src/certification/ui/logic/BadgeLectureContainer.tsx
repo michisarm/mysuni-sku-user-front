@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {useState, Fragment} from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
@@ -8,7 +8,6 @@ import {dateTimeHelper} from 'shared';
 import CubeType from 'myTraining/model/CubeType';
 import CubeTypeNameType from 'myTraining/model/CubeTypeNameType';
 import BadgeCompData from '../model/BadgeCompData';
-import BadgeCompModel from '../model/BadgeCompModel';
 import {BadgeDetailService, StudentService} from '../../../lecture/stores';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
@@ -57,46 +56,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history, } = Props;
 
   const [opened, setOpened] = useState(false);
-
-  // useEffect(() => {
-  //   // 배지 구성 학습 리스트 조회하기
-  //   //getBadgeCompLectures(badgeId);
-  // }, [badgeId]);
-
-  /*
-  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
-  const showCourseInfo = (course: BadgeCourseData) => {
-    //
-    course.isOpened = !course.isOpened;
-    course.cubeData = [];
-
-    if (course.isOpened) {
-      coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
-        .then((response: CoursePlanCustomModel | null) => {
-          if (response && response.lectureViews) {
-            response.lectureViews.map((lecture: LectureViewModel) => {
-              const cubeData = new BadgeCubeData();
-              cubeData.cubeId = lecture.cubeId;
-              cubeData.name = lecture.name;
-              cubeData.learningCardId = lecture.learningCardId;
-              cubeData.cubeType = lecture.cubeType;
-              cubeData.learningTime = lecture.learningTime;
-              // 진행율(%)
-              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
-              cubeData.learningState = lecture.learningState;
-              // 큐브 정보를 코스에 추가
-              course.cubeData = course.cubeData.concat(cubeData);
-            });
-          }
-        })
-        .catch((error) => {})
-        .finally(() => setOpened(!opened));
-    }
-    else {
-      setOpened(!opened);
-    }
-  };
-  */
 
   // 코스를 구성하는 렉쳐(큐브)들의 정보 한번에 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
@@ -298,39 +257,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                   </div>
                 </div>
               </div>
-              {/*
-              <div className="detail">
-                <ul className="step1">
-                  {badgeComp.course.cubeData.length > 0 ?
-                    badgeComp.course.cubeData.map((cube: BadgeCubeData, index2: number) =>
-                      <Fragment key={`cube-${index}`}>
-                        <li>
-                          <div className="tit">
-                            <span className="ellipsis">{(index + 1) + '-' + (index2 + 1) + '. ' + cube.name}</span>
-                          </div>
-                          <div className="right">
-                            <span>{CubeTypeNameType[cube.cubeType as CubeType]}</span>
-                            <span>{dateTimeHelper.timeToHourMinuteFormat(cube.learningTime)}</span>
-
-                            {/*상태호출*/}
-              {/*
-                            {setLearningStateForMedia(cube)}
-                          </div>
-                        </li>
-                        {/*subDepth: COURSE > CUBE TRS*/}
-              {/*}
-                        <TRSContainer parentType="COURSE" subDepth={true} badgeCourseCube={cube} />
-                      </Fragment>
-                    )
-                    :
-                    <div>코스 정보가 존재하지 않습니다.</div>
-                  }
-                  {/*subDepth: COURSE TRS*/}
-              {/*<TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />*/}
-              {/*
-                </ul>
-              </div>
-              */}
             </div>
             :
             <Fragment key={`cube-${index}`}>

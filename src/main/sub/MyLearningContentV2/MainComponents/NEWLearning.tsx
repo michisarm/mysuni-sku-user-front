@@ -67,6 +67,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
     newLectureService!.findPagingNewLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
       .then((response) => {
+        newLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(newLectureService!.Title);
         }

@@ -64,6 +64,7 @@ const RQDLearning: React.FC<Props> = Props => {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(
         savedRequiredLearningList
       );
+      rqdLectureService!.setTitle(requiredMain.title);
       if (requiredMain.totalCount > PAGE_SIZE - 1) {
         rqdLectureService!.setPagingRqdLectures(requiredMain);
         if (
@@ -80,12 +81,9 @@ const RQDLearning: React.FC<Props> = Props => {
     }
 
     // 서버로부터 가져오기
-    rqdLectureService!
-      .findPagingRqdLectures(
-        LectureFilterRdoModel.newLectures(PAGE_SIZE, 0),
-        true
-      )
+    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
       .then(response => {
+        rqdLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
           setTitle(rqdLectureService!.Title);
         } else {
