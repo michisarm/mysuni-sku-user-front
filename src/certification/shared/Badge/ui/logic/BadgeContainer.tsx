@@ -65,9 +65,9 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     if (certiAdminCategory !== 'mySUNI') {
       // iconUrl 이 있는 경우 우선 노출
       if ( iconUrl ) {
-        return domainPath + iconUrl;
+        return iconUrl;
       } else {
-        const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
+        const admin = (certiAdminCategory === 'Third') ? 'pp' : 'sub';
         return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
       }
     } else {
