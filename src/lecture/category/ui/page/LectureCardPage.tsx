@@ -282,7 +282,9 @@ class LectureCardPage extends Component<Props, State> {
     lectureCardService
       .findLectureCard(params.lectureCardId)
       .then(lectureCard => {
-        commentService!.countByFeedbackId(lectureCard!.commentId);
+        if (lectureCard && lectureCard!.commentId) {
+          commentService!.countByFeedbackId(lectureCard!.commentId);
+        }
       });
     await studentService.findIsJsonStudentByCube(params.lectureCardId);
     await this.findStudent();

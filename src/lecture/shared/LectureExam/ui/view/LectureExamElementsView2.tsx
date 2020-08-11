@@ -2,111 +2,6 @@
 import React from 'react';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 
-interface ReportProps {
-  OnReport?: () => void
-  onReportNotReady?: () => void
-  viewObject?: any
-  passedState?: boolean
-  type?: string
-  name?: string
-  sort?: string
-}
-
-export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name, sort }: ReportProps) => {
-  //
-  if (!OnReport) return null;
-  // console.log('Report viewObject : ', viewObject);
-  // if (passedState !== undefined) {
-  //   alert(passedState);
-  // }
-
-  return (
-
-    <>
-      { sort !== 'detail' ?
-        (
-          <div className="bar typeB">
-            <div className="category">
-              <i className="icon icon-report24" />
-              <span>Report</span>
-            </div>
-            <div className="tit">
-              <a className="ellipsis" href="#">{name}</a>
-            </div>
-            <div className="right">
-              {
-                passedState && (
-                  <div className="btn-play completed">
-                    <span className="text no-link">제출완료</span>
-                    <i className="icon play-completed24" />
-                  </div>
-                )
-              }
-
-              {
-                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
-                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
-                    <span className="text">과제제출</span>
-                    <i className="icon play-black24"/>
-                  </a>
-                )
-              }
-
-              {
-                !passedState && ( type === '1' || type === '3' ) && (
-                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
-                    <span className="text">과제제출</span>
-                    <i className="icon play-black24" />
-                  </a>
-                )
-              }
-            </div>
-          </div>
-        ) : (
-          <li className="step2 trs">
-            <div className="category">
-              <i className="icon icon-report24" />
-              <span>Report</span>
-            </div>
-            <div className="tit">
-              <a className="ellipsis" href="#">{name}</a>
-            </div>
-            <div className="right">
-              {
-                passedState && (
-                  <div className="btn-play completed">
-                    <span className="text no-link">제출완료</span>
-                    <i className="icon play-completed24" />
-                  </div>
-                )
-              }
-
-              {
-                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
-                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
-                    <span className="text">과제제출</span>
-                    <i className="icon play-black24"/>
-                  </a>
-                )
-              }
-
-              {
-                !passedState && ( type === '1' || type === '3' ) && (
-                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
-                    <span className="text">과제제출</span>
-                    <i className="icon play-black24" />
-                  </a>
-                )
-              }
-            </div>
-          </li>
-        )
-      }
-
-    </>
-  );
-};
-
 interface TestProps {
   OnTest?: () => void
   OnTestNotReady?: () => void
@@ -123,7 +18,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
   if (!OnTest) return null;
 
   // console.log('Test viewObject : ', viewObject);
-  // console.log('type : ', type, 'name : ', name);
+  // console.log('examTitle', viewObject.examTitle, 'type : ', type, 'name : ', name);
   return (
 
     <>
@@ -251,6 +146,111 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
   );
 };
 
+interface ReportProps {
+  OnReport?: () => void
+  onReportNotReady?: () => void
+  viewObject?: any
+  passedState?: boolean
+  type?: string
+  name?: string
+  sort?: string
+}
+
+export const Report = ({ OnReport, onReportNotReady, viewObject, passedState, type, name, sort }: ReportProps) => {
+  //
+  if (!OnReport) return null;
+  // console.log('Report viewObject : ', viewObject);
+  // if (passedState !== undefined) {
+  //   alert(passedState);
+  // }
+
+  return (
+
+    <>
+      { sort !== 'detail' ?
+        (
+          <div className="bar typeB">
+            <div className="category">
+              <i className="icon icon-report24" />
+              <span>Report</span>
+            </div>
+            <div className="tit">
+              {/*<a className="ellipsis" href="#">{name}</a>*/}
+            </div>
+            <div className="right">
+              {
+                passedState && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">제출완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
+                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24"/>
+                  </a>
+                )
+              }
+
+              {
+                !passedState && ( type === '1' || type === '3' ) && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+            </div>
+          </div>
+        ) : (
+          <li className="step2 trs">
+            <div className="category">
+              <i className="icon icon-report24" />
+              <span>Report</span>
+            </div>
+            <div className="tit">
+              {/*<a className="ellipsis" href="#">{name}</a>*/}
+            </div>
+            <div className="right">
+              {
+                passedState && (
+                  <div className="btn-play completed">
+                    <span className="text no-link">제출완료</span>
+                    <i className="icon play-completed24" />
+                  </div>
+                )
+              }
+
+              {
+                !passedState && ( type === '0' || type === '2' || type === '4' || type === '5' ) && (
+                  <a href="#" className="btn-play black" onClick={e => {OnReport(); e.preventDefault();}}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24"/>
+                  </a>
+                )
+              }
+
+              {
+                !passedState && ( type === '1' || type === '3' ) && (
+                  <a href="#" className="btn-play black" onClick={e => {if (onReportNotReady) {onReportNotReady();} e.preventDefault();}}>
+                    <span className="text">과제제출</span>
+                    <i className="icon play-black24" />
+                  </a>
+                )
+              }
+            </div>
+          </li>
+        )
+      }
+
+    </>
+  );
+};
+
 interface SurveyProps {
   onSurvey?: () => void
   OnSurveyNotReady?: () => void
@@ -264,7 +264,7 @@ export const Survey = ({ onSurvey, OnSurveyNotReady, viewObject, type, name, sor
   //
   if (!onSurvey) return null;
 
-  console.log('Survey viewObject : ', viewObject.surveyState);
+  // console.log('Survey surveyTitle : ', viewObject.surveyTitle);
 
   return (
 

@@ -165,7 +165,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     console.log('serviceType : ', serviceType);
 
     if (!finished) {
-      if (answerSheet.id && answerSheet.id.length) {
+      if (answerSheet && answerSheet.id && answerSheet.id.length) {
         answerSheetService!.saveAnswerSheet().then(() => {
           this.onCloseModal();
           if (onSaveCallback) onSaveCallback();
@@ -221,7 +221,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
     } = this.props;
     const { answerSheet } = answerSheetService!;
     const { surveyCase } = surveyCaseService!;
-    if (answerSheet.id && answerSheet.id.length) {
+    if (answerSheet && answerSheet.id && answerSheet.id.length) {
       answerSheetService!.saveAnswerSheet().then(() => {
         answerSheetService!.submitAnswerSheet(answerSheet.id).then(() => {
           this.onCloseModal();

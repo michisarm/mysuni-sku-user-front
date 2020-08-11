@@ -41,7 +41,7 @@ class LectureExamContainer2 extends Component<Props> {
     return (
       <>
         {sort === 'box' ? (
-          <div className="course-cont">
+          <>
             <div className="cube-box">
               <Report
                 OnReport={onReport}
@@ -66,6 +66,7 @@ class LectureExamContainer2 extends Component<Props> {
                 sort={sort}
               />
             </div>
+
             <div className="cube-box">
               <Survey
                 onSurvey={onSurvey}
@@ -76,7 +77,7 @@ class LectureExamContainer2 extends Component<Props> {
                 sort={sort}
               />
             </div>
-          </div>
+          </>
         ) : (
           <>
             <Report
@@ -88,6 +89,7 @@ class LectureExamContainer2 extends Component<Props> {
               name={name}
               sort={sort}
             />
+
             <Test
               OnTest={onTest}
               OnTestNotReady={onTestNotReady}
@@ -98,6 +100,7 @@ class LectureExamContainer2 extends Component<Props> {
               name={name}
               sort={sort}
             />
+
             <Survey
               onSurvey={onSurvey}
               OnSurveyNotReady={OnSurveyNotReady}

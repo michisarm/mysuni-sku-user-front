@@ -423,94 +423,95 @@ class LectureOverviewViewV2 extends Component<Props, State> {
         />
         <>
           <div className="ov-paragraph course-area">
+            <div className="course-cont">
 
-            {/*선수코스*/}
-            {(isPreCourse && hasNotPostCourse) && (
+              {/*선수코스*/}
+              {(isPreCourse && hasNotPostCourse) && (
+                <Lecture2.Group
+                  type={Lecture2.GroupType.PreCourse}
+                >
+                  {preLectureViews.map((preLectureView: LectureViewModel) => (
+                    <Lecture2.PreCourse
+                      lectureView={preLectureView}
+                      lectureViewName={preLectureView.name}
+                      onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
+                    />
+                  ))}
+                </Lecture2.Group>
+              )}
+
+
               <Lecture2.Group
-                type={Lecture2.GroupType.PreCourse}
+                type={Lecture2.GroupType.Course}
+                totalCourseCount={viewObject.totalCourseCount}
               >
-                {preLectureViews.map((preLectureView: LectureViewModel) => (
-                  <Lecture2.PreCourse
-                    lectureView={preLectureView}
-                    lectureViewName={preLectureView.name}
-                    onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
-                  />
+                {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
+                  <Lecture2.CourseSection
+                    key={`course-${lectureViewsIndex}`}
+                    lecture={(
+                      <Lecture2.Course
+                        className="first"
+                        lectureView={lecture}
+                        lectureViewSize={(getSubLectureViews(lecture.id).length)}
+                        lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
+                        thumbnailImage={lecture.baseUrl || undefined}
+                        toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                        onViewDetail={() => this.onViewDetail(lecture)}
+                        collegeId={params.collegeId}
+                        lectureCardId={lectureCardId}
+                        learningState={viewObject.state}
+                        member={member}
+                        onRefreshLearningState={onRefreshLearningState}
+                        onDoLearn={this.onDoLearn}
+                        isPreCoursePassed={isPreCoursePassed}
+                        studentInfo={studentInfo}
+                        onLectureInitRequest={this.handleLectureInitRequest}
+                      />
+                    )}
+                  >
+                    {getSubLectureViews(lecture.id).map((subLecture, index) =>
+
+                      <Lecture2.Course
+                        key={`sub-lecture-${index}`}
+                        className="included"
+                        lectureView={subLecture}
+                        lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
+                        thumbnailImage={subLecture.baseUrl || undefined}
+                        onViewDetail={() => this.onViewDetail(subLecture)}
+                        collegeId={params.collegeId}
+                        lectureCardId={lectureCardId}
+                        member={member}
+                        onRefreshLearningState={onRefreshLearningState}
+                        onDoLearn={this.onDoLearn}
+                        isPreCoursePassed={isPreCoursePassed}
+                        studentInfo={studentInfo}
+                        onLectureInitRequest={this.handleLectureInitRequest}
+                      />
+                    )}
+                  </Lecture2.CourseSection>
                 ))}
               </Lecture2.Group>
-            )}
 
-
-            <Lecture2.Group
-              type={Lecture2.GroupType.Course}
-              totalCourseCount={viewObject.totalCourseCount}
-            >
-              {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-                <Lecture2.CourseSection
-                  key={`course-${lectureViewsIndex}`}
-                  lecture={(
-                    <Lecture2.Course
-                      className="first"
-                      lectureView={lecture}
-                      lectureViewSize={(getSubLectureViews(lecture.id).length)}
-                      lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                      onViewDetail={() => this.onViewDetail(lecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      learningState={viewObject.state}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                      isPreCoursePassed={isPreCoursePassed}
-                      studentInfo={studentInfo}
-                      onLectureInitRequest={this.handleLectureInitRequest}
-                    />
-                  )}
-                >
-                  {getSubLectureViews(lecture.id).map((subLecture, index) =>
-
-                    <Lecture2.Course
-                      key={`sub-lecture-${index}`}
-                      className="included"
-                      lectureView={subLecture}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                      thumbnailImage={subLecture.baseUrl || undefined}
-                      onViewDetail={() => this.onViewDetail(subLecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                      isPreCoursePassed={isPreCoursePassed}
-                      studentInfo={studentInfo}
-                      onLectureInitRequest={this.handleLectureInitRequest}
-                    />
-                  )}
-                </Lecture2.CourseSection>
-              ))}
-            </Lecture2.Group>
-
-            {
-              viewObject && (
-                <LectureExam2
-                  onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-                  onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-                  onTest={viewObject.examId ? this.onTest : undefined}
-                  onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-                  onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
-                  onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
-                  onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-                  OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
-                  viewObject={viewObject}
-                  passedState={viewObject.passedState}
-                  type={viewObject.examType}
-                  name={viewObject.examName}
-                  sort="box"
-                />
-              )
-            }
-
+              {
+                viewObject && (
+                  <LectureExam2
+                    onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+                    onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
+                    onTest={viewObject.examId ? this.onTest : undefined}
+                    onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
+                    onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+                    OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
+                    viewObject={viewObject}
+                    passedState={viewObject.passedState}
+                    type={viewObject.examType}
+                    name={viewObject.examName}
+                    sort="box"
+                  />
+                )
+              }
+            </div>
           </div>
 
           {
