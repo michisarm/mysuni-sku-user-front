@@ -46,7 +46,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   const domainPath =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
     process.env.REACT_APP_ENVIRONMENT === 'server'
-      ? '' /*window.location.protocol + '//' + window.location.host*/
+      ? window.location.protocol + '//' + window.location.host
       : process.env.REACT_APP_PUBLIC_URL;
 
   const onViewDetail = () => {
