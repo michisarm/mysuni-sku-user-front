@@ -73,6 +73,13 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     findBadgeStudent(badgeId);
   }, [badgeId]);
 
+
+  useEffect(() => {
+    //
+    findBadgeStudent(badgeId);
+
+  },[learningCount]);
+
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
     //
@@ -152,6 +159,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
       setPassedCount(passCount);
       setLearningCount(components.length);
+
     });
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
@@ -196,7 +204,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         !learningCompleted
       ) {
 
-        if ( /*badgeDetail.autoIssued && */learningCount > 0 && learningCount === passedCount ) {
+        if ( learningCount > 0 && learningCount === passedCount ) {
           setBadgeState(ChallengeState.ReadyForRequest);
         } else {
           // 진행 중 => 도전취소 버튼 노출
