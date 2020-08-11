@@ -57,6 +57,7 @@ interface Props extends RouteComponentProps<RouteParams> {
 interface State {
   loaded: boolean;
   examTitle: string;
+  surveyState: boolean;
   surveyTitle: string;
   tabState: string;
   isPreCoursePassed: boolean;
@@ -235,7 +236,12 @@ class CoursePageV2 extends Component<Props, State> {
 
     coursePlanService
       .findAllCoursePlanInfo(params.coursePlanId, params.serviceId)
-      .then(() => this.findStudentInfo().then(() => this.getPreCourseModel()));
+      .then(() =>
+        this.findStudentInfo().then(() => {
+          this.findSurveyAnswerSheet();
+          this.getPreCourseModel();
+        })
+      );
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
@@ -340,6 +346,24 @@ class CoursePageV2 extends Component<Props, State> {
     }
   }
 
+  async findSurveyAnswerSheet() {
+    const { coursePlanService, answerSheetService } = this.props;
+    const { answerSheet } = answerSheetService;
+
+    if (coursePlanService.coursePlanContents.surveyCaseId) {
+      await answerSheetService
+        .findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId)
+        .then((response) => {
+          console.log('answerSheet : ', response);
+          const disabled =
+            response && response.progress === AnswerProgress.Complete;
+          // this.state.surveyState = disabled;
+          this.setState({ surveyState: disabled });
+          // this.setState({})
+        });
+    }
+  }
+
   async findProgramOrCourseLecture() {
     //
     const {
@@ -393,7 +417,7 @@ class CoursePageV2 extends Component<Props, State> {
     //
     const { lectureService } = this.props;
 
-    lectureViews.map(async lectureView => {
+    lectureViews.map(async (lectureView) => {
       if (
         lectureView.serviceType === LectureServiceType.Program ||
         (lectureView.serviceType === LectureServiceType.Course &&
@@ -493,7 +517,8 @@ class CoursePageV2 extends Component<Props, State> {
     examTitle = examPaperService.examPaper?.title || '';
     surveyId = coursePlanContents.surveyId || '';
     // surveyTitle = this.state.surveyTitle || '';
-    surveyTitle = surveyCaseService.surveyCase.titles?.langStringMap.get('ko') || '';
+    surveyTitle =
+      surveyCaseService.surveyCase.titles?.langStringMap.get('ko') || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
     reportFileBoxId = coursePlan.reportFileBox
@@ -784,7 +809,7 @@ class CoursePageV2 extends Component<Props, State> {
         } else if (
           studentData.phaseCount === studentData.completePhaseCount &&
           studentData.learningState === LearningState.Failed &&
-            studentData.studentScore.numberOfTrials > 2
+          studentData.studentScore.numberOfTrials > 2
         ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
