@@ -493,7 +493,7 @@ class CoursePageV2 extends Component<Props, State> {
     examTitle = examPaperService.examPaper?.title || '';
     surveyId = coursePlanContents.surveyId || '';
     // surveyTitle = this.state.surveyTitle || '';
-    surveyTitle = surveyCaseService.surveyCase.titles?.string || '';
+    surveyTitle = surveyCaseService.surveyCase.titles?.langStringMap.get('ko') || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
     reportFileBoxId = coursePlan.reportFileBox
@@ -521,7 +521,7 @@ class CoursePageV2 extends Component<Props, State> {
     // reportFileBoxId = this.checkNullValue(coursePlan.reportFileBox.fileBoxId);
     // tabState = this.checkNullValue(this.state.tabState);
 
-    console.log('course page student : ', student);
+    // console.log('course page student : ', student);
 
     // console.log('----', student.lectureUsid, coursePlan.coursePlanId, state);
 
