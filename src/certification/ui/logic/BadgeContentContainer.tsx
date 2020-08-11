@@ -67,20 +67,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [passedCount, setPassedCount] = useState(0);
 
   useEffect(() => {
-
     // 구성학습 정보 조회
     findBadgeLearningInfo(badgeId);
-
-  }, []);
-
-  useEffect(() => {
-
-    if (learningCount > 0) {
-      // 수강정보 조회
-      findBadgeStudent(badgeId);
-    }
-
-  }, [badgeId, learningCount]);
+    // 수강정보 조회
+    findBadgeStudent(badgeId);
+  }, [badgeId]);
 
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
@@ -105,63 +96,63 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 뱃지 구성 학습 리스트 조회하기
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    const components: BadgeCompModel[] = await badgeService!.findBadgeComposition(badgeId);
+    await badgeService!.findBadgeComposition(badgeId).then((components: BadgeCompModel[]) => {
+      let compList: BadgeCompData[] = [];
+      let passCount = 0;
+      if (components.length > 0 && components[0] ) {
+        components.map((data: BadgeCompModel) => {
+          // 학습완료 카운트
+          if (data.learningState === 'Passed') {
+            passCount++;
+          }
 
-    let compList: BadgeCompData[] = [];
-    let passCount = 0;
-    if (components.length > 0 && components[0] ) {
-      components.map((data: BadgeCompModel) => {
-        // 학습완료 카운트
-        if (data.learningState === 'Passed') {
-          passCount++;
-        }
+          const compData = new BadgeCompData();
+          //console.log( data );
+          // 공통
+          compData.compType = data.serviceType;
+          compData.id = data.id;
+          compData.patronKeyString = data.patronKey.keyString;
+          // 코스정보
+          if (data.serviceType === 'COURSE') {
+            compData.course = new BadgeCourseData();
+            const keyStr = data.patronKey.keyString;
+            compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+            compData.course.collegeId = data.category.college.id;
+            compData.course.serviceId = data.serviceId;
+            compData.course.name = data.name;
+            compData.course.coursePlanId = data.coursePlanId;
+            compData.course.isOpened = false;
+            compData.course.cubeCount = data.lectureCardUsids.length;
+            compData.course.learningState = data.learningState;
+            compData.course.serviceType = 'Course';
+            data.lectureCardUsids.map((id: string) => {
+              compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
+            });
+          }
+          // (학습)카드 정보
+          else {
+            compData.cube = new BadgeCubeData();
+            const keyStr = data.patronKey.keyString;
+            compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
+            compData.cube.collegeId = data.category.college.id;
+            compData.cube.lectureCardId = data.serviceId;
+            compData.cube.name = data.name;
+            compData.cube.cubeId = data.cubeId;
+            compData.cube.learningCardId = data.learningCardId;
+            compData.cube.cubeType = data.cubeType;
+            compData.cube.learningTime = data.learningTime; // 학습시간(분)
+            compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
+            compData.cube.learningState = data.learningState;
+            compData.cube.serviceType = 'cube';
+          }
+          compList = compList.concat(compData);
+        });
+      }
+      setBadgeCompList(compList);
 
-        const compData = new BadgeCompData();
-        //console.log( data );
-        // 공통
-        compData.compType = data.serviceType;
-        compData.id = data.id;
-        compData.patronKeyString = data.patronKey.keyString;
-        // 코스정보
-        if (data.serviceType === 'COURSE') {
-          compData.course = new BadgeCourseData();
-          const keyStr = data.patronKey.keyString;
-          compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-          compData.course.collegeId = data.category.college.id;
-          compData.course.serviceId = data.serviceId;
-          compData.course.name = data.name;
-          compData.course.coursePlanId = data.coursePlanId;
-          compData.course.isOpened = false;
-          compData.course.cubeCount = data.lectureCardUsids.length;
-          compData.course.learningState = data.learningState;
-          compData.course.serviceType = 'Course';
-          data.lectureCardUsids.map((id: string) => {
-            compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
-          });
-        }
-        // (학습)카드 정보
-        else {
-          compData.cube = new BadgeCubeData();
-          const keyStr = data.patronKey.keyString;
-          compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-          compData.cube.collegeId = data.category.college.id;
-          compData.cube.lectureCardId = data.serviceId;
-          compData.cube.name = data.name;
-          compData.cube.cubeId = data.cubeId;
-          compData.cube.learningCardId = data.learningCardId;
-          compData.cube.cubeType = data.cubeType;
-          compData.cube.learningTime = data.learningTime; // 학습시간(분)
-          compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
-          compData.cube.learningState = data.learningState;
-          compData.cube.serviceType = 'cube';
-        }
-        compList = compList.concat(compData);
-      });
-    }
-    setBadgeCompList(compList);
-
-    setPassedCount(passCount);
-    setLearningCount(components.length);
+      setPassedCount(passCount);
+      setLearningCount(components.length);
+    });
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
