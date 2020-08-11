@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
+import { getPublicUrl } from 'shared/helper/envHelper';
 import certificationRoutePaths from '../../../../routePaths';
 import {
   BadgeContentWrapper,
@@ -65,7 +66,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     if (certiAdminCategory !== 'mySUNI') {
       // iconUrl 이 있는 경우 우선 노출
       if (iconUrl) {
-        return domainPath + iconUrl;
+        return iconUrl;
       } else {
         const admin = certiAdminCategory === 'Third' ? 'pp' : 'sub';
         return `/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
@@ -99,9 +100,9 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
         iconUrl={
           iconUrl
             ? domainPath + iconUrl
-            : CategoryImageURL[
+            : `${getPublicUrl()}${CategoryImageURL[
                 badge.mainCategoryId as keyof typeof CategoryImageURL
-            ]
+            ]}`
         }
         mainCategory={mainCategoryName}
       />

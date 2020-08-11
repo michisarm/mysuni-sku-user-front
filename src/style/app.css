@@ -208,8 +208,8 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 }
 
 /* badgeB Type - C타입 적용 시 삭제*/
-.badge{position:relative;display:block;text-align:center}
-.badge.s280{padding:.25rem .375rem .5rem;margin-left:-.375rem;margin-top:-.25rem;width:18.25rem;height:18.25rem}
+.badge {position:relative;display:block;text-align:center}
+.badge.s280 {padding:.25rem .375rem .5rem;margin-left:-.375rem;margin-top:-.25rem;width:18.25rem;height:18.25rem}
 .badge.s280 .issuing{display:block;position:absolute;top:2.25rem;left:0;text-align:center;width:100%;height:1.25rem}
 .badge.s280 .issuing img{display:inline-block;height:100%}
 .badge.s280 .college{display:block;margin-top:3.375rem}
@@ -221,7 +221,7 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .badge.s280.Basic{background:url(./media/bronze_1_c.a7bfc969.png) 50% 50% no-repeat}
 .badge.s280.Intermediate{background:url(./media/silver_1_c.c292095d.png) 50% 50% no-repeat}
 .badge.s280.Advanced{background:url(./media/gold_1_c.df1e6984.png) 50% 50% no-repeat}
-.badge.s220{padding:.25rem .375rem .5rem;margin-left:-.375rem;margin-top:-.25rem;width:14.5rem;height:14.5rem}
+.badge.s220 {padding:.25rem .375rem .5rem;margin-left:-.375rem;margin-top:-.25rem;width:14.5rem;height:14.5rem}
 .badge.s220 .issuing{display:block;position:absolute;top:1.75rem;left:0;text-align:center;width:100%;height:.875rem}
 .badge.s220 .issuing img{display:inline-block;height:100%}
 .badge.s220 .college{display:block;margin-top:2.575rem}
