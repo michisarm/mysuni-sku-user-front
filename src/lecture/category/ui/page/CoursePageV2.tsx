@@ -493,7 +493,7 @@ class CoursePageV2 extends Component<Props, State> {
     examTitle = examPaperService.examPaper?.title || '';
     surveyId = coursePlanContents.surveyId || '';
     // surveyTitle = this.state.surveyTitle || '';
-    surveyTitle = surveyCaseService.surveyCase.titles.string || '';
+    surveyTitle = surveyCaseService.surveyCase.titles?.string || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
     reportFileBoxId = coursePlan.reportFileBox
