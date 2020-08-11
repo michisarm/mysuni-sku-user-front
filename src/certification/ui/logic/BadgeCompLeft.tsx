@@ -108,10 +108,10 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
           return;
         }
       }
-      if ( badge.additionTermsExist && !studentInfo?.missionCompleted ) {
-        reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
-        return;
-      }
+      // if ( badge.additionTermsExist && !studentInfo?.missionCompleted ) {
+      //   reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
+      //   return;
+      // }
     }
 
     badgeService!.requestManualIssued(studentInfo!.id, IssueState.Requested)
@@ -200,7 +200,8 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
 
             {/*자동발급 완료 팝업*/}
             <ChallengeSuccessModal
-              badge={badgeService!.badgeDetailInfo}
+              // badge={badgeService!.badgeDetailInfo}
+              badgeId={badgeId}
               successModal={successModal}
               onCloseSuccessModal={onControlSuccessModal}
             />

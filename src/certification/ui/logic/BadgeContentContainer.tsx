@@ -286,12 +286,12 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     const missionCompleted = studentInfo.missionCompleted;
 
     // 수동발급 뱃지 & 추가미션 미완료
-    if (!autoIssuedBadge ) {
-      if (badgeDetail.additionTermsExist && !missionCompleted ) {
-        reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
-        return;
-      }
-    }
+    // if (!autoIssuedBadge ) {
+    //   if (badgeDetail.additionTermsExist && !missionCompleted ) {
+    //     reactAlert({title: '알림', message: '추가 미션을 완료해주세요.'});
+    //     return;
+    //   }
+    // }
 
     badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
       .then((response) => {
@@ -435,7 +435,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
         {/*자동발급 뱃지 & 뱃지획득 시*/}
         <ChallengeSuccessModal
-          badge={badgeDetail}
+          badgeId={badgeId}
           successModal={successModal}
           onCloseSuccessModal={onControlSuccessModal}
         />
