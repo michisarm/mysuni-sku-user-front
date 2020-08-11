@@ -42,7 +42,10 @@ const MyLearningContentContainer : React.FC<Props> = (Props) => {
       <RequiredLearning />
       <NewLearning />
       <PopularLearning profileMemberName={member.name} />
-      <RecommendLearning profileMemberName={member.name} />
+      <RecommendLearning
+        profileMemberName={member.name}
+        profileMemberEmail={member.email}
+      />
     </>
   );
 };

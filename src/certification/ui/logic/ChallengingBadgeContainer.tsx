@@ -118,7 +118,17 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
 
   const refreshChallengingContainer = () => {
     resetTotBadgeCount();
-    setUseCount(useCount + 1);
+
+    badgeService!.clearMyBadges();
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(pageNo - 1);
+
+    refresh.current = true;
+
+    // setUseCount(useCount + 1);
   };
 
   const onSelectDifficultyLevel = (diffLevel: string) => {

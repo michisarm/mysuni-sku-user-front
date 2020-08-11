@@ -29,11 +29,13 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService,
 
   profileMemberName: string,
+  profileMemberEmail: string,
 }
 
 const LRSLearning : React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, lrsLectureService, inMyLectureService, profileMemberName, history } = Props;
+  const { actionLogService, reviewService, lrsLectureService, inMyLectureService,
+    profileMemberName, profileMemberEmail, history } = Props;
 
   const CONTENT_TYPE = 'Recommend';
   const CONTENT_TYPE_NAME = '추천과정';
@@ -69,7 +71,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
       }
     }
 
-    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.lrsLectures(PAGE_SIZE, 0, profileMemberEmail), true)
       .then((response) => {
         lrsLectureService!.setTitle(response.title);
         if (!response || !response.title || response.title.length < 1) {
