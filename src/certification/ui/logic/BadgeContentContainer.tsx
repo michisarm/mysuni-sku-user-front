@@ -391,7 +391,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   //
   return (
     <>
-
       {/*상단*/}
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
