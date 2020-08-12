@@ -462,7 +462,7 @@ class LectureCardContainer extends Component<Props, State> {
       reactAlert({
         title: '알림',
         message:
-          '현재 다른 과정을 학습하고 있습니다.<br>2개 이상의 Contents를 동시에 학습할 경우, 본인에게 실제 학습 여부를 확인하여 이수를 취소할 수도 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
