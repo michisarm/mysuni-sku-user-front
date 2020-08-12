@@ -149,8 +149,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
     //
-    console.log( cube.learningState );
-
     // 버튼 스타일
     let styleName = 'black';
     switch( cube.learningState ) {
