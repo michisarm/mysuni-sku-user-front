@@ -99,12 +99,12 @@ class POPLectureService {
   }
 
   @action
-  removeLectureFromStorage(trainingId: string) {
+  removeLectureFromStorage(serviceId: string) {
     const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
     if (savedPopularLearningList && savedPopularLearningList.length > 0) {
       const PopularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
       if (PopularMain && PopularMain.results && PopularMain.results.length > 0) {
-        PopularMain.results = PopularMain.results.filter((item) => item.id !== trainingId);
+        PopularMain.results = PopularMain.results.filter((item) => item.serviceId !== serviceId);
         PopularMain.totalCount = PopularMain.results.length;
         PopularMain.empty = PopularMain.totalCount < 1;
         window.sessionStorage.setItem('PopLearningList', JSON.stringify(PopularMain));

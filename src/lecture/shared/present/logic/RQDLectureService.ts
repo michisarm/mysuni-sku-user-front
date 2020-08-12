@@ -100,12 +100,12 @@ class RQDLectureService {
   }
 
   @action
-  removeLectureFromStorage(trainingId: string) {
+  removeLectureFromStorage(serviceId: string) {
     const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
     if (savedRequiredLearningList && savedRequiredLearningList.length > 0) {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       if (requiredMain && requiredMain.results && requiredMain.results.length > 0) {
-        requiredMain.results = requiredMain.results.filter((item) => item.id !== trainingId);
+        requiredMain.results = requiredMain.results.filter((item) => item.serviceId !== serviceId);
         requiredMain.totalCount = requiredMain.results.length;
         requiredMain.empty = requiredMain.totalCount < 1;
         window.sessionStorage.setItem('RqdLearningList', JSON.stringify(requiredMain));

@@ -107,12 +107,12 @@ class NEWLectureService {
   }
 
   @action
-  removeLectureFromStorage(trainingId: string) {
+  removeLectureFromStorage(serviceId: string) {
     const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
     if (savedNewLearningList && savedNewLearningList.length > 0) {
       const NewMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
       if (NewMain && NewMain.results && NewMain.results.length > 0) {
-        NewMain.results = NewMain.results.filter((item) => item.id !== trainingId);
+        NewMain.results = NewMain.results.filter((item) => item.serviceId !== serviceId);
         NewMain.totalCount = NewMain.results.length;
         NewMain.empty = NewMain.totalCount < 1;
         window.sessionStorage.setItem('NewLearningList', JSON.stringify(NewMain));

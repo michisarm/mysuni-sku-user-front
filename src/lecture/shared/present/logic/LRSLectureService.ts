@@ -112,12 +112,12 @@ class LRSLectureService {
   }
 
   @action
-  removeLectureFromStorage(trainingId: string) {
+  removeLectureFromStorage(serviceId: string) {
     const savedLrsLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
     if (savedLrsLearningList && savedLrsLearningList.length > 0) {
       const LrsMain: OffsetElementList<LectureModel> = JSON.parse(savedLrsLearningList);
       if (LrsMain && LrsMain.results && LrsMain.results.length > 0) {
-        LrsMain.results = LrsMain.results.filter((item) => item.id !== trainingId);
+        LrsMain.results = LrsMain.results.filter((item) => item.serviceId !== serviceId);
         LrsMain.totalCount = LrsMain.results.length;
         LrsMain.empty = LrsMain.totalCount < 1;
         window.sessionStorage.setItem('LrsLearningList', JSON.stringify(LrsMain));
