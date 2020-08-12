@@ -4,6 +4,8 @@ import {OffsetElementList} from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
+import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
+import InMyLectureCdoModel from '../../../../myTraining/model/InMyLectureCdoModel';
 
 
 @autobind
@@ -12,9 +14,11 @@ class RQDLectureService {
   static instance: RQDLectureService;
 
   private arrangeApi: ArrangeApi;
+  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi) {
+  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
     this.arrangeApi = arrangeApi;
+    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -94,8 +98,22 @@ class RQDLectureService {
   get totalCount() {
     return this._totalCount;
   }
+
+  @action
+  removeLectureFromStorage(serviceId: string) {
+    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
+    if (savedRequiredLearningList && savedRequiredLearningList.length > 0) {
+      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
+      if (requiredMain && requiredMain.results && requiredMain.results.length > 0) {
+        requiredMain.results = requiredMain.results.filter((item) => item.serviceId !== serviceId);
+        requiredMain.totalCount = requiredMain.results.length;
+        requiredMain.empty = requiredMain.totalCount < 1;
+        window.sessionStorage.setItem('RqdLearningList', JSON.stringify(requiredMain));
+      }
+    }
+  }
 }
 
-RQDLectureService.instance = new RQDLectureService(ArrangeApi.instance);
+RQDLectureService.instance = new RQDLectureService(ArrangeApi.instance, InMyLectureApi.instance);
 
 export default RQDLectureService;

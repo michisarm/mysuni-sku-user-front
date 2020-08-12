@@ -6,6 +6,7 @@ import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
+import LectureModel from '../../../lecture/model/LectureModel';
 
 
 @autobind
@@ -71,12 +72,20 @@ class InMyLectureService {
     this._inMyLectures = [];
   }
 
-  addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
-    return this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
+  @action
+  async addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
+    const response = await this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
+    runInAction(() => this.findAllInMyLectures());
+
+    return response;
   }
 
-  removeInMyLecture(inMyLectureId: string) {
-    return this.inMyLectureApi.removeInMyLecture(inMyLectureId);
+  @action
+  async removeInMyLecture(inMyLectureId: string) {
+    const response = await this.inMyLectureApi.removeInMyLecture(inMyLectureId);
+    runInAction(() => this.findAllInMyLectures());
+
+    return response;
   }
 
   @action

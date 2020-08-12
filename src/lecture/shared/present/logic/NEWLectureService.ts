@@ -4,6 +4,7 @@ import {OffsetElementList} from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
+import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 
 @autobind
@@ -12,9 +13,11 @@ class NEWLectureService {
   static instance: NEWLectureService;
 
   private arrangeApi: ArrangeApi;
+  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi) {
+  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
     this.arrangeApi = arrangeApi;
+    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -102,8 +105,22 @@ class NEWLectureService {
   get totalCount() {
     return this._totalCount;
   }
+
+  @action
+  removeLectureFromStorage(serviceId: string) {
+    const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
+    if (savedNewLearningList && savedNewLearningList.length > 0) {
+      const NewMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+      if (NewMain && NewMain.results && NewMain.results.length > 0) {
+        NewMain.results = NewMain.results.filter((item) => item.serviceId !== serviceId);
+        NewMain.totalCount = NewMain.results.length;
+        NewMain.empty = NewMain.totalCount < 1;
+        window.sessionStorage.setItem('NewLearningList', JSON.stringify(NewMain));
+      }
+    }
+  }
 }
 
-NEWLectureService.instance = new NEWLectureService(ArrangeApi.instance);
+NEWLectureService.instance = new NEWLectureService(ArrangeApi.instance, InMyLectureApi.instance);
 
 export default NEWLectureService;

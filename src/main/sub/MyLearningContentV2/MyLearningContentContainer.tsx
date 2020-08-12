@@ -12,20 +12,25 @@ import MainBanner from './MainComponents/MainBanner';
 import NewLearning from './MainComponents/NEWLearning';
 import PopularLearning from './MainComponents/POPLearning';
 import RecommendLearning from './MainComponents/LRSLearning';
+import InMyLectureApi from '../../../myTraining/present/apiclient/InMyLectureApi';
+import {InMyLectureService} from '../../../myTraining/stores';
 
 
 interface Props extends RouteComponentProps {
   skProfileService?: SkProfileService,
+  inMyLectureService?: InMyLectureService;
 }
 
 const MyLearningContentContainer : React.FC<Props> = (Props) => {
-  const { skProfileService } = Props;
+  const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
 
   const [memName, setMemName] = useState('');
 
   useEffect(() => {
+    inMyLectureService!.findAllInMyLectures();
+
     setMemName(member.name);
     if (memName.length < 1) {
       setTimeout(() => {
@@ -51,5 +56,6 @@ const MyLearningContentContainer : React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'profile.skProfileService'
+  'profile.skProfileService',
+  'myTraining.inMyLectureService',
 ))(withRouter(MyLearningContentContainer));

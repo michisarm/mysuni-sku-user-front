@@ -49,14 +49,14 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     myTrainingService!.clear();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedInProgressLearningList = window.navigator.onLine && window.sessionStorage.getItem('InProgressLearningList');
-    if (savedInProgressLearningList) {
-      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
-      if (inProgressMain.totalCount > PAGE_SIZE - 1) {
-        myTrainingService!.setMyTrainingsWithState(inProgressMain);
-        return;
-      }
-    }
+    // const savedInProgressLearningList = window.navigator.onLine && window.sessionStorage.getItem('InProgressLearningList');
+    // if (savedInProgressLearningList) {
+    //   const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
+    //   if (inProgressMain.totalCount > PAGE_SIZE - 1) {
+    //     myTrainingService!.setMyTrainingsWithState(inProgressMain);
+    //     return;
+    //   }
+    // }
 
     // 서버로부터 가져오기
     myTrainingService!.findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE,0,[],true);

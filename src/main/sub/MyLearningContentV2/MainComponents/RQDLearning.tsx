@@ -57,21 +57,13 @@ const RQDLearning: React.FC<Props> = Props => {
     rqdLectureService!.clearLectures();
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRequiredLearningList =
-      window.navigator.onLine &&
-      window.sessionStorage.getItem('RqdLearningList');
+    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
     if (savedRequiredLearningList) {
-      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(
-        savedRequiredLearningList
-      );
+      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       rqdLectureService!.setTitle(requiredMain.title);
       if (requiredMain.totalCount > PAGE_SIZE - 1) {
         rqdLectureService!.setPagingRqdLectures(requiredMain);
-        if (
-          !requiredMain ||
-          !requiredMain.title ||
-          requiredMain.title.length < 1
-        ) {
+        if (!requiredMain || !requiredMain.title || requiredMain.title.length < 1) {
           setTitle(rqdLectureService!.Title);
         } else {
           setTitle(requiredMain.title);
@@ -167,38 +159,36 @@ const RQDLearning: React.FC<Props> = Props => {
     });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
+      inMyLectureService!.removeInMyLecture(training.id);
     } else {
       let servicePatronKeyString = training.patronKey.keyString;
 
       if (training instanceof MyTrainingModel) {
         servicePatronKeyString = training.servicePatronKeyString;
       }
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: training.serviceId,
-            serviceType: training.serviceType,
-            category: training.category,
-            name: training.name,
-            description: training.description,
-            cubeType: training.cubeType,
-            learningTime: training.learningTime,
-            stampCount: training.stampCount,
-            coursePlanId: training.coursePlanId,
+      inMyLectureService!.addInMyLecture(
+        new InMyLectureCdoModel({
+          serviceId: training.serviceId,
+          serviceType: training.serviceType,
+          category: training.category,
+          name: training.name,
+          description: training.description,
+          cubeType: training.cubeType,
+          learningTime: training.learningTime,
+          stampCount: training.stampCount,
+          coursePlanId: training.coursePlanId,
 
-            requiredSubsidiaries: training.requiredSubsidiaries,
-            cubeId: training.cubeId,
-            courseSetJson: training.courseSetJson,
-            courseLectureUsids: training.courseLectureUsids,
-            lectureCardUsids: training.lectureCardUsids,
+          requiredSubsidiaries: training.requiredSubsidiaries,
+          cubeId: training.cubeId,
+          courseSetJson: training.courseSetJson,
+          courseLectureUsids: training.courseLectureUsids,
+          lectureCardUsids: training.lectureCardUsids,
 
-            reviewId: training.reviewId,
-            baseUrl: training.baseUrl,
-            servicePatronKeyString,
-          })
-        )
-        .then(findMyContent);
+          reviewId: training.reviewId,
+          baseUrl: training.baseUrl,
+          servicePatronKeyString,
+        })
+      );
     }
   };
 
