@@ -37,7 +37,6 @@ const LRSLearning : React.FC<Props> = (Props) => {
   const { actionLogService, reviewService, lrsLectureService, inMyLectureService,
     profileMemberName, profileMemberEmail, history } = Props;
 
-  const CONTENT_TYPE = 'Recommend';
   const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
 
@@ -59,7 +58,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
     const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
     if (savedRecommendLearningList) {
       const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
-      if (recommendMain.totalCount > PAGE_SIZE - 1) {
+      if (recommendMain.results.length > PAGE_SIZE - 1) {
         lrsLectureService!.setPagingLrsLectures(recommendMain);
         if (!recommendMain || !recommendMain.title || recommendMain.title.length < 1) {
           setTitle(lrsLectureService!.Title);

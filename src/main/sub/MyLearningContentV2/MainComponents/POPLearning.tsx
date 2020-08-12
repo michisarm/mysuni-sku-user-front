@@ -35,7 +35,6 @@ const POPLearning : React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
 
-  const CONTENT_TYPE = 'Popular';
   const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
 
@@ -55,7 +54,7 @@ const POPLearning : React.FC<Props> = (Props) => {
     const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
     if (savedPopularLearningList) {
       const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
-      if (popularMain.totalCount > PAGE_SIZE - 1) {
+      if (popularMain.results.length > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);
         if (!popularMain || !popularMain.title || popularMain.title.length < 1) {
           setTitle(popLectureService!.Title);

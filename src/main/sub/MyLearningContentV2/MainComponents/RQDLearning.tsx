@@ -40,7 +40,6 @@ const RQDLearning: React.FC<Props> = Props => {
     history,
   } = Props;
 
-  const CONTENT_TYPE = 'Required';
   const CONTENT_TYPE_NAME = '권장과정';
   const PAGE_SIZE = 8;
 
@@ -61,7 +60,7 @@ const RQDLearning: React.FC<Props> = Props => {
     if (savedRequiredLearningList) {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       rqdLectureService!.setTitle(requiredMain.title);
-      if (requiredMain.totalCount > PAGE_SIZE - 1) {
+      if (requiredMain.results.length > PAGE_SIZE - 1) {
         rqdLectureService!.setPagingRqdLectures(requiredMain);
         if (!requiredMain || !requiredMain.title || requiredMain.title.length < 1) {
           setTitle(rqdLectureService!.Title);

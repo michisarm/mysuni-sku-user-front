@@ -33,7 +33,6 @@ const NEWLearning : React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, newLectureService, inMyLectureService, history } = Props;
 
-  const CONTENT_TYPE = 'New';
   const CONTENT_TYPE_NAME = '신규과정';
   const PAGE_SIZE = 8;
 
@@ -53,7 +52,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
     const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
     if (savedNewLearningList) {
       const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
-      if (newMain.totalCount > PAGE_SIZE - 1) {
+      if (newMain.results.length > PAGE_SIZE - 1) {
         newLectureService!.setPagingNewLectures(newMain);
         if (!newMain || !newMain.title || newMain.title.length < 1) {
           setTitle(newLectureService!.Title);
