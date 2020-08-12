@@ -149,7 +149,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
     //
-    //console.log( cube );
+    console.log( cube.learningState );
 
     // 버튼 스타일
     let styleName = 'black';
@@ -178,18 +178,14 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
     return (
       <a href="#" className={classNames('btn-play', styleName)} onClick={(e) => moveToCubePage(cube!, e)}>
-        <span className="text">
+        <span className={classNames('text', (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting) ? 'no-link' : '')}>
           {stateName}{
             cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) ?
               `(${cube.sumViewSeconds}%)` : ''
           }
         </span>
 
-        { cube.learningState !== BadgeLectureState.Progress && (
-          <Icon className={classNames( (cube.learningState !== BadgeLectureState.Waiting) ? `play-${styleName}24` : 'play-black24-dim' )} />
-        )}
-
-        { cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) && (
+        { (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) && cube.learningState === BadgeLectureState.Progress ? (
           <span className={`pie-wrapper progress-${cube.sumViewSeconds}`}>
             <span className="pie">
               <span className="left-side"/>
@@ -197,6 +193,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             </span>
             <div className="shadow"/>
           </span>
+        ):(
+          <Icon className={classNames(
+            (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting)
+              ? 'play-black24-dim' : `play-${styleName}24` )}
+          />
         )}
       </a>
     );
