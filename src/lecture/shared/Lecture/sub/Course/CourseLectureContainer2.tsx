@@ -808,7 +808,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   getDuration() {
-    return this.studentData && this.studentData.durationViewSeconds !== null ? this.studentData.durationViewSeconds : '0';
+    if (this.studentData && this.studentData.durationViewSeconds !== null) {
+      let durationViewSeconds = this.studentData.durationViewSeconds;
+      durationViewSeconds = durationViewSeconds > 90 ? 100 : durationViewSeconds;
+      return durationViewSeconds;
+    } else {
+      return 0;
+    }
   }
 
   setLearningStateForMedia() {
