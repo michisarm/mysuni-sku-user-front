@@ -72,7 +72,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
         return `${getPublicUrl()}/static/media/badge/${admin}_${certiAdminSubcategory}_${language}.png`;
       }
     } else {
-      return certiAdminCategoryIcon.mySUNI;
+      return `${getPublicUrl()}${certiAdminCategoryIcon.mySUNI}`;
     }
   };
 
