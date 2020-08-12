@@ -20,12 +20,13 @@ class InMyLectureApi {
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
     this.serverUrl : this.devUrl;
 
-
+  // 관심목록에 추가
   addInMyLecture(inMyLectureCdo: InMyLectureCdoModel) {
     return axiosApi.post<string>(this.baseUrl, inMyLectureCdo)
       .then(response => response && response.data);
   }
 
+  // 관심목록에서 제거
   removeInMyLecture(inMyLectureId: string) {
     return axiosApi.delete(this.baseUrl + `/${inMyLectureId}`);
   }

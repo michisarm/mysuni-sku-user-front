@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
+import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 
 @autobind
@@ -12,9 +13,11 @@ class LRSLectureService {
   static instance: LRSLectureService;
 
   private arrangeApi: ArrangeApi;
+  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi) {
+  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
     this.arrangeApi = arrangeApi;
+    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -107,8 +110,22 @@ class LRSLectureService {
   get totalCount() {
     return this._totalCount;
   }
+
+  @action
+  removeLectureFromStorage(trainingId: string) {
+    const savedLrsLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
+    if (savedLrsLearningList && savedLrsLearningList.length > 0) {
+      const LrsMain: OffsetElementList<LectureModel> = JSON.parse(savedLrsLearningList);
+      if (LrsMain && LrsMain.results && LrsMain.results.length > 0) {
+        LrsMain.results = LrsMain.results.filter((item) => item.id !== trainingId);
+        LrsMain.totalCount = LrsMain.results.length;
+        LrsMain.empty = LrsMain.totalCount < 1;
+        window.sessionStorage.setItem('LrsLearningList', JSON.stringify(LrsMain));
+      }
+    }
+  }
 }
 
-LRSLectureService.instance = new LRSLectureService(ArrangeApi.instance);
+LRSLectureService.instance = new LRSLectureService(ArrangeApi.instance, InMyLectureApi.instance);
 
 export default LRSLectureService;

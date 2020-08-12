@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
+import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 
 @autobind
@@ -12,9 +13,11 @@ class POPLectureService {
   static instance: POPLectureService;
 
   private arrangeApi: ArrangeApi;
+  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi) {
+  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
     this.arrangeApi = arrangeApi;
+    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -94,8 +97,22 @@ class POPLectureService {
   get totalCount() {
     return this._totalCount;
   }
+
+  @action
+  removeLectureFromStorage(trainingId: string) {
+    const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
+    if (savedPopularLearningList && savedPopularLearningList.length > 0) {
+      const PopularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
+      if (PopularMain && PopularMain.results && PopularMain.results.length > 0) {
+        PopularMain.results = PopularMain.results.filter((item) => item.id !== trainingId);
+        PopularMain.totalCount = PopularMain.results.length;
+        PopularMain.empty = PopularMain.totalCount < 1;
+        window.sessionStorage.setItem('PopLearningList', JSON.stringify(PopularMain));
+      }
+    }
+  }
 }
 
-POPLectureService.instance = new POPLectureService(ArrangeApi.instance);
+POPLectureService.instance = new POPLectureService(ArrangeApi.instance, InMyLectureApi.instance);
 
 export default POPLectureService;

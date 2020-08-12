@@ -125,7 +125,7 @@ const POPLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
+      inMyLectureService!.removeInMyLecture(training.id);
     }
     else {
       let servicePatronKeyString = training.patronKey.keyString;
@@ -153,7 +153,7 @@ const POPLearning : React.FC<Props> = (Props) => {
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
         servicePatronKeyString,
-      })).then(findMyContent);
+      }));
     }
   };
 
