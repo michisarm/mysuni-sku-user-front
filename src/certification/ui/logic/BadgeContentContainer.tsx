@@ -391,7 +391,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   //
   return (
     <>
-
       {/*상단*/}
       <BadgeContentHeader>
         {/*뱃지 정보 및 디자인*/}
@@ -445,10 +444,12 @@ const BadgeContentContainer: React.FC<Props> = Props => {
       <BadgeOverview>
         {/*설명 및 획득조건, 자격증명*/}
         <OverviewField.List>
-          <OverviewField.Item
-            title="인증내용"
-            contentHtml={badgeDetail.description}
-          />
+          { badgeDetail.description && (
+            <OverviewField.Item
+              title="인증내용"
+              contentHtml={badgeDetail.description}
+            />
+          )}
           <OverviewField.Item
             title="획득 조건"
             content={badgeDetail.obtainTerms}
@@ -499,13 +500,16 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         </OverviewField.List>
 
         {/*태그*/}
-        <OverviewField.List icon>
-          <OverviewField.Item
-            titleIcon="tag2"
-            title="태그"
-            contentHtml={getTagsList(badgeDetail.tags)}
-          />
-        </OverviewField.List>
+        { badgeDetail.tags && (
+          <OverviewField.List icon>
+            <OverviewField.Item
+              titleIcon="tag2"
+              title="태그"
+              contentHtml={getTagsList(badgeDetail.tags)}
+            />
+          </OverviewField.List>
+        )}
+
       </BadgeOverview>
     </>
   );
