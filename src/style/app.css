@@ -233,3 +233,14 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .badge.s220.Basic{background:url(./media/bronze_2_c.fde3aaab.png) 50% 50% no-repeat}
 .badge.s220.Intermediate{background:url(./media/silver_2_c.f4968dbc.png) 50% 50% no-repeat}
 .badge.s220.Advanced{background:url(./media/gold_2_c.31ef1321.png) 50% 50% no-repeat}
+
+.badge-detail .course-cont .course-box .bar .toggle-btn { display:none;}
+.badge-detail .course-cont .course-box .bar .right > span,
+.badge-detail .course-cont .course-box .bar .right > a { display: inline-block; }
+.badge-detail .course-cont .cube-box .bar.typeA .tit a{text-decoration:none;}
+.badge-detail .course-cont .course-box .bar .right .btn-play { padding-left: 0.5rem; }
+.badge-detail .course-cont .course-box .bar .tit a {font-weight: 700;}
+.badge-detail .course-cont .course-box .bar .toggle-btn { display: none; }
+.challenge-wrap .challenge-badge .left-area .status .txt.txt2 { display:block; margin-bottom: 0.625rem;}
+.badge-detail .course-cont .course-box .bar .right { display: table-cell; vertical-align: middle; text-align: right; padding: 0 1.25rem; width: 20rem; }
+.course-cont .course-box.type2 .bar .num {padding-right:1.25rem; cursor: pointer;}

@@ -234,28 +234,30 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       {badgeCompList.length > 0 && badgeCompList[0] ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
-            <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
+            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
               <div className="bar">
-                <div className="tit">
+                <span className="tit">
                   <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
                   {/*<span className="ellipsis">{(index + 1) + '. ' + badgeComp.course.name}</span>*/}
-                </div>
+                </span>
 
-                <div className="right">
-                  <span className="num">
-                    {badgeComp.course.cubeCount}개 강의 구성
-                  </span>
+                <span className="num" onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
+                  {badgeComp.course.cubeCount < 10 ? `0${badgeComp.course.cubeCount}` : badgeComp.course.cubeCount}개 강의 구성
 
-                  {/*코스의 학습상태 */}
-                  {setCourseLearningState(badgeComp)}
+                  {badgeComp.course.learningState && (
+                    <span className="completed">학습완료</span>
+                  )}
+                </span>
 
-                  {/*Learning Path 기능 변경으로 사용안함*/}
-                  <div className="toggle-btn">
-                    <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
-                      <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
-                      <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
-                    </Button>
-                  </div>
+                {/*코스의 학습상태 0812 Learning Path > Course UI 변경 */}
+                {/*{setCourseLearningState(badgeComp)}*/}
+
+                {/*Learning Path 기능 변경으로 사용안함*/}
+                <div className="toggle-btn">
+                  <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
+                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
+                    <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
+                  </Button>
                 </div>
               </div>
             </div>
