@@ -700,6 +700,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
+  surveyCallback() {
+    if (this.init()) this.init();
+  }
+
   testCallback() {
     const { onLectureInitRequest } = this.props;
     if (this.studentData) {
@@ -1035,7 +1039,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               surveyId={this.personalCube?.contents.surveyId}
               surveyCaseId={this.personalCube?.contents.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
-              // onSaveCallback={this.testCallback}
+              onSaveCallback={this.surveyCallback}
               serviceId={lectureView.serviceId}
               serviceType={lectureView.serviceType}
             />

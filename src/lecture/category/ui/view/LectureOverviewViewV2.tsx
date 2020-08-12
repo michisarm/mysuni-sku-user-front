@@ -33,6 +33,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   viewObject: any,
   typeViewObject: any,
   onSaveCallback:() => void,
+  onSurveyCallback:() => void,
   skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
@@ -385,6 +386,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       viewObject,
       typeViewObject,
       onSaveCallback,
+      onSurveyCallback,
       skProfileService,
       lectureService,
       lectureCardId,
@@ -547,6 +549,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
+              onSaveCallback={onSurveyCallback}
               // onSaveCallback={this.testCallback}
               serviceId={params.serviceId}
               serviceType={params.serviceType}

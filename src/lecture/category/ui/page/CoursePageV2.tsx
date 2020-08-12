@@ -718,6 +718,10 @@ class CoursePageV2 extends Component<Props, State> {
     }
   }
 
+  surveyCallback() {
+    if (this.init()) this.init();
+  }
+
   getReviewId() {
     //
     const { match, programLectureService, courseLectureService } = this.props;
@@ -851,6 +855,7 @@ class CoursePageV2 extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        onSurveyCallback={this.surveyCallback}
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}
