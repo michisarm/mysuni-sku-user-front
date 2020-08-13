@@ -665,7 +665,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   onTest() {
-    this.examModal.onOpenModal();
+    const { isPreCoursePassed } = this.props;
+    if (isPreCoursePassed) {
+      this.examModal.onOpenModal();
+    } else {
+      reactAlert({ title: '선수과정안내', message: '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.' });
+    }
   }
 
   // truefree 2020-04-03
@@ -808,7 +813,13 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   getDuration() {
-    return this.studentData && this.studentData.durationViewSeconds !== null ? this.studentData.durationViewSeconds : '0';
+    if (this.studentData && this.studentData.durationViewSeconds !== null) {
+      let durationViewSeconds = this.studentData.durationViewSeconds;
+      durationViewSeconds = durationViewSeconds > 90 ? 100 : durationViewSeconds;
+      return durationViewSeconds;
+    } else {
+      return 0;
+    }
   }
 
   setLearningStateForMedia() {

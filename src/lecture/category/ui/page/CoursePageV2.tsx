@@ -8,6 +8,7 @@ import { CommentService } from '@nara.drama/feedback';
 
 import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { ContentLayout, Tab } from 'shared';
+import { ActionEventService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
@@ -44,6 +45,7 @@ import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService: ActionEventService;
   skProfileService: SkProfileService;
   collegeService: CollegeService;
   courseLectureService: CourseLectureService;
@@ -82,6 +84,7 @@ interface RouteParams {
 
 @inject(
   mobxHelper.injectFrom(
+    'shared.actionEventService',
     'college.collegeService',
     'profile.skProfileService',
     'lecture.courseLectureService',
@@ -138,6 +141,7 @@ class CoursePageV2 extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
+    this.publishViewEvent();
     // console.log('Course Page : componentDidMount');
   }
 
@@ -180,6 +184,26 @@ class CoursePageV2 extends Component<Props, State> {
     // await this.findStudent();
     // await this.getPreCourseModel();
     this.setState({ loaded: true });
+  }
+
+  async publishViewEvent() {
+    const { actionEventService, coursePlanService } = this.props;
+    const { match } = this.props;
+    const { serviceType, collegeId, coursePlanId, serviceId } = match.params;
+
+    const coursePlan = await coursePlanService.findCoursePlan(coursePlanId);
+    const courseName = coursePlan.name;
+    const menu = 'COURSE_VIEW';
+    const lectureCardId = serviceId;
+
+    actionEventService.registerViewActionLog({
+      menu,
+      serviceType,
+      collegeId,
+      coursePlanId,
+      lectureCardId,
+      courseName,
+    });
   }
 
   /**

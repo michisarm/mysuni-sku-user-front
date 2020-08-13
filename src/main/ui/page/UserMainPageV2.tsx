@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import {inject} from 'mobx-react';
 import {mobxHelper, reactAutobind} from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
+import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
 
 
 interface Props {
+  actionEventService: ActionEventService;
   myTrainingService?: MyTrainingService;
 }
 
-@inject(
-  mobxHelper.injectFrom(
-    'myTraining.myTrainingService'
-  )
-)
+@inject(mobxHelper.injectFrom(
+  'shared.actionEventService',
+  'myTraining.myTrainingService'
+))
 @reactAutobind
 class UserMainPageV2 extends Component<Props> {
   //
@@ -28,6 +29,17 @@ class UserMainPageV2 extends Component<Props> {
       const { myTrainingService } = this.props;
       myTrainingService!.findLearningCompletedAll('Completed', 0, -1);
     }
+  }
+
+  componentDidMount() {
+    this.publishViewEvent();
+  }
+
+  publishViewEvent() {
+    const { actionEventService } = this.props;
+    const menu = 'MAIN_VIEW';
+
+    actionEventService.registerViewActionLog({menu});
   }
 
   render() {
