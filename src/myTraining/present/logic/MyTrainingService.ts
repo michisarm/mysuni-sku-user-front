@@ -48,6 +48,21 @@ class MyTrainingService {
   }
 
   @action
+  async findLearningCompletedAll(state: string, offset: number, limit: number, channelIds: string[] = []) {
+    const rdoModel = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+    const completedLearnings: any = await this.myTrainingApi.findLearningCompletedAll(rdoModel);
+
+    if (completedLearnings) {
+      window.sessionStorage.setItem('learningCompleted', JSON.stringify(completedLearnings));
+    }
+    else {
+      window.sessionStorage.setItem('learningCompleted', '');
+    }
+
+    return completedLearnings;
+  }
+
+  @action
   async fetchAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
     //
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);

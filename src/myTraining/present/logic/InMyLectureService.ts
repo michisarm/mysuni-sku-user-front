@@ -6,7 +6,6 @@ import InMyLectureApi from '../apiclient/InMyLectureApi';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
-import LectureModel from '../../../lecture/model/LectureModel';
 
 
 @autobind
@@ -74,18 +73,19 @@ class InMyLectureService {
 
   @action
   async addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
-    const response = await this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
-    runInAction(() => this.findAllInMyLectures());
-
-    return response;
+    await this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel).then((response) => {
+      if (response && response.length > 0) {
+        runInAction(() => this.findAllInMyLectures());
+      }
+      return response;
+    }).catch((reason: any) => {return null;});
   }
 
   @action
   async removeInMyLecture(inMyLectureId: string) {
-    const response = await this.inMyLectureApi.removeInMyLecture(inMyLectureId);
-    runInAction(() => this.findAllInMyLectures());
-
-    return response;
+    await this.inMyLectureApi.removeInMyLecture(inMyLectureId).then(() => {
+      return runInAction(() => this.findAllInMyLectures());
+    }).catch((reason: any) => {return null;});
   }
 
   @action

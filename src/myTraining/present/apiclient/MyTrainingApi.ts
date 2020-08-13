@@ -10,10 +10,25 @@ class MyTrainingApi {
   //
   static instance: MyTrainingApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
-  baseUrl = '/api/mytraining/mytraining/mytrainings';
-  // localUrl = 'http://localhost:8233/mytraining/mytrainings';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+    process.env.REACT_APP_MY_TRAINING_API === undefined || process.env.REACT_APP_MY_TRAINING_API === '' ?
+    '/api/mytraining/mytraining/mytrainings' : process.env.REACT_APP_MY_TRAINING_API;
 
+  findLearningCompletedAll(myTrainingRdo: MyTrainingRdoModel) {
+    //
+    const params = {
+      limit: myTrainingRdo.limit,
+      offset: myTrainingRdo.offset,
+      denizenKey: myTrainingRdo.denizenKey,
+      state: myTrainingRdo.state,
+      channelIds: myTrainingRdo.channelIds,
+    };
+
+    axiosApi.get<Object>(this.baseUrl + '/byState/filterWithJoinedValue', { params })
+      .then((response) => {
+        return response;
+      }).catch((reason) => { return null;});
+  }
 
   getOffsetElementList(response: any) {
     //

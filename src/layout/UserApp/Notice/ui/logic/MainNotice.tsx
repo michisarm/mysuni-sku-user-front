@@ -22,19 +22,19 @@ const MainNoticeContainer : React.FC<Props> = (Props) => {
 
   // myTrainingService 변경  실행
   useEffect(() => {
-    getLeastNotices();
+    getLatestNotices();
     setShowingNotice();
   }, [notices]);
 
-  const getLeastNotices = async () => {
+  const getLatestNotices = async () => {
     mainNoticeService!.clearMainNotices();
     // 알림이 없으면 null을 리턴받는디.
-    const notiInfo: PostModel[] | null = await mainNoticeService!.getMainNotices();
-    if (notices === null && (notiInfo === null || notiInfo.length < 1)) {
+    const notiInfo: PostModel[] | [] = await mainNoticeService!.getMainNotices();
+    if (notices === null && notiInfo.length < 1) {
       setNotices([]);
     }
-    else if (notiInfo !== null && (notices?.length !== notiInfo.length ||
-      (notiInfo.length > 0 && notices.length > 0 && notices[0].id !== notiInfo[0].id))) {
+    else if (notices?.length !== notiInfo.length ||
+      (notiInfo.length > 0 && notices.length > 0 && notices[0].id !== notiInfo[0].id)) {
       setNotices(notiInfo);
     }
   };
@@ -52,7 +52,7 @@ const MainNoticeContainer : React.FC<Props> = (Props) => {
       }
       // 공지사항 없음
       else if (notices !== null && notices.length < 1) {
-        window.localStorage.setItem('notice_show', 'HIDE');
+        //window.localStorage.setItem('notice_show', 'HIDE');
         if (showNotice) {
           setShowNotice(false);
         }
