@@ -241,36 +241,34 @@ class CollegeLecturesContainer extends Component<Props, State> {
           )
         );
     } else {
-      inMyLectureService!
-        .addInMyLecture(
-          new InMyLectureCdoModel({
-            serviceId: lecture.serviceId,
-            serviceType: lecture.serviceType,
-            category: lecture.category,
-            name: lecture.name,
-            description: lecture.description,
-            cubeType: lecture.cubeType,
-            learningTime: lecture.learningTime,
-            stampCount: lecture.stampCount,
-            coursePlanId: lecture.coursePlanId,
+      inMyLectureService!.addInMyLecture(
+        new InMyLectureCdoModel({
+          serviceId: lecture.serviceId,
+          serviceType: lecture.serviceType,
+          category: lecture.category,
+          name: lecture.name,
+          description: lecture.description,
+          cubeType: lecture.cubeType,
+          learningTime: lecture.learningTime,
+          stampCount: lecture.stampCount,
+          coursePlanId: lecture.coursePlanId,
 
-            requiredSubsidiaries: lecture.requiredSubsidiaries,
-            cubeId: lecture.cubeId,
-            courseSetJson: lecture.courseSetJson,
-            courseLectureUsids: lecture.courseLectureUsids,
-            lectureCardUsids: lecture.lectureCardUsids,
+          requiredSubsidiaries: lecture.requiredSubsidiaries,
+          cubeId: lecture.cubeId,
+          courseSetJson: lecture.courseSetJson,
+          courseLectureUsids: lecture.courseLectureUsids,
+          lectureCardUsids: lecture.lectureCardUsids,
 
-            reviewId: lecture.reviewId,
-            baseUrl: lecture.baseUrl,
-            servicePatronKeyString: lecture.patronKey.keyString,
-          })
+          reviewId: lecture.reviewId,
+          baseUrl: lecture.baseUrl,
+          servicePatronKeyString: lecture.patronKey.keyString,
+        })
+      ).then(() =>
+        inMyLectureService!.addInMyLectureInAllList(
+          lecture.serviceId,
+          lecture.serviceType
         )
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
+      );
     }
   }
 

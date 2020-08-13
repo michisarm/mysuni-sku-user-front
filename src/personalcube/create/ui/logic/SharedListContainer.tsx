@@ -243,14 +243,12 @@ class SharedListContainer extends React.Component<Props, States> {
           )
         );
     } else {
-      inMyLectureService!
-        .addInMyLecture(InMyLectureCdoModel.fromLecture(lecture))
-        .then(() =>
-          inMyLectureService!.addInMyLectureInAllList(
-            lecture.serviceId,
-            lecture.serviceType
-          )
-        );
+      inMyLectureService!.addInMyLecture(InMyLectureCdoModel.fromLecture(lecture)).then(() =>
+        inMyLectureService!.addInMyLectureInAllList(
+          lecture.serviceId,
+          lecture.serviceType
+        )
+      );
     }
   }
 

@@ -586,14 +586,12 @@ class LectureCardContainer extends Component<Props, State> {
         title: '알림',
         message: '본 과정이 관심목록에 추가되었습니다.',
       });
-      inMyLectureService!
-        .addInMyLecture(inMyLectureCdo)
-        .then(() =>
-          inMyLectureService!.findInMyLecture(
-            inMyLectureCdo.serviceId,
-            inMyLectureCdo.serviceType
-          )
-        );
+      inMyLectureService!.addInMyLecture(inMyLectureCdo).then(() =>
+        inMyLectureService!.findInMyLecture(
+          inMyLectureCdo.serviceId,
+          inMyLectureCdo.serviceType
+        )
+      );
     }
   }
 

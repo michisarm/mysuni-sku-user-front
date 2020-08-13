@@ -43,7 +43,7 @@ class MainNoticeService {
     runInAction(() => this._mainNotices = this._mainNotices.concat(mainNoticeList.results));
 
     // 알림이 없으면 null을 리턴한다.
-    return mainNoticeList.results.length > 0 ? mainNoticeList.results : null;
+    return mainNoticeList.results.length > 0 ? mainNoticeList.results : [];
   }
 
   @computed
