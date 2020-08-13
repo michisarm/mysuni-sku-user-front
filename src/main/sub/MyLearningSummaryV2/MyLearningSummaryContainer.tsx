@@ -18,6 +18,7 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearni
 import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
+import supportRoutePaths from '../../../board/routePaths';
 import IssueState from '../../../certification/shared/Badge/ui/model/IssueState';
 
 
@@ -97,6 +98,12 @@ class MyLearningSummaryContainer extends Component<Props> {
     else if (pathname.startsWith(`${lectureRoutePaths.recommend()}/pages`)) {
       history.replace(lectureRoutePaths.recommend());
     }
+  }
+
+  // 1:1 문의하기 이동
+  moveToSupportQnA() {
+    const { history } = this.props;
+    history.push(supportRoutePaths.supportQnANewPost());
   }
 
   render() {
@@ -197,7 +204,7 @@ class MyLearningSummaryContainer extends Component<Props> {
 
         </HeaderWrapperView>
 
-        <AdditionalToolsMyLearning>
+        <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA}>
           <FavoriteChannelChangeModal
             trigger={(
               <a>
