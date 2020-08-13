@@ -27,7 +27,7 @@ class UserMainPageV2 extends Component<Props> {
     const completedLearnings = window.sessionStorage.getItem('learningCompleted');
     if (!completedLearnings || completedLearnings.length < 1) {
       const { myTrainingService } = this.props;
-      myTrainingService!.findLearningCompletedAll('Completed', 0, -1);
+      myTrainingService!.findAllLearningPassed('Passed', 0, 0);
     }
   }
 

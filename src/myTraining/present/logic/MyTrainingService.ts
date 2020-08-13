@@ -28,7 +28,6 @@ class MyTrainingService {
   @observable
   retryCount: number = 0;
 
-
   constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
   }
@@ -48,18 +47,17 @@ class MyTrainingService {
   }
 
   @action
-  async findLearningCompletedAll(state: string, offset: number, limit: number, channelIds: string[] = []) {
+  async findAllLearningPassed(state: string, offset: number, limit: number, channelIds: string[] = []) {
     const rdoModel = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
-    const completedLearnings: any = await this.myTrainingApi.findLearningCompletedAll(rdoModel);
-
-    if (completedLearnings) {
-      window.sessionStorage.setItem('learningCompleted', JSON.stringify(completedLearnings));
-    }
-    else {
-      window.sessionStorage.setItem('learningCompleted', '');
-    }
-
-    return completedLearnings;
+    await this.myTrainingApi.findAllLearningPassed(rdoModel)
+      .then((response: any) => {
+        if (response) {
+          window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
+        }
+        else {
+          window.sessionStorage.setItem('learningPassed', '');
+        }
+      });
   }
 
   @action

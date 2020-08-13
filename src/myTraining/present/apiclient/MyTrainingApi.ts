@@ -14,8 +14,8 @@ class MyTrainingApi {
     process.env.REACT_APP_MY_TRAINING_API === undefined || process.env.REACT_APP_MY_TRAINING_API === '' ?
     '/api/mytraining/mytraining/mytrainings' : process.env.REACT_APP_MY_TRAINING_API;
 
-  findLearningCompletedAll(myTrainingRdo: MyTrainingRdoModel) {
-    //
+  findAllLearningPassed(myTrainingRdo: MyTrainingRdoModel) {
+
     const params = {
       limit: myTrainingRdo.limit,
       offset: myTrainingRdo.offset,
@@ -24,10 +24,7 @@ class MyTrainingApi {
       channelIds: myTrainingRdo.channelIds,
     };
 
-    axiosApi.get<Object>(this.baseUrl + '/byState/filterWithJoinedValue', { params })
-      .then((response) => {
-        return response;
-      }).catch((reason) => { return null;});
+    return axiosApi.get<any>(this.baseUrl + '/byState/lightWeight', { params });
   }
 
   getOffsetElementList(response: any) {
