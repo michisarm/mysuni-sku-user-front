@@ -242,7 +242,7 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
                 <span className="num" onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
                   {badgeComp.course.cubeCount < 10 ? `0${badgeComp.course.cubeCount}` : badgeComp.course.cubeCount}개 강의 구성
 
-                  {badgeComp.course.learningState && (
+                  {badgeComp.course.learningState === BadgeLectureState.Passed && (
                     <span className="completed">학습완료</span>
                   )}
                 </span>
