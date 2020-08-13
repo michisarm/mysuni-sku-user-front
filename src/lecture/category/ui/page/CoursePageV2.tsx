@@ -182,6 +182,7 @@ class CoursePageV2 extends Component<Props, State> {
     // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     // await this.findStudent();
     // await this.getPreCourseModel();
+    this.publishViewEvent();
     this.setState({ loaded: true });
   }
 
@@ -272,7 +273,6 @@ class CoursePageV2 extends Component<Props, State> {
         })
       );
       
-    this.publishViewEvent();
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
