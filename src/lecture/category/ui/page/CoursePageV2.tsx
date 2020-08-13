@@ -272,9 +272,6 @@ class CoursePageV2 extends Component<Props, State> {
           this.getPreCourseModel();
         })
       );
-      
-
-    this.publishViewEvent();
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
