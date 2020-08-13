@@ -274,6 +274,8 @@ class CoursePageV2 extends Component<Props, State> {
       
     this.publishViewEvent();
 
+    this.publishViewEvent();
+
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
       // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
@@ -368,13 +370,19 @@ class CoursePageV2 extends Component<Props, State> {
         !studentService.StudentInfos!.preCourses
       ) {
         const preLectureViews = courseLectureService.getPreLectureViews;
-        for (let j = 0; j < preLectureViews.length; j++) {
-          const preLectureView = preLectureViews[j];
+
+        preLectureViews.forEach( preLectureView => {
           if (preLectureView.required) isPreCoursePassed = false;
-          break;
-        }
+        });
+
+        // for (let j = 0; j < preLectureViews.length; j++) {
+        //   const preLectureView = preLectureViews[j];
+        //   if (preLectureView.required) isPreCoursePassed = false;
+        //   break;
+        // }
       }
 
+      console.log('isPreCoursePassed? : ', isPreCoursePassed);
       this.setState({ isPreCoursePassed });
     }
   }

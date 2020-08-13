@@ -363,13 +363,18 @@ class CourseLectureContainer2 extends Component<Props, State> {
       if (studentForVideo && studentForVideo.id) {
         if (studentForVideo.proposalState === ProposalState.Approved) {
           if (
-            studentForVideo.learningState === LearningState.Waiting || studentForVideo.learningState === LearningState.HomeworkWaiting
-            || studentForVideo.learningState === LearningState.TestWaiting
-            /*|| studentForVideo.learningState === LearningState.TestPassed*/ || studentForVideo.learningState === LearningState.Failed
+            studentForVideo.learningState === LearningState.Waiting ||
+            studentForVideo.learningState === LearningState.Failed /*||
+            studentForVideo.learningState === LearningState.TestWaiting ||
+            studentForVideo.learningState === LearningState.HomeworkWaiting ||
+            studentForVideo.learningState === LearningState.TestPassed*/
           ) {
             state = SubState.Waiting;
           }
-          if (studentForVideo.learningState === LearningState.Progress || studentForVideo.learningState === LearningState.TestPassed) state = SubState.InProgress;
+          if (studentForVideo.learningState === LearningState.Progress ||
+            studentForVideo.learningState === LearningState.TestPassed ||
+            studentForVideo.learningState === LearningState.TestWaiting ||
+            studentForVideo.learningState === LearningState.HomeworkWaiting) state = SubState.InProgress;
           if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
           if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
         }
@@ -623,15 +628,17 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (this.personalCube && this.studentData  && this.studentData.id) {
       if (this.studentData.proposalState === ProposalState.Approved) {
         if (
-          this.studentData.learningState === LearningState.Waiting || this.studentData.learningState === LearningState.HomeworkWaiting
+          this.studentData.learningState    === LearningState.Waiting
+          || this.studentData.learningState === LearningState.HomeworkWaiting
           || this.studentData.learningState === LearningState.TestWaiting
-          || this.studentData.learningState === LearningState.TestPassed || this.studentData.learningState === LearningState.Failed
+          || this.studentData.learningState === LearningState.TestPassed
+          || this.studentData.learningState === LearningState.Failed
         ) {
           state = SubState.InProgress;
         }
         if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed)   state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed)   state = SubState.InProgress;
         // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
@@ -676,7 +683,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onReportNotReady() {
-    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
@@ -815,7 +822,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   getDuration() {
     if (this.studentData && this.studentData.durationViewSeconds !== null) {
       let durationViewSeconds = this.studentData.durationViewSeconds;
-      durationViewSeconds = durationViewSeconds > 90 ? 100 : durationViewSeconds;
+      durationViewSeconds = durationViewSeconds >= 90 ? 100 : durationViewSeconds;
       return durationViewSeconds;
     } else {
       return 0;
