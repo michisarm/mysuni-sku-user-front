@@ -191,8 +191,8 @@ class CoursePageV2 extends Component<Props, State> {
     const { match } = this.props;
     const { serviceType, collegeId, coursePlanId, serviceId } = match.params;
 
-    const coursePlan = await coursePlanService.findCoursePlan(coursePlanId);
-    const courseName = coursePlan.name;
+    await coursePlanService.findCoursePlan(coursePlanId);
+    const courseName = coursePlanService.coursePlan.name;
     const menu = 'COURSE_VIEW';
     const lectureCardId = serviceId;
 
