@@ -141,7 +141,6 @@ class CoursePageV2 extends Component<Props, State> {
     //
     this.setCineroom();
     this.init();
-    this.publishViewEvent();
     // console.log('Course Page : componentDidMount');
   }
 
@@ -186,12 +185,11 @@ class CoursePageV2 extends Component<Props, State> {
     this.setState({ loaded: true });
   }
 
-  async publishViewEvent() {
+  publishViewEvent() {
     const { actionEventService, coursePlanService } = this.props;
     const { match } = this.props;
     const { serviceType, collegeId, coursePlanId, serviceId } = match.params;
 
-    await coursePlanService.findCoursePlan(coursePlanId);
     const courseName = coursePlanService.coursePlan.name;
     const menu = 'COURSE_VIEW';
     const lectureCardId = serviceId;
@@ -265,7 +263,7 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    coursePlanService
+    await coursePlanService
       .findAllCoursePlanInfo(params.coursePlanId, params.serviceId)
       .then(() =>
         this.findStudentInfo().then(() => {
@@ -273,6 +271,8 @@ class CoursePageV2 extends Component<Props, State> {
           this.getPreCourseModel();
         })
       );
+      
+    this.publishViewEvent();
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
