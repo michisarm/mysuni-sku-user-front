@@ -22,11 +22,13 @@ const MainNoticeContainer : React.FC<Props> = (Props) => {
 
   // myTrainingService 변경  실행
   useEffect(() => {
-    getLatestNotices();
     setShowingNotice();
-  }, [notices]);
+    if (showNotice) {
+      setLatestNotice();
+    }
+  }, []);
 
-  const getLatestNotices = async () => {
+  const setLatestNotice = async () => {
     mainNoticeService!.clearMainNotices();
     // 알림이 없으면 null을 리턴받는디.
     const notiInfo: PostModel[] | [] = await mainNoticeService!.getMainNotices();
