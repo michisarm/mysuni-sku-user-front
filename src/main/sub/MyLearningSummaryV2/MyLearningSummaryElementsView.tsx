@@ -55,7 +55,12 @@ export const SharedHeaderItemView: FunctionComponent<SharedHeaderItemViewProps> 
   </>
 );
 
-export const AdditionalToolsMyLearning: FunctionComponent = ({ children }) => (
+
+interface AdditionalToolsMyLearningProps {
+  children: React.ReactNode,
+  onClickQnA: () => void,
+}
+export const AdditionalToolsMyLearning: FunctionComponent<AdditionalToolsMyLearningProps> = ({ children, onClickQnA }) => (
   <div className="main-learning-link">
     <div className="inner">
       <div className="left">
@@ -71,7 +76,8 @@ export const AdditionalToolsMyLearning: FunctionComponent = ({ children }) => (
         {/*</div>*/}
       </div>
       <div className="right">
-        <a href="/board/support/Q&A" className="contact-us">
+        <a href="#" onClick={onClickQnA} className="contact-us">
+
           <span>1:1 문의하기</span>
           <Icon className="arrow-g-16"/>
         </a>
