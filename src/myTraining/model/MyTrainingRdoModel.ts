@@ -10,7 +10,7 @@ class MyTrainingRdoModel {
   denizenKey?: string = '';
   cubeType?: CubeType ;
   state?: string = '';
-  required?: boolean = false;
+  required?: boolean;
   channelIds?: string[];
 
 
