@@ -19,7 +19,6 @@ import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
-import IssueState from '../../../certification/shared/Badge/ui/model/IssueState';
 
 
 interface Props extends RouteComponentProps {
@@ -154,7 +153,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper>
             <div className="ui profile">
               <div className="pic s80">
-                <Image src={member.photoFilePath || profileImg} alt="프로필사진"/>
+                <Image src={skProfile.photoFilePath || profileImg} alt="프로필사진"/>
               </div>
             </div>
             <div className="user">

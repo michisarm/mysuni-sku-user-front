@@ -14,7 +14,7 @@ class MyTrainingApi {
     process.env.REACT_APP_MY_TRAINING_API === undefined || process.env.REACT_APP_MY_TRAINING_API === '' ?
     '/api/mytraining/mytraining/mytrainings' : process.env.REACT_APP_MY_TRAINING_API;
 
-  saveAllLearningPassedToStorage(state: string, endDate: number) {
+  saveAllLearningPassedToStorage(state: string, endDate: string) {
 
     const params = {
       state,
