@@ -39,6 +39,7 @@ import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel'
 import StudentInfoModel from '../../../../model/StudentInfoModel';
 import { LectureExam2 } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
+import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -217,8 +218,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     //   console.log('토글토글');
     // }
   }
-
-  isPreCoursePassed: boolean | undefined;
 
   async init()
   {
@@ -420,6 +419,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
         //Course 전체 학습상태 갱신
         onRefreshLearningState!();
+        this.removeStorage();
 
         //학습하기한 Lecture Card의 학습하기 버튼 상태 갱신(CSS 변경)
         this.setState({ classNameForLearningState: classNameForLearningStateTemp });
@@ -545,10 +545,18 @@ class CourseLectureContainer2 extends Component<Props, State> {
     });
   }
 
+  removeStorage() {
+    const { lectureView } = this.props;
+    RQDLectureService.instance.removeLectureFromStorage(lectureView.serviceId);
+    NEWLectureService.instance.removeLectureFromStorage(lectureView.serviceId);
+    POPLectureService.instance.removeLectureFromStorage(lectureView.serviceId);
+    LRSLectureService.instance.removeLectureFromStorage(lectureView.serviceId);
+  }
+
   async getMainActionForVideo()
   {
     //collegeId
-    const { mediaService, isPreCoursePassed } = this.props;
+    const { mediaService, isPreCoursePassed, lectureView } = this.props;
     // const { personalCube } = personalCubeService!;
 
     const { service, contents } = this.personalCube!.contents;
