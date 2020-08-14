@@ -19,7 +19,7 @@ import {
   SurveyFormService,
 } from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
-
+import { MyTrainingService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import {
   LectureServiceType,
@@ -43,6 +43,7 @@ import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService: ActionEventService;
@@ -178,6 +179,7 @@ class CoursePageV2 extends Component<Props, State> {
     //
     this.setState({ loaded: false });
     await this.findBaseInfo();
+    MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
     // this.findProgramOrCourseLecture();
     // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     // await this.findStudent();
@@ -275,7 +277,7 @@ class CoursePageV2 extends Component<Props, State> {
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
-      // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+      // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);1
 
       console.log(
         'examPaperService.examPaper.title : ',

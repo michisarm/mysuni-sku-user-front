@@ -34,6 +34,7 @@ import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 import { ActionEventService } from 'shared/stores';
 
 import { InMyLectureCdoModel } from 'myTraining/model';
+import { MyTrainingService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import {
   StudentJoinRdoModel,
@@ -56,6 +57,7 @@ import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/date
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService;
@@ -267,6 +269,7 @@ class LectureCardPage extends Component<Props, State> {
                       }
                     });
                   }
+                  
                 });
             }
           });
@@ -290,6 +293,8 @@ class LectureCardPage extends Component<Props, State> {
     await this.findStudent();
 
     await this.searchForExams();
+
+    MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
 
     this.setState({ loaded: true });
   }
@@ -488,6 +493,7 @@ class LectureCardPage extends Component<Props, State> {
       studentService,
       classroomService,
       rollBookService,
+      match,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
@@ -513,6 +519,7 @@ class LectureCardPage extends Component<Props, State> {
     let examName: string = '';
     let studentId: string = '';
     let rollBookId: string = '';
+    let serviceId: string = '';
 
     examId = personalCube.contents.examId || '';
     examTitle = this.state.examTitle || '';
@@ -525,6 +532,7 @@ class LectureCardPage extends Component<Props, State> {
     examName = this.state.name || '';
     studentId = student.id || '';
     rollBookId = rollBooks[0]?.id || '';
+    serviceId = match.params.lectureCardId || '';
 
     // console.log('lecture card page student : ', student);
 
@@ -628,6 +636,7 @@ class LectureCardPage extends Component<Props, State> {
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId,
       stamp: 0,
+      serviceId,
 
       //etc
       category: personalCube.category,
