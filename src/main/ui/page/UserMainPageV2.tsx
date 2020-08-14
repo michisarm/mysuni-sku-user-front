@@ -28,7 +28,7 @@ class UserMainPageV2 extends Component<Props> {
 
     if (completedLearnings === null || completedLearnings.length < 1) {
       const { myTrainingService } = this.props;
-      myTrainingService!.saveAllLearningPassedToStorage('Passed', 0);
+      myTrainingService!.saveAllLearningPassedToStorage('Passed', '0');
     }
   }
 

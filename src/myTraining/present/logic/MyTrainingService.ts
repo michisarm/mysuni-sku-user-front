@@ -4,7 +4,6 @@ import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
-import {LectureModel} from '../../../lecture/model';
 
 
 @autobind
@@ -48,17 +47,52 @@ class MyTrainingService {
   }
 
   @action
-  async saveAllLearningPassedToStorage(state: string, endDate: number) {
+  async saveAllLearningPassedToStorage(state: string, endDate: string) {
     //
     await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
       .then((response: any) => {
         if (response) {
           window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
+          this.getAllLearningPassedFromStorage();
         }
         else {
           window.sessionStorage.setItem('learningPassed', '');
         }
       });
+  }
+
+  @action
+  async saveNewLearningPassedToStorage(state: string) {
+    //
+    const endDate: string | null = sessionStorage.getItem('endDate');
+
+    if (endDate) {
+      await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
+        .then((response: any) => {
+          if (response) {
+            const learningPassed = sessionStorage.getItem('learningPassed');
+            if (learningPassed) {
+              const newPassed = JSON.stringify(response.data);
+              const newFast = newPassed.split('[', 1);
+              const newList = newPassed.lastIndexOf(']');
+              const newData = newFast[1].substring(0, newList);
+
+              const oldFast = learningPassed.split('[', 1);
+              const joinData = oldFast[0] + newData + ',' + oldFast[1];
+
+              console.log('joinData : ', joinData);
+
+              window.sessionStorage.setItem('learningPassed', JSON.stringify(joinData));
+            } else {
+              window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
+            }
+
+            this.getAllLearningPassedFromStorage();
+          }
+        });
+    } else {
+      this.saveAllLearningPassedToStorage('Passed', '0');
+    }
   }
 
   @action
@@ -70,6 +104,10 @@ class MyTrainingService {
     if (savedLearningPassed && savedLearningPassed.length > 0) {
       const learningPassed: MyTrainingModel[] = JSON.parse(savedLearningPassed).results as MyTrainingModel[];
       this._myTrainings = this._myTrainings.concat(learningPassed);
+    }
+
+    if (this._myTrainings.length > 0) {
+      sessionStorage.setItem('endDate', this._myTrainings[0].endDate);
     }
 
     return this._myTrainings;
@@ -121,6 +159,9 @@ class MyTrainingService {
 
         if (channelIds.length === 0) {
           result = offsetList.results;
+          // if (result.length > 0) {
+          //   sessionStorage.setItem('endDate', result[0].endDate);
+          // }
         } else {
           for (let i = 0; i < channelIds.length; i++) {
             for (let j = 0; j < offsetList.results.length; j++) {
