@@ -4,6 +4,7 @@ import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
+import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
 
 
 @autobind
@@ -52,8 +53,9 @@ class MyTrainingService {
     await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
       .then((response: any) => {
         if (response) {
-          window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
-          this.getAllLearningPassedFromStorage();
+          this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+          // window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
+          // this.getAllLearningPassedFromStorage();
         }
         else {
           window.sessionStorage.setItem('learningPassed', '');
@@ -70,28 +72,41 @@ class MyTrainingService {
       await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
         .then((response: any) => {
           if (response) {
-            const learningPassed = sessionStorage.getItem('learningPassed');
-            if (learningPassed) {
-              const newPassed = JSON.stringify(response.data);
-              const newFast = newPassed.split('[', 1);
-              const newList = newPassed.lastIndexOf(']');
-              const newData = newFast[1].substring(0, newList);
-
-              const oldFast = learningPassed.split('[', 1);
-              const joinData = oldFast[0] + newData + ',' + oldFast[1];
-
-              console.log('joinData : ', joinData);
-
-              window.sessionStorage.setItem('learningPassed', JSON.stringify(joinData));
-            } else {
-              window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
-            }
-
-            this.getAllLearningPassedFromStorage();
+            this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
           }
         });
+    }
+  }
+
+  @action
+  async setCombineLearningPassedFromStorage(data :string) {
+    //
+    if (data.length > 0) {
+      const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
+      if (newModel.results.length > 0) {
+        console.log('newModel Count : ', newModel.results.length);
+
+        const oldJson = sessionStorage.getItem('learningPassed');
+        if (oldJson) {
+          if (oldJson.length > 0) {
+
+            const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(oldJson);
+            console.log('oldModel Count : ', oldModel.results.length);
+            if (oldModel.results.length > 0) {
+              newModel.results = newModel.results.concat(oldModel.results);
+            }
+          }
+        }
+      }
+
+      console.log('total Count : ', newModel.results.length);
+
+      if (newModel.results.length > 0) {
+        sessionStorage.setItem('endDate', newModel.results[0].endDate);
+        sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
+      }
     } else {
-      this.saveAllLearningPassedToStorage('Passed', '0');
+      sessionStorage.setItem('learningPassed', '');
     }
   }
 
@@ -104,10 +119,6 @@ class MyTrainingService {
     if (savedLearningPassed && savedLearningPassed.length > 0) {
       const learningPassed: MyTrainingModel[] = JSON.parse(savedLearningPassed).results as MyTrainingModel[];
       this._myTrainings = this._myTrainings.concat(learningPassed);
-    }
-
-    if (this._myTrainings.length > 0) {
-      sessionStorage.setItem('endDate', this._myTrainings[0].endDate);
     }
 
     return this._myTrainings;
@@ -195,6 +206,7 @@ class MyTrainingService {
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = offsetList.results);
+
     return offsetList;
   }
 
@@ -215,6 +227,7 @@ class MyTrainingService {
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+
     return trainingOffsetElementList;
   }
 

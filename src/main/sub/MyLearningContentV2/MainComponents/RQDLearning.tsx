@@ -217,7 +217,6 @@ const RQDLearning: React.FC<Props> = Props => {
             ) => {
               //
               const inMyLecture = getInMyLecture(learning.serviceId);
-              console.log(learning);
 
               return (
                 <Lecture
