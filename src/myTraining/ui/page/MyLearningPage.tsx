@@ -25,7 +25,7 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   lectureService: LectureService,
   inMyLectureService: InMyLectureService,
   myTrainingService: MyTrainingService,
-  
+
 }
 
 @inject(mobxHelper.injectFrom(
