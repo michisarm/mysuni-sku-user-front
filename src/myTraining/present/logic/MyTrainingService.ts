@@ -57,9 +57,6 @@ class MyTrainingService {
           // window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
           // this.getAllLearningPassedFromStorage();
         }
-        else {
-          window.sessionStorage.setItem('learningPassed', '');
-        }
       });
   }
 
@@ -75,6 +72,8 @@ class MyTrainingService {
             this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
           }
         });
+    } else {
+      this.saveAllLearningPassedToStorage('Passed', '0');
     }
   }
 
@@ -85,16 +84,16 @@ class MyTrainingService {
       const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
       if (newModel.results.length > 0) {
         console.log('newModel Count : ', newModel.results.length);
+      }
 
-        const oldJson = sessionStorage.getItem('learningPassed');
-        if (oldJson) {
-          if (oldJson.length > 0) {
+      const oldJson = sessionStorage.getItem('learningPassed');
+      if (oldJson) {
+        if (oldJson.length > 0) {
 
-            const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(oldJson);
-            console.log('oldModel Count : ', oldModel.results.length);
-            if (oldModel.results.length > 0) {
-              newModel.results = newModel.results.concat(oldModel.results);
-            }
+          const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(oldJson);
+          console.log('oldModel Count : ', oldModel.results.length);
+          if (oldModel.results.length > 0) {
+            newModel.results = newModel.results.concat(oldModel.results);
           }
         }
       }
@@ -105,8 +104,6 @@ class MyTrainingService {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
-    } else {
-      sessionStorage.setItem('learningPassed', '');
     }
   }
 
