@@ -77,7 +77,15 @@ class NEWLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
-    this._title = lectureOffsetElementList.title;
+    if (lectureOffsetElementList.title !== this._title) {
+      this._title = lectureOffsetElementList.title;
+      const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
+      if (savedNewLearningList && savedNewLearningList.length > 0) {
+        const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+        newMain.title = this._title;
+        window.sessionStorage.setItem('NewLearningList', JSON.stringify(newMain));
+      }
+    }
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;

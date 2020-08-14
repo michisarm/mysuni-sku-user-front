@@ -4,6 +4,7 @@ import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
+import {LectureModel} from '../../../lecture/model';
 
 
 @autobind
@@ -47,9 +48,9 @@ class MyTrainingService {
   }
 
   @action
-  async findAllLearningPassed(state: string, offset: number, limit: number, channelIds: string[] = []) {
-    const rdoModel = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
-    await this.myTrainingApi.findAllLearningPassed(rdoModel)
+  async saveAllLearningPassedToStorage(state: string, endDate: number) {
+    //
+    await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
       .then((response: any) => {
         if (response) {
           window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
@@ -58,6 +59,20 @@ class MyTrainingService {
           window.sessionStorage.setItem('learningPassed', '');
         }
       });
+  }
+
+  @action
+  async getAllLearningPassedFromStorage() {
+    //
+    this._myTrainings = [];
+
+    const savedLearningPassed = window.navigator.onLine && window.sessionStorage.getItem('learningPassed');
+    if (savedLearningPassed && savedLearningPassed.length > 0) {
+      const learningPassed: MyTrainingModel[] = JSON.parse(savedLearningPassed).results as MyTrainingModel[];
+      this._myTrainings = this._myTrainings.concat(learningPassed);
+    }
+
+    return this._myTrainings;
   }
 
   @action

@@ -35,12 +35,10 @@ class RQDLectureService {
 
   @computed
   get Title() {
-    if (this._title && this._title.length > 0) {
-      return this._title;
+    if (!this._title || this._title.length < 1) {
+      this._title = 'SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!';
     }
-    else {
-      return 'SK 구성원이라면 꼭 들어야 하는 필수 권장 학습 과정!';
-    }
+    return this._title;
   }
 
   @observable
@@ -70,7 +68,15 @@ class RQDLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
-    this._title = lectureOffsetElementList.title;
+    if (lectureOffsetElementList.title !== this._title) {
+      this._title = lectureOffsetElementList.title;
+      const savedRqdLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
+      if (savedRqdLearningList && savedRqdLearningList.length > 0) {
+        const rqdMain: OffsetElementList<LectureModel> = JSON.parse(savedRqdLearningList);
+        rqdMain.title = this._title;
+        window.sessionStorage.setItem('RqdLearningList', JSON.stringify(rqdMain));
+      }
+    }
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;

@@ -82,7 +82,15 @@ class LRSLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
-    this._title = lectureOffsetElementList.title;
+    if (lectureOffsetElementList.title !== this._title) {
+      this._title = lectureOffsetElementList.title;
+      const savedLrsLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
+      if (savedLrsLearningList && savedLrsLearningList.length > 0) {
+        const lrsMain: OffsetElementList<LectureModel> = JSON.parse(savedLrsLearningList);
+        lrsMain.title = this._title;
+        window.sessionStorage.setItem('LrsLearningList', JSON.stringify(lrsMain));
+      }
+    }
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;

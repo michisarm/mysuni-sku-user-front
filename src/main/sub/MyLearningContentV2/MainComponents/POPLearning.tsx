@@ -52,7 +52,7 @@ const POPLearning : React.FC<Props> = (Props) => {
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
-    if (savedPopularLearningList) {
+    if (savedPopularLearningList && savedPopularLearningList.length > 0) {
       const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
       if (popularMain.results.length > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);

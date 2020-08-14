@@ -57,7 +57,7 @@ const RQDLearning: React.FC<Props> = Props => {
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
-    if (savedRequiredLearningList) {
+    if (savedRequiredLearningList && savedRequiredLearningList.length > 0) {
       const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
       rqdLectureService!.setTitle(requiredMain.title);
       if (requiredMain.results.length > PAGE_SIZE - 1) {

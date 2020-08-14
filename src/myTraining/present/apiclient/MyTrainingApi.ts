@@ -14,14 +14,11 @@ class MyTrainingApi {
     process.env.REACT_APP_MY_TRAINING_API === undefined || process.env.REACT_APP_MY_TRAINING_API === '' ?
     '/api/mytraining/mytraining/mytrainings' : process.env.REACT_APP_MY_TRAINING_API;
 
-  findAllLearningPassed(myTrainingRdo: MyTrainingRdoModel) {
+  saveAllLearningPassedToStorage(state: string, endDate: number) {
 
     const params = {
-      limit: myTrainingRdo.limit,
-      offset: myTrainingRdo.offset,
-      denizenKey: myTrainingRdo.denizenKey,
-      state: myTrainingRdo.state,
-      channelIds: myTrainingRdo.channelIds,
+      state,
+      endDate,
     };
 
     return axiosApi.get<any>(this.baseUrl + '/byState/lightWeight', { params });

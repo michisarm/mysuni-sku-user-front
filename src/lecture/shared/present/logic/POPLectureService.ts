@@ -69,7 +69,15 @@ class POPLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
-    this._title = lectureOffsetElementList.title;
+    if (lectureOffsetElementList.title !== this._title) {
+      this._title = lectureOffsetElementList.title;
+      const savedPopLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
+      if (savedPopLearningList && savedPopLearningList.length > 0) {
+        const popMain: OffsetElementList<LectureModel> = JSON.parse(savedPopLearningList);
+        popMain.title = this._title;
+        window.sessionStorage.setItem('PopLearningList', JSON.stringify(popMain));
+      }
+    }
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;

@@ -24,10 +24,10 @@ class UserMainPageV2 extends Component<Props> {
     //
     super(props);
 
-    const completedLearnings = window.sessionStorage.getItem('learningCompleted');
+    const completedLearnings = window.sessionStorage.getItem('learningPassed');
     if (!completedLearnings || completedLearnings.length < 1) {
       const { myTrainingService } = this.props;
-      myTrainingService!.findAllLearningPassed('Passed', 0, 0);
+      myTrainingService!.saveAllLearningPassedToStorage('Passed', 0);
     }
   }
 
