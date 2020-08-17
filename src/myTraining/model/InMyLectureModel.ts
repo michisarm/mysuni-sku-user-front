@@ -14,6 +14,8 @@ import {
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { CourseSetModel } from 'course/model';
 import { LectureServiceType } from 'lecture/model';
+import MyTrainingRdoModel from './MyTrainingRdoModel';
+import MyTrainingModel from './MyTrainingModel';
 
 
 class InMyLectureModel extends DramaEntityObservableModel {
@@ -49,7 +51,6 @@ class InMyLectureModel extends DramaEntityObservableModel {
   // UI only
   required: boolean = false;
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
-
 
   constructor(inMyLecture?: InMyLectureModel) {
     //

@@ -26,7 +26,6 @@ class SkProfileService {
 
   studySummaryCachingFetch: CachingFetch = new CachingFetch();
 
-
   constructor(skProfileApi: SkProfileApi) {
     //
     this.skProfileApi = skProfileApi;
@@ -35,6 +34,16 @@ class SkProfileService {
   @computed
   get profileMemberName() {
     return this.skProfile.member.name;
+  }
+
+  @computed
+  get profileMemberEmail() {
+    return this.skProfile.member.email;
+  }
+
+  @computed
+  get profileMemberCompanyCode() {
+    return this.skProfile.member.companyCode;
   }
 
   @computed

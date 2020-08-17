@@ -39,7 +39,7 @@ class ContentHeader extends Component<Props> {
 
     return (
       <div className={classNames('main-info-area', className)}>
-        <div className="progress-info-wrap">
+        <div className="progress-info-wrap mypage">
           {children}
         </div>
         {bottom}

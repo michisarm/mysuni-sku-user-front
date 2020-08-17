@@ -1,3 +1,3 @@
 
-export { default } from './CardGroupContainer';
-export * from './CardGroupContainer';
+export { default } from './CardGroupContainer2';
+export * from './CardGroupContainer2';

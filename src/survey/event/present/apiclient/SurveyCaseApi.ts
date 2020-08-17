@@ -4,6 +4,7 @@ import SurveyCaseModel from '../../model/SurveyCaseModel';
 export default class SurveyCaseApi {
   //
   rootURL = '/api/survey/surveyCases';
+  // rootURL = 'http://ma.mysuni.sk.com/api/survey/surveyCases';
 
   static instance: SurveyCaseApi;
 

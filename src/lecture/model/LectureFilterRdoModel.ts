@@ -1,7 +1,13 @@
 import { decorate, observable } from 'mobx';
 import { DenizenKey } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
 import OrderByType from './OrderByType';
+import SkProfileService from '../../profile/present/logic/SkProfileService';
 
+
+interface Props {
+  skProfileService?: SkProfileService,
+}
 
 class LectureFilterRdoModel {
   //
@@ -11,7 +17,7 @@ class LectureFilterRdoModel {
   offset: number = 0;
   limit: number = 0;
   channelIds?: string[];
-
+  email?: string = patronInfo.getPatronEmail();
 
   constructor(lectureRdo?: LectureFilterRdoModel) {
     //
@@ -26,6 +32,27 @@ class LectureFilterRdoModel {
       orderBy: OrderByType.Time,
       limit,
       offset,
+      channelIds,
+    });
+  }
+
+  static newLectures(limit: number, offset: number, order: OrderByType=OrderByType.Time, channelIds: string[] = []) {
+    //
+    return new LectureFilterRdoModel({
+      orderBy: order,
+      limit,
+      offset,
+      channelIds,
+    });
+  }
+
+  static lrsLectures(limit: number, offset: number, email: string, order: OrderByType=OrderByType.Time, channelIds: string[] = []) {
+    //
+    return new LectureFilterRdoModel({
+      orderBy: order,
+      limit,
+      offset,
+      email,
       channelIds,
     });
   }

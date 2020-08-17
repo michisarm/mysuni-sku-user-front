@@ -24,7 +24,7 @@ class CourseContentHeaderContainer extends Component<Props> {
   //
   componentDidMount() {
     //
-    this.findReviewSummary();
+    // this.findReviewSummary();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>): void {
@@ -32,9 +32,9 @@ class CourseContentHeaderContainer extends Component<Props> {
     const { reviewId: prevReviewId } = prevProps;
     const { reviewId } = this.props;
 
-    if (prevReviewId !== reviewId) {
-      this.findReviewSummary();
-    }
+    // if (prevReviewId !== reviewId) {
+    //   this.findReviewSummary();
+    // }
   }
 
   findReviewSummary() {
@@ -51,9 +51,21 @@ class CourseContentHeaderContainer extends Component<Props> {
     const { reviewService, coursePlan, typeViewObject } = this.props;
     const { reviewSummary } = reviewService!;
 
+    // console.log('coursePlan.category : ', coursePlan.category);
+
+    // console.log( 'reviewSummary && reviewSummary.average : ',  reviewSummary && reviewSummary.average);
+    // console.log( 'reviewSummary && reviewSummary.average != null : ',  reviewSummary && reviewSummary.average != null);
+
     if (!coursePlan.category) {
       return null;
     }
+
+    // console.log('coursePlan.stamp.stampReady : ', coursePlan.stamp.stampReady);
+    // console.log('coursePlan.stamp.stampCount : ', coursePlan.stamp.stampCount);
+    //
+    // console.log('reviewSummary : ', reviewSummary);
+    // console.log('reviewSummary.average : ', reviewSummary.average);
+    // console.log('reviewSummary.maxStarCount : ', reviewSummary.maxStarCount);
 
     return (
       <LectureContentHeader>
@@ -71,10 +83,12 @@ class CourseContentHeaderContainer extends Component<Props> {
         <LectureContentHeader.RightCell>
           <LectureContentHeader.StampItem value={coursePlan.stamp.stampReady && coursePlan.stamp.stampCount || 0} />
           {
-            <LectureContentHeader.StarRatingItem
-              value={reviewSummary.average}
-              max={reviewSummary.maxStarCount}
-            />
+            (reviewSummary && reviewSummary.average != null) && (
+              <LectureContentHeader.StarRatingItem
+                value={reviewSummary.average}
+                max={reviewSummary.maxStarCount}
+              />
+            )
           }
         </LectureContentHeader.RightCell>
       </LectureContentHeader>

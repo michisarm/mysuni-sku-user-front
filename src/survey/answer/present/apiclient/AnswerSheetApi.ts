@@ -5,6 +5,7 @@ import EvaluationSheetModel from '../../model/EvaluationSheetModel';
 export default class AnswerSheetApi {
   //
   rootURL = '/api/survey/answerSheets';
+  // rootURL = 'http://ma.mysuni.sk.com/api/survey/answerSheets';
 
   static instance: AnswerSheetApi;
 

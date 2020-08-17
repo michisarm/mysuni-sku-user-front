@@ -10,7 +10,9 @@ class StudentApi {
   //
   static instance: StudentApi;
 
-  baseUrl = '/api/lecture/students';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_STUDENT_API === undefined || process.env.REACT_APP_STUDENT_API === '' ?
+    '/api/lecture/students' : process.env.REACT_APP_STUDENT_API;
 
 
   registerStudent(studentCdo: StudentCdoModel) {
@@ -72,6 +74,13 @@ class StudentApi {
 
   modifyStudentForCoursework(studentId: string, fileBoxId: string) {
     return axiosApi.put(this.baseUrl + `/flow/courseworkProcess/${studentId}/${fileBoxId}`);
+  }
+
+  findPreCourseStudentList(lectureCardIds: string[]) {
+    // return axiosApi.get<number>(this.baseUrl + `/flow/isPreCoursePassed?lectureCardIds=${lectureCardIds}`);
+    return axiosApi.get<StudentModel[]>(this.baseUrl + `/flow/preCourseList?lectureCardIds=${lectureCardIds}`)
+      .then(response => response && response.data);
+
   }
 }
 

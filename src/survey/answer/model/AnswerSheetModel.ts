@@ -16,6 +16,8 @@ export default class AnswerSheetModel extends DramaEntityObservableModel {
   respondent: RespondentModel = new RespondentModel();
   suggestionSheet: SuggestionSheetModel = new SuggestionSheetModel();
   completeTime: number = 0;
+  serviceId: string = '';
+  serviceType: string = '';
 
   evaluationSheet: EvaluationSheetModel = new EvaluationSheetModel();
 

@@ -10,15 +10,23 @@ class InMyLectureApi {
   //
   static instance: InMyLectureApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
-  baseUrl = this.devUrl + '/api/mytraining/mytraining/inmylecture';
+  // devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  // baseUrl = this.devUrl + '/api/mytraining/mytraining/inmylecture';
 
+  serverUrl = '/api/mytraining/mytraining/inmylecture';
+  devUrl = process.env.REACT_APP_IN_MY_LECTURE_API  === undefined || process.env.REACT_APP_IN_MY_LECTURE_API  === '' ?
+    this.serverUrl : process.env.REACT_APP_IN_MY_LECTURE_API ;
 
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
+
+  // 관심목록에 추가
   addInMyLecture(inMyLectureCdo: InMyLectureCdoModel) {
     return axiosApi.post<string>(this.baseUrl, inMyLectureCdo)
       .then(response => response && response.data);
   }
 
+  // 관심목록에서 제거
   removeInMyLecture(inMyLectureId: string) {
     return axiosApi.delete(this.baseUrl + `/${inMyLectureId}`);
   }

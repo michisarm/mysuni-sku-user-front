@@ -6,6 +6,8 @@ export default class ExaminationApi {
 
   URL = '/lp/adm/exam/examinations';
 
+  // URL = 'http://ma.mysuni.sk.com/lp/adm/exam/examinations';
+
   static instance: ExaminationApi;
 
   findExamination(examinationId : string) {

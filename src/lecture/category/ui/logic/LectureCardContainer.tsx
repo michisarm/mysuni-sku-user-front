@@ -24,19 +24,19 @@ import {
   StudentJoinRdoModel,
 } from 'lecture/model';
 import {
-  LectureService,
-  RollBookService,
+  LectureService, LRSLectureService, NEWLectureService, POPLectureService,
+  RollBookService, RQDLectureService,
   StudentService,
 } from 'lecture/stores';
 import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
+import { InMyLectureService, MyTrainingService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import StudyActionType from 'shared/model/StudyActionType';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
+import { LectureExam } from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
@@ -72,6 +72,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   init?: () => void;
   loaded: boolean;
   onPageRefresh?: () => void;
+
+  studentId?: string | undefined;
 }
 
 interface State {
@@ -459,7 +461,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
-        message: '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>2개 이상의 Contents를 동시에 학습할 경우, 본인에게 실제 학습 여부를 확인하여 이수를 취소할 수도 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
@@ -467,11 +470,20 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  removeStorage() {
+    const { viewObject } = this.props;
+    RQDLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    NEWLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    POPLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    LRSLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+  }
+
   playVideo() {
     const { typeViewObject } = this.props;
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
@@ -540,6 +552,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
@@ -560,6 +573,7 @@ class LectureCardContainer extends Component<Props, State> {
     // request download file to nara
     // depot.downloadDepot(typeViewObject.fileBoxId);
     this.publishStudyEvent();
+    this.removeStorage();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -569,6 +583,7 @@ class LectureCardContainer extends Component<Props, State> {
       this.onRegisterStudent(ProposalState.Approved);
     }
     this.publishStudyEvent(true);
+    this.removeStorage();
     this.setState({ openDownloadModal: false });
   }
 
@@ -583,14 +598,12 @@ class LectureCardContainer extends Component<Props, State> {
         title: '알림',
         message: '본 과정이 관심목록에 추가되었습니다.',
       });
-      inMyLectureService!
-        .addInMyLecture(inMyLectureCdo)
-        .then(() =>
-          inMyLectureService!.findInMyLecture(
-            inMyLectureCdo.serviceId,
-            inMyLectureCdo.serviceType
-          )
-        );
+      inMyLectureService!.addInMyLecture(inMyLectureCdo).then(() =>
+        inMyLectureService!.findInMyLecture(
+          inMyLectureCdo.serviceId,
+          inMyLectureCdo.serviceType
+        )
+      );
     }
   }
 
@@ -640,6 +653,7 @@ class LectureCardContainer extends Component<Props, State> {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
+        MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
       });
     }
   }
@@ -724,6 +738,7 @@ class LectureCardContainer extends Component<Props, State> {
     ) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
@@ -799,6 +814,7 @@ class LectureCardContainer extends Component<Props, State> {
       .then(confirmed => {
         if (onPageRefresh) {
           onPageRefresh();
+          MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
         }
       });
   }
@@ -1254,11 +1270,15 @@ class LectureCardContainer extends Component<Props, State> {
       typeViewObject,
       studentCdo,
       children,
+      lectureServiceId,
+      lectureServiceType,
     } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
+    console.log('LectureCardContainer : ', lectureServiceId);
+    console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
@@ -1301,6 +1321,8 @@ class LectureCardContainer extends Component<Props, State> {
             surveyCaseId={viewObject.surveyCaseId}
             ref={surveyModal => (this.surveyModal = surveyModal)}
             onSaveCallback={this.surveyCallback}
+            serviceId={lectureServiceId}
+            serviceType={lectureServiceType}
           />
         )}
         <CubeReportModal

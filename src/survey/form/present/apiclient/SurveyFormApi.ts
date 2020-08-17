@@ -3,6 +3,7 @@ import { SurveyFormModel } from '../../model/SurveyFormModel';
 
 export default class SurveyFormApi {
   URL = '/api/survey/surveyForms';
+  // URL = 'http://ma.mysuni.sk.com/api/survey/surveyForms';
 
   static instance: SurveyFormApi;
 

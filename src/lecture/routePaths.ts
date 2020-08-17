@@ -4,7 +4,8 @@ import queryString from 'query-string';
 
 interface OptionalParams {
   programLectureId?: string,
-  courseLectureId?: string
+  courseLectureId?: string,
+  postCourseLectureId?: string
 }
 
 
@@ -34,6 +35,11 @@ export default {
     cineroomId: string, collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
     { programLectureId, courseLectureId }: OptionalParams = {}
   ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ programLectureId, courseLectureId })}`,
+
+  preCourseOverview: (
+    cineroomId: string, collegeId: string, coursePlanId: string, serviceType: string, serviceId: string,
+    { postCourseLectureId }: OptionalParams = {}
+  ) => `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}${getQueryParams({ postCourseLectureId })}`,
 
   lectureCardOverviewPrev: (
     collegeId: string, cubeId: string, lectureCardId: string, { programLectureId, courseLectureId }: OptionalParams = {}

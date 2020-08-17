@@ -1,15 +1,15 @@
-import { decorate, observable } from 'mobx';
-import { patronInfo } from '@nara.platform/dock';
-import { CubeType } from 'shared/model';
+import {decorate, observable} from 'mobx';
+import {patronInfo} from '@nara.platform/dock';
+import {CubeType} from 'shared/model';
 
 
 class MyTrainingRdoModel {
   //
   limit: number = 0;
   offset: number = 0;
-  denizenKey?: string;
-  cubeType?: CubeType;
-  state?: string;
+  denizenKey?: string = '';
+  cubeType?: CubeType ;
+  state?: string = '';
   required?: boolean;
   channelIds?: string[];
 
