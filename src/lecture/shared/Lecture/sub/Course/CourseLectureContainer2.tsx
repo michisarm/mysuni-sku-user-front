@@ -855,6 +855,45 @@ class CourseLectureContainer2 extends Component<Props, State> {
               </span>
             </a>
           );
+        case SubState.Failed:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습중({this.getDuration()}%)</span>
+              <span className={'pie-wrapper progress-' + this.getDuration()}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.TestWaiting:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습중({this.getDuration()}%)</span>
+              <span className={'pie-wrapper progress-' + this.getDuration()}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.Waiting:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습중({this.getDuration()}%)</span>
+              <span className={'pie-wrapper progress-' + this.getDuration()}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
         case SubState.Completed:
           return (
             <a href="#" className="btn-play completed">
@@ -874,6 +913,45 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       switch (this.state.inProgress) {
         case SubState.InProgress:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+              <span className={'pie-wrapper progress-' + 100}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.Failed:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+              <span className={'pie-wrapper progress-' + 100}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.TestWaiting:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+              <span className={'pie-wrapper progress-' + 100}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.Waiting:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
