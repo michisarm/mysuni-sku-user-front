@@ -367,9 +367,17 @@ class CoursePageV2 extends Component<Props, State> {
           }
         } else {
           const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          const preCourseIds: string[] = [];
+
+          preCourseStudentList?.forEach( preCourse => {
+            preCourseIds.push(preCourse.lectureUsid);
+          });
 
           preLectureViews.forEach( preLectureView => {
-            if (preLectureView.required) isPreCoursePassed = false;
+            if (preLectureView.required && !preCourseIds.includes(preLectureView.serviceId)) {
+              isPreCoursePassed = false;
+            }
           });
         }
       } else if (
