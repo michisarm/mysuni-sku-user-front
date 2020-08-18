@@ -342,27 +342,35 @@ class CoursePageV2 extends Component<Props, State> {
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
       ) {
-        const preLectureViews = courseLectureService.getPreLectureViews;
-        const preCourseStudentList = studentService.StudentInfos!.preCourses;
-        // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
-        // @ts-ignore
-        for (let i = 0; i < preCourseStudentList.length; i++) {
+        if ( courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length ) {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
           // @ts-ignore
-          const preCourse = preCourseStudentList[i];
-          for (let j = 0; j < preLectureViews.length; j++) {
-            const preLectureView = preLectureViews[j];
-            // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
-            if (preLectureView.serviceId === preCourse.lectureUsid) {
-              if (
-                preLectureView.required &&
-                preCourse.learningState !== 'Passed'
-              ) {
-                // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
-                isPreCoursePassed = false;
-                break;
+          for (let i = 0; i < preCourseStudentList.length; i++) {
+            // @ts-ignore
+            const preCourse = preCourseStudentList[i];
+            for (let j = 0; j < preLectureViews.length; j++) {
+              const preLectureView = preLectureViews[j];
+              // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
+              if (preLectureView.serviceId === preCourse.lectureUsid) {
+                if (
+                  preLectureView.required &&
+                  preCourse.learningState !== 'Passed'
+                ) {
+                  console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
+                  isPreCoursePassed = false;
+                  break;
+                }
               }
             }
           }
+        } else {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+
+          preLectureViews.forEach( preLectureView => {
+            if (preLectureView.required) isPreCoursePassed = false;
+          });
         }
       } else if (
         courseLectureService.getPreLectureViews &&
