@@ -35,7 +35,7 @@ class CategoryLecturesHeaderView extends Component<Props> {
     Happiness: 'college-happy86',
     InnovationDesign: 'college-design86',
     SemicondDesign: 'college-semicond86',
-    Skacademy: 'college-Skacademy86',
+    Skacademy: 'college-skacademy86',
     EnergySolution: 'college-energy86',
   };
 
