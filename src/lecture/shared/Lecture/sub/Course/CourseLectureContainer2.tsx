@@ -15,7 +15,7 @@ import {PersonalCubeService} from 'personalcube/personalcube/stores';
 import {MediaService} from 'personalcube/media/stores';
 import {BoardService} from 'personalcube/community/stores';
 import {ExaminationService, ExamPaperService} from 'assistant/stores';
-import { AnswerSheetService, SurveyCaseService, SurveyFormService } from 'survey/stores';
+import {SurveyCaseService, SurveyFormService} from 'survey/stores';
 
 import {LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel} from '../../../../model';
 import LectureSubInfo, {State as SubState} from '../../../LectureSubInfo';
@@ -67,7 +67,7 @@ interface Props {
 
   examinationService?: ExaminationService,
   examPaperService?: ExamPaperService,
-  answerSheetService?: AnswerSheetService,
+  // answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
   surveyFormService?: SurveyFormService,
 
@@ -99,7 +99,7 @@ interface State
 
   'assistant.examinationService',
   'assistant.examPaperService',
-  'survey.answerSheetService',
+  // 'survey.answerSheetService',
   'survey.surveyCaseService',
   'survey.surveyFormService',
   'lecture.studentService',
@@ -164,7 +164,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidMount()
   {
-    console.log('componentDidMount');
+
     const { lectureView, studentService } = this.props;
     const { setOpen } = this.context;
 
@@ -197,7 +197,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   // }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    console.log('componentDidUpdate');
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
     if ((this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) ||
       this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
@@ -222,7 +221,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   async init()
   {
-    const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService, answerSheetService } = this.props;
+    const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService } = this.props;
+
+
+    // console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
 
     if (lectureView && lectureView.cubeId) {
 
@@ -230,34 +232,47 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.getStudentInfoView();
       }
 
+      // this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
+      // this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
+
       this.personalCube = lectureView.personalCube;
       this.rollBooks = lectureView.rollBooks;
 
-      if (lectureView.examPaper) {
-        this.state.examTitle = lectureView.examPaper.title;
-        this.setState({examTitle:lectureView.examPaper.title});
-      }
+      // console.log('init lectureView : ', lectureView);
+      // console.log('init personalCube : ', this.personalCube);
+      // console.log('init rollBooks : ', this.rollBooks[0]);
 
       if (this.rollBooks[0]) {
+        //this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
+
+        if (this.personalCube?.contents.examId)
+        {
+          // const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
+          // const examPaper = await examPaperService!.findExamPaper(examination.paperId);
+          examinationService?.setExamination(lectureView.examination);
+          const examPaper = lectureView.examPaper;
+          if (examPaper) {
+            this.state.examTitle = examPaper.title;
+            this.setState({examTitle:examPaper.title});
+          }
+        }
+
         if (this.personalCube?.contents.surveyCaseId) {
           console.log('personalCube surveyCaseId : ', this.personalCube?.contents.surveyCaseId);
+          const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+          const surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+          // const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
+          // const surveyCase = lectureView.surveyCase  === null ? new SurveyCaseModel() : new SurveyCaseModel(lectureView.surveyCase);
 
-          let answerSheet : any;
-          if ( answerSheetService?.answerSheet !== null && answerSheetService?.answerSheet.id ) {
-            answerSheet = answerSheetService?.answerSheet;
-          } else {
-            answerSheet = await answerSheetService?.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
-          }
+          // console.log('surveyCase : ', surveyCase);
 
-          let surveyForm : any;
-          if ( surveyFormService?.surveyForm !== null && surveyFormService?.surveyForm.id ) {
-            surveyForm = surveyFormService?.surveyForm;
-          } else {
-            surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
-          }
+          // const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
+          // const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
-          const disabled = answerSheet && answerSheet.progress === AnswerProgress.Complete;
+          const disabled = answerSheetService && answerSheetService.progress === AnswerProgress.Complete;
           this.state.surveyState = disabled;
+
+          console.log('<<<<<<<<<<<<<<<<<<<<< surveyState : ', disabled);
 
           if (surveyForm && surveyForm.titles && surveyForm.titles.langStringMap) {
             // @ts-ignore
@@ -706,7 +721,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   surveyCallback() {
-    console.log('surveyCallback');
     if (this.init()) this.init();
   }
 
@@ -841,45 +855,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
               </span>
             </a>
           );
-        case SubState.Failed:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-              <span className="text">학습중({this.getDuration()}%)</span>
-              <span className={'pie-wrapper progress-' + this.getDuration()}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
-        case SubState.TestWaiting:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-              <span className="text">학습중({this.getDuration()}%)</span>
-              <span className={'pie-wrapper progress-' + this.getDuration()}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
-        case SubState.Waiting:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
-              <span className="text">학습중({this.getDuration()}%)</span>
-              <span className={'pie-wrapper progress-' + this.getDuration()}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
         case SubState.Completed:
           return (
             <a href="#" className="btn-play completed">
@@ -899,45 +874,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       switch (this.state.inProgress) {
         case SubState.InProgress:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
-              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
-              <span className={'pie-wrapper progress-' + 100}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
-        case SubState.Failed:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
-              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
-              <span className={'pie-wrapper progress-' + 100}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
-        case SubState.TestWaiting:
-          return (
-            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
-              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
-              <span className={'pie-wrapper progress-' + 100}>
-                <span className="pie">
-                  <span className="left-side" />
-                  <span className="right-side" />
-                </span>
-                <div className="shadow" />
-              </span>
-            </a>
-          );
-        case SubState.Waiting:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
