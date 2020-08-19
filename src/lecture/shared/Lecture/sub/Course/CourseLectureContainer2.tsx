@@ -164,7 +164,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   componentDidMount()
   {
-
+    console.log('componentDidMount');
     const { lectureView, studentService } = this.props;
     const { setOpen } = this.context;
 
@@ -197,6 +197,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   // }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    console.log('componentDidUpdate');
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
     if ((this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) ||
       this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
@@ -223,40 +224,21 @@ class CourseLectureContainer2 extends Component<Props, State> {
   {
     const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService, answerSheetService } = this.props;
 
-
-    // console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
-
     if (lectureView && lectureView.cubeId) {
 
       if (studentInfo !== null) {
         this.getStudentInfoView();
       }
 
-      // this.personalCube = await personalCubeService!.findPersonalCube(lectureView.cubeId);
-      // this.rollBooks = await rollBookService!.findAllLecturesByLectureCardId(lectureView.serviceId);
-
       this.personalCube = lectureView.personalCube;
       this.rollBooks = lectureView.rollBooks;
 
-      // console.log('init lectureView : ', lectureView);
-      // console.log('init personalCube : ', this.personalCube);
-      // console.log('init rollBooks : ', this.rollBooks[0]);
+      if (lectureView.examPaper) {
+        this.state.examTitle = lectureView.examPaper.title;
+        this.setState({examTitle:lectureView.examPaper.title});
+      }
 
       if (this.rollBooks[0]) {
-        //this.studentData = await StudentApi.instance.findStudentByRollBookId(this.rollBooks[0].id);
-
-        if (this.personalCube?.contents.examId)
-        {
-          // const examination = await examinationService!.findExamination(this.personalCube?.contents.examId);
-          // const examPaper = await examPaperService!.findExamPaper(examination.paperId);
-          examinationService?.setExamination(lectureView.examination);
-          const examPaper = lectureView.examPaper;
-          if (examPaper) {
-            this.state.examTitle = examPaper.title;
-            this.setState({examTitle:examPaper.title});
-          }
-        }
-
         if (this.personalCube?.contents.surveyCaseId) {
           console.log('personalCube surveyCaseId : ', this.personalCube?.contents.surveyCaseId);
 
@@ -274,18 +256,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
             surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
           }
 
-          // const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
-          // const surveyCase = lectureView.surveyCase  === null ? new SurveyCaseModel() : new SurveyCaseModel(lectureView.surveyCase);
-
-          // console.log('surveyCase : ', surveyCase);
-
-          // const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
-          // const title = JSON.parse(JSON.stringify(obj.langStringMap));
-
           const disabled = answerSheet && answerSheet.progress === AnswerProgress.Complete;
           this.state.surveyState = disabled;
-
-          // console.log('<<<<<<<<<<<<<<<<<<<<< surveyState : ', disabled);
 
           if (surveyForm && surveyForm.titles && surveyForm.titles.langStringMap) {
             // @ts-ignore
@@ -734,6 +706,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   surveyCallback() {
+    console.log('surveyCallback');
     if (this.init()) this.init();
   }
 
