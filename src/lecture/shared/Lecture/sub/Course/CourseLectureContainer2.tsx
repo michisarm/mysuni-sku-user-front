@@ -15,7 +15,7 @@ import {PersonalCubeService} from 'personalcube/personalcube/stores';
 import {MediaService} from 'personalcube/media/stores';
 import {BoardService} from 'personalcube/community/stores';
 import {ExaminationService, ExamPaperService} from 'assistant/stores';
-import {SurveyCaseService, SurveyFormService} from 'survey/stores';
+import { AnswerSheetService, SurveyCaseService, SurveyFormService } from 'survey/stores';
 
 import {LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel} from '../../../../model';
 import LectureSubInfo, {State as SubState} from '../../../LectureSubInfo';
@@ -67,7 +67,7 @@ interface Props {
 
   examinationService?: ExaminationService,
   examPaperService?: ExamPaperService,
-  // answerSheetService?: AnswerSheetService,
+  answerSheetService?: AnswerSheetService,
   surveyCaseService?: SurveyCaseService,
   surveyFormService?: SurveyFormService,
 
@@ -99,7 +99,7 @@ interface State
 
   'assistant.examinationService',
   'assistant.examPaperService',
-  // 'survey.answerSheetService',
+  'survey.answerSheetService',
   'survey.surveyCaseService',
   'survey.surveyFormService',
   'lecture.studentService',
@@ -221,7 +221,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   async init()
   {
-    const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService } = this.props;
+    const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService, answerSheetService } = this.props;
 
 
     // console.log('courselecture isPreCoursePassed : ', isPreCoursePassed);
@@ -259,8 +259,21 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
         if (this.personalCube?.contents.surveyCaseId) {
           console.log('personalCube surveyCaseId : ', this.personalCube?.contents.surveyCaseId);
-          const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
-          const surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+
+          let answerSheet : any;
+          if ( answerSheetService?.answerSheet !== null && answerSheetService?.answerSheet.id ) {
+            answerSheet = answerSheetService?.answerSheet;
+          } else {
+            answerSheet = await answerSheetService?.findAnswerSheet(this.personalCube?.contents.surveyCaseId);
+          }
+
+          let surveyForm : any;
+          if ( surveyFormService?.surveyForm !== null && surveyFormService?.surveyForm.id ) {
+            surveyForm = surveyFormService?.surveyForm;
+          } else {
+            surveyForm = await surveyFormService!.findSurveyForm(this.personalCube?.contents.surveyId);
+          }
+
           // const answerSheetService =  lectureView.answerSheet === null ? new AnswerSheetModel() : lectureView.answerSheet;
           // const surveyCase = lectureView.surveyCase  === null ? new SurveyCaseModel() : new SurveyCaseModel(lectureView.surveyCase);
 
@@ -269,10 +282,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
           // const obj =  JSON.parse(JSON.stringify(surveyCase.titles));
           // const title = JSON.parse(JSON.stringify(obj.langStringMap));
 
-          const disabled = answerSheetService && answerSheetService.progress === AnswerProgress.Complete;
+          const disabled = answerSheet && answerSheet.progress === AnswerProgress.Complete;
           this.state.surveyState = disabled;
 
-          console.log('<<<<<<<<<<<<<<<<<<<<< surveyState : ', disabled);
+          // console.log('<<<<<<<<<<<<<<<<<<<<< surveyState : ', disabled);
 
           if (surveyForm && surveyForm.titles && surveyForm.titles.langStringMap) {
             // @ts-ignore
