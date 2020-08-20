@@ -35,8 +35,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
     Happiness: 'college-happy86',
     InnovationDesign: 'college-design86',
     SemicondDesign: 'college-semicond86',
-    Skacademy: 'college-Skacademy86',
+    Skacademy: 'college-skacademy86',
     EnergySolution: 'college-energy86',
+    SkOperation: 'college-operation86',
+    LifeStyle: 'college-life86',
   };
 
   getThumbnailIcon(collegeName: string) {
@@ -64,6 +66,10 @@ class CategoryLecturesHeaderView extends Component<Props> {
         return CategoryLecturesHeaderView.thumbnailIcon.Skacademy;
       case '에너지솔루션':
         return CategoryLecturesHeaderView.thumbnailIcon.EnergySolution;
+      case 'SK경영':
+        return CategoryLecturesHeaderView.thumbnailIcon.SkOperation;
+      case 'Life Style':
+        return CategoryLecturesHeaderView.thumbnailIcon.LifeStyle;
       default:
         return CategoryLecturesHeaderView.thumbnailIcon.Default;
     }
