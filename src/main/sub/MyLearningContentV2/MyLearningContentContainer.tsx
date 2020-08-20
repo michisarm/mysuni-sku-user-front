@@ -42,7 +42,10 @@ const MyLearningContentContainer : React.FC<Props> = (Props) => {
   return (
     <>
       <InProgressLearning profileMemberName={member.name} />
-      <ChallengingBadge profileMemberName={member.name} />
+
+      {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
+      {/*<ChallengingBadge profileMemberName={member.name} />*/}
+
       <MainBanner />
       <RequiredLearning />
       <NewLearning />

@@ -14,15 +14,15 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
-  mySUNI = '/static/media/logo_badge.svg',
+  mySUNI = '/static/media/logo-badge.svg',
 }
 
 enum CategoryImageURL {
-  BDGCAT_AIDT = '/static/media/AI_DT.png',
-  BDGCAT_JOB = '/static/media/job.png',
-  BDGCAT_BIZ = '/static/media/biz.png',
-  BDGCAT_HAPPY = '/static/media/happiness.png',
-  BDGCAT_BM = '/static/media/BM_design.png',
+  BDGCAT_AIDT = '/static/media/icon-ai.png',
+  BDGCAT_JOB = '/static/media/icon-common.png',
+  BDGCAT_BIZ = '/static/media/icon-biz.png',
+  BDGCAT_HAPPY = '/static/media/icon-happy.png',
+  BDGCAT_BM = '/static/media/icon-bmdesign.png',
 }
 
 interface Props extends RouteComponentProps {
@@ -76,7 +76,6 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     }
   };
 
-
   return (
     // 스타일 지정: badge level + badge type
     <BadgeContentWrapper
@@ -93,18 +92,21 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
           certiAdminSubcategory.certiAdminSubcategory,
           iconUrl
         )}
-        certiAdminCategoryName={certiAdminCategory.certiAdminCategoryName}
+        certiAdminCategoryName={
+          certiAdminCategory.certiAdminCategoryName === 'mySUNI'
+            ? certiAdminCategory.certiAdminCategoryName
+            : certiAdminSubcategory.certiAdminSubcategoryName
+        }
       />
       {/*College, Category*/}
       <College
         iconUrl={
-          iconUrl
-            ? domainPath + iconUrl
-            : `${getPublicUrl()}${CategoryImageURL[
-                badge.mainCategoryId as keyof typeof CategoryImageURL
-            ]}`
+          `${getPublicUrl()}${
+            CategoryImageURL[
+              badge.mainCategoryId as keyof typeof CategoryImageURL
+            ]
+          }`
         }
-        mainCategory={mainCategoryName}
       />
       {/*뱃지명*/}
       <Title name={name} />

@@ -51,7 +51,6 @@ export const CertificationOrg: FunctionComponent<CertificationOrgProps> = ({
 }) => (
   <span className="issuing">
     <img
-      // src={`${getPublicUrl()}${certiAdminCategoryIcon}`}
       src={certiAdminCategoryIcon}
       alt={`발급기관: ${certiAdminCategoryName}`}
     />
@@ -60,16 +59,13 @@ export const CertificationOrg: FunctionComponent<CertificationOrgProps> = ({
 
 interface CollegeProps {
   iconUrl: string;
-  mainCategory: string;
 }
 
 export const College: FunctionComponent<CollegeProps> = ({
   iconUrl,
-  mainCategory,
 }) => (
   <span className="college">
     <img src={iconUrl} alt="" />
-    <span>{mainCategory}</span>
   </span>
 );
 
