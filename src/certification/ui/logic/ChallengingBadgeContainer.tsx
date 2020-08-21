@@ -154,8 +154,8 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {myBadges.length > 0 ?
-        myBadges.map( (badge: MyBadgeModel, index: number) =>
+      {badgeService!.myBadges.length > 0 ?
+        badgeService!.myBadges.map( (badge: MyBadgeModel, index: number) =>
           <Fragment key={`container-${index}`}>
             <ChallengeBoxContainer
               myBadge={badge}
