@@ -1276,8 +1276,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
-    console.log('LectureCardContainer : ', lectureServiceId);
-    console.log('LectureCardContainer : ', lectureServiceType);
+    // console.log('LectureCardContainer : ', viewObject);
+    // console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (

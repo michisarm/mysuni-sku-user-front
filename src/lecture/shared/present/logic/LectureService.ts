@@ -63,7 +63,7 @@ class LectureService {
 
   @action
   setSubLectureViews(courseId: string, lectureViews: LectureViewModel[]) {
-    console.log('courseId : ', courseId, 'lectureViews, ', lectureViews);
+    // console.log('courseId : ', courseId, 'lectureViews, ', lectureViews);
     runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
   }
 
@@ -300,7 +300,7 @@ class LectureService {
 
   findLectureViewsFromJson(lectures: string) {
     runInAction(() => (this._lectureViews = JSON.parse(lectures)));
-    console.log('lectureViews : ', this.lectureViews);
+    // console.log('lectureViews : ', this.lectureViews);
   }
 
   // SubLectureViewMap -------------------------------------------------------------------------------------------------

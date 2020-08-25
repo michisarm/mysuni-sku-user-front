@@ -8,6 +8,7 @@ import StudentModel from './StudentModel';
 class StudentCourseModel {
   //
   courses: StudentCubeModel[] = [];
+  // student: StudentCubeModel = new StudentCubeModel();
   // count : number = 0;
 
   constructor(courses?: StudentCourseModel) {

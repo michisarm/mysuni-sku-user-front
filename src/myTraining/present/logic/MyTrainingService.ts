@@ -53,9 +53,9 @@ class MyTrainingService {
     await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
       .then((response: any) => {
         if (response) {
-          this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
-          // window.sessionStorage.setItem('learningPassed', JSON.stringify(response.data));
-          // this.getAllLearningPassedFromStorage();
+          if (response.data !== null && response.data !== '') {
+            this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+          }
         }
       });
   }
@@ -69,7 +69,9 @@ class MyTrainingService {
       await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
         .then((response: any) => {
           if (response) {
-            this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+            if (response.data !== null && response.data !== '') {
+              this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+            }
           }
         });
     } else {
@@ -82,23 +84,23 @@ class MyTrainingService {
     //
     if (data.length > 0) {
       const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
-      if (newModel.results.length > 0) {
-        console.log('newModel Count : ', newModel.results.length);
-      }
+      // if (newModel.results.length > 0) {
+      //   console.log('newModel Count : ', newModel.results.length);
+      // }
 
       const oldJson = sessionStorage.getItem('learningPassed');
       if (oldJson) {
         if (oldJson.length > 0) {
 
           const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(oldJson);
-          console.log('oldModel Count : ', oldModel.results.length);
+          // console.log('oldModel Count : ', oldModel.results.length);
           if (oldModel.results.length > 0) {
             newModel.results = newModel.results.concat(oldModel.results);
           }
         }
       }
 
-      console.log('total Count : ', newModel.results.length);
+      // console.log('total Count : ', newModel.results.length);
 
       if (newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
