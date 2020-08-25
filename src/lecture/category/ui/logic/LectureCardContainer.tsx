@@ -24,8 +24,12 @@ import {
   StudentJoinRdoModel,
 } from 'lecture/model';
 import {
-  LectureService, LRSLectureService, NEWLectureService, POPLectureService,
-  RollBookService, RQDLectureService,
+  LectureService,
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
+  RollBookService,
+  RQDLectureService,
   StudentService,
 } from 'lecture/stores';
 import { ActionEventService } from 'shared/stores';
@@ -461,7 +465,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
-        message: '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
@@ -597,12 +602,14 @@ class LectureCardContainer extends Component<Props, State> {
         title: '알림',
         message: '본 과정이 관심목록에 추가되었습니다.',
       });
-      inMyLectureService!.addInMyLecture(inMyLectureCdo).then(() =>
-        inMyLectureService!.findInMyLecture(
-          inMyLectureCdo.serviceId,
-          inMyLectureCdo.serviceType
-        )
-      );
+      inMyLectureService!
+        .addInMyLecture(inMyLectureCdo)
+        .then(() =>
+          inMyLectureService!.findInMyLecture(
+            inMyLectureCdo.serviceId,
+            inMyLectureCdo.serviceType
+          )
+        );
     }
   }
 

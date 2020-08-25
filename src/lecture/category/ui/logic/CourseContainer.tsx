@@ -290,7 +290,8 @@ class CourseContainer extends Component<Props, State> {
     if (this.handleMultiVideo(lectureView)) {
       reactAlert({
         title: '알림',
-        message: '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
       });
     } else {
