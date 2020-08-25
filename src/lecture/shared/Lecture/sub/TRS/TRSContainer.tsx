@@ -199,10 +199,10 @@ class TRSContainer extends Component<Props, State> {
         this.setState({examTitle:examPaper.title});
       }
 
-      if (lectureView.surveyCase.id) {
-        const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
+      if (lectureView.surveyCase?.id) {
+        const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase?.id);
         // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
-        const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
+        const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase?.surveyFormId);
 
         const disabled = answerSheetService && answerSheetService.progress === AnswerProgress.Complete;
         this.state.surveyState = disabled;
@@ -217,12 +217,12 @@ class TRSContainer extends Component<Props, State> {
         this.setState({ surveyTitle:surveyForm.titles.langStringMap.get('ko') });
       }
 
-      if (lectureView.cubeId)
+      if (lectureView?.cubeId)
       {
         // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
         const cubeIntro = lectureView.cubeIntro;
-        if (cubeIntro?.reportFileBox.fileBoxId) {
-          this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
+        if (cubeIntro?.reportFileBox?.fileBoxId) {
+          this.state.reportFileId = cubeIntro?.reportFileBox?.fileBoxId;
         }
       }
 
@@ -418,12 +418,12 @@ class TRSContainer extends Component<Props, State> {
     let reportFileBoxId: string = '';
 
     state = this.state.inProgress || undefined;
-    examId = lectureView.examination.id || '';
+    examId = lectureView.examination?.id || '';
     examTitle = this.state.examTitle || '';
-    surveyId = lectureView.surveyCase.surveyFormId || '';
+    surveyId = lectureView.surveyCase?.surveyFormId || '';
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
-    surveyCaseId = lectureView.surveyCase.id || '';
+    surveyCaseId = lectureView.surveyCase?.id || '';
     reportFileBoxId = this.state.reportFileId || '';
     this.state.isContent = true;
 
@@ -527,7 +527,7 @@ class TRSContainer extends Component<Props, State> {
   testCallback() {
     const { onLectureInitRequest, lectureView } = this.props;
     if (this.studentData) {
-      StudentApi.instance.modifyStudentForExam(this.studentData.id, lectureView.examination.id)
+      StudentApi.instance.modifyStudentForExam(this.studentData.id, lectureView.examination?.id)
         .then(() => {
           // if (this.init()) this.init();
           if (onLectureInitRequest) onLectureInitRequest();
@@ -653,10 +653,10 @@ class TRSContainer extends Component<Props, State> {
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam2
-                    onTest={lectureView.examination.id ? this.onTest : undefined}
-                    onTestNotReady={lectureView.examination.id ? this.onTestNotReady : undefined}
-                    onAlreadyPassed={lectureView.examination.id ? this.onAlreadyPassed : undefined}
-                    onTestWaiting={lectureView.examination.id ? this.onTestWaiting : undefined}
+                    onTest={lectureView.examination?.id ? this.onTest : undefined}
+                    onTestNotReady={lectureView.examination?.id ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={lectureView.examination?.id ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={lectureView.examination?.id ? this.onTestWaiting : undefined}
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                     onSurvey={this.viewObject.surveyId ? this.onSurvey : undefined}
@@ -680,10 +680,10 @@ class TRSContainer extends Component<Props, State> {
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam2
-                    onTest={lectureView.examination.id ? this.onTest : undefined}
-                    onTestNotReady={lectureView.examination.id ? this.onTestNotReady : undefined}
-                    onAlreadyPassed={lectureView.examination.id ? this.onAlreadyPassed : undefined}
-                    onTestWaiting={lectureView.examination.id ? this.onTestWaiting : undefined}
+                    onTest={lectureView.examination?.id ? this.onTest : undefined}
+                    onTestNotReady={lectureView.examination?.id ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={lectureView.examination?.id ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={lectureView.examination?.id ? this.onTestWaiting : undefined}
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                     onSurvey={this.viewObject.surveyId ? this.onSurvey : undefined}
@@ -706,10 +706,10 @@ class TRSContainer extends Component<Props, State> {
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam2
-                    onTest={lectureView.examination.id ? this.onTest : undefined}
-                    onTestNotReady={lectureView.examination.id ? this.onTestNotReady : undefined}
-                    onAlreadyPassed={lectureView.examination.id ? this.onAlreadyPassed : undefined}
-                    onTestWaiting={lectureView.examination.id ? this.onTestWaiting : undefined}
+                    onTest={lectureView.examination?.id ? this.onTest : undefined}
+                    onTestNotReady={lectureView.examination?.id ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={lectureView.examination?.id ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={lectureView.examination?.id ? this.onTestWaiting : undefined}
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                     onSurvey={this.viewObject.surveyId ? this.onSurvey : undefined}
@@ -732,10 +732,10 @@ class TRSContainer extends Component<Props, State> {
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam2
-                    onTest={lectureView.examination.id ? this.onTest : undefined}
-                    onTestNotReady={lectureView.examination.id ? this.onTestNotReady : undefined}
-                    onAlreadyPassed={lectureView.examination.id ? this.onAlreadyPassed : undefined}
-                    onTestWaiting={lectureView.examination.id ? this.onTestWaiting : undefined}
+                    onTest={lectureView.examination?.id ? this.onTest : undefined}
+                    onTestNotReady={lectureView.examination?.id ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={lectureView.examination?.id ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={lectureView.examination?.id ? this.onTestWaiting : undefined}
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                     onSurvey={this.viewObject.surveyId ? this.onSurvey : undefined}
@@ -758,10 +758,10 @@ class TRSContainer extends Component<Props, State> {
               {
                 this.viewObject && this.state.isContent && (
                   <LectureExam2
-                    onTest={lectureView.examination.id ? this.onTest : undefined}
-                    onTestNotReady={lectureView.examination.id ? this.onTestNotReady : undefined}
-                    onAlreadyPassed={lectureView.examination.id ? this.onAlreadyPassed : undefined}
-                    onTestWaiting={lectureView.examination.id ? this.onTestWaiting : undefined}
+                    onTest={lectureView.examination?.id ? this.onTest : undefined}
+                    onTestNotReady={lectureView.examination?.id ? this.onTestNotReady : undefined}
+                    onAlreadyPassed={lectureView.examination?.id ? this.onAlreadyPassed : undefined}
+                    onTestWaiting={lectureView.examination?.id ? this.onTestWaiting : undefined}
                     onReport={this.viewObject.reportFileBoxId ? this.onReport : undefined}
                     onReportNotReady={this.viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
                     onSurvey={this.viewObject.surveyId ? this.onSurvey : undefined}
@@ -779,9 +779,9 @@ class TRSContainer extends Component<Props, State> {
         )}
 
         {
-          this.viewObject && lectureView.examination.id && (
+          this.viewObject && lectureView.examination?.id && (
             <AnswerSheetModal
-              examId={lectureView.examination.id}
+              examId={lectureView.examination?.id}
               ref={examModal => this.examModal = examModal}
               onSaveCallback={this.testCallback}
               onInitCallback={onLectureInitRequest}
@@ -790,10 +790,10 @@ class TRSContainer extends Component<Props, State> {
         }
 
         {
-          this.viewObject && lectureView.surveyCase.id && (
+          this.viewObject && lectureView.surveyCase?.id && (
             <SurveyAnswerSheetModal
-              surveyId={lectureView.surveyCase.surveyFormId}
-              surveyCaseId={lectureView.surveyCase.id}
+              surveyId={lectureView.surveyCase?.surveyFormId}
+              surveyCaseId={lectureView.surveyCase?.id}
               ref={surveyModal => this.surveyModal = surveyModal}
               onSaveCallback={this.surveyCallback}
               serviceId={lectureView.serviceId}

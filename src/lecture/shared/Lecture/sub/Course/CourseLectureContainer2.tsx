@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
 
+import depot from '@nara.drama/depot';
+
 import classNames from 'classnames';
 import {Button, Icon} from 'semantic-ui-react';
 
@@ -24,13 +26,20 @@ import RollBookService from '../../../present/logic/RollBookService';
 import Action from '../../model/Action';
 import {CourseSectionContext} from '../CourseSection';
 import {AnswerProgress} from '../../../../../survey/answer/model/AnswerProgress';
+import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer2';
+import {AnswerSheetModal, CubeReportModal} from '../../../../../assistant';
+import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey';
+import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
+import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
 import {dateTimeHelper} from '../../../../../shared';
 import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
+import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
+import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
+import { LectureExam2 } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
-import {LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService} from '../../../../stores';
-import CubeTypeNameType from '../../../../../personalcube/personalcube/model/CubeTypeNameType';
+import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
 
 interface Props {
   rollBookService?: RollBookService,
@@ -161,6 +170,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     if (lectureView.cubeId) {
       setOpen(true);
+      this.init();
       return;
     }
 
@@ -168,17 +178,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
       setOpen(true);
     }
 
-    // this.init();
+    this.init();
   }
-  //
-  // componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-  //
-  //   if (this.props !== prevProps) {
-  //     console.log('componentDidUpdate this.props : ', this.props);
-  //     console.log('componentDidUpdate prevProps : ', prevProps);
-  //     this.init();
-  //   }
-  // }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
@@ -198,6 +199,43 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.getStudentInfoView();
       }
 
+      examinationService?.setExamination(lectureView.examination);
+      const examPaper = lectureView.examPaper;
+      if (examPaper) {
+        this.state.examTitle = examPaper.title;
+        this.setState({examTitle:examPaper.title});
+      }
+
+      if (lectureView.surveyCase?.id) {
+        const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
+        // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
+        const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
+
+        const disabled = answerSheetService && answerSheetService.progress === AnswerProgress.Complete;
+        this.state.surveyState = disabled;
+
+        // console.log('this.lectureView.surveyCase.id : ', lectureView.surveyCase.surveyFormId);
+        // console.log('this.surveyForm : ', surveyForm);
+        if (surveyForm && surveyForm.titles && surveyForm.titles.langStringMap) {
+          // @ts-ignore
+          this.state.surveyTitle = surveyForm.titles.langStringMap.get('ko');
+        }
+        this.setState({ surveyState:disabled });
+        this.setState({ surveyTitle:surveyForm.titles.langStringMap.get('ko') });
+      }
+
+      if (lectureView.cubeId)
+      {
+        // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
+        const cubeIntro = lectureView.cubeIntro;
+        if (cubeIntro?.reportFileBox.fileBoxId) {
+          this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
+        }
+      }
+
+      this.viewObject = this.getViewObject();
+
+      // console.log('this.viewObject : ', this.viewObject);
       this.setExamState(this.studentData);
     }
   }
@@ -453,6 +491,23 @@ class CourseLectureContainer2 extends Component<Props, State> {
       //Video, Audio
       if (service.type === ContentsServiceType.Media) {
         const media = await mediaService!.findMedia(contents.id);
+
+        //통계처리
+        // if (media.mediaType === MediaType.InternalMedia) {
+        //   const studentCdo = {
+        //     ...this.getStudentCdo(),
+        //     proposalState: ProposalState.Approved,
+        //   };
+        //
+        //   lectureService.confirmUsageStatisticsByCardId(studentCdo)
+        //     .then((confirmed) => {
+        //       if (confirmed) {
+        //         history.replace('/empty');
+        //         setTimeout(() => history.replace(routePaths.lectureCardOverview(collegeId, lectureView.cubeId, lectureView.serviceId)));
+        //       }
+        //     });
+        // }
+
         const url = this.getMediaUrl(media);
 
         //외부 영상, CP사 영상
@@ -496,12 +551,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
     let reportFileBoxId: string = '';
 
     state = this.state.inProgress || undefined;
-    examId = lectureView.examination.id || '';
+    examId = lectureView.examPaper?.id || '';
     examTitle = this.state.examTitle || '';
-    surveyId = lectureView.surveyCase.surveyFormId || '';
+    surveyId = lectureView.surveyCase?.surveyFormId || '';
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
-    surveyCaseId = lectureView.surveyCase.id || '';
+    surveyCaseId = lectureView.surveyCase?.id || '';
     reportFileBoxId = this.state.reportFileId || '';
     this.state.isContent = true;
 
@@ -543,22 +598,157 @@ class CourseLectureContainer2 extends Component<Props, State> {
     };
   }
 
+
+  getTestViewObject() {
+    //
+    // this.getStudentInfoView();
+    const { lectureView } = this.props;
+    this.state.isContent = false;
+
+    let state: string | undefined;
+    let examId: string = '';
+    let examTitle: string = '';
+    let surveyId: string = '';
+    let surveyTitle: string = '';
+    let surveyState: boolean = false;
+    let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
+
+    state = lectureView.learningState || undefined;
+    examId = lectureView.examPaper?.id || '';
+    examTitle = lectureView.examPaper?.title || '';
+    surveyId = lectureView.surveyCase?.id || '';
+    surveyTitle = 'TEST' || '';
+    surveyState = false;
+    surveyCaseId = lectureView.surveyCase?.id || '';
+    reportFileBoxId = '' || '';
+    this.state.isContent = true;
+
+    // if (lectureView.personalCube) {
+    //   if (lectureView.learningState === null) {
+    //     state = LearningState.Waiting;
+    //   } else if (lectureView.learningState === LearningState.Passed) {
+    //     state = LearningState.Progress;
+    //   } else {
+    //     state = LearningState.Progress;
+    //   }
+    // }
+
+    if (this.studentData && this.studentData.id) {
+      if (this.studentData.proposalState === ProposalState.Approved) {
+        if (
+          this.studentData.learningState    === LearningState.Waiting
+          || this.studentData.learningState === LearningState.HomeworkWaiting
+          || this.studentData.learningState === LearningState.TestWaiting
+          || this.studentData.learningState === LearningState.TestPassed
+          || this.studentData.learningState === LearningState.Failed
+        ) {
+          state = SubState.InProgress;
+        }
+        if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed)   state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed)   state = SubState.InProgress;
+        // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
+        // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
+      }
+
+      if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
+        this.studentData.learningState === LearningState.Progress) {
+        state = SubState.InProgress;
+      }
+    }
+
+    // console.log('getViewObject>>>> : ', this.state.isContent);
+    return {
+      // Sub info
+      state,
+      examId,
+      // Fields
+      examTitle,
+      surveyId,
+      surveyTitle,
+      surveyState,
+      surveyCaseId,
+      reportFileBoxId,
+    };
+  }
+
+  onApplyReference() {
+    this.applyReferenceModel.onOpenModal();
+  }
+
+  onReport() {
+    this.reportModal.onOpenModal();
+  }
+
+  onTest() {
+    const { isPreCoursePassed } = this.props;
+    if (isPreCoursePassed) {
+      this.examModal.onOpenModal();
+    } else {
+      reactAlert({ title: '선수과정안내', message: '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.' });
+    }
+  }
+
+  // truefree 2020-04-03
+  // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
+  onReportNotReady() {
+    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
+  onAlreadyPassed() {
+    reactAlert({ title: 'Test 안내', message: '이미 통과한 시험입니다.' });
+  }
+
+  onTestWaiting() {
+    reactAlert({ title: 'Test 안내', message: '시험결과를 기다리고 있습니다.' });
+  }
+
+  onTestNotReady() {
+    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
+  OnSurveyNotReady() {
+    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    // reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
+    // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
+  }
+
   onSurvey() {
     this.surveyModal.onOpenModal();
   }
 
+  surveyCallback() {
+    if (this.init()) this.init();
+  }
+
+  testCallback() {
+    const { onLectureInitRequest } = this.props;
+    if (this.studentData) {
+      StudentApi.instance.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
+        .then(() => {
+          // if (this.init()) this.init();
+          if (onLectureInitRequest) onLectureInitRequest();
+        });
+    }
+  }
+
   setExamState(studentData?: any) {
 
-    // console.log('lectureView : ', lectureView);
-    // console.log('setExamState : ', studentData);
-    // console.log('setExamState : ', studentData?.serviceType);
+    // console.log('시험정보 세팅');
+    // console.log('studentData : ',studentData);
+    // console.log('serviceType : ' + studentData.serviceType);
 
     if (studentData && studentData.learningState === LearningState.Passed) {
       this.state.passedState = true;
     }
 
     this.setStateName('1', 'Test');
-
+    // console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
         if (studentData.learningState === LearningState.Progress ||
@@ -614,12 +804,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
         } else {
           this.setStateName('1', 'Test');
         }
-
-        // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
       }
     }
 
-
+    // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
   }
 
   setStateName(type: string, name: string) {
@@ -634,6 +822,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
     }
+  }
+
+  onClickDownloadReport(fileBoxId: string) {
+    //
+    depot.downloadDepot(fileBoxId);
   }
 
   getDuration() {
@@ -652,7 +845,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio ) {
       switch (this.state.inProgress) {
         case SubState.InProgress:
-        case SubState.Waiting:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
               <span className="text">학습중({this.getDuration()}%)</span>
@@ -684,7 +876,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       switch (this.state.inProgress) {
         case SubState.InProgress:
-        case SubState.Waiting:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
@@ -725,7 +916,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } = this.props;
 
     const { open } = this.context;
+
     const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(this.props.lectureView.learningTime);
+    this.viewObject = this.getViewObject();
 
     return (
       <>
@@ -746,7 +939,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
             </div>
           )
         )}
-
 
         {className === 'first' && (
           !lectureView.cubeId && (
