@@ -808,7 +808,7 @@ class TRSContainer extends Component<Props, State> {
               downloadFileBoxId ={this.viewObject.reportFileBoxId}
               ref={reportModal => this.reportModal = reportModal}
               downloadReport = {this.onClickDownloadReport}
-              rollBookId={this.rollBooks[0].id}
+              rollBookId={this.rollBooks[0]?.id}
             />
           )
         }
