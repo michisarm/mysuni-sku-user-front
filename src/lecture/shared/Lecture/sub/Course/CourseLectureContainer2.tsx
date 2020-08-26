@@ -422,7 +422,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   getMediaUrl(media: MediaModel) : string
   {
     let url : string = '';
-    // const { personalCube } = this.props.personalCubeService!;
+    const { lectureView } = this.props;
 
     switch (media.mediaType) {
       case MediaType.ContentsProviderMedia:
@@ -435,10 +435,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
       case MediaType.InternalMediaUpload:
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
-        if (this.personalCube!.contents.type === CubeType.Video && url)
+        if (lectureView.personalCube?.contents.type === CubeType.Video && url)
         {
           url += '&offerviewer=false&showtitle=false&showbrand=false';
-        } else if (this.personalCube!.contents.type === CubeType.Audio && url)
+        } else if (lectureView.personalCube?.contents.type === CubeType.Audio && url)
         {
           url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
@@ -724,20 +724,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
-  surveyCallback() {
-    if (this.init()) this.init();
-  }
-
-  testCallback() {
-    const { onLectureInitRequest } = this.props;
-    if (this.studentData) {
-      StudentApi.instance.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
-        .then(() => {
-          // if (this.init()) this.init();
-          if (onLectureInitRequest) onLectureInitRequest();
-        });
-    }
-  }
 
   setExamState(studentData?: any) {
 
