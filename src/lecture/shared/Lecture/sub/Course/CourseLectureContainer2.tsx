@@ -485,12 +485,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { mediaService, isPreCoursePassed, lectureView } = this.props;
     // const { personalCube } = personalCubeService!;
 
-    const { service, contents } = this.personalCube!.contents;
+    // console.log('personalCube : ', lectureView);
+
+    // const { service, contents } = this.personalCube!.contents;
 
     if (isPreCoursePassed) {
       //Video, Audio
-      if (service.type === ContentsServiceType.Media) {
-        const media = await mediaService!.findMedia(contents.id);
+      if (lectureView.personalCube?.contents.service.type === ContentsServiceType.Media) {
+        const media = await mediaService!.findMedia(lectureView.personalCube?.contents.contents.id);
 
         //통계처리
         // if (media.mediaType === MediaType.InternalMedia) {
