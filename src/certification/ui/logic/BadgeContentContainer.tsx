@@ -219,7 +219,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     switch (badgeState) {
       case ChallengeState.WaitForChallenge:
         // TODO! Badge 정식 오픈 전까지 준비 안내 팝업 0820
-        reactAlert({title: '안내', message: 'Coming soon!'});
+        reactAlert({title: '안내', message: '현재는 체험 기간입니다. 추후 오픈 예정입니다.'});
         //onClickChallenge();
         break;
       case ChallengeState.Challenging:

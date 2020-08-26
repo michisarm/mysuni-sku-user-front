@@ -82,11 +82,6 @@ const TutorialModalView = () => {
                     onClick={e => onClickSubMenu(menu.value, e)}
                   >
                     {menu.text}
-                    {menu.value === 'tu4' && (
-                      <span className="beta">
-                        <span className="blind">beta</span>
-                      </span>
-                    )}
                   </a>
                 ))}
               </div>
@@ -207,7 +202,7 @@ const TutorialModalView = () => {
                 <div id="tu4" className="tu-cont">
                   <div className="img">
                     <img
-                      src={`${getPublicUrl()}/images/all/tu-img-badge.jpg`}
+                      src={`${getPublicUrl()}/images/all/tu-img-badge.png`}
                       alt=""
                     />
                   </div>
