@@ -12,9 +12,7 @@ export default class CoursePlanApi {
   process.env.REACT_APP_COURSE_PLAN_API === undefined || process.env.REACT_APP_COURSE_PLAN_API === '' ?
     '/api/course/coursePlans' : process.env.REACT_APP_COURSE_PLAN_API;
 
-  DetailURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_COURSE_PLAN_API === undefined || process.env.REACT_APP_COURSE_PLAN_API === '' ?
-    '/api/course/coursePlan' : process.env.REACT_APP_COURSE_PLAN_API;
+  DetailURL = '/api/lecture/coursePlan';
 
   coursePlanContentsURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
   process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
