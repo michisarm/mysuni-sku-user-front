@@ -20,7 +20,6 @@ const TutorialModalView = () => {
 
   useEffect(()=>{
     const tutorialModal = window.localStorage.getItem('TutorialModal');
-    console.log( `tutorialModal: ${tutorialModal}` );
     if (tutorialModal === null || tutorialModal === 'SHOW') {
       setModalOpen(true);
     } else {
