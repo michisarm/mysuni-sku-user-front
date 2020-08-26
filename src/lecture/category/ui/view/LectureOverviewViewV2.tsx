@@ -489,8 +489,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                 <Lecture2.Group
                   type={Lecture2.GroupType.PreCourse}
                 >
-                  {preLectureViews.map((preLectureView: LectureViewModel) => (
+                  {preLectureViews.map((preLectureView: LectureViewModel, index: number) => (
                     <Lecture2.PreCourse
+                      key={`preCourse-${index}`}
                       lectureView={preLectureView}
                       lectureViewName={preLectureView.name}
                       onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}

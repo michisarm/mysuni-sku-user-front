@@ -16,6 +16,10 @@ export default class CoursePlanApi {
   process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
     '/api/course/coursePlanContents' : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
 
+  lectureContentsURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
+    '/api/lecture' : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
+
 
   registerCoursePlan(coursePlan: CoursePlanModel) {
     //
@@ -85,7 +89,7 @@ export default class CoursePlanApi {
   }
 
   findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
-    return axios.get<CoursePlanCustomModel>(`http://ma.mysuni.sk.com/api/lecture/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,)
+    return axios.get<CoursePlanCustomModel>(this.lectureContentsURL + `/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,)
       .then(response => response && response.data || null);
   }
 }
