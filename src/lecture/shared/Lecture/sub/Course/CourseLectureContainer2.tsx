@@ -206,7 +206,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.setState({examTitle:examPaper.title});
       }
 
-      if (lectureView.surveyCase?.id) {
+      if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
         const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
         // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
         const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
