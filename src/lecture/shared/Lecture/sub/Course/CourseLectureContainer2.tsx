@@ -398,26 +398,32 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
-  onClickPlayForOpen(url : string)
-  {
-
-    if (url && url.startsWith('http'))
-    {
-      this.onRegisterStudentForVideo(ProposalState.Approved);
-      this.popupLearnModal(url);
-      // const a = window.open('http://www.naver.com', '_blank');
-    } else
-    {
+  onClickPlayForOpen(url: string) {
+    if (url && url.startsWith('http')) {
+      // this.publishStudyEvent(true, url);
+      window.open(url, '_blank');
+    } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
-
-
   }
 
-  // onEndLearn() {
-  //   const studentCdo = this.getStudentCdo();
+  // onClickPlayForOpen(url : string) {
+  //   if (url && url.startsWith('http'))
+  //   {
+  //     this.onRegisterStudentForVideo(ProposalState.Approved);
+  //     this.popupLearnModal(url);
+  //     // const a = window.open('http://www.naver.com', '_blank');
+  //   } else
+  //   {
+  //     reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+  //     console.warn('[UserFront] Url is empty.');
+  //   }
   // }
+
+  onEndLearn() {
+    const studentCdo = this.getStudentCdo();
+  }
 
   getMediaUrl(media: MediaModel) : string
   {
@@ -450,11 +456,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   getStudentCdo(): StudentCdoModel {
     const {
-      member,
+      member, lectureView
     } = this.props;
 
     return new StudentCdoModel({
-      rollBookId: this.rollBooks.length ? this.rollBooks[0].id : '',
+      rollBookId: lectureView.rollBooks.length ? lectureView.rollBooks[0].id : '',
       name: member!.name,
       email: member!.email,
       company: member!.company,
@@ -493,24 +499,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
       //Video, Audio
       if (lectureView.personalCube?.contents.service.type === ContentsServiceType.Media) {
         const media = await mediaService!.findMedia(lectureView.personalCube?.contents.contents.id);
-
-        //통계처리
-        // if (media.mediaType === MediaType.InternalMedia) {
-        //   const studentCdo = {
-        //     ...this.getStudentCdo(),
-        //     proposalState: ProposalState.Approved,
-        //   };
-        //
-        //   lectureService.confirmUsageStatisticsByCardId(studentCdo)
-        //     .then((confirmed) => {
-        //       if (confirmed) {
-        //         history.replace('/empty');
-        //         setTimeout(() => history.replace(routePaths.lectureCardOverview(collegeId, lectureView.cubeId, lectureView.serviceId)));
-        //       }
-        //     });
-        // }
-
         const url = this.getMediaUrl(media);
+
+        console.log('media : ', media);
 
         //외부 영상, CP사 영상
         if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia) {
