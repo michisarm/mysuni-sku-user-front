@@ -82,7 +82,7 @@ class MyTrainingService {
     //
     if (data.length > 0) {
       const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
-      if (newModel.results.length > 0) {
+      if (newModel && newModel.results && newModel.results.length > 0) {
         console.log('newModel Count : ', newModel.results.length);
       }
 
@@ -98,9 +98,11 @@ class MyTrainingService {
         }
       }
 
-      console.log('total Count : ', newModel.results.length);
+      if (newModel && newModel.results && newModel.results.length > 0) {
+        console.log('total Count : ', newModel.results.length);
+      }
 
-      if (newModel.results.length > 0) {
+      if (newModel && newModel.results && newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
