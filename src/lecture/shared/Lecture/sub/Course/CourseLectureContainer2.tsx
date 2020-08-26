@@ -206,7 +206,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         this.setState({examTitle:examPaper.title});
       }
 
-      if (lectureView.surveyCase?.id) {
+      if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
         const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
         // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
         const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
@@ -398,31 +398,38 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
-  onClickPlayForOpen(url : string)
-  {
-
-    if (url && url.startsWith('http'))
-    {
+  onClickPlayForOpen(url: string) {
+    if (url && url.startsWith('http')) {
+      // this.publishStudyEvent(true, url);
       this.onRegisterStudentForVideo(ProposalState.Approved);
-      this.popupLearnModal(url);
-      // const a = window.open('http://www.naver.com', '_blank');
-    } else
-    {
+      window.open(url, '_blank');
+    } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
-
-
   }
 
-  // onEndLearn() {
-  //   const studentCdo = this.getStudentCdo();
+  // onClickPlayForOpen(url : string) {
+  //   if (url && url.startsWith('http'))
+  //   {
+  //     this.onRegisterStudentForVideo(ProposalState.Approved);
+  //     this.popupLearnModal(url);
+  //     // const a = window.open('http://www.naver.com', '_blank');
+  //   } else
+  //   {
+  //     reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
+  //     console.warn('[UserFront] Url is empty.');
+  //   }
   // }
+
+  onEndLearn() {
+    const studentCdo = this.getStudentCdo();
+  }
 
   getMediaUrl(media: MediaModel) : string
   {
     let url : string = '';
-    // const { personalCube } = this.props.personalCubeService!;
+    const { lectureView } = this.props;
 
     switch (media.mediaType) {
       case MediaType.ContentsProviderMedia:
@@ -435,10 +442,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
       case MediaType.InternalMediaUpload:
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
-        if (this.personalCube!.contents.type === CubeType.Video && url)
+        if (lectureView.personalCube?.contents.type === CubeType.Video && url)
         {
           url += '&offerviewer=false&showtitle=false&showbrand=false';
-        } else if (this.personalCube!.contents.type === CubeType.Audio && url)
+        } else if (lectureView.personalCube?.contents.type === CubeType.Audio && url)
         {
           url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
@@ -450,11 +457,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   getStudentCdo(): StudentCdoModel {
     const {
-      member,
+      member, lectureView
     } = this.props;
 
     return new StudentCdoModel({
-      rollBookId: this.rollBooks.length ? this.rollBooks[0].id : '',
+      rollBookId: lectureView.rollBooks.length ? lectureView.rollBooks[0].id : '',
       name: member!.name,
       email: member!.email,
       company: member!.company,
@@ -485,30 +492,17 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { mediaService, isPreCoursePassed, lectureView } = this.props;
     // const { personalCube } = personalCubeService!;
 
-    const { service, contents } = this.personalCube!.contents;
+    // console.log('personalCube : ', lectureView);
+
+    // const { service, contents } = this.personalCube!.contents;
 
     if (isPreCoursePassed) {
       //Video, Audio
-      if (service.type === ContentsServiceType.Media) {
-        const media = await mediaService!.findMedia(contents.id);
-
-        //통계처리
-        // if (media.mediaType === MediaType.InternalMedia) {
-        //   const studentCdo = {
-        //     ...this.getStudentCdo(),
-        //     proposalState: ProposalState.Approved,
-        //   };
-        //
-        //   lectureService.confirmUsageStatisticsByCardId(studentCdo)
-        //     .then((confirmed) => {
-        //       if (confirmed) {
-        //         history.replace('/empty');
-        //         setTimeout(() => history.replace(routePaths.lectureCardOverview(collegeId, lectureView.cubeId, lectureView.serviceId)));
-        //       }
-        //     });
-        // }
-
+      if (lectureView.personalCube?.contents.service.type === ContentsServiceType.Media) {
+        const media = await mediaService!.findMedia(lectureView.personalCube?.contents.contents.id);
         const url = this.getMediaUrl(media);
+
+        console.log('media : ', media);
 
         //외부 영상, CP사 영상
         if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia) {
@@ -722,20 +716,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
-  surveyCallback() {
-    if (this.init()) this.init();
-  }
-
-  testCallback() {
-    const { onLectureInitRequest } = this.props;
-    if (this.studentData) {
-      StudentApi.instance.modifyStudentForExam(this.studentData.id, this.personalCube!.contents.examId)
-        .then(() => {
-          // if (this.init()) this.init();
-          if (onLectureInitRequest) onLectureInitRequest();
-        });
-    }
-  }
 
   setExamState(studentData?: any) {
 
