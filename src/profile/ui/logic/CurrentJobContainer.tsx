@@ -28,7 +28,7 @@ interface State {
   'profile.skProfileService'))
 @observer
 @reactAutobind
-class FavoriteJobContainer extends React.Component<Props, State> {
+class CurrentJobContainer extends React.Component<Props, State> {
   //
   state = {
     focus: false,
@@ -128,7 +128,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     } else {
       skProfileUdo = new SkProfileUdo(skProfileService.skProfile.member.favoriteJobGroup, skProfileService.skProfile.pisAgreement);
       skProfileService.modifySkProfile(skProfileUdo);
-      this.props.history.push(routePaths.favoriteCollege());
+      this.props.history.push(routePaths.favoriteJob());
     }
   }
 
@@ -145,16 +145,17 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       <>
         <div className="title-box">
           <Icon className="login-sub2 woman"/>
-          <h2>관심 직무</h2>
+          <h2>현직무</h2>
           <p>
-            여러분은 어떤 직무 분야에 관심을 가지고 있으신가요?<br/>
-            지금 당장은 아니더라도 앞으로 해보고 싶은 직무, 도전하고 싶은 업무에 대한 의견을 부탁드립니다.
+            여러분은 어떤 직무 분야에 해당하시나요?<br/>
+            수행하고 있는 업무를 기반으로 현 직무를 선택해주시기 바랍니다.<br/>
+            직무분석이 완료된 관계사를 중심으로 반영되어 있으니, 해당하는 직무가 없을 경우 기타-직접입력으로 작성 해주세요.
           </p>
         </div>
         <Form>
           <div className="select-cont-wrap">
             <div className="select-box">
-              <div className="select-title">Step 01. 관심 있는 직군을 선택해주세요.</div>
+              <div className="select-title">Step 01. 현재 직무가 속해 있는 직군을 선택해주세요.</div>
               <Select
                 placeholder="선택해주세요"
                 options={selectOptionJobGroup}
@@ -172,7 +173,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
             {/*{*/}
             {/*favoriteJobGroup && favoriteJobGroup.favoriteJobGroup && favoriteJobGroup.favoriteJobGroup.id && favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (*/}
             <div className="select-box">
-              <div className="select-title">Step 02. 관심 있는 직무를 선택해주세요.</div>
+              <div className="select-title">Step 02. 현재 직무를 선택해주세요.</div>
               <Select
                 placeholder="선택해주세요"
                 options={selectOptionJobDuty}
@@ -223,4 +224,4 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(FavoriteJobContainer);
+export default withRouter(CurrentJobContainer);

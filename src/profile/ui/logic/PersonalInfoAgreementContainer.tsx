@@ -69,10 +69,13 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     skProfileService.findSkProfile()
       .then(skProfile => {
         if (skProfile.studySummaryConfigured) {
-          history.push('/');
+          //history.push('/');
+          history.push(routePaths.currentJob());
         }
         else {
-          history.push(routePaths.favoriteWelcome());
+
+          //history.push(routePaths.favoriteWelcome());
+          history.push(routePaths.currentJob());
         }
       });
 
@@ -88,60 +91,67 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     const { mySuniChecked, domesticChecked, international } = this.state;
 
     return (
-      <div className="terms-content">
-        <div className="logo">
-          <Icon className="sk-university-login" /><span className="blind">SUNI</span>
+      <>
+        <div className="title-box">
+          <Icon className="login-sub5 woman"/>
+          <h2>개인정보동의</h2>
+          <p>mySUNI 개인정보 처리방침에 동의해주세요.</p>
         </div>
 
-        <h2 className="title1">mySUNI 개인정보 처리방침에 동의해주세요.</h2>
+        <div className="terms-content">
+          <div className="join-agree-area">
+            <ul>
+              <li>
+                <Checkbox
+                  className="base black"
+                  label="전체동의"
+                  checked={mySuniChecked && domesticChecked && international}
+                  onChange={this.onChangeAllCheck}
+                />
+              </li>
+              <li>
+                <Checkbox
+                  className="base"
+                  label="개인정보 처리방침(필수)"
+                  name="mySuniChecked"
+                  checked={mySuniChecked}
+                  onChange={this.onChangeCheck}
+                />
+              </li>
+              <li>
+                <Checkbox
+                  className="base"
+                  label="제3자 정보제공에 대한 동의(필수)"
+                  name="domesticChecked"
+                  checked={domesticChecked}
+                  onChange={this.onChangeCheck}
+                />
+              </li>
+              <li>
+                <Checkbox
+                  className="base"
+                  label="국외 제3자 제공에 대한 동의(필수)"
+                  name="international"
+                  checked={international}
+                  onChange={this.onChangeCheck}
+                />
+              </li>
+            </ul>
+          </div>
 
-        <div className="join-agree-area">
-          <ul>
-            <li>
-              <Checkbox
-                className="base black"
-                label="전체동의"
-                checked={mySuniChecked && domesticChecked && international}
-                onChange={this.onChangeAllCheck}
-              />
-            </li>
-            <li>
-              <Checkbox
-                className="base"
-                label="mySUNI 개인정보 처리방침 동의(필수)"
-                name="mySuniChecked"
-                checked={mySuniChecked}
-                onChange={this.onChangeCheck}
-              />
-            </li>
-            <li>
-              <Checkbox
-                className="base"
-                label="제3자 정보제공에 대한 동의(필수)"
-                name="domesticChecked"
-                checked={domesticChecked}
-                onChange={this.onChangeCheck}
-              />
-            </li>
-            <li>
-              <Checkbox
-                className="base"
-                label="국외 제3자 제공에 대한 동의(필수)"
-                name="international"
-                checked={international}
-                onChange={this.onChangeCheck}
-              />
-            </li>
-          </ul>
+          <PersonalInfoTermsView />
+
+          <div className="button-area">
+            <div className="error">
+              개인정보 제공 동의를 하지 않으시면 mySUNI 서비스를 이용 하실 수 없습니다.
+            </div>
+            {/*<Button className="fix line" onClick={this.onCancel}>Cancel</Button>*/}
+
+            {/*disabeld 상태에서 -> 개인정보 동의 체크 후 활성화*/}
+            <Button className="fix bg" onClick={this.onConfirm}>다음</Button>
+          </div>
         </div>
-
-        <PersonalInfoTermsView />
-
-        <div className="button-area">
-          <Button className="fix line" onClick={this.onCancel}>Cancel</Button>
-          <Button className="fix bg" onClick={this.onConfirm}>OK</Button>
-        </div>
-      </div>
+      </>
     );
   }
 }

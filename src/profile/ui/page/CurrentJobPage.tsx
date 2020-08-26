@@ -4,14 +4,13 @@ import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
-import FavoriteContentHeaderContainer from '../logic/FavoriteContentHeaderContainer';
-import FavoriteJobContainer from '../logic/FavoriteJobContainer';
+import CurrentJobContainer from '../logic/CurrentJobContainer';
 import PersonalInfoStep from '../view/PersonalInfoStep';
 
 
 @observer
 @reactAutobind
-class FavoriteJobPage extends React.Component {
+class CurrentJobPage extends React.Component {
   //
   componentDidMount(): void {
     //
@@ -31,11 +30,9 @@ class FavoriteJobPage extends React.Component {
       >
         <section>
           <div className="interest-content lo-08-03">
+            <PersonalInfoStep activeStep="step3"/>
 
-            {/*<FavoriteContentHeaderContainer step={2} />*/}
-            <PersonalInfoStep activeStep="step4"/>
-
-            <FavoriteJobContainer />
+            <CurrentJobContainer />
           </div>
         </section>
       </ContentLayout>
@@ -43,4 +40,4 @@ class FavoriteJobPage extends React.Component {
   }
 }
 
-export default FavoriteJobPage;
+export default CurrentJobPage;

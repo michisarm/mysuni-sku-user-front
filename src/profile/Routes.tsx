@@ -7,6 +7,7 @@ import NotFoundPage from 'layout/NotFoundPage';
 import PersonalInfoAgreementPage from './ui/page/PersonalInfoAgreementPage';
 
 import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
+import CurrentJobPage from './ui/page/CurrentJobPage';
 import FavoriteCollegePage from './ui/page/FavoriteCollegePage';
 import FavoriteJobPage from './ui/page/FavoriteJobPage';
 import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
@@ -23,6 +24,7 @@ class Routes extends React.PureComponent {
         <Route exact path="/profile/agreement" component={PersonalInfoAgreementPage} />
 
         <Route exact path="/profile/interest" component={FavoriteWelcomePage} />
+        <Route exact path="/profile/interest/current" component={CurrentJobPage} />
         <Route exact path="/profile/interest/college" component={FavoriteCollegePage} />
         <Route exact path="/profile/interest/job" component={FavoriteJobPage} />
         <Route exact path="/profile/interest/learningType" component={FavoriteLearningTypePage} />
