@@ -401,6 +401,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   onClickPlayForOpen(url: string) {
     if (url && url.startsWith('http')) {
       // this.publishStudyEvent(true, url);
+      this.onRegisterStudentForVideo(ProposalState.Approved);
       window.open(url, '_blank');
     } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
