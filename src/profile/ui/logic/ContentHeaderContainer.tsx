@@ -30,7 +30,7 @@ class ContentHeaderContainer extends Component<Props> {
             <span className="blind">my suni</span>
           </div>
 
-          <Step.Group className="number-step">
+          <Step.Group className="number-step type2">
             <Step active={step === 1} completed={step !== 1}>
               <Step.Content>
                 <span className="number">
