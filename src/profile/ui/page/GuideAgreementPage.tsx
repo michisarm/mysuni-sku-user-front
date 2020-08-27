@@ -15,7 +15,7 @@ class GuideAgreementPage extends Component {
     return (
       <ContentLayout className="bg-white">
         <section>
-          <div className="interest-content">
+          <div className="interest-content lo-08-01">
             <ContentHeaderContainer step={1} />
 
             <GuideAgreementContainer />
