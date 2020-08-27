@@ -27,7 +27,7 @@ interface State {
 )
 @observer
 @reactAutobind
-class FavoriteJobContainer extends React.Component<Props, State> {
+class CurrentJobContainer extends React.Component<Props, State> {
   //
   state = {
     focus: false,
@@ -40,11 +40,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     jobGroupService!.findAllJobGroups();
     skProfileService!.findSkProfile().then(skProfile => {
       //
-      const favoriteJobGroup =
-        skProfile.member.favoriteJobGroup.favoriteJobGroup;
+      const currentJobGroup = skProfile.member.currentJobGroup.currentJobGroup;
 
-      if (skProfile.member.favoriteJobGroup.favoriteJobGroup) {
-        jobGroupService!.findJobGroupById(favoriteJobGroup.id);
+      if (skProfile.member.currentJobGroup.currentJobGroup) {
+        jobGroupService!.findJobGroupById(currentJobGroup.id);
       }
     });
   }
@@ -77,11 +76,11 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const { jobGroupService, skProfileService } = this.props;
 
     jobGroupService!.findJobGroupById(data.value);
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobGroup', {
+    skProfileService!.setCurrentJobGroupProp('currentJobGroup', {
       id: data.value,
       name: event.target.innerText,
     });
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', new IdName());
+    skProfileService!.setCurrentJobGroupProp('currentJobDuty', new IdName());
   }
 
   setJobDuties() {
@@ -110,7 +109,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
+    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
       id: data.value,
       name: event.target.innerText,
     });
@@ -124,15 +123,14 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       focus: false,
     });
 
-    skProfileService!.setFavoriteJobGroupProp('favoriteJobDuty', {
+    skProfileService!.setCurrentJobGroupProp('currentJobDuty', {
       id: 'etc',
       name: data.value,
     });
   }
 
   onPreviousClick() {
-    // this.props.history.push(routePaths.favoriteCollege());
-    this.props.history.push(routePaths.currentJob());
+    this.props.history.push(routePaths.personalInfoAgreement());
   }
 
   onNextClick() {
@@ -140,19 +138,19 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const skProfileService = this.props.skProfileService!;
     const { skProfile } = skProfileService!;
     const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
+    const { currentJobGroup } = member!;
 
     let skProfileUdo: SkProfileUdo;
 
     if (
-      !favoriteJobGroup.favoriteJobGroup ||
-      !favoriteJobGroup.favoriteJobGroup!.id ||
-      !favoriteJobGroup.favoriteJobDuty ||
-      !favoriteJobGroup.favoriteJobDuty!.id
+      !currentJobGroup.currentJobGroup ||
+      !currentJobGroup.currentJobGroup!.id ||
+      !currentJobGroup.currentJobDuty ||
+      !currentJobGroup.currentJobDuty!.id
     ) {
       reactAlert({
         title: '알림',
-        message: '관심 직군과 관심 직무를 선택해주세요.',
+        message: '현재 직군과 현재 직무를 선택해주세요.',
       });
     } else {
       skProfileUdo = new SkProfileUdo(
@@ -162,7 +160,7 @@ class FavoriteJobContainer extends React.Component<Props, State> {
       );
       skProfileService.modifySkProfile(skProfileUdo);
       // this.props.history.push(routePaths.favoriteLearningType());
-      this.props.history.push(routePaths.favoriteCollege());
+      this.props.history.push(routePaths.favoriteJob());
     }
   }
 
@@ -173,45 +171,45 @@ class FavoriteJobContainer extends React.Component<Props, State> {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
     const { member } = skProfile!;
-    const { favoriteJobGroup } = member!;
+    const { currentJobGroup } = member!;
 
     return (
       <Form>
-        <h3 className="title-filter">관심직무 선택</h3>
+        <h3 className="title-filter">현재직무 선택</h3>
         <div className="select-cont-wrap">
           <div className="select-box">
             <div className="select-title">
-              Step 01. 관심 있는 직군을 선택해주세요.
+              Step 01. 현재 직무가 속해 있는 직군을 선택해주세요.
             </div>
             <Select
               placeholder="선택해주세요"
               options={selectOptionJobGroup}
               value={
-                favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup &&
-                favoriteJobGroup.favoriteJobGroup.id
+                currentJobGroup &&
+                currentJobGroup.currentJobGroup &&
+                currentJobGroup.currentJobGroup.id
               }
               onChange={(event: any, data: any) =>
                 this.selectJobGroup(event, data)
               }
             />
           </div>
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id !== 'etc' ? (
+          {currentJobGroup &&
+          currentJobGroup.currentJobGroup &&
+          currentJobGroup.currentJobGroup.id &&
+          currentJobGroup.currentJobGroup.id !== 'etc' ? (
             <div className="select-box">
               <div className="select-title">
-                Step 02. 관심 직무를 선택해주세요.
+                Step 02. 현재 직무를 선택해주세요.
               </div>
               <Select
                 placeholder="선택해주세요"
                 options={selectOptionJobDuty}
                 value={
                   member &&
-                  member.favoriteJobGroup &&
-                  member.favoriteJobGroup.favoriteJobDuty &&
-                  member.favoriteJobGroup.favoriteJobDuty.id
+                  member.currentJobGroup &&
+                  member.currentJobGroup.currentJobDuty &&
+                  member.currentJobGroup.currentJobDuty.id
                 }
                 onChange={(event: any, data: any) =>
                   this.selectJobDuty(event, data)
@@ -221,10 +219,10 @@ class FavoriteJobContainer extends React.Component<Props, State> {
           ) : (
             ''
           )}
-          {favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup &&
-          favoriteJobGroup.favoriteJobGroup.id &&
-          favoriteJobGroup.favoriteJobGroup.id === 'etc' ? (
+          {currentJobGroup &&
+          currentJobGroup.currentJobGroup &&
+          currentJobGroup.currentJobGroup.id &&
+          currentJobGroup.currentJobGroup.id === 'etc' ? (
             <div className="select-box">
               <div className="select-title">
                 Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
@@ -233,18 +231,18 @@ class FavoriteJobContainer extends React.Component<Props, State> {
                 className={classNames('ui h48 input', {
                   focus: this.state.focus,
                   write:
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name,
+                    currentJobGroup &&
+                    currentJobGroup.currentJobDuty &&
+                    currentJobGroup.currentJobDuty.name,
                 })}
               >
                 <input
                   type="text"
                   placeholder="Text.."
                   value={
-                    favoriteJobGroup &&
-                    favoriteJobGroup.favoriteJobDuty &&
-                    favoriteJobGroup.favoriteJobDuty.name
+                    currentJobGroup &&
+                    currentJobGroup.currentJobDuty &&
+                    currentJobGroup.currentJobDuty.name
                   }
                   onClick={() => this.setState({ focus: true })}
                   onChange={e =>
@@ -278,4 +276,4 @@ class FavoriteJobContainer extends React.Component<Props, State> {
   }
 }
 
-export default withRouter(FavoriteJobContainer);
+export default withRouter(CurrentJobContainer);

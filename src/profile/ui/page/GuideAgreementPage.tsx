@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import ContentHeaderContainer from '../logic/ContentHeaderContainer';
-import PersonalInfoAgreementContainer from '../logic/PersonalInfoAgreementContainer';
+import GuideAgreementContainer from '../logic/GuideAgreementContainer';
 
 @observer
 @reactAutobind
-class PersonalInfoAgreementPage extends Component {
+class GuideAgreementPage extends Component {
   //
   render() {
     //
@@ -16,9 +16,9 @@ class PersonalInfoAgreementPage extends Component {
       <ContentLayout className="bg-white">
         <section>
           <div className="interest-content">
-            <ContentHeaderContainer step={2} />
+            <ContentHeaderContainer step={1} />
 
-            <PersonalInfoAgreementContainer />
+            <GuideAgreementContainer />
           </div>
         </section>
       </ContentLayout>
@@ -26,4 +26,4 @@ class PersonalInfoAgreementPage extends Component {
   }
 }
 
-export default PersonalInfoAgreementPage;
+export default GuideAgreementPage;

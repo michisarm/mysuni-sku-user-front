@@ -4,11 +4,11 @@ import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
 import ContentHeaderContainer from '../logic/ContentHeaderContainer';
-import FavoriteJobContainer from '../logic/FavoriteJobContainer';
+import CurrentJobContainer from '../logic/CurrentJobContainer';
 
 @observer
 @reactAutobind
-class FavoriteJobPage extends React.Component {
+class CurrentJobPage extends React.Component {
   //
   componentDidMount(): void {
     //
@@ -26,9 +26,9 @@ class FavoriteJobPage extends React.Component {
       <ContentLayout disabled>
         <section>
           <div className="interest-content step2">
-            <ContentHeaderContainer step={4} />
+            <ContentHeaderContainer step={3} />
 
-            <FavoriteJobContainer />
+            <CurrentJobContainer />
           </div>
         </section>
       </ContentLayout>
@@ -36,4 +36,4 @@ class FavoriteJobPage extends React.Component {
   }
 }
 
-export default FavoriteJobPage;
+export default CurrentJobPage;
