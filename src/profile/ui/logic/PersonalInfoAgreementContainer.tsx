@@ -58,7 +58,7 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     //
     const skProfileService = this.props.skProfileService!;
     const { history } = this.props;
-    const { skProfile } = skProfileService!;
+    const { skProfile, reAgree } = skProfileService!;
     const { mySuniChecked, domesticChecked, international } = this.state;
 
     if (!mySuniChecked || !domesticChecked || !international) {
@@ -75,8 +75,12 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       // if (skProfile.studySummaryConfigured) {
       //   history.push('/');
       // } else {
-      history.push(routePaths.currentJob());
       // }
+      if (reAgree) {
+        history.push(routePaths.currentJob());
+      } else {
+        history.push(routePaths.favoriteWelcome());
+      }
     });
 
     skProfile.pisAgreement.signed = true;
