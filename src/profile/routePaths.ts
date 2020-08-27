@@ -1,26 +1,18 @@
-
-
 export default {
   //
-  personalInfoAgreement: () =>
-    `/profile/agreement`,
+  guideAgreement: () => `/profile/guide`,
 
-  favoriteWelcome: () =>
-    `/profile/interest`,
+  personalInfoAgreement: () => `/profile/agreement`,
 
-  currentJob: () =>
-    `/profile/interest/current`,
+  favoriteWelcome: () => `/profile/interest`,
 
-  favoriteCollege: () =>
-    `/profile/interest/college`,
+  currentJob: () => `/profile/interest/currentjob`,
 
-  favoriteJob: () =>
-    `/profile/interest/job`,
+  favoriteJob: () => `/profile/interest/favoritejob`,
 
-  favoriteLearningType: () =>
-    `/profile/interest/learningType`,
+  favoriteCollege: () => `/profile/interest/college`,
 
-  favoriteProgress: () =>
-    `/profile/interest/progress`,
+  favoriteLearningType: () => `/profile/interest/learningType`,
 
+  favoriteProgress: () => `/profile/interest/progress`,
 };

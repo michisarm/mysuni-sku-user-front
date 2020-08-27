@@ -1,12 +1,10 @@
-
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
+import ContentHeaderContainer from '../logic/ContentHeaderContainer';
 import CurrentJobContainer from '../logic/CurrentJobContainer';
-import PersonalInfoStep from '../view/PersonalInfoStep';
-
 
 @observer
 @reactAutobind
@@ -25,12 +23,10 @@ class CurrentJobPage extends React.Component {
   render() {
     //
     return (
-      <ContentLayout
-        disabled
-      >
+      <ContentLayout disabled>
         <section>
-          <div className="interest-content lo-08-03">
-            <PersonalInfoStep activeStep="step3"/>
+          <div className="interest-content lo-08-03 step2">
+            <ContentHeaderContainer step={3} />
 
             <CurrentJobContainer />
           </div>

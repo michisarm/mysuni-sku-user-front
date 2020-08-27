@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -15,16 +14,15 @@ import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import StudySummaryModel from '../../model/StudySummaryModel';
 
-
 interface Props extends RouteComponentProps {
-  collegeService?: CollegeService
-  skProfileService?: SkProfileService
-  collegeLectureCountService?: CollegeLectureCountService
+  collegeService?: CollegeService;
+  skProfileService?: SkProfileService;
+  collegeLectureCountService?: CollegeLectureCountService;
 }
 
 interface State {
-  selectedCollege: CollegeLectureCountRdo
-  favorites : ChannelModel [],
+  selectedCollege: CollegeLectureCountRdo;
+  favorites: ChannelModel[];
 }
 
 const style = {
@@ -38,11 +36,13 @@ const style = {
   left: '1.25rem',
 };
 
-@inject(mobxHelper.injectFrom(
-  'college.collegeService',
-  'profile.skProfileService',
-  'lecture.collegeLectureCountService'
-))
+@inject(
+  mobxHelper.injectFrom(
+    'college.collegeService',
+    'profile.skProfileService',
+    'lecture.collegeLectureCountService'
+  )
+)
 @observer
 @reactAutobind
 class FavoriteCollegeContainer extends React.Component<Props, State> {
@@ -58,7 +58,11 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
   init() {
     //
-    const { collegeService, skProfileService, collegeLectureCountService } = this.props;
+    const {
+      collegeService,
+      skProfileService,
+      collegeLectureCountService,
+    } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
 
     collegeLectureCountService!.findCollegeLectureCounts();
@@ -66,35 +70,42 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     skProfileService!.findStudySummary();
     // collegeService!.findAllChannel();
 
-    const channels = studySummaryFavoriteChannels.map(channel =>
-      new ChannelModel({ id: channel.id, channelId: channel.id, name: channel.name, checked: true })
+    const channels = studySummaryFavoriteChannels.map(
+      channel =>
+        new ChannelModel({
+          id: channel.id,
+          channelId: channel.id,
+          name: channel.name,
+          checked: true,
+        })
     );
 
-    this.setState({ favorites: [...channels]});
+    this.setState({ favorites: [...channels] });
   }
 
-
-  onSelectCollege( college : CollegeLectureCountRdo ) {
+  onSelectCollege(college: CollegeLectureCountRdo) {
     //
     this.setState({ selectedCollege: college });
   }
 
-  onSelectChannel(channel : IdNameCount | ChannelModel) {
+  onSelectChannel(channel: IdNameCount | ChannelModel) {
     //
     let { favorites }: State = this.state;
 
-    if (favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)) {
-      favorites = favorites.filter(favoriteChannel => favoriteChannel.id !== channel.id);
-    }
-    else {
+    if (
+      favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)
+    ) {
+      favorites = favorites.filter(
+        favoriteChannel => favoriteChannel.id !== channel.id
+      );
+    } else {
       favorites.push(new ChannelModel(channel));
     }
     this.setState({ favorites });
-
   }
 
   onReset() {
-    this.setState({ favorites: []});
+    this.setState({ favorites: [] });
   }
 
   onNextClick() {
@@ -102,16 +113,20 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     const { collegeService, skProfileService, history } = this.props;
     const { favorites } = this.state;
 
-    if (favorites.length < 3 ) {
+    if (favorites.length < 3) {
       reactAlert({
         title: '알림',
         message: '관심 분야는 3개이상 선택해 주세요.',
       });
-    }
-    else {
+    } else {
       collegeService!.favoriteChannels = [...favorites];
-      skProfileService!.setStudySummaryProp('favoriteChannels', collegeService!.favoriteChannelIdNames);
-      skProfileService!.modifyStudySummary(StudySummaryModel.asNameValues(skProfileService!.studySummary));
+      skProfileService!.setStudySummaryProp(
+        'favoriteChannels',
+        collegeService!.favoriteChannelIdNames
+      );
+      skProfileService!.modifyStudySummary(
+        StudySummaryModel.asNameValues(skProfileService!.studySummary)
+      );
 
       history.push(routePaths.favoriteLearningType());
     }
@@ -119,114 +134,147 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
 
   render() {
     const { channelMap } = this.props.collegeService!;
-    const { collegeLectureCounts, totalChannelCount } = this.props.collegeLectureCountService!;
+    const {
+      collegeLectureCounts,
+      totalChannelCount,
+    } = this.props.collegeLectureCountService!;
     const { selectedCollege, favorites } = this.state;
 
     return (
-      <>
-        <div className="title-box">
-          <Icon className="login-sub1 woman"/>
-          <h2>관심분야</h2>
-          <p>
-            여러분의 관심사에 대해 꼼꼼하게 선택해주세요.<br/>
-            최소 3개 이상으로 여러 개를 중복 선택 가능합니다.<br/>
-            조금이라도 관심을 가지는 주제는 모두 선택을 해주세요.
-          </p>
-        </div>
-
-        <Form>
-          <h3 className="title-filter">관심분야 선택</h3>
-          <div className="filter-wrap">
-            <div className="column">
-              <div className="f-tit">College</div>
-              <div className="f-list">
-                <div className="scrolling">
-                  <div className="college">
-                    {collegeLectureCounts && collegeLectureCounts.length > 0 && collegeLectureCounts.map((college, index) => (
+      <Form>
+        <h3 className="title-filter">관심분야 선택</h3>
+        <div className="filter-wrap">
+          <div className="column">
+            <div className="f-tit">College</div>
+            <div className="f-list">
+              <div className="scrolling">
+                <div className="college">
+                  {collegeLectureCounts &&
+                    collegeLectureCounts.length > 0 &&
+                    collegeLectureCounts.map((college, index) => (
                       <div className="ui rect-icon radio checkbox" key={index}>
-                        <input type="radio"
+                        <input
+                          type="radio"
                           id={`radio_${index}`}
                           name="college"
                           className="hidden"
                           tabIndex={index}
                           value={college.collegeId}
-                          onChange={() => this.onSelectCollege(college) }
+                          onChange={() => this.onSelectCollege(college)}
                         />
-                        <label htmlFor={`radio_${index}`}>{college.name}({college.channelCounts.length})</label>
+                        <label htmlFor={`radio_${index}`}>
+                          {college.name}({college.channelCounts.length})
+                        </label>
                       </div>
                     ))}
-                  </div>
                 </div>
               </div>
             </div>
-            <div className="column">
-              <div className="f-tit">Channel</div>
-              <div className="f-list">
-                <div className="scrolling">
-                  <div className="channel">
-                    <ul>
-                      {
-                        selectedCollege && selectedCollege.channelCounts.length && selectedCollege.channelCounts.map((channel, index) => {
-                          const ch = channelMap.get(channel.id) || new ChannelModel();
-                          return (
-                            <li key={index}>
-                              <div className="ui base checkbox popup-wrap">
-                                <input
-                                  type="checkbox"
-                                  id={`checkbox_${index}`}
-                                  className="hidden"
-                                  tabIndex={index}
-                                  checked ={favorites.map(favoriteChannel => favoriteChannel.id).includes(channel.id)}
-                                  onChange={() => this.onSelectChannel(channel)}
-                                />
-                                <Popup
-                                  className="custom-black"
-                                  content={ch.description}
-                                  inverted
-                                  style={style}
-                                  trigger={
-                                    <label className="pop" data-offset="23" htmlFor={`checkbox_${index}`}>
-                                      {channel.name} <span>({channel.count})</span>
-                                    </label>
-                                  }
-                                />
-                              </div>
-                            </li>
-                          );
-                        }) || ''
-                      }
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="column">
-              <div className="f-tit">Selected <span className="counter"><span className="now">{favorites.length}</span> / {totalChannelCount}</span>
-              </div>
-              <div className="f-list">
-                <div className="scrolling">
-                  <div className="selected">
-                    {
-                      favorites && favorites.map((channel, index) => (
-                        <Button className="del type2" key={index} onClick={() => this.onSelectChannel(channel)}>{channel.name}</Button>
-                      )) || ''
-                    }
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Button className="clear" onClick={this.onReset}><Icon className="reset" /><span className="blind">reset</span></Button>
           </div>
-          {/*<div className="select-error">*/}
-          {/*  <Icon value="error16" /><span className="blind">error</span>*/}
-          {/*  <span>관심 분야를 3개 이상 선택해주세요.</span>*/}
-          {/*</div>*/}
-          <div className="button-area">
-            <div className="error">관심 분야를 3개 이상 선택해주세요.</div>
-            <Button className="fix bg" onClick={this.onNextClick}>다음</Button>
+          <div className="column">
+            <div className="f-tit">Channel</div>
+            <div className="f-list">
+              <div className="scrolling">
+                <div className="channel">
+                  <ul>
+                    {(selectedCollege &&
+                      selectedCollege.channelCounts.length &&
+                      selectedCollege.channelCounts.map((channel, index) => {
+                        const ch =
+                          channelMap.get(channel.id) || new ChannelModel();
+                        return (
+                          <li key={index}>
+                            <div className="ui base checkbox popup-wrap">
+                              <input
+                                type="checkbox"
+                                id={`checkbox_${index}`}
+                                className="hidden"
+                                tabIndex={index}
+                                checked={favorites
+                                  .map(favoriteChannel => favoriteChannel.id)
+                                  .includes(channel.id)}
+                                onChange={() => this.onSelectChannel(channel)}
+                              />
+                              <label
+                                className="pop"
+                                data-offset="23"
+                                htmlFor={`checkbox_${index}`}
+                              >
+                                {channel.name} <span>({channel.count})</span>
+                              </label>
+                              {/* <Popup
+                                className="custom-black"
+                                content={ch.description}
+                                inverted
+                                style={style}
+                                trigger={
+                                  <label
+                                    className="pop"
+                                    data-offset="23"
+                                    htmlFor={`checkbox_${index}`}
+                                  >
+                                    {channel.name}{' '}
+                                    <span>({channel.count})</span>
+                                  </label>
+                                }
+                              /> */}
+                            </div>
+                          </li>
+                        );
+                      })) ||
+                      ''}
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
-        </Form>
-      </>
+          <div className="column">
+            <div className="f-tit">
+              Selected{' '}
+              <span className="counter">
+                <span className="now">{favorites.length}</span> /{' '}
+                {totalChannelCount}
+              </span>
+            </div>
+            <div className="f-list">
+              <div className="scrolling">
+                <div className="selected">
+                  {(favorites &&
+                    favorites.map((channel, index) => (
+                      <Button
+                        className="del type2"
+                        key={index}
+                        onClick={() => this.onSelectChannel(channel)}
+                      >
+                        {channel.name}
+                      </Button>
+                    ))) ||
+                    ''}
+                </div>
+              </div>
+            </div>
+            <Button className="clear" onClick={this.onReset}>
+              <Icon className="reset" />
+              <span className="blind">reset</span>
+            </Button>
+          </div>
+          <Button className="clear" onClick={this.onReset}>
+            <Icon className="reset" />
+            <span className="blind">reset</span>
+          </Button>
+        </div>
+        {/* <div className="select-error">
+          <Icon value="error16" />
+          <span className="blind">error</span>
+          <span>관심 분야를 3개 이상 선택해주세요.</span>
+        </div> */}
+        <div className="button-area">
+          <div className="error">관심 분야를 3개 이상 선택해주세요.</div>
+          <Button className="fix bg" onClick={this.onNextClick}>
+            다음
+          </Button>
+        </div>
+      </Form>
     );
   }
 }
