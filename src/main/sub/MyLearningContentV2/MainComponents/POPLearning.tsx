@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {  mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -35,11 +35,12 @@ const POPLearning : React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
 
-  const CONTENT_TYPE = 'Popular';
   const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
 
   const { popLectures } = popLectureService!;
+
+  const [title, setTitle] = useState<string|null>('');
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -51,15 +52,30 @@ const POPLearning : React.FC<Props> = (Props) => {
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
-    if (savedPopularLearningList) {
+    if (savedPopularLearningList && savedPopularLearningList.length > 0) {
       const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
-      if (popularMain.totalCount > PAGE_SIZE - 1) {
+      if (popularMain.results.length > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);
+        if (!popularMain || !popularMain.title || popularMain.title.length < 1) {
+          setTitle(popLectureService!.Title);
+        }
+        else {
+          setTitle(popularMain.title);
+        }
         return;
       }
     }
 
-    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    popLectureService!.findPagingPopLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+      .then((response) => {
+        popLectureService!.setTitle(response.title);
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(popLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -108,7 +124,7 @@ const POPLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
+      inMyLectureService!.removeInMyLecture(training.id);
     }
     else {
       let servicePatronKeyString = training.patronKey.keyString;
@@ -136,7 +152,7 @@ const POPLearning : React.FC<Props> = (Props) => {
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
         servicePatronKeyString,
-      })).then(findMyContent);
+      }));
     }
   };
 
@@ -147,7 +163,7 @@ const POPLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>{popLectureService!.Title}</strong>
+        <strong>{title}</strong>
         <div className="right">
           {
             popLectures.length > 0 && (

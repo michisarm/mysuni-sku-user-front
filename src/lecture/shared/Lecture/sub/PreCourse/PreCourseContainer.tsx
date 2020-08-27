@@ -91,15 +91,24 @@ class PreCourseContainer extends Component<Props, State> {
       lectureView, lectureViewName, onViewDetail,
     } = this.props;
 
-
     return (
       <>
         { lectureView && (
           <div className="course-box">
             <div className="bar">
+
               <div className="tit">
-                <a className="ellipsis" onClick={onViewDetail}>{lectureViewName}</a>
+                <a href="#" className="ellipsis" onClick={onViewDetail}>
+                  { lectureView.required === 0 ? (
+                    <span className="blue">[선택] </span>
+                  ) : (
+                    <span className="red">[필수] </span>
+                  )}
+
+                  <span className="under">{lectureViewName}</span>
+                </a>
               </div>
+
               <div className="right-area">
                 <a className="ui icon right button btn-blue" onClick={onViewDetail}>
                   <span>바로가기</span>

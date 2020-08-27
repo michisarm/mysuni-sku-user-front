@@ -122,97 +122,108 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
     const { typeGroup, timeGroup, goalGroup } = this.state;
 
     return (
-      <Form>
-        <div className="type-check-wrap">
-          <div className="type-check-box type">
-            <h3 className="title-filter">학습유형</h3>
-            <div className="check-area">
-              {type && type.map((label, index) => (
-                <Radio name="typeGroup"
-                  label={label}
-                  value={label}
-                  className="base"
-                  key={index}
-                  tabIndex={index}
-                  checked={label === typeGroup}
-                  onChange={this.onChangeRadio}
-                />
-              ))
-              }
-            </div>
-          </div>
-          <div className="type-check-box location">
-            <h3 className="title-filter">오프라인 학습 수강 가능 장소 <span>(중복 선택 가능)</span></h3>
-            <div className="check-area">
-              {
-                area && area.map((label, index) => (
-                  <Checkbox name="areaGroup"
+      <>
+        <div className="title-box">
+          <Icon className="login-sub3 woman"/>
+          <h2>학습형태</h2>
+          <p>
+            여러분의 학습 목표와 선호하는 학습방식을 선택해 주세요.<br/>
+            Survey Data를 참고하여 향후 보다 효과적이고 의미있는 콘텐츠를 제공해드릴 예정입니다.
+          </p>
+        </div>
+        <Form>
+          <div className="type-check-wrap">
+            <div className="type-check-box type">
+              <h3 className="title-filter">학습유형</h3>
+              <div className="check-area">
+                {type && type.map((label, index) => (
+                  <Radio name="typeGroup"
                     label={label}
                     value={label}
                     className="base"
                     key={index}
-                    defaultChecked={index === 0}
-                    onChange={(event: any, props: any) => this.onChangeCheck(event, props)}
+                    tabIndex={index}
+                    checked={label === typeGroup}
+                    onChange={this.onChangeRadio}
                   />
                 ))
-              }
+                }
+              </div>
             </div>
-          </div>
-          <div className="type-check-box time">
-            <h3 className="title-filter">오프라인 학습 선호 시간대</h3>
-            <div className="check-area">
-              {
-                time && time.map((label, index) => (
-                  <Radio name="timeGroup" label={label} value={label} className="base" key={index} checked={label === timeGroup} onChange={this.onChangeRadio} />
-                ))
-              }
+            <div className="type-check-box location">
+              <h3 className="title-filter">오프라인 학습 수강 가능 장소 <span>(중복 선택 가능)</span></h3>
+              <div className="check-area">
+                {
+                  area && area.map((label, index) => (
+                    <Checkbox name="areaGroup"
+                      label={label}
+                      value={label}
+                      className="base"
+                      key={index}
+                      defaultChecked={index === 0}
+                      onChange={(event: any, props: any) => this.onChangeCheck(event, props)}
+                    />
+                  ))
+                }
+              </div>
             </div>
-          </div>
-          <div className="type-check-box purpose">
-            <h3 className="title-filter">어떤 목적으로 교육을 수강하고 싶은가요? <span>(중복 3개 선택 가능)</span></h3>
-            <div className="check-area">
-              {
-                goal && goal.map((label, index) => (
-                  <Checkbox
-                    name="goalGroup"
-                    label={label}
-                    value={label}
-                    className="base"
-                    key={index}
-                    checked={goalGroup.includes(label)}
-                    onChange={(event:any, props:any) => this.onChangeCheck(event, props)}
-                  />
-                ))
-              }
-              <div className="etc-input">
-                <label>기타</label>
-                <div className={classNames('ui h48 input', {
-                  focus: this.state.focus,
-                  write: this.state.write,
-                })}
-                >
-                  <input type="text"
-                    placeholder="Optional…"
-                    value={this.state.write}
-                    onClick={() => this.setState({ focus: true })}
-                    onBlur={() => this.setState({ focus: false })}
-                    onChange={(e) => this.setState({ write: e.target.value })}
-                  />
-                  <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
+            <div className="type-check-box time">
+              <h3 className="title-filter">오프라인 학습 선호 시간대</h3>
+              <div className="check-area">
+                {
+                  time && time.map((label, index) => (
+                    <Radio name="timeGroup" label={label} value={label} className="base" key={index} checked={label === timeGroup} onChange={this.onChangeRadio} />
+                  ))
+                }
+              </div>
+            </div>
+            <div className="type-check-box purpose">
+              <h3 className="title-filter">어떤 목적으로 교육을 수강하고 싶은가요? <span>(중복 3개 선택 가능)</span></h3>
+              <div className="check-area">
+                {
+                  goal && goal.map((label, index) => (
+                    <Checkbox
+                      name="goalGroup"
+                      label={label}
+                      value={label}
+                      className="base"
+                      key={index}
+                      checked={goalGroup.includes(label)}
+                      onChange={(event:any, props:any) => this.onChangeCheck(event, props)}
+                    />
+                  ))
+                }
+                <div className="etc-input">
+                  <label>기타</label>
+                  <div className={classNames('ui h48 input', {
+                    focus: this.state.focus,
+                    write: this.state.write,
+                  })}
+                  >
+                    <input type="text"
+                      placeholder="Optional…"
+                      value={this.state.write}
+                      onClick={() => this.setState({ focus: true })}
+                      onBlur={() => this.setState({ focus: false })}
+                      onChange={(e) => this.setState({ write: e.target.value })}
+                    />
+                    <Icon className="clear link" onClick={() => this.setState({ write: '' })} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {/*<div className="select-error">*/}
-        {/*  <Icon className="error16" /><span className="blind">error</span>*/}
-        {/*  <span>학습 유형을 선택해주세요.</span>*/}
-        {/*</div>*/}
-        <div className="button-area">
-          <Button className="fix line" onClick={this.onPrevious}>Previous</Button>
-          <Button className="fix bg" onClick={this.onSubmmit}>Submit</Button>
-        </div>
-      </Form>
+          {/*<div className="select-error">*/}
+          {/*  <Icon className="error16" /><span className="blind">error</span>*/}
+          {/*  <span>학습 유형을 선택해주세요.</span>*/}
+          {/*</div>*/}
+          <div className="button-area">
+            <div className="error">학습형태 항목별 문의 사항에 대해 선택해주세요.</div>
+            {/*<Button className="fix line" onClick={this.onPrevious}>Previous</Button>*/}
+            <Button className="fix bg" onClick={this.onSubmmit}>다음</Button>
+          </div>
+        </Form>
+      </>
     );
   }
 }

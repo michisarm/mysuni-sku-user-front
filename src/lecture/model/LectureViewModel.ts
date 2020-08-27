@@ -10,6 +10,7 @@ import { ExaminationModel } from '../../assistant/exam/model/ExaminationModel';
 import { ExamPaperModel } from '../../assistant/paper/model/ExamPaperModel';
 import { CubeIntroModel } from '../../personalcube/cubeintro/model';
 import StudentModel from './StudentModel';
+import SurveyCaseModel from '../../survey/event/model/SurveyCaseModel';
 
 
 class LectureViewModel extends DramaEntityObservableModel {
@@ -42,6 +43,7 @@ class LectureViewModel extends DramaEntityObservableModel {
 
   answerSheet: AnswerSheetModel = new AnswerSheetModel();
   surveyForm: SurveyFormModel = new SurveyFormModel();
+  surveyCase: SurveyCaseModel = new SurveyCaseModel();
 
   examination: ExaminationModel = new ExaminationModel();
   examPaper: ExamPaperModel = new ExamPaperModel();
@@ -58,6 +60,7 @@ class LectureViewModel extends DramaEntityObservableModel {
       this.serviceType = LectureViewModel.getServiceType(lectureView);
       this.category = new CategoryModel(lectureView.category);
       this.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, this.serviceType);
+      this.surveyCase = new SurveyCaseModel(this.surveyCase);
     }
   }
 

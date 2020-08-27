@@ -15,17 +15,20 @@ interface Props extends RouteComponentProps {
   myBadge: MyBadgeModel,
   badgeStyle: string,
   badgeSize: string,
+  refreshChallengingContainer: () => void,
 }
 
 const ChallengeBoxContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, myBadge, badgeStyle, badgeSize } = Props;
+  const { badgeService, myBadge, badgeStyle, badgeSize, refreshChallengingContainer } = Props;
 
   const [compLearnings, setCompLearnings] = useState<BadgeCompModel[]>([]);
 
   // 학습 카운트 정보
   const [learningCount, setLearningCount] = useState<number>(0);
   const [passedCount, setPassedCount] = useState<number>(0);
+
+  const [showCount, setShowCount] = useState<number>(0);
 
   useEffect(() => {
     findBadgeLearningInfo(myBadge.badgeId);
@@ -51,6 +54,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
     setPassedCount(count);
   };
 
+
   // 도전중, 발급요청중인 뱃지 목록
   return (
     <div className="challenge-wrap">
@@ -66,6 +70,7 @@ const ChallengeBoxContainer: React.FC<Props> = (Props) => {
             learningCount={learningCount}
             passedCount={passedCount}
             passedAll={learningCount > 0 && learningCount === passedCount}
+            refreshChallengingContainer={refreshChallengingContainer}
           />
 
           {/*도전중 뱃지별 학습리스트*/}

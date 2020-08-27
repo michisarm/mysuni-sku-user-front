@@ -17,6 +17,7 @@ import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 
 import BadgeRoutePaths from '../../../certification/routePaths';
 import MyTrainingRoutePaths from '../../routePaths';
+import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoModel';
 
 
 interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
@@ -38,6 +39,9 @@ class MyLearningContentHeaderContainer extends Component<Props> {
   //
   componentDidMount(): void {
     this.init();
+
+    const { badgeService } = this.props;
+    badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel.earned('', 'Issued'));
   }
 
   init() {
@@ -91,16 +95,6 @@ class MyLearningContentHeaderContainer extends Component<Props> {
               onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
             />
           )}
-          {/*{ (myLearningSummary.suniLearningTime > 0 || myLearningSummary.myCompanyLearningTime > 0 || myLearningSummary.myCompanyInSuniLearningTime > 0) ?*/}
-          {/*<ContentHeader.ChartItem*/}
-          {/*universityTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime}*/}
-          {/*myCompanyTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}*/}
-          {/*/>*/}
-          {/*:*/}
-          {/*<ContentHeader.WaitingItem*/}
-          {/*onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}*/}
-          {/*/>*/}
-          {/*}*/}
         </ContentHeader.Cell>
         <ContentHeader.Cell>
           <ContentHeaderStampView

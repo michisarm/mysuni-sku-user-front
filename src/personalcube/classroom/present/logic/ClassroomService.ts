@@ -37,7 +37,11 @@ export default class ClassroomService {
   @action
   async findClassrooms(cubeId: string) {
     const classrooms = await this.classroomGroupFlowApi.findClassrooms(cubeId);
-    return runInAction(() => this.classrooms = classrooms.map(classroom => new ClassroomModel(classroom)));
+    if (classrooms) {
+      return runInAction(() => this.classrooms = classrooms.map(classroom => new ClassroomModel(classroom)));
+    } else {
+      return null;
+    }
   }
 
   @action

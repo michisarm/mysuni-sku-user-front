@@ -8,13 +8,18 @@ import { CommentService } from '@nara.drama/feedback';
 
 import { CubeType, LearningState, ProposalState } from 'shared/model';
 import { ContentLayout, Tab } from 'shared';
+import { ActionEventService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 import { CoursePlanService } from 'course/stores';
 import { ExaminationService, ExamPaperService } from 'assistant/stores';
-import { AnswerSheetService, SurveyCaseService } from 'survey/stores';
+import {
+  AnswerSheetService,
+  SurveyCaseService,
+  SurveyFormService,
+} from 'survey/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
-
+import { MyTrainingService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import {
   LectureServiceType,
@@ -37,8 +42,11 @@ import { State as SubState } from '../../../shared/LectureSubInfo';
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import StudentInfoModel from '../../../model/StudentInfoModel';
+import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
+  actionEventService: ActionEventService;
   skProfileService: SkProfileService;
   collegeService: CollegeService;
   courseLectureService: CourseLectureService;
@@ -52,12 +60,14 @@ interface Props extends RouteComponentProps<RouteParams> {
   examPaperService: ExamPaperService;
   answerSheetService: AnswerSheetService;
   surveyCaseService: SurveyCaseService;
+  surveyFormService: SurveyFormService;
 }
 
 interface State {
   loaded: boolean;
   examTitle: string;
-  surveyTitle: string;
+  surveyState: boolean;
+  surveyTitle: string | any;
   tabState: string;
   isPreCoursePassed: boolean;
   type: string;
@@ -75,6 +85,7 @@ interface RouteParams {
 
 @inject(
   mobxHelper.injectFrom(
+    'shared.actionEventService',
     'college.collegeService',
     'profile.skProfileService',
     'lecture.courseLectureService',
@@ -87,7 +98,8 @@ interface RouteParams {
     'assistant.examinationService',
     'assistant.examPaperService',
     'survey.answerSheetService',
-    'survey.surveyCaseService'
+    'survey.surveyCaseService',
+    'survey.surveyFormService'
   )
 )
 @reactAutobind
@@ -167,11 +179,32 @@ class CoursePageV2 extends Component<Props, State> {
     //
     this.setState({ loaded: false });
     await this.findBaseInfo();
+    MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
     // this.findProgramOrCourseLecture();
     // await this.props.studentService!.findIsJsonStudent(this.props.match.params.serviceId);
     // await this.findStudent();
     // await this.getPreCourseModel();
+    this.publishViewEvent();
     this.setState({ loaded: true });
+  }
+
+  publishViewEvent() {
+    const { actionEventService, coursePlanService } = this.props;
+    const { match } = this.props;
+    const { serviceType, collegeId, coursePlanId, serviceId } = match.params;
+
+    const courseName = coursePlanService.coursePlan.name;
+    const menu = 'COURSE_VIEW';
+    const lectureCardId = serviceId;
+
+    actionEventService.registerViewActionLog({
+      menu,
+      serviceType,
+      collegeId,
+      coursePlanId,
+      lectureCardId,
+      courseName,
+    });
   }
 
   /**
@@ -233,19 +266,26 @@ class CoursePageV2 extends Component<Props, State> {
     } = this.props;
     const { params } = match;
 
-    coursePlanService
+    await coursePlanService
       .findAllCoursePlanInfo(params.coursePlanId, params.serviceId)
-      .then(() => this.findStudentInfo().then(() => this.getPreCourseModel()));
+      .then(() =>
+        this.findStudentInfo().then(() => {
+          this.findSurveyAnswerSheet();
+          this.getPreCourseModel();
+        })
+      );
 
     if (coursePlanService.coursePlanContents.testId) {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
-      // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);
+      // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);1
 
-      console.log(
-        'examPaperService.examPaper.title : ',
-        examPaperService.examPaper.title
-      );
-      this.state.examTitle = examPaperService.examPaper.title;
+      // console.log(
+      //   'examPaperService.examPaper.title : ',
+      //   examPaperService.examPaper.title
+      // );
+      const examTitle = examPaperService.examPaper.title;
+      this.state.examTitle = examTitle;
+      this.setState({examTitle});
     }
     //
     // collegeService.findCollege(params.collegeId);
@@ -258,29 +298,29 @@ class CoursePageV2 extends Component<Props, State> {
     //   this.state.examTitle = examPaper.title;
     // }
     //
-    if (coursePlanService.coursePlanContents.surveyCaseId) {
-      // await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
-      // const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
-      // answerSheetService.setAnswerSheet(answerSheetService.answerSheet);
-      // const surveyCase = surveyCaseService.surveyCase;
-      //
-      const obj = JSON.parse(JSON.stringify(surveyCaseService.getSurveyCase));
-      const title = JSON.parse(JSON.stringify(obj.langStringMap));
+    // if (coursePlanService.coursePlanContents.surveyCaseId) {
+    //     await AnswerSheetService.instance.findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId);
+    //     const surveyCase = await surveyCaseService!.findSurveyCase(coursePlanService.coursePlanContents.surveyCaseId);
+    //     answerSheetService.setAnswerSheet(answerSheetService.answerSheet);
+    //     const surveyCase = surveyCaseService.surveyCase;
 
-      const { answerSheet } = answerSheetService!;
-      const disabled =
-        answerSheet &&
-        answerSheet.progress &&
-        answerSheet.progress === AnswerProgress.Complete;
-
-      this.state.surveyState = disabled;
-      this.state.surveyTitle = title.ko;
-    }
+    //   const obj = JSON.parse(JSON.stringify(surveyCaseService.getSurveyCase));
+    //   const title = JSON.parse(JSON.stringify(obj.langStringMap));
+    //
+    //   const { answerSheet } = answerSheetService!;
+    //   const disabled =
+    //     answerSheet &&
+    //     answerSheet.progress &&
+    //     answerSheet.progress === AnswerProgress.Complete;
+    //
+    //   this.state.surveyState = disabled;
+    //   this.state.surveyTitle = title.ko;
+    // }
   }
 
   // 선수코스 세팅..
   getPreCourseModel() {
-    console.log('선수코스 세팅 시작!');
+    // console.log('선수코스 세팅 시작!');
     const {
       match,
       coursePlanService,
@@ -302,41 +342,105 @@ class CoursePageV2 extends Component<Props, State> {
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
       ) {
-        const preLectureViews = courseLectureService.getPreLectureViews;
-        const preCourseStudentList = studentService.StudentInfos!.preCourses;
-        // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
-        // @ts-ignore
-        for (let i = 0; i < preCourseStudentList.length; i++) {
+        if ( courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length ) {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
           // @ts-ignore
-          const preCourse = preCourseStudentList[i];
-          for (let j = 0; j < preLectureViews.length; j++) {
-            const preLectureView = preLectureViews[j];
-            // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
-            if (preLectureView.serviceId === preCourse.lectureUsid) {
-              if (
-                preLectureView.required &&
-                preCourse.learningState !== 'Passed'
-              ) {
-                // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
-                isPreCoursePassed = false;
-                break;
+          for (let i = 0; i < preCourseStudentList.length; i++) {
+            // @ts-ignore
+            const preCourse = preCourseStudentList[i];
+            for (let j = 0; j < preLectureViews.length; j++) {
+              const preLectureView = preLectureViews[j];
+              // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
+              if (preLectureView.serviceId === preCourse.lectureUsid) {
+                if (
+                  preLectureView.required &&
+                  preCourse.learningState !== 'Passed'
+                ) {
+                  // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
+                  isPreCoursePassed = false;
+                  break;
+                }
               }
             }
           }
+        } else {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          const preCourseIds: string[] = [];
+
+          preCourseStudentList?.forEach( preCourse => {
+            preCourseIds.push(preCourse.lectureUsid);
+          });
+
+          preLectureViews.forEach( preLectureView => {
+            if (preLectureView.required && !preCourseIds.includes(preLectureView.serviceId)) {
+              isPreCoursePassed = false;
+            }
+          });
         }
       } else if (
         courseLectureService.getPreLectureViews &&
         !studentService.StudentInfos!.preCourses
       ) {
         const preLectureViews = courseLectureService.getPreLectureViews;
-        for (let j = 0; j < preLectureViews.length; j++) {
-          const preLectureView = preLectureViews[j];
+
+        preLectureViews.forEach( preLectureView => {
           if (preLectureView.required) isPreCoursePassed = false;
-          break;
-        }
+        });
+
+        // for (let j = 0; j < preLectureViews.length; j++) {
+        //   const preLectureView = preLectureViews[j];
+        //   if (preLectureView.required) isPreCoursePassed = false;
+        //   break;
+        // }
       }
 
+      // console.log('isPreCoursePassed? : ', isPreCoursePassed);
       this.setState({ isPreCoursePassed });
+    }
+  }
+
+  async findSurveyAnswerSheet() {
+    const {
+      coursePlanService,
+      surveyFormService,
+      examPaperService,
+    } = this.props;
+
+    if (coursePlanService.coursePlanContents.surveyCaseId) {
+      await AnswerSheetService.instance
+        .findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId)
+        .then((response) => {
+          // console.log('answerSheet : ', response);
+          const disabled =
+            response && response.progress === AnswerProgress.Complete;
+          // this.state.surveyState = disabled;
+          this.setState({ surveyState: disabled });
+          // this.setState({})
+        });
+    }
+
+    if (coursePlanService.coursePlanContents.surveyId) {
+      await surveyFormService
+        .findSurveyForm(coursePlanService.coursePlanContents.surveyId)
+        .then((response) => {
+          // console.log('surveyForm : ', response);
+          const surveyForm: SurveyFormModel = response;
+          this.setState({ surveyTitle: surveyForm.titles.langStringMap.get('ko') });
+        });
+    }
+
+    if (coursePlanService.coursePlanContents.testId) {
+
+      // console.log(
+      //   'examPaperService.examPaper.title : ',
+      //   examPaperService.examPaper.title
+      // );
+      const examTitle = examPaperService.examPaper.title;
+      this.state.examTitle = examTitle;
+      this.setState({examTitle});
     }
   }
 
@@ -393,7 +497,7 @@ class CoursePageV2 extends Component<Props, State> {
     //
     const { lectureService } = this.props;
 
-    lectureViews.map(async lectureView => {
+    lectureViews.map(async (lectureView) => {
       if (
         lectureView.serviceType === LectureServiceType.Program ||
         (lectureView.serviceType === LectureServiceType.Course &&
@@ -420,6 +524,7 @@ class CoursePageV2 extends Component<Props, State> {
       studentService,
       courseLectureService,
       examPaperService,
+      examinationService,
       surveyCaseService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
@@ -440,6 +545,7 @@ class CoursePageV2 extends Component<Props, State> {
     let examName: string = '';
 
     // console.log('coursePlanContents : ', coursePlanContents);
+    // console.log('examinationService : ', examinationService);
     if (student && student.id) {
       this.setExamState(student);
 
@@ -479,7 +585,7 @@ class CoursePageV2 extends Component<Props, State> {
         student.phaseCount !== student.completePhaseCount &&
         student.learningState === LearningState.Progress
       ) {
-        console.log('Course Page Waiting : ', SubState.InProgress);
+        // console.log('Course Page Waiting : ', SubState.InProgress);
         state = SubState.InProgress;
       }
 
@@ -492,8 +598,9 @@ class CoursePageV2 extends Component<Props, State> {
     // examTitle = this.state.examTitle || '';
     examTitle = examPaperService.examPaper?.title || '';
     surveyId = coursePlanContents.surveyId || '';
-    // surveyTitle = this.state.surveyTitle || '';
-    surveyTitle = surveyCaseService.surveyCase.titles.string || '';
+    surveyTitle = this.state.surveyTitle || '';
+    // surveyTitle =
+    //   surveyCaseService.surveyCase.titles?.langStringMap.get('ko') || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
     reportFileBoxId = coursePlan.reportFileBox
@@ -502,28 +609,6 @@ class CoursePageV2 extends Component<Props, State> {
     tabState = this.state.tabState || '';
     examType = this.state.type || '';
     examName = this.state.name || '';
-
-    // console.log('getViewObject ===== examId : ', examId);
-    // console.log('getViewObject ===== examTitle : ', examTitle);
-    // console.log('getViewObject ===== surveyId : ', surveyId);
-    // console.log('getViewObject ===== surveyTitle : ', surveyTitle);
-    // console.log('getViewObject ===== surveyState : ', surveyState);
-    // console.log('getViewObject ===== surveyCaseId : ', surveyCaseId);
-    // console.log('getViewObject ===== reportFileBoxId : ', reportFileBoxId);
-    // console.log('getViewObject ===== tabState : ', tabState);
-
-    // examId = this.checkNullValue(coursePlanContents.testId);
-    // examTitle = this.checkNullValue(this.state.examTitle);
-    // surveyId = this.checkNullValue(coursePlanContents.surveyId);
-    // surveyTitle = this.checkNullValue(this.state.surveyTitle);
-    // surveyState = this.state.surveyState || false;
-    // surveyCaseId = this.checkNullValue(coursePlanContents.surveyCaseId);
-    // reportFileBoxId = this.checkNullValue(coursePlan.reportFileBox.fileBoxId);
-    // tabState = this.checkNullValue(this.state.tabState);
-
-    console.log('course page student : ', student);
-
-    // console.log('----', student.lectureUsid, coursePlan.coursePlanId, state);
 
     return {
       // Sub info
@@ -660,6 +745,10 @@ class CoursePageV2 extends Component<Props, State> {
     }
   }
 
+  surveyCallback() {
+    if (this.init()) this.init();
+  }
+
   getReviewId() {
     //
     const { match, programLectureService, courseLectureService } = this.props;
@@ -722,89 +811,46 @@ class CoursePageV2 extends Component<Props, State> {
     this.setStateName('1', 'Test');
     // console.log('setExamState : ', studentData);
     if (studentData) {
-      if (studentData.serviceType && studentData.serviceType === 'Lecture') {
-        if (
-          studentData.learningState === LearningState.Progress ||
-          studentData.learningState === LearningState.HomeworkWaiting
-        ) {
-          this.setStateName('0', 'Test');
-        } else if (
-          studentData.learningState === LearningState.Failed &&
-          studentData.studentScore.numberOfTrials < 3
-        ) {
-          // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (
-          studentData.learningState === LearningState.Failed &&
-          studentData.studentScore.numberOfTrials > 2
-        ) {
-          // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (studentData.learningState === LearningState.Missed) {
-          // this.setStateName('4', '미이수');
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (studentData.learningState === LearningState.Passed) {
-          this.setStateName('5', '이수');
-        } else if (studentData.learningState === LearningState.TestWaiting) {
-          this.setStateName('5', '결과대기');
-        } else {
-          this.setStateName('1', 'Test');
-        }
-        // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
-      } else if (
-        studentData.serviceType === 'Course' ||
-        studentData.serviceType === 'Program'
+      if (
+        studentData.phaseCount === studentData.completePhaseCount &&
+        (studentData.learningState === LearningState.Progress ||
+          studentData.learningState === LearningState.HomeworkWaiting)
       ) {
-        if (
-          studentData.phaseCount === studentData.completePhaseCount &&
-          (studentData.learningState === LearningState.Progress ||
-            studentData.learningState === LearningState.HomeworkWaiting)
-        ) {
-          this.setStateName('0', 'Test');
-        } else if (
-          studentData.phaseCount === studentData.completePhaseCount &&
-          studentData.learningState === LearningState.Failed &&
-          studentData.studentScore.numberOfTrials < 3
-        ) {
-          // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (
-          studentData.phaseCount === studentData.completePhaseCount &&
-          studentData.learningState === LearningState.Failed &&
-            studentData.studentScore.numberOfTrials > 2
-        ) {
-          // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (studentData.learningState === LearningState.Missed) {
-          // this.setStateName('4', '미이수');
-          this.setStateName(
-            '0',
-            `재응시 (${studentData.studentScore.numberOfTrials})`
-          );
-        } else if (studentData.learningState === LearningState.Passed) {
-          this.setStateName('5', '이수');
-        } else if (studentData.learningState === LearningState.TestPassed) {
-          this.setStateName('5', '결과대기');
-        } else {
-          this.setStateName('1', 'Test');
-        }
+        this.setStateName('0', 'Test');
+      } else if (
+        studentData.phaseCount === studentData.completePhaseCount &&
+        studentData.learningState === LearningState.Failed &&
+        studentData.studentScore.numberOfTrials < 3
+      ) {
+        // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
+        // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        this.setStateName(
+          '0',
+          `재응시 (${studentData.studentScore.numberOfTrials})`
+        );
+      } else if (
+        studentData.phaseCount === studentData.completePhaseCount &&
+        studentData.learningState === LearningState.Failed &&
+        studentData.studentScore.numberOfTrials > 2
+      ) {
+        // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
+        // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
+        this.setStateName(
+          '0',
+          `재응시 (${studentData.studentScore.numberOfTrials})`
+        );
+      } else if (studentData.learningState === LearningState.Missed) {
+        // this.setStateName('4', '미이수');
+        this.setStateName(
+          '0',
+          `재응시 (${studentData.studentScore.numberOfTrials})`
+        );
+      } else if (studentData.learningState === LearningState.Passed || studentData.learningState === LearningState.TestPassed) {
+        this.setStateName('5', '이수');
+      } else if (studentData.learningState === LearningState.TestWaiting) {
+        this.setStateName('5', '결과대기');
+      } else {
+        this.setStateName('1', 'Test');
       }
     }
 
@@ -829,13 +875,14 @@ class CoursePageV2 extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
 
-    console.log('renderOverview -------->', viewObject);
+    // console.log('renderOverview --------> ', viewObject);
 
     return this.renderBaseContentWith(
       <LectureOverviewViewV2
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        onSurveyCallback={this.surveyCallback}
         lectureCardId={serviceId}
         onRefreshLearningState={this.onRefreshLearningState}
         coursePlanService={coursePlanService}

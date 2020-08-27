@@ -80,6 +80,14 @@ const MyBadgePage : React.FC<Props> = (Props) => {
     }
   };
 
+  const resetTotBadgeCount = () => {
+    badgeService?.getCountOfBadges().then(() => {
+      setTotBadgeCount(badgeService.badgeCount);
+      setChallengeCount(badgeService.challengingCount);
+      setEarnedCount(badgeService.earnedCount);
+    });
+  };
+
   const getTabs = () => {
     //
     return [
@@ -108,6 +116,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
         render: () => (
           <ChallengingBadgeContainer
             badgeCount={challengeCount}
+            resetTotBadgeCount={resetTotBadgeCount}
           />
         )
       },

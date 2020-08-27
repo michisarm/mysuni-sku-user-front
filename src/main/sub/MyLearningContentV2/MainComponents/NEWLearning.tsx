@@ -33,11 +33,12 @@ const NEWLearning : React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, newLectureService, inMyLectureService, history } = Props;
 
-  const CONTENT_TYPE = 'New';
   const CONTENT_TYPE_NAME = '신규과정';
   const PAGE_SIZE = 8;
 
   const { newLectures } = newLectureService!;
+
+  const [title, setTitle] = useState<string|null>('');
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -49,15 +50,30 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
-    if (savedNewLearningList) {
+    if (savedNewLearningList && savedNewLearningList.length > 0) {
       const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
-      if (newMain.totalCount > PAGE_SIZE - 1) {
+      if (newMain.results.length > PAGE_SIZE - 1) {
         newLectureService!.setPagingNewLectures(newMain);
+        if (!newMain || !newMain.title || newMain.title.length < 1) {
+          setTitle(newLectureService!.Title);
+        }
+        else {
+          setTitle(newMain.title);
+        }
         return;
       }
     }
 
-    newLectureService!.findPagingNewLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    newLectureService!.findPagingNewLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
+      .then((response) => {
+        newLectureService!.setTitle(response.title);
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(newLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -107,7 +123,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
+      inMyLectureService!.removeInMyLecture(training.id);
     }
     else {
       let servicePatronKeyString = training.patronKey.keyString;
@@ -135,7 +151,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
         servicePatronKeyString,
-      })).then(findMyContent);
+      }));
     }
   };
 
@@ -146,7 +162,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
   return (
     <ContentWrapper>
       <div className="section-head">
-        <strong>{newLectureService?.Title}</strong>
+        <strong>{title}</strong>
         <div className="right">
           {
             newLectures.length > 0 && (

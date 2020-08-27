@@ -3,7 +3,7 @@ enum BadgeLectureState {
   Progress = 'Progress',
   Waiting = 'Waiting',
   TestWaiting = 'TestWaiting',
-  HomeWorkWaiting = 'HomeWorkWaiting',
+  HomeworkWaiting = 'HomeworkWaiting',
   Failed = 'Failed',
   TestPassed = 'TestPassed',
   Passed = 'Passed',

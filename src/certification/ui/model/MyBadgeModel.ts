@@ -6,6 +6,7 @@ class MyBadgeModel {
   name: string = '';
   iconUrl: string = '';
   autoIssued: boolean = false;
+  additionTermsExist: boolean = false;
 
   certiAdminCategory: {
     certiAdminCategory: string,

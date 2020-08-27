@@ -7,7 +7,7 @@ import {Button, Icon} from 'semantic-ui-react';
 import {AnswerSheetModal, CubeReportModal} from 'assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
 
-import {DatePeriod} from 'shared/model';
+import {DatePeriod, LearningState} from 'shared/model';
 import {CubeType} from 'personalcube/personalcube/model';
 import {OverviewField} from 'personalcube';
 import classNames from 'classnames';
@@ -27,11 +27,13 @@ import routePaths from '../../../routePaths';
 import ProposalState from '../../../../shared/model/ProposalState';
 import StudentService from '../../../shared/present/logic/StudentService';
 import StudentInfoModel from '../../../model/StudentInfoModel';
+import SurveyCaseModel from '../../../../survey/event/model/SurveyCaseModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
   viewObject: any,
   typeViewObject: any,
   onSaveCallback:() => void,
+  onSurveyCallback:() => void,
   skProfileService?: SkProfileService,
   lectureService?: LectureService,
   programLectureService?: ProgramLectureService,
@@ -109,6 +111,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
       this.findCoursePlan();
     }
+    //
+    // if (prevProps.surveyCase?.id !== this.props.surveyCase?.id) {
+    //     //   this.props.onPageInit();
+    //     // }
 
     // console.log('LectureOverviewView render completed');
   }
@@ -160,7 +166,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
         this.setState({ multiple: true });
       }
     }
-
   }
 
   onToggleCategory() {
@@ -184,7 +189,12 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   }
 
   onTest() {
-    this.examModal.onOpenModal();
+    const { isPreCoursePassed } = this.props;
+    if (isPreCoursePassed) {
+      this.examModal.onOpenModal();
+    } else {
+      reactAlert({ title: '선수과정안내', message: '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.' });
+    }
   }
 
   // truefree 2020-04-03
@@ -345,6 +355,58 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (onPageInit) onPageInit();
   }
 
+
+  getTestViewObject(lectureView: LectureViewModel) {
+    //
+    let state: string | undefined;
+    let examId: string = '';
+    let examTitle: string = '';
+    let surveyId: string = '';
+    let surveyTitle: string = '';
+    let surveyState: boolean = false;
+    let surveyCaseId: string = '';
+    let reportFileBoxId: string = '';
+
+    state = lectureView.learningState || undefined;
+    examId = lectureView.examPaper.id || '';
+    examTitle = lectureView.examPaper.title || '';
+    surveyId = lectureView.surveyCase.id || '';
+    surveyTitle = 'TEST' || '';
+    surveyState = false;
+    surveyCaseId = lectureView.surveyCase.id || '';
+    reportFileBoxId = '' || '';
+
+    if (lectureView.personalCube) {
+      if (lectureView.learningState === null) {
+        state = LearningState.Waiting;
+      } else if (lectureView.learningState === LearningState.Passed) {
+        state = LearningState.Progress;
+      } else {
+        state = LearningState.Progress;
+      }
+
+      // if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
+      //   this.studentData.learningState === LearningState.Progress) {
+      //   state = SubState.InProgress;
+      // }
+    }
+    // console.log('getViewObject>>>> : ', this.state.isContent);
+    return {
+      // Sub info
+      state,
+      examId,
+      // Fields
+      examTitle,
+      surveyId,
+      surveyTitle,
+      surveyState,
+      surveyCaseId,
+      reportFileBoxId,
+    };
+  }
+
+
+
   renderSubCategories() {
     //
     const { viewObject } = this.props;
@@ -380,6 +442,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       viewObject,
       typeViewObject,
       onSaveCallback,
+      onSurveyCallback,
+      onPageInit,
       skProfileService,
       lectureService,
       lectureCardId,
@@ -395,8 +459,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { params } = match;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
-    const { lectureViews, getSubLectureViews } = lectureService!;
-    const { preLectureViews } = courseLectureService;
+    const { lectureViews, getSubLectureViews  } = lectureService!;
+    const { preLectureViews, courseLecture } = courseLectureService;
 
     if (!viewObject.category) {
       return null;
@@ -408,7 +472,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const isPreCourse = courseLectureService.getPreLectureViews.length > 0;
     const hasNotPostCourse = !location.search.match('postCourseLectureId');
 
-    // console.log('LectureOverviewViewV2 : ', params.serviceId);
+    // console.log('LectureOverviewViewV2 viewObject : ', viewObject);
     // console.log('LectureOverviewViewV2 : ', params.serviceType);
 
     return (
@@ -418,33 +482,94 @@ class LectureOverviewViewV2 extends Component<Props, State> {
         />
         <>
           <div className="ov-paragraph course-area">
+            <div className="course-cont">
 
-            {/*선수코스*/}
-            {(isPreCourse && hasNotPostCourse) && (
+              {/*선수코스*/}
+              {(isPreCourse && hasNotPostCourse) && (
+                <Lecture2.Group
+                  type={Lecture2.GroupType.PreCourse}
+                >
+                  {preLectureViews.map((preLectureView: LectureViewModel) => (
+                    <Lecture2.PreCourse
+                      lectureView={preLectureView}
+                      lectureViewName={preLectureView.name}
+                      onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
+                    />
+                  ))}
+                </Lecture2.Group>
+              )}
+
+
               <Lecture2.Group
-                type={Lecture2.GroupType.PreCourse}
+                type={Lecture2.GroupType.Course}
+                totalCourseCount={viewObject.totalCourseCount}
               >
-                {preLectureViews.map((preLectureView: LectureViewModel) => (
-                  <Lecture2.PreCourse
-                    lectureView={preLectureView}
-                    lectureViewName={preLectureView.name}
-                    onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
-                  />
-                ))}
-              </Lecture2.Group>
-            )}
+                {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
+                  <Lecture2.CourseSection
+                    key={`course-${lectureViewsIndex}`}
+                    lecture={(
+                      <Lecture2.Course
+                        className="first"
+                        lectureView={lecture}
+                        lectureViewSize={(getSubLectureViews(lecture.id).length)}
+                        lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
+                        thumbnailImage={lecture.baseUrl || undefined}
+                        toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                        onViewDetail={() => this.onViewDetail(lecture)}
+                        collegeId={params.collegeId}
+                        lectureCardId={lectureCardId}
+                        learningState={viewObject.state}
+                        member={member}
+                        onRefreshLearningState={onRefreshLearningState}
+                        onDoLearn={this.onDoLearn}
+                        isPreCoursePassed={isPreCoursePassed}
+                        studentInfo={studentInfo}
+                        onLectureInitRequest={this.handleLectureInitRequest}
+                      />
+                    )}
+                  >
+                    {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                      <>
+                        <Lecture2.Course
+                          key={`sub-lecture-${index}`}
+                          className="included"
+                          lectureView={subLecture}
+                          lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
+                          thumbnailImage={subLecture.baseUrl || undefined}
+                          onViewDetail={() => this.onViewDetail(subLecture)}
+                          collegeId={params.collegeId}
+                          lectureCardId={lectureCardId}
+                          member={member}
+                          onRefreshLearningState={onRefreshLearningState}
+                          onDoLearn={this.onDoLearn}
+                          isPreCoursePassed={isPreCoursePassed}
+                          studentInfo={studentInfo}
+                          onLectureInitRequest={this.handleLectureInitRequest}
+                        />
 
+                        <Lecture2.TRS
+                          key={`sub-lecture-trs-${index}`}
+                          className="included"
+                          lectureView={subLecture}
+                          lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
+                          thumbnailImage={subLecture.baseUrl || undefined}
+                          onViewDetail={() => this.onViewDetail(subLecture)}
+                          collegeId={params.collegeId}
+                          lectureCardId={lectureCardId}
+                          member={member}
+                          onRefreshLearningState={onRefreshLearningState}
+                          onDoLearn={this.onDoLearn}
+                          isPreCoursePassed={isPreCoursePassed}
+                          studentInfo={studentInfo}
+                          onLectureInitRequest={this.handleLectureInitRequest}
+                        />
 
-            <Lecture2.Group
-              type={Lecture2.GroupType.Course}
-              totalCourseCount={viewObject.totalCourseCount}
-            >
-              {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-                <Lecture2.CourseSection
-                  key={`course-${lectureViewsIndex}`}
-                  lecture={(
-                    <Lecture2.Course
-                      className="first"
+                      </>
+                    )}
+                    {/*{console.log('================ : ', lectureViewsIndex)}*/}
+                    <Lecture2.TRS
+                      key={`course-trs-${lectureViewsIndex}`}
+                      className="course-trs"
                       lectureView={lecture}
                       lectureViewSize={(getSubLectureViews(lecture.id).length)}
                       lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
@@ -461,51 +586,55 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       studentInfo={studentInfo}
                       onLectureInitRequest={this.handleLectureInitRequest}
                     />
-                  )}
-                >
-                  {getSubLectureViews(lecture.id).map((subLecture, index) =>
+                    {/*{console.log('================ : ', lecture.name)}*/}
+                  </Lecture2.CourseSection>
+                ))}
+              </Lecture2.Group>
 
-                    <Lecture2.Course
-                      key={`sub-lecture-${index}`}
-                      className="included"
-                      lectureView={subLecture}
-                      lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                      thumbnailImage={subLecture.baseUrl || undefined}
-                      onViewDetail={() => this.onViewDetail(subLecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                      isPreCoursePassed={isPreCoursePassed}
-                      studentInfo={studentInfo}
-                      onLectureInitRequest={this.handleLectureInitRequest}
+              {
+                viewObject && (
+                  <>
+                    <LectureExam2
+                      onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
+                      onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
+                      onTest={viewObject.examId ? this.onTest : undefined}
+                      onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
+                      onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
+                      onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
+                      onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+                      OnSurveyNotReady={viewObject.surveyId ? this.OnSurveyNotReady : undefined}
+                      viewObject={viewObject}
+                      passedState={viewObject.passedState}
+                      type={viewObject.examType}
+                      name={viewObject.examName}
+                      sort="box"
                     />
-                  )}
-                </Lecture2.CourseSection>
-              ))}
-            </Lecture2.Group>
 
-            {
-              viewObject && (
-                <LectureExam2
-                  onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-                  onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-                  onTest={viewObject.examId ? this.onTest : undefined}
-                  onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-                  onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
-                  onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
-                  onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-                  OnSurveyNotReady={viewObject.examId ? this.OnSurveyNotReady : undefined}
-                  viewObject={viewObject}
-                  passedState={viewObject.passedState}
-                  type={viewObject.examType}
-                  name={viewObject.examName}
-                  sort="box"
-                />
-              )
-            }
+                    {/*<Lecture2.TRS*/}
+                    {/*  // key={`course-trs-${lectureViewsIndex}`}*/}
+                    {/*  className="course-trs"*/}
+                    {/*  lectureView={lecture}*/}
+                    {/*  // lectureViewSize={(getSubLectureViews(lecture.id).length)}*/}
+                    {/*  // lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}*/}
+                    {/*  // thumbnailImage={lecture.baseUrl || undefined}*/}
+                    {/*  // toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}*/}
+                    {/*  // onViewDetail={() => this.onViewDetail(lecture)}*/}
+                    {/*  collegeId={params.collegeId}*/}
+                    {/*  lectureCardId={lectureCardId}*/}
+                    {/*  learningState={viewObject.state}*/}
+                    {/*  member={member}*/}
+                    {/*  onRefreshLearningState={onRefreshLearningState}*/}
+                    {/*  onDoLearn={this.onDoLearn}*/}
+                    {/*  isPreCoursePassed={isPreCoursePassed}*/}
+                    {/*  studentInfo={studentInfo}*/}
+                    {/*  onLectureInitRequest={this.handleLectureInitRequest}*/}
+                    {/*/>*/}
 
+                  </>
+
+                )
+              }
+            </div>
           </div>
 
           {
@@ -524,6 +653,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               examId={viewObject.examId}
               ref={examModal => this.examModal = examModal}
               onSaveCallback={onSaveCallback}
+              onInitCallback={onPageInit}
             />
           )
         }
@@ -541,6 +671,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
               surveyId={viewObject.surveyId}
               surveyCaseId={viewObject.surveyCaseId}
               ref={surveyModal => this.surveyModal = surveyModal}
+              onSaveCallback={onSurveyCallback}
               // onSaveCallback={this.testCallback}
               serviceId={params.serviceId}
               serviceType={params.serviceType}

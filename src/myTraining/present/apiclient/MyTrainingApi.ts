@@ -10,10 +10,19 @@ class MyTrainingApi {
   //
   static instance: MyTrainingApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
-  baseUrl = '/api/mytraining/mytraining/mytrainings';
-  // localUrl = 'http://localhost:8233/mytraining/mytrainings';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+    process.env.REACT_APP_MY_TRAINING_API === undefined || process.env.REACT_APP_MY_TRAINING_API === '' ?
+    '/api/mytraining/mytraining/mytrainings' : process.env.REACT_APP_MY_TRAINING_API;
 
+  saveAllLearningPassedToStorage(state: string, endDate: string) {
+
+    const params = {
+      state,
+      endDate,
+    };
+
+    return axiosApi.get<any>(this.baseUrl + '/byState/lightWeight', { params });
+  }
 
   getOffsetElementList(response: any) {
     //

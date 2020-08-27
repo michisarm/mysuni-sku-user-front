@@ -26,7 +26,6 @@ class SkProfileService {
 
   studySummaryCachingFetch: CachingFetch = new CachingFetch();
 
-
   constructor(skProfileApi: SkProfileApi) {
     //
     this.skProfileApi = skProfileApi;

@@ -32,7 +32,7 @@ class ArrangeApi {
     };
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/RQD', {params})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 
   /********************************************************************************************************/
@@ -47,7 +47,7 @@ class ArrangeApi {
     };
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/NEW', {params})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 
   // 인기과정 조회
@@ -60,7 +60,7 @@ class ArrangeApi {
     };
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/POP', {params})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 
   // LRS 추천과정 조회
@@ -69,12 +69,12 @@ class ArrangeApi {
     const params = {
       offset: lectureFilterRdo.offset,
       limit: lectureFilterRdo.limit,
-      orderBy: lectureFilterRdo.orderBy,
       email: lectureFilterRdo.email,
+      orderBy: lectureFilterRdo.orderBy,
     };
 
     return axiosApi.get<OffsetElementList<LectureModel>>(this.baseUrl + '/arrange/LRS', {params})
-      .then(response => response && response.data);
+      .then(response => response && response.data || null);
   }
 }
 

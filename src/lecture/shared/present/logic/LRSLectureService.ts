@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
+import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
 
 
 @autobind
@@ -12,21 +13,22 @@ class LRSLectureService {
   static instance: LRSLectureService;
 
   private arrangeApi: ArrangeApi;
+  private inMyLectureApi: InMyLectureApi;
 
-  constructor(arrangeApi: ArrangeApi) {
+  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
     this.arrangeApi = arrangeApi;
+    this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
-  _profileName: string | null = '';
 
   @action
-  setProfileName(name: string) {
-    if (name && name.length > 0) {
-      this._profileName = name;
+  setTitle(title: string | null) {
+    if (title && title.length > 0) {
+      this._title = title;
     }
     else {
-      this._profileName = '학습자';
+      this._title = `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
     }
   }
 
@@ -37,6 +39,18 @@ class LRSLectureService {
     }
     else {
       return `mySUNI가 ${this._profileName}님을 위해 추천하는 과정입니다.`;
+    }
+  }
+
+  _profileName: string | null = '';
+
+  @action
+  setProfileName(name: string) {
+    if (name && name.length > 0) {
+      this._profileName = name;
+    }
+    else {
+      this._profileName = '학습자';
     }
   }
 
@@ -68,7 +82,15 @@ class LRSLectureService {
       lectureOffsetElementList.results = lectureOffsetElementList.results.map((lecture) => new LectureModel(lecture));
     }
     this._totalCount = lectureOffsetElementList.totalCount;
-    this._title = lectureOffsetElementList.title;
+    if (lectureOffsetElementList.title !== this._title) {
+      this._title = lectureOffsetElementList.title;
+      const savedLrsLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
+      if (savedLrsLearningList && savedLrsLearningList.length > 0) {
+        const lrsMain: OffsetElementList<LectureModel> = JSON.parse(savedLrsLearningList);
+        lrsMain.title = this._title;
+        window.sessionStorage.setItem('LrsLearningList', JSON.stringify(lrsMain));
+      }
+    }
 
     runInAction(() => this._lectures = this._lectures.concat(lectureOffsetElementList.results));
     return lectureOffsetElementList;
@@ -96,8 +118,22 @@ class LRSLectureService {
   get totalCount() {
     return this._totalCount;
   }
+
+  @action
+  removeLectureFromStorage(serviceId: string) {
+    const savedLrsLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
+    if (savedLrsLearningList && savedLrsLearningList.length > 0) {
+      const LrsMain: OffsetElementList<LectureModel> = JSON.parse(savedLrsLearningList);
+      if (LrsMain && LrsMain.results && LrsMain.results.length > 0) {
+        LrsMain.results = LrsMain.results.filter((item) => item.serviceId !== serviceId);
+        LrsMain.totalCount = LrsMain.results.length;
+        LrsMain.empty = LrsMain.totalCount < 1;
+        window.sessionStorage.setItem('LrsLearningList', JSON.stringify(LrsMain));
+      }
+    }
+  }
 }
 
-LRSLectureService.instance = new LRSLectureService(ArrangeApi.instance);
+LRSLectureService.instance = new LRSLectureService(ArrangeApi.instance, InMyLectureApi.instance);
 
 export default LRSLectureService;

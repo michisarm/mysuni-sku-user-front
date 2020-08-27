@@ -94,9 +94,10 @@ class CardGroup2 extends Component<Props> {
               )
             }
           </div>
-          <div className="course-cont">
-            {children}
-          </div>
+          {children}
+          {/*<div className="course-cont">*/}
+          {/*  {children}*/}
+          {/*</div>*/}
         </>
       );
     }

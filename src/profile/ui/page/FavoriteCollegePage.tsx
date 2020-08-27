@@ -6,6 +6,7 @@ import { observer } from 'mobx-react';
 import { ContentLayout } from 'shared';
 import FavoriteCollegeContainer from '../logic/FavoriteCollegeContainer';
 import FavoriteContentHeaderContainer from '../logic/FavoriteContentHeaderContainer';
+import PersonalInfoStep from '../view/PersonalInfoStep';
 
 
 @observer
@@ -29,8 +30,10 @@ class FavoriteCollegePage extends React.Component {
         disabled
       >
         <section className="bg-white">
-          <div className="interest-content step1">
-            <FavoriteContentHeaderContainer step={1} />
+          <div className="interest-content lo-08-06 step1">
+
+            {/*<FavoriteContentHeaderContainer step={1} />*/}
+            <PersonalInfoStep activeStep="step5" />
 
             <FavoriteCollegeContainer />
           </div>

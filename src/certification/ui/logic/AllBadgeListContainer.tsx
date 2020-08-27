@@ -174,6 +174,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
   );
 };
 
+
 export default inject(mobxHelper.injectFrom(
   'badge.badgeService',
   'shared.pageService',

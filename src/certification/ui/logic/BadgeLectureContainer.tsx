@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {useState, Fragment} from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
@@ -8,7 +8,6 @@ import {dateTimeHelper} from 'shared';
 import CubeType from 'myTraining/model/CubeType';
 import CubeTypeNameType from 'myTraining/model/CubeTypeNameType';
 import BadgeCompData from '../model/BadgeCompData';
-import BadgeCompModel from '../model/BadgeCompModel';
 import {BadgeDetailService, StudentService} from '../../../lecture/stores';
 import BadgeCubeData from '../model/BadgeCubeData';
 import BadgeCourseData from '../model/BadgeCourseData';
@@ -17,7 +16,6 @@ import {CoursePlanService} from '../../../course/stores';
 import {CoursePlanCustomModel} from '../../../course/model/CoursePlanCustomModel';
 import BadgeLectureState from '../../ui/model/BadgeLectureState';
 import BadgeLectureStateName from '../../ui/model/BadgeLectureStateName';
-import TRSContainer from './TRSContainer';
 import {CubeIntroModel} from '../../../personalcube/cubeintro/model';
 import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
 import RollBookModel from '../../../lecture/model/RollBookModel';
@@ -50,106 +48,14 @@ interface Props extends RouteComponentProps {
   studentService?: StudentService;
 
   badgeId: string;
+  badgeCompList: BadgeCompData[];
 }
 
 const BadgeLectureContainer: React.FC<Props> = (Props) => {
   //
-  const { coursePlanService, badgeDetailService, badgeId, history, } = Props;
+  const { coursePlanService, badgeDetailService, badgeId, badgeCompList, history, } = Props;
 
-  const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   const [opened, setOpened] = useState(false);
-
-  useEffect(() => {
-    // 배지 구성 학습 리스트 조회하기
-    getBadgeCompLectures(badgeId);
-  }, [badgeId]);
-
-  // 뱃지 구성 학습 리스트 조회하기
-  const getBadgeCompLectures = (badgeId: string) => {
-    let compList: BadgeCompData[] = [];
-    badgeDetailService!.findBadgeCompList(badgeId).then((response: BadgeCompModel[]) => {
-      if (response.length > 0 && response[0] ) {
-        response.map((data: BadgeCompModel) => {
-          const compData = new BadgeCompData();
-          //console.log( data );
-          // 공통
-          compData.compType = data.serviceType;
-          compData.id = data.id;
-          compData.patronKeyString = data.patronKey.keyString;
-          // 코스정보
-          if (data.serviceType === 'COURSE') {
-            compData.course = new BadgeCourseData();
-            const keyStr = data.patronKey.keyString;
-            compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.course.collegeId = data.category.college.id;
-            compData.course.serviceId = data.serviceId;
-            compData.course.name = data.name;
-            compData.course.coursePlanId = data.coursePlanId;
-            compData.course.isOpened = false;
-            compData.course.cubeCount = data.lectureCardUsids.length;
-            compData.course.learningState = data.learningState;
-            compData.course.serviceType = 'Course';
-            data.lectureCardUsids.map((id: string) => {
-              compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
-            });
-          }
-          // (학습)카드 정보
-          else {
-            compData.cube = new BadgeCubeData();
-            const keyStr = data.patronKey.keyString;
-            compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.cube.collegeId = data.category.college.id;
-            compData.cube.lectureCardId = data.serviceId;
-            compData.cube.name = data.name;
-            compData.cube.cubeId = data.cubeId;
-            compData.cube.learningCardId = data.learningCardId;
-            compData.cube.cubeType = data.cubeType;
-            compData.cube.learningTime = data.learningTime; // 학습시간(분)
-            compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
-            compData.cube.learningState = data.learningState;
-            compData.cube.serviceType = 'cube';
-          }
-          compList = compList.concat(compData);
-        });
-      }
-      setBadgeCompList(compList);
-    });
-  };
-
-  /*
-  // 코스를 구성하는 렉쳐(큐브)들의 정보 가져오기
-  const showCourseInfo = (course: BadgeCourseData) => {
-    //
-    course.isOpened = !course.isOpened;
-    course.cubeData = [];
-
-    if (course.isOpened) {
-      coursePlanService!.findAllCoursePlanInfo(course.coursePlanId, course.serviceId)
-        .then((response: CoursePlanCustomModel | null) => {
-          if (response && response.lectureViews) {
-            response.lectureViews.map((lecture: LectureViewModel) => {
-              const cubeData = new BadgeCubeData();
-              cubeData.cubeId = lecture.cubeId;
-              cubeData.name = lecture.name;
-              cubeData.learningCardId = lecture.learningCardId;
-              cubeData.cubeType = lecture.cubeType;
-              cubeData.learningTime = lecture.learningTime;
-              // 진행율(%)
-              cubeData.sumViewSeconds = lecture.sumViewSeconds === '' ? 0 : parseInt(lecture.sumViewSeconds);
-              cubeData.learningState = lecture.learningState;
-              // 큐브 정보를 코스에 추가
-              course.cubeData = course.cubeData.concat(cubeData);
-            });
-          }
-        })
-        .catch((error) => {})
-        .finally(() => setOpened(!opened));
-    }
-    else {
-      setOpened(!opened);
-    }
-  };
-  */
 
   // 코스를 구성하는 렉쳐(큐브)들의 정보 한번에 가져오기
   const showCourseInfo = (course: BadgeCourseData) => {
@@ -243,8 +149,6 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
   // Cube 상태 및 스타일 - PSJ
   const setLearningStateForMedia = (cube: BadgeCubeData) => {
     //
-    //console.log( cube );
-
     // 버튼 스타일
     let styleName = 'black';
     switch( cube.learningState ) {
@@ -272,18 +176,14 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
 
     return (
       <a href="#" className={classNames('btn-play', styleName)} onClick={(e) => moveToCubePage(cube!, e)}>
-        <span className="text">
+        <span className={classNames('text', (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting) ? 'no-link' : '')}>
           {stateName}{
             cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) ?
               `(${cube.sumViewSeconds}%)` : ''
           }
         </span>
 
-        { cube.learningState !== BadgeLectureState.Progress && (
-          <Icon className={classNames( (cube.learningState !== BadgeLectureState.Waiting) ? `play-${styleName}24` : 'play-black24-dim' )} />
-        )}
-
-        { cube.learningState === BadgeLectureState.Progress && (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) && (
+        { (cube.cubeType === CubeType.Video || cube.cubeType === CubeType.Audio) && cube.learningState === BadgeLectureState.Progress ? (
           <span className={`pie-wrapper progress-${cube.sumViewSeconds}`}>
             <span className="pie">
               <span className="left-side"/>
@@ -291,6 +191,11 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
             </span>
             <div className="shadow"/>
           </span>
+        ):(
+          <Icon className={classNames(
+            (cube.learningState === BadgeLectureState.Waiting || cube.learningState === BadgeLectureState.HomeworkWaiting || cube.learningState === BadgeLectureState.TestWaiting)
+              ? 'play-black24-dim' : `play-${styleName}24` )}
+          />
         )}
       </a>
     );
@@ -327,63 +232,32 @@ const BadgeLectureContainer: React.FC<Props> = (Props) => {
       {badgeCompList.length > 0 && badgeCompList[0] ?
         badgeCompList.map((badgeComp: BadgeCompData, index: number) => (
           badgeComp.compType === 'COURSE' && badgeComp.course ?
-            <div className={classNames('course-box', 'fn-parents', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
+            <div className={classNames('course-box', 'type2', badgeComp.course.isOpened ? 'open' : '')} key={`course-box-${index}`}>
               <div className="bar">
-                <div className="tit">
+                <span className="tit">
                   <a href="#" onClick={(e) => moveToCoursePage(badgeComp.course!, e)} className="ellipsis">{(index + 1) + '. ' + badgeComp.course!.name}</a>
                   {/*<span className="ellipsis">{(index + 1) + '. ' + badgeComp.course.name}</span>*/}
-                </div>
+                </span>
 
-                <div className="right">
-                  <span className="num">
-                    {badgeComp.course.cubeCount}개 강의 구성
-                  </span>
+                <span className="num" onClick={(e) => moveToCoursePage(badgeComp.course!, e)}>
+                  {badgeComp.course.cubeCount < 10 ? `0${badgeComp.course.cubeCount}` : badgeComp.course.cubeCount}개 강의 구성
 
-                  {/*코스의 학습상태 */}
-                  {setCourseLearningState(badgeComp)}
+                  {badgeComp.course.learningState === BadgeLectureState.Passed && (
+                    <span className="completed">학습완료</span>
+                  )}
+                </span>
 
-                  {/*Learning Path 기능 변경으로 사용안함*/}
-                  <div className="toggle-btn">
-                    <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
-                      <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
-                      <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
-                    </Button>
-                  </div>
+                {/*코스의 학습상태 0812 Learning Path > Course UI 변경 */}
+                {/*{setCourseLearningState(badgeComp)}*/}
+
+                {/*Learning Path 기능 변경으로 사용안함*/}
+                <div className="toggle-btn">
+                  <Button icon className="img-icon fn-more-toggle" onClick={() => showCourseInfo(badgeComp.course!)}>
+                    <Icon className={classNames('s24', badgeComp.course.isOpened ? 'arrow-up' : 'arrow-down')}/>
+                    <span className="blind">{badgeComp.course.isOpened ? 'open' : 'close'}</span>
+                  </Button>
                 </div>
               </div>
-              {/*
-              <div className="detail">
-                <ul className="step1">
-                  {badgeComp.course.cubeData.length > 0 ?
-                    badgeComp.course.cubeData.map((cube: BadgeCubeData, index2: number) =>
-                      <Fragment key={`cube-${index}`}>
-                        <li>
-                          <div className="tit">
-                            <span className="ellipsis">{(index + 1) + '-' + (index2 + 1) + '. ' + cube.name}</span>
-                          </div>
-                          <div className="right">
-                            <span>{CubeTypeNameType[cube.cubeType as CubeType]}</span>
-                            <span>{dateTimeHelper.timeToHourMinuteFormat(cube.learningTime)}</span>
-
-                            {/*상태호출*/}
-              {/*
-                            {setLearningStateForMedia(cube)}
-                          </div>
-                        </li>
-                        {/*subDepth: COURSE > CUBE TRS*/}
-              {/*}
-                        <TRSContainer parentType="COURSE" subDepth={true} badgeCourseCube={cube} />
-                      </Fragment>
-                    )
-                    :
-                    <div>코스 정보가 존재하지 않습니다.</div>
-                  }
-                  {/*subDepth: COURSE TRS*/}
-              {/*<TRSContainer parentType="COURSE" badgeCourse={badgeComp.course} />*/}
-              {/*
-                </ul>
-              </div>
-              */}
             </div>
             :
             <Fragment key={`cube-${index}`}>

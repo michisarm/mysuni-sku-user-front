@@ -18,6 +18,7 @@ import ContentHeaderBadgeView from '../view/ContentHeaderBadgeView';
 
 import BadgeRoutePaths from '../../../certification/routePaths';
 import MyTrainingRoutePaths from '../../routePaths';
+import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoModel';
 
 
 interface Props extends RouteComponentProps {
@@ -71,6 +72,9 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
     //
     const { myLearningSummaryService } = this.props;
     myLearningSummaryService!.findMyLearningSummary();
+
+    const { badgeService } = this.props;
+    badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel.earned('', 'Issued'));
   }
 
   onChangeYear(selectedYear: number) {

@@ -124,7 +124,7 @@ class AnswerDetailContainer extends Component<Props, States> {
                         </a>
                         <br />
                       </div>
-                    )) || '<div></div><div></div><div></div>'
+                    )) || null
                   }
                 </div><br />
               </div>

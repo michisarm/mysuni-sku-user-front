@@ -18,7 +18,7 @@ import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearni
 import {ChannelModel} from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
-import IssueState from '../../../certification/shared/Badge/ui/model/IssueState';
+import supportRoutePaths from '../../../board/routePaths';
 
 
 interface Props extends RouteComponentProps {
@@ -99,6 +99,12 @@ class MyLearningSummaryContainer extends Component<Props> {
     }
   }
 
+  // 1:1 문의하기 이동
+  moveToSupportQnA() {
+    const { history } = this.props;
+    history.push(supportRoutePaths.supportQnANewPost());
+  }
+
   render() {
     //
     const { myLearningSummaryService, skProfileService, badgeService } = this.props;
@@ -147,7 +153,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper>
             <div className="ui profile">
               <div className="pic s80">
-                <Image src={member.photoFilePath || profileImg} alt="프로필사진"/>
+                <Image src={skProfile.photoFilePath || profileImg} alt="프로필사진"/>
               </div>
             </div>
             <div className="user">
@@ -197,7 +203,7 @@ class MyLearningSummaryContainer extends Component<Props> {
 
         </HeaderWrapperView>
 
-        <AdditionalToolsMyLearning>
+        <AdditionalToolsMyLearning onClickQnA={this.moveToSupportQnA}>
           <FavoriteChannelChangeModal
             trigger={(
               <a>

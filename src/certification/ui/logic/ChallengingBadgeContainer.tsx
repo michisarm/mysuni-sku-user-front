@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, Fragment} from 'react';
 import {inject, observer} from 'mobx-react';
 import {mobxHelper} from '@nara.platform/accent';
 import {NoSuchContentPanel} from 'shared';
@@ -25,11 +25,12 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
 
   badgeCount: number | undefined,
   countMessage?: string,
+  resetTotBadgeCount: () => void;
 }
 
 const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
   //
-  const { badgeService, pageService, history, match, } = Props;
+  const { badgeService, pageService, resetTotBadgeCount, history, match, } = Props;
 
   const PAGE_KEY = 'badge.challenging';
   const PAGE_SIZE = 4;
@@ -114,6 +115,19 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
     history.replace(routePaths.currentPage(getPageNo() + 1));
   };
 
+  const refreshChallengingContainer = () => {
+    resetTotBadgeCount();
+
+    badgeService!.clearMyBadges();
+
+    const pageNo = getPageNo();
+    pageService!.initPageMap(pageKey.current, 0, pageNo * PAGE_SIZE);
+
+    findMyContent(pageNo - 1);
+
+    refresh.current = true;
+  };
+
   const onSelectDifficultyLevel = (diffLevel: string) => {
     // 페이지 변경(초기화)
     match.params.pageNo = '1';
@@ -140,15 +154,16 @@ const ChallengingBadgeContainer: React.FC<Props> = (Props) => {
         countMessage={BadgeCountText.ChallengingBadgeList}
       />
 
-      {myBadges.length > 0 ?
-        myBadges.map( (badge: MyBadgeModel, index: number) =>
-          <>
+      {badgeService!.myBadges.length > 0 ?
+        badgeService!.myBadges.map( (badge: MyBadgeModel, index: number) =>
+          <Fragment key={`container-${index}`}>
             <ChallengeBoxContainer
               myBadge={badge}
-              badgeStyle={BadgeStyle.Detail}
+              badgeStyle={BadgeStyle.List}
               badgeSize={BadgeSize.Small}
+              refreshChallengingContainer={refreshChallengingContainer}
             />
-          </>
+          </Fragment>
         ) : (
           <NoSuchContentPanel message={(
             <>

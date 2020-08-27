@@ -1,5 +1,5 @@
 
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {  mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -29,17 +29,20 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService,
 
   profileMemberName: string,
+  profileMemberEmail: string,
 }
 
 const LRSLearning : React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, lrsLectureService, inMyLectureService, profileMemberName, history } = Props;
+  const { actionLogService, reviewService, lrsLectureService, inMyLectureService,
+    profileMemberName, profileMemberEmail, history } = Props;
 
-  const CONTENT_TYPE = 'Recommend';
   const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
 
   const { lrsLectures } = lrsLectureService!;
+
+  const [title, setTitle] = useState<string|null>('');
 
   lrsLectureService?.setProfileName(profileMemberName);
 
@@ -53,15 +56,30 @@ const LRSLearning : React.FC<Props> = (Props) => {
 
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
-    if (savedRecommendLearningList) {
+    if (savedRecommendLearningList && savedRecommendLearningList.length > 0) {
       const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
-      if (recommendMain.totalCount > PAGE_SIZE - 1) {
+      if (recommendMain.results.length > PAGE_SIZE - 1) {
         lrsLectureService!.setPagingLrsLectures(recommendMain);
+        if (!recommendMain || !recommendMain.title || recommendMain.title.length < 1) {
+          setTitle(lrsLectureService!.Title);
+        }
+        else {
+          setTitle(recommendMain.title);
+        }
         return;
       }
     }
 
-    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true);
+    lrsLectureService!.findPagingLrsLectures(LectureFilterRdoModel.lrsLectures(PAGE_SIZE, 0, profileMemberEmail), true)
+      .then((response) => {
+        lrsLectureService!.setTitle(response.title);
+        if (!response || !response.title || response.title.length < 1) {
+          setTitle(lrsLectureService!.Title);
+        }
+        else {
+          setTitle(response.title);
+        }
+      });
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -110,7 +128,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
     actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
-      inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
+      inMyLectureService!.removeInMyLecture(training.id);
     }
     else {
       let servicePatronKeyString = training.patronKey.keyString;
@@ -138,7 +156,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
         servicePatronKeyString,
-      })).then(findMyContent);
+      }));
     }
   };
 
@@ -150,7 +168,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
     <ContentWrapper>
       <div className="section-head">
         {/*<strong>mySUNI가 <span className="ellipsis">{profileMemberName}</span>님을 위해 추천하는 과정입니다.</strong>*/}
-        <strong>{lrsLectureService?.Title}</strong>
+        <strong>{title}</strong>
         {/*<strong>{lrsLectureService?.Title}</strong>*/}
         <div className="right">
           {

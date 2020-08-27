@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Report, Test, Survey } from '../view/LectureExamElementsView2';
+import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 
 interface Props {
   /** 과제 액션*/
@@ -35,12 +36,12 @@ class LectureExamContainer2 extends Component<Props> {
     //
     const { onReport, onReportNotReady, onTest, onTestNotReady, onAlreadyPassed, onTestWaiting, onSurvey, OnSurveyNotReady, viewObject, passedState, type, name, sort } = this.props;
 
-    // console.log('viewObject : ', viewObject);
+    // console.log('LectureExamContainer2 : ', sort);
 
     return (
       <>
         {sort === 'box' ? (
-          <div className="course-cont">
+          <>
             <div className="cube-box">
               <Report
                 OnReport={onReport}
@@ -65,6 +66,7 @@ class LectureExamContainer2 extends Component<Props> {
                 sort={sort}
               />
             </div>
+
             <div className="cube-box">
               <Survey
                 onSurvey={onSurvey}
@@ -75,7 +77,7 @@ class LectureExamContainer2 extends Component<Props> {
                 sort={sort}
               />
             </div>
-          </div>
+          </>
         ) : (
           <>
             <Report
@@ -87,6 +89,7 @@ class LectureExamContainer2 extends Component<Props> {
               name={name}
               sort={sort}
             />
+
             <Test
               OnTest={onTest}
               OnTestNotReady={onTestNotReady}
@@ -97,6 +100,7 @@ class LectureExamContainer2 extends Component<Props> {
               name={name}
               sort={sort}
             />
+
             <Survey
               onSurvey={onSurvey}
               OnSurveyNotReady={OnSurveyNotReady}

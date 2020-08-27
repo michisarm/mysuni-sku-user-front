@@ -83,7 +83,7 @@ const BadgeCompRight: React.FC<Props> = (Props) => {
               <li className={classNames('class-card', (learning.learningState === 'Passed') ? 'completed' : '')} key={`learning-${index}`}>
                 <a href="#" onClick={(e) => moveToOverviewPage(learning, e)}>
                   <span className="class-icon">
-                    <Image src={domainPath + learning.iconBox?.iconUrl} />
+                    <Image src={learning.iconBox?.baseUrl} />
                   </span>
                   <span className="title">{learning.name}</span>
                   <span className="time">

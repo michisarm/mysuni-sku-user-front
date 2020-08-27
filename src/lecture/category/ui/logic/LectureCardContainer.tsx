@@ -25,12 +25,16 @@ import {
 } from 'lecture/model';
 import {
   LectureService,
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
   RollBookService,
+  RQDLectureService,
   StudentService,
 } from 'lecture/stores';
 import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
+import { InMyLectureService, MyTrainingService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
@@ -470,11 +474,20 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  removeStorage() {
+    const { viewObject } = this.props;
+    RQDLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    NEWLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    POPLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    LRSLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+  }
+
   playVideo() {
     const { typeViewObject } = this.props;
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
@@ -543,6 +556,7 @@ class LectureCardContainer extends Component<Props, State> {
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
@@ -563,6 +577,7 @@ class LectureCardContainer extends Component<Props, State> {
     // request download file to nara
     // depot.downloadDepot(typeViewObject.fileBoxId);
     this.publishStudyEvent();
+    this.removeStorage();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -572,6 +587,7 @@ class LectureCardContainer extends Component<Props, State> {
       this.onRegisterStudent(ProposalState.Approved);
     }
     this.publishStudyEvent(true);
+    this.removeStorage();
     this.setState({ openDownloadModal: false });
   }
 
@@ -643,6 +659,7 @@ class LectureCardContainer extends Component<Props, State> {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
+        MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
       });
     }
   }
@@ -803,6 +820,7 @@ class LectureCardContainer extends Component<Props, State> {
       .then(confirmed => {
         if (onPageRefresh) {
           onPageRefresh();
+          MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
         }
       });
   }
@@ -1265,8 +1283,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
-    console.log('LectureCardContainer : ', lectureServiceId);
-    console.log('LectureCardContainer : ', lectureServiceType);
+    // console.log('LectureCardContainer : ', viewObject);
+    // console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
