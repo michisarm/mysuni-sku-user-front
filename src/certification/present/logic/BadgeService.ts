@@ -303,6 +303,18 @@ class BadgeService {
     return response;
   }
 
+  @action
+  async findBadgeInfo(badgeId: string) {
+    //
+    const response: BadgeDetailModel | null = await this.badgeApi.findBadgeInformation(badgeId);
+
+    runInAction(() => {
+      this._badgeDetail = new BadgeDetailModel(response);
+    });
+
+    return response;
+  }
+
   @computed
   get badgeDetailInfo() {
     return this._badgeDetail;
