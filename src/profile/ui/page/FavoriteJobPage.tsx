@@ -1,12 +1,11 @@
-
 import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
 import { ContentLayout } from 'shared';
-import FavoriteContentHeaderContainer from '../logic/FavoriteContentHeaderContainer';
+import ContentHeaderContainer from '../logic/ContentHeaderContainer';
 import FavoriteJobContainer from '../logic/FavoriteJobContainer';
-
+import PersonalInfoStep from '../view/PersonalInfoStep';
 
 @observer
 @reactAutobind
@@ -25,12 +24,10 @@ class FavoriteJobPage extends React.Component {
   render() {
     //
     return (
-      <ContentLayout
-        disabled
-      >
+      <ContentLayout disabled>
         <section>
-          <div className="interest-content step2">
-            <FavoriteContentHeaderContainer step={2} />
+          <div className="interest-content lo-08-03 step2">
+            <ContentHeaderContainer step={4} />
 
             <FavoriteJobContainer />
           </div>

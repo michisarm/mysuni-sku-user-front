@@ -54,7 +54,7 @@ class UserMainPageV2 extends Component<Props> {
           <MyLearningContentContainer/>
 
           {/*튜토리얼 팝업*/}
-          {/*<TutorialModalView/>*/}
+          <TutorialModalView/>
         </div>
       </ContentLayout>
     );

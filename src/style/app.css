@@ -219,3 +219,7 @@ i.icon.balloon.logout::before { content: ''; display: block; width: 100%; height
 .course-cont .course-box .cube-box .bar.typeB:nth-child(1):after { content: ''; width: 47.5rem; height: 0.0625rem; position: absolute; top: 0; left: 1.25rem; background: #eee !important; }
 .course-cont .course-box .cube-box .bar.typeA .tit .ellipsis { text-decoration: underline; }
 .course-cont .cube-box .bar.typeB .tit .ellipsis { text-decoration: underline !important; font-weight: 400 !important; }
+
+.tutorials2 .header2 .ui.checkbox:not(.radio) input:checked~label:before {
+  background-color: transparent !important;
+}
