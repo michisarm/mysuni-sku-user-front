@@ -118,9 +118,11 @@ class BoxCardView extends Component<Props, States> {
 
                 {/*0630 PSJ 수강신청, 유료과정에 대한 메타 정보*/}
                 { (model.cubeType === CubeType.ClassRoomLecture || model.cubeType === CubeType.ELearning) && (
-
-                  // 0630 size12 클래스는 유료과정+수강신청일 경우에만 적용
-                  <span className={ classNames('g-text', 'size12')}>유료과정&amp;수강신청</span>
+                  <>
+                    // 0630 size12 클래스는 유료과정+수강신청일 경우에만 적용
+                    {/*<span className={ classNames('g-text', 'size12')}>유료과정&amp;수강신청</span>*/}
+                    <span className={ classNames('g-text', 'size12')}/>
+                  </>
                 )}
 
               </Field>
