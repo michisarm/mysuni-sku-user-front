@@ -5,7 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Form, Popup, Button, Icon } from 'semantic-ui-react';
 import { IdNameCount } from 'shared/model';
-import { ChannelModel } from 'college/model';
+import { ChannelModel, CollegeType } from 'college/model';
 import { CollegeService } from 'college/stores';
 import { CollegeLectureCountService } from 'lecture/stores';
 import CollegeLectureCountRdo from 'lecture/model/CollegeLectureCountRdo';
@@ -23,6 +23,7 @@ interface Props extends RouteComponentProps {
 interface State {
   selectedCollege: CollegeLectureCountRdo;
   favorites: ChannelModel[];
+  favoriteCompanyChannels: ChannelModel[];
 }
 
 const style = {
@@ -50,13 +51,14 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   state = {
     selectedCollege: new CollegeLectureCountRdo(),
     favorites: [] as ChannelModel[],
+    favoriteCompanyChannels: [] as ChannelModel[],
   };
 
   componentDidMount(): void {
     this.init();
   }
 
-  init() {
+  async init() {
     //
     const {
       collegeService,
@@ -65,7 +67,17 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
     } = this.props;
     const { studySummaryFavoriteChannels } = skProfileService!;
 
-    collegeLectureCountService!.findCollegeLectureCounts();
+    const colleges: CollegeLectureCountRdo[] = await collegeLectureCountService!.findCollegeLectureCounts();
+    const companyChannels = colleges
+      .filter(college => college.collegeType === CollegeType.Company)
+      .map(college =>
+        college.channelCounts.map(
+          channel =>
+            new ChannelModel({ channelId: channel.id, name: channel.name })
+        )
+      )
+      .flat();
+
     skProfileService!.findSkProfile();
     skProfileService!.findStudySummary();
     // collegeService!.findAllChannel();
@@ -80,7 +92,18 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         })
     );
 
-    this.setState({ favorites: [...channels] });
+    const favoriteChannelsWithoutCompany = channels.filter(
+      channel =>
+        !companyChannels.some(
+          companyChannel => companyChannel.channelId === channel.channelId
+        )
+    );
+
+    // this.setState({ favorites: [...channels] });
+    this.setState({
+      favorites: favoriteChannelsWithoutCompany,
+      favoriteCompanyChannels: companyChannels,
+    });
   }
 
   onSelectCollege(college: CollegeLectureCountRdo) {
@@ -111,7 +134,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   onNextClick() {
     //
     const { collegeService, skProfileService, history } = this.props;
-    const { favorites } = this.state;
+    const { favorites, favoriteCompanyChannels } = this.state;
 
     if (favorites.length < 3) {
       reactAlert({
@@ -119,7 +142,9 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
         message: '관심 분야는 3개이상 선택해 주세요.',
       });
     } else {
-      collegeService!.favoriteChannels = [...favorites];
+      const nextFavoriteChannels = [...favorites, ...favoriteCompanyChannels];
+      // collegeService!.favoriteChannels = [...favorites];
+      collegeService!.favoriteChannels = [...nextFavoriteChannels];
       skProfileService!.setStudySummaryProp(
         'favoriteChannels',
         collegeService!.favoriteChannelIdNames
@@ -138,7 +163,7 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
       collegeLectureCounts,
       totalChannelCount,
     } = this.props.collegeLectureCountService!;
-    const { selectedCollege, favorites } = this.state;
+    const { selectedCollege, favorites, favoriteCompanyChannels } = this.state;
 
     return (
       <Form>
@@ -242,14 +267,34 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
                   {(favorites &&
                     favorites.map((channel, index) => (
                       <Button
-                        className="del type2"
+                        className="del"
                         key={index}
                         onClick={() => this.onSelectChannel(channel)}
+                        style={{ 'font-weight': '500' }}
                       >
                         {channel.name}
                       </Button>
                     ))) ||
                     ''}
+                  {favoriteCompanyChannels.map((channel: ChannelModel) => (
+                    <Popup
+                      className="custom-black"
+                      content="필수 관심채널이며, 삭제 불가능합니다."
+                      inverted
+                      style={style}
+                      position="top center"
+                      trigger={
+                        <Button
+                          key={`del_${channel.id}`}
+                          className="del default"
+                          data-offset="23"
+                          style={{ 'font-weight': '500' }}
+                        >
+                          {channel.name}
+                        </Button>
+                      }
+                    />
+                  ))}
                 </div>
               </div>
             </div>

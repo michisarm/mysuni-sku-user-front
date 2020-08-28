@@ -24,35 +24,39 @@ class AppLayoutContainer extends Component<Props> {
   }
 
   async findProfile() {
-    // if (process.env.NODE_ENV !== 'development') {
-    const skProfileService = this.props.skProfileService!;
-    const data = await SkProfileApi.instance.findSkProfile();
-    const obj = JSON.parse(JSON.stringify(data));
-
-    // 재동의 : 시작일자 대신에.. test 용
-    function compareDate() {
+    //////////////////////////////////////////////////////////////
+    // 재동의
+    function compareDate(signDate: any) {
       let rtn = false;
-      const today = new Date().getTime();
-      const agrDate = new Date(obj.pisAgreement.date).getTime();
-      if (today > agrDate) {
+      const reAgreeDate = new Date('2020-09-01').getTime();
+      const agreeDate = new Date(signDate).getTime();
+      if (reAgreeDate > agreeDate) {
         rtn = true;
       }
       return rtn;
     }
 
-    if (!obj.pisAgreement.signed) {
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (obj.pisAgreement.signed && compareDate()) {
-      // 재동의 : 기준날짜 정해서 동의한 날짜가 이전이면 재동의 page 이동
-      skProfileService.setReagree(true);
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
-    } else if (!obj.studySummaryConfigured) {
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+    if (process.env.NODE_ENV !== 'development') {
+      const skProfileService = this.props.skProfileService!;
+      const data = await SkProfileApi.instance.findSkProfile();
+      const obj = JSON.parse(JSON.stringify(data));
+
+      if (!obj.pisAgreement.signed) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      } else if (
+        obj.pisAgreement.signed &&
+        compareDate(obj.pisAgreement.date)
+      ) {
+        // 재동의 : 기준날짜 정해서 동의한 날짜가 이전이면 재동의 page 이동
+        skProfileService.setReagree(true);
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
+      } else if (!obj.studySummaryConfigured) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
     }
-    // }
   }
 
   render() {
