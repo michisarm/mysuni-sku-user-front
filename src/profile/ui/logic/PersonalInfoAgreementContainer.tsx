@@ -72,12 +72,10 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     skProfileService.findSkProfile().then(skProfile => {
       // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
       //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
-      // if (skProfile.studySummaryConfigured) {
-      //   history.push('/');
-      // } else {
-      // }
       if (reAgree) {
         history.push(routePaths.currentJob());
+      } else if (skProfile.studySummaryConfigured) {
+        history.push('/');
       } else {
         history.push(routePaths.favoriteWelcome());
       }
