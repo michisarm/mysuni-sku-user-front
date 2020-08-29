@@ -28,7 +28,7 @@ class AppLayoutContainer extends Component<Props> {
     // 재동의
     function compareDate(signDate: any) {
       let rtn = false;
-      const reAgreeDate = new Date('2020-09-01').getTime();
+      const reAgreeDate = new Date('1020-08-30').getTime();
       const agreeDate = new Date(signDate).getTime();
       if (reAgreeDate > agreeDate) {
         rtn = true;
