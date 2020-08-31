@@ -16,7 +16,7 @@ import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import { CardSorting, SeeMoreButton } from '../../../shared';
 import routePaths from '../../../routePaths';
-import Lecture from '../../../shared/Lecture';
+import {Lecture} from '../../../shared/Lecture';
 import ChannelLecturesContentWrapperView from '../../../category/ui/view/ChannelLecturesContentWrapperView';
 import LectureServiceType from '../../../model/LectureServiceType';
 
@@ -196,8 +196,7 @@ class LecturesByChannelContainer extends Component<Props, State> {
         reviewId: lecture.reviewId,
         baseUrl: lecture.baseUrl,
         servicePatronKeyString: lecture.patronKey.keyString,
-      }))
-        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
+      })).then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
   }
 

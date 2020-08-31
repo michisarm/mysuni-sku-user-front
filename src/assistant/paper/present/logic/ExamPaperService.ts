@@ -28,6 +28,14 @@ export default class ExamPaperService {
   }
 
   @action
+  setExamPaper(examPaper: ExamPaperModel) {
+    return runInAction(() => {
+      this.examPaper = examPaper;
+      return examPaper;
+    });
+  }
+
+  @action
   clear() {
     //
     this.examPaper = new ExamPaperModel();

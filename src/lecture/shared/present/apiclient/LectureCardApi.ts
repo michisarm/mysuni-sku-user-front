@@ -6,7 +6,9 @@ class LectureCardApi {
   //
   static instance: LectureCardApi;
 
-  baseUrl = '/api/lecture/lectureCards';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_LECTURE_CARD_API === undefined || process.env.REACT_APP_LECTURE_CARD_API === '' ?
+    '/api/lecture/lectureCards' : process.env.REACT_APP_LECTURE_CARD_API;
 
   findAllLectureCards(offset: number, limit: number, college?: string, channel?: string) {
     //

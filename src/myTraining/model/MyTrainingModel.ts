@@ -115,6 +115,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
         if (!this.learningState && this.startDate) {
           return moment(Number(this.startDate)).format('YYYY.MM.DD') + ' 부터 학습시작';
         }
+
         if (
           this.learningState === LearningState.Progress || this.learningState === LearningState.Waiting
           || this.learningState === LearningState.HomeworkWaiting || this.learningState === LearningState.TestWaiting
@@ -122,9 +123,11 @@ class MyTrainingModel extends DramaEntityObservableModel {
         ) {
           return moment(Number(this.time)).format('YYYY.MM.DD') + ' 학습 시작';
         }
+
         if (this.learningState === LearningState.Passed) {
           return moment(Number(this.time)).format('YYYY.MM.DD') + ' 학습 완료';
         }
+
         if (this.learningState === LearningState.Missed) {
           return moment(Number(this.time)).format('YYYY.MM.DD') + ' 이수 실패';
         }

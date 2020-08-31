@@ -1,5 +1,5 @@
 import autobind from 'autobind-decorator';
-import { action, observable, runInAction } from 'mobx';
+import { action, computed, observable, runInAction } from 'mobx';
 import SurveyCaseApi from '../apiclient/SurveyCaseApi';
 import SurveyCaseModel from '../../model/SurveyCaseModel';
 import RoundPartModel from '../../model/RoundPartModel';
@@ -13,6 +13,16 @@ export default class SurveyCaseService {
 
   @observable
   surveyCase: SurveyCaseModel = new SurveyCaseModel();
+
+  @action
+  setSurveyCase(surveyCase: SurveyCaseModel) {
+    this.surveyCase = new SurveyCaseModel(surveyCase);
+  }
+
+  @computed
+  get getSurveyCase() {
+    return this.surveyCase;
+  }
 
   @observable
   roundPart: RoundPartModel = new RoundPartModel();

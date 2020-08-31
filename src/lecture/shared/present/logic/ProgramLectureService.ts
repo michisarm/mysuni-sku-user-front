@@ -1,5 +1,4 @@
-
-import { observable, action, runInAction } from 'mobx';
+import {action, observable, runInAction} from 'mobx';
 import ProgramLectureModel from '../../../model/ProgramLectureModel';
 import CourseLectureApi from '../apiclient/ProgramLectureApi';
 
@@ -28,6 +27,11 @@ class ProgramLectureService {
 
     runInAction(() => this.programLecture = programLecture);
     return programLecture;
+  }
+
+  @action
+  setProgramLecture(lecture: ProgramLectureModel) {
+    this.programLecture = lecture;
   }
 }
 

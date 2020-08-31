@@ -14,7 +14,7 @@ export class CoursePlanCdoModel {
   courseOperator: CourseOperatorModel = new CourseOperatorModel();
   iconBox: IconBoxModel = new IconBoxModel();
   courseOpen: CourseOpenModel = new CourseOpenModel();
-  reportFileBox: ReportFileBoxModel = new ReportFileBoxModel();
+  reportFileBox: ReportFileBoxModel | null = new ReportFileBoxModel();
   stamp: StampModel = new StampModel();
   creator: CreatorModel = new CreatorModel();
 }

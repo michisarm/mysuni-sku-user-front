@@ -11,6 +11,12 @@ import LectureCountService from './category/present/logic/LectureCountService';
 import AnswerSheetService from '../survey/answer/present/logic/AnswerSheetService';
 import SurveyCaseService from '../survey/event/present/logic/SurveyCaseService';
 import SurveyFormService from '../survey/form/present/logic/SurveyFormService';
+import RQDLectureService from './shared/present/logic/RQDLectureService';
+import NEWLectureService from './shared/present/logic/NEWLectureService';
+import POPLectureService from './shared/present/logic/POPLectureService';
+import LRSLectureService from './shared/present/logic/LRSLectureService';
+import BadgeService from '../certification/present/logic/BadgeService';
+import BadgeDetailService from '../certification/present/logic/BadgeDetailService';
 
 
 export default {
@@ -27,11 +33,33 @@ export default {
     surveyCaseService: SurveyCaseService.instance,
     surveyFormService: SurveyFormService.instance,
   },
+  rqdLecture: {
+    rqdLectureService: RQDLectureService.instance,
+  },
+  newLecture: {
+    newLectureService: NEWLectureService.instance,
+  },
+  popLecture: {
+    popLectureService: POPLectureService.instance,
+  },
+  lrsLecture: {
+    lrsLectureService: LRSLectureService.instance,
+  },
+  badge: {
+    badgeService: BadgeService.instance,
+  },
+  badgeDetail: {
+    badgeDetailService: BadgeDetailService.instance,
+  },
 };
 
 export {
   LectureCardService,
   LectureService,
+  RQDLectureService,
+  NEWLectureService,
+  POPLectureService,
+  LRSLectureService,
   ProgramLectureService,
   CourseLectureService,
   RollBookService,
@@ -41,4 +69,6 @@ export {
   AnswerSheetService,
   SurveyCaseService,
   SurveyFormService,
+  BadgeService,
+  BadgeDetailService,
 };

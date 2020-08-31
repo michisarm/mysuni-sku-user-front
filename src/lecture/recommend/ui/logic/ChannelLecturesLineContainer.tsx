@@ -13,7 +13,7 @@ import { SkProfileService } from 'profile/stores';
 import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
-import Lecture from '../../../shared/Lecture';
+import {Lecture} from '../../../shared/Lecture';
 import LectureModel from '../../../model/LectureModel';
 import LectureServiceType from '../../../model/LectureServiceType';
 
@@ -72,8 +72,7 @@ class ChannelLecturesLineContainer extends Component<Props> {
         reviewId: lecture.reviewId,
         baseUrl: lecture.baseUrl,
         servicePatronKeyString: lecture.patronKey.keyString,
-      }))
-        .then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
+      })).then(() => inMyLectureService!.addInMyLectureInAllList(lecture.serviceId, lecture.serviceType));
     }
   }
 

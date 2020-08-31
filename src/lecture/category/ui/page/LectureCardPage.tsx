@@ -34,6 +34,7 @@ import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 import { ActionEventService } from 'shared/stores';
 
 import { InMyLectureCdoModel } from 'myTraining/model';
+import { MyTrainingService } from 'myTraining/stores';
 import routePaths from '../../../routePaths';
 import {
   StudentJoinRdoModel,
@@ -56,6 +57,7 @@ import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/date
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService;
@@ -221,17 +223,21 @@ class LectureCardPage extends Component<Props, State> {
 
         await cubeIntroService.findCubeIntro(personalCube.cubeIntro.id);
 
+        // console.log('mediaService : ', mediaService);
+        // console.log('contents : ', contents);
+
         if (service.type === ContentsServiceType.Classroom) {
           await classroomService.findClassrooms(personalCube.personalCubeId);
         } else if (service.type === ContentsServiceType.Media) {
           mediaService.findMedia(contents.id).then(media => {
             if (
+              media &&
               media.mediaType === MediaType.ContentsProviderMedia &&
               media.mediaContents.contentsProvider.isLinkedInType
             ) {
               this.setState({ linkedInOpen: true });
             }
-            if (media.mediaType === MediaType.InternalMedia) {
+            if (media && media.mediaType === MediaType.InternalMedia) {
               const studentCdo = {
                 ...this.getStudentCdo(),
                 proposalState: ProposalState.Approved,
@@ -263,6 +269,7 @@ class LectureCardPage extends Component<Props, State> {
                       }
                     });
                   }
+                  
                 });
             }
           });
@@ -278,12 +285,16 @@ class LectureCardPage extends Component<Props, State> {
     lectureCardService
       .findLectureCard(params.lectureCardId)
       .then(lectureCard => {
-        commentService!.countByFeedbackId(lectureCard!.commentId);
+        if (lectureCard && lectureCard!.commentId) {
+          commentService!.countByFeedbackId(lectureCard!.commentId);
+        }
       });
     await studentService.findIsJsonStudentByCube(params.lectureCardId);
     await this.findStudent();
 
     await this.searchForExams();
+
+    MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
 
     this.setState({ loaded: true });
   }
@@ -482,6 +493,7 @@ class LectureCardPage extends Component<Props, State> {
       studentService,
       classroomService,
       rollBookService,
+      match,
     } = this.props;
     const { personalCube } = personalCubeService!;
     const { cubeIntro } = cubeIntroService!;
@@ -507,6 +519,7 @@ class LectureCardPage extends Component<Props, State> {
     let examName: string = '';
     let studentId: string = '';
     let rollBookId: string = '';
+    let serviceId: string = '';
 
     examId = personalCube.contents.examId || '';
     examTitle = this.state.examTitle || '';
@@ -519,6 +532,7 @@ class LectureCardPage extends Component<Props, State> {
     examName = this.state.name || '';
     studentId = student.id || '';
     rollBookId = rollBooks[0]?.id || '';
+    serviceId = match.params.lectureCardId || '';
 
     // console.log('lecture card page student : ', student);
 
@@ -622,6 +636,7 @@ class LectureCardPage extends Component<Props, State> {
       fileBoxId: personalCube.contents.fileBoxId,
       reportFileBoxId,
       stamp: 0,
+      serviceId,
 
       //etc
       category: personalCube.category,
@@ -825,7 +840,7 @@ class LectureCardPage extends Component<Props, State> {
     let url = '';
     let videoUrl = '';
 
-    switch (media.mediaType) {
+    switch (media && media.mediaType) {
       case MediaType.ContentsProviderMedia:
         url = media.mediaContents.contentsProvider.url;
         break;
@@ -858,12 +873,12 @@ class LectureCardPage extends Component<Props, State> {
     }
 
     return {
-      mediaType: media.mediaType,
+      mediaType: media && media.mediaType,
       url,
       videoUrl,
       learningPeriod: {
-        startDate: media.learningPeriod.startDateDot,
-        endDate: media.learningPeriod.endDateDot,
+        startDate: media && media.learningPeriod.startDateDot,
+        endDate: media && media.learningPeriod.endDateDot,
       },
     };
   }
@@ -1023,6 +1038,8 @@ class LectureCardPage extends Component<Props, State> {
 
   renderOverview() {
     //
+    // const { servic, serviceType } = this.props.match.params!;
+    const parmas = this.props.match;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
 
@@ -1031,6 +1048,8 @@ class LectureCardPage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        serviceId={parmas.params.lectureCardId}
+        serviceType={parmas.params.cubeId}
       />
     );
   }

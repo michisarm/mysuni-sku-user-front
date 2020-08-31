@@ -5,3 +5,5 @@ export { default as MyCommunityPage } from './ui/page/MyCommunityPage';
 
 export { default as MyLearningSummaryModal } from './ui/logic/MyLearningSummaryModal';
 export { default as MyFeed } from './ui/logic/MyFeedContainer';
+
+export { default as NewLearningPage } from './ui/page/NewLearningPage';

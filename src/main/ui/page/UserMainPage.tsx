@@ -32,9 +32,9 @@ class UserMainPage extends Component<Props> {
   }
 
   publishViewEvent() {
-    const {actionEventService} = this.props;
-    const menu = `MAIN_VIEW`;
-  
+    const { actionEventService } = this.props;
+    const menu = 'MAIN_VIEW';
+
     actionEventService.registerViewActionLog({menu});
   }
 

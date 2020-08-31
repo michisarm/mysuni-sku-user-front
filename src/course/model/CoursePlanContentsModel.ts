@@ -27,6 +27,8 @@ export class CoursePlanContentsModel implements DramaEntity {
 
   fileBoxId: string = '';
 
+  totalCourseCount: number = 0;
+
   constructor(courseContents?: CoursePlanContentsModel) {
     //
     if (courseContents) {
@@ -115,4 +117,6 @@ decorate(CoursePlanContentsModel, {
   examAuthorName: observable,
 
   fileBoxId: observable,
+
+  totalCourseCount: observable,
 });

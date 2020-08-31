@@ -1,17 +1,19 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Image, Label } from 'semantic-ui-react';
+import {Button, Icon, Image, Label} from 'semantic-ui-react';
 import { CategoryModel } from 'shared/model';
-
 
 interface TitleProps {
   title: string | React.ReactNode,
   category?: CategoryModel,
   children?: React.ReactNode,
+  toggle?: boolean,
+  onToggle?: () => void,
+  open?: boolean
 }
 
-export const Title = ({ category, title, children }: TitleProps) => (
+export const Title = ({ category, title, children, toggle, onToggle, open }: TitleProps) => (
   <div className="title-area">
     {category && category.college.name && <Label className={category.color}>{category.college.name}</Label>}
     <div className="header">{title}</div>
@@ -25,15 +27,17 @@ interface FieldProps {
   text: string,
   bold?: boolean,
   subField?: React.ReactNode,
+  children?: React.ReactNode
 }
 
-export const Field = ({ icon, text, bold, subField }: FieldProps) => (
+export const Field = ({ icon, text, bold, subField, children }: FieldProps) => (
   <div className="li">
     <Label className={`onlytext ${bold ? 'bold' : ''}`}>
       <Icon className={icon} />
       <span>{text}</span>
     </Label>
     {subField}
+    {children}
   </div>
 );
 
@@ -50,7 +54,7 @@ export const SubField = ({ icon, text, className = '', bold = false, children = 
   <Label className={classNames('onlytext', { bold }, className)}>
     <Icon className={icon} />
     <span>{text}</span>
-    {children}
+    {/*{children}*/}
   </Label>
 );
 

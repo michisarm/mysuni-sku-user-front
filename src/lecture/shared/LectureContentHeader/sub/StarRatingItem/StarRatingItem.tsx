@@ -22,7 +22,7 @@ class StarRatingItem extends Component<Props> {
     const { value, max } = this.props;
     const stars = [] as any;
 
-    stars.length = max!;
+    stars.length = (max === 0) ? 5 : max!;
     stars.fill(true);
 
     return (

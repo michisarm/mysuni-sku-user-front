@@ -14,6 +14,9 @@ import { LectureModel } from '../../../../model';
 import { Buttons, Field, Fields, Ribbon, SubField, Thumbnail, Title } from '../../../ui/view/LectureElementsView';
 import Action from '../../model/Action';
 import { CubeIconType } from '../../model';
+// 고도화
+import {CubeType} from '../../../../../shared/model';
+
 
 
 interface Props {
@@ -108,9 +111,20 @@ class BoxCardView extends Component<Props, States> {
 
           <Title title={model.name} category={model.category} />
 
+          {/*아이콘과 정보 영역*/}
           <Fields>
             { model.cubeTypeName && (
-              <Field icon={CubeIconType[model.cubeType] || CubeIconType[model.serviceType]} text={model.cubeTypeName} bold />
+              <Field icon={CubeIconType[model.cubeType] || CubeIconType[model.serviceType]} text={model.cubeTypeName} bold>
+
+                {/*0630 PSJ 수강신청, 유료과정에 대한 메타 정보*/}
+                { (model.cubeType === CubeType.ClassRoomLecture || model.cubeType === CubeType.ELearning) && (
+                  <>
+                    {/*0630 size12 클래스는 유료과정+수강신청일 경우에만 적용*/}
+                    {/*<span className={ classNames('g-text', 'size12')}>유료과정&amp;수강신청</span>*/}
+                  </>
+                )}
+
+              </Field>
             )}
 
             {

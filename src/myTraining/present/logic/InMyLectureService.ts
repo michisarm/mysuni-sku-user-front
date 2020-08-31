@@ -71,12 +71,21 @@ class InMyLectureService {
     this._inMyLectures = [];
   }
 
-  addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
-    return this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel);
+  @action
+  async addInMyLecture(inMyLectureCdoModel: InMyLectureCdoModel) {
+    await this.inMyLectureApi.addInMyLecture(inMyLectureCdoModel).then((response) => {
+      if (response && response.length > 0) {
+        runInAction(() => this.findAllInMyLectures());
+      }
+      return response;
+    }).catch((reason: any) => {return null;});
   }
 
-  removeInMyLecture(inMyLectureId: string) {
-    return this.inMyLectureApi.removeInMyLecture(inMyLectureId);
+  @action
+  async removeInMyLecture(inMyLectureId: string) {
+    await this.inMyLectureApi.removeInMyLecture(inMyLectureId).then(() => {
+      return runInAction(() => this.findAllInMyLectures());
+    }).catch((reason: any) => {return null;});
   }
 
   @action

@@ -1,4 +1,3 @@
-
 import { observable, action, runInAction, computed } from 'mobx';
 import { autobind, NameValueList, CachingFetch } from '@nara.platform/accent';
 
@@ -7,7 +6,6 @@ import SkProfileApi from '../apiclient/SkProfileApi';
 import SkProfileModel from '../../model/SkProfileModel';
 import StudySummaryModel from '../../model/StudySummaryModel';
 import SkProfileUdo from '../../model/SkProfileUdo';
-
 
 @autobind
 class SkProfileService {
@@ -26,6 +24,8 @@ class SkProfileService {
 
   studySummaryCachingFetch: CachingFetch = new CachingFetch();
 
+  @observable
+  reAgree: boolean = false;
 
   constructor(skProfileApi: SkProfileApi) {
     //
@@ -38,14 +38,29 @@ class SkProfileService {
   }
 
   @computed
+  get profileMemberEmail() {
+    return this.skProfile.member.email;
+  }
+
+  @computed
+  get profileMemberCompanyCode() {
+    return this.skProfile.member.companyCode;
+  }
+
+  @computed
   get studySummaryFavoriteChannels() {
     //
     const { favoriteChannels } = this.studySummary;
 
-    return favoriteChannels && favoriteChannels.idNames || [];
+    return (favoriteChannels && favoriteChannels.idNames) || [];
   }
 
   // SkProfile ---------------------------------------------------------------------------------------------------------
+
+  @action
+  setReagree(agree: boolean) {
+    this.reAgree = agree;
+  }
 
   @action
   clearSkProfile() {
@@ -57,18 +72,34 @@ class SkProfileService {
     //
     const fetched = this.skProfileCachingFetch.fetch(
       () => this.skProfileApi.findSkProfile(),
-      (skProfile) => runInAction(() => this.skProfile = new SkProfileModel(skProfile)),
+      skProfile =>
+        runInAction(() => (this.skProfile = new SkProfileModel(skProfile)))
     );
-    return fetched ? this.skProfileCachingFetch.inProgressFetching : this.skProfile;
+    return fetched
+      ? this.skProfileCachingFetch.inProgressFetching
+      : this.skProfile;
   }
 
-  modifySkProfile(skProfileUdo : SkProfileUdo) {
-    this.skProfileApi.modifySkProfile(skProfileUdo);
+  modifySkProfile(skProfileUdo: SkProfileUdo) {
+    return this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 
   @action
-  setFavoriteJobGroupProp(name:string, value:any) {
-    this.skProfile.member.favoriteJobGroup = _.set(this.skProfile.member.favoriteJobGroup, name, value);
+  setFavoriteJobGroupProp(name: string, value: any) {
+    this.skProfile.member.favoriteJobGroup = _.set(
+      this.skProfile.member.favoriteJobGroup,
+      name,
+      value
+    );
+  }
+
+  @action
+  setCurrentJobGroupProp(name: string, value: any) {
+    this.skProfile.member.currentJobGroup = _.set(
+      this.skProfile.member.currentJobGroup,
+      name,
+      value
+    );
   }
 
   // StudySummary ------------------------------------------------------------------------------------------------------
@@ -78,10 +109,15 @@ class SkProfileService {
     //
     const fetched = this.studySummaryCachingFetch.fetch(
       () => this.skProfileApi.findStudySummary(),
-      (studySummary) => runInAction(() => this.studySummary = new StudySummaryModel(studySummary)),
+      studySummary =>
+        runInAction(
+          () => (this.studySummary = new StudySummaryModel(studySummary))
+        )
     );
 
-    return fetched ? this.studySummaryCachingFetch.inProgressFetching : this.studySummary;
+    return fetched
+      ? this.studySummaryCachingFetch.inProgressFetching
+      : this.studySummary;
   }
 
   modifyStudySummary(nameValues: NameValueList) {
@@ -95,12 +131,14 @@ class SkProfileService {
   /**
    * mySUNI에서 본인 증명사진 base64 데이터 저장
    */
-  modifyPhotoImageByProfileId(profileId: string, photoType: string, photoImage : string)
-  {
+  modifyPhotoImageByProfileId(
+    profileId: string,
+    photoType: string,
+    photoImage: string
+  ) {
     let asNameValues = {} as NameValueList;
 
-    if (!photoType || photoType === '0')
-    {
+    if (!photoType || photoType === '0') {
       asNameValues = {
         nameValues: [
           {
@@ -109,8 +147,7 @@ class SkProfileService {
           },
         ],
       };
-    } else if (photoType && photoType === '1')
-    {
+    } else if (photoType && photoType === '1') {
       asNameValues = {
         nameValues: [
           {
@@ -129,19 +166,17 @@ class SkProfileService {
   }
 
   @action
-  setStudySummaryProp(name:string, value:any) {
+  setStudySummaryProp(name: string, value: any) {
     this.studySummary = _.set(this.studySummary, name, value);
   }
 
   @action
-  setMemberProp(name: string, value: string | {} | string[])
-  {
+  setMemberProp(name: string, value: string | {} | string[]) {
     this.skProfile.member = _.set(this.skProfile.member, name, value);
   }
 
   @action
-  setProfileProp(name: string, value: string | {} | string[] | number)
-  {
+  setProfileProp(name: string, value: string | {} | string[] | number) {
     // console.log('SkProfileService setProfileProp=', value);
     this.skProfile = _.set(this.skProfile, name, value);
   }

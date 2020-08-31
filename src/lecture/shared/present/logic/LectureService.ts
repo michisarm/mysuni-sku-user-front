@@ -42,18 +42,32 @@ class LectureService {
   // @observable
   // _recommendLectures: RecommendLectureRdo[] = [];
 
+  // 추천과정 리스트
   @observable
   _recommendLectureListRdo: RecommendLectureListRdo = new RecommendLectureListRdo();
 
+  // 추천과정
   @observable
   recommendLecture: RecommendLectureRdo = new RecommendLectureRdo();
 
   @observable
   _lectureViews: LectureViewModel[] = [];
 
+  @action
+  setLectureViews(views: any) {
+    this._lectureViews = views;
+  }
+
   @observable
   subLectureViewsMap: Map<string, LectureViewModel[]> = new Map();
 
+  @action
+  setSubLectureViews(courseId: string, lectureViews: LectureViewModel[]) {
+    // console.log('courseId : ', courseId, 'lectureViews, ', lectureViews);
+    runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
+  }
+
+  // 권장과정
   @observable
   requiredLecturesCount: number = 0;
 
@@ -70,7 +84,8 @@ class LectureService {
   @computed
   get lectures(): LectureModel[] {
     //
-    return (this._lectures as IObservableArray).peek();
+    const lectures = this._lectures as IObservableArray;
+    return lectures.peek();
   }
 
   @computed
@@ -90,6 +105,12 @@ class LectureService {
     //
     return (this._lectureViews as IObservableArray).peek();
   }
+
+  // @computed
+  // get preLectureViews() {
+  //   //
+  //   return (this._preLectureViews as IObservableArray).peek();
+  // }
 
   // Lectures ----------------------------------------------------------------------------------------------------------
 
@@ -178,18 +199,48 @@ class LectureService {
     return lectureOffsetElementList;
   }
 
+  // 권장과정
   @action
   async findPagingRequiredLectures(
     limit: number,
     offset: number,
-    channelIds: string[] = []
+    channelIds: string[] = [],
+    orderBy: OrderByType = OrderByType.New,
+    fromMain: boolean = false
   ) {
     //
-    const response = await this.lectureFlowApi.findRequiredLectures(
+    const response = await this.lectureFlowApi.findRqdLectures(
       LectureFilterRdoModel.new(limit, offset, channelIds)
     );
     const lectureOffsetElementList = new OffsetElementList<LectureModel>(
       response
+    );
+
+    if (fromMain) {
+      window.sessionStorage.setItem(
+        'RequiredLearningList',
+        JSON.stringify(lectureOffsetElementList)
+      );
+    }
+
+    lectureOffsetElementList.results = lectureOffsetElementList.results.map(
+      lecture => new LectureModel(lecture)
+    );
+
+    runInAction(
+      () =>
+        (this._lectures = this._lectures.concat(
+          lectureOffsetElementList.results
+        ))
+    );
+    return lectureOffsetElementList;
+  }
+
+  @action
+  async setPagingRequiredLectures(lectures: OffsetElementList<LectureModel>) {
+    //
+    const lectureOffsetElementList = new OffsetElementList<LectureModel>(
+      lectures
     );
 
     lectureOffsetElementList.results = lectureOffsetElementList.results.map(
@@ -230,6 +281,28 @@ class LectureService {
     return lectureViews;
   }
 
+  @action
+  async findLectureViewsV2(
+    coursePlanId: string,
+    lectureCardUsids: string[],
+    courseLectureUsids?: string[]
+  ) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViewsV2(
+      coursePlanId,
+      lectureCardUsids,
+      courseLectureUsids
+    );
+
+    runInAction(() => (this._lectureViews = lectureViews));
+    return lectureViews;
+  }
+
+  findLectureViewsFromJson(lectures: string) {
+    runInAction(() => (this._lectureViews = JSON.parse(lectures)));
+    // console.log('lectureViews : ', this.lectureViews);
+  }
+
   // SubLectureViewMap -------------------------------------------------------------------------------------------------
 
   @action
@@ -250,8 +323,31 @@ class LectureService {
     return lectureViews;
   }
 
+  @action
+  async findSubLectureViewsV2(
+    courseId: string,
+    coursePlanId: string,
+    lectureCardIds: string[],
+    courseLectureIds?: string[]
+  ) {
+    //
+    const lectureViews = await this.lectureApi.findLectureViewsV2(
+      coursePlanId,
+      lectureCardIds,
+      courseLectureIds
+    );
+
+    runInAction(() => this.subLectureViewsMap.set(courseId, lectureViews));
+    return lectureViews;
+  }
+
   getSubLectureViews(courseId: string) {
     //
+
+    // if (this.subLectureViewsMap.get(courseId)) {
+    //   console.log( 'subLectureViewsMap.get : ', courseId, (this.subLectureViewsMap.get(courseId) as IObservableArray).peek());
+    // }
+
     return this.subLectureViewsMap.get(courseId) || [];
   }
 

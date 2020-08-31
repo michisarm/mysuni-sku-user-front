@@ -27,6 +27,13 @@ const routePaths = {
   communityMyCreatedCommunity: () => routePaths.communityTab('MyCreatedCommunity'),
   communityMyFeed: () => routePaths.communityTab('MyFeed'),
 
+  newLearningTab: (tab: string) => `/my-training/new-learning/${tab}/pages/1`,
+  learningRqdLecture: () => routePaths.newLearningTab('Required'),
+  learningNewLecture: () => routePaths.newLearningTab('New'),
+  learningPopLecture: () => routePaths.newLearningTab('Popular'),
+  learningLrsLecture: () => routePaths.newLearningTab('Recommend'),
+
+
   createPersonalCubeDetail: (personalCubeId: string, cubeType: string) => `/personalcube/create/cubes/cube/${personalCubeId}/${cubeType}`,
   createSharedDetail: (personalCubeId: string, cubeType: string, cubeState: string) => `/personalcube/create/cubes/shared/${personalCubeId}/${cubeType}/${cubeState}`,
   approvalCubesDetail: (studentId: string) => `/my-training/my-page/ApprovalList/detail/${studentId}`,

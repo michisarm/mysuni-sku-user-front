@@ -2,12 +2,24 @@
 import { axiosApi as axios, OffsetElementList } from '@nara.platform/accent';
 import { NameValueList } from 'shared/model';
 import { CoursePlanModel, CoursePlanContentsModel, CoursePlanRdoModel } from '../../model';
+import {CoursePlanCustomModel} from '../../model/CoursePlanCustomModel';
 
 export default class CoursePlanApi {
-  URL = '/api/course/coursePlans';
-  coursePlanContentsURL = '/api/course/coursePlanContents';
-
+  //
   static instance: CoursePlanApi;
+
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_API === undefined || process.env.REACT_APP_COURSE_PLAN_API === '' ?
+    '/api/course/coursePlans' : process.env.REACT_APP_COURSE_PLAN_API;
+
+  coursePlanContentsURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
+    '/api/course/coursePlanContents' : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
+
+  lectureContentsURL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined || process.env.REACT_APP_COURSE_PLAN_CONTENT_API === '' ?
+    '/api/lecture' : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
+
 
   registerCoursePlan(coursePlan: CoursePlanModel) {
     //
@@ -53,11 +65,33 @@ export default class CoursePlanApi {
       .then(response => response && response.data || null);
   }
 
+  findCoursePlanContentsV2(coursePlanContentsId: string) {
+    //
+    return axios.get<CoursePlanContentsModel>(this.coursePlanContentsURL + `/v2/${coursePlanContentsId}`)
+      .then(response => response && response.data || null);
+  }
+
   modifyCoursePlanContents(coursePlanContentsId: string, nameValues: NameValueList) {
     //
     return axios.put<string>(this.coursePlanContentsURL + `/${coursePlanContentsId}`, nameValues);
   }
 
+  findAllPrecedenceCourseList(coursePlanId: string) {
+    return axios.get<OffsetElementList<CoursePlanModel>>(this.URL + `/precedenceCourseList/${coursePlanId}` )
+      .then(response => response && response.data || null);
+
+  }
+
+  findAllPreCourseIdList(coursePlanId: string) {
+    return axios.get<string[]>(this.URL + `/preCourseIdList/${coursePlanId}` )
+      .then(response => response && response.data || null);
+
+  }
+
+  findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
+    return axios.get<CoursePlanCustomModel>(this.lectureContentsURL + `/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`,)
+      .then(response => response && response.data || null);
+  }
 }
 
 Object.defineProperty(CoursePlanApi, 'instance', {
