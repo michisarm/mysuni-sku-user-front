@@ -31,17 +31,17 @@ class GuideAgreementContainer extends Component<Props> {
 
   onConfirm() {
     const { history } = this.props;
+    const skProfileService = this.props.skProfileService!;
+    // 재동의 : 이 페이지는 재동의 시에만 나오는 페이지라서 재동의 상태를 여기서 세팅
+    // AppLayoutContainer 에서는 window.location.href 로 페이지 refresh 가 되어 store 값이 날아가서 reAgree 세팅안됌.
+    skProfileService.setReagree(true);
     history.push(routePaths.personalInfoAgreement());
   }
 
   render() {
-    const skProfileService = this.props.skProfileService!;
-    const { reAgree } = skProfileService!;
-
     return (
       <div className="interest-content">
         <GuideAgreementView />
-
         <div className="button-area">
           {/* <Button className="fix line" onClick={this.onCancel}>
             Cancel
