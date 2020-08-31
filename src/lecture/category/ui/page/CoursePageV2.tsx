@@ -544,7 +544,7 @@ class CoursePageV2 extends Component<Props, State> {
     let examType: string = '';
     let examName: string = '';
 
-    // console.log('coursePlanContents : ', coursePlanContents);
+    // console.log('student : ', student);
     // console.log('examinationService : ', examinationService);
     if (student && student.id) {
       this.setExamState(student);

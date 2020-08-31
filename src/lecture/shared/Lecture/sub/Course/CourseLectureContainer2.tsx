@@ -228,7 +228,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       {
         // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
         const cubeIntro = lectureView.cubeIntro;
-        if (cubeIntro?.reportFileBox.fileBoxId) {
+        if (cubeIntro && cubeIntro?.reportFileBox && cubeIntro?.reportFileBox.fileBoxId) {
           this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
         }
       }
