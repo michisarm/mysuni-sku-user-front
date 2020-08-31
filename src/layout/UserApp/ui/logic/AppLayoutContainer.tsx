@@ -36,21 +36,24 @@ class AppLayoutContainer extends Component<Props> {
       return rtn;
     }
 
-    // if (process.env.NODE_ENV !== 'development') {
-    const data = await SkProfileApi.instance.findSkProfile();
-    const obj = JSON.parse(JSON.stringify(data));
+    if (process.env.NODE_ENV !== 'development') {
+      const data = await SkProfileApi.instance.findSkProfile();
+      const obj = JSON.parse(JSON.stringify(data));
 
-    if (!obj.pisAgreement.signed) {
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
-    } else if (!obj.studySummaryConfigured) {
-      window.location.href =
-        process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      if (!obj.pisAgreement.signed) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      } else if (
+        obj.pisAgreement.signed &&
+        compareDate(obj.pisAgreement.date)
+      ) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
+      } else if (!obj.studySummaryConfigured) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+      }
     }
-    // }
   }
 
   render() {
