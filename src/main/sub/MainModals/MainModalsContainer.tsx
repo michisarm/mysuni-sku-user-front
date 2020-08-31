@@ -154,19 +154,19 @@ class MainModalsContainer extends Component<{}, State> {
 
     // 20200604 팝업제거 요청 by 이의연 RF
 
-    if (systemGuideModalState.disabled) {
-      return null;
-    }
+    // if (systemGuideModalState.disabled) {
+    //   return null;
+    // }
 
-    if (systemGuideModalState.open) {
-      return (
-        <SystemGuideModalView
-          modalState={systemGuideModalState}
-          onClose={this.onCloseSystemGuide}
-          onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
-        />
-      );
-    }
+    // if (systemGuideModalState.open) {
+    //   return (
+    //     <SystemGuideModalView
+    //       modalState={systemGuideModalState}
+    //       onClose={this.onCloseSystemGuide}
+    //       onCheckDisable={(e: any, data: any) => this.onCheckNoMoreSee(PageType.SystemGuide, data.checked)}
+    //     />
+    //   );
+    // }
     /*else if (trustedSiteModalState.open) {
       return (
         <TrustedSiteModalView
