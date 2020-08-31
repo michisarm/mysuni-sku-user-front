@@ -55,7 +55,10 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
   };
 
   componentDidMount(): void {
-    this.init();
+    const { skProfileService } = this.props;
+    skProfileService!.findSkProfile();
+    // summary 성공하면 setting 시작
+    skProfileService!.findStudySummary().then(() => this.init());
   }
 
   async init() {
@@ -78,8 +81,8 @@ class FavoriteCollegeContainer extends React.Component<Props, State> {
       )
       .flat();
 
-    skProfileService!.findSkProfile();
-    skProfileService!.findStudySummary();
+    // skProfileService!.findSkProfile();
+    // skProfileService!.findStudySummary()
     // collegeService!.findAllChannel();
 
     const channels = studySummaryFavoriteChannels.map(
