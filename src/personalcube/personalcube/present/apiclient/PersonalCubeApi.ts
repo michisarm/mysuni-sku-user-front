@@ -27,9 +27,9 @@ export default class PersonalCubeApi {
   // baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
   //   this.serverUrl : this.devUrl;
 
-  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
-  process.env.REACT_APP_PERSONAL_CUBE_API === undefined || process.env.REACT_APP_PERSONAL_CUBE_API === '' ?
-    '/api/personalCube' : process.env.REACT_APP_PERSONAL_CUBE_API;
+  // baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  // process.env.REACT_APP_PERSONAL_CUBE_API === undefined || process.env.REACT_APP_PERSONAL_CUBE_API === '' ?
+  //   '/api/personalCube' : process.env.REACT_APP_PERSONAL_CUBE_API;
 
   /*URL = this.baseUrl + '/personalcubes';
   flowURL = this.baseUrl + '/cubes/flow';
