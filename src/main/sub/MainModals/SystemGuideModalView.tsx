@@ -45,7 +45,7 @@ class SystemGuideModalView extends Component<Props> {
                   </ul>
                   <div>· 작업 일시</div>
                   <ul>
-                    <li>- 8월 31일 월요일 19:00 ~ 21:00</li>
+                    <li>- 8월 31일 월요일 19:00 ~ 22:00</li>
                     <li>(작업 시간 동안 서비스 사용 불가)</li>
                   </ul>
                   <div>· 기타 문의</div>
