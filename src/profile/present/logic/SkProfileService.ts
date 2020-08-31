@@ -81,7 +81,7 @@ class SkProfileService {
   }
 
   modifySkProfile(skProfileUdo: SkProfileUdo) {
-    this.skProfileApi.modifySkProfile(skProfileUdo);
+    return this.skProfileApi.modifySkProfile(skProfileUdo);
   }
 
   @action

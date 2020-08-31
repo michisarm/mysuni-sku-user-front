@@ -69,25 +69,27 @@ class PersonalInfoAgreementContainer extends Component<Props> {
       return;
     }
 
-    skProfileService.findSkProfile().then(skProfile => {
-      // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
-      //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
-      if (reAgree) {
-        history.push(routePaths.currentJob());
-      } else if (skProfile.studySummaryConfigured) {
-        history.push('/');
-      } else {
-        history.push(routePaths.favoriteWelcome());
-      }
-    });
-
     skProfile.pisAgreement.signed = true;
     skProfile.pisAgreement.date = moment().format('YYYY-MM-DD');
 
     const skProfileUdo = SkProfileUdo.fromPisAgreement(
       new PisAgreementModel(skProfile.pisAgreement)
     );
-    skProfileService.modifySkProfile(skProfileUdo);
+
+    // 수정 api 처리될때까지 조회하면 안된다...... ㅡㅡ;
+    skProfileService.modifySkProfile(skProfileUdo).then(() =>
+      skProfileService.findSkProfile().then(skProfile => {
+        // 재동의 : studySummaryConfigured === true 이면 홈으로 이동하는 로직이 있음.
+        //         재동의는 무조건 현직무, 관심직무 다시 선택하게.
+        if (reAgree) {
+          history.push(routePaths.currentJob());
+        } else if (skProfile.studySummaryConfigured) {
+          history.push('/');
+        } else {
+          history.push(routePaths.favoriteWelcome());
+        }
+      })
+    );
   }
 
   render() {
