@@ -1,11 +1,16 @@
-import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
+import {
+  IObservableArray,
+  action,
+  computed,
+  observable,
+  runInAction,
+} from 'mobx';
 import { autobind } from '@nara.platform/accent';
 import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
-
 
 @autobind
 class MyTrainingService {
@@ -50,11 +55,14 @@ class MyTrainingService {
   @action
   async saveAllLearningPassedToStorage(state: string, endDate: string) {
     //
-    await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
+    await this.myTrainingApi
+      .saveAllLearningPassedToStorage(state, endDate)
       .then((response: any) => {
         if (response) {
           if (response.data !== null && response.data !== '') {
-            this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+            this.setCombineLearningPassedFromStorage(
+              JSON.stringify(response.data)
+            );
           }
         }
       });
@@ -66,11 +74,14 @@ class MyTrainingService {
     const endDate: string | null = sessionStorage.getItem('endDate');
 
     if (endDate) {
-      await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
+      await this.myTrainingApi
+        .saveAllLearningPassedToStorage(state, endDate)
         .then((response: any) => {
           if (response) {
             if (response.data !== null && response.data !== '') {
-              this.setCombineLearningPassedFromStorage(JSON.stringify(response.data));
+              this.setCombineLearningPassedFromStorage(
+                JSON.stringify(response.data)
+              );
             }
           }
         });
@@ -80,10 +91,12 @@ class MyTrainingService {
   }
 
   @action
-  async setCombineLearningPassedFromStorage(data :string) {
+  async setCombineLearningPassedFromStorage(data: string) {
     //
     if (data.length > 0) {
-      const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
+      const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
+        data
+      );
       // if (newModel.results.length > 0) {
       //   console.log('newModel Count : ', newModel.results.length);
       // }
@@ -91,8 +104,9 @@ class MyTrainingService {
       const oldJson = sessionStorage.getItem('learningPassed');
       if (oldJson) {
         if (oldJson.length > 0) {
-
-          const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(oldJson);
+          const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
+            oldJson
+          );
           // console.log('oldModel Count : ', oldModel.results.length);
           if (oldModel.results.length > 0) {
             newModel.results = newModel.results.concat(oldModel.results);
@@ -102,7 +116,7 @@ class MyTrainingService {
 
       // console.log('total Count : ', newModel.results.length);
 
-      if (newModel.results.length > 0) {
+      if (newModel && newModel.results && newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
@@ -114,9 +128,12 @@ class MyTrainingService {
     //
     this._myTrainings = [];
 
-    const savedLearningPassed = window.navigator.onLine && window.sessionStorage.getItem('learningPassed');
+    const savedLearningPassed =
+      window.navigator.onLine &&
+      window.sessionStorage.getItem('learningPassed');
     if (savedLearningPassed && savedLearningPassed.length > 0) {
-      const learningPassed: MyTrainingModel[] = JSON.parse(savedLearningPassed).results as MyTrainingModel[];
+      const learningPassed: MyTrainingModel[] = JSON.parse(savedLearningPassed)
+        .results as MyTrainingModel[];
       this._myTrainings = this._myTrainings.concat(learningPassed);
     }
 
@@ -124,26 +141,52 @@ class MyTrainingService {
   }
 
   @action
-  async fetchAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
+  async fetchAndAddAllMyTrainingsWithState(
+    state: string,
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
-    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+    const rdo = MyTrainingRdoModel.newWithState(
+      state,
+      limit,
+      offset,
+      channelIds
+    );
     const offsetList = await this.myTrainingApi.fetchAllMyTrainings(rdo);
 
-    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    runInAction(
+      () => (this._myTrainings = this._myTrainings.concat(offsetList.results))
+    );
     return offsetList;
   }
 
   @action
-  async findAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = [], fromMain: boolean = false) {
+  async findAllMyTrainingsWithState(
+    state: string,
+    limit: number,
+    offset: number,
+    channelIds: string[] = [],
+    fromMain: boolean = false
+  ) {
     //
-    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+    const rdo = MyTrainingRdoModel.newWithState(
+      state,
+      limit,
+      offset,
+      channelIds
+    );
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
     if (fromMain) {
-      window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
+      window.sessionStorage.setItem(
+        'InProgressLearningList',
+        JSON.stringify(offsetList)
+      );
     }
 
-    runInAction(() => this._myTrainings = offsetList.results);
+    runInAction(() => (this._myTrainings = offsetList.results));
     return offsetList;
   }
 
@@ -152,20 +195,31 @@ class MyTrainingService {
     //
     const offsetList = lectures;
 
-    runInAction(() => this._myTrainings = offsetList.results);
+    runInAction(() => (this._myTrainings = offsetList.results));
     return offsetList;
   }
 
   @action
-  async findAndAddAllMyTrainingsWithState(state: string, limit: number, offset: number, channelIds: string[] = []) {
+  async findAndAddAllMyTrainingsWithState(
+    state: string,
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
     if (state === 'Completed' || state === 'Passed') {
       const learningPassed = sessionStorage.getItem('learningPassed');
       if (learningPassed) {
         let result: MyTrainingModel[] = [];
-        const parseElement: OffsetElementList<MyTrainingModel> = JSON.parse(learningPassed);
-        const offsetList: OffsetElementList<MyTrainingModel> = new OffsetElementList<MyTrainingModel>();
-        offsetList.results = offsetList.results.concat(parseElement.results.map((e) => new MyTrainingModel(e)));
+        const parseElement: OffsetElementList<MyTrainingModel> = JSON.parse(
+          learningPassed
+        );
+        const offsetList: OffsetElementList<MyTrainingModel> = new OffsetElementList<
+          MyTrainingModel
+        >();
+        offsetList.results = offsetList.results.concat(
+          parseElement.results.map(e => new MyTrainingModel(e))
+        );
 
         if (channelIds.length === 0) {
           result = offsetList.results;
@@ -175,7 +229,7 @@ class MyTrainingService {
         } else {
           for (let i = 0; i < channelIds.length; i++) {
             for (let j = 0; j < offsetList.results.length; j++) {
-              if (offsetList.results[j].category.channel.id === channelIds[i]){
+              if (offsetList.results[j].category.channel.id === channelIds[i]) {
                 result.push(offsetList.results[j]);
               }
             }
@@ -184,59 +238,103 @@ class MyTrainingService {
 
         // @ts-ignore
         result.sort((a, b) => b.endDate - a.endDate);
-        const useResult: MyTrainingModel[] = result.slice(offset, limit + offset);
+        const useResult: MyTrainingModel[] = result.slice(
+          offset,
+          limit + offset
+        );
         offsetList.totalCount = result.length;
 
-        runInAction(() => this._myTrainings = this._myTrainings.concat(useResult));
+        runInAction(
+          () => (this._myTrainings = this._myTrainings.concat(useResult))
+        );
         return offsetList;
       }
     }
 
-    const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
+    const rdo = MyTrainingRdoModel.newWithState(
+      state,
+      limit,
+      offset,
+      channelIds
+    );
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
-    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    runInAction(
+      () => (this._myTrainings = this._myTrainings.concat(offsetList.results))
+    );
     return offsetList;
   }
 
   @action
-  async findAllMyTrainingsWithRequired(limit: number, offset: number, channelIds: string[] = []) {
+  async findAllMyTrainingsWithRequired(
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
     const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    runInAction(() => this._myTrainings = offsetList.results);
+    runInAction(() => (this._myTrainings = offsetList.results));
 
     return offsetList;
   }
 
   @action
-  async findAndAddAllMyTrainingsWithRequired(limit: number, offset: number, channelIds: string[] = []) {
+  async findAndAddAllMyTrainingsWithRequired(
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
     const rdo = MyTrainingRdoModel.newWithRequired(limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
 
-    runInAction(() => this._myTrainings = this._myTrainings.concat(offsetList.results));
+    runInAction(
+      () => (this._myTrainings = this._myTrainings.concat(offsetList.results))
+    );
     return offsetList;
   }
 
   @action
   async findAndAddAllMyCommunityTrainings(limit: number, offset: number) {
     //
-    const rdo = MyTrainingRdoModel.newWithCubeType(CubeType.Community, limit, offset);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainings(rdo);
+    const rdo = MyTrainingRdoModel.newWithCubeType(
+      CubeType.Community,
+      limit,
+      offset
+    );
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainings(
+      rdo
+    );
 
-    runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._myTrainings = this._myTrainings.concat(
+          trainingOffsetElementList.results
+        ))
+    );
 
     return trainingOffsetElementList;
   }
 
   @action
-  async findAndAddAllMyTrainingsWithStamp(limit: number, offset: number, channelIds: string[] = []) {
+  async findAndAddAllMyTrainingsWithStamp(
+    limit: number,
+    offset: number,
+    channelIds: string[] = []
+  ) {
     //
     const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
+      rdo
+    );
 
-    runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+    runInAction(
+      () =>
+        (this._myTrainings = this._myTrainings.concat(
+          trainingOffsetElementList.results
+        ))
+    );
     return trainingOffsetElementList;
   }
 
@@ -244,11 +342,12 @@ class MyTrainingService {
   async countMyTrainingsWithStamp(channelIds: string[] = []) {
     //
     const rdo = MyTrainingRdoModel.new(1, 0, channelIds);
-    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(
+      rdo
+    );
 
     return trainingOffsetElementList.totalCount;
   }
-
 
   @action
   async findAllTabMyTraining() {
@@ -268,8 +367,6 @@ class MyTrainingService {
 MyTrainingService.instance = new MyTrainingService(MyTrainingApi.instance);
 
 export default MyTrainingService;
-
-
 
 // console.log('offset : ', offset);
 // console.log('limit : ', limit + offset);
@@ -305,3 +402,4 @@ export default MyTrainingService;
 //   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
 //   return offsetList;
 // }
+// 1
