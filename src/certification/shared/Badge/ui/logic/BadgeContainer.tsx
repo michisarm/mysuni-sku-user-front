@@ -101,11 +101,11 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
       {/*College, Category*/}
       <College
         iconUrl={
-          `${getPublicUrl()}${
-            CategoryImageURL[
-              badge.mainCategoryId as keyof typeof CategoryImageURL
-            ]
-          }`
+          iconUrl
+            ? domainPath + iconUrl
+            : `${getPublicUrl()}${CategoryImageURL[
+                badge.mainCategoryId as keyof typeof CategoryImageURL
+            ]}`
         }
       />
       {/*뱃지명*/}
