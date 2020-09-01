@@ -402,3 +402,4 @@ export default MyTrainingService;
 //   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
 //   return offsetList;
 // }
+// 1
