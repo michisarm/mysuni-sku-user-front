@@ -175,7 +175,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
           </div>
           <div className="type-check-box location">
             <h3 className="title-filter">
-              오프라인 학습 수강 가능 장소 <span>(중복 선택 가능)</span>
+            온라인 학습 중 선호하는 유형은 무엇인가요?
             </h3>
             <div className="check-area">
               {media &&
