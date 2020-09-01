@@ -50,10 +50,10 @@ const goal: string[] = [
 class FavoriteLearningTypeContainer extends Component<Props, State> {
   //
   state = {
-    typeGroup: '오프라인',
-    timeGroup: '오전',
-    mediaGroup: ['Video'],
-    goalGroup: ['새로운 지식과 트렌드를 배우기 위해'],
+    typeGroup: '',
+    mediaGroup: [''],
+    timeGroup: '',
+    goalGroup: [''],
     focus: false,
     write: '',
   };
@@ -69,6 +69,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
     const skProfileService = this.props.skProfileService!;
     const collegeService = this.props.collegeService!;
     const { history } = this.props;
+    const { reAgree } = skProfileService!;
 
     const { typeGroup, timeGroup, mediaGroup, goalGroup, write } = this.state;
     const learningTyps: IdNameList = new IdNameList();
@@ -95,7 +96,14 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
       )
       .then(() => {
         history.push(routePaths.favoriteProgress());
-        setTimeout(() => history.replace(mainRoutePaths.introduction()), 3000);
+        if (reAgree) {
+          setTimeout(() => history.replace(mainRoutePaths.main()), 3000);
+        } else {
+          setTimeout(
+            () => history.replace(mainRoutePaths.introduction()),
+            3000
+          );
+        }
       });
   }
 
@@ -142,7 +150,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
 
   render() {
     //
-    const { typeGroup, timeGroup, goalGroup } = this.state;
+    const { typeGroup, mediaGroup, timeGroup, goalGroup } = this.state;
 
     return (
       <Form>
@@ -178,7 +186,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
                     value={label}
                     className="base"
                     key={index}
-                    defaultChecked={index === 0}
+                    checked={mediaGroup.includes(label)}
                     onChange={(event: any, props: any) =>
                       this.onChangeCheck(event, props)
                     }
