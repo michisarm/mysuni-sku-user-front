@@ -50,9 +50,9 @@ const goal: string[] = [
 class FavoriteLearningTypeContainer extends Component<Props, State> {
   //
   state = {
-    typeGroup: '상관없음',
+    typeGroup: '',
     mediaGroup: [''],
-    timeGroup: '상관없음',
+    timeGroup: '',
     goalGroup: [''],
     focus: false,
     write: '',
@@ -175,7 +175,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
           </div>
           <div className="type-check-box location">
             <h3 className="title-filter">
-            온라인 학습 중 선호하는 유형은 무엇인가요?
+              온라인 학습 중 선호하는 유형은 무엇인가요?
             </h3>
             <div className="check-area">
               {media &&

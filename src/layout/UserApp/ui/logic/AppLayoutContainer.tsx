@@ -37,25 +37,22 @@ class AppLayoutContainer extends Component<Props> {
     }
 
     // local 테스트 시에는 development 막고해 dev 용임
-    if (process.env.NODE_ENV !== 'development') {
-      const data = await SkProfileApi.instance.findSkProfile();
-      const obj = JSON.parse(JSON.stringify(data));
+    // if (process.env.NODE_ENV !== 'development') {
+    const data = await SkProfileApi.instance.findSkProfile();
+    const obj = JSON.parse(JSON.stringify(data));
 
-      if (!obj.pisAgreement.signed) {
-        window.location.href =
-          process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-      } else if (
-        obj.pisAgreement.signed &&
-        compareDate(obj.pisAgreement.date)
-      ) {
-        window.location.href =
-          process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
-      } else if (!obj.studySummaryConfigured) {
-        window.location.href =
-          process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-      }
-      // local 테스트 시에는 development 막고해 dev 용임
+    if (!obj.pisAgreement.signed) {
+      window.location.href =
+        process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+    } else if (obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
+      window.location.href =
+        process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
+    } else if (!obj.studySummaryConfigured) {
+      window.location.href =
+        process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
     }
+    // local 테스트 시에는 development 막고해 dev 용임
+    // }
   }
 
   render() {

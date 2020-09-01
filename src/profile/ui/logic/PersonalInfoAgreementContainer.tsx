@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import moment from 'moment';
-import { Button, Checkbox, Icon } from 'semantic-ui-react';
+import { Button, Checkbox, Form, Radio } from 'semantic-ui-react';
 import routePaths from '../../routePaths';
 import SkProfileService from '../../present/logic/SkProfileService';
 import SkProfileUdo from '../../model/SkProfileUdo';
@@ -25,23 +25,40 @@ class PersonalInfoAgreementContainer extends Component<Props> {
     mySuniChecked: false,
     domesticChecked: false,
     international: false,
+    initCheckOne: false,
+    initCheckTwo: false,
+    initCheckThr: false,
   };
 
   onChangeAllCheck(e: any, checkProps: any) {
     //
     this.setState({
-      mySuniChecked: checkProps.checked,
-      domesticChecked: checkProps.checked,
-      international: checkProps.checked,
+      initCheckOne: true,
+      initCheckTwo: true,
+      initCheckThr: true,
+      mySuniChecked: true,
+      domesticChecked: true,
+      international: true,
     });
   }
 
   onChangeCheck(e: any, data: any) {
-    //
-    const { name } = data;
+    // const { name } = data;
+    // this.setState({
+    //   [name]: data.checked,
+    // });
+    if (e === 'mySuniChecked') {
+      this.setState({ initCheckOne: true });
+    }
+    if (e === 'domesticChecked') {
+      this.setState({ initCheckTwo: true });
+    }
+    if (e === 'international') {
+      this.setState({ initCheckThr: true });
+    }
 
     this.setState({
-      [name]: data.checked,
+      [e]: data,
     });
   }
 
@@ -94,12 +111,19 @@ class PersonalInfoAgreementContainer extends Component<Props> {
 
   render() {
     //
-    const { mySuniChecked, domesticChecked, international } = this.state;
+    const {
+      initCheckOne,
+      initCheckTwo,
+      initCheckThr,
+      mySuniChecked,
+      domesticChecked,
+      international,
+    } = this.state;
     return (
       <div className="terms-content" style={{ paddingTop: '40px' }}>
         <div className="join-agree-area">
           <ul>
-            <li>
+            <li style={{ display: 'none' }}>
               <Checkbox
                 className="base black"
                 label="전체동의"
@@ -108,30 +132,67 @@ class PersonalInfoAgreementContainer extends Component<Props> {
               />
             </li>
             <li>
-              <Checkbox
-                className="base"
-                label="mySUNI 개인정보 처리방침 동의(필수)"
+              <span className="agree-dot" />
+              <span className="agree-cont">개인정보 처리방침 동의(필수)</span>
+              <Radio
                 name="mySuniChecked"
-                checked={mySuniChecked}
-                onChange={this.onChangeCheck}
+                label="동의"
+                className="base"
+                checked={initCheckOne && mySuniChecked}
+                onChange={() => this.onChangeCheck('mySuniChecked', true)}
+                style={{ width: '100px' }}
+              />
+              <Radio
+                name="mySuniChecked"
+                label="미동의"
+                className="base"
+                checked={initCheckOne && !mySuniChecked}
+                onChange={() => this.onChangeCheck('mySuniChecked', false)}
+                style={{ width: '100px' }}
               />
             </li>
             <li>
-              <Checkbox
-                className="base"
-                label="제3자 정보제공에 대한 동의(필수)"
+              <span className="agree-dot" />
+              <span className="agree-cont">
+                제3자 정보제공에 대한 동의(필수)
+              </span>
+              <Radio
                 name="domesticChecked"
-                checked={domesticChecked}
-                onChange={this.onChangeCheck}
+                label="동의"
+                className="base"
+                checked={initCheckTwo && domesticChecked}
+                onChange={() => this.onChangeCheck('domesticChecked', true)}
+                style={{ width: '100px' }}
+              />
+              <Radio
+                name="domesticChecked"
+                label="미동의"
+                className="base"
+                checked={initCheckTwo && !domesticChecked}
+                onChange={() => this.onChangeCheck('domesticChecked', false)}
+                style={{ width: '100px' }}
               />
             </li>
             <li>
-              <Checkbox
-                className="base"
-                label="국외 제3자 제공에 대한 동의(필수)"
+              <span className="agree-dot" />
+              <span className="agree-cont">
+                국외 제3자 제공에 대한 동의(필수)
+              </span>
+              <Radio
                 name="international"
-                checked={international}
-                onChange={this.onChangeCheck}
+                label="동의"
+                className="base"
+                checked={initCheckThr && international}
+                onChange={() => this.onChangeCheck('international', true)}
+                style={{ width: '100px' }}
+              />
+              <Radio
+                name="international"
+                label="미동의"
+                className="base"
+                checked={initCheckThr && !international}
+                onChange={() => this.onChangeCheck('international', false)}
+                style={{ width: '100px' }}
               />
             </li>
           </ul>
