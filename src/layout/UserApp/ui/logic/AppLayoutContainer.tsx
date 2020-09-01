@@ -54,6 +54,7 @@ class AppLayoutContainer extends Component<Props> {
         window.location.href =
           process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
       }
+      // local 테스트 시에는 development 막고해 dev 용임
     }
   }
 
