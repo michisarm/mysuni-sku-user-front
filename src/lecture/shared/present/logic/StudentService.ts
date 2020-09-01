@@ -25,7 +25,6 @@ class StudentService {
   @action
   getLectureInfo(lectureId: string): StudentModel {
     //
-
     let lecture: StudentModel | null = null;
 
     if (this._studentInfo && this._studentInfo.student) {
@@ -41,6 +40,7 @@ class StudentService {
     }
 
     if (this._studentInfo && this._studentInfo.course) {
+
       this._studentInfo.course.courses.map((courseInfo: StudentCubeModel) => {
         if (courseInfo && !lecture) {
           courseInfo.lectures.map((info: StudentModel) => {
@@ -48,6 +48,10 @@ class StudentService {
               lecture = new StudentModel(info);
             }
           });
+        }
+
+        if (courseInfo.student.lectureUsid === lectureId) {
+          lecture = new StudentModel(courseInfo.student);
         }
       });
     }

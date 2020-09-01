@@ -87,7 +87,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       surveyCaseId,
     } = this.props;
 
-    console.log('surveyId : ', surveyId, ' surveyCaseId : ', surveyCaseId);
+    // console.log('surveyId : ', surveyId, ' surveyCaseId : ', surveyCaseId);
 
     if (surveyId && surveyCaseId) {
       answerSheetService!.findAnswerSheet(surveyCaseId);

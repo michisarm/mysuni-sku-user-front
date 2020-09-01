@@ -7,6 +7,7 @@ class StudentCubeModel {
   //
   course_lecture_id: string = '';
   lectures: StudentModel[] = [];
+  student: StudentModel = new StudentModel();
   count: number = 0;
 
   constructor(studentCube?: StudentCubeModel) {

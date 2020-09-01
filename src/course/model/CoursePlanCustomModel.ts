@@ -16,14 +16,14 @@ export interface CoursePlanCustomModel {
   coursePlanContents: CoursePlanContentsModel
   answerSheet: AnswerSheetModel
   surveyCase: SurveyCaseModel
-  surveyForm: SurveyFormModel
+  // surveyForm: SurveyFormModel
   courseLecture: CourseLectureModel
   programLecture: ProgramLectureModel
   lectureViews: LectureViewModel[]
   reviewSummary: ReviewSummaryModel
   commentCountRdo: CommentCountRdoModel
   subLectureViews:  SubLectureViewModel[]
-  precedenceCourse: CoursePlanModel[]
+  // precedenceCourse: CoursePlanModel[]
   preCourseLectures: LectureViewModel[]
   examination: ExaminationModel
   examPaper: ExamPaperModel

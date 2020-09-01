@@ -29,7 +29,7 @@ const BadgePreviewPage: React.FC<Props> = Props => {
 
   const findMyContent = async (id: string) => {
     //
-    const badgeInfo: BadgeDetailModel | null = await badgeService!.findBadgeDetailInfo(
+    const badgeInfo: BadgeDetailModel | null = await badgeService!.findBadgeInfo(
       id
     );
 
