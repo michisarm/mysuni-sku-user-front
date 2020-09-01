@@ -36,6 +36,7 @@ class AppLayoutContainer extends Component<Props> {
       return rtn;
     }
 
+    // local 테스트 시에는 development 막고해 dev 용임
     if (process.env.NODE_ENV !== 'development') {
       const data = await SkProfileApi.instance.findSkProfile();
       const obj = JSON.parse(JSON.stringify(data));
