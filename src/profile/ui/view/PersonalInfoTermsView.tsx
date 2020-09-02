@@ -86,8 +86,7 @@ class PersonalInfoTermsView extends Component {
             </div>
             <div className="text2">3. 개인정보의 제3자 제공에 관한 사항</div>
             <div className="text3">
-              ① mySUNI는 SK 구성원으로부터 수집한 개인정보를 &#39;2. 개인정보
-              수집 및 이용목적&#39;에서 고지한 범위 내에서만 사용하며, SK
+              ① mySUNI는 SK 구성원으로부터 수집한 개인정보를 고지한 범위 내에서만 사용하며, SK
               구성원의 동의 없이는 동범위를 초과하여 이용하거나 제3자에게
               제공하거나 공유하지 않습니다.
             </div>

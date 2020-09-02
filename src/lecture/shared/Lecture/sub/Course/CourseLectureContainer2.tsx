@@ -839,7 +839,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed">
+            <a href="#" className="btn-play completed" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
@@ -870,7 +870,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed">
+            <a href="#" className="btn-play completed" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
@@ -959,7 +959,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
               { lectureView.cubeTypeName && (
                 <li>
                   <div className="tit">
-                    <span className="ellipsis">{lectureViewName}{/*{lectureView.name}*/}</span>
+                    <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
                   </div>
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>
