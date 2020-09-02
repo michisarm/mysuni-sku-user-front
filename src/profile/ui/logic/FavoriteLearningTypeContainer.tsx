@@ -129,7 +129,7 @@ class FavoriteLearningTypeContainer extends Component<Props, State> {
     if (
       targetProps.checked &&
       targetProps.name === 'goalGroup' &&
-      state.goalGroup.length === 3
+      state.goalGroup.length === 4
     ) {
       reactAlert({
         title: '교육목적',
