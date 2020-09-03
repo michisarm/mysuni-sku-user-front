@@ -113,7 +113,7 @@ class MyTrainingService {
       if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           await this.clear();
-          this.findAllMyTrainingsWithState('InProgress', oldInProgressJson.length-1, 0);
+          this.findAllMyTrainingsWithState('InProgressLearningList', oldInProgressJson.length-1, 0);
         }
       }
 
@@ -149,10 +149,8 @@ class MyTrainingService {
     //
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
-    console.log('fromMain ::::: ',fromMain);
     if (fromMain) {
-      window.sessionStorage.removeItem('InProgressLearningList');
-      console.log('JSON.stringify(offsetList) ::::: ',JSON.stringify(offsetList));
+      //window.sessionStorage.removeItem('InProgressLearningList');
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
 
