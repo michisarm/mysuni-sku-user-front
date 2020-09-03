@@ -1,45 +1,65 @@
-
 import { computed, decorate, observable } from 'mobx';
 
 import { LangStrings } from 'shared/model/LangStrings';
 import MemberModel from './MemberModel';
 import FavoriteJobGroupModel from './FavoriteJobGroupModel';
-
+import CurrentJobGroupModel from './CurrentJobGroupModel';
 
 class EmployeeModel extends MemberModel {
   //
-  employeeId: string = '' ;      // 암호화
+  employeeId: string = ''; // 암호화
   names: LangStrings = new LangStrings();
   //name : string = '';
-  email: string = '';           // 암호화
-  phone: string = '';           // 암호화
-  jobTitle : string = '';      //직위
-  jobRank : string = '';         //직급 rank
-  jobName : string = '';         //직무 job
-  jobDuty : string = '';         //직책 duty
-  base64Photo: string = '';     //base64 image 크기
-  photoFileUrl:string = '';      //SK IM Photo URL
+  email: string = ''; // 암호화
+  phone: string = ''; // 암호화
+  jobTitle: string = ''; //직위
+  jobRank: string = ''; //직급 rank
+  jobName: string = ''; //직무 job
+  jobDuty: string = ''; //직책 duty
+  base64Photo: string = ''; //base64 image 크기
+  photoFileUrl: string = ''; //SK IM Photo URL
   photoFilename: string = '';
 
   // team: TeamModel = new TeamModel();
 
   companyCode: string = '';
   companyNames: LangStrings = new LangStrings();
-  departmentCode: string= '';
+  departmentCode: string = '';
   departmentNames: LangStrings = new LangStrings();
   leaderId: string = '';
   leaderNames: string = '';
 
   favoriteJobGroup: FavoriteJobGroupModel = new FavoriteJobGroupModel();
+  currentJobGroup: CurrentJobGroupModel = new CurrentJobGroupModel();
 
   constructor(employee?: EmployeeModel) {
     super();
     if (employee) {
-      const favoriteJobGroup = employee.favoriteJobGroup && new FavoriteJobGroupModel(employee.favoriteJobGroup) || this.favoriteJobGroup;
-      const names = employee.names && new LangStrings(employee.names) || this.names;
-      const companyNames = employee.companyNames && new LangStrings(employee.companyNames) || this.companyNames;
-      const departmentNames = employee.departmentNames && new LangStrings(employee.departmentNames) || this.departmentNames;
-      Object.assign(this, { ...employee, favoriteJobGroup, names, companyNames, departmentNames });
+      const favoriteJobGroup =
+        (employee.favoriteJobGroup &&
+          new FavoriteJobGroupModel(employee.favoriteJobGroup)) ||
+        this.favoriteJobGroup;
+      const currentJobGroup =
+        (employee.currentJobGroup &&
+          new CurrentJobGroupModel(employee.currentJobGroup)) ||
+        this.currentJobGroup;
+      const names =
+        (employee.names && new LangStrings(employee.names)) || this.names;
+      const companyNames =
+        (employee.companyNames && new LangStrings(employee.companyNames)) ||
+        this.companyNames;
+      const departmentNames =
+        (employee.departmentNames &&
+          new LangStrings(employee.departmentNames)) ||
+        this.departmentNames;
+      Object.assign(this, {
+        ...employee,
+        currentJobGroup,
+        favoriteJobGroup,
+        names,
+        companyNames,
+        departmentNames,
+      });
     }
   }
 
@@ -54,7 +74,11 @@ class EmployeeModel extends MemberModel {
   @computed
   get company() {
     if (this.companyNames && this.companyNames.langStringMap) {
-      return this.companyNames.langStringMap.get(this.companyNames.defaultLanguage) || '';
+      return (
+        this.companyNames.langStringMap.get(
+          this.companyNames.defaultLanguage
+        ) || ''
+      );
     }
     return '';
   }
@@ -62,7 +86,11 @@ class EmployeeModel extends MemberModel {
   @computed
   get department() {
     if (this.departmentNames && this.departmentNames.langStringMap) {
-      return this.departmentNames.langStringMap.get(this.departmentNames.defaultLanguage) || '';
+      return (
+        this.departmentNames.langStringMap.get(
+          this.departmentNames.defaultLanguage
+        ) || ''
+      );
     }
     return '';
   }
@@ -72,9 +100,10 @@ class EmployeeModel extends MemberModel {
     //
     if (!this.photoFilename || !this.companyCode) {
       return undefined;
-    }
-    else {
-      return `/profile/photo/${this.companyCode.toLowerCase()}/${this.photoFilename}`;
+    } else {
+      return `/profile/photo/${this.companyCode.toLowerCase()}/${
+        this.photoFilename
+      }`;
     }
   }
 }
@@ -98,6 +127,7 @@ decorate(EmployeeModel, {
   leaderId: observable,
   leaderNames: observable,
   favoriteJobGroup: observable,
+  currentJobGroup: observable,
 });
 
 export default EmployeeModel;

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
@@ -10,10 +9,9 @@ import Footer from '../../Footer';
 import QuickNav from '../../QuickNav';
 import SkProfileApi from '../../../../profile/present/apiclient/SkProfileApi';
 
-
 interface Props {
-  children: React.ReactNode,
-  skProfileService?: SkProfileService
+  children: React.ReactNode;
+  skProfileService?: SkProfileService;
 }
 
 @inject(mobxHelper.injectFrom('profile.skProfileService'))
@@ -26,16 +24,37 @@ class AppLayoutContainer extends Component<Props> {
   }
 
   async findProfile() {
+    //////////////////////////////////////////////////////////////
+    // 재동의
+    function compareDate(signDate: any) {
+      let rtn = false;
+      const reAgreeDate = new Date('2020-08-30').getTime();
+      const agreeDate = new Date(signDate).getTime();
+      if (reAgreeDate > agreeDate) {
+        rtn = true;
+      }
+      return rtn;
+    }
+
+    // local 테스트 시에는 development 막고해 dev 용임
     if (process.env.NODE_ENV !== 'development') {
       const data = await SkProfileApi.instance.findSkProfile();
       const obj = JSON.parse(JSON.stringify(data));
 
       if (!obj.pisAgreement.signed) {
-        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
+      } else if (
+        obj.pisAgreement.signed &&
+        compareDate(obj.pisAgreement.date)
+      ) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
+      } else if (!obj.studySummaryConfigured) {
+        window.location.href =
+          process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
       }
-      else if (!obj.studySummaryConfigured) {
-        window.location.href = process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
-      }
+      // local 테스트 시에는 development 막고해 dev 용임
     }
   }
 

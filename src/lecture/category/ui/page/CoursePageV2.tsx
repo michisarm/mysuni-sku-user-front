@@ -279,10 +279,10 @@ class CoursePageV2 extends Component<Props, State> {
       // const examination = await ExaminationService.instance.findExamination(coursePlanService.coursePlanContents.testId);
       // const examPaper = await ExamPaperService.instance.findExamPaper(examination.paperId);1
 
-      console.log(
-        'examPaperService.examPaper.title : ',
-        examPaperService.examPaper.title
-      );
+      // console.log(
+      //   'examPaperService.examPaper.title : ',
+      //   examPaperService.examPaper.title
+      // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
       this.setState({examTitle});
@@ -320,7 +320,7 @@ class CoursePageV2 extends Component<Props, State> {
 
   // 선수코스 세팅..
   getPreCourseModel() {
-    console.log('선수코스 세팅 시작!');
+    // console.log('선수코스 세팅 시작!');
     const {
       match,
       coursePlanService,
@@ -342,27 +342,43 @@ class CoursePageV2 extends Component<Props, State> {
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
       ) {
-        const preLectureViews = courseLectureService.getPreLectureViews;
-        const preCourseStudentList = studentService.StudentInfos!.preCourses;
-        // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
-        // @ts-ignore
-        for (let i = 0; i < preCourseStudentList.length; i++) {
+        if ( courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length ) {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
           // @ts-ignore
-          const preCourse = preCourseStudentList[i];
-          for (let j = 0; j < preLectureViews.length; j++) {
-            const preLectureView = preLectureViews[j];
-            // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
-            if (preLectureView.serviceId === preCourse.lectureUsid) {
-              if (
-                preLectureView.required &&
-                preCourse.learningState !== 'Passed'
-              ) {
-                // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
-                isPreCoursePassed = false;
-                break;
+          for (let i = 0; i < preCourseStudentList.length; i++) {
+            // @ts-ignore
+            const preCourse = preCourseStudentList[i];
+            for (let j = 0; j < preLectureViews.length; j++) {
+              const preLectureView = preLectureViews[j];
+              // console.log( 'preCourseInfo : ', preLectureView.serviceId, preCourse.lectureUsid, preLectureView.required, preCourse.learningState );
+              if (preLectureView.serviceId === preCourse.lectureUsid) {
+                if (
+                  preLectureView.required &&
+                  preCourse.learningState !== 'Passed'
+                ) {
+                  // console.log('preLectureView.required : ', preLectureView.required, 'preCourse.learningState : ', preCourse.learningState);
+                  isPreCoursePassed = false;
+                  break;
+                }
               }
             }
           }
+        } else {
+          const preLectureViews = courseLectureService.getPreLectureViews;
+          const preCourseStudentList = studentService.StudentInfos!.preCourses;
+          const preCourseIds: string[] = [];
+
+          preCourseStudentList?.forEach( preCourse => {
+            preCourseIds.push(preCourse.lectureUsid);
+          });
+
+          preLectureViews.forEach( preLectureView => {
+            if (preLectureView.required && !preCourseIds.includes(preLectureView.serviceId)) {
+              isPreCoursePassed = false;
+            }
+          });
         }
       } else if (
         courseLectureService.getPreLectureViews &&
@@ -381,7 +397,7 @@ class CoursePageV2 extends Component<Props, State> {
         // }
       }
 
-      console.log('isPreCoursePassed? : ', isPreCoursePassed);
+      // console.log('isPreCoursePassed? : ', isPreCoursePassed);
       this.setState({ isPreCoursePassed });
     }
   }
@@ -418,10 +434,10 @@ class CoursePageV2 extends Component<Props, State> {
 
     if (coursePlanService.coursePlanContents.testId) {
 
-      console.log(
-        'examPaperService.examPaper.title : ',
-        examPaperService.examPaper.title
-      );
+      // console.log(
+      //   'examPaperService.examPaper.title : ',
+      //   examPaperService.examPaper.title
+      // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
       this.setState({examTitle});
@@ -508,6 +524,7 @@ class CoursePageV2 extends Component<Props, State> {
       studentService,
       courseLectureService,
       examPaperService,
+      examinationService,
       surveyCaseService,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
@@ -527,7 +544,8 @@ class CoursePageV2 extends Component<Props, State> {
     let examType: string = '';
     let examName: string = '';
 
-    // console.log('coursePlanContents : ', coursePlanContents);
+    // console.log('student : ', student);
+    // console.log('examinationService : ', examinationService);
     if (student && student.id) {
       this.setExamState(student);
 
@@ -567,7 +585,7 @@ class CoursePageV2 extends Component<Props, State> {
         student.phaseCount !== student.completePhaseCount &&
         student.learningState === LearningState.Progress
       ) {
-        console.log('Course Page Waiting : ', SubState.InProgress);
+        // console.log('Course Page Waiting : ', SubState.InProgress);
         state = SubState.InProgress;
       }
 
@@ -591,28 +609,6 @@ class CoursePageV2 extends Component<Props, State> {
     tabState = this.state.tabState || '';
     examType = this.state.type || '';
     examName = this.state.name || '';
-
-    // console.log('getViewObject ===== examId : ', examId);
-    // console.log('getViewObject ===== examTitle : ', examTitle);
-    // console.log('getViewObject ===== surveyId : ', surveyId);
-    // console.log('getViewObject ===== surveyTitle : ', surveyTitle);
-    // console.log('getViewObject ===== surveyState : ', surveyState);
-    // console.log('getViewObject ===== surveyCaseId : ', surveyCaseId);
-    // console.log('getViewObject ===== reportFileBoxId : ', reportFileBoxId);
-    // console.log('getViewObject ===== tabState : ', tabState);
-
-    // examId = this.checkNullValue(coursePlanContents.testId);
-    // examTitle = this.checkNullValue(this.state.examTitle);
-    // surveyId = this.checkNullValue(coursePlanContents.surveyId);
-    // surveyTitle = this.checkNullValue(this.state.surveyTitle);
-    // surveyState = this.state.surveyState || false;
-    // surveyCaseId = this.checkNullValue(coursePlanContents.surveyCaseId);
-    // reportFileBoxId = this.checkNullValue(coursePlan.reportFileBox.fileBoxId);
-    // tabState = this.checkNullValue(this.state.tabState);
-
-    // console.log('course page student : ', student);
-
-    // console.log('----', student.lectureUsid, coursePlan.coursePlanId, state);
 
     return {
       // Sub info
@@ -858,7 +854,7 @@ class CoursePageV2 extends Component<Props, State> {
       }
     }
 
-    console.log('type : ' + this.state.type + ', name : ' + this.state.name);
+    // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
   }
 
   setStateName(type: string, name: string) {
@@ -879,7 +875,7 @@ class CoursePageV2 extends Component<Props, State> {
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
 
-    // console.log('renderOverview -------->', viewObject);
+    // console.log('renderOverview --------> ', viewObject);
 
     return this.renderBaseContentWith(
       <LectureOverviewViewV2

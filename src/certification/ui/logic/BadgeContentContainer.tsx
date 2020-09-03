@@ -218,7 +218,9 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const getAction = () => {
     switch (badgeState) {
       case ChallengeState.WaitForChallenge:
-        onClickChallenge();
+        // TODO! Badge 정식 오픈 전까지 준비 안내 팝업 0820
+        reactAlert({title: '안내', message: '현재는 체험 기간입니다. 추후 오픈 예정입니다.'});
+        //onClickChallenge();
         break;
       case ChallengeState.Challenging:
         onChangeCancleModal();
@@ -454,36 +456,45 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             title="획득 조건"
             content={badgeDetail.obtainTerms}
           />
-          <OverviewField.Item
-            title="자격증명"
-            content={badgeDetail.qualification}
-          />
+
+          {/*0826 C&C 요청으로 화면에서 숨김처리 */}
+          {/*<OverviewField.Item*/}
+          {/*title="자격증명"*/}
+          {/*content={badgeDetail.qualification}*/}
+          {/*/>*/}
+
         </OverviewField.List>
 
-        {/*담당자 & 추가발급조건*/}
-        <OverviewField.List icon>
-          <OverviewField.Item
-            titleIcon="host"
-            title="담당자"
-            content={
-              <div className="host-line">
-                {badgeDetail.badgeOperator.badgeOperatorName} (
-                {badgeDetail.badgeOperator.badgeOperatorCompany})
-                <Button icon className="right btn-blue" onClick={onClickSupport}>
-                  문의하기
-                  <Icon className="arrow-b-16" />
-                </Button>
-              </div>
-            }
-          />
-          {badgeDetail.additionTermsExist && (
+        {/*담당자*/}
+        {/*0826 C&C 요청으로 화면에서 숨김처리 */}
+        {/*<OverviewField.List icon>*/}
+        {/*<OverviewField.Item*/}
+        {/*titleIcon="host"*/}
+        {/*title="담당자"*/}
+        {/*content={*/}
+        {/*<div className="host-line">*/}
+        {/*{badgeDetail.badgeOperator.badgeOperatorName} (*/}
+        {/*{badgeDetail.badgeOperator.badgeOperatorCompany})*/}
+        {/*<Button icon className="right btn-blue" onClick={onClickSupport}>*/}
+        {/*문의하기*/}
+        {/*<Icon className="arrow-b-16" />*/}
+        {/*</Button>*/}
+        {/*</div>*/}
+        {/*}*/}
+        {/*/>*/}
+        {/*</OverviewField.List>*/}
+
+        {/*추가발급조건*/}
+        {badgeDetail.additionTermsExist && (
+          <OverviewField.List icon>
             <OverviewField.Item
               titleIcon="addinfo"
               title="추가 발급 조건"
               contentHtml="해당 Badge는 학습 이수 외에도 추가 미션이 있습니다.<br/>학습 이수 완료 후, 발급 요청하시면 담당자가 추가 미션에 대해 안내 드릴 예정입니다."
             />
-          )}
-        </OverviewField.List>
+          </OverviewField.List>
+        )}
+
 
         {/*학습정보*/}
         <OverviewField.List icon className="course-area">

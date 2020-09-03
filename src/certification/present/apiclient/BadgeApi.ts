@@ -99,6 +99,12 @@ class BadgeApi {
       .catch((error) => null);
   }
 
+  findBadgeInformation(badgeId: string) {
+    return axiosApi.get<BadgeDetailModel>(this.baseUrl + `/badges/${badgeId}`)
+      .then((response) => response && response.data || null)
+      .catch((error) => null);
+  }
+
   findBadgeComposition(badgeId: string) {
     //
     return axiosApi.get<BadgeCompModel[]>(this.baseUrl + `/badges/flow/${badgeId}/lectures`)

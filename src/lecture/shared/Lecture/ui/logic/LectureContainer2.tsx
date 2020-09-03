@@ -10,6 +10,7 @@ import { MyTrainingModel, InMyLectureModel } from 'myTraining/model';
 import CardGroup, { LearningCardContext, GroupType } from '../../sub/CardGroup';
 import LineHeader from '../../sub/LineHeader';
 import Course from '../../sub/Course';
+import TRS from '../../sub/TRS';
 import PreCourse from '../../sub/PreCourse';
 import CourseSection from '../../sub/CourseSection';
 
@@ -68,6 +69,8 @@ class LectureContainer2 extends Component<Props, States> {
   static CourseSection = CourseSection;
 
   static Course = Course;
+
+  static TRS = TRS;
 
   static GroupType = GroupType;
 
@@ -287,9 +290,6 @@ class LectureContainer2 extends Component<Props, States> {
     } = this.props;
 
     const { open } = this.state;
-
-    console.log('lectureCardId : ' + lectureView?.serviceId);
-    console.log('learningState : ' + this.props.learningState);
 
     return (
       <CourseLectureContainer2

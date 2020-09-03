@@ -45,6 +45,10 @@ class StudentInfoModel {
       }
       if (studentInfo.courses) {
         if (studentInfo.courses.length > 0) {
+          // if (studentInfo.courses.student) {
+          //   studentInfo.courses.student = new StudentModel(studentInfo.courses.student);
+          // }
+
           this.course = new StudentCourseModel();
           studentInfo.courses.map((course: StudentCubeModel) => {
             this.course!.courses = this.course!.courses.concat(new StudentCubeModel(course));

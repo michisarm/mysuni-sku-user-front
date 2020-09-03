@@ -23,6 +23,7 @@ interface Props {
   type?: string;
   trigger?: React.ReactNode;
   onSaveCallback?: () => void;
+  onInitCallback?: () => void;
 }
 
 interface States {
@@ -45,6 +46,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   };
 
   onOpenModal() {
+    const { onInitCallback } = this.props;
     this.setState(
       {
         open: true,
@@ -54,12 +56,17 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
   }
 
   onCloseModal() {
-    this.setState(
-      {
-        open: false,
-      },
-      this.clear
-    );
+    const { onInitCallback } = this.props;
+    if (onInitCallback) onInitCallback();
+
+    setTimeout(() => {
+      this.setState(
+        {
+          open: false,
+        },
+        // this.clear
+      );
+    }, 300);
   }
 
   async init() {
@@ -70,6 +77,7 @@ export class AnswerSheetModalContainer extends React.Component<Props, States> {
       examId,
     } = this.props;
 
+    // console.log('examId : ', examId);
     if (examId) {
       answerSheetService!.findAnswerSheet(
         examId,

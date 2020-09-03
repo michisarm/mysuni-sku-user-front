@@ -141,14 +141,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
   // 성공 모달 닫기
   const onControlSuccessModal = () => {
     setSuccessModal(!successModal);
-    setBadgeState(IssueState.Issued);
-    //getBadgeStudentInfo(badge.badgeId);
-
-    // 발급 완료 후, 획득 뱃지 목록으로 이동(임시)
-    //history.push(CertificationRoutePaths.badgeEarnedBadgeList());
-
     refreshChallengingContainer();
-    //setBadgeState(IssueState.Issued);
   };
 
   return (
@@ -171,7 +164,7 @@ const BadgeCompLeft: React.FC<Props> = (Props) => {
         )}
         { (badgeState !== IssueState.Issued && badgeState !== IssueState.Requested) && (
           <>
-            {/*수동발급*/}
+
             { badge.autoIssued ? (
               // 자동발급뱃지이지만 학습이수처리 이상으로 자동발급이 안된 경우
               (!studentInfo?.learningCompleted && passedAll) && (

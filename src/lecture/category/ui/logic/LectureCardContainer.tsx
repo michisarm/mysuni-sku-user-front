@@ -24,8 +24,12 @@ import {
   StudentJoinRdoModel,
 } from 'lecture/model';
 import {
-  LectureService, LRSLectureService, NEWLectureService, POPLectureService,
-  RollBookService, RQDLectureService,
+  LectureService,
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
+  RollBookService,
+  RQDLectureService,
   StudentService,
 } from 'lecture/stores';
 import { ActionEventService } from 'shared/stores';
@@ -462,7 +466,7 @@ class LectureCardContainer extends Component<Props, State> {
       reactAlert({
         title: '알림',
         message:
-          '현재 다른 과정을 학습하고 있습니다.<br>2개 이상의 Contents를 동시에 학습할 경우, 본인에게 실제 학습 여부를 확인하여 이수를 취소할 수도 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
@@ -598,12 +602,14 @@ class LectureCardContainer extends Component<Props, State> {
         title: '알림',
         message: '본 과정이 관심목록에 추가되었습니다.',
       });
-      inMyLectureService!.addInMyLecture(inMyLectureCdo).then(() =>
-        inMyLectureService!.findInMyLecture(
-          inMyLectureCdo.serviceId,
-          inMyLectureCdo.serviceType
-        )
-      );
+      inMyLectureService!
+        .addInMyLecture(inMyLectureCdo)
+        .then(() =>
+          inMyLectureService!.findInMyLecture(
+            inMyLectureCdo.serviceId,
+            inMyLectureCdo.serviceType
+          )
+        );
     }
   }
 
@@ -1277,8 +1283,8 @@ class LectureCardContainer extends Component<Props, State> {
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
-    console.log('LectureCardContainer : ', lectureServiceId);
-    console.log('LectureCardContainer : ', lectureServiceType);
+    // console.log('LectureCardContainer : ', viewObject);
+    // console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (

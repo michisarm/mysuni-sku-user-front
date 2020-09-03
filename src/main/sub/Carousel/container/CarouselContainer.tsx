@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
@@ -10,13 +9,12 @@ import ContentType from '../model/ContentType';
 import CarouselWrapperView from '../view/CarouselWrapperView';
 import CarouselItemView from '../view/CarouselItemView';
 
-
 interface Props {
-  autoScrolling?: boolean
+  autoScrolling?: boolean;
 }
 
 interface State {
-  activeIndex: number,
+  activeIndex: number;
 }
 
 @reactAutobind
@@ -35,8 +33,12 @@ class CarouselContainer extends Component<Props, State> {
       title: <>이번 주 새로운 콘텐츠를 소개 드립니다.</>,
       description: (
         <>
-          구성원 Deep Change 역량향상에 도움이 되는 Timely한 콘텐츠 제공을 약속 드립니다.<br />
-          갓 오픈한 따끈따끈한, 콘텐츠 지금 만나보실까요?<br /><br />
+          구성원 Deep Change 역량향상에 도움이 되는 Timely한 콘텐츠 제공을 약속
+          드립니다.
+          <br />
+          갓 오픈한 따끈따끈한, 콘텐츠 지금 만나보실까요?
+          <br />
+          <br />
           <span className="link-tag">바로가기</span>
         </>
       ),
@@ -57,11 +59,36 @@ class CarouselContainer extends Component<Props, State> {
     // },
     {
       type: ContentType.LinkContent,
+      title: (
+        <>
+          AI/DT Literacy 과정: <br />
+          8월 이벤트를 알려 드립니다!
+        </>
+      ),
+      description: (
+        <>
+          핵.인.싸 과정인 AI/DT Literacy 과정이 8월 이벤트를 진행합니다.
+          <br />
+          총 25개의 과정중에서 8월 한달동안 8과목만 이수하시면,
+          <br />
+          추첨을 통해 굿즈를 선물로 드려요.
+          <br />
+          <span className="link-tag">AI/DT Literacy 채널 바로가기</span>
+        </>
+      ),
+      link: '/lecture/college/CLG00001/channel/CHN0005a',
+      imageUrl: '/images/all/img_banner_newcontents_20200820.jpg',
+    },
+    {
+      type: ContentType.LinkContent,
       title: <>문과용 해례본: </>,
       description: (
         <>
-          에너지역량 뿐만 아니라, AI/DT역량도 축적해야겠죠.<br />
-          환경에서 고객까지 고려하여 융합하는 코스를 에너지솔루션칼리지에서 마련했습니다.<br />
+          에너지역량 뿐만 아니라, AI/DT역량도 축적해야겠죠.
+          <br />
+          환경에서 고객까지 고려하여 융합하는 코스를 에너지솔루션칼리지에서
+          마련했습니다.
+          <br />
           자, 그럼 Deep Change 준비 되셨나요?
         </>
       ),
@@ -111,12 +138,20 @@ class CarouselContainer extends Component<Props, State> {
     // },
     {
       type: ContentType.LinkContent,
-      title: <>개정된 핵인싸 과정으로<br />역량 향상의 씨앗을 심어보세요</>,
+      title: (
+        <>
+          개정된 핵인싸 과정으로
+          <br />
+          역량 향상의 씨앗을 심어보세요
+        </>
+      ),
       description: (
         <>
           전사 차원의 Human Capital 육성 방향에 따라 <br />
-          핵인싸 과정이 전면 개편 되었습니다.<br />
-          핵인싸 과정 이수로 역량도 업글하시고, SK 인싸 되세요~!<br />
+          핵인싸 과정이 전면 개편 되었습니다.
+          <br />
+          핵인싸 과정 이수로 역량도 업글하시고, SK 인싸 되세요~!
+          <br />
         </>
       ),
       link: boardRoutePaths.supportNoticePost('NTC-00003c'),
@@ -252,18 +287,31 @@ class CarouselContainer extends Component<Props, State> {
     // },
     {
       type: ContentType.ExternalWindowVideo,
-      title: <>구성원을 위한 자기주도학습 플랫폼<br />&#39;mySUNI&#39;에 오신 여러분 환영합니다.</>,
+      title: (
+        <>
+          구성원을 위한 자기주도학습 플랫폼
+          <br />
+          &#39;mySUNI&#39;에 오신 여러분 환영합니다.
+        </>
+      ),
       description: (
         <>
-          안녕하세요! &quot;mySUNI&quot;입니다.<br />
-          친근하게 애칭처럼 &quot;써니&quot;라고 불러주세요!<br />
-          매 주 4시간만 저와 함께 하시면, 여러분에게 놀라운 일이 생길 것이에요~<br />
-          <span className="link-tag"><Icon className="arrow right" />mySUNI 소개보기</span>
+          안녕하세요! &quot;mySUNI&quot;입니다.
+          <br />
+          친근하게 애칭처럼 &quot;써니&quot;라고 불러주세요!
+          <br />
+          매 주 4시간만 저와 함께 하시면, 여러분에게 놀라운 일이 생길 것이에요~
+          <br />
+          <span className="link-tag">
+            <Icon className="arrow right" />
+            mySUNI 소개보기
+          </span>
         </>
       ),
       link: mainRoutePaths.introductionMySuni(),
       imageUrl: '/images/all/img_banner_01.jpg',
-      mediaUrl: 'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse',
+      mediaUrl:
+        'https://sku.ap.panopto.com/Panopto/Pages/BrowserNotSupported.aspx?continue=true&ReturnUrl=%2FPanopto%2FPages%2FEmbed.aspx%3Fid%3D9958d963-4a7f-4c95-810f-ab44004a786a%26offerviewer%3Dfalse%26showtitle%3Dfalse%26showbrand%3Dfalse%26interactivity%3Dfalse',
     },
     // {
     //   type: ContentType.FileDownload,
@@ -336,7 +384,6 @@ class CarouselContainer extends Component<Props, State> {
       imageUrl: '',
     },
     */
-
   ];
 
   intervalId = 0;
@@ -344,7 +391,6 @@ class CarouselContainer extends Component<Props, State> {
   state = {
     activeIndex: 0,
   };
-
 
   componentDidMount() {
     //
@@ -363,13 +409,16 @@ class CarouselContainer extends Component<Props, State> {
     const { autoScrolling } = this.props;
 
     if (autoScrolling) {
-      this.intervalId = setInterval(this.nextBanner, this.AUTO_NEXT_TIME) as any;
+      this.intervalId = setInterval(
+        this.nextBanner,
+        this.AUTO_NEXT_TIME
+      ) as any;
     }
   }
 
   nextBanner() {
     //
-    this.setState((state) => {
+    this.setState(state => {
       //
       const nextIndex = state.activeIndex + 1;
 
@@ -381,14 +430,14 @@ class CarouselContainer extends Component<Props, State> {
 
   onClickPrev() {
     //
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       activeIndex: prevState.activeIndex - 1,
     }));
   }
 
   onClickNext() {
     //
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       activeIndex: prevState.activeIndex + 1,
     }));
   }
@@ -408,40 +457,53 @@ class CarouselContainer extends Component<Props, State> {
       <CarouselWrapperView
         actions={
           <>
-            <button className={`swiper-button-prev ${isFirst ? 'swiper-button-disabled' : ''}`} disabled={isFirst} onClick={this.onClickPrev} />
-            <button className={`swiper-button-next ${isLast ? 'swiper-button-disabled' : ''}`} disabled={isLast} onClick={this.onClickNext} />
+            <button
+              className={`swiper-button-prev ${
+                isFirst ? 'swiper-button-disabled' : ''
+              }`}
+              disabled={isFirst}
+              onClick={this.onClickPrev}
+            />
+            <button
+              className={`swiper-button-next ${
+                isLast ? 'swiper-button-disabled' : ''
+              }`}
+              disabled={isLast}
+              onClick={this.onClickNext}
+            />
           </>
         }
         pages={
           <div className="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
-            {items.map((item, index) =>
+            {items.map((item, index) => (
               <button
                 key={`carousel-${index}`}
-                className={`swiper-pagination-bullet ${activeIndex === index && 'swiper-pagination-bullet-active'}`}
+                className={`swiper-pagination-bullet ${activeIndex === index &&
+                  'swiper-pagination-bullet-active'}`}
                 aria-label={`Goto slide ${index + 1}`}
                 onClick={() => this.onClickPage(index)}
               />
-            )}
+            ))}
           </div>
         }
       >
-        {items.map((item: any, index) => (
-          index === activeIndex && (
-            <CarouselItemView
-              key={`carousel_item_${index}`}
-              type={item.type}
-              title={item.title}
-              description={item.description}
-              link={item.link}
-              mediaUrl={item.mediaUrl}
-              imageUrl={item.imageUrl}
-            />
-          )
-        ))}
+        {items.map(
+          (item: any, index) =>
+            index === activeIndex && (
+              <CarouselItemView
+                key={`carousel_item_${index}`}
+                type={item.type}
+                title={item.title}
+                description={item.description}
+                link={item.link}
+                mediaUrl={item.mediaUrl}
+                imageUrl={item.imageUrl}
+              />
+            )
+        )}
       </CarouselWrapperView>
     );
   }
 }
-
 
 export default CarouselContainer;

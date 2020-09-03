@@ -1,13 +1,14 @@
 import React, { FunctionComponent } from 'react';
 import { Button, Image } from 'semantic-ui-react';
+import { getPublicUrl } from 'shared/helper/envHelper';
 import classNames from 'classnames';
 
 enum CategoryImageURL {
-  BDGCAT_AIDT = '/static/media/AI_DT.png',
-  BDGCAT_JOB = '/static/media/job.png',
-  BDGCAT_BIZ = '/static/media/biz.png',
-  BDGCAT_HAPPY = '/static/media/happiness.png',
-  BDGCAT_BM = '/static/media/BM_design.png',
+  BDGCAT_AIDT = '/static/media/icon-ai.png',
+  BDGCAT_JOB = '/static/media/icon-common.png',
+  BDGCAT_BIZ = '/static/media/icon-biz.png',
+  BDGCAT_HAPPY = '/static/media/icon-happy.png',
+  BDGCAT_BM = '/static/media/icon-bmdesign.png',
 }
 
 interface BadgeCategoryProps {
@@ -25,8 +26,8 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
   const domainPath =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
     process.env.REACT_APP_ENVIRONMENT === 'server'
-      ? '' /*window.location.protocol + '//' + window.location.host*/
-      : process.env.REACT_APP_PUBLIC_URL + '/suni-main';
+      ? window.location.protocol + '//' + window.location.host
+      : process.env.REACT_APP_PUBLIC_URL;
 
   return (
     <div className="badge-category">
@@ -49,10 +50,10 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
                   {/*<Image src={category.iconUrl && (domainPath + category.iconUrl)} alt={category.name}/>*/}
                   <Image
                     src={
-                      domainPath +
-                      CategoryImageURL[
-                        category.categoryId as keyof typeof CategoryImageURL
-                      ]
+                      // domainPath +
+                      `${getPublicUrl()}${CategoryImageURL[
+                          category.categoryId as keyof typeof CategoryImageURL
+                      ]}`
                     }
                     alt={category.name}
                   />

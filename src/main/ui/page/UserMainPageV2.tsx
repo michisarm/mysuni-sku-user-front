@@ -6,6 +6,7 @@ import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
+import TutorialModalView from '../../sub/MainModals/TutorialModalViewV2';
 
 
 interface Props {
@@ -32,6 +33,7 @@ class UserMainPageV2 extends Component<Props> {
     }
   }
 
+
   componentDidMount() {
     this.publishViewEvent();
   }
@@ -50,6 +52,9 @@ class UserMainPageV2 extends Component<Props> {
         <div className="main-wrap">
           <MyLearningSummary/>
           <MyLearningContentContainer/>
+
+          {/*튜토리얼 팝업*/}
+          <TutorialModalView/>
         </div>
       </ContentLayout>
     );
