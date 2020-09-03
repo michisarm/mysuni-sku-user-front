@@ -58,6 +58,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentService?: StudentService;
   lectureService?: LectureService;
   rollBookService?: RollBookService;
+  myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   lectureServiceId: string;
   lectureCardId: string;
@@ -99,6 +100,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
+    'myTraining.mytrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
     'personalCube.personalCubeService'
@@ -654,12 +656,13 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onMarkComplete() {
-    const { student, studentService, lectureCardId } = this.props;
+    const { student, studentService, myTrainingService, lectureCardId } = this.props;
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
-        MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
+        myTrainingService!.saveNewLearningPassedToStorage('Passed');
+        myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
       });
     }
   }
@@ -796,8 +799,10 @@ class LectureCardContainer extends Component<Props, State> {
     const {
       studentCdo,
       lectureService,
+      myTrainingService,
       onPageRefresh,
       lectureCardId,
+      
     } = this.props;
 
     // 동영상 close click 시 lectureCardId 가 같다면
@@ -820,7 +825,7 @@ class LectureCardContainer extends Component<Props, State> {
       .then(confirmed => {
         if (onPageRefresh) {
           onPageRefresh();
-          MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
+          myTrainingService!.saveNewLearningPassedToStorage('Passed');
         }
       });
   }
