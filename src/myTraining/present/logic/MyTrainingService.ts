@@ -91,6 +91,7 @@ class MyTrainingService {
       // }
       console.log('newModel Test:::: ',newModel);
       const oldJson = sessionStorage.getItem('learningPassed');
+      const oldInProgressJson = sessionStorage.getItem('InProgressLearningList');
       if (oldJson) {
         if (oldJson.length > 0) {
 
@@ -107,6 +108,13 @@ class MyTrainingService {
       if (newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
+      }
+
+      if (oldInProgressJson) {
+        if (oldInProgressJson.length > 0) {
+          await this.clear();
+          this.findAllMyTrainingsWithState('InProgress', oldInProgressJson.length-1, 0);
+        }
       }
     }
   }
