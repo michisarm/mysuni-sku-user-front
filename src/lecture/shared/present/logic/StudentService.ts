@@ -10,6 +10,7 @@ import StudentModel from '../../../model/StudentModel';
 import StudentInfoModel from '../../../model/StudentInfoModel';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
 import StudentCubeModel from '../../../model/StudentCubeModel';
+import LectureStudentRdoModel from '../../../model/LectureStudentRdoModel';
 
 
 @autobind
@@ -18,6 +19,7 @@ class StudentService {
   static instance: StudentService;
 
   private studentApi: StudentApi;
+  private studentFlowApi: StudentFlowApi;
 
   @observable
   _studentInfo: StudentInfoModel | null = null;
@@ -86,8 +88,9 @@ class StudentService {
   @observable
   _studentForVideo: StudentModel = new StudentModel();
 
-  constructor(studentApi: StudentApi) {
+  constructor(studentApi: StudentApi, studentFlowApi: StudentFlowApi) {
     this.studentApi = studentApi;
+    this.studentFlowApi = studentFlowApi;
   }
 
   @computed
@@ -142,9 +145,12 @@ class StudentService {
   @action
   async setStudentInfo(serviceId: string, lectureCardIds: string[], courseLectureIds: string[], preLectureCardIds: string[]) {
     //
+    const lectureStudentRdo = new LectureStudentRdoModel({serviceId, lectureCardIds, courseLectureIds, preLectureCardIds});
+
     this._studentInfo = null;
 
-    const studentInfo = await StudentFlowApi.instance.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds, preLectureCardIds);
+    // const studentInfo = await this.studentFlowApi.getLectureStudentView(serviceId, lectureCardIds, courseLectureIds, preLectureCardIds);
+    const studentInfo = await this.studentFlowApi.getLectureStudentView2(lectureStudentRdo);
 
     if (studentInfo) {
       return runInAction(() => {
@@ -291,6 +297,12 @@ class StudentService {
   }
 }
 
-StudentService.instance = new StudentService(StudentApi.instance);
+// StudentService.instance = new StudentService(StudentApi.instance);
 
 export default StudentService;
+
+Object.defineProperty(StudentService, 'instance', {
+  value: new StudentService(StudentApi.instance, StudentFlowApi.instance),
+  writable: false,
+  configurable: false
+});
