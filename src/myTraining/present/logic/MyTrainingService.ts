@@ -110,7 +110,6 @@ class MyTrainingService {
       if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           //window.sessionStorage.removeItem('InProgressLearningList');
-          this.clear();
           console.log('this._myTrainings.length',this._myTrainings.length);
           this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
         }
@@ -149,6 +148,7 @@ class MyTrainingService {
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
     if (fromMain) {
       //window.sessionStorage.removeItem('InProgressLearningList');
+      this.clear();
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
 
