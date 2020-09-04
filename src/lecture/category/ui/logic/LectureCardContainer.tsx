@@ -677,11 +677,8 @@ class LectureCardContainer extends Component<Props, State> {
   removeLearningFromSessionStorage() {
     const {myTrainingService} = this.props;
 
-    const learningList = sessionStorage.getItem('InProgressLearningList');
-    console.log('[LectureCardContainer] InProgressLearningList : ', learningList);
-
     sessionStorage.removeItem('InProgressLearningList');
-    console.log('[LectureCardContainer] InProgressLearningList is removed(expected null) : ', learningList);
+    console.log('[LectureCardContainer] InProgressLearningList is removed(expected null) : ', sessionStorage.getItem('InProgressLearningList'));
 
     myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
   }
