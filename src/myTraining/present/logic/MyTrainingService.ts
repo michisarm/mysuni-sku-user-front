@@ -64,7 +64,6 @@ class MyTrainingService {
   async saveNewLearningPassedToStorage(state: string) {
     //
     const endDate: string | null = sessionStorage.getItem('endDate');
-
     if (endDate) {
       await this.myTrainingApi.saveAllLearningPassedToStorage(state, endDate)
         .then((response: any) => {
@@ -82,13 +81,14 @@ class MyTrainingService {
   @action
   async setCombineLearningPassedFromStorage(data :string) {
     //
+
     if (data.length > 0) {
       const newModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(data);
       // if (newModel.results.length > 0) {
       //   console.log('newModel Count : ', newModel.results.length);
       // }
-
       const oldJson = sessionStorage.getItem('learningPassed');
+      const oldInProgressJson = sessionStorage.getItem('InProgressLearningList');
       if (oldJson) {
         if (oldJson.length > 0) {
 
@@ -105,6 +105,13 @@ class MyTrainingService {
       if (newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
+      }
+
+      if (oldInProgressJson) {
+        if (oldInProgressJson.length > 0) {
+          //window.sessionStorage.removeItem('InProgressLearningList');
+          this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
+        }
       }
     }
   }
@@ -138,8 +145,9 @@ class MyTrainingService {
     //
     const rdo = MyTrainingRdoModel.newWithState(state, limit, offset, channelIds);
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
-
     if (fromMain) {
+      //window.sessionStorage.removeItem('InProgressLearningList');
+      this.clear();
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
 
