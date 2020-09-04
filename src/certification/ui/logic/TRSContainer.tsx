@@ -237,7 +237,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
           </a>
         ) : (
           <span className={classNames('btn-play', (state === BadgeLectureState.Passed) ? 'completed' : '')}>
-            <span className={classNames('text', (state === BadgeLectureState.Waiting) ? 'no-link' : '')}>{BadgeLectureStateName[state as BadgeLectureState]}</span>
+            <span className={classNames('text', (state === BadgeLectureState.Waiting || BadgeLectureState.Missed) ? 'no-link' : '')}>{BadgeLectureStateName[state as BadgeLectureState]}</span>
             <Icon className={`play-${styleName}24-dim`}/>
           </span>
         )}
