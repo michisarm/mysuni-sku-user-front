@@ -26,7 +26,7 @@ import RollBookService from '../../../present/logic/RollBookService';
 import Action from '../../model/Action';
 import {CourseSectionContext} from '../CourseSection';
 import {AnswerProgress} from '../../../../../survey/answer/model/AnswerProgress';
-import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer2';
+import LectureExam2 from '../../../LectureExam/ui/logic/LectureExamContainer2';
 import {AnswerSheetModal, CubeReportModal} from '../../../../../assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
@@ -37,7 +37,7 @@ import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
-import { LectureExam2 } from '../../../LectureExam';
+import { LectureExam } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
 

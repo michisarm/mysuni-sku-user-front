@@ -740,7 +740,6 @@ class CoursePageV2 extends Component<Props, State> {
       StudentApi.instance
         .modifyStudentForExam(student.id, viewObject.examId)
         .then(() => {
-          this.init();
         });
     }
   }
