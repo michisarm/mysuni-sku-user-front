@@ -110,7 +110,7 @@ class MyTrainingService {
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
 
-   /*    if (oldInProgressJson) {
+      /*if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           await this.clear();
           this.findAllMyTrainingsWithState('InProgressLearningList', oldInProgressJson.length-1, 0);
