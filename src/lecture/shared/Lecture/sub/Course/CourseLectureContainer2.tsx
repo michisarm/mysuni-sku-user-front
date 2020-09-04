@@ -26,7 +26,7 @@ import RollBookService from '../../../present/logic/RollBookService';
 import Action from '../../model/Action';
 import {CourseSectionContext} from '../CourseSection';
 import {AnswerProgress} from '../../../../../survey/answer/model/AnswerProgress';
-import LectureExam from '../../../LectureExam/ui/logic/LectureExamContainer2';
+import LectureExam2 from '../../../LectureExam/ui/logic/LectureExamContainer2';
 import {AnswerSheetModal, CubeReportModal} from '../../../../../assistant';
 import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
@@ -37,7 +37,7 @@ import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
 import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
-import { LectureExam2 } from '../../../LectureExam';
+import { LectureExam } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
 
@@ -837,6 +837,19 @@ class CourseLectureContainer2 extends Component<Props, State> {
               </span>
             </a>
           );
+        case SubState.Waiting:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+              <span className="text">학습중({this.getDuration()}%)</span>
+              <span className={'pie-wrapper progress-' + this.getDuration()}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
         case SubState.Completed:
           return (
             <a href="#" className="btn-play completed" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
@@ -856,6 +869,19 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       switch (this.state.inProgress) {
         case SubState.InProgress:
+          return (
+            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+              <span className={'pie-wrapper progress-' + 100}>
+                <span className="pie">
+                  <span className="left-side" />
+                  <span className="right-side" />
+                </span>
+                <div className="shadow" />
+              </span>
+            </a>
+          );
+        case SubState.Waiting:
           return (
             <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
