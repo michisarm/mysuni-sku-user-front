@@ -111,7 +111,8 @@ class MyTrainingService {
         if (oldInProgressJson.length > 0) {
           //window.sessionStorage.removeItem('InProgressLearningList');
           //this.clear();
-          this.findAllMyTrainingsWithState('InProgress', this._myTrainings.length, 0,[], true);
+          console.log('this._myTrainings.length',this._myTrainings.length);
+          this.findAllMyTrainingsWithState('InProgress', oldInProgressJson.length, 0,[], true);
         }
       }
     }
