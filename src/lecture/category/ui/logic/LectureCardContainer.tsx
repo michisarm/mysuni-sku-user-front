@@ -100,7 +100,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
-    'myTraining.mytrainingService',
+    'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
     'personalCube.personalCubeService'
@@ -662,7 +662,10 @@ class LectureCardContainer extends Component<Props, State> {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
         myTrainingService!.saveNewLearningPassedToStorage('Passed');
+        sessionStorage.removeItem('InProgressLearningList');
+        console.log('sessionStorage is removed : ' + sessionStorage.getItem('InProgressLearningList'));
         myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+        console.log('[onMarkComplete]: Inprogress');
       });
     }
   }
