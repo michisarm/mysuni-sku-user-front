@@ -110,14 +110,13 @@ class MyTrainingService {
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
 
-      if (oldInProgressJson) {
+      /*if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           //window.sessionStorage.removeItem('InProgressLearningList');
           //this.clear();
           this.findAllMyTrainingsWithState('InProgress', oldInProgressJson.length-1, 0,[], true);
         }
-      }
-
+      } */
     }
   }
 
