@@ -226,7 +226,8 @@ const TRSContainer: React.FC<Props> = (Props) => {
   const setTRSState = (type: string, state: string) => {
     //
     const styleName = ( state === BadgeLectureState.Passed || state === BadgeLectureState.Missed ) ? 'completed' : 'black';
-
+    console.log('[TRSContainer] state : ', state);
+    console.log('[TRSContainer] type : ', type);
     return (
       <>
         {/*대기중 or 진행 중*/}
@@ -237,7 +238,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
           </a>
         ) : (
           <span className={classNames('btn-play', (state === BadgeLectureState.Passed) ? 'completed' : '')}>
-            <span className={classNames('text', (state === BadgeLectureState.Waiting || BadgeLectureState.Missed || BadgeLectureState.Failed) ? 'no-link' : '')}>{BadgeLectureStateName[state as BadgeLectureState]}</span>
+            <span className={classNames('text', (state === BadgeLectureState.Waiting) ? 'no-link' : '')}>{type === 'test' ? examStateDesc.current : BadgeLectureStateName[state as BadgeLectureState]}</span>
             <Icon className={`play-${styleName}24-dim`}/>
           </span>
         )}
