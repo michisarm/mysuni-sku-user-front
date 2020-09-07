@@ -658,7 +658,7 @@ class LectureCardContainer extends Component<Props, State> {
       return;
     }
     // default로 Support Notice 이동
-    history.push(boardRoutePaths.supportNotice());
+    history.push(boardRoutePaths.supportQnA());
   }
 
   onJoin() {
