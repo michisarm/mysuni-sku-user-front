@@ -101,14 +101,14 @@ class LectureSubInfoContainer extends Component<Props> {
           {/* 스크랩 url 복사 */}
           <FootButtons onBookmark={onBookmark} onRemove={onRemove} />
         </div>
+        <Survey onSurvey={onSurvey} />
+        <Report onDownloadReport={onDownloadReport} />
         <div className="contact-us">
           <Button icon className="right btn-blue" onClick={onMoveToSupport}>
             시스템 문의
             <Icon className="arrow-b-16" />
           </Button>
         </div>
-        <Survey onSurvey={onSurvey} />
-        <Report onDownloadReport={onDownloadReport} />
       </div>
     );
   }
