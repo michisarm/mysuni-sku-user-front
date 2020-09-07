@@ -362,3 +362,7 @@ i.icon.balloon.logout::before {
   display: inline-block;
   width: 300px;
 }
+.select-right {
+  left: 300px;
+  width: 252px;
+}
