@@ -477,9 +477,11 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
     return (
       <OverviewField.Wrapper>
-        <OverviewField.Description
-          description={viewObject.description}
-        />
+        {viewObject.description !== undefined &&
+          viewObject.description !== null &&
+          viewObject.description !== '' && (
+            <OverviewField.Description description={viewObject.description} />
+        )}
         <>
           <div className="ov-paragraph course-area">
             <div className="course-cont">
