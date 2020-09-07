@@ -58,6 +58,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   studentService?: StudentService;
   lectureService?: LectureService;
   rollBookService?: RollBookService;
+  myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   lectureServiceId: string;
   lectureCardId: string;
@@ -99,6 +100,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
+    'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
     'personalCube.personalCubeService'
@@ -488,6 +490,8 @@ class LectureCardContainer extends Component<Props, State> {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
@@ -557,12 +561,14 @@ class LectureCardContainer extends Component<Props, State> {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
       // }
       //0416
-
+ 
       window.open(typeViewObject.url, '_blank');
 
       //this.setState( {openLearningModal: true});
@@ -578,6 +584,8 @@ class LectureCardContainer extends Component<Props, State> {
     // depot.downloadDepot(typeViewObject.fileBoxId);
     this.publishStudyEvent();
     this.removeStorage();
+    //
+    this.removeLearningFromSessionStorage();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -654,14 +662,25 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onMarkComplete() {
-    const { student, studentService, lectureCardId } = this.props;
+    const { student, studentService, myTrainingService, lectureCardId } = this.props;
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
-        MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
+        myTrainingService!.saveNewLearningPassedToStorage('Passed');
+        
+        this.removeLearningFromSessionStorage();
       });
     }
+  }
+
+  removeLearningFromSessionStorage() {
+    const {myTrainingService} = this.props;
+
+    // sessionStorage.removeItem('InProgressLearningList');
+    console.log('[LectureCardContainer] InProgressLearningList is removed(expected null) : ', sessionStorage.getItem('InProgressLearningList'));
+
+    myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
   }
 
   onApplyReference() {
@@ -796,8 +815,10 @@ class LectureCardContainer extends Component<Props, State> {
     const {
       studentCdo,
       lectureService,
+      myTrainingService,
       onPageRefresh,
       lectureCardId,
+      
     } = this.props;
 
     // 동영상 close click 시 lectureCardId 가 같다면
@@ -820,7 +841,7 @@ class LectureCardContainer extends Component<Props, State> {
       .then(confirmed => {
         if (onPageRefresh) {
           onPageRefresh();
-          MyTrainingService.instance.saveNewLearningPassedToStorage('Passed');
+          myTrainingService!.saveNewLearningPassedToStorage('Passed');
         }
       });
   }
