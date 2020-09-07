@@ -183,9 +183,9 @@ const TRSContainer: React.FC<Props> = (Props) => {
       examState.current = StateDefault.Test;
       setExamState(studentService!.student);
     }
-    
+
     viewObject.current = getViewObject(cube);
-    
+
     if (cubeContents.fileBoxId && cubeContents.fileBoxId.length > 0) {
       setReport(true);
       reportTitle.current = cube.personalCube.contents.examTitle;
@@ -226,8 +226,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
   const setTRSState = (type: string, state: string) => {
     //
     const styleName = ( state === BadgeLectureState.Passed || state === BadgeLectureState.Missed ) ? 'completed' : 'black';
-    console.log('[TRSContainer] state : ', state);
-    console.log('[TRSContainer] type : ', type);
+
     return (
       <>
         {/*대기중 or 진행 중*/}
@@ -238,7 +237,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
           </a>
         ) : (
           <span className={classNames('btn-play', (state === BadgeLectureState.Passed) ? 'completed' : '')}>
-            <span className={classNames('text', (state === BadgeLectureState.Waiting) ? 'no-link' : '')}>{type === 'test' ? examStateDesc.current : BadgeLectureStateName[state as BadgeLectureState]}</span>
+            <span className={classNames('text', (state === BadgeLectureState.Waiting) ? 'no-link' : '')}>{BadgeLectureStateName[state as BadgeLectureState]}</span>
             <Icon className={`play-${styleName}24-dim`}/>
           </span>
         )}
@@ -307,7 +306,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
     //
     const personalCube: PersonalCubeModel | null = cube.personalCube;
     const studentData: StudentModel = studentService!.student;
-    
+
     // this.state.isContent = false;
 
     let vo_state: string | undefined;
@@ -327,7 +326,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
     vo_surveyState = surveyState.current || false;
     vo_surveyCaseId = personalCube?.contents.surveyCaseId || '';
     vo_reportFileBoxId = reportFileId.current || '';
-    
+
     isContent.current = true;
 
     if (personalCube && studentData  && studentData.id) {
