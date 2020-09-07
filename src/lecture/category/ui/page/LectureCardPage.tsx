@@ -1036,6 +1036,14 @@ class LectureCardPage extends Component<Props, State> {
     // });
   }
 
+  routeToPostDetail(postId: string) {
+    
+    const { personalCubeService: { personalCube }, history, match: { params } } = this.props;
+    const postUrl = `/lecture/college/${params.collegeId}/cube/${personalCube.personalCubeId}/lecture-card/${params.lectureCardId}/posts`;
+
+    history.push(`${postUrl}/${postId}`);
+  }
+
   renderOverview() {
     //
     // const { servic, serviceType } = this.props.match.params!;
@@ -1090,6 +1098,7 @@ class LectureCardPage extends Component<Props, State> {
         routeToPost={
           student.id ? () => history.push(`${postUrl}/new`) : undefined
         }
+        routeToDetail={this.routeToPostDetail}
       />
     );
   }
@@ -1112,6 +1121,7 @@ class LectureCardPage extends Component<Props, State> {
         routeToPost={
           student.id ? () => history.push(`${postsUrl}/new`) : undefined
         }
+        routeToDetail={this.routeToPostDetail}
       />
     );
   }
