@@ -35,7 +35,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '0' || type === '2') && (
                 <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
               )
@@ -44,7 +44,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '1' || type === '3') && (
                 <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
                 // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
@@ -63,7 +63,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '5' && name === '이수') && (
                 <a href="#" className="btn-play completed" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
-                  <span className="text no-link">Pass</span>
+                  <span className="text no-link">{name}</span>
                   <i className="icon play-completed24" />
                 </a>
               )
@@ -95,7 +95,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '0' || type === '2') && (
                 <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
               )
@@ -104,7 +104,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '1' || type === '3') && (
                 <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
                 // <button className="ui button trs" style={{ opacity: 0.3 }} onClick={OnTestNotReady}><span>{name}</span></button>
@@ -123,7 +123,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '5' && name === '이수') && (
                 <a href="#" className="btn-play completed" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
-                  <span className="text no-link">Pass</span>
+                  <span className="text no-link">{name}</span>
                   <i className="icon play-completed24" />
                 </a>
               )
@@ -156,7 +156,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '0' || type === '2') && (
                 <a href="#" className="btn-play black" onClick={e => {OnTest(); e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
               )
@@ -165,7 +165,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '1' || type === '3' || type === undefined) && (
                 <a href="#" className="btn-play black" onClick={e => {if (OnTestNotReady) {OnTestNotReady();} e.preventDefault();}}>
-                  <span className="text">평가응시</span>
+                  <span className="text">{name}</span>
                   <i className="icon play-black24" />
                 </a>
               )
@@ -183,7 +183,7 @@ export const Test = ({ OnTest, OnTestNotReady, onAlreadyPassed, onTestWaiting, v
             {
               (type === '5' && name === '이수') && (
                 <a href="#" className="btn-play completed" onClick={e => {if (onAlreadyPassed) {onAlreadyPassed();} e.preventDefault();}}>
-                  <span className="text no-link">Pass</span>
+                  <span className="text no-link">{name}</span>
                   <i className="icon play-completed24" />
                 </a>
               )

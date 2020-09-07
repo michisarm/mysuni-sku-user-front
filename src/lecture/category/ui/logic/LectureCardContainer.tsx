@@ -100,7 +100,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
-    'myTraining.mytrainingService',
+    'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
     'personalCube.personalCubeService'
@@ -490,6 +490,8 @@ class LectureCardContainer extends Component<Props, State> {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
@@ -559,12 +561,14 @@ class LectureCardContainer extends Component<Props, State> {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
       this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
       // }
       //0416
-
+ 
       window.open(typeViewObject.url, '_blank');
 
       //this.setState( {openLearningModal: true});
@@ -580,6 +584,8 @@ class LectureCardContainer extends Component<Props, State> {
     // depot.downloadDepot(typeViewObject.fileBoxId);
     this.publishStudyEvent();
     this.removeStorage();
+    //
+    this.removeLearningFromSessionStorage();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -662,9 +668,19 @@ class LectureCardContainer extends Component<Props, State> {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
         myTrainingService!.saveNewLearningPassedToStorage('Passed');
-        myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+        
+        this.removeLearningFromSessionStorage();
       });
     }
+  }
+
+  removeLearningFromSessionStorage() {
+    const {myTrainingService} = this.props;
+
+    // sessionStorage.removeItem('InProgressLearningList');
+    console.log('[LectureCardContainer] InProgressLearningList is removed(expected null) : ', sessionStorage.getItem('InProgressLearningList'));
+
+    myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
   }
 
   onApplyReference() {
