@@ -79,14 +79,20 @@ export default class PrivacyPolicyModalContainer extends Component<
         trigger={trigger}
       >
         <Modal.Header>
-          개인정보 처리방침
-          <Select
-            className="small-border select-right"
-            placeholder="선택하세요"
-            options={privacyPolicyOption}
-            value={policyVer}
-            onChange={this.onChangePolicy}
-          />
+          <div className="modal-header">
+            개인정보 처리방침
+            <Select
+              className="small-border select-right"
+              placeholder="선택하세요"
+              options={privacyPolicyOption}
+              value={policyVer}
+              onChange={this.onChangePolicy}
+            />
+          </div>
+          <div className="modal-header-li">
+            ※ 이전버전의 공고사항은 상단의 공고일자를 변경하여 확인
+            부탁드립니다.
+          </div>
         </Modal.Header>
         <Modal.Content>
           <PrivacyPolicyView policyVer={policyVer} />
