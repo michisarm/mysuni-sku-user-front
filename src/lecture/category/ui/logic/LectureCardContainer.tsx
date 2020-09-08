@@ -650,15 +650,15 @@ class LectureCardContainer extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
-  onMoveToSupport(tab?: string) {
-    const {history} = this.props;
+  moveToSupportQnA(tab?: string) {
+    const { history } = this.props;
     // tab에 따른 Support 이동
-    if(tab) {
+    if(tab && typeof tab === 'string') {
       history.push(boardRoutePaths.supportTab(tab));
       return;
     }
-    // default로 Support Notice 이동
-    history.push(boardRoutePaths.supportNotice());
+    // default:: Support QnA로 이동
+    history.push(boardRoutePaths.supportQnA());
   }
 
   onJoin() {
@@ -1409,7 +1409,7 @@ class LectureCardContainer extends Component<Props, State> {
             inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark
           }
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
-          onMoveToSupport={() => this.onMoveToSupport('')}
+          moveToSupport={this.moveToSupportQnA}
           // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           /* onDownloadReport={
              ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?

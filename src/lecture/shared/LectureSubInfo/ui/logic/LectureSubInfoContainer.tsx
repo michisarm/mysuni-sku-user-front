@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Icon, Button } from 'semantic-ui-react';
+import classNames from 'classnames';
 import { ActionType, State, Level } from '../../model';
 import Action from '../../model/Action';
 import Operator from '../../model/Operator';
@@ -43,8 +44,8 @@ interface Props {
   onSurvey?: () => void;
   /** 과제 다운로드 액션*/
   onDownloadReport?: () => void;
-  /* Support Notice 이동 */
-  onMoveToSupport?: () => void;
+  /* support 이동 */
+  moveToSupport?: () => void;
 }
 
 @reactAutobind
@@ -77,7 +78,7 @@ class LectureSubInfoContainer extends Component<Props> {
       onRemove,
       onSurvey,
       onDownloadReport,
-      onMoveToSupport
+      moveToSupport
     } = this.props;
     return (
       <div className="sub-info-wrap">
@@ -103,10 +104,10 @@ class LectureSubInfoContainer extends Component<Props> {
         </div>
         <Survey onSurvey={onSurvey} />
         <Report onDownloadReport={onDownloadReport} />
-        <div className="contact-us">
-          <Button icon className="right btn-blue" onClick={onMoveToSupport}>
+        <div className={classNames('contact-us')}>
+          <Button icon className={classNames('right', 'btn-blue')} onClick={moveToSupport}>
             시스템 문의
-            <Icon className="arrow-b-16" />
+            <Icon className={classNames('arrow-b-16')} />
           </Button>
         </div>
       </div>
