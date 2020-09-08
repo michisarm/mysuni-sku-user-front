@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
+import { Icon, Button } from 'semantic-ui-react';
 import { ActionType, State, Level } from '../../model';
 import Action from '../../model/Action';
 import Operator from '../../model/Operator';
@@ -15,6 +16,7 @@ import {
   Survey,
   Report,
 } from '../view/LectureSubInfoElementsView';
+
 
 interface Props {
   /** required stamp 여부 */
@@ -41,6 +43,8 @@ interface Props {
   onSurvey?: () => void;
   /** 과제 다운로드 액션*/
   onDownloadReport?: () => void;
+  /* Support Notice 이동 */
+  onMoveToSupport?: () => void;
 }
 
 @reactAutobind
@@ -73,6 +77,7 @@ class LectureSubInfoContainer extends Component<Props> {
       onRemove,
       onSurvey,
       onDownloadReport,
+      onMoveToSupport
     } = this.props;
     return (
       <div className="sub-info-wrap">
@@ -86,7 +91,7 @@ class LectureSubInfoContainer extends Component<Props> {
               state={state}
             />
             {/* 레벨 */}
-            <StateView state={state} />
+            <StateView state={state} /> 
             <LevelView level={level} />
             {/* 학습시간 ~ 인원 */}
             <ClassView clazz={clazz} />
@@ -98,6 +103,12 @@ class LectureSubInfoContainer extends Component<Props> {
         </div>
         <Survey onSurvey={onSurvey} />
         <Report onDownloadReport={onDownloadReport} />
+        <div className="contact-us">
+          <Button icon className="right btn-blue" onClick={onMoveToSupport}>
+            시스템 문의
+            <Icon className="arrow-b-16" />
+          </Button>
+        </div>
       </div>
     );
   }

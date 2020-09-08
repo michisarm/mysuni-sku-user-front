@@ -183,9 +183,9 @@ const TRSContainer: React.FC<Props> = (Props) => {
       examState.current = StateDefault.Test;
       setExamState(studentService!.student);
     }
-    
+
     viewObject.current = getViewObject(cube);
-    
+
     if (cubeContents.fileBoxId && cubeContents.fileBoxId.length > 0) {
       setReport(true);
       reportTitle.current = cube.personalCube.contents.examTitle;
@@ -306,7 +306,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
     //
     const personalCube: PersonalCubeModel | null = cube.personalCube;
     const studentData: StudentModel = studentService!.student;
-    
+
     // this.state.isContent = false;
 
     let vo_state: string | undefined;
@@ -326,7 +326,7 @@ const TRSContainer: React.FC<Props> = (Props) => {
     vo_surveyState = surveyState.current || false;
     vo_surveyCaseId = personalCube?.contents.surveyCaseId || '';
     vo_reportFileBoxId = reportFileId.current || '';
-    
+
     isContent.current = true;
 
     if (personalCube && studentData  && studentData.id) {
