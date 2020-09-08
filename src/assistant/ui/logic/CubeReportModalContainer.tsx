@@ -57,15 +57,16 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   onSaveModal() {
     const { studentService, onSaveCallback, lectureView } = this.props;
     const { student } = this.props.studentService || {} as StudentService;
-    let { id: studentId, homeworkFileBoxId } = student;
+    let { id, homeworkFileBoxId } = student;
 
+    console.log('[CubeReportModalContainer] : lectureView', lectureView);
     if(lectureView) {
-      studentId = lectureView.student.id;
+      id = lectureView.student.id;
       homeworkFileBoxId = lectureView.student.homeworkFileBoxId;
     }
 
-    if (studentId && student) {
-      studentService!.modifyStudentForCoursework(studentId, homeworkFileBoxId)
+    if (id && student) {
+      studentService!.modifyStudentForCoursework(id, homeworkFileBoxId)
         .then(() => this.onCloseModal());
       if (onSaveCallback) onSaveCallback();
     }
