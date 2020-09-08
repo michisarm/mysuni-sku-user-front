@@ -60,9 +60,10 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     let { id, homeworkFileBoxId } = student;
 
     console.log('[CubeReportModalContainer] : lectureView', lectureView);
-    if(lectureView) {
-      id = lectureView.student.id;
-      homeworkFileBoxId = lectureView.student.homeworkFileBoxId;
+    if(lectureView && studentService) {
+      const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
+      id = lectureStudent.id;
+      homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
     }
 
     if (id && student) {
