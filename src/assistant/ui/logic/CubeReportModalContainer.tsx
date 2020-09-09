@@ -44,34 +44,55 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   }
 
   onCloseModal() {
+    const { studentService } = this.props;
+
     this.setState({
       open: false,
     });
+
+    // 기존의 student homeworkFileboxId 를 clear 해야 함.
+    studentService!.clear();
   }
 
+  /* 
+    1. LectureCardPage 에서는 rollBookId가 넘어오나, CoursePage 에서는 넘어오지 않음.
+    2. rollBookId로 student 조회해야 함.
+    3. CoursePage의 경우, 전달 받은 lectureView를 통해 lecture에 해당하는 rollBookId 를 가져옴.
+    4. lectureView 는 coursePage 에서만 전달 됨.
+  */
   async init() {
-    const { rollBookId, studentService, lectureView } = this.props;
-    const {student} = studentService || {} as StudentService;
-    if (studentService && rollBookId) {
-      studentService.findStudentByRollBookId(rollBookId);
+    const { studentService, lectureView } = this.props;
+    let { rollBookId } = this.props;
+  
+    // rollBookId 가 있을 경우 :: from LectureCardPage
+    if (rollBookId) {
+      studentService!.findStudentByRollBookId(rollBookId);
       return;
     }
 
+    // rollBookId 가 없는 경우 :: from CoursePage
+    if(!rollBookId && lectureView) {
+      rollBookId = lectureView.rollBooks[0].id;
+    }
+    studentService!.findStudentByRollBookId(rollBookId);
+  
+/* 
     if(studentService && lectureView) {
       const rollBookId = lectureView.rollBooks[0].id;
       console.log('[CubeReportModalContainer] lectureView rollBookId :: ', rollBookId);
       studentService.clear();
       const student = await studentService.findStudentByRollBookId(rollBookId);
       console.log('[CubeReportModalContainer] student id :: ', student.id);
-    }
+    } */
   }
 
   onSaveModal() {
     const { studentService, onSaveCallback, lectureView } = this.props;
     const { student } = this.props.studentService || {} as StudentService;
-    let { id } = student;
+    const { id: studentId, homeworkFileBoxId } = student;
 
-    console.log('[CubeReportModalContainer] lectureView :: ', lectureView);
+    console.log('studentId ::', studentId);
+    /*   console.log('[CubeReportModalContainer] lectureView :: ', lectureView);
     if(lectureView && studentService) {
       const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
       console.log('[CubeReportModalContainer] lectureStudent :: ', lectureStudent);
@@ -81,9 +102,9 @@ class CubeReportModalContainer extends React.Component<Props, States> {
       // homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
     }
     console.log('[CubeReportModalContainer] student homeworkFileBoxId :: ', student.homeworkFileBoxId);
-
-    if (id && student) {
-      studentService!.modifyStudentForCoursework(id, student.homeworkFileBoxId)
+  */
+    if (student && studentId) {
+      studentService!.modifyStudentForCoursework(studentId, homeworkFileBoxId)
         .then(() => this.onCloseModal());
       if (onSaveCallback) onSaveCallback();
     }
