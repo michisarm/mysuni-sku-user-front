@@ -50,7 +50,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
       open: false,
     });
 
-    // 기존의 student homeworkFileboxId 를 clear 해야 함.
+    // 기존의 student homeworkFileboxId 를 clear 해야 함. // by rlaehdrn123
     studentService!.clear();
   }
 
@@ -69,21 +69,11 @@ class CubeReportModalContainer extends React.Component<Props, States> {
       studentService!.findStudentByRollBookId(rollBookId);
       return;
     }
-
     // rollBookId 가 없는 경우 :: from CoursePage
     if(!rollBookId && lectureView) {
       rollBookId = lectureView.rollBooks[0].id;
     }
     studentService!.findStudentByRollBookId(rollBookId);
-  
-  /* 
-    if(studentService && lectureView) {
-      const rollBookId = lectureView.rollBooks[0].id;
-      console.log('[CubeReportModalContainer] lectureView rollBookId :: ', rollBookId);
-      studentService.clear();
-      const student = await studentService.findStudentByRollBookId(rollBookId);
-      console.log('[CubeReportModalContainer] student id :: ', student.id);
-    } */
   }
 
   onSaveModal() {
@@ -91,18 +81,6 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     const { student } = this.props.studentService || {} as StudentService;
     const { id: studentId, homeworkFileBoxId } = student;
 
-    console.log('studentId ::', studentId);
-    /*   console.log('[CubeReportModalContainer] lectureView :: ', lectureView);
-    if(lectureView && studentService) {
-      const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
-      console.log('[CubeReportModalContainer] lectureStudent :: ', lectureStudent);
-      id = lectureStudent.id;
-     
-      console.log('[CubeReportModalContainer] lectureStudent homeworkFileBoxId :: ', lectureStudent.homeworkFileBoxId);
-      // homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
-    }
-    console.log('[CubeReportModalContainer] student homeworkFileBoxId :: ', student.homeworkFileBoxId);
-  */
     if (student && studentId) {
       studentService!.modifyStudentForCoursework(studentId, homeworkFileBoxId)
         .then(() => this.onCloseModal());
