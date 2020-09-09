@@ -38,7 +38,9 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   onOpenModal() {
     this.setState({
       open: true,
-    }, this.init);
+    });
+
+    this.init();
   }
 
   onCloseModal() {
@@ -48,8 +50,15 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   }
 
   init() {
-    const { rollBookId, studentService } = this.props;
+    const { rollBookId, studentService, lectureView } = this.props;
     if (studentService && rollBookId) {
+      studentService.findStudentByRollBookId(rollBookId);
+      return;
+    }
+
+    if(studentService && lectureView) {
+      const rollBookId = lectureView.rollBooks[0].id;
+      console.log('[CubeReportModalContainer] lectureView rollBookId :: ', rollBookId);
       studentService.findStudentByRollBookId(rollBookId);
     }
   }
