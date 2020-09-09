@@ -59,12 +59,16 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     const { student } = this.props.studentService || {} as StudentService;
     let { id, homeworkFileBoxId } = student;
 
-    console.log('[CubeReportModalContainer] : lectureView', lectureView);
+    console.log('[CubeReportModalContainer] lectureView :: ', lectureView);
     if(lectureView && studentService) {
       const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
+      console.log('[CubeReportModalContainer] lectureStudent :: ', lectureStudent);
       id = lectureStudent.id;
-      homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
+     
+      console.log('[CubeReportModalContainer] lectureStudent homeworkFileBoxId :: ', lectureStudent.homeworkFileBoxId);
+      // homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
     }
+    console.log('[CubeReportModalContainer] student homeworkFileBoxId :: ', student.homeworkFileBoxId);
 
     if (id && student) {
       studentService!.modifyStudentForCoursework(id, homeworkFileBoxId)
