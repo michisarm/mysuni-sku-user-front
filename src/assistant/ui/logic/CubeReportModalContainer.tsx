@@ -49,8 +49,9 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     });
   }
 
-  init() {
+  async init() {
     const { rollBookId, studentService, lectureView } = this.props;
+    const {student} = studentService || {} as StudentService;
     if (studentService && rollBookId) {
       studentService.findStudentByRollBookId(rollBookId);
       return;
@@ -59,7 +60,9 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     if(studentService && lectureView) {
       const rollBookId = lectureView.rollBooks[0].id;
       console.log('[CubeReportModalContainer] lectureView rollBookId :: ', rollBookId);
-      studentService.findStudentByRollBookId(rollBookId);
+      studentService.clear();
+      const student = await studentService.findStudentByRollBookId(rollBookId);
+      console.log('[CubeReportModalContainer] student id :: ', student.id);
     }
   }
 
