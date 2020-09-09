@@ -76,7 +76,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     }
     studentService!.findStudentByRollBookId(rollBookId);
   
-/* 
+  /* 
     if(studentService && lectureView) {
       const rollBookId = lectureView.rollBooks[0].id;
       console.log('[CubeReportModalContainer] lectureView rollBookId :: ', rollBookId);
