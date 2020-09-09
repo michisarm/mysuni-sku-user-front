@@ -17,7 +17,7 @@ interface Props {
 
   trigger?: React.ReactNode
   onSaveCallback?:() => void
-  lectureCardId?: string
+  lectureView?: LectureViewModel
 }
 
 interface States {
@@ -55,13 +55,13 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   }
 
   onSaveModal() {
-    const { studentService, onSaveCallback, lectureCardId } = this.props;
+    const { studentService, onSaveCallback, lectureView } = this.props;
     const { student } = this.props.studentService || {} as StudentService;
-    let { id, homeworkFileBoxId } = student;
+    let { id } = student;
 
-    console.log('[CubeReportModalContainer] lectureCardId :: ', lectureCardId);
-    if(lectureCardId && studentService) {
-      const lectureStudent = studentService.getLectureInfo(lectureCardId);
+    console.log('[CubeReportModalContainer] lectureView :: ', lectureView);
+    if(lectureView && studentService) {
+      const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
       console.log('[CubeReportModalContainer] lectureStudent :: ', lectureStudent);
       id = lectureStudent.id;
      
@@ -71,7 +71,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
     console.log('[CubeReportModalContainer] student homeworkFileBoxId :: ', student.homeworkFileBoxId);
 
     if (id && student) {
-      studentService!.modifyStudentForCoursework(id, homeworkFileBoxId)
+      studentService!.modifyStudentForCoursework(id, student.homeworkFileBoxId)
         .then(() => this.onCloseModal());
       if (onSaveCallback) onSaveCallback();
     }
