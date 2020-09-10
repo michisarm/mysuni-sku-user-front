@@ -923,7 +923,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         case SubState.Completed:
           return (
             <div className="btn-completed">
-              <Button className="img-completed">
+              <Button className="img-completed transparent">
                 <span className="">학습완료</span>
                 <Icon className="play-completed24 s24"/>
               </Button>
@@ -935,7 +935,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         case SubState.Completed:
           return (
             <div className="btn-completed">
-              <Button className="img-completed">
+              <Button className="img-completed transparent">
                 <span className="">학습완료</span>
                 <Icon className="play-completed24 s24"/>
               </Button>
