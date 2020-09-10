@@ -973,6 +973,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
                   <span>{hourMinuteFormat}</span>
+                  {this.setLearningStateForMedia()}
                 </div>
               </div>
             </div>
