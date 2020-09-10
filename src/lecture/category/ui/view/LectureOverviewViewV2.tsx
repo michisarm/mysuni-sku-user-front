@@ -568,13 +568,10 @@ class LectureOverviewViewV2 extends Component<Props, State> {
           <div className="ov-paragraph course-area">
             <div className="course-cont">
               {/*선수코스*/}
-              {(isPreCourse && hasNotPostCourse) && (
-                <Lecture2.Group
-                  type={Lecture2.GroupType.PreCourse}
-                >
-                  {preLectureViews.map((preLectureView: LectureViewModel, index: number) => (
+              {isPreCourse && hasNotPostCourse && (
+                <Lecture2.Group type={Lecture2.GroupType.PreCourse}>
+                  {preLectureViews.map((preLectureView: LectureViewModel) => (
                     <Lecture2.PreCourse
-                      key={`preCourse-${index}`}
                       lectureView={preLectureView}
                       lectureViewName={preLectureView.name}
                       onViewDetail={() =>
