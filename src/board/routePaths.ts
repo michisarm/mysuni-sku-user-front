@@ -19,7 +19,7 @@ const routePaths = {
 
   supportFAQPost: (postId: string) =>
     `/board/support/faq-detail/${postId}`,
-
+  
   supportQnAPost: (postId: string) =>
     `/board/support/qna-detail/${postId}`,
 

@@ -1,26 +1,35 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
+/* eslint-disable */
+import React, { Component } from 'react';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
-import {Button, Icon} from 'semantic-ui-react';
-import {AnswerSheetModal, CubeReportModal} from 'assistant';
-import {AnswerSheetModal as SurveyAnswerSheetModal} from 'survey';
+import { Button, Icon } from 'semantic-ui-react';
+import { AnswerSheetModal, CubeReportModal } from 'assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 
-import {DatePeriod, LearningState} from 'shared/model';
-import {CubeType} from 'personalcube/personalcube/model';
-import {OverviewField} from 'personalcube';
+import { DatePeriod, LearningState } from 'shared/model';
+import { CubeType } from 'personalcube/personalcube/model';
+import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
-import {RouteComponentProps, withRouter} from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import {LectureExam2} from '../../../shared/LectureExam';
+import { LectureExam2 } from '../../../shared/LectureExam';
 
 import SkProfileService from '../../../../profile/present/logic/SkProfileService';
-import {CourseLectureService, LectureService, ProgramLectureService} from '../../../stores';
-import {CoursePlanService} from '../../../../course/stores';
-import {LectureServiceType, LectureViewModel, StudentCdoModel} from '../../../model';
-import {Lecture2} from '../../../shared';
+import {
+  CourseLectureService,
+  LectureService,
+  ProgramLectureService,
+} from '../../../stores';
+import { CoursePlanService } from '../../../../course/stores';
+import {
+  LectureServiceType,
+  LectureViewModel,
+  StudentCdoModel,
+} from '../../../model';
+import { Lecture2 } from '../../../shared';
 import LectureLearningModalView from './LectureLearningModalView';
 import routePaths from '../../../routePaths';
 
@@ -30,45 +39,47 @@ import StudentInfoModel from '../../../model/StudentInfoModel';
 import SurveyCaseModel from '../../../../survey/event/model/SurveyCaseModel';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  viewObject: any,
-  typeViewObject: any,
-  onSaveCallback:() => void,
-  onSurveyCallback:() => void,
-  skProfileService?: SkProfileService,
-  lectureService?: LectureService,
-  programLectureService?: ProgramLectureService,
-  courseLectureService:  CourseLectureService,
-  coursePlanService?: CoursePlanService,
-  studentService: StudentService,
-  lectureCardId : string,
-  onRefreshLearningState?: () => void,
-  onPageInit:() => void,
-  onPageRefresh?:() => void,
-  isPreCoursePassed: boolean,
-  studentInfo: StudentInfoModel | null
+  viewObject: any;
+  typeViewObject: any;
+  onSaveCallback: () => void;
+  onSurveyCallback: () => void;
+  skProfileService?: SkProfileService;
+  lectureService?: LectureService;
+  programLectureService?: ProgramLectureService;
+  courseLectureService: CourseLectureService;
+  coursePlanService?: CoursePlanService;
+  studentService: StudentService;
+  lectureCardId: string;
+  onRefreshLearningState?: () => void;
+  onPageInit: () => void;
+  onPageRefresh?: () => void;
+  isPreCoursePassed: boolean;
+  studentInfo: StudentInfoModel | null;
 }
 
 interface RouteParams {
-  cineroomId: string,
-  collegeId: string,
-  coursePlanId: string,
-  serviceType: LectureServiceType,
-  serviceId: string
+  cineroomId: string;
+  collegeId: string;
+  coursePlanId: string;
+  serviceType: LectureServiceType;
+  serviceId: string;
 }
 
 interface State {
-  multiple: boolean,
-  categoryOpen: boolean,
-  openLearnModal: boolean,
+  multiple: boolean;
+  categoryOpen: boolean;
+  openLearnModal: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'profile.skProfileService',
-  'lecture.lectureService',
-  'lecture.programLectureService',
-  'lecture.courseLectureService',
-  'course.coursePlanService',
-))
+@inject(
+  mobxHelper.injectFrom(
+    'profile.skProfileService',
+    'lecture.lectureService',
+    'lecture.programLectureService',
+    'lecture.courseLectureService',
+    'course.coursePlanService'
+  )
+)
 @reactAutobind
 @observer
 class LectureOverviewViewV2 extends Component<Props, State> {
@@ -104,11 +115,17 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   componentDidUpdate(prevProps: Props) {
     //
-    if (prevProps.viewObject !== this.props.viewObject && prevProps.viewObject.subCategories !== this.props.viewObject.subCategories) {
+    if (
+      prevProps.viewObject !== this.props.viewObject &&
+      prevProps.viewObject.subCategories !== this.props.viewObject.subCategories
+    ) {
       this.setMultiple();
     }
 
-    if (prevProps.match.params.coursePlanId !== this.props.match.params.coursePlanId) {
+    if (
+      prevProps.match.params.coursePlanId !==
+      this.props.match.params.coursePlanId
+    ) {
       this.findCoursePlan();
     }
     //
@@ -119,8 +136,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     // console.log('LectureOverviewView render completed');
   }
 
-  async findSkProfile()
-  {
+  async findSkProfile() {
     const { skProfileService } = this.props;
     await skProfileService!.findSkProfile();
   }
@@ -139,7 +155,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     //
     const { match, coursePlanService } = this.props;
 
-    const coursePlan = await coursePlanService!.findCoursePlan(match.params.coursePlanId);
+    const coursePlan = await coursePlanService!.findCoursePlan(
+      match.params.coursePlanId
+    );
 
     if (coursePlan) {
       coursePlanService!.findCoursePlanContents(coursePlan.contentsId);
@@ -159,7 +177,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
     if (this.itemRefs) {
       const categoriesHeight = this.itemRefs
-        .map((itemRef) => itemRef.getPanelRef().offsetHeight)
+        .map(itemRef => itemRef.getPanelRef().offsetHeight)
         .reduce((prev, current) => prev + current, 0);
 
       if (categoriesHeight > panelHeight) {
@@ -170,7 +188,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   onToggleCategory() {
     //
-    this.setState((state) => ({
+    this.setState(state => ({
       categoryOpen: !state.categoryOpen,
     }));
   }
@@ -193,14 +211,21 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     if (isPreCoursePassed) {
       this.examModal.onOpenModal();
     } else {
-      reactAlert({ title: '선수과정안내', message: '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.' });
+      reactAlert({
+        title: '선수과정안내',
+        message:
+          '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.',
+      });
     }
   }
 
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onReportNotReady() {
-    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    reactAlert({
+      title: 'Report 안내',
+      message: '학습 시작 후 Report 참여 가능합니다.',
+    });
   }
 
   onAlreadyPassed() {
@@ -208,21 +233,33 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   }
 
   onTestWaiting() {
-    reactAlert({ title: 'Test 안내', message: '시험 결과를 기다리고 있습니다.' });
+    reactAlert({
+      title: 'Test 안내',
+      message: '시험 결과를 기다리고 있습니다.',
+    });
   }
 
   onTestNotReady() {
     const { viewObject } = this.props;
 
     if (viewObject.cubeType === 'Course' || viewObject.cubeType === 'Program') {
-      reactAlert({ title: 'Test 안내', message: '과정 이수 완료 후 Test 응시 가능합니다.' });
+      reactAlert({
+        title: 'Test 안내',
+        message: '과정 이수 완료 후 Test 응시 가능합니다.',
+      });
     } else {
-      reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+      reactAlert({
+        title: 'Test 안내',
+        message: '학습 시작 후 Test 참여 가능합니다.',
+      });
     }
   }
 
   OnSurveyNotReady() {
-    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    reactAlert({
+      title: 'Survey 안내',
+      message: '학습 시작 후 Survey 참여 가능합니다.',
+    });
   }
 
   onSurvey() {
@@ -239,7 +276,8 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     // const { id: studentId } = student!;
 
     if (viewObject) {
-      StudentApi.instance.modifyStudentForExam(viewObject.studentId, viewObject.examId)
+      StudentApi.instance
+        .modifyStudentForExam(viewObject.studentId, viewObject.examId)
         .then(() => {
           // if (this.init()) this.init();
         });
@@ -257,7 +295,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     // }));
 
     window.location.href = `/suni-main/lecture/cineroom/${params.cineroomId}/college/${params.collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}?postCourseLectureId=${serviceId}`;
-
   }
 
   onViewDetail(lecture: LectureViewModel) {
@@ -272,29 +309,57 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     // Program -> Course
     if (serviceType === LectureServiceType.Course) {
       if (params.cineroomId) {
-        history.push(routePaths.courseOverview(params.cineroomId, params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
+        history.push(
+          routePaths.courseOverview(
+            params.cineroomId,
+            params.collegeId,
+            coursePlanId,
+            serviceType,
+            serviceId,
+            {
+              programLectureId: params.serviceId,
+            }
+          )
+        );
+      } else {
+        history.push(
+          routePaths.courseOverviewPrev(
+            params.collegeId,
+            coursePlanId,
+            serviceType,
+            serviceId,
+            {
+              programLectureId: params.serviceId,
+            }
+          )
+        );
       }
-      else {
-        history.push(routePaths.courseOverviewPrev(params.collegeId, coursePlanId, serviceType, serviceId, {
-          programLectureId: params.serviceId,
-        }));
-      }
-    }
-    else if (serviceType === LectureServiceType.Card) {
+    } else if (serviceType === LectureServiceType.Card) {
       // Program -> Card
       if (params.serviceType === LectureServiceType.Program) {
-
         if (params.cineroomId) {
-          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
-        }
-        else {
-          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: params.serviceId,
-          }));
+          history.push(
+            routePaths.lectureCardOverview(
+              params.cineroomId,
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: params.serviceId,
+              }
+            )
+          );
+        } else {
+          history.push(
+            routePaths.lectureCardOverviewPrev(
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: params.serviceId,
+              }
+            )
+          );
         }
       }
       // Course -> Card
@@ -302,23 +367,37 @@ class LectureOverviewViewV2 extends Component<Props, State> {
         const queryParam = queryString.parse(search);
 
         if (params.cineroomId) {
-          history.push(routePaths.lectureCardOverview(params.cineroomId, params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
-        }
-        else {
-          history.push(routePaths.lectureCardOverviewPrev(params.collegeId, cubeId, serviceId, {
-            programLectureId: queryParam.programLectureId as string,
-            courseLectureId: params.serviceId,
-          }));
+          history.push(
+            routePaths.lectureCardOverview(
+              params.cineroomId,
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: queryParam.programLectureId as string,
+                courseLectureId: params.serviceId,
+              }
+            )
+          );
+        } else {
+          history.push(
+            routePaths.lectureCardOverviewPrev(
+              params.collegeId,
+              cubeId,
+              serviceId,
+              {
+                programLectureId: queryParam.programLectureId as string,
+                courseLectureId: params.serviceId,
+              }
+            )
+          );
         }
       }
     }
   }
 
   // 학습하기 - 학습 모달창 팝업
-  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel):void {
+  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel): void {
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
@@ -335,8 +414,9 @@ class LectureOverviewViewV2 extends Component<Props, State> {
         ...this.learnStudentCdo,
         proposalState: ProposalState.Approved,
       };
-      lectureService?.confirmUsageStatisticsByCardId(studentCdo)
-        .then((confirmed) => {
+      lectureService
+        ?.confirmUsageStatisticsByCardId(studentCdo)
+        .then(confirmed => {
           if (onPageRefresh) {
             onPageRefresh();
           }
@@ -354,7 +434,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { onPageInit } = this.props;
     if (onPageInit) onPageInit();
   }
-
 
   getTestViewObject(lectureView: LectureViewModel) {
     //
@@ -405,8 +484,6 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     };
   }
 
-
-
   renderSubCategories() {
     //
     const { viewObject } = this.props;
@@ -415,21 +492,26 @@ class LectureOverviewViewV2 extends Component<Props, State> {
       return null;
     }
 
-    const subCategoriesPerMain = viewObject.subCategories.reduce((prev: any, subCategory: any) => {
-      //
-      const subCategories: string[] = prev[subCategory.college.name] || [];
+    const subCategoriesPerMain = viewObject.subCategories.reduce(
+      (prev: any, subCategory: any) => {
+        //
+        const subCategories: string[] = prev[subCategory.college.name] || [];
 
-      subCategories.push(subCategory.channel.name);
-      return {
-        ...prev,
-        [subCategory.college.name]: subCategories,
-      };
-    }, {});
+        subCategories.push(subCategory.channel.name);
+        return {
+          ...prev,
+          [subCategory.college.name]: subCategories,
+        };
+      },
+      {}
+    );
 
-    return Object.entries(subCategoriesPerMain).map(([categoryName, subCategories]: any[], index: number) => (
+    return Object.entries(
+      subCategoriesPerMain
+    ).map(([categoryName, subCategories]: any[], index: number) => (
       <OverviewField.Item
         key={`sub-category-${index}`}
-        ref={(element) => this.setItemsRef(element, index)}
+        ref={element => this.setItemsRef(element, index)}
         title={categoryName}
         content={subCategories.join(' / ')}
       />
@@ -459,7 +541,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
     const { params } = match;
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
-    const { lectureViews, getSubLectureViews  } = lectureService!;
+    const { lectureViews, getSubLectureViews } = lectureService!;
     const { preLectureViews, courseLecture } = courseLectureService;
 
     if (!viewObject.category) {
@@ -477,13 +559,14 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
     return (
       <OverviewField.Wrapper>
-        <OverviewField.Description
-          description={viewObject.description}
-        />
+        {viewObject.description !== undefined &&
+          viewObject.description !== null &&
+          viewObject.description !== '' && (
+            <OverviewField.Description description={viewObject.description} />
+          )}
         <>
           <div className="ov-paragraph course-area">
             <div className="course-cont">
-
               {/*선수코스*/}
               {(isPreCourse && hasNotPostCourse) && (
                 <Lecture2.Group
@@ -494,28 +577,122 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                       key={`preCourse-${index}`}
                       lectureView={preLectureView}
                       lectureViewName={preLectureView.name}
-                      onViewDetail={() => this.onPreCourseViewDetail(preLectureView)}
+                      onViewDetail={() =>
+                        this.onPreCourseViewDetail(preLectureView)
+                      }
                     />
                   ))}
                 </Lecture2.Group>
               )}
 
-
               <Lecture2.Group
                 type={Lecture2.GroupType.Course}
                 totalCourseCount={viewObject.totalCourseCount}
               >
-                {lectureViews.map((lecture: LectureViewModel, lectureViewsIndex: number) => (
-                  <Lecture2.CourseSection
-                    key={`course-${lectureViewsIndex}`}
-                    lecture={(
-                      <Lecture2.Course
-                        className="first"
+                {lectureViews.map(
+                  (lecture: LectureViewModel, lectureViewsIndex: number) => (
+                    <Lecture2.CourseSection
+                      key={`course-${lectureViewsIndex}`}
+                      lecture={
+                        <Lecture2.Course
+                          className="first"
+                          lectureView={lecture}
+                          lectureViewSize={
+                            getSubLectureViews(lecture.id).length
+                          }
+                          lectureViewName={
+                            lectureViewsIndex + 1 + '. ' + lecture.name
+                          }
+                          thumbnailImage={lecture.baseUrl || undefined}
+                          toggle={
+                            lecture.serviceType ===
+                              LectureServiceType.Program ||
+                            lecture.serviceType === LectureServiceType.Course
+                          }
+                          onViewDetail={() => this.onViewDetail(lecture)}
+                          collegeId={params.collegeId}
+                          lectureCardId={lectureCardId}
+                          learningState={viewObject.state}
+                          member={member}
+                          onRefreshLearningState={onRefreshLearningState}
+                          onDoLearn={this.onDoLearn}
+                          isPreCoursePassed={isPreCoursePassed}
+                          studentInfo={studentInfo}
+                          onLectureInitRequest={this.handleLectureInitRequest}
+                        />
+                      }
+                    >
+                      {getSubLectureViews(lecture.id).map(
+                        (subLecture, index) => (
+                          <>
+                            <Lecture2.Course
+                              key={`sub-lecture-${index}`}
+                              className="included"
+                              lectureView={subLecture}
+                              lectureViewName={
+                                lectureViewsIndex +
+                                1 +
+                                '. ' +
+                                (index + 1) +
+                                '. ' +
+                                subLecture.name
+                              }
+                              thumbnailImage={subLecture.baseUrl || undefined}
+                              onViewDetail={() => this.onViewDetail(subLecture)}
+                              collegeId={params.collegeId}
+                              lectureCardId={lectureCardId}
+                              member={member}
+                              onRefreshLearningState={onRefreshLearningState}
+                              onDoLearn={this.onDoLearn}
+                              isPreCoursePassed={isPreCoursePassed}
+                              studentInfo={studentInfo}
+                              onLectureInitRequest={
+                                this.handleLectureInitRequest
+                              }
+                            />
+
+                            <Lecture2.TRS
+                              key={`sub-lecture-trs-${index}`}
+                              className="included"
+                              lectureView={subLecture}
+                              lectureViewName={
+                                lectureViewsIndex +
+                                1 +
+                                '. ' +
+                                (index + 1) +
+                                '. ' +
+                                subLecture.name
+                              }
+                              thumbnailImage={subLecture.baseUrl || undefined}
+                              onViewDetail={() => this.onViewDetail(subLecture)}
+                              collegeId={params.collegeId}
+                              lectureCardId={lectureCardId}
+                              member={member}
+                              onRefreshLearningState={onRefreshLearningState}
+                              onDoLearn={this.onDoLearn}
+                              isPreCoursePassed={isPreCoursePassed}
+                              studentInfo={studentInfo}
+                              onLectureInitRequest={
+                                this.handleLectureInitRequest
+                              }
+                            />
+                          </>
+                        )
+                      )}
+                      {/*{console.log('================ : ', lectureViewsIndex)}*/}
+                      <Lecture2.TRS
+                        key={`course-trs-${lectureViewsIndex}`}
+                        className="course-trs"
                         lectureView={lecture}
-                        lectureViewSize={(getSubLectureViews(lecture.id).length)}
-                        lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
+                        lectureViewSize={getSubLectureViews(lecture.id).length}
+                        lectureViewName={
+                          lectureViewsIndex + 1 + '. ' + lecture.name
+                        }
                         thumbnailImage={lecture.baseUrl || undefined}
-                        toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
+                        toggle={
+                          lecture.serviceType === LectureServiceType.Program ||
+                          lecture.serviceType === LectureServiceType.Course
+                        }
                         onViewDetail={() => this.onViewDetail(lecture)}
                         collegeId={params.collegeId}
                         lectureCardId={lectureCardId}
@@ -527,281 +704,244 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                         studentInfo={studentInfo}
                         onLectureInitRequest={this.handleLectureInitRequest}
                       />
-                    )}
-                  >
-                    {getSubLectureViews(lecture.id).map((subLecture, index) =>
-                      <>
-                        <Lecture2.Course
-                          key={`sub-lecture-${index}`}
-                          className="included"
-                          lectureView={subLecture}
-                          lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                          thumbnailImage={subLecture.baseUrl || undefined}
-                          onViewDetail={() => this.onViewDetail(subLecture)}
-                          collegeId={params.collegeId}
-                          lectureCardId={lectureCardId}
-                          member={member}
-                          onRefreshLearningState={onRefreshLearningState}
-                          onDoLearn={this.onDoLearn}
-                          isPreCoursePassed={isPreCoursePassed}
-                          studentInfo={studentInfo}
-                          onLectureInitRequest={this.handleLectureInitRequest}
-                        />
-
-                        <Lecture2.TRS
-                          key={`sub-lecture-trs-${index}`}
-                          className="included"
-                          lectureView={subLecture}
-                          lectureViewName={(lectureViewsIndex+1)+'. '+(index+1)+'. '+subLecture.name}
-                          thumbnailImage={subLecture.baseUrl || undefined}
-                          onViewDetail={() => this.onViewDetail(subLecture)}
-                          collegeId={params.collegeId}
-                          lectureCardId={lectureCardId}
-                          member={member}
-                          onRefreshLearningState={onRefreshLearningState}
-                          onDoLearn={this.onDoLearn}
-                          isPreCoursePassed={isPreCoursePassed}
-                          studentInfo={studentInfo}
-                          onLectureInitRequest={this.handleLectureInitRequest}
-                        />
-
-                      </>
-                    )}
-                    {/*{console.log('================ : ', lectureViewsIndex)}*/}
-                    <Lecture2.TRS
-                      key={`course-trs-${lectureViewsIndex}`}
-                      className="course-trs"
-                      lectureView={lecture}
-                      lectureViewSize={(getSubLectureViews(lecture.id).length)}
-                      lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}
-                      thumbnailImage={lecture.baseUrl || undefined}
-                      toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}
-                      onViewDetail={() => this.onViewDetail(lecture)}
-                      collegeId={params.collegeId}
-                      lectureCardId={lectureCardId}
-                      learningState={viewObject.state}
-                      member={member}
-                      onRefreshLearningState={onRefreshLearningState}
-                      onDoLearn={this.onDoLearn}
-                      isPreCoursePassed={isPreCoursePassed}
-                      studentInfo={studentInfo}
-                      onLectureInitRequest={this.handleLectureInitRequest}
-                    />
-                    {/*{console.log('================ : ', lecture.name)}*/}
-                  </Lecture2.CourseSection>
-                ))}
+                      {/*{console.log('================ : ', lecture.name)}*/}
+                    </Lecture2.CourseSection>
+                  )
+                )}
               </Lecture2.Group>
 
-              {
-                viewObject && (
-                  <>
-                    <LectureExam2
-                      onReport={viewObject.reportFileBoxId ? this.onReport : undefined}
-                      onReportNotReady={viewObject.reportFileBoxId ? this.onReportNotReady : undefined}
-                      onTest={viewObject.examId ? this.onTest : undefined}
-                      onTestNotReady={viewObject.examId ? this.onTestNotReady : undefined}
-                      onAlreadyPassed={viewObject.examId ? this.onAlreadyPassed : undefined}
-                      onTestWaiting={viewObject.examId ? this.onTestWaiting : undefined}
-                      onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-                      OnSurveyNotReady={viewObject.surveyId ? this.OnSurveyNotReady : undefined}
-                      viewObject={viewObject}
-                      passedState={viewObject.passedState}
-                      type={viewObject.examType}
-                      name={viewObject.examName}
-                      sort="box"
-                    />
+              {viewObject && (
+                <>
+                  <LectureExam2
+                    onReport={
+                      viewObject.reportFileBoxId ? this.onReport : undefined
+                    }
+                    onReportNotReady={
+                      viewObject.reportFileBoxId
+                        ? this.onReportNotReady
+                        : undefined
+                    }
+                    onTest={viewObject.examId ? this.onTest : undefined}
+                    onTestNotReady={
+                      viewObject.examId ? this.onTestNotReady : undefined
+                    }
+                    onAlreadyPassed={
+                      viewObject.examId ? this.onAlreadyPassed : undefined
+                    }
+                    onTestWaiting={
+                      viewObject.examId ? this.onTestWaiting : undefined
+                    }
+                    onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+                    OnSurveyNotReady={
+                      viewObject.surveyId ? this.OnSurveyNotReady : undefined
+                    }
+                    viewObject={viewObject}
+                    passedState={viewObject.passedState}
+                    type={viewObject.examType}
+                    name={viewObject.examName}
+                    sort="box"
+                  />
 
-                    {/*<Lecture2.TRS*/}
-                    {/*  // key={`course-trs-${lectureViewsIndex}`}*/}
-                    {/*  className="course-trs"*/}
-                    {/*  lectureView={lecture}*/}
-                    {/*  // lectureViewSize={(getSubLectureViews(lecture.id).length)}*/}
-                    {/*  // lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}*/}
-                    {/*  // thumbnailImage={lecture.baseUrl || undefined}*/}
-                    {/*  // toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}*/}
-                    {/*  // onViewDetail={() => this.onViewDetail(lecture)}*/}
-                    {/*  collegeId={params.collegeId}*/}
-                    {/*  lectureCardId={lectureCardId}*/}
-                    {/*  learningState={viewObject.state}*/}
-                    {/*  member={member}*/}
-                    {/*  onRefreshLearningState={onRefreshLearningState}*/}
-                    {/*  onDoLearn={this.onDoLearn}*/}
-                    {/*  isPreCoursePassed={isPreCoursePassed}*/}
-                    {/*  studentInfo={studentInfo}*/}
-                    {/*  onLectureInitRequest={this.handleLectureInitRequest}*/}
-                    {/*/>*/}
-
-                  </>
-
-                )
-              }
+                  {/*<Lecture2.TRS*/}
+                  {/*  // key={`course-trs-${lectureViewsIndex}`}*/}
+                  {/*  className="course-trs"*/}
+                  {/*  lectureView={lecture}*/}
+                  {/*  // lectureViewSize={(getSubLectureViews(lecture.id).length)}*/}
+                  {/*  // lectureViewName={(lectureViewsIndex + 1) + '. ' + lecture.name}*/}
+                  {/*  // thumbnailImage={lecture.baseUrl || undefined}*/}
+                  {/*  // toggle={lecture.serviceType === LectureServiceType.Program || lecture.serviceType === LectureServiceType.Course}*/}
+                  {/*  // onViewDetail={() => this.onViewDetail(lecture)}*/}
+                  {/*  collegeId={params.collegeId}*/}
+                  {/*  lectureCardId={lectureCardId}*/}
+                  {/*  learningState={viewObject.state}*/}
+                  {/*  member={member}*/}
+                  {/*  onRefreshLearningState={onRefreshLearningState}*/}
+                  {/*  onDoLearn={this.onDoLearn}*/}
+                  {/*  isPreCoursePassed={isPreCoursePassed}*/}
+                  {/*  studentInfo={studentInfo}*/}
+                  {/*  onLectureInitRequest={this.handleLectureInitRequest}*/}
+                  {/*/>*/}
+                </>
+              )}
             </div>
           </div>
 
-          {
-            openLearnModal && (
-              <LectureLearningModalView
-                ref={lectureLearningModal => this.lectureLearningModal = lectureLearningModal }
-                videoUrl={this.learningVideoUrl}
-                onClose={this.onLearningModalClose}
-              />
-            )
-          }
-        </>
-        {
-          viewObject && viewObject.examId && (
-            <AnswerSheetModal
-              examId={viewObject.examId}
-              ref={examModal => this.examModal = examModal}
-              onSaveCallback={onSaveCallback}
-              onInitCallback={onPageInit}
+          {openLearnModal && (
+            <LectureLearningModalView
+              ref={lectureLearningModal =>
+                (this.lectureLearningModal = lectureLearningModal)
+              }
+              videoUrl={this.learningVideoUrl}
+              onClose={this.onLearningModalClose}
             />
-          )
-        }
+          )}
+        </>
+        {viewObject && viewObject.examId && (
+          <AnswerSheetModal
+            examId={viewObject.examId}
+            ref={examModal => (this.examModal = examModal)}
+            onSaveCallback={onSaveCallback}
+            onInitCallback={onPageInit}
+          />
+        )}
 
         <CubeReportModal
-          downloadFileBoxId ={viewObject.reportFileBoxId}
-          ref={reportModal => this.reportModal = reportModal}
-          downloadReport = {this.onClickDownloadReport}
+          downloadFileBoxId={viewObject.reportFileBoxId}
+          ref={reportModal => (this.reportModal = reportModal)}
+          downloadReport={this.onClickDownloadReport}
           rollBookId={viewObject.rollBookId}
         />
 
-        {
-          viewObject && viewObject.surveyId && (
-            <SurveyAnswerSheetModal
-              surveyId={viewObject.surveyId}
-              surveyCaseId={viewObject.surveyCaseId}
-              ref={surveyModal => this.surveyModal = surveyModal}
-              onSaveCallback={onSurveyCallback}
-              // onSaveCallback={this.testCallback}
-              serviceId={params.serviceId}
-              serviceType={params.serviceType}
-            />
-          )
-        }
+        {viewObject && viewObject.surveyId && (
+          <SurveyAnswerSheetModal
+            surveyId={viewObject.surveyId}
+            surveyCaseId={viewObject.surveyCaseId}
+            ref={surveyModal => (this.surveyModal = surveyModal)}
+            onSaveCallback={onSurveyCallback}
+            // onSaveCallback={this.testCallback}
+            serviceId={params.serviceId}
+            serviceType={params.serviceType}
+          />
+        )}
 
         <OverviewField.List
           ref={this.panelRef}
-          className={classNames('sub-category fn-parents', { open: categoryOpen })}
-          header={(
-            <OverviewField.Title
-              icon="category"
-              text="서브채널"
-            />
-          )}
+          className={classNames('sub-category fn-parents', {
+            open: categoryOpen,
+          })}
+          header={<OverviewField.Title icon="category" text="서브채널" />}
         >
           {this.renderSubCategories()}
-          { multiple && (
+          {multiple && (
             <Button
               icon
-              className={classNames('right btn-blue fn-more-toggle', { 'btn-more': !categoryOpen, 'btn-hide': categoryOpen })}
+              className={classNames('right btn-blue fn-more-toggle', {
+                'btn-more': !categoryOpen,
+                'btn-hide': categoryOpen,
+              })}
               onClick={this.onToggleCategory}
             >
-              {categoryOpen ? 'hide' : 'more'} <Icon className={classNames({ more2: !categoryOpen, hide2: categoryOpen })} />
+              {categoryOpen ? 'hide' : 'more'}{' '}
+              <Icon
+                className={classNames({
+                  more2: !categoryOpen,
+                  hide2: categoryOpen,
+                })}
+              />
             </Button>
           )}
         </OverviewField.List>
 
-        <OverviewField.FileDownload
-          fileBoxIds={[ viewObject.fileBoxId ]}
-        />
-
-        { cubeType === CubeType.ClassRoomLecture && typeViewObject.applyingPeriod && (
-          <OverviewField.List icon className="period-area">
-            <OverviewField.Item
-              titleIcon="period"
-              title="수강신청기간"
-              content={this.getPeriodDate(typeViewObject.applyingPeriod)}
-            />
-            <OverviewField.Item
-              titleIcon="cancellation"
-              title="취소가능기간"
-              content={(
-                <>
-                  {this.getPeriodDate(typeViewObject.cancellablePeriod)}
-                  { typeViewObject.cancellationPenalty && (
-                    <div className="info">
-                      No Show Penalty : {typeViewObject.cancellationPenalty}
-                    </div>
-                  )}
-                </>
-              )}
-            />
-          </OverviewField.List>
+        {/* 첨부파일 UI 변경 by gon */}
+        {viewObject && (
+          <>
+            {viewObject.fileBoxId && viewObject.fileBoxId.length > 0 && (
+              <OverviewField.FileDownload fileBoxIds={[viewObject.fileBoxId]} />
+            )}
+          </>
         )}
 
-        {
-          (typeViewObject.classrooms || viewObject.goal || viewObject.applicants
-            || viewObject.organizerName) && (
-            <OverviewField.List
-              icon
-              header={ typeViewObject.classrooms ? (
+        {cubeType === CubeType.ClassRoomLecture &&
+          typeViewObject.applyingPeriod && (
+            <OverviewField.List icon className="period-area">
+              <OverviewField.Item
+                titleIcon="period"
+                title="수강신청기간"
+                content={this.getPeriodDate(typeViewObject.applyingPeriod)}
+              />
+              <OverviewField.Item
+                titleIcon="cancellation"
+                title="취소가능기간"
+                content={
+                  <>
+                    {this.getPeriodDate(typeViewObject.cancellablePeriod)}
+                    {typeViewObject.cancellationPenalty && (
+                      <div className="info">
+                        No Show Penalty : {typeViewObject.cancellationPenalty}
+                      </div>
+                    )}
+                  </>
+                }
+              />
+            </OverviewField.List>
+          )}
+
+        {((typeViewObject.classrooms ||
+          viewObject.goal ||
+          viewObject.applicants ||
+          viewObject.organizerName) && (
+          <OverviewField.List
+            icon
+            header={
+              typeViewObject.classrooms ? (
                 <OverviewField.Table
                   titleIcon="series"
                   titleText="차수정보"
                   classrooms={typeViewObject.classrooms}
                 />
-              ) : null }
-            >
-              {
-                viewObject.goal && (
-                  <OverviewField.Item
-                    titleIcon="goal"
-                    title="학습목표"
-                    content={viewObject.goal}
-                  />
-                ) || null
-              }
-              {
-                viewObject.applicants && (
-                  <OverviewField.Item
-                    titleIcon="target"
-                    title="대상"
-                    content={viewObject.applicants}
-                  />
-                ) || null
-              }
-              {
-                viewObject.organizerName && (
-                  <OverviewField.Item
-                    titleIcon="host"
-                    title="교육기관 출처"
-                    content={viewObject.organizerName}
-                  />
-                )
-              }
-            </OverviewField.List>
-          ) || null
-        }
-        {
-          (typeViewObject.location || viewObject.completionTerms || viewObject.guide)
-          && (
-            <OverviewField.List className="info-box2">
-              { cubeType === CubeType.ClassRoomLecture && (
-                <OverviewField.Item
-                  title="장소"
-                  content={typeViewObject.location}
-                />
-              )}
+              ) : null
+            }
+          >
+            {(viewObject.goal && (
               <OverviewField.Item
-                title="이수조건"
-                content={viewObject.completionTerms}
+                titleIcon="goal"
+                title="학습목표"
+                content={viewObject.goal}
               />
+            )) ||
+              null}
+            {(viewObject.applicants && (
               <OverviewField.Item
-                title="기타안내"
-                className="quill-des"
-                contentHtml={viewObject.guide}
+                titleIcon="target"
+                title="대상"
+                content={viewObject.applicants}
               />
-            </OverviewField.List>
-          ) || null
-        }
+            )) ||
+              null}
+            {viewObject.organizerName && (
+              <OverviewField.Item
+                titleIcon="host"
+                title="교육기관 출처"
+                content={viewObject.organizerName}
+              />
+            )}
+          </OverviewField.List>
+        )) ||
+          null}
+        {((typeViewObject.location ||
+          viewObject.completionTerms ||
+          viewObject.guide) && (
+          <OverviewField.List className="info-box2">
+            {cubeType === CubeType.ClassRoomLecture && (
+              <OverviewField.Item
+                title="장소"
+                content={typeViewObject.location}
+              />
+            )}
+            <OverviewField.Item
+              title="이수조건"
+              content={viewObject.completionTerms}
+            />
+            <OverviewField.Item
+              title="기타안내"
+              className="quill-des"
+              contentHtml={viewObject.guide}
+            />
+          </OverviewField.List>
+        )) ||
+          null}
         <OverviewField.List className="tab-wrap" icon>
           <OverviewField.Item
             titleIcon="tag2"
             title="태그"
-            content={viewObject.tags.map((tag: string, index: number) => (
-              tag && <span key={`tag-${index}`} className="ui label tag">{tag}</span>
-            ))}
+            content={viewObject.tags.map(
+              (tag: string, index: number) =>
+                tag && (
+                  <span key={`tag-${index}`} className="ui label tag">
+                    {tag}
+                  </span>
+                )
+            )}
           />
         </OverviewField.List>
       </OverviewField.Wrapper>

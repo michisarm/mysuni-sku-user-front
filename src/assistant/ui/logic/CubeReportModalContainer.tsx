@@ -7,6 +7,7 @@ import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { depotHelper } from 'shared';
 import { StudentService } from 'lecture/stores';
+// import LectureViewModel from '../../../lecture/model/LectureViewModel';
 
 interface Props {
   studentService ?: StudentService
@@ -16,6 +17,7 @@ interface Props {
 
   trigger?: React.ReactNode
   onSaveCallback?:() => void
+  // lectureView?: LectureViewModel
 }
 
 interface States {
@@ -54,8 +56,15 @@ class CubeReportModalContainer extends React.Component<Props, States> {
 
   onSaveModal() {
     const { studentService, onSaveCallback } = this.props;
-    const { student } = this.props.studentService || {} as StudentService;
+    const { student } = studentService || {} as StudentService;
     const { id: studentId } = student!;
+
+    /* if(studentId && studentService) {
+      const lectureStudent = studentService.getLectureInfo(lectureView.serviceId);
+      id = lectureStudent.id;
+      homeworkFileBoxId = lectureStudent.homeworkFileBoxId;
+    } */
+
     if (studentId && student) {
       studentService!.modifyStudentForCoursework(studentId, student.homeworkFileBoxId)
         .then(() => this.onCloseModal());

@@ -53,6 +53,9 @@ import LectureLearningModalView from '../view/LectureLearningModalView';
 import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
+// routePaths
+import boardRoutePaths from '../../../../board/routePaths';
+
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
   studentService?: StudentService;
@@ -645,6 +648,17 @@ class LectureCardContainer extends Component<Props, State> {
 
   onClickSurvey() {
     this.surveyModal.onOpenModal();
+  }
+
+  moveToSupportQnA(tab?: string) {
+    const { history } = this.props;
+    // tab에 따른 Support 이동
+    if(tab && typeof tab === 'string') {
+      history.push(boardRoutePaths.supportTab(tab));
+      return;
+    }
+    // default:: Support QnA로 이동
+    history.push(boardRoutePaths.supportQnA());
   }
 
   onJoin() {
@@ -1395,6 +1409,7 @@ class LectureCardContainer extends Component<Props, State> {
             inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark
           }
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
+          moveToSupport={this.moveToSupportQnA}
           // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           /* onDownloadReport={
              ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
