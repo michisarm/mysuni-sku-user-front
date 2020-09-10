@@ -73,7 +73,7 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   }
 
   onSaveModal() {
-    const { studentService, onSaveCallback, lectureView } = this.props;
+    const { studentService, onSaveCallback } = this.props;
     const { student } = this.props.studentService || ({} as StudentService);
     const { id: studentId, homeworkFileBoxId } = student;
 
@@ -88,8 +88,9 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   getFileBoxIdForReference(depotId: string) {
     //
     const { studentService } = this.props;
-    if (studentService)
+    if (studentService) {
       studentService.setStudentProp('homeworkFileBoxId', depotId);
+    }
   }
 
   onSubmitClick() {
