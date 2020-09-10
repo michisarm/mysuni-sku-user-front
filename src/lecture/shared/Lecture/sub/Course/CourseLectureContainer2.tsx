@@ -41,6 +41,8 @@ import { LectureExam } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
 import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
 
+import './index.css';
+
 interface Props {
   rollBookService?: RollBookService,
   boardService: BoardService,
@@ -913,6 +915,38 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
+  setLearningStateForFirst() {
+    const { lectureView, onViewDetail } = this.props;
+
+    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio ) {
+      switch (this.state.inProgress) {
+        case SubState.Completed:
+          return (
+            <div className="btn-completed">
+              <Button className="img-completed">
+                <span className="">학습완료</span>
+                <Icon className="play-completed24 s24"/>
+              </Button>
+            </div>
+          );
+      }
+    } else {
+      switch (this.state.inProgress) {
+        case SubState.Completed:
+          return (
+            <div className="btn-completed">
+              <Button className="img-completed">
+                <span className="">학습완료</span>
+                <Icon className="play-completed24 s24"/>
+              </Button>
+            </div>
+          );
+      }
+    }
+    return null;
+  }
+
+
   render() {
     //
     const { classNameForLearningState } = this.state;
@@ -955,7 +989,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
                 </div>
                 {
                   lectureViewSize && (
-                    <div className="num">{lectureViewSize}개 강의 구성</div>
+                    <>
+                      <div className="num">{lectureViewSize}개 강의 구성</div>
+                      {this.setLearningStateForFirst()}
+                    </>
                   )
                 }
 

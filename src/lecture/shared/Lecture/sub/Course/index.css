@@ -1,0 +1,12 @@
+.ui.breadcrumb {
+    float: right;
+}
+.course-cont .course-box .bar .num {padding-right:1rem}
+.btn-completed {display:table-cell; width:10.5rem; padding:0 0 0 0.8rem; vertical-align:middle}
+.btn-completed .ui.button {position:relative; height:1.5rem; padding:0; margin:0; background-color: white;}
+.btn-completed .ui.button:before {position:absolute; left:-1rem; top:4px; width:0.0625rem; height:0.8rem; margin-top:0; background:#b9b9b9; content:''}
+.btn-completed .ui.button span {display:inline-block; vertical-align:middle; height:1.5rem; padding-top:0.18rem; padding-right:0.1rem; color:#6c788f; font-weight:700}
+.btn-completed .ui.button > .icon:not(.button) {display:inline-block; height:1.5rem; vertical-align:middle}
+.btn-completed .ui.button:not(.icon) > .icon:not(.button):not(.dropdown) {margin:0 0 0 0.2rem}
+
+.course-cont .course-box .bar .btn-completed + .toggle-btn {padding-left:0}
