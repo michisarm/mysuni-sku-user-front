@@ -59,17 +59,17 @@ class CubeReportModalContainer extends React.Component<Props, States> {
   async init() {
     const { studentService, lectureView } = this.props;
     let { rollBookId } = this.props;
-
     // rollBookId 가 있을 경우 :: from LectureCardPage
     if (rollBookId) {
       studentService!.findStudentByRollBookId(rollBookId);
+
       return;
     }
     // rollBookId 가 없는 경우 :: from CoursePage
     if (!rollBookId && lectureView) {
       rollBookId = lectureView.rollBooks[0].id;
     }
-    studentService!.findStudentByRollBookId(rollBookId);
+    await studentService!.findStudentByRollBookId(rollBookId);
   }
 
   onSaveModal() {
