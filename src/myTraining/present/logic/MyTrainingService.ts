@@ -18,6 +18,9 @@ class MyTrainingService {
   _myTrainings: MyTrainingModel[] = [];
 
   @observable
+  _myTrainingsExcel: MyTrainingModel[] = [];
+
+  @observable
   inprogressCount: number = 0;
 
   @observable
@@ -110,7 +113,11 @@ class MyTrainingService {
       if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           //window.sessionStorage.removeItem('InProgressLearningList');
-          this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
+          //this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
+          const rdo = MyTrainingRdoModel.newWithState('InProgress', 8, 0, []);
+          const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
+          //window.sessionStorage.removeItem('InProgressLearningList');
+          window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
         }
       }
     }
@@ -147,7 +154,7 @@ class MyTrainingService {
     const offsetList = await this.myTrainingApi.findAllMyTrainings(rdo);
     if (fromMain) {
       //window.sessionStorage.removeItem('InProgressLearningList');
-      this.clear();
+      //this.clear();
       window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
     }
 
@@ -245,6 +252,16 @@ class MyTrainingService {
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
 
     runInAction(() => this._myTrainings = this._myTrainings.concat(trainingOffsetElementList.results));
+    return trainingOffsetElementList;
+  }
+
+  @action
+  async findAndAddAllMyTrainingsWithStampForExcel(limit: number, offset: number, channelIds: string[] = []) {
+    //
+    const rdo = MyTrainingRdoModel.new(limit, offset, channelIds);
+    const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
+
+    runInAction(() => this._myTrainingsExcel = this._myTrainingsExcel.concat(trainingOffsetElementList.results));
     return trainingOffsetElementList;
   }
 

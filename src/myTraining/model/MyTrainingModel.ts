@@ -94,6 +94,21 @@ class MyTrainingModel extends DramaEntityObservableModel {
     }
   }
 
+  static asStampXLSX(
+    myTraining: MyTrainingModel,
+    index: number
+  ): MyTrainingStampXlsxModel {
+    //
+
+    return {
+      No: String(index + 1),
+      college : myTraining.category.college.name,
+      과정명: myTraining.name || '-',
+      스탬프 : myTraining.stampCount,
+      획득일자 : moment(myTraining.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
+    };
+  }
+
   @computed
   get state() {
     if (this.proposalState === ProposalState.Approved) {
