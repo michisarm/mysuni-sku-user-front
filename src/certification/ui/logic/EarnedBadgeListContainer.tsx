@@ -75,7 +75,7 @@ const EarnedBadgeListContainer: React.FC<Props> = (Props) => {
                   <Badge
                     badge={badge}
                     badgeStyle={BadgeStyle.List}
-                    badgeSize={BadgeSize.Large}
+                    badgeSize={BadgeSize.Small}
                   />
                   <div className="badge-name">{badge.name}</div>
                 </li>

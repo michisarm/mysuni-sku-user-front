@@ -91,7 +91,7 @@ const ChallengingBadge  : React.FC<Props> = (Props) => {
                   <Badge
                     badge={badge}
                     badgeStyle={BadgeStyle.List}
-                    badgeSize={BadgeSize.Large}
+                    badgeSize={BadgeSize.Small}
                   />
                 </li>
               );

@@ -399,7 +399,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         <Badge
           badge={badgeDetail}
           badgeStyle={BadgeStyle.Detail}
-          badgeSize={BadgeSize.Large}
+          badgeSize={BadgeSize.Small}
         />
         {/*뱃지 타이틀*/}
         <BadgeTitle
