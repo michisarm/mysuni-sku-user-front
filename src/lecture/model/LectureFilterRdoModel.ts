@@ -36,7 +36,7 @@ class LectureFilterRdoModel {
     });
   }
 
-  static newLectures(limit: number, offset: number, order: OrderByType=OrderByType.Time, channelIds: string[] = []) {
+  static newLectures(limit: number, offset: number, order: OrderByType = OrderByType.Time, channelIds: string[] = []) {
     //
     return new LectureFilterRdoModel({
       orderBy: order,
@@ -46,8 +46,12 @@ class LectureFilterRdoModel {
     });
   }
 
-  static lrsLectures(limit: number, offset: number, email: string, order: OrderByType=OrderByType.Time, channelIds: string[] = []) {
+  static lrsLectures(limit: number, offset: number, email?: string, order: OrderByType = OrderByType.Time, channelIds: string[] = []) {
     //
+    if (!email) {
+      email = patronInfo.getPatronEmail();
+    }
+
     return new LectureFilterRdoModel({
       orderBy: order,
       limit,
