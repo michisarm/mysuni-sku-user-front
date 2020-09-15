@@ -1,4 +1,3 @@
-
 import { axiosApi as axios, NameValueList } from '@nara.platform/accent';
 
 import { OffsetElementList, CubeState } from 'shared/model';
@@ -14,7 +13,8 @@ export default class PersonalCubeApi {
   //
   static instance: PersonalCubeApi;
 
-  devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  // devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
+  devUrl = '';
   URL = this.devUrl + '/api/personalCube/personalcubes';
   flowURL = this.devUrl + '/api/personalCube/cubes/flow';
   approvalURL = this.devUrl + '/api/personalCube/approval';
@@ -36,27 +36,35 @@ export default class PersonalCubeApi {
   approvalURL = this.baseUrl + '/approval';
   depotURL = 'http://localhost:8080/depotFile/multiple';*/
 
-  static convertOffsetElementList(response: any): OffsetElementList<PersonalCubeModel> {
+  static convertOffsetElementList(
+    response: any
+  ): OffsetElementList<PersonalCubeModel> {
     //
     if (!response || !response.data) {
       return new OffsetElementList<PersonalCubeModel>();
     }
-    const offsetElementList = new OffsetElementList<PersonalCubeModel>(response.data);
+    const offsetElementList = new OffsetElementList<PersonalCubeModel>(
+      response.data
+    );
 
-    offsetElementList.results = offsetElementList.results.map((result) => new PersonalCubeModel(result));
+    offsetElementList.results = offsetElementList.results.map(
+      result => new PersonalCubeModel(result)
+    );
     return offsetElementList;
   }
 
   registerCube(cubeCdo: PersonalCubeCdoModel) {
     //
-    return axios.post<string>(this.URL + '/regist', cubeCdo)
-      .then(response => response && response.data || null);
+    return axios
+      .post<string>(this.URL + '/regist', cubeCdo)
+      .then(response => (response && response.data) || null);
   }
 
   findPersonalCube(personalCubeId: string) {
     //
-    return axios.get<PersonalCubeModel>(this.URL + `/${personalCubeId}`)
-      .then(response => response && response.data || null);
+    return axios
+      .get<PersonalCubeModel>(this.URL + `/${personalCubeId}`)
+      .then(response => (response && response.data) || null);
   }
 
   modifyPersonalCube(personalCubeId: string, nameValues: NameValueList) {
@@ -72,62 +80,88 @@ export default class PersonalCubeApi {
   // Todo: totalCount 를 얻는 메소드가 필요함.
   findAllPersonalCubes(offset: number, limit: number) {
     //
-    return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL, { params: {
-      offset,
-      limit,
-    }}).then((response: any) => response && response.data || null);
+    return axios
+      .get<OffsetElementList<PersonalCubeModel>>(this.URL, {
+        params: {
+          offset,
+          limit,
+        },
+      })
+      .then((response: any) => (response && response.data) || null);
   }
 
   // Query
   findAllPersonalCubesByQuery(personalCubeRdo: PersonalCubeRdoModel) {
     //
-    return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL + `/searchKey`, { params: personalCubeRdo })
-      .then((response: any) => response && response.data || null);
+    return axios
+      .get<OffsetElementList<PersonalCubeModel>>(this.URL + `/searchKey`, {
+        params: personalCubeRdo,
+      })
+      .then((response: any) => (response && response.data) || null);
   }
 
   // Query
-  findPersonalCubesForCreator(offset: number, limit: number, cubeState?: CubeState) {
+  findPersonalCubesForCreator(
+    offset: number,
+    limit: number,
+    cubeState?: CubeState
+  ) {
     //
     const params = {
       offset,
       limit,
       cubeState,
     };
-    return axios.get<OffsetElementList<PersonalCubeModel>>(this.URL + `/forCreator`, { params })
-      .then((response: any) => PersonalCubeApi.convertOffsetElementList(response));
+    return axios
+      .get<OffsetElementList<PersonalCubeModel>>(this.URL + `/forCreator`, {
+        params,
+      })
+      .then((response: any) =>
+        PersonalCubeApi.convertOffsetElementList(response)
+      );
   }
 
   findAllApprovalContents(approvalContents: ApprovalContentsRdo) {
     //
-    return axios.get<OffsetElementList<ApprovalContents>>(this.approvalURL, { params: approvalContents })
-      .then(response => response && response.data || null);
+    return axios
+      .get<OffsetElementList<ApprovalContents>>(this.approvalURL, {
+        params: approvalContents,
+      })
+      .then(response => (response && response.data) || null);
   }
 
   personalCubeRequestOpen(personalCubeRequestCdo: PersonalCubeRequestCdoModel) {
     //
-    return axios.post<string>(this.flowURL + `/requestOpen`, personalCubeRequestCdo)
-      .then(response => response && response.data || null);
+    return axios
+      .post<string>(this.flowURL + `/requestOpen`, personalCubeRequestCdo)
+      .then(response => (response && response.data) || null);
   }
 
-  personalCubeRequestReject(personalCubeRequestCdo: PersonalCubeRequestCdoModel) {
+  personalCubeRequestReject(
+    personalCubeRequestCdo: PersonalCubeRequestCdoModel
+  ) {
     //
-    return axios.post<string>(this.flowURL + `/requestReject`, personalCubeRequestCdo)
-      .then(response => response && response.data || null);
+    return axios
+      .post<string>(this.flowURL + `/requestReject`, personalCubeRequestCdo)
+      .then(response => (response && response.data) || null);
   }
-
 
   // todo Domain 변경으로 Excel 메소드 확인 필요 to 왕선임님
   findAllPersonalCubesExcel(personalCubeRdo: PersonalCubeRdoModel) {
     //
-    return axios.get<ExcelView>(this.URL + `/excel`, { params: personalCubeRdo })
-      // .then((response: any) => window.location.href = response.request.responseURL);
-      .then((response: any) => console.log(response));
+    return (
+      axios
+        .get<ExcelView>(this.URL + `/excel`, { params: personalCubeRdo })
+        // .then((response: any) => window.location.href = response.request.responseURL);
+        .then((response: any) => console.log(response))
+    );
   }
 
   findFileBox(depotIds: string) {
     //
-    return axios.get<string>(this.depotURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
-      .then(response => response && response.data || null);
+    return axios
+      .get<string>(this.depotURL + `?depotIds=%255B%2522${depotIds}%2522%255D`)
+      .then(response => (response && response.data) || null);
   }
 }
 
