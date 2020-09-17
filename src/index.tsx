@@ -21,6 +21,9 @@ import 'react-quill/dist/quill.snow.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { initializeBody } from './shared/helper/bodyHelper';
 
+
+initializeBody();
 
 ReactDOM.render(<App />, document.getElementById('root'));
