@@ -196,8 +196,8 @@ class LectureOverviewView extends Component<Props, State> {
     const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
-    console.log('LectureOverviewView : ', serviceId);
-    console.log('LectureOverviewView : ', serviceType);
+    //console.log('LectureOverviewView : ', serviceId);
+    //console.log('LectureOverviewView : ', serviceType);
 
     return (
       <OverviewField.Wrapper>

@@ -452,10 +452,12 @@ class LectureCardContainer extends Component<Props, State> {
       typeViewObject.classrooms.length &&
       typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.setState(
-        { selectedClassRoom: typeViewObject.classrooms[0] },
-        this.onApplyReference
-      );
+      //단일차수일 경우
+      this.onSelectClassroom(typeViewObject.classrooms[0]);
+      // this.setState(
+      //   { selectedClassRoom: typeViewObject.classrooms[0] },
+      //   this.onApplyReference
+      // );
     } else {
       this.onApplyReference();
     }
