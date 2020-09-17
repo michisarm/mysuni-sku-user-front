@@ -401,3 +401,11 @@ i.icon.balloon.logout::before {
 .badge-list ul li:nth-child(4n) {margin-right:0}
 .badge-list ul li .badge-name {width:100%}
 .badge-list ul li .badge-name span {float:left}
+
+.badge.s220 .title .cell {padding:0 1.5rem}
+.badge.s220 .title .cell span {overflow:hidden; display:block; word-break:keep-all; text-overflow:clip; -webkit-line-clamp: none}
+.msie .badge.s220 .title .cell {font-weight:500}
+
+.badge.s280 .title .cell {padding:0 1.5rem}
+.badge.s280 .title .cell span {overflow:hidden; display:block; word-break:keep-all; text-overflow:clip; -webkit-line-clamp: none}
+.msie .badge.s280 .title .cell {font-weight:500}
