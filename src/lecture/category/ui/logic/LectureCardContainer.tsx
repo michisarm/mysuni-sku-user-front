@@ -573,7 +573,7 @@ class LectureCardContainer extends Component<Props, State> {
       //   this.onMarkComplete();
       // }
       //0416
- 
+
       window.open(typeViewObject.url, '_blank');
 
       //this.setState( {openLearningModal: true});
@@ -655,7 +655,7 @@ class LectureCardContainer extends Component<Props, State> {
   moveToSupportQnA(tab?: string) {
     const { history } = this.props;
     // tab에 따른 Support 이동
-    if(tab && typeof tab === 'string') {
+    if (tab && typeof tab === 'string') {
       history.push(boardRoutePaths.supportTab(tab));
       return;
     }
@@ -678,25 +678,39 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onMarkComplete() {
-    const { student, studentService, myTrainingService, lectureCardId } = this.props;
+    const {
+      student,
+      studentService,
+      myTrainingService,
+      lectureCardId,
+    } = this.props;
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
         myTrainingService!.saveNewLearningPassedToStorage('Passed');
-        
+
         this.removeLearningFromSessionStorage();
       });
     }
   }
 
   removeLearningFromSessionStorage() {
-    const {myTrainingService} = this.props;
+    const { myTrainingService } = this.props;
 
     // sessionStorage.removeItem('InProgressLearningList');
-    console.log('[LectureCardContainer] InProgressLearningList is removed(expected null) : ', sessionStorage.getItem('InProgressLearningList'));
+    console.log(
+      '[LectureCardContainer] InProgressLearningList is removed(expected null) : ',
+      sessionStorage.getItem('InProgressLearningList')
+    );
 
-    myTrainingService!.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
+    myTrainingService!.findAllMyTrainingsWithState(
+      'InProgress',
+      8,
+      0,
+      [],
+      true
+    );
   }
 
   onApplyReference() {
@@ -834,7 +848,6 @@ class LectureCardContainer extends Component<Props, State> {
       myTrainingService,
       onPageRefresh,
       lectureCardId,
-      
     } = this.props;
 
     // 동영상 close click 시 lectureCardId 가 같다면
@@ -1055,7 +1068,8 @@ class LectureCardContainer extends Component<Props, State> {
           student &&
           student.id &&
           student.learningState === LearningState.Progress &&
-          !viewObject.examId
+          !viewObject.examId &&
+          !viewObject.reportFileBoxId
         ) {
           subActions.push({
             type: LectureSubInfo.ActionType.MarkComplete,
