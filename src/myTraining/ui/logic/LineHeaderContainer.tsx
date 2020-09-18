@@ -44,6 +44,7 @@ class LineHeaderContainer extends Component<Props> {
     });
 
     myTrainings.results.forEach(value => data.push({
+      유형: value.serviceType,
       카테고리: value.category.college.name,
       타이틀: value.name,
       '학습시간(분)': value.learningTime }));
