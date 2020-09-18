@@ -11,6 +11,7 @@ import ApprovalSharedDetailContainer from './ui/logic/ApprovalSharedDetailContai
 // 고도화
 import NewLearningPage from './ui/page/NewLearningPage';
 import APLPage from './ui/page/APLPage';
+import { AplCreatePage } from './index';
 
 class MainRoutes extends React.Component {
   //
@@ -54,7 +55,8 @@ class MainRoutes extends React.Component {
           path="/my-training/my-page/ApprovalList/detail/:studentId"
           component={ApprovalSharedDetailContainer}
         />
-        <Route exact path="/my-training/apl/create" component={APLPage} />
+        <Route exact path="/my-training/apl/createtest" component={APLPage} />
+        <Route exact path="/my-training/apl/create" component={AplCreatePage} />
 
         <Route
           exact
