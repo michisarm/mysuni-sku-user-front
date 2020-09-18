@@ -31,7 +31,7 @@ interface Props {
   onResetFocusControl?: () => void;
 }
 
-@inject('aplService', 'sharedService')
+@inject('aplService')
 @observer
 @reactAutobind
 class AplCreateContainer extends React.Component<Props> {
@@ -289,6 +289,7 @@ class AplCreateContainer extends React.Component<Props> {
   }
 }
 
-export default inject(mobxHelper.injectFrom('aplService', 'sharedService'))(
-  withRouter(observer(AplCreateContainer))
-);
+export default AplCreateContainer;
+// export default inject(mobxHelper.injectFrom('aplService'))(
+//   withRouter(observer(AplCreateContainer))
+// );
