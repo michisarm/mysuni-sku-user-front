@@ -57,7 +57,7 @@ class InMyLectureCdoModel {
       lectureCardUsids: [],
       reviewId: lectureCard.reviewId,
       baseUrl: personalCube.iconBox.baseUrl,
-      servicePatronKeyString: personalCube.patronKey.keyString,
+      servicePatronKeyString: personalCube.patronKey.keyString!,
     });
   }
 
@@ -82,7 +82,7 @@ class InMyLectureCdoModel {
 
       reviewId: lecture.reviewId,
       baseUrl: lecture.baseUrl,
-      servicePatronKeyString: lecture.patronKey.keyString,
+      servicePatronKeyString: lecture.patronKey.keyString!,
     });
   }
 }

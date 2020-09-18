@@ -2,10 +2,10 @@ import { decorate, observable } from 'mobx';
 
 class MyTrainingTabModel {
   //
-  inprogressCount: number = 0;
-  enrolledCount: number = 0;
-  completedCount: number = 0;
-  retryCount: number = 0;
+  inprogressCount: number = 0;              // 학습중
+  enrolledCount: number = 0;                // 학습예정
+  completedCount: number = 0;               // 학습완료
+  retryCount: number = 0;                   // 취소/미이수
 
 
   constructor(mytrainingRdo?: MyTrainingTabModel) {

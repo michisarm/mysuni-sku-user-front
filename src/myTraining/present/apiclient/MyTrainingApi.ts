@@ -6,6 +6,7 @@ import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingTabModel from '../../model/MyTrainingTabModel';
 
 
+
 class MyTrainingApi {
   //
   static instance: MyTrainingApi;

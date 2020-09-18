@@ -12,6 +12,8 @@ import {
 import { CubeType, CubeTypeNameType } from 'personalcube/personalcube/model';
 import { CourseSetModel } from 'course/model';
 import { LectureServiceType } from 'lecture/model';
+import { InProgressXlsxModel } from './InProgressXlsxModel';
+import { CompletedXlsxModel } from './CompletedXlsxModel';
 
 class MyTrainingModel extends DramaEntityObservableModel {
   //
@@ -32,10 +34,11 @@ class MyTrainingModel extends DramaEntityObservableModel {
   requiredSubsidiaries: IdName[] = [];
   required: boolean = false;
   cubeId: string = '';
+  cineroomId: string = '';
   courseSetJson: CourseSetModel = new CourseSetModel();
   courseLectureUsids: string[] = [];
   lectureCardUsids: string[] = [];
-
+  level: string = '';
   time: number = 0;
 
   reviewId: string = '';
@@ -46,6 +49,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
   createDate: string = '';
   startDate: string = '';
   endDate: string = '';
+  retryDate: string = '';
   // UI only
   cubeTypeName: CubeTypeNameType = CubeTypeNameType.None;
 
@@ -65,6 +69,36 @@ class MyTrainingModel extends DramaEntityObservableModel {
       this.passedStudentCount = myTraining.studentCount;
     }
   }
+
+  toXlsxForInProgress(index: number): InProgressXlsxModel {
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      학습유형: this.cubeType,
+      Level: this.level,
+      진행률: '',
+      학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
+      학습시작일: moment(this.startDate).format('YYYY.MM.DD')
+    };
+  }
+
+  toXlsxForCompleted(index: number): CompletedXlsxModel {
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      학습유형: this.cubeType,
+      Level: this.level,
+      학습시간: moment(this.learningTime).format('YYYY.MM.DD'),
+      학습완료일: moment(this.endDate).format('YYYY.MM.DD')
+    };
+  }
+
+  isCardType() {
+    return this.serviceType === LectureServiceType.Card ? true : false;
+  }
+
 
   static getServiceType(myTraining: MyTrainingModel) {
     //
@@ -171,9 +205,11 @@ decorate(MyTrainingModel, {
   coursePlanId: observable,
   requiredSubsidiaries: observable,
   cubeId: observable,
+  cineroomId: observable,
   courseSetJson: observable,
   courseLectureUsids: observable,
   lectureCardUsids: observable,
+  level: observable,
   time: observable,
   required: observable,
   cubeTypeName: observable,
@@ -182,6 +218,7 @@ decorate(MyTrainingModel, {
   passedStudentCount: observable,
   baseUrl: observable,
   endDate: observable,
+  retryDate: observable,
 });
 
 export default MyTrainingModel;

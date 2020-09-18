@@ -1,4 +1,3 @@
-
 import MyTrainingService from './present/logic/MyTrainingService';
 import MyLearningSummaryService from './present/logic/MyLearningSummaryService';
 import InMyLectureService from './present/logic/InMyLectureService';

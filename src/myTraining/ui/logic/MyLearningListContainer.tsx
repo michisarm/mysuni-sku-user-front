@@ -58,7 +58,7 @@ class MyLearningPage extends Component<Props, State> {
 
   PAGE_SIZE = 8;
 
-  state= {
+  state = {
     type: '',
     channels: [],
   };
@@ -296,9 +296,9 @@ class MyLearningPage extends Component<Props, State> {
   render() {
     //
     const { inMyLectureService, lectureService, myTrainingService, reviewService, pageService } = this.props;
-    const { ratingMap } =  reviewService!;
+    const { ratingMap } = reviewService!;
     const { type, channels } = this.state;
-    const { inMyLectureMap } =  inMyLectureService!;
+    const { inMyLectureMap } = inMyLectureService!;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
     let cardType = Lecture.GroupType.Box;
     let list: (MyTrainingModel | LectureModel | InMyLectureModel)[] = [];
