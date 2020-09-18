@@ -6,6 +6,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { Breadcrumb, Button, Container, Form, Header } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import { ContentLayout } from 'shared';
 import AplService from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
 import { AplType } from '../../model/AplType';
@@ -14,7 +15,7 @@ import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
 import { AplModel } from '../..';
-import { ContentLayout } from 'shared';
+import AplCreateContainer from '../logic/AplCreateContainer';
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
@@ -442,72 +443,15 @@ class AplCreatePage extends React.Component<Props, States> {
             </div>
           </div>
         </div>
+        <AplCreateContainer
+          //aplId={aplId}
+          onChangeAplProps={this.onChangeAplProps}
+          //AplModel={apl}
+          aplService={aplService}
+          focusControlName={focusControlName}
+          onResetFocusControl={this.onResetFocusControl}
+        />
       </ContentLayout>
-      // <>
-      //   <Container fluid>
-      //     <div>
-      //       <Breadcrumb icon="right angle" sections={aplSectionsSelectType} />
-      //       <Header as="h2">개인학습</Header>
-      //       {<span>{cube && new Date(cube.time).toLocaleDateString()}</span>}
-      //     </div>
-      //     { <Form className="search-box">
-      //       <AplBasicInfoContainer
-      //         aplId={aplId}
-      //         onChangeAplProps={this.onChangeAplProps}
-      //         //AplModel={apl}
-      //         aplService={aplService}
-      //         focusControlName={focusControlName}
-      //         onResetFocusControl={this.onResetFocusControl}
-      //       />
-      //     </Form>
-      //     <AplDetailView
-      //       //apl={apl}
-      //       //menuArranges={result}
-      //       onChangeAplProps={this.onChangeAplProps}
-      //       aplType={apl.type}
-      //       aplService={aplService}
-      //       //selectChange={this.findCreateaplArrange}
-      //     /> }
-
-      //     <div className="btn-group">
-      //       <Button onClick={this.routeToAplConfirm} type="button">
-      //         취소
-      //       </Button>
-      //       <div className="fl-right">
-      //         <Button
-      //           primary
-      //           onClick={() => this.handleSave('save')}
-      //           type="button"
-      //         >
-      //           승인요청
-      //         </Button>
-      //       </div>
-      //     </div>
-
-      //     <AlertWin
-      //       message={alertMessage}
-      //       handleClose={this.handleCloseAlertWin}
-      //       open={alertWinOpen}
-      //       alertIcon={alertIcon}
-      //       title={alertTitle}
-      //       type={alertType}
-      //       handleOk={this.handleAlertOk}
-      //     />
-      //     {
-      //     <ConfirmArrangeWin
-      //       id={aplId}
-      //       message={message}
-      //       open={confirmWinArrangeOpen}
-      //       handleClose={this.handleCloseConfirmWinArrange}
-      //       handleOk={this.handleOKConfirmWinApl}
-      //       handleTempSave={this.handleTempSave}
-      //       title="저장 안내"
-      //       isSaveAndApprove={isSaveAndApprove}
-      //       state={AplState}
-      //     />
-      //     }
-      //   </Container>
-      // </>
     );
   }
 }
