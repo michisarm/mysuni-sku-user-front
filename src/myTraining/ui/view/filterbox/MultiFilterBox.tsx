@@ -54,39 +54,31 @@ function MultiFilterBox(props: Props) {
     }
 
     if (!activeFilter) {
-      const { collegeIds, learningTypes, difficultyLevels, organizers, required, serviceType } = conditions;
-      const newFilterRdo = MyTrainingFilterRdoModel.createWithConditions(collegeIds, learningTypes, difficultyLevels, organizers, required, serviceType);
-      const filterCount = newFilterRdo.getFilterCount();
-
-      // 조건과 함께 기존의 contentType 또한 지정해야 함.
-      if (filterCount) {
-        const contentType = myTrainingService!.myTrainingFilterRdo.contentType;
-        myTrainingService!.myTrainingFilterRdo = newFilterRdo;
-        myTrainingService!.myTrainingFilterRdo.contentType = contentType;
-
-        onFilterCount(filterCount);
-      }
+      myTrainingService!.changeFilterRdoWithConditions(conditions);
+      const filterCount = myTrainingService!.getFilterCount();
+      //
+      onFilterCount(filterCount);
     }
   }, [activeFilter]);
 
 
+
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
-    return college.id;
+    return college.collegeId;
   };
 
   /* Event Handlers */
 
   // checkbox selectAll 클릭 시, 해당 영역 데이터 전체 선택 됨.
   const onCheckAll = (e: any, data: any) => {
-    console.log('[MultiFIlterBox] :: onCheckAll()');
     switch (data.name) {
       case FilterConditionName.College:
         if (conditions.collegeIds.length === colleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
           break;
         }
-        setConditions({ ...conditions, collegeIds: [...colleges.map(college => college.id)] });
+        setConditions({ ...conditions, collegeIds: [...colleges.map(college => college.collegeId)] });
         break;
       case FilterConditionName.LearningType:
         if (conditions.learningTypes.length === CheckboxOptions.learningTypes.length) {
@@ -164,15 +156,7 @@ function MultiFilterBox(props: Props) {
     전체해제 버튼을 눌렀을 시, 선택된 checkbox는 사라짐.
   */
   const onClearConditions = () => {
-    const initConditions = {
-      collegeIds: [],
-      learningTypes: [],
-      difficultyLevels: [],
-      organizers: [],
-      required: '',
-      serviceType: ''
-    };
-    setConditions(initConditions);
+    setConditions(INITIAL_CONDITIONS);
   };
 
   const onClearOne = (type: string, condition: string) => {
@@ -195,7 +179,7 @@ function MultiFilterBox(props: Props) {
 
   return (
     <div className={(activeFilter && 'filter-table on') || 'filter-table'}>
-      {activeFilter && (
+      { activeFilter && (
         <>
           <div className="title">Filter</div>
           <Table>
@@ -206,6 +190,7 @@ function MultiFilterBox(props: Props) {
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
+                    className="base"
                     name={FilterConditionName.College}
                     label={SELECT_ALL}
                     checked={conditions.collegeIds.length === colleges.length}
@@ -216,6 +201,7 @@ function MultiFilterBox(props: Props) {
                     colleges.map((college, index) => (
                       <Fragment key={`checkbox-college-${index}`}>
                         <Checkbox
+                          className="base"
                           name={FilterConditionName.College}
                           label={college.name}
                           value={college.collegeId}
@@ -231,6 +217,7 @@ function MultiFilterBox(props: Props) {
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
+                    className="base"
                     name={FilterConditionName.LearningType}
                     label={SELECT_ALL}
                     checked={conditions.learningTypes.length === CheckboxOptions.learningTypes.length}
@@ -239,6 +226,7 @@ function MultiFilterBox(props: Props) {
                   {CheckboxOptions.learningTypes.map((learningType, index) => (
                     <Fragment key={`checkbox-learningType-${index}`}>
                       <Checkbox
+                        className="base"
                         name={FilterConditionName.LearningType}
                         label={learningType.text}
                         value={learningType.value}
@@ -254,6 +242,7 @@ function MultiFilterBox(props: Props) {
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
+                    className="base"
                     name={FilterConditionName.DifficultyLevel}
                     label={SELECT_ALL}
                     checked={conditions.difficultyLevels.length === CheckboxOptions.difficultyLevels.length}
@@ -262,6 +251,7 @@ function MultiFilterBox(props: Props) {
                   {CheckboxOptions.difficultyLevels.map((difficultyLevel, index) => (
                     <Fragment key={`checkbox-difficultyLevel-${index}`}>
                       <Checkbox
+                        className="base"
                         name={FilterConditionName.DifficultyLevel}
                         label={difficultyLevel.text}
                         value={difficultyLevel.value}
@@ -277,6 +267,7 @@ function MultiFilterBox(props: Props) {
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
+                    className="base"
                     name={FilterConditionName.Organizer}
                     label={SELECT_ALL}
                     checked={conditions.organizers.length === CheckboxOptions.organizers.length}
@@ -285,6 +276,7 @@ function MultiFilterBox(props: Props) {
                   {CheckboxOptions.organizers.map((organizer, index) => (
                     <Fragment key={`checkbox-organizer-${index}`}>
                       <Checkbox
+                        className="base"
                         name={FilterConditionName.Organizer}
                         label={organizer.text}
                         value={organizer.value}
@@ -301,6 +293,7 @@ function MultiFilterBox(props: Props) {
                   {CheckboxOptions.requireds.map((required, index) => (
                     <Fragment key={`checkbox-required-${index}`}>
                       <Checkbox
+                        className="base radio"
                         name={FilterConditionName.Required}
                         label={required.text}
                         value={required.value}
@@ -331,4 +324,13 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
 ))(React.memo(observer(MultiFilterBox)));
 
+/* global variables */
 const SELECT_ALL = 'Select All';
+const INITIAL_CONDITIONS = {
+  collegeIds: [],
+  learningTypes: [],
+  difficultyLevels: [],
+  organizers: [],
+  required: '',
+  serviceType: ''
+};

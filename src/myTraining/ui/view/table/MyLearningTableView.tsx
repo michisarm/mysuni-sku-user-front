@@ -14,10 +14,11 @@ interface Props {
   contentType: MyLearningContentType;
   models: MyTrainingModelV2[];
   totalCount: number;
+  onClickSort: (column: string, direction: string) => void;
 }
 
 function MyLearningTableView(props: Props) {
-  const { contentType, models, totalCount } = props;
+  const { contentType, models, totalCount, onClickSort } = props;
 
   /*
     탭에 따라 table header 가 달라진다.
@@ -29,6 +30,7 @@ function MyLearningTableView(props: Props) {
       <Table className="ml-02-02">
         <MyLearningTableHeader
           contentType={contentType}
+          onClickSort={onClickSort}
         />
 
         {/* body */}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
+import classNames from 'classnames';
 import { MyLearningContentType } from '../model';
 
 interface Props {
@@ -18,7 +19,7 @@ function MyLearningButtons(props: Props) {
           <>
             <Button
               icon
-              className="ui icon left button post delete btn-left"
+              className={classNames('left', 'post', 'delete', 'btn-left')}
               onClick={onDelete}
             >
               <Icon className="del24" />
@@ -26,7 +27,7 @@ function MyLearningButtons(props: Props) {
             </Button>
             <Button
               icon
-              className="ui icon left button post excel-down ml8"
+              className={classNames('left', 'post', 'excel-down', 'ml8')}
               onClick={onDownloadExcel}
             >
               <Icon className="excel-down" aria-hidden="true" />
@@ -39,7 +40,7 @@ function MyLearningButtons(props: Props) {
           <>
             <Button
               icon
-              className="ui icon left button post excel-down ml8"
+              className={classNames('left', 'post', 'excel-down', 'ml8')}
               onClick={onDownloadExcel}
             >
               <Icon className="excel-down" aria-hidden="true" />

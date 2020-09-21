@@ -26,8 +26,7 @@ function MyLearningTableBody(props: Props) {
 
   const { contentType, models, totalCount, myTrainingService, history } = props;
   const { myTrainingV2s } = myTrainingService!;
-  const [lastIndex, setLastIndex] = useState<number>(totalCount);
-  const { selectedIds } = myTrainingService!;
+  const { selectedIds, selectOne, deleteOne, selectAll } = myTrainingService!;
 
   /* useEffect(() => {
     setLastIndex(totalCount);
@@ -51,8 +50,14 @@ function MyLearningTableBody(props: Props) {
     }
   };
 
-  const onCheckOne = (id: string) => {
-    selectedIds.push(id);
+  const onCheckOne = (e: any, data: any) => {
+    if (selectedIds.includes(data.value)) {
+      deleteOne(data.value);
+      return;
+    }
+
+    selectOne(data.value);
+
   };
 
   /* render functions */
@@ -69,7 +74,7 @@ function MyLearningTableBody(props: Props) {
     return (
       <>
         <Table.Cell>
-          {lastIndex - index} {/* No */}
+          {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell>
           {model.category.college.name} {/* College */}
@@ -178,18 +183,18 @@ function MyLearningTableBody(props: Props) {
           <Table.Row key={`learning-${index}`}>
             {contentType === MyLearningContentType.InProgress && (
               <Table.Cell>
-                <Checkbox>
+                <Checkbox
                   value={model.id}
                   checked={selectedIds.includes(model.id)}
-                  onChange={() => onCheckOne(model.id)}
-                </Checkbox>
+                  onChange={onCheckOne}
+                />
               </Table.Cell>
             )
             }
             {renderWithBaseContent(model, index)}
             {renderByContentType(model, contentType)}
             <Table.Cell>
-              <span className="btn-blue" onClick={() => onClickLearn(model)}>학습하기</span>
+              <a className="btn-blue" href="#" onClick={() => onClickLearn(model)}>학습하기</a>
             </Table.Cell>
           </Table.Row>
         ))

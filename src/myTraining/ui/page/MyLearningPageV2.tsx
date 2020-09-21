@@ -30,9 +30,6 @@ interface RouteParams {
   pageNo?: string;
 }
 
-/* 
-
-*/
 function MyLearningPageV2(props: Props) {
   const { actionEventService, notieService, lectureService, inMyLectureService, myTrainingService } = props;
   const { history, match } = props;
@@ -61,7 +58,7 @@ function MyLearningPageV2(props: Props) {
       권장과정 = requiredLectureCount
       학습예정 = enrolledCount
       mySUNI 학습완료 = completedCount
-      개인 학습완료 = ?
+      개인 학습완료 = ??
       취소/미이수 = retryCount
   */
   const fetchAllTabCounts = () => {
@@ -71,13 +68,16 @@ function MyLearningPageV2(props: Props) {
 
   /*
     TabItemModel[] 을 생성해 return 함.
+    APL 의 personalCompleted 카운트가 추가되어야 함.
   */
   const getTabs = (): TabItemModel[] => {
-    // personalCompletedCount 가 추가되어야 함.
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyLectureAllCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
 
+    /*
+      탭이 전환될 때마다, 새로운 MyLearningListContainer 인스턴스가 생성되고 소멸된다.
+    */
     return [
       {
         name: MyLearningContentType.InProgress,
@@ -119,7 +119,7 @@ function MyLearningPageV2(props: Props) {
   };
 
   /*
-    화면에 보여질 tabItem을 return 함. tabItem 은 하나의 컴포넌트 (element)
+    화면에 보여질 TabItem 을 return 함. TabItem 은 하나의 컴포넌트(atom).
   */
   const getTabItem = (contentType: MyLearningContentType, count: number = 0) => {
     return (
@@ -130,21 +130,15 @@ function MyLearningPageV2(props: Props) {
     );
   };
 
-  /*
-    currentTab => MyLearningContentType으로 변환.
-  */
-  const convertTabToContentType = (tab: string) => {
-    return MyLearningContentType[tab as MyLearningContentType];
-  };
 
-  const getContentNameFromTab = (tab: string) => {
-    return MyLearningContentTypeName[tab as MyLearningContentType];
-  };
   /* event handlers */
 
-  // 탭 전환 시, 액션 로그를 생성하기 위해 routePath를 return 함.
+  /* 
+    탭 전환 시, 탭에 따라 notie를 read 함. 
+    액션 로그를 생성하기 위해 routePath를 return 함.
+  */
   const onChangeTab = (tab: TabItemModel): string => {
-    // 전환되는 탭에 따라, notie를 read 함.
+
     switch (tab.name) {
       case MyLearningContentType.InProgress:
         notieService!.readNotie('Learning_Progress');
@@ -164,6 +158,7 @@ function MyLearningPageV2(props: Props) {
     return routePaths.learningTab(tab.name);
   };
 
+  /* render UI */
   return (
     <ContentLayout className="myLearning" breadcrumb={[{ text: 'learning' }, { text: getContentNameFromTab(currentTab) }]}>
       <MyLearningContentHeaderContainer />
@@ -180,3 +175,18 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
 )
 )(withRouter(observer(MyLearningPageV2)));
+
+
+/*
+  변환된 contentType 은 MyLearningListContainer 의 props로 전달됨.
+*/
+const convertTabToContentType = (tab: string) => {
+  return MyLearningContentType[tab as MyLearningContentType];
+};
+
+/*
+  currentTab 을 BreadCrumb 에 표시할 LearningContentTypeName 으로 변환.
+*/
+const getContentNameFromTab = (tab: string) => {
+  return MyLearningContentTypeName[tab as MyLearningContentType];
+};

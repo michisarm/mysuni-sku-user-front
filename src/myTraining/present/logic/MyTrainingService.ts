@@ -4,6 +4,7 @@ import { CubeType, OffsetElementList, LearningState } from 'shared/model';
 import { LectureServiceType } from 'lecture/model';
 import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
+import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { MyLearningContentType } from 'myTraining/ui/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingFlowApi from '../apiclient/MyTrainingFlowApi';
@@ -314,29 +315,57 @@ class MyTrainingService {
   }
 
   @action
-  clearAllMyTrainingV2() {
+  clearAllMyTrainingV2(contentType?: MyLearningContentType) {
     this._myTrainingV2s = [];
     this.myTrainingV2Count = 0;
-    this.myTrainingFilterRdo = new MyTrainingFilterRdoModel();
+
+    this.myTrainingFilterRdo = contentType ?
+      MyTrainingFilterRdoModel.createWithContentType(contentType) : new MyTrainingFilterRdoModel();
   }
 
+  changeFilterRdoWithServiceType(serviceType: string) {
+    if (serviceType === 'All') {
+      serviceType = '';
+    }
+
+    this.myTrainingFilterRdo.changeServiceType(serviceType);
+    this.myTrainingFilterRdo.setDefaultOffset();
+  }
+
+  changeFilterRdoWithConditions(conditions: FilterCondition) {
+    this.myTrainingFilterRdo.changeConditions(conditions);
+    this.myTrainingFilterRdo.setDefaultOffset();
+  }
+
+  changeFilterRdoWithOffset(offset: Offset) {
+    this.myTrainingFilterRdo.changeOffset(offset);
+  }
+
+  getFilterCount() {
+    return this.myTrainingFilterRdo.getFilterCount();
+  }
 
   @action
-  async findAllMyTrainingV2sByContentType(contentType: MyLearningContentType) {
+  async findAllMyTrainingV2(filterRdo?: MyTrainingFilterRdoModel) {
+
+    if (filterRdo) {
+      this.myTrainingFilterRdo = filterRdo;
+    }
 
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
-    this.myTrainingFilterRdo.changeContentType(contentType);
     const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
-
     if (
       offsetMyTrainings &&
       offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
+      offsetMyTrainings.results.length)
+    {
       runInAction(() => {
         this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
-      console.log('offsetMyTrainings :: ', offsetMyTrainings.results);
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -372,6 +401,7 @@ class MyTrainingService {
 
       runInAction(() => {
         this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
+        this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
     }
   }
@@ -389,6 +419,9 @@ class MyTrainingService {
         this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -406,10 +439,21 @@ class MyTrainingService {
     return myTrainingV2sForExcel;
   }
 
+  @action
+  selectOne(id: string) {
+    this.selectedIds.push(id);
+  }
+
+  @action
+  deleteOne(id: string) {
+    this.selectedIds = this.selectedIds.filter(selectedId => selectedId !== id);
+  }
 
   @action
   deleteBySelectedIds() {
+    console.log('selectedIds :: ', this.selectedIds);
     this._myTrainingV2s = this._myTrainingV2s.filter(myTrainingV2 => !this.selectedIds.includes(myTrainingV2.id));
+    this.myTrainingV2Count -= this.selectedIds.length;
 
     // 삭제하기로 선택된 myTraining 들의 상태를 update 하기 위한 api.
     this.myTrainingFlowApi.updateBySelectedIds();
@@ -418,12 +462,23 @@ class MyTrainingService {
   @action
   selectAll() {
     this.selectedIds = this._myTrainingV2s.map(myTrainingV2 => myTrainingV2.id);
+    console.log(this.selectedIds);
   }
 
+  @action
+  deleteAll() {
+    this.selectedIds = [];
+  }
 
-  // 학습완료된 views만 조회 ==> 다시 조회해야할 것 같다.
-  @computed get getCompletedViews() {
-    return this._myTrainingV2s.filter(myTrainingV2 => myTrainingV2.learningState === LearningState.Passed);
+  @action
+  sortByDirection(column: string, direction: string) {
+    if (direction === 'asc') {
+      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => a.stampCount - b.stampCount);
+      return;
+    }
+    if (direction === 'desc') {
+      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => a.startDate - b.startDate);
+    }
   }
 }
 

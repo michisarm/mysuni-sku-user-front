@@ -1,6 +1,7 @@
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
 import { MyLearningContentType } from 'myTraining/ui/model';
+import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 
 class MyTrainingFilterRdoModel {
 
@@ -21,7 +22,7 @@ class MyTrainingFilterRdoModel {
   /*
     MultiFilterBox 에서 선택되는 검색 조건들.
   */
-  serviceType: string = ''; // CourseOnly / ViewAll
+  serviceType: string = ''; // 코스만보기 = 'Course', 전체보기 = ''
   collegeIds: string[] = []; // 컬리지
   cubeTypes: string[] = []; // 교육유형
   difficultyLevels: string[] = []; // 난이도
@@ -38,6 +39,10 @@ class MyTrainingFilterRdoModel {
   // offset, denizenKey, contentType 만을 검색 조건으로 함.
   static createWithContentType(contentType: MyLearningContentType) {
     return new MyTrainingFilterRdoModel({ contentType } as MyTrainingFilterRdoModel);
+  }
+
+  static createWithContentTypeAndServiceType(contentType: MyLearningContentType, serviceType: string) {
+    return new MyTrainingFilterRdoModel({ contentType, serviceType } as MyTrainingFilterRdoModel);
   }
 
   static createWithConditions(
@@ -66,8 +71,21 @@ class MyTrainingFilterRdoModel {
     this.offset = offset;
   }
 
+  setDefaultOffset() {
+    this.offset = { offset: 0, limit: 20 };
+  }
+
   changeServiceType(serviceType: string) {
     this.serviceType = serviceType;
+  }
+
+  changeConditions(conditions: FilterCondition) {
+    this.collegeIds = conditions.collegeIds;
+    this.cubeTypes = conditions.learningTypes;
+    this.difficultyLevels = conditions.difficultyLevels;
+    this.organizers = conditions.organizers;
+    this.required = conditions.required;
+    this.serviceType = conditions.serviceType ? conditions.serviceType : this.serviceType;
   }
 
   getFilterCount() {

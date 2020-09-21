@@ -6,6 +6,7 @@ import XLSX from 'xlsx';
 import { InProgressXlsxModel } from 'myTraining/model/InProgressXlsxModel';
 import { CompletedXlsxModel } from 'myTraining/model/CompletedXlsxModel';
 import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
+import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
 import { MyLearningContentType } from '../model';
 import { ListLeftTopPanel, ListRightTopPanel } from '../view/panel';
 import { MyTrainingService } from '../../stores';
@@ -13,35 +14,24 @@ import { MyTrainingService } from '../../stores';
 
 
 
+
 interface Props extends RouteComponentProps {
   contentType: MyLearningContentType;
+  viewType: string;
+  onChangeViewType: (e: any, data: any) => void;
+  resultEmpty: boolean;
   filterCount: number;
   activeFilter: boolean;
   onClickFilter: () => void;
   onClickDelete: () => void;
-  onClearPage: () => void;
 
   myTrainingService?: MyTrainingService;
 }
 
 function LineHeaderContainerV2(props: Props) {
-  const { contentType, filterCount, activeFilter, onClickFilter, onClickDelete, onClearPage, myTrainingService } = props;
+  const { contentType, resultEmpty, filterCount, activeFilter, onClickFilter, onClickDelete, myTrainingService } = props;
+  const { viewType, onChangeViewType } = props;
 
-  const [viewType, setViewType] = useState<string>('None');
-
-  const onChangeViewType = (e: any, data: any) => {
-
-    if (data.value === 'Course') {
-      myTrainingService!.findAllMyTrainingsV2WithServiceType(data.value);
-    }
-
-    if (data.value === 'All') {
-      myTrainingService!.findAllMyTrainingsV2WithServiceType('');
-    }
-
-    onClearPage();
-    setViewType(data.value);
-  };
 
   /* lifeCycles */
 
@@ -108,13 +98,16 @@ function LineHeaderContainerV2(props: Props) {
   return (
     <>
       <div className="top-guide-title">
-        <ListLeftTopPanel
-          contentType={contentType}
-          onClickDelete={onClickDelete}
-          onDownloadExcel={onDownloadExcel}
-        />
+        {!resultEmpty && (
+          <ListLeftTopPanel
+            contentType={contentType}
+            onClickDelete={onClickDelete}
+            onDownloadExcel={onDownloadExcel}
+          />
+        )}
         <ListRightTopPanel
           contentType={contentType}
+          resultEmpty={resultEmpty}
           filterCount={filterCount}
           activeFilter={activeFilter}
           onClickFilter={onClickFilter}

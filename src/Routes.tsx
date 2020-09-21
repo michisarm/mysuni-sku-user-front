@@ -10,8 +10,10 @@ const LectureRoutes = lazy(() => import('./lecture/Routes'));
 const MyTrainingRoutes = lazy(() => import('./myTraining/Routes'));
 const BoardRoutes = lazy(() => import('./board/Routes'));
 const ExpertRoutes = lazy(() => import('./expert/Routes'));
+
 const CertificationRoutes = lazy(() => import('./certification/Routes'));
 const PreviewRoutes = lazy(() => import('./preview/Routes'));
+const ApprovalRoutes = lazy(() => import('./approval/Routes'));
 
 class Routes extends PureComponent {
   //
@@ -34,12 +36,15 @@ class Routes extends PureComponent {
                         component={CertificationRoutes}
                       />
                       <Route
+                        path="/approval"
+                        component={ApprovalRoutes}
+                      />
+                      <Route
                         path="/personalcube"
                         component={PersonalCubeRoutes}
                       />
                       <Route path="/lecture" component={LectureRoutes} />
                       <Route path="/my-training" component={MyTrainingRoutes} />
-
                       <Route path="/board" component={BoardRoutes} />
                       <Route path="/expert" component={ExpertRoutes} />
                       <Route path="/" component={MainRoutes} />

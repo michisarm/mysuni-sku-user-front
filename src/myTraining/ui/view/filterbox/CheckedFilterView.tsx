@@ -13,9 +13,6 @@ interface Props {
 function CheckedFilterView(props: Props) {
   const { colleges, conditions, onClear, onClearOne } = props;
 
-
-
-
   /* functions */
   const getCollegeNames = (collegeIds: string[]) => {
     return collegeIds.map(collegeId => {

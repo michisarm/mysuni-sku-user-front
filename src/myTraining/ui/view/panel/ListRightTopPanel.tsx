@@ -5,6 +5,7 @@ import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
 
 interface Props {
   contentType: MyLearningContentType;
+  resultEmpty: boolean;
   filterCount: number;
   activeFilter: boolean;
   onClickFilter: () => void;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 function ListRightTopPanel(props: Props) {
-  const { contentType, filterCount, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
+  const { contentType, resultEmpty, filterCount, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
   /* const [checkedValue, setCheckedValue] = useState<string>('course');
 
@@ -42,15 +43,16 @@ function ListRightTopPanel(props: Props) {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed:
-        return (
+        return !resultEmpty && (
           <div className="view-all">
             {CheckboxOptions.viewTypes.map((viewType, index) => (
               <Fragment key={`view-type-${index}`}>
                 <Checkbox
+                  className="base radio"
                   name={viewType.name}
                   label={viewType.label}
                   value={viewType.value}
-                  checked={checkedViewType === viewType.value}
+                  checked={viewType.value === checkedViewType}
                   onChange={onChangeViewType}
                 />
               </Fragment>
@@ -76,15 +78,15 @@ function ListRightTopPanel(props: Props) {
         {contentType === MyLearningContentType.PersonalCompleted ||
           (
             <Button
-              icon={activeFilter && true || false}
-              className={activeFilter && 'btn-filter-blue on' || 'left post'}
+              // icon={!activeFilter ? true : false}
+              className={activeFilter && 'btn-filter-blue' || 'left post'}
               onClick={onClickFilter}
             >
               {activeFilter || (
                 <Icon className="filter2" aria-hidden="true" />
               )}
               {/* 선택된 filter 조건이 있으면, 선택된 조건 count 만큼 숫자 표시. */}
-              <span>Filter{filterCount && `(${filterCount})`}</span>
+              <span>Filter{filterCount != null && `(${filterCount})`}</span>
             </Button>
           )}
       </>
