@@ -101,7 +101,9 @@ class MyTrainingService {
       //   console.log('newModel Count : ', newModel.results.length);
       // }
       const oldJson = sessionStorage.getItem('learningPassed');
-      const oldInProgressJson = sessionStorage.getItem('InProgressLearningList');
+      const oldInProgressJson = sessionStorage.getItem(
+        'InProgressLearningList'
+      );
       if (oldJson) {
         if (oldJson.length > 0) {
           const oldModel: OffsetElementList<MyTrainingSimpleModel> = JSON.parse(
@@ -124,7 +126,7 @@ class MyTrainingService {
       if (oldInProgressJson) {
         if (oldInProgressJson.length > 0) {
           //window.sessionStorage.removeItem('InProgressLearningList');
-          this.findAllMyTrainingsWithState('InProgress', 8, 0,[], true);
+          this.findAllMyTrainingsWithState('InProgress', 8, 0, [], true);
         }
       }
     }
@@ -188,7 +190,10 @@ class MyTrainingService {
     if (fromMain) {
       //window.sessionStorage.removeItem('InProgressLearningList');
       this.clear();
-      window.sessionStorage.setItem('InProgressLearningList', JSON.stringify(offsetList));
+      window.sessionStorage.setItem(
+        'InProgressLearningList',
+        JSON.stringify(offsetList)
+      );
     }
 
     runInAction(() => (this._myTrainings = offsetList.results));
