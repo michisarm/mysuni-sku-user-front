@@ -79,7 +79,21 @@
     "@types/sockjs-client": "^1.1.1"
   },
   "eslintConfig": {
-    "extends": "nara"
+    "extends": [
+      "react-app"
+    ],
+    "rules": {
+      "no-nested-ternary": 0,
+      "indent": "off",
+      "operator-linebreak": "off",
+      "semi": "off",
+      "babel/semi": "off",
+      "quotes": "off",
+      "import/no-duplicates": "off",
+      "import/order": "off",
+      "no-lonely-if": "off",
+      "react/jsx-indent": "off"
+    }
   },
   "browserslist": []
 }
