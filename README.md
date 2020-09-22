@@ -4,14 +4,24 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. ESLint, Prettier - Code formatter 설치
 2. git 에서 .prettierrc 파일 pull
-3. vscode : settings.json 에 아래추가
-   "editor.defaultFormatter": "esbenp.prettier-vscode",
-   "[javascript]": {
-   "editor.defaultFormatter": "esbenp.prettier-vscode"
-   },
-   "editor.formatOnSave": true,
-   "javascript.format.enable": false,
-   저장 시 자동 format
+3. vscode
+- Prettier Extension 설치 [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- .vscode/settings.json 파일을 아래 설정을 참조하여 변경(코드 저장시 포맷이 적용됩니다.)
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false
+}
+```   
+   
 4. IntelliJ : Settings - Languages & Frameworks - JavaScript - Code Quality Tools - ESLint
    Enable = 체크해줌
    Ctrl + Alt + Shift + P 눌러서 format 하고 저장
