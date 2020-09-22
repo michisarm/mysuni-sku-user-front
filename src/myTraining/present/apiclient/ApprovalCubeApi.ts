@@ -15,7 +15,7 @@ export default class ApprovalCubeApi {
 
   devUrl = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEVELOPMENT_URL : '';
 
-  lectureApprovalURL = this.devUrl + '/api/lecture/studentApproval';
+  lectureApprovalURL = '/api/lecture/studentApproval';
   // baseUrl = this.devUrl + '/api/lecture/studentApproval';
 
   static convertOffsetElementList(response: any): OffsetElementList<ApprovalCubeModel> {

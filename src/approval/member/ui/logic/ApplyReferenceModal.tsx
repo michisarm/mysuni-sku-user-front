@@ -65,8 +65,6 @@ class ApplyReferenceModal extends React.Component<Props> {
         this.close();
       }
     }
-    // by JSM
-
   }
 
   close() {
@@ -118,7 +116,7 @@ class ApplyReferenceModal extends React.Component<Props> {
     const { approvalMember } = memberService!;
     const { companyApprover, originCompanyApprover } = companyApproverService!;
 
-    // by JSM : 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
+    // 승인자 아이디가 없고 생성시간이 0이면 다이얼로그 표시하지 않음
     const memId = approvalMember ? approvalMember.id : '';
     const creationTime = approvalMember ? approvalMember.creationTime : 0;
 

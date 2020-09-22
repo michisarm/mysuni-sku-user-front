@@ -378,7 +378,7 @@ class CoursePage extends Component<Props, State> {
     surveyTitle = this.state.surveyTitle || '';
     surveyState = this.state.surveyState || false;
     surveyCaseId = coursePlanContents.surveyCaseId || '';
-    reportFileBoxId = coursePlan.reportFileBox.fileBoxId || '';
+    reportFileBoxId = coursePlan.reportFileBox ? coursePlan.reportFileBox.fileBoxId : '';
     tabState = this.state.tabState || '';
 
     // console.log('course page student : ', student);
@@ -586,7 +586,7 @@ class CoursePage extends Component<Props, State> {
 
   renderList() {
     //
-    const { serviceId } = this.props.match.params!;
+    const { serviceId, serviceType } = this.props.match.params!;
     const { coursePlanService } = this.props;
     this.state.tabState = 'list';
 
@@ -602,6 +602,7 @@ class CoursePage extends Component<Props, State> {
 
   renderOverview() {
     //
+    const { serviceId, serviceType } = this.props.match.params!;
     const viewObject = this.getViewObject();
     const typeViewObject = this.getTypeViewObject();
     this.state.tabState = 'view';
@@ -611,6 +612,8 @@ class CoursePage extends Component<Props, State> {
         viewObject={viewObject}
         typeViewObject={typeViewObject}
         onSaveCallback={this.testCallback}
+        serviceId={serviceId}
+        serviceType={serviceType}
       />
     );
   }
@@ -678,6 +681,7 @@ class CoursePage extends Component<Props, State> {
         init={this.init}
         loaded={this.state.loaded}
         onPageRefresh={this.onPageRefresh}
+        studentId=''
       >
         {courseContent}
       </LectureCardContainer>

@@ -12,6 +12,8 @@ class ProgramLectureModel extends DramaEntityObservableModel {
   reviewId: string = '';
   commentId: string = '';
   time: number = 0;
+  passedStudentCount: number = 0;
+  studentCount: number = 0;
 
   constructor(programLecture?: ProgramLectureModel) {
     super();

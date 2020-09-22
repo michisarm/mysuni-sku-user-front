@@ -873,7 +873,8 @@ class CourseLectureContainer extends Component<Props, State> {
         : `${process.env.PUBLIC_URL}/images/all/thumb-card-complete-60-px@2x.png`;
 
     // console.log('lecture container viewObject : ', this.viewObject);
-    // console.log('lecture container personalCube : ', this.personalCube);
+    // console.log('CourseLectureContainer : ', lectureView.serviceId);
+    // console.log('CourseLectureContainer : ', lectureView.serviceType);
 
     return (
       <div>
@@ -917,10 +918,15 @@ class CourseLectureContainer extends Component<Props, State> {
               </Field>
             </div>
           </Title>
+
+          {/*<CubeRightInfo*/}
+          {/*  learningType={lectureView.cubeType}*/}
+          {/*  learningState={this.studentData.learningState}*/}
+          {/*  learningTime="11m"*/}
+          {/*/>*/}
+
           <Buttons>
-            <Button className="fix line" onClick={onViewDetail}>
-              상세보기
-            </Button>
+            {/*<Button className="fix line" onClick={onViewDetail}>상세보기</Button>*/}
             {lectureView.cubeType === CubeType.Video &&
               (this.state.inProgress !== SubState.Completed ? (
                 <Button
@@ -966,6 +972,8 @@ class CourseLectureContainer extends Component<Props, State> {
               surveyCaseId={this.personalCube?.contents.surveyCaseId}
               ref={surveyModal => (this.surveyModal = surveyModal)}
               // onSaveCallback={this.testCallback}
+              serviceId={lectureView.serviceId}
+              serviceType={lectureView.serviceType}
             />
           )}
           {this.viewObject && this.viewObject.reportFileBoxId && (

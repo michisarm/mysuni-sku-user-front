@@ -12,12 +12,14 @@ import { OverviewField } from 'personalcube';
 import classNames from 'classnames';
 import { Button, Icon } from 'semantic-ui-react';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import LectureExam from '../../../shared/LectureExam';
+import { LectureExam } from '../../../shared/LectureExam';
 
 interface Props {
   viewObject: any;
   typeViewObject: any;
   onSaveCallback: () => void;
+  serviceId: string;
+  serviceType: string;
 }
 
 interface State {
@@ -179,7 +181,13 @@ class LectureOverviewView extends Component<Props, State> {
 
   render() {
     //
-    const { viewObject, typeViewObject, onSaveCallback } = this.props;
+    const {
+      viewObject,
+      typeViewObject,
+      onSaveCallback,
+      serviceId,
+      serviceType,
+    } = this.props;
 
     if (!viewObject.category) {
       return null;
@@ -188,7 +196,8 @@ class LectureOverviewView extends Component<Props, State> {
     const { multiple, categoryOpen } = this.state;
     const cubeType = viewObject.cubeType;
 
-    // console.log('LectureOverview : ', JSON.stringify(viewObject));
+    //console.log('LectureOverviewView : ', serviceId);
+    //console.log('LectureOverviewView : ', serviceType);
 
     return (
       <OverviewField.Wrapper>
@@ -213,6 +222,8 @@ class LectureOverviewView extends Component<Props, State> {
             surveyCaseId={viewObject.surveyCaseId}
             ref={surveyModal => (this.surveyModal = surveyModal)}
             // onSaveCallback={this.testCallback}
+            serviceId={serviceId}
+            serviceType={serviceType}
           />
         )}
         {viewObject && (

@@ -9,7 +9,7 @@ export { default as StudentService } from './present/logic/StudentService';
 export { default as LectureApi } from './present/apiclient/LectureApi';
 
 /** Component */
-export { default as Lecture } from './Lecture';
+export { Lecture, Lecture2 } from './Lecture';
 export { default as LectureContentHeader } from './LectureContentHeader';
 export { default as ChannelFilterModal } from './ChannelFilterModal';
 export { default as ChannelsPanel } from './ui/logic/ChannelsPanelContainer';

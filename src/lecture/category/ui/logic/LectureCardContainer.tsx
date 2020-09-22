@@ -25,18 +25,22 @@ import {
 } from 'lecture/model';
 import {
   LectureService,
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
   RollBookService,
+  RQDLectureService,
   StudentService,
 } from 'lecture/stores';
 import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
-import { InMyLectureService } from 'myTraining/stores';
+import { InMyLectureService, MyTrainingService } from 'myTraining/stores';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
 import { getYearMonthDateHourMinuteSecond } from 'shared/helper/dateTimeHelper';
 import StudyActionType from 'shared/model/StudyActionType';
 import LectureSubInfo from '../../../shared/LectureSubInfo';
-import LectureExam from '../../../shared/LectureExam';
+import { LectureExam } from '../../../shared/LectureExam';
 import LectureCardContentWrapperView from '../view/LectureCardContentWrapperView';
 import ClassroomModalView from '../view/ClassroomModalView';
 import StudentModel from '../../../model/StudentModel';
@@ -49,11 +53,15 @@ import LectureLearningModalView from '../view/LectureLearningModalView';
 import LearningState from '../../../../shared/model/LearningState';
 import { ClassroomService } from '../../../../personalcube/classroom/stores';
 
+// routePaths
+import boardRoutePaths from '../../../../board/routePaths';
+
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
   studentService?: StudentService;
   lectureService?: LectureService;
   rollBookService?: RollBookService;
+  myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   lectureServiceId: string;
   lectureCardId: string;
@@ -72,6 +80,8 @@ interface Props extends RouteComponentProps<RouteParams> {
   init?: () => void;
   loaded: boolean;
   onPageRefresh?: () => void;
+
+  studentId?: string | undefined;
 }
 
 interface State {
@@ -93,6 +103,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
+    'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
     'personalCube.personalCubeService'
@@ -441,10 +452,12 @@ class LectureCardContainer extends Component<Props, State> {
       typeViewObject.classrooms.length &&
       typeViewObject.classrooms.length === 1;
     if (isSingleClassroom) {
-      this.setState(
-        { selectedClassRoom: typeViewObject.classrooms[0] },
-        this.onApplyReference
-      );
+      //단일차수일 경우
+      this.onSelectClassroom(typeViewObject.classrooms[0]);
+      // this.setState(
+      //   { selectedClassRoom: typeViewObject.classrooms[0] },
+      //   this.onApplyReference
+      // );
     } else {
       this.onApplyReference();
     }
@@ -459,7 +472,8 @@ class LectureCardContainer extends Component<Props, State> {
     if (this.handleMultiVideo()) {
       reactAlert({
         title: '알림',
-        message: '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
         onClose: () => this.playVideo(),
       });
     } else {
@@ -467,11 +481,22 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  removeStorage() {
+    const { viewObject } = this.props;
+    RQDLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    NEWLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    POPLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+    LRSLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
+  }
+
   playVideo() {
     const { typeViewObject } = this.props;
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
 
       //0413 window.open -> modal로 변경
       //window.open(typeViewObject.url, '_blank');
@@ -540,6 +565,9 @@ class LectureCardContainer extends Component<Props, State> {
     if (typeViewObject.url && typeViewObject.url.startsWith('http')) {
       this.publishStudyEvent();
       this.onRegisterStudent(ProposalState.Approved);
+      this.removeStorage();
+      //
+      this.removeLearningFromSessionStorage();
       // // 200508 avedpark 동영상링크 학습하기 -> 학습완료
       // if (typeViewObject.mediaType === MediaType.LinkMedia) {
       //   this.onMarkComplete();
@@ -560,6 +588,9 @@ class LectureCardContainer extends Component<Props, State> {
     // request download file to nara
     // depot.downloadDepot(typeViewObject.fileBoxId);
     this.publishStudyEvent();
+    this.removeStorage();
+    //
+    this.removeLearningFromSessionStorage();
     this.setState({ openDownloadModal: true });
   }
   // 다운로드 시 팝업으로 확인가능하게 하고 수업시작 by gon
@@ -569,6 +600,7 @@ class LectureCardContainer extends Component<Props, State> {
       this.onRegisterStudent(ProposalState.Approved);
     }
     this.publishStudyEvent(true);
+    this.removeStorage();
     this.setState({ openDownloadModal: false });
   }
 
@@ -620,6 +652,17 @@ class LectureCardContainer extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
+  moveToSupportQnA(tab?: string) {
+    const { history } = this.props;
+    // tab에 따른 Support 이동
+    if (tab && typeof tab === 'string') {
+      history.push(boardRoutePaths.supportTab(tab));
+      return;
+    }
+    // default:: Support QnA로 이동
+    history.push(boardRoutePaths.supportQnA());
+  }
+
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
     studentService!.joinCommunity({ ...studentCdo }).then(() => {
@@ -635,13 +678,39 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onMarkComplete() {
-    const { student, studentService, lectureCardId } = this.props;
+    const {
+      student,
+      studentService,
+      myTrainingService,
+      lectureCardId,
+    } = this.props;
     if (student && student.id) {
       studentService!.studentMarkComplete(student.rollBookId).then(() => {
         studentService!.findIsJsonStudentByCube(lectureCardId);
         studentService!.findStudent(student.id);
+        myTrainingService!.saveNewLearningPassedToStorage('Passed');
+
+        this.removeLearningFromSessionStorage();
       });
     }
+  }
+
+  removeLearningFromSessionStorage() {
+    const { myTrainingService } = this.props;
+
+    // sessionStorage.removeItem('InProgressLearningList');
+    console.log(
+      '[LectureCardContainer] InProgressLearningList is removed(expected null) : ',
+      sessionStorage.getItem('InProgressLearningList')
+    );
+
+    myTrainingService!.findAllMyTrainingsWithState(
+      'InProgress',
+      8,
+      0,
+      [],
+      true
+    );
   }
 
   onApplyReference() {
@@ -724,6 +793,7 @@ class LectureCardContainer extends Component<Props, State> {
     ) {
       proposalState = student.proposalState;
     }
+
     let rollBookId = studentCdo.rollBookId;
     if (rollBook && rollBook.id) rollBookId = rollBook.id;
 
@@ -775,6 +845,7 @@ class LectureCardContainer extends Component<Props, State> {
     const {
       studentCdo,
       lectureService,
+      myTrainingService,
       onPageRefresh,
       lectureCardId,
     } = this.props;
@@ -799,6 +870,7 @@ class LectureCardContainer extends Component<Props, State> {
       .then(confirmed => {
         if (onPageRefresh) {
           onPageRefresh();
+          myTrainingService!.saveNewLearningPassedToStorage('Passed');
         }
       });
   }
@@ -996,7 +1068,8 @@ class LectureCardContainer extends Component<Props, State> {
           student &&
           student.id &&
           student.learningState === LearningState.Progress &&
-          !viewObject.examId
+          !viewObject.examId &&
+          !viewObject.reportFileBoxId
         ) {
           subActions.push({
             type: LectureSubInfo.ActionType.MarkComplete,
@@ -1254,11 +1327,15 @@ class LectureCardContainer extends Component<Props, State> {
       typeViewObject,
       studentCdo,
       children,
+      lectureServiceId,
+      lectureServiceType,
     } = this.props;
     const { inMyLecture } = inMyLectureService!;
     const { openLearningModal, openDownloadModal } = this.state;
     const { classrooms } = this.props.classroomService!;
 
+    // console.log('LectureCardContainer : ', viewObject);
+    // console.log('LectureCardContainer : ', lectureServiceType);
     // console.log('LectureCardContainer : ', JSON.stringify(this.state));
 
     return (
@@ -1301,6 +1378,8 @@ class LectureCardContainer extends Component<Props, State> {
             surveyCaseId={viewObject.surveyCaseId}
             ref={surveyModal => (this.surveyModal = surveyModal)}
             onSaveCallback={this.surveyCallback}
+            serviceId={lectureServiceId}
+            serviceType={lectureServiceType}
           />
         )}
         <CubeReportModal
@@ -1346,6 +1425,7 @@ class LectureCardContainer extends Component<Props, State> {
             inMyLecture && inMyLecture.id ? undefined : this.onClickBookmark
           }
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
+          moveToSupport={this.moveToSupportQnA}
           // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
           /* onDownloadReport={
              ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?

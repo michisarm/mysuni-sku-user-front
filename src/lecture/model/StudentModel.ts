@@ -18,6 +18,7 @@ class StudentModel extends DramaEntityObservableModel {
   studentScore: StudentScoreModel = new StudentScoreModel();
   creationTime: number = 0;
   updateTime: number = 0;
+  lectureUsid: string = '';
   programLectureUsid: string = '';
   courseLectureUsid: string = '';
   joinRequests: JoinRequestModel[] = [];
@@ -26,6 +27,7 @@ class StudentModel extends DramaEntityObservableModel {
   examAttendance: boolean = false;
   updateTimeForTest: number = 0;
   homeworkFileBoxId: string = '';
+  durationViewSeconds: string = '';
 
   serviceType: string = '';
   phaseCount: number = 0;           // Course 일 경우 조회시 산출됨. 저장되지 않음.
@@ -36,9 +38,14 @@ class StudentModel extends DramaEntityObservableModel {
 
   constructor(student?: StudentModel) {
     //
-    super();
+    super(student);
+
     if (student) {
-      Object.assign(this, { ...student });
+      //
+      // Object.assign(this, { ...student });
+      Object.assign(this, JSON.parse(JSON.stringify(student)));
+
+      //
       this.studentScore = student.studentScore && new StudentScoreModel(student.studentScore) || this.studentScore;
       this.joinRequests = student.joinRequests && student.joinRequests.length
         && student.joinRequests.map(request => new JoinRequestModel(request)) || this.joinRequests;
@@ -63,6 +70,7 @@ decorate(StudentModel, {
   studentScore: observable,
   creationTime: observable,
   updateTime: observable,
+  lectureUsid: observable,
   programLectureUsid: observable,
   courseLectureUsid: observable,
   joinRequests: observable,
@@ -75,6 +83,7 @@ decorate(StudentModel, {
   serviceType: observable,
   phaseCount: observable,
   completePhaseCount: observable,
+  durationViewSeconds: observable,
 });
 
 export default StudentModel;

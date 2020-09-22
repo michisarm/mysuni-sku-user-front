@@ -55,6 +55,15 @@ class ProfileContainer extends Component<Props, State> {
 
   onLogout() {
     localStorage.clear();
+
+    // localStorage.removeItem('nara.cineroomId');
+    // localStorage.removeItem('nara.workspaces');
+    // localStorage.removeItem('nara.token');
+    // localStorage.removeItem('nara.displayName');
+    // localStorage.removeItem('nara.companyCode');
+    // localStorage.removeItem('nara.email');
+
+    sessionStorage.clear();
     window.location.href = '/api/checkpoint/sso/logout';
     //window.location.href = 'https://proxy.gdisso.sk.com/nsso-authweb/logoff.do?ssosite=mysuni.sk.com&returnURL=https://mysuni.sk.com';
   }

@@ -7,7 +7,9 @@ class RollBookApi {
   //
   static instance: RollBookApi;
 
-  baseUrl = '/api/lecture/rollbooks';
+  baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ||
+  process.env.REACT_APP_ROLL_BOOK_API === undefined || process.env.REACT_APP_ROLL_BOOK_API === '' ?
+    '/api/lecture/rollbooks' : process.env.REACT_APP_ROLL_BOOK_API;
 
 
   findRollBookByLectureCardIdAndRound(lectureCardId: string, round: number) {

@@ -14,6 +14,7 @@ import {
   LogoView, MenuView, SearchBarView,
 } from '../view/HeaderElementsView';
 import BreadcrumbView from '../view/BreadcrumbView';
+import MainNotice from '../../../Notice';
 
 
 interface Props extends RouteComponentProps {
@@ -99,6 +100,10 @@ class HeaderContainer extends Component<Props, State> {
             values={breadcrumb.values}
             supportPath={this.supportPath}
           />
+        )}
+        // Notice
+        mainNotice={(
+          <MainNotice/>
         )}
       >
         <>

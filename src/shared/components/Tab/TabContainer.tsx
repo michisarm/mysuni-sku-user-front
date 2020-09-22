@@ -1,4 +1,3 @@
-
 import React, { Component, ReactNode } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
@@ -10,43 +9,41 @@ import { ActionEventService } from 'shared/stores';
 import { LectureServiceType } from 'lecture/model';
 import TabItemModel from './model/TabItemModel';
 
-
 interface Props extends RouteComponentProps<RouteParams> {
-  actionEventService?: ActionEventService
-  tabs: TabItemModel[]
-  header?: ReactNode
-  className?: string
-  wrapperClassName?: string
-  defaultActiveName?: string
-  allMounted?: boolean
-  large?: boolean
-  renderItems?: (props: any) => React.ReactNode
-  renderContent?: (props: any) => React.ReactNode
-  onChangeTab?: (tab: TabItemModel) => any
+  actionEventService?: ActionEventService;
+  tabs: TabItemModel[];
+  header?: ReactNode;
+  className?: string;
+  wrapperClassName?: string;
+  defaultActiveName?: string;
+  allMounted?: boolean;
+  large?: boolean;
+  renderItems?: (props: any) => React.ReactNode;
+  renderContent?: (props: any) => React.ReactNode;
+  onChangeTab?: (tab: TabItemModel) => any;
+  topOfContents?: React.ReactNode;
 }
 
 interface RouteParams {
-  collegeId: string,
-  serviceType?: LectureServiceType,
-  cubeId?: string
-  lectureCardId?: string,
-  coursePlanId?: string,
+  collegeId: string;
+  serviceType?: LectureServiceType;
+  cubeId?: string;
+  lectureCardId?: string;
+  coursePlanId?: string;
 }
 
 interface State {
-  activeName: string
+  activeName: string;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionEventService'
-))
+@inject(mobxHelper.injectFrom('shared.actionEventService'))
 @reactAutobind
 @observer
 class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
     className: 'tab-menu offset0',
-    onChangeTab: () => {}
+    onChangeTab: () => {},
   };
 
   state = {
@@ -61,8 +58,7 @@ class TabContainer extends Component<Props, State> {
 
     if (props.defaultActiveName) {
       this.state.activeName = props.defaultActiveName;
-    }
-    else if (props.tabs.length > 0) {
+    } else if (props.tabs.length > 0) {
       this.state.activeName = props.tabs[0].name;
     }
   }
@@ -70,63 +66,80 @@ class TabContainer extends Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     const { onChangeTab, tabs } = this.props;
 
-    if(prevProps.defaultActiveName !== this.props.defaultActiveName){
-      if(this.props.defaultActiveName === 'Posts' || this.props.defaultActiveName === 'Overview'){
-        this.changeActiveName(tabs[0]);
-      } else { // 20200527 탭 이동 정상화
-        this.changeActiveName(tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]);
-      } 
+    if (prevProps.defaultActiveName !== this.props.defaultActiveName) {
+      if (
+        this.props.defaultActiveName === 'Posts' ||
+        this.props.defaultActiveName === 'Overview'
+      ) {
+        this.onClickTab(tabs[0]);
+      } else {
+        // 20200716 탭 이동
+        this.setPreviousTab(
+          tabs[tabs.findIndex(tab => tab.name === this.props.defaultActiveName)]
+        );
+      }
     }
   }
 
-  changeActiveName(tab: TabItemModel) {
+  setPreviousTab(tab: TabItemModel) {
     this.setState({ activeName: tab.name });
   }
 
   onClickTab(tab: TabItemModel) {
     //
     const { onChangeTab } = this.props;
-    
+
     const pageName = this.findPageName();
-    const menu = pageName && `tab_${pageName}_${tab.name}` || `tab_${tab.name}`;
+    const menu =
+      (pageName && `tab_${pageName}_${tab.name}`) || `tab_${tab.name}`;
 
     this.setState({ activeName: tab.name });
 
     const routePath = onChangeTab!(tab);
-    if(routePath) this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
-    
-    else this.publishViewEvent(menu);
+    if (routePath) {
+      this.publishViewEvent(menu, `${window.location.origin}${routePath}`);
+    } else {
+      this.publishViewEvent(menu);
+    }
   }
 
   findPageName() {
-    const {match} = this.props;
-    const {coursePlanId, cubeId} = match.params;
+    const { match } = this.props;
+    const { coursePlanId, cubeId } = match.params;
 
     let pageName = '';
     const path = window.location.href;
     const splitedPath = path.split('/');
 
-    if(path === 'https://mysuni.sk.com/suni-main/pages/1') pageName = 'main';
-    if(splitedPath.includes('learning')) pageName = 'learning';
-    if(splitedPath.includes('my-page')) pageName = 'my-page';
-    if(splitedPath.includes('introduction')) pageName = 'introduction';
-    if(splitedPath.includes('create')) pageName   = 'create';
-    if(splitedPath.includes('instructor')) pageName = 'instructor';
-    if(splitedPath.includes('board')) pageName = 'board';
-    if(coursePlanId) pageName = 'course';
-    if(cubeId) pageName = 'cube';
+    if (path === 'https://mysuni.sk.com/suni-main/pages/1') pageName = 'main';
+    if (splitedPath.includes('learning')) pageName = 'learning';
+    if (splitedPath.includes('my-page')) pageName = 'my-page';
+    if (splitedPath.includes('introduction')) pageName = 'introduction';
+    if (splitedPath.includes('create')) pageName = 'create';
+    if (splitedPath.includes('instructor')) pageName = 'instructor';
+    if (splitedPath.includes('board')) pageName = 'board';
+    if (coursePlanId) pageName = 'course';
+    if (cubeId) pageName = 'cube';
 
     return pageName;
   }
 
   publishViewEvent(menu: string, path?: string) {
-    const {actionEventService} = this.props;
-    const {match} = this.props;
-    const {collegeId, cubeId, lectureCardId, coursePlanId} = match.params;
+    const { actionEventService } = this.props;
+    const { match } = this.props;
+    const { collegeId, cubeId, lectureCardId, coursePlanId } = match.params;
     let { serviceType } = match.params;
-    
-    if(cubeId) serviceType = LectureServiceType.Card;
-    actionEventService?.registerViewActionLog({menu, path, serviceType, collegeId, cubeId, lectureCardId, coursePlanId});
+
+    if (cubeId) serviceType = LectureServiceType.Card;
+    actionEventService?.registerViewActionLog({
+      menu,
+      path,
+      serviceType,
+      collegeId,
+      cubeId,
+      lectureCardId,
+      coursePlanId,
+    });
   }
 
   renderItems() {
@@ -136,14 +149,13 @@ class TabContainer extends Component<Props, State> {
 
     if (renderItems) {
       return renderItems({ tabs, activeName, onClickTab: this.onClickTab });
-    }
-    else {
+    } else {
       return (
         <Sticky context={this.contextRef} className={className}>
           {header}
           <div className="cont-inner">
             <Menu className={large ? 'sku2' : 'sku'}>
-              { tabs.map((tab, index) => (
+              {tabs.map((tab, index) => (
                 <Menu.Item
                   key={`tab-${index}`}
                   className={tab.className}
@@ -163,7 +175,7 @@ class TabContainer extends Component<Props, State> {
 
   renderContent(tab: TabItemModel) {
     //
-    const { renderContent } = this.props;
+    const { renderContent, topOfContents } = this.props;
     const { activeName } = this.state;
 
     if (typeof renderContent === 'function') {
@@ -171,11 +183,19 @@ class TabContainer extends Component<Props, State> {
     }
 
     return (
-      <Segment className="full" key={`tab-content-${tab.name}`}>
-        <div className={classNames('ui tab', { active: tab.name === activeName })}>
-          {tab.render({ tab, active: tab.name === activeName })}
-        </div>
-      </Segment>
+      <>
+        {/*0716 Tab구성페이지 - Full Size Contents 존재할 경우*/}
+        {topOfContents}
+        <Segment className="full" key={`tab-content-${tab.name}`}>
+          <div
+            className={classNames('ui tab', {
+              active: tab.name === activeName,
+            })}
+          >
+            {tab.render({ tab, active: tab.name === activeName })}
+          </div>
+        </Segment>
+      </>
     );
   }
 
@@ -189,20 +209,14 @@ class TabContainer extends Component<Props, State> {
       <div ref={this.contextRef}>
         {this.renderItems()}
 
-        { allMounted ?
-          tabs.map(tab => this.renderContent(tab))
-          :
-          activeTab && this.renderContent(activeTab)
-        }
+        {allMounted
+          ? tabs.map(tab => this.renderContent(tab))
+          : activeTab && this.renderContent(activeTab)}
       </div>
     );
 
     if (wrapperClassName) {
-      return (
-        <div className={wrapperClassName}>
-          {contents}
-        </div>
-      );
+      return <div className={wrapperClassName}>{contents}</div>;
     }
     return contents;
   }

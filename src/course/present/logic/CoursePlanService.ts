@@ -1,6 +1,7 @@
 
-import { action, observable, runInAction } from 'mobx';
-import { autobind, OffsetElementList } from '@nara.platform/accent';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import { autobind, OffsetElementList, axiosApi } from '@nara.platform/accent';
+import {ReviewService, CommentService, CommentCountRdoModel, ReviewSummaryModel} from '@nara.drama/feedback';
 import _ from 'lodash';
 
 import { IdName, CourseState } from 'shared/model';
@@ -12,6 +13,25 @@ import { CoursePlanFlowUdoModel } from '../../model/CoursePlanFlowUdoModel';
 import { CoursePlanQueryModel } from '../../model/CoursePlanQueryModel';
 import { LearningCardModel } from '../../model/LearningCardModel';
 import { CourseRequestCdoModel } from '../../model/CourseRequestCdoModel';
+import AnswerSheetService from '../../../survey/answer/present/logic/AnswerSheetService';
+import {SurveyCaseService, SurveyFormService} from '../../../survey/stores';
+import CourseLectureService from '../../../lecture/shared/present/logic/CourseLectureService';
+import {LectureService} from '../../../lecture/stores';
+import AnswerSheetModel from '../../../survey/answer/model/AnswerSheetModel';
+import SurveyCaseModel from '../../../survey/event/model/SurveyCaseModel';
+import CourseLectureModel from '../../../lecture/model/CourseLectureModel';
+import LectureViewModel from '../../../lecture/model/LectureViewModel';
+import ProgramLectureService from '../../../lecture/shared/present/logic/ProgramLectureService';
+import StudentService from '../../../lecture/shared/present/logic/StudentService';
+import {SurveyFormModel} from '../../../survey/form/model/SurveyFormModel';
+import {ProgramLectureModel} from '../../../lecture/model';
+import {PersonalCubeModel} from '../../../personalcube/personalcube/model';
+import SubLectureViewModel from '../../../lecture/model/SubLectureViewModel';
+import { CourseLectureIdsModel } from '../../model/CourseLectureIdsModel';
+import { ExaminationModel } from '../../../assistant/exam/model/ExaminationModel';
+import { ExamPaperModel } from '../../../assistant/paper/model/ExamPaperModel';
+import { ExaminationService, ExamPaperService } from '../../../assistant/stores';
+
 
 
 @autobind
@@ -22,6 +42,21 @@ class CoursePlanService {
   coursePlanApi: CoursePlanApi;
   coursePlanFlowApi: CoursePlanFlowApi;
 
+  answerSheetService: AnswerSheetService = AnswerSheetService.instance;
+  surveyCaseService: SurveyCaseService = SurveyCaseService.instance;
+  surveyFormService: SurveyFormService = SurveyFormService.instance;
+
+  examinationService: ExaminationService = ExaminationService.instance;
+  examPaperService: ExamPaperService = ExamPaperService.instance;
+
+  courseLectureService: CourseLectureService = CourseLectureService.instance;
+  programLectureService: ProgramLectureService = ProgramLectureService.instance;
+
+  lectureService: LectureService = LectureService.instance;  //  lectureViews(LectureViewModel[])
+  reviewService: ReviewService = ReviewService.instance;     // reviewSummary(ReviewSummaryModel)
+  commentService: CommentService = CommentService.instance;  //  commentCountRdo(CommentCountRdoModel)
+
+  studentService: StudentService = StudentService.instance;
 
   @observable
   coursePlans: OffsetElementList<CoursePlanModel> = { results: [], totalCount: 0 };
@@ -62,6 +97,18 @@ class CoursePlanService {
   @observable
   channelsMap: Map<IdName, IdName[]> = new Map<IdName, IdName[]>();
 
+  @observable
+  preCourseSet: CoursePlanModel[] = [];
+
+  @observable
+  preCourseIdSet: string[] = [];
+
+  @observable
+  courseIdsSet: CourseLectureIdsModel = new CourseLectureIdsModel() || undefined;
+
+  @observable
+  isPreCoursePassed: boolean = true;
+
 
   constructor(coursePlanApi: CoursePlanApi, coursePlanFlowApi: CoursePlanFlowApi) {
     this.coursePlanApi = coursePlanApi;
@@ -74,6 +121,22 @@ class CoursePlanService {
   }
 
   // CoursePlans -------------------------------------------------------------------------------------------------------
+  //
+  // @action
+  // setIsPreCoursePassed(isPreCoursePassed: boolean) {
+  //   return runInAction(() => this.isPreCoursePassed = isPreCoursePassed);
+  // }
+  //
+  // @action
+  // get getIsPreCoursePassed() {
+  //   return this.isPreCoursePassed;
+  // }
+
+  @computed
+  get getPreCourseSet() {
+    //
+    return (this.preCourseSet as IObservableArray).peek();
+  }
 
   @action
   async findAllCoursePlan() {
@@ -92,6 +155,105 @@ class CoursePlanService {
   // CoursePlan --------------------------------------------------------------------------------------------------------
 
   @action
+  async findAllCoursePlanInfo(coursePlanId: string, courseLectureId: string) {
+    //
+    const courseData: any = await this.coursePlanApi.findAllCoursePlanInfo(coursePlanId, courseLectureId);
+
+    runInAction(() => {
+      if (courseData) {
+        const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
+        const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
+        // const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
+        const surveyCase: SurveyCaseModel = JSON.parse(JSON.stringify(courseData.surveyCase));
+        // const surveyForm: SurveyFormModel = JSON.parse(JSON.stringify(courseData.surveyForm));
+        const examination: ExaminationModel = JSON.parse(JSON.stringify(courseData.examination));
+
+        let examPaper: ExamPaperModel = new ExamPaperModel();
+        if(courseData.examPaper) examPaper = JSON.parse(JSON.stringify(courseData.examPaper));
+
+        let courseLecture: CourseLectureModel = new CourseLectureModel();
+        if(courseData.courseLecture) courseLecture = JSON.parse(JSON.stringify(courseData.courseLecture));
+
+        const programLecture: ProgramLectureModel = JSON.parse(JSON.stringify(courseData.programLecture));
+
+        courseData.lectureViews.map((lectureView: any) => {
+          lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
+          lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
+          lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
+        });
+        const lectureViews: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.lectureViews));
+
+        const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
+        const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
+        // const preCourseSet: CoursePlanModel[] = JSON.parse(JSON.stringify(courseData.precedenceCourse));
+        const preCourseLectures: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.preCourseLectures));
+
+        courseData.subLectureViews.map((subLecture: any) => {
+          subLecture.lectureViews.map((lectureView: any) => {
+            lectureView.serviceType = LectureViewModel.getServiceType(lectureView);
+            lectureView.cubeTypeName = LectureViewModel.getCubeTypeName(lectureView.cubeType, lectureView.serviceType);
+            lectureView.personalCube = new PersonalCubeModel(lectureView.personalCube);
+          });
+        });
+        const subLectureViews: SubLectureViewModel[] = JSON.parse(JSON.stringify(courseData.subLectureViews));
+
+        this.coursePlan = new CoursePlanModel(coursePlan);
+        this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
+        // this.answerSheetService.setAnswerSheet(answerSheet);
+        this.surveyCaseService.setSurveyCase(surveyCase);
+        // this.surveyFormService.setSurveyForm(surveyForm);
+        this.examinationService.setExamination(examination);
+        this.examPaperService.setExamPaper(examPaper);
+        this.courseLectureService.setCourseLecture(courseLecture);
+        this.programLectureService.setProgramLecture(programLecture);
+        this.lectureService.setLectureViews(lectureViews);
+        this.reviewService.reviewSummary = new ReviewSummaryModel(reviewSummary);
+        this.commentService.commentCount = commentCountRdo;
+
+        for (let i = 0; i < subLectureViews.length; i++) {
+          const subLectureView = subLectureViews[i];
+          this.lectureService.setSubLectureViews(subLectureView.lectureId, subLectureView.lectureViews);
+        }
+        // this.preCourseSet = preCourseSet;
+        this.courseLectureService.setPreLectureViews(preCourseLectures);
+
+        // let serviceId: string = '';
+        // let lectureCardIds: string[] = [];
+        // let courseLectureIds: string[] = [];
+
+        // 코스 학습정보를 가져오기 위한 id 취합
+        if ( courseData.courseLecture.coursePlanId ) {
+          this.courseIdsSet.serviceId = courseLecture.usid;
+          this.courseIdsSet.lectureCardIds = courseLecture.lectureCardUsids;
+        } else {
+          this.courseIdsSet.serviceId = programLecture.usid;
+          this.courseIdsSet.lectureCardIds = programLecture.lectureCardUsids;
+          this.courseIdsSet.courseLectureIds = programLecture.courseLectureUsids;
+        }
+
+        // 선수코스 학습정보를 가져오기 위한 id 취합
+        const preCourseIds: string[] = [];
+        if (courseData.preCourseLectures) {
+          for ( let i = 0; i < preCourseLectures.length; i++ ) {
+            preCourseIds.push(preCourseLectures[i].serviceId);
+          }
+          this.courseIdsSet.preLectureCardIds = preCourseIds;
+        }
+        // this.setStudentInfo(serviceId, lectureCardIds, courseLectureIds);
+      }
+    });
+
+    return courseData;
+  }
+
+  @action
+  async setStudentInfo() {
+    return runInAction(() => {
+      return this.studentService.setStudentInfo(this.courseIdsSet.serviceId, this.courseIdsSet.lectureCardIds, this.courseIdsSet.courseLectureIds, this.courseIdsSet.preLectureCardIds);
+    });
+  }
+
+  @action
   clearCoursePlan() {
     //
     this.coursePlan = new CoursePlanModel();
@@ -100,10 +262,30 @@ class CoursePlanService {
   @action
   async findCoursePlan(coursePlanId: string) {
     //
-    const coursePlan = await this.coursePlanApi.findCoursePlan(coursePlanId);
+    // const courseData: any = tempData; //
+    const courseData: any = await this.coursePlanApi.findCoursePlan(coursePlanId);
+
     return runInAction(() => {
-      this.coursePlan = new CoursePlanModel(coursePlan);
-      return coursePlan;
+      if (courseData) {
+        const coursePlan: CoursePlanModel = JSON.parse(JSON.stringify(courseData.coursePlan));
+        const coursePlanContents: CoursePlanContentsModel = JSON.parse(JSON.stringify(courseData.coursePlanContents));
+        // const answerSheet: AnswerSheetModel = JSON.parse(JSON.stringify(courseData.answerSheet));
+        const surveyCase: SurveyCaseModel = JSON.parse(JSON.stringify(courseData.surveyCase));
+        const courseLecture: CourseLectureModel = JSON.parse(JSON.stringify(courseData.courseLecture));
+        const lectureViews: LectureViewModel[] = JSON.parse(JSON.stringify(courseData.lectureViews));
+        const reviewSummary: ReviewSummaryModel = JSON.parse(JSON.stringify(courseData.reviewSummary));
+        const commentCountRdo: CommentCountRdoModel = JSON.parse(JSON.stringify(courseData.commentCountRdo));
+
+        this.coursePlan = new CoursePlanModel(coursePlan);
+        this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents);
+        // this.answerSheetService.setAnswerSheet(answerSheet);
+        this.surveyCaseService.setSurveyCase(surveyCase);
+        this.courseLectureService.setCourseLecture(courseLecture);
+        this.lectureService.setLectureViews(lectureViews);
+        this.reviewService.reviewSummary = reviewSummary;
+        this.commentService.commentCount = commentCountRdo;
+      }
+      return courseData;
     });
   }
 
@@ -136,6 +318,14 @@ class CoursePlanService {
   async findCoursePlanContents(coursePlanContentsId: string) {
     //
     const coursePlanContents = await this.coursePlanApi.findCoursePlanContents(coursePlanContentsId);
+
+    return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents));
+  }
+
+  @action
+  async findCoursePlanContentsV2(coursePlanContentsId: string) {
+    //
+    const coursePlanContents = await this.coursePlanApi.findCoursePlanContentsV2(coursePlanContentsId);
 
     return runInAction(() => this.coursePlanContents = new CoursePlanContentsModel(coursePlanContents));
   }
@@ -272,6 +462,31 @@ class CoursePlanService {
   setCourseSet(courseSet: CoursePlanModel) {
     //
     this.courseSet = [...this.courseSet].concat([courseSet]);
+  }
+
+  @action
+  async findAllPrecedenceCourseList( coursePlanId: string) {
+    const precedenceSet = await this.coursePlanApi.findAllPrecedenceCourseList( coursePlanId );
+    if (precedenceSet) {
+      return precedenceSet.results;
+      /*return runInAction( () => {
+        this.preCourseSet = precedenceSet.results.map(result => new CoursePlanModel(result));
+      });*/
+    } else {
+      return null;
+    }
+  }
+
+  @action
+  async findAllPreCourseIdList( coursePlanId: string) {
+    const preCourseIdSet = await this.coursePlanApi.findAllPreCourseIdList( coursePlanId );
+    if (preCourseIdSet) {
+      console.log( 'preCourseIdSet : ', preCourseIdSet );
+      this.preCourseIdSet = preCourseIdSet;
+      return preCourseIdSet;
+    } else {
+      return null;
+    }
   }
 }
 

@@ -195,15 +195,16 @@ class MyLearningPage extends Component<Props, State> {
         reviewId: training.reviewId,
         baseUrl: training.baseUrl,
         servicePatronKeyString,
-      }))
-        .then(() => {
-          if (type === MyLearningContentType.InMyList) {
-            inMyLectureService!.clearInMyLectures();
-            pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
-            this.findPagingList();
-          }
-          else inMyLectureService!.addInMyLectureInAllList(training.serviceId, training.serviceType);
-        });
+      })).then(() => {
+        if (type === MyLearningContentType.InMyList) {
+          inMyLectureService!.clearInMyLectures();
+          pageService!.initPageMap(this.PAGE_KEY, 0, this.PAGE_SIZE);
+          this.findPagingList();
+        }
+        else {
+          inMyLectureService!.addInMyLectureInAllList(training.serviceId, training.serviceType);
+        }
+      });
     }
   }
 

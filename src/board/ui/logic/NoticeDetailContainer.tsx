@@ -157,4 +157,5 @@ class NoticeDetailContainer extends React.Component<Props, State> {
   }
 }
 
+
 export default withRouter(NoticeDetailContainer);

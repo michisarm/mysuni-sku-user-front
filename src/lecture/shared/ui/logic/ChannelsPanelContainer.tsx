@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -10,31 +9,29 @@ import { ActionLogService } from 'shared/stores';
 import { ChannelModel } from 'college/model';
 import { SkProfileService } from 'profile/stores';
 
-
 interface Props {
-  actionLogService?: ActionLogService,
-  skProfileService?: SkProfileService,
-  title?: React.ReactNode,
-  configurable?: boolean,
-  channels: ChannelModel[]
-  onSelectChannel: (e: any, data: OnSelectChannelData) => void
-  onConfirmCallback?: () => void
+  actionLogService?: ActionLogService;
+  skProfileService?: SkProfileService;
+  title?: React.ReactNode;
+  configurable?: boolean;
+  channels: ChannelModel[];
+  onSelectChannel: (e: any, data: OnSelectChannelData) => void;
+  onConfirmCallback?: () => void;
 }
 
 interface OnSelectChannelData {
-  index: number,
-  channel: ChannelModel,
+  index: number;
+  channel: ChannelModel;
 }
 
 interface States {
-  multiple: boolean,
-  open: boolean
+  multiple: boolean;
+  open: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-  'profile.skProfileService',
-))
+@inject(
+  mobxHelper.injectFrom('shared.actionLogService', 'profile.skProfileService')
+)
 @observer
 @reactAutobind
 class ChannelsPanelContainer extends Component<Props, States> {
@@ -51,9 +48,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
 
   panelRef = React.createRef<HTMLDivElement>();
 
-
-  componentDidMount()
-  {
+  componentDidMount() {
     this.setMultiple();
   }
 
@@ -106,21 +101,27 @@ class ChannelsPanelContainer extends Component<Props, States> {
     const { channels, title, configurable, onConfirmCallback } = this.props;
     const { multiple, open } = this.state;
 
-
     return (
       <div className="channel-of-interest">
         <div className="table-css type2 type3">
           <div className="row">
             <div className="cell vtop">
               <div className="tit-set">
-                { title || `Channel (${channels.length})`}
+                {title || `Channel (${channels.length})`}
                 {configurable && (
                   <FavoriteChannelChangeModal
-                    trigger={(
-                      <Button icon className="img-icon" onClick={() => this.onClickActionLog('관심 Channel 보기')}>
-                        <Icon className="setting17" /><span className="blind">setting</span>
+                    trigger={
+                      <Button
+                        icon
+                        className="img-icon"
+                        onClick={() =>
+                          this.onClickActionLog('관심 Channel 보기')
+                        }
+                      >
+                        <Icon className="setting17" />
+                        <span className="blind">setting</span>
                       </Button>
-                    )}
+                    }
                     favorites={channels}
                     onConfirmCallback={() => {
                       this.findStudySummary();
@@ -141,8 +142,10 @@ class ChannelsPanelContainer extends Component<Props, States> {
                   {channels.map((channel, index) => (
                     <Button
                       key={`sub-category-${index}`}
-                      className={`toggle toggle4 ${ channel.checked ? 'active' : ''}`}
-                      onClick={(e) => this.onClickChannel(e, index, channel)}
+                      className={`toggle toggle4 ${
+                        channel.checked ? 'active' : ''
+                      }`}
+                      onClick={e => this.onClickChannel(e, index, channel)}
                     >
                       {channel.name}
                     </Button>
@@ -152,7 +155,7 @@ class ChannelsPanelContainer extends Component<Props, States> {
             </div>
             <div className="cell vtop">
               <div className="toggle-btn">
-                { multiple && (
+                {multiple && (
                   <Button icon className="img-icon" onClick={this.onToggle}>
                     <Icon
                       className={classNames({

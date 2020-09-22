@@ -19,6 +19,7 @@ class RecommendLectureRdo {
           results: lecture.lectures.results.map(lecture => new LectureModel(lecture)),
           totalCount: lecture.lectures.totalCount,
           empty: false,
+          title: null,
         }) || this.lectures;
     }
   }
