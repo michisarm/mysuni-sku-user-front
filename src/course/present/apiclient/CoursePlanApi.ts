@@ -30,10 +30,10 @@ export default class CoursePlanApi {
   lectureContentsURL =
     process.env.REACT_APP_ENVIRONMENT === undefined ||
     process.env.REACT_APP_ENVIRONMENT === 'server' ||
-    process.env.REACT_APP_COURSE_PLAN_CONTENT_API === undefined ||
-    process.env.REACT_APP_COURSE_PLAN_CONTENT_API === ''
+    process.env.REACT_APP_COURSE_LECTURE_CONTENT_API === undefined ||
+    process.env.REACT_APP_COURSE_LECTURE_CONTENT_API === ''
       ? '/api/lecture'
-      : process.env.REACT_APP_COURSE_PLAN_CONTENT_API;
+      : process.env.REACT_APP_COURSE_LECTURE_CONTENT_API;
 
   registerCoursePlan(coursePlan: CoursePlanModel) {
     //
@@ -140,3 +140,4 @@ Object.defineProperty(CoursePlanApi, 'instance', {
   writable: false,
   configurable: false,
 });
+// 1

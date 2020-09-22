@@ -139,7 +139,7 @@ class MyTrainingService {
 
       // console.log('total Count : ', newModel.results.length);
 
-      if (newModel.results.length > 0) {
+      if (newModel && newModel.results && newModel.results.length > 0) {
         sessionStorage.setItem('endDate', newModel.results[0].endDate);
         sessionStorage.setItem('learningPassed', JSON.stringify(newModel));
       }
@@ -680,3 +680,4 @@ Object.defineProperty(MyTrainingService, 'instance', {
 //   runInAction(() => this._myTrainings = this._myTrainings.concat(result));
 //   return offsetList;
 // }
+// 1
