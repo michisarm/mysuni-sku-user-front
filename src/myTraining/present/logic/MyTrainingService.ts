@@ -256,7 +256,7 @@ class MyTrainingService {
           MyTrainingModel
         >();
         offsetList.results = offsetList.results.concat(
-          parseElement.results.map(e => new MyTrainingModel(e))
+          parseElement.results.map((e) => new MyTrainingModel(e))
         );
 
         if (channelIds.length === 0) {
@@ -482,7 +482,7 @@ class MyTrainingService {
     ) {
       runInAction(() => {
         this._myTrainingV2s = offsetMyTrainings.results.map(
-          offsetMyTraining => new MyTrainingModelV2(offsetMyTraining)
+          (offsetMyTraining) => new MyTrainingModelV2(offsetMyTraining)
         );
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
@@ -506,7 +506,7 @@ class MyTrainingService {
       offsetMyTrainings.results.length
     ) {
       const addedMyTrainings = offsetMyTrainings.results.map(
-        offsetMyTraining => new MyTrainingModelV2(offsetMyTraining)
+        (offsetMyTraining) => new MyTrainingModelV2(offsetMyTraining)
       );
       runInAction(() => {
         this._myTrainingV2s = [...this._myTrainingV2s, ...addedMyTrainings];
@@ -530,7 +530,7 @@ class MyTrainingService {
     ) {
       runInAction(() => {
         this._myTrainingV2s = offsetMyTrainings.results.map(
-          offsetMyTraining => new MyTrainingModelV2(offsetMyTraining)
+          (offsetMyTraining) => new MyTrainingModelV2(offsetMyTraining)
         );
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
@@ -550,7 +550,7 @@ class MyTrainingService {
     ) {
       runInAction(() => {
         this._myTrainingV2s = offsetMyTrainings.results.map(
-          offsetMyTraining => new MyTrainingModelV2(offsetMyTraining)
+          (offsetMyTraining) => new MyTrainingModelV2(offsetMyTraining)
         );
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
@@ -574,7 +574,7 @@ class MyTrainingService {
       filterRdoForExcel
     );
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(
-      offsetMyTraining => new MyTrainingModelV2(offsetMyTraining)
+      (offsetMyTraining) => new MyTrainingModelV2(offsetMyTraining)
     );
 
     return myTrainingV2sForExcel;
@@ -587,14 +587,16 @@ class MyTrainingService {
 
   @action
   deleteOne(id: string) {
-    this.selectedIds = this.selectedIds.filter(selectedId => selectedId !== id);
+    this.selectedIds = this.selectedIds.filter(
+      (selectedId) => selectedId !== id
+    );
   }
 
   @action
   deleteBySelectedIds() {
     console.log('selectedIds :: ', this.selectedIds);
     this._myTrainingV2s = this._myTrainingV2s.filter(
-      myTrainingV2 => !this.selectedIds.includes(myTrainingV2.id)
+      (myTrainingV2) => !this.selectedIds.includes(myTrainingV2.id)
     );
     this.myTrainingV2Count -= this.selectedIds.length;
 
@@ -604,7 +606,9 @@ class MyTrainingService {
 
   @action
   selectAll() {
-    this.selectedIds = this._myTrainingV2s.map(myTrainingV2 => myTrainingV2.id);
+    this.selectedIds = this._myTrainingV2s.map(
+      (myTrainingV2) => myTrainingV2.id
+    );
     console.log(this.selectedIds);
   }
 
