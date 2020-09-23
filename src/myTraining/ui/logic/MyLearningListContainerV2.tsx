@@ -37,7 +37,7 @@ function MyLearningListContainerV2(props: Props) {
 
   /* effects */
   useEffect(() => {
-    // 
+    //
     clearPageInfo();
     if (filterCount === 0) {
       fetchModelsByContentType(contentType);

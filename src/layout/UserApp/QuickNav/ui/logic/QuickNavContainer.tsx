@@ -13,7 +13,8 @@ import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutePaths from 'myTraining/routePaths';
 import boardRoutePaths from 'board/routePaths';
 
-import SiteMapModalContainer from './SiteMapModalContainer';
+//import SiteMapModalContainer from './SiteMapModalContainer';
+import SiteMapModalContainer from './SiteMapModalContainerV2';
 import QuickNavWrapperView from '../view/QuickNavWrapperView';
 import {
   MenuWrapperView,
@@ -114,7 +115,12 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickApproval() {
     // 승인관리 바로 가기
-    this.routeNav('/my-training/my-page/ApprovalList/pages/1');
+    this.routeNav('/approval/ApprovalList');
+  }
+
+  onClickApl() {
+    // 개인학습 등록 바로 가기
+    this.routeNav('/learning/add-personal-learning-create');
   }
 
   onClickAdminSite() {
@@ -209,6 +215,13 @@ class QuickNavContainer extends Component<Props, State> {
                 iconName="confirm"
                 text="승인관리"
                 onClick={this.onClickApproval}
+              />
+
+              {/*0907 개인학습 등록 메뉴 추가*/}
+              <BottomMenuItemView
+                iconName="apl"
+                text="개인학습 등록"
+                onClick={this.onClickApl}
               />
 
               {this.hasAdminRole && (

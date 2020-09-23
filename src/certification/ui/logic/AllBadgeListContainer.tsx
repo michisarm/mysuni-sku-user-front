@@ -161,7 +161,7 @@ const AllBadgeListContainer: React.FC<Props> = (Props) => {
           <BadgeListContainer
             badges={badges}
             badgeStyle={BadgeStyle.List}
-            badgeSize={BadgeSize.Large}
+            badgeSize={BadgeSize.Small}
           />
           { isContentMore() && <SeeMoreButton onClick={onClickSeeMore} /> }
         </>

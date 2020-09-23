@@ -48,7 +48,7 @@ const BadgePreviewPage: React.FC<Props> = Props => {
           <Badge
             badge={badgeDetail!}
             badgeStyle={BadgeStyle.Detail}
-            badgeSize={BadgeSize.Large}
+            badgeSize={BadgeSize.Small}
           />
           <div className="badge-name">{badgeDetail!.name}</div>
         </li>

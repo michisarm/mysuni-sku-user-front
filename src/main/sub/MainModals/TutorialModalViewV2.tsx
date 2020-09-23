@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 import { Modal, Checkbox, Button, Image } from 'semantic-ui-react';
 import { getPublicUrl } from 'shared/helper/envHelper';
 import Swiper from 'react-id-swiper';
 import classNames from 'classnames';
+import { getCookie, setCookie } from '@nara.platform/accent';
 
 const TutorialSubMenu = [
   { key: 'tu1', value: 'tu1', text: '메인페이지 소개' },
@@ -18,18 +20,24 @@ const TutorialModalView = () => {
   const [noMoreModal, setNoMoreModal] = useState(false);
   const [activeMenu, setActiveMenu] = useState('tu1');
 
-  useEffect(()=>{
-    const tutorialModal = window.localStorage.getItem('TutorialModal');
-    if (tutorialModal === null || tutorialModal === 'SHOW') {
+  useEffect(() => {
+    // const valTutorialModal = window.localStorage.getItem('TutorialModal');
+    const valTutorialModal = getCookie('TutorialModal');
+    const tutorialModal = valTutorialModal;
+    if (
+      tutorialModal === null ||
+      tutorialModal === '' ||
+      tutorialModal === 'SHOW'
+    ) {
       setModalOpen(true);
     } else {
       setModalOpen(false);
     }
-  },[]);
+  }, []);
 
   const ModalClose = () => {
-    //
-    window.localStorage.setItem('TutorialModal', noMoreModal ? 'HIDE' : 'SHOW');
+    // window.localStorage.setItem('TutorialModal', noMoreModal ? 'HIDE' : 'SHOW');
+    setCookie('TutorialModal', noMoreModal ? 'HIDE' : 'SHOW');
     setModalOpen(!modalOpen);
   };
 
@@ -59,7 +67,11 @@ const TutorialModalView = () => {
     <Modal open={modalOpen} className="base w1000 tutorials2 front scrolling">
       <Modal.Header className="header2">
         <div className="right-btn">
-          <Checkbox label="더 이상 보지 않기" className="base" onChange={onHandleChange}/>
+          <Checkbox
+            label="더 이상 보지 않기"
+            className="base"
+            onChange={onHandleChange}
+          />
           <Button className="close" onClick={ModalClose}>
             Close
           </Button>
@@ -70,7 +82,7 @@ const TutorialModalView = () => {
           <div className="cont-wrap">
             <div className="left">
               <div className="inner">
-                {TutorialSubMenu.map((menu) => (
+                {TutorialSubMenu.map(menu => (
                   <a
                     href="#"
                     key={menu.value}

@@ -8,14 +8,17 @@ import { Form, Icon, Radio } from 'semantic-ui-react';
 import { PersonalCubeModel } from 'personalcube/personalcube/model';
 import { OfficeWebModel } from 'personalcube/officeweb/model';
 
-
 interface Props {
-  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void
-  officeWeb: OfficeWebModel
-  onChangeOfficeWebProps: (name: string, value: string | Date, nameSub?: string) => void
-  getFileBoxIdForReference: (fileBoxId: string) => void
-  personalCube: PersonalCubeModel
-  getFileBoxIdForEducation: (fileBoxId: string) => void
+  onChangePersonalCubeProps: (name: string, value: string | {} | []) => void;
+  officeWeb: OfficeWebModel;
+  onChangeOfficeWebProps: (
+    name: string,
+    value: string | Date,
+    nameSub?: string
+  ) => void;
+  getFileBoxIdForReference: (fileBoxId: string) => void;
+  personalCube: PersonalCubeModel;
+  getFileBoxIdForEducation: (fileBoxId: string) => void;
 }
 
 @observer
@@ -23,8 +26,13 @@ interface Props {
 class CreateDocumentTypeView extends React.Component<Props> {
   //
   render() {
-
-    const { onChangePersonalCubeProps, officeWeb, getFileBoxIdForEducation, getFileBoxIdForReference, personalCube } = this.props;
+    const {
+      onChangePersonalCubeProps,
+      officeWeb,
+      getFileBoxIdForEducation,
+      getFileBoxIdForReference,
+      personalCube,
+    } = this.props;
 
     return (
       <>
@@ -38,15 +46,28 @@ class CreateDocumentTypeView extends React.Component<Props> {
           <div className="line-attach">
             <div className="attach-inner">
               <FileBox
-                id={officeWeb && officeWeb.fileBoxId || ''}
-                vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
-                patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
-                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
+                id={(officeWeb && officeWeb.fileBoxId) || ''}
+                vaultKey={{
+                  keyString: 'sku-depot',
+                  patronType: PatronType.Pavilion,
+                }}
+                patronKey={{
+                  keyString: 'sku-denizen',
+                  patronType: PatronType.Denizen,
+                }}
+                validations={[
+                  {
+                    type: ValidationType.Duplication,
+                    validator: depotHelper.duplicationValidator,
+                  },
+                ]}
                 onChange={getFileBoxIdForEducation}
               />
-              <div className="info-text"><Icon className="info16" />
+              <div className="info-text">
+                <Icon className="info16" />
                 <span className="blind">infomation</span>
-                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다.
+                DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
+                용량의 파일을 등록하실 수 있습니다.
               </div>
             </div>
           </div>
@@ -57,16 +78,34 @@ class CreateDocumentTypeView extends React.Component<Props> {
           <div className="lg-attach">
             <div className="attach-inner">
               <FileBox
-                vaultKey={{ keyString: 'sku-depot', patronType: PatronType.Pavilion }}
-                patronKey={{ keyString: 'sku-denizen', patronType: PatronType.Denizen }}
-                validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator }]}
+                vaultKey={{
+                  keyString: 'sku-depot',
+                  patronType: PatronType.Pavilion,
+                }}
+                patronKey={{
+                  keyString: 'sku-denizen',
+                  patronType: PatronType.Denizen,
+                }}
+                validations={[
+                  {
+                    type: ValidationType.Duplication,
+                    validator: depotHelper.duplicationValidator,
+                  },
+                ]}
                 onChange={getFileBoxIdForReference}
-                id={personalCube && personalCube.contents && personalCube.contents.fileBoxId}
+                id={
+                  personalCube &&
+                  personalCube.contents &&
+                  personalCube.contents.fileBoxId
+                }
               />
               <div className="bottom">
-                <span className="text1"><Icon className="info16" />
+                <span className="text1">
+                  <Icon className="info16" />
                   <span className="blind">information</span>
-                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte 용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을 등록할 수 있습니다.
+                  DOC, PPT, PDF, XLS 파일을 등록하실 수 있습니다. / 최대 10Mbyte
+                  용량의 파일을 등록하실 수 있습니다. / 참고자료는 다수의 파일을
+                  등록할 수 있습니다.
                 </span>
               </div>
             </div>
@@ -80,16 +119,26 @@ class CreateDocumentTypeView extends React.Component<Props> {
             label="공개"
             name="radioGroup"
             value={SearchFilterType.SearchOn}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOn}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
+            checked={
+              personalCube &&
+              personalCube.searchFilter === SearchFilterType.SearchOn
+            }
+            onChange={(e: any, data: any) =>
+              onChangePersonalCubeProps('searchFilter', data.value)
+            }
           />
           <Radio
             className="base"
             label="비공개"
             name="radioGroup"
             value={SearchFilterType.SearchOff}
-            checked={personalCube && personalCube.searchFilter === SearchFilterType.SearchOff}
-            onChange={(e: any, data: any) => onChangePersonalCubeProps('searchFilter', data.value)}
+            checked={
+              personalCube &&
+              personalCube.searchFilter === SearchFilterType.SearchOff
+            }
+            onChange={(e: any, data: any) =>
+              onChangePersonalCubeProps('searchFilter', data.value)
+            }
           />
         </Form.Field>
       </>
@@ -98,4 +147,3 @@ class CreateDocumentTypeView extends React.Component<Props> {
 }
 
 export default CreateDocumentTypeView;
-

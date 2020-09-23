@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/polyfill": "7.0.0",
     "@nara.drama/approval": "0.3.8",
-    "@nara.drama/depot": "1.3.3",
+    "@nara.drama/depot": "1.3.6",
     "@nara.drama/feedback": "0.1.6",
     "@nara.platform/accent": "0.2.0",
     "@nara.platform/dock": "0.1.4",
@@ -79,7 +79,21 @@
     "@types/sockjs-client": "^1.1.1"
   },
   "eslintConfig": {
-    "extends": "nara"
+    "extends": [
+      "react-app"
+    ],
+    "rules": {
+      "no-nested-ternary": 0,
+      "indent": "off",
+      "operator-linebreak": "off",
+      "semi": "off",
+      "babel/semi": "off",
+      "quotes": "off",
+      "import/no-duplicates": "off",
+      "import/order": "off",
+      "no-lonely-if": "off",
+      "react/jsx-indent": "off"
+    }
   },
   "browserslist": []
 }

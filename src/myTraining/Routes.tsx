@@ -14,6 +14,7 @@ import NewLearningPage from './ui/page/NewLearningPage';
 import MyLearningPageV2 from './ui/page/MyLearningPageV2';
 import APLPage from './ui/page/APLPage';
 import { AplCreatePage } from './index';
+import MyPageV2 from './ui/page/MyPagePageV2';
 
 class MainRoutes extends React.Component {
   //
@@ -42,7 +43,7 @@ class MainRoutes extends React.Component {
 
         {/*<Redirect exact from="/my-training/community" to="/my-training/community/MyCommunity" />*/}
         {/*<Route exact path="/my-training/community/:tab" component={MyCommunityPage} />*/}
-
+        {/*
         <Redirect
           exact
           from="/my-training/my-page"
@@ -54,6 +55,10 @@ class MainRoutes extends React.Component {
           path="/my-training/my-page/:tab/pages/:pageNo"
           component={MyPage}
         />
+      */}
+        <Redirect exact from="/my-training/my-page" to="/my-training/my-page/EarnedBadgeList/pages/1" />
+        <Route exact path="/my-training/my-page/:tab" component={MyPageV2} />
+        <Route exact path="/my-training/my-page/:tab/pages/:pageNo" component={MyPageV2} />
 
         <Route
           exact

@@ -6,6 +6,7 @@ import { patronInfo } from '@nara.platform/dock';
 import { Breadcrumb, Button, Container, Form, Header } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import { ContentLayout } from 'shared';
 import AplService from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
 import { AplType } from '../../model/AplType';
@@ -14,6 +15,7 @@ import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
 import { AplModel } from '../..';
+import AplCreateContainer from '../logic/AplCreateContainer';
 
 interface Props
   extends RouteComponentProps<{ cineroomId: string; aplType: string }> {
@@ -431,77 +433,30 @@ class AplCreatePage extends React.Component<Props, States> {
     const AplType = apl && apl.type;
     const AplState = apl && apl.state;
     return (
-      <>
-        <Container fluid>
-          <div>
-            <Breadcrumb icon="right angle" sections={aplSectionsSelectType} />
-            <Header as="h2">개인학습</Header>
-            {/*<span>{cube && new Date(cube.time).toLocaleDateString()}</span>*/}
-          </div>
-          {/* <Form className="search-box">
-            <AplBasicInfoContainer
-              aplId={aplId}
-              onChangeAplProps={this.onChangeAplProps}
-              //AplModel={apl}
-              aplService={aplService}
-              focusControlName={focusControlName}
-              onResetFocusControl={this.onResetFocusControl}
-            />
-          </Form>
-          <AplDetailView
-            //apl={apl}
-            //menuArranges={result}
-            onChangeAplProps={this.onChangeAplProps}
-            aplType={apl.type}
-            aplService={aplService}
-            //selectChange={this.findCreateaplArrange}
-          /> */}
-
-          <div className="btn-group">
-            <Button onClick={this.routeToAplConfirm} type="button">
-              취소
-            </Button>
-            <div className="fl-right">
-              <Button
-                primary
-                onClick={() => this.handleSave('save')}
-                type="button"
-              >
-                승인요청
-              </Button>
+      <ContentLayout className="no-padding">
+        <div className="add-personal-learning">
+          <div className="add-personal-learning-wrap">
+            <div className="apl-tit">개인학습</div>
+            <div className="apl-notice">
+              ‘mySUNI / 각 사 교육’ 외 개인적으로 학습하였을 경우, <br />
+              승인권자의 확인 후 학습시간으로 등록 할 수 있습니다.
             </div>
           </div>
-
-          <AlertWin
-            message={alertMessage}
-            handleClose={this.handleCloseAlertWin}
-            open={alertWinOpen}
-            alertIcon={alertIcon}
-            title={alertTitle}
-            type={alertType}
-            handleOk={this.handleAlertOk}
-          />
-          {/*
-          <ConfirmArrangeWin
-            id={aplId}
-            message={message}
-            open={confirmWinArrangeOpen}
-            handleClose={this.handleCloseConfirmWinArrange}
-            handleOk={this.handleOKConfirmWinApl}
-            handleTempSave={this.handleTempSave}
-            title="저장 안내"
-            isSaveAndApprove={isSaveAndApprove}
-            state={AplState}
-          />
-          */}
-        </Container>
-      </>
+        </div>
+        <AplCreateContainer
+          //aplId={aplId}
+          onChangeAplProps={this.onChangeAplProps}
+          //AplModel={apl}
+          aplService={aplService}
+          focusControlName={focusControlName}
+          onResetFocusControl={this.onResetFocusControl}
+        />
+      </ContentLayout>
     );
   }
 }
 
-export default withRouter(AplCreatePage);
-// export default inject(mobxHelper.injectFrom(
-//   'shared.actionLogService',
-//   'badge.badgeService',
-// ))(withRouter(observer(AplCreatePage)));
+//export default withRouter(AplCreatePage);
+export default inject(mobxHelper.injectFrom('aplService', 'sharedService'))(
+  withRouter(observer(AplCreatePage))
+);

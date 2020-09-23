@@ -392,3 +392,12 @@ i.icon.balloon.logout::before {
   text-indent: 1.875rem;
   text-align: right;
 }
+
+/* 뱃지 스타일 변경 */
+
+.scrolling-area.badge-scrolling .scrolling {min-height:16rem; height:16rem}
+.scrolling-area.badge-scrolling .scrolling .belt li {margin-right:0.3rem}
+.badge-list ul li {margin-right:100px}
+.badge-list ul li:nth-child(4n) {margin-right:0}
+.badge-list ul li .badge-name {width:100%}
+.badge-list ul li .badge-name span {float:left}

@@ -18,7 +18,7 @@ function MyLearningTableHeader(props: Props) {
 
   /* by 김동구
 
-    contentType 에 따라 테이블 컬럼이 동적으로 변경됨. 
+    contentType 에 따라 테이블 컬럼이 동적으로 변경됨.
     현재 contentType 에 맞는 테이블 컬럼을 가져옴.
   */
   const headerColumns = TableHeaderColumn.getByContentType(contentType);
@@ -58,7 +58,7 @@ function MyLearningTableHeader(props: Props) {
     if (fromStyle) {
       return getDireciton(column) === Direction.DESC ? 'list-down16' : 'list-up16';
     }
-    // 클릭한 컬럼의 innerText 를 리턴함. 
+    // 클릭한 컬럼의 innerText 를 리턴함.
     return getDireciton(column) === Direction.DESC ? '내림차순 정렬' : '오름차순 정렬';
   };
 

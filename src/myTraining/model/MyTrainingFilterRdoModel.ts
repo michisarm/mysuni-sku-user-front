@@ -94,8 +94,8 @@ class MyTrainingFilterRdoModel {
   }
 
   setCubeTypeAndServiceType(conditions: FilterCondition) {
-    /* 
-      learningTypes 에 'Course' 가 포함될 경우, 
+    /*
+      learningTypes 에 'Course' 가 포함될 경우,
       cubeTypes 에는 'Course'를 제외하며 ServiceType 에 'Course'를 바인딩함.
     */
     if (conditions.learningTypes.includes('Course')) {
