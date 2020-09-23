@@ -55,14 +55,14 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     //
     const { history } = this.props;
 
-    history.push( BadgeRoutePaths.badgeEarnedBadgeList() );
+    history.push(BadgeRoutePaths.badgeEarnedBadgeList());
   }
 
   onClickMyStamp() {
     //
     const { history } = this.props;
 
-    history.push( MyTrainingRoutePaths.myPageEarnedStampList() );
+    history.push(MyTrainingRoutePaths.myPageEarnedStampList());
   }
 
   render() {
@@ -71,7 +71,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
     const { skProfile } = skProfileService!;
     const { member } = skProfile;
     const { myLearningSummary } = myLearningSummaryService!;
-    const  myBadgeCount = badgeService!.earnedCount;
+    const myBadgeCount = badgeService!.earnedCount;
 
     return (
       <ContentHeader>
@@ -85,12 +85,12 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell inner>
-          { myLearningSummary.totalLearningTime !== 0 && (
+          {myLearningSummary.totalLearningTime !== 0 && (
             <ContentHeaderTotalTimeItem
               minute={myLearningSummary.totalLearningTime}
             />
           )}
-          { myLearningSummary.totalLearningTime === 0 && (
+          {myLearningSummary.totalLearningTime === 0 && (
             <ContentHeader.WaitingItem
               onClick={() => { actionLogService?.registerClickActionLog({ subAction: '추천 학습 과정 보기' }); history.push(lectureRoutePaths.recommend()); }}
             />
@@ -107,7 +107,7 @@ class MyLearningContentHeaderContainer extends Component<Props> {
             badgeCount={myBadgeCount}
             selectedYear={0}
             yearOptions={[]}
-            onChangeYear={()=>{}}
+            onChangeYear={() => { }}
             onClickItem={this.onClickMyBadge}
           />
         </ContentHeader.Cell>

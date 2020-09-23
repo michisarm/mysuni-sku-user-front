@@ -9,6 +9,7 @@ import { InProgressXlsxModel } from './InProgressXlsxModel';
 
 class MyTrainingModelV2 {
 
+  [key: string]: any;
   id: string = '';
   serviceId: string = '';
   serviceType: string = ''; // 카드 코스 구분을 위해
@@ -23,9 +24,8 @@ class MyTrainingModelV2 {
   learningState?: LearningState; // 학습 상태
   learningTime: number = 0; // 학습시간
   startDate: number = 0; // 학습시작일
-  endDate: number = 0; // 학습완료일
+  endDate: number = 0; // 학습완료일 (취소/미이수일)
   createDate: number = 0; // 등록일
-  retryDate: number = 0; // 취소/미이수일
   stampCount: number = 0; // 스탬프
 
   // for make observable object from json data.
@@ -35,29 +35,43 @@ class MyTrainingModelV2 {
     }
   }
 
-  @computed get learningTimeWithFormat() {
+  @computed get formattedLearningTime() {
     const hour = Math.floor(this.learningTime / 60);
     const minute = this.learningTime % 60;
 
     return hour && `${hour}h ${minute}m` || `${minute}m`;
   }
 
-  /* functions */
-  isCardType() {
-    return this.serviceType === LectureServiceType.Card ? true : false;
+  @computed get stampCountForDisplay() {
+    // 획득할 수 있는 stampCount 가 없는 경우 '-' 로 화면에 노출.
+    if (!this.stampCount) {
+      return '-';
+    }
+
+    return this.stampCount;
   }
 
-  /*
-    No: string = '';
-    College: string = '';
-    과정명: string = '';
-    학습유형: string = '';
-    Level: string = '';
-    진행률: string = '';
-    학습시간: string = '';
-    학습시작일: string = '';
-  */
+  /* functions */
+  isCardType() {
+    // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
+    return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
+  }
+
+
+
+
+
   toXlsxForInProgress(index: number): InProgressXlsxModel {
+    /*
+      No: string = '';
+      College: string = '';
+      과정명: string = '';
+      학습유형: string = '';
+      Level: string = '';
+      진행률: string = '';
+      학습시간: string = '';
+      학습시작일: string = '';
+    */
     return {
       No: String(index),
       College: this.category.college.name,
@@ -70,16 +84,16 @@ class MyTrainingModelV2 {
     };
   }
 
-  /*
-    No: string = '';
-    College: string = '';
-    과정명: string = '';
-    학습유형: string = '';
-    Level: string = '';
-    학습시간: string = '';
-    학습완료일: string = '';
-  */
   toXlsxForCompleted(index: number): CompletedXlsxModel {
+    /*
+      No: string = '';
+      College: string = '';
+      과정명: string = '';
+      학습유형: string = '';
+      Level: string = '';
+      학습시간: string = '';
+      학습완료일: string = '';
+    */
     return {
       No: String(index),
       College: this.category.college.name,
@@ -105,6 +119,5 @@ decorate(MyTrainingModelV2, {
   startDate: observable,
   endDate: observable,
   createDate: observable,
-  retryDate: observable,
   stampCount: observable,
 });

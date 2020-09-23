@@ -3,20 +3,15 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
-import { Button, Icon } from 'semantic-ui-react';
 import { SkProfileService } from 'profile/stores';
-import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, NoSuchContentPanelMessages } from '../model';
 import MultiFilterBox from '../view/filterbox/MultiFilterBox';
-import MyLearningTableView from '../view/table/MyLearningTableView';
+import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
 import { LectureService, SeeMoreButton } from '../../../lecture';
 import { MyTrainingService } from '../../stores';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
-import { CollegeService } from '../../../college/stores';
-
-
+import { Direction } from '../view/table/MyLearningTableHeader';
 
 interface Props extends RouteComponentProps {
   contentType: MyLearningContentType;
@@ -25,101 +20,105 @@ interface Props extends RouteComponentProps {
   lectureService?: LectureService;
 }
 
-
 function MyLearningListContainerV2(props: Props) {
-  const { contentType, skProfileService, myTrainingService, history } = props;
+  const { contentType, skProfileService, myTrainingService } = props;
   const { profileMemberName } = skProfileService!;
-  const { myTrainingV2s } = myTrainingService!;
+  const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
 
+  /* states */
+  const [filterCount, setFilterCount] = useState<number>(0);
   const [activeFilter, setActiveFilter] = useState<boolean>(false);
+  const [viewType, setViewType] = useState<string>('Course');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(true);
-
-  const [filterCount, setFilterCount] = useState<number>(0);
+  const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
-  /*
-    get observables!
-  */
-
-  // contentType의 변경이 없으면, 호출되지 않음.
+  /* effects */
   useEffect(() => {
-
-    findModelByContentType(contentType);
-  }, [contentType]);
-
-
-  useEffect(() => {
-    if (!activeFilter && filterCount > 0) {
-      myTrainingService!.findllMyTrainingsV2WithConditions();
+    // 
+    clearPageInfo();
+    if (filterCount === 0) {
+      fetchModelsByContentType(contentType);
+    } else {
+      fetchModelsByConditions(viewType);
     }
 
-  }, [activeFilter, filterCount]);
-
-  /*  useEffect(() => {
-     if (filterCount > 0) {
- 
-       myTrainingService!.clearAllMyTrainingV2();
-       myTrainingService!.findAllMyTrainingV2sByContentType(myTrainingFilterRdo);
- 
-     }
-   }, [filterCount]); */
-
-  // 탭이 전환될 때 마다, 초기화된 데이터를 새롭게 불러와야 함.
-
+  }, [contentType, viewType, filterCount]);
 
   /* functions */
+  const fetchModelsByContentType = async (contentType: MyLearningContentType) => {
+    //
+    myTrainingService!.clearAllMyTrainingV2(contentType);
+    //
+    switch (contentType) {
+      case MyLearningContentType.InProgress:
+      case MyLearningContentType.Completed: {
+        myTrainingService!.changeFilterRdoWithViewType(viewType);
+        const isEmpty = await myTrainingService!.findAllMyTrainingV2();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore();
+        return;
+      }
+      case MyLearningContentType.InMyList:
+      case MyLearningContentType.Required:
+        return;
+      default: {
+        const isEmpty = await myTrainingService!.findAllMyTrainingV2();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore();
+      }
 
-  const findModelByContentType = async (contentType: MyLearningContentType) => {
-
-    if (contentType === MyLearningContentType.InMyList) {
-
-      myTrainingService!.clearAllMyTrainingV2();
-      return;
     }
-    if (contentType === MyLearningContentType.Required) {
+  };
 
-      myTrainingService!.clearAllMyTrainingV2();
-      return;
+  const fetchModelsByConditions = async (viewType?: string) => {
+    if (viewType) {
+      myTrainingService!.changeFilterRdoWithViewType(viewType);
     }
+    const isEmpty = await myTrainingService!.findllMyTrainingsV2WithConditions();
+    setResultEmpty(isEmpty);
 
-    myTrainingService!.clearAllMyTrainingV2();
-    myTrainingService!.findAllMyTrainingV2sByContentType(contentType);
-
-    // checkShowSeeMore();
-    // model.current = myTrainingService!.myTrainingV2s;
+    checkShowSeeMore();
   };
 
   const clearPageInfo = () => {
     pageInfo.current = { offset: 0, limit: 20 };
   };
 
-  // MultiFilterBox 에서 filter 가 닫힐 때, 호출되는 함수.
-  const onFilterCount = (count: number) => {
-    setFilterCount(count);
+  const checkShowSeeMore = () => {
+    const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
 
-
-
-    /* if (contentType === MyLearningContentType.InMyList) {
+    if (myTrainingV2s.length >= myTrainingV2Count) {
+      setShowSeeMore(false);
       return;
     }
-    if (contentType === MyLearningContentType.Required) {
-  
-    } */
 
-    /* myTrainingService!.clearAllMyTrainingV2();
-    myTrainingService?.findAllMyTrainingsV2(myTrainingFilterRdo); */
+    if (myTrainingV2Count <= PAGE_SIZE) {
+      setShowSeeMore(false);
+      return;
+    }
 
+    setShowSeeMore(true);
   };
 
-  /* event handler */
 
+  /* handlers */
+  const onFilterCount = (count: number) => {
+    if (filterCount && filterCount === count) {
+      fetchModelsByConditions(viewType);
+    }
 
+    setFilterCount(count);
+  };
 
   const onClickFilter = () => {
     setActiveFilter(!activeFilter);
+  };
 
+  const onChangeViewType = (e: any, data: any) => {
+    setViewType(data.value);
   };
 
   const onClickDelete = () => {
@@ -131,101 +130,78 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const onConfirmModal = () => {
-
     setOpenModal(false);
-
     //myTrainingView ids를 통해 delete 로직을 수행함.
     myTrainingService!.deleteBySelectedIds();
   };
 
-  const checkShowSeeMore = () => {
-    const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
-    if (myTrainingV2s.length === myTrainingV2Count) {
-      setShowSeeMore(false);
-    }
-
-    if (myTrainingV2Count <= PAGE_SIZE) {
-      setShowSeeMore(false);
-    }
+  const onClickSort = (column: string, direction: Direction) => {
+    myTrainingService!.sortBy(column, direction);
   };
 
-  // 버튼 클릭 시, 추가적으로 데이터를 불러옴.
   const onSeeMore = async () => {
     pageInfo.current.offset += pageInfo.current.limit;
     pageInfo.current.limit = PAGE_SIZE;
-
 
     await myTrainingService!.findAllMyTrainingsV2WithPage(pageInfo.current);
     checkShowSeeMore();
   };
 
-
   /* Render Functions */
-  const renderNoSuchContentPanel = (contentType: MyLearningContentType) => {
-    const message = (
-      <>
-        <div className="text">{NoSuchContentPanelMessages.getByContentType(contentType)}</div>
-        {contentType === MyLearningContentType.InProgress &&
-          (
-            <Button
-              icon
-              as="a"
-              className="right btn-blue2"
-              onClick={() => history.push('/lecture/recommend')}
-            >
-              <span className="border">{`${profileMemberName} 님에게 추천하는 학습 과정 보기`}</span>
-              <Icon className="morelink" />
-            </Button>
-          )
-        }
-      </>
-    );
+  const renderNoSuchContentPanel = (contentType: MyLearningContentType, withFilter: boolean = false) => {
+    const message = withFilter
+      && '필터 조건에 해당하는 결과가 없습니다.' || NoSuchContentPanelMessages.getByContentType(contentType);
+    const link = (contentType === MyLearningContentType.InProgress)
+      && { text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`, path: '/lecture/recommend' } || undefined;
 
-    return <NoSuchContentPanel message={message} />;
+    return <NoSuchContentPanel message={message} link={link} />;
   };
 
-  const renderNoSuchFilterResult = () => {
-    return (
-      <div className="text">필터 조건에 해당하는 결과가 없습니다.</div>
-    );
-  };
-
+  /* render */
   return (
     <>
       {
         myTrainingV2s &&
-        myTrainingV2s.length && !filterCount &&
+        myTrainingV2s.length &&
         (
           <>
             <LineHeaderContainerV2
               contentType={contentType}
+              viewType={viewType}
+              onChangeViewType={onChangeViewType}
+              resultEmpty={resultEmpty}
               filterCount={filterCount}
               activeFilter={activeFilter}
               onClickFilter={onClickFilter}
               onClickDelete={onClickDelete}
-              onClearPage={clearPageInfo}
             />
             <MultiFilterBox
               activeFilter={activeFilter}
               onFilterCount={onFilterCount}
             />
-            <MyLearningTableView
-              contentType={contentType}
-              models={myTrainingV2s}
-              totalCount={myTrainingService!.myTrainingV2Count}
-            />
-            {showSeeMore &&
-              (
-                <SeeMoreButton
-                  onClick={onSeeMore}
+            {!resultEmpty && (
+              <>
+
+                <MyLearningTableTemplate
+                  contentType={contentType}
+                  models={myTrainingV2s}
+                  totalCount={myTrainingV2Count}
+                  onClickSort={onClickSort}
                 />
-              )
-            }
-            <MyLearningDeleteModal
-              open={openModal}
-              onClose={onCloseModal}
-              onConfirm={onConfirmModal}
-            />
+                {showSeeMore &&
+                  (
+                    <SeeMoreButton
+                      onClick={onSeeMore}
+                    />
+                  )
+                }
+                <MyLearningDeleteModal
+                  open={openModal}
+                  onClose={onCloseModal}
+                  onConfirm={onConfirmModal}
+                />
+              </>
+            ) || renderNoSuchContentPanel(contentType, true)}
           </>
         ) || renderNoSuchContentPanel(contentType)
       }
@@ -239,5 +215,5 @@ export default inject(mobxHelper.injectFrom(
   'lecture.lectureService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 
-// 
+/* globals */
 const PAGE_SIZE = 20;

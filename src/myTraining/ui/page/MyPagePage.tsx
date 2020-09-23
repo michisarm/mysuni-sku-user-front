@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
+import React, { Component } from 'react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-import {ActionLogService} from 'shared/stores';
-import {ContentLayout, Tab, TabItemModel} from 'shared';
+import { ActionLogService } from 'shared/stores';
+import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import MyPageContentType from '../model/MyPageContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
@@ -99,7 +99,7 @@ class MyPagePage extends Component<Props, State> {
           </>
         ),
         render: () => (
-          <MyApprovalListContainer/>
+          <MyApprovalListContainer />
         )
       }
     ] as TabItemModel[];

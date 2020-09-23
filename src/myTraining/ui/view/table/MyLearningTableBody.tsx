@@ -19,66 +19,66 @@ interface Props extends RouteComponentProps {
   myTrainingService?: MyTrainingService;
 }
 
-/*
-  contentType 에 따라, table body의 데이터가 달라짐.
+/* by 김동구
+
+  contentType 에 따라, 테이블 리스트 데이터가 변경됨.
 */
 function MyLearningTableBody(props: Props) {
 
   const { contentType, models, totalCount, myTrainingService, history } = props;
-  const { myTrainingV2s } = myTrainingService!;
-  const [lastIndex, setLastIndex] = useState<number>(totalCount);
-  const { selectedIds } = myTrainingService!;
+  const { selectedIds, selectOne, clearOne } = myTrainingService!;
 
-  /* useEffect(() => {
-    setLastIndex(totalCount);
-  }, [totalCount]); */
-
-  /* event handlers */
-  /*
-    학습하기 버튼 클릭 시, 해당 강좌 상세페이지로 전환됨.
-  */
+  /* handlers */
   const onClickLearn = (model: MyTrainingModelV2) => {
-    const { category: { college }, coursePlanId, serviceId, serviceType, cubeId } = model;
+    // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
+    const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
     const { id: collegeId } = college;
     const cineroomId = patronInfo.getCineroomId() || '';
 
-    // cineroomId, collegeId, cubeId, 'lectureCardId as serviceId'   
-    if (model.serviceType === LectureServiceType.Card) {
+    // Card
+    if (model.isCardType()) {
       history.push(routePaths.lectureCardOverview(cineroomId, collegeId, cubeId, serviceId));
-    } else {
-      // cineroomId, collegeId, coursePlanId, serviceType, serviceId
+    }
+    // Program 또는 Course
+    else {
       history.push(routePaths.courseOverview(cineroomId, collegeId, coursePlanId, serviceType, serviceId));
     }
   };
 
-  const onCheckOne = (id: string) => {
-    selectedIds.push(id);
+  const onCheckOne = (e: any, data: any) => {
+    // 이미 선택되어 있는 경우, 해제함.
+    if (selectedIds.includes(data.value)) {
+      clearOne(data.value);
+      return;
+    }
+
+    selectOne(data.value);
   };
 
-  /* render functions */
 
-  /*
-    ContentType 에 관계없이 공통으로 보여지는 항목들.
-      1. No
-      2. College
-      3. 과정명
-      4. 학습유형
-      5. Level
-  */
+  /* render functions */
   const renderWithBaseContent = (model: MyTrainingModelV2, index: number) => {
+    /*
+      ContentType 에 상관없이 공통으로 보여지는 컬럼들.
+        1. No
+        2. College
+        3. 과정명
+        4. 학습유형
+        5. Level
+    */
     return (
       <>
         <Table.Cell>
-          {lastIndex - index} {/* No */}
+          {totalCount - index} {/* No */}
         </Table.Cell>
         <Table.Cell>
           {model.category.college.name} {/* College */}
         </Table.Cell>
-        <Table.Cell>
-          {model.name} {/* 과정명 */}
+        <Table.Cell className="title">
+          <a href="#" onClick={() => onClickLearn(model)}><span className="ellipsis">{model.name} {/* 과정명 */}</span></a>
         </Table.Cell>
         <Table.Cell>
-          {model.serviceType === 'CARD' ? model.cubeType : 'Course'} {/* 학습유형 */}
+          {model.isCardType() ? model.cubeType : 'Course'} {/* 학습유형 */}
         </Table.Cell>
         <Table.Cell>
           {model.difficultyLevel || '-'} {/* Level */}
@@ -87,25 +87,23 @@ function MyLearningTableBody(props: Props) {
     );
   };
 
-  /*
-    ContentType 에 따라 달라지는 항목들.
-  */
+
   const renderByContentType = (model: MyTrainingModelV2, contentType: MyLearningContentType) => {
+    /*
+      ContentType 에 따라 달라지는 컬럼들.
+    */
     switch (contentType) {
       case MyLearningContentType.InProgress:
         return (
           <>
             <Table.Cell>
-              {/* 진행률 */}
-              {'-'}
+              {'-'}  {/* 진행률 */}
             </Table.Cell>
             <Table.Cell>
-              {model.learningTimeWithFormat}{/* 학습시간 */}
+              {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {
-                formatTime(model.startDate)
-              }{/* 학습시작일 */}
+              {formatDate(model.startDate)}{/* 학습시작일 */}
             </Table.Cell>
           </>
         );
@@ -115,13 +113,13 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.learningTimeWithFormat}{/* 학습시간 */}
+              {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCount}{/* 스탬프 */}
+              {model.stampCountForDisplay}{/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
-              {formatTime(model.createDate)}{/* 등록일 */}
+              {formatDate(model.createDate)}{/* 등록일 */}
             </Table.Cell>
           </>
         );
@@ -129,13 +127,13 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.learningTimeWithFormat}{/* 학습시간 */}
+              {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCount}{/* 스탬프 */}
+              {model.stampCountForDisplay}{/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
-              {formatTime(model.startDate)}{/* 학습시작일 */}
+              {formatDate(model.startDate)}{/* 학습시작일 */}
             </Table.Cell>
           </>
         );
@@ -143,10 +141,10 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.learningTimeWithFormat}{/* 학습시간 */}
+              {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {formatTime(model.endDate)}{/* 학습완료일 */}
+              {formatDate(model.endDate)}{/* 학습완료일 */}
             </Table.Cell>
           </>
         );
@@ -154,13 +152,13 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
-              {model.learningTimeWithFormat}{/* 학습시간 */}
+              {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
-              {model.stampCount}{/* 스탬프 */}
+              {model.stampCountForDisplay}{/* 스탬프 */}
             </Table.Cell>
             <Table.Cell>
-              {formatTime(model.retryDate)}{/* 취소/미이수일 */}
+              {formatDate(model.endDate)}{/* 취소/미이수일 */}
             </Table.Cell>
           </>
         );
@@ -175,21 +173,21 @@ function MyLearningTableBody(props: Props) {
         models &&
         models.length &&
         models.map((model, index) => (
-          <Table.Row key={`learning-${index}`}>
+          <Table.Row key={`learning-body-${index}`}>
             {contentType === MyLearningContentType.InProgress && (
               <Table.Cell>
-                <Checkbox>
+                <Checkbox
                   value={model.id}
                   checked={selectedIds.includes(model.id)}
-                  onChange={() => onCheckOne(model.id)}
-                </Checkbox>
+                  onChange={onCheckOne}
+                />
               </Table.Cell>
             )
             }
             {renderWithBaseContent(model, index)}
             {renderByContentType(model, contentType)}
             <Table.Cell>
-              <span className="btn-blue" onClick={() => onClickLearn(model)}>학습하기</span>
+              <a className="btn-blue" href="#" onClick={() => onClickLearn(model)}>학습하기</a>
             </Table.Cell>
           </Table.Row>
         ))
@@ -203,6 +201,7 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
 ))(withRouter(observer(MyLearningTableBody)));
 
-const formatTime = (time: number) => {
+/* globals */
+const formatDate = (time: number) => {
   return moment(Number(time)).format('YYYY.MM.DD');
 };

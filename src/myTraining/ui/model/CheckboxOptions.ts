@@ -17,10 +17,10 @@ const CheckboxOptions = {
     { key: 0, text: 'Course', value: 'Course' },
     { key: 1, text: 'Video', value: 'Video' },
     { key: 2, text: 'Audio', value: 'Audio' },
-    { key: 3, text: 'e-Learning', value: 'e-Learning' },
-    { key: 4, text: 'Classroom', value: 'Classroom' },
+    { key: 3, text: 'e-Learning', value: 'ELearning' },
+    { key: 4, text: 'Classroom', value: 'ClassRoomLecture' },
     { key: 5, text: 'Community', value: 'Community' },
-    { key: 6, text: 'Web Page', value: 'Web Page' },
+    { key: 6, text: 'Web Page', value: 'WebPage' },
     { key: 7, text: 'Documents', value: 'Documents' },
   ],
 

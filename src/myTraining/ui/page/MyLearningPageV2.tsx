@@ -22,23 +22,17 @@ interface Props extends RouteComponentProps<RouteParams> {
   myTrainingService?: MyTrainingService;
 }
 
-/* 
-  URL path 로 올 수 있는 파라미터는 아래와 같음.
-*/
 interface RouteParams {
   tab: string;
   pageNo?: string;
 }
 
-/* 
-
-*/
 function MyLearningPageV2(props: Props) {
   const { actionEventService, notieService, lectureService, inMyLectureService, myTrainingService } = props;
   const { history, match } = props;
   const currentTab = match.params.tab;
 
-  /* lifeCycles */
+  /* effects */
   useEffect(() => {
     publishViewEvent();
     fetchAllTabCounts();
@@ -47,37 +41,38 @@ function MyLearningPageV2(props: Props) {
   }, []);
 
   /* functions */
-
-  // 뷰 액션로그 생성
   const publishViewEvent = () => {
+    // 뷰 액션로그 생성
     const menu = 'LEARNING_VIEW';
     actionEventService!.registerViewActionLog({ menu });
   };
 
-  /*
-    LearningPage 탭 카운트 조회
-      학습중 = inProgressCount
-      관심목록 = inMyLectureAllCount
-      권장과정 = requiredLectureCount
-      학습예정 = enrolledCount
-      mySUNI 학습완료 = completedCount
-      개인 학습완료 = ?
-      취소/미이수 = retryCount
-  */
+
   const fetchAllTabCounts = () => {
+    /*
+      LearningPage 탭 카운트 조회
+        학습중 = inProgressCount
+        관심목록 = inMyLectureAllCount
+        권장과정 = requiredLectureCount
+        학습예정 = enrolledCount
+        mySUNI 학습완료 = completedCount
+        개인 학습완료 = ??
+        취소/미이수 = retryCount
+    */
     myTrainingService!.findAllTabMyTraining(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
     lectureService!.countRequiredLectures(); // 권장과정
   };
 
-  /*
-    TabItemModel[] 을 생성해 return 함.
-  */
+
   const getTabs = (): TabItemModel[] => {
-    // personalCompletedCount 가 추가되어야 함.
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyLectureAllCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
 
+    /*
+      TabItemModel[] 을 생성해 return 함.
+      APL 의 personalCompleted 카운트가 추가되어야 함.
+    */
     return [
       {
         name: MyLearningContentType.InProgress,
@@ -118,10 +113,9 @@ function MyLearningPageV2(props: Props) {
     ] as TabItemModel[];
   };
 
-  /*
-    화면에 보여질 tabItem을 return 함. tabItem 은 하나의 컴포넌트 (element)
-  */
+  /* functions */
   const getTabItem = (contentType: MyLearningContentType, count: number = 0) => {
+    // 화면에 보여질 TabItem 을 return 함. TabItem 은 하나의 컴포넌트(atom).
     return (
       <>
         {MyLearningContentTypeName[contentType]}
@@ -130,21 +124,10 @@ function MyLearningPageV2(props: Props) {
     );
   };
 
-  /*
-    currentTab => MyLearningContentType으로 변환.
-  */
-  const convertTabToContentType = (tab: string) => {
-    return MyLearningContentType[tab as MyLearningContentType];
-  };
 
-  const getContentNameFromTab = (tab: string) => {
-    return MyLearningContentTypeName[tab as MyLearningContentType];
-  };
-  /* event handlers */
-
-  // 탭 전환 시, 액션 로그를 생성하기 위해 routePath를 return 함.
+  /* handlers */
   const onChangeTab = (tab: TabItemModel): string => {
-    // 전환되는 탭에 따라, notie를 read 함.
+
     switch (tab.name) {
       case MyLearningContentType.InProgress:
         notieService!.readNotie('Learning_Progress');
@@ -164,6 +147,7 @@ function MyLearningPageV2(props: Props) {
     return routePaths.learningTab(tab.name);
   };
 
+  /* render */
   return (
     <ContentLayout className="myLearning" breadcrumb={[{ text: 'learning' }, { text: getContentNameFromTab(currentTab) }]}>
       <MyLearningContentHeaderContainer />
@@ -180,3 +164,15 @@ export default inject(mobxHelper.injectFrom(
   'myTraining.myTrainingService'
 )
 )(withRouter(observer(MyLearningPageV2)));
+
+
+/* globals */
+const convertTabToContentType = (tab: string) => {
+  // 변환된 contentType 은 MyLearningListContainer 의 props로 전달됨.
+  return MyLearningContentType[tab as MyLearningContentType];
+};
+
+const getContentNameFromTab = (tab: string) => {
+  // currentTab 을 BreadCrumb 에 표시할 LearningContentTypeName 으로 변환.
+  return MyLearningContentTypeName[tab as MyLearningContentType];
+};

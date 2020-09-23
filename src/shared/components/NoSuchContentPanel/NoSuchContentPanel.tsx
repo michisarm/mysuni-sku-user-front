@@ -48,7 +48,7 @@ class NoSuchContentPanel extends Component<Props> {
 
         { link && (
           <Button icon className="right btn-blue2" onClick={this.onClickLink}>
-            Create 바로가기 <Icon className="morelink" />
+            {link.text && link.text || 'Create 바로가기'}<Icon className="morelink" />
           </Button>
         )}
 
