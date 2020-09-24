@@ -24,10 +24,9 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
 }) => {
   //
   const domainPath =
-    process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server'
+    process.env.NODE_ENV !== 'development'
       ? window.location.protocol + '//' + window.location.host
-      : process.env.REACT_APP_PUBLIC_URL;
+      : 'http://10.178.66.114';
 
   return (
     <div className="badge-category">
@@ -51,9 +50,11 @@ const BadgeCategoryContainer: FunctionComponent<BadgeCategoryProps> = ({
                   <Image
                     src={
                       // domainPath +
-                      `${getPublicUrl()}${CategoryImageURL[
+                      `${getPublicUrl()}${
+                        CategoryImageURL[
                           category.categoryId as keyof typeof CategoryImageURL
-                      ]}`
+                        ]
+                      }`
                     }
                     alt={category.name}
                   />

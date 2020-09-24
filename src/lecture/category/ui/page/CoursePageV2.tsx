@@ -285,7 +285,7 @@ class CoursePageV2 extends Component<Props, State> {
       // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
-      this.setState({examTitle});
+      this.setState({ examTitle });
     }
     //
     // collegeService.findCollege(params.collegeId);
@@ -342,7 +342,7 @@ class CoursePageV2 extends Component<Props, State> {
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
       ) {
-        if ( courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length ) {
+        if (courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length) {
           const preLectureViews = courseLectureService.getPreLectureViews;
           const preCourseStudentList = studentService.StudentInfos!.preCourses;
           // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
@@ -370,11 +370,11 @@ class CoursePageV2 extends Component<Props, State> {
           const preCourseStudentList = studentService.StudentInfos!.preCourses;
           const preCourseIds: string[] = [];
 
-          preCourseStudentList?.forEach( preCourse => {
+          preCourseStudentList?.forEach(preCourse => {
             preCourseIds.push(preCourse.lectureUsid);
           });
 
-          preLectureViews.forEach( preLectureView => {
+          preLectureViews.forEach(preLectureView => {
             if (preLectureView.required && !preCourseIds.includes(preLectureView.serviceId)) {
               isPreCoursePassed = false;
             }
@@ -386,7 +386,7 @@ class CoursePageV2 extends Component<Props, State> {
       ) {
         const preLectureViews = courseLectureService.getPreLectureViews;
 
-        preLectureViews.forEach( preLectureView => {
+        preLectureViews.forEach(preLectureView => {
           if (preLectureView.required) isPreCoursePassed = false;
         });
 
@@ -440,7 +440,7 @@ class CoursePageV2 extends Component<Props, State> {
       // );
       const examTitle = examPaperService.examPaper.title;
       this.state.examTitle = examTitle;
-      this.setState({examTitle});
+      this.setState({ examTitle });
     }
   }
 
@@ -523,13 +523,17 @@ class CoursePageV2 extends Component<Props, State> {
       coursePlanService,
       studentService,
       courseLectureService,
+      programLectureService,
       examPaperService,
       examinationService,
       surveyCaseService,
+      match
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
+    const { programLecture } = programLectureService!;
     const { student } = studentService!;
+    const { serviceType } = match.params;
 
     let state: SubState | undefined;
     let examId: string = '';
@@ -615,7 +619,7 @@ class CoursePageV2 extends Component<Props, State> {
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: coursePlan.learningTime,
-      rollBooksPassedStudentCount: courseLecture.passedStudentCount, // Todo
+      rollBooksPassedStudentCount: serviceType === LectureServiceType.Course ? courseLecture.passedStudentCount : programLecture.passedStudentCount, // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,

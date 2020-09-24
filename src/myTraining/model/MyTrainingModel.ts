@@ -15,6 +15,7 @@ import { LectureServiceType } from 'lecture/model';
 
 class MyTrainingModel extends DramaEntityObservableModel {
   //
+  originalSerivceType: string = '';
   serviceType: LectureServiceType = LectureServiceType.Card;
   serviceId: string = '';
   servicePatronKeyString: string = '';
@@ -56,8 +57,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
 
     if (myTraining) {
       Object.assign(this, { ...myTraining });
-
+      this.originalSerivceType = myTraining.serviceType;
       this.serviceType = MyTrainingModel.getServiceType(myTraining);
+
       this.category = new CategoryModel(myTraining.category);
 
       // UI Model
@@ -67,8 +69,9 @@ class MyTrainingModel extends DramaEntityObservableModel {
   }
 
   static getServiceType(myTraining: MyTrainingModel) {
+
     //
-    const serviceType = myTraining.serviceType as string;
+    const serviceType =  myTraining.serviceType as string;
 
     if (serviceType === 'PROGRAM') {
       return LectureServiceType.Program;
@@ -77,6 +80,7 @@ class MyTrainingModel extends DramaEntityObservableModel {
       return LectureServiceType.Course;
     }
     else {
+
       return LectureServiceType.Card;
     }
   }
@@ -92,6 +96,21 @@ class MyTrainingModel extends DramaEntityObservableModel {
     else {
       return CubeTypeNameType[CubeType[cubeType]];
     }
+  }
+
+  static asStampXLSX(
+    myTraining: MyTrainingModel,
+    index: number
+  ): MyTrainingStampXlsxModel {
+    //
+
+    return {
+      No: String(index + 1),
+      college : myTraining.category.college.name,
+      과정명: myTraining.name || '-',
+      스탬프 : myTraining.stampCount,
+      획득일자 : moment(myTraining.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
+    };
   }
 
   @computed

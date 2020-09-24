@@ -43,7 +43,7 @@ class FileDownload extends Component<Props, State> {
   }
 
   onDownloadOne(fileId: string) {
-    depot.downloadDepotFiles([fileId]);
+    depot.downloadDepotFile(fileId);
   }
 
   onDownloadAll() {

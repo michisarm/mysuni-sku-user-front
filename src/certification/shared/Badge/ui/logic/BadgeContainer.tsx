@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { FunctionComponent, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { mobxHelper } from '@nara.platform/accent';
@@ -45,10 +46,9 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   } = badge;
 
   const domainPath =
-    process.env.REACT_APP_ENVIRONMENT === undefined ||
-    process.env.REACT_APP_ENVIRONMENT === 'server'
+    process.env.NODE_ENV !== 'development'
       ? window.location.protocol + '//' + window.location.host
-      : process.env.REACT_APP_PUBLIC_URL;
+      : 'http://10.178.66.114';
 
   const onViewDetail = () => {
     history.push(certificationRoutePaths.badgeDetailPage(badgeId));
@@ -103,9 +103,11 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
         iconUrl={
           iconUrl
             ? domainPath + iconUrl
-            : `${getPublicUrl()}${CategoryImageURL[
-                badge.mainCategoryId as keyof typeof CategoryImageURL
-            ]}`
+            : `${getPublicUrl()}${
+                CategoryImageURL[
+                  badge.mainCategoryId as keyof typeof CategoryImageURL
+                ]
+              }`
         }
       />
       {/*뱃지명*/}

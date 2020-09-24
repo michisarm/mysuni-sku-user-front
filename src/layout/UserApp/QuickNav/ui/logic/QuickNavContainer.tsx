@@ -118,14 +118,13 @@ class QuickNavContainer extends Component<Props, State> {
   }
 
   onClickAdminSite() {
-    // localAdmin by gon
-    if (window.location.hostname === 'localhost') {
-      window.open('http://localhost:8090');
-    } else {
+    if (process.env.NODE_ENV !== 'development') {
       const adminSiteUrl = process.env.REACT_APP_ADMIN_SITE;
       if (adminSiteUrl) {
         window.open(adminSiteUrl);
       }
+    } else {
+      window.open('http://localhost:8090');
     }
   }
 

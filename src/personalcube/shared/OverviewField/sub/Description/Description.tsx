@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
+import $ from 'jquery'
 import './Description.css'
 
 interface Props {
@@ -29,6 +30,22 @@ class Description extends Component<Props, DescriptionState, any> {
     if(textContainer !== null){
       if(textContainer.clientHeight < textContainer.scrollHeight){
         this.setState({ showMoreButton: true })
+      } else {
+        const {ResizeObserver} = (window as any)
+        if(ResizeObserver !== undefined){
+          const resizeObserver = new ResizeObserver(() => {
+            if(this.state.showMoreButton){
+              return;
+            }
+            if(textContainer.clientHeight < textContainer.scrollHeight){
+              this.setState({ showMoreButton: true })
+              resizeObserver.unobserve(textContainer);
+            }     
+          });
+          resizeObserver.observe(textContainer);
+        } else {
+          this.setState({ showMoreButton: true })
+        }
       }
     }
   }
