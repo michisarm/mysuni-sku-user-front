@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Button, Icon, Label } from 'semantic-ui-react';
 import { OverviewField } from 'personalcube';
 import { SkProfileService } from 'profile/stores';
 import { Badge } from '../../shared/Badge';
@@ -57,7 +56,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [successModal, setSuccessModal] = useState(false);
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
-  const [badgeState, setBadgeState] = useState();
+  const [badgeState, setBadgeState] = useState<ChallengeState | IssueState>();
 
   // 뱃지 수강 정보
   const [studentInfo, setStudentInfo] = useState<BadgeStudentModel>();
@@ -66,18 +65,14 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [learningCount, setLearningCount] = useState(0);
   const [passedCount, setPassedCount] = useState(0);
 
+  /* effects */
   useEffect(() => {
-    // 구성학습 정보 조회
-    findBadgeLearningInfo(badgeId);
-    // 수강정보 조회
-    findBadgeStudent(badgeId);
+    findBadgeLearningInfo(badgeId); // 뱃지 구성학습 정보 조회
+    findBadgeStudent(badgeId); // 뱃지 수강 정보 조회
   }, [badgeId]);
 
-
   useEffect(() => {
-    //
-    findBadgeStudent(badgeId);
-
+    findBadgeStudent(badgeId); // 뱃지 수강 정보 조회
   }, [learningCount]);
 
   // 뱃지에 대한 수강정보 호출

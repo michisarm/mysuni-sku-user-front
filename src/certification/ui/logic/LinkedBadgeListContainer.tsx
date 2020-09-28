@@ -1,29 +1,26 @@
 
-import React, {useEffect, useRef, useState} from 'react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {inject, observer} from 'mobx-react';
-import {mobxHelper} from '@nara.platform/accent';
-import {NoSuchContentPanel} from 'shared';
+import React, { useEffect } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { NoSuchContentPanel } from 'shared';
 import BadgeService from '../../present/logic/BadgeService';
-import {Badge} from '../../shared/Badge';
-import {LinkedBadgeListWrapper} from '../view/BadgeContentElementView';
+import { Badge } from '../../shared/Badge';
+import { LinkedBadgeListWrapper } from '../view/BadgeContentElementView';
 import BadgeStyle from '../model/BadgeStyle';
 import BadgeSize from '../model/BadgeSize';
 import MyBadgeModel from '../model/MyBadgeModel';
 
 
 interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
-
-  badgeId: string,
+  badgeId: string;
+  badgeService?: BadgeService;
 }
 
 const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   //
   const { badgeService, badgeId } = Props;
-  const { myBadges } = badgeService!;
-
-  const [linkedBadges, setLinkedBadges] = useState<MyBadgeModel[]>([]);
+  const { myBadges } = badgeService!; // 연관 뱃지는 my 뱃지와 동일하게 MyBadgeModel을 사용함.
 
   useEffect(() => {
     //
@@ -32,39 +29,38 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
 
   const findMyContent = async () => {
     //
-    const badgeList = await badgeService!.findLinkedBadges(badgeId);
-
-    setLinkedBadges(badgeList);
+    await badgeService!.findLinkedBadges(badgeId);
   };
 
   return (
+    // Template Component
     <LinkedBadgeListWrapper>
       {/*연관 Badge 목록*/}
       <div className="list">
-        {linkedBadges.length > 0 && linkedBadges[0] ? (
+        {myBadges && myBadges.length !== 0 ? (
           <ul>
-            {linkedBadges.map((badge: MyBadgeModel, index: number) => {
+            {myBadges.map((myBadge: MyBadgeModel, index: number) => {
               return (
                 <li key={`linked-badge-${index}`}>
                   <Badge
-                    badge={badge}
+                    badge={myBadge}
                     badgeStyle={BadgeStyle.List}
                     badgeSize={BadgeSize.Small}
                   />
-                  <div className="badge-name">{badge.name}</div>
+                  <div className="badge-name">{myBadge.name}</div>
                 </li>
               );
             })}
           </ul>
-        ) : (
-          <NoSuchContentPanel message="등록된 연관 Badge가 없습니다."/>
-        )}
+        ) :
+          (
+            <NoSuchContentPanel message="등록된 연관 Badge가 없습니다." />
+          )}
       </div>
     </LinkedBadgeListWrapper>
   );
 };
 
 export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-  'shared.pageService',
+  'badge.badgeService'
 ))(withRouter(observer(LinkedBadgeListContainer)));

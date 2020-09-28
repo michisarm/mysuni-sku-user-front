@@ -34,7 +34,7 @@ interface Props {
   action?: Action | ActionType,
   toggle?: boolean,
   onAction?: () => void,
-  onViewDetail?: (e: any, data: OnViewDetailData ) => void,
+  onViewDetail?: (e: any, data: OnViewDetailData) => void,
   onToggle?: (openState: boolean) => void,
 }
 
@@ -77,18 +77,18 @@ class LectureContainer extends Component<Props, States> {
     thumbnailImage: null,
     action: null,
     toggle: false,
-    onAction: () => {},
-    onViewDetail: () => {},
+    onAction: () => { },
+    onViewDetail: () => { },
   };
 
   static defaultActions: ActionWith[] = [
-    { type: ActionType.Add,           iconName: 'add-list' },
-    { type: ActionType.Remove,        iconName: 'remove2' },
-    { type: ActionType.My,            iconName: 'my' },
-    { type: ActionType.Play,          iconName: 'play2',      text: 'Play' },
-    { type: ActionType.LearningStart, iconName: 'play2',      text: 'LearningStart' },
-    { type: ActionType.Download,      iconName: 'download2',  text: 'Download' },
-    { type: ActionType.Join,          iconName: 'join',       text: 'Join' },
+    { type: ActionType.Add, iconName: 'add-list' },
+    { type: ActionType.Remove, iconName: 'remove2' },
+    { type: ActionType.My, iconName: 'my' },
+    { type: ActionType.Play, iconName: 'play2', text: 'Play' },
+    { type: ActionType.LearningStart, iconName: 'play2', text: 'LearningStart' },
+    { type: ActionType.Download, iconName: 'download2', text: 'Download' },
+    { type: ActionType.Join, iconName: 'join', text: 'Join' },
   ];
 
   state = {
@@ -151,14 +151,31 @@ class LectureContainer extends Component<Props, States> {
     onViewDetail!(e, data);
   }
 
+  /* render functions */
   renderBoxCard() {
-    //
+    /* 
+      state, date, rating 은 LectureCard 하단에 표시하기 위함. by 김동구
+      state 는 서버로부터 전달되는 viewState 를 화면에 표시하기 위해 변환한 값.
+      state 값에 따라 표시되는 화면이 달라짐.
+      [
+        1. state = 학습중, 학습완료
+          date (학습시작일, 학습완료일) 는 표시되나 rating 은 표시되지 않음.
+  
+        2. state = null
+          2-1. && required = true
+            state 는 '권장과정' 으로 표시되며, date 와 rating 은 표시되지 않음.
+  
+          2-2. && required = false
+            rating 은 표시되나 date 는 표시되지 않음.
+      ]
+    */
     const {
       model, thumbnailImage,
       onAction,
     } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
+
 
     let state = model.state;
     let date;

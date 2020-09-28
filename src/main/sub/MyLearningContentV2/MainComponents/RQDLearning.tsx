@@ -23,6 +23,7 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import RQDLectureService from '../../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 
+
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
   reviewService?: ReviewService;
@@ -244,15 +245,16 @@ const RQDLearning: React.FC<Props> = Props => {
             }
           )}
         </Lecture.Group>
-      ) : (
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
-            </div>
-          }
-        />
-      )}
+      ) :
+        (
+          <NoSuchContentPanel
+            message="모든 과정을 이수하셨습니다."
+            link={{
+              text: '전체 권장과정 List를 확인하시겠습니까?',
+              path: myTrainingRoutes.learningRequired()
+            }}
+          />
+        )}
     </ContentWrapper>
   );
 };
