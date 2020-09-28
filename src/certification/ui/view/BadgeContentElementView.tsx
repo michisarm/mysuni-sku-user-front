@@ -119,6 +119,7 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({ children })
 
 
 interface BadgeStatusProps {
+  // badgeState 에 IssueState 타입 추가. 2020.09.28 by 김동구
   badgeState: ChallengeState | IssueState | undefined,
   issueStateTime?: number | undefined,
   onClickButton: () => void,
