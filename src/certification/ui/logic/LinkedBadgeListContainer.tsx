@@ -66,6 +66,9 @@ const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   );
 };
 
+/*
+  pageService 는 사용하지 않으므로 삭제함. 0928 by 김동구
+*/
 export default inject(mobxHelper.injectFrom(
   'badge.badgeService'
 ))(withRouter(observer(LinkedBadgeListContainer)));
