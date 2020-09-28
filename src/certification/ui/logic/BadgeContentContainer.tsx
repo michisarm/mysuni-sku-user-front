@@ -56,6 +56,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const [successModal, setSuccessModal] = useState(false);
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
+  // badgeState 타입 지정. 0928 by 김동구
   const [badgeState, setBadgeState] = useState<ChallengeState | IssueState>();
 
   // 뱃지 수강 정보
