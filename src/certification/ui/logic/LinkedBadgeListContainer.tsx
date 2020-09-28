@@ -20,7 +20,7 @@ interface Props extends RouteComponentProps {
 const LinkedBadgeListContainer: React.FC<Props> = (Props) => {
   /*
     연관 뱃지에 대한 state 는 store 에서 이미 관리하고 있으므로,
-    컴포넌트에서 따로 관리하지 않도록 수정. 0928 by 김동구
+    컴포넌트에서 따로 관리하지 않도록 수정. 2020.09.28 by 김동구
 
     연관 뱃지는 my 뱃지와 동일하게 MyBadgeModel 을 사용함.
   */
