@@ -15,30 +15,65 @@ interface BadgeContentWrapperProps {
   badgeLevel: string;
   badgeStyle: string;
   badgeSize: string;
+  mainCategoryId: string;
 }
 
 export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = ({
   badgeLevel,
   badgeStyle,
   badgeSize,
+  mainCategoryId,
   children,
   onViewDetail,
 }) => (
   <>
     {badgeStyle === 'List' ? (
       <a
-        className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}
+        className={classNames('badge', mainCategoryId)}
         onClick={onViewDetail}
       >
         {children}
       </a>
     ) : (
-      <div className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}>
+      <div className={classNames('badge', mainCategoryId)}>
         {children}
       </div>
     )}
   </>
 );
+
+interface BadgeLevelProps {
+  difficultyLevel: string;
+}
+
+export const BadgeLevel: FunctionComponent<BadgeLevelProps> = (({difficultyLevel}) => (
+  <p className="star-score star3">
+    {
+      difficultyLevel === 'Level1' && (
+        <>
+          <em/>
+        </>
+      )
+    }
+    {
+      difficultyLevel === 'Level2' && (
+        <>
+          <em/>
+          <em/>
+        </>
+      )
+    }
+    {
+      difficultyLevel === 'Level3' && (
+        <>
+          <em/>
+          <em/>
+          <em/>
+        </>
+      )
+    }
+  </p>
+));
 
 interface CertificationOrgProps {
   certiAdminCategoryIcon: string;
