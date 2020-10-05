@@ -674,6 +674,8 @@ class LectureCardContainer extends Component<Props, State> {
       studentService!.findStudentByRollBookId(studentCdo.rollBookId);
       studentService!.findIsJsonStudentByCube(lectureCardId);
       studentService!.findStudentCount(studentCdo.rollBookId);
+    }).then(() => {
+      this.removeRqdLectureFromSessionStorage();
     });
   }
 
