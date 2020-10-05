@@ -719,7 +719,6 @@ class LectureCardContainer extends Component<Props, State> {
       학습중 & 학습완료 시,
       메인페이지에 display 되는 해당 권장과정 을 보여지지 않게 하기 위함. 2020.10.05 by 김동구
     */
-    console.log('call RQD!');
     const { rqdLectureService } = this.props;
     rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(8, 0), true);
   }
