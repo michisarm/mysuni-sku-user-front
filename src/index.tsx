@@ -11,7 +11,8 @@ import './style/css/main.12bb7fc7.chunk.css';
 // 0724 badge layout 변경 - 발급기관로고 분리
 //import './style/css/2.b6563bb3.chunk.css';
 // 0810 PSJ 뱃지 디자인 변경
-import './style/css/2.2e9b8fef.chunk.css';
+//import './style/css/2.2e9b8fef.chunk.css';
+import './style/css/2.56eaab44.chunk.css';
 
 
 import './style/app.css';

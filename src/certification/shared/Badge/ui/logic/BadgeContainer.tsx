@@ -6,9 +6,9 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 import certificationRoutePaths from '../../../../routePaths';
 import {
   BadgeContentWrapper,
-  BadgeLevel,
+  //BadgeLevel,
   CertificationOrg,
-  College,
+  College, StarScore,
   Title,
 } from '../view/BadgeView';
 import BadgeModel from '../../../../ui/model/BadgeModel';
@@ -16,6 +16,7 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
+  //mySUNI = '/static/media/logo-badge.svg',
   mySUNI = '/static/media/logo-badgeN.png',
 }
 
@@ -38,10 +39,10 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
   const { badge, badgeStyle, badgeSize, history } = Props;
   const {
     badgeId,
-    mainCategoryId,
     difficultyLevel,
     iconUrl,
     mainCategoryName,
+    mainCategoryId,
     name,
     certiAdminCategory,
     certiAdminSubcategory,
@@ -113,7 +114,10 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
               }`
         }
       />
-      <BadgeLevel difficultyLevel={difficultyLevel}/>
+      {/*StarScore*/}
+      <StarScore badgeLevel={difficultyLevel} />
+      {/*<BadgeLevel difficultyLevel={difficultyLevel} />*/}
+
       {/*뱃지명*/}
       <Title name={name} />
     </BadgeContentWrapper>

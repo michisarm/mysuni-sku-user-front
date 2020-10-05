@@ -10,6 +10,14 @@ enum BadgeDifficultyLevel {
   Level3 = 'advanced',
 }
 
+enum BadgeCategoryId {
+  BDGCAT_AIDT = 'aidt',
+  BDGCAT_JOB = 'job',
+  BDGCAT_BIZ = 'biz',
+  BDGCAT_HAPPY = 'happy',
+  BDGCAT_BM = 'bm',
+}
+
 interface BadgeContentWrapperProps {
   onViewDetail?: () => void;
   badgeLevel: string;
@@ -22,58 +30,27 @@ export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = 
   badgeLevel,
   badgeStyle,
   badgeSize,
-  mainCategoryId,
   children,
   onViewDetail,
+  mainCategoryId
 }) => (
   <>
     {badgeStyle === 'List' ? (
       <a
-        className={classNames('badge', mainCategoryId)}
+        className={classNames('badge_new', BadgeCategoryId[mainCategoryId as keyof typeof BadgeCategoryId])}
+        //className={classNames('badge', mainCategoryId, BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}
         onClick={onViewDetail}
       >
         {children}
       </a>
     ) : (
-      <div className={classNames('badge', mainCategoryId)}>
+      <div className={classNames('badge_new', BadgeCategoryId[mainCategoryId as keyof typeof BadgeCategoryId])}>
+        {/*<div className={classNames('badge',mainCategoryId, BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}>*/}
         {children}
       </div>
     )}
   </>
 );
-
-interface BadgeLevelProps {
-  difficultyLevel: string;
-}
-
-export const BadgeLevel: FunctionComponent<BadgeLevelProps> = (({difficultyLevel}) => (
-  <p className="star-score star3">
-    {
-      difficultyLevel === 'Level1' && (
-        <>
-          <em/>
-        </>
-      )
-    }
-    {
-      difficultyLevel === 'Level2' && (
-        <>
-          <em/>
-          <em/>
-        </>
-      )
-    }
-    {
-      difficultyLevel === 'Level3' && (
-        <>
-          <em/>
-          <em/>
-          <em/>
-        </>
-      )
-    }
-  </p>
-));
 
 interface CertificationOrgProps {
   certiAdminCategoryIcon: string;
@@ -103,6 +80,31 @@ export const College: FunctionComponent<CollegeProps> = ({
     <img src={iconUrl} alt="" />
   </span>
 );
+
+interface StarScoreProps {
+  badgeLevel: string;
+}
+
+/*20200929 Update*/
+export const StarScore: FunctionComponent<StarScoreProps> = ({ badgeLevel }) => {
+  let star = '';
+  let starScoreEm;
+  if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level1) {
+    star = 'star1';
+    starScoreEm= <><em/></>;
+  } else if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level2) {
+    star = 'star2';
+    starScoreEm= <><em/><em/></>;
+  } else if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level3) {
+    star = 'star3';
+    starScoreEm= <><em/><em/><em/></>;
+  }
+  return (
+    <p className={`star-score ${star}`}>
+      {starScoreEm}
+    </p>
+  );
+};
 
 interface TitleProps {
   name: string;
