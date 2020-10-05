@@ -8,6 +8,8 @@ export default {
 
   currentJob: () => `/profile/interest/currentjob`,
 
+  currentjobRe: () => `/profile/interest/currentjobRe`,
+  
   favoriteJob: () => `/profile/interest/favoritejob`,
 
   favoriteCollege: () => `/profile/interest/college`,

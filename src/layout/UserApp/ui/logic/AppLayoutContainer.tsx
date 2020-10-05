@@ -42,12 +42,21 @@ class AppLayoutContainer extends Component<Props> {
     if (!obj.pisAgreement.signed) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.personalInfoAgreement();
-    } else if (obj.pisAgreement.signed && compareDate(obj.pisAgreement.date)) {
+    } else if (
+      obj.pisAgreement.signed &&
+      compareDate(obj.pisAgreement.date)
+    ) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.guideAgreement();
     } else if (!obj.studySummaryConfigured) {
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.favoriteWelcome();
+    } else if (obj.member && (
+      (!obj.member.currentJobGroup ||
+      !obj.member.currentJobGroup.currentJobGroup ||
+      obj.member.currentJobGroup.currentJobGroup.id === ''))){
+      window.location.href =
+        process.env.PUBLIC_URL + profileRoutePaths.currentjobRe();
     }
   }
 

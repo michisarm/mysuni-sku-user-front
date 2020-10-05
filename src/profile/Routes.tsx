@@ -9,6 +9,7 @@ import PersonalInfoAgreementPage from './ui/page/PersonalInfoAgreementPage';
 import FavoriteWelcomePage from './ui/page/FavoriteWelcomePage';
 import FavoriteCollegePage from './ui/page/FavoriteCollegePage';
 import CurrentJobPage from './ui/page/CurrentJobPage';
+import CurrentJobRePage from './ui/page/CurrentJobRePage';
 import FavoriteJobPage from './ui/page/FavoriteJobPage';
 import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
 
@@ -51,6 +52,11 @@ class Routes extends React.PureComponent {
           exact
           path="/profile/interest/progress"
           component={ProgressPage}
+        />
+        <Route
+          exact
+          path="/profile/interest/currentjobRe"
+          component={CurrentJobRePage}
         />
 
         <Route component={NotFoundPage} />
