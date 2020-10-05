@@ -11,6 +11,7 @@ import FavoriteCollegePage from './ui/page/FavoriteCollegePage';
 import CurrentJobPage from './ui/page/CurrentJobPage';
 import CurrentJobRePage from './ui/page/CurrentJobRePage';
 import FavoriteJobPage from './ui/page/FavoriteJobPage';
+import FavoriteJobRePage from './ui/page/FavoriteJobRePage';
 import FavoriteLearningTypePage from './ui/page/FavoriteLearningTypePage';
 
 import ProgressPage from './ui/page/ProgressPage';
@@ -58,7 +59,11 @@ class Routes extends React.PureComponent {
           path="/profile/interest/currentjobRe"
           component={CurrentJobRePage}
         />
-
+        <Route
+          exact
+          path="/profile/interest/favoritejobRe"
+          component={FavoriteJobRePage}
+        />
         <Route component={NotFoundPage} />
       </Switch>
     );

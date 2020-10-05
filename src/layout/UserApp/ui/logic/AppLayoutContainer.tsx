@@ -57,6 +57,12 @@ class AppLayoutContainer extends Component<Props> {
       obj.member.currentJobGroup.currentJobGroup.id === ''))){
       window.location.href =
         process.env.PUBLIC_URL + profileRoutePaths.currentjobRe();
+    } else if (obj.member && (
+      (!obj.member.favoriteJobGroup ||
+      !obj.member.favoriteJobGroup.favoriteJobGroup ||
+      obj.member.favoriteJobGroup.favoriteJobGroup.id === ''))){
+      window.location.href =
+        process.env.PUBLIC_URL + profileRoutePaths.favoriteJobRe();
     }
   }
 

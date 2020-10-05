@@ -2,13 +2,13 @@ import React from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
 
-import { Button, Icon, Step } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
-import CurrentJobContainerRe from '../logic/CurrentJobContainerRe';
+import { Icon } from 'semantic-ui-react';
+import FavoriteJobContainerRe from '../logic/FavoriteJobContainerRe';
 
 @observer
 @reactAutobind
-class CurrentJobRePage extends React.Component {
+class FavoriteJobRePage extends React.Component {
   //
   componentDidMount(): void {
     //
@@ -27,7 +27,6 @@ class CurrentJobRePage extends React.Component {
       <ContentLayout disabled>
         <section>
           <div className="interest-content lo-08-03 step2">
-
             <div>
               <div className="header">
                 <div className="logo">
@@ -38,10 +37,10 @@ class CurrentJobRePage extends React.Component {
 
               <div className="title-box" style={divStyle}>
                 <div>
-                  <h2>현직무 Survey 재시행 안내</h2>
+                  <h2>관심직무 Survey 재시행 안내</h2>
                   <p>안녕하십니까?</p>
                   <p>지난 9월 1일부터 시행한 직무 및 학습방식 Survey 에 오류가 발생하여,</p>
-                  <p>일부 응답자분들께 현직무에 대해서만 재입력을 부탁드립니다.</p>
+                  <p>일부 응답자분들께 관심직무에 대해서만 재입력을 부탁드립니다.</p>
                   <p>&nbsp;</p>
                   <p>불편함을 끼쳐드려 죄송하오며,</p>
                   <p>응답해주신 정보는 개인별 맞춤형 콘텐츠 추천등을 위해 소중히 활용/관리하겠습니다.</p>
@@ -49,8 +48,8 @@ class CurrentJobRePage extends React.Component {
                 </div>
               </div>
             </div>
-
-            <CurrentJobContainerRe />
+            
+            <FavoriteJobContainerRe />
           </div>
         </section>
       </ContentLayout>
@@ -58,4 +57,4 @@ class CurrentJobRePage extends React.Component {
   }
 }
 
-export default CurrentJobRePage;
+export default FavoriteJobRePage;

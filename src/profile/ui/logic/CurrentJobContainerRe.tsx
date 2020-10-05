@@ -27,7 +27,7 @@ interface State {
 )
 @observer
 @reactAutobind
-class CurrentJobContainer extends React.Component<Props, State> {
+class CurrentJobContainerRe extends React.Component<Props, State> {
   //
   state = {
     focus: false,
@@ -138,7 +138,7 @@ class CurrentJobContainer extends React.Component<Props, State> {
     const skProfileService = this.props.skProfileService!;
     const { skProfile } = skProfileService!;
     const { member } = skProfile!;
-    const { currentJobGroup } = member!;
+    const { currentJobGroup, favoriteJobGroup } = member!;
 
     let skProfileUdo: SkProfileUdo;
 
@@ -159,7 +159,15 @@ class CurrentJobContainer extends React.Component<Props, State> {
         skProfileService.skProfile.pisAgreement
       );
       skProfileService.modifySkProfile(skProfileUdo).then(() => {
-        location.href = '/';
+        if (
+          !favoriteJobGroup.favoriteJobGroup ||
+          !favoriteJobGroup.favoriteJobGroup!.id ||
+          favoriteJobGroup.favoriteJobGroup!.id === ''
+        ) {
+          this.props.history.push(routePaths.favoriteJobRe());
+        } else {
+          this.props.history.push('/');
+        }
       });
       // this.props.history.push(routePaths.favoriteLearningType());
       // this.props.history.push(routePaths.favoriteJob());
@@ -177,105 +185,105 @@ class CurrentJobContainer extends React.Component<Props, State> {
 
     return (
       <Form>
-        <div className="select-cont-wrap" style={{height:'20rem'}}>
+      <div className="select-cont-wrap" style={{height:'20rem'}}>
+        <div className="select-box">
+          <div className="select-title">
+            Step 01. 현재 직무가 속해 있는 직군을 선택해주세요.
+          </div>
+          <Select
+            placeholder="선택해주세요"
+            options={selectOptionJobGroup}
+            value={
+              currentJobGroup &&
+              currentJobGroup.currentJobGroup &&
+              currentJobGroup.currentJobGroup.id
+            }
+            onChange={(event: any, data: any) =>
+              this.selectJobGroup(event, data)
+            }
+          />
+        </div>
+        {currentJobGroup &&
+        currentJobGroup.currentJobGroup &&
+        currentJobGroup.currentJobGroup.id &&
+        currentJobGroup.currentJobGroup.id !== 'etc' ? (
           <div className="select-box">
             <div className="select-title">
-              Step 01. 현재 직무가 속해 있는 직군을 선택해주세요.
+              Step 02. 현재 직무를 선택해주세요.
             </div>
             <Select
               placeholder="선택해주세요"
-              options={selectOptionJobGroup}
+              options={selectOptionJobDuty}
               value={
-                currentJobGroup &&
-                currentJobGroup.currentJobGroup &&
-                currentJobGroup.currentJobGroup.id
+                member &&
+                member.currentJobGroup &&
+                member.currentJobGroup.currentJobDuty &&
+                member.currentJobGroup.currentJobDuty.id
               }
               onChange={(event: any, data: any) =>
-                this.selectJobGroup(event, data)
+                this.selectJobDuty(event, data)
               }
             />
           </div>
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id !== 'etc' ? (
-            <div className="select-box">
-              <div className="select-title">
-                Step 02. 현재 직무를 선택해주세요.
-              </div>
-              <Select
-                placeholder="선택해주세요"
-                options={selectOptionJobDuty}
+        ) : (
+          ''
+        )}
+        {currentJobGroup &&
+        currentJobGroup.currentJobGroup &&
+        currentJobGroup.currentJobGroup.id &&
+        currentJobGroup.currentJobGroup.id === 'etc' ? (
+          <div className="select-box">
+            <div className="select-title">
+              Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
+            </div>
+            <div
+              className={classNames('ui h48 input', {
+                focus: this.state.focus,
+                write:
+                  currentJobGroup &&
+                  currentJobGroup.currentJobDuty &&
+                  currentJobGroup.currentJobDuty.name,
+              })}
+            >
+              <input
+                type="text"
+                placeholder="Text.."
                 value={
-                  member &&
-                  member.currentJobGroup &&
-                  member.currentJobGroup.currentJobDuty &&
-                  member.currentJobGroup.currentJobDuty.id
+                  currentJobGroup &&
+                  currentJobGroup.currentJobDuty &&
+                  currentJobGroup.currentJobDuty.name
                 }
-                onChange={(event: any, data: any) =>
-                  this.selectJobDuty(event, data)
+                onClick={() => this.setState({ focus: true })}
+                onChange={e =>
+                  this.selectEtcJobDuty({ value: e.target.value })
                 }
               />
+              <Icon
+                className="clear link"
+                onClick={() => this.selectEtcJobDuty({ value: '' })}
+              />
             </div>
-          ) : (
-            ''
-          )}
-          {currentJobGroup &&
-          currentJobGroup.currentJobGroup &&
-          currentJobGroup.currentJobGroup.id &&
-          currentJobGroup.currentJobGroup.id === 'etc' ? (
-            <div className="select-box">
-              <div className="select-title">
-                Step 02. 해당 되는 직무가 없을 경우 직접 입력해주세요.
-              </div>
-              <div
-                className={classNames('ui h48 input', {
-                  focus: this.state.focus,
-                  write:
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name,
-                })}
-              >
-                <input
-                  type="text"
-                  placeholder="Text.."
-                  value={
-                    currentJobGroup &&
-                    currentJobGroup.currentJobDuty &&
-                    currentJobGroup.currentJobDuty.name
-                  }
-                  onClick={() => this.setState({ focus: true })}
-                  onChange={e =>
-                    this.selectEtcJobDuty({ value: e.target.value })
-                  }
-                />
-                <Icon
-                  className="clear link"
-                  onClick={() => this.selectEtcJobDuty({ value: '' })}
-                />
-              </div>
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-        {/*<div className="select-error">*/}
-        {/*  <Icon className="error16" /><span className="blind">error</span>*/}
-        {/*  <span>직군 및 직무를 선택해주세요.</span>*/}
-        {/*</div>*/}
-        <div className="button-area">
-          {/* <Button className="fix line" onClick={() => this.onPreviousClick()}>
-            Previous
-          </Button> */}
-          <div className="error">직군 및 직무를 선택해주세요.</div>
-          <Button className="fix bg" onClick={() => this.onNextClick()}>
-            완료
-          </Button>
-        </div>
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
+      {/*<div className="select-error">*/}
+      {/*  <Icon className="error16" /><span className="blind">error</span>*/}
+      {/*  <span>직군 및 직무를 선택해주세요.</span>*/}
+      {/*</div>*/}
+      <div className="button-area">
+        {/* <Button className="fix line" onClick={() => this.onPreviousClick()}>
+          Previous
+        </Button> */}
+        <div className="error">직군 및 직무를 선택해주세요.</div>
+        <Button className="fix bg" onClick={() => this.onNextClick()}>
+          완료
+        </Button>
+      </div>
       </Form>
     );
   }
 }
 
-export default withRouter(CurrentJobContainer);
+export default withRouter(CurrentJobContainerRe);
