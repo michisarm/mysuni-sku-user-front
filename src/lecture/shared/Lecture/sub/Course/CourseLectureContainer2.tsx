@@ -1,41 +1,41 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAlert, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
+import React, { Component } from 'react';
+import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
+import { inject, observer } from 'mobx-react';
 
 import depot from '@nara.drama/depot';
 
 import classNames from 'classnames';
-import {Button, Icon} from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
-import {LearningState, ProposalState} from 'shared/model';
-import {EmployeeModel} from 'profile/model';
-import {ContentsServiceType, PersonalCubeModel} from 'personalcube/personalcube/model';
-import {MediaModel, MediaType} from 'personalcube/media/model';
-import {PersonalCubeService} from 'personalcube/personalcube/stores';
-import {MediaService} from 'personalcube/media/stores';
-import {BoardService} from 'personalcube/community/stores';
-import {ExaminationService, ExamPaperService} from 'assistant/stores';
-import {SurveyCaseService, SurveyFormService} from 'survey/stores';
+import { LearningState, ProposalState } from 'shared/model';
+import { EmployeeModel } from 'profile/model';
+import { ContentsServiceType, PersonalCubeModel } from 'personalcube/personalcube/model';
+import { MediaModel, MediaType } from 'personalcube/media/model';
+import { PersonalCubeService } from 'personalcube/personalcube/stores';
+import { MediaService } from 'personalcube/media/stores';
+import { BoardService } from 'personalcube/community/stores';
+import { ExaminationService, ExamPaperService } from 'assistant/stores';
+import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 
-import {LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel} from '../../../../model';
-import LectureSubInfo, {State as SubState} from '../../../LectureSubInfo';
+import { LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel, LectureFilterRdoModel } from '../../../../model';
+import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
 import RollBookService from '../../../present/logic/RollBookService';
 
 import Action from '../../model/Action';
-import {CourseSectionContext} from '../CourseSection';
-import {AnswerProgress} from '../../../../../survey/answer/model/AnswerProgress';
+import { CourseSectionContext } from '../CourseSection';
+import { AnswerProgress } from '../../../../../survey/answer/model/AnswerProgress';
 import LectureExam2 from '../../../LectureExam/ui/logic/LectureExamContainer2';
-import {AnswerSheetModal, CubeReportModal} from '../../../../../assistant';
-import {AnswerSheetModal as SurveyAnswerSheetModal} from '../../../../../survey';
+import { AnswerSheetModal, CubeReportModal } from '../../../../../assistant';
+import { AnswerSheetModal as SurveyAnswerSheetModal } from '../../../../../survey';
 import StudentApi from '../../../present/apiclient/StudentApi';
 import AnswerSheetApi from '../../../../../survey/answer/present/apiclient/AnswerSheetApi';
-import {CubeIntroService} from '../../../../../personalcube/cubeintro/stores';
-import {dateTimeHelper} from '../../../../../shared';
+import { CubeIntroService } from '../../../../../personalcube/cubeintro/stores';
+import { dateTimeHelper } from '../../../../../shared';
 import CubeType from '../../../../../personalcube/personalcube/model/CubeType';
 import AnswerSheetModel from '../../../../../survey/answer/model/AnswerSheetModel';
-import {SurveyFormModel} from '../../../../../survey/form/model/SurveyFormModel';
+import { SurveyFormModel } from '../../../../../survey/form/model/SurveyFormModel';
 import StudentInfoModel from '../../../../model/StudentInfoModel';
 import { LectureExam } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
@@ -48,6 +48,7 @@ interface Props {
   boardService: BoardService,
   personalCubeService?: PersonalCubeService,
   studentService?: StudentService,
+  rqdLectureService?: RQDLectureService,
   mediaService?: MediaService,
   collegeId?: string,
   lectureView: LectureViewModel,
@@ -65,7 +66,7 @@ interface Props {
   onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
   student?: StudentModel,
   lectureCardId?: string,
-  member? : EmployeeModel,
+  member?: EmployeeModel,
 
   examinationService?: ExaminationService,
   examPaperService?: ExamPaperService,
@@ -74,13 +75,12 @@ interface Props {
   surveyFormService?: SurveyFormService,
 
   learningState?: string
-  isPreCoursePassed?:  boolean
+  isPreCoursePassed?: boolean
   studentInfo?: StudentInfoModel | null
   onLectureInitRequest?: () => void
 }
 
-interface State
-{
+interface State {
   classNameForLearningState: string,
   inProgress: string,
   examTitle: string,
@@ -97,6 +97,7 @@ interface State
   'personalCube.boardService',
   'personalCube.personalCubeService',
   'lecture.studentService',
+  'rqdLecture.rqdLectureService',
   'personalCube.mediaService',
 
   'assistant.examinationService',
@@ -117,10 +118,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     thumbnailImage: null,
     action: null,
     toggle: false,
-    onAction: () => {},
-    onViewDetail: () => {},
-    onToggle: () => {},
-    onRefreshLearningState: () => {},
+    onAction: () => { },
+    onViewDetail: () => { },
+    onToggle: () => { },
+    onRefreshLearningState: () => { },
     className: '',
     rollBookService: RollBookService,
     boardService: BoardService,
@@ -138,7 +139,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   studentData: any = StudentModel;
 
   personalCube: PersonalCubeModel | null | undefined = {} as PersonalCubeModel;
-  classNameForLearningState: string  = '';
+  classNameForLearningState: string = '';
   studentForVideoObj: StudentModel | null = {} as StudentModel;
   rollBooks: RollBookModel[] = [];
 
@@ -158,14 +159,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
       isContent: false
     };
 
-  constructor(props: Props)
-  {
+  constructor(props: Props) {
     //
     super(props);
   }
 
-  componentDidMount()
-  {
+  componentDidMount() {
 
     const { lectureView, studentService } = this.props;
     const { setOpen } = this.context;
@@ -191,8 +190,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     }
   }
 
-  async init()
-  {
+  async init() {
     const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService } = this.props;
 
     if (lectureView) {
@@ -205,11 +203,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
       const examPaper = lectureView.examPaper;
       if (examPaper) {
         this.state.examTitle = examPaper.title;
-        this.setState({examTitle:examPaper.title});
+        this.setState({ examTitle: examPaper.title });
       }
 
       if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
-        const answerSheetService =  await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
+        const answerSheetService = await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
         // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
         const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
 
@@ -222,12 +220,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
           // @ts-ignore
           this.state.surveyTitle = surveyForm.titles.langStringMap.get('ko');
         }
-        this.setState({ surveyState:disabled });
-        this.setState({ surveyTitle:surveyForm.titles.langStringMap.get('ko') });
+        this.setState({ surveyState: disabled });
+        this.setState({ surveyTitle: surveyForm.titles.langStringMap.get('ko') });
       }
 
-      if (lectureView.cubeId)
-      {
+      if (lectureView.cubeId) {
         // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
         const cubeIntro = lectureView.cubeIntro;
         if (cubeIntro && cubeIntro?.reportFileBox && cubeIntro?.reportFileBox.fileBoxId) {
@@ -248,7 +245,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const { getLectureInfo } = studentService!;
 
     const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
-    if ( studentLecture ) {
+    if (studentLecture) {
       this.studentForVideoObj = studentLecture;
       const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
       this.setState({ classNameForLearningState: classNameForLearningStateTemp });
@@ -279,12 +276,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     return -1;
   }
 
-  setClassNameForLearningState(studentForVideo: StudentModel)
-  {
+  setClassNameForLearningState(studentForVideo: StudentModel) {
     let classNameForLearningState: string = 'fix line' || 'fix bg';
 
-    if (studentForVideo)
-    {
+    if (studentForVideo) {
       let state: SubState = SubState.Waiting;
 
       if (studentForVideo && studentForVideo.id) {
@@ -331,17 +326,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
   }
 
-  registerStudentForVideo(studentCdo: StudentCdoModel)
-  {
+  registerStudentForVideo(studentCdo: StudentCdoModel) {
     //
     const { studentService, lectureView, onRefreshLearningState } = this.props;
     const { getStudentForVideo } = studentService!;
 
     //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
-    return studentService!.registerStudent(studentCdo).then(() =>
-    {
-      getStudentForVideo(lectureView.serviceId).then((studentForVideo) =>
-      {
+    return studentService!.registerStudent(studentCdo).then(() => {
+      getStudentForVideo(lectureView.serviceId).then((studentForVideo) => {
         this.studentForVideoObj = studentForVideo;
         const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
 
@@ -359,43 +351,39 @@ class CourseLectureContainer2 extends Component<Props, State> {
     });
   }
 
-  async onRegisterStudentForVideo(proposalState?: ProposalState)
-  {
+  async onRegisterStudentForVideo(proposalState?: ProposalState) {
     const studentCdo = this.getStudentCdo();
 
     if ((!this.studentForVideoObj || !this.studentForVideoObj.id) || (this.studentForVideoObj.proposalState !== ProposalState.Canceled
-      && this.studentForVideoObj.proposalState !== ProposalState.Rejected))
-    {
-      this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
+      && this.studentForVideoObj.proposalState !== ProposalState.Rejected)) {
+      await this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
     }
     else if (this.studentForVideoObj.proposalState === ProposalState.Canceled || this.studentForVideoObj.proposalState === ProposalState.Rejected) {
-      this.registerStudentForVideo({ ...studentCdo, proposalState: this.studentForVideoObj.proposalState });
+      await this.registerStudentForVideo({ ...studentCdo, proposalState: this.studentForVideoObj.proposalState });
     }
+    this.removeRqdLectureFromSessionStorage();
   }
 
-  onLearningStartForVideo(url : string)
-  {
+  onLearningStartForVideo(url: string) {
     // const { onDoLearn } = this.props;
 
     if (url && url.startsWith('http')) {
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
-    } else
-    {
+    } else {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
 
-  onClickPlayForVideo(url : string)
-  {
+  onClickPlayForVideo(url: string) {
     if (url && url.startsWith('http')) {
       this.onRegisterStudentForVideo(ProposalState.Approved);
       this.popupLearnModal(url);
       //window.open(url, '_blank');
     } else {
-      reactAlert({title: '알림', message: '잘못 된 URL 정보입니다.'});
+      reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
   }
@@ -428,9 +416,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
     const studentCdo = this.getStudentCdo();
   }
 
-  getMediaUrl(media: MediaModel) : string
-  {
-    let url : string = '';
+  getMediaUrl(media: MediaModel): string {
+    let url: string = '';
     const { lectureView } = this.props;
 
     switch (media.mediaType) {
@@ -444,11 +431,9 @@ class CourseLectureContainer2 extends Component<Props, State> {
       case MediaType.InternalMediaUpload:
         url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
 
-        if (lectureView.personalCube?.contents.type === CubeType.Video && url)
-        {
+        if (lectureView.personalCube?.contents.type === CubeType.Video && url) {
           url += '&offerviewer=false&showtitle=false&showbrand=false';
-        } else if (lectureView.personalCube?.contents.type === CubeType.Audio && url)
-        {
+        } else if (lectureView.personalCube?.contents.type === CubeType.Audio && url) {
           url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
         break;
@@ -488,8 +473,16 @@ class CourseLectureContainer2 extends Component<Props, State> {
     LRSLectureService.instance.removeLectureFromStorage(lectureView.serviceId);
   }
 
-  async getMainActionForVideo()
-  {
+  removeRqdLectureFromSessionStorage() {
+    /*
+      학습중 & 학습완료 시,
+      메인페이지에 display 되는 해당 권장과정 을 보여지지 않게 하기 위함. 2020.10.05 by 김동구
+    */
+    const { rqdLectureService } = this.props;
+    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(8, 0), true);
+  }
+
+  async getMainActionForVideo() {
     //collegeId
     const { mediaService, isPreCoursePassed, lectureView } = this.props;
     // const { personalCube } = personalCubeService!;
@@ -513,7 +506,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlayForVideo(url) };
         }
       }
-    }  else {
+    } else {
       reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
     }
     // else if (service.type === ContentsServiceType.Community)
@@ -556,10 +549,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     reportFileBoxId = this.state.reportFileId || '';
     this.state.isContent = true;
 
-    if (this.studentData  && this.studentData.id) {
+    if (this.studentData && this.studentData.id) {
       if (this.studentData.proposalState === ProposalState.Approved) {
         if (
-          this.studentData.learningState    === LearningState.Waiting
+          this.studentData.learningState === LearningState.Waiting
           || this.studentData.learningState === LearningState.HomeworkWaiting
           || this.studentData.learningState === LearningState.TestWaiting
           || this.studentData.learningState === LearningState.TestPassed
@@ -568,8 +561,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
           state = SubState.InProgress;
         }
         if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed)   state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Missed)   state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
         // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
@@ -633,7 +626,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (this.studentData && this.studentData.id) {
       if (this.studentData.proposalState === ProposalState.Approved) {
         if (
-          this.studentData.learningState    === LearningState.Waiting
+          this.studentData.learningState === LearningState.Waiting
           || this.studentData.learningState === LearningState.HomeworkWaiting
           || this.studentData.learningState === LearningState.TestWaiting
           || this.studentData.learningState === LearningState.TestPassed
@@ -642,8 +635,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
           state = SubState.InProgress;
         }
         if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed)   state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Missed)   state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
         // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
@@ -759,7 +752,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
         if (
           studentData.phaseCount === studentData.completePhaseCount
           && (studentData.learningState === LearningState.Progress
-          || studentData.learningState === LearningState.HomeworkWaiting)
+            || studentData.learningState === LearningState.HomeworkWaiting)
         ) {
           this.setStateName('0', 'Test');
         } else if (
@@ -824,11 +817,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
   setLearningStateForMedia() {
     const { lectureView, onViewDetail } = this.props;
 
-    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio ) {
+    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio) {
       switch (this.state.inProgress) {
         case SubState.InProgress:
           return (
-            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+            <a href="#" className="btn-play orange" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
               <span className="text">학습중({this.getDuration()}%)</span>
               <span className={'pie-wrapper progress-' + this.getDuration()}>
                 <span className="pie">
@@ -841,7 +834,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Waiting:
           return (
-            <a href="#" className="btn-play orange" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+            <a href="#" className="btn-play orange" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
               <span className="text">학습중({this.getDuration()}%)</span>
               <span className={'pie-wrapper progress-' + this.getDuration()}>
                 <span className="pie">
@@ -854,14 +847,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+            <a href="#" className="btn-play completed" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
           );
         default:
           return (
-            <a href="#" className="btn-play black" onClick={e => {this.getMainActionForVideo(); e.preventDefault();}}>
+            <a href="#" className="btn-play black" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
               <span className="text">학습하기</span>
               <i className="icon play-black24" />
             </a>
@@ -872,7 +865,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
       switch (this.state.inProgress) {
         case SubState.InProgress:
           return (
-            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+            <a href="#" className="btn-play orange" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
               <span className={'pie-wrapper progress-' + 100}>
                 <span className="pie">
@@ -885,7 +878,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Waiting:
           return (
-            <a href="#" className="btn-play orange" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+            <a href="#" className="btn-play orange" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
               <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
               <span className={'pie-wrapper progress-' + 100}>
                 <span className="pie">
@@ -898,14 +891,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+            <a href="#" className="btn-play completed" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
           );
         default:
           return (
-            <a href="#" className="btn-play black" onClick={e => {this.checkPreCourseOnViewDetail(lectureView);}}>
+            <a href="#" className="btn-play black" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
               <span className="text">학습하기</span>
               <i className="icon play-black24" />
             </a>
@@ -918,14 +911,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
   setLearningStateForFirst() {
     const { lectureView, onViewDetail } = this.props;
 
-    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio ) {
+    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio) {
       switch (this.state.inProgress) {
         case SubState.Completed:
           return (
             <div className="btn-completed">
               <Button className="img-completed">
                 <span className="">학습완료</span>
-                <Icon className="play-completed24 s24"/>
+                <Icon className="play-completed24 s24" />
               </Button>
             </div>
           );
@@ -937,7 +930,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="btn-completed">
               <Button className="img-completed">
                 <span className="">학습완료</span>
-                <Icon className="play-completed24 s24"/>
+                <Icon className="play-completed24 s24" />
               </Button>
             </div>
           );
@@ -968,7 +961,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div className="cube-box">
               <div className="bar typeA">
                 <div className="tit">
-                  <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
+                  <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
                 </div>
                 <div className="right">
                   <span>{lectureView.cubeTypeName}</span>
@@ -985,7 +978,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
             <div>
               <div className="bar">
                 <div className="tit">
-                  <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
+                  <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
                 </div>
                 {
                   lectureViewSize && (
@@ -1007,7 +1000,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
                     })}
                     onClick={this.onToggle}
                   >
-                    <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open  })} />
+                    <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open })} />
                   </Button>
                 </div>
               </div>
@@ -1019,10 +1012,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
         {className !== 'first' && (
           <>
             <ul className="step1">
-              { lectureView.cubeTypeName && (
+              {lectureView.cubeTypeName && (
                 <li>
                   <div className="tit">
-                    <span className="ellipsis" style={{cursor:'pointer'}} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
+                    <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
                   </div>
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>

@@ -17,3 +17,4 @@ export { default as StudentModel } from './StudentModel';
 export { default as StudentCdoModel } from './StudentCdoModel';
 export { default as StudentJoinRdoModel } from './StudentJoinRdoModel';
 export { default as StudentCountRdoModel } from './StudentCountRdoModel';
+export { default as LectureFilterRdoModel } from './LectureFilterRdoModel';

@@ -23,6 +23,7 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import RQDLectureService from '../../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 
+
 interface Props extends RouteComponentProps {
   actionLogService?: ActionLogService;
   reviewService?: ReviewService;
@@ -53,25 +54,40 @@ const RQDLearning: React.FC<Props> = Props => {
   }, []);
 
   const findMyContent = async () => {
-    rqdLectureService!.clearLectures();
+    /*
+      1. session storage 에 권장과정이 있는 경우. 2020.09.28 by 김동구
+        1.1. && 8개 이상 
+          세션 스토리지에서 데이터를 불러옴. 
+        1.2. && 8개 미만 
+          서버에서 다시 데이터를 불러옴. (8개가 쌓일 때까지)
 
+      2. session storage 에 권장과정이 없는 경우.
+        서버에서 데이터를 불러옴.
+    */
+    rqdLectureService!.clearLectures();
     // 세션 스토리지에 정보가 있는 경우 가져오기
-    const savedRequiredLearningList = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
-    if (savedRequiredLearningList && savedRequiredLearningList.length > 0) {
-      const requiredMain: OffsetElementList<LectureModel> = JSON.parse(savedRequiredLearningList);
-      rqdLectureService!.setTitle(requiredMain.title);
-      if (requiredMain.results.length > PAGE_SIZE - 1) {
-        rqdLectureService!.setPagingRqdLectures(requiredMain);
-        if (!requiredMain || !requiredMain.title || requiredMain.title.length < 1) {
+    const sessionRequiredLectures = window.navigator.onLine && window.sessionStorage.getItem('RqdLearningList');
+    if (sessionRequiredLectures && sessionRequiredLectures.length !== 0) {
+      // session storage 의 json data 파싱.
+      const offsetRequiredLectures: OffsetElementList<LectureModel> = JSON.parse(sessionRequiredLectures);
+      rqdLectureService!.setTitle(offsetRequiredLectures.title);
+
+      if (offsetRequiredLectures.results.length >= PAGE_SIZE) {
+        // session storage 의 권장과정 을 store 에 추가.
+        rqdLectureService!.setPagingRqdLectures(offsetRequiredLectures);
+        if (!offsetRequiredLectures || !offsetRequiredLectures.title || offsetRequiredLectures.title.length < 1) {
           setTitle(rqdLectureService!.Title);
         } else {
-          setTitle(requiredMain.title);
+          setTitle(offsetRequiredLectures.title);
         }
         return;
       }
     }
-
-    // 서버로부터 가져오기
+    /* 
+      서버로부터 가져오기 (8개 미만인 경우)
+      가져온 데이터는 session storage 에도 저장됨.
+      session storage 에 저장된 데이터가 8개 미만인 경우, 다시 서버로부터 데이터를 가져옴.
+    */
     rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(PAGE_SIZE, 0), true)
       .then(response => {
         rqdLectureService!.setTitle(response.title);
@@ -244,15 +260,16 @@ const RQDLearning: React.FC<Props> = Props => {
             }
           )}
         </Lecture.Group>
-      ) : (
-        <NoSuchContentPanel
-          message={
-            <div className="text">
-              {CONTENT_TYPE_NAME}에 해당하는 학습 과정이 없습니다.
-            </div>
-          }
-        />
-      )}
+      ) :
+        (
+          <NoSuchContentPanel
+            message="모든 과정을 이수하셨습니다."
+            link={{
+              text: '전체 권장과정 List를 확인하시겠습니까?',
+              path: myTrainingRoutes.learningRequired()
+            }}
+          />
+        )}
     </ContentWrapper>
   );
 };

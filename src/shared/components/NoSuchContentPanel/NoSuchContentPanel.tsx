@@ -48,10 +48,10 @@ class NoSuchContentPanel extends Component<Props> {
 
         { link && (
           <Button icon className="right btn-blue2" onClick={this.onClickLink}>
-            Create 바로가기 <Icon className="morelink" />
+            {/* link 의 text 가 있을 시, text 를 표시함. */}
+            {link.text && link.text || 'Create 바로가기'}<Icon className="morelink" />
           </Button>
         )}
-
         {children}
       </div>
     );

@@ -1,20 +1,21 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
-import {mobxHelper, reactAlert} from '@nara.platform/accent';
-import {patronInfo} from '@nara.platform/dock';
-import {ReviewService} from '@nara.drama/feedback';
-import {ActionLogService, PageService} from 'shared/stores';
-import {LRSLectureService, NEWLectureService, POPLectureService,} from 'lecture/stores';
-import {LectureModel, LectureServiceType, OrderByType} from 'lecture/model';
-import {InMyLectureCdoModel, InMyLectureModel} from 'myTraining/model';
-import {InMyLectureService} from 'myTraining/stores';
-import {CubeType} from 'shared/model';
+import React, { useEffect, useRef, useState } from 'react';
+import { inject, observer } from 'mobx-react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { patronInfo } from '@nara.platform/dock';
+import { ReviewService } from '@nara.drama/feedback';
+import { ActionLogService, PageService } from 'shared/stores';
+import { LRSLectureService, NEWLectureService, POPLectureService, } from 'lecture/stores';
+import { LectureModel, LectureServiceType, OrderByType } from 'lecture/model';
+import { InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
+import { InMyLectureService } from 'myTraining/stores';
+import { CubeType } from 'shared/model';
 import lectureRoutePaths from 'lecture/routePaths';
-import {Lecture, SeeMoreButton} from 'lecture/shared';
+import myTrainingRoutePaths from 'myTraining/routePaths';
+import { Lecture, SeeMoreButton } from 'lecture/shared';
 import routePaths from 'personalcube/routePaths';
-import {NoSuchContentPanel} from 'shared';
-import {ContentType} from '../page/NewLearningPage';
+import { NoSuchContentPanel } from 'shared';
+import { ContentType } from '../page/NewLearningPage';
 import SkProfileService from '../../../profile/present/logic/SkProfileService';
 import RQDLectureService from '../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../lecture/model/LectureFilterRdoModel';
@@ -94,7 +95,7 @@ const NewLearningListView: React.FC<Props> = Props => {
       match.params.pageNo = '1';
       if (order === OrderByType.Popular) {
         setNewOrder(OrderByType.New);
-        return () => {};
+        return () => { };
       }
       curOrder.current = OrderByType.New;
     }
@@ -450,6 +451,26 @@ const NewLearningListView: React.FC<Props> = Props => {
     return page && page.pageNo < page.totalPages;
   };
 
+  /* render functions by 김동구 */
+  const renderNoSuchContentPanel = (contentType: ContentType | string) => {
+    // 권장과정일 경우, NoSuchContentPanel 의 message, link 다르게 표시. (개선요청사항)
+    if (contentType === ContentType.Required) {
+      return (
+        <NoSuchContentPanel
+          message="모든 과정을 이수하셨습니다."
+          link={{
+            text: '전체 권장과정 List를 확인하시겠습니까?',
+            path: myTrainingRoutePaths.learningRequired()
+          }}
+        />
+      );
+    }
+    // default
+    return (
+      <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
+    );
+  };
+
   return (
     <div className="section">
       {lectures && lectures.current && lectures.current.length > 0 && lectures.current[0] ? (
@@ -486,9 +507,7 @@ const NewLearningListView: React.FC<Props> = Props => {
           {isContentMore() && <SeeMoreButton onClick={onClickSeeMore} />}
           {window.scrollTo(0, yPos)}
         </>
-      ) : (
-        <NoSuchContentPanel message="아직 생성한 학습이 없습니다." />
-      )}
+      ) : renderNoSuchContentPanel(contentType)}
     </div>
   );
 };

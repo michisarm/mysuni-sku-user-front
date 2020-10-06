@@ -10,11 +10,20 @@ enum BadgeDifficultyLevel {
   Level3 = 'advanced',
 }
 
+enum BadgeCategoryId {
+  BDGCAT_AIDT = 'aidt',
+  BDGCAT_JOB = 'job',
+  BDGCAT_BIZ = 'biz',
+  BDGCAT_HAPPY = 'happy',
+  BDGCAT_BM = 'bm',
+}
+
 interface BadgeContentWrapperProps {
   onViewDetail?: () => void;
   badgeLevel: string;
   badgeStyle: string;
   badgeSize: string;
+  mainCategoryId: string;
 }
 
 export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = ({
@@ -23,17 +32,20 @@ export const BadgeContentWrapper: FunctionComponent<BadgeContentWrapperProps> = 
   badgeSize,
   children,
   onViewDetail,
+  mainCategoryId
 }) => (
   <>
     {badgeStyle === 'List' ? (
       <a
-        className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}
+        className={classNames('badge_new', BadgeCategoryId[mainCategoryId as keyof typeof BadgeCategoryId])}
+        //className={classNames('badge', mainCategoryId, BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}
         onClick={onViewDetail}
       >
         {children}
       </a>
     ) : (
-      <div className={classNames('badge', BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}>
+      <div className={classNames('badge_new', BadgeCategoryId[mainCategoryId as keyof typeof BadgeCategoryId])}>
+        {/*<div className={classNames('badge',mainCategoryId, BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel], badgeSize)}>*/}
         {children}
       </div>
     )}
@@ -68,6 +80,31 @@ export const College: FunctionComponent<CollegeProps> = ({
     <img src={iconUrl} alt="" />
   </span>
 );
+
+interface StarScoreProps {
+  badgeLevel: string;
+}
+
+/*20200929 Update*/
+export const StarScore: FunctionComponent<StarScoreProps> = ({ badgeLevel }) => {
+  let star = '';
+  let starScoreEm;
+  if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level1) {
+    star = 'star1';
+    starScoreEm= <><em/></>;
+  } else if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level2) {
+    star = 'star2';
+    starScoreEm= <><em/><em/></>;
+  } else if (BadgeDifficultyLevel[badgeLevel as keyof typeof BadgeDifficultyLevel] === BadgeDifficultyLevel.Level3) {
+    star = 'star3';
+    starScoreEm= <><em/><em/><em/></>;
+  }
+  return (
+    <p className={`star-score ${star}`}>
+      {starScoreEm}
+    </p>
+  );
+};
 
 interface TitleProps {
   name: string;

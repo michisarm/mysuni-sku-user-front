@@ -28,6 +28,7 @@ class InMyLectureService {
 
   constructor(inMyLectureApi: InMyLectureApi) {
     this.inMyLectureApi = inMyLectureApi;
+
   }
 
   @computed
@@ -78,14 +79,14 @@ class InMyLectureService {
         runInAction(() => this.findAllInMyLectures());
       }
       return response;
-    }).catch((reason: any) => {return null;});
+    }).catch((reason: any) => { return null; });
   }
 
   @action
   async removeInMyLecture(inMyLectureId: string) {
     await this.inMyLectureApi.removeInMyLecture(inMyLectureId).then(() => {
       return runInAction(() => this.findAllInMyLectures());
-    }).catch((reason: any) => {return null;});
+    }).catch((reason: any) => { return null; });
   }
 
   @action

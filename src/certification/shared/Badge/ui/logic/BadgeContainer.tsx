@@ -6,8 +6,9 @@ import { getPublicUrl } from 'shared/helper/envHelper';
 import certificationRoutePaths from '../../../../routePaths';
 import {
   BadgeContentWrapper,
+  //BadgeLevel,
   CertificationOrg,
-  College,
+  College, StarScore,
   Title,
 } from '../view/BadgeView';
 import BadgeModel from '../../../../ui/model/BadgeModel';
@@ -15,7 +16,8 @@ import BadgeDetailModel from '../../../../ui/model/BadgeDetailModel';
 import MyBadgeModel from '../../../../ui/model/MyBadgeModel';
 
 enum certiAdminCategoryIcon {
-  mySUNI = '/static/media/logo-badge.svg',
+  //mySUNI = '/static/media/logo-badge.svg',
+  mySUNI = '/static/media/logo-badgeN.png',
 }
 
 enum CategoryImageURL {
@@ -40,6 +42,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
     difficultyLevel,
     iconUrl,
     mainCategoryName,
+    mainCategoryId,
     name,
     certiAdminCategory,
     certiAdminSubcategory,
@@ -83,6 +86,7 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
       badgeLevel={difficultyLevel}
       badgeStyle={badgeStyle}
       badgeSize={badgeSize}
+      mainCategoryId={mainCategoryId}
     >
       {/*인증관리주체*/}
       {/*직접 등록한 아이콘 우선 노출*/}
@@ -110,6 +114,10 @@ const BadgeContainer: FunctionComponent<Props> = Props => {
               }`
         }
       />
+      {/*StarScore*/}
+      <StarScore badgeLevel={difficultyLevel} />
+      {/*<BadgeLevel difficultyLevel={difficultyLevel} />*/}
+
       {/*뱃지명*/}
       <Title name={name} />
     </BadgeContentWrapper>

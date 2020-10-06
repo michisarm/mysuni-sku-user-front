@@ -32,6 +32,7 @@ import {
   RQDLectureService,
   StudentService,
 } from 'lecture/stores';
+import { LectureFilterRdoModel } from 'lecture/model';
 import { ActionEventService } from 'shared/stores';
 import { InMyLectureCdoModel } from 'myTraining/model';
 import { InMyLectureService, MyTrainingService } from 'myTraining/stores';
@@ -60,6 +61,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
   studentService?: StudentService;
   lectureService?: LectureService;
+  rqdLectureService?: RQDLectureService;
   rollBookService?: RollBookService;
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
@@ -103,6 +105,7 @@ interface RouteParams {
     'lecture.rollBookService',
     'lecture.studentService',
     'lecture.lectureService',
+    'rqdLecture.rqdLectureService',
     'myTraining.myTrainingService',
     'myTraining.inMyLectureService',
     'personalCube.classroomService',
@@ -388,7 +391,7 @@ class LectureCardContainer extends Component<Props, State> {
     });
   }
 
-  onRegisterStudent(proposalState?: ProposalState) {
+  async onRegisterStudent(proposalState?: ProposalState) {
     const { studentCdo, student } = this.props;
 
     if (
@@ -397,7 +400,7 @@ class LectureCardContainer extends Component<Props, State> {
       (student.proposalState !== ProposalState.Canceled &&
         student.proposalState !== ProposalState.Rejected)
     ) {
-      this.registerStudent({
+      await this.registerStudent({
         ...studentCdo,
         proposalState: proposalState || studentCdo.proposalState,
       });
@@ -405,11 +408,13 @@ class LectureCardContainer extends Component<Props, State> {
       student.proposalState === ProposalState.Canceled ||
       student.proposalState === ProposalState.Rejected
     ) {
-      this.registerStudent({
+      await this.registerStudent({
         ...studentCdo,
         proposalState: student.proposalState,
       });
     }
+
+    this.removeRqdLectureFromSessionStorage();
   }
 
   registerStudent(studentCdo: StudentCdoModel) {
@@ -669,6 +674,8 @@ class LectureCardContainer extends Component<Props, State> {
       studentService!.findStudentByRollBookId(studentCdo.rollBookId);
       studentService!.findIsJsonStudentByCube(lectureCardId);
       studentService!.findStudentCount(studentCdo.rollBookId);
+    }).then(() => {
+      this.removeRqdLectureFromSessionStorage();
     });
   }
 
@@ -699,11 +706,6 @@ class LectureCardContainer extends Component<Props, State> {
     const { myTrainingService } = this.props;
 
     // sessionStorage.removeItem('InProgressLearningList');
-    console.log(
-      '[LectureCardContainer] InProgressLearningList is removed(expected null) : ',
-      sessionStorage.getItem('InProgressLearningList')
-    );
-
     myTrainingService!.findAllMyTrainingsWithState(
       'InProgress',
       8,
@@ -713,11 +715,21 @@ class LectureCardContainer extends Component<Props, State> {
     );
   }
 
+
+  removeRqdLectureFromSessionStorage() {
+    /*
+      학습중 & 학습완료 시,
+      메인페이지에 display 되는 해당 권장과정 을 보여지지 않게 하기 위함. 2020.10.05 by 김동구
+    */
+    const { rqdLectureService } = this.props;
+    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(8, 0), true);
+  }
+
   onApplyReference() {
     this.applyReferenceModel.onOpenModal();
   }
 
-  onApplyReferenceEmpty() {}
+  onApplyReferenceEmpty() { }
 
   onReport() {
     this.reportModal.onOpenModal();
@@ -962,9 +974,9 @@ class LectureCardContainer extends Component<Props, State> {
           } = getYearMonthDateHourMinuteSecond(applyingPeriod!.endDateSub)!;
           if (
             new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() >
-              today.getTime() ||
+            today.getTime() ||
             new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() <
-              today.getTime()
+            today.getTime()
           ) {
             return {
               type: LectureSubInfo.ActionType.Enrollment,
@@ -1291,9 +1303,9 @@ class LectureCardContainer extends Component<Props, State> {
             )!;
             if (
               new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <=
-                today.getTime() &&
+              today.getTime() &&
               new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >=
-                today.getTime()
+              today.getTime()
             ) {
               return () => {
                 studentService!.removeStudent(student!.rollBookId).then(() => {
@@ -1355,15 +1367,15 @@ class LectureCardContainer extends Component<Props, State> {
         />
         {(cubeType === CubeType.ClassRoomLecture ||
           cubeType === CubeType.ELearning) && (
-          <ApplyReferenceModal
-            ref={applyReferenceModel =>
-              (this.applyReferenceModel = applyReferenceModel)
-            }
-            classrooms={typeViewObject.classrooms}
-            selectedClassRoom={this.state.selectedClassRoom}
-            handleOk={this.onClickApplyReferentOk}
-          />
-        )}
+            <ApplyReferenceModal
+              ref={applyReferenceModel =>
+                (this.applyReferenceModel = applyReferenceModel)
+              }
+              classrooms={typeViewObject.classrooms}
+              selectedClassRoom={this.state.selectedClassRoom}
+              handleOk={this.onClickApplyReferentOk}
+            />
+          )}
         {viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}
@@ -1391,15 +1403,15 @@ class LectureCardContainer extends Component<Props, State> {
           rollBookId={studentCdo.rollBookId}
         />
         {// 0413 window.open => modal view로 변경
-        openLearningModal && typeViewObject && typeViewObject.videoUrl && (
-          <LectureLearningModalView
-            ref={lectureLearningModal =>
-              (this.lectureLearningModal = lectureLearningModal)
-            }
-            videoUrl={typeViewObject.videoUrl}
-            onClose={this.onLearningModalClose}
-          />
-        )}
+          openLearningModal && typeViewObject && typeViewObject.videoUrl && (
+            <LectureLearningModalView
+              ref={lectureLearningModal =>
+                (this.lectureLearningModal = lectureLearningModal)
+              }
+              videoUrl={typeViewObject.videoUrl}
+              onClose={this.onLearningModalClose}
+            />
+          )}
         {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
         <LectureSubInfo
           required={viewObject.required}
@@ -1426,11 +1438,11 @@ class LectureCardContainer extends Component<Props, State> {
           }
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           moveToSupport={this.moveToSupportQnA}
-          // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-          /* onDownloadReport={
-             ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
-               () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
-           }*/
+        // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+        /* onDownloadReport={
+           ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
+             () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
+         }*/
         />
 
         {/* 200713 children-SubInfo 위치 변경 */}

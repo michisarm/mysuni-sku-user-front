@@ -1,17 +1,18 @@
 import React from 'react';
-import {Button, Icon, Label, Segment} from 'semantic-ui-react';
+import { Button, Icon, Label, Segment } from 'semantic-ui-react';
 import classNames from 'classnames';
-import {dateTimeHelper} from 'shared';
+import { dateTimeHelper } from 'shared';
 import moment from 'moment';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import ChallengeStateName from '../../shared/Badge/ui/model/ChallengeStateName';
+import IssueState from '../../shared/Badge/ui/model/IssueState';
 
 
 interface Props {
   children: React.ReactNode
 }
 
-export const BadgeContentHeader: React.FC<Props> = ({children}) => (
+export const BadgeContentHeader: React.FC<Props> = ({ children }) => (
   <div className="badge-header">
     <div className="inner">
       {children}
@@ -25,7 +26,7 @@ interface BadgeTitleProps {
   name: string,
 }
 
-export const BadgeTitle: React.FC<BadgeTitleProps> = ({college, name}) => (
+export const BadgeTitle: React.FC<BadgeTitleProps> = ({ college, name }) => (
   <div className="title-area">
     <div className="college">{college}</div>
     <div className="title">{name}</div>
@@ -40,7 +41,7 @@ interface BadgeInfoProps {
   learningTime: number
 }
 
-export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryName, designAdminName, difficultyLevel, learningTime}) => {
+export const BadgeInformation: React.FC<BadgeInfoProps> = ({ certiAdminCategoryName, designAdminName, difficultyLevel, learningTime }) => {
   //
   const learningTimeFormat = dateTimeHelper.timeToHourMinuteFormat(learningTime);
 
@@ -49,7 +50,7 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryNa
     //
     let levelHtml = '';
     const num = Number(level.charAt(level.length - 1));
-    for ( let i = 0; i < num; i++ ) {
+    for (let i = 0; i < num; i++) {
       levelHtml += '<span class="star"></span>';
     }
 
@@ -73,7 +74,7 @@ export const BadgeInformation: React.FC<BadgeInfoProps> = ({certiAdminCategoryNa
       <div>
         <span className="detail level">
           <span>Level</span>
-          <span dangerouslySetInnerHTML={{__html: getDifficultyLevel(difficultyLevel)}}/>
+          <span dangerouslySetInnerHTML={{ __html: getDifficultyLevel(difficultyLevel) }} />
         </span>
         <span className="detail period">
           <span>총 학습시간</span>
@@ -89,7 +90,7 @@ interface BadgeOverviewProps {
   children: React.ReactNode
 }
 
-export const BadgeOverview: React.FC<BadgeOverviewProps> = ({children}) => (
+export const BadgeOverview: React.FC<BadgeOverviewProps> = ({ children }) => (
   <Segment className="full">
     <div className="badge-detail">
       {children}
@@ -102,12 +103,12 @@ interface LinkedBadgeProps {
   children: React.ReactNode | any,
 }
 
-export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) => (
+export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({ children }) => (
   <div className="relation-badge-area">
     <Segment className="full">
       <h3 className="title-style">
         <Label className="onlytext bold size24">
-          <Icon className="series"/>
+          <Icon className="series" />
           <span>연관 Badge</span>
         </Label>
       </h3>
@@ -118,7 +119,8 @@ export const LinkedBadgeListWrapper: React.FC<LinkedBadgeProps> = ({children}) =
 
 
 interface BadgeStatusProps {
-  badgeState: ChallengeState | undefined,
+  // badgeState 에 IssueState 타입 추가. 2020.09.28 by 김동구
+  badgeState: ChallengeState | IssueState | undefined,
   issueStateTime?: number | undefined,
   onClickButton: () => void,
   description?: string,
@@ -128,7 +130,7 @@ interface BadgeStatusProps {
 
 export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
   //
-  const {badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted} = BadgeStatusProps;
+  const { badgeState, issueStateTime, onClickButton, description, learningTotalCount, learningCompleted } = BadgeStatusProps;
   const issueStateTimeFormat = moment(issueStateTime).format('YYYY.MM.DD');
 
   return (
@@ -153,7 +155,7 @@ export const BadgeStatus: React.FC<BadgeStatusProps> = (BadgeStatusProps) => {
       {/*발급요청 완료, 획득 완료*/}
       { (badgeState === ChallengeState.Issued || badgeState === ChallengeState.Requested) && (
         <>
-          <div className={ classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black' )}>
+          <div className={classNames('big', (badgeState === ChallengeState.Requested) ? 'orange' : 'black')}>
             {ChallengeStateName[badgeState as ChallengeState]}
           </div>
           <span className="txt">{issueStateTimeFormat} {description}</span>

@@ -178,6 +178,8 @@ class BadgeService {
     // 모든 뱃지 정보 가져오기
     const badgeOffsetElementList: OffsetElementList<BadgeModel> | null = await this.badgeApi.findPagingAllBadges(badgeFilterRdo);
 
+    console.log(badgeOffsetElementList);
+
     if (badgeOffsetElementList) {
       runInAction(() => {
         this._badgeCount = badgeOffsetElementList.totalCount;

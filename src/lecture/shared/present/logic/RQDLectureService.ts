@@ -1,6 +1,6 @@
-import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
-import {autobind} from '@nara.platform/accent';
-import {OffsetElementList} from 'shared/model';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import { autobind } from '@nara.platform/accent';
+import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
@@ -54,7 +54,7 @@ class RQDLectureService {
   }
 
   @action
-  async findPagingRqdLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+  async findPagingRqdLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean = false) {
     //
     // 신규과정 학습정보 가져오기
     const response = await this.arrangeApi.findRqdLectures(lectureFilterRdo);
