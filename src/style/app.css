@@ -411,6 +411,7 @@ i.icon.balloon.logout::before {
 .msie .badge.s280 .title .cell {font-weight:500}
 
 /*Badge Ctype*/
+.badge-p01 .badge_new { margin-left: auto; margin-right: auto; }
 /*
 .badge { position: relative; display: block; text-align: center; padding: 0.25rem 0.375rem 0.5rem; margin-left: -0.375rem; margin-top: -0.25rem; width: 14.5rem; height: 14.5rem; }
 
