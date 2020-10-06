@@ -486,6 +486,7 @@ class LectureCardContainer extends Component<Props, State> {
     }
   }
 
+  /* 실제 작동되고 있지 않는 것으로 추정. 2020.10.06 by 김동구 */
   removeStorage() {
     const { viewObject } = this.props;
     RQDLectureService.instance.removeLectureFromStorage(viewObject.serviceId);
