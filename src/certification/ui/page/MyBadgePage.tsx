@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {mobxHelper} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
 import {RouteComponentProps, withRouter} from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 import {ActionLogService} from 'shared/stores';
 import {ContentLayout, Tab, TabItemModel} from 'shared';
@@ -159,7 +160,9 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           )
         }
         renderStaticMenu={()=>(
-          <a href="/introduction/Certification"><div className="item-button">인증제도 소개 바로가기</div></a>
+          <NavLink to="/introduction">
+            <div className="item-button">인증제도 소개 바로가기</div>            
+          </NavLink>
         )}
       />
     </ContentLayout>

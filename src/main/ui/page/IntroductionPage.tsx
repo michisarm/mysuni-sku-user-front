@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { observer } from 'mobx-react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { withRouter, RouteComponentProps, NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
@@ -10,6 +10,7 @@ import routePaths from '../../routePaths';
 import MySuniView from '../view/MySuniView';
 import CollegeView from '../view/CollegeView';
 import CertificationView from '../view/CertificationView';
+import certificationRoutePaths from '../../../certification/routePaths';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -93,7 +94,9 @@ class UserMainPage extends Component<Props> {
           onChangeTab={this.onChangeTab}
           renderContent={this.renderTabContent}
           renderStaticMenu={()=>(
-            <a href="/certification/badge/AllBadgeList/pages/1"><div className="item-button">Certification 바로가기</div></a>
+            <NavLink to={certificationRoutePaths.badge()}>
+              <div className="item-button">Certification 바로가기</div>
+            </NavLink>
           )}
         />
       </ContentLayout>
