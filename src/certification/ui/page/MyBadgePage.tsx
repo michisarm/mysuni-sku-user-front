@@ -147,6 +147,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
       ]}
     >
       <Tab
+        large={true}
         tabs={getTabs()}
         defaultActiveName={params.tab}
         onChangeTab={onChangeTab}
