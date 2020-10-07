@@ -1,4 +1,3 @@
-
 /** Helper */
 export { default as storybookHelper } from './helper/storybookHelper';
 export { default as DynamicImport } from './helper/DynamicImport';
@@ -6,6 +5,7 @@ export { default as withSplitting } from './helper/withSplitting';
 export { default as dateTimeHelper } from './helper/dateTimeHelper';
 export { default as depotHelper } from './helper/depotHelper';
 export { default as apiHelper } from './helper/apiHelper';
+export { default as storageHelper } from './helper/storageHelper';
 export { default as actionHandler } from './present/logic/actionHandler';
 
 /** Component */

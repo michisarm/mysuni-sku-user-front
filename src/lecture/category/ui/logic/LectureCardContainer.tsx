@@ -13,6 +13,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import depot from '@nara.drama/depot';
+import { storageHelper } from 'shared';
 import { CubeType, ProposalState } from 'shared/model';
 import { MediaType } from 'personalcube/media/model';
 import { ClassroomModel } from 'personalcube/classroom/model';
@@ -473,8 +474,10 @@ class LectureCardContainer extends Component<Props, State> {
   }
 
   onClickPlay() {
-    // 20200717 video 멀티 시청불가~! = return true
-    if (this.handleMultiVideo()) {
+    // 동영상 close click 시 lectureCardId 가 다르면
+    // 20200717 video 멀티 시청불가~!
+    const { lectureCardId } = this.props;
+    if (storageHelper.checkMultiVideo(lectureCardId)) {
       reactAlert({
         title: '알림',
         message:
@@ -511,40 +514,6 @@ class LectureCardContainer extends Component<Props, State> {
       reactAlert({ title: '알림', message: '잘못 된 URL 정보입니다.' });
       console.warn('[UserFront] Url is empty.');
     }
-  }
-
-  // 20200717 video 멀티 시청불가~! = return true
-  handleMultiVideo() {
-    function nvl(str: any, dvalue: any) {
-      if (typeof str === 'undefined' || str === null || str === '') {
-        str = dvalue;
-      }
-      return str;
-    }
-    const { lectureCardId } = this.props;
-    const liveLectureCardId = getCookie('liveLectureCardId');
-    const term = nvl(getCookie('liveLectureCardIdTime'), 0);
-    let rtnLive = false;
-    const after2Min = new Date();
-    after2Min.setMinutes(after2Min.getMinutes() + 2);
-    const nowTime = new Date().getTime();
-    // console.log('1.lectureCardId', lectureCardId);
-    // console.log('1.liveLectureCardId', liveLectureCardId);
-    if (
-      nvl(liveLectureCardId, 0) === 0 ||
-      liveLectureCardId === lectureCardId ||
-      (liveLectureCardId !== lectureCardId && term < nowTime)
-    ) {
-      deleteCookie('liveLectureCardId');
-      deleteCookie('liveLectureCardIdTime');
-      setCookie('liveLectureCardId', lectureCardId);
-      setCookie('liveLectureCardIdTime', after2Min.getTime().toString());
-      // console.log('2.local.liveLectureCardId', getCookie('liveLectureCardId'));
-      // console.log('2.local.liveLectureCardIdTime', getCookie('liveLectureCardIdTime'));
-    } else {
-      rtnLive = true;
-    }
-    return rtnLive;
   }
 
   onLearningStart() {
@@ -668,13 +637,16 @@ class LectureCardContainer extends Component<Props, State> {
 
   onJoin() {
     const { studentCdo, studentService, lectureCardId } = this.props;
-    studentService!.joinCommunity({ ...studentCdo }).then(() => {
-      studentService!.findStudentByRollBookId(studentCdo.rollBookId);
-      studentService!.findIsJsonStudentByCube(lectureCardId);
-      studentService!.findStudentCount(studentCdo.rollBookId);
-    }).then(() => {
-      this.removeRqdLectureFromSessionStorage();
-    });
+    studentService!
+      .joinCommunity({ ...studentCdo })
+      .then(() => {
+        studentService!.findStudentByRollBookId(studentCdo.rollBookId);
+        studentService!.findIsJsonStudentByCube(lectureCardId);
+        studentService!.findStudentCount(studentCdo.rollBookId);
+      })
+      .then(() => {
+        this.removeRqdLectureFromSessionStorage();
+      });
   }
 
   onClickDownloadReport(fileBoxId: string) {
@@ -713,21 +685,23 @@ class LectureCardContainer extends Component<Props, State> {
     );
   }
 
-
   removeRqdLectureFromSessionStorage() {
     /*
       학습중 & 학습완료 시,
       메인페이지에 display 되는 해당 권장과정 을 보여지지 않게 하기 위함. 2020.10.05 by 김동구
     */
     const { rqdLectureService } = this.props;
-    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(8, 0), true);
+    rqdLectureService!.findPagingRqdLectures(
+      LectureFilterRdoModel.newLectures(8, 0),
+      true
+    );
   }
 
   onApplyReference() {
     this.applyReferenceModel.onOpenModal();
   }
 
-  onApplyReferenceEmpty() { }
+  onApplyReferenceEmpty() {}
 
   onReport() {
     this.reportModal.onOpenModal();
@@ -862,13 +836,7 @@ class LectureCardContainer extends Component<Props, State> {
 
     // 동영상 close click 시 lectureCardId 가 같다면
     // 20200717 video 멀티 시청불가~! 해제
-    const liveLectureCardId = getCookie('liveLectureCardId');
-    // console.log('3.lectureCardId', lectureCardId);
-    // console.log('3.liveLectureCardId', liveLectureCardId);
-    if (lectureCardId === liveLectureCardId) {
-      deleteCookie('liveLectureCardId');
-      deleteCookie('liveLectureCardIdTime');
-    }
+    storageHelper.deleteMultiVideo(lectureCardId);
 
     this.setState({ openLearningModal: false });
     const lectureStudentCdo = {
@@ -972,9 +940,9 @@ class LectureCardContainer extends Component<Props, State> {
           } = getYearMonthDateHourMinuteSecond(applyingPeriod!.endDateSub)!;
           if (
             new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() >
-            today.getTime() ||
+              today.getTime() ||
             new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() <
-            today.getTime()
+              today.getTime()
           ) {
             return {
               type: LectureSubInfo.ActionType.Enrollment,
@@ -1301,9 +1269,9 @@ class LectureCardContainer extends Component<Props, State> {
             )!;
             if (
               new Date(startYear, startMonth, startDate, 0, 0, 0).getTime() <=
-              today.getTime() &&
+                today.getTime() &&
               new Date(endYear, endMonth, endDate, 23, 59, 59).getTime() >=
-              today.getTime()
+                today.getTime()
             ) {
               return () => {
                 studentService!.removeStudent(student!.rollBookId).then(() => {
@@ -1365,15 +1333,15 @@ class LectureCardContainer extends Component<Props, State> {
         />
         {(cubeType === CubeType.ClassRoomLecture ||
           cubeType === CubeType.ELearning) && (
-            <ApplyReferenceModal
-              ref={applyReferenceModel =>
-                (this.applyReferenceModel = applyReferenceModel)
-              }
-              classrooms={typeViewObject.classrooms}
-              selectedClassRoom={this.state.selectedClassRoom}
-              handleOk={this.onClickApplyReferentOk}
-            />
-          )}
+          <ApplyReferenceModal
+            ref={applyReferenceModel =>
+              (this.applyReferenceModel = applyReferenceModel)
+            }
+            classrooms={typeViewObject.classrooms}
+            selectedClassRoom={this.state.selectedClassRoom}
+            handleOk={this.onClickApplyReferentOk}
+          />
+        )}
         {viewObject && viewObject.examId && (
           <AnswerSheetModal
             examId={viewObject.examId}
@@ -1401,15 +1369,15 @@ class LectureCardContainer extends Component<Props, State> {
           rollBookId={studentCdo.rollBookId}
         />
         {// 0413 window.open => modal view로 변경
-          openLearningModal && typeViewObject && typeViewObject.videoUrl && (
-            <LectureLearningModalView
-              ref={lectureLearningModal =>
-                (this.lectureLearningModal = lectureLearningModal)
-              }
-              videoUrl={typeViewObject.videoUrl}
-              onClose={this.onLearningModalClose}
-            />
-          )}
+        openLearningModal && typeViewObject && typeViewObject.videoUrl && (
+          <LectureLearningModalView
+            ref={lectureLearningModal =>
+              (this.lectureLearningModal = lectureLearningModal)
+            }
+            videoUrl={typeViewObject.videoUrl}
+            onClose={this.onLearningModalClose}
+          />
+        )}
         {/* 핵인싸과정 신청하기 등 오른쪽 버튼 부분 */}
         <LectureSubInfo
           required={viewObject.required}
@@ -1436,8 +1404,8 @@ class LectureCardContainer extends Component<Props, State> {
           }
           onRemove={inMyLecture && inMyLecture.id ? this.onRemove : undefined}
           moveToSupport={this.moveToSupportQnA}
-        // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
-        /* onDownloadReport={
+          // onSurvey={viewObject.surveyId ? this.onSurvey : undefined}
+          /* onDownloadReport={
            ((viewObject && viewObject.reportFileBoxId) || (typeViewObject && typeViewObject.reportFileBoxId)) ?
              () => this.onClickDownloadReport(viewObject.reportFileBoxId || typeViewObject.reportFileBoxId) : undefined
          }*/
