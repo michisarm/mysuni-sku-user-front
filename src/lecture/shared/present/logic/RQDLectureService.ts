@@ -1,24 +1,26 @@
-import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
-import {autobind} from '@nara.platform/accent';
-import {OffsetElementList} from 'shared/model';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import { autobind } from '@nara.platform/accent';
+import { OffsetElementList } from 'shared/model';
 import LectureModel from '../../../model/LectureModel';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import ArrangeApi from '../apiclient/ArrangeApi';
-import InMyLectureApi from '../../../../myTraining/present/apiclient/InMyLectureApi';
-import InMyLectureCdoModel from '../../../../myTraining/model/InMyLectureCdoModel';
 
-
+/*
+  편성된 권장과정 데이터를 관리하는 Service.
+  Learning 탭의 권장과정은 편성된 권장과정이 아니며 다르게 관리됨. 
+  편성된 권장과정은 UserMainPageV2 와 NewLearningPage 에서 사용되고 있음. 2020.10.06 by 김동구
+*/
 @autobind
 class RQDLectureService {
   //
   static instance: RQDLectureService;
 
   private arrangeApi: ArrangeApi;
-  private inMyLectureApi: InMyLectureApi;
+  // private inMyLectureApi: InMyLectureApi; :: 사용되지 않으므로 주석 처리.
 
-  constructor(arrangeApi: ArrangeApi, inMyLectureApi: InMyLectureApi) {
+  constructor(arrangeApi: ArrangeApi) {
     this.arrangeApi = arrangeApi;
-    this.inMyLectureApi = inMyLectureApi;
+    // this.inMyLectureApi = inMyLectureApi;
   }
 
   _title: string | null = '';
@@ -54,7 +56,7 @@ class RQDLectureService {
   }
 
   @action
-  async findPagingRqdLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean=false) {
+  async findPagingRqdLectures(lectureFilterRdo: LectureFilterRdoModel, fromMain: boolean = false) {
     //
     // 신규과정 학습정보 가져오기
     const response = await this.arrangeApi.findRqdLectures(lectureFilterRdo);
@@ -120,6 +122,6 @@ class RQDLectureService {
   }
 }
 
-RQDLectureService.instance = new RQDLectureService(ArrangeApi.instance, InMyLectureApi.instance);
+RQDLectureService.instance = new RQDLectureService(ArrangeApi.instance);
 
 export default RQDLectureService;

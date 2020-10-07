@@ -22,6 +22,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   renderContent?: (props: any) => React.ReactNode;
   onChangeTab?: (tab: TabItemModel) => any;
   topOfContents?: React.ReactNode;
+  renderStaticMenu?:() => React.ReactNode;
 }
 
 interface RouteParams {
@@ -144,7 +145,7 @@ class TabContainer extends Component<Props, State> {
 
   renderItems() {
     //
-    const { renderItems, header, className, large, tabs } = this.props;
+    const { renderItems, header, className, large, tabs, renderStaticMenu } = this.props;
     const { activeName } = this.state;
 
     if (renderItems) {
@@ -166,6 +167,9 @@ class TabContainer extends Component<Props, State> {
                   {tab.item || tab.name}
                 </Menu.Item>
               ))}
+              {
+                renderStaticMenu && renderStaticMenu()
+              }
             </Menu>
           </div>
         </Sticky>
@@ -212,6 +216,7 @@ class TabContainer extends Component<Props, State> {
         {allMounted
           ? tabs.map(tab => this.renderContent(tab))
           : activeTab && this.renderContent(activeTab)}
+
       </div>
     );
 

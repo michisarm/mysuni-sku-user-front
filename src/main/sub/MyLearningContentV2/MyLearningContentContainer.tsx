@@ -1,5 +1,5 @@
 
-import React, {Component, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -12,8 +12,7 @@ import MainBanner from './MainComponents/MainBanner';
 import NewLearning from './MainComponents/NEWLearning';
 import PopularLearning from './MainComponents/POPLearning';
 import RecommendLearning from './MainComponents/LRSLearning';
-import InMyLectureApi from '../../../myTraining/present/apiclient/InMyLectureApi';
-import {InMyLectureService} from '../../../myTraining/stores';
+import { InMyLectureService } from '../../../myTraining/stores';
 
 
 interface Props extends RouteComponentProps {
@@ -21,7 +20,7 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService;
 }
 
-const MyLearningContentContainer : React.FC<Props> = (Props) => {
+const MyLearningContentContainer: React.FC<Props> = (Props) => {
   const { skProfileService, inMyLectureService } = Props;
   const { skProfile } = skProfileService!;
   const { member } = skProfile;
@@ -44,7 +43,7 @@ const MyLearningContentContainer : React.FC<Props> = (Props) => {
       <InProgressLearning profileMemberName={member.name} />
 
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
-      {/*<ChallengingBadge profileMemberName={member.name} />*/}
+      <ChallengingBadge profileMemberName={member.name} />
 
       <MainBanner />
       <RequiredLearning />

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {mobxHelper} from '@nara.platform/accent';
 import {inject, observer} from 'mobx-react';
 import {RouteComponentProps, withRouter} from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 import {ActionLogService} from 'shared/stores';
 import {ContentLayout, Tab, TabItemModel} from 'shared';
@@ -146,6 +147,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
       ]}
     >
       <Tab
+        large={true}
         tabs={getTabs()}
         defaultActiveName={params.tab}
         onChangeTab={onChangeTab}
@@ -158,6 +160,11 @@ const MyBadgePage : React.FC<Props> = (Props) => {
             />
           )
         }
+        renderStaticMenu={()=>(
+          <NavLink to="/introduction/Certification">
+            <div className="item-button">인증제도 소개 바로가기</div>            
+          </NavLink>
+        )}
       />
     </ContentLayout>
   );
