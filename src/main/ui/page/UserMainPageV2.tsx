@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
-import {inject} from 'mobx-react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
+import { inject } from 'mobx-react';
+import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import { ActionEventService } from 'shared/stores';
 import MyLearningSummary from '../../sub/MyLearningSummaryV2';
 import MyLearningContentContainer from '../../sub/MyLearningContentV2';
 import MyTrainingService from '../../../myTraining/present/logic/MyTrainingService';
-import TutorialModalView from '../../sub/MainModals/TutorialModalViewV2';
-
+// 현업 요청으로 팝업제거 20201007
+// import TutorialModalView from '../../sub/MainModals/TutorialModalViewV2';
 
 interface Props {
   actionEventService: ActionEventService;
   myTrainingService?: MyTrainingService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionEventService',
-  'myTraining.myTrainingService'
-))
+@inject(
+  mobxHelper.injectFrom(
+    'shared.actionEventService',
+    'myTraining.myTrainingService'
+  )
+)
 @reactAutobind
 class UserMainPageV2 extends Component<Props> {
   //
@@ -33,7 +35,6 @@ class UserMainPageV2 extends Component<Props> {
     }
   }
 
-
   componentDidMount() {
     this.publishViewEvent();
   }
@@ -42,7 +43,7 @@ class UserMainPageV2 extends Component<Props> {
     const { actionEventService } = this.props;
     const menu = 'MAIN_VIEW';
 
-    actionEventService.registerViewActionLog({menu});
+    actionEventService.registerViewActionLog({ menu });
   }
 
   render() {
@@ -50,11 +51,12 @@ class UserMainPageV2 extends Component<Props> {
     return (
       <ContentLayout className="main">
         <div className="main-wrap">
-          <MyLearningSummary/>
-          <MyLearningContentContainer/>
+          <MyLearningSummary />
+          <MyLearningContentContainer />
 
-          {/*튜토리얼 팝업*/}
-          <TutorialModalView/>
+          {/* 튜토리얼 팝업 */}
+          {/* 현업 요청으로 팝업제거 20201007*/}
+          {/* <TutorialModalView/> */}
         </div>
       </ContentLayout>
     );
