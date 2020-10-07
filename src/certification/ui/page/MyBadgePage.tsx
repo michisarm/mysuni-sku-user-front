@@ -160,7 +160,7 @@ const MyBadgePage : React.FC<Props> = (Props) => {
           )
         }
         renderStaticMenu={()=>(
-          <NavLink to="/introduction">
+          <NavLink to="/introduction/Certification">
             <div className="item-button">인증제도 소개 바로가기</div>            
           </NavLink>
         )}
