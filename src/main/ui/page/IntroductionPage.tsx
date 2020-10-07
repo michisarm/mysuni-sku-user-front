@@ -92,6 +92,9 @@ class UserMainPage extends Component<Props> {
           tabs={this.getTabs()}
           onChangeTab={this.onChangeTab}
           renderContent={this.renderTabContent}
+          renderStaticMenu={()=>(
+            <a href="/certification/badge/AllBadgeList/pages/1"><div className="item-button">Certification 바로가기</div></a>
+          )}
         />
       </ContentLayout>
     );

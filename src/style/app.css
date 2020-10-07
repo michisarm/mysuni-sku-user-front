@@ -473,3 +473,41 @@ body.msie .badge.s220 .title { font-weight: 500; }
 
 body.msie .badge.s220 .title .cell span { font-weight: 500; word-break: keep-all; -ms-word-break: keep-all; }
 */
+.introduction .cont-inner .item-button {
+  text-align: center;
+  width: 180px;
+  height: 32px;
+  border: solid 1px #4c4c4c;
+  border-radius: 4px;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  font-weight: bold;
+  color: #4c4c4c;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.cont-inner .item-button {
+  text-align: center;
+  width: 180px;
+  height: 32px;
+  border: solid 1px #4c4c4c;
+  border-radius: 4px;
+  position: absolute;
+  top: 16%;
+  right: 0;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  font-weight: bold;
+  color: #4c4c4c;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.introduction .common-intro.case3 .inner .inner-video {
+  width: 920px;
+  height: 517px;
+}
