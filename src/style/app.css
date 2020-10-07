@@ -496,3 +496,12 @@ body.msie .badge.s220 .title .cell span { font-weight: 500; word-break: keep-all
   width: 920px;
   height: 517px;
 }
+
+.msie .cont-inner .item-button {
+  line-height: 21px;
+}
+
+.introduction .common-intro.case3 .inner {
+  padding: 3.75rem 0 0;
+  background: none;
+}
