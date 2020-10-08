@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
-import $ from 'jquery'
-import './Description.css'
+import $ from 'jquery';
+import './Description.css';
 
 interface Props {
   description: string;
@@ -25,26 +25,26 @@ class Description extends Component<Props, DescriptionState, any> {
     this.textContainerRef = React.createRef<HTMLDivElement>();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const textContainer = this.textContainerRef.current;
-    if(textContainer !== null){
-      if(textContainer.clientHeight < textContainer.scrollHeight){
-        this.setState({ showMoreButton: true })
+    if (textContainer !== null) {
+      if (textContainer.clientHeight < textContainer.scrollHeight) {
+        this.setState({ showMoreButton: true });
       } else {
-        const {ResizeObserver} = (window as any)
-        if(ResizeObserver !== undefined){
+        const { ResizeObserver } = window as any;
+        if (ResizeObserver !== undefined) {
           const resizeObserver = new ResizeObserver(() => {
-            if(this.state.showMoreButton){
+            if (this.state.showMoreButton) {
               return;
             }
-            if(textContainer.clientHeight < textContainer.scrollHeight){
-              this.setState({ showMoreButton: true })
+            if (textContainer.clientHeight < textContainer.scrollHeight) {
+              this.setState({ showMoreButton: true });
               resizeObserver.unobserve(textContainer);
-            }     
+            }
           });
           resizeObserver.observe(textContainer);
         } else {
-          this.setState({ showMoreButton: true })
+          this.setState({ showMoreButton: true });
         }
       }
     }
@@ -66,9 +66,9 @@ class Description extends Component<Props, DescriptionState, any> {
     const { descriptionOpen, showMoreButton } = this.state || {};
 
     return (
-      <div className="class-guide-txt fn-parents">
+      <div className="class-guide-txt fn-parents ql-snow">
         <div
-          className={`${descriptionOpen ? '' : 'text'} description`}
+          className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
           dangerouslySetInnerHTML={{ __html: description }}
           ref={this.textContainerRef}
         />

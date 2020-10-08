@@ -1,16 +1,14 @@
-
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { List, Label, Icon } from 'semantic-ui-react';
 
-
 interface Props {
-  title: React.ReactNode,
-  className?: string
-  content?: React.ReactNode,
-  contentHtml?: string,
-  titleIcon?: string,
+  title: React.ReactNode;
+  className?: string;
+  content?: React.ReactNode;
+  contentHtml?: string;
+  titleIcon?: string;
 }
 
 @reactAutobind
@@ -22,33 +20,44 @@ class Item extends Component<Props> {
 
   panelRef = React.createRef<HTMLDivElement>();
 
-
   getPanelRef() {
     return this.panelRef.current;
   }
 
   render() {
     //
-    const { title, className, titleIcon, content, contentHtml } = this.props;
+    const {
+      title,
+      className = '',
+      titleIcon,
+      content,
+      contentHtml,
+    } = this.props;
 
     return (
       <List.Item>
         <div className="title" ref={this.panelRef}>
-          {!titleIcon ?
+          {!titleIcon ? (
             title
-            :
+          ) : (
             <h3 className="title-style">
               <Label className="onlytext bold size24">
-                <Icon className={titleIcon} /><span>{title}</span>
+                <Icon className={titleIcon} />
+                <span>{title}</span>
               </Label>
             </h3>
-          }
+          )}
         </div>
-        { contentHtml ?
-          <div className={className ? `${className} detail` : 'detail'} dangerouslySetInnerHTML={{ __html: contentHtml }} />
-          :
-          <div className={className ? `${className} detail` : 'detail'}>{content}</div>
-        }
+        {contentHtml ? (
+          <div className={`${className} detail ql-snow`}>
+            <div
+              className="ql-editor"
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
+            />
+          </div>
+        ) : (
+          <div className={`${className} detail`}>{content}</div>
+        )}
       </List.Item>
     );
   }
