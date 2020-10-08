@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -9,7 +10,10 @@ import { Button, Icon } from 'semantic-ui-react';
 
 import { LearningState, ProposalState } from 'shared/model';
 import { EmployeeModel } from 'profile/model';
-import { ContentsServiceType, PersonalCubeModel } from 'personalcube/personalcube/model';
+import {
+  ContentsServiceType,
+  PersonalCubeModel,
+} from 'personalcube/personalcube/model';
 import { MediaModel, MediaType } from 'personalcube/media/model';
 import { PersonalCubeService } from 'personalcube/personalcube/stores';
 import { MediaService } from 'personalcube/media/stores';
@@ -17,7 +21,14 @@ import { BoardService } from 'personalcube/community/stores';
 import { ExaminationService, ExamPaperService } from 'assistant/stores';
 import { SurveyCaseService, SurveyFormService } from 'survey/stores';
 
-import { LectureViewModel, RollBookModel, StudentCdoModel, StudentJoinRdoModel, StudentModel, LectureFilterRdoModel } from '../../../../model';
+import {
+  LectureViewModel,
+  RollBookModel,
+  StudentCdoModel,
+  StudentJoinRdoModel,
+  StudentModel,
+  LectureFilterRdoModel,
+} from '../../../../model';
 import LectureSubInfo, { State as SubState } from '../../../LectureSubInfo';
 
 import StudentService from '../../../present/logic/StudentService';
@@ -39,74 +50,85 @@ import { SurveyFormModel } from '../../../../../survey/form/model/SurveyFormMode
 import StudentInfoModel from '../../../../model/StudentInfoModel';
 import { LectureExam } from '../../../LectureExam';
 import SurveyCaseModel from '../../../../../survey/event/model/SurveyCaseModel';
-import { LRSLectureService, NEWLectureService, POPLectureService, RQDLectureService } from '../../../../stores';
+import {
+  LRSLectureService,
+  NEWLectureService,
+  POPLectureService,
+  RQDLectureService,
+} from '../../../../stores';
 
 import './index.css';
 
 interface Props {
-  rollBookService?: RollBookService,
-  boardService: BoardService,
-  personalCubeService?: PersonalCubeService,
-  studentService?: StudentService,
-  rqdLectureService?: RQDLectureService,
-  mediaService?: MediaService,
-  collegeId?: string,
-  lectureView: LectureViewModel,
-  lectureViewSize?: number,
-  lectureViewName?: string,
-  className?: string,
-  thumbnailImage?: string,
-  action?: Action,
-  toggle?: boolean,
-  open?: boolean,
-  onAction?: () => void,
-  onViewDetail?: (e: any) => void,
-  onToggle?: () => void,
-  onRefreshLearningState?: () => void,
-  onDoLearn?: (videoUrl: string, studentCdo: StudentCdoModel) => void,
-  student?: StudentModel,
-  lectureCardId?: string,
-  member?: EmployeeModel,
+  rollBookService?: RollBookService;
+  boardService: BoardService;
+  personalCubeService?: PersonalCubeService;
+  studentService?: StudentService;
+  rqdLectureService?: RQDLectureService;
+  mediaService?: MediaService;
+  collegeId?: string;
+  lectureView: LectureViewModel;
+  lectureViewSize?: number;
+  lectureViewName?: string;
+  className?: string;
+  thumbnailImage?: string;
+  action?: Action;
+  toggle?: boolean;
+  open?: boolean;
+  onAction?: () => void;
+  onViewDetail?: (e: any) => void;
+  onToggle?: () => void;
+  onRefreshLearningState?: () => void;
+  onDoLearn?: (
+    videoUrl: string,
+    studentCdo: StudentCdoModel,
+    lectureView?: LectureViewModel
+  ) => void;
+  student?: StudentModel;
+  lectureCardId?: string;
+  member?: EmployeeModel;
 
-  examinationService?: ExaminationService,
-  examPaperService?: ExamPaperService,
+  examinationService?: ExaminationService;
+  examPaperService?: ExamPaperService;
   // answerSheetService?: AnswerSheetService,
-  surveyCaseService?: SurveyCaseService,
-  surveyFormService?: SurveyFormService,
+  surveyCaseService?: SurveyCaseService;
+  surveyFormService?: SurveyFormService;
 
-  learningState?: string
-  isPreCoursePassed?: boolean
-  studentInfo?: StudentInfoModel | null
-  onLectureInitRequest?: () => void
+  learningState?: string;
+  isPreCoursePassed?: boolean;
+  studentInfo?: StudentInfoModel | null;
+  onLectureInitRequest?: () => void;
 }
 
 interface State {
-  classNameForLearningState: string,
-  inProgress: string,
-  examTitle: string,
-  surveyState: boolean,
-  surveyTitle: string | any,
-  reportFileId: string,
-  type: string,
-  name: string,
-  isContent: boolean,
+  classNameForLearningState: string;
+  inProgress: string;
+  examTitle: string;
+  surveyState: boolean;
+  surveyTitle: string | any;
+  reportFileId: string;
+  type: string;
+  name: string;
+  isContent: boolean;
 }
 
-@inject(mobxHelper.injectFrom(
-  'lecture.rollBookService',
-  'personalCube.boardService',
-  'personalCube.personalCubeService',
-  'lecture.studentService',
-  'rqdLecture.rqdLectureService',
-  'personalCube.mediaService',
+@inject(
+  mobxHelper.injectFrom(
+    'lecture.rollBookService',
+    'personalCube.boardService',
+    'personalCube.personalCubeService',
+    'lecture.studentService',
+    'rqdLecture.rqdLectureService',
+    'personalCube.mediaService',
 
-  'assistant.examinationService',
-  'assistant.examPaperService',
-  // 'survey.answerSheetService',
-  'survey.surveyCaseService',
-  'survey.surveyFormService',
-  'lecture.studentService',
-))
+    'assistant.examinationService',
+    'assistant.examPaperService',
+    // 'survey.answerSheetService',
+    'survey.surveyCaseService',
+    'survey.surveyFormService',
+    'lecture.studentService'
+  )
+)
 @reactAutobind
 @observer
 class CourseLectureContainer2 extends Component<Props, State> {
@@ -118,10 +140,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
     thumbnailImage: null,
     action: null,
     toggle: false,
-    onAction: () => { },
-    onViewDetail: () => { },
-    onToggle: () => { },
-    onRefreshLearningState: () => { },
+    onAction: () => {},
+    onViewDetail: () => {},
+    onToggle: () => {},
+    onRefreshLearningState: () => {},
     className: '',
     rollBookService: RollBookService,
     boardService: BoardService,
@@ -143,21 +165,18 @@ class CourseLectureContainer2 extends Component<Props, State> {
   studentForVideoObj: StudentModel | null = {} as StudentModel;
   rollBooks: RollBookModel[] = [];
 
-
-
-  state =
-    {
-      classNameForLearningState: 'fix line' || 'fix bg',
-      inProgress: '',
-      examTitle: '',
-      reportFileId: '',
-      surveyState: false,
-      surveyTitle: '',
-      passedState: false,
-      type: '',
-      name: '',
-      isContent: false
-    };
+  state = {
+    classNameForLearningState: 'fix line' || 'fix bg',
+    inProgress: '',
+    examTitle: '',
+    reportFileId: '',
+    surveyState: false,
+    surveyTitle: '',
+    passedState: false,
+    type: '',
+    name: '',
+    isContent: false,
+  };
 
   constructor(props: Props) {
     //
@@ -165,7 +184,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   componentDidMount() {
-
     const { lectureView, studentService } = this.props;
     const { setOpen } = this.context;
 
@@ -182,19 +200,31 @@ class CourseLectureContainer2 extends Component<Props, State> {
     this.init();
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<State>,
+    snapshot?: any
+  ): void {
     // console.log('componentDidUpdate', prevProps.studentInfo !== this.props.studentInfo);
-    if ((this.props.studentInfo !== null && prevProps.studentInfo !== this.props.studentInfo) ||
-      this.props.isPreCoursePassed !== prevProps.isPreCoursePassed) {
+    if (
+      (this.props.studentInfo !== null &&
+        prevProps.studentInfo !== this.props.studentInfo) ||
+      this.props.isPreCoursePassed !== prevProps.isPreCoursePassed
+    ) {
       this.init();
     }
   }
 
   async init() {
-    const { lectureView, examinationService, examPaperService, studentInfo, surveyFormService } = this.props;
+    const {
+      lectureView,
+      examinationService,
+      examPaperService,
+      studentInfo,
+      surveyFormService,
+    } = this.props;
 
     if (lectureView) {
-
       if (studentInfo !== null) {
         this.getStudentInfoView();
       }
@@ -207,27 +237,43 @@ class CourseLectureContainer2 extends Component<Props, State> {
       }
 
       if (lectureView.surveyCase?.id && lectureView.surveyCase.surveyFormId) {
-        const answerSheetService = await AnswerSheetApi.instance.findAnswerSheet(lectureView.surveyCase.id);
+        const answerSheetService = await AnswerSheetApi.instance.findAnswerSheet(
+          lectureView.surveyCase.id
+        );
         // const surveyForm = await surveyFormService!.findSurveyForm(lectureView.surveyCase.id);
-        const surveyForm = await SurveyFormService.instance!.findSurveyForm(lectureView.surveyCase.surveyFormId);
+        const surveyForm = await SurveyFormService.instance!.findSurveyForm(
+          lectureView.surveyCase.surveyFormId
+        );
 
-        const disabled = answerSheetService && answerSheetService.progress === AnswerProgress.Complete;
+        const disabled =
+          answerSheetService &&
+          answerSheetService.progress === AnswerProgress.Complete;
         this.state.surveyState = disabled;
 
         // console.log('this.lectureView.surveyCase.id : ', lectureView.surveyCase.surveyFormId);
         // console.log('this.surveyForm : ', surveyForm);
-        if (surveyForm && surveyForm.titles && surveyForm.titles.langStringMap) {
+        if (
+          surveyForm &&
+          surveyForm.titles &&
+          surveyForm.titles.langStringMap
+        ) {
           // @ts-ignore
           this.state.surveyTitle = surveyForm.titles.langStringMap.get('ko');
         }
         this.setState({ surveyState: disabled });
-        this.setState({ surveyTitle: surveyForm.titles.langStringMap.get('ko') });
+        this.setState({
+          surveyTitle: surveyForm.titles.langStringMap.get('ko'),
+        });
       }
 
       if (lectureView.cubeId) {
         // const cubeIntro = await CubeIntroService.instance.findCubeIntro(this.personalCube?.cubeIntro.id);
         const cubeIntro = lectureView.cubeIntro;
-        if (cubeIntro && cubeIntro?.reportFileBox && cubeIntro?.reportFileBox.fileBoxId) {
+        if (
+          cubeIntro &&
+          cubeIntro?.reportFileBox &&
+          cubeIntro?.reportFileBox.fileBoxId
+        ) {
           this.state.reportFileId = cubeIntro?.reportFileBox.fileBoxId;
         }
       }
@@ -240,15 +286,18 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   getStudentInfoView() {
-
     const { studentService, lectureView } = this.props;
     const { getLectureInfo } = studentService!;
 
     const studentLecture: StudentModel = getLectureInfo(lectureView.serviceId);
     if (studentLecture) {
       this.studentForVideoObj = studentLecture;
-      const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
-      this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+      const classNameForLearningStateTemp = this.setClassNameForLearningState(
+        this.studentForVideoObj
+      );
+      this.setState({
+        classNameForLearningState: classNameForLearningStateTemp,
+      });
       this.studentData = studentLecture;
 
       this.setExamState(this.studentData);
@@ -258,9 +307,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   getStudentJoin() {
-    const {
-      studentService,
-    } = this.props;
+    const { studentService } = this.props;
     const { studentJoins }: StudentService = studentService!;
 
     if (studentJoins && studentJoins.length) {
@@ -286,24 +333,31 @@ class CourseLectureContainer2 extends Component<Props, State> {
         if (studentForVideo.proposalState === ProposalState.Approved) {
           if (
             studentForVideo.learningState === LearningState.Waiting ||
-            studentForVideo.learningState === LearningState.Failed /*||
+            studentForVideo.learningState ===
+              LearningState.Failed /*||
             studentForVideo.learningState === LearningState.TestWaiting ||
             studentForVideo.learningState === LearningState.HomeworkWaiting ||
             studentForVideo.learningState === LearningState.TestPassed*/
           ) {
             state = SubState.Waiting;
           }
-          if (studentForVideo.learningState === LearningState.Progress ||
+          if (
+            studentForVideo.learningState === LearningState.Progress ||
             studentForVideo.learningState === LearningState.TestPassed ||
             studentForVideo.learningState === LearningState.TestWaiting ||
-            studentForVideo.learningState === LearningState.HomeworkWaiting) state = SubState.InProgress;
-          if (studentForVideo.learningState === LearningState.Passed) state = SubState.Completed;
-          if (studentForVideo.learningState === LearningState.Missed) state = SubState.Missed;
+            studentForVideo.learningState === LearningState.HomeworkWaiting
+          )
+            state = SubState.InProgress;
+          if (studentForVideo.learningState === LearningState.Passed)
+            state = SubState.Completed;
+          if (studentForVideo.learningState === LearningState.Missed)
+            state = SubState.Missed;
         }
       }
 
       this.state.inProgress = state;
-      classNameForLearningState = (state === SubState.InProgress) ? 'fix bg' : 'fix line';
+      classNameForLearningState =
+        state === SubState.InProgress ? 'fix bg' : 'fix line';
 
       // this.classNameForLearningState = classNameForLearningState;
     }
@@ -323,7 +377,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
     } else {
       setOpen(!open);
     }*/
-
   }
 
   registerStudentForVideo(studentCdo: StudentCdoModel) {
@@ -333,16 +386,20 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     //학습하기 시 출석부에 학생등록 처리 후 Lecture Card의 학습상태를 갱신함.
     return studentService!.registerStudent(studentCdo).then(() => {
-      getStudentForVideo(lectureView.serviceId).then((studentForVideo) => {
+      getStudentForVideo(lectureView.serviceId).then(studentForVideo => {
         this.studentForVideoObj = studentForVideo;
-        const classNameForLearningStateTemp = this.setClassNameForLearningState(this.studentForVideoObj);
+        const classNameForLearningStateTemp = this.setClassNameForLearningState(
+          this.studentForVideoObj
+        );
 
         //Course 전체 학습상태 갱신
         onRefreshLearningState!();
         this.removeStorage();
 
         //학습하기한 Lecture Card의 학습하기 버튼 상태 갱신(CSS 변경)
-        this.setState({ classNameForLearningState: classNameForLearningStateTemp });
+        this.setState({
+          classNameForLearningState: classNameForLearningStateTemp,
+        });
       });
 
       // studentService!.findStudentForVideo(studentCdo.rollBookId);
@@ -354,12 +411,24 @@ class CourseLectureContainer2 extends Component<Props, State> {
   async onRegisterStudentForVideo(proposalState?: ProposalState) {
     const studentCdo = this.getStudentCdo();
 
-    if ((!this.studentForVideoObj || !this.studentForVideoObj.id) || (this.studentForVideoObj.proposalState !== ProposalState.Canceled
-      && this.studentForVideoObj.proposalState !== ProposalState.Rejected)) {
-      await this.registerStudentForVideo({ ...studentCdo, proposalState: proposalState || studentCdo.proposalState });
-    }
-    else if (this.studentForVideoObj.proposalState === ProposalState.Canceled || this.studentForVideoObj.proposalState === ProposalState.Rejected) {
-      await this.registerStudentForVideo({ ...studentCdo, proposalState: this.studentForVideoObj.proposalState });
+    if (
+      !this.studentForVideoObj ||
+      !this.studentForVideoObj.id ||
+      (this.studentForVideoObj.proposalState !== ProposalState.Canceled &&
+        this.studentForVideoObj.proposalState !== ProposalState.Rejected)
+    ) {
+      await this.registerStudentForVideo({
+        ...studentCdo,
+        proposalState: proposalState || studentCdo.proposalState,
+      });
+    } else if (
+      this.studentForVideoObj.proposalState === ProposalState.Canceled ||
+      this.studentForVideoObj.proposalState === ProposalState.Rejected
+    ) {
+      await this.registerStudentForVideo({
+        ...studentCdo,
+        proposalState: this.studentForVideoObj.proposalState,
+      });
     }
     this.removeRqdLectureFromSessionStorage();
   }
@@ -429,12 +498,18 @@ class CourseLectureContainer2 extends Component<Props, State> {
         break;
       case MediaType.InternalMedia:
       case MediaType.InternalMediaUpload:
-        url = media.mediaContents.internalMedias.length ? media.mediaContents.internalMedias[0].viewUrl : '';
+        url = media.mediaContents.internalMedias.length
+          ? media.mediaContents.internalMedias[0].viewUrl
+          : '';
 
         if (lectureView.personalCube?.contents.type === CubeType.Video && url) {
           url += '&offerviewer=false&showtitle=false&showbrand=false';
-        } else if (lectureView.personalCube?.contents.type === CubeType.Audio && url) {
-          url += '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
+        } else if (
+          lectureView.personalCube?.contents.type === CubeType.Audio &&
+          url
+        ) {
+          url +=
+            '&offerviewer=false&interactivity=none&showtitle=false&showbrand=false';
         }
         break;
     }
@@ -443,12 +518,12 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   getStudentCdo(): StudentCdoModel {
-    const {
-      member, lectureView
-    } = this.props;
+    const { member, lectureView } = this.props;
 
     return new StudentCdoModel({
-      rollBookId: lectureView.rollBooks.length ? lectureView.rollBooks[0].id : '',
+      rollBookId: lectureView.rollBooks.length
+        ? lectureView.rollBooks[0].id
+        : '',
       name: member!.name,
       email: member!.email,
       company: member!.company,
@@ -479,7 +554,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
       메인페이지에 display 되는 해당 권장과정 을 보여지지 않게 하기 위함. 2020.10.05 by 김동구
     */
     const { rqdLectureService } = this.props;
-    rqdLectureService!.findPagingRqdLectures(LectureFilterRdoModel.newLectures(8, 0), true);
+    rqdLectureService!.findPagingRqdLectures(
+      LectureFilterRdoModel.newLectures(8, 0),
+      true
+    );
   }
 
   async getMainActionForVideo() {
@@ -493,21 +571,39 @@ class CourseLectureContainer2 extends Component<Props, State> {
 
     if (isPreCoursePassed) {
       //Video, Audio
-      if (lectureView.personalCube?.contents.service.type === ContentsServiceType.Media) {
-        const media = await mediaService!.findMedia(lectureView.personalCube?.contents.contents.id);
+      if (
+        lectureView.personalCube?.contents.service.type ===
+        ContentsServiceType.Media
+      ) {
+        const media = await mediaService!.findMedia(
+          lectureView.personalCube?.contents.contents.id
+        );
         const url = this.getMediaUrl(media);
 
         console.log('media : ', media);
 
         //외부 영상, CP사 영상
-        if (media.mediaType === MediaType.LinkMedia || media.mediaType === MediaType.ContentsProviderMedia) {
-          return { type: LectureSubInfo.ActionType.LearningStart, onAction: this.onClickPlayForOpen(url) };
+        if (
+          media.mediaType === MediaType.LinkMedia ||
+          media.mediaType === MediaType.ContentsProviderMedia
+        ) {
+          return {
+            type: LectureSubInfo.ActionType.LearningStart,
+            onAction: this.onClickPlayForOpen(url),
+          };
         } else {
-          return { type: LectureSubInfo.ActionType.Play, onAction: this.onClickPlayForVideo(url) };
+          return {
+            type: LectureSubInfo.ActionType.Play,
+            onAction: this.onClickPlayForVideo(url),
+          };
         }
       }
     } else {
-      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
+      reactAlert({
+        title: '선수과정안내',
+        message:
+          '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.',
+      });
     }
     // else if (service.type === ContentsServiceType.Community)
     // {
@@ -518,10 +614,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   popupLearnModal(url: string) {
-    const { onDoLearn } = this.props;
+    const { onDoLearn, lectureView } = this.props;
     if (onDoLearn) {
       const studentCdo = this.getStudentCdo();
-      onDoLearn(url, studentCdo);
+      onDoLearn(url, studentCdo, lectureView);
     }
   }
 
@@ -552,23 +648,29 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (this.studentData && this.studentData.id) {
       if (this.studentData.proposalState === ProposalState.Approved) {
         if (
-          this.studentData.learningState === LearningState.Waiting
-          || this.studentData.learningState === LearningState.HomeworkWaiting
-          || this.studentData.learningState === LearningState.TestWaiting
-          || this.studentData.learningState === LearningState.TestPassed
-          || this.studentData.learningState === LearningState.Failed
+          this.studentData.learningState === LearningState.Waiting ||
+          this.studentData.learningState === LearningState.HomeworkWaiting ||
+          this.studentData.learningState === LearningState.TestWaiting ||
+          this.studentData.learningState === LearningState.TestPassed ||
+          this.studentData.learningState === LearningState.Failed
         ) {
           state = SubState.InProgress;
         }
-        if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Progress)
+          state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed)
+          state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed)
+          state = SubState.InProgress;
         // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
-        this.studentData.learningState === LearningState.Progress) {
+      if (
+        !examId &&
+        this.studentData.phaseCount !== this.studentData.completePhaseCount &&
+        this.studentData.learningState === LearningState.Progress
+      ) {
         state = SubState.InProgress;
       }
     }
@@ -586,7 +688,6 @@ class CourseLectureContainer2 extends Component<Props, State> {
       reportFileBoxId,
     };
   }
-
 
   getTestViewObject() {
     //
@@ -626,23 +727,29 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (this.studentData && this.studentData.id) {
       if (this.studentData.proposalState === ProposalState.Approved) {
         if (
-          this.studentData.learningState === LearningState.Waiting
-          || this.studentData.learningState === LearningState.HomeworkWaiting
-          || this.studentData.learningState === LearningState.TestWaiting
-          || this.studentData.learningState === LearningState.TestPassed
-          || this.studentData.learningState === LearningState.Failed
+          this.studentData.learningState === LearningState.Waiting ||
+          this.studentData.learningState === LearningState.HomeworkWaiting ||
+          this.studentData.learningState === LearningState.TestWaiting ||
+          this.studentData.learningState === LearningState.TestPassed ||
+          this.studentData.learningState === LearningState.Failed
         ) {
           state = SubState.InProgress;
         }
-        if (this.studentData.learningState === LearningState.Progress) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Passed) state = SubState.InProgress;
-        if (this.studentData.learningState === LearningState.Missed) state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Progress)
+          state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Passed)
+          state = SubState.InProgress;
+        if (this.studentData.learningState === LearningState.Missed)
+          state = SubState.InProgress;
         // if (this.studentData.learningState === LearningState.Passed) state = SubState.Completed;
         // if (this.studentData.learningState === LearningState.Missed) state = SubState.Missed;
       }
 
-      if (!examId && this.studentData.phaseCount !== this.studentData.completePhaseCount &&
-        this.studentData.learningState === LearningState.Progress) {
+      if (
+        !examId &&
+        this.studentData.phaseCount !== this.studentData.completePhaseCount &&
+        this.studentData.learningState === LearningState.Progress
+      ) {
         state = SubState.InProgress;
       }
     }
@@ -675,14 +782,21 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (isPreCoursePassed) {
       this.examModal.onOpenModal();
     } else {
-      reactAlert({ title: '선수과정안내', message: '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.' });
+      reactAlert({
+        title: '선수과정안내',
+        message:
+          '본 시험은 선수 Course 과정을 이수하신 후에 응시가 가능합니다.',
+      });
     }
   }
 
   // truefree 2020-04-03
   // Test 응시 못하는 조건일 땐 Alert 띄워 달라길래....
   onReportNotReady() {
-    reactAlert({ title: 'Report 안내', message: '학습 시작 후 Report 참여 가능합니다.' });
+    reactAlert({
+      title: 'Report 안내',
+      message: '학습 시작 후 Report 참여 가능합니다.',
+    });
     // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
@@ -692,17 +806,26 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 
   onTestWaiting() {
-    reactAlert({ title: 'Test 안내', message: '시험결과를 기다리고 있습니다.' });
+    reactAlert({
+      title: 'Test 안내',
+      message: '시험결과를 기다리고 있습니다.',
+    });
   }
 
   onTestNotReady() {
-    reactAlert({ title: 'Test 안내', message: '학습 시작 후 Test 참여 가능합니다.' });
+    reactAlert({
+      title: 'Test 안내',
+      message: '학습 시작 후 Test 참여 가능합니다.',
+    });
     // reactAlert({ title: 'Test&Report 안내', message: '과정 이수 완료 후 Test 응시(Report 제출) 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
 
   OnSurveyNotReady() {
-    reactAlert({ title: 'Survey 안내', message: '학습 시작 후 Survey 참여 가능합니다.' });
+    reactAlert({
+      title: 'Survey 안내',
+      message: '학습 시작 후 Survey 참여 가능합니다.',
+    });
     // reactAlert({ title: 'Survey 안내', message: '과정 이수 완료 후 Survey 응시 가능합니다.' });
     // reactAlert({ title: 'Test&Report 안내', message: '모든 컨텐츠를 학습해야 Test응시(Report제출)가 가능합니다.' });
   }
@@ -711,9 +834,7 @@ class CourseLectureContainer2 extends Component<Props, State> {
     this.surveyModal.onOpenModal();
   }
 
-
   setExamState(studentData?: any) {
-
     // console.log('시험정보 세팅');
     // console.log('studentData : ',studentData);
     // console.log('serviceType : ' + studentData.serviceType);
@@ -726,19 +847,39 @@ class CourseLectureContainer2 extends Component<Props, State> {
     // console.log('setExamState : ', studentData);
     if (studentData) {
       if (studentData.serviceType || studentData.serviceType === 'Lecture') {
-        if (studentData.learningState === LearningState.Progress ||
-          studentData.learningState === LearningState.HomeworkWaiting) {
+        if (
+          studentData.learningState === LearningState.Progress ||
+          studentData.learningState === LearningState.HomeworkWaiting
+        ) {
           this.setStateName('0', 'Test');
-        } else if (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials < 3) {
+        } else if (
+          studentData.learningState === LearningState.Failed &&
+          studentData.studentScore.numberOfTrials < 3
+        ) {
           // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
-        } else if (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials > 2) {
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
+        } else if (
+          studentData.learningState === LearningState.Failed &&
+          studentData.studentScore.numberOfTrials > 2
+        ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
         } else if (studentData.learningState === LearningState.Missed) {
           // this.setStateName('4', '미이수');
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
-        } else if (studentData.learningState === LearningState.Passed || studentData.learningState === LearningState.TestPassed) {
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
+        } else if (
+          studentData.learningState === LearningState.Passed ||
+          studentData.learningState === LearningState.TestPassed
+        ) {
           this.setStateName('5', '이수');
         } else if (studentData.learningState === LearningState.TestWaiting) {
           this.setStateName('5', '결과대기');
@@ -746,33 +887,48 @@ class CourseLectureContainer2 extends Component<Props, State> {
           this.setStateName('1', 'Test');
         }
         // console.log('type : ' + this.state.type + ', name : ' + this.state.name);
-      }
-      else if (studentData.serviceType === 'Course' || studentData.serviceType === 'Program') {
-
+      } else if (
+        studentData.serviceType === 'Course' ||
+        studentData.serviceType === 'Program'
+      ) {
         if (
-          studentData.phaseCount === studentData.completePhaseCount
-          && (studentData.learningState === LearningState.Progress
-            || studentData.learningState === LearningState.HomeworkWaiting)
+          studentData.phaseCount === studentData.completePhaseCount &&
+          (studentData.learningState === LearningState.Progress ||
+            studentData.learningState === LearningState.HomeworkWaiting)
         ) {
           this.setStateName('0', 'Test');
         } else if (
-          studentData.phaseCount === studentData.completePhaseCount
-          && (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials < 3)
+          studentData.phaseCount === studentData.completePhaseCount &&
+          studentData.learningState === LearningState.Failed &&
+          studentData.studentScore.numberOfTrials < 3
         ) {
           // this.setStateName('2', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
         } else if (
-          studentData.phaseCount === studentData.completePhaseCount
-          && (studentData.learningState === LearningState.Failed && studentData.studentScore.numberOfTrials > 2)
+          studentData.phaseCount === studentData.completePhaseCount &&
+          studentData.learningState === LearningState.Failed &&
+          studentData.studentScore.numberOfTrials > 2
         ) {
           // this.setStateName('3', `재응시(${studentData.studentScore.numberOfTrials}/3)`);
           // // subActions.push({ type: `재응시(${student.numberOfTrials}/3)`, onAction: this.onTest });
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
         } else if (studentData.learningState === LearningState.Missed) {
           // this.setStateName('4', '미이수');
-          this.setStateName('0', `재응시 (${studentData.studentScore.numberOfTrials})`);
-        } else if (studentData.learningState === LearningState.Passed || studentData.learningState === LearningState.TestPassed) {
+          this.setStateName(
+            '0',
+            `재응시 (${studentData.studentScore.numberOfTrials})`
+          );
+        } else if (
+          studentData.learningState === LearningState.Passed ||
+          studentData.learningState === LearningState.TestPassed
+        ) {
           this.setStateName('5', '이수');
         } else if (studentData.learningState === LearningState.TestPassed) {
           this.setStateName('5', '결과대기');
@@ -795,7 +951,11 @@ class CourseLectureContainer2 extends Component<Props, State> {
     if (isPreCoursePassed) {
       if (onViewDetail) onViewDetail(lecture);
     } else {
-      reactAlert({ title: '선수과정안내', message: '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.' });
+      reactAlert({
+        title: '선수과정안내',
+        message:
+          '본 과정은 선수 Course 과정을 이수하신 후에 학습이 가능합니다.',
+      });
     }
   }
 
@@ -807,7 +967,8 @@ class CourseLectureContainer2 extends Component<Props, State> {
   getDuration() {
     if (this.studentData && this.studentData.durationViewSeconds !== null) {
       let durationViewSeconds = this.studentData.durationViewSeconds;
-      durationViewSeconds = durationViewSeconds >= 90 ? 100 : durationViewSeconds;
+      durationViewSeconds =
+        durationViewSeconds >= 90 ? 100 : durationViewSeconds;
       return durationViewSeconds;
     } else {
       return 0;
@@ -817,11 +978,21 @@ class CourseLectureContainer2 extends Component<Props, State> {
   setLearningStateForMedia() {
     const { lectureView, onViewDetail } = this.props;
 
-    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio) {
+    if (
+      lectureView.cubeType === CubeType.Video ||
+      lectureView.cubeType === CubeType.Audio
+    ) {
       switch (this.state.inProgress) {
         case SubState.InProgress:
           return (
-            <a href="#" className="btn-play orange" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
+            <a
+              href="#"
+              className="btn-play orange"
+              onClick={e => {
+                this.getMainActionForVideo();
+                e.preventDefault();
+              }}
+            >
               <span className="text">학습중({this.getDuration()}%)</span>
               <span className={'pie-wrapper progress-' + this.getDuration()}>
                 <span className="pie">
@@ -834,7 +1005,14 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Waiting:
           return (
-            <a href="#" className="btn-play orange" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
+            <a
+              href="#"
+              className="btn-play orange"
+              onClick={e => {
+                this.getMainActionForVideo();
+                e.preventDefault();
+              }}
+            >
               <span className="text">학습중({this.getDuration()}%)</span>
               <span className={'pie-wrapper progress-' + this.getDuration()}>
                 <span className="pie">
@@ -847,26 +1025,47 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
+            <a
+              href="#"
+              className="btn-play completed"
+              onClick={e => {
+                this.getMainActionForVideo();
+                e.preventDefault();
+              }}
+            >
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
           );
         default:
           return (
-            <a href="#" className="btn-play black" onClick={e => { this.getMainActionForVideo(); e.preventDefault(); }}>
+            <a
+              href="#"
+              className="btn-play black"
+              onClick={e => {
+                this.getMainActionForVideo();
+                e.preventDefault();
+              }}
+            >
               <span className="text">학습하기</span>
               <i className="icon play-black24" />
             </a>
           );
-
       }
     } else {
       switch (this.state.inProgress) {
         case SubState.InProgress:
           return (
-            <a href="#" className="btn-play orange" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
-              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+            <a
+              href="#"
+              className="btn-play orange"
+              onClick={e => {
+                this.checkPreCourseOnViewDetail(lectureView);
+              }}
+            >
+              <span className="text">
+                학습중{/*({lectureView.sumViewSeconds}%)*/}
+              </span>
               <span className={'pie-wrapper progress-' + 100}>
                 <span className="pie">
                   <span className="left-side" />
@@ -878,8 +1077,16 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Waiting:
           return (
-            <a href="#" className="btn-play orange" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
-              <span className="text">학습중{/*({lectureView.sumViewSeconds}%)*/}</span>
+            <a
+              href="#"
+              className="btn-play orange"
+              onClick={e => {
+                this.checkPreCourseOnViewDetail(lectureView);
+              }}
+            >
+              <span className="text">
+                학습중{/*({lectureView.sumViewSeconds}%)*/}
+              </span>
               <span className={'pie-wrapper progress-' + 100}>
                 <span className="pie">
                   <span className="left-side" />
@@ -891,19 +1098,30 @@ class CourseLectureContainer2 extends Component<Props, State> {
           );
         case SubState.Completed:
           return (
-            <a href="#" className="btn-play completed" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
+            <a
+              href="#"
+              className="btn-play completed"
+              onClick={e => {
+                this.checkPreCourseOnViewDetail(lectureView);
+              }}
+            >
               <span className="text">학습완료</span>
               <i className="icon play-completed24" />
             </a>
           );
         default:
           return (
-            <a href="#" className="btn-play black" onClick={e => { this.checkPreCourseOnViewDetail(lectureView); }}>
+            <a
+              href="#"
+              className="btn-play black"
+              onClick={e => {
+                this.checkPreCourseOnViewDetail(lectureView);
+              }}
+            >
               <span className="text">학습하기</span>
               <i className="icon play-black24" />
             </a>
           );
-
       }
     }
   }
@@ -911,7 +1129,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
   setLearningStateForFirst() {
     const { lectureView, onViewDetail } = this.props;
 
-    if (lectureView.cubeType === CubeType.Video || lectureView.cubeType === CubeType.Audio) {
+    if (
+      lectureView.cubeType === CubeType.Video ||
+      lectureView.cubeType === CubeType.Audio
+    ) {
       switch (this.state.inProgress) {
         case SubState.Completed:
           return (
@@ -939,83 +1160,106 @@ class CourseLectureContainer2 extends Component<Props, State> {
     return null;
   }
 
-
   render() {
     //
     const { classNameForLearningState } = this.state;
     const {
-      className, lectureView, thumbnailImage, toggle,
-      onViewDetail, lectureViewSize, lectureViewName, learningState
+      className,
+      lectureView,
+      thumbnailImage,
+      toggle,
+      onViewDetail,
+      lectureViewSize,
+      lectureViewName,
+      learningState,
     } = this.props;
 
     const { open } = this.context;
 
-    const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(this.props.lectureView.learningTime);
+    const hourMinuteFormat = dateTimeHelper.timeToHourMinuteFormat(
+      this.props.lectureView.learningTime
+    );
     this.viewObject = this.getViewObject();
 
     return (
       <>
-
-        {className === 'first' && (
-          lectureView.cubeId && (
-            <div className="cube-box">
-              <div className="bar typeA">
-                <div className="tit">
-                  <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
-                </div>
-                <div className="right">
-                  <span>{lectureView.cubeTypeName}</span>
-                  <span>{hourMinuteFormat}</span>
-                  {this.setLearningStateForMedia()}
-                </div>
+        {className === 'first' && lectureView.cubeId && (
+          <div className="cube-box">
+            <div className="bar typeA">
+              <div className="tit">
+                <span
+                  className="ellipsis"
+                  style={{ cursor: 'pointer' }}
+                  onClick={onViewDetail}
+                >
+                  {lectureViewName}
+                  {/*{lectureView.name}*/}
+                </span>
+              </div>
+              <div className="right">
+                <span>{lectureView.cubeTypeName}</span>
+                <span>{hourMinuteFormat}</span>
+                {this.setLearningStateForMedia()}
               </div>
             </div>
-          )
+          </div>
         )}
+        {className === 'first' && !lectureView.cubeId && (
+          <div>
+            <div className="bar">
+              <div className="tit">
+                <span
+                  className="ellipsis"
+                  style={{ cursor: 'pointer' }}
+                  onClick={onViewDetail}
+                >
+                  {lectureViewName}
+                  {/*{lectureView.name}*/}
+                </span>
+              </div>
+              {lectureViewSize && (
+                <>
+                  <div className="num">{lectureViewSize}개 강의 구성</div>
+                  {this.setLearningStateForFirst()}
+                </>
+              )}
 
-        {className === 'first' && (
-          !lectureView.cubeId && (
-            <div>
-              <div className="bar">
-                <div className="tit">
-                  <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
-                </div>
-                {
-                  lectureViewSize && (
-                    <>
-                      <div className="num">{lectureViewSize}개 강의 구성</div>
-                      {this.setLearningStateForFirst()}
-                    </>
-                  )
-                }
-
-                <div className="toggle-btn">
-                  <Button
-                    icon
+              <div className="toggle-btn">
+                <Button
+                  icon
+                  className={classNames({
+                    'img-icon': true,
+                    'fn-more-toggle': true,
+                    'card-open': !open,
+                    'card-close': open,
+                  })}
+                  onClick={this.onToggle}
+                >
+                  <Icon
                     className={classNames({
-                      'img-icon': true,
-                      'fn-more-toggle': true,
-                      'card-open': !open,
-                      'card-close': open,
+                      'arrow-down': !open,
+                      'arrow-up': open,
                     })}
-                    onClick={this.onToggle}
-                  >
-                    <Icon className={classNames({ 'arrow-down': !open, 'arrow-up': open })} />
-                  </Button>
-                </div>
+                  />
+                </Button>
               </div>
             </div>
-
-          )
+          </div>
         )}
-
         {className !== 'first' && (
           <>
             <ul className="step1">
               {lectureView.cubeTypeName && (
                 <li>
                   <div className="tit">
-                    <span className="ellipsis" style={{ cursor: 'pointer' }} onClick={onViewDetail}>{lectureViewName}{/*{lectureView.name}*/}</span>
+                    <span
+                      className="ellipsis"
+                      style={{ cursor: 'pointer' }}
+                      onClick={onViewDetail}
+                    >
+                      {lectureViewName}
+                      {/*{lectureView.name}*/}
+                    </span>
                   </div>
                   <div className="right">
                     <span>{lectureView.cubeTypeName}</span>
@@ -1033,15 +1277,10 @@ class CourseLectureContainer2 extends Component<Props, State> {
   }
 }
 
-
 interface FieldProps {
-  children: React.ReactNode,
+  children: React.ReactNode;
 }
 
-const Field = ({ children }: FieldProps) => (
-  <li>
-    {children}
-  </li>
-);
+const Field = ({ children }: FieldProps) => <li>{children}</li>;
 
 export default CourseLectureContainer2;

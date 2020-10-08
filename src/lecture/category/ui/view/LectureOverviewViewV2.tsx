@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { mobxHelper, reactAlert, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
-
 import depot from '@nara.drama/depot';
+import { storageHelper } from 'shared';
 import { Button, Icon } from 'semantic-ui-react';
 import { AnswerSheetModal, CubeReportModal } from 'assistant';
 import { AnswerSheetModal as SurveyAnswerSheetModal } from 'survey';
@@ -91,6 +91,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   lectureLearningModal: any = null;
   learningVideoUrl: string = '';
   learnStudentCdo: StudentCdoModel | null = null;
+  lectureView: LectureViewModel = new LectureViewModel();
 
   state = {
     multiple: false,
@@ -397,7 +398,31 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   }
 
   // 학습하기 - 학습 모달창 팝업
-  onDoLearn(videoUrl: string, studentCdo: StudentCdoModel): void {
+  onDoLearn(
+    videoUrl: string,
+    studentCdo: StudentCdoModel,
+    lectureView?: LectureViewModel
+  ): void {
+    // 동영상 close click 시 lectureCardId 가 같다면
+    // 20200717 video 멀티 시청불가~! = return true
+    if (storageHelper.checkMultiVideo(lectureView?.serviceId)) {
+      reactAlert({
+        title: '알림',
+        message:
+          '현재 다른 과정을 학습하고 있습니다.<br>가급적 기존 학습을 완료한 후 학습해 주시기 바랍니다.',
+        onClose: () => this.playVideo(videoUrl, studentCdo, lectureView),
+      });
+    } else {
+      this.playVideo(videoUrl, studentCdo, lectureView);
+    }
+  }
+
+  playVideo(
+    videoUrl: string,
+    studentCdo: StudentCdoModel,
+    lectureView?: LectureViewModel
+  ) {
+    if (lectureView) this.lectureView = lectureView;
     this.learningVideoUrl = videoUrl;
     studentCdo.proposalState = ProposalState.Approved;
     this.learnStudentCdo = studentCdo;
@@ -409,6 +434,11 @@ class LectureOverviewViewV2 extends Component<Props, State> {
   // 학습 모달창 닫기 - 학습통계정보 저장
   onLearningModalClose() {
     const { lectureService, onPageRefresh } = this.props;
+
+    // 동영상 close click 시 lectureCardId 가 같다면
+    // 20200717 video 멀티 시청불가~! 해제
+    storageHelper.deleteMultiVideo(this.lectureView.serviceId);
+
     if (this.learnStudentCdo) {
       const studentCdo = {
         ...this.learnStudentCdo,
@@ -582,6 +612,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                 </Lecture2.Group>
               )}
 
+              {/* Course 콘텐츠 */}
               <Lecture2.Group
                 type={Lecture2.GroupType.Course}
                 totalCourseCount={viewObject.totalCourseCount}
@@ -707,6 +738,7 @@ class LectureOverviewViewV2 extends Component<Props, State> {
                 )}
               </Lecture2.Group>
 
+              {/* 시험 리포트 설문 */}
               {viewObject && (
                 <>
                   <LectureExam2
