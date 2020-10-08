@@ -19,7 +19,7 @@ const ChallengeCancelModal: React.FC<Props> = (Props) => {
         <div className="content-wrap6">
           <div className="badge-p02">
             <div className="tt">Badge획득 도전을 취소하시겠습니까?</div>
-            학습 완료 내역은 재도전시,<br/>다시 학습 하실 필요가 없습니다.
+            도전을 취소해도 이수하신 학습과정은 영향이 없습니다.
           </div>
         </div>
       </Modal.Content>

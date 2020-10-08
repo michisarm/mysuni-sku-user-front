@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Image, Segment } from 'semantic-ui-react';
 import introductionCertification2 from '../../../style/media/introduction-certification2.png';
+import certification from '../../../style/media/certification.png';
 
 
 class CertificationView extends Component {
@@ -13,8 +14,8 @@ class CertificationView extends Component {
         <div className="common-intro case3">
           <div className="inner">
             <div className="strong">mySUNI에서는 구성원의 자발적 학습과 Career 개발을 위해<br/>인증제도를 운영하고 있습니다.</div>
-            <iframe title="인증안내 영상" className="inner-video" src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=4ecc2936-9626-4201-af48-ac4b0098f10c&amp;offerviewer=false&amp;showtitle=false&amp;interactivity=none&amp;showbrand=false"/>
-            <img src="../../img/certification.png" alt=""/>
+            <iframe title="인증안내 영상" className="inner-video" src="https://sku.ap.panopto.com/Panopto/Pages/Embed.aspx?id=2c3a5cdd-5683-48a5-86b3-ac4d0086b990&amp;offerviewer=false&amp;showtitle=false&amp;interactivity=none&amp;showbrand=false"/>
+            <img src={certification} alt=""/>
           </div>
         </div>
 
