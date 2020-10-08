@@ -120,8 +120,9 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     const { personalCube } = personalCubeService!;
     const { personalCubeId } = match.params;
 
+    const createType : string = 'U';
     if (!personalCubeId) {
-      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name }})
+      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType }})
         .then((personalCubeId) => {
           if (personalCubeId) {
             this.routeToCreateIntro(personalCubeId);
