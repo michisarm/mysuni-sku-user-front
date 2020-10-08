@@ -1,9 +1,7 @@
-
 import React from 'react';
 import RenderPropsModel from './RenderPropsModel';
 
-
-interface TabItemModel {
+export default interface TabItemModel {
   //
   name: string;
   render: (props: RenderPropsModel) => React.ReactNode;
@@ -12,5 +10,3 @@ interface TabItemModel {
   className?: string;
   onClick?: () => void;
 }
-
-export default TabItemModel;
