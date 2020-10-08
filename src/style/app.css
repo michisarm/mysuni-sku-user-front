@@ -395,23 +395,59 @@ i.icon.balloon.logout::before {
 
 /* 뱃지 스타일 변경 */
 
-.scrolling-area.badge-scrolling .scrolling {min-height:16rem; height:16rem}
-.scrolling-area.badge-scrolling .scrolling .belt li {margin-right:0.3rem}
-.badge-list ul li {margin-right:100px}
-.badge-list ul li:nth-child(4n) {margin-right:0}
-.badge-list ul li .badge-name {width:100%}
-.badge-list ul li .badge-name span {float:left}
+.scrolling-area.badge-scrolling .scrolling {
+  min-height: 16rem;
+  height: 16rem;
+}
+.scrolling-area.badge-scrolling .scrolling .belt li {
+  margin-right: 0.3rem;
+}
+.badge-list ul li {
+  margin-right: 100px;
+}
+.badge-list ul li:nth-child(4n) {
+  margin-right: 0;
+}
+.badge-list ul li .badge-name {
+  width: 100%;
+}
+.badge-list ul li .badge-name span {
+  float: left;
+}
 
-.badge.s220 .title .cell {padding:0 1.5rem}
-.badge.s220 .title .cell span {overflow:hidden; display:block; word-break:keep-all; text-overflow:clip; -webkit-line-clamp: none}
-.msie .badge.s220 .title .cell {font-weight:500}
+.badge.s220 .title .cell {
+  padding: 0 1.5rem;
+}
+.badge.s220 .title .cell span {
+  overflow: hidden;
+  display: block;
+  word-break: keep-all;
+  text-overflow: clip;
+  -webkit-line-clamp: none;
+}
+.msie .badge.s220 .title .cell {
+  font-weight: 500;
+}
 
-.badge.s280 .title .cell {padding:0 1.5rem}
-.badge.s280 .title .cell span {overflow:hidden; display:block; word-break:keep-all; text-overflow:clip; -webkit-line-clamp: none}
-.msie .badge.s280 .title .cell {font-weight:500}
+.badge.s280 .title .cell {
+  padding: 0 1.5rem;
+}
+.badge.s280 .title .cell span {
+  overflow: hidden;
+  display: block;
+  word-break: keep-all;
+  text-overflow: clip;
+  -webkit-line-clamp: none;
+}
+.msie .badge.s280 .title .cell {
+  font-weight: 500;
+}
 
 /*Badge Ctype*/
-.badge-p01 .badge_new { margin-left: auto; margin-right: auto; }
+.badge-p01 .badge_new {
+  margin-left: auto;
+  margin-right: auto;
+}
 /*
 .badge { position: relative; display: block; text-align: center; padding: 0.25rem 0.375rem 0.5rem; margin-left: -0.375rem; margin-top: -0.25rem; width: 14.5rem; height: 14.5rem; }
 
@@ -504,4 +540,14 @@ body.msie .badge.s220 .title .cell span { font-weight: 500; word-break: keep-all
 .introduction .common-intro.case3 .inner {
   padding: 3.75rem 0 0;
   background: none;
+}
+
+.support .post-view-wrap .post-view .content-area .content-inner p,
+.support .post-view-wrap .post-view .content-area .content-inner blockquote,
+.support .post-view-wrap .post-view .content-area .content-inner li {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: #282e3b;
+  font-family: notosanskr, Apple SD Gothic Neo, Apple Gothic, -apple-system,
+    sans-serif;
 }
