@@ -97,11 +97,10 @@ class NoticeDetailContainer extends React.Component<Props, State> {
 
           {post.contents && (
             <div className="content-area">
-              <div className="content-inner">
-                <ReactQuill
-                  readOnly
-                  theme="bubble"
-                  value={post.contents.contents || ''}
+              <div className="content-inner ql-snow">
+                <div
+                  className="ql-editor"
+                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
                 />
               </div>
               <div className="file">
@@ -156,6 +155,5 @@ class NoticeDetailContainer extends React.Component<Props, State> {
     );
   }
 }
-
 
 export default withRouter(NoticeDetailContainer);

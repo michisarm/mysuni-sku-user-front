@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -11,16 +10,12 @@ import routePaths from '../../routePaths';
 import { CategoryService, PostService } from '../../stores';
 import BoardDetailContentHeaderView from '../view/BoardDetailContentHeaderView';
 
-
 interface Props extends RouteComponentProps<{ postId: string }> {
-  postService?: PostService
-  categoryService?: CategoryService
+  postService?: PostService;
+  categoryService?: CategoryService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'board.postService',
-  'board.categoryService',
-))
+@inject(mobxHelper.injectFrom('board.postService', 'board.categoryService'))
 @observer
 @reactAutobind
 class FaqDetailContainer extends Component<Props> {
@@ -30,13 +25,12 @@ class FaqDetailContainer extends Component<Props> {
     const { postId } = this.props.match.params;
     const { postService, categoryService } = this.props;
 
-    postService!.findPostByPostId(postId)
-      .then(() => {
-        const categoryId = postService!.post.category.id;
-        if (categoryId) {
-          categoryService!.findCategoryByCategoryId(categoryId);
-        }
-      });
+    postService!.findPostByPostId(postId).then(() => {
+      const categoryId = postService!.post.category.id;
+      if (categoryId) {
+        categoryService!.findCategoryByCategoryId(categoryId);
+      }
+    });
   }
 
   onClickList() {
@@ -56,13 +50,12 @@ class FaqDetailContainer extends Component<Props> {
             onClickList={this.onClickList}
           />
 
-          { post.contents && (
+          {post.contents && (
             <div className="content-area">
-              <div className="content-inner">
-                <ReactQuill
-                  readOnly
-                  theme="bubble"
-                  value={post.contents.contents || ''}
+              <div className="content-inner  ql-snow">
+                <div
+                  className="ql-editor"
+                  dangerouslySetInnerHTML={{ __html: post.contents.contents }}
                 />
               </div>
             </div>
