@@ -59,7 +59,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
     if (savedRecommendLearningList && savedRecommendLearningList.length > 0) {
-      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(JSON.stringify(savedRecommendLearningList));
+      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
       if (recommendMain.results.length > PAGE_SIZE - 1) {
         lrsLectureService!.setPagingLrsLectures(recommendMain);
         if (!recommendMain || !recommendMain.title || recommendMain.title.length < 1) {
