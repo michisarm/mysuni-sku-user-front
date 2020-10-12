@@ -149,7 +149,7 @@ const InProgressLearning: React.FC<Props> = (Props) => {
 
   const routeToRecommend = () => {
     history.push(lectureRoutes.recommend());
-  }
+  };
 
   return (
     <ContentWrapper>
