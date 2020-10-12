@@ -84,7 +84,7 @@ class CertificationView extends Component {
                         <td/>
                       </tr>
                       <tr>
-                        <th>미래 Biz</th>
+                        <th>미래 Biz.</th>
                         <td>
                           <ul>
                             <li><span>반도체 Biz Essentials</span></li>
