@@ -30,11 +30,12 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService,
 
   profileMemberName: string,
+  GA_NAME: string,
 }
 
 const InProgressLearning: React.FC<Props> = (Props) => {
   //
-  const { reviewService, myTrainingService, inMyLectureService, profileMemberName, history } = Props;
+  const { reviewService, myTrainingService, inMyLectureService, profileMemberName, history, GA_NAME } = Props;
 
   const CONTENT_TYPE = 'InProgress';
   const ONTENT_TYPE_NAME = '학습중';
@@ -184,6 +185,7 @@ const InProgressLearning: React.FC<Props> = (Props) => {
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
+                GA_NAME={GA_NAME}
               />
             );
           })}

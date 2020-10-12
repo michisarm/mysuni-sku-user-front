@@ -30,6 +30,7 @@ interface Props extends RouteComponentProps {
 
   profileMemberName: string,
   profileMemberEmail: string,
+  GA_NAME: string
 }
 /*
   ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
@@ -37,7 +38,7 @@ interface Props extends RouteComponentProps {
 const LRSLearning: React.FC<Props> = (Props) => {
   //
   const { reviewService, lrsLectureService, inMyLectureService,
-    profileMemberName, profileMemberEmail, history } = Props;
+    profileMemberName, profileMemberEmail, history, GA_NAME } = Props;
 
   const CONTENT_TYPE_NAME = '추천과정';
   const PAGE_SIZE = 8;
@@ -201,6 +202,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
+                GA_NAME={GA_NAME}
               />
             );
           })}
