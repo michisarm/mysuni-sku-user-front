@@ -40,7 +40,10 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
 
   return (
     <>
-      <InProgressLearning profileMemberName={member.name} />
+      <InProgressLearning 
+        profileMemberName={member.name}
+        GA_NAME="studying_detail_btn" 
+      />
 
       {/*TODO! Badge 정식 오픈 시 주석해제 0820 */}
       <ChallengingBadge profileMemberName={member.name} />
@@ -52,6 +55,7 @@ const MyLearningContentContainer: React.FC<Props> = (Props) => {
       <RecommendLearning
         profileMemberName={member.name}
         profileMemberEmail={member.email}
+        GA_NAME="recommend_detail_btn"
       />
     </>
   );
