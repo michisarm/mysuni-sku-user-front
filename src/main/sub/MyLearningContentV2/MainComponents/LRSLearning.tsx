@@ -1,6 +1,6 @@
 
-import React, {useEffect, useState} from 'react';
-import {  mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { useEffect, useState } from 'react';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
@@ -32,7 +32,7 @@ interface Props extends RouteComponentProps {
   profileMemberEmail: string,
 }
 
-const LRSLearning : React.FC<Props> = (Props) => {
+const LRSLearning: React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, lrsLectureService, inMyLectureService,
     profileMemberName, profileMemberEmail, history } = Props;
@@ -42,7 +42,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
 
   const { lrsLectures } = lrsLectureService!;
 
-  const [title, setTitle] = useState<string|null>('');
+  const [title, setTitle] = useState<string | null>('');
 
   lrsLectureService?.setProfileName(profileMemberName);
 
@@ -57,7 +57,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedRecommendLearningList = window.navigator.onLine && window.sessionStorage.getItem('LrsLearningList');
     if (savedRecommendLearningList && savedRecommendLearningList.length > 0) {
-      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(savedRecommendLearningList);
+      const recommendMain: OffsetElementList<LectureModel> = JSON.parse(JSON.stringify(savedRecommendLearningList));
       if (recommendMain.results.length > PAGE_SIZE - 1) {
         lrsLectureService!.setPagingLrsLectures(recommendMain);
         if (!recommendMain || !recommendMain.title || recommendMain.title.length < 1) {
@@ -174,7 +174,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
           {
             lrsLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
@@ -195,7 +195,7 @@ const LRSLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}

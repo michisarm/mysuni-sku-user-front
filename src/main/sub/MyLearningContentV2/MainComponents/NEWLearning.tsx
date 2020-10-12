@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -29,7 +29,7 @@ interface Props extends RouteComponentProps {
   inMyLectureService?: InMyLectureService,
 }
 
-const NEWLearning : React.FC<Props> = (Props) => {
+const NEWLearning: React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, newLectureService, inMyLectureService, history } = Props;
 
@@ -38,7 +38,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
   const { newLectures } = newLectureService!;
 
-  const [title, setTitle] = useState<string|null>('');
+  const [title, setTitle] = useState<string | null>('');
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -51,7 +51,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedNewLearningList = window.navigator.onLine && window.sessionStorage.getItem('NewLearningList');
     if (savedNewLearningList && savedNewLearningList.length > 0) {
-      const newMain: OffsetElementList<LectureModel> = JSON.parse(savedNewLearningList);
+      const newMain: OffsetElementList<LectureModel> = JSON.parse(JSON.stringify(savedNewLearningList));
       if (newMain.results.length > PAGE_SIZE - 1) {
         newLectureService!.setPagingNewLectures(newMain);
         if (!newMain || !newMain.title || newMain.title.length < 1) {
@@ -98,7 +98,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    console.log( CONTENT_TYPE_NAME );
+    console.log(CONTENT_TYPE_NAME);
     actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
@@ -167,14 +167,14 @@ const NEWLearning : React.FC<Props> = (Props) => {
           {
             newLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
         </div>
       </div>
 
-      {newLectures.length > 0 && newLectures[0]?
+      {newLectures.length > 0 && newLectures[0] ?
         <Lecture.Group type={Lecture.GroupType.Line}>
           {newLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
@@ -188,7 +188,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}

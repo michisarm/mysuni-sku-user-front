@@ -30,7 +30,7 @@ interface Props extends RouteComponentProps {
   profileMemberName: string,
 }
 
-const InProgressLearning : React.FC<Props> = (Props) => {
+const InProgressLearning: React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, myTrainingService, inMyLectureService, profileMemberName, history } = Props;
 
@@ -51,7 +51,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedInProgressLearningList = window.navigator.onLine && window.sessionStorage.getItem('InProgressLearningList');
     if (savedInProgressLearningList) {
-      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
+      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(JSON.stringify(savedInProgressLearningList));
       if (inProgressMain.totalCount > PAGE_SIZE - 1) {
         myTrainingService!.setMyTrainingsWithState(inProgressMain);
         return;
@@ -59,7 +59,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     }
 
     // 서버로부터 가져오기
-    myTrainingService!.findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE,0,[],true);
+    myTrainingService!.findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE, 0, [], true);
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -151,7 +151,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
           {
             myTrainings.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
@@ -172,7 +172,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
@@ -188,7 +188,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
-              onClick={ () => {
+              onClick={() => {
                 onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
                 history.push('/lecture/recommend');
               }}
@@ -196,7 +196,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
               <span className="border">
                 <span className="ellipsis">{profileMemberName}</span> 님에게 추천하는 학습 과정 보기
               </span>
-              <Icon className="morelink"/>
+              <Icon className="morelink" />
             </Button>
           </>
         )}

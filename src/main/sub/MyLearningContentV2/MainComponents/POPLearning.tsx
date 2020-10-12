@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {  mobxHelper, reactAlert } from '@nara.platform/accent';
+import React, { useEffect, useState } from 'react';
+import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
@@ -13,7 +13,7 @@ import { NoSuchContentPanel } from 'shared';
 import lectureRoutePaths from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
-import { POPLectureService} from 'lecture/stores';
+import { POPLectureService } from 'lecture/stores';
 import { Lecture } from 'lecture';
 import { MyTrainingModel, InMyLectureCdoModel, InMyLectureModel } from 'myTraining/model';
 import { InMyLectureService } from 'myTraining/stores';
@@ -31,7 +31,7 @@ interface Props extends RouteComponentProps {
   profileMemberName: string,
 }
 
-const POPLearning : React.FC<Props> = (Props) => {
+const POPLearning: React.FC<Props> = (Props) => {
   //
   const { actionLogService, reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
 
@@ -40,7 +40,7 @@ const POPLearning : React.FC<Props> = (Props) => {
 
   const { popLectures } = popLectureService!;
 
-  const [title, setTitle] = useState<string|null>('');
+  const [title, setTitle] = useState<string | null>('');
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -53,7 +53,7 @@ const POPLearning : React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedPopularLearningList = window.navigator.onLine && window.sessionStorage.getItem('PopLearningList');
     if (savedPopularLearningList && savedPopularLearningList.length > 0) {
-      const popularMain: OffsetElementList<LectureModel> = JSON.parse(savedPopularLearningList);
+      const popularMain: OffsetElementList<LectureModel> = JSON.parse(JSON.stringify(savedPopularLearningList));
       if (popularMain.results.length > PAGE_SIZE - 1) {
         popLectureService!.setPagingPopLectures(popularMain);
         if (!popularMain || !popularMain.title || popularMain.title.length < 1) {
@@ -168,14 +168,14 @@ const POPLearning : React.FC<Props> = (Props) => {
           {
             popLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
         </div>
       </div>
 
-      {popLectures.length > 0 && popLectures[0]?
+      {popLectures.length > 0 && popLectures[0] ?
         <Lecture.Group type={Lecture.GroupType.Line}>
           {popLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
@@ -189,7 +189,7 @@ const POPLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
@@ -205,7 +205,7 @@ const POPLearning : React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
-              onClick={ () => {
+              onClick={() => {
                 onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
                 history.push('/lecture/recommend');
               }}
@@ -214,7 +214,7 @@ const POPLearning : React.FC<Props> = (Props) => {
                 <span className="ellipsis">{profileMemberName}</span>
                 님에게 추천하는 학습 과정 보기
               </span>
-              <Icon className="morelink"/>
+              <Icon className="morelink" />
             </Button>
           </>
         )}
