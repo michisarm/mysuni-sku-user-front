@@ -5,12 +5,12 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
+// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
 
-import lectureRoutePaths from 'lecture/routePaths';
+import lectureRoutes from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { POPLectureService } from 'lecture/stores';
@@ -23,17 +23,19 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
+  // actionLogService?: ActionLogService,
   reviewService?: ReviewService,
   popLectureService?: POPLectureService,
   inMyLectureService?: InMyLectureService,
 
   profileMemberName: string,
 }
-
+/*
+  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
+*/
 const POPLearning: React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
+  const { reviewService, popLectureService, inMyLectureService, profileMemberName, history } = Props;
 
   const CONTENT_TYPE_NAME = '인기과정';
   const PAGE_SIZE = 8;
@@ -100,7 +102,7 @@ const POPLearning: React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningPopLecture());
@@ -112,16 +114,16 @@ const POPLearning: React.FC<Props> = (Props) => {
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutes.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutes.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
     }
   };
 
   const onActionLecture = (training: MyTrainingModel | LectureModel | InMyLectureModel) => {
     //
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
@@ -156,8 +158,11 @@ const POPLearning: React.FC<Props> = (Props) => {
     }
   };
 
-  const onClickActionLog = (text: string) => {
+  /* const onClickActionLog = (text: string) => {
     actionLogService?.registerClickActionLog({ subAction: text });
+  }; */
+  const routeToRecommend = () => {
+    history.push(lectureRoutes.recommend());
   };
 
   return (
@@ -205,10 +210,7 @@ const POPLearning: React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
-              onClick={() => {
-                onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
-                history.push('/lecture/recommend');
-              }}
+              onClick={routeToRecommend}
             >
               <span className="border">
                 <span className="ellipsis">{profileMemberName}</span>
@@ -225,7 +227,7 @@ const POPLearning: React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
+  // 'shared.actionLogService',
   'shared.reviewService',
   'popLecture.popLectureService',
   'myTraining.inMyLectureService',

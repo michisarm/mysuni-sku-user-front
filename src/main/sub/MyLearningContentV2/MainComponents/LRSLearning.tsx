@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
+// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
@@ -23,7 +23,7 @@ import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoMod
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
+  // actionLogService?: ActionLogService,
   reviewService?: ReviewService,
   lrsLectureService?: LRSLectureService,
   inMyLectureService?: InMyLectureService,
@@ -31,10 +31,12 @@ interface Props extends RouteComponentProps {
   profileMemberName: string,
   profileMemberEmail: string,
 }
-
+/*
+  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
+*/
 const LRSLearning: React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, lrsLectureService, inMyLectureService,
+  const { reviewService, lrsLectureService, inMyLectureService,
     profileMemberName, profileMemberEmail, history } = Props;
 
   const CONTENT_TYPE_NAME = '추천과정';
@@ -104,7 +106,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningLrsLecture());
@@ -125,7 +127,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
 
   const onActionLecture = (training: MyTrainingModel | LectureModel | InMyLectureModel) => {
     //
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
@@ -160,9 +162,9 @@ const LRSLearning: React.FC<Props> = (Props) => {
     }
   };
 
-  const onClickActionLog = (text: string) => {
+  /* const onClickActionLog = (text: string) => {
     actionLogService?.registerClickActionLog({ subAction: text });
-  };
+  }; */
 
   return (
     <ContentWrapper>
@@ -214,7 +216,7 @@ const LRSLearning: React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
+  // 'shared.actionLogService',
   'shared.reviewService',
   'lrsLecture.lrsLectureService',
   'myTraining.inMyLectureService',

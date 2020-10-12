@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
+// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
@@ -23,9 +23,11 @@ import OffsetElementList from '../../../../shared/model/OffsetElementList';
 import RQDLectureService from '../../../../lecture/shared/present/logic/RQDLectureService';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 
-
+/*
+  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
+*/
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
+  // actionLogService?: ActionLogService;
   reviewService?: ReviewService;
   rqdLectureService?: RQDLectureService;
   inMyLectureService?: InMyLectureService;
@@ -34,7 +36,7 @@ interface Props extends RouteComponentProps {
 const RQDLearning: React.FC<Props> = Props => {
   //
   const {
-    actionLogService,
+    // actionLogService,
     reviewService,
     rqdLectureService,
     inMyLectureService,
@@ -126,7 +128,7 @@ const RQDLearning: React.FC<Props> = Props => {
 
   const onViewAll = () => {
     //
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningRqdLecture());
@@ -168,10 +170,10 @@ const RQDLearning: React.FC<Props> = Props => {
     training: MyTrainingModel | LectureModel | InMyLectureModel
   ) => {
     //
-    actionLogService?.registerSeenActionLog({
+    /* actionLogService?.registerSeenActionLog({
       lecture: training,
       subAction: '아이콘',
-    });
+    }); */
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
@@ -207,9 +209,9 @@ const RQDLearning: React.FC<Props> = Props => {
     }
   };
 
-  const onClickActionLog = (text: string) => {
+  /* const onClickActionLog = (text: string) => {
     actionLogService?.registerClickActionLog({ subAction: text });
-  };
+  }; */
 
   return (
     <ContentWrapper>
@@ -276,7 +278,7 @@ const RQDLearning: React.FC<Props> = Props => {
 
 export default inject(
   mobxHelper.injectFrom(
-    'shared.actionLogService',
+    // 'shared.actionLogService',
     'shared.reviewService',
     'rqdLecture.rqdLectureService',
     'myTraining.inMyLectureService'
