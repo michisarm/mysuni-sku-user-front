@@ -169,9 +169,6 @@ class LectureContainer extends Component<Props, States> {
 
     /* react-gtm */
     TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
-
-    console.log('process:',process.env.REACT_APP_API_GA_ID);
-    console.log('process:',process.env.REACT_APP_API_GTM_ID);
   }
 
   /* render functions */
