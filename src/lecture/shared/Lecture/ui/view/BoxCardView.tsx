@@ -110,8 +110,6 @@ class BoxCardView extends Component<Props, States> {
       btnClassNames = 'fix bg';
     }
 
-    console.log('process:',process.env.REACT_APP_API_TRACKING_ID);
-
     return (
       <Card
         className={classNames({
