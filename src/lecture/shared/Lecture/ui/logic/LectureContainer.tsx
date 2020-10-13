@@ -52,6 +52,7 @@ interface ActionWith extends Action {
   type: ActionType,
 }
 
+
 /**
  * 러닝카드 컴포넌트입니다.
  */
@@ -102,7 +103,7 @@ class LectureContainer extends Component<Props, States> {
   };
 
   // react-ga tracking id
-  componentDidMount() { ReactGA.initialize('UA-178888440-1'); }
+  componentDidMount() { ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`); }
 
   onHoverIn() {
     const { actionLogService, model } = this.props;
@@ -147,16 +148,18 @@ class LectureContainer extends Component<Props, States> {
   }
 
   onViewDetail(e: any) {
-    //
     const { actionLogService, model, onViewDetail, GA_NAME } = this.props;
     const data = {
       model,
     };
 
+    // (하위컴포넌트)BoxCardView.tsx 에서 event값 이용해 GA_NAME 판별 후 GA Event에 카테고리 클릭 수 전송. 
     if (GA_NAME === 'recommend_detail_btn') {
+      // 추천과정
       Event('recommend_detail_btn', 'click_recommed_detail_btn', 'detail');
     }
     else if (GA_NAME === 'studying_detail_btn') {
+      // 학습과정
       Event('studying_detail_btn', 'click_studying_detail_btn', '_study_detail');
     }
 
@@ -165,7 +168,7 @@ class LectureContainer extends Component<Props, States> {
     onViewDetail!(e, data);
 
     /* react-gtm */
-    TagManager.initialize({ gtmId: 'GTM-5TT3K4C' });
+    TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
   }
 
   /* render functions */
@@ -376,7 +379,7 @@ class LectureContainer extends Component<Props, States> {
 
 export default LectureContainer;
 
-//react-GA button Event
+//react-GA Event
 export const Event = (category: string, action: string, label: string) => {
   ReactGA.event({ category, action });
 };
