@@ -7,6 +7,8 @@ class WriterModel {
   employeeId: string = 'Admin';
   email: string = 'aa@mail.com';
   name: string = 'Roy';
+  companyCode: string = '';
+  companyName: string = '';
 
   constructor(writer?: WriterModel) {
     //
@@ -18,6 +20,8 @@ decorate(WriterModel, {
   employeeId: observable,
   email: observable,
   name: observable,
+  companyCode: observable,
+  companyName: observable
 });
 
 export default WriterModel;
