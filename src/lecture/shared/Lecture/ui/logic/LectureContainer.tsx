@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
+// react-ga & gtm import
+import ReactGA from 'react-ga';
+import TagManager from 'react-gtm-module';
+
 import moment from 'moment';
 import { ActionLogService } from 'shared/stores';
 import { LectureModel, LectureViewModel } from 'lecture/model';
@@ -36,6 +40,7 @@ interface Props {
   onAction?: () => void,
   onViewDetail?: (e: any, data: OnViewDetailData) => void,
   onToggle?: (openState: boolean) => void,
+  GA_NAME?: string,
 }
 
 interface States {
@@ -46,6 +51,7 @@ interface States {
 interface ActionWith extends Action {
   type: ActionType,
 }
+
 
 /**
  * 러닝카드 컴포넌트입니다.
@@ -96,6 +102,8 @@ class LectureContainer extends Component<Props, States> {
     open: false,
   };
 
+  // react-ga tracking id
+  componentDidMount() { ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`); }
 
   onHoverIn() {
     const { actionLogService, model } = this.props;
@@ -140,15 +148,27 @@ class LectureContainer extends Component<Props, States> {
   }
 
   onViewDetail(e: any) {
-    //
-    const { actionLogService, model, onViewDetail } = this.props;
+    const { actionLogService, model, onViewDetail, GA_NAME } = this.props;
     const data = {
       model,
     };
 
+    // (하위컴포넌트)BoxCardView.tsx 에서 event값 이용해 GA_NAME 판별 후 GA Event에 카테고리 클릭 수 전송. 
+    if (GA_NAME === 'recommend_detail_btn') {
+      // 추천과정
+      Event('recommend_detail_btn', 'click_recommed_detail_btn', 'detail');
+    }
+    else if (GA_NAME === 'studying_detail_btn') {
+      // 학습과정
+      Event('studying_detail_btn', 'click_studying_detail_btn', '_study_detail');
+    }
+
     actionLogService?.registerSeenActionLog({ lecture: model, subAction: '상세보기' });
 
     onViewDetail!(e, data);
+
+    /* react-gtm */
+    TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
   }
 
   /* render functions */
@@ -245,7 +265,7 @@ class LectureContainer extends Component<Props, States> {
     //
     const {
       model, thumbnailImage,
-      onAction,
+      onAction, GA_NAME
     } = this.props;
     let { rating } = this.props;
     const { hovered } = this.state;
@@ -278,6 +298,7 @@ class LectureContainer extends Component<Props, States> {
             onViewDetail={this.onViewDetail}
             onHoverIn={this.onHoverIn}
             onHoverOut={this.onHoverOut}
+            GA_NAME={GA_NAME}
           />
         </CardGroup>
       </li>
@@ -357,3 +378,8 @@ class LectureContainer extends Component<Props, States> {
 }
 
 export default LectureContainer;
+
+//react-GA Event
+export const Event = (category: string, action: string, label: string) => {
+  ReactGA.event({ category, action });
+};

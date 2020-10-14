@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { mobxHelper, reactAlert } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
+// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
@@ -21,24 +21,26 @@ import { ContentWrapper } from '../MyLearningContentElementsView';
 import LectureFilterRdoModel from '../../../../lecture/model/LectureFilterRdoModel';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
-
+/*
+  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
+*/
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
+  // actionLogService?: ActionLogService,
   reviewService?: ReviewService,
   newLectureService?: NEWLectureService,
   inMyLectureService?: InMyLectureService,
 }
 
-const NEWLearning : React.FC<Props> = (Props) => {
+const NEWLearning: React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, newLectureService, inMyLectureService, history } = Props;
+  const { reviewService, newLectureService, inMyLectureService, history } = Props;
 
   const CONTENT_TYPE_NAME = '신규과정';
   const PAGE_SIZE = 8;
 
   const { newLectures } = newLectureService!;
 
-  const [title, setTitle] = useState<string|null>('');
+  const [title, setTitle] = useState<string | null>('');
 
   // // lectureService 변경  실행
   useEffect(() => {
@@ -98,8 +100,8 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    console.log( CONTENT_TYPE_NAME );
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+    console.log(CONTENT_TYPE_NAME);
+    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     window.sessionStorage.setItem('from_main', 'TRUE');
     history.push(myTrainingRoutes.learningNewLecture());
@@ -120,7 +122,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
 
   const onActionLecture = (training: MyTrainingModel | LectureModel | InMyLectureModel) => {
     //
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id);
@@ -155,9 +157,9 @@ const NEWLearning : React.FC<Props> = (Props) => {
     }
   };
 
-  const onClickActionLog = (text: string) => {
+  /* const onClickActionLog = (text: string) => {
     actionLogService?.registerClickActionLog({ subAction: text });
-  };
+  }; */
 
   return (
     <ContentWrapper>
@@ -167,14 +169,14 @@ const NEWLearning : React.FC<Props> = (Props) => {
           {
             newLectures.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
         </div>
       </div>
 
-      {newLectures.length > 0 && newLectures[0]?
+      {newLectures.length > 0 && newLectures[0] ?
         <Lecture.Group type={Lecture.GroupType.Line}>
           {newLectures.map((learning: LectureModel | MyTrainingModel | InMyLectureModel, index: number) => {
             //
@@ -188,7 +190,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
@@ -207,7 +209,7 @@ const NEWLearning : React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
+  // 'shared.actionLogService',
   'shared.reviewService',
   'newLecture.newLectureService',
   'myTraining.inMyLectureService',

@@ -6,12 +6,12 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { patronInfo } from '@nara.platform/dock';
 
 import { Button, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
+// import { ActionLogService } from 'shared/stores';
 import { ReviewService } from '@nara.drama/feedback';
 import { CubeType } from 'shared/model';
 import { NoSuchContentPanel } from 'shared';
 
-import lectureRoutePaths from 'lecture/routePaths';
+import lectureRoutes from 'lecture/routePaths';
 import myTrainingRoutes from 'myTraining/routePaths';
 import { LectureModel, LectureServiceType } from 'lecture/model';
 import { Lecture } from 'lecture';
@@ -20,19 +20,22 @@ import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
 import { ContentWrapper } from '../MyLearningContentElementsView';
 import OffsetElementList from '../../../../shared/model/OffsetElementList';
 
-
+/*
+  ActionLogService 는 서버 부하가 심해 현재 동작하고 있지 않으며, ActionEventService 로 대체됨. 2020.10.12. by 김동구
+*/
 interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService,
+  // actionLogService?: ActionLogService,
   reviewService?: ReviewService,
   myTrainingService?: MyTrainingService,
   inMyLectureService?: InMyLectureService,
 
   profileMemberName: string,
+  GA_NAME: string,
 }
 
-const InProgressLearning : React.FC<Props> = (Props) => {
+const InProgressLearning: React.FC<Props> = (Props) => {
   //
-  const { actionLogService, reviewService, myTrainingService, inMyLectureService, profileMemberName, history } = Props;
+  const { reviewService, myTrainingService, inMyLectureService, profileMemberName, history, GA_NAME } = Props;
 
   const CONTENT_TYPE = 'InProgress';
   const ONTENT_TYPE_NAME = '학습중';
@@ -51,7 +54,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     // 세션 스토리지에 정보가 있는 경우 가져오기
     const savedInProgressLearningList = window.navigator.onLine && window.sessionStorage.getItem('InProgressLearningList');
     if (savedInProgressLearningList) {
-      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(savedInProgressLearningList);
+      const inProgressMain: OffsetElementList<MyTrainingModel> = JSON.parse(JSON.stringify(savedInProgressLearningList));
       if (inProgressMain.totalCount > PAGE_SIZE - 1) {
         myTrainingService!.setMyTrainingsWithState(inProgressMain);
         return;
@@ -59,7 +62,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     }
 
     // 서버로부터 가져오기
-    myTrainingService!.findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE,0,[],true);
+    myTrainingService!.findAllMyTrainingsWithState(CONTENT_TYPE, PAGE_SIZE, 0, [], true);
   };
 
   const getInMyLecture = (serviceId: string) => {
@@ -84,7 +87,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
 
   const onViewAll = () => {
     //
-    actionLogService?.registerClickActionLog({ subAction: 'View all' });
+    // actionLogService?.registerClickActionLog({ subAction: 'View all' });
 
     history.push(myTrainingRoutes.learningTab(CONTENT_TYPE));
   };
@@ -95,16 +98,16 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     const cineroom = patronInfo.getCineroomByPatronId(model.servicePatronKeyString) || patronInfo.getCineroomByDomain(model)!;
 
     if (model.serviceType === LectureServiceType.Program || model.serviceType === LectureServiceType.Course) {
-      history.push(lectureRoutePaths.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
+      history.push(lectureRoutes.courseOverview(cineroom.id, model.category.college.id, model.coursePlanId, model.serviceType, model.serviceId));
     }
     else if (model.serviceType === LectureServiceType.Card) {
-      history.push(lectureRoutePaths.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
+      history.push(lectureRoutes.lectureCardOverview(cineroom.id, model.category.college.id, model.cubeId, model.serviceId));
     }
   };
 
   const onActionLecture = (training: MyTrainingModel | LectureModel | InMyLectureModel) => {
     //
-    actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
+    // actionLogService?.registerSeenActionLog({ lecture: training, subAction: '아이콘' });
 
     if (training instanceof InMyLectureModel) {
       inMyLectureService!.removeInMyLecture(training.id).then(findMyContent);
@@ -139,8 +142,14 @@ const InProgressLearning : React.FC<Props> = (Props) => {
     }
   };
 
-  const onClickActionLog = (text: string) => {
-    actionLogService?.registerClickActionLog({ subAction: text });
+  /* 
+    const onClickActionLog = (text: string) => {
+      actionLogService?.registerClickActionLog({ subAction: text });
+    }; 
+  */
+
+  const routeToRecommend = () => {
+    history.push(lectureRoutes.recommend());
   };
 
   return (
@@ -151,7 +160,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
           {
             myTrainings.length > 0 && (
               <Button icon className="right btn-blue" onClick={onViewAll}>
-                View all <Icon className="morelink"/>
+                View all <Icon className="morelink" />
               </Button>
             )
           }
@@ -172,10 +181,11 @@ const InProgressLearning : React.FC<Props> = (Props) => {
                 thumbnailImage={learning.baseUrl || undefined}
                 action={inMyLecture ? Lecture.ActionType.Remove : Lecture.ActionType.Add}
                 onAction={() => {
-                  reactAlert({title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.'});
+                  reactAlert({ title: '알림', message: inMyLecture ? '본 과정이 관심목록에서 제외되었습니다.' : '본 과정이 관심목록에 추가되었습니다.' });
                   onActionLecture(inMyLecture || learning);
                 }}
                 onViewDetail={onViewDetail}
+                GA_NAME={GA_NAME}
               />
             );
           })}
@@ -188,15 +198,12 @@ const InProgressLearning : React.FC<Props> = (Props) => {
               icon
               as="a"
               className="right btn-blue2"
-              onClick={ () => {
-                onClickActionLog(`${profileMemberName}님에게 추천하는 학습 과정 보기`);
-                history.push('/lecture/recommend');
-              }}
+              onClick={routeToRecommend}
             >
               <span className="border">
                 <span className="ellipsis">{profileMemberName}</span> 님에게 추천하는 학습 과정 보기
               </span>
-              <Icon className="morelink"/>
+              <Icon className="morelink" />
             </Button>
           </>
         )}
@@ -207,7 +214,7 @@ const InProgressLearning : React.FC<Props> = (Props) => {
 };
 
 export default inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
+  // 'shared.actionLogService',
   'shared.reviewService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
