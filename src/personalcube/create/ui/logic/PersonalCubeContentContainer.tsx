@@ -116,13 +116,13 @@ class PersonalCubeContentContainer extends Component<Props, State> {
     const { skProfileService, personalCubeService, match } = this.props;
     const { isNext } = this.state;
 
-    const { name, company, email } = skProfileService!.skProfile.member;
+    const { name, company, email, department } = skProfileService!.skProfile.member;
     const { personalCube } = personalCubeService!;
     const { personalCubeId } = match.params;
 
     const createType : string = 'U';
     if (!personalCubeId) {
-      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType }})
+      personalCubeService!.registerCube({ ...personalCube, creator: { company, email, name, createType, department }})
         .then((personalCubeId) => {
           if (personalCubeId) {
             this.routeToCreateIntro(personalCubeId);
