@@ -13,11 +13,13 @@ import { FileBox, PatronType, ValidationType } from '@nara.drama/depot';
 import routePaths from '../../routePaths';
 import { PostModel } from '../../model';
 import { BoardService, CategoryService, PostService } from '../../stores';
+import { SkProfileService } from 'profile/stores';
 
 
 interface Props extends RouteComponentProps<{ boardId: string }> {
   boardService?: BoardService,
   categoryService?: CategoryService,
+  skProfileService?: SkProfileService,
   postService?: PostService,
 }
 
@@ -35,6 +37,7 @@ interface States {
   'board.boardService',
   'board.categoryService',
   'board.postService',
+  'profile.skProfileService',
 ))
 @observer
 @reactAutobind
@@ -53,17 +56,20 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
   componentDidMount(): void {
     //
+    const skProfileService = this.props.skProfileService!;
     const categoryService = this.props.categoryService!;
     const postService = this.props.postService!;
     const name = patronInfo.getPatronName() || '';
     const email = patronInfo.getPatronEmail() || '';
-
+    const { company } = skProfileService!.skProfile.member;
     postService.clearPost();
     categoryService.findCategoriesByBoardId('QNA')
       .then(() => {
         postService.changePostProps('boardId', 'QNA');
         postService.changePostProps('writer.name', name);
         postService.changePostProps('writer.email', email);
+        postService.changePostProps('writer.companyName', company);
+        postService.changePostProps('writer.companyCode', skProfileService!.skProfile.member.companyCode);
       });
   }
 
@@ -94,7 +100,6 @@ class QnaRegisterContainer extends React.Component<Props, States> {
 
     postService!.registerPost(post)
       .then((postId) => history.push(routePaths.supportQnAPost(postId as string)));
-
     this.onClose();
 
     if (PostModel.isBlank(post) === 'success') {

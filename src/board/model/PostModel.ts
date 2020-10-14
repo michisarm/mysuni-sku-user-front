@@ -130,7 +130,7 @@ decorate(PostModel, {
   openState: observable,
   answer: observable,
   period: observable,
-  commentFeedbackId: observable,
+  commentFeedbackId: observable
 });
 
 export default PostModel;
