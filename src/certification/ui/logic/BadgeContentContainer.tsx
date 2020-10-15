@@ -227,11 +227,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const getAction = () => {
     switch (badgeState) {
       case ChallengeState.WaitForChallenge:
-        // reactAlert({
-        //   title: '',
-        //   message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
-        // });
-        setAlertModal(!alertModal);
+        reactAlert({
+          title: '',
+          message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
+        });
+        // setAlertModal(!alertModal);
         onClickChallenge();
         break;
       case ChallengeState.Challenging:
