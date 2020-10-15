@@ -18,6 +18,7 @@ import BadgeSize from '../model/BadgeSize';
 import BadgeDetailModel from '../model/BadgeDetailModel';
 import ChallengeCancelModal from './ChallengeCancelModal';
 import ChallengeSuccessModal from './ChallengeSuccessModal';
+import ChallengeAlertModal from './ChallengeAlertModal';
 import IssueState from '../../shared/Badge/ui/model/IssueState';
 import ChallengeState from '../../shared/Badge/ui/model/ChallengeState';
 import BadgeStudentModel from '../model/BadgeStudentModel';
@@ -27,7 +28,6 @@ import BadgeCompModel from '../model/BadgeCompModel';
 import BadgeCompData from '../model/BadgeCompData';
 import BadgeCourseData from '../model/BadgeCourseData';
 import BadgeCubeData from '../model/BadgeCubeData';
-
 
 export enum ChallengeDescription {
   None = 'none',
@@ -41,19 +41,26 @@ export enum ChallengeDescription {
 }
 
 interface Props extends RouteComponentProps {
-  badgeService?: BadgeService,
-  skProfileService?: SkProfileService,
+  badgeService?: BadgeService;
+  skProfileService?: SkProfileService;
 
-  badgeId: string,
-  badgeDetail: BadgeDetailModel,
+  badgeId: string;
+  badgeDetail: BadgeDetailModel;
 }
 
 const BadgeContentContainer: React.FC<Props> = Props => {
   //
-  const { badgeService, skProfileService, badgeId, badgeDetail, history } = Props;
+  const {
+    badgeService,
+    skProfileService,
+    badgeId,
+    badgeDetail,
+    history,
+  } = Props;
 
   const [cancelModal, setCancelModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [alertModal, setAlertModal] = useState(false);
 
   const [badgeCompList, setBadgeCompList] = useState<BadgeCompData[]>([]);
   // badgeState 타입 지정. 0928 by 김동구
@@ -79,12 +86,12 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 뱃지에 대한 수강정보 호출
   const findBadgeStudent = async (badgeId: string) => {
     //
-    await badgeService!.findBadgeStudentInfo(badgeId)
+    await badgeService!
+      .findBadgeStudentInfo(badgeId)
       .then((response: BadgeStudentModel | null) => {
         if (response === null) {
           setBadgeState(ChallengeState.WaitForChallenge);
-        }
-        else {
+        } else {
           setStudentInfo(response);
           // 수강 정보 조합 => Badge 상태
           getBadgeState(
@@ -99,64 +106,71 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 뱃지 구성 학습 리스트 조회하기
   const findBadgeLearningInfo = async (badgeId: string) => {
     //
-    await badgeService!.findBadgeComposition(badgeId).then((components: BadgeCompModel[]) => {
-      let compList: BadgeCompData[] = [];
-      let passCount = 0;
-      if (components.length > 0 && components[0]) {
-        components.map((data: BadgeCompModel) => {
-          // 학습완료 카운트
-          if (data.learningState === 'Passed') {
-            passCount++;
-          }
+    await badgeService!
+      .findBadgeComposition(badgeId)
+      .then((components: BadgeCompModel[]) => {
+        let compList: BadgeCompData[] = [];
+        let passCount = 0;
+        if (components.length > 0 && components[0]) {
+          components.map((data: BadgeCompModel) => {
+            // 학습완료 카운트
+            if (data.learningState === 'Passed') {
+              passCount++;
+            }
 
-          const compData = new BadgeCompData();
-          //console.log( data );
-          // 공통
-          compData.compType = data.serviceType;
-          compData.id = data.id;
-          compData.patronKeyString = data.patronKey.keyString;
-          // 코스정보
-          if (data.serviceType === 'COURSE') {
-            compData.course = new BadgeCourseData();
-            const keyStr = data.patronKey.keyString;
-            compData.course.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.course.collegeId = data.category.college.id;
-            compData.course.serviceId = data.serviceId;
-            compData.course.name = data.name;
-            compData.course.coursePlanId = data.coursePlanId;
-            compData.course.isOpened = false;
-            compData.course.cubeCount = data.lectureCardUsids.length;
-            compData.course.learningState = data.learningState;
-            compData.course.serviceType = 'Course';
-            data.lectureCardUsids.map((id: string) => {
-              compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(id);
-            });
-          }
-          // (학습)카드 정보
-          else {
-            compData.cube = new BadgeCubeData();
-            const keyStr = data.patronKey.keyString;
-            compData.cube.cineroomId = keyStr.substring(keyStr.indexOf('@') + 1);
-            compData.cube.collegeId = data.category.college.id;
-            compData.cube.lectureCardId = data.serviceId;
-            compData.cube.name = data.name;
-            compData.cube.cubeId = data.cubeId;
-            compData.cube.learningCardId = data.learningCardId;
-            compData.cube.cubeType = data.cubeType;
-            compData.cube.learningTime = data.learningTime; // 학습시간(분)
-            compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
-            compData.cube.learningState = data.learningState;
-            compData.cube.serviceType = 'cube';
-          }
-          compList = compList.concat(compData);
-        });
-      }
-      setBadgeCompList(compList);
+            const compData = new BadgeCompData();
+            //console.log( data );
+            // 공통
+            compData.compType = data.serviceType;
+            compData.id = data.id;
+            compData.patronKeyString = data.patronKey.keyString;
+            // 코스정보
+            if (data.serviceType === 'COURSE') {
+              compData.course = new BadgeCourseData();
+              const keyStr = data.patronKey.keyString;
+              compData.course.cineroomId = keyStr.substring(
+                keyStr.indexOf('@') + 1
+              );
+              compData.course.collegeId = data.category.college.id;
+              compData.course.serviceId = data.serviceId;
+              compData.course.name = data.name;
+              compData.course.coursePlanId = data.coursePlanId;
+              compData.course.isOpened = false;
+              compData.course.cubeCount = data.lectureCardUsids.length;
+              compData.course.learningState = data.learningState;
+              compData.course.serviceType = 'Course';
+              data.lectureCardUsids.map((id: string) => {
+                compData.course!.lectureCardIds = compData.course!.lectureCardIds.concat(
+                  id
+                );
+              });
+            }
+            // (학습)카드 정보
+            else {
+              compData.cube = new BadgeCubeData();
+              const keyStr = data.patronKey.keyString;
+              compData.cube.cineroomId = keyStr.substring(
+                keyStr.indexOf('@') + 1
+              );
+              compData.cube.collegeId = data.category.college.id;
+              compData.cube.lectureCardId = data.serviceId;
+              compData.cube.name = data.name;
+              compData.cube.cubeId = data.cubeId;
+              compData.cube.learningCardId = data.learningCardId;
+              compData.cube.cubeType = data.cubeType;
+              compData.cube.learningTime = data.learningTime; // 학습시간(분)
+              compData.cube.sumViewSeconds = data.sumViewSeconds; // 진행율(%)
+              compData.cube.learningState = data.learningState;
+              compData.cube.serviceType = 'cube';
+            }
+            compList = compList.concat(compData);
+          });
+        }
+        setBadgeCompList(compList);
 
-      setPassedCount(passCount);
-      setLearningCount(components.length);
-
-    });
+        setPassedCount(passCount);
+        setLearningCount(components.length);
+      });
 
     // 학습 진행률이 100% 인 경우, 발급요청 상태로 변경
     // learningCompleted를 사용하지 않는 이유: Learning Path의 모든 학습의 완료 시점을 알기 힘듬. 학습하기 -> 학습완료로 변경 시점에 모든 cube, course, badge를 다뒤져야 하는 상황
@@ -176,8 +190,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     if (challengeState !== 'Challenged') {
       // 도전 대기 - 최초도전 or 도전취소
       setBadgeState(ChallengeState.WaitForChallenge);
-    }
-    else {  //if (challengeState === 'Challenged') {
+    } else {
+      //if (challengeState === 'Challenged') {
       if (issueState === IssueState.Issued) {
         // 획득 완료
         setBadgeState(ChallengeState.Issued);
@@ -199,7 +213,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         issueState !== IssueState.Requested &&
         !learningCompleted
       ) {
-
         if (learningCount > 0 && learningCount === passedCount) {
           setBadgeState(ChallengeState.ReadyForRequest);
         } else {
@@ -214,8 +227,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const getAction = () => {
     switch (badgeState) {
       case ChallengeState.WaitForChallenge:
-        // TODO! Badge 정식 오픈 전까지 준비 안내 팝업 0820
-        // reactAlert({title: '안내', message: '현재는 체험 기간입니다. 추후 오픈 예정입니다.'});
+        // reactAlert({
+        //   title: '',
+        //   message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
+        // });
+        setAlertModal(!alertModal);
         onClickChallenge();
         break;
       case ChallengeState.Challenging:
@@ -231,7 +247,12 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 도전하기 버튼 클릭
   const onClickChallenge = () => {
     //
-    const { name, email, company, department } = skProfileService!.skProfile.member;
+    const {
+      name,
+      email,
+      company,
+      department,
+    } = skProfileService!.skProfile.member;
 
     const myStudentInfo = {
       name,
@@ -241,10 +262,17 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     };
 
     // 재도전시 badgeStudentId 사용
-    const retryBadgeStudentId = (studentInfo !== undefined) ? studentInfo.id : null;
+    const retryBadgeStudentId =
+      studentInfo !== undefined ? studentInfo.id : null;
 
-    badgeService!.challengeBadge(retryBadgeStudentId, myStudentInfo, badgeId, ChallengeState.Challenged)
-      .then((response) => {
+    badgeService!
+      .challengeBadge(
+        retryBadgeStudentId,
+        myStudentInfo,
+        badgeId,
+        ChallengeState.Challenged
+      )
+      .then(response => {
         if (response) {
           findBadgeStudent(badgeId);
           //setBadgeState(ChallengeState.Challenging);
@@ -261,15 +289,20 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   const onClickChallengeCancel = () => {
     //
     if (studentInfo) {
-      badgeService!.cancelChallengeBadge(studentInfo.id, ChallengeState.Canceled)
-        .then((response) => {
+      badgeService!
+        .cancelChallengeBadge(studentInfo.id, ChallengeState.Canceled)
+        .then(response => {
           if (response) {
             setBadgeState(ChallengeState.WaitForChallenge);
             findBadgeStudent(badgeId);
           } else {
-            reactAlert({ title: '도전 취소 실패', message: '도전을 취소하지 못하였습니다.' });
+            reactAlert({
+              title: '도전 취소 실패',
+              message: '도전을 취소하지 못하였습니다.',
+            });
           }
-        }).then(() => {
+        })
+        .then(() => {
           setCancelModal(!cancelModal);
         });
     }
@@ -291,8 +324,9 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //   }
     // }
 
-    badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
-      .then((response) => {
+    badgeService!
+      .requestManualIssued(studentInfo.id, IssueState.Requested)
+      .then(response => {
         if (response) {
           if (autoIssuedBadge) {
             setSuccessModal(!successModal);
@@ -302,7 +336,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           }
           findBadgeStudent(badgeId);
         } else {
-          reactAlert({ title: '요청 실패', message: '뱃지 발급 요청을 실패했습니다.' });
+          reactAlert({
+            title: '요청 실패',
+            message: '뱃지 발급 요청을 실패했습니다.',
+          });
         }
       });
 
@@ -313,16 +350,16 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //   // 수동발급 요청
     //   onClickRequestManualIssue();
     // }
-
   };
 
   // 자동발급
   const onClickRequestAutoIssue = () => {
     //
-    const List: any[] = [{ id: studentInfo!.id, learningCompleted: true, issueState: 'Issued' }];
+    const List: any[] = [
+      { id: studentInfo!.id, learningCompleted: true, issueState: 'Issued' },
+    ];
 
-    badgeService!.requestAutoIssued(List).then((response) => {
-
+    badgeService!.requestAutoIssued(List).then(response => {
       // 뱃지 발급 팝업 띄우기
       if (response) {
         setSuccessModal(!successModal);
@@ -343,12 +380,16 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         return;
       }
 
-      badgeService!.requestManualIssued(studentInfo.id, IssueState.Requested)
-        .then((response) => {
+      badgeService!
+        .requestManualIssued(studentInfo.id, IssueState.Requested)
+        .then(response => {
           if (response) {
             setBadgeState(ChallengeState.Requested);
           } else {
-            reactAlert({ title: '요청 실패', message: '뱃지 발급 요청을 실패했습니다.' });
+            reactAlert({
+              title: '요청 실패',
+              message: '뱃지 발급 요청을 실패했습니다.',
+            });
           }
         });
     }
@@ -357,6 +398,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 성공 모달 닫기
   const onControlSuccessModal = () => {
     setSuccessModal(!successModal);
+  };
+  // alert 모달 닫기
+  const onHandleAlertModal = () => {
+    setAlertModal(!alertModal);
   };
 
   // tag list
@@ -373,7 +418,12 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
     tagList.map((tag, index) => {
       if (tag !== '') {
-        tagHtml += '<span class="ui label tag" id="tag-' + index + '">' + tag + '</span>';
+        tagHtml +=
+          '<span class="ui label tag" id="tag-' +
+          index +
+          '">' +
+          tag +
+          '</span>';
       }
     });
 
@@ -384,7 +434,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     // Q&A 작성 화면으로 이동
     history.push(boardRoutePaths.supportQnANewPost());
   };
-
 
   //
   return (
@@ -407,9 +456,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           certiAdminCategoryName={
             badgeDetail.certiAdminCategory.certiAdminCategoryName
           }
-          designAdminName={
-            badgeDetail.designAdmin.designAdminName
-          }
+          designAdminName={badgeDetail.designAdmin.designAdminName}
           difficultyLevel={badgeDetail.difficultyLevel}
           learningTime={badgeDetail.learningTime}
         />
@@ -436,6 +483,13 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           successModal={successModal}
           onCloseSuccessModal={onControlSuccessModal}
         />
+
+        {/* 도전하기 실행 전 alert */}
+        <ChallengeAlertModal
+          badgeName={badgeDetail.name}
+          alertModal={alertModal}
+          onHandleAlertModal={onHandleAlertModal}
+        />
       </BadgeContentHeader>
 
       {/*하단 - 그외 메타정보 및 학습 정보 */}
@@ -458,7 +512,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           {/*title="자격증명"*/}
           {/*content={badgeDetail.qualification}*/}
           {/*/>*/}
-
         </OverviewField.List>
 
         {/*담당자*/}
@@ -491,7 +544,6 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           </OverviewField.List>
         )}
 
-
         {/*학습정보*/}
         <OverviewField.List icon className="course-area">
           <OverviewField.Item
@@ -502,7 +554,8 @@ const BadgeContentContainer: React.FC<Props> = Props => {
               <BadgeLectureContainer
                 badgeId={badgeId}
                 badgeCompList={badgeCompList}
-              />}
+              />
+            }
           />
         </OverviewField.List>
 
@@ -516,15 +569,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
             />
           </OverviewField.List>
         )}
-
       </BadgeOverview>
     </>
   );
 };
 
-export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
-  'profile.skProfileService',
-))(
-  withRouter(observer(BadgeContentContainer))
-);
+export default inject(
+  mobxHelper.injectFrom('badge.badgeService', 'profile.skProfileService')
+)(withRouter(observer(BadgeContentContainer)));
