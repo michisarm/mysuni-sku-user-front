@@ -6,6 +6,7 @@ export class CreatorModel {
   company: string = '';
   createType: string = '';
   department: string = '';
+  companyCode: string = '';
 
   constructor(creator?: CreatorModel) {
     if (creator) {
@@ -20,5 +21,6 @@ decorate(CreatorModel, {
   company: observable,
   createType: observable,
   department: observable,
+  companyCode: observable,
 });
 
