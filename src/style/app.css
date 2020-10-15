@@ -525,3 +525,8 @@ body .badge_new .title .cell span{
 .main-wrap .no-cont-wrap {
   padding: 55px 0 56px !important;
 }
+body.msie #root section.content .tab-menu-inner .ui.menu .item{
+  flex: none;
+  width: auto;
+  flex-grow: 1;
+}
