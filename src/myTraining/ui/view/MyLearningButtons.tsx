@@ -2,15 +2,20 @@ import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { MyLearningContentType, MyPageContentType } from '../model';
+import { MyContentType } from '../logic/MyLearningListContainerV2';
 
 interface Props {
   contentType: MyLearningContentType | MyPageContentType;
   onDelete: () => void;
-  onDownloadExcel: () => void;
+  downloadExcel: (contentType: MyContentType) => void;
 }
 
 function MyLearningButtons(props: Props) {
-  const { contentType, onDelete, onDownloadExcel } = props;
+  const { contentType, onDelete, downloadExcel } = props;
+
+  const onDownloadExcel = () => {
+    downloadExcel(contentType);
+  };
 
   const renderButtons = (contentType: MyLearningContentType | MyPageContentType): any => {
     switch (contentType) {

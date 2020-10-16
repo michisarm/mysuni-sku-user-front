@@ -9,11 +9,13 @@ import routePaths from 'lecture/routePaths';
 import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import InMyLectureModelV2 from 'myTraining/model/InMyLectureModelV2';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../../model';
 
 
+
 interface Props extends RouteComponentProps {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   totalCount: number;
   models: (MyTrainingModelV2 | InMyLectureModelV2)[];
   myTrainingService?: MyTrainingService;
@@ -82,7 +84,7 @@ function MyLearningTableBody(props: Props) {
   };
 
 
-  const renderByContentType = (model: MyTrainingModelV2 | InMyLectureModelV2, contentType: MyLearningContentType | MyPageContentType) => {
+  const renderByContentType = (model: MyTrainingModelV2 | InMyLectureModelV2, contentType: MyContentType) => {
     /*
       ContentType 에 따라 달라지는 컬럼들.
     */

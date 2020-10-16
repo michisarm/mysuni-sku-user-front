@@ -1,17 +1,17 @@
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind, Offset } from '@nara.platform/accent';
-import { CubeType, OffsetElementList, LearningState } from 'shared/model';
-import { LectureServiceType } from 'lecture/model';
+import { CubeType, OffsetElementList } from 'shared/model';
 import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import { Direction, Order } from 'myTraining/ui/view/table/MyLearningTableHeader';
+import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingFlowApi from '../apiclient/MyTrainingFlowApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
+
 
 
 
@@ -323,11 +323,11 @@ class MyTrainingService {
     this.myTrainingV2Count = 0;
   }
 
-  initFilterRdo(contentType: MyLearningContentType | MyPageContentType) {
-    this.myTrainingFilterRdo = MyTrainingFilterRdoModel.createWithContentType(contentType);
+  initFilterRdo(contentType: MyContentType) {
+    this.myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
   }
 
-  changeFilterRdoWithViewType(viewType: string) {
+  changeFilterRdoWithViewType(viewType: ViewType) {
     if (viewType === 'All') {
       viewType = '';
     }

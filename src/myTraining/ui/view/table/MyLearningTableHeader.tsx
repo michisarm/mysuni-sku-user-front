@@ -4,10 +4,12 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType, TableHeaderColumn } from '../../model';
 
+
 interface Props {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   onClickSort: (column: string, direction: Direction) => void;
   myTrainingService?: MyTrainingService;
 }

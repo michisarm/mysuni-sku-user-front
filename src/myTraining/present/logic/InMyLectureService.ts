@@ -31,6 +31,9 @@ class InMyLectureService {
   @observable
   _inMyLectureV2Count: number = 0;
 
+  @observable
+  inMyListCount: number = 0;
+
   inMyLectureFilterRdo: InMyLectureFilterRdoModel = new InMyLectureFilterRdoModel();
 
   /////////////////////////////////////// 개편 ///////////////////////////////////////
@@ -201,7 +204,7 @@ class InMyLectureService {
   async findAllTabCount() {
     const tabCount = await this.inMyLectureApi.countInMyLectures();
 
-    runInAction(() => this._inMyLectureV2Count = tabCount);
+    runInAction(() => this.inMyListCount = tabCount);
   }
 
   @action

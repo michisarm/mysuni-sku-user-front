@@ -1,17 +1,19 @@
 import React from 'react';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyLearningButtons from '../MyLearningButtons';
 import { MyLearningContentType, MyPageContentType } from '../../../../myTraining/ui/model';
+
 
 interface Props {
   contentType: MyLearningContentType | MyPageContentType;
   totalCount: number;
   countMessage?: string;
   onClickDelete: () => void;
-  onDownloadExcel: () => void;
+  downloadExcel: (contentType: MyContentType) => void;
 }
 
 function ListLeftTopPanel(props: Props) {
-  const { contentType, totalCount, countMessage, onClickDelete, onDownloadExcel } = props;
+  const { contentType, totalCount, countMessage, onClickDelete, downloadExcel } = props;
 
   const renderButtons = () => {
     switch (contentType) {
@@ -22,7 +24,7 @@ function ListLeftTopPanel(props: Props) {
           <MyLearningButtons
             contentType={contentType}
             onDelete={onClickDelete}
-            onDownloadExcel={onDownloadExcel}
+            downloadExcel={downloadExcel}
           />
         );
       default:

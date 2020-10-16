@@ -1,20 +1,20 @@
 import React from 'react';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 
 interface Props {
   className: string;
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   activeFilter: boolean;
   filterCount: number;
   children: React.ReactNode;
-
 }
 
 
 function ListTopPanelTemplate(props: Props) {
   const { className, contentType, activeFilter, filterCount, children } = props;
 
-  const renderByContentType = (contentType: MyLearningContentType | MyPageContentType) => {
+  const renderByContentType = (contentType: MyContentType) => {
 
     switch (contentType) {
       case MyLearningContentType.InProgress:

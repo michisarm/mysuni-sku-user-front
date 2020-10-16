@@ -4,7 +4,6 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
-import { MyTrainingModelV2, InMyLectureModelV2 } from 'myTraining/model';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
 import { MultiFilterBox } from '../view/filterbox';
@@ -15,7 +14,7 @@ import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 
 interface Props extends RouteComponentProps {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
@@ -25,8 +24,6 @@ interface Props extends RouteComponentProps {
 function MyLearningListContainerV2(props: Props) {
   const { contentType, skProfileService, myTrainingService, inMyLectureService } = props;
   const { profileMemberName } = skProfileService!;
-  const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
-  const { inMyLectureV2s, inMyLectureV2Count } = inMyLectureService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
@@ -38,23 +35,27 @@ function MyLearningListContainerV2(props: Props) {
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
 
+
   /* effects */
   useEffect(() => {
-    //
-    initPageInfo();
+    initPage();
     if (filterCount === 0) {
       fetchModelsByContentType(contentType);
     } else {
       fetchModelsByConditions(contentType, viewType);
     }
-
   }, [contentType, viewType, filterCount]);
 
+  useEffect(() => {
+    /* just for clean up */
+    return () => clearStore(contentType);
+  }, [contentType]);
+
   /* functions */
-  const fetchModelsByContentType = async (contentType: MyLearningContentType | MyPageContentType) => {
+  const fetchModelsByContentType = async (contentType: MyContentType) => {
     //
-    clearAndInitStore(contentType);
-    //
+    //clearStore(contentType);
+    initStore(contentType);
     switch (contentType) {
       /* 학습중 & mySUNI 학습완료 */
       case MyLearningContentType.InProgress:
@@ -73,6 +74,7 @@ function MyLearningListContainerV2(props: Props) {
         return;
       }
       case MyLearningContentType.Required: {
+
         return;
       }
       /* My Page :: My Stamp */
@@ -84,8 +86,6 @@ function MyLearningListContainerV2(props: Props) {
       }
       /* 학습예정 & 취소/미이수 */
       default: {
-        myTrainingService!.clearAllMyTrainingV2();
-        myTrainingService!.initFilterRdo(contentType);
         const isEmpty = await myTrainingService!.findAllMyTrainingV2();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
@@ -93,7 +93,7 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const fetchModelsByConditions = async (contentType: MyLearningContentType | MyPageContentType, viewType: string) => {
+  const fetchModelsByConditions = async (contentType: MyContentType, viewType: ViewType) => {
     switch (contentType) {
       case MyPageContentType.EarnedStampList: {
         const isEmpty = await myTrainingService!.findAllMyTrainingsV2WithStampByConditions();
@@ -109,7 +109,7 @@ function MyLearningListContainerV2(props: Props) {
       }
       default: {
         if (viewType) {
-          viewType = changeViewTypeByContentType(contentType);
+          viewType = changeViewType(contentType);
           myTrainingService!.changeFilterRdoWithViewType(viewType);
         }
         const isEmpty = await myTrainingService!.findllMyTrainingsV2WithConditions();
@@ -119,65 +119,88 @@ function MyLearningListContainerV2(props: Props) {
     }
   };
 
-  const clearAndInitStore = (contentType: MyLearningContentType | MyPageContentType) => {
+  const initPage = () => {
+    pageInfo.current = { offset: 0, limit: 20 };
+  };
+
+  const clearStore = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
         inMyLectureService!.clearAllInMyLectureV2s();
-        inMyLectureService!.initFilterRdo();
         break;
       case MyLearningContentType.Required:
         break;
       default:
         myTrainingService!.clearAllMyTrainingV2();
+    }
+  };
+
+  const initStore = (contentType: MyContentType) => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.initFilterRdo();
+        break;
+      case MyLearningContentType.Required:
+        break;
+      default:
         myTrainingService!.initFilterRdo(contentType);
     }
   };
 
-  const getModels = (contentType: MyLearningContentType | MyPageContentType): (MyTrainingModelV2 | InMyLectureModelV2)[] => {
-    const { inMyLectureV2s } = inMyLectureService!;
+  const getModels = (contentType: MyContentType) => {
     const { myTrainingV2s } = myTrainingService!;
+    const { inMyLectureV2s } = inMyLectureService!;
 
-    if (contentType === MyLearningContentType.InMyList) {
-      return inMyLectureV2s;
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureV2s;
+      default:
+        return myTrainingV2s;
     }
-    return myTrainingV2s;
   };
 
-  const getTotalCount = (contentType: MyLearningContentType | MyPageContentType): number => {
+  const getTotalCount = (contentType: MyContentType): number => {
     const { inMyLectureV2Count } = inMyLectureService!;
     const { myTrainingV2Count } = myTrainingService!;
 
-    if (contentType === MyLearningContentType.InMyList) {
-      return inMyLectureV2Count;
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureV2Count;
+      default:
+        return myTrainingV2Count;
     }
-    return myTrainingV2Count;
   };
 
-  const isModelExist = () => {
-    return (myTrainingV2s && myTrainingV2s.length) || (inMyLectureV2s && inMyLectureV2s.length);
-  };
+  const isModelExist = (contentType: MyContentType) => {
+    const { myTrainingV2s } = myTrainingService!;
+    const { inMyLectureV2s } = inMyLectureService!;
 
-
-  const changeViewTypeByContentType = (contentType: MyLearningContentType | MyPageContentType): string => {
-    if (!(contentType === MyLearningContentType.InProgress || contentType === MyLearningContentType.Completed)) {
-      return '';
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureV2s && inMyLectureV2s.length;
+      default:
+        return myTrainingV2s && myTrainingV2s.length;
     }
-    return viewType;
   };
 
-  const initPageInfo = () => {
-    pageInfo.current = { offset: 0, limit: 20 };
+  const changeViewType = (contentType: MyContentType): ViewType => {
+    switch (contentType) {
+      case MyLearningContentType.InProgress:
+      case MyLearningContentType.Completed:
+        return viewType;
+      default:
+        return '';
+    }
   };
 
-  const checkShowSeeMore = (contentType: MyLearningContentType | MyPageContentType): void => {
-    const models: (MyTrainingModelV2 | InMyLectureModelV2)[] = getModels(contentType);
-    const totalCount: number = getTotalCount(contentType);
+  const checkShowSeeMore = (contentType: MyContentType): void => {
+    const models = getModels(contentType);
+    const totalCount = getTotalCount(contentType);
 
     if (models.length >= totalCount) {
       setShowSeeMore(false);
       return;
     }
-
     if (totalCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
@@ -223,7 +246,6 @@ function MyLearningListContainerV2(props: Props) {
         inMyLectureService!.sortInMyLectureV2sBy(column, direction);
         break;
       case MyLearningContentType.Required:
-
         break;
       default:
         myTrainingService!.sortMyTrainingV2sBy(column, direction);
@@ -248,9 +270,10 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   /* Render Functions */
-  const renderNoSuchContentPanel = (contentType: MyLearningContentType | MyPageContentType, withFilter: boolean = false) => {
+  const renderNoSuchContentPanel = (contentType: MyContentType, withFilter: boolean = false) => {
     const message = withFilter &&
       '필터 조건에 해당하는 결과가 없습니다.' || NoSuchContentPanelMessages.getMessageByConentType(contentType);
+
     const link = (contentType === MyLearningContentType.InProgress) &&
       { text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`, path: '/lecture/recommend' } || undefined;
 
@@ -261,7 +284,7 @@ function MyLearningListContainerV2(props: Props) {
   return (
     <>
       {
-        isModelExist() &&
+        isModelExist(contentType) &&
         (
           <>
             <LineHeaderContainerV2
@@ -326,5 +349,5 @@ export default inject(mobxHelper.injectFrom(
 const PAGE_SIZE = 20;
 
 /* types */
-export type ViewType = 'Course' | ''; // 코스만보기 | 전체보기
-
+export type ViewType = 'Course' | 'All' | ''; // 코스만보기 | 전체보기
+export type MyContentType = MyLearningContentType | MyPageContentType;

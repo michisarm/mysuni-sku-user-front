@@ -5,14 +5,16 @@ import { mobxHelper } from '@nara.platform/accent';
 import { CollegeService } from 'college/stores';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
-import CheckboxOptions from '../../model/CheckboxOptions';
 import CheckedFilterView from './CheckedFilterView';
+import CheckboxOptions from '../../model/CheckboxOptions';
+
 
 
 
 interface Props {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   activeFilter: boolean;
   onChangeFilterCount: (count: number) => void;
   collegeService?: CollegeService;
@@ -75,7 +77,7 @@ function MultiFilterBox(props: Props) {
 
 
   /* functions */
-  const changeFilterRdo = (contentType: MyLearningContentType | MyPageContentType) => {
+  const changeFilterRdo = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
         inMyLectureService!.changeFilterRdoWithConditions(conditions);
@@ -85,7 +87,7 @@ function MultiFilterBox(props: Props) {
     }
   };
 
-  const getFilterCount = (contentType: MyLearningContentType | MyPageContentType) => {
+  const getFilterCount = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
         return inMyLectureService!.getFilterCount();

@@ -1,5 +1,5 @@
-import MyLearningContentType from './MyLearningContentType';
-import MyPageContentType from './MyPageContentType';
+import { MyContentType } from '../logic/MyLearningListContainerV2';
+
 
 const NoSuchContentPanelMessages = {
   InProgress: '학습중인 과정이 없습니다.',
@@ -12,7 +12,7 @@ const NoSuchContentPanelMessages = {
   EarnedBadgeList: `획득한 Badge가 없습니다.
   등록된 Badge 리스트에서 원하는 Badge에 도전해보세요.`,
   EarnedStampList: '획득한 스탬프가 없습니다.',
-  getMessageByConentType: (contentType: MyLearningContentType | MyPageContentType): string => {
+  getMessageByConentType: (contentType: MyContentType): string => {
     return NoSuchContentPanelMessages[contentType];
   }
 };

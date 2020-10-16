@@ -41,7 +41,6 @@ function MyLearningPageV2(props: Props) {
 
   /* functions */
   const publishViewEvent = () => {
-    // 뷰 액션로그 생성
     const menu = 'LEARNING_VIEW';
     actionEventService!.registerViewActionLog({ menu });
   };
@@ -51,7 +50,7 @@ function MyLearningPageV2(props: Props) {
     /*
       LearningPage 탭 카운트 조회
         학습중 = inprogressCount
-        관심목록 = inMyLectureAllCount
+        관심목록 = inMyListCount
         권장과정 = requiredLectureCount
         학습예정 = enrolledCount
         mySUNI 학습완료 = completedCount
@@ -65,13 +64,9 @@ function MyLearningPageV2(props: Props) {
 
   const getTabs = (): TabItemModel[] => {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
-    const { inMyLectureV2Count } = inMyLectureService!;
+    const { inMyListCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
 
-    /*
-      TabItemModel[] 을 생성해 return 함.
-      APL 의 personalCompleted 카운트가 추가되어야 함.
-    */
     return [
       {
         name: MyLearningContentType.InProgress,
@@ -80,7 +75,7 @@ function MyLearningPageV2(props: Props) {
       },
       {
         name: MyLearningContentType.InMyList,
-        item: getTabItem(MyLearningContentType.InMyList, inMyLectureV2Count),
+        item: getTabItem(MyLearningContentType.InMyList, inMyListCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
       },
       {
@@ -109,7 +104,6 @@ function MyLearningPageV2(props: Props) {
 
   /* functions */
   const getTabItem = (contentType: MyLearningContentType, count: number = 0) => {
-    // 화면에 보여질 TabItem 을 return 함. TabItem 은 하나의 컴포넌트(atom).
     return (
       <>
         {MyLearningContentTypeName[contentType]}
@@ -121,7 +115,7 @@ function MyLearningPageV2(props: Props) {
 
   /* handlers */
   const onChangeTab = (tab: TabItemModel): string => {
-
+    //
     switch (tab.name) {
       case MyLearningContentType.InProgress:
         notieService!.readNotie('Learning_Progress');
@@ -156,9 +150,7 @@ export default inject(mobxHelper.injectFrom(
   'lecture.lectureService',
   'myTraining.inMyLectureService',
   'myTraining.myTrainingService'
-)
-)(withRouter(observer(MyLearningPageV2)));
-
+))(withRouter(observer(MyLearningPageV2)));
 
 /* globals */
 const convertTabToContentType = (tab: string) => {

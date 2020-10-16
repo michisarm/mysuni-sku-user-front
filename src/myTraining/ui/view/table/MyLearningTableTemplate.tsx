@@ -1,9 +1,10 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 
 interface Props {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   children: React.ReactNode;
 }
 
@@ -22,7 +23,7 @@ function MyLearningTableTemplate(props: Props) {
 export default MyLearningTableTemplate;
 
 /* globals */
-const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType): string => {
+const getWrapperStyle = (contentType: MyContentType): string => {
   switch (contentType) {
     case MyPageContentType.EarnedStampList: /* My Stamp */
       return 'mystamp-list-wrap';
@@ -31,7 +32,7 @@ const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType)
   }
 };
 
-const getTableStyle = (contentType: MyLearningContentType | MyPageContentType): string => {
+const getTableStyle = (contentType: MyContentType): string => {
   switch (contentType) {
     case MyLearningContentType.InProgress: /* 학습중 */
       return 'ml-02-02';

@@ -1,3 +1,4 @@
+import { MyContentType } from '../logic/MyLearningListContainerV2';
 import MyLearningContentType from './MyLearningContentType';
 import MyPageContentType from './MyPageContentType';
 
@@ -88,7 +89,7 @@ const TableHeaderColumn = {
     { key: 3, text: '스탬프', icon: true },
     { key: 4, text: '획득일자', icon: true }
   ],
-  getColumnsByContentType: (contentType: MyLearningContentType | MyPageContentType): { key: number; text: string; icon?: boolean }[] => {
+  getColumnsByContentType: (contentType: MyContentType): { key: number; text: string; icon?: boolean }[] => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
         return TableHeaderColumn.InProgress;
