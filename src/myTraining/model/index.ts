@@ -1,6 +1,8 @@
 
 export { default as MyTrainingModel } from './MyTrainingModel';
 export { default as InMyLectureModel } from './InMyLectureModel';
+export { default as MyTrainingModelV2 } from './MyTrainingModelV2';
+export { default as InMyLectureModelV2 } from './InMyLectureModelV2';
 export { default as InMyLectureCdoModel } from './InMyLectureCdoModel';
 export { default as MyFeedModel } from './MyFeedModel';
 

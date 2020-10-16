@@ -12,9 +12,9 @@ class ApprovalRoutes extends React.Component {
     //
     return (
       <Switch>
-        <Redirect exact from="/approval/ApprovalList" to="/approval/ApprovalList/pages/1" />
-        <Route exact path="/approval/ApprovalList/:tab" component={MyApprovalPage}/>
-        <Route exact path="/approval/ApprovalList/pages/1" component={MyApprovalPage} />
+        <Redirect exact from="/approval" to="/approval/ApprovalList/pages/1" />
+        <Route exact path="/approval/:tab" component={MyApprovalPage} />
+        <Route exact path="/approval/:tab/pages/:pageNo" component={MyApprovalPage} />
         <Route exact path="/approval/ApprovalList/detail/:studentId" component={ApprovalSharedDetailContainer} />
         {/*<Route exact path="/my-training/learning/add-personal-learning-create" component={CreateAplContainer} />*/}
         <Route component={NotFoundPage} />

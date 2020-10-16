@@ -3,9 +3,12 @@ import moment from 'moment';
 import { CategoryModel, LearningState } from 'shared/model';
 import { LectureServiceType } from 'lecture/model';
 import { DifficultyLevel } from './DifficultyLevel';
-import { CubeType } from '../../personalcube/personalcube/model';
 import { CompletedXlsxModel } from './CompletedXlsxModel';
 import { InProgressXlsxModel } from './InProgressXlsxModel';
+import { CubeType } from '../../personalcube/personalcube/model';
+import { MyStampXlsxModel } from './MyStampXlsxModel';
+import CubeTypeNameType from './CubeTypeNameType';
+
 
 class MyTrainingModelV2 {
 
@@ -47,8 +50,11 @@ class MyTrainingModelV2 {
     if (!this.stampCount) {
       return '-';
     }
-
     return this.stampCount;
+  }
+
+  @computed get displayCubeType(): string {
+    return CubeTypeNameType[this.cubeType];
   }
 
   /* functions */
@@ -56,9 +62,6 @@ class MyTrainingModelV2 {
     // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
     return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
   }
-
-
-
 
 
   toXlsxForInProgress(index: number): InProgressXlsxModel {
@@ -104,11 +107,21 @@ class MyTrainingModelV2 {
       학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')
     };
   }
+
+  toXlsxForMyStamp(index: number): MyStampXlsxModel {
+
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      스탬프: String(this.stampCount),
+      획득일자: moment(Number(this.endDate)).format('YYYY.MM.DD'),
+    };
+  }
 }
 
 export default MyTrainingModelV2;
 
-// made observable object!
 decorate(MyTrainingModelV2, {
   category: observable,
   difficultyLevel: observable,

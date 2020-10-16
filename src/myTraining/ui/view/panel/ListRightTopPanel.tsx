@@ -1,15 +1,17 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { Fragment } from 'react';
+import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
-import { MyLearningContentType } from 'myTraining/ui/model';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
+import { ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 
 interface Props {
-  contentType: MyLearningContentType;
+  contentType: MyLearningContentType | MyPageContentType;
   resultEmpty: boolean;
   filterCount: number;
   activeFilter: boolean;
   onClickFilter: () => void;
-  checkedViewType: string;
+  checkedViewType: ViewType;
   onChangeViewType: (e: any, data: any) => void;
 }
 
@@ -78,15 +80,15 @@ function ListRightTopPanel(props: Props) {
         {contentType === MyLearningContentType.PersonalCompleted ||
           (
             <Button
-              // icon={!activeFilter ? true : false}
-              className={activeFilter && 'btn-filter-blue' || 'left post'}
+              icon={(activeFilter || filterCount) ? false : true}
+              className={classNames((activeFilter || filterCount) && 'btn-filter-blue' || 'left post', activeFilter && 'on')}
               onClick={onClickFilter}
             >
-              {activeFilter || (
+              {(!activeFilter && !filterCount) && (
                 <Icon className="filter2" aria-hidden="true" />
               )}
               {/* 선택된 filter 조건이 있으면, 선택된 조건 count 만큼 숫자 표시. */}
-              <span>Filter{filterCount != null && `(${filterCount})`}</span>
+              <span>Filter{filterCount !== 0 && `(${filterCount})`}</span>
             </Button>
           )}
       </>
@@ -94,14 +96,23 @@ function ListRightTopPanel(props: Props) {
   };
 
   return (
-    <div className="right-wrap">
-      {/* radio checkbox */}
+    <>
       {renderCheckbox()}
-
-      {/* filter button */}
       {renderFilter()}
-    </div>
+    </>
   );
 }
 
 export default ListRightTopPanel;
+
+/* globals */
+const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType): string => {
+  switch (contentType) {
+    case MyLearningContentType.InProgress:
+    case MyLearningContentType.Completed:
+    case MyPageContentType.EarnedStampList:
+      return 'right-wrap';
+    default:
+      return '';
+  }
+};

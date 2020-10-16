@@ -1,34 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
+import { MyTrainingModelV2, InMyLectureModelV2 } from 'myTraining/model';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import { MyLearningContentType, NoSuchContentPanelMessages } from '../model';
-import MultiFilterBox from '../view/filterbox/MultiFilterBox';
-import MyLearningTableTemplate from '../view/table/MyLearningTableTemplate';
+import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
+import { MultiFilterBox } from '../view/filterbox';
+import { MyLearningTableTemplate, MyLearningTableHeader, MyLearningTableBody } from '../view/table';
 import { LectureService, SeeMoreButton } from '../../../lecture';
-import { MyTrainingService } from '../../stores';
+import { MyTrainingService, InMyLectureService } from '../../stores';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 
 interface Props extends RouteComponentProps {
-  contentType: MyLearningContentType;
+  contentType: MyLearningContentType | MyPageContentType;
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
+  inMyLectureService?: InMyLectureService;
   lectureService?: LectureService;
 }
 
 function MyLearningListContainerV2(props: Props) {
-  const { contentType, skProfileService, myTrainingService } = props;
+  const { contentType, skProfileService, myTrainingService, inMyLectureService } = props;
   const { profileMemberName } = skProfileService!;
   const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
+  const { inMyLectureV2s, inMyLectureV2Count } = inMyLectureService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
   const [activeFilter, setActiveFilter] = useState<boolean>(false);
-  const [viewType, setViewType] = useState<string>('Course');
+  const [viewType, setViewType] = useState<ViewType>('Course');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(true);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
@@ -38,64 +41,144 @@ function MyLearningListContainerV2(props: Props) {
   /* effects */
   useEffect(() => {
     //
-    clearPageInfo();
+    initPageInfo();
     if (filterCount === 0) {
       fetchModelsByContentType(contentType);
     } else {
-      fetchModelsByConditions(viewType);
+      fetchModelsByConditions(contentType, viewType);
     }
 
   }, [contentType, viewType, filterCount]);
 
   /* functions */
-  const fetchModelsByContentType = async (contentType: MyLearningContentType) => {
+  const fetchModelsByContentType = async (contentType: MyLearningContentType | MyPageContentType) => {
     //
-    myTrainingService!.clearAllMyTrainingV2(contentType);
+    clearAndInitStore(contentType);
     //
     switch (contentType) {
+      /* 학습중 & mySUNI 학습완료 */
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
         myTrainingService!.changeFilterRdoWithViewType(viewType);
         const isEmpty = await myTrainingService!.findAllMyTrainingV2();
         setResultEmpty(isEmpty);
-        checkShowSeeMore();
+        checkShowSeeMore(contentType);
         return;
       }
-      case MyLearningContentType.InMyList:
-      case MyLearningContentType.Required:
+      /* 관심목록 & 권장과정 */
+      case MyLearningContentType.InMyList: {
+        const isEmpty = await inMyLectureService!.findAllInMyLectureV2s();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
         return;
+      }
+      case MyLearningContentType.Required: {
+        return;
+      }
+      /* My Page :: My Stamp */
+      case MyPageContentType.EarnedStampList: {
+        const isEmpty = await myTrainingService!.findAllMyTrainingsV2WithStamp();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+        return;
+      }
+      /* 학습예정 & 취소/미이수 */
       default: {
+        myTrainingService!.clearAllMyTrainingV2();
+        myTrainingService!.initFilterRdo(contentType);
         const isEmpty = await myTrainingService!.findAllMyTrainingV2();
         setResultEmpty(isEmpty);
-        checkShowSeeMore();
+        checkShowSeeMore(contentType);
       }
-
     }
   };
 
-  const fetchModelsByConditions = async (viewType?: string) => {
-    if (viewType) {
-      myTrainingService!.changeFilterRdoWithViewType(viewType);
+  const fetchModelsByConditions = async (contentType: MyLearningContentType | MyPageContentType, viewType: string) => {
+    switch (contentType) {
+      case MyPageContentType.EarnedStampList: {
+        const isEmpty = await myTrainingService!.findAllMyTrainingsV2WithStampByConditions();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+        return;
+      }
+      case MyLearningContentType.InMyList: {
+        const isEmpty = await inMyLectureService!.findAllInMyLectureV2ByConditions();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+        return;
+      }
+      default: {
+        if (viewType) {
+          viewType = changeViewTypeByContentType(contentType);
+          myTrainingService!.changeFilterRdoWithViewType(viewType);
+        }
+        const isEmpty = await myTrainingService!.findllMyTrainingsV2WithConditions();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+      }
     }
-    const isEmpty = await myTrainingService!.findllMyTrainingsV2WithConditions();
-    setResultEmpty(isEmpty);
-
-    checkShowSeeMore();
   };
 
-  const clearPageInfo = () => {
+  const clearAndInitStore = (contentType: MyLearningContentType | MyPageContentType) => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.clearAllInMyLectureV2s();
+        inMyLectureService!.initFilterRdo();
+        break;
+      case MyLearningContentType.Required:
+        break;
+      default:
+        myTrainingService!.clearAllMyTrainingV2();
+        myTrainingService!.initFilterRdo(contentType);
+    }
+  };
+
+  const getModels = (contentType: MyLearningContentType | MyPageContentType): (MyTrainingModelV2 | InMyLectureModelV2)[] => {
+    const { inMyLectureV2s } = inMyLectureService!;
+    const { myTrainingV2s } = myTrainingService!;
+
+    if (contentType === MyLearningContentType.InMyList) {
+      return inMyLectureV2s;
+    }
+    return myTrainingV2s;
+  };
+
+  const getTotalCount = (contentType: MyLearningContentType | MyPageContentType): number => {
+    const { inMyLectureV2Count } = inMyLectureService!;
+    const { myTrainingV2Count } = myTrainingService!;
+
+    if (contentType === MyLearningContentType.InMyList) {
+      return inMyLectureV2Count;
+    }
+    return myTrainingV2Count;
+  };
+
+  const isModelExist = () => {
+    return (myTrainingV2s && myTrainingV2s.length) || (inMyLectureV2s && inMyLectureV2s.length);
+  };
+
+
+  const changeViewTypeByContentType = (contentType: MyLearningContentType | MyPageContentType): string => {
+    if (!(contentType === MyLearningContentType.InProgress || contentType === MyLearningContentType.Completed)) {
+      return '';
+    }
+    return viewType;
+  };
+
+  const initPageInfo = () => {
     pageInfo.current = { offset: 0, limit: 20 };
   };
 
-  const checkShowSeeMore = () => {
-    const { myTrainingV2s, myTrainingV2Count } = myTrainingService!;
+  const checkShowSeeMore = (contentType: MyLearningContentType | MyPageContentType): void => {
+    const models: (MyTrainingModelV2 | InMyLectureModelV2)[] = getModels(contentType);
+    const totalCount: number = getTotalCount(contentType);
 
-    if (myTrainingV2s.length >= myTrainingV2Count) {
+    if (models.length >= totalCount) {
       setShowSeeMore(false);
       return;
     }
 
-    if (myTrainingV2Count <= PAGE_SIZE) {
+    if (totalCount <= PAGE_SIZE) {
       setShowSeeMore(false);
       return;
     }
@@ -103,11 +186,10 @@ function MyLearningListContainerV2(props: Props) {
     setShowSeeMore(true);
   };
 
-
   /* handlers */
-  const onFilterCount = (count: number) => {
+  const onChangeFilterCount = (count: number) => {
     if (filterCount && filterCount === count) {
-      fetchModelsByConditions(viewType);
+      fetchModelsByConditions(contentType, viewType);
     }
 
     setFilterCount(count);
@@ -136,23 +218,41 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const onClickSort = (column: string, direction: Direction) => {
-    myTrainingService!.sortBy(column, direction);
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.sortInMyLectureV2sBy(column, direction);
+        break;
+      case MyLearningContentType.Required:
+
+        break;
+      default:
+        myTrainingService!.sortMyTrainingV2sBy(column, direction);
+    }
   };
 
-  const onSeeMore = async () => {
+
+  const onClickSeeMore = async () => {
     pageInfo.current.offset += pageInfo.current.limit;
     pageInfo.current.limit = PAGE_SIZE;
-
-    await myTrainingService!.findAllMyTrainingsV2WithPage(pageInfo.current);
-    checkShowSeeMore();
+    switch (contentType) {
+      case MyPageContentType.EarnedStampList:
+        await myTrainingService!.findAllMyTrainingsV2WithStampAndPage(pageInfo.current);
+        break;
+      case MyLearningContentType.InMyList:
+        await inMyLectureService!.findAllInMyLectureV2WithPage(pageInfo.current);
+        break;
+      default:
+        await myTrainingService!.findAllMyTrainingsV2WithPage(pageInfo.current);
+    }
+    checkShowSeeMore(contentType);
   };
 
   /* Render Functions */
-  const renderNoSuchContentPanel = (contentType: MyLearningContentType, withFilter: boolean = false) => {
-    const message = withFilter
-      && '필터 조건에 해당하는 결과가 없습니다.' || NoSuchContentPanelMessages.getByContentType(contentType);
-    const link = (contentType === MyLearningContentType.InProgress)
-      && { text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`, path: '/lecture/recommend' } || undefined;
+  const renderNoSuchContentPanel = (contentType: MyLearningContentType | MyPageContentType, withFilter: boolean = false) => {
+    const message = withFilter &&
+      '필터 조건에 해당하는 결과가 없습니다.' || NoSuchContentPanelMessages.getMessageByConentType(contentType);
+    const link = (contentType === MyLearningContentType.InProgress) &&
+      { text: `${profileMemberName} 님에게 추천하는 학습 과정 보기`, path: '/lecture/recommend' } || undefined;
 
     return <NoSuchContentPanel message={message} link={link} />;
   };
@@ -161,8 +261,7 @@ function MyLearningListContainerV2(props: Props) {
   return (
     <>
       {
-        myTrainingV2s &&
-        myTrainingV2s.length &&
+        isModelExist() &&
         (
           <>
             <LineHeaderContainerV2
@@ -176,22 +275,29 @@ function MyLearningListContainerV2(props: Props) {
               onClickDelete={onClickDelete}
             />
             <MultiFilterBox
+              contentType={contentType}
               activeFilter={activeFilter}
-              onFilterCount={onFilterCount}
+              onChangeFilterCount={onChangeFilterCount}
             />
             {!resultEmpty && (
               <>
-
                 <MyLearningTableTemplate
                   contentType={contentType}
-                  models={myTrainingV2s}
-                  totalCount={myTrainingV2Count}
-                  onClickSort={onClickSort}
-                />
+                >
+                  <MyLearningTableHeader
+                    contentType={contentType}
+                    onClickSort={onClickSort}
+                  />
+                  <MyLearningTableBody
+                    contentType={contentType}
+                    models={getModels(contentType)}
+                    totalCount={getTotalCount(contentType)}
+                  />
+                </MyLearningTableTemplate>
                 {showSeeMore &&
                   (
                     <SeeMoreButton
-                      onClick={onSeeMore}
+                      onClick={onClickSeeMore}
                     />
                   )
                 }
@@ -212,8 +318,13 @@ function MyLearningListContainerV2(props: Props) {
 export default inject(mobxHelper.injectFrom(
   'profile.skProfileService',
   'myTraining.myTrainingService',
+  'myTraining.inMyLectureService',
   'lecture.lectureService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 
 /* globals */
 const PAGE_SIZE = 20;
+
+/* types */
+export type ViewType = 'Course' | ''; // 코스만보기 | 전체보기
+

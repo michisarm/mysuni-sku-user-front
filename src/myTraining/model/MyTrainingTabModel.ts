@@ -34,8 +34,6 @@ class MyTrainingTabModel {
       retryCount
     });
   }
-
-
 }
 
 decorate(MyTrainingTabModel, {

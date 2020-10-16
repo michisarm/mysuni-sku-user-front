@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
@@ -8,14 +8,14 @@ import moment from 'moment';
 import routePaths from 'lecture/routePaths';
 import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
-import { InMyLectureModel } from 'myTraining/model';
-import { LectureModel, LectureServiceType } from 'lecture/model';
-import { MyLearningContentType } from '../../model';
+import InMyLectureModelV2 from 'myTraining/model/InMyLectureModelV2';
+import { MyLearningContentType, MyPageContentType } from '../../model';
+
 
 interface Props extends RouteComponentProps {
-  contentType: MyLearningContentType;
+  contentType: MyLearningContentType | MyPageContentType;
   totalCount: number;
-  models: MyTrainingModelV2[];
+  models: (MyTrainingModelV2 | InMyLectureModelV2)[];
   myTrainingService?: MyTrainingService;
 }
 
@@ -29,7 +29,7 @@ function MyLearningTableBody(props: Props) {
   const { selectedIds, selectOne, clearOne } = myTrainingService!;
 
   /* handlers */
-  const onClickLearn = (model: MyTrainingModelV2) => {
+  const onClickLearn = (model: MyTrainingModelV2 | InMyLectureModelV2) => {
     // 학습하기 버튼 클릭 시, 해당 강좌 상세 페이지로 이동함.
     const { category: { college }, serviceId, serviceType, coursePlanId, cubeId } = model;
     const { id: collegeId } = college;
@@ -57,7 +57,7 @@ function MyLearningTableBody(props: Props) {
 
 
   /* render functions */
-  const renderWithBaseContent = (model: MyTrainingModelV2, index: number) => {
+  const renderWithBaseContent = (model: MyTrainingModelV2 | InMyLectureModelV2, index: number) => {
     /*
       ContentType 에 상관없이 공통으로 보여지는 컬럼들.
         1. No
@@ -77,18 +77,12 @@ function MyLearningTableBody(props: Props) {
         <Table.Cell className="title">
           <a href="#" onClick={() => onClickLearn(model)}><span className="ellipsis">{model.name} {/* 과정명 */}</span></a>
         </Table.Cell>
-        <Table.Cell>
-          {model.isCardType() ? model.cubeType : 'Course'} {/* 학습유형 */}
-        </Table.Cell>
-        <Table.Cell>
-          {model.difficultyLevel || '-'} {/* Level */}
-        </Table.Cell>
       </>
     );
   };
 
 
-  const renderByContentType = (model: MyTrainingModelV2, contentType: MyLearningContentType) => {
+  const renderByContentType = (model: MyTrainingModelV2 | InMyLectureModelV2, contentType: MyLearningContentType | MyPageContentType) => {
     /*
       ContentType 에 따라 달라지는 컬럼들.
     */
@@ -96,6 +90,12 @@ function MyLearningTableBody(props: Props) {
       case MyLearningContentType.InProgress:
         return (
           <>
+            <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'} {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.difficultyLevel || '-'} {/* Level */}
+            </Table.Cell>
             <Table.Cell>
               {'-'}  {/* 진행률 */}
             </Table.Cell>
@@ -113,6 +113,12 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'} {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.difficultyLevel || '-'} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
               {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
@@ -126,6 +132,12 @@ function MyLearningTableBody(props: Props) {
       case MyLearningContentType.Enrolled:
         return (
           <>
+            <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'} {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.difficultyLevel || '-'} {/* Level */}
+            </Table.Cell>
             <Table.Cell>
               {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
@@ -141,6 +153,12 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'} {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.difficultyLevel || '-'} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
               {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
@@ -152,6 +170,12 @@ function MyLearningTableBody(props: Props) {
         return (
           <>
             <Table.Cell>
+              {model.isCardType() ? model.displayCubeType : 'Course'} {/* 학습유형 */}
+            </Table.Cell>
+            <Table.Cell>
+              {model.difficultyLevel || '-'} {/* Level */}
+            </Table.Cell>
+            <Table.Cell>
               {model.formattedLearningTime}{/* 학습시간 */}
             </Table.Cell>
             <Table.Cell>
@@ -159,6 +183,17 @@ function MyLearningTableBody(props: Props) {
             </Table.Cell>
             <Table.Cell>
               {formatDate(model.endDate)}{/* 취소/미이수일 */}
+            </Table.Cell>
+          </>
+        );
+      case MyPageContentType.EarnedStampList:
+        return (
+          <>
+            <Table.Cell>
+              {model.stampCountForDisplay} {/* 스탬프 */}
+            </Table.Cell>
+            <Table.Cell>
+              {formatDate(model.endDate)} {/* 획득일자 */}
             </Table.Cell>
           </>
         );
@@ -172,7 +207,7 @@ function MyLearningTableBody(props: Props) {
       {contentType === MyLearningContentType.PersonalCompleted ||
         models &&
         models.length &&
-        models.map((model, index) => (
+        models.map((model: MyTrainingModelV2 | InMyLectureModelV2, index: number) => (
           <Table.Row key={`learning-body-${index}`}>
             {contentType === MyLearningContentType.InProgress && (
               <Table.Cell>

@@ -10,8 +10,8 @@ interface Props {
   badgeCount: number
   selectedYear: number
   yearOptions: any[]
-  onChangeYear:(year: number) => void,
-  onClickItem?:() => void,
+  onChangeYear: (year: number) => void,
+  onClickItem?: () => void,
 }
 
 @reactAutobind

@@ -4,10 +4,10 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
-import { MyLearningContentType, TableHeaderColumn } from '../../model';
+import { MyLearningContentType, MyPageContentType, TableHeaderColumn } from '../../model';
 
 interface Props {
-  contentType: MyLearningContentType;
+  contentType: MyLearningContentType | MyPageContentType;
   onClickSort: (column: string, direction: Direction) => void;
   myTrainingService?: MyTrainingService;
 }
@@ -17,11 +17,10 @@ function MyLearningTableHeader(props: Props) {
   const { myTrainingV2s, selectedIds, selectAll, clearAll } = myTrainingService!;
 
   /* by 김동구
-
     contentType 에 따라 테이블 컬럼이 동적으로 변경됨.
     현재 contentType 에 맞는 테이블 컬럼을 가져옴.
   */
-  const headerColumns = TableHeaderColumn.getByContentType(contentType);
+  const headerColumns = TableHeaderColumn.getColumnsByContentType(contentType);
 
   // 아이콘이 있는 테이블 컬럼을 Order 타입으로 변환.
   const initialOrders = headerColumns
@@ -68,10 +67,10 @@ function MyLearningTableHeader(props: Props) {
     // 클릭한 컬럼의 order 객체 를 구함.
     const clickedOrder = orders.filter(order => order.column === column)[0];
     // 클릭하지 않은 order 객체들 을 구함.
-    const NonClickedOrder = orders.filter(order => order.column !== column);
+    const nonClickedOrder = orders.filter(order => order.column !== column);
 
     // 클릭한 컬럼의 정렬 순서를 toggle 한 뒤 orders state 수정. (정렬 아이콘 UI 변경을 위함.)
-    setOrders([...NonClickedOrder, { column, direction: toggleDirection(clickedOrder.direction) }]);
+    setOrders([...nonClickedOrder, { column, direction: toggleDirection(clickedOrder.direction) }]);
 
     // 실제 테이블 리스트 데잍터 정렬을 위한 함수.
     onClickSort(clickedOrder.column, clickedOrder.direction);

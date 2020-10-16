@@ -7,6 +7,7 @@ import { ActionLogService } from 'shared/stores';
 import { ContentLayout, Tab, TabItemModel } from 'shared';
 import routePaths from '../../routePaths';
 import MyPageContentType from '../model/MyPageContentType';
+import ApprovalContentType from '../model/MyApprovalContentType';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
 import MyPageListContainer from '../logic/MyPageListContainer';
 
@@ -92,7 +93,7 @@ class MyPagePage extends Component<Props, State> {
         ),
       },
       {
-        name: MyPageContentType.ApprovalList,
+        name: ApprovalContentType.ApprovalList,
         item: (
           <>
             승인관리

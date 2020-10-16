@@ -12,14 +12,15 @@ import { NoSuchContentPanel } from 'shared';
 import { ChannelModel } from 'college/model';
 import { LectureServiceType } from 'lecture/model';
 import { Lecture, SeeMoreButton } from 'lecture';
+import MyTrainingStampXlsxModel from 'myTraining/model/MyTrainingStampXlsxModel';
 
+import LineHeaderContainer from './LineHeaderContainer';
 import routePaths from '../../routePaths';
 import MyTrainingService from '../../present/logic/MyTrainingService';
 import MyTrainingModel from '../../model/MyTrainingModel';
-import MyPageContentType from '../model/MyPageContentTypeV2';
-import LineHeaderContainerV2 from './LineHeaderContainerV2';
-import {OffsetElementList} from '../../../shared/model';
-import LineHeaderContainer from './LineHeaderContainer';
+import MyPageContentType from '../model/MyPageContentType';
+import { OffsetElementList } from '../../../shared/model';
+
 
 
 interface States {
@@ -30,8 +31,8 @@ interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
   pageService?: PageService,
   myTrainingService?: MyTrainingService
   contentType: MyPageContentType
-  onChangeCompletedCount: (completedCount: number) => void
-  onChangeEarnedStampCount: (earnedStampCount: number) => void
+  onChangeCompletedCount?: (completedCount: number) => void
+  onChangeEarnedStampCount?: (earnedStampCount: number) => void
 }
 
 @inject(mobxHelper.injectFrom(
@@ -103,9 +104,9 @@ class MyPageListContainerV2 extends Component<Props, States> {
     const { channels } = this.state;
     const activeItem = this.getAContentType();
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
-    let offsetList: any = null;
+    const offsetList: any = null;
 
-    if (activeItem === MyPageContentType.CompletedList) {
+    /* if (activeItem === MyPageContentType.CompletedList) {
       const stampTotalCount = await myTrainingService!.countMyTrainingsWithStamp(channelIds);
       onChangeEarnedStampCount(stampTotalCount);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithState('Completed', page!.limit, page!.nextOffset, channelIds);
@@ -116,7 +117,7 @@ class MyPageListContainerV2 extends Component<Props, States> {
       onChangeCompletedCount(completedCount.completedCount);
       offsetList = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
       onChangeEarnedStampCount(offsetList.totalCount);
-    }
+    } */
 
     pageService!.setTotalCountAndPageNo(this.PAGE_KEY, offsetList.totalCount, pageNo || pageNo === 0 ? pageNo + 1 : page!.pageNo + 1);
   }
@@ -171,7 +172,7 @@ class MyPageListContainerV2 extends Component<Props, States> {
     const { channels } = this.state;
     const activeItem = this.getAContentType();
     const channelIds = channels.map((channel: ChannelModel) => channel.channelId);
-    const stamps:OffsetElementList<MyTrainingModel> = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
+    const stamps: OffsetElementList<MyTrainingModel> = await myTrainingService!.findAndAddAllMyTrainingsWithStamp(page!.limit, page!.nextOffset, channelIds);
     const stampXlsxList: MyTrainingStampXlsxModel[] = [];
     stamps.results.map((stamp, index) => {
       stampXlsxList.push(MyTrainingModel.asStampXLSX(stamp, index));
@@ -190,12 +191,12 @@ class MyPageListContainerV2 extends Component<Props, States> {
     //
     const { pageService, myTrainingService } = this.props;
     const page = pageService!.pageMap.get(this.PAGE_KEY);
-    const { myTrainings } =  myTrainingService!;
+    const { myTrainings } = myTrainingService!;
     const { channels } = this.state;
     const activeItem = this.getAContentType();
-    console.log('myTrainings ;; ' ,myTrainings);
+    console.log('myTrainings ;; ', myTrainings);
     if (myTrainings.length < 1) {
-      return (
+      /* return (
         <NoSuchContentPanel
           message={(
             activeItem === MyPageContentType.CompletedList ?
@@ -204,7 +205,7 @@ class MyPageListContainerV2 extends Component<Props, States> {
               '획득한 스탬프가 없습니다.'
           )}
         />
-      );
+      ); */
     }
 
     return (
@@ -217,7 +218,7 @@ class MyPageListContainerV2 extends Component<Props, States> {
         />
 
         <Lecture.Group type={Lecture.GroupType.ListStamp}>
-          { myTrainings.map((myTraining: MyTrainingModel, index: number) => (
+          {myTrainings.map((myTraining: MyTrainingModel, index: number) => (
             <Lecture
               key={`training-${index}`}
               model={myTraining}

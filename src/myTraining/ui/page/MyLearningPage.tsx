@@ -49,7 +49,7 @@ class MyLearningPage extends Component<Props> {
   getNoties() {
     //
     const { myTrainingService, lectureService } = this.props;
-    
+
     myTrainingService.saveNewLearningPassedToStorage('Passed');
 
     myTrainingService!.findAllTabMyTraining();
@@ -60,10 +60,10 @@ class MyLearningPage extends Component<Props> {
   }
 
   publishViewEvent() {
-    const {actionEventService} = this.props;
+    const { actionEventService } = this.props;
     const menu = `LEARNING_VIEW`;
 
-    actionEventService.registerViewActionLog({menu});
+    actionEventService.registerViewActionLog({ menu });
   }
 
   getTabs() {

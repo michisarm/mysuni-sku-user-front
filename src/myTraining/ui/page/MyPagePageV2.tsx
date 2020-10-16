@@ -1,172 +1,107 @@
-import React, {Component, useEffect, useState} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
 
-import {ActionLogService} from 'shared/stores';
-import {ContentLayout, Tab, TabItemModel} from 'shared';
-import routePaths from '../../routePaths';
-import MyPageContentType from '../model/MyPageContentTypeV2';
+import React, { useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { BadgeService } from 'lecture/stores';
+import { MyLearningSummaryService } from 'myTraining/stores';
+import routePaths from 'myTraining/routePaths';
+import { ContentLayout, TabItemModel } from 'shared';
+import Tab from 'shared/components/Tab';
+import EarnedBadgeListContainer from 'certification/ui/logic/EarnedBadgeListContainer';
+import { MyPageContentType, MyPageContentTypeName } from '../model';
 import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
-import MyPageListContainer from '../logic/MyPageListContainerV2';
-
-import MyApprovalListContainer from '../logic/MyApprovalListContainer';
-import EarnedBadgeListContainer from '../../../certification/ui/logic/EarnedBadgeListContainer';
-import BadgeService from '../../../certification/present/logic/BadgeService';
-import MyBadgeContentType from '../../../certification/ui/model/MyBadgeContentType';
-
-// import {ApprovalListBoard} from '../view/ApprovalListBoard';
+import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 
 interface Props extends RouteComponentProps<RouteParams> {
-//interface Props extends RouteComponentProps<{ tab: string, pageNo: string }> {
-  actionLogService?: ActionLogService
-  badgeService?: BadgeService,
-
-  profileMemberName: string,
-}
-
-interface State {
-  subBreadcrumb: string
-  completedCount: number
-  earnedStampCount: number
+  badgeService?: BadgeService;
+  myLearningSummaryService?: MyLearningSummaryService;
 }
 
 interface RouteParams {
-  tab: string
-  pageNo: string
+  tab: string,
+  pageNo?: string
 }
 
-enum SubBreadcrumb {
-  // CompletedList = '학습완료',
-  //ApprovalList = '승인관리',
-  EarnedBadgeList = 'My Badge',
-  EarnedStampList = 'My Stamp',
-}
+function MyPagePageV2(props: Props) {
+  const { badgeService, myLearningSummaryService, history, match } = props;
+  const { earnedCount } = badgeService!;
+  const { myLearningSummary: { acheiveStampCount } } = myLearningSummaryService!;
+  const currentTab = match.params.tab;
 
-@inject(mobxHelper.injectFrom('shared.actionLogService', 'badge.badgeService'))
-@observer
-@reactAutobind
-class MyPagePageV2 extends Component<Props, State> {
-  //
-  state = {
-    // 시작하는 탭 설정
-    //subBreadcrumb: SubBreadcrumb.EarnedStampList,
-    subBreadcrumb: SubBreadcrumb.EarnedBadgeList,
-    completedCount: 0,
-    earnedStampCount: 0,
+  /* states */
+  const [myBadgeCount, setMyBadgeCount] = useState<number>(0);
+
+  /* effects */
+  useEffect(() => {
+    fetchAllTabCounts();
+  }, []);
+
+  /* functions */
+  const fetchAllTabCounts = async () => {
+    await badgeService!.getCountOfBadges(); // get myBadgeCount
+    setMyBadgeCount(earnedCount);
   };
 
-
-  componentDidMount(): void {
-    //
-    this.setSubBreadcrumb();
-    this.initCountOfBadges();
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    //
-    if (prevProps.location.key !== this.props.location.key) {
-      this.setSubBreadcrumb();
-    }
-  }
-
-  setSubBreadcrumb() {
-    //
-    const { match } = this.props;
-
-    this.setState({
-      subBreadcrumb: (SubBreadcrumb as any)[match.params.tab] || '',
-    });
-  }
-
-  initCountOfBadges() {
-    //
-    const { badgeService } = this.props;
-    badgeService?.getCountOfBadges();
-  }
-
-  getTabs() {
-    //
-    const { completedCount, earnedStampCount  } = this.state;
-    const { badgeService, profileMemberName, history, match } = this.props;
-
+  const getTabs = (): TabItemModel[] => {
     return [
-      // 0521 학습완료탭 삭제, MyBadge Add
       {
-        name: MyBadgeContentType.EarnedBadgeList,
-        item: (
-          <>
-            My Badge
-            { <span className="count">+{badgeService?.earnedCount || 0} </span> }
-          </>
-        ),
-        render: () => (
-          <EarnedBadgeListContainer
-            profileMemberName={profileMemberName}
-            badgeCount={badgeService?.earnedCount || 0}
-          />
-        )
+        name: MyPageContentType.EarnedBadgeList,
+        item: getTabItem(MyPageContentType.EarnedBadgeList, myBadgeCount),
+        render: () => <EarnedBadgeListContainer badgeCount={myBadgeCount} />
       },
       {
         name: MyPageContentType.EarnedStampList,
-        item: (
-          <>
-            My Stamp
-            <span className="count">{earnedStampCount > 0 ? `+${earnedStampCount}` : earnedStampCount}</span>
-          </>
-        ),
-        render: () => (
-          <MyPageListContainer
-            contentType={MyPageContentType.EarnedStampList}
-            onChangeCompletedCount={this.onChangeCompletedCount}
-            onChangeEarnedStampCount={this.onChangeEarnedStampCount}
-          />
-        ),
-      },
+        item: getTabItem(MyPageContentType.EarnedStampList, acheiveStampCount),
+        render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
+      }
     ] as TabItemModel[];
-  }
+  };
 
-  onChangeTab(tab: TabItemModel): string {
-    //
-    this.props.actionLogService?.registerClickActionLog({ subAction: (SubBreadcrumb as any)[tab.name] });
-    this.props.history.push(routePaths.myPageTab(tab.name));
-
-    return routePaths.myPageTab(tab.name);
-  }
-
-  onChangeCompletedCount(completedCount: number) {
-    //
-    this.setState({ completedCount });
-  }
-
-  onChangeEarnedStampCount(earnedStampCount: number) {
-    //
-    this.setState({ earnedStampCount });
-  }
-
-  render() {
-    //
-    const { params } = this.props.match;
-    const { subBreadcrumb } = this.state;
-
+  const getTabItem = (contentType: MyPageContentType, count: number) => {
     return (
-      <ContentLayout
-        className="MyPage"
-        breadcrumb={[
-          { text: 'MyPage' },
-          { text: subBreadcrumb },
-        ]}
-      >
-        <MyPageContentHeaderContainer />
-
-        <Tab
-          tabs={this.getTabs()}
-          defaultActiveName={params.tab}
-          onChangeTab={this.onChangeTab}
-        />
-      </ContentLayout>
+      <>
+        {MyPageContentTypeName[contentType]}
+        <span className="count">+{count > 0 && count || 0}</span>
+      </>
     );
-  }
+  };
+
+  const onChangeTab = (tab: TabItemModel): string => {
+    history.push(routePaths.myPageTab(tab.name));
+    return routePaths.myPageTab(tab.name);
+  };
+
+  return (
+    <ContentLayout
+      className="MyPage"
+      breadcrumb={
+        [
+          { text: 'My Page' },
+          { text: getContentNameFromTab(currentTab) }
+        ]
+      }
+    >
+      <MyPageContentHeaderContainer />
+      <Tab
+        tabs={getTabs()}
+        defaultActiveName={currentTab}
+        onChangeTab={onChangeTab}
+      />
+    </ContentLayout>
+  );
 }
 
-export default withRouter(MyPagePageV2);
+export default inject(mobxHelper.injectFrom(
+  'badge.badgeService',
+  'myTraining.myLearningSummaryService'
+))(withRouter(observer(MyPagePageV2)));
+
+/* globals */
+const convertTabToContentType = (tab: string) => {
+  return MyPageContentType[tab as MyPageContentType];
+};
+
+const getContentNameFromTab = (tab: string) => {
+  return MyPageContentTypeName[tab as MyPageContentType];
+};

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { observer, inject } from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import moment from 'moment';
 import { ContentHeader } from 'shared';
@@ -22,13 +22,14 @@ import BadgeFilterRdoModel from '../../../certification/ui/model/BadgeFilterRdoM
 
 
 interface Props extends RouteComponentProps {
-  skProfileService? : SkProfileService
-  myLearningSummaryService? : MyLearningSummaryService,
-  badgeService? : BadgeService,
+  skProfileService?: SkProfileService
+  myLearningSummaryService?: MyLearningSummaryService,
+  badgeService?: BadgeService,
 }
 
 interface State {
-  selectedYear: number
+  selectedYear: number;
+  myBadgeCount: number;
 }
 
 @inject(mobxHelper.injectFrom(
@@ -60,6 +61,7 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
 
   state = {
     selectedYear: moment().year(),
+    myBadgeCount: 0
   };
 
 
@@ -70,8 +72,11 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
 
   init() {
     //
-    const { myLearningSummaryService } = this.props;
+    const { myLearningSummaryService, badgeService } = this.props;
+    const { earnedCount } = badgeService!;
     myLearningSummaryService!.findMyLearningSummary();
+
+    this.setState({ myBadgeCount: earnedCount });
 
     //const { badgeService } = this.props;
     //badgeService!.findPagingEarnedBadges(BadgeFilterRdoModel.earned('', 'Issued'));
@@ -89,25 +94,24 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
     //
     const { history } = this.props;
 
-    history.push( BadgeRoutePaths.badgeEarnedBadgeList() );
+    history.push(BadgeRoutePaths.badgeEarnedBadgeList());
   }
 
   onClickMyStamp() {
     //
     const { history } = this.props;
 
-    history.push( MyTrainingRoutePaths.myPageEarnedStampList() );
+    history.push(MyTrainingRoutePaths.myPageEarnedStampList());
   }
 
 
   render() {
     //
     const { yearOptions } = MyPageContentHeaderContainer;
-    const { skProfileService, myLearningSummaryService, badgeService } = this.props;
-    const { selectedYear } = this.state;
+    const { skProfileService, myLearningSummaryService } = this.props;
+    const { selectedYear, myBadgeCount } = this.state;
     const { skProfile } = skProfileService!;
     const { myLearningSummary } = myLearningSummaryService!;
-    const myBadgeCount = badgeService!.earnedCount;
 
     return (
       <ContentHeader
@@ -125,8 +129,8 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
           <ContentHeaderLearningSummaryView
             year={selectedYear}
             totalLearningTime={myLearningSummary.totalLearningTime}
-            mySuniLearningTime={myLearningSummary.suniLearningTime-myLearningSummary.myCompanyInSuniLearningTime}
-            myCompanyLearningTime={myLearningSummary.myCompanyLearningTime+myLearningSummary.myCompanyInSuniLearningTime}
+            mySuniLearningTime={myLearningSummary.suniLearningTime - myLearningSummary.myCompanyInSuniLearningTime}
+            myCompanyLearningTime={myLearningSummary.myCompanyLearningTime + myLearningSummary.myCompanyInSuniLearningTime}
           />
         </ContentHeader.Cell>
         <ContentHeader.Cell>

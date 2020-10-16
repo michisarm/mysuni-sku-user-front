@@ -4,6 +4,7 @@ import { OffsetElementList } from 'shared/model';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingTabModel from '../../model/MyTrainingTabModel';
+import MyTrainingFilterRdoModel from '../../model/MyTrainingFilterRdoModel';
 
 
 
@@ -53,9 +54,23 @@ class MyTrainingApi {
       .then(this.getOffsetElementList);
   }
 
+  findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi.post('http://localhost:8233/mytraining/mytrainings/stamps/v2', myTrainingFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
   findAllTabMyTraining() {
     return axiosApi.get<MyTrainingTabModel>(this.baseUrl + '/tab/counts').then((response) => response.data);
   }
+
+  //////// 개편 ////////
+  findAllTabCount() {
+    return axiosApi.get<MyTrainingTabModel>('http://localhost:8233/mytraining/mytrainings/tab/counts/v2')
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+  //////// 개편 ////////
 }
 
 MyTrainingApi.instance = new MyTrainingApi();

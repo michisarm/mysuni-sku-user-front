@@ -1,151 +1,81 @@
-import React, {Component} from 'react';
-import {mobxHelper, reactAutobind} from '@nara.platform/accent';
-import {inject, observer} from 'mobx-react';
-import {RouteComponentProps, withRouter} from 'react-router';
 
-import {ActionLogService} from 'shared/stores';
-import {ContentLayout, Tab, TabItemModel} from 'shared';
+import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import { ContentLayout } from 'shared';
+import Tab, { TabItemModel } from 'shared/components/Tab';
+import { ApprovalCubeService } from 'myTraining/stores';
 import routePaths from '../../routePaths';
-import MyPageContentTypeV2 from '../model/MyPageContentTypeV2';
-import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
-import MyPageListContainer from '../logic/MyPageListContainer';
-
+import MyApprovalContentType from '../model/MyApprovalContentType';
+import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
-import APLPage from './APLPage';
-//import AplListContainer from '../../../apl/ui/logic/AplListContainer';
-
-// import {ApprovalListBoard} from '../view/ApprovalListBoard';
+import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
 
 interface Props extends RouteComponentProps<RouteParams> {
-  actionLogService?: ActionLogService
-}
-
-interface State {
-  subBreadcrumb: string
-  approvalCount: number
-  addPersonalLearningCount: number
+  approvalCubeService?: ApprovalCubeService;
 }
 
 interface RouteParams {
-  tab: string
-  pageNo: string
+  tab: string;
+  pageNo?: string;
 }
 
-enum SubBreadcrumb {
-  // CompletedList = '학습완료',
-  //ApprovalList = '승인관리',
-  ApprovalList = '유료과정',
-  ApprovalAddPersonalLearning = '개인학습',
-}
+function MyApprovalPage(props: Props) {
+  const { approvalCubeService, history, match } = props;
+  const { approvalCubeOffsetList: { totalCount } } = approvalCubeService!;
+  const currentTab = match.params.tab;
 
-@inject(mobxHelper.injectFrom('shared.actionLogService'))
-@observer
-@reactAutobind
-class MyApprovalPage extends Component<Props, State> {
-  //
-  state = {
-    // 시작하는 탭 설정
-    subBreadcrumb: SubBreadcrumb.ApprovalList,
-    approvalCount: 0,
-    addPersonalLearningCount: 0,
-  };
-
-
-  componentDidMount(): void {
-    //
-    this.setSubBreadcrumb();
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>): void {
-    //
-    if (prevProps.location.key !== this.props.location.key) {
-      this.setSubBreadcrumb();
-    }
-  }
-
-  setSubBreadcrumb() {
-    //
-    const { match } = this.props;
-
-    this.setState({
-      subBreadcrumb: (SubBreadcrumb as any)[match.params.tab] || '',
-    });
-  }
-
-  getTabs() {
-    //
-    const { approvalCount, addPersonalLearningCount } = this.state;
-
+  /* functions */
+  const getTabs = (): TabItemModel[] => {
     return [
       {
-        name: MyPageContentTypeV2.ApprovalList,
-        item: (
-          <>
-            유료과정
-            <span className="count">{approvalCount > 0 ? `+${approvalCount}` : approvalCount}</span>
-          </>
-        ),
-        render: () => (
-          <MyApprovalListContainer/>
-        )
-      },
-      {
-        name: MyPageContentTypeV2.ApprovalAddPersonalLearning,
-        item: (
-          <>
-            개인학습
-            <span className="count">{addPersonalLearningCount > 0 ? `+${addPersonalLearningCount}` : addPersonalLearningCount}</span>
-          </>
-        ),
-        render: () => (
-          /*<AplListContainer/>*/
-          <APLPage/>
-        ),
-      },
-    ] as TabItemModel[];
-  }
+        name: MyApprovalContentType.ApprovalList,
+        item: getTabItem(MyApprovalContentType.ApprovalList, totalCount),
+        render: () => <MyApprovalListContainer />
+      }
+    ];
+  };
 
-  onChangeTab(tab: TabItemModel): string {
-    //
-    this.props.actionLogService?.registerClickActionLog({ subAction: (SubBreadcrumb as any)[tab.name] });
-    this.props.history.push(routePaths.approvalTab(tab.name));
-
-    return routePaths.approvalTab(tab.name);
-  }
-
-  onChangeApprovalCount(approvalCount: number) {
-    //
-    this.setState({ approvalCount });
-  }
-
-  onChangeAddPersonalLearningCount(addPersonalLearningCount: number) {
-    //
-    this.setState({ addPersonalLearningCount });
-  }
-
-  render() {
-    //
-    const { params } = this.props.match;
-    const { subBreadcrumb } = this.state;
-
+  const getTabItem = (contentType: MyApprovalContentType, count: number) => {
     return (
-      <ContentLayout
-        className="MyApprovalPage"
-        breadcrumb={[
-          { text: 'MyApprovalPage' },
-          { text: subBreadcrumb },
-        ]}
-      >
-        <MyPageContentHeaderContainer />
-
-        <Tab
-          tabs={this.getTabs()}
-          defaultActiveName={params.tab}
-          onChangeTab={this.onChangeTab}
-        />
-      </ContentLayout>
+      <>
+        {MyApprovalContentTypeName[contentType]}
+        <span className="count">+{count > 0 && count || 0}</span>
+      </>
     );
-  }
+  };
+
+  const onChangeTab = (tab: TabItemModel): string => {
+    history.push(routePaths.approvalTab(tab.name));
+    return routePaths.approvalTab(tab.name);
+  };
+
+  /* render */
+  return (
+    <ContentLayout
+      className="MyApprovalPage"
+      breadcrumb={[
+        { text: '승인관리' },
+        { text: convertTabToContentTypeName(currentTab) }
+      ]}
+    >
+      <MyApprovalContentHeader />
+      <Tab
+        tabs={getTabs()}
+        defaultActiveName={currentTab}
+        onChangeTab={onChangeTab}
+      />
+
+    </ContentLayout>
+  );
 }
 
-export default withRouter(MyApprovalPage);
+export default inject(mobxHelper.injectFrom(
+  'approvalCube.approvalCubeService'
+))(withRouter(observer(MyApprovalPage)));
+
+/* globals */
+const convertTabToContentTypeName = (tab: string): MyApprovalContentTypeName => {
+  return MyApprovalContentTypeName[tab as MyApprovalContentType];
+};

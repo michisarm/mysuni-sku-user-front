@@ -17,7 +17,13 @@ class MyTrainingFlowApi {
     return axiosApi
       .post(this.baseUrl + '/v2', myTrainingFilterRdo)
       .then(response => response && response.data || null)
-      .catch(err => err && null);
+      .catch(error => error && null);
+  }
+
+  findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi.post(this.baseUrl + '/stamp/v2', myTrainingFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
   }
 
   updateBySelectedIds() {

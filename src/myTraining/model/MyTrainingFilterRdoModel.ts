@@ -1,6 +1,6 @@
 import { Offset, DenizenKey, PatronType } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
-import { MyLearningContentType } from 'myTraining/ui/model';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 
 class MyTrainingFilterRdoModel {
@@ -17,7 +17,7 @@ class MyTrainingFilterRdoModel {
     patronType: PatronType.Denizen,
   };
 
-  contentType: MyLearningContentType = MyLearningContentType.InProgress; // 탭 전환될 때마다 전달되는 contentType
+  contentType: MyLearningContentType | MyPageContentType = MyLearningContentType.InProgress; // 탭 전환될 때마다 전달되는 contentType
 
   /*
     MultiFilterBox 에서 선택되는 검색 조건들.
@@ -38,7 +38,7 @@ class MyTrainingFilterRdoModel {
   }
 
   // offset, denizenKey, contentType 만을 검색 조건으로 함.
-  static createWithContentType(contentType: MyLearningContentType) {
+  static createWithContentType(contentType: MyLearningContentType | MyPageContentType) {
     return new MyTrainingFilterRdoModel({ contentType } as MyTrainingFilterRdoModel);
   }
 
@@ -68,14 +68,6 @@ class MyTrainingFilterRdoModel {
     this.contentType = contentType;
   }
 
-  changeOffset(offset: Offset) {
-    this.offset = offset;
-  }
-
-  setDefaultOffset() {
-    this.offset = { offset: 0, limit: 20 };
-  }
-
   changeServiceType(serviceType: string) {
     this.serviceType = serviceType;
   }
@@ -90,7 +82,14 @@ class MyTrainingFilterRdoModel {
     this.difficultyLevels = conditions.difficultyLevels;
     this.organizers = conditions.organizers;
     this.required = conditions.required === 'none' ? '' : conditions.required;
+  }
 
+  changeOffset(offset: Offset) {
+    this.offset = offset;
+  }
+
+  setDefaultOffset() {
+    this.offset = { offset: 0, limit: 20 };
   }
 
   setCubeTypeAndServiceType(conditions: FilterCondition) {

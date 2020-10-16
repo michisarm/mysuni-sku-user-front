@@ -6,7 +6,7 @@ import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
 import { Direction, Order } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
-import { MyLearningContentType } from 'myTraining/ui/model';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingFlowApi from '../apiclient/MyTrainingFlowApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
@@ -52,6 +52,9 @@ class MyTrainingService {
 
   @observable
   retryCount: number = 0;
+
+  @observable
+  myStampCount: number = 0;
 
   constructor(myTrainingApi: MyTrainingApi, myTrainingFlowApi: MyTrainingFlowApi) {
     this.myTrainingApi = myTrainingApi;
@@ -271,6 +274,8 @@ class MyTrainingService {
     const rdo = MyTrainingRdoModel.new(1, 0, channelIds);
     const trainingOffsetElementList = await this.myTrainingApi.findAllMyTrainingsWithStamp(rdo);
 
+    runInAction(() => this.myStampCount = trainingOffsetElementList.totalCount);
+
     return trainingOffsetElementList.totalCount;
   }
 
@@ -300,12 +305,26 @@ class MyTrainingService {
   }
 
   @action
-  clearAllMyTrainingV2(contentType?: MyLearningContentType) {
+  async findAllTabCount() {
+    const myTrainingTabModel = await this.myTrainingApi.findAllTabCount();
+    if (myTrainingTabModel) {
+      runInAction(() => {
+        this.inprogressCount = myTrainingTabModel.inprogressCount;
+        this.completedCount = myTrainingTabModel.completedCount;
+        this.enrolledCount = myTrainingTabModel.enrolledCount;
+        this.retryCount = myTrainingTabModel.retryCount;
+      });
+    }
+  }
+
+  @action
+  clearAllMyTrainingV2() {
     this._myTrainingV2s = [];
     this.myTrainingV2Count = 0;
+  }
 
-    this.myTrainingFilterRdo = contentType ?
-      MyTrainingFilterRdoModel.createWithContentType(contentType) : new MyTrainingFilterRdoModel();
+  initFilterRdo(contentType: MyLearningContentType | MyPageContentType) {
+    this.myTrainingFilterRdo = MyTrainingFilterRdoModel.createWithContentType(contentType);
   }
 
   changeFilterRdoWithViewType(viewType: string) {
@@ -318,6 +337,7 @@ class MyTrainingService {
   }
 
   changeFilterRdoWithConditions(conditions: FilterCondition) {
+    /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
     this.myTrainingFilterRdo.changeConditions(conditions);
     this.myTrainingFilterRdo.setDefaultOffset();
   }
@@ -340,20 +360,64 @@ class MyTrainingService {
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
     const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
 
-    if (
-      offsetMyTrainings &&
+    if (offsetMyTrainings &&
       offsetMyTrainings.results &&
       offsetMyTrainings.results.length) {
       runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
+        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
         this.myTrainingV2Count = offsetMyTrainings.totalCount;
       });
-
       return false;
-
     }
     return true;
   }
+
+  @action
+  async findAllMyTrainingsV2WithStamp() {
+    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+
+    if (offsetMyTrainings &&
+      offsetMyTrainings.results &&
+      offsetMyTrainings.results.length) {
+      runInAction(() => {
+        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
+        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  @action
+  async findAllMyTrainingsV2WithStampByConditions() {
+    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+
+    if (offsetMyTrainings &&
+      offsetMyTrainings.results &&
+      offsetMyTrainings.results.length) {
+      runInAction(() => {
+        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
+        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  @action
+  async findAllMyTrainingsV2WithStampAndPage(offset: Offset) {
+    this.myTrainingFilterRdo.changeOffset(offset);
+
+    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+
+    if (offsetMyTrainings &&
+      offsetMyTrainings.results &&
+      offsetMyTrainings.results.length) {
+      const addedMyTrainings = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
+      runInAction(() => this._myTrainingV2s = [...this._myTrainingV2s, ...addedMyTrainings]);
+    }
+  }
+
 
   @action
   async findAllMyTrainingsV2WithPage(offset: Offset) {
@@ -425,6 +489,18 @@ class MyTrainingService {
     return myTrainingV2sForExcel;
   }
 
+  async findAllMyTrainingsV2WithStampForExcel() {
+    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this.myTrainingFilterRdo);
+
+    filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
+
+    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(filterRdoForExcel);
+    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
+
+    return myTrainingV2sForExcel;
+
+  }
+
   @action
   selectOne(id: string) {
     this.selectedIds = [...this.selectedIds, id];
@@ -457,17 +533,17 @@ class MyTrainingService {
   }
 
   @action
-  sortBy(column: string, direction: Direction) {
+  sortMyTrainingV2sBy(column: string, direction: Direction) {
 
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
-    const prop = convertColumn(column);
+    const propKey = convertColumn(column);
 
     if (direction === Direction.ASC) {
-      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => a[prop] - b[prop]);
+      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => a[propKey] - b[propKey]);
       return;
     }
     if (direction === Direction.DESC) {
-      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => b[prop] - a[prop]);
+      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => b[propKey] - a[propKey]);
     }
   }
 }
@@ -482,13 +558,14 @@ Object.defineProperty(MyTrainingService, 'instance', {
   configurable: false,
 });
 
-const convertColumn = (column: string): any => {
+export const convertColumn = (column: string): any => {
   switch (column) {
     case '학습시간':
       return 'learningTime';
     case '학습시작일':
       return 'startDate';
     case '학습완료일':
+    case '획득일자':
       return 'endDate';
     case '스탬프':
       return 'stampCount';

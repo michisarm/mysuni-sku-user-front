@@ -1,30 +1,35 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Table, Checkbox } from 'semantic-ui-react';
 import { observer, inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { CollegeService } from 'college/stores';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
+import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
+import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import CheckboxOptions from '../../model/CheckboxOptions';
 import CheckedFilterView from './CheckedFilterView';
 
 
+
 interface Props {
+  contentType: MyLearningContentType | MyPageContentType;
   activeFilter: boolean;
-  onFilterCount: (count: number) => void;
+  onChangeFilterCount: (count: number) => void;
   collegeService?: CollegeService;
   myTrainingService?: MyTrainingService;
+  inMyLectureService?: InMyLectureService;
 }
 
 export type FilterCondition = {
-  collegeIds: string[];
-  learningTypes: string[];
-  difficultyLevels: string[];
-  organizers: string[];
-  required: string;
-  serviceType: string;
+  collegeIds: string[];                 // 컬리지
+  learningTypes: string[];              // 학습유형
+  difficultyLevels: string[];           // 난이도
+  organizers: string[];                 // 교육기관
+  required: string;                     // 권장과정
+  serviceType: string;                  // 학습유형에 포함되어 있는 'Course'
 }
 
-enum FilterConditionName {
+export enum FilterConditionName {
   College = '컬리지',
   LearningType = '학습유형',
   DifficultyLevel = '난이도',
@@ -32,9 +37,15 @@ enum FilterConditionName {
   Required = '핵인싸'
 }
 
+/*
+  학습유형의 'Course' 항목은 학습유형(learningTypes) 에 속해 있으나, 실제 conditions 의 serviceType 에 값이 바인딩 됨. 
+  'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
+*/
 function MultiFilterBox(props: Props) {
-  const { activeFilter, onFilterCount, collegeService, myTrainingService } = props;
+  const { contentType, activeFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService } = props;
   const { colleges } = collegeService!;
+
+  /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
     collegeIds: [],
     learningTypes: [],
@@ -44,47 +55,79 @@ function MultiFilterBox(props: Props) {
     serviceType: ''
   });
 
-
-  /* filter 창이 닫히면 체크된 조건들로 새로 myTrainingViews 조회 */
+  /* effects */
   useEffect(() => {
-
+    /* 
+      1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
+      2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
+    */
     if (activeFilter) {
       collegeService!.findAllColleges();
     }
 
     if (!activeFilter) {
-      myTrainingService!.changeFilterRdoWithConditions(conditions);
-      const filterCount = myTrainingService!.getFilterCount();
+      changeFilterRdo(contentType);
+      const filterCount = getFilterCount(contentType);
       //
-      onFilterCount(filterCount);
+      onChangeFilterCount(filterCount);
     }
   }, [activeFilter]);
 
 
+  /* functions */
+  const changeFilterRdo = (contentType: MyLearningContentType | MyPageContentType) => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        inMyLectureService!.changeFilterRdoWithConditions(conditions);
+        break;
+      default:
+        myTrainingService!.changeFilterRdoWithConditions(conditions);
+    }
+  };
+
+  const getFilterCount = (contentType: MyLearningContentType | MyPageContentType) => {
+    switch (contentType) {
+      case MyLearningContentType.InMyList:
+        return inMyLectureService!.getFilterCount();
+      default:
+        return myTrainingService!.getFilterCount();
+    }
+  };
 
   const getCollegeId = (collegeName: string) => {
     const college = colleges.filter(college => college.name === collegeName)[0];
     return college.collegeId;
   };
 
-  /* Event Handlers */
-
-  // checkbox selectAll 클릭 시, 해당 영역 데이터 전체 선택 됨.
+  /* handlers */
   const onCheckAll = (e: any, data: any) => {
+    /*
+      전체 선택이 가능한 항목들에 대해서만 FilterConditionName 을 기준으로 영역을 나눔.
+        1. 컬리지
+        2. 학습유형
+        3. 난이도
+        4. 교육기관  
+    */
     switch (data.name) {
       case FilterConditionName.College:
+        /* 전체 해제 */
         if (conditions.collegeIds.length === colleges.length) {
           setConditions({ ...conditions, collegeIds: [] });
           break;
         }
+        /* 전체 선택 */
         setConditions({ ...conditions, collegeIds: [...colleges.map(college => college.collegeId)] });
         break;
       case FilterConditionName.LearningType:
-        if (conditions.learningTypes.length === CheckboxOptions.learningTypes.length) {
-          setConditions({ ...conditions, learningTypes: [] });
+        if (conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType) {
+          setConditions({ ...conditions, learningTypes: [], serviceType: '' });
           break;
         }
-        setConditions({ ...conditions, learningTypes: [...CheckboxOptions.learningTypes.map(learningType => learningType.value)] });
+        setConditions({
+          ...conditions,
+          learningTypes: [...CheckboxOptions.learningTypes.map(learningType => learningType.value).filter(value => value !== 'Course')],
+          serviceType: 'Course'
+        });
         break;
       case FilterConditionName.DifficultyLevel:
         if (conditions.difficultyLevels.length === CheckboxOptions.difficultyLevels.length) {
@@ -103,73 +146,85 @@ function MultiFilterBox(props: Props) {
     }
   };
 
-  // data 가 event 가 발생한 target 을 의미함.
   const onCheckOne = (e: any, data: any) => {
+    /*
+      개별 선택이 가능한 모든 항목들.
+        1. 컬리지
+        2. 학습유형
+        3. 난이도
+        4. 교육기관
+        5. 핵인싸
+    */
     switch (data.name) {
-      case FilterConditionName.College: // 컬리지
+      case FilterConditionName.College:
         if (conditions.collegeIds.includes(data.value)) {
+          /* 선택 해제 */
           setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== data.value) });
           break;
         }
+        /* 선택 */
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.concat(data.value) });
         break;
-      case FilterConditionName.LearningType:  // 학습유형
+      case FilterConditionName.LearningType:
+        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 해제 */
         if (conditions.learningTypes.includes(data.value)) {
           setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== data.value) });
           break;
         }
 
+        /* 'Course' 선택 해제 */
         if (conditions.serviceType === 'Course' && data.value === 'Course') {
           setConditions({ ...conditions, serviceType: '' });
           break;
         }
-        // 학습 유형 중 Course를 선택했을 시, conditions의 serviceType 에 바인딩 하도록 함.
+        /* 학습유형 중 'Course' 를 선택할 시, learningTypes 가 아닌 serviceType 에 값이 바인딩됨. */
         if (data.value === 'Course') {
           setConditions({ ...conditions, serviceType: data.value });
           break;
         }
 
+        /* 'Course' 를 제외한 모든 학습 유형에 대한 선택 */
         setConditions({ ...conditions, learningTypes: conditions.learningTypes.concat(data.value) });
         break;
-      case FilterConditionName.DifficultyLevel: // 난이도
+      case FilterConditionName.DifficultyLevel:
         if (conditions.difficultyLevels.includes(data.value)) {
           setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.filter(difficultyLevel => difficultyLevel !== data.value) });
           break;
         }
-
         setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.concat(data.value) });
         break;
-      case FilterConditionName.Organizer: // 교육기관
+      case FilterConditionName.Organizer:
         if (conditions.organizers.includes(data.value)) {
           setConditions({ ...conditions, organizers: conditions.organizers.filter(organizer => organizer !== data.value) });
           break;
         }
         setConditions({ ...conditions, organizers: conditions.organizers.concat(data.value) });
         break;
-      case FilterConditionName.Required:  //핵인싸
+      case FilterConditionName.Required:
         setConditions({ ...conditions, required: data.value });
         break;
     }
   };
-  /*
-    전체해제 버튼을 눌렀을 시, 선택된 checkbox는 사라짐.
-  */
-  const onClearConditions = () => {
+
+  const onClearAll = () => {
     setConditions(InitialConditions);
   };
 
   const onClearOne = (type: string, condition: string) => {
     switch (type) {
-      case '컬리지':
+      case FilterConditionName.College:
         setConditions({ ...conditions, collegeIds: conditions.collegeIds.filter(collegeId => collegeId !== getCollegeId(condition)) });
         break;
-      case '학습유형':
+      case FilterConditionName.LearningType:
         setConditions({ ...conditions, learningTypes: conditions.learningTypes.filter(learningType => learningType !== condition) });
+        if (condition === 'Course') {
+          setConditions({ ...conditions, serviceType: '' });
+        }
         break;
-      case '난이도':
+      case FilterConditionName.DifficultyLevel:
         setConditions({ ...conditions, difficultyLevels: conditions.difficultyLevels.filter(difficultyLevel => difficultyLevel !== condition) });
         break;
-      case '교육기관':
+      case FilterConditionName.Organizer:
         setConditions({ ...conditions, organizers: conditions.organizers.filter(organizer => organizer !== condition) });
         break;
     }
@@ -182,10 +237,10 @@ function MultiFilterBox(props: Props) {
         <>
           <div className="title">Filter</div>
           <Table>
-            {/* body */}
             <Table.Body>
               <Table.Row>
-                <Table.HeaderCell>컬리지</Table.HeaderCell>
+                {/* 컬리지 */}
+                <Table.HeaderCell>{FilterConditionName.College}</Table.HeaderCell>
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
@@ -212,14 +267,15 @@ function MultiFilterBox(props: Props) {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.HeaderCell>교육유형</Table.HeaderCell>
+                {/* 학습유형 */}
+                <Table.HeaderCell>{FilterConditionName.LearningType}</Table.HeaderCell>
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
                     className="base"
                     name={FilterConditionName.LearningType}
                     label={SELECT_ALL}
-                    checked={conditions.learningTypes.length === CheckboxOptions.learningTypes.length}
+                    checked={(conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)}
                     onChange={onCheckAll}
                   />
                   {CheckboxOptions.learningTypes.map((learningType, index) => (
@@ -237,7 +293,8 @@ function MultiFilterBox(props: Props) {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.HeaderCell>난이도</Table.HeaderCell>
+                {/* 난이도 */}
+                <Table.HeaderCell>{FilterConditionName.DifficultyLevel}</Table.HeaderCell>
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
@@ -262,7 +319,8 @@ function MultiFilterBox(props: Props) {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.HeaderCell>교육기관</Table.HeaderCell>
+                {/* 교육기관 */}
+                <Table.HeaderCell>{FilterConditionName.Organizer}</Table.HeaderCell>
                 <Table.Cell>
                   {/* select All 체크박스 */}
                   <Checkbox
@@ -287,7 +345,8 @@ function MultiFilterBox(props: Props) {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.HeaderCell>핵인싸</Table.HeaderCell>
+                {/* 핵인싸 */}
+                <Table.HeaderCell>{FilterConditionName.Required}</Table.HeaderCell>
                 <Table.Cell>
                   {CheckboxOptions.requireds.map((required, index) => (
                     <Fragment key={`checkbox-required-${index}`}>
@@ -305,11 +364,11 @@ function MultiFilterBox(props: Props) {
               </Table.Row>
             </Table.Body>
           </Table>
-          {/* display selected values */}
+          {/* display selected conditions */}
           <CheckedFilterView
             colleges={colleges}
             conditions={conditions}
-            onClear={onClearConditions}
+            onClearAll={onClearAll}
             onClearOne={onClearOne}
           />
         </>
@@ -320,7 +379,8 @@ function MultiFilterBox(props: Props) {
 
 export default inject(mobxHelper.injectFrom(
   'college.collegeService',
-  'myTraining.myTrainingService'
+  'myTraining.myTrainingService',
+  'myTraining.inMyLectureService'
 ))(React.memo(observer(MultiFilterBox)));
 
 /* globals */
@@ -333,3 +393,4 @@ const InitialConditions = {
   required: '',
   serviceType: ''
 };
+

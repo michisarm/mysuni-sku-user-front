@@ -115,7 +115,7 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickApproval() {
     // 승인관리 바로 가기
-    this.routeNav('/approval/ApprovalList');
+    this.routeNav('/approval');
   }
 
   onClickApl() {

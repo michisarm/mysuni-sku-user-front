@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
+import { mobxHelper } from '@nara.platform/accent';
+import routePaths from 'myTraining/routePaths';
 import { ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
-import { observer, inject } from 'mobx-react';
-import { LectureService } from 'lecture';
-import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import { MyTrainingService } from 'myTraining/stores';
-import { mobxHelper } from '@nara.platform/accent';
+import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
+import { LectureService } from 'lecture/stores';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
-import routePaths from 'myTraining/routePaths';
-import { MyLearningContentType, MyLearningContentTypeName } from '../model';
 import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
+import { MyLearningContentType, MyLearningContentTypeName } from '../model';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
   notieService?: NotieService;
-  lectureService?: LectureService;
-  inMyLectureService?: InMyLectureService;
   myTrainingService?: MyTrainingService;
+  inMyLectureService?: InMyLectureService;
+  lectureService?: LectureService;
 }
 
 interface RouteParams {
@@ -28,14 +27,14 @@ interface RouteParams {
 }
 
 function MyLearningPageV2(props: Props) {
-  const { actionEventService, notieService, lectureService, inMyLectureService, myTrainingService } = props;
+  const { actionEventService, notieService, myTrainingService, inMyLectureService, lectureService } = props;
   const { history, match } = props;
   const currentTab = match.params.tab;
 
   /* effects */
   useEffect(() => {
     publishViewEvent();
-    fetchAllTabCounts();
+    fetchAllTabCount();
     // 학습완료한 강좌에 대해 sessionStorage 저장하는 로직
     // myTrainingService!.saveNewLearningPassedToStorage('Passed');
   }, []);
@@ -48,25 +47,25 @@ function MyLearningPageV2(props: Props) {
   };
 
 
-  const fetchAllTabCounts = () => {
+  const fetchAllTabCount = () => {
     /*
       LearningPage 탭 카운트 조회
-        학습중 = inProgressCount
+        학습중 = inprogressCount
         관심목록 = inMyLectureAllCount
         권장과정 = requiredLectureCount
         학습예정 = enrolledCount
         mySUNI 학습완료 = completedCount
-        개인 학습완료 = ??
         취소/미이수 = retryCount
     */
-    myTrainingService!.findAllTabMyTraining(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
+    myTrainingService!.findAllTabCount(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
+    inMyLectureService!.findAllTabCount();  // 관심목록
     lectureService!.countRequiredLectures(); // 권장과정
   };
 
 
   const getTabs = (): TabItemModel[] => {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
-    const { inMyLectureAllCount } = inMyLectureService!;
+    const { inMyLectureV2Count } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
 
     /*
@@ -81,7 +80,7 @@ function MyLearningPageV2(props: Props) {
       },
       {
         name: MyLearningContentType.InMyList,
-        item: getTabItem(MyLearningContentType.InMyList, inMyLectureAllCount),
+        item: getTabItem(MyLearningContentType.InMyList, inMyLectureV2Count),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
       },
       {
@@ -101,11 +100,6 @@ function MyLearningPageV2(props: Props) {
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
       },
       {
-        name: MyLearningContentType.PersonalCompleted,
-        item: getTabItem(MyLearningContentType.PersonalCompleted, 0),
-        render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
-      },
-      {
         name: MyLearningContentType.Retry,
         item: getTabItem(MyLearningContentType.Retry, retryCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
@@ -119,7 +113,7 @@ function MyLearningPageV2(props: Props) {
     return (
       <>
         {MyLearningContentTypeName[contentType]}
-        {(count > 0 && <span className="count">+{count}</span>) || <span className="count">0</span>}
+        <span className="count">+{count > 0 && count || 0}</span>
       </>
     );
   };
@@ -149,7 +143,7 @@ function MyLearningPageV2(props: Props) {
 
   /* render */
   return (
-    <ContentLayout className="myLearning" breadcrumb={[{ text: 'learning' }, { text: getContentNameFromTab(currentTab) }]}>
+    <ContentLayout className="myLearning" breadcrumb={[{ text: 'Learning' }, { text: getContentNameFromTab(currentTab) }]}>
       <MyLearningContentHeaderContainer />
       <TabContainer tabs={getTabs()} defaultActiveName={currentTab} onChangeTab={onChangeTab} />
     </ContentLayout>

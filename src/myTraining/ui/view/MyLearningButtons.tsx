@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { MyLearningContentType } from '../model';
+import { MyLearningContentType, MyPageContentType } from '../model';
 
 interface Props {
-  contentType: MyLearningContentType;
+  contentType: MyLearningContentType | MyPageContentType;
   onDelete: () => void;
   onDownloadExcel: () => void;
 }
@@ -12,7 +12,7 @@ interface Props {
 function MyLearningButtons(props: Props) {
   const { contentType, onDelete, onDownloadExcel } = props;
 
-  const renderButtons = (contentType: MyLearningContentType): any => {
+  const renderButtons = (contentType: MyLearningContentType | MyPageContentType): any => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
         return (
@@ -36,6 +36,7 @@ function MyLearningButtons(props: Props) {
           </>
         );
       case MyLearningContentType.Completed:
+      case MyPageContentType.EarnedStampList:
         return (
           <>
             <Button

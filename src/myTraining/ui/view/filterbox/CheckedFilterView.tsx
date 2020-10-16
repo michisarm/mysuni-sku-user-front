@@ -1,36 +1,30 @@
 import { CollegeModel } from 'college/model';
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment } from 'react';
 import { Button, Icon, Table } from 'semantic-ui-react';
-import { FilterCondition } from './MultiFilterBox';
+import { FilterCondition, FilterConditionName } from './MultiFilterBox';
 
 interface Props {
   colleges: CollegeModel[];
   conditions: FilterCondition;
-  onClear: () => void;
+  onClearAll: () => void;
   onClearOne: (type: string, condition: string) => void;
 }
 
 function CheckedFilterView(props: Props) {
-  const { colleges, conditions, onClear, onClearOne } = props;
+  /* colleges 는 collegeId 에 매핑되는 collegeName 을 구하기 위함. 2020.10.08 by 김동구 */
+  const { colleges, conditions, onClearAll, onClearOne } = props;
 
-  /* functions */
-  const getCollegeNames = (collegeIds: string[]) => {
-    return collegeIds.map(collegeId => {
-      return colleges.filter(college => college.collegeId === collegeId)
-        .map(college => college.name);
-    });
-  };
-
+  /* render functions */
   const renderCheckedConditions = () => {
     const buttons: React.ReactNode[] = [];
-    const collegeNames = getCollegeNames(conditions.collegeIds);
+    const collegeNames = getCollegeNames(colleges, conditions.collegeIds);
 
     if (conditions.collegeIds &&
       conditions.collegeIds.length) {
       buttons.push(
         collegeNames.map((collegeName, index) => (
-          <Fragment key={`college-view-${index}`}>
-            <Button className="del" onClick={() => onClearOne('컬리지', collegeName[0])}>
+          <Fragment key={`checked-college-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.College, collegeName)}>
               {collegeName}
             </Button>
           </Fragment >
@@ -38,12 +32,20 @@ function CheckedFilterView(props: Props) {
       );
     }
 
+    if (conditions.serviceType) {
+      buttons.push(
+        <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, conditions.serviceType)}>
+          {conditions.serviceType}
+        </Button>
+      );
+    }
+
     if (conditions.learningTypes &&
       conditions.learningTypes.length) {
       buttons.push(
         conditions.learningTypes.map((learningType, index) => (
-          <Fragment key={`learningType-view-${index}`}>
-            <Button className="del" onClick={() => onClearOne('학습유형', learningType)}>
+          <Fragment key={`checked-learningType-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.LearningType, learningType)}>
               {learningType}
             </Button>
           </Fragment >
@@ -55,8 +57,8 @@ function CheckedFilterView(props: Props) {
       conditions.difficultyLevels.length) {
       buttons.push(
         conditions.difficultyLevels.map((difficultyLevel, index) => (
-          <Fragment key={`difficultyLevel-view-${index}`}>
-            <Button className="del" onClick={() => onClearOne('난이도', difficultyLevel)}>
+          <Fragment key={`checked-difficultyLevel-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.DifficultyLevel, difficultyLevel)}>
               {difficultyLevel}
             </Button>
           </Fragment>
@@ -68,8 +70,8 @@ function CheckedFilterView(props: Props) {
       conditions.organizers.length) {
       buttons.push(
         conditions.organizers.map((organizer, index) => (
-          <Fragment key={`organizer-view-${index}`}>
-            <Button className="del" onClick={() => onClearOne('교육기관', organizer)}>
+          <Fragment key={`checked-organizer-${index}`}>
+            <Button className="del" onClick={() => onClearOne(FilterConditionName.Organizer, organizer)}>
               {organizer}
             </Button>
           </Fragment>
@@ -80,7 +82,7 @@ function CheckedFilterView(props: Props) {
     return buttons;
   };
 
-
+  /* render */
   return (
     <div className="selected">
       <Table>
@@ -88,7 +90,7 @@ function CheckedFilterView(props: Props) {
         <Table.Body>
           <Table.Row>
             <Table.HeaderCell>
-              <Button icon className="clear" onClick={onClear}>
+              <Button icon className="clear" onClick={onClearAll}>
                 <Icon className="reset" />
               </Button>
               <span>전체해제</span>
@@ -102,3 +104,12 @@ function CheckedFilterView(props: Props) {
 }
 
 export default CheckedFilterView;
+
+/* globals */
+const getCollegeNames = (colleges: CollegeModel[], collegeIds: string[]): string[] => {
+  /* collegeId 에 해당하는 college 를 찾아 collegeName 을 구함. */
+  return collegeIds.map(collegeId => {
+    const college = colleges.filter(college => college.collegeId === collegeId)[0];
+    return college.name;
+  });
+};
