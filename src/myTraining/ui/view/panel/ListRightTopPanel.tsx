@@ -1,14 +1,15 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyLearningContentType } from 'myTraining/ui/model';
 import CheckboxOptions from 'myTraining/ui/model/CheckboxOptions';
-import { ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 
 interface Props {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   resultEmpty: boolean;
   filterCount: number;
+  openFilter: boolean;
   activeFilter: boolean;
   onClickFilter: () => void;
   checkedViewType: ViewType;
@@ -16,32 +17,10 @@ interface Props {
 }
 
 function ListRightTopPanel(props: Props) {
-  const { contentType, resultEmpty, filterCount, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
+  const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
 
-  /* const [checkedValue, setCheckedValue] = useState<string>('course');
-
-  useEffect(() => {
-    console.log('After onChangeCheckbox :: ', checkedValue);
-  }, [checkedValue]); */
-  /* event handlers */
-
-  /*
-    check된 value에 따라서 list 화면에 뿌려질 데이터가 달라지도록 해야함.
-    myTrainingService 에 하나의 MyTrainingListViewRdoModel 을 만들어서 추가 하도록 한다.
-  */
-  /*   const onChangeCheckbox = (e: any, data: any) => {
-      console.log('before onChangeCheckbox:: ', checkedValue);
-      setCheckedValue(data.value);
-    }; */
-
-  /* render functions on condition */
-
-  /* contentType 이 아래와 같은 경우에만 checkbox를 랜더링 함.
-      1. 학습중
-      2. mySUNI 학습완료
-
-  */
-  const renderCheckbox = () => {
+  /* render functions */
+  const renderRadiobox = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed:
@@ -66,53 +45,35 @@ function ListRightTopPanel(props: Props) {
     }
   };
 
-  /*
-    개인학습 완료를 제외한 모든 탭에서 필터를 랜더링 함.
-    activeFilter에 따라 css 가 달라짐.
-      1. Button className :: left button post => btn-filter-blue 
-      2. Button icon 추가됨
+  const renderFilter = (contentType: MyContentType) => {
+    const active = activeFilter ? 'btn-filter-blue' : 'left post';
+    const open = openFilter ? 'on' : '';
 
-      두 가지 케이스를 분리해서 랜더링하는 편이 좋아 보임.
-  */
-  const renderFilter = () => {
-    return (
-      <>
-        {contentType === MyLearningContentType.PersonalCompleted ||
-          (
-            <Button
-              icon={(activeFilter || filterCount) ? false : true}
-              className={classNames((activeFilter || filterCount) && 'btn-filter-blue' || 'left post', activeFilter && 'on')}
-              onClick={onClickFilter}
-            >
-              {(!activeFilter && !filterCount) && (
-                <Icon className="filter2" aria-hidden="true" />
-              )}
-              {/* 선택된 filter 조건이 있으면, 선택된 조건 count 만큼 숫자 표시. */}
-              <span>Filter{filterCount !== 0 && `(${filterCount})`}</span>
-            </Button>
-          )}
-      </>
-    );
+    switch (contentType) {
+      case MyLearningContentType.PersonalCompleted:
+        return null;
+      default:
+        return (
+          <Button
+            icon={activeFilter ? false : true}
+            className={classNames(active, open)}
+            onClick={onClickFilter}
+          >
+            {!activeFilter && (
+              <Icon className="filter2" aria-hidden="true" />
+            )}
+            <span>Filter{filterCount > 0 && `(${filterCount})`}</span>
+          </Button>
+        );
+    }
   };
 
   return (
     <>
-      {renderCheckbox()}
-      {renderFilter()}
+      {renderRadiobox(contentType)}
+      {renderFilter(contentType)}
     </>
   );
 }
 
 export default ListRightTopPanel;
-
-/* globals */
-const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType): string => {
-  switch (contentType) {
-    case MyLearningContentType.InProgress:
-    case MyLearningContentType.Completed:
-    case MyPageContentType.EarnedStampList:
-      return 'right-wrap';
-    default:
-      return '';
-  }
-};

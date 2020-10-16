@@ -15,7 +15,7 @@ import CheckboxOptions from '../../model/CheckboxOptions';
 
 interface Props {
   contentType: MyContentType;
-  activeFilter: boolean;
+  openFilter: boolean;
   onChangeFilterCount: (count: number) => void;
   collegeService?: CollegeService;
   myTrainingService?: MyTrainingService;
@@ -44,7 +44,7 @@ export enum FilterConditionName {
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
-  const { contentType, activeFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService } = props;
+  const { contentType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService } = props;
   const { colleges } = collegeService!;
 
   /* states */
@@ -63,17 +63,17 @@ function MultiFilterBox(props: Props) {
       1. filter 창이 열리는 순간, College 에 대한 정보를 불러옴. 2020.10.08 by 김동구
       2. filter 창이 닫히는 순간, 체크된 조건들로 새롭게 myTrainingV2s 를 조회함.
     */
-    if (activeFilter) {
+    if (openFilter) {
       collegeService!.findAllColleges();
     }
 
-    if (!activeFilter) {
+    if (!openFilter) {
       changeFilterRdo(contentType);
       const filterCount = getFilterCount(contentType);
       //
       onChangeFilterCount(filterCount);
     }
-  }, [activeFilter]);
+  }, [openFilter]);
 
 
   /* functions */
@@ -234,8 +234,8 @@ function MultiFilterBox(props: Props) {
   };
 
   return (
-    <div className={(activeFilter && 'filter-table on') || 'filter-table'}>
-      { activeFilter && (
+    <div className={(openFilter && 'filter-table on') || 'filter-table'}>
+      {openFilter && (
         <>
           <div className="title">Filter</div>
           <Table>

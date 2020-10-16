@@ -17,7 +17,7 @@ interface Props extends RouteComponentProps {
   onChangeViewType: (e: any, data: any) => void;
   resultEmpty: boolean;
   filterCount: number;
-  activeFilter: boolean;
+  openFilter: boolean;
   onClickFilter: () => void;
   onClickDelete: () => void;
   //
@@ -26,7 +26,7 @@ interface Props extends RouteComponentProps {
 }
 
 function LineHeaderContainerV2(props: Props) {
-  const { contentType, resultEmpty, filterCount, activeFilter, onClickFilter, onClickDelete, myTrainingService, inMyLectureService } = props;
+  const { contentType, resultEmpty, filterCount, openFilter, onClickFilter, onClickDelete, myTrainingService, inMyLectureService } = props;
   const { viewType, onChangeViewType } = props;
 
   /* functions */
@@ -48,6 +48,10 @@ function LineHeaderContainerV2(props: Props) {
       default:
         return myTrainingV2Count;
     }
+  };
+
+  const isFilterActive = (): boolean => {
+    return (openFilter || filterCount > 0);
   };
 
   /* handlers */
@@ -76,7 +80,6 @@ function LineHeaderContainerV2(props: Props) {
     writeExcelFile(xlsxList, filename);
   };
 
-
   /* render */
   return (
     <>
@@ -85,8 +88,7 @@ function LineHeaderContainerV2(props: Props) {
           <ListTopPanelTemplate
             className="left-wrap"
             contentType={contentType}
-            activeFilter={activeFilter}
-            filterCount={filterCount}
+            activeFilter={isFilterActive()}
           >
             <ListLeftTopPanel
               contentType={contentType}
@@ -99,14 +101,14 @@ function LineHeaderContainerV2(props: Props) {
         <ListTopPanelTemplate
           className="right-wrap"
           contentType={contentType}
-          activeFilter={activeFilter}
-          filterCount={filterCount}
+          activeFilter={isFilterActive()}
         >
           <ListRightTopPanel
             contentType={contentType}
             resultEmpty={resultEmpty}
             filterCount={filterCount}
-            activeFilter={activeFilter}
+            openFilter={openFilter}
+            activeFilter={isFilterActive()}
             onClickFilter={onClickFilter}
             checkedViewType={viewType}
             onChangeViewType={onChangeViewType}

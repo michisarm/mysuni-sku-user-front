@@ -6,16 +6,13 @@ interface Props {
   className: string;
   contentType: MyContentType;
   activeFilter: boolean;
-  filterCount: number;
   children: React.ReactNode;
 }
 
-
 function ListTopPanelTemplate(props: Props) {
-  const { className, contentType, activeFilter, filterCount, children } = props;
+  const { className, contentType, activeFilter, children } = props;
 
-  const renderByContentType = (contentType: MyContentType) => {
-
+  const wrapListTopPanel = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed:
@@ -27,7 +24,7 @@ function ListTopPanelTemplate(props: Props) {
         );
       default:
         return (
-          (activeFilter || filterCount) && className === 'right-wrap' &&
+          (activeFilter && className === 'right-wrap') &&
           (
             <div className={className}>
               {children}
@@ -42,7 +39,7 @@ function ListTopPanelTemplate(props: Props) {
     }
   };
 
-  return renderByContentType(contentType);
+  return wrapListTopPanel(contentType);
 }
 
 export default ListTopPanelTemplate;

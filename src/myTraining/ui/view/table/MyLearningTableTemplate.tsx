@@ -40,12 +40,6 @@ const getTableStyle = (contentType: MyContentType): string => {
       return 'ml-02-06';
     case MyPageContentType.EarnedStampList: /* My Stamp */
       return '';
-    /* 
-      관심목록
-      권장과정
-      학습예정
-      취소/미이수
-    */
     default:
       return 'ml-02-03';
   }

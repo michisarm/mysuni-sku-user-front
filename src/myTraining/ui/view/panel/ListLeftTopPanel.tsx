@@ -1,11 +1,11 @@
 import React from 'react';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import MyLearningButtons from '../MyLearningButtons';
+import { DeleteButton, DownloadExcelButton } from '../MyLearningButtons';
 import { MyLearningContentType, MyPageContentType } from '../../../../myTraining/ui/model';
 
 
 interface Props {
-  contentType: MyLearningContentType | MyPageContentType;
+  contentType: MyContentType;
   totalCount: number;
   countMessage?: string;
   onClickDelete: () => void;
@@ -15,15 +15,25 @@ interface Props {
 function ListLeftTopPanel(props: Props) {
   const { contentType, totalCount, countMessage, onClickDelete, downloadExcel } = props;
 
-  const renderButtons = () => {
+  const renderButtons = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
+        return (
+          <>
+            <DeleteButton
+              onDelete={onClickDelete}
+            />
+            <DownloadExcelButton
+              contentType={contentType}
+              downloadExcel={downloadExcel}
+            />
+          </>
+        );
       case MyLearningContentType.Completed:
       case MyPageContentType.EarnedStampList:
         return (
-          <MyLearningButtons
+          <DownloadExcelButton
             contentType={contentType}
-            onDelete={onClickDelete}
             downloadExcel={downloadExcel}
           />
         );
@@ -33,7 +43,7 @@ function ListLeftTopPanel(props: Props) {
   };
 
 
-  const renderMessage = () => {
+  const renderMessage = (contentType: MyContentType) => {
     /*
       contentType이 개인학습 완료일 경우, 아래와 같이 메세지 변경.
         1. countMessage => 승인완료
@@ -58,21 +68,10 @@ function ListLeftTopPanel(props: Props) {
 
   return (
     <>
-      {renderButtons()}
-      {renderMessage()}
+      {renderButtons(contentType)}
+      {renderMessage(contentType)}
     </>
   );
 }
 
 export default ListLeftTopPanel;
-
-const getWrapperStyle = (contentType: MyLearningContentType | MyPageContentType): string => {
-  switch (contentType) {
-    case MyLearningContentType.InProgress:
-    case MyLearningContentType.Completed:
-    case MyPageContentType.EarnedStampList:
-      return 'left-wrap';
-    default:
-      return '';
-  }
-};

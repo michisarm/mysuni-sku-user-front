@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
+import myTrainingRoutes from 'myTraining/routePaths';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
 import { MultiFilterBox } from '../view/filterbox';
@@ -13,7 +14,8 @@ import { MyTrainingService, InMyLectureService } from '../../stores';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 
-interface Props extends RouteComponentProps {
+
+interface Props extends RouteComponentProps<RouteParams> {
   contentType: MyContentType;
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
@@ -21,20 +23,25 @@ interface Props extends RouteComponentProps {
   lectureService?: LectureService;
 }
 
+interface RouteParams {
+  tab: string;
+  pageNo?: string;
+}
+
+
 function MyLearningListContainerV2(props: Props) {
-  const { contentType, skProfileService, myTrainingService, inMyLectureService } = props;
+  const { contentType, skProfileService, myTrainingService, inMyLectureService, history, match } = props;
   const { profileMemberName } = skProfileService!;
 
   /* states */
   const [filterCount, setFilterCount] = useState<number>(0);
-  const [activeFilter, setActiveFilter] = useState<boolean>(false);
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>('Course');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [showSeeMore, setShowSeeMore] = useState<boolean>(true);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
-
 
   /* effects */
   useEffect(() => {
@@ -120,7 +127,25 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const initPage = () => {
+    initPageInfo();
+    initPageNo();
+  };
+
+  const initPageInfo = () => {
     pageInfo.current = { offset: 0, limit: 20 };
+  };
+
+  const initPageNo = () => {
+    history.replace(myTrainingRoutes.currentPage(1));
+  };
+
+  const getPageNo = (): number => {
+    const currentPageNo = match.params.pageNo;
+    if (currentPageNo) {
+      const nextPageNo = parseInt(currentPageNo) + 1;
+      return nextPageNo;
+    }
+    return 1;
   };
 
   const clearStore = (contentType: MyContentType) => {
@@ -219,7 +244,7 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const onClickFilter = () => {
-    setActiveFilter(!activeFilter);
+    setOpenFilter(prev => !prev);
   };
 
   const onChangeViewType = (e: any, data: any) => {
@@ -267,6 +292,7 @@ function MyLearningListContainerV2(props: Props) {
         await myTrainingService!.findAllMyTrainingsV2WithPage(pageInfo.current);
     }
     checkShowSeeMore(contentType);
+    history.replace(myTrainingRoutes.currentPage(getPageNo()));
   };
 
   /* Render Functions */
@@ -293,13 +319,13 @@ function MyLearningListContainerV2(props: Props) {
               onChangeViewType={onChangeViewType}
               resultEmpty={resultEmpty}
               filterCount={filterCount}
-              activeFilter={activeFilter}
+              openFilter={openFilter}
               onClickFilter={onClickFilter}
               onClickDelete={onClickDelete}
             />
             <MultiFilterBox
               contentType={contentType}
-              activeFilter={activeFilter}
+              openFilter={openFilter}
               onChangeFilterCount={onChangeFilterCount}
             />
             {!resultEmpty && (
