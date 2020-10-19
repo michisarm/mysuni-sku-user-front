@@ -522,7 +522,7 @@ body .badge_new .title .cell span{
   font-size: 12px;
 }
 .fixed-container:after {
-  top: 70px;
+  top: 100%;
 }
 
 .badge-category ul li .title .ellipsis{
