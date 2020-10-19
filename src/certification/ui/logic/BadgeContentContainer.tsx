@@ -225,21 +225,29 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
   // 상태에 따른 버튼 이벤트
   const getAction = () => {
-    switch (badgeState) {
-      case ChallengeState.WaitForChallenge:
-        reactAlert({
-          title: '',
-          message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
-        });
-        // setAlertModal(!alertModal);
-        onClickChallenge();
-        break;
-      case ChallengeState.Challenging:
-        onChangeCancleModal();
-        break;
-      case ChallengeState.ReadyForRequest:
-        onClickRequest();
-        break;
+    if (badgeDetail.badgeSelected) {
+      reactAlert({
+        title: '',
+        message:
+          '관계사 HR을 통해 대상자를 별도 선발하는 뱃지입니다.<p>도전하기에 제한이 있을 수 있습니다.',
+      });
+    } else {
+      switch (badgeState) {
+        case ChallengeState.WaitForChallenge:
+          reactAlert({
+            title: '',
+            message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
+          });
+          // setAlertModal(!alertModal);
+          onClickChallenge();
+          break;
+        case ChallengeState.Challenging:
+          onChangeCancleModal();
+          break;
+        case ChallengeState.ReadyForRequest:
+          onClickRequest();
+          break;
+      }
     }
   };
 
