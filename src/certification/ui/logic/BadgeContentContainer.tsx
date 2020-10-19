@@ -437,7 +437,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
   const replaceEnterWithBr = (target: string) => {
     return target.split('\n').join('<br />');
-  }
+  };
 
   //
   return (
