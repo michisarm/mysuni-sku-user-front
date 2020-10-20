@@ -43,7 +43,7 @@ import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
-
+import LectureListContainer from 'lecture/card/ui/logic/LectureListContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService: ActionEventService;
@@ -342,7 +342,10 @@ class CoursePageV2 extends Component<Props, State> {
         courseLectureService.getPreLectureViews &&
         studentService.StudentInfos!.preCourses
       ) {
-        if (courseLectureService.getPreLectureViews.length === studentService.StudentInfos!.preCourses?.length) {
+        if (
+          courseLectureService.getPreLectureViews.length ===
+          studentService.StudentInfos!.preCourses?.length
+        ) {
           const preLectureViews = courseLectureService.getPreLectureViews;
           const preCourseStudentList = studentService.StudentInfos!.preCourses;
           // console.log('preCoursePlanSet : ', preLectureViews, 'preCourseStudentList : ', preCourseStudentList);
@@ -375,7 +378,10 @@ class CoursePageV2 extends Component<Props, State> {
           });
 
           preLectureViews.forEach(preLectureView => {
-            if (preLectureView.required && !preCourseIds.includes(preLectureView.serviceId)) {
+            if (
+              preLectureView.required &&
+              !preCourseIds.includes(preLectureView.serviceId)
+            ) {
               isPreCoursePassed = false;
             }
           });
@@ -412,7 +418,7 @@ class CoursePageV2 extends Component<Props, State> {
     if (coursePlanService.coursePlanContents.surveyCaseId) {
       await AnswerSheetService.instance
         .findAnswerSheet(coursePlanService.coursePlanContents.surveyCaseId)
-        .then((response) => {
+        .then(response => {
           // console.log('answerSheet : ', response);
           const disabled =
             response && response.progress === AnswerProgress.Complete;
@@ -425,15 +431,16 @@ class CoursePageV2 extends Component<Props, State> {
     if (coursePlanService.coursePlanContents.surveyId) {
       await surveyFormService
         .findSurveyForm(coursePlanService.coursePlanContents.surveyId)
-        .then((response) => {
+        .then(response => {
           // console.log('surveyForm : ', response);
           const surveyForm: SurveyFormModel = response;
-          this.setState({ surveyTitle: surveyForm.titles.langStringMap.get('ko') });
+          this.setState({
+            surveyTitle: surveyForm.titles.langStringMap.get('ko'),
+          });
         });
     }
 
     if (coursePlanService.coursePlanContents.testId) {
-
       // console.log(
       //   'examPaperService.examPaper.title : ',
       //   examPaperService.examPaper.title
@@ -497,7 +504,7 @@ class CoursePageV2 extends Component<Props, State> {
     //
     const { lectureService } = this.props;
 
-    lectureViews.map(async (lectureView) => {
+    lectureViews.map(async lectureView => {
       if (
         lectureView.serviceType === LectureServiceType.Program ||
         (lectureView.serviceType === LectureServiceType.Course &&
@@ -527,7 +534,7 @@ class CoursePageV2 extends Component<Props, State> {
       examPaperService,
       examinationService,
       surveyCaseService,
-      match
+      match,
     } = this.props;
     const { coursePlan, coursePlanContents } = coursePlanService!;
     const { courseLecture } = courseLectureService!;
@@ -619,7 +626,10 @@ class CoursePageV2 extends Component<Props, State> {
       required: coursePlan.required,
       // difficultyLevel: cubeIntro.difficultyLevel,
       learningTime: coursePlan.learningTime,
-      rollBooksPassedStudentCount: serviceType === LectureServiceType.Course ? courseLecture.passedStudentCount : programLecture.passedStudentCount, // Todo
+      rollBooksPassedStudentCount:
+        serviceType === LectureServiceType.Course
+          ? courseLecture.passedStudentCount
+          : programLecture.passedStudentCount, // Todo
 
       // instructorName: cubeIntro.description.instructor.name,
       operatorName: coursePlan.courseOperator.name,
@@ -849,7 +859,10 @@ class CoursePageV2 extends Component<Props, State> {
           '0',
           `재응시 (${studentData.studentScore.numberOfTrials})`
         );
-      } else if (studentData.learningState === LearningState.Passed || studentData.learningState === LearningState.TestPassed) {
+      } else if (
+        studentData.learningState === LearningState.Passed ||
+        studentData.learningState === LearningState.TestPassed
+      ) {
         this.setStateName('5', '이수');
       } else if (studentData.learningState === LearningState.TestWaiting) {
         this.setStateName('5', '결과대기');
@@ -1013,6 +1026,7 @@ class CoursePageV2 extends Component<Props, State> {
             </div>
           }
         />
+        <LectureListContainer />
       </ContentLayout>
     );
   }

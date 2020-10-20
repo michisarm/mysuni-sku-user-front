@@ -10,6 +10,8 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import CoursePlanComplex from '../model/CoursePlanComplex';
+import LectureStudentView from '../model/LectureStudentView';
+import StudentJoin from '../model/StudentJoin';
 
 const BASE_URL = '/api/lecture';
 
@@ -30,7 +32,20 @@ interface StudentInfoViewBody {
   serviceId: string;
 }
 
-export function studentInfoView(body: StudentInfoViewBody) {
+export function studentInfoView(
+  body: StudentInfoViewBody
+): Promise<LectureStudentView> {
   const url = `${BASE_URL}/students/flow/studentInfoView`;
-  axiosApi.post(url, body).then(response => response && response.data);
+  return axiosApi
+    .post<LectureStudentView>(url, body)
+    .then(response => response && response.data);
+}
+
+export function findIsJsonStudentByCube(
+  lectureCardId: string
+): Promise<StudentJoin[]> {
+  const url = `${BASE_URL}/students/flow/isJsonByCube?lectureCardId=${lectureCardId}`;
+  return axiosApi
+    .get<StudentJoin[]>(url)
+    .then(response => response && response.data);
 }

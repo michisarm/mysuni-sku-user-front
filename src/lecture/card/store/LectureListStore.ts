@@ -1,6 +1,35 @@
-import State from 'lecture/shared/LectureSubInfo/model/State';
 import CubeType from '../model/CubeType';
+import LearningState from '../model/LearningState';
 import { createStore } from './Store';
+
+type LectureListItemType = 'REPORT' | 'EXAM' | 'SURVEY';
+
+export interface LectureListTestItem {
+  id: string;
+  name: string;
+  questionCount: number;
+  url: LectureListCourseItemUrl;
+  state?: LearningState;
+  type: LectureListItemType;
+}
+
+export interface LectureListSurveyItem {
+  id: string;
+  name: string;
+  questionCount: number;
+  url: LectureListCourseItemUrl;
+  state?: LearningState;
+  type: LectureListItemType;
+}
+
+export interface LectureListReportItem {
+  id: string;
+  name: string;
+  questionCount: number;
+  url: LectureListCourseItemUrl;
+  state?: LearningState;
+  type: LectureListItemType;
+}
 
 interface LectureListCourseItemUrl {
   coursePlanId: string;
@@ -8,8 +37,8 @@ interface LectureListCourseItemUrl {
   serviceId: string;
 }
 
-interface LectureListCubeItemUrl {
-  programLectureUsid: string;
+export interface LectureListCubeItemUrl {
+  programLectureUsid?: string;
   cubeId: string;
   lectureCardId: string;
 }
@@ -21,7 +50,9 @@ export interface LectureListCubeItem {
   cubeType: CubeType;
   learningTime: number;
   url: LectureListCubeItemUrl;
-  state?: State;
+  learningState?: LearningState;
+  state?: LearningState;
+  serviceId: string;
 }
 
 export interface LectureListCourseItem {
@@ -29,12 +60,24 @@ export interface LectureListCourseItem {
   cubes?: LectureListCubeItem[];
   name: string;
   url: LectureListCourseItemUrl;
-  state?: State;
+  state?: LearningState;
+  serviceId: string;
+  test?: LectureListTestItem;
+  survey?: LectureListSurveyItem;
+  report?: LectureListReportItem;
 }
 
-const initialStore: (LectureListCourseItem | LectureListCubeItem)[] = [];
+export interface LectureList {
+  courses: LectureListCourseItem[];
+  cubes: LectureListCubeItem[];
+  test?: LectureListTestItem;
+  survey?: LectureListSurveyItem;
+  report?: LectureListReportItem;
+}
+
+const initialStore: LectureList = { courses: [], cubes: [] };
 const [setLectureList, onLectureList, getLectureList] = createStore<
-  (LectureListCourseItem | LectureListCubeItem)[]
+  LectureList
 >(initialStore);
 
 export { setLectureList, onLectureList, getLectureList };
