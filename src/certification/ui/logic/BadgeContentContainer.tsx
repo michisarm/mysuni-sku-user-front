@@ -247,6 +247,9 @@ const BadgeContentContainer: React.FC<Props> = Props => {
         case ChallengeState.ReadyForRequest:
           onClickRequest();
           break;
+        case ChallengeState.Requested:
+          onCancelRequest();
+          break;
       }
     }
   };
@@ -358,6 +361,11 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //   // 수동발급 요청
     //   onClickRequestManualIssue();
     // }
+  };
+
+  // 발급요청 취소
+  const onCancelRequest = () => {
+    // manager-front Certification관리 - 학습자관리 - 일괄취소 참조해서 작업해
   };
 
   // 자동발급
