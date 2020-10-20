@@ -703,12 +703,15 @@ class CollegeView extends Component<Props, State> {
     const { activeIndex } = this.state;
 
     return (
-      <Tab
-        className="tab-menu-inner"
-        panes={panes}
-        activeIndex={activeIndex}
-        onTabChange={this.onTabChange}
-      />
+      <>
+        <style dangerouslySetInnerHTML={{__html:'body.msie #root section.content .tab-menu-inner .ui.menu .item{flex:none;width:auto;flex-grow:1}'}} />
+        <Tab
+          className="tab-menu-inner"
+          panes={panes}
+          activeIndex={activeIndex}
+          onTabChange={this.onTabChange}
+        />
+      </>
     );
   }
 }
