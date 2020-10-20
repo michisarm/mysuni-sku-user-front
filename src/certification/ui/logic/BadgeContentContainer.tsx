@@ -443,6 +443,10 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     history.push(boardRoutePaths.supportQnANewPost());
   };
 
+  const replaceEnterWithBr = (target: string) => {
+    return target.split('\n').join('<br />');
+  };
+
   //
   return (
     <>
@@ -512,7 +516,7 @@ const BadgeContentContainer: React.FC<Props> = Props => {
           )}
           <OverviewField.Item
             title="획득 조건"
-            content={badgeDetail.obtainTerms}
+            contentHtml={replaceEnterWithBr(badgeDetail.obtainTerms)}
           />
 
           {/*0826 C&C 요청으로 화면에서 숨김처리 */}
