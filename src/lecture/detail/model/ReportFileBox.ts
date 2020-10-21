@@ -1,5 +1,5 @@
 export default interface ReportFileBox {
-  isReport: boolean;
+  report: boolean;
   fileBoxId: string;
   reportName: string;
   reportQuestion: string;

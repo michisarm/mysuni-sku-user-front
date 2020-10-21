@@ -11,6 +11,7 @@
 import { axiosApi } from '@nara.platform/accent';
 import CoursePlanComplex from '../model/CoursePlanComplex';
 import LectureStudentView from '../model/LectureStudentView';
+import Student from '../model/Student';
 import StudentJoin from '../model/StudentJoin';
 
 const BASE_URL = '/api/lecture';
@@ -39,6 +40,11 @@ export function studentInfoView(
   return axiosApi
     .post<LectureStudentView>(url, body)
     .then(response => response && response.data);
+}
+
+export function findStudent(studentId: string): Promise<Student> {
+  const url = `${BASE_URL}/students/${studentId}`;
+  return axiosApi.get<Student>(url).then(response => response && response.data);
 }
 
 export function findIsJsonStudentByCube(

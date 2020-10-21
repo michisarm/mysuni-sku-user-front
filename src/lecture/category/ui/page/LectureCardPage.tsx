@@ -57,7 +57,8 @@ import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/date
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import LectureListContainer from 'lecture/card/ui/logic/LectureListContainer';
+import LectureListContainer from 'lecture/detail/ui/logic/LectureListContainer';
+import LectureStructureContainer from '../../../detail/ui/logic/LectureStructureContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService;
@@ -1239,7 +1240,7 @@ class LectureCardPage extends Component<Props, State> {
         />
 
         <LinkedInModalContainer enabled={linkedInOpen} />
-        <LectureListContainer />
+        <LectureStructureContainer />
       </ContentLayout>
     );
   }

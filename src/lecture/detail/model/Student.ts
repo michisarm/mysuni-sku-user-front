@@ -24,8 +24,10 @@ export default interface Student {
   rollBookId: string;
   examAttendance: boolean;
   updateTimeForTest: number;
-  homeworkFileBoxId: string;
-  sumViewSeconds: string;
+  homeworkFileBoxId: string | null;
+  homeworkContent: string | null;
+  homeworkOperatorComment: string | null;
+  homeworkOperatorFileBoxId: string | null;
   durationViewSeconds: string;
   stamped: boolean;
   lectureUsid: string;

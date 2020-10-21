@@ -43,7 +43,7 @@ import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
-import LectureListContainer from 'lecture/card/ui/logic/LectureListContainer';
+import LectureListContainer from 'lecture/detail/ui/logic/LectureListContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService: ActionEventService;

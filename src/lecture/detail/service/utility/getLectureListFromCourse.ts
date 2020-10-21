@@ -1,13 +1,10 @@
-import {
-  findCoursePlanContents,
-  studentInfoView,
-} from 'lecture/card/api/lectureApi';
-import CoursePlanComplex from 'lecture/card/model/CoursePlanComplex';
+import { findCoursePlanContents, studentInfoView } from '../../api/lectureApi';
+import CoursePlanComplex from '../../model/CoursePlanComplex';
 import {
   LectureList,
   LectureListCourseItem,
   LectureListCubeItem,
-} from 'lecture/card/store/LectureListStore';
+} from '../../store/LectureListStore';
 import { CourseParams } from '../useLectureList';
 import { getLectureListFromCube } from './getLectureListFromCube';
 

@@ -70,6 +70,8 @@ export interface LectureListCourseItem {
 export interface LectureList {
   courses: LectureListCourseItem[];
   cubes: LectureListCubeItem[];
+  course?: LectureListCourseItem;
+  cube?: LectureListCubeItem;
   test?: LectureListTestItem;
   survey?: LectureListSurveyItem;
   report?: LectureListReportItem;

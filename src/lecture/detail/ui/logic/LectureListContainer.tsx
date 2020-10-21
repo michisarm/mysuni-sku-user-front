@@ -1,4 +1,4 @@
-import { useLectureList } from 'lecture/card/service/useLectureList';
+import { useLectureList } from '../../service/useLectureList';
 import React from 'react';
 
 function LectureListContainer() {
