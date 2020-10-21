@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { OverviewField } from 'personalcube';
 import { SkProfileService } from 'profile/stores';
@@ -366,6 +366,25 @@ const BadgeContentContainer: React.FC<Props> = Props => {
   // 발급요청 취소
   const onCancelRequest = () => {
     // manager-front Certification관리 - 학습자관리 - 일괄취소 참조해서 작업해
+    if (studentInfo === undefined) return;
+    function cancelIssue() {
+      badgeService!.cancelManualIssued(studentInfo!.id).then(res => {
+        if (res) {
+          setBadgeState(IssueState.Issued);
+          findBadgeStudent(badgeId);
+        } else {
+          reactAlert({
+            title: '요청취소 실패',
+            message: '뱃지 발급 요청취소를 실패했습니다.',
+          });
+        }
+      });
+    }
+    reactConfirm({
+      title: '',
+      message: '뱃지발급 요청을 취소하시겠습니까?',
+      onOk: () => cancelIssue(),
+    });
   };
 
   // 자동발급
