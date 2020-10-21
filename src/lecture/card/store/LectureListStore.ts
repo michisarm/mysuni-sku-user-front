@@ -31,7 +31,7 @@ export interface LectureListReportItem {
   type: LectureListItemType;
 }
 
-interface LectureListCourseItemUrl {
+export interface LectureListCourseItemUrl {
   coursePlanId: string;
   serviceType: string;
   serviceId: string;

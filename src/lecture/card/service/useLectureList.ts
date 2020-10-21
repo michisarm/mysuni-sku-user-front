@@ -20,16 +20,18 @@ import {
 
 type Value = LectureList | undefined;
 
-interface CubeParams {
+export interface CubeParams {
   cubeId: string;
   lectureCardId: string;
 }
 
-interface CourseParams {
+export interface CourseParams {
   coursePlanId: string;
   serviceType: string;
   serviceId: string;
 }
+
+function getLectureList(params: CourseParams) {}
 
 function coursePlanComplexToLectureList(
   coursePlanComplex: CoursePlanComplex,
