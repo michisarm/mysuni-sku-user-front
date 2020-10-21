@@ -72,6 +72,7 @@ class BadgeDetailModel {
   openResponseTime: number = -1;
   mainCategoryId: string = '';
   mainCategoryName: string = '';
+  badgeSelected: boolean | undefined;
   badgeType: string = '';
   badgeState: string = '';
   difficultyLevel: string = '';

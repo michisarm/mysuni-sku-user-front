@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { mobxHelper, reactAlert } from '@nara.platform/accent';
+import { mobxHelper, reactAlert, reactConfirm } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { OverviewField } from 'personalcube';
 import { SkProfileService } from 'profile/stores';
@@ -225,21 +225,32 @@ const BadgeContentContainer: React.FC<Props> = Props => {
 
   // 상태에 따른 버튼 이벤트
   const getAction = () => {
-    switch (badgeState) {
-      case ChallengeState.WaitForChallenge:
-        reactAlert({
-          title: '',
-          message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
-        });
-        // setAlertModal(!alertModal);
-        onClickChallenge();
-        break;
-      case ChallengeState.Challenging:
-        onChangeCancleModal();
-        break;
-      case ChallengeState.ReadyForRequest:
-        onClickRequest();
-        break;
+    if (badgeDetail.badgeSelected) {
+      reactAlert({
+        title: '',
+        message:
+          '관계사 HR을 통해 대상자를 별도 선발하는 뱃지입니다.<p>도전하기에 제한이 있을 수 있습니다.',
+      });
+    } else {
+      switch (badgeState) {
+        case ChallengeState.WaitForChallenge:
+          reactAlert({
+            title: '',
+            message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
+          });
+          // setAlertModal(!alertModal);
+          onClickChallenge();
+          break;
+        case ChallengeState.Challenging:
+          onChangeCancleModal();
+          break;
+        case ChallengeState.ReadyForRequest:
+          onClickRequest();
+          break;
+        case ChallengeState.Requested:
+          onCancelRequest();
+          break;
+      }
     }
   };
 
@@ -350,6 +361,30 @@ const BadgeContentContainer: React.FC<Props> = Props => {
     //   // 수동발급 요청
     //   onClickRequestManualIssue();
     // }
+  };
+
+  // 발급요청 취소
+  const onCancelRequest = () => {
+    // manager-front Certification관리 - 학습자관리 - 일괄취소 참조해서 작업해
+    if (studentInfo === undefined) return;
+    function cancelIssue() {
+      badgeService!.cancelManualIssued(studentInfo!.id).then(res => {
+        if (res) {
+          setBadgeState(IssueState.Issued);
+          findBadgeStudent(badgeId);
+        } else {
+          reactAlert({
+            title: '요청취소 실패',
+            message: '뱃지 발급 요청취소를 실패했습니다.',
+          });
+        }
+      });
+    }
+    reactConfirm({
+      title: '',
+      message: '뱃지발급 요청을 취소하시겠습니까?',
+      onOk: () => cancelIssue(),
+    });
   };
 
   // 자동발급
