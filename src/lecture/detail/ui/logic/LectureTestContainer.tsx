@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLectureStructure } from '../../service/useLectureStructure';
 
-function LectureStructureContainer() {
+function LectureTestContainer() {
   useLectureStructure();
   return null;
 }
 
-export default LectureStructureContainer;
+export default LectureTestContainer;
