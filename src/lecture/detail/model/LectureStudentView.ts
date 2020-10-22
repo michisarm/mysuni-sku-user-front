@@ -5,4 +5,5 @@ export default interface LectureStudentView {
   courses: CourseStudentView[];
   preCourses: Student[];
   lectures: Student[];
+  own: Student;
 }

@@ -1,5 +1,6 @@
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
+import LectureView from '../model/LectureView';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
@@ -91,6 +92,7 @@ export interface LectureStructureCourseItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  lectureView?: LectureView;
 }
 
 export interface LectureStructure {

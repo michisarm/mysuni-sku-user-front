@@ -4,11 +4,14 @@ import {
   StudentInfoViewBody,
 } from '../../api/lectureApi';
 import CoursePlanComplex from '../../model/CoursePlanComplex';
+import LectureStudentView from '../../model/LectureStudentView';
 import {
   LectureStructure,
   LectureStructureCourseItemParams,
   LectureStructureCubeItem,
 } from '../../viewModel/LectureStructure';
+import { getItemMapFromCourse } from './getItemMapFromCourse';
+import { getItemMapFromLecture } from './getItemMapFromLecture';
 
 function getCoursePlanComplexByParams(
   params: LectureStructureCourseItemParams
@@ -30,31 +33,39 @@ function parseCoursePlanComplex(
   const lectureCardIds: string[] = [];
   const preLectureCardIds: string[] = [];
 
-  coursePlanComplex.lectureViews.forEach(
-    ({ id, name, coursePlanId, cubeId, cubeType, learningTime, serviceId }) => {
-      if (coursePlanId !== null) {
-        lectureStructure.courses.push({
-          id,
-          name,
-          params,
-          serviceId,
-        });
-        courseLectureIds.push(serviceId);
-      }
-      if (cubeId !== null) {
-        lectureStructure.cubes.push({
-          id,
-          name,
-          cubeId,
-          cubeType,
-          learningTime,
-          params: { ...params, cubeId },
-          serviceId,
-        });
-        lectureCardIds.push(serviceId);
-      }
+  coursePlanComplex.lectureViews.forEach(lectureView => {
+    const {
+      id,
+      name,
+      coursePlanId,
+      cubeId,
+      cubeType,
+      learningTime,
+      serviceId,
+    } = lectureView;
+    if (coursePlanId !== null) {
+      lectureStructure.courses.push({
+        id,
+        name,
+        params,
+        serviceId,
+        lectureView,
+      });
+      courseLectureIds.push(serviceId);
     }
-  );
+    if (cubeId !== null) {
+      lectureStructure.cubes.push({
+        id,
+        name,
+        cubeId,
+        cubeType,
+        learningTime,
+        params: { ...params, cubeId },
+        serviceId,
+      });
+      lectureCardIds.push(serviceId);
+    }
+  });
   coursePlanComplex.subLectureViews.forEach(({ lectureId, lectureViews }) => {
     const course = lectureStructure.courses.find(c => c.id === lectureId);
     if (course !== undefined) {
@@ -91,14 +102,16 @@ async function parseLectureStudentView(
   lectureCardIds: string[],
   preLectureCardIds: string[],
   lectureStructure: LectureStructure
-): Promise<void> {
+): Promise<LectureStudentView> {
   const { serviceId } = params;
-  const { courses, lectures } = await studentInfoView({
+  const lectureStudentView = await studentInfoView({
     courseLectureIds,
     lectureCardIds,
     preLectureCardIds,
     serviceId,
   });
+
+  const { courses, lectures } = lectureStudentView;
 
   courses.forEach(({ lectures, courseLectureId }) => {
     const course = lectureStructure.courses.find(
@@ -151,6 +164,8 @@ async function parseLectureStudentView(
         break;
     }
   });
+
+  return lectureStudentView;
 }
 
 export async function getCourseLectureStructure(
@@ -166,13 +181,57 @@ export async function getCourseLectureStructure(
     lectureCardIds,
     preLectureCardIds,
   } = stuendentInfoViewBody;
-  await parseLectureStudentView(
+  const lectureStudentView = await parseLectureStudentView(
     params,
     courseLectureIds,
     lectureCardIds,
     preLectureCardIds,
     lectureStructure
   );
+
+  const student = lectureStudentView.own;
+  const itemMap = await getItemMapFromCourse(
+    coursePlanComplex,
+    params,
+    student
+  );
+  if (itemMap.test !== undefined) {
+    lectureStructure.test = itemMap.test;
+  }
+  if (itemMap.survey !== undefined) {
+    lectureStructure.survey = itemMap.survey;
+  }
+  if (itemMap.report !== undefined) {
+    lectureStructure.report = itemMap.report;
+  }
+
+  const getItemMapFromLectureArray: Promise<void>[] = [];
+  lectureStructure.courses.forEach(course => {
+    const getItemMapFromLecturePromise = async () => {
+      if (course.lectureView !== undefined) {
+        const courseStudent = lectureStudentView.courses.find(
+          ({ courseLectureId }) => (courseLectureId = course.serviceId)
+        );
+        const courseItemMap = await getItemMapFromLecture(
+          course.lectureView,
+          params,
+          courseStudent && courseStudent.student
+        );
+        if (courseItemMap.test !== undefined) {
+          course.test = courseItemMap.test;
+        }
+        if (courseItemMap.survey !== undefined) {
+          course.survey = courseItemMap.survey;
+        }
+        if (courseItemMap.report !== undefined) {
+          course.report = courseItemMap.report;
+        }
+      }
+    };
+    getItemMapFromLectureArray.push(getItemMapFromLecturePromise());
+  });
+
+  await Promise.all(getItemMapFromLectureArray);
 
   return lectureStructure;
 }
