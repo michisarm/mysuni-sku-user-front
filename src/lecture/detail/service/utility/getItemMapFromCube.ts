@@ -41,18 +41,23 @@ async function getTestItem(
   params: LectureStructureCubeItemParams
 ) {
   if (examId !== '') {
-    const { result } = await findExamination(examId);
+    let examination = null;
+    {
+      const { result } = await findExamination(examId);
+      examination = result;
+    }
     let state: State = 'None';
 
-    if (result.paperId !== null) {
-      const { examPaperForm } = await findExamPaperForm(result.paperId);
-      console.log(examPaperForm); // undefined..
+    let examPaperForm = null;
+    {
+      const { result } = await findExamPaperForm(examination.paperId);
+      examPaperForm = result;
     }
 
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(
-        result.paperId,
+        examination.paperId,
         denizenId
       );
       if (findAnswerSheetData.result !== null) {
@@ -64,12 +69,13 @@ async function getTestItem(
     }
 
     const item: LectureStructureTestItem = {
-      id: result.id,
-      name: result.examPaperTitle,
-      questionCount: result.questionCount,
+      id: examination.id,
+      name: examination.examPaperTitle,
+      questionCount: examination.questionCount,
       params,
       state,
       type: 'EXAM',
+      questions: examPaperForm.questions,
     };
     return item;
   }

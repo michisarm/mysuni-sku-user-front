@@ -9,7 +9,7 @@ interface FindExaminationData {
 }
 
 interface FindExamPaperFormData {
-  examPaperForm: ExamPaperForm;
+  result: ExamPaperForm;
 }
 
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k8/findExamination

@@ -1,3 +1,4 @@
+import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 
@@ -44,6 +45,7 @@ export interface LectureStructureTestItem extends Item {
   params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
   state: State;
   type: LectureStructureItemType;
+  questions: ExamQuestionModel;
 }
 
 export interface LectureStructureSurveyItem extends Item {
