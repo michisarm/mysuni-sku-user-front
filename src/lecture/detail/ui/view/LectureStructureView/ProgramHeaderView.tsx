@@ -1,10 +1,12 @@
 import React from 'react';
 
-interface ProgramViewProps {
+interface ProgramHeaderViewProps {
   name: string;
 }
 
-const ProgramView: React.FC<ProgramViewProps> = function ProgramView({ name }) {
+const ProgramHeaderView: React.FC<ProgramHeaderViewProps> = function ProgramHeaderView({
+  name,
+}) {
   return (
     <div className="cube-state-holder">
       <div className="cube-state-title">{name}</div>
@@ -12,4 +14,4 @@ const ProgramView: React.FC<ProgramViewProps> = function ProgramView({ name }) {
   );
 };
 
-export default ProgramView;
+export default ProgramHeaderView;

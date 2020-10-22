@@ -4,7 +4,7 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CubeType from '../../../model/CubeType';
 import { State } from '../../../viewModel/LectureStructure';
 
-interface CubeViewProps {
+interface ProgramCubeViewProps {
   name: string;
   state?: State;
   activated?: boolean;
@@ -13,7 +13,7 @@ interface CubeViewProps {
   path: string;
 }
 
-const CubeView: React.FC<CubeViewProps> = function CubeView({
+const ProgramCubeView: React.FC<ProgramCubeViewProps> = function ProgramCubeView({
   name,
   state = 'None',
   activated = false,
@@ -41,4 +41,4 @@ const CubeView: React.FC<CubeViewProps> = function CubeView({
   );
 };
 
-export default CubeView;
+export default ProgramCubeView;

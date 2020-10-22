@@ -11,7 +11,6 @@ import PostFormPage from './community/ui/page/PostFormPage';
 import PostDetailPage from './community/ui/page/PostDetailPage';
 import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
-import LectureStructureContainer from './detail/ui/logic/LectureStructureContainer';
 import LectureDetailContainer from './detail/ui/logic/LectureDetailContainer';
 
 class Routes extends Component {
@@ -39,30 +38,42 @@ class Routes extends Component {
         />
 
         <Route
-          exact
           path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={CoursePageV2}
+          component={LectureDetailContainer}
         />
         <Route
-          exact
           path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={CoursePageV2}
+          component={LectureDetailContainer}
         />
 
         <Route
-          exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/new"
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={LectureDetailContainer}
+        />
+        <Route
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
           component={LectureDetailContainer}
         />
 
         <Route
           exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/old"
+          component={CoursePageV2}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/old"
+          component={CoursePageV2}
+        />
+
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
           component={LectureCardPage}
         />
         <Route
           exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
           component={LectureCardPage}
         />
 

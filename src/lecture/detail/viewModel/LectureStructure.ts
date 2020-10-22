@@ -7,8 +7,8 @@ export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 export type State = 'None' | 'Progress' | 'Completed';
 
 interface Params {
-  cineroomId: string;
-  collegeId?: string;
+  cineroomId?: string;
+  collegeId: string;
 }
 
 interface Item {
@@ -83,6 +83,7 @@ export interface LectureStructureCubeItem extends Item {
 
 export interface LectureStructureCourseItem extends Item {
   id: string;
+  coursePlanId: string;
   cubes?: LectureStructureCubeItem[];
   name: string;
   params: LectureStructureCourseItemParams;

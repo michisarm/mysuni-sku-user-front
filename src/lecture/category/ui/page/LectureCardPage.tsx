@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { mobxHelper, reactAutobind } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import queryString from 'query-string';
 import { Label } from 'semantic-ui-react';
 import { patronInfo } from '@nara.platform/dock';
 
@@ -57,7 +56,6 @@ import { getYearMonthDateHourMinuteSecond } from '../../../../shared/helper/date
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import AnswerSheetApi from '../../../../survey/answer/present/apiclient/AnswerSheetApi';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import LectureStructureContainer from '../../../detail/ui/logic/LectureStructureContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   skProfileService: SkProfileService;
@@ -1239,7 +1237,6 @@ class LectureCardPage extends Component<Props, State> {
         />
 
         <LinkedInModalContainer enabled={linkedInOpen} />
-        <LectureStructureContainer />
       </ContentLayout>
     );
   }

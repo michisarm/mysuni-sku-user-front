@@ -37,13 +37,10 @@ import CourseContentHeaderContainer from '../logic/CourseContentHeaderContainer'
 import LectureCardContainer from '../logic/LectureCardContainer';
 import LectureOverviewViewV2 from '../view/LectureOverviewViewV2';
 import LectureCommentsContainer from '../logic/LectureCommentsContainer';
-import CourseContainer from '../logic/CourseContainer';
 import { State as SubState } from '../../../shared/LectureSubInfo';
 import { AnswerProgress } from '../../../../survey/answer/model/AnswerProgress';
 import StudentApi from '../../../shared/present/apiclient/StudentApi';
-import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
-import LectureStructureContainer from '../../../detail/ui/logic/LectureStructureContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService: ActionEventService;
