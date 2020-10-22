@@ -26,7 +26,7 @@ export function findCoursePlanContents(
     .then(response => response && response.data);
 }
 
-interface StudentInfoViewBody {
+export interface StudentInfoViewBody {
   courseLectureIds: string[];
   lectureCardIds: string[];
   preLectureCardIds: string[];

@@ -63,27 +63,29 @@ async function getStateMapByParams(
   params: LectureStructureCubeItemParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
-  const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-  if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-    const learningState = studentJoins[0].learningState;
-    let state: State = 'None';
-    if (studentJoins[0].proposalState === 'Approved') {
-      switch (learningState) {
-        case 'Progress':
-        case 'TestPassed':
-        case 'TestWaiting':
-        case 'HomeworkWaiting':
-          state = 'Progress';
-          break;
-        case 'Passed':
-          state = 'Completed';
-          break;
+  if (lectureCardId !== undefined) {
+    const studentJoins = await findIsJsonStudentByCube(lectureCardId);
+    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
+      const learningState = studentJoins[0].learningState;
+      let state: State = 'None';
+      if (studentJoins[0].proposalState === 'Approved') {
+        switch (learningState) {
+          case 'Progress':
+          case 'TestPassed':
+          case 'TestWaiting':
+          case 'HomeworkWaiting':
+            state = 'Progress';
+            break;
+          case 'Passed':
+            state = 'Completed';
+            break;
 
-        default:
-          break;
+          default:
+            break;
+        }
       }
+      return { state, learningState, studentId: studentJoins[0].studentId };
     }
-    return { state, learningState, studentId: studentJoins[0].studentId };
   }
 }
 
@@ -93,6 +95,7 @@ export async function getCubeLectureStructure(
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
+    type: 'Cube',
   };
   const personalCube = await getPersonalCubeByParams(params);
   const cube = await getLectureStructureCubeItemByPersonalCube(

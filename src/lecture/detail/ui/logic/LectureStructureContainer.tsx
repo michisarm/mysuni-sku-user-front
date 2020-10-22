@@ -1,9 +1,16 @@
 import React from 'react';
 import { useLectureStructure } from '../../service/useLectureStructure';
+import LectureStructureView from '../view/LectureStructureView/LectureStructureView';
 
 function LectureStructureContainer() {
-  useLectureStructure();
-  return null;
+  const [lectureStructure] = useLectureStructure();
+  return (
+    <>
+      {lectureStructure && (
+        <LectureStructureView lectureStructure={lectureStructure} />
+      )}
+    </>
+  );
 }
 
 export default LectureStructureContainer;

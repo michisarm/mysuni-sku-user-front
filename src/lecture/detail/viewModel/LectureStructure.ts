@@ -1,6 +1,7 @@
 import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
+import LectureView from '../model/LectureView';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
@@ -29,13 +30,16 @@ export interface ItemMap {
 
 export interface LectureStructureCourseItemParams extends Params {
   coursePlanId: string;
-  serviceType: string;
+  serviceType: LectureType;
   serviceId: string;
 }
 
 export interface LectureStructureCubeItemParams extends Params {
+  coursePlanId?: string;
+  serviceType?: string;
+  serviceId?: string;
   cubeId: string;
-  lectureCardId: string;
+  lectureCardId?: string;
 }
 
 export interface LectureStructureTestItem extends Item {
@@ -76,6 +80,7 @@ export interface LectureStructureCubeItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  serviceId?: string;
 }
 
 export interface LectureStructureCourseItem extends Item {
@@ -89,6 +94,7 @@ export interface LectureStructureCourseItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  lectureView?: LectureView;
 }
 
 export interface LectureStructure {
@@ -99,4 +105,5 @@ export interface LectureStructure {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  type: LectureType;
 }
