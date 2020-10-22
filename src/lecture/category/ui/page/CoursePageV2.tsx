@@ -44,6 +44,7 @@ import StudentApi from '../../../shared/present/apiclient/StudentApi';
 import StudentInfoModel from '../../../model/StudentInfoModel';
 import { SurveyFormModel } from '../../../../survey/form/model/SurveyFormModel';
 import LectureListContainer from 'lecture/detail/ui/logic/LectureListContainer';
+import LectureStructureContainer from '../../../detail/ui/logic/LectureStructureContainer';
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService: ActionEventService;
@@ -1026,7 +1027,7 @@ class CoursePageV2 extends Component<Props, State> {
             </div>
           }
         />
-        <LectureListContainer />
+        <LectureStructureContainer />
       </ContentLayout>
     );
   }

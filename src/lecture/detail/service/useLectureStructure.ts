@@ -11,6 +11,7 @@ import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
 } from '../viewModel/LectureStructure';
+import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureStructure } from './utility/getCubeLectureStructure';
 
 type Value = LectureStructure | undefined;
@@ -30,7 +31,11 @@ export function useLectureStructure(): [Value] {
   }, []);
 
   const getCourseItem = useCallback(
-    (params: LectureStructureCourseItemParams) => {},
+    (params: LectureStructureCourseItemParams) => {
+      getCourseLectureStructure(params).then(lectureStructure => {
+        setLectureStructure(lectureStructure);
+      });
+    },
     []
   );
 

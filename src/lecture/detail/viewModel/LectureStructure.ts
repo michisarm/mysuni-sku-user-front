@@ -33,8 +33,11 @@ export interface LectureStructureCourseItemParams extends Params {
 }
 
 export interface LectureStructureCubeItemParams extends Params {
+  coursePlanId?: string;
+  serviceType?: string;
+  serviceId?: string;
   cubeId: string;
-  lectureCardId: string;
+  lectureCardId?: string;
 }
 
 export interface LectureStructureTestItem extends Item {
@@ -74,6 +77,7 @@ export interface LectureStructureCubeItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  serviceId?: string;
 }
 
 export interface LectureStructureCourseItem extends Item {
