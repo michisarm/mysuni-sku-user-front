@@ -45,7 +45,7 @@ export interface LectureStructureTestItem extends Item {
   params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
   state: State;
   type: LectureStructureItemType;
-  questions: ExamQuestionModel;
+  questions: ExamQuestionModel[];
 }
 
 export interface LectureStructureSurveyItem extends Item {
