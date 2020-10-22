@@ -29,7 +29,7 @@ export interface ItemMap {
 
 export interface LectureStructureCourseItemParams extends Params {
   coursePlanId: string;
-  serviceType: string;
+  serviceType: LectureType;
   serviceId: string;
 }
 
@@ -103,4 +103,5 @@ export interface LectureStructure {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  type: LectureType;
 }

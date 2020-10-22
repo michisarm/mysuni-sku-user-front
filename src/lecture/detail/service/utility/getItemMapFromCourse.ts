@@ -12,11 +12,9 @@ import {
 } from '../../api/surveyApi';
 import CoursePlanComplex from '../../model/CoursePlanComplex';
 import Student from '../../model/Student';
-import { LectureListCourseItemUrl } from '../../store/LectureListStore';
 import {
   ItemMap,
   LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,

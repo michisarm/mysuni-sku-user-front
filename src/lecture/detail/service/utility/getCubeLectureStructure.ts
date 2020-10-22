@@ -95,6 +95,7 @@ export async function getCubeLectureStructure(
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
+    type: 'Cube',
   };
   const personalCube = await getPersonalCubeByParams(params);
   const cube = await getLectureStructureCubeItemByPersonalCube(

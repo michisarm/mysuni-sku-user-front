@@ -15,7 +15,6 @@ import {
 import CoursePlanComplex from '../../model/CoursePlanComplex';
 import LectureView from '../../model/LectureView';
 import Student from '../../model/Student';
-import { LectureListCourseItemUrl } from '../../store/LectureListStore';
 import {
   ItemMap,
   LectureStructureCourseItemParams,

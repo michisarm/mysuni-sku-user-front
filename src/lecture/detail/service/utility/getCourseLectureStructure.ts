@@ -27,8 +27,18 @@ function parseCoursePlanComplex(
   lectureStructure: LectureStructure;
   stuendentInfoViewBody: StudentInfoViewBody;
 } {
-  const { serviceId: rootServiceId } = params;
-  const lectureStructure: LectureStructure = { courses: [], cubes: [] };
+  const { serviceId: rootServiceId, serviceType } = params;
+  const lectureStructure: LectureStructure = {
+    courses: [],
+    cubes: [],
+    type: serviceType,
+    course: {
+      id: coursePlanComplex.coursePlan.contentsId,
+      name: coursePlanComplex.coursePlan.name,
+      params,
+      serviceId: params.serviceId,
+    },
+  };
   const courseLectureIds: string[] = [];
   const lectureCardIds: string[] = [];
   const preLectureCardIds: string[] = [];
