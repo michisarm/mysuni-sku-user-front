@@ -3,6 +3,7 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import { patronInfo } from '@nara.platform/dock';
+import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
 import { findAnswerSheet } from '../../api/assistantApi';
 import { findCoursePlan } from '../../api/courseApi';
 import { findExamination } from '../../api/examApi';
@@ -58,6 +59,7 @@ async function getTestItem(
       }
     }
 
+    const temp : ExamQuestionModel[] = [];
     const item: LectureStructureTestItem = {
       id: examination.id,
       name: examination.examPaperTitle,
@@ -65,6 +67,9 @@ async function getTestItem(
       params,
       state,
       type: 'EXAM',
+      questions: temp,//examination.questions,
+      successPoint: 100,//examPaperForm.successPoint,
+      totalPoint: 0,//examTotalPoint,
     };
     return item;
   }

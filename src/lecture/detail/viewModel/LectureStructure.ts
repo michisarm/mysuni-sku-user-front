@@ -50,6 +50,8 @@ export interface LectureStructureTestItem extends Item {
   state: State;
   type: LectureStructureItemType;
   questions: ExamQuestionModel[];
+  successPoint: number;
+  totalPoint: number;
 }
 
 export interface LectureStructureSurveyItem extends Item {

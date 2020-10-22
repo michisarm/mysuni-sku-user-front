@@ -49,9 +49,13 @@ async function getTestItem(
     let state: State = 'None';
 
     let examPaperForm = null;
+    let examTotalPoint = 0;
     {
       const { result } = await findExamPaperForm(examination.paperId);
       examPaperForm = result;
+      examPaperForm.questions.map((result,index) => {
+        examTotalPoint += result.allocatedPoint;
+      });
     }
 
     const denizenId = patronInfo.getDenizenId();
@@ -76,6 +80,8 @@ async function getTestItem(
       state,
       type: 'EXAM',
       questions: examPaperForm.questions,
+      successPoint: examination.successPoint,
+      totalPoint: examTotalPoint,
     };
     return item;
   }

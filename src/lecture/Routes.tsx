@@ -68,6 +68,17 @@ class Routes extends Component {
           component={LectureCardPage}
         />
 
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test"
+          component={LectureTestContainer}
+        />
+        <Route
+          exact
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test"
+          component={LectureTestContainer}
+        />
+
         {/* recommend */}
         <Redirect
           exact
