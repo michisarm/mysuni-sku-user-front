@@ -526,9 +526,9 @@ body .badge_new .title .cell span{
   top: 100%;
 }
 
-/* .fixed-container.tab-menu2:after { */
-/*   top: 50px; */
-/* } */
+.fixed-container.tab-menu2:after {
+  top: 50px;
+}
 
 .badge-category ul li .title .ellipsis{
   line-height: 20px;
