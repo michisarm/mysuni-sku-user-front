@@ -4,7 +4,7 @@
 
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../api/assistantApi';
-import { findExamination } from '../../api/examApi';
+import { findExamination, findExamPaperForm } from '../../api/examApi';
 import { findCubeIntro } from '../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
@@ -37,13 +37,17 @@ interface GetItemMapArg {
 }
 
 async function getTestItem(
-  cubeId: string,
   examId: string,
   params: LectureStructureCubeItemParams
 ) {
   if (examId !== '') {
-    const { result } = await findExamination(cubeId);
+    const { result } = await findExamination(examId);
     let state: State = 'None';
+
+    if (result.paperId !== null) {
+      const { examPaperForm } = await findExamPaperForm(result.paperId);
+      console.log(examPaperForm); // undefined..
+    }
 
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
@@ -141,8 +145,7 @@ export async function getItemMapFromCube(
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
   const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
-  const { cubeId } = params;
-  const testItem = await getTestItem(cubeId, examId, params);
+  const testItem = await getTestItem(examId, params);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }

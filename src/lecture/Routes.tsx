@@ -12,6 +12,9 @@ import PostFormPage from './community/ui/page/PostFormPage';
 import PostDetailPage from './community/ui/page/PostDetailPage';
 import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
+import LectureListContainer from './detail/ui/logic/LectureListContainer';
+import LectureStructureContainer from './detail/ui/logic/LectureStructureContainer';
+import LectureTestContainer from './detail/ui/logic/LectureTestContainer';
 
 
 class Routes extends Component {
@@ -29,8 +32,14 @@ class Routes extends Component {
         <Route exact path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
         <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId" component={CoursePageV2} />
 
-        <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
-        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
+        {/*<Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureCardPage} />*/}
+
+        <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureListContainer} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId" component={LectureStructureContainer} />
+
+        <Route exact path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test" component={LectureTestContainer} />
+        <Route exact path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test" component={LectureTestContainer} />
 
         {/* recommend */}
         <Redirect exact from="/lecture/recommend" to="/lecture/recommend/pages/1" />
