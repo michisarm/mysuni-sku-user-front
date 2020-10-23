@@ -17,17 +17,17 @@
 }
  */
 
-import { findIsJsonStudentByCube, findStudent } from '../../api/lectureApi';
-import { findCubeIntro, findPersonalCube } from '../../api/mPersonalCubeApi';
-import PersonalCube from '../../model/PersonalCube';
-import Student from '../../model/Student';
+import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
+import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
+import PersonalCube from '../../../model/PersonalCube';
+import Student from '../../../model/Student';
 import {
   LectureStructure,
   LectureStructureCubeItem,
   LectureStructureCubeItemParams,
   State,
   StudentStateMap,
-} from '../../viewModel/LectureStructure';
+} from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';
 
 function getPersonalCubeByParams(

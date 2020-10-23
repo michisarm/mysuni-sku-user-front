@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLectureStructure } from '../../service/useLectureStructure';
+import { useLectureStructure } from '../../service/useLectureStructure/useLectureStructure';
 import LectureStructureView from '../view/LectureStructureView/LectureStructureView';
 
 function LectureStructureContainer() {

@@ -5,12 +5,12 @@ import { useParams } from 'react-router-dom';
 import {
   onLectureStructure,
   setLectureStructure,
-} from '../store/LectureStructureStore';
+} from '../../store/LectureStructureStore';
 import {
   LectureStructure,
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
-} from '../viewModel/LectureStructure';
+} from '../../viewModel/LectureStructure';
 import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureStructure } from './utility/getCubeLectureStructure';
 

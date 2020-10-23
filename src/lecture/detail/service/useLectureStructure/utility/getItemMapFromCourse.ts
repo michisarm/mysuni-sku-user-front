@@ -3,15 +3,15 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../api/assistantApi';
-import { findExamination } from '../../api/examApi';
-import { findCubeIntro } from '../../api/mPersonalCubeApi';
+import { findAnswerSheet } from '../../../api/assistantApi';
+import { findExamination } from '../../../api/examApi';
+import { findCubeIntro } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
-} from '../../api/surveyApi';
-import CoursePlanComplex from '../../model/CoursePlanComplex';
-import Student from '../../model/Student';
+} from '../../../api/surveyApi';
+import CoursePlanComplex from '../../../model/CoursePlanComplex';
+import Student from '../../../model/Student';
 import {
   ItemMap,
   LectureStructureCourseItemParams,
@@ -19,7 +19,7 @@ import {
   LectureStructureSurveyItem,
   LectureStructureTestItem,
   State,
-} from '../../viewModel/LectureStructure';
+} from '../../../viewModel/LectureStructure';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination

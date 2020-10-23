@@ -3,27 +3,22 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../api/assistantApi';
-import { findCoursePlan } from '../../api/courseApi';
-import { findExamination } from '../../api/examApi';
-import { findCoursePlanContents } from '../../api/lectureApi';
-import { findCubeIntro } from '../../api/mPersonalCubeApi';
+import { findAnswerSheet } from '../../../api/assistantApi';
+import { findExamination } from '../../../api/examApi';
+import { findCubeIntro } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
-} from '../../api/surveyApi';
-import CoursePlanComplex from '../../model/CoursePlanComplex';
-import LectureView from '../../model/LectureView';
-import Student from '../../model/Student';
+} from '../../../api/surveyApi';
+import Student from '../../../model/Student';
 import {
   ItemMap,
-  LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
   State,
-} from '../../viewModel/LectureStructure';
+} from '../../../viewModel/LectureStructure';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -34,20 +29,26 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-interface GetItemMapArg {}
+interface GetItemMapArg {
+  cubeIntroId: string;
+  examId: string;
+  surveyId: string;
+  surveyCaseId: string;
+}
 
 async function getTestItem(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams
+  cubeId: string,
+  examId: string,
+  params: LectureStructureCubeItemParams
 ) {
-  const { examination } = lectureView;
-  if (examination !== null) {
+  if (examId !== '') {
+    const { result } = await findExamination(cubeId);
     let state: State = 'None';
 
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(
-        examination.paperId,
+        result.paperId,
         denizenId
       );
       if (findAnswerSheetData.result !== null) {
@@ -59,9 +60,9 @@ async function getTestItem(
     }
 
     const item: LectureStructureTestItem = {
-      id: examination.id,
-      name: examination.examPaperTitle,
-      questionCount: examination.questionCount,
+      id: result.id,
+      name: result.examPaperTitle,
+      questionCount: result.questionCount,
       params,
       state,
       type: 'EXAM',
@@ -71,13 +72,12 @@ async function getTestItem(
 }
 
 async function getSurveyItem(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams
+  surveyId: string,
+  surveyCaseId: string,
+  params: LectureStructureCubeItemParams
 ) {
-  const { surveyCase } = lectureView;
-  if (surveyCase !== null) {
-    const { surveyFormId } = surveyCase;
-    const { titles, questions } = await findSurveyForm(surveyFormId);
+  if (surveyId !== '') {
+    const { titles, questions } = await findSurveyForm(surveyId);
     let state: State = 'None';
     let title = '';
     if (
@@ -87,7 +87,7 @@ async function getSurveyItem(
     ) {
       title = titles.langStringMap[titles.defaultLanguage];
     }
-    const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCase.id);
+    const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
     if (answerSheet !== null) {
       const { progress } = answerSheet;
       if (progress === 'Complete') {
@@ -97,7 +97,7 @@ async function getSurveyItem(
       }
     }
     const item: LectureStructureSurveyItem = {
-      id: surveyFormId,
+      id: surveyId,
       name: title,
       questionCount: questions.length,
       params,
@@ -109,12 +109,12 @@ async function getSurveyItem(
 }
 
 async function getReportItem(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams,
+  cubeIntroId: string,
+  params: LectureStructureCubeItemParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
-  const coursePlan = await findCoursePlan(lectureView.coursePlanId);
-  if (coursePlan.reportFileBox.reportName !== '') {
+  const cubeIntro = await findCubeIntro(cubeIntroId);
+  if (cubeIntro.reportFileBox.reportName !== '') {
     let state: State = 'None';
     if (student !== undefined) {
       if (
@@ -125,7 +125,7 @@ async function getReportItem(
       }
     }
     const item: LectureStructureReportItem = {
-      name: coursePlan.reportFileBox.reportName,
+      name: cubeIntro.reportFileBox.reportName,
       params,
       state,
       type: 'REPORT',
@@ -134,21 +134,23 @@ async function getReportItem(
   }
 }
 
-export async function getItemMapFromLecture(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams,
+export async function getItemMapFromCube(
+  arg: GetItemMapArg,
+  params: LectureStructureCubeItemParams,
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
-  const testItem = await getTestItem(lectureView, params);
+  const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
+  const { cubeId } = params;
+  const testItem = await getTestItem(cubeId, examId, params);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }
-  const surveyItem = await getSurveyItem(lectureView, params);
+  const surveyItem = await getSurveyItem(surveyId, surveyCaseId, params);
   if (surveyItem !== undefined) {
     itemMap.survey = surveyItem;
   }
-  const reportItem = await getReportItem(lectureView, params, student);
+  const reportItem = await getReportItem(cubeIntroId, params, student);
   if (reportItem !== undefined) {
     itemMap.report = reportItem;
   }

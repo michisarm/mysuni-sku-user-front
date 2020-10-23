@@ -2,14 +2,14 @@ import {
   findCoursePlanContents,
   studentInfoView,
   StudentInfoViewBody,
-} from '../../api/lectureApi';
-import CoursePlanComplex from '../../model/CoursePlanComplex';
-import LectureStudentView from '../../model/LectureStudentView';
+} from '../../../api/lectureApi';
+import CoursePlanComplex from '../../../model/CoursePlanComplex';
+import LectureStudentView from '../../../model/LectureStudentView';
 import {
   LectureStructure,
   LectureStructureCourseItemParams,
   LectureStructureCubeItem,
-} from '../../viewModel/LectureStructure';
+} from '../../../viewModel/LectureStructure';
 import { getItemMapFromCourse } from './getItemMapFromCourse';
 import { getItemMapFromLecture } from './getItemMapFromLecture';
 
