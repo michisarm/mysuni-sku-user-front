@@ -94,35 +94,8 @@ export async function getCubeLectureTest(
   };
   
   const examination = await getItemMapFromCube(params.examId);
-  lectureStructure.test = await getItemMapFromCube(params.examId);
-  /*if (cube !== undefined) {
-    const stateMap = await getStateMapByParams(params);
-    let student: Student;
-    if (stateMap !== undefined) {
-      cube.state = stateMap.state;
-      cube.learningState = stateMap.learningState;
-      student = await findStudent(stateMap.studentId);
-      const cubeIntroId = personalCube.cubeIntro.id;
-      const examId = personalCube.contents.examId;
-      const surveyId = personalCube.contents.surveyId;
-      const surveyCaseId = personalCube.contents.surveyCaseId;
-      const itemMap = await getItemMapFromCube(
-        { cubeIntroId, examId, surveyId, surveyCaseId },
-        params,
-        student
-      );
-      if (itemMap.test !== undefined) {
-        lectureStructure.test = itemMap.test;
-      }
-      if (itemMap.survey !== undefined) {
-        lectureStructure.survey = itemMap.survey;
-      }
-      if (itemMap.report !== undefined) {
-        lectureStructure.report = itemMap.report;
-      }
-    }
-
-    lectureStructure.cube = cube;
-  }*/
+  if (examination !== undefined) {
+    lectureStructure.test = examination;
+  }
   return lectureStructure;
 }
