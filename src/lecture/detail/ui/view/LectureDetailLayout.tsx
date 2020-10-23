@@ -35,7 +35,9 @@ const LectureDetailLayout: React.FC = function LectureDetailLayout({
             <span>펼치기</span>
           </a>
           <div className="main-wrap">
-            <div className="scrolling-area area2 ">{children}</div>
+            <div className="scrolling-area area2 ">
+              <div className="ui segment full">{children}</div>
+            </div>
           </div>
         </div>
       </div>

@@ -39,24 +39,6 @@ class Routes extends Component {
         />
 
         <Route
-          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailCourseRoutes}
-        />
-
-        <Route
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailCubeRoutes}
-        />
-        <Route
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailCubeRoutes}
-        />
-
-        <Route
           exact
           path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/old"
           component={CoursePageV2}
@@ -76,6 +58,24 @@ class Routes extends Component {
           exact
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
           component={LectureCardPage}
+        />
+
+        <Route
+          path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={LectureDetailCourseRoutes}
+        />
+        <Route
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
+          component={LectureDetailCourseRoutes}
+        />
+
+        <Route
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={LectureDetailCubeRoutes}
+        />
+        <Route
+          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
+          component={LectureDetailCubeRoutes}
         />
 
         {/* recommend */}

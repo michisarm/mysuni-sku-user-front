@@ -32,6 +32,9 @@ export interface LectureStructureCourseItemParams extends Params {
   coursePlanId: string;
   serviceType: LectureType;
   serviceId: string;
+  courseId?: string;
+  subCubeId?: string;
+  subLectureCardId?: string;
 }
 
 export interface LectureStructureCubeItemParams extends Params {

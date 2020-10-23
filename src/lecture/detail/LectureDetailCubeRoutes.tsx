@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReportPage';
+import LectureOverviewPage from './ui/logic/LectureOverview/LectureOverviewPage';
 
 export default function LectureDetailCubeRoutes() {
   return (
@@ -10,12 +11,12 @@ export default function LectureDetailCubeRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailContainer}
+        component={LectureOverviewPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailContainer}
+        component={LectureOverviewPage}
       />
       <Route
         exact

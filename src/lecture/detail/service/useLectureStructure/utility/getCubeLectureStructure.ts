@@ -41,7 +41,7 @@ async function getLectureStructureCubeItemByPersonalCube(
   personalCube: PersonalCube,
   params: LectureStructureCubeItemParams
 ): Promise<LectureStructureCubeItem | void> {
-  const { cubeId } = params;
+  const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
@@ -55,6 +55,7 @@ async function getLectureStructureCubeItemByPersonalCube(
       cubeType,
       learningTime,
       params,
+      serviceId: lectureCardId,
     };
   }
 }
