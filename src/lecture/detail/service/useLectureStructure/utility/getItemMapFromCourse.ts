@@ -43,7 +43,7 @@ async function getTestItem(
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(
-        examination.paperId,
+        examination.id,
         denizenId
       );
       if (findAnswerSheetData.result !== null) {

@@ -10,6 +10,7 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import CoursePlanComplex from '../model/CoursePlanComplex';
+import LectureCard from '../model/LectureCard';
 import LectureStudentView from '../model/LectureStudentView';
 import Student from '../model/Student';
 import StudentJoin from '../model/StudentJoin';
@@ -23,6 +24,13 @@ export function findCoursePlanContents(
   const url = `${BASE_URL}/coursePlan?coursePlanId=${coursePlanId}&courseLectureId=${courseLectureId}`;
   return axiosApi
     .get<CoursePlanComplex>(url)
+    .then(response => response && response.data);
+}
+
+export function findLectureCard(lectureCardId: string): Promise<LectureCard> {
+  const url = `${BASE_URL}/lectureCards/${lectureCardId}`;
+  return axiosApi
+    .get<LectureCard>(url)
     .then(response => response && response.data);
 }
 
