@@ -64,7 +64,7 @@ async function getTestItem(
       id: examination.id,
       name: examination.examPaperTitle,
       questionCount: examination.questionCount,
-      params,
+      //params,
       state,
       type: 'EXAM',
       questions: temp,//examination.questions,

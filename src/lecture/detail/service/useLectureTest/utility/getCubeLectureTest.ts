@@ -17,6 +17,8 @@
 }
  */
 
+import { findExamination } from 'lecture/detail/api/examApi';
+import Examination from 'lecture/detail/model/Examination';
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
@@ -29,13 +31,6 @@ import {
   StudentStateMap,
 } from '../../../viewModel/LectureTest';
 import { getItemMapFromCube } from './getItemMapFromCube';
-
-function getPersonalCubeByParams(
-  params: LectureStructureCubeItemParams
-): Promise<PersonalCube> {
-  const { cubeId } = params;
-  return findPersonalCube(cubeId);
-}
 
 async function getLectureStructureCubeItemByPersonalCube(
   personalCube: PersonalCube,
@@ -89,7 +84,7 @@ async function getStateMapByParams(
   }
 }
 
-export async function getCubeLectureStructure(
+export async function getCubeLectureTest(
   params: LectureStructureCubeItemParams
 ): Promise<LectureTest> {
   const lectureStructure: LectureTest = {
@@ -97,12 +92,10 @@ export async function getCubeLectureStructure(
     cubes: [],
     type: 'Cube',
   };
-  /*const personalCube = await getPersonalCubeByParams(params);
-  const cube = await getLectureStructureCubeItemByPersonalCube(
-    personalCube,
-    params
-  );
-  if (cube !== undefined) {
+  
+  const examination = await getItemMapFromCube(params.examId);
+  lectureStructure.test = await getItemMapFromCube(params.examId);
+  /*if (cube !== undefined) {
     const stateMap = await getStateMapByParams(params);
     let student: Student;
     if (stateMap !== undefined) {

@@ -12,7 +12,7 @@ import {
   LectureStructureCubeItemParams,
 } from '../../viewModel/LectureTest';
 import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
-import { getCubeLectureStructure } from './utility/getCubeLectureStructure';
+import { getCubeLectureTest } from './utility/getCubeLectureTest';
 
 type Value = LectureTest | undefined;
 
@@ -25,7 +25,7 @@ export function useLectureTest(): [Value] {
   >();
 
   const getCubeItem = useCallback((params: LectureStructureCubeItemParams) => {
-    getCubeLectureStructure(params).then(lectureTest => {
+    getCubeLectureTest(params).then(lectureTest => {
       setLectureTest(lectureTest);
     });
   }, []);

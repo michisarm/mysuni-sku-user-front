@@ -44,7 +44,7 @@ function parseCoursePlanComplex(
   const lectureCardIds: string[] = [];
   const preLectureCardIds: string[] = [];
 
-  coursePlanComplex.lectureViews.forEach(lectureView => {
+  /*coursePlanComplex.lectureViews.forEach(lectureView => {
     const {
       id,
       name,
@@ -77,8 +77,8 @@ function parseCoursePlanComplex(
       });
       lectureCardIds.push(serviceId);
     }
-  });
-  coursePlanComplex.subLectureViews.forEach(({ lectureId, lectureViews }) => {
+  });*/
+  /*coursePlanComplex.subLectureViews.forEach(({ lectureId, lectureViews }) => {
     const course = lectureStructure.courses.find(c => c.id === lectureId);
     if (course !== undefined) {
       const cubes: LectureStructureCubeItem[] = lectureViews.map<
@@ -95,7 +95,7 @@ function parseCoursePlanComplex(
       });
       course.cubes = cubes;
     }
-  });
+  });*/
 
   return {
     lectureStructure,

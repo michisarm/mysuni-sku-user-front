@@ -40,13 +40,14 @@ export interface LectureStructureCubeItemParams extends Params {
   serviceId?: string;
   cubeId: string;
   lectureCardId?: string;
+  examId: string;
 }
 
 export interface LectureStructureTestItem extends Item {
   id: string;
   name: string;
   questionCount: number;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
+  //params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
   state: State;
   type: LectureStructureItemType;
   questions: ExamQuestionModel[];
