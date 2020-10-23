@@ -12,6 +12,7 @@ import PostDetailPage from './community/ui/page/PostDetailPage';
 import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
 import LectureDetailContainer from './detail/ui/logic/LectureDetailContainer';
+import CubeRoutes from './detail/CubeRoutes';
 
 class Routes extends Component {
   //
@@ -48,11 +49,11 @@ class Routes extends Component {
 
         <Route
           path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailContainer}
+          component={CubeRoutes}
         />
         <Route
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailContainer}
+          component={CubeRoutes}
         />
 
         <Route
