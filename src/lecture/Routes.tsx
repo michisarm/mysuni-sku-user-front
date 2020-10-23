@@ -11,8 +11,8 @@ import PostFormPage from './community/ui/page/PostFormPage';
 import PostDetailPage from './community/ui/page/PostDetailPage';
 import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
-import LectureDetailContainer from './detail/ui/logic/LectureDetailContainer';
-import CubeRoutes from './detail/CubeRoutes';
+import LectureDetailCubeRoutes from './detail/LectureDetailCubeRoutes';
+import LectureDetailCourseRoutes from './detail/LectureDetailCourseRoutes';
 
 class Routes extends Component {
   //
@@ -40,20 +40,20 @@ class Routes extends Component {
 
         <Route
           path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailContainer}
+          component={LectureDetailCourseRoutes}
         />
         <Route
           path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-          component={LectureDetailContainer}
+          component={LectureDetailCourseRoutes}
         />
 
         <Route
           path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={CubeRoutes}
+          component={LectureDetailCubeRoutes}
         />
         <Route
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={CubeRoutes}
+          component={LectureDetailCubeRoutes}
         />
 
         <Route

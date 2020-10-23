@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureTestPage from './ui/logic/LectureTestPage';
 
-export default function CubeRoutes() {
+export default function LectureDetailCubeRoutes() {
   return (
     <Switch>
       <Route
