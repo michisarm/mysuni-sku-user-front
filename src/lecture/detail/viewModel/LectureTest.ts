@@ -1,7 +1,6 @@
-import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
-import CubeType from '../model/CubeType';
+import Answer from '../model/Answer';
+import ExamQuestion from '../model/ExamQuestion';
 import LearningState from '../model/LearningState';
-import LectureView from '../model/LectureView';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
@@ -22,12 +21,6 @@ export interface StudentStateMap {
   studentId: string;
 }
 
-export interface ItemMap {
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-}
-
 export interface LectureStructureCourseItemParams extends Params {
   coursePlanId: string;
   serviceType: LectureType;
@@ -43,71 +36,21 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
-export interface LectureStructureTestItem extends Item {
+export interface LectureTestItem extends Item {
   id: string;
   name: string;
   questionCount: number;
-  //params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-  questions: ExamQuestionModel[];
+  questions: ExamQuestion[];
   successPoint: number;
   totalPoint: number;
 }
 
-export interface LectureStructureSurveyItem extends Item {
-  id: string;
-  name: string;
-  questionCount: number;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-}
-
-export interface LectureStructureReportItem extends Item {
-  name: string;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-}
-
-export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  params: LectureStructureCubeItemParams;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  serviceId?: string;
-}
-
-export interface LectureStructureCourseItem extends Item {
-  id: string;
-  coursePlanId: string;
-  cubes?: LectureStructureCubeItem[];
-  name: string;
-  params: LectureStructureCourseItemParams;
-  learningState?: LearningState;
-  state?: State;
-  serviceId: string;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  lectureView?: LectureView;
+export interface LectureTestAnswerItem extends Item {
+  answers: Answer[];
+  submitted: boolean;
 }
 
 export interface LectureTest {
-  courses: LectureStructureCourseItem[];
-  cubes: LectureStructureCubeItem[];
-  course?: LectureStructureCourseItem;
-  cube?: LectureStructureCubeItem;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  type: LectureType;
+  test: LectureTestItem;
+  answer?: LectureTestAnswerItem;
 }

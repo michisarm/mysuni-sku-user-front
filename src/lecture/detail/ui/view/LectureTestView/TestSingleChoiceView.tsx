@@ -1,20 +1,21 @@
-import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
+import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import React from 'react';
 import { Radio } from 'semantic-ui-react';
 
 interface TestSingleChoiceViewProps {
-  question: ExamQuestionModel;
+  question: ExamQuestion;
+  answer?: string;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
+  answer,
 }) {
-    
   return (
     <div className="course-survey-list">
-      {question.items.map((item,idx) => (
+      {question.items.map(item => (
         <Radio
-          key={idx}
+          key={question.questionNo + '_' + item.itemNo}
           className="base"
           label={item.itemText}
           name={`test_${question.questionNo}`}
@@ -25,6 +26,6 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
       ))}
     </div>
   );
-}
+};
 
 export default TestSingleChoiceView;
