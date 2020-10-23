@@ -1,20 +1,21 @@
-import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
+import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import React from 'react';
-import { Checkbox, Radio } from 'semantic-ui-react';
+import { Checkbox } from 'semantic-ui-react';
 
 interface TestMultiChoiceViewProps {
-  question: ExamQuestionModel;
+  question: ExamQuestion;
+  answer?: string;
 }
 
 const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMultiChoiceView({
   question,
+  answer,
 }) {
-    
   return (
     <div className="course-survey-list">
-      {question.items.map((item,idx) => (
+      {question.items.map(item => (
         <Checkbox
-          key={idx}
+          key={question.questionNo + '_' + item.itemNo}
           className="base"
           label={item.itemText}
           name="radioGroup"
@@ -23,6 +24,6 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
       ))}
     </div>
   );
-}
+};
 
 export default TestMultiChoiceView;

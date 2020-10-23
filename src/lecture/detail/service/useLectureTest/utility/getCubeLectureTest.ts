@@ -16,86 +16,8 @@
   report?: LectureStructureReportItem;
 }
  */
+import { getTestItemMapFromCube } from './getTestItemMapFromCube';
 
-import { findExamination } from 'lecture/detail/api/examApi';
-import Examination from 'lecture/detail/model/Examination';
-import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
-import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
-import Student from '../../../model/Student';
-import {
-  LectureTest,
-  LectureStructureCubeItem,
-  LectureStructureCubeItemParams,
-  State,
-  StudentStateMap,
-} from '../../../viewModel/LectureTest';
-import { getItemMapFromCube } from './getItemMapFromCube';
-
-async function getLectureStructureCubeItemByPersonalCube(
-  personalCube: PersonalCube,
-  params: LectureStructureCubeItemParams
-): Promise<LectureStructureCubeItem | void> {
-  const { cubeId } = params;
-  const { id, name } = personalCube;
-  const cubeType = personalCube.contents.type;
-  const cubeIntroId = personalCube.cubeIntro.id;
-  const cubeIntro = await findCubeIntro(cubeIntroId);
-  if (cubeIntro !== undefined) {
-    const learningTime = cubeIntro.learningTime;
-    return {
-      id,
-      name,
-      cubeId,
-      cubeType,
-      learningTime,
-      params,
-    };
-  }
-}
-
-async function getStateMapByParams(
-  params: LectureStructureCubeItemParams
-): Promise<StudentStateMap | void> {
-  const { lectureCardId } = params;
-  if (lectureCardId !== undefined) {
-    const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-      const learningState = studentJoins[0].learningState;
-      let state: State = 'None';
-      if (studentJoins[0].proposalState === 'Approved') {
-        switch (learningState) {
-          case 'Progress':
-          case 'TestPassed':
-          case 'TestWaiting':
-          case 'HomeworkWaiting':
-            state = 'Progress';
-            break;
-          case 'Passed':
-            state = 'Completed';
-            break;
-
-          default:
-            break;
-        }
-      }
-      return { state, learningState, studentId: studentJoins[0].studentId };
-    }
-  }
-}
-
-export async function getCubeLectureTest(
-  params: LectureStructureCubeItemParams
-): Promise<LectureTest> {
-  const lectureStructure: LectureTest = {
-    courses: [],
-    cubes: [],
-    type: 'Cube',
-  };
-  
-  const examination = await getItemMapFromCube(params.examId);
-  if (examination !== undefined) {
-    lectureStructure.test = examination;
-  }
-  return lectureStructure;
+export async function getCubeLectureTest(examId: string): Promise<void> {
+  await getTestItemMapFromCube(examId);
 }

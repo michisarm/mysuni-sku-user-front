@@ -1,11 +1,24 @@
-import { LectureTest } from '../viewModel/LectureTest';
+import {
+  LectureTestItem,
+  LectureTestAnswerItem,
+} from '../viewModel/LectureTest';
 import { createStore } from './Store';
 
-const initialStore: LectureTest = { courses: [], cubes: [], type: 'Cube' };
-const [
-  setLectureTest,
-  onLectureTest,
-  getLectureTest,
-] = createStore<LectureTest>(initialStore);
+const [setLectureTestItem, onLectureTestItem, getLectureTestItem] = createStore<
+  LectureTestItem
+>();
 
-export { setLectureTest, onLectureTest, getLectureTest };
+const [
+  setLectureTestAnswerItem,
+  onLectureTestAnswerItem,
+  getLectureTestAnswerItem,
+] = createStore<LectureTestAnswerItem>();
+
+export {
+  setLectureTestItem,
+  onLectureTestItem,
+  getLectureTestItem,
+  setLectureTestAnswerItem,
+  onLectureTestAnswerItem,
+  getLectureTestAnswerItem,
+};

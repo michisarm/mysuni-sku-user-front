@@ -3,12 +3,13 @@ import { useLectureTest } from '../../service/useLectureTest/useLectureTest';
 import LectureTestView from '../view/LectureTestView/LectureTestView';
 
 function LectureTestContainer() {
-  const lectureStructure = useLectureTest()[0]!;
-  
+  const [testItem, answerItem] = useLectureTest();
   return (
-    <LectureTestView 
-      lectureStructure={lectureStructure}
-    />
+    <>
+      {testItem !== undefined && (
+        <LectureTestView testItem={testItem} answerItem={answerItem} />
+      )}
+    </>
   );
 }
 
