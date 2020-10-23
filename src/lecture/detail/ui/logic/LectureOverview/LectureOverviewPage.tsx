@@ -1,6 +1,7 @@
 import { useLectureOverview } from 'lecture/detail/service/useLectureOverview/useLectureOverview';
 import React from 'react';
 import LectureDetailLayout from '../../view/LectureDetailLayout';
+import LectureDescriptionContainer from './LectureDescriptionContainer';
 import LectureSummaryContainer from './LectureSummaryContainer';
 
 function LectureOverviewPage() {
@@ -8,6 +9,7 @@ function LectureOverviewPage() {
   return (
     <LectureDetailLayout>
       <LectureSummaryContainer />
+      <LectureDescriptionContainer />
     </LectureDetailLayout>
   );
 }

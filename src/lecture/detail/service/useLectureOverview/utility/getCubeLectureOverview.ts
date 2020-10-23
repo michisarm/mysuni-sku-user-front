@@ -6,9 +6,13 @@ import {
 import CubeIntro from 'lecture/detail/model/CubeIntro';
 import LectureCard from 'lecture/detail/model/LectureCard';
 import PersonalCube from 'lecture/detail/model/PersonalCube';
+import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
-import { setLectureSummary } from '../../../store/LectureOverviewStore';
+import {
+  setLectureDescription,
+  setLectureSummary,
+} from '../../../store/LectureOverviewStore';
 
 function getLectureSummary(
   personalCube: PersonalCube,
@@ -34,6 +38,17 @@ function getLectureSummary(
   };
 }
 
+function getLectureDescription(cubeIntro: CubeIntro): LectureDescription {
+  const {
+    applicants,
+    description,
+    goal,
+    completionTerms,
+    guide,
+  } = cubeIntro.description;
+  return { applicants, description, goal, completionTerms, guide };
+}
+
 function findCube(personalCubeId: string) {
   return findPersonalCube(personalCubeId);
 }
@@ -55,4 +70,6 @@ export async function getCubeLectureOverview(
     lectureCard
   );
   setLectureSummary(lectureSummary);
+  const lectureDescription = getLectureDescription(cubeIntro);
+  setLectureDescription(lectureDescription);
 }

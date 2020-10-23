@@ -1,3 +1,7 @@
 export default interface LectureDescription {
-  htmlContent: string;
+  applicants: string;
+  description: string;
+  goal: string;
+  completionTerms: string;
+  guide: string;
 }
