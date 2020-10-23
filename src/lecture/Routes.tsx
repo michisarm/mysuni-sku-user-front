@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import NotFoundPage from 'layout/NotFoundPage';
@@ -13,7 +12,7 @@ import PostDetailPage from './community/ui/page/PostDetailPage';
 import ReplyFormPage from './community/ui/page/ReplyFormPage';
 import ReplyDetailPage from './community/ui/page/ReplyDetailPage';
 import LectureDetailContainer from './detail/ui/logic/LectureDetailContainer';
-import LectureTestContainer from './detail/ui/logic/LectureTestContainer';
+import CubeRoutes from './detail/CubeRoutes';
 
 class Routes extends Component {
   //
@@ -50,11 +49,11 @@ class Routes extends Component {
 
         <Route
           path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailContainer}
+          component={CubeRoutes}
         />
         <Route
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-          component={LectureDetailContainer}
+          component={CubeRoutes}
         />
 
         <Route
@@ -77,17 +76,6 @@ class Routes extends Component {
           exact
           path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/old"
           component={LectureCardPage}
-        />
-
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test"
-          component={LectureTestContainer}
-        />
-        <Route
-          exact
-          path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/test"
-          component={LectureTestContainer}
         />
 
         {/* recommend */}
