@@ -33,6 +33,7 @@ function parseCoursePlanComplex(
     cubes: [],
     type: serviceType,
     course: {
+      coursePlanId: coursePlanComplex.coursePlan.coursePlanId,
       id: coursePlanComplex.coursePlan.contentsId,
       name: coursePlanComplex.coursePlan.name,
       params,
@@ -56,6 +57,7 @@ function parseCoursePlanComplex(
     if (coursePlanId !== null) {
       lectureStructure.courses.push({
         id,
+        coursePlanId,
         name,
         params,
         serviceId,
