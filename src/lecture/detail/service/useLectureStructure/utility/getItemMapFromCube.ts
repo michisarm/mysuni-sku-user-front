@@ -42,15 +42,12 @@ async function getTestItem(
   params: LectureStructureCubeItemParams
 ) {
   if (examId !== '') {
-    const { result } = await findExamination(cubeId);
+    const { result } = await findExamination(examId);
     let state: State = 'None';
 
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(
-        result.paperId,
-        denizenId
-      );
+      const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
       if (findAnswerSheetData.result !== null) {
         if (findAnswerSheetData.result.submitted === true) {
           state = 'Completed';

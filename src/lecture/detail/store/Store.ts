@@ -19,9 +19,12 @@ interface GetCurrent<T> {
 }
 
 export function createStore<T>(
-  initialStore: T
+  initialStore?: T
 ): [Publish<T>, Subscribe<T>, GetCurrent<T>] {
-  let store = initialStore;
+  let store: T;
+  if (initialStore !== undefined) {
+    store = initialStore;
+  }
   const subscriberMap = new Map<string, SubscribeCallback<T>>();
 
   function publish(next: T, publisherId?: string) {

@@ -34,8 +34,6 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-interface GetItemMapArg {}
-
 async function getTestItem(
   lectureView: LectureView,
   params: LectureStructureCourseItemParams
@@ -47,7 +45,7 @@ async function getTestItem(
     const denizenId = patronInfo.getDenizenId();
     if (denizenId !== undefined) {
       const findAnswerSheetData = await findAnswerSheet(
-        examination.paperId,
+        examination.id,
         denizenId
       );
       if (findAnswerSheetData.result !== null) {
