@@ -1,5 +1,5 @@
 import React from 'react';
-import LectureDetailLayout from '../view/LectureDetailLayout';
+import LectureDetailLayout from '../../view/LectureDetailLayout';
 
 import LectureReportContainer from './LectureReportContainer';
 

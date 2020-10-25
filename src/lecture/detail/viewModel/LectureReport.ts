@@ -1,33 +1,20 @@
-import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
-import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
-import LectureView from '../model/LectureView';
-
-export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
-interface Params {
-  cineroomId?: string;
-  collegeId: string;
-}
-
-interface Item {
-  activated?: boolean;
-}
-
+//TODO 과제제출 , 답변 상태에 대한 처리 추가 필요함
 export interface StudentStateMap {
   learningState: LearningState;
   state: State;
   studentId: string;
 }
 
-export interface ItemMap {
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
+interface Params {
+  cineroomId?: string;
+  collegeId: string;
 }
 
+//TODO LectureStructureParams Report에 필요한 형식만 사용되게 수정 예정
 export interface LectureStructureCourseItemParams extends Params {
   coursePlanId: string;
   serviceType: LectureType;
@@ -43,71 +30,30 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
-export interface LectureStructureTestItem extends Item {
-  id: string;
-  name: string;
-  questionCount: number;
-  //params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-  questions: ExamQuestionModel[];
-  successPoint: number;
-  totalPoint: number;
+// homeworkContent: null
+// homeworkFileBoxId: "3q"
+// homeworkOperatorComment: "<p>ajklfajlfd</p>"
+// homeworkOperatorFileBoxId: null
+// id: "267cc717-a01b-4850-8e78-3237cd6366cf"
+
+// TODO ? 표시 정리
+export interface StudentReport {
+  id?: string;
+  homeworkContent?: string | null;
+  homeworkFileBoxId?: string | null;
+  homeworkOperatorComment?: string | null;
+  homeworkOperatorFileBoxId?: string | null;
 }
 
-export interface LectureStructureSurveyItem extends Item {
-  id: string;
-  name: string;
-  questionCount: number;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-}
-
-export interface LectureStructureReportItem extends Item {
-  name: string;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
-  type: LectureStructureItemType;
-}
-
-export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  params: LectureStructureCubeItemParams;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  serviceId?: string;
-}
-
-export interface LectureStructureCourseItem extends Item {
-  id: string;
-  coursePlanId: string;
-  cubes?: LectureStructureCubeItem[];
-  name: string;
-  params: LectureStructureCourseItemParams;
-  learningState?: LearningState;
-  state?: State;
-  serviceId: string;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  lectureView?: LectureView;
+export interface ReportFileBox {
+  report?: boolean;
+  fileBoxId?: string;
+  reportName?: string;
+  reportQuestion?: string;
 }
 
 export interface LectureReport {
-  courses: LectureStructureCourseItem[];
-  cubes: LectureStructureCubeItem[];
-  course?: LectureStructureCourseItem;
-  cube?: LectureStructureCubeItem;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-  type: LectureType;
+  studentReport?: StudentReport;
+  reportFileBox?:ReportFileBox;
+  state?: State;
 }

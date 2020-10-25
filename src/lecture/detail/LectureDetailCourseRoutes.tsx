@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
-import LectureTestPage from './ui/logic/LectureTestPage';
+import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 
 export default function LectureDetailCourseRoutes() {
   return (
@@ -89,12 +89,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
-        component={LectureTestPage}
+        component={LectureReportPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
-        component={LectureTestPage}
+        component={LectureReportPage}
       />{' '}
     </Switch>
   );

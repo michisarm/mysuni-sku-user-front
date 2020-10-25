@@ -17,26 +17,33 @@
 }
  */
 
-import { findExamination } from 'lecture/detail/api/examApi';
-import Examination from 'lecture/detail/model/Examination';
 import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
 import {
-  LectureReport,
+  LectureStructure,
   LectureStructureCubeItem,
   LectureStructureCubeItemParams,
   State,
   StudentStateMap,
-} from '../../../viewModel/LectureReport';
-import { getItemMapFromCube } from './getItemMapFromCube';
+} from '../../../viewModel/LectureStructure';
+import { getReportItem } from './getReportItemMapFromCube';
+import { LectureReport } from 'lecture/detail/viewModel/LectureReport';
+import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
+
+function getPersonalCubeByParams(
+  params: LectureStructureCubeItemParams
+): Promise<PersonalCube> {
+  const { cubeId } = params;
+  return findPersonalCube(cubeId);
+}
 
 async function getLectureStructureCubeItemByPersonalCube(
   personalCube: PersonalCube,
   params: LectureStructureCubeItemParams
 ): Promise<LectureStructureCubeItem | void> {
-  const { cubeId } = params;
+  const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
@@ -50,6 +57,7 @@ async function getLectureStructureCubeItemByPersonalCube(
       cubeType,
       learningTime,
       params,
+      serviceId: lectureCardId,
     };
   }
 }
@@ -86,16 +94,25 @@ async function getStateMapByParams(
 
 export async function getCubeLectureReport(
   params: LectureStructureCubeItemParams
-): Promise<LectureReport> {
-  const lectureStructure: LectureReport = {
-    courses: [],
-    cubes: [],
-    type: 'Cube',
-  };
-
-  const examination = await getItemMapFromCube(params.examId);
-  if (examination !== undefined) {
-    lectureStructure.test = examination;
+): Promise<void> {
+  const personalCube = await getPersonalCubeByParams(params);
+  const cube = await getLectureStructureCubeItemByPersonalCube(
+    personalCube,
+    params
+  );
+  if (cube !== undefined) {
+    const stateMap = await getStateMapByParams(params);
+    let student: Student;
+    if (stateMap !== undefined) {
+      cube.state = stateMap.state;
+      cube.learningState = stateMap.learningState;
+      student = await findStudent(stateMap.studentId);
+      const cubeIntroId = personalCube.cubeIntro.id;      
+      setLectureReport(await getReportItem(
+        cubeIntroId,
+        stateMap.studentId,
+        student
+      )); 
+    }
   }
-  return lectureStructure;
 }

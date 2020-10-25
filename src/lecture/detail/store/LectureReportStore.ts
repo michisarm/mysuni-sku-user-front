@@ -1,9 +1,14 @@
-import { LectureReport } from '../viewModel/LectureReport';
+import {
+  LectureReport
+} from '../viewModel/LectureReport';
 import { createStore } from './Store';
 
-const initialStore: LectureReport = { courses: [], cubes: [], type: 'Cube' };
 const [setLectureReport, onLectureReport, getLectureReport] = createStore<
-  LectureReport
->(initialStore);
+LectureReport
+>();
 
-export { setLectureReport, onLectureReport, getLectureReport };
+export {
+  setLectureReport,
+  onLectureReport,
+  getLectureReport,
+};
