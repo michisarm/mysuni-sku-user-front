@@ -44,8 +44,7 @@ function LectureDescriptionView({
   return (
     <div className="class-guide-txt fn-parents ql-snow" id={rootId}>
       <div
-        className={`${descriptionOpen ? '' : 'text'} description`}
-        // className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
+        className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
         ref={textContainerRef}
       />

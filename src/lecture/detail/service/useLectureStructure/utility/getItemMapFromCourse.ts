@@ -4,17 +4,16 @@
 
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
-import { findExamination } from '../../../api/examApi';
-import { findCubeIntro } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
 } from '../../../api/surveyApi';
 import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import Student from '../../../model/Student';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import {
   ItemMap,
-  LectureStructureCourseItemParams,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -34,8 +33,9 @@ interface GetItemMapArg {}
 
 async function getTestItem(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureStructureCourseItemParams
+  params: LectureParams
 ) {
+  const routerParams = parseLectureParams(params);
   const { examination } = coursePlanComplex;
   if (examination !== null) {
     let state: State = 'None';
@@ -59,6 +59,8 @@ async function getTestItem(
       name: examination.examPaperTitle,
       questionCount: examination.questionCount,
       params,
+      routerParams,
+      path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
     };
@@ -68,8 +70,9 @@ async function getTestItem(
 
 async function getSurveyItem(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureStructureCourseItemParams
+  params: LectureParams
 ) {
+  const routerParams = parseLectureParams(params);
   const { surveyCase } = coursePlanComplex;
   if (surveyCase !== null) {
     const { surveyFormId } = surveyCase;
@@ -97,6 +100,8 @@ async function getSurveyItem(
       name: title,
       questionCount: questions.length,
       params,
+      routerParams,
+      path: `${toPath(params)}/survey`,
       state,
       type: 'SURVEY',
     };
@@ -106,9 +111,10 @@ async function getSurveyItem(
 
 async function getReportItem(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureStructureCourseItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
+  const routerParams = parseLectureParams(params);
   if (
     coursePlanComplex.coursePlan.reportFileBox !== null &&
     coursePlanComplex.coursePlan.reportFileBox.reportName !== ''
@@ -125,6 +131,8 @@ async function getReportItem(
     const item: LectureStructureReportItem = {
       name: coursePlanComplex.coursePlan.reportFileBox.reportName,
       params,
+      routerParams,
+      path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
     };
@@ -134,7 +142,7 @@ async function getReportItem(
 
 export async function getItemMapFromCourse(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureStructureCourseItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};

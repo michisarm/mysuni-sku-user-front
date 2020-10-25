@@ -12,11 +12,13 @@ import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
   setLectureDescription,
   setLectureInstructor,
+  setLecturePrecourse,
   setLectureSubcategory,
   setLectureSummary,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
+import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 
@@ -102,4 +104,5 @@ export async function getCubeLectureOverview(
   setLectureTags(lectureTags);
   const lectureInstructor = getLectureInstructor(cubeIntro);
   setLectureInstructor(lectureInstructor);
+  setLecturePrecourse(getEmptyLecturePrecourse());
 }

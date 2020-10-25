@@ -4,14 +4,14 @@ import { State } from '../../../viewModel/LectureStructure';
 
 interface ProgramTestViewProps {
   name: string;
-  state: State;
+  state?: State;
   activated?: boolean;
   path: string;
 }
 
 const ProgramTestView: React.FC<ProgramTestViewProps> = function ProgramTestView({
   name,
-  state,
+  state = 'None',
   activated = false,
   path,
 }) {

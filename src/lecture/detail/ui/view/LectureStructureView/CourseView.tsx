@@ -14,14 +14,6 @@ import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
 
-function getCubePath(path: string, cubeId: string) {
-  return `${path}/cube/${cubeId}`;
-}
-
-function getItemPath(path: string, itemType: LectureStructureItemType) {
-  return `${path}/${itemType.toLowerCase()}`;
-}
-
 interface CourseViewProps {
   name: string;
   state?: State;
@@ -107,7 +99,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
               activated={cube.activated}
               learningTime={cube.learningTime}
               cubeType={cube.cubeType}
-              path={getCubePath(path, cube.cubeId)}
+              path={cube.path}
             />
           );
         })}
@@ -117,7 +109,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             state={test.state}
             activated={test.activated}
             questionCount={test.questionCount}
-            path={getItemPath(path, test.type)}
+            path={test.path}
           />
         )}
         {survey && (
@@ -126,7 +118,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             state={survey.state}
             activated={survey.activated}
             questionCount={survey.questionCount}
-            path={getItemPath(path, survey.type)}
+            path={survey.path}
           />
         )}
         {report && (
@@ -134,7 +126,7 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
             name={report.name}
             state={report.state}
             activated={report.activated}
-            path={getItemPath(path, report.type)}
+            path={report.path}
           />
         )}
       </div>

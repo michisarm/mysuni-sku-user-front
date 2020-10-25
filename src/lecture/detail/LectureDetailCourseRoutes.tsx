@@ -6,6 +6,7 @@ import LectureOverviewPage from './ui/logic/LectureOverview/LectureOverviewPage'
 export default function LectureDetailCourseRoutes() {
   return (
     <Switch>
+      {/* Program / Course */}
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
@@ -16,6 +17,7 @@ export default function LectureDetailCourseRoutes() {
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
         component={LectureOverviewPage}
       />
+      {/* Program / Course / Exam, Survey, Report*/}
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/exam"
@@ -46,56 +48,48 @@ export default function LectureDetailCourseRoutes() {
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
         component={LectureDetailContainer}
       />
+      {/* Content */}
       <Route
         exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId"
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
         component={LectureOverviewPage}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId"
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
         component={LectureOverviewPage}
       />
+      {/* Content Exam,Survey,Report */}
       <Route
         exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/cube/:subCubeId/:subServiceId"
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
         component={LectureDetailContainer}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/cube/:subCubeId/:subServiceId"
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/exam"
         component={LectureDetailContainer}
       />
       <Route
         exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/exam"
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
         component={LectureDetailContainer}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/exam"
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
         component={LectureDetailContainer}
       />
       <Route
         exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/survey"
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
         component={LectureDetailContainer}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/survey"
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
         component={LectureDetailContainer}
       />
-      <Route
-        exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/report"
-        component={LectureDetailContainer}
-      />
-      <Route
-        exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:subCoursePlanId/:subServiceId/report"
-        component={LectureDetailContainer}
-      />{' '}
     </Switch>
   );
 }

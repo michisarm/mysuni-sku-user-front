@@ -6,11 +6,8 @@ import {
   onLectureStructure,
   setLectureStructure,
 } from '../../store/LectureStructureStore';
-import {
-  LectureStructure,
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-} from '../../viewModel/LectureStructure';
+import LectureParams from '../../viewModel/LectureParams';
+import { LectureStructure } from '../../viewModel/LectureStructure';
 import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureStructure } from './utility/getCubeLectureStructure';
 
@@ -20,30 +17,26 @@ export function useLectureStructure(): [Value] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+  const params = useParams<LectureParams>();
 
-  const getCubeItem = useCallback((params: LectureStructureCubeItemParams) => {
+  const getCubeItem = useCallback((params: LectureParams) => {
     getCubeLectureStructure(params).then(lectureStructure => {
       setLectureStructure(lectureStructure);
     });
   }, []);
 
-  const getCourseItem = useCallback(
-    (params: LectureStructureCourseItemParams) => {
-      getCourseLectureStructure(params).then(lectureStructure => {
-        setLectureStructure(lectureStructure);
-      });
-    },
-    []
-  );
+  const getCourseItem = useCallback((params: LectureParams) => {
+    getCourseLectureStructure(params).then(lectureStructure => {
+      setLectureStructure(lectureStructure);
+    });
+  }, []);
 
   useEffect(() => {
+    const { lectureType, contentId, lectureId, ...structParams } = params;
     if (params.cubeId !== undefined) {
-      getCubeItem(params);
+      getCubeItem(structParams);
     } else {
-      getCourseItem(params);
+      getCourseItem(structParams);
     }
   }, [params]);
 
@@ -58,6 +51,7 @@ export function useLectureStructure(): [Value] {
     }
     return onLectureStructure(next => {
       setValue(next);
+      console.log('useLectureStructure', next);
     }, subscriberId);
   }, [subscriberId]);
 

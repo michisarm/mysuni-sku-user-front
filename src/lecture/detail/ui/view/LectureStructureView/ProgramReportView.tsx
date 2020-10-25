@@ -4,14 +4,14 @@ import { State } from '../../../viewModel/LectureStructure';
 
 interface ProgramReportViewProps {
   name: string;
-  state: State;
+  state?: State;
   activated?: boolean;
   path: string;
 }
 
 const ProgramReportView: React.FC<ProgramReportViewProps> = function ProgramReportView({
   name,
-  state,
+  state = 'None',
   activated = false,
   path,
 }) {

@@ -1,18 +1,14 @@
-import {
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
-} from 'lecture/detail/viewModel/LectureStructure';
 /* eslint-disable consistent-return */
 
 import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { parseLectureParams } from '../../utility/lectureRouterParamsHelper';
+import LectureParams from '../../viewModel/LectureParams';
 import { getCourseLectureOverview } from './utility/getCourseLectureOverview';
 import { getCubeLectureOverview } from './utility/getCubeLectureOverview';
 
 export function useLectureOverview() {
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+  const params = useParams<LectureParams>();
 
   const getCubeOverview = useCallback(
     (personalCubeId: string, lectureCardId: string) => {
@@ -22,31 +18,33 @@ export function useLectureOverview() {
   );
 
   const getCourseOverview = useCallback(
-    (
-      coursePlanId: string,
-      serviceId: string,
-      collegeId: string,
-      cineroomId?: string
-    ) => {
+    ({
+      coursePlanId,
+      serviceId,
+      collegeId,
+      cineroomId,
+    }: {
+      coursePlanId: string;
+      serviceId: string;
+      collegeId: string;
+      cineroomId?: string;
+    }) => {
       getCourseLectureOverview(coursePlanId, serviceId, collegeId, cineroomId);
     },
     []
   );
 
   useEffect(() => {
-    const personalCubeId = params.cubeId || params.subCubeId;
-    if (personalCubeId !== undefined) {
-      const lectureCardId = params.lectureCardId || params.subLectureCardId;
-      if (lectureCardId !== undefined) {
-        getCubeOverview(personalCubeId, lectureCardId);
-        return;
-      }
+    const lectureParams = parseLectureParams(params);
+    const { contentType, contentId, lectureId } = lectureParams;
+    if (contentType === 'cube') {
+      getCubeOverview(contentId, lectureId);
     }
-    getCourseOverview(
-      params.coursePlanId,
-      params.serviceId,
-      params.collegeId,
-      params.cineroomId
-    );
+    getCourseOverview({
+      cineroomId: params.cineroomId,
+      collegeId: params.collegeId,
+      coursePlanId: contentId,
+      serviceId: lectureId,
+    });
   }, [params]);
 }

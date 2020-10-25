@@ -10,3 +10,10 @@ export default interface LecturePrecourse {
   courses: Precourese[];
   path: string;
 }
+
+export function getEmptyLecturePrecourse(): LecturePrecourse {
+  return {
+    path: '',
+    courses: [],
+  };
+}
