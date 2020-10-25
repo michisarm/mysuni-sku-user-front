@@ -30,6 +30,12 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
+export interface LectureReportCubeItemParams extends Params {
+  id?: string;
+  homeworkContent?: string;
+  homeworkFileBoxId?: string;
+}
+
 // homeworkContent: null
 // homeworkFileBoxId: "3q"
 // homeworkOperatorComment: "<p>ajklfajlfd</p>"

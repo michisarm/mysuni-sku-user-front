@@ -10,20 +10,26 @@ import {
 import {
   LectureReport,
   LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams
+  LectureStructureCubeItemParams,
+  LectureReportCubeItemParams
 } from '../../viewModel/LectureReport';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureReport } from './utility/getCubeLectureReport';
+import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 
 type ReportValue = LectureReport | undefined;
 
-export function useLectureReport(): [ReportValue,(reportValue:ReportValue) => void] {
+export function useLectureReport(): [ReportValue,(reportValue:ReportValue) => void,() => void] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [reportValue, setReportValue] = useState<ReportValue>();
   const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
+    LectureStructureCourseItemParams & LectureStructureCubeItemParams & LectureReportCubeItemParams
   >();
+ 
+  const lectureReportCubeItemParams = useParams<
+  LectureReportCubeItemParams
+>();
 
   const getCubeReportItem = useCallback((params: LectureStructureCubeItemParams) => {
     getCubeLectureReport(params)
@@ -61,5 +67,11 @@ export function useLectureReport(): [ReportValue,(reportValue:ReportValue) => vo
     }, subscriberId);
   }, [subscriberId]);
 
-  return [reportValue, setReportValue];
+  const setCubeLectureReport = useCallback(() => {
+    setCubeLectureStudentReport(params);
+  }, []);
+
+
+
+  return [reportValue, setReportValue, setCubeLectureReport];
 }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Icon, Dropdown } from 'semantic-ui-react';
+import depot, { DepotFileViewModel } from '@nara.drama/depot';
 
-interface AttachFileUploadProps {}
+interface AttachFileUploadProps {filesMap:Map<string, any>|undefined}
 
-const AttachFileUpload: React.FC<AttachFileUploadProps> = function AttachFileUpload({}) {
+const AttachFileUpload: React.FC<AttachFileUploadProps> = function AttachFileUpload({filesMap}) {
   return (
     <>
       {/* 파일 박스 */}
@@ -42,6 +43,57 @@ const AttachFileUpload: React.FC<AttachFileUploadProps> = function AttachFileUpl
                 </div>
                 <div className="ui segment side-segment-list">
                   <div role="list" className="ui middle aligned list">
+
+
+
+                  {(filesMap &&
+                    filesMap.get('reference') &&
+                    filesMap
+                      .get('reference')
+                      .map(
+                        (
+                          foundedFile: DepotFileViewModel,
+                          index: number
+                        ) =>{            
+                          return (
+                            <div role="listitem" className="item">
+                            <div className="right floated content">
+                              <span className="sub-info">23.8KB</span>
+                              <a>
+                                <i className="material-icons">close</i>
+                              </a>
+                            </div>
+                            <div className="content">
+                              <a
+                                href="/api/depot/depotFile/flow/download/2s-2"
+                                download=""
+                              >
+                                <span className="file-type alternate">
+                                  <i
+                                    aria-hidden="true"
+                                    className="file alternate icon"
+                                  />
+                                </span>
+                                2019-09-09 08.47.01.wqwjpg
+                              </a>
+                            </div>
+                            </div>
+                          )
+                      } 
+                          // <p key={index}>
+                          //   <a
+                          //     onClick={() =>
+                          //       depot.downloadDepotFile(foundedFile.id)
+                          //     }
+                          //   >
+                          //     {foundedFile.name}
+                          //   </a>
+                          // </p>
+                        )
+                      ) ||
+                    '-'}
+{/* 
+
                     <div role="listitem" className="item">
                       <div className="right floated content">
                         <span className="sub-info">23.8KB</span>
@@ -86,7 +138,9 @@ const AttachFileUpload: React.FC<AttachFileUploadProps> = function AttachFileUpl
                           2019-09-09 08.47.01.jpg
                         </a>
                       </div>
-                    </div>
+                    </div> */}
+
+
                   </div>
                 </div>
               </div>

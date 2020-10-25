@@ -63,3 +63,10 @@ export function findIsJsonStudentByCube(
     .get<StudentJoin[]>(url)
     .then(response => response && response.data);
 }
+
+export function modifyStudent(studentId: string, fileBoxId: string, homework: string): Promise<void> {
+  const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}/${homework}`;
+  return axiosApi
+    .put<void>(url)
+    .then(response => response && response.data);
+}
