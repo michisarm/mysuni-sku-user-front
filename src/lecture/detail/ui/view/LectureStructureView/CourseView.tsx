@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
@@ -72,24 +72,38 @@ const CourseView: React.FC<CourseViewProps> = function CourseView({
   report,
   path,
 }) {
+  const [opened, setOpened] = useState<boolean>(true);
+  const toggle = useCallback(() => {
+    if (opened) {
+      setOpened(false);
+    } else {
+      setOpened(true);
+    }
+  }, [opened]);
   return (
     <>
-      <Link to={path}>
-        <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
-          <a className="btn-over-view enable">{name}</a>
-          <a className="btn-accordion open">
-            총<strong>{cubes.length}개</strong> 강의 구성
-          </a>
-          <span
-            className={`label-state-learning ${
-              state === 'Progress' ? 'proceeding' : ''
-            } ${state === 'Completed' ? 'complete' : ''}`}
-          >
-            <span>진행상태</span>
-          </span>
-        </div>
-      </Link>
-      <div className="state-course-holder">
+      <div className={`accordion-state-holder ${activated ? 'act-on' : ''}`}>
+        <Link to={path} className="btn-over-view enable">
+          {name}
+        </Link>
+        <button
+          className={`btn-accordion ${opened ? 'open' : ''}`}
+          onClick={toggle}
+        >
+          총<strong>{cubes.length}개</strong> 강의 구성
+        </button>
+        <span
+          className={`label-state-learning ${
+            state === 'Progress' ? 'proceeding' : ''
+          } ${state === 'Completed' ? 'complete' : ''}`}
+        >
+          <span>진행상태</span>
+        </span>
+      </div>
+      <div
+        className="state-course-holder"
+        style={opened ? {} : { display: 'none' }}
+      >
         {cubes.map(cube => {
           return (
             <CubeView

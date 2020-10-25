@@ -34,6 +34,7 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           state={lectureStructure.test.state}
           questionCount={lectureStructure.test.questionCount}
           path={lectureStructure.test.path}
+          activated={lectureStructure.test.activated}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -42,6 +43,7 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           state={lectureStructure.survey.state}
           questionCount={lectureStructure.survey.questionCount}
           path={lectureStructure.survey.path}
+          activated={lectureStructure.survey.activated}
         />
       )}
       {lectureStructure.report !== undefined && (
@@ -49,6 +51,7 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           name={lectureStructure.report.name}
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
+          activated={lectureStructure.report.activated}
         />
       )}
     </>

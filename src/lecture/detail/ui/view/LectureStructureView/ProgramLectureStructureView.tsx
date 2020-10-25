@@ -53,6 +53,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           name={lectureStructure.test.name}
           state={lectureStructure.test.state}
           path={lectureStructure.test.path}
+          activated={lectureStructure.test.activated}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -60,6 +61,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           name={lectureStructure.survey.name}
           state={lectureStructure.survey.state}
           path={lectureStructure.survey.path}
+          activated={lectureStructure.survey.activated}
         />
       )}
       {lectureStructure.report !== undefined && (
@@ -67,6 +69,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           name={lectureStructure.report.name}
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
+          activated={lectureStructure.report.activated}
         />
       )}
     </>
