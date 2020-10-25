@@ -109,7 +109,10 @@ async function getReportItem(
   params: LectureStructureCourseItemParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
-  if (coursePlanComplex.coursePlan.reportFileBox.reportName !== '') {
+  if (
+    coursePlanComplex.coursePlan.reportFileBox !== null &&
+    coursePlanComplex.coursePlan.reportFileBox.reportName !== ''
+  ) {
     let state: State = 'None';
     if (student !== undefined) {
       if (

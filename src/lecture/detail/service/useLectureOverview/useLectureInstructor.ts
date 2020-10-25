@@ -1,18 +1,18 @@
-import { onLectureDescription } from 'lecture/detail/store/LectureOverviewStore';
-import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
+import { onLectureInstructor } from '../../store/LectureOverviewStore';
+import LectureInstructor from '../../viewModel/LectureOverview/LectureInstructor';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
 
-type Value = LectureDescription | undefined;
+type Value = LectureInstructor | undefined;
 
-export function useLectureDescription(): [Value] {
+export function useLectureInstructor(): [Value] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureDescription-${++subscriberIdRef.current}`;
+    const next = `useLectureInstructor-${++subscriberIdRef.current}`;
     setSubscriberId(next);
   }, []);
 
@@ -20,7 +20,7 @@ export function useLectureDescription(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureDescription(next => {
+    return onLectureInstructor(next => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);

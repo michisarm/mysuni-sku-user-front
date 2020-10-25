@@ -58,7 +58,6 @@ export function useLectureStructure(): [Value] {
     }
     return onLectureStructure(next => {
       setValue(next);
-      console.log('LectureStructure', next);
     }, subscriberId);
   }, [subscriberId]);
 

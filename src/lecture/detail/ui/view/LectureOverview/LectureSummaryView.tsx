@@ -16,7 +16,7 @@ const LectureSummaryView: React.FC<LectureSummaryViewProps> = function LectureSu
       <div className="contents-header">
         <div className="title-area">
           <div className="ui mpurple label">
-            {lectureSummary.category.college}
+            {lectureSummary.category.college.name}
           </div>
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">
@@ -45,14 +45,12 @@ const LectureSummaryView: React.FC<LectureSummaryViewProps> = function LectureSu
               <Label className="bold onlytext">
                 <span className="header-span-first">담당</span>
                 <span className="tool-tip">
-                  {lectureSummary.operation.operator.name}
+                  {lectureSummary.operator.name}
                   <i>
                     <span className="tip-name">
-                      {lectureSummary.operation.operator.company}
+                      {lectureSummary.operator.company}
                     </span>
-                    <a className="tip-mail">
-                      {lectureSummary.operation.operator.email}
-                    </a>
+                    <a className="tip-mail">{lectureSummary.operator.email}</a>
                   </i>
                 </span>
               </Label>
