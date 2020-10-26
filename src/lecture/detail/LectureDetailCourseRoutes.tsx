@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureOverviewPage from './ui/logic/LectureOverview/LectureOverviewPage';
+import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 
 export default function LectureDetailCourseRoutes() {
   return (
@@ -90,6 +91,16 @@ export default function LectureDetailCourseRoutes() {
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
         component={LectureDetailContainer}
       />
+      <Route
+        exact
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
+        component={LectureReportPage}
+      />
+      <Route
+        exact
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
+        component={LectureReportPage}
+      />{' '}
     </Switch>
   );
 }
