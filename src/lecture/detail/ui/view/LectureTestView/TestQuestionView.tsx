@@ -2,6 +2,8 @@ import { QuestionType } from 'assistant/paper/model/QuestionType';
 import React from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
+import TestShortAnswerView from './TestShortAnswerView';
+import TestEssayView from './TestEssayView';
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 
 interface TestQuestionViewProps {
@@ -28,16 +30,10 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           <TestMultiChoiceView question={question} answer={answer} />
         )}
         {question.questionType === QuestionType.ShortAnswer && (
-          <>
-            {/*<ShortAnswerView />*/}
-            ShortAnswerView
-          </>
+          <TestShortAnswerView question={question} answer={answer} />
         )}
         {question.questionType === QuestionType.Essay && (
-          <>
-            {/*<EssayView />*/}
-            EssayView
-          </>
+          <TestEssayView question={question} answer={answer} />
         )}
       </div>
     </>

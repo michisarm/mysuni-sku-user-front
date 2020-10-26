@@ -1,6 +1,34 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import {
+  getLectureTestAnswerItem,
+  setLectureTestAnswerItem,
+} from 'lecture/detail/store/LectureTestStore';
 import React from 'react';
 import { Radio } from 'semantic-ui-react';
+
+function setAnswer(questionNo: string, value: string) {
+  const answerItem = getLectureTestAnswerItem();
+  answerItem.answers.map(answer => {
+    if (questionNo === answer.questionNo) {
+      answer.answer = value;
+    }
+  });
+  setLectureTestAnswerItem(answerItem);
+}
+
+function getAnswer(questionNo: string) {
+  const answerItem = getLectureTestAnswerItem();
+  let value: string = '';
+
+  if (answerItem) {
+    answerItem.answers.map(answer => {
+      if (questionNo === answer.questionNo) {
+        value = answer.answer;
+      }
+    });
+  }
+  return value;
+}
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
@@ -11,6 +39,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   question,
   answer,
 }) {
+  console.log('render', answer);
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
@@ -19,9 +48,11 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           className="base"
           label={item.itemText}
           name={`test_${question.questionNo}`}
-          value={item.itemNo}
-          /*checked={this.state.value === "value01"*/
-          /*onChange={this.handleChange*/
+          value={item.itemNo} //value가 안 됨
+          checked={item.itemNo === answer}
+          onChange={(e: any, data: any) =>
+            setAnswer(question.questionNo, data.value)
+          }
         />
       ))}
     </div>
