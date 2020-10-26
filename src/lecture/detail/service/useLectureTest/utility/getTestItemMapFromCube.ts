@@ -16,6 +16,7 @@ import {
 import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import PersonalCube from '../../../model/PersonalCube';
+import { findIsJsonStudentByCube } from 'lecture/detail/api/lectureApi';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -66,6 +67,7 @@ async function getTestAnswerItem(examId: string) {
     answers: [],
     submitted: false,
     submitAnswers: [],
+    learningState: 'Progress',
   };
 
   if (examId !== '') {
@@ -85,29 +87,41 @@ async function getTestAnswerItem(examId: string) {
   }
 }
 
-export async function getTestItemMapFromCube(cubeId: string): Promise<void> {
+export async function getTestItemMapFromCube(
+  cubeId: string,
+  lectureCardId: string
+): Promise<void> {
   // void : return이 없는 경우 undefined
 
   const personalCube = await getPersonalCubeByParams(cubeId);
   const examId =
     personalCube && personalCube.contents && personalCube.contents.examId;
 
-  if (examId !== undefined) {
-    const testItem = await getTestItem(examId);
-    if (testItem !== undefined) {
-      setLectureTestItem(testItem);
-      const answerItem = await getTestAnswerItem(examId);
-      if (answerItem !== undefined) {
-        if (answerItem.answers.length < 1) {
-          testItem.questions.forEach((result, index) => {
-            answerItem.answers.push({
-              questionNo: result.questionNo,
-              answer: '',
-            });
-          });
-        }
+  if (lectureCardId !== undefined) {
+    const studentJoins = await findIsJsonStudentByCube(lectureCardId);
+    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
+      const learningState = studentJoins[0].learningState;
 
-        setLectureTestAnswerItem(answerItem);
+      if (examId !== undefined) {
+        const testItem = await getTestItem(examId);
+        if (testItem !== undefined) {
+          setLectureTestItem(testItem);
+          const answerItem = await getTestAnswerItem(examId);
+          if (answerItem !== undefined) {
+            if (answerItem.answers.length < 1) {
+              testItem.questions.forEach((result, index) => {
+                answerItem.answers.push({
+                  questionNo: result.questionNo,
+                  answer: '',
+                });
+              });
+            }
+
+            answerItem.learningState = learningState;
+
+            setLectureTestAnswerItem(answerItem);
+          }
+        }
       }
     }
   }

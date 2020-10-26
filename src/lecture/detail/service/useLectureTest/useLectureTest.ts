@@ -31,7 +31,7 @@ export function useLectureTest(): [TestValue, AnswerValue] {
   const { lectureId, contentType, contentId } = useLectureRouterParams();
 
   const getCubeTestItem = useCallback(() => {
-    getCubeLectureTest(contentId);
+    getCubeLectureTest(contentId, lectureId);
   }, []);
 
   //const getCourseItem = useCallback(

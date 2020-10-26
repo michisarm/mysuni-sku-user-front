@@ -51,6 +51,7 @@ export interface LectureTestAnswerItem extends Item {
   answers: Answer[];
   submitted: boolean;
   submitAnswers: Answer[];
+  learningState: LearningState;
 }
 
 export interface LectureTest {

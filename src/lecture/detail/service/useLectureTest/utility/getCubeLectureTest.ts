@@ -18,6 +18,9 @@
  */
 import { getTestItemMapFromCube } from './getTestItemMapFromCube';
 
-export async function getCubeLectureTest(examId: string): Promise<void> {
-  await getTestItemMapFromCube(examId);
+export async function getCubeLectureTest(
+  cubeId: string,
+  lectureCardId: string
+): Promise<void> {
+  await getTestItemMapFromCube(cubeId, lectureCardId);
 }
