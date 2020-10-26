@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -11,7 +12,7 @@ import {
   LectureReport,
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
-  LectureReportCubeItemParams
+  LectureReportCubeItemParams,
 } from '../../viewModel/LectureReport';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureReport } from './utility/getCubeLectureReport';
@@ -19,20 +20,24 @@ import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentRepo
 
 type ReportValue = LectureReport | undefined;
 
-export function useLectureReport(): [ReportValue,(reportValue:ReportValue) => void,() => void] {
+export function useLectureReport(): [
+  ReportValue,
+  (reportValue: ReportValue) => void,
+  () => void
+] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [reportValue, setReportValue] = useState<ReportValue>();
   const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams & LectureReportCubeItemParams
+    LectureStructureCourseItemParams &
+      LectureStructureCubeItemParams &
+      LectureReportCubeItemParams
   >();
- 
-  const lectureReportCubeItemParams = useParams<
-  LectureReportCubeItemParams
->();
 
-  const getCubeReportItem = useCallback((params: LectureStructureCubeItemParams) => {
-    getCubeLectureReport(params)
+  const lectureReportCubeItemParams = useParams<LectureReportCubeItemParams>();
+
+  const getCubeReportItem = useCallback((params: LectureParams) => {
+    getCubeLectureReport(params);
   }, []);
 
   //const getCourseItem = useCallback(
@@ -70,8 +75,6 @@ export function useLectureReport(): [ReportValue,(reportValue:ReportValue) => vo
   const setCubeLectureReport = useCallback(() => {
     setCubeLectureStudentReport(params);
   }, []);
-
-
 
   return [reportValue, setReportValue, setCubeLectureReport];
 }

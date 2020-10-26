@@ -11,15 +11,12 @@ import {
   findSurveyForm,
 } from '../../../api/surveyApi';
 import Student from '../../../model/Student';
+import { State } from '../../../viewModel/LectureStructure';
 import {
-  ItemMap,
-  LectureStructureCubeItemParams,
-  LectureStructureReportItem,
-  LectureStructureSurveyItem,
-  LectureStructureTestItem,
-  State,
-} from '../../../viewModel/LectureStructure';
-import { LectureReport,StudentReport,ReportFileBox } from 'lecture/detail/viewModel/LectureReport';
+  LectureReport,
+  StudentReport,
+  ReportFileBox,
+} from 'lecture/detail/viewModel/LectureReport';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -29,82 +26,6 @@ import { LectureReport,StudentReport,ReportFileBox } from 'lecture/detail/viewMo
 // survey
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
-
-interface GetItemMapArg {
-  cubeIntroId: string;
-  examId: string;
-  surveyId: string;
-  surveyCaseId: string;
-}
-
-async function getTestItem(
-  cubeId: string,
-  examId: string,
-  params: LectureStructureCubeItemParams
-) {
-  if (examId !== '') {
-    const { result } = await findExamination(examId);
-    let state: State = 'None';
-
-    const denizenId = patronInfo.getDenizenId();
-    if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
-      if (findAnswerSheetData.result !== null) {
-        if (findAnswerSheetData.result.submitted === true) {
-          state = 'Completed';
-        }
-        state = 'Progress';
-      }
-    }
-
-    const item: LectureStructureTestItem = {
-      id: result.id,
-      name: result.examPaperTitle,
-      questionCount: result.questionCount,
-      params,
-      state,
-      type: 'EXAM',
-    };
-    return item;
-  }
-}
-
-async function getSurveyItem(
-  surveyId: string,
-  surveyCaseId: string,
-  params: LectureStructureCubeItemParams
-) {
-  if (surveyId !== '') {
-    const { titles, questions } = await findSurveyForm(surveyId);
-    let state: State = 'None';
-    let title = '';
-    if (
-      titles !== null &&
-      titles.defaultLanguage !== null &&
-      titles.langStringMap[titles.defaultLanguage] !== undefined
-    ) {
-      title = titles.langStringMap[titles.defaultLanguage];
-    }
-    const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-    if (answerSheet !== null) {
-      const { progress } = answerSheet;
-      if (progress === 'Complete') {
-        state = 'Completed';
-      } else {
-        state = 'Progress';
-      }
-    }
-    const item: LectureStructureSurveyItem = {
-      id: surveyId,
-      name: title,
-      questionCount: questions.length,
-      params,
-      state,
-      type: 'SURVEY',
-    };
-    return item;
-  }
-}
 
 export async function getReportItem(
   cubeIntroId: string,
@@ -118,10 +39,10 @@ export async function getReportItem(
   if (cubeIntro.reportFileBox.reportName !== '') {
     let state: State = 'None';
 
-    reportFileBox.fileBoxId= cubeIntro.reportFileBox.fileBoxId;
-    reportFileBox.report= cubeIntro.reportFileBox.report;
-    reportFileBox.reportName= cubeIntro.reportFileBox.reportName;
-    reportFileBox.reportQuestion= cubeIntro.reportFileBox.reportQuestion;
+    reportFileBox.fileBoxId = cubeIntro.reportFileBox.fileBoxId;
+    reportFileBox.report = cubeIntro.reportFileBox.report;
+    reportFileBox.reportName = cubeIntro.reportFileBox.reportName;
+    reportFileBox.reportQuestion = cubeIntro.reportFileBox.reportQuestion;
 
     if (student !== undefined) {
       if (
@@ -129,8 +50,8 @@ export async function getReportItem(
         student.homeworkFileBoxId !== null
       ) {
         state = 'Progress';
-        studentReport.homeworkContent= student.homeworkContent;
-        studentReport.homeworkFileBoxId= student.homeworkFileBoxId;
+        studentReport.homeworkContent = student.homeworkContent;
+        studentReport.homeworkFileBoxId = student.homeworkFileBoxId;
       }
       if (
         student.homeworkOperatorComment !== null ||
@@ -138,15 +59,16 @@ export async function getReportItem(
       ) {
         // TODO : 담당자 답변시 완료 상태가 맞는지 확인
         state = 'Completed';
-        studentReport.homeworkOperatorComment= student.homeworkOperatorComment;
-        studentReport.homeworkOperatorFileBoxId= student.homeworkOperatorFileBoxId;
+        studentReport.homeworkOperatorComment = student.homeworkOperatorComment;
+        studentReport.homeworkOperatorFileBoxId =
+          student.homeworkOperatorFileBoxId;
       }
-      studentReport.id =  studentId;
+      studentReport.id = studentId;
     }
-    lectureReport.reportFileBox=reportFileBox;
-    lectureReport.studentReport=studentReport;
-    lectureReport.state=state;
+    lectureReport.reportFileBox = reportFileBox;
+    lectureReport.studentReport = studentReport;
+    lectureReport.state = state;
   }
-  
+
   return lectureReport;
 }

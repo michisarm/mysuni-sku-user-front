@@ -1,4 +1,5 @@
 import LearningState from '../model/LearningState';
+import { LectureType } from './LectureType';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
@@ -60,6 +61,6 @@ export interface ReportFileBox {
 
 export interface LectureReport {
   studentReport?: StudentReport;
-  reportFileBox?:ReportFileBox;
+  reportFileBox?: ReportFileBox;
   state?: State;
 }

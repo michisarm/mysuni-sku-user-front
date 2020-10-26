@@ -17,53 +17,68 @@
 }
  */
 
-import { findIsJsonStudentByCube, findStudent, modifyStudent } from '../../../api/lectureApi';
+import {
+  findIsJsonStudentByCube,
+  findStudent,
+  modifyStudent,
+} from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
+// TODO : /viewModel/LectureStructure -> /viewModel/LectureReport 로 변경 예정
 import {
   LectureStructure,
   LectureStructureCubeItem,
-  LectureStructureCubeItemParams,
   State,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getReportItem } from './getReportItemMapFromCube';
-import { LectureReport, LectureReportCubeItemParams } from 'lecture/detail/viewModel/LectureReport';
+import {
+  LectureReport,
+  LectureReportCubeItemParams,
+  LectureStructureCubeItemParams,
+} from 'lecture/detail/viewModel/LectureReport';
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
+import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
+import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
 
-function getPersonalCubeByParams(
-  params: LectureStructureCubeItemParams
-): Promise<PersonalCube> {
+function getPersonalCubeByParams(params: LectureParams): Promise<PersonalCube> {
   const { cubeId } = params;
-  return findPersonalCube(cubeId);
+  return findPersonalCube(cubeId!);
 }
 
 async function getLectureStructureCubeItemByPersonalCube(
   personalCube: PersonalCube,
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
   const cubeIntro = await findCubeIntro(cubeIntroId);
+  const routerParams: LectureRouterParams = {
+    contentType: 'cube',
+    contentId: cubeId!,
+    lectureId: lectureCardId!,
+  };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
     return {
       id,
       name,
-      cubeId,
+      cubeId: cubeId!,
       cubeType,
       learningTime,
       params,
+      routerParams,
+      path: toPath(params),
       serviceId: lectureCardId,
     };
   }
 }
 
 async function getStateMapByParams(
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
   if (lectureCardId !== undefined) {
@@ -93,7 +108,7 @@ async function getStateMapByParams(
 }
 
 export async function getCubeLectureReport(
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<void> {
   const personalCube = await getPersonalCubeByParams(params);
   const cube = await getLectureStructureCubeItemByPersonalCube(
@@ -107,12 +122,10 @@ export async function getCubeLectureReport(
       cube.state = stateMap.state;
       cube.learningState = stateMap.learningState;
       student = await findStudent(stateMap.studentId);
-      const cubeIntroId = personalCube.cubeIntro.id;      
-      setLectureReport(await getReportItem(
-        cubeIntroId,
-        stateMap.studentId,
-        student
-      )); 
+      const cubeIntroId = personalCube.cubeIntro.id;
+      setLectureReport(
+        await getReportItem(cubeIntroId, stateMap.studentId, student)
+      );
     }
   }
 }
