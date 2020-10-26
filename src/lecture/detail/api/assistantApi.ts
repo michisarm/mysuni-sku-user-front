@@ -1,7 +1,6 @@
 import { axiosApi } from '@nara.platform/accent';
+import Answer from '../model/Answer';
 import AnswerSheet from '../model/AnswerSheet';
-import CubeIntro from '../model/CubeIntro';
-import PersonalCube from '../model/PersonalCube';
 
 const BASE_URL = '/api/assistant/v1';
 
@@ -16,5 +15,41 @@ export function findAnswerSheet(
   const url = `${BASE_URL}/answersheets?examId=${examId}&examineeId=${examineeId}`;
   return axiosApi
     .get<FindAnswerSheetData>(url)
+    .then(response => response && response.data);
+}
+
+export interface LectureTestAnswerSheetViewBody {
+  answers: Answer[];
+  examId: string;
+  examineeEmail: string;
+  examineeId: string;
+  examineeName: string;
+  finished: boolean;
+  id: string;
+  questionCount: number;
+  submitAnswers: Answer[];
+  submitted: boolean;
+}
+
+export interface stringResult {
+  result: string;
+}
+
+export function registerAnswerSheet(
+  answerSheet: LectureTestAnswerSheetViewBody
+): Promise<stringResult> {
+  const url = `${BASE_URL}/answersheets`;
+  return axiosApi
+    .post<stringResult>(url, answerSheet)
+    .then(response => response && response.data);
+}
+
+export function modifyAnswerSheet(
+  answerSheet: LectureTestAnswerSheetViewBody,
+  sheetId: string
+): Promise<stringResult> {
+  const url = `${BASE_URL}/answersheets/${sheetId}`;
+  return axiosApi
+    .put<stringResult>(url, answerSheet)
     .then(response => response && response.data);
 }

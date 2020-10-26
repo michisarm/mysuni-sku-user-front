@@ -1,4 +1,10 @@
-import React from 'react';
+import { reactConfirm } from '@nara.platform/accent';
+import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
+import {
+  getLectureTestAnswerItem,
+  setLectureTestAnswerItem,
+} from 'lecture/detail/store/LectureTestStore';
+import React, { useCallback } from 'react';
 import {
   LectureTestAnswerItem,
   LectureTestItem,
@@ -14,6 +20,35 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   testItem,
   answerItem,
 }) {
+  const saveAnswerSheet = useCallback(() => {
+    let answerItemId = '';
+    if (answerItem !== undefined) {
+      answerItemId = answerItem.id;
+    }
+
+    saveTestAnswerSheet(answerItemId, false, false);
+  }, [answerItem]);
+  const submitAnswerSheet = useCallback(() => {
+    let answerItemId = '';
+    if (answerItem !== undefined) {
+      answerItemId = answerItem.id;
+    }
+
+    if (answerItem!.answers.some(element => element.answer === '')) {
+      alert('빈 답안을 작성해주세요!');
+    } else {
+      reactConfirm({
+        title: '알림',
+        message: 'Test를 최종 제출 하시겠습니까?',
+        onOk: () => {
+          answerItem!.submitAnswers = answerItem!.answers;
+          setLectureTestAnswerItem(answerItem!);
+          saveTestAnswerSheet(answerItemId, true, true);
+        },
+      });
+    }
+  }, [answerItem]);
+
   return (
     <>
       <div className="course-info-detail responsive-course">
@@ -65,8 +100,18 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                         );
                       })}
                     <div className="survey-preview">
-                      <button className="ui button fix line">저장</button>
-                      <button className="ui button fix bg">제출</button>
+                      <button
+                        className="ui button fix line"
+                        onClick={saveAnswerSheet}
+                      >
+                        저장
+                      </button>
+                      <button
+                        className="ui button fix bg"
+                        onClick={submitAnswerSheet}
+                      >
+                        제출
+                      </button>
                     </div>
                   </>
                 )}

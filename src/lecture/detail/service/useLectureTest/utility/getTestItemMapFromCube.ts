@@ -55,8 +55,10 @@ async function getTestItem(examId: string) {
 
 async function getTestAnswerItem(examId: string) {
   const item: LectureTestAnswerItem = {
+    id: '',
     answers: [],
     submitted: false,
+    submitAnswers: [],
   };
 
   if (examId !== '') {
@@ -65,8 +67,10 @@ async function getTestAnswerItem(examId: string) {
       const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
 
       if (findAnswerSheetData.result !== null) {
+        item.id = findAnswerSheetData.result.id;
         item.answers = findAnswerSheetData.result.answers!;
         item.submitted = findAnswerSheetData.result.submitted!;
+        item.submitAnswers = findAnswerSheetData.result.submitAnswers!;
       }
     }
 
@@ -81,6 +85,15 @@ export async function getTestItemMapFromCube(examId: string): Promise<void> {
     setLectureTestItem(testItem);
     const answerItem = await getTestAnswerItem(examId);
     if (answerItem !== undefined) {
+      if (answerItem.answers.length < 1) {
+        testItem.questions.forEach((result, index) => {
+          answerItem.answers.push({
+            questionNo: result.questionNo,
+            answer: '',
+          });
+        });
+      }
+
       setLectureTestAnswerItem(answerItem);
     }
   }

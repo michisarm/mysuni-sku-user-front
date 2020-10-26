@@ -47,8 +47,10 @@ export interface LectureTestItem extends Item {
 }
 
 export interface LectureTestAnswerItem extends Item {
+  id: string;
   answers: Answer[];
   submitted: boolean;
+  submitAnswers: Answer[];
 }
 
 export interface LectureTest {

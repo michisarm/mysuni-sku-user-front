@@ -23,9 +23,9 @@ function setAnswer(questionNo: string, value: string) {
     }
     return answer;
   });
-  if (!nextAnswers.some(answer => answer.questionNo === questionNo)) {
-    nextAnswers.push({ questionNo, answer: value });
-  }
+  //if (!nextAnswers.some(answer => answer.questionNo === questionNo)) {
+  //  nextAnswers.push({ questionNo, answer: value });
+  //}
   const nextAnswerItem = { ...answerItem, answers: nextAnswers };
   setLectureTestAnswerItem(nextAnswerItem);
 }
