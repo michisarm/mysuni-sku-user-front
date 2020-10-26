@@ -16,6 +16,7 @@ import {
 } from '../../viewModel/LectureReport';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureReport } from './utility/getCubeLectureReport';
+import { getCourseLectureReport } from './utility/getCourseLectureReport';
 import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 
 type ReportValue = LectureReport | undefined;
@@ -40,20 +41,15 @@ export function useLectureReport(): [
     getCubeLectureReport(params);
   }, []);
 
-  //const getCourseItem = useCallback(
-  //  (params: LectureStructureCourseItemParams) => {
-  //    getCourseLectureStructure(params).then(LectureReport => {
-  //      setLectureReport(LectureReport);
-  //    });
-  //  },
-  //  []
-  //);
+  const getCourseReportItem = useCallback((params: LectureParams) => {
+    getCourseLectureReport(params);
+  }, []);
 
   useEffect(() => {
     if (params.cubeId !== undefined) {
       getCubeReportItem(params);
     } else {
-      //getCourseReportItem(params);
+      getCourseReportItem(params);
     }
   }, [params]);
 

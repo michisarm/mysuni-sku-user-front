@@ -1,22 +1,4 @@
 /* eslint-disable consistent-return */
-
-/**
- * 
- export interface LectureStructureCubeItem extends Item {
-  id: string;
-  name: string;
-  cubeId: string;
-  cubeType: CubeType;
-  learningTime: number;
-  url: LectureStructureCubeItemUrl;
-  learningState?: LearningState;
-  state?: State;
-  test?: LectureStructureTestItem;
-  survey?: LectureStructureSurveyItem;
-  report?: LectureStructureReportItem;
-}
- */
-
 import {
   findIsJsonStudentByCube,
   findStudent,
@@ -25,6 +7,7 @@ import {
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
+
 // TODO : /viewModel/LectureStructure -> /viewModel/LectureReport 로 변경 예정
 import {
   LectureStructure,

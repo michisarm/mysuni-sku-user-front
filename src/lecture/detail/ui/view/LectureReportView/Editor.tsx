@@ -53,23 +53,25 @@ const Editor: React.FC<EditorProps> = function Editor({
   //AS-IS 활용함, 변경 해야하는지 확인
   function handleChange(html: any) {
     //
-    if (html && html.length < 1000000000000000) {
-      //TODO : 코드 리뷰 후 개선 필요
-      // const studentReport: StudentReport = lectureReport.studentReport || {};
-      // studentReport.homeworkContent = html;
-      // lectureReport.studentReport = studentReport;
-      // setLectureReport(lectureReport);
+    if (lectureReport) {
+      if (html && html.length < 1000000000000000) {
+        //TODO : 코드 리뷰 후 개선 필요
+        // const studentReport: StudentReport = lectureReport.studentReport || {};
+        // studentReport.homeworkContent = html;
+        // lectureReport.studentReport = studentReport;
+        // setLectureReport(lectureReport);
 
-      const studentReport = getLectureReport().studentReport || {};
-      studentReport.homeworkContent = html;
-      lectureReport.studentReport = studentReport;
+        const studentReport = getLectureReport()?.studentReport || {};
+        studentReport.homeworkContent = html;
+        lectureReport.studentReport = studentReport;
 
-      // const nextLectureReport = { ...lectureReport, lectureReport };
-      // setLectureReport(nextLectureReport);
+        // const nextLectureReport = { ...lectureReport, lectureReport };
+        // setLectureReport(nextLectureReport);
 
-      setLectureReport(lectureReport);
-    } else {
-      alert('html 작성 오류');
+        setLectureReport(lectureReport);
+      } else {
+        alert('html 작성 오류');
+      }
     }
   }
 

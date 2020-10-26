@@ -1,8 +1,8 @@
-import React from 'react';
-import { Form, Icon, Button } from 'semantic-ui-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { reactConfirm } from '@nara.platform/accent';
+import { Form, Icon, Button, List } from 'semantic-ui-react';
 import Reportheader from './ReportHeader';
 import Editor from './Editor';
-import AttachFileUpload from './AttachFileUpload';
 import { LectureReport, StudentReport } from '../../../viewModel/LectureReport';
 import depot, {
   FileBox,
@@ -30,6 +30,15 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
   // setLectureReport,
   setCubeLectureReport,
 }) {
+  const onSubmitClick = useCallback(() => {
+    reactConfirm({
+      title: '알림',
+      message:
+        '과제 제출이 완료되었습니다. 채점이 완료되면 메일로 결과를 확인하실 수 있습니다.',
+      onOk: () => setCubeLectureReport(),
+    });
+  }, []);
+
   // AS-IS 붙여봄
   function getFileBoxIdForReference(depotId: string) {
     //
@@ -39,6 +48,33 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     lectureReport.studentReport = studentReport;
     setLectureReport(lectureReport);
   }
+
+  // filesMap: new Map<string, any>(),
+
+  const [filesMap, setFilesMap] = useState<Map<string, any>>(
+    new Map<string, any>()
+  );
+
+  useEffect(() => {
+    getFileIds();
+  }, [lectureReport]);
+
+  const getFileIds = useCallback(() => {
+    const referenceFileBoxId =
+      lectureReport && lectureReport.studentReport?.homeworkOperatorFileBoxId;
+
+    Promise.resolve().then(() => {
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+    });
+  }, [lectureReport]);
+
+  const findFiles = useCallback((type: string, fileBoxId: string) => {
+    depot.getDepotFiles(fileBoxId).then(files => {
+      filesMap.set(type, files);
+      const newMap = new Map(filesMap.set(type, files));
+      setFilesMap(newMap);
+    });
+  }, []);
 
   return (
     <div className="course-info-detail responsive-course">
@@ -143,14 +179,77 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   </div>
                 </div>
               </div>
+              {lectureReport?.studentReport?.homeworkOperatorComment && (
+                <Form>
+                  <Form.Field>
+                    <label>담당자의견</label>
+                    <div className="ui editor-wrap">
+                      <div className="content-area">
+                        <div className="content-inner ql-snow">
+                          <div
+                            className="ql-editor"
+                            dangerouslySetInnerHTML={{
+                              __html:
+                                lectureReport?.studentReport
+                                  ?.homeworkOperatorComment,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Form.Field>
+                  <div className="badge-detail">
+                    <div className="ov-paragraph download-area">
+                      <List bulleted>
+                        <List.Item>
+                          <div className="detail">
+                            <div className="file-down-wrap">
+                              {filesMap &&
+                                filesMap.get('reference') &&
+                                filesMap
+                                  .get('reference')
+                                  .map(
+                                    (
+                                      foundedFile: DepotFileViewModel,
+                                      index: number
+                                    ) => (
+                                      <div className="down">
+                                        <a
+                                          key={index}
+                                          onClick={() =>
+                                            depot.downloadDepotFile(
+                                              foundedFile.id
+                                            )
+                                          }
+                                        >
+                                          <span>{foundedFile.name}</span>
+                                        </a>
+                                      </div>
+                                    )
+                                  )}
+                              <div className="all-down">
+                                <a
+                                  onClick={() =>
+                                    depot.downloadDepot(
+                                      lectureReport?.studentReport
+                                        ?.homeworkOperatorFileBoxId || ''
+                                    )
+                                  }
+                                >
+                                  <Icon className="icon-down-type4" />
+                                  <span>전체 다운로드</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </List.Item>
+                      </List>
+                    </div>
+                  </div>
+                </Form>
+              )}
               <div className="survey-preview">
-                {/* AS-IS 에는 제출 버튼만 있음 저장 기능이 필요한지 확인 */}
-                {/* prams 관리 코드 확인, backend lecture modifystudent 개발서버 업로드 후 테스트 진행 필요 */}
-                {/* <button className="ui button fix line">저장</button> */}
-                <button
-                  className="ui button fix bg"
-                  onClick={() => setCubeLectureReport()}
-                >
+                <button className="ui button fix bg" onClick={onSubmitClick}>
                   제출
                 </button>
               </div>

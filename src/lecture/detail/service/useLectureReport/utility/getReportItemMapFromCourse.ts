@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 
-import { findCubeIntro } from '../../../api/mPersonalCubeApi';
+import { findCoursePlan } from '../../../api/courseApi';
 import Student from '../../../model/Student';
 import { State } from '../../../viewModel/LectureReport';
 import {
@@ -10,21 +10,21 @@ import {
 } from 'lecture/detail/viewModel/LectureReport';
 
 export async function getReportItem(
-  cubeIntroId: string,
+  coursePlanId: string,
   studentId: string,
   student?: Student
 ): Promise<LectureReport> {
-  const cubeIntro = await findCubeIntro(cubeIntroId);
+  const coursePlan = await findCoursePlan(coursePlanId);
   const lectureReport: LectureReport = {};
   const studentReport: StudentReport = {};
   const reportFileBox: ReportFileBox = {};
-  if (cubeIntro.reportFileBox.reportName !== '') {
+  if (coursePlan.reportFileBox.reportName !== '') {
     let state: State = 'None';
 
-    reportFileBox.fileBoxId = cubeIntro.reportFileBox.fileBoxId;
-    reportFileBox.report = cubeIntro.reportFileBox.report;
-    reportFileBox.reportName = cubeIntro.reportFileBox.reportName;
-    reportFileBox.reportQuestion = cubeIntro.reportFileBox.reportQuestion;
+    reportFileBox.fileBoxId = coursePlan.reportFileBox.fileBoxId;
+    reportFileBox.report = coursePlan.reportFileBox.report;
+    reportFileBox.reportName = coursePlan.reportFileBox.reportName;
+    reportFileBox.reportQuestion = coursePlan.reportFileBox.reportQuestion;
 
     if (student !== undefined) {
       if (
