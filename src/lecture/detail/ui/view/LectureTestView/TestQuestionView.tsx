@@ -2,11 +2,29 @@ import { QuestionType } from 'assistant/paper/model/QuestionType';
 import React from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
+import TestShortAnswerView from './TestShortAnswerView';
+import TestEssayView from './TestEssayView';
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import {
+  getLectureTestAnswerItem,
+  setLectureTestAnswerItem,
+} from 'lecture/detail/store/LectureTestStore';
 
 interface TestQuestionViewProps {
   question: ExamQuestion;
   answer?: string;
+}
+
+function setAnswer(questionNo: string, value: string) {
+  const answerItem = getLectureTestAnswerItem();
+  const nextAnswer = answerItem.answers.map(answer => {
+    if (questionNo === answer.questionNo) {
+      return { ...answer, answer: value };
+    }
+    return answer;
+  });
+  const nextAnswerItem = { ...answerItem, answer: nextAnswer };
+  setLectureTestAnswerItem(nextAnswerItem);
 }
 
 const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionView({
@@ -22,22 +40,32 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
           점)
         </p>
         {question.questionType === QuestionType.SingleChoice && (
-          <TestSingleChoiceView question={question} answer={answer} />
+          <TestSingleChoiceView
+            question={question}
+            answer={answer}
+            setAnswer={setAnswer}
+          />
         )}
         {question.questionType === QuestionType.MultiChoice && (
-          <TestMultiChoiceView question={question} answer={answer} />
+          <TestMultiChoiceView
+            question={question}
+            answer={answer}
+            setAnswer={setAnswer}
+          />
         )}
         {question.questionType === QuestionType.ShortAnswer && (
-          <>
-            {/*<ShortAnswerView />*/}
-            ShortAnswerView
-          </>
+          <TestShortAnswerView
+            question={question}
+            answer={answer}
+            setAnswer={setAnswer}
+          />
         )}
         {question.questionType === QuestionType.Essay && (
-          <>
-            {/*<EssayView />*/}
-            EssayView
-          </>
+          <TestEssayView
+            question={question}
+            answer={answer}
+            setAnswer={setAnswer}
+          />
         )}
       </div>
     </>

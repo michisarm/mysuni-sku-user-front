@@ -5,6 +5,7 @@ import { Checkbox } from 'semantic-ui-react';
 interface TestMultiChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
+  setAnswer: (questionNo: string, value: string) => void;
 }
 
 const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMultiChoiceView({
@@ -18,8 +19,9 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
           key={question.questionNo + '_' + item.itemNo}
           className="base"
           label={item.itemText}
-          name="radioGroup"
+          name={`test_${question.questionNo}`}
           value={item.itemNo}
+          checked={answer?.includes(item.itemNo)}
         />
       ))}
     </div>

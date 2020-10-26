@@ -20,7 +20,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         <div className="course-detail-center">
           <div className="main-wrap">
             <div className="scrolling-area area2 ">
-              <div className="ui segment full">
+              <div className="ui segment full test-complete">
                 {testItem && (
                   <>
                     <div className="course-info-header">
@@ -52,7 +52,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                         if (answerItem !== undefined) {
                           answerItem.answers.map(result => {
                             if (result.questionNo === question.questionNo) {
-                              answer = result.questionNo;
+                              answer = result.answer;
                             }
                           });
                         }
