@@ -11,8 +11,16 @@ import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSumm
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
   setLectureDescription,
+  setLectureInstructor,
+  setLecturePrecourse,
+  setLectureSubcategory,
   setLectureSummary,
+  setLectureTags,
 } from '../../../store/LectureOverviewStore';
+import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
+import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
+import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
+import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 
 function getLectureSummary(
   personalCube: PersonalCube,
@@ -22,31 +30,49 @@ function getLectureSummary(
   const category = personalCube.category;
   const difficultyLevel = cubeIntro.difficultyLevel;
   const learningTime = timeToHourMinuteFormat(cubeIntro.learningTime);
-  const operation = cubeIntro.operation;
+  const operator = cubeIntro.operation.operator;
   const iconBox = personalCube.iconBox;
   return {
     name: personalCube.name,
     category: {
-      college: category.college.name,
-      channel: category.channel.name,
+      college: category.college,
+      channel: category.channel,
     },
     difficultyLevel,
     learningTime,
-    operation,
+    operator,
     passedCount: lectureCard.passedStudentCount,
     iconBox,
   };
 }
 
 function getLectureDescription(cubeIntro: CubeIntro): LectureDescription {
-  const {
-    applicants,
-    description,
-    goal,
-    completionTerms,
-    guide,
-  } = cubeIntro.description;
-  return { applicants, description, goal, completionTerms, guide };
+  const { description } = cubeIntro.description;
+  return { description };
+}
+
+function getLectureSubcategory(personalCube: PersonalCube): LectureSubcategory {
+  const { subCategories } = personalCube;
+  return {
+    categories: subCategories.map(({ channel, college }) => ({
+      channel,
+      college,
+    })),
+  };
+}
+
+function getLectureTags(personalCube: PersonalCube): LectureTags {
+  const { tags } = personalCube;
+  return {
+    tags,
+  };
+}
+
+function getLectureInstructor(cubeIntro: CubeIntro): LectureInstructor {
+  const { instructor } = cubeIntro;
+  return {
+    instructors: instructor,
+  };
 }
 
 function findCube(personalCubeId: string) {
@@ -72,4 +98,11 @@ export async function getCubeLectureOverview(
   setLectureSummary(lectureSummary);
   const lectureDescription = getLectureDescription(cubeIntro);
   setLectureDescription(lectureDescription);
+  const lectureSubcategory = getLectureSubcategory(personalCube);
+  setLectureSubcategory(lectureSubcategory);
+  const lectureTags = getLectureTags(personalCube);
+  setLectureTags(lectureTags);
+  const lectureInstructor = getLectureInstructor(cubeIntro);
+  setLectureInstructor(lectureInstructor);
+  setLecturePrecourse(getEmptyLecturePrecourse());
 }

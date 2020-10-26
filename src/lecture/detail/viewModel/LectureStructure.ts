@@ -2,18 +2,20 @@ import { ExamQuestionModel } from 'assistant/paper/model/ExamQuestionModel';
 import CubeType from '../model/CubeType';
 import LearningState from '../model/LearningState';
 import LectureView from '../model/LectureView';
+import LectureParams from './LectureParams';
+import LectureRouterParams from './LectureRouterParams';
+import { LectureType } from './LectureType';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
 export type State = 'None' | 'Progress' | 'Completed';
 
-interface Params {
-  cineroomId?: string;
-  collegeId: string;
-}
-
 interface Item {
   activated?: boolean;
+  params: LectureParams;
+  routerParams: LectureRouterParams;
+  path: string;
+  state?: State;
 }
 
 export interface StudentStateMap {
@@ -28,29 +30,10 @@ export interface ItemMap {
   report?: LectureStructureReportItem;
 }
 
-export interface LectureStructureCourseItemParams extends Params {
-  coursePlanId: string;
-  serviceType: LectureType;
-  serviceId: string;
-  courseId?: string;
-  subCubeId?: string;
-  subLectureCardId?: string;
-}
-
-export interface LectureStructureCubeItemParams extends Params {
-  coursePlanId?: string;
-  serviceType?: string;
-  serviceId?: string;
-  cubeId: string;
-  lectureCardId?: string;
-}
-
 export interface LectureStructureTestItem extends Item {
   id: string;
   name: string;
   questionCount: number;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
   type: LectureStructureItemType;
 }
 
@@ -58,15 +41,11 @@ export interface LectureStructureSurveyItem extends Item {
   id: string;
   name: string;
   questionCount: number;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
   type: LectureStructureItemType;
 }
 
 export interface LectureStructureReportItem extends Item {
   name: string;
-  params: LectureStructureCourseItemParams | LectureStructureCubeItemParams;
-  state: State;
   type: LectureStructureItemType;
 }
 
@@ -76,9 +55,7 @@ export interface LectureStructureCubeItem extends Item {
   cubeId: string;
   cubeType: CubeType;
   learningTime: number;
-  params: LectureStructureCubeItemParams;
   learningState?: LearningState;
-  state?: State;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
@@ -90,9 +67,7 @@ export interface LectureStructureCourseItem extends Item {
   coursePlanId: string;
   cubes?: LectureStructureCubeItem[];
   name: string;
-  params: LectureStructureCourseItemParams;
   learningState?: LearningState;
-  state?: State;
   serviceId: string;
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;

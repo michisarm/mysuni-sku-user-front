@@ -1,32 +1,13 @@
 import React from 'react';
+import LectureParams from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
-  LectureStructureCubeItemParams,
   LectureStructureItemType,
 } from '../../../viewModel/LectureStructure';
 import CubeView from './CubeView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
-
-function getPath(
-  params: LectureStructureCubeItemParams,
-  itemType: LectureStructureItemType
-) {
-  const { cineroomId, collegeId, cubeId, lectureCardId } = params;
-  if (cineroomId === undefined) {
-    return `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${itemType.toLowerCase()}`;
-  }
-  return `/lecture/cineroom/${cineroomId}/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${itemType.toLowerCase()}`;
-}
-
-function getSelfPath(params: LectureStructureCubeItemParams) {
-  const { cineroomId, collegeId, cubeId, lectureCardId } = params;
-  if (cineroomId === undefined) {
-    return `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`;
-  }
-  return `/lecture/cineroom/${cineroomId}/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}`;
-}
 
 interface CubeLectureStructureViewProps {
   lectureStructure: LectureStructure;
@@ -45,7 +26,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           activated={lectureStructure.cube.activated}
           learningTime={lectureStructure.cube.learningTime}
           cubeType={lectureStructure.cube.cubeType}
-          path={getSelfPath(lectureStructure.cube.params)}
+          path={lectureStructure.cube.path}
         />
       )}
       {lectureStructure.test !== undefined && (
@@ -53,10 +34,7 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           name={lectureStructure.test.name}
           state={lectureStructure.test.state}
           questionCount={lectureStructure.test.questionCount}
-          path={getPath(
-            lectureStructure.test.params as LectureStructureCubeItemParams,
-            lectureStructure.test.type
-          )}
+          path={lectureStructure.test.path}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -64,20 +42,14 @@ const CubeLectureStructureView: React.FC<CubeLectureStructureViewProps> = functi
           name={lectureStructure.survey.name}
           state={lectureStructure.survey.state}
           questionCount={lectureStructure.survey.questionCount}
-          path={getPath(
-            lectureStructure.survey.params as LectureStructureCubeItemParams,
-            lectureStructure.survey.type
-          )}
+          path={lectureStructure.survey.path}
         />
       )}
       {lectureStructure.report !== undefined && (
         <ReportView
           name={lectureStructure.report.name}
           state={lectureStructure.report.state}
-          path={getPath(
-            lectureStructure.report.params as LectureStructureCubeItemParams,
-            lectureStructure.report.type
-          )}
+          path={lectureStructure.report.path}
         />
       )}
     </>

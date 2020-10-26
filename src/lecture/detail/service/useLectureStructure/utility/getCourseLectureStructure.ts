@@ -5,24 +5,25 @@ import {
 } from '../../../api/lectureApi';
 import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import LectureStudentView from '../../../model/LectureStudentView';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
-  LectureStructureCourseItemParams,
   LectureStructureCubeItem,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCourse } from './getItemMapFromCourse';
 import { getItemMapFromLecture } from './getItemMapFromLecture';
 
 function getCoursePlanComplexByParams(
-  params: LectureStructureCourseItemParams
+  params: LectureParams
 ): Promise<CoursePlanComplex> {
   const { coursePlanId, serviceId } = params;
-  return findCoursePlanContents(coursePlanId, serviceId);
+  return findCoursePlanContents(coursePlanId!, serviceId!);
 }
 
 function parseCoursePlanComplex(
   coursePlanComplex: CoursePlanComplex,
-  params: LectureStructureCourseItemParams
+  params: LectureParams
 ): {
   lectureStructure: LectureStructure;
   stuendentInfoViewBody: StudentInfoViewBody;
@@ -31,13 +32,15 @@ function parseCoursePlanComplex(
   const lectureStructure: LectureStructure = {
     courses: [],
     cubes: [],
-    type: serviceType,
+    type: serviceType!,
     course: {
       coursePlanId: coursePlanComplex.coursePlan.coursePlanId,
       id: coursePlanComplex.coursePlan.contentsId,
       name: coursePlanComplex.coursePlan.name,
       params,
-      serviceId: params.serviceId,
+      routerParams: parseLectureParams(params),
+      path: toPath(params),
+      serviceId: params.serviceId!,
     },
   };
   const courseLectureIds: string[] = [];
@@ -55,24 +58,40 @@ function parseCoursePlanComplex(
       serviceId,
     } = lectureView;
     if (coursePlanId !== null) {
+      const courseParams: LectureParams = {
+        ...params,
+        lectureType: 'coures',
+        contentId: coursePlanId,
+        lectureId: serviceId,
+      };
       lectureStructure.courses.push({
         id,
         coursePlanId,
         name,
-        params,
+        params: courseParams,
+        routerParams: parseLectureParams(courseParams),
+        path: toPath(courseParams),
         serviceId,
         lectureView,
       });
       courseLectureIds.push(serviceId);
     }
     if (cubeId !== null) {
+      const cubeParams: LectureParams = {
+        ...params,
+        lectureType: 'cube',
+        contentId: cubeId,
+        lectureId: serviceId,
+      };
       lectureStructure.cubes.push({
         id,
         name,
         cubeId,
         cubeType,
         learningTime,
-        params: { ...params, cubeId },
+        params: cubeParams,
+        routerParams: parseLectureParams(cubeParams),
+        path: toPath(cubeParams),
         serviceId,
       });
       lectureCardIds.push(serviceId);
@@ -84,13 +103,21 @@ function parseCoursePlanComplex(
       const cubes: LectureStructureCubeItem[] = lectureViews.map<
         LectureStructureCubeItem
       >(({ id, name, cubeId, cubeType, learningTime, serviceId }) => {
+        const cubeParams: LectureParams = {
+          ...params,
+          lectureType: 'cube',
+          contentId: cubeId,
+          lectureId: serviceId,
+        };
         return {
           id,
           name,
           cubeId,
           cubeType,
           learningTime,
-          params: { ...params, cubeId },
+          params: cubeParams,
+          routerParams: parseLectureParams(cubeParams),
+          path: toPath(cubeParams),
         };
       });
       course.cubes = cubes;
@@ -103,13 +130,13 @@ function parseCoursePlanComplex(
       courseLectureIds,
       lectureCardIds,
       preLectureCardIds,
-      serviceId: params.serviceId,
+      serviceId: params.serviceId!,
     },
   };
 }
 // Side Effect - Call by Ref
 async function parseLectureStudentView(
-  params: LectureStructureCourseItemParams,
+  params: LectureParams,
   courseLectureIds: string[],
   lectureCardIds: string[],
   preLectureCardIds: string[],
@@ -120,7 +147,7 @@ async function parseLectureStudentView(
     courseLectureIds,
     lectureCardIds,
     preLectureCardIds,
-    serviceId,
+    serviceId: serviceId!,
   });
 
   const { courses, lectures } = lectureStudentView;
@@ -181,7 +208,7 @@ async function parseLectureStudentView(
 }
 
 export async function getCourseLectureStructure(
-  params: LectureStructureCourseItemParams
+  params: LectureParams
 ): Promise<LectureStructure> {
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
   const { lectureStructure, stuendentInfoViewBody } = parseCoursePlanComplex(
@@ -226,7 +253,7 @@ export async function getCourseLectureStructure(
         );
         const courseItemMap = await getItemMapFromLecture(
           course.lectureView,
-          params,
+          course.params,
           courseStudent && courseStudent.student
         );
         if (courseItemMap.test !== undefined) {

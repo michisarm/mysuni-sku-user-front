@@ -22,7 +22,6 @@ export function useLectureDescription(): [Value] {
     }
     return onLectureDescription(next => {
       setValue(next);
-      console.log('useLectureDescription', next);
     }, subscriberId);
   }, [subscriberId]);
 
