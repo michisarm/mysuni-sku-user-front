@@ -6,24 +6,16 @@ import {
 import React from 'react';
 import { Form, Icon, Radio } from 'semantic-ui-react';
 
-function setAnswer(questionNo: string, value: string) {
-  const answerItem = getLectureTestAnswerItem();
-  answerItem.answers.map(answer => {
-    if (questionNo === answer.questionNo) {
-      answer.answer = value;
-    }
-  });
-  setLectureTestAnswerItem(answerItem);
-}
-
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
+  setAnswer: (questionNo: string, value: string) => void;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
   answer,
+  setAnswer,
 }) {
   return (
     <Form>
@@ -33,7 +25,11 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
             <span className="now">{answer!.length}</span>/
             <span className="max">1000</span>
           </span>
-          <textarea placeholder="답변을 입력해주세요." value={answer} />
+          <textarea
+            placeholder="답변을 입력해주세요."
+            value={answer}
+            onChange={(data: any) => setAnswer(question.questionNo, data.value)}
+          />
           <Icon className="clear link" />
           <span className="validation">
             You can enter up to 100 characters.

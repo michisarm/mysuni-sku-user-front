@@ -5,6 +5,7 @@ import { Checkbox } from 'semantic-ui-react';
 interface TestMultiChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
+  setAnswer: (questionNo: string, value: string) => void;
 }
 
 const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMultiChoiceView({

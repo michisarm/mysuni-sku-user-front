@@ -1,29 +1,17 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
-import {
-  getLectureTestAnswerItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
 import React from 'react';
-import { Form, Icon, Radio } from 'semantic-ui-react';
-
-function setAnswer(questionNo: string, value: string) {
-  const answerItem = getLectureTestAnswerItem();
-  answerItem.answers.map(answer => {
-    if (questionNo === answer.questionNo) {
-      answer.answer = value;
-    }
-  });
-  setLectureTestAnswerItem(answerItem);
-}
+import { Form, Icon } from 'semantic-ui-react';
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
+  setAnswer: (questionNo: string, value: string) => void;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
   answer,
+  setAnswer,
 }) {
   return (
     <Form>
@@ -37,6 +25,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
             type="text"
             placeholder="답변을 입력해주세요. (최대 100자 입력 가능)"
             value={answer}
+            onChange={(data: any) => setAnswer(question.questionNo, data.value)}
           />
           <Icon className="clear link" />
           <span className="validation">

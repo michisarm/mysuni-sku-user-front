@@ -1,20 +1,8 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
-import {
-  getLectureTestAnswerItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
+import { getLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
 import React from 'react';
+import { useState } from 'react';
 import { Radio } from 'semantic-ui-react';
-
-function setAnswer(questionNo: string, value: string) {
-  const answerItem = getLectureTestAnswerItem();
-  answerItem.answers.map(answer => {
-    if (questionNo === answer.questionNo) {
-      answer.answer = value;
-    }
-  });
-  setLectureTestAnswerItem(answerItem);
-}
 
 function getAnswer(questionNo: string) {
   const answerItem = getLectureTestAnswerItem();
@@ -27,19 +15,23 @@ function getAnswer(questionNo: string) {
       }
     });
   }
+  console.log('getAnswer', value);
   return value;
 }
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
+  setAnswer: (questionNo: string, value: string) => void;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
   answer,
+  setAnswer,
 }) {
-  console.log('render', answer);
+  //const [test, setTest] = useState<string>();
+  console.log('render', test);
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
@@ -48,9 +40,11 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           className="base"
           label={item.itemText}
           name={`test_${question.questionNo}`}
-          value={item.itemNo} //value가 안 됨
+          value={item.itemNo}
+          //checked={item.itemNo === test}
           checked={item.itemNo === answer}
           onChange={(e: any, data: any) =>
+            //setTest(data.value)
             setAnswer(question.questionNo, data.value)
           }
         />
