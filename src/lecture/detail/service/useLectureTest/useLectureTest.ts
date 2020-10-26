@@ -12,6 +12,7 @@ import {
   LectureTestItem,
   LectureTestAnswerItem,
 } from '../../viewModel/LectureTest';
+import { useLectureRouterParams } from '../useLectureRouterParams';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
 
@@ -27,8 +28,10 @@ export function useLectureTest(): [TestValue, AnswerValue] {
     LectureStructureCourseItemParams & LectureStructureCubeItemParams
   >();
 
-  const getCubeTestItem = useCallback((examId: string) => {
-    getCubeLectureTest(examId);
+  const { lectureId, contentType, contentId } = useLectureRouterParams();
+
+  const getCubeTestItem = useCallback(() => {
+    getCubeLectureTest(contentId);
   }, []);
 
   //const getCourseItem = useCallback(
@@ -41,8 +44,8 @@ export function useLectureTest(): [TestValue, AnswerValue] {
   //);
 
   useEffect(() => {
-    if (params.cubeId !== undefined && params.examId !== undefined) {
-      getCubeTestItem(params.examId);
+    if (contentId !== undefined) {
+      getCubeTestItem();
     } else {
       //getCourseItem(params);
     }

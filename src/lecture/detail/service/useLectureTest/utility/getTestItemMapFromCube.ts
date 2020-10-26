@@ -13,6 +13,9 @@ import {
   setLectureTestAnswerItem,
   setLectureTestItem,
 } from 'lecture/detail/store/LectureTestStore';
+import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import PersonalCube from '../../../model/PersonalCube';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -22,6 +25,10 @@ import {
 // survey
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
+
+function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
+  return findPersonalCube(cubeId);
+}
 
 async function getTestItem(examId: string) {
   if (examId !== '') {
@@ -78,23 +85,30 @@ async function getTestAnswerItem(examId: string) {
   }
 }
 
-export async function getTestItemMapFromCube(examId: string): Promise<void> {
+export async function getTestItemMapFromCube(cubeId: string): Promise<void> {
   // void : return이 없는 경우 undefined
-  const testItem = await getTestItem(examId);
-  if (testItem !== undefined) {
-    setLectureTestItem(testItem);
-    const answerItem = await getTestAnswerItem(examId);
-    if (answerItem !== undefined) {
-      if (answerItem.answers.length < 1) {
-        testItem.questions.forEach((result, index) => {
-          answerItem.answers.push({
-            questionNo: result.questionNo,
-            answer: '',
-          });
-        });
-      }
 
-      setLectureTestAnswerItem(answerItem);
+  const personalCube = await getPersonalCubeByParams(cubeId);
+  const examId =
+    personalCube && personalCube.contents && personalCube.contents.examId;
+
+  if (examId !== undefined) {
+    const testItem = await getTestItem(examId);
+    if (testItem !== undefined) {
+      setLectureTestItem(testItem);
+      const answerItem = await getTestAnswerItem(examId);
+      if (answerItem !== undefined) {
+        if (answerItem.answers.length < 1) {
+          testItem.questions.forEach((result, index) => {
+            answerItem.answers.push({
+              questionNo: result.questionNo,
+              answer: '',
+            });
+          });
+        }
+
+        setLectureTestAnswerItem(answerItem);
+      }
     }
   }
 }
