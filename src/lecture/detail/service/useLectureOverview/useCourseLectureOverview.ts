@@ -7,7 +7,7 @@ import LectureParams from '../../viewModel/LectureParams';
 import { getCourseLectureOverview } from './utility/getCourseLectureOverview';
 import { getCubeLectureOverview } from './utility/getCubeLectureOverview';
 
-export function useLectureOverview() {
+export function useCourseLectureOverview() {
   const params = useParams<LectureParams>();
 
   const getCubeOverview = useCallback(
@@ -39,6 +39,7 @@ export function useLectureOverview() {
     const { contentType, contentId, lectureId } = lectureParams;
     if (contentType === 'cube') {
       getCubeOverview(contentId, lectureId);
+      return;
     }
     getCourseOverview({
       cineroomId: params.cineroomId,

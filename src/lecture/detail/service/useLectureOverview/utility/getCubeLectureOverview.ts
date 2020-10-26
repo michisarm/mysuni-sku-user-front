@@ -10,13 +10,14 @@ import LectureDescription from 'lecture/detail/viewModel/LectureOverview/Lecture
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
+  setLectureCubeSummary,
   setLectureDescription,
   setLectureInstructor,
   setLecturePrecourse,
   setLectureSubcategory,
-  setLectureSummary,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
+import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -26,12 +27,12 @@ function getLectureSummary(
   personalCube: PersonalCube,
   cubeIntro: CubeIntro,
   lectureCard: LectureCard
-): LectureSummary {
+): LectureCubeSummary {
   const category = personalCube.category;
   const difficultyLevel = cubeIntro.difficultyLevel;
   const learningTime = timeToHourMinuteFormat(cubeIntro.learningTime);
   const operator = cubeIntro.operation.operator;
-  const iconBox = personalCube.iconBox;
+  const [instructor] = cubeIntro.instructor;
   return {
     name: personalCube.name,
     category: {
@@ -42,7 +43,7 @@ function getLectureSummary(
     learningTime,
     operator,
     passedCount: lectureCard.passedStudentCount,
-    iconBox,
+    instructor,
   };
 }
 
@@ -95,7 +96,7 @@ export async function getCubeLectureOverview(
     cubeIntro,
     lectureCard
   );
-  setLectureSummary(lectureSummary);
+  setLectureCubeSummary(lectureSummary);
   const lectureDescription = getLectureDescription(cubeIntro);
   setLectureDescription(lectureDescription);
   const lectureSubcategory = getLectureSubcategory(personalCube);

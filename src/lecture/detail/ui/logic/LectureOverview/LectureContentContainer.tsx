@@ -5,6 +5,7 @@ import { useLectureSubcategory } from '../../../service/useLectureOverview/useLe
 import { useLectureTags } from '../../../service/useLectureOverview/useLectureTags';
 import { useLectureInstructor } from '../../../service/useLectureOverview/useLectureInstructor';
 import { useLecturePrecourse } from '../../../service/useLectureOverview/useLecturePrecourse';
+import { useLectureBadge } from '../../../service/useLectureOverview/useLectureBadge';
 
 function LectureContentContainer() {
   const [lectureDescription] = useLectureDescription();
@@ -12,6 +13,7 @@ function LectureContentContainer() {
   const [lectureTags] = useLectureTags();
   const [lectureInstructor] = useLectureInstructor();
   const [lecturePrecourse] = useLecturePrecourse();
+  const [lectureBadge] = useLectureBadge();
   return (
     <LectureContentView
       lectureDescription={lectureDescription}
@@ -19,6 +21,7 @@ function LectureContentContainer() {
       lectureTags={lectureTags}
       lectureInstructor={lectureInstructor}
       lecturePrecourse={lecturePrecourse}
+      lectureBadge={lectureBadge}
     />
   );
 }

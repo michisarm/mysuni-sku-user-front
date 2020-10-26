@@ -1,12 +1,11 @@
 import { findCoursePlanContents } from '../../../api/lectureApi';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
-import LectureSummary from '../../../viewModel/LectureOverview/LectureSummary';
 import {
+  setLectureCourseSummary,
   setLectureDescription,
   setLectureInstructor,
   setLecturePrecourse,
   setLectureSubcategory,
-  setLectureSummary,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
@@ -15,10 +14,11 @@ import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';
+import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 
 function getLectureSummary(
   coursePlanComplex: CoursePlanComplex
-): LectureSummary {
+): LectureCourseSummary {
   const category = coursePlanComplex.coursePlan.category;
   const learningTime = timeToHourMinuteFormat(
     coursePlanComplex.coursePlan.learningTime
@@ -112,7 +112,7 @@ export async function getCourseLectureOverview(
     path = `/lecture/cineroom/${cineroomId}/college/${collegeId}`;
   }
   const lectureSummary = getLectureSummary(coursePlanComplex);
-  setLectureSummary(lectureSummary);
+  setLectureCourseSummary(lectureSummary);
   const lectureDescription = getLectureDescription(coursePlanComplex);
   setLectureDescription(lectureDescription);
   const lectureSubcategory = getLectureSubcategory(coursePlanComplex);
