@@ -17,13 +17,13 @@ interface TestQuestionViewProps {
 
 function setAnswer(questionNo: string, value: string) {
   const answerItem = getLectureTestAnswerItem();
-  const nextAnswer = answerItem.answers.map(answer => {
+  const nextAnswers = answerItem.answers.map(answer => {
     if (questionNo === answer.questionNo) {
       return { ...answer, answer: value };
     }
     return answer;
   });
-  const nextAnswerItem = { ...answerItem, answer: nextAnswer };
+  const nextAnswerItem = { ...answerItem, answers: nextAnswers };
   setLectureTestAnswerItem(nextAnswerItem);
 }
 

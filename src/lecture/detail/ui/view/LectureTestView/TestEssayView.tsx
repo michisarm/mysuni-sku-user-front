@@ -17,22 +17,31 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   answer,
   setAnswer,
 }) {
+  const maxLength = 1000;
+
   return (
     <Form>
       <Form.Field>
         <div className="ui right-top-count input">
           <span className="count">
-            <span className="now">{answer!.length}</span>/
-            <span className="max">1000</span>
+            <span className="now">
+              {answer && answer.length}
+              {!answer && '0'}
+            </span>
+            /<span className="max">{maxLength}</span>
           </span>
           <textarea
             placeholder="답변을 입력해주세요."
             value={answer}
-            onChange={(data: any) => setAnswer(question.questionNo, data.value)}
+            onChange={(e: any) => {
+              if (e.target.value.length <= maxLength) {
+                setAnswer(question.questionNo, e.target.value);
+              }
+            }}
           />
           <Icon className="clear link" />
           <span className="validation">
-            You can enter up to 100 characters.
+            You can enter up to {maxLength} characters.
           </span>
         </div>
       </Form.Field>

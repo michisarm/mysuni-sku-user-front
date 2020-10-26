@@ -20,7 +20,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         <div className="course-detail-center">
           <div className="main-wrap">
             <div className="scrolling-area area2 ">
-              <div className="ui segment full test-complete">
+              <div className="ui segment full">
                 {testItem && (
                   <>
                     <div className="course-info-header">
