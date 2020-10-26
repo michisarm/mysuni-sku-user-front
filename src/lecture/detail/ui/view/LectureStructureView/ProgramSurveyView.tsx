@@ -4,14 +4,14 @@ import { State } from '../../../viewModel/LectureStructure';
 
 interface ProgramSurveyViewProps {
   name: string;
-  state: State;
+  state?: State;
   activated?: boolean;
   path: string;
 }
 
 const ProgramSurveyView: React.FC<ProgramSurveyViewProps> = function ProgramSurveyView({
   name,
-  state,
+  state = 'None',
   activated = false,
   path,
 }) {

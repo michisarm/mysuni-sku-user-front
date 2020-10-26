@@ -21,47 +21,53 @@ import { findIsJsonStudentByCube, findStudent } from '../../../api/lectureApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
 import {
   LectureStructure,
   LectureStructureCubeItem,
-  LectureStructureCubeItemParams,
   State,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';
 
-function getPersonalCubeByParams(
-  params: LectureStructureCubeItemParams
-): Promise<PersonalCube> {
+function getPersonalCubeByParams(params: LectureParams): Promise<PersonalCube> {
   const { cubeId } = params;
-  return findPersonalCube(cubeId);
+  return findPersonalCube(cubeId!);
 }
 
 async function getLectureStructureCubeItemByPersonalCube(
   personalCube: PersonalCube,
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<LectureStructureCubeItem | void> {
   const { cubeId, lectureCardId } = params;
   const { id, name } = personalCube;
   const cubeType = personalCube.contents.type;
   const cubeIntroId = personalCube.cubeIntro.id;
   const cubeIntro = await findCubeIntro(cubeIntroId);
+  const routerParams: LectureRouterParams = {
+    contentType: 'cube',
+    contentId: cubeId!,
+    lectureId: lectureCardId!,
+  };
   if (cubeIntro !== undefined) {
     const learningTime = cubeIntro.learningTime;
     return {
       id,
       name,
-      cubeId,
+      cubeId: cubeId!,
       cubeType,
       learningTime,
       params,
+      routerParams,
+      path: toPath(params),
       serviceId: lectureCardId,
     };
   }
 }
 
 async function getStateMapByParams(
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<StudentStateMap | void> {
   const { lectureCardId } = params;
   if (lectureCardId !== undefined) {
@@ -91,7 +97,7 @@ async function getStateMapByParams(
 }
 
 export async function getCubeLectureStructure(
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ): Promise<LectureStructure> {
   const lectureStructure: LectureStructure = {
     courses: [],

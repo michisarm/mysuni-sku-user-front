@@ -1,5 +1,6 @@
 import LectureDescription from '../viewModel/LectureOverview/LectureDescription';
 import LectureInstructor from '../viewModel/LectureOverview/LectureInstructor';
+import LecturePrecourse from '../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
 import LectureSummary from '../viewModel/LectureOverview/LectureSummary';
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
@@ -28,6 +29,12 @@ const [
   getLectureInstructor,
 ] = createStore<LectureInstructor>();
 
+const [
+  setLecturePrecourse,
+  onLecturePrecourse,
+  getLecturePrecourse,
+] = createStore<LecturePrecourse>();
+
 export {
   setLectureSummary,
   onLectureSummary,
@@ -44,4 +51,7 @@ export {
   setLectureInstructor,
   onLectureInstructor,
   getLectureInstructor,
+  setLecturePrecourse,
+  onLecturePrecourse,
+  getLecturePrecourse,
 };

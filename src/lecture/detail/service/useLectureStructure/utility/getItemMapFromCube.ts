@@ -11,9 +11,10 @@ import {
   findSurveyForm,
 } from '../../../api/surveyApi';
 import Student from '../../../model/Student';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import {
   ItemMap,
-  LectureStructureCubeItemParams,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -36,11 +37,9 @@ interface GetItemMapArg {
   surveyCaseId: string;
 }
 
-async function getTestItem(
-  cubeId: string,
-  examId: string,
-  params: LectureStructureCubeItemParams
-) {
+async function getTestItem(examId: string, params: LectureParams) {
+  const routerParams = parseLectureParams(params);
+
   if (examId !== '') {
     const { result } = await findExamination(examId);
     let state: State = 'None';
@@ -61,6 +60,8 @@ async function getTestItem(
       name: result.examPaperTitle,
       questionCount: result.questionCount,
       params,
+      routerParams,
+      path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
     };
@@ -71,8 +72,9 @@ async function getTestItem(
 async function getSurveyItem(
   surveyId: string,
   surveyCaseId: string,
-  params: LectureStructureCubeItemParams
+  params: LectureParams
 ) {
+  const routerParams = parseLectureParams(params);
   if (surveyId !== '') {
     const { titles, questions } = await findSurveyForm(surveyId);
     let state: State = 'None';
@@ -98,6 +100,8 @@ async function getSurveyItem(
       name: title,
       questionCount: questions.length,
       params,
+      routerParams,
+      path: `${toPath(params)}/survey`,
       state,
       type: 'SURVEY',
     };
@@ -107,9 +111,10 @@ async function getSurveyItem(
 
 async function getReportItem(
   cubeIntroId: string,
-  params: LectureStructureCubeItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
+  const routerParams = parseLectureParams(params);
   const cubeIntro = await findCubeIntro(cubeIntroId);
   if (cubeIntro.reportFileBox.reportName !== '') {
     let state: State = 'None';
@@ -124,6 +129,8 @@ async function getReportItem(
     const item: LectureStructureReportItem = {
       name: cubeIntro.reportFileBox.reportName,
       params,
+      routerParams,
+      path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
     };
@@ -133,13 +140,12 @@ async function getReportItem(
 
 export async function getItemMapFromCube(
   arg: GetItemMapArg,
-  params: LectureStructureCubeItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};
   const { cubeIntroId, examId, surveyId, surveyCaseId } = arg;
-  const { cubeId } = params;
-  const testItem = await getTestItem(cubeId, examId, params);
+  const testItem = await getTestItem(examId, params);
   if (testItem !== undefined) {
     itemMap.test = testItem;
   }

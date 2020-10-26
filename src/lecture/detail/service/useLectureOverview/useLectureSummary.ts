@@ -22,7 +22,6 @@ export function useLectureSummary(): [Value] {
     }
     return onLectureSummary(next => {
       setValue(next);
-      console.log('useLectureSummary', next);
     }, subscriberId);
   }, [subscriberId]);
 

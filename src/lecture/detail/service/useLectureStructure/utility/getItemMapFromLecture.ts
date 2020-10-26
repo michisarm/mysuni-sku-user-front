@@ -5,20 +5,16 @@
 import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
 import { findCoursePlan } from '../../../api/courseApi';
-import { findExamination } from '../../../api/examApi';
-import { findCoursePlanContents } from '../../../api/lectureApi';
-import { findCubeIntro } from '../../../api/mPersonalCubeApi';
 import {
   findAnswerSheetBySurveyCaseId,
   findSurveyForm,
 } from '../../../api/surveyApi';
-import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import LectureView from '../../../model/LectureView';
 import Student from '../../../model/Student';
+import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
+import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import {
   ItemMap,
-  LectureStructureCourseItemParams,
-  LectureStructureCubeItemParams,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -34,10 +30,8 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-async function getTestItem(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams
-) {
+async function getTestItem(lectureView: LectureView, params: LectureParams) {
+  const routerParams = parseLectureParams(params);
   const { examination } = lectureView;
   if (examination !== null) {
     let state: State = 'None';
@@ -61,6 +55,8 @@ async function getTestItem(
       name: examination.examPaperTitle,
       questionCount: examination.questionCount,
       params,
+      routerParams,
+      path: `${toPath(params)}/exam`,
       state,
       type: 'EXAM',
     };
@@ -68,10 +64,8 @@ async function getTestItem(
   }
 }
 
-async function getSurveyItem(
-  lectureView: LectureView,
-  params: LectureStructureCourseItemParams
-) {
+async function getSurveyItem(lectureView: LectureView, params: LectureParams) {
+  const routerParams = parseLectureParams(params);
   const { surveyCase } = lectureView;
   if (surveyCase !== null) {
     const { surveyFormId } = surveyCase;
@@ -99,6 +93,8 @@ async function getSurveyItem(
       name: title,
       questionCount: questions.length,
       params,
+      routerParams,
+      path: `${toPath(params)}/survey`,
       state,
       type: 'SURVEY',
     };
@@ -108,9 +104,10 @@ async function getSurveyItem(
 
 async function getReportItem(
   lectureView: LectureView,
-  params: LectureStructureCourseItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
+  const routerParams = parseLectureParams(params);
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
   if (coursePlan.reportFileBox.reportName !== '') {
     let state: State = 'None';
@@ -125,6 +122,8 @@ async function getReportItem(
     const item: LectureStructureReportItem = {
       name: coursePlan.reportFileBox.reportName,
       params,
+      routerParams,
+      path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
     };
@@ -134,7 +133,7 @@ async function getReportItem(
 
 export async function getItemMapFromLecture(
   lectureView: LectureView,
-  params: LectureStructureCourseItemParams,
+  params: LectureParams,
   student?: Student
 ): Promise<ItemMap> {
   const itemMap: ItemMap = {};

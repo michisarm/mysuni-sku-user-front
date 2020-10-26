@@ -1,44 +1,13 @@
 import React from 'react';
+import LectureParams from '../../../viewModel/LectureParams';
 import {
   LectureStructure,
-  LectureStructureCourseItemParams,
   LectureStructureItemType,
 } from '../../../viewModel/LectureStructure';
 import CourseView from './CourseView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
-
-function getSelfPath(params: LectureStructureCourseItemParams) {
-  const {
-    cineroomId,
-    collegeId,
-    coursePlanId,
-    serviceType,
-    serviceId,
-  } = params;
-  if (cineroomId === undefined) {
-    return `/lecture/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}`;
-  }
-  return `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}`;
-}
-
-function getItemPath(
-  params: LectureStructureCourseItemParams,
-  itemType: LectureStructureItemType
-) {
-  const {
-    cineroomId,
-    collegeId,
-    coursePlanId,
-    serviceType,
-    serviceId,
-  } = params;
-  if (cineroomId === undefined) {
-    return `/lecture/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}/${itemType.toLowerCase()}`;
-  }
-  return `/lecture/cineroom/${cineroomId}/college/${collegeId}/course-plan/${coursePlanId}/${serviceType}/${serviceId}/${itemType.toLowerCase()}`;
-}
 
 interface CourseLectureStructureViewProps {
   lectureStructure: LectureStructure;
@@ -56,7 +25,7 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           state={lectureStructure.course.state}
           activated={lectureStructure.course.activated}
           cubes={lectureStructure.cubes}
-          path={getSelfPath(lectureStructure.course.params)}
+          path={lectureStructure.course.path}
         />
       )}
       {lectureStructure.test !== undefined && (
@@ -64,10 +33,8 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           name={lectureStructure.test.name}
           state={lectureStructure.test.state}
           questionCount={lectureStructure.test.questionCount}
-          path={getItemPath(
-            lectureStructure.test.params as LectureStructureCourseItemParams,
-            lectureStructure.test.type
-          )}
+          path={lectureStructure.test.path}
+          activated={lectureStructure.test.activated}
         />
       )}
       {lectureStructure.survey !== undefined && (
@@ -75,20 +42,16 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           name={lectureStructure.survey.name}
           state={lectureStructure.survey.state}
           questionCount={lectureStructure.survey.questionCount}
-          path={getItemPath(
-            lectureStructure.survey.params as LectureStructureCourseItemParams,
-            lectureStructure.survey.type
-          )}
+          path={lectureStructure.survey.path}
+          activated={lectureStructure.survey.activated}
         />
       )}
       {lectureStructure.report !== undefined && (
         <ReportView
           name={lectureStructure.report.name}
           state={lectureStructure.report.state}
-          path={getItemPath(
-            lectureStructure.report.params as LectureStructureCourseItemParams,
-            lectureStructure.report.type
-          )}
+          path={lectureStructure.report.path}
+          activated={lectureStructure.report.activated}
         />
       )}
     </>

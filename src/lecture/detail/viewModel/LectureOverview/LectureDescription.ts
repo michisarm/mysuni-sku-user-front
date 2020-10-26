@@ -1,3 +1,3 @@
 export default interface LectureDescription {
-  htmlContent: string;
+  description: string;
 }
