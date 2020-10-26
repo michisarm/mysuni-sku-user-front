@@ -17,11 +17,16 @@
 }
  */
 
-import {  modifyStudent } from '../../../api/lectureApi';
-import {  LectureReportCubeItemParams } from 'lecture/detail/viewModel/LectureReport';
+import { modifyStudent } from '../../../api/lectureApi';
+import { LectureReportCubeItemParams } from 'lecture/detail/viewModel/LectureReport';
+import { getLectureReport } from '../../../store/LectureReportStore';
 
 export async function setCubeLectureStudentReport(
   params: LectureReportCubeItemParams
 ): Promise<void> {
-  await modifyStudent(params.id||'',params.homeworkFileBoxId||'',params.homeworkContent||'');
+  await modifyStudent(
+    getLectureReport().studentReport?.id || '',
+    getLectureReport().studentReport?.homeworkFileBoxId || '',
+    getLectureReport().studentReport?.homeworkContent || ''
+  );
 }

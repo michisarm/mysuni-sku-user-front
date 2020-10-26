@@ -47,7 +47,7 @@ export interface LectureReportCubeItemParams extends Params {
 export interface StudentReport {
   id?: string;
   homeworkContent?: string | null;
-  homeworkFileBoxId?: string | null;
+  homeworkFileBoxId?: string;
   homeworkOperatorComment?: string | null;
   homeworkOperatorFileBoxId?: string | null;
 }

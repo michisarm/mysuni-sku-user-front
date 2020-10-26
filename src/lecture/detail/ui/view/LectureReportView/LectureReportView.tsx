@@ -4,40 +4,41 @@ import Reportheader from './ReportHeader';
 import Editor from './Editor';
 import AttachFileUpload from './AttachFileUpload';
 import { LectureReport, StudentReport } from '../../../viewModel/LectureReport';
-import depot, { FileBox, ValidationType, DepotFileViewModel } from '@nara.drama/depot';
+import depot, {
+  FileBox,
+  ValidationType,
+  DepotFileViewModel,
+} from '@nara.drama/depot';
 import { PatronType } from '@nara.platform/accent';
 import { depotHelper } from 'shared';
+import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
 // cube 개발화면 관리자  : http://ma.mysuni.sk.com/manager/cineroom/ne1-m2-c2/learning-management/cubes/cube-detail/CUBE-2jd/Video
 // cube 원본 화면 참조 :   http://ma.mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/course-plan/COURSE-PLAN-d5/Course/C-LECTURE-7d
 //                        http://ma.mysuni.sk.com/suni-main/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t
-// http://ma.mysuni.sk.com/api/depot/vaultFile/flow/combine/ 파일 업로드 API 호출시 에러 http://ma.mysuni.sk.com report Upload 에서도 에러
 
 interface LectureReportViewProps {
   lectureReport: LectureReport;
-  setLectureReport:(reportValue:LectureReport) => void;
-  setCubeLectureReport:() => void;
+  setLectureReport: (reportValue: LectureReport) => void;
+  setCubeLectureReport: () => void;
 }
 
 const LectureReportView: React.FC<LectureReportViewProps> = function LectureReportView({
   lectureReport,
-  setLectureReport,
-  setCubeLectureReport
+  // setLectureReport,
+  setCubeLectureReport,
 }) {
-  const [filesMap, setFilesMap] = React.useState<Map<string, any>>();
-  // AS-IS 붙여봄 
+  // AS-IS 붙여봄
   function getFileBoxIdForReference(depotId: string) {
     //
-      //TODO : 코드 리뷰 후 개선 필요
-      const studentReport: StudentReport = lectureReport.studentReport||{};
-      studentReport.homeworkFileBoxId= depotId;
-      lectureReport.studentReport = studentReport;
-      setLectureReport(lectureReport);
+    //TODO : 코드 리뷰 후 개선 필요
+    const studentReport: StudentReport = lectureReport.studentReport || {};
+    studentReport.homeworkFileBoxId = depotId;
+    lectureReport.studentReport = studentReport;
+    setLectureReport(lectureReport);
   }
-
-
 
   return (
     <div className="course-info-detail responsive-course">
@@ -47,7 +48,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
             <div className="ui segment full">
               {/* Header */}
               <div className="course-info-header">
-                <Reportheader lectureReport = {lectureReport} />
+                <Reportheader lectureReport={lectureReport} />
               </div>
 
               <div className="apl-form-wrap support">
@@ -62,7 +63,10 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   <Form.Field>
                     <label>작성</label>
                     <div className="ui editor-wrap">
-                      <Editor lectureReport = {lectureReport} setLectureReport = {setLectureReport} />
+                      <Editor
+                        lectureReport={lectureReport}
+                        setLectureReport={setLectureReport}
+                      />
                     </div>
                   </Form.Field>
                   {/*TODO : 첨부파일이 없는 경우도 있는지 확인, 없는 경우의 처리 방법 문의  */}
@@ -70,7 +74,15 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                     <label>첨부파일</label>
                     <div className="download-file">
                       <div className="btn-wrap">
-                        <Button icon className="left icon-big-line2" onClick={() => depot.downloadDepot(lectureReport?.reportFileBox?.fileBoxId||'')}>
+                        <Button
+                          icon
+                          className="left icon-big-line2"
+                          onClick={() =>
+                            depot.downloadDepot(
+                              lectureReport?.reportFileBox?.fileBoxId || ''
+                            )
+                          }
+                        >
                           <Icon className="download2" />
                           <span>Download File</span>
                         </Button>
@@ -91,43 +103,56 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
               <div className="report-attach">
                 {/* <AttachFileUpload filesMap={filesMap}/> */}
                 {/* AS-IS 호출 하여 붙여봄 이대로 사용해도 되는지 확인 후 사용 */}
-                  <div className="lg-attach">
-                    <div className="attach-inner">   
-                      <FileBox
-                        // id={lectureReport?.studentReport?.homeworkFileBoxId || ''}
-                        id={lectureReport?.reportFileBox?.fileBoxId || ''}
-                        vaultKey={{
-                          keyString: 'sku-depot',
-                          patronType: PatronType.Pavilion,
-                        }}
-                        patronKey={{
-                          keyString: 'sku-denizen',
-                          patronType: PatronType.Denizen,
-                        }}
-                        validations={[
-                          {
-                            type: ValidationType.Duplication,
-                            validator: depotHelper.duplicationValidator,
-                          },
-                        ]}
-                        onChange={getFileBoxIdForReference}
-                      />           
-                      <div className="bottom">
-                        <span className="text1">
-                          <Icon className="info16" />
-                          <span className="blind">information</span>
-                          작성된 Report를 Upload하시면 과정 담당자가 확인 후 의견을 드릴
-                          예정입니다.
-                        </span>
-                      </div>                           
+                <div className="lg-attach">
+                  <div className="attach-inner">
+                    {/* TODO  homeworkFileBoxId 데이터가 null 문자열로 저장되어 있는 경우가 있음, 공백 or String 으로 처리 되어야 할것으로 보임*/}
+                    <FileBox
+                      // id={lectureReport?.studentReport?.homeworkFileBoxId || ''}
+                      id={
+                        lectureReport?.studentReport?.homeworkFileBoxId !==
+                          null &&
+                        lectureReport?.studentReport?.homeworkFileBoxId !==
+                          'null'
+                          ? lectureReport?.studentReport?.homeworkFileBoxId
+                          : ''
+                      }
+                      vaultKey={{
+                        keyString: 'sku-depot',
+                        patronType: PatronType.Pavilion,
+                      }}
+                      patronKey={{
+                        keyString: 'sku-denizen',
+                        patronType: PatronType.Denizen,
+                      }}
+                      validations={[
+                        {
+                          type: ValidationType.Duplication,
+                          validator: depotHelper.duplicationValidator,
+                        },
+                      ]}
+                      onChange={getFileBoxIdForReference}
+                    />
+                    <div className="bottom">
+                      <span className="text1">
+                        <Icon className="info16" />
+                        <span className="blind">information</span>
+                        작성된 Report를 Upload하시면 과정 담당자가 확인 후
+                        의견을 드릴 예정입니다.
+                      </span>
                     </div>
                   </div>
-              </div>                
+                </div>
+              </div>
               <div className="survey-preview">
                 {/* AS-IS 에는 제출 버튼만 있음 저장 기능이 필요한지 확인 */}
                 {/* prams 관리 코드 확인, backend lecture modifystudent 개발서버 업로드 후 테스트 진행 필요 */}
-                <button className="ui button fix line">저장</button>
-                <button className="ui button fix bg" onClick={() => setCubeLectureReport()}>제출</button>
+                {/* <button className="ui button fix line">저장</button> */}
+                <button
+                  className="ui button fix bg"
+                  onClick={() => setCubeLectureReport()}
+                >
+                  제출
+                </button>
               </div>
             </div>
           </div>
