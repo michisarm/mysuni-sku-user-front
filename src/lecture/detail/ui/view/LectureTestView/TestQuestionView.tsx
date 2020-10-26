@@ -17,12 +17,14 @@ interface TestQuestionViewProps {
 
 function setAnswer(questionNo: string, value: string) {
   const answerItem = getLectureTestAnswerItem();
-  answerItem.answers.map(answer => {
+  const nextAnswer = answerItem.answers.map(answer => {
     if (questionNo === answer.questionNo) {
-      answer.answer = value;
+      return { ...answer, answer: value };
     }
+    return answer;
   });
-  setLectureTestAnswerItem(answerItem);
+  const nextAnswerItem = { ...answerItem, answer: nextAnswer };
+  setLectureTestAnswerItem(nextAnswerItem);
 }
 
 const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionView({

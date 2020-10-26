@@ -1,6 +1,6 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import { getLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useState } from 'react';
 import { Radio } from 'semantic-ui-react';
 
@@ -32,6 +32,11 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
 }) {
   //const [test, setTest] = useState<string>();
   console.log('render', test);
+  const setAnswerFromRadio = useCallback((e: any, data: any) => {
+    //setTest(data.value)
+    setAnswer(question.questionNo, data.value);
+  }, []);
+
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
@@ -43,10 +48,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           value={item.itemNo}
           //checked={item.itemNo === test}
           checked={item.itemNo === answer}
-          onChange={(e: any, data: any) =>
-            //setTest(data.value)
-            setAnswer(question.questionNo, data.value)
-          }
+          onChange={setAnswerFromRadio}
         />
       ))}
     </div>

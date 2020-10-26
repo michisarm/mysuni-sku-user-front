@@ -1,6 +1,7 @@
 import Answer from '../model/Answer';
 import ExamQuestion from '../model/ExamQuestion';
 import LearningState from '../model/LearningState';
+import { LectureType } from './LectureType';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
