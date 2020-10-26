@@ -31,7 +31,6 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
   setAnswer,
 }) {
   //const [test, setTest] = useState<string>();
-  console.log('render', test);
   const setAnswerFromRadio = useCallback((e: any, data: any) => {
     //setTest(data.value)
     setAnswer(question.questionNo, data.value);
