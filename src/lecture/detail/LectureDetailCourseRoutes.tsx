@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
-import LectureCourseOverviewPage from './ui/logic/LectureOverview/LectureCourseOverviewPage';
+import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 
 export default function LectureDetailCourseRoutes() {

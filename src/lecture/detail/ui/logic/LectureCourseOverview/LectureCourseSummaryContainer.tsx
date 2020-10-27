@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLectureCourseSummary } from '../../../service/useLectureOverview/useLectureCourseSummary';
+import { useLectureCourseSummary } from '../../../service/useLectureCourseOverview/useLectureCourseSummary';
 import LectureCourseSummaryView from '../../view/LectureOverview/LectureCourseSummaryView';
 
 function LectureCourseSummaryContainer() {

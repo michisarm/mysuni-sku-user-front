@@ -12,7 +12,7 @@ import LecturePrecourseView from './LecturePrecourseView';
 import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
 import LectureBadgeView from './LectureBadgeView';
 
-interface LectureContentViewProps {
+interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
   lectureSubcategory?: LectureSubcategory;
   lectureTags?: LectureTags;
@@ -28,7 +28,7 @@ function hashLink(hash: string) {
   }
 }
 
-const LectureContentView: React.FC<LectureContentViewProps> = function LectureContentView({
+const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = function LectureCourseContentView({
   lectureDescription,
   lectureSubcategory,
   lectureTags,
@@ -111,4 +111,4 @@ const LectureContentView: React.FC<LectureContentViewProps> = function LectureCo
   );
 };
 
-export default LectureContentView;
+export default LectureCourseContentView;
