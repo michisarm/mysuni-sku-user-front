@@ -4,13 +4,9 @@ import classNames from 'classnames';
 
 interface LectureDescriptionViewProps {
   htmlContent: string;
-  rootId?: string;
 }
 
-function LectureDescriptionView({
-  htmlContent,
-  rootId,
-}: LectureDescriptionViewProps) {
+function LectureDescriptionView({ htmlContent }: LectureDescriptionViewProps) {
   const [descriptionOpen, setDescriptionOpen] = useState<boolean>();
   const [showMoreButton, setShowMoreButton] = useState<boolean>();
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -42,7 +38,7 @@ function LectureDescriptionView({
     }
   }, []);
   return (
-    <div className="class-guide-txt fn-parents ql-snow" id={rootId}>
+    <div className="class-guide-txt fn-parents ql-snow">
       <div
         className={`${descriptionOpen ? '' : 'text'} description ql-editor`}
         dangerouslySetInnerHTML={{ __html: htmlContent }}

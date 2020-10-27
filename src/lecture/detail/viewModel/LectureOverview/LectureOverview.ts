@@ -1,4 +1,6 @@
 /**
+ * LectureCourseOverview
+ *
  * LectureSummary
  * LectureAction
  * LecturePrecourse
@@ -6,6 +8,20 @@
  * LectureSubcategory
  * LectureTags
  * LectureInstructor
- * LectureRelation
  * LectureBadge
+ * LectureRelation
+ */
+
+/**
+ * LectureCubeOverview
+ *
+ * LectureSummary
+ * LectureState
+ * LectureAction
+ * LectureContent
+ * LectureDescription
+ * LectureSubcategory
+ * LectureFiles
+ * LectureInfo
+ * LectureTags
  */

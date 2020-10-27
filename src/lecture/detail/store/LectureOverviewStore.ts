@@ -1,14 +1,25 @@
+import LectureBadge from '../viewModel/LectureOverview/LectureBadge';
+import LectureCourseSummary from '../viewModel/LectureOverview/LectureCourseSummary';
+import LectureCubeSummary from '../viewModel/LectureOverview/LectureCubeSummary';
 import LectureDescription from '../viewModel/LectureOverview/LectureDescription';
+import LectureFile from '../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../viewModel/LectureOverview/LectureInstructor';
 import LecturePrecourse from '../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
-import LectureSummary from '../viewModel/LectureOverview/LectureSummary';
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
 import { createStore } from './Store';
 
-const [setLectureSummary, onLectureSummary, getLectureSummary] = createStore<
-  LectureSummary
->();
+const [
+  setLectureCubeSummary,
+  onLectureCubeSummary,
+  getLectureCubeSummary,
+] = createStore<LectureCubeSummary>();
+
+const [
+  setLectureCourseSummary,
+  onLectureCourseSummary,
+  getLectureCourseSummary,
+] = createStore<LectureCourseSummary>();
 
 const [
   setLectureDescription,
@@ -35,10 +46,21 @@ const [
   getLecturePrecourse,
 ] = createStore<LecturePrecourse>();
 
+const [setLectureBadge, onLectureBadge, getLectureBadge] = createStore<
+  LectureBadge
+>();
+
+const [setLectureFile, onLectureFile, getLectureFile] = createStore<
+  LectureFile
+>();
+
 export {
-  setLectureSummary,
-  onLectureSummary,
-  getLectureSummary,
+  setLectureCubeSummary,
+  onLectureCubeSummary,
+  getLectureCubeSummary,
+  setLectureCourseSummary,
+  onLectureCourseSummary,
+  getLectureCourseSummary,
   setLectureDescription,
   onLectureDescription,
   getLectureDescription,
@@ -54,4 +76,10 @@ export {
   setLecturePrecourse,
   onLecturePrecourse,
   getLecturePrecourse,
+  setLectureBadge,
+  onLectureBadge,
+  getLectureBadge,
+  setLectureFile,
+  onLectureFile,
+  getLectureFile,
 };
