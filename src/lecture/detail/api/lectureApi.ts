@@ -74,3 +74,11 @@ export function modifyStudent(
     .put<void>(url, homework)
     .then(response => response && response.data);
 }
+
+export function modifyStudentForExam(
+  studentId: string,
+  examId: string
+): Promise<void> {
+  const url = `${BASE_URL}/students/flow/examProcess/${studentId}/${examId}`;
+  return axiosApi.put<void>(url).then(response => response && response.data);
+}

@@ -36,6 +36,9 @@ async function getTestItem(
   params: LectureParams
 ) {
   const routerParams = parseLectureParams(params);
+  // TODO
+  // course는 Test가 복수개이기 때문에 examId를 course_plan_contents의 testId를 이용한 examination이 아니라 학습시작한 student의 student_score_json.examId의 examination를 사용해야한다.
+  // student에서 examId가져오는 api 필요(student에 examId가 없으면 api 내에서 랜덤으로 course의 examId를 넣어줘야 함)
   const { examination } = coursePlanComplex;
   if (examination !== null) {
     let state: State = 'None';
