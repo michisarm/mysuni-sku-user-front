@@ -37,19 +37,19 @@ export interface stringResult {
 
 export function registerAnswerSheet(
   answerSheet: LectureTestAnswerSheetViewBody
-): Promise<stringResult> {
+): Promise<string> {
   const url = `${BASE_URL}/answersheets`;
   return axiosApi
     .post<stringResult>(url, answerSheet)
-    .then(response => response && response.data);
+    .then(response => response && response.data && response.data.result);
 }
 
 export function modifyAnswerSheet(
   answerSheet: LectureTestAnswerSheetViewBody,
   sheetId: string
-): Promise<stringResult> {
+): Promise<string> {
   const url = `${BASE_URL}/answersheets/${sheetId}`;
   return axiosApi
     .put<stringResult>(url, answerSheet)
-    .then(response => response && response.data);
+    .then(response => response && response.data && response.data.result);
 }

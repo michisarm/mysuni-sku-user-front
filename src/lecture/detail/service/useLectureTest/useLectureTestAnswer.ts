@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 
+import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
@@ -13,23 +14,25 @@ import {
   LectureTestAnswerItem,
 } from '../../viewModel/LectureTest';
 import { useLectureRouterParams } from '../useLectureRouterParams';
+import { useLectureTest } from './useLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
+import { getCubeLectureTestAnswer } from './utility/getCubeLectureTest';
 
-type TestValue = LectureTestItem | undefined;
+type AnswerValue = LectureTestAnswerItem | undefined;
 
-export function useLectureTest(): [TestValue] {
+export function useLectureTestAnswer(): [AnswerValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
-  const [testValue, setTestValue] = useState<TestValue>();
+  const [answerValue, setAnswerValue] = useState<AnswerValue>();
   const params = useParams<
     LectureStructureCourseItemParams & LectureStructureCubeItemParams
   >();
 
   const { lectureId, contentType, contentId } = useLectureRouterParams();
 
-  const getCubeTestItem = useCallback(() => {
-    getCubeLectureTest(contentId);
+  const getCubeTestAnswerItem = useCallback(() => {
+    getCubeLectureTestAnswer(contentId);
   }, []);
 
   //const getCourseItem = useCallback(
@@ -43,14 +46,14 @@ export function useLectureTest(): [TestValue] {
 
   useEffect(() => {
     if (contentId !== undefined) {
-      getCubeTestItem();
+      getCubeTestAnswerItem();
     } else {
       //getCourseItem(params);
     }
   }, [params]);
 
   useEffect(() => {
-    const next = `useLectureTest-${++subscriberIdRef.current}`;
+    const next = `useLectureTestAnswer-${++subscriberIdRef.current}`;
     setSubscriberId(next);
   }, []);
 
@@ -58,11 +61,11 @@ export function useLectureTest(): [TestValue] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureTestItem(next => {
-      setTestValue(next);
-      console.log('LectureTestItem', next);
+    return onLectureTestAnswerItem(next => {
+      setAnswerValue(next);
+      console.log('LectureTestAnswerItem', next);
     }, subscriberId);
   }, [subscriberId]);
 
-  return [testValue];
+  return [answerValue];
 }

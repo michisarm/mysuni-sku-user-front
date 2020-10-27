@@ -1,10 +1,12 @@
 import { reactConfirm } from '@nara.platform/accent';
+import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
+import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
 import {
   getLectureTestAnswerItem,
   setLectureTestAnswerItem,
 } from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { LearningState } from 'shared/model';
 import {
   LectureTestAnswerItem,
@@ -14,20 +16,38 @@ import TestQuestionView from './TestQuestionView';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
-  answerItem?: LectureTestAnswerItem;
+  lectureId: string;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
   testItem,
-  answerItem,
+  lectureId,
 }) {
+  const [testStudentItem] = useLectureTestStudent();
+  const [answerItem] = useLectureTestAnswer();
+
+  let readOnly = false;
+  // readonly state에 넣고 아래는 useEffect에
+  //useEffect(() => {
+  if (
+    testStudentItem &&
+    testStudentItem.learningState &&
+    (testStudentItem.learningState === 'TestWaiting' ||
+      testStudentItem.learningState === 'Passed' ||
+      testStudentItem.learningState === 'TestPassed')
+  ) {
+    //    setReadOnly(true);
+    readOnly = true;
+  }
+  //}, [readOnly]);
+
   const saveAnswerSheet = useCallback(() => {
     let answerItemId = '';
     if (answerItem !== undefined) {
       answerItemId = answerItem.id;
     }
 
-    saveTestAnswerSheet(answerItemId, false, false);
+    saveTestAnswerSheet(lectureId, answerItemId, false, false);
   }, [answerItem]);
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
@@ -42,29 +62,27 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
         title: '알림',
         message: 'Test를 최종 제출 하시겠습니까?',
         onOk: () => {
-          answerItem!.submitAnswers = answerItem!.answers;
-          setLectureTestAnswerItem(answerItem!);
-          saveTestAnswerSheet(answerItemId, true, true);
+          if (answerItem) {
+            const nextAnswerItem = {
+              ...answerItem,
+              submitAnswers: answerItem.answers,
+            };
+            setLectureTestAnswerItem(nextAnswerItem);
+            saveTestAnswerSheet(lectureId, answerItemId, true, true);
+          }
+
+          //answerItem!.submitAnswers = answerItem!.answers;
+          //setLectureTestAnswerItem(answerItem!);
+          //saveTestAnswerSheet(answerItemId, true, true);
         },
       });
     }
   }, [answerItem]);
 
   let testClassName = ' ui segment full ';
-  let readOnly = false;
-  if (
-    testItem.student &&
-    testItem.student.learningState &&
-    (testItem.student.learningState === LearningState.TestWaiting ||
-      testItem.student.learningState === LearningState.Passed ||
-      testItem.student.learningState === LearningState.TestPassed)
-  ) {
-    readOnly = true;
-  }
   if (answerItem?.submitted) {
     testClassName += ' test-complete ';
   }
-
   return (
     <>
       <div className="course-info-detail responsive-course">
@@ -80,30 +98,26 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           {testItem.name}
                         </div>
                         <div className="survey-header-right">
-                          {testItem.student &&
-                            testItem.student.learningState &&
-                            (testItem.student.learningState ===
-                              LearningState.Failed ||
-                              testItem.student.learningState ===
-                                LearningState.Missed) && (
+                          {testStudentItem &&
+                            testStudentItem.learningState &&
+                            (testStudentItem.learningState === 'Failed' ||
+                              testStudentItem.learningState === 'Missed') && (
                               <button className="ui button free submit p18">
                                 재응시
                               </button>
                             )}
-                          {testItem.student &&
-                            testItem.student.learningState &&
-                            testItem.student.learningState ===
-                              LearningState.TestWaiting && (
+                          {testStudentItem &&
+                            testStudentItem.learningState &&
+                            testStudentItem.learningState === 'TestWaiting' && (
                               <button className="ui button free proceeding p18">
                                 검수중
                               </button>
                             )}
-                          {testItem.student &&
-                            testItem.student.learningState &&
-                            (testItem.student.learningState ===
-                              LearningState.Passed ||
-                              testItem.student.learningState ===
-                                LearningState.TestPassed) && (
+                          {testStudentItem &&
+                            testStudentItem.learningState &&
+                            (testStudentItem.learningState === 'Passed' ||
+                              testStudentItem.learningState ===
+                                'TestPassed') && (
                               <button className="ui button free complete p18">
                                 이수
                               </button>
@@ -141,8 +155,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                               }
                             });
                             if (question.questionType === 'SingleChoice') {
-                              //questionClassName += ' correct ';
-                              //questionClassName += ' wrong ';
                               if (question.answer === submitAnswer) {
                                 answerResult = true;
                               }
@@ -151,9 +163,9 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                               let answerChkArr = [];
 
                               // 문제지 정답
-                              answerChkArr = question.answer.split(',');
+                              answerChkArr = JSON.parse(question.answer);
                               // 사용자 정답
-                              const answerMultiJson = JSON.parse(submitAnswer);
+                              const answerMultiJson = submitAnswer.split(',');
                               let checkCnt = 0;
 
                               // 자릿수 비교

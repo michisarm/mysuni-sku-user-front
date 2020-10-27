@@ -46,11 +46,16 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
   ) {
     questionClassName += ' survey-text ';
   }
-  if (submitted && answerResult) {
-    questionClassName += ' correct ';
-  }
-  if (submitted && !answerResult) {
-    questionClassName += ' wrong ';
+  if (
+    submitted &&
+    (question.questionType === 'SingleChoice' ||
+      question.questionType === 'MultiChoice')
+  ) {
+    if (answerResult) {
+      questionClassName += ' correct ';
+    } else {
+      questionClassName += ' wrong ';
+    }
   }
   return (
     <>

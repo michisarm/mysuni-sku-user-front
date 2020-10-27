@@ -17,25 +17,28 @@
 }
  */
 import { patronInfo } from '@nara.platform/dock';
-import { ExaminationModel } from 'assistant/exam/model/ExaminationModel';
 import {
   LectureTestAnswerSheetViewBody,
   registerAnswerSheet,
   modifyAnswerSheet,
 } from 'lecture/detail/api/assistantApi';
+import { modifyStudentForExam } from 'lecture/detail/api/lectureApi';
 import {
   getLectureTestAnswerItem,
   getLectureTestItem,
-  setLectureTestAnswerItem,
+  getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
+import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
 
 export async function saveTestAnswerSheet(
+  lectureCardId: string,
   answerSheetId: string,
   pFinished: boolean,
   pSubmitted: boolean
 ): Promise<void> {
   const testItem = getLectureTestItem();
   const answerItem = getLectureTestAnswerItem();
+  const testStudentItem = getLectureTestStudentItem();
   const answerSheetBody: LectureTestAnswerSheetViewBody = {
     answers: answerItem.answers,
     examId: testItem.id,
@@ -50,10 +53,21 @@ export async function saveTestAnswerSheet(
   };
   if (answerSheetId !== '') {
     await modifyAnswerSheet(answerSheetBody, answerSheetId);
+    if (pFinished) {
+      await modifyStudentForExam(
+        testStudentItem.studentId,
+        answerSheetBody.examId
+      );
+    }
+    await getTestStudentItemMapFromCube(lectureCardId); // student 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(newAnswerSheetId => {
-      answerSheetBody.id = newAnswerSheetId.result;
-      modifyAnswerSheet(answerSheetBody, newAnswerSheetId.result);
+      answerSheetBody.id = newAnswerSheetId;
+      modifyAnswerSheet(answerSheetBody, newAnswerSheetId);
+      if (pFinished) {
+        modifyStudentForExam(testStudentItem.studentId, answerSheetBody.examId);
+      }
+      getTestStudentItemMapFromCube(lectureCardId); // student 재호출
     });
   }
 }

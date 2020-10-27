@@ -64,70 +64,21 @@ async function getTestItem(examId: string) {
   }
 }
 
-async function getTestAnswerItem(examId: string) {
-  const item: LectureTestAnswerItem = {
-    id: '',
-    answers: [],
-    submitted: false,
-    submitAnswers: [],
-  };
-
-  if (examId !== '') {
-    const denizenId = patronInfo.getDenizenId(); // denizenId는 파라메터로 넘기지 않고 서버단에서 해결할 것
-    if (denizenId !== undefined) {
-      const findAnswerSheetData = await findAnswerSheet(examId, denizenId);
-
-      if (findAnswerSheetData.result !== null) {
-        item.id = findAnswerSheetData.result.id;
-        item.answers = findAnswerSheetData.result.answers!;
-        item.submitted = findAnswerSheetData.result.submitted!;
-        item.submitAnswers = findAnswerSheetData.result.submitAnswers!;
-      }
-    }
-
-    return item;
-  }
-}
-
 export async function getTestItemMapFromCube(
-  cubeId: string,
-  lectureCardId: string
-): Promise<void> {
+  cubeId: string
+): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
 
   const personalCube = await getPersonalCubeByParams(cubeId);
   const examId =
     personalCube && personalCube.contents && personalCube.contents.examId;
 
-  if (lectureCardId !== undefined) {
-    const studentJoins = await findIsJsonStudentByCube(lectureCardId);
-    if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
-      const student = await findStudent(studentJoins[0].studentId);
-      const learningState = studentJoins[0].learningState;
-
-      if (examId !== undefined) {
-        const testItem = await getTestItem(examId);
-        if (testItem !== undefined) {
-          testItem.student = {
-            serviceType: student.serviceType,
-            learningState,
-          };
-          setLectureTestItem(testItem);
-          const answerItem = await getTestAnswerItem(examId);
-          if (answerItem !== undefined) {
-            if (answerItem.answers.length < 1) {
-              testItem.questions.forEach((result, index) => {
-                answerItem.answers.push({
-                  questionNo: result.questionNo,
-                  answer: '',
-                });
-              });
-            }
-
-            setLectureTestAnswerItem(answerItem);
-          }
-        }
-      }
+  if (examId !== undefined) {
+    const testItem = await getTestItem(examId);
+    if (testItem !== undefined) {
+      setLectureTestItem(testItem);
     }
+    return testItem;
   }
+  return undefined;
 }

@@ -5,4 +5,5 @@ export default interface AnswerSheet {
   submitted?: boolean;
   answers: Answer[];
   submitAnswers: Answer[];
+  finished: boolean;
 }
