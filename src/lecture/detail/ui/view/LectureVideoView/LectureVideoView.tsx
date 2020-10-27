@@ -1,10 +1,34 @@
 /*eslint-disable*/
 
 import React, { useCallback, useEffect, useState } from 'react';
+import { getLectureTranscripts } from 'lecture/detail/store/LectureTranscriptStore';
+import SkuVideoPlayer from 'lecture/detail/service/useLectureTranscript/components/SkuPlayer/SkuVideoPlayer';
+
+//샘플 페이지 : http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
 
 interface LectureVideoViewProps {}
 
 const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoView({}) {
+  const toHHMM = useCallback((idx: number) => {
+    const time = idx;
+    const hours = Math.floor(time / 60);
+    const minutes = Math.floor(time - hours * 60);
+
+    let sHours = '';
+    let sMinutes = '';
+    sHours = String(hours.toString()).padStart(2, '0');
+    sMinutes = String(minutes.toString()).padStart(2, '0');
+
+    return sHours + ':' + sMinutes;
+  }, []);
+
+  const [displayTranscript, setDisplayTranscript] = useState<boolean>(true);
+  const captionInfos = {
+    infos: [
+      { lang: 'ko', url: 'test.srt', isDefault: false },
+      { lang: 'en', url: 'test_en.srt', isDefault: true },
+    ],
+  };
   return (
     <div className="course-info-detail responsive-course">
       <div className="course-detail-center">
@@ -21,85 +45,50 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
               </div>
 
               <div className="course-video">
-                <button className="ui icon button right btn-blue">
-                  Close Transcript
-                  <i aria-hidden="true" className="icon icon morelink" />
-                </button>
+                <SkuVideoPlayer
+                  cubeId=""
+                  deliveryId="2081ffc6-d685-4f12-9e45-ac2a0019e0b3"
+                  userId="djpaek@sk.com"
+                  useCaption={true}
+                  captionInfos={captionInfos}
+                  hasNext={true}
+                  nextInfos={null}
+                ></SkuVideoPlayer>
+                {displayTranscript && (
+                  <button
+                    className="ui icon button right btn-blue"
+                    onClick={() => setDisplayTranscript(false)}
+                  >
+                    Close Transcript
+                    <i aria-hidden="true" className="icon icon morelink" />
+                  </button>
+                )}
+                {!displayTranscript && (
+                  <button
+                    className="ui icon button right btn-blue"
+                    onClick={() => setDisplayTranscript(true)}
+                  >
+                    View Transcript
+                    <i aria-hidden="true" className="icon icon morelink" />
+                  </button>
+                )}
               </div>
 
-              <div className="course-video-tanscript">
-                <div className="course-video-scroll">
-                  <strong>0:06</strong>
-                  <p>
-                    Now one question that you might have about that,
-                    is aboutthis notion of the right way of thinking about
-                    things.
-                  </p>
-                  <strong>0:37</strong>
-                  <p>
-                    Now these are really, really important questions for
-                    philosophy, and I don't want to try and answer them now. But
-                    I do want to consider what a couple of famous, influential
-                    philosophers have said about those questions. And that's why
-                    I'm here at Old Calton Cemetery, outside the David Hume
-                    monument. David Hume was a famous Edinburgh-based
-                    philosopher. And he thought that a skeptical attitude
-                    towards philosophy's capacity to find the truth about the
-                    world was entirely appropriate.
-                  </p>
-                  <strong>1:20</strong>
-                  <p>
-                    Now one question that you might have about that, is about
-                    this notion of the right way of thinking about things.
-                  </p>
-                  <strong>1:48</strong>
-                  <p>
-                    Now these are really, really important questions for
-                    philosophy, and I don't want to try and answer them now. But
-                    I do want to consider what a couple of famous, influential
-                    philosophers have said about those questions. And that's why
-                    I'm here at Old Calton Cemetery, outside the David Hume
-                    monument. David Hume was a famous Edinburgh-based
-                    philosopher. And he thought that a skeptical attitude
-                    towards philosophy's capacity to find the truth about the
-                    world was entirely appropriate.
-                  </p>
-                  <strong>0:06</strong>
-                  <p>
-                    Now one question that you might have about that, is about
-                    this notion of the right way of thinking about things.
-                  </p>
-                  <strong>0:37</strong>
-                  <p>
-                    Now these are really, really important questions for
-                    philosophy, and I don't want to try and answer them now. But
-                    I do want to consider what a couple of famous, influential
-                    philosophers have said about those questions. And that's why
-                    I'm here at Old Calton Cemetery, outside the David Hume
-                    monument. David Hume was a famous Edinburgh-based
-                    philosopher. And he thought that a skeptical attitude
-                    towards philosophy's capacity to find the truth about the
-                    world was entirely appropriate.
-                  </p>
-                  <strong>1:20</strong>
-                  <p>
-                    Now one question that you might have about that, is about
-                    this notion of the right way of thinking about things.
-                  </p>
-                  <strong>1:48</strong>
-                  <p>
-                    Now these are really, really important questions for
-                    philosophy, and I don't want to try and answer them now. But
-                    I do want to consider what a couple of famous, influential
-                    philosophers have said about those questions. And that's why
-                    I'm here at Old Calton Cemetery, outside the David Hume
-                    monument. David Hume was a famous Edinburgh-based
-                    philosopher. And he thought that a skeptical attitude
-                    towards philosophy's capacity to find the truth about the
-                    world was entirely appropriate.
-                  </p>
+              {displayTranscript && (
+                <div className="course-video-tanscript">
+                  <div className="course-video-scroll">
+                    {getLectureTranscripts() &&
+                      getLectureTranscripts().map(lectureTranscript => {
+                        return (
+                          <>
+                            <strong>{toHHMM(lectureTranscript.idx)}</strong>
+                            <p>{lectureTranscript.text}</p>
+                          </>
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="lms-inner-menu">
                 <a href="#lms-overview" className="lms-act">
                   Overview

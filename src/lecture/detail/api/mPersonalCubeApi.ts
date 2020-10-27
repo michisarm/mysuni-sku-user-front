@@ -33,6 +33,6 @@ export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro> {
 
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
-    .get<Transcript[]>(`${BASE_URL}/${deliveryId}/${locale}`)
+    .get<Transcript[]>(`${BASE_URL}/transcripts/${deliveryId}/${locale}`)
     .then(response => response && response.data);
 }

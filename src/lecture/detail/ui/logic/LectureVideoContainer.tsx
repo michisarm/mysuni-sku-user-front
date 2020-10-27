@@ -1,9 +1,9 @@
 import React from 'react';
-// import { useLectureVideo } from '../../../service/useLectureVideo/useLectureVideo';
- import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
+import { useLectureTranscript } from '../../service/useLectureTranscript/useLectureTranscript';
+import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
 
 function LectureVideoContainer() {
-  // const lectureVideo = useLectureVideo()[0]!;
+  const lectureTranscript = useLectureTranscript()[0]!;
   // const setLectureVideo = useLectureVideo()[1]!;
   // const setCubeLectureVideo = useLectureVideo()[2]!;
 

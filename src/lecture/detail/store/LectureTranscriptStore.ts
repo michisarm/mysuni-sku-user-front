@@ -1,6 +1,10 @@
-import { Transcript } from '../viewModel/Transcript';
+import { LectureTranscript } from '../viewModel/LectureTranscript';
 import { createStore } from './Store';
 
-const [setTranscript, onTranscript, getTranscript] = createStore<Transcript>();
+const [
+  setLectureTranscripts,
+  onLectureTranscripts,
+  getLectureTranscripts,
+] = createStore<LectureTranscript[]>();
 
-export { setTranscript, onTranscript, getTranscript };
+export { setLectureTranscripts, onLectureTranscripts, getLectureTranscripts };
