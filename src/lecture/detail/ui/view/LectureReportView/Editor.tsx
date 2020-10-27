@@ -11,30 +11,9 @@ import {
 
 interface EditorProps {
   lectureReport: LectureReport;
-  setLectureReport: (reportValue: LectureReport) => void;
 }
 
-const Editor: React.FC<EditorProps> = function Editor({
-  lectureReport,
-  // setLectureReport,
-}) {
-  function setAnswer(questionNo: string, value: string) {
-    const answerItem = getLectureReport().studentReport || {};
-    answerItem.homeworkContent = '';
-    lectureReport.studentReport = answerItem;
-
-    setLectureReport(lectureReport);
-    // const answerItem = getLectureReport();
-    // const nextAnswer = answerItem.answers.map(answer => {
-    //   if (questionNo === answer.questionNo) {
-    //     return { ...answer, answer: value };
-    //   }
-    //   return answer;
-    // });
-    // const nextAnswerItem = { ...answerItem, answer: nextAnswer };
-    // setLectureReport(nextAnswerItem);
-  }
-
+const Editor: React.FC<EditorProps> = function Editor({ lectureReport }) {
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -55,19 +34,9 @@ const Editor: React.FC<EditorProps> = function Editor({
     //
     if (lectureReport) {
       if (html && html.length < 1000000000000000) {
-        //TODO : 코드 리뷰 후 개선 필요
-        // const studentReport: StudentReport = lectureReport.studentReport || {};
-        // studentReport.homeworkContent = html;
-        // lectureReport.studentReport = studentReport;
-        // setLectureReport(lectureReport);
-
         const studentReport = getLectureReport()?.studentReport || {};
         studentReport.homeworkContent = html;
         lectureReport.studentReport = studentReport;
-
-        // const nextLectureReport = { ...lectureReport, lectureReport };
-        // setLectureReport(nextLectureReport);
-
         setLectureReport(lectureReport);
       } else {
         alert('html 작성 오류');

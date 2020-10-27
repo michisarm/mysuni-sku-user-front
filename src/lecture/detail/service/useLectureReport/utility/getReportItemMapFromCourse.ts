@@ -39,8 +39,6 @@ export async function getReportItem(
         student.homeworkOperatorComment !== null ||
         student.homeworkOperatorFileBoxId !== null
       ) {
-        // TODO : 담당자 답변시 완료 상태가 맞는지 확인
-        state = 'Completed';
         studentReport.homeworkOperatorComment = student.homeworkOperatorComment;
         studentReport.homeworkOperatorFileBoxId =
           student.homeworkOperatorFileBoxId;
@@ -49,6 +47,9 @@ export async function getReportItem(
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;
+    if (student?.learningState == 'Passed') {
+      state = 'Completed';
+    }
     lectureReport.state = state;
   }
 

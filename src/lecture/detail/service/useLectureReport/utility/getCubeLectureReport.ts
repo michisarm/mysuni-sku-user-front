@@ -9,17 +9,20 @@ import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
 
 // TODO : /viewModel/LectureStructure -> /viewModel/LectureReport 로 변경 예정
-import {
-  LectureStructure,
-  LectureStructureCubeItem,
-  State,
-  StudentStateMap,
-} from '../../../viewModel/LectureStructure';
+// import {
+//   LectureStructure,
+//   LectureStructureCubeItem,
+//   State,
+//   StudentStateMap,
+// } from '../../../viewModel/LectureStructure';
 import { getReportItem } from './getReportItemMapFromCube';
 import {
   LectureReport,
   LectureReportCubeItemParams,
   LectureStructureCubeItemParams,
+  LectureStructureCubeItem,
+  State,
+  StudentStateMap,
 } from 'lecture/detail/viewModel/LectureReport';
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';

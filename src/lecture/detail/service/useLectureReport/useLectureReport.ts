@@ -3,18 +3,13 @@
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  setLectureReport,
-  onLectureReport,
-  getLectureReport,
-} from '../../store/LectureReportStore';
+import { onLectureReport } from '../../store/LectureReportStore';
 import {
   LectureReport,
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
   LectureReportCubeItemParams,
 } from '../../viewModel/LectureReport';
-//import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureReport } from './utility/getCubeLectureReport';
 import { getCourseLectureReport } from './utility/getCourseLectureReport';
 import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';

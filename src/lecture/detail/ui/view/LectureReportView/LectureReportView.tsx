@@ -11,7 +11,10 @@ import depot, {
 } from '@nara.drama/depot';
 import { PatronType } from '@nara.platform/accent';
 import { depotHelper } from 'shared';
-import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
+import {
+  getLectureReport,
+  setLectureReport,
+} from 'lecture/detail/store/LectureReportStore';
 
 // 개발 참고 데이터 주석 - 차후 삭제
 // cube 개발화면        :  http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2jd/lecture-card/LECTURE-CARD-26t/report
@@ -84,7 +87,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
             <div className="ui segment full">
               {/* Header */}
               <div className="course-info-header">
-                <Reportheader lectureReport={lectureReport} />
+                <Reportheader />
               </div>
 
               <div className="apl-form-wrap support">
@@ -92,17 +95,14 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   <Form.Field>
                     <label>주제</label>
                     <div className="ui editor-wrap">
-                      {lectureReport?.reportFileBox?.reportQuestion}
+                      {getLectureReport()?.reportFileBox?.reportQuestion}
                     </div>
                   </Form.Field>
 
                   <Form.Field>
                     <label>작성</label>
                     <div className="ui editor-wrap">
-                      <Editor
-                        lectureReport={lectureReport}
-                        setLectureReport={setLectureReport}
-                      />
+                      <Editor lectureReport={lectureReport} />
                     </div>
                   </Form.Field>
                   {/*TODO : 첨부파일이 없는 경우도 있는지 확인, 없는 경우의 처리 방법 문의  */}
@@ -115,7 +115,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                           className="left icon-big-line2"
                           onClick={() =>
                             depot.downloadDepot(
-                              lectureReport?.reportFileBox?.fileBoxId || ''
+                              getLectureReport()?.reportFileBox?.fileBoxId || ''
                             )
                           }
                         >
@@ -145,11 +145,11 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                     <FileBox
                       // id={lectureReport?.studentReport?.homeworkFileBoxId || ''}
                       id={
-                        lectureReport?.studentReport?.homeworkFileBoxId !==
+                        getLectureReport()?.studentReport?.homeworkFileBoxId !==
                           null &&
-                        lectureReport?.studentReport?.homeworkFileBoxId !==
+                        getLectureReport()?.studentReport?.homeworkFileBoxId !==
                           'null'
-                          ? lectureReport?.studentReport?.homeworkFileBoxId
+                          ? getLectureReport()?.studentReport?.homeworkFileBoxId
                           : ''
                       }
                       vaultKey={{
@@ -179,7 +179,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   </div>
                 </div>
               </div>
-              {lectureReport?.studentReport?.homeworkOperatorComment && (
+              {getLectureReport()?.studentReport?.homeworkOperatorComment && (
                 <Form>
                   <Form.Field>
                     <label>담당자의견</label>
@@ -190,8 +190,8 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                             className="ql-editor"
                             dangerouslySetInnerHTML={{
                               __html:
-                                lectureReport?.studentReport
-                                  ?.homeworkOperatorComment,
+                                getLectureReport()?.studentReport
+                                  ?.homeworkOperatorComment || '',
                             }}
                           />
                         </div>
@@ -231,7 +231,7 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                                 <a
                                   onClick={() =>
                                     depot.downloadDepot(
-                                      lectureReport?.studentReport
+                                      getLectureReport()?.studentReport
                                         ?.homeworkOperatorFileBoxId || ''
                                     )
                                   }
