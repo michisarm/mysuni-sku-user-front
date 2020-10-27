@@ -42,17 +42,13 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
     });
   }, []);
 
-  // AS-IS 붙여봄
-  function getFileBoxIdForReference(depotId: string) {
-    //
-    //TODO : 코드 리뷰 후 개선 필요
+  const getFileBoxIdForReference = useCallback((depotId: string) => {
+    const lectureReport = getLectureReport();
     const studentReport: StudentReport = lectureReport.studentReport || {};
     studentReport.homeworkFileBoxId = depotId;
     lectureReport.studentReport = studentReport;
     setLectureReport(lectureReport);
-  }
-
-  // filesMap: new Map<string, any>(),
+  }, []);
 
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
     new Map<string, any>()
@@ -108,42 +104,44 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                   {/*TODO : 첨부파일이 없는 경우도 있는지 확인, 없는 경우의 처리 방법 문의  */}
                   <Form.Field>
                     <label>첨부파일</label>
-                    <div className="download-file">
-                      <div className="btn-wrap">
-                        <Button
-                          icon
-                          className="left icon-big-line2"
-                          onClick={() =>
-                            depot.downloadDepot(
-                              getLectureReport()?.reportFileBox?.fileBoxId || ''
-                            )
-                          }
-                        >
-                          <Icon className="download2" />
-                          <span>Download File</span>
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="bottom">
-                      <span className="text1">
-                        <Icon className="info16" />
-                        <span className="blind">information</span>
-                        과정담당자가 등록한 Report 양식을 Download 받으실 수
-                        있습니다.
-                      </span>
-                    </div>
+                    {getLectureReport()?.reportFileBox?.fileBoxId && (
+                      <>
+                        <div className="download-file">
+                          <div className="btn-wrap">
+                            <Button
+                              icon
+                              className="left icon-big-line2"
+                              onClick={() =>
+                                depot.downloadDepot(
+                                  getLectureReport()?.reportFileBox
+                                    ?.fileBoxId || ''
+                                )
+                              }
+                            >
+                              <Icon className="download2" />
+                              <span>Download File</span>
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="bottom">
+                          <span className="text1">
+                            <Icon className="info16" />
+                            <span className="blind">information</span>
+                            과정담당자가 등록한 Report 양식을 Download 받으실 수
+                            있습니다.
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </Form.Field>
                 </Form>
               </div>
 
               <div className="report-attach">
                 {/* <AttachFileUpload filesMap={filesMap}/> */}
-                {/* AS-IS 호출 하여 붙여봄 이대로 사용해도 되는지 확인 후 사용 */}
                 <div className="lg-attach">
                   <div className="attach-inner">
-                    {/* TODO  homeworkFileBoxId 데이터가 null 문자열로 저장되어 있는 경우가 있음, 공백 or String 으로 처리 되어야 할것으로 보임*/}
                     <FileBox
-                      // id={lectureReport?.studentReport?.homeworkFileBoxId || ''}
                       id={
                         getLectureReport()?.studentReport?.homeworkFileBoxId !==
                           null &&
@@ -198,54 +196,55 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
                       </div>
                     </div>
                   </Form.Field>
-                  <div className="badge-detail">
-                    <div className="ov-paragraph download-area">
-                      <List bulleted>
-                        <List.Item>
-                          <div className="detail">
-                            <div className="file-down-wrap">
-                              {filesMap &&
-                                filesMap.get('reference') &&
-                                filesMap
-                                  .get('reference')
-                                  .map(
-                                    (
-                                      foundedFile: DepotFileViewModel,
-                                      index: number
-                                    ) => (
-                                      <div className="down">
-                                        <a
-                                          key={index}
-                                          onClick={() =>
-                                            depot.downloadDepotFile(
-                                              foundedFile.id
-                                            )
-                                          }
-                                        >
-                                          <span>{foundedFile.name}</span>
-                                        </a>
-                                      </div>
-                                    )
-                                  )}
-                              <div className="all-down">
-                                <a
-                                  onClick={() =>
-                                    depot.downloadDepot(
-                                      getLectureReport()?.studentReport
-                                        ?.homeworkOperatorFileBoxId || ''
-                                    )
-                                  }
-                                >
-                                  <Icon className="icon-down-type4" />
-                                  <span>전체 다운로드</span>
-                                </a>
+                  {filesMap && (
+                    <div className="badge-detail">
+                      <div className="ov-paragraph download-area">
+                        <List bulleted>
+                          <List.Item>
+                            <div className="detail">
+                              <div className="file-down-wrap">
+                                {filesMap.get('reference') &&
+                                  filesMap
+                                    .get('reference')
+                                    .map(
+                                      (
+                                        foundedFile: DepotFileViewModel,
+                                        index: number
+                                      ) => (
+                                        <div className="down">
+                                          <a
+                                            key={index}
+                                            onClick={() =>
+                                              depot.downloadDepotFile(
+                                                foundedFile.id
+                                              )
+                                            }
+                                          >
+                                            <span>{foundedFile.name}</span>
+                                          </a>
+                                        </div>
+                                      )
+                                    )}
+                                <div className="all-down">
+                                  <a
+                                    onClick={() =>
+                                      depot.downloadDepot(
+                                        getLectureReport()?.studentReport
+                                          ?.homeworkOperatorFileBoxId || ''
+                                      )
+                                    }
+                                  >
+                                    <Icon className="icon-down-type4" />
+                                    <span>전체 다운로드</span>
+                                  </a>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </List.Item>
-                      </List>
+                          </List.Item>
+                        </List>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Form>
               )}
               <div className="survey-preview">
