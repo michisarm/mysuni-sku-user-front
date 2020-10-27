@@ -11,6 +11,7 @@ import MySuniView from '../view/MySuniView';
 import CollegeView from '../view/CollegeView';
 import CertificationView from '../view/CertificationView';
 import certificationRoutePaths from '../../../certification/routePaths';
+import PromotionTab from '../view/PromotionTab';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -24,12 +25,14 @@ enum ContentType {
   MySuni = 'MySuni',
   College = 'College',
   Certification = 'Certification',
+  PromotionTab = 'PromotionTab'
 }
 
 enum ContentTypeName {
   MySuni = 'mySUNI 소개',
   College = 'College 소개',
   Certification = '인증제도 소개',
+  PromotionTab = '홍보자료'
 }
 
 
@@ -54,6 +57,11 @@ class UserMainPage extends Component<Props> {
         name: ContentType.Certification,
         item: ContentTypeName.Certification,
         render: () => <CertificationView />,
+      },
+      {
+        name: ContentType.PromotionTab,
+        item: ContentTypeName.PromotionTab,
+        render: () => <PromotionTab />,
       },
     ] as TabItemModel[];
   }
