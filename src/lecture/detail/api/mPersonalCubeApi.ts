@@ -11,6 +11,7 @@
 import { axiosApi } from '@nara.platform/accent';
 import CubeIntro from '../model/CubeIntro';
 import PersonalCube from '../model/PersonalCube';
+import Transcript from '../model/Transcript';
 
 const BASE_URL = '/api/personalCube';
 
@@ -27,5 +28,11 @@ export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro> {
   const url = `${BASE_URL}/cubeintros/${cubeIntroId}`;
   return axiosApi
     .get<CubeIntro>(url)
+    .then(response => response && response.data);
+}
+
+export function findAllTranscript(deliveryId: string, locale: string) {
+  return axiosApi
+    .get<Transcript[]>(`${BASE_URL}/${deliveryId}/${locale}`)
     .then(response => response && response.data);
 }
