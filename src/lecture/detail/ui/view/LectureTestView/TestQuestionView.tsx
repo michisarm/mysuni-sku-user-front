@@ -1,4 +1,3 @@
-import { QuestionType } from 'assistant/paper/model/QuestionType';
 import React from 'react';
 import TestSingleChoiceView from './TestSingleChoiceView';
 import TestMultiChoiceView from './TestMultiChoiceView';
@@ -13,6 +12,9 @@ import {
 interface TestQuestionViewProps {
   question: ExamQuestion;
   answer?: string;
+  answerResult?: boolean;
+  submitted?: boolean;
+  readOnly: boolean;
 }
 
 function setAnswer(questionNo: string, value: string) {
@@ -33,41 +35,61 @@ function setAnswer(questionNo: string, value: string) {
 const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionView({
   question,
   answer,
+  answerResult,
+  submitted,
+  readOnly,
 }) {
+  let questionClassName = ' course-radio-survey ';
+  if (
+    question.questionType === 'ShortAnswer' ||
+    question.questionType === 'Essay'
+  ) {
+    questionClassName += ' survey-text ';
+  }
+  if (submitted && answerResult) {
+    questionClassName += ' correct ';
+  }
+  if (submitted && !answerResult) {
+    questionClassName += ' wrong ';
+  }
   return (
     <>
-      <div key={question.id} className="course-radio-survey">
+      <div key={question.id} className={questionClassName}>
         <p>
           <span>{question.questionNo}</span>
           {question.direction} ({question.allocatedPoint}
           점)
         </p>
-        {question.questionType === QuestionType.SingleChoice && (
+        {question.questionType === 'SingleChoice' && (
           <TestSingleChoiceView
             question={question}
             answer={answer}
             setAnswer={setAnswer}
+            readOnly={readOnly}
           />
         )}
-        {question.questionType === QuestionType.MultiChoice && (
+        {question.questionType === 'MultiChoice' && (
           <TestMultiChoiceView
             question={question}
             answer={answer}
             setAnswer={setAnswer}
+            readOnly={readOnly}
           />
         )}
-        {question.questionType === QuestionType.ShortAnswer && (
+        {question.questionType === 'ShortAnswer' && (
           <TestShortAnswerView
             question={question}
             answer={answer}
             setAnswer={setAnswer}
+            readOnly={readOnly}
           />
         )}
-        {question.questionType === QuestionType.Essay && (
+        {question.questionType === 'Essay' && (
           <TestEssayView
             question={question}
             answer={answer}
             setAnswer={setAnswer}
+            readOnly={readOnly}
           />
         )}
       </div>

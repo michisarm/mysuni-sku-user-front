@@ -6,12 +6,14 @@ interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
   setAnswer: (questionNo: string, value: string) => void;
+  readOnly: boolean;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
   answer,
   setAnswer,
+  readOnly,
 }) {
   const setAnswerFromRadio = useCallback((e: any, data: any) => {
     setAnswer(question.questionNo, data.value);
@@ -28,6 +30,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
           value={item.itemNo}
           checked={item.itemNo === answer}
           onChange={setAnswerFromRadio}
+          readOnly={readOnly}
         />
       ))}
     </div>

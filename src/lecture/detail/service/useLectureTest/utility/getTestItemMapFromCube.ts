@@ -16,7 +16,10 @@ import {
 import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import PersonalCube from '../../../model/PersonalCube';
-import { findIsJsonStudentByCube } from 'lecture/detail/api/lectureApi';
+import {
+  findIsJsonStudentByCube,
+  findStudent,
+} from 'lecture/detail/api/lectureApi';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -67,7 +70,6 @@ async function getTestAnswerItem(examId: string) {
     answers: [],
     submitted: false,
     submitAnswers: [],
-    learningState: 'Progress',
   };
 
   if (examId !== '') {
@@ -100,11 +102,16 @@ export async function getTestItemMapFromCube(
   if (lectureCardId !== undefined) {
     const studentJoins = await findIsJsonStudentByCube(lectureCardId);
     if (studentJoins.length > 0 && studentJoins[0].studentId !== null) {
+      const student = await findStudent(studentJoins[0].studentId);
       const learningState = studentJoins[0].learningState;
 
       if (examId !== undefined) {
         const testItem = await getTestItem(examId);
         if (testItem !== undefined) {
+          testItem.student = {
+            serviceType: student.serviceType,
+            learningState,
+          };
           setLectureTestItem(testItem);
           const answerItem = await getTestAnswerItem(examId);
           if (answerItem !== undefined) {
@@ -116,8 +123,6 @@ export async function getTestItemMapFromCube(
                 });
               });
             }
-
-            answerItem.learningState = learningState;
 
             setLectureTestAnswerItem(answerItem);
           }

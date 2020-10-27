@@ -6,12 +6,14 @@ interface TestSingleChoiceViewProps {
   question: ExamQuestion;
   answer?: string;
   setAnswer: (questionNo: string, value: string) => void;
+  readOnly: boolean;
 }
 
 const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestSingleChoiceView({
   question,
   answer,
   setAnswer,
+  readOnly,
 }) {
   const maxLength = 100;
 
@@ -37,6 +39,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
                 setAnswer(question.questionNo, e.target.value);
               }
             }}
+            readOnly={readOnly}
           />
           <Icon className="clear link" />
           <span className="validation">

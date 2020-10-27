@@ -37,6 +37,11 @@ export interface LectureStructureCubeItemParams extends Params {
   examId: string;
 }
 
+export interface LectureTestStudent extends Item {
+  serviceType: LectureType;
+  learningState: LearningState;
+}
+
 export interface LectureTestItem extends Item {
   id: string;
   name: string;
@@ -44,6 +49,7 @@ export interface LectureTestItem extends Item {
   questions: ExamQuestion[];
   successPoint: number;
   totalPoint: number;
+  student?: LectureTestStudent;
 }
 
 export interface LectureTestAnswerItem extends Item {
@@ -51,7 +57,6 @@ export interface LectureTestAnswerItem extends Item {
   answers: Answer[];
   submitted: boolean;
   submitAnswers: Answer[];
-  learningState: LearningState;
 }
 
 export interface LectureTest {
