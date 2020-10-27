@@ -3,12 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
+import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
 
-interface LectureSummaryViewProps {
-  lectureSummary: LectureSummary;
+interface LectureCourseSummaryViewProps {
+  lectureSummary: LectureCourseSummary;
 }
 
-const LectureSummaryView: React.FC<LectureSummaryViewProps> = function LectureSummaryView({
+const LectureCourseSummaryView: React.FC<LectureCourseSummaryViewProps> = function LectureCourseSummaryView({
   lectureSummary,
 }) {
   return (
@@ -21,12 +22,6 @@ const LectureSummaryView: React.FC<LectureSummaryViewProps> = function LectureSu
           <div className="header">{lectureSummary.name}</div>
           <div className="header-deatil">
             <div className="item">
-              {lectureSummary.difficultyLevel !== undefined && (
-                <Label className="bold onlytext">
-                  <Icon className="inter" />
-                  <span>{lectureSummary.difficultyLevel}</span>
-                </Label>
-              )}
               <Label className="bold onlytext">
                 <Icon className="time2" />
                 <span>{lectureSummary.learningTime}</span>
@@ -74,4 +69,4 @@ const LectureSummaryView: React.FC<LectureSummaryViewProps> = function LectureSu
   );
 };
 
-export default LectureSummaryView;
+export default LectureCourseSummaryView;

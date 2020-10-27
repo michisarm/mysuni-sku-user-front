@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import LectureDetailCourseSubRoutes from './LectureDetailCourseSubRoutes';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
-import LectureOverviewPage from './ui/logic/LectureOverview/LectureOverviewPage';
+import LectureCourseOverviewPage from './ui/logic/LectureOverview/LectureCourseOverviewPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 
 export default function LectureDetailCourseRoutes() {
@@ -11,12 +12,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-        component={LectureOverviewPage}
+        component={LectureCourseOverviewPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId"
-        component={LectureOverviewPage}
+        component={LectureCourseOverviewPage}
       />
       {/* Program / Course / Exam, Survey, Report*/}
       <Route
@@ -53,12 +54,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
-        component={LectureOverviewPage}
+        component={LectureDetailCourseSubRoutes}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId"
-        component={LectureOverviewPage}
+        component={LectureDetailCourseSubRoutes}
       />
       {/* Content Exam,Survey,Report */}
       <Route
