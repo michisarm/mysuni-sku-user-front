@@ -2,6 +2,7 @@ import LectureBadge from '../viewModel/LectureOverview/LectureBadge';
 import LectureCourseSummary from '../viewModel/LectureOverview/LectureCourseSummary';
 import LectureCubeSummary from '../viewModel/LectureOverview/LectureCubeSummary';
 import LectureDescription from '../viewModel/LectureOverview/LectureDescription';
+import LectureFile from '../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../viewModel/LectureOverview/LectureInstructor';
 import LecturePrecourse from '../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
@@ -49,6 +50,10 @@ const [setLectureBadge, onLectureBadge, getLectureBadge] = createStore<
   LectureBadge
 >();
 
+const [setLectureFile, onLectureFile, getLectureFile] = createStore<
+  LectureFile
+>();
+
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
@@ -74,4 +79,7 @@ export {
   setLectureBadge,
   onLectureBadge,
   getLectureBadge,
+  setLectureFile,
+  onLectureFile,
+  getLectureFile,
 };

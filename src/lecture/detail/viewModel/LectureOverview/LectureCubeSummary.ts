@@ -4,5 +4,4 @@ import LectureSummary from './LectureSummary';
 
 export default interface LectureCubeSummary extends LectureSummary {
   difficultyLevel: DifficultyLevel;
-  instructor: Instructor;
 }

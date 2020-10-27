@@ -12,12 +12,15 @@ import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
   setLectureCubeSummary,
   setLectureDescription,
+  setLectureFile,
   setLectureInstructor,
   setLecturePrecourse,
   setLectureSubcategory,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
+import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
+import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -32,7 +35,6 @@ function getLectureSummary(
   const difficultyLevel = cubeIntro.difficultyLevel;
   const learningTime = timeToHourMinuteFormat(cubeIntro.learningTime);
   const operator = cubeIntro.operation.operator;
-  const [instructor] = cubeIntro.instructor;
   return {
     name: personalCube.name,
     category: {
@@ -43,7 +45,6 @@ function getLectureSummary(
     learningTime,
     operator,
     passedCount: lectureCard.passedStudentCount,
-    instructor,
   };
 }
 
@@ -76,6 +77,11 @@ function getLectureInstructor(cubeIntro: CubeIntro): LectureInstructor {
   };
 }
 
+function getLectureFile(fileBoxId: string): Promise<LectureFile> {
+  const fileBoxIds = [fileBoxId];
+  return getFiles(fileBoxIds).then(files => ({ files }));
+}
+
 function findCube(personalCubeId: string) {
   return findPersonalCube(personalCubeId);
 }
@@ -106,4 +112,8 @@ export async function getCubeLectureOverview(
   const lectureInstructor = getLectureInstructor(cubeIntro);
   setLectureInstructor(lectureInstructor);
   setLecturePrecourse(getEmptyLecturePrecourse());
+  if (personalCube.contents.fileBoxId !== '') {
+    const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
+    setLectureFile(lectureFile);
+  }
 }
