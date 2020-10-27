@@ -5,17 +5,9 @@ import { useParams } from 'react-router-dom';
 import { parseLectureParams } from '../../utility/lectureRouterParamsHelper';
 import LectureParams from '../../viewModel/LectureParams';
 import { getCourseLectureOverview } from './utility/getCourseLectureOverview';
-import { getCubeLectureOverview } from './utility/getCubeLectureOverview';
 
-export function useCourseLectureOverview() {
+export function useLectureCourseOverview() {
   const params = useParams<LectureParams>();
-
-  const getCubeOverview = useCallback(
-    (personalCubeId: string, lectureCardId: string) => {
-      getCubeLectureOverview(personalCubeId, lectureCardId);
-    },
-    []
-  );
 
   const getCourseOverview = useCallback(
     ({
@@ -36,11 +28,7 @@ export function useCourseLectureOverview() {
 
   useEffect(() => {
     const lectureParams = parseLectureParams(params);
-    const { contentType, contentId, lectureId } = lectureParams;
-    if (contentType === 'cube') {
-      getCubeOverview(contentId, lectureId);
-      return;
-    }
+    const { contentId, lectureId } = lectureParams;
     getCourseOverview({
       cineroomId: params.cineroomId,
       collegeId: params.collegeId,

@@ -3,20 +3,21 @@ import { Route, Switch } from 'react-router-dom';
 import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
-import LectureOverviewPage from './ui/logic/LectureOverview/LectureCourseOverviewPage';
+import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
 
 export default function LectureDetailCubeRoutes() {
+  debugger;
   return (
     <Switch>
       <Route
         exact
         path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailCubeRoutes}
+        component={LectureDetailCubeSubRoutes}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId"
-        component={LectureDetailCubeRoutes}
+        component={LectureDetailCubeSubRoutes}
       />
       <Route
         exact

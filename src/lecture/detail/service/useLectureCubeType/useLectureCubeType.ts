@@ -31,6 +31,7 @@ export function useLectureCubeType(cubeId?: string): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
+    debugger;
     if (cubeId === undefined) {
       return;
     }

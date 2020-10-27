@@ -1,13 +1,9 @@
 import React from 'react';
-import { useLectureCubeType } from './service/useLectureCubeType/useLectureCubeType';
 import { useLectureRouterParams } from './service/useLectureRouterParams';
-import LectureCourseOverviewPage from './ui/logic/LectureOverview/LectureCourseOverviewPage';
+import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 
 function LectureDetailCourseSubRoutes() {
   const params = useLectureRouterParams();
-  const cubeType = useLectureCubeType(
-    params.contentType === 'cube' ? params.contentId : undefined
-  );
   return (
     <>
       {params.contentType === 'coures' && <LectureCourseOverviewPage />}

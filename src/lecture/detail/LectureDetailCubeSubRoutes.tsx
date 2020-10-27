@@ -8,9 +8,8 @@ import LectureCubeElearningPage from './ui/logic/LectureCubeElearningPage';
 import LectureCubeTaskPage from './ui/logic/LectureCubeTaskPage';
 import LectureCubeVideoPage from './ui/logic/LectureCubeVideoPage';
 import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
-import LectureCourseOverviewPage from './ui/logic/LectureOverview/LectureCourseOverviewPage';
 
-function LectureDetailCourseSubRoutes() {
+function LectureDetailCubeSubRoutes() {
   const params = useLectureRouterParams();
   const [cubeType] = useLectureCubeType(params.contentId);
   return (
@@ -40,4 +39,4 @@ function LectureDetailCourseSubRoutes() {
   );
 }
 
-export default LectureDetailCourseSubRoutes;
+export default LectureDetailCubeSubRoutes;
