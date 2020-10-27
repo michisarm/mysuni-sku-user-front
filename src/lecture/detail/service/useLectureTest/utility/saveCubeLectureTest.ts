@@ -28,7 +28,7 @@ import {
   getLectureTestItem,
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
-import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
+import { getTestStudentItemMapFromLecture } from './getTestStudentItemMapFromLecture';
 
 export async function saveTestAnswerSheet(
   lectureCardId: string,
@@ -59,7 +59,7 @@ export async function saveTestAnswerSheet(
         answerSheetBody.examId
       );
     }
-    await getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+    await getTestStudentItemMapFromLecture(lectureCardId); // student 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(newAnswerSheetId => {
       answerSheetBody.id = newAnswerSheetId;
@@ -67,7 +67,7 @@ export async function saveTestAnswerSheet(
       if (pFinished) {
         modifyStudentForExam(testStudentItem.studentId, answerSheetBody.examId);
       }
-      getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+      getTestStudentItemMapFromLecture(lectureCardId); // student 재호출
     });
   }
 }

@@ -6,8 +6,6 @@ import { patronInfo } from '@nara.platform/dock';
 import { findAnswerSheet } from '../../../api/assistantApi';
 import { LectureTestAnswerItem } from '../../../viewModel/LectureTest';
 import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
-import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 
 // exam
@@ -46,7 +44,7 @@ async function getTestAnswerItem(examId: string) {
   }
 }
 
-export async function getTestAnswerItemMapFromCube(
+export async function getTestAnswerItemMapFromExam(
   examId: string,
   questions: ExamQuestion[]
 ): Promise<void> {

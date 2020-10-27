@@ -2,16 +2,9 @@ import { reactConfirm } from '@nara.platform/accent';
 import { useLectureTestStudent } from 'lecture/detail/service/useLectureTest/useLectureTestStudent';
 import { useLectureTestAnswer } from 'lecture/detail/service/useLectureTest/useLectureTestAnswer';
 import { saveTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCubeLectureTest';
-import {
-  getLectureTestAnswerItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
-import React, { useCallback, useEffect, useState } from 'react';
-import { LearningState } from 'shared/model';
-import {
-  LectureTestAnswerItem,
-  LectureTestItem,
-} from '../../../viewModel/LectureTest';
+import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore';
+import React, { useCallback } from 'react';
+import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
 
 interface LectureTestViewProps {
@@ -27,8 +20,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   const [answerItem] = useLectureTestAnswer();
 
   let readOnly = false;
-  // readonly state에 넣고 아래는 useEffect에
-  //useEffect(() => {
   if (
     testStudentItem &&
     testStudentItem.learningState &&
@@ -36,10 +27,8 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       testStudentItem.learningState === 'Passed' ||
       testStudentItem.learningState === 'TestPassed')
   ) {
-    //    setReadOnly(true);
     readOnly = true;
   }
-  //}, [readOnly]);
 
   const saveAnswerSheet = useCallback(() => {
     let answerItemId = '';
@@ -70,10 +59,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             setLectureTestAnswerItem(nextAnswerItem);
             saveTestAnswerSheet(lectureId, answerItemId, true, true);
           }
-
-          //answerItem!.submitAnswers = answerItem!.answers;
-          //setLectureTestAnswerItem(answerItem!);
-          //saveTestAnswerSheet(answerItemId, true, true);
         },
       });
     }

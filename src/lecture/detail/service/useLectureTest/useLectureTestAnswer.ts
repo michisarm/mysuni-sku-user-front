@@ -1,22 +1,17 @@
 /* eslint-disable consistent-return */
 
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  onLectureTestItem,
-  onLectureTestAnswerItem,
-} from '../../store/LectureTestStore';
+import { onLectureTestAnswerItem } from '../../store/LectureTestStore';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
-  LectureTestItem,
   LectureTestAnswerItem,
 } from '../../viewModel/LectureTest';
 import { useLectureRouterParams } from '../useLectureRouterParams';
-import { useLectureTest } from './useLectureTest';
+import { getCourseLectureTestAnswer } from './utility/getCourseLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
-import { getCubeLectureTest } from './utility/getCubeLectureTest';
 import { getCubeLectureTestAnswer } from './utility/getCubeLectureTest';
 
 type AnswerValue = LectureTestAnswerItem | undefined;
@@ -25,30 +20,22 @@ export function useLectureTestAnswer(): [AnswerValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [answerValue, setAnswerValue] = useState<AnswerValue>();
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+  const params = useParams<LectureParams>();
 
-  const { lectureId, contentType, contentId } = useLectureRouterParams();
-
-  const getCubeTestAnswerItem = useCallback(() => {
-    getCubeLectureTestAnswer(contentId);
+  const getCubeTestAnswerItem = useCallback((params: LectureParams) => {
+    getCubeLectureTestAnswer(params.cubeId!);
   }, []);
 
-  //const getCourseItem = useCallback(
-  //  (params: LectureStructureCourseItemParams) => {
-  //    getCourseLectureStructure(params).then(lectureTest => {
-  //      setLectureTest(lectureTest);
-  //    });
-  //  },
-  //  []
-  //);
+  const getCourseTestAnswerItem = useCallback((params: LectureParams) => {
+    getCourseLectureTestAnswer(params);
+  }, []);
 
   useEffect(() => {
-    if (contentId !== undefined) {
-      getCubeTestAnswerItem();
+    const { lectureType, contentId, lectureId, ...structParams } = params;
+    if (params.cubeId !== undefined) {
+      getCubeTestAnswerItem(params);
     } else {
-      //getCourseItem(params);
+      getCourseTestAnswerItem(params);
     }
   }, [params]);
 

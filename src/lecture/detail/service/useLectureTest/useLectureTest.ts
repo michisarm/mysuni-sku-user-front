@@ -1,18 +1,16 @@
 /* eslint-disable consistent-return */
 
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  onLectureTestItem,
-  onLectureTestAnswerItem,
-} from '../../store/LectureTestStore';
+import { onLectureTestItem } from '../../store/LectureTestStore';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
   LectureTestItem,
-  LectureTestAnswerItem,
 } from '../../viewModel/LectureTest';
 import { useLectureRouterParams } from '../useLectureRouterParams';
+import { getCourseLectureTest } from './utility/getCourseLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
 
@@ -22,30 +20,22 @@ export function useLectureTest(): [TestValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [testValue, setTestValue] = useState<TestValue>();
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+  const params = useParams<LectureParams>();
 
-  const { lectureId, contentType, contentId } = useLectureRouterParams();
-
-  const getCubeTestItem = useCallback(() => {
-    getCubeLectureTest(contentId);
+  const getCubeTestItem = useCallback((params: LectureParams) => {
+    getCubeLectureTest(params.cubeId!);
   }, []);
 
-  //const getCourseItem = useCallback(
-  //  (params: LectureStructureCourseItemParams) => {
-  //    getCourseLectureStructure(params).then(lectureTest => {
-  //      setLectureTest(lectureTest);
-  //    });
-  //  },
-  //  []
-  //);
+  const getCourseTestItem = useCallback((params: LectureParams) => {
+    getCourseLectureTest(params);
+  }, []);
 
   useEffect(() => {
-    if (contentId !== undefined) {
-      getCubeTestItem();
+    const { lectureType, contentId, lectureId, ...structParams } = params;
+    if (params.cubeId !== undefined) {
+      getCubeTestItem(params);
     } else {
-      //getCourseItem(params);
+      getCourseTestItem(params);
     }
   }, [params]);
 

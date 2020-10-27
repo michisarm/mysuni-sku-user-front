@@ -1,6 +1,5 @@
-import LearningState from 'lecture/detail/model/LearningState';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLectureTest } from '../../service/useLectureTest/useLectureTest';
 import LectureTestView from '../view/LectureTestView/LectureTestView';
 

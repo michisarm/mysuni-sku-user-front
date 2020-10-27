@@ -2,21 +2,7 @@
 // report
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
-import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../../api/assistantApi';
-import { findExamination, findExamPaperForm } from '../../../api/examApi';
-import {
-  LectureTestItem,
-  LectureTestAnswerItem,
-} from '../../../viewModel/LectureTest';
-import {
-  setLectureTestAnswerItem,
-  setLectureTestItem,
-  setLectureTestStudentItem,
-} from 'lecture/detail/store/LectureTestStore';
-import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
-import LectureParams from 'lecture/detail/viewModel/LectureParams';
-import PersonalCube from '../../../model/PersonalCube';
+import { setLectureTestStudentItem } from 'lecture/detail/store/LectureTestStore';
 import {
   findIsJsonStudentByCube,
   findStudent,
@@ -31,7 +17,7 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-export async function getTestStudentItemMapFromCube(
+export async function getTestStudentItemMapFromLecture(
   lectureCardId: string
 ): Promise<void> {
   // void : return이 없는 경우 undefined

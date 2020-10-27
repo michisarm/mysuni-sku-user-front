@@ -1,10 +1,6 @@
 import ExamQuestion from 'lecture/detail/model/ExamQuestion';
-import {
-  getLectureTestAnswerItem,
-  setLectureTestAnswerItem,
-} from 'lecture/detail/store/LectureTestStore';
 import React from 'react';
-import { Form, Icon, Radio } from 'semantic-ui-react';
+import { Form, Icon } from 'semantic-ui-react';
 
 interface TestSingleChoiceViewProps {
   question: ExamQuestion;

@@ -1,26 +1,16 @@
 /* eslint-disable consistent-return */
 
-import ExamQuestion from 'lecture/detail/model/ExamQuestion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  onLectureTestItem,
-  onLectureTestAnswerItem,
-  onLectureTestStudentItem,
-} from '../../store/LectureTestStore';
+import { onLectureTestStudentItem } from '../../store/LectureTestStore';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
   LectureTestStudentItem,
 } from '../../viewModel/LectureTest';
 import { useLectureRouterParams } from '../useLectureRouterParams';
-import { useLectureTest } from './useLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
-import {
-  getCubeLectureTest,
-  getCubeLectureTestStudent,
-} from './utility/getCubeLectureTest';
-import { getCubeLectureTestAnswer } from './utility/getCubeLectureTest';
+import { getCubeLectureTestStudent } from './utility/getCubeLectureTest';
 
 type TestStudentValue = LectureTestStudentItem | undefined;
 
@@ -37,15 +27,6 @@ export function useLectureTestStudent(): [TestStudentValue] {
   const getCubeTestStudentItem = useCallback(() => {
     getCubeLectureTestStudent(lectureId);
   }, []);
-
-  //const getCourseItem = useCallback(
-  //  (params: LectureStructureCourseItemParams) => {
-  //    getCourseLectureStructure(params).then(lectureTest => {
-  //      setLectureTest(lectureTest);
-  //    });
-  //  },
-  //  []
-  //);
 
   useEffect(() => {
     if (lectureId !== undefined) {

@@ -5,8 +5,9 @@
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
-import { findPersonalCube } from 'lecture/detail/api/mPersonalCubeApi';
-import PersonalCube from '../../../model/PersonalCube';
+import { findCoursePlanContents } from 'lecture/detail/api/lectureApi';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 
 // exam
 // http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
@@ -17,8 +18,11 @@ import PersonalCube from '../../../model/PersonalCube';
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
-  return findPersonalCube(cubeId);
+function getCoursePlanComplexByParams(
+  params: LectureParams
+): Promise<CoursePlanComplex> {
+  const { coursePlanId, serviceId } = params;
+  return findCoursePlanContents(coursePlanId!, serviceId!);
 }
 
 async function getTestItem(examId: string) {
@@ -51,14 +55,19 @@ async function getTestItem(examId: string) {
   }
 }
 
-export async function getTestItemMapFromCube(
-  cubeId: string
+export async function getTestItemMapFromCourse(
+  params: LectureParams
 ): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
 
-  const personalCube = await getPersonalCubeByParams(cubeId);
+  const coursePlanComplex = await getCoursePlanComplexByParams(params);
+  // TODO
+  // course는 Test가 복수개이기 때문에 examId를 course_plan_contents의 testId를 이용한 examination이 아니라 학습시작한 student의 student_score_json.examId의 examination를 사용해야한다.
+  // student에서 examId가져오는 api 필요(student에 examId가 없으면 api 내에서 랜덤으로 course의 examId를 넣어줘야 함)
   const examId =
-    personalCube && personalCube.contents && personalCube.contents.examId;
+    coursePlanComplex &&
+    coursePlanComplex.examination &&
+    coursePlanComplex.examination.id;
 
   if (examId !== undefined) {
     const testItem = await getTestItem(examId);
