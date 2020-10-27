@@ -1,14 +1,9 @@
 import React from 'react';
-import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
+import { useLectureFile } from '../../../service/useLectureFile';
 import LectureFileView from '../../view/LectureOverview/LectureFileView';
 
-interface LectureFileViewProps {
-  lectureFile?: LectureFile;
-}
-
-const LectureCubeFileContainer: React.FC<LectureFileViewProps> = function LectureCubeFileContainer({
-  lectureFile,
-}) {
+const LectureCubeFileContainer: React.FC = function LectureCubeFileContainer() {
+  const [lectureFile] = useLectureFile();
   return <>{lectureFile && <LectureFileView lectureFile={lectureFile} />}</>;
 };
 

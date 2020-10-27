@@ -49,8 +49,15 @@ function getLectureSummary(
 }
 
 function getLectureDescription(cubeIntro: CubeIntro): LectureDescription {
-  const { description } = cubeIntro.description;
-  return { description };
+  const {
+    description,
+    applicants,
+    completionTerms,
+    goal,
+    guide,
+  } = cubeIntro.description;
+  const organizer = cubeIntro.operation.organizer.name;
+  return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
 function getLectureSubcategory(personalCube: PersonalCube): LectureSubcategory {
