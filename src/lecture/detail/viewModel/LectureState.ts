@@ -9,10 +9,10 @@ export default interface LectureState {
   learningState: LearningState;
   proposalState: ProposalState;
   type: CubeType;
+  hideAction?: boolean;
+  hideState?: boolean;
   canAction?: boolean;
   actionText?: string;
   action?: () => void;
   stateText?: string;
-  subStateVisible?: boolean;
-  subStateText?: string;
 }
