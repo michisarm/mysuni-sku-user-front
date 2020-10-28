@@ -20,12 +20,12 @@ export default function LectureDetailCubeRoutes() {
       />
       <Route
         exact
-        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam/:examId"
+        path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
         component={LectureTestPage}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam/:examId"
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/exam"
         component={LectureTestPage}
       />
       <Route

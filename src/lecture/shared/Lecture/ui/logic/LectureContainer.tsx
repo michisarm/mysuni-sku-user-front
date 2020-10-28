@@ -4,8 +4,8 @@ import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
 
 // react-ga & gtm import
-import ReactGA from 'react-ga';
-import TagManager from 'react-gtm-module';
+//import ReactGA from 'react-ga';
+//import TagManager from 'react-gtm-module';
 
 import moment from 'moment';
 import { ActionLogService } from 'shared/stores';
@@ -103,7 +103,7 @@ class LectureContainer extends Component<Props, States> {
   };
 
   // react-ga tracking id
-  componentDidMount() { ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`); }
+  //componentDidMount() { ReactGA.initialize(`${process.env.REACT_APP_API_GA_ID}`); }
 
   onHoverIn() {
     const { actionLogService, model } = this.props;
@@ -168,7 +168,7 @@ class LectureContainer extends Component<Props, States> {
     onViewDetail!(e, data);
 
     /* react-gtm */
-    TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
+    //TagManager.initialize({ gtmId: `${process.env.REACT_APP_API_GTM_ID}` });
   }
 
   /* render functions */
@@ -381,5 +381,5 @@ export default LectureContainer;
 
 //react-GA Event
 export const Event = (category: string, action: string, label: string) => {
-  ReactGA.event({ category, action });
+  //ReactGA.event({ category, action });
 };

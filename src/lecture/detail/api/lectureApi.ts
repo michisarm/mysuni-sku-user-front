@@ -64,9 +64,19 @@ export function findIsJsonStudentByCube(
     .then(response => response && response.data);
 }
 
-export function modifyStudent(studentId: string, fileBoxId: string, homework: string): Promise<void> {
+export function modifyStudent(
+  studentId: string,
+  fileBoxId: string,
+  homework: string
+): Promise<void> {
   const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}/${homework}`;
-  return axiosApi
-    .put<void>(url)
-    .then(response => response && response.data);
+  return axiosApi.put<void>(url).then(response => response && response.data);
+}
+
+export function modifyStudentForExam(
+  studentId: string,
+  examId: string
+): Promise<void> {
+  const url = `${BASE_URL}/students/flow/examProcess/${studentId}/${examId}`;
+  return axiosApi.put<void>(url).then(response => response && response.data);
 }

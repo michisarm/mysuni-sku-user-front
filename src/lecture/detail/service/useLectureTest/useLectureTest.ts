@@ -1,50 +1,40 @@
 /* eslint-disable consistent-return */
 
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  onLectureTestItem,
-  onLectureTestAnswerItem,
-} from '../../store/LectureTestStore';
+import { onLectureTestItem } from '../../store/LectureTestStore';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
   LectureTestItem,
-  LectureTestAnswerItem,
 } from '../../viewModel/LectureTest';
+import { useLectureRouterParams } from '../useLectureRouterParams';
+import { getCourseLectureTest } from './utility/getCourseLectureTest';
 //import { getCourseLectureStructure } from './utility/getCourseLectureStructure';
 import { getCubeLectureTest } from './utility/getCubeLectureTest';
 
 type TestValue = LectureTestItem | undefined;
-type AnswerValue = LectureTestAnswerItem | undefined;
 
-export function useLectureTest(): [TestValue, AnswerValue] {
+export function useLectureTest(): [TestValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [testValue, setTestValue] = useState<TestValue>();
-  const [answerValue, setAnswerValue] = useState<AnswerValue>();
-  const params = useParams<
-    LectureStructureCourseItemParams & LectureStructureCubeItemParams
-  >();
+  const params = useParams<LectureParams>();
 
-  const getCubeTestItem = useCallback((examId: string) => {
-    getCubeLectureTest(examId);
+  const getCubeTestItem = useCallback((params: LectureParams) => {
+    getCubeLectureTest(params.cubeId!);
   }, []);
 
-  //const getCourseItem = useCallback(
-  //  (params: LectureStructureCourseItemParams) => {
-  //    getCourseLectureStructure(params).then(lectureTest => {
-  //      setLectureTest(lectureTest);
-  //    });
-  //  },
-  //  []
-  //);
+  const getCourseTestItem = useCallback((params: LectureParams) => {
+    getCourseLectureTest(params);
+  }, []);
 
   useEffect(() => {
-    if (params.cubeId !== undefined && params.examId !== undefined) {
-      getCubeTestItem(params.examId);
+    if (params.cubeId !== undefined) {
+      getCubeTestItem(params);
     } else {
-      //getCourseItem(params);
+      getCourseTestItem(params);
     }
   }, [params]);
 
@@ -63,15 +53,5 @@ export function useLectureTest(): [TestValue, AnswerValue] {
     }, subscriberId);
   }, [subscriberId]);
 
-  useEffect(() => {
-    if (subscriberId === undefined) {
-      return;
-    }
-    return onLectureTestAnswerItem(next => {
-      setAnswerValue(next);
-      console.log('LectureTestAnswerItem', next);
-    }, subscriberId);
-  }, [subscriberId]);
-
-  return [testValue, answerValue];
+  return [testValue];
 }

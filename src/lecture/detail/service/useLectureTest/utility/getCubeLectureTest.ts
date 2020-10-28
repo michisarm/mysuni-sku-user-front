@@ -16,8 +16,23 @@
   report?: LectureStructureReportItem;
 }
  */
+import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestItemMapFromCube } from './getTestItemMapFromCube';
+import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
 
-export async function getCubeLectureTest(examId: string): Promise<void> {
-  await getTestItemMapFromCube(examId);
+export async function getCubeLectureTest(cubeId: string): Promise<void> {
+  await getTestItemMapFromCube(cubeId);
+}
+
+export async function getCubeLectureTestStudent(
+  lectureCardId: string
+): Promise<void> {
+  await getTestStudentItemMapFromCube(lectureCardId);
+}
+
+export async function getCubeLectureTestAnswer(cubeId: string): Promise<void> {
+  const testItem = await getTestItemMapFromCube(cubeId); // 다른 방법은?
+  if (testItem) {
+    await getTestAnswerItemMapFromExam(testItem.id, testItem.questions);
+  }
 }
