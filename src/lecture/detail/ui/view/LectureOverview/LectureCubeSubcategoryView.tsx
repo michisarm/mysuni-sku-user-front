@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Label, List } from 'semantic-ui-react';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 
-interface LectureSubcategoryViewProps {
+interface LectureCubeSubcategoryViewProps {
   lectureSubcategory: LectureSubcategory;
 }
 
@@ -14,7 +14,7 @@ interface IdName {
 interface College extends IdName {
   channels: IdName[];
 }
-const LectureSubcategoryView: React.FC<LectureSubcategoryViewProps> = function LectureSubcategoryView({
+const LectureCubeSubcategoryView: React.FC<LectureCubeSubcategoryViewProps> = function LectureCubeSubcategoryView({
   lectureSubcategory,
 }) {
   const [subcategoryTree, setSubcategoryTree] = useState<College[]>([]);
@@ -40,7 +40,7 @@ const LectureSubcategoryView: React.FC<LectureSubcategoryViewProps> = function L
     setSubcategoryTree(nextSubcategoryTree);
   }, [lectureSubcategory]);
   return (
-    <div className="ov-paragraph fn-parents intro">
+    <div className="ov-paragraph fn-parents">
       <div className="section-head">
         <h3 className="title-style">
           <Label className="onlytext bold size24">
@@ -66,4 +66,4 @@ const LectureSubcategoryView: React.FC<LectureSubcategoryViewProps> = function L
   );
 };
 
-export default LectureSubcategoryView;
+export default LectureCubeSubcategoryView;

@@ -4,7 +4,7 @@ import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstruc
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 import LectureDescriptionView from './LectureDescriptionView';
-import LectureSubcategoryView from './LectureSubcategoryView';
+import LectureSubcategoryView from './LectureCourseSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import LectureInstructorView from './LectureInstructorView';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';

@@ -12,12 +12,15 @@ import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
   setLectureCubeSummary,
   setLectureDescription,
+  setLectureFile,
   setLectureInstructor,
   setLecturePrecourse,
   setLectureSubcategory,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
+import { getFiles } from '../../../utility/depotFilesHelper';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
+import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
@@ -32,7 +35,6 @@ function getLectureSummary(
   const difficultyLevel = cubeIntro.difficultyLevel;
   const learningTime = timeToHourMinuteFormat(cubeIntro.learningTime);
   const operator = cubeIntro.operation.operator;
-  const [instructor] = cubeIntro.instructor;
   return {
     name: personalCube.name,
     category: {
@@ -43,13 +45,19 @@ function getLectureSummary(
     learningTime,
     operator,
     passedCount: lectureCard.passedStudentCount,
-    instructor,
   };
 }
 
 function getLectureDescription(cubeIntro: CubeIntro): LectureDescription {
-  const { description } = cubeIntro.description;
-  return { description };
+  const {
+    description,
+    applicants,
+    completionTerms,
+    goal,
+    guide,
+  } = cubeIntro.description;
+  const organizer = cubeIntro.operation.organizer.name;
+  return { description, applicants, completionTerms, goal, guide, organizer };
 }
 
 function getLectureSubcategory(personalCube: PersonalCube): LectureSubcategory {
@@ -74,6 +82,11 @@ function getLectureInstructor(cubeIntro: CubeIntro): LectureInstructor {
   return {
     instructors: instructor,
   };
+}
+
+function getLectureFile(fileBoxId: string): Promise<LectureFile> {
+  const fileBoxIds = [fileBoxId];
+  return getFiles(fileBoxIds).then(files => ({ files }));
 }
 
 function findCube(personalCubeId: string) {
@@ -106,4 +119,8 @@ export async function getCubeLectureOverview(
   const lectureInstructor = getLectureInstructor(cubeIntro);
   setLectureInstructor(lectureInstructor);
   setLecturePrecourse(getEmptyLecturePrecourse());
+  if (personalCube.contents.fileBoxId !== '') {
+    const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
+    setLectureFile(lectureFile);
+  }
 }

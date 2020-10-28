@@ -6,7 +6,6 @@ import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureDetailCubeSubRoutes from './LectureDetailCubeSubRoutes';
 
 export default function LectureDetailCubeRoutes() {
-  debugger;
   return (
     <Switch>
       <Route

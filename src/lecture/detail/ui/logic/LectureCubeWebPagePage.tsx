@@ -5,11 +5,21 @@
  */
 
 import React from 'react';
+import { useLectuerCubeOverview } from '../../service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
 import LectureDetailLayout from '../view/LectureDetailLayout';
+import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
+import LectureCubeFileContainer from './LectureCubeOverview/LectureCubeFileContainer';
+import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
 function LectureCubeWebPagePage() {
-  return <LectureDetailLayout />;
+  useLectuerCubeOverview();
+  return (
+    <LectureDetailLayout>
+      <LectureCubeSummaryContainer />
+      <LectureCubeContentContainer />
+    </LectureDetailLayout>
+  );
 }
 
 export default LectureCubeWebPagePage;
