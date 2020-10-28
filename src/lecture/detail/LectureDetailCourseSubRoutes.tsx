@@ -6,8 +6,12 @@ function LectureDetailCourseSubRoutes() {
   const params = useLectureRouterParams();
   return (
     <>
-      {params.contentType === 'coures' && <LectureCourseOverviewPage />}
-      {params.contentType === 'cube' && <LectureDetailCourseSubRoutes />}
+      {params && params.contentType === 'coures' && (
+        <LectureCourseOverviewPage />
+      )}
+      {params && params.contentType === 'cube' && (
+        <LectureDetailCourseSubRoutes />
+      )}
     </>
   );
 }

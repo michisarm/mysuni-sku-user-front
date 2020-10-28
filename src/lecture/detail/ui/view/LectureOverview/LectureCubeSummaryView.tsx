@@ -4,6 +4,7 @@ import Icon from 'semantic-ui-react/dist/commonjs/elements/Icon';
 import Label from 'semantic-ui-react/dist/commonjs/elements/Label';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
+import LectureStateContainer from '../../logic/LectureStateContainer';
 
 interface LectureCubeSummaryViewProps {
   lectureSummary: LectureCubeSummary;
@@ -71,7 +72,9 @@ const LectureCubeSummaryView: React.FC<LectureCubeSummaryViewProps> = function L
             </div>
           </div>
         </div>
-        <div className="right-area" />
+        <div className="right-area">
+          <LectureStateContainer />
+        </div>
       </div>
     </div>
   );
