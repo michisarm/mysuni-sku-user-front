@@ -42,12 +42,6 @@
   width: 75rem !important;
 }
 
-body.msie #root section.content .tab-menu-inner .ui.menu .item{
-  flex: none;
-  width: auto;
-  flex-grow: 1;
-}
-
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .channel-change
     .table-css
@@ -528,4 +522,3 @@ body .badge_new .title .cell span{
 .main-wrap .no-cont-wrap {
   padding: 55px 0 56px !important;
 }
-

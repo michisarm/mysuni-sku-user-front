@@ -54,7 +54,7 @@ class UserMainPage extends Component<Props> {
         name: ContentType.Certification,
         item: ContentTypeName.Certification,
         render: () => <CertificationView />,
-      }
+      },
     ] as TabItemModel[];
   }
 
