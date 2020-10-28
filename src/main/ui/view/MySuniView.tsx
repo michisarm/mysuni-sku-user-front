@@ -70,26 +70,6 @@ class MySuniView extends Component {
             <h2>Content Providers</h2>
             <ul>
               <li>
-                <a href="http://www.postech.ac.kr/" target="_blank">
-                  <Image src={`${this.PUBLIC_URL}/images/all/postech.png`} alt="" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.snu.ac.kr/" target="_blank">
-                  <Image src={`${this.PUBLIC_URL}/images/all/seoul-university.png`} alt="" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.microsoft.com/" target="_blank">
-                  <Image src={`${this.PUBLIC_URL}/images/all/microsoft.png`} alt="" />
-                </a>
-              </li>
-              <li>
-                <a href="https://www.google.com/" target="_blank">
-                  <Image src={`${this.PUBLIC_URL}/images/all/google.png`} alt="" />
-                </a>
-              </li>
-              <li>
                 <a href="https://www.ideou.com/" target="_blank">
                   <Image src={`${this.PUBLIC_URL}/images/all/ideo.png`} alt="" />
                 </a>
