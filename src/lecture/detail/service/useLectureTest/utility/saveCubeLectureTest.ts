@@ -39,6 +39,13 @@ export async function saveTestAnswerSheet(
   const testItem = getLectureTestItem();
   const answerItem = getLectureTestAnswerItem();
   const testStudentItem = getLectureTestStudentItem();
+  if (
+    testItem === undefined ||
+    answerItem === undefined ||
+    testStudentItem === undefined
+  ) {
+    return;
+  }
   const answerSheetBody: LectureTestAnswerSheetViewBody = {
     answers: answerItem.answers,
     examId: testItem.id,

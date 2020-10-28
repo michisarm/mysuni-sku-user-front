@@ -19,6 +19,9 @@ interface TestQuestionViewProps {
 
 function setAnswer(questionNo: string, value: string) {
   const answerItem = getLectureTestAnswerItem();
+  if (answerItem === undefined) {
+    return;
+  }
   const nextAnswers = answerItem.answers.map(answer => {
     if (questionNo === answer.questionNo) {
       return { ...answer, answer: value };
