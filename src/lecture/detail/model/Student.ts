@@ -6,6 +6,7 @@ import ServiceType from './ServiceType';
 import StudentScore from './StudentScore';
 
 export default interface Student {
+  id: string;
   name: string;
   email: string;
   company: string;

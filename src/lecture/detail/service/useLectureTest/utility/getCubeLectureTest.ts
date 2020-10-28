@@ -18,7 +18,7 @@
  */
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestItemMapFromCube } from './getTestItemMapFromCube';
-import { getTestStudentItemMapFromLecture } from './getTestStudentItemMapFromLecture';
+import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
 
 export async function getCubeLectureTest(cubeId: string): Promise<void> {
   await getTestItemMapFromCube(cubeId);
@@ -27,7 +27,7 @@ export async function getCubeLectureTest(cubeId: string): Promise<void> {
 export async function getCubeLectureTestStudent(
   lectureCardId: string
 ): Promise<void> {
-  await getTestStudentItemMapFromLecture(lectureCardId);
+  await getTestStudentItemMapFromCube(lectureCardId);
 }
 
 export async function getCubeLectureTestAnswer(cubeId: string): Promise<void> {

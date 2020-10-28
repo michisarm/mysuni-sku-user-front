@@ -6,16 +6,20 @@ import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore'
 import React, { useCallback } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
+import { useParams } from 'react-router-dom';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 
 interface LectureTestViewProps {
   testItem: LectureTestItem;
-  lectureId: string;
+  params: LectureParams;
 }
 
 const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView({
   testItem,
-  lectureId,
+  params,
 }) {
+  const lectureId = params.lectureId;
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
 
@@ -36,8 +40,12 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
       answerItemId = answerItem.id;
     }
 
-    saveTestAnswerSheet(lectureId, answerItemId, false, false);
-  }, [answerItem]);
+    if (params.cubeId !== undefined) {
+      saveTestAnswerSheet(params.lectureId!, answerItemId, false, false);
+    } else {
+      saveCourseTestAnswerSheet(params, answerItemId, false, false);
+    }
+  }, [answerItem, params]);
   const submitAnswerSheet = useCallback(() => {
     let answerItemId = '';
     if (answerItem !== undefined) {
@@ -57,12 +65,16 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
               submitAnswers: answerItem.answers,
             };
             setLectureTestAnswerItem(nextAnswerItem);
-            saveTestAnswerSheet(lectureId, answerItemId, true, true);
+            if (params.cubeId !== undefined) {
+              saveTestAnswerSheet(params.lectureId!, answerItemId, true, true);
+            } else {
+              saveCourseTestAnswerSheet(params, answerItemId, true, true);
+            }
           }
         },
       });
     }
-  }, [answerItem]);
+  }, [answerItem, params]);
 
   let testClassName = ' ui segment full ';
   if (answerItem?.submitted) {

@@ -28,10 +28,11 @@ import {
   getLectureTestItem,
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
-import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
+import { getTestStudentItemMapFromCourse } from './getTestStudentItemMapFromCourse';
 
-export async function saveTestAnswerSheet(
-  lectureCardId: string,
+export async function saveCourseTestAnswerSheet(
+  params: LectureParams,
   answerSheetId: string,
   pFinished: boolean,
   pSubmitted: boolean
@@ -59,7 +60,7 @@ export async function saveTestAnswerSheet(
         answerSheetBody.examId
       );
     }
-    await getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+    await getTestStudentItemMapFromCourse(params); // student 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(newAnswerSheetId => {
       answerSheetBody.id = newAnswerSheetId;
@@ -67,7 +68,7 @@ export async function saveTestAnswerSheet(
       if (pFinished) {
         modifyStudentForExam(testStudentItem.studentId, answerSheetBody.examId);
       }
-      getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+      getTestStudentItemMapFromCourse(params); // student 재호출
     });
   }
 }

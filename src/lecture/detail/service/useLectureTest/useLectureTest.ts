@@ -31,7 +31,6 @@ export function useLectureTest(): [TestValue] {
   }, []);
 
   useEffect(() => {
-    const { lectureType, contentId, lectureId, ...structParams } = params;
     if (params.cubeId !== undefined) {
       getCubeTestItem(params);
     } else {
