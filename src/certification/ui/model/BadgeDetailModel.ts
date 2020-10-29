@@ -1,4 +1,3 @@
-
 class BadgeDetailModel {
   //
   id: string = '';
@@ -18,25 +17,25 @@ class BadgeDetailModel {
   description: string = '';
 
   certiAdminCategory: {
-    certiAdminCategory: string,
-    certiAdminCategoryName: string,
+    certiAdminCategory: string;
+    certiAdminCategoryName: string;
   } = {
     certiAdminCategory: '',
-    certiAdminCategoryName: ''
+    certiAdminCategoryName: '',
   };
 
   certiAdminSubcategory: {
-    certiAdminSubcategory: string,
-    certiAdminSubcategoryName: string,
+    certiAdminSubcategory: string;
+    certiAdminSubcategoryName: string;
   } = {
     certiAdminSubcategory: '',
-    certiAdminSubcategoryName: ''
+    certiAdminSubcategoryName: '',
   };
 
   badgeOperator: {
-    badgeOperatorId: string,
-    badgeOperatorName: string,
-    badgeOperatorCompany: string,
+    badgeOperatorId: string;
+    badgeOperatorName: string;
+    badgeOperatorCompany: string;
   } = {
     badgeOperatorId: '',
     badgeOperatorName: '',
@@ -44,17 +43,17 @@ class BadgeDetailModel {
   };
 
   creator: {
-    creatorId: string,
-    creatorName: string
+    creatorId: string;
+    creatorName: string;
   } = {
     creatorId: '',
     creatorName: '',
   };
 
   designAdmin: {
-    designAdminId: string,
-    designAdminName: string,
-    designAdminType: string,
+    designAdminId: string;
+    designAdminName: string;
+    designAdminType: string;
   } = {
     designAdminId: '',
     designAdminName: '',
@@ -62,8 +61,8 @@ class BadgeDetailModel {
   };
 
   openRequest: {
-    openRequesterId: string,
-    openRequestTime: number,
+    openRequesterId: string;
+    openRequestTime: number;
   } = {
     openRequesterId: '',
     openRequestTime: -1,
@@ -72,17 +71,18 @@ class BadgeDetailModel {
   openResponseTime: number = -1;
   mainCategoryId: string = '';
   mainCategoryName: string = '';
+  badgeSelected: boolean | undefined;
   badgeType: string = '';
   badgeState: string = '';
   difficultyLevel: string = '';
 
   subCategories: {
-    id: number,
-    categoryId: string,
-    name: string,
-    parentId: string,
-    parentName: string,
-    iconUrl: string,
+    id: number;
+    categoryId: string;
+    name: string;
+    parentId: string;
+    parentName: string;
+    iconUrl: string;
   } = {
     id: -1,
     categoryId: '',
@@ -95,7 +95,7 @@ class BadgeDetailModel {
   constructor(onebadge?: BadgeDetailModel | null) {
     //
     if (onebadge) {
-      Object.assign(this, {...onebadge});
+      Object.assign(this, { ...onebadge });
     }
   }
 }
