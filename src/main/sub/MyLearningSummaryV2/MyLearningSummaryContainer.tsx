@@ -47,7 +47,7 @@ class MyLearningSummaryContainer extends Component<Props> {
   init() {
     //
     const { myLearningSummaryService, skProfileService } = this.props;
-    myLearningSummaryService!.findMyLearningSummaryV2();
+    myLearningSummaryService!.findTotalMyLearningSummary();
     skProfileService!.findStudySummary();
     // badgeService!.getCountOfBadges();
 

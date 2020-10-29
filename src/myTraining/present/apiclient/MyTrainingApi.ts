@@ -60,20 +60,40 @@ class MyTrainingApi {
     return axiosApi.get<MyTrainingTabModel>(this.baseUrl + '/tab/counts').then((response) => response.data);
   }
 
-  //////// 개편 ////////
+  //////////////////////// 개편 ////////////////////////
 
-  findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
-    return axiosApi.post('http://localhost:8233/mytraining/mytrainings/stamps/v2', myTrainingFilterRdo)
+  findAllTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi
+      .post(`${this.baseUrl}/table/views`, myTrainingFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
+  findAllStampTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi.post(`${this.baseUrl}/stamp/table/views`, myTrainingFilterRdo)
       .then(response => response && response.data || null)
       .catch(error => error && null);
   }
 
   findAllTabCount() {
-    return axiosApi.get<MyTrainingTabModel>('http://localhost:8233/mytraining/mytrainings/tab/counts/v2')
+    return axiosApi.get<MyTrainingTabModel>(`${this.baseUrl}/tab/counts/v2`)
       .then(response => response && response.data || null)
       .catch(error => error && null);
   }
-  //////// 개편 ////////
+
+  updateBySelectedIds() {
+
+  }
+
+
+  /* 
+    findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+      return axiosApi.post('http://localhost:8233/mytraining/mytrainings/stamps/v2', myTrainingFilterRdo)
+        .then(response => response && response.data || null)
+        .catch(error => error && null);
+    } 
+  */
+  //////////////////////// 개편 ////////////////////////
 }
 
 MyTrainingApi.instance = new MyTrainingApi();

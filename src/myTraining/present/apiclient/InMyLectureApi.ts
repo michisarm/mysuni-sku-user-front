@@ -63,7 +63,7 @@ class InMyLectureApi {
 
   ////////////////////////////// 개편 //////////////////////////////
   findAllTableViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
-    return axiosApi.post<OffsetElementList<InMyLectureTableViewModel>>('http://localhost:8233/mytraining/inmylecture/myLecture/v2', inMyLectureFilterRdo)
+    return axiosApi.post<OffsetElementList<InMyLectureTableViewModel>>(`${this.baseUrl}/table/views`, inMyLectureFilterRdo)
       .then(response => response && response.data || null)
       .catch(error => error && null);
   }

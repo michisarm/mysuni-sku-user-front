@@ -11,10 +11,12 @@ import MyPage from './ui/page/MyPagePage';
 import ApprovalSharedDetailContainer from './ui/logic/ApprovalSharedDetailContainer';
 // 고도화
 import NewLearningPage from './ui/page/NewLearningPage';
+import MyLearningPage from './ui/page/MyLearningPage';
 import MyLearningPageV2 from './ui/page/MyLearningPageV2';
 import APLPage from './ui/page/APLPage';
 import { AplCreatePage } from './index';
 import MyPageV2 from './ui/page/MyPagePageV2';
+
 
 class MainRoutes extends React.Component {
   //
@@ -23,8 +25,8 @@ class MainRoutes extends React.Component {
     return (
       <Switch>
         <Redirect exact from="/my-training/learning" to="/my-training/learning/InProgress/pages/1" />
-        <Route exact path="/my-training/learning/:tab" component={MyLearningPageV2} />
-        <Route exact path="/my-training/learning/:tab/pages/:pageNo" component={MyLearningPageV2} />
+        <Route exact path="/my-training/learning/:tab" component={MyLearningPage} />
+        <Route exact path="/my-training/learning/:tab/pages/:pageNo" component={MyLearningPage} />
         <Redirect
           exact
           from="/my-training/learning"

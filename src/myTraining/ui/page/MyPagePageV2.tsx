@@ -33,7 +33,7 @@ function MyPagePageV2(props: Props) {
   */
   useEffect(() => {
     if (acheiveStampCount === 0 && achieveBadgeCount === 0) {
-      myLearningSummaryService!.findMyLearningSummaryV2();
+      myLearningSummaryService!.findTotalMyLearningSummary();
     }
   }, []);
 

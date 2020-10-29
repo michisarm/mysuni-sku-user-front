@@ -58,7 +58,7 @@ class MyLearningSummaryModal extends Component<Props> {
         totalMyLearningSummary 는 조회되지 않으며, 확인 후 다시 조회를 해야함. 2020.10.28 by 김동구
       */
       if (totalMyLearningSummary.year === 0) {
-        myLearningSummaryService!.findMyLearningSummaryV2();
+        myLearningSummaryService!.findTotalMyLearningSummary();
       }
     }
   }

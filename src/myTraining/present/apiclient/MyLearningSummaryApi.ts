@@ -18,20 +18,27 @@ class MyLearningSummaryApi {
 
   findMyLearningSummary() {
     //
-    return axiosApi.get<MyLearningSummaryModel>('http://localhost:8233/summaries/')
-      .then(response => response && response.data);
-  }
-
-  findMyLearningSummaryV2() {
-    return axiosApi.get<MyLearningSummaryModel>('http://localhost:8233/summaries/v2')
+    return axiosApi.get<MyLearningSummaryModel>(this.baseUrl)
       .then(response => response && response.data);
   }
 
   findMyLearningSummaryYear(year: number) {
     //
-    return axiosApi.get<MyLearningSummaryModel>(`http://localhost:8233/summaries/v2/${year}`)
+    return axiosApi.get<MyLearningSummaryModel>(this.baseUrl + `/${year}`)
       .then(response => response && response.data);
   }
+
+  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
+  findTotalMyLearningSummary() {
+    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/v2`)
+      .then(response => response && response.data);
+  }
+
+  findMyLearningSummaryByYear(year: number) {
+    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/v2/${year}`)
+      .then(response => response && response.data);
+  }
+  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
 }
 
 MyLearningSummaryApi.instance = new MyLearningSummaryApi();

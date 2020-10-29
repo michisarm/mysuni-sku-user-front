@@ -46,13 +46,13 @@ class LectureFlowApi {
    * 권장과정 갯수 조회 API
    */
   countRequiredLectures(lectureFilterRdoV2: LectureFilterRdoModelV2) {
-    return axiosApi.post<number>('http://localhost:8080/lectures/flow/required/count', lectureFilterRdoV2)
+    return axiosApi.post<number>(`${this.baseUrl}/required/count`, lectureFilterRdoV2)
       .then((response: any) => response.data && response.data.searchOnCount && response.data.searchOnCount.valueOf()); //searchOnCount
   }
 
   ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
   findAllRqdTableViews(lectureFilterRdoV2: LectureFilterRdoModelV2) {
-    return axiosApi.post<OffsetElementList<LectureTableViewModel>>('http://localhost:8080/lectures/flow/required/view', lectureFilterRdoV2)
+    return axiosApi.post<OffsetElementList<LectureTableViewModel>>(`${this.baseUrl}/required/view`, lectureFilterRdoV2)
       .then(response => response && response.data || null)
       .catch(err => err && null);
   }

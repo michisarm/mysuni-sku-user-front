@@ -7,14 +7,9 @@ import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
-import MyTrainingFlowApi from '../apiclient/MyTrainingFlowApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
-
-
-
-
 
 
 @autobind
@@ -23,7 +18,6 @@ class MyTrainingService {
   static instance: MyTrainingService;
 
   private myTrainingApi: MyTrainingApi;
-  private myTrainingFlowApi: MyTrainingFlowApi;
 
   @observable
   _myTrainings: MyTrainingModel[] = [];
@@ -46,9 +40,8 @@ class MyTrainingService {
   @observable
   myStampCount: number = 0;
 
-  constructor(myTrainingApi: MyTrainingApi, myTrainingFlowApi: MyTrainingFlowApi) {
+  constructor(myTrainingApi: MyTrainingApi) {
     this.myTrainingApi = myTrainingApi;
-    this.myTrainingFlowApi = myTrainingFlowApi;
   }
 
   @computed
@@ -473,7 +466,7 @@ class MyTrainingService {
       this._myTrainingFilterRdo = filterRdo;
     }
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
       offsetTableViews.results &&
@@ -489,7 +482,7 @@ class MyTrainingService {
 
   @action
   async findAllStampTableViews() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
       offsetTableViews.results &&
@@ -505,7 +498,7 @@ class MyTrainingService {
 
   @action
   async findAllStampTableViewsByConditions() {
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
       offsetTableViews.results &&
@@ -523,7 +516,7 @@ class MyTrainingService {
   async findAllStampTableViewsWithPage(offset: Offset) {
     this._myTrainingFilterRdo.changeOffset(offset);
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
     if (offsetTableViews &&
       offsetTableViews.results &&
@@ -538,7 +531,7 @@ class MyTrainingService {
   async findAllTableViewsWithPage(offset: Offset) {
     this._myTrainingFilterRdo.changeOffset(offset);
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
@@ -556,7 +549,7 @@ class MyTrainingService {
     this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
     this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
 
-    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetTableViews &&
@@ -572,7 +565,7 @@ class MyTrainingService {
 
   @action
   async findAllTableViewsByConditions() {
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetMyTrainings &&
@@ -597,7 +590,7 @@ class MyTrainingService {
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(filterRdoForExcel);
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllTableViews(filterRdoForExcel);
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
@@ -608,7 +601,7 @@ class MyTrainingService {
 
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(filterRdoForExcel);
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingApi.findAllStampTableViews(filterRdoForExcel);
     const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
@@ -641,7 +634,7 @@ class MyTrainingService {
     this._myTrainingTableViewCount -= this.selectedIds.length;
 
     // 삭제하기로 선택된 myTraining 들의 상태를 update 하기 위한 api.
-    this.myTrainingFlowApi.updateBySelectedIds();
+    this.myTrainingApi.updateBySelectedIds();
   }
 
   @action
@@ -665,7 +658,7 @@ class MyTrainingService {
 export default MyTrainingService;
 
 Object.defineProperty(MyTrainingService, 'instance', {
-  value: new MyTrainingService(MyTrainingApi.instance, MyTrainingFlowApi.instance),
+  value: new MyTrainingService(MyTrainingApi.instance),
   writable: false,
   configurable: false,
 });

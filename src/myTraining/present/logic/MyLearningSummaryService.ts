@@ -43,22 +43,31 @@ class MyLearningSummaryService {
   }
 
   @action
-  async findMyLearningSummaryV2() {
+  async findMyLearningSummaryYear(year: number) {
+    //
+    const myLearningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+
+    return runInAction(() => {
+      this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
+      return myLearningSummary;
+    });
+  }
+
+  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
+  @action
+  async findTotalMyLearningSummary() {
     this.myLearningSummaryCachingFetch.fetch(
-      () => this.myLearningSummaryApi.findMyLearningSummaryV2(),
-      (myLearningSummary) => runInAction(() => this._totalMyLearningSummary = new MyLearningSummaryModel(myLearningSummary))
+      () => this.myLearningSummaryApi.findTotalMyLearningSummary(),
+      (totalMyLearningSummary) => runInAction(() => this._totalMyLearningSummary = new MyLearningSummaryModel(totalMyLearningSummary))
     );
-    /* 
-        const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryV2();
-        runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary)); 
-    */
   }
 
   @action
-  async findMyLearningSummaryYear(year: number) {
-    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+  async findMyLearningSummaryByYear(year: number) {
+    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryByYear(year);
     runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary));
   }
+  ////////////////////////////////////////////// 개편 //////////////////////////////////////////////
 }
 
 MyLearningSummaryService.instance = new MyLearningSummaryService(MyLearningSummaryApi.instance);
