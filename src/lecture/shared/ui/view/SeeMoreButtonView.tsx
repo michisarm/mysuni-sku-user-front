@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 
 import { Button, Icon } from 'semantic-ui-react';
@@ -10,9 +10,10 @@ interface Props {
 }
 
 @reactAutobind
-class SeeMoreButtonView extends Component<Props> {
+class SeeMoreButtonView extends PureComponent<Props> {
   //
   render() {
+    console.log('SeeMoreButton :: render :: ');
     //
     const { onClick } = this.props;
 

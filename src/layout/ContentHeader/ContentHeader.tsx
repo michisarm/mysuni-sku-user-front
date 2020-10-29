@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import classNames from 'classnames';
-
 import Cell from './sub/Cell';
 import ProfileItem from './sub/ProfileItem';
+import LearningTimeItem from './sub/LearningTimeItem';
 import WaitingItem from './sub/WaitingItem';
 import ChartItem from './sub/ChartItem';
 import CommunityItem from './sub/CommunityItem';
@@ -24,6 +24,8 @@ class ContentHeader extends Component<Props> {
 
   static ProfileItem = ProfileItem;
 
+  static LearningTimeItem = LearningTimeItem;
+
   static WaitingItem = WaitingItem;
 
   static ChartItem = ChartItem;
@@ -31,7 +33,6 @@ class ContentHeader extends Component<Props> {
   static CommunityItem = CommunityItem;
 
   static RecommendItem = RecommendItem;
-
 
   render() {
     //

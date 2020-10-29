@@ -1,6 +1,6 @@
-import {action, computed, IObservableArray, observable, runInAction} from 'mobx';
-import {autobind} from '@nara.platform/accent';
-import {OffsetElementList} from 'shared/model';
+import { action, computed, IObservableArray, observable, runInAction } from 'mobx';
+import { autobind } from '@nara.platform/accent';
+import { OffsetElementList } from 'shared/model';
 import BadgeApi from '../apiclient/BadgeApi';
 import BadgeFilterRdoModel from '../../ui/model/BadgeFilterRdoModel';
 import BadgeModel from '../../ui/model/BadgeModel';
@@ -194,12 +194,12 @@ class BadgeService {
   }
 
   @action
-  async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean=false) {
+  async findPagingChallengingBadges(badgeFilterRdo: BadgeFilterRdoModel, fromMain: boolean = false) {
     //
     //this.clearChallengingBadges();
 
     // 도전 뱃지 정보 가져오기
-    const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null  = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
+    const badgeOffsetElementList: OffsetElementList<MyBadgeModel> | null = await this.badgeApi.findPagingChallengingBadges(badgeFilterRdo);
 
     // // use session storage (사용할 거면 풀 것) : by JSM
     // if (fromMain) {
@@ -363,7 +363,7 @@ class BadgeService {
 
   // 도전하기
   @action
-  async challengeBadge(id: string | null, studentInfo: {name: string, email: string, company: string, department: string}, badgeId: string, challengeState: string) {
+  async challengeBadge(id: string | null, studentInfo: { name: string, email: string, company: string, department: string }, badgeId: string, challengeState: string) {
     //
     const response = await this.badgeApi.challengeBadge(id, studentInfo, badgeId, challengeState);
     return response;
@@ -438,7 +438,7 @@ class BadgeService {
   */
 }
 
-Object.defineProperty(BadgeService, 'instance',{
+Object.defineProperty(BadgeService, 'instance', {
   value: new BadgeService(BadgeApi.instance),
   writable: false,
   configurable: false,

@@ -1,0 +1,151 @@
+import { observable, decorate, computed } from 'mobx';
+import moment from 'moment';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
+import { CategoryModel, LearningState } from 'shared/model';
+import { LectureServiceType } from 'lecture/model';
+import { DifficultyLevel } from './DifficultyLevel';
+import { CompletedXlsxModel } from './CompletedXlsxModel';
+import { InProgressXlsxModel } from './InProgressXlsxModel';
+import { CubeType } from '../../personalcube/personalcube/model';
+import { MyStampXlsxModel } from './MyStampXlsxModel';
+import CubeTypeNameType from './CubeTypeNameType';
+
+
+
+class MyTrainingTableViewModel {
+
+  [key: string]: any;
+  id: string = '';
+  serviceId: string = '';
+  serviceType: string = ''; // 카드 코스 구분을 위해
+  cineroomId: string = '';
+  coursePlanId: string = '';
+  cubeId: string = '';
+  category: CategoryModel = new CategoryModel(); // College & channel
+  difficultyLevel: DifficultyLevel = DifficultyLevel.Basic; // Level
+  name: string = ''; // 과정명
+  organizer: string = ''; // 교육기관
+  cubeType: CubeType = CubeType.None; // 학습유형
+  learningState?: LearningState; // 학습 상태
+  learningTime: number = 0; // 학습시간
+  startDate: number = 0; // 학습시작일
+  endDate: number = 0; // 학습완료일 (취소/미이수일)
+  createDate: number = 0; // 등록일
+  stampCount: number = 0; // 스탬프
+
+  passCount: number = 0;
+  rowCount: number = 0;
+
+  // for make observable object from json data.
+  constructor(myTrainingTableView?: MyTrainingTableViewModel) {
+    if (myTrainingTableView) {
+      Object.assign(this, myTrainingTableView);
+    }
+  }
+
+  @computed get formattedLearningTime(): string {
+    return timeToHourMinutePaddingFormat(this.learningTime);
+  }
+
+  @computed get displayStampCount() {
+    // 획득할 수 있는 stampCount 가 없는 경우 '-' 로 화면에 노출.
+    if (!this.stampCount) {
+      return '-';
+    }
+    return this.stampCount;
+  }
+
+  @computed get displayCubeType(): string {
+    return CubeTypeNameType[this.cubeType];
+  }
+
+  @computed get displayCollegeName(): string {
+    return this.category &&
+      this.category.college && this.category.college.name || '-';
+  }
+
+  @computed get displayDifficultyLevel(): string {
+    return this.difficultyLevel || '-';
+  }
+
+  @computed get displayProgressRate(): string {
+    return this.isCardType() ? '-' : `${this.passCount}/${this.rowCount}`;
+  }
+
+  /* functions */
+  isCardType() {
+    // 서버에서 serviceType 이 대문자로 전달됨. ( CARD, COURSE, PROGRAM )
+    return this.serviceType === LectureServiceType.Card.toUpperCase() ? true : false;
+  }
+
+
+  toXlsxForInProgress(index: number): InProgressXlsxModel {
+    /*
+      No: string = '';
+      College: string = '';
+      과정명: string = '';
+      학습유형: string = '';
+      Level: string = '';
+      진행률: string = '';
+      학습시간: string = '';
+      학습시작일: string = '';
+    */
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      학습유형: this.cubeType,
+      Level: this.difficultyLevel || '-',
+      진행률: '-',
+      학습시간: this.learningTimeWithFormat,
+      학습시작일: moment(Number(this.startDate)).format('YYYY.MM.DD')
+    };
+  }
+
+  toXlsxForCompleted(index: number): CompletedXlsxModel {
+    /*
+      No: string = '';
+      College: string = '';
+      과정명: string = '';
+      학습유형: string = '';
+      Level: string = '';
+      학습시간: string = '';
+      학습완료일: string = '';
+    */
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      학습유형: this.cubeType,
+      Level: this.difficultyLevel || '-',
+      학습시간: this.learningTimeWithFormat,
+      학습완료일: moment(Number(this.endDate)).format('YYYY.MM.DD')
+    };
+  }
+
+  toXlsxForMyStamp(index: number): MyStampXlsxModel {
+
+    return {
+      No: String(index),
+      College: this.category.college.name,
+      과정명: this.name,
+      스탬프: String(this.stampCount),
+      획득일자: moment(Number(this.endDate)).format('YYYY.MM.DD'),
+    };
+  }
+}
+
+export default MyTrainingTableViewModel;
+
+decorate(MyTrainingTableViewModel, {
+  category: observable,
+  difficultyLevel: observable,
+  name: observable,
+  cubeType: observable,
+  learningState: observable,
+  learningTime: observable,
+  startDate: observable,
+  endDate: observable,
+  createDate: observable,
+  stampCount: observable,
+});

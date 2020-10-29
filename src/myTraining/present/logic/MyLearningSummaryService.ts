@@ -1,5 +1,5 @@
 
-import { observable, action, runInAction } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import { autobind, CachingFetch } from '@nara.platform/accent';
 
 import MyLearningSummaryApi from '../apiclient/MyLearningSummaryApi';
@@ -16,8 +16,14 @@ class MyLearningSummaryService {
   @observable
   myLearningSummary: MyLearningSummaryModel = {} as MyLearningSummaryModel;
 
+  @observable
+  private _totalMyLearningSummary: MyLearningSummaryModel = new MyLearningSummaryModel();
+
   myLearningSummaryCachingFetch: CachingFetch = new CachingFetch();
 
+  @computed get totalMyLearningSummary() {
+    return this._totalMyLearningSummary;
+  }
 
   constructor(myLearningSummaryApi: MyLearningSummaryApi) {
     this.myLearningSummaryApi = myLearningSummaryApi;
@@ -37,14 +43,21 @@ class MyLearningSummaryService {
   }
 
   @action
-  async findMyLearningSummaryYear(year: number) {
-    //
-    const myLearningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+  async findMyLearningSummaryV2() {
+    this.myLearningSummaryCachingFetch.fetch(
+      () => this.myLearningSummaryApi.findMyLearningSummaryV2(),
+      (myLearningSummary) => runInAction(() => this._totalMyLearningSummary = new MyLearningSummaryModel(myLearningSummary))
+    );
+    /* 
+        const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryV2();
+        runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary)); 
+    */
+  }
 
-    return runInAction(() => {
-      this.myLearningSummary = new MyLearningSummaryModel(myLearningSummary);
-      return myLearningSummary;
-    });
+  @action
+  async findMyLearningSummaryYear(year: number) {
+    const learningSummary = await this.myLearningSummaryApi.findMyLearningSummaryYear(year);
+    runInAction(() => this.myLearningSummary = new MyLearningSummaryModel(learningSummary));
   }
 }
 

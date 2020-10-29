@@ -12,7 +12,6 @@ import { ActionLogService } from 'shared/stores';
 import { CollegeService } from 'college/stores';
 import { SkProfileService } from 'profile/stores';
 
-
 interface Props {
   actionLogService?: ActionLogService
   skProfileService?: SkProfileService
@@ -24,7 +23,10 @@ interface States {
   open: boolean
 }
 
-@inject(mobxHelper.injectFrom('shared.actionLogService', 'college.collegeService', 'profile.skProfileService'))
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'college.collegeService',
+  'profile.skProfileService'))
 @observer
 @reactAutobind
 class FavoriteChannelContainer extends Component<Props, States> {
@@ -37,7 +39,6 @@ class FavoriteChannelContainer extends Component<Props, States> {
     multiple: false,
     open: false,
   };
-
 
   componentDidMount(): void {
     //
@@ -65,8 +66,15 @@ class FavoriteChannelContainer extends Component<Props, States> {
     //
     const { current } = this.channelsRef;
 
-    if (current && current.offsetHeight > 32) {
+    /* 
+      기존에는 current.offsetHeight > 32 이였으나 적용이 되지 않아 60 으로 수정함.
+      관심 channel 목록이 두 줄인 경우, 63 정도의 높이가 나옴.
+      하지만 반응형 size 를 고려한 정확한 수치가 필요함.
+    */
+    if (current && current.offsetHeight > 60) {
       this.setState({ multiple: true });
+    } else {
+      this.setState({ multiple: false });
     }
   }
 
@@ -120,7 +128,7 @@ class FavoriteChannelContainer extends Component<Props, States> {
                   ref={this.channelsRef}
                   className="belt"
                 >
-                  { channels && channels.length !== 0 && channels.map((channel, index) => (
+                  {channels && channels.length !== 0 && channels.map((channel, index) => (
                     <Label className="channel" key={`channel-${index}`}>{channel.name}</Label>
                   ))}
                 </div>
@@ -128,13 +136,12 @@ class FavoriteChannelContainer extends Component<Props, States> {
             </div>
             <div className="cell vtop">
               <div className="toggle-btn">
-                { multiple && (
+                {multiple && (
                   <Button icon className="img-icon" onClick={this.onToggle}>
                     <Icon
                       className={classNames({
-                        s26: true,
-                        'arrow-down': !open,
-                        'arrow-up': open,
+                        'sum-open': !open,
+                        'sum-close': open
                       })}
                     />
                     <span className="blind">open</span>

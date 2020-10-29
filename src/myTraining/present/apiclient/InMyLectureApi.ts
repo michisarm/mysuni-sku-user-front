@@ -1,9 +1,12 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
+import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
+import InMyLectureFilterRdoModel from 'myTraining/model/InMyLectureFilterRdoModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
 import InMyLectureCdoModel from '../../model/InMyLectureCdoModel';
+
 
 
 class InMyLectureApi {
@@ -14,8 +17,8 @@ class InMyLectureApi {
   // baseUrl = this.devUrl + '/api/mytraining/mytraining/inmylecture';
 
   serverUrl = '/api/mytraining/mytraining/inmylecture';
-  devUrl = process.env.REACT_APP_IN_MY_LECTURE_API  === undefined || process.env.REACT_APP_IN_MY_LECTURE_API  === '' ?
-    this.serverUrl : process.env.REACT_APP_IN_MY_LECTURE_API ;
+  devUrl = process.env.REACT_APP_IN_MY_LECTURE_API === undefined || process.env.REACT_APP_IN_MY_LECTURE_API === '' ?
+    this.serverUrl : process.env.REACT_APP_IN_MY_LECTURE_API;
 
   baseUrl = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_APP_ENVIRONMENT === 'server' ?
     this.serverUrl : this.devUrl;
@@ -55,9 +58,17 @@ class InMyLectureApi {
    */
   countInMyLectures() {
     return axiosApi.post<number>(this.baseUrl + '/myLecturesCount')
-      .then((response : any) => response.data && response.data.myStateCount && response.data.myStateCount.valueOf()); //myStateCount
+      .then((response: any) => response.data && response.data.myStateCount && response.data.myStateCount.valueOf()); //myStateCount
   }
 
+  ////////////////////////////// 개편 //////////////////////////////
+  findAllTableViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
+    return axiosApi.post<OffsetElementList<InMyLectureTableViewModel>>('http://localhost:8233/mytraining/inmylecture/myLecture/v2', inMyLectureFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
+  ////////////////////////////// 개편 //////////////////////////////
 }
 
 InMyLectureApi.instance = new InMyLectureApi();
