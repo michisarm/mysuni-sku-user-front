@@ -1,6 +1,6 @@
+import React, { Fragment, memo } from 'react';
+import { Button, Icon } from 'semantic-ui-react';
 import { CollegeModel } from 'college/model';
-import React, { Fragment } from 'react';
-import { Button, Icon, Table } from 'semantic-ui-react';
 import { FilterCondition, FilterConditionName } from './MultiFilterBox';
 
 interface Props {
@@ -14,6 +14,7 @@ function CheckedFilterView(props: Props) {
   /* colleges 는 collegeId 에 매핑되는 collegeName 을 구하기 위함. 2020.10.08 by 김동구 */
   const { colleges, conditions, onClearAll, onClearOne } = props;
 
+  console.log('checkedFilterView :: render :: ');
   /* render functions */
   const renderCheckedConditions = () => {
     const buttons: React.ReactNode[] = [];
@@ -79,31 +80,41 @@ function CheckedFilterView(props: Props) {
       );
     }
 
+    if (conditions.required === 'true') {
+      buttons.push(
+        <Fragment key="checked-required-0">
+          <Button className="del" onClick={() => onClearOne(FilterConditionName.Required, conditions.required)}>
+            {FilterConditionName.Required}
+          </Button>
+        </Fragment>
+      );
+    }
+
     return buttons;
   };
 
   /* render */
   return (
     <div className="selected">
-      <Table>
+      <table>
         {/* body */}
-        <Table.Body>
-          <Table.Row>
-            <Table.HeaderCell>
+        <tbody>
+          <tr>
+            <th>
               <Button icon className="clear" onClick={onClearAll}>
                 <Icon className="reset" />
               </Button>
               <span>전체해제</span>
-            </Table.HeaderCell>
-            <Table.Cell>{renderCheckedConditions()}</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
+            </th>
+            <td>{renderCheckedConditions()}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default CheckedFilterView;
+export default memo(CheckedFilterView);
 
 /* globals */
 const getCollegeNames = (colleges: CollegeModel[], collegeIds: string[]): string[] => {

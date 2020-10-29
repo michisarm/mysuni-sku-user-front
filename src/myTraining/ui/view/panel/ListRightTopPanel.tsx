@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, memo } from 'react';
 import classNames from 'classnames';
 import { Button, Checkbox, Icon } from 'semantic-ui-react';
 import { MyLearningContentType } from 'myTraining/ui/model';
@@ -18,6 +18,8 @@ interface Props {
 
 function ListRightTopPanel(props: Props) {
   const { contentType, resultEmpty, filterCount, openFilter, activeFilter, onClickFilter, checkedViewType, onChangeViewType } = props;
+
+  console.log('ListRightTopPanel :: render :: ');
 
   /* render functions */
   const renderRadiobox = (contentType: MyContentType) => {
@@ -76,4 +78,4 @@ function ListRightTopPanel(props: Props) {
   );
 }
 
-export default ListRightTopPanel;
+export default memo(ListRightTopPanel);

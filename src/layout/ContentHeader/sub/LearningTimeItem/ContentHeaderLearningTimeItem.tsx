@@ -1,32 +1,20 @@
 
 import React, { PureComponent } from 'react';
-import { reactAutobind, mobxHelper } from '@nara.platform/accent';
-import { inject } from 'mobx-react';
-
+import { reactAutobind } from '@nara.platform/accent';
 import { Button, Label, Icon } from 'semantic-ui-react';
-import { ActionLogService } from 'shared/stores';
 import { MyLearningSummaryModal } from 'myTraining';
 
-
 interface Props {
-  actionLogService?: ActionLogService,
   minute?: number,
 }
 
-@inject(mobxHelper.injectFrom(
-  'shared.actionLogService',
-))
+
 @reactAutobind
-class ContentHeaderTotalTimeItem extends PureComponent<Props> {
+class ContentHeaderLearningTimeItem extends PureComponent<Props> {
   //
   static defaultProps = {
     minute: 0,
   };
-
-  onClickActionLog() {
-    const { actionLogService } = this.props;
-    actionLogService?.registerClickActionLog({ subAction: '총 학습시간' });
-  }
 
   render() {
     //
@@ -75,7 +63,7 @@ class ContentHeaderTotalTimeItem extends PureComponent<Props> {
         {
           <MyLearningSummaryModal
             trigger={(
-              <Button className="btn-total-time" onClick={this.onClickActionLog}>
+              <Button className="btn-total-time">
                 <Label className="onlytext">
                   <Icon className="total-time" /><span>총 학습시간</span>
                 </Label>
@@ -89,4 +77,4 @@ class ContentHeaderTotalTimeItem extends PureComponent<Props> {
   }
 }
 
-export default ContentHeaderTotalTimeItem;
+export default ContentHeaderLearningTimeItem;

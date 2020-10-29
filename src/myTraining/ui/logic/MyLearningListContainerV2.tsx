@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect, useRef, useCallback, lazy } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
 import { NoSuchContentPanel } from 'shared';
 import { SkProfileService } from 'profile/stores';
-import myTrainingRoutes from 'myTraining/routePaths';
 import LineHeaderContainerV2 from './LineHeaderContainerV2';
 import { MyLearningContentType, MyPageContentType, NoSuchContentPanelMessages } from '../model';
 import { MultiFilterBox } from '../view/filterbox';
 import { MyLearningTableTemplate, MyLearningTableHeader, MyLearningTableBody } from '../view/table';
-import { LectureService, SeeMoreButton } from '../../../lecture';
-import { MyTrainingService, InMyLectureService } from '../../stores';
 import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
+import { MyTrainingService, InMyLectureService, AplService } from '../../stores';
+import { LectureService, SeeMoreButton } from '../../../lecture';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -20,6 +20,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   skProfileService?: SkProfileService;
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
+  aplService?: AplService;
   lectureService?: LectureService;
 }
 
@@ -28,9 +29,9 @@ interface RouteParams {
   pageNo?: string;
 }
 
-
 function MyLearningListContainerV2(props: Props) {
-  const { contentType, skProfileService, myTrainingService, inMyLectureService, history, match } = props;
+  console.log('MyLearningListContainer :: render ::');
+  const { contentType, skProfileService, myTrainingService, inMyLectureService, aplService, lectureService, history, match } = props;
   const { profileMemberName } = skProfileService!;
 
   /* states */
@@ -38,7 +39,7 @@ function MyLearningListContainerV2(props: Props) {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [viewType, setViewType] = useState<ViewType>('Course');
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [showSeeMore, setShowSeeMore] = useState<boolean>(true);
+  const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
   const [resultEmpty, setResultEmpty] = useState<boolean>(false);
 
   const pageInfo = useRef<Offset>({ offset: 0, limit: 20 });
@@ -68,32 +69,42 @@ function MyLearningListContainerV2(props: Props) {
       case MyLearningContentType.InProgress:
       case MyLearningContentType.Completed: {
         myTrainingService!.changeFilterRdoWithViewType(viewType);
-        const isEmpty = await myTrainingService!.findAllMyTrainingV2();
+        const isEmpty = await myTrainingService!.findAllTableViews();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+        return;
+      }
+      /* 개인학습 완료 */
+      case MyLearningContentType.PersonalCompleted: {
+        const offsetApl = await aplService!.findAllAplsByQuery();
+        const isEmpty = offsetApl.results.length === 0 ? true : false;
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       /* 관심목록 & 권장과정 */
       case MyLearningContentType.InMyList: {
-        const isEmpty = await inMyLectureService!.findAllInMyLectureV2s();
+        const isEmpty = await inMyLectureService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       case MyLearningContentType.Required: {
-
+        const isEmpty = await lectureService!.findAllRqdTableViews();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
         return;
       }
       /* My Page :: My Stamp */
       case MyPageContentType.EarnedStampList: {
-        const isEmpty = await myTrainingService!.findAllMyTrainingsV2WithStamp();
+        const isEmpty = await myTrainingService!.findAllStampTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       /* 학습예정 & 취소/미이수 */
       default: {
-        const isEmpty = await myTrainingService!.findAllMyTrainingV2();
+        const isEmpty = await myTrainingService!.findAllTableViews();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
       }
@@ -103,23 +114,30 @@ function MyLearningListContainerV2(props: Props) {
   const fetchModelsByConditions = async (contentType: MyContentType, viewType: ViewType) => {
     switch (contentType) {
       case MyPageContentType.EarnedStampList: {
-        const isEmpty = await myTrainingService!.findAllMyTrainingsV2WithStampByConditions();
+        const isEmpty = await myTrainingService!.findAllStampTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
       case MyLearningContentType.InMyList: {
-        const isEmpty = await inMyLectureService!.findAllInMyLectureV2ByConditions();
+        const isEmpty = await inMyLectureService!.findAllTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
         return;
       }
+      case MyLearningContentType.Required: {
+        const isEmpty = await lectureService!.findAllRqdTableViewsByConditions();
+        setResultEmpty(isEmpty);
+        checkShowSeeMore(contentType);
+        return;
+      }
+
       default: {
         if (viewType) {
           viewType = changeViewType(contentType);
           myTrainingService!.changeFilterRdoWithViewType(viewType);
         }
-        const isEmpty = await myTrainingService!.findllMyTrainingsV2WithConditions();
+        const isEmpty = await myTrainingService!.findAllTableViewsByConditions();
         setResultEmpty(isEmpty);
         checkShowSeeMore(contentType);
       }
@@ -136,7 +154,7 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const initPageNo = () => {
-    history.replace(myTrainingRoutes.currentPage(1));
+    history.replace('./1');
   };
 
   const getPageNo = (): number => {
@@ -151,12 +169,16 @@ function MyLearningListContainerV2(props: Props) {
   const clearStore = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
-        inMyLectureService!.clearAllInMyLectureV2s();
+        inMyLectureService!.clearAllTableViews();
         break;
       case MyLearningContentType.Required:
+        lectureService!.clearAllTableViews();
+        break;
+      case MyLearningContentType.PersonalCompleted:
+        aplService!.clearApls();
         break;
       default:
-        myTrainingService!.clearAllMyTrainingV2();
+        myTrainingService!.clearAllTableViews();
     }
   };
 
@@ -166,6 +188,10 @@ function MyLearningListContainerV2(props: Props) {
         inMyLectureService!.initFilterRdo();
         break;
       case MyLearningContentType.Required:
+        lectureService!.initFilterRdo();
+        break;
+      case MyLearningContentType.PersonalCompleted:
+        aplService!.initQueryModel();
         break;
       default:
         myTrainingService!.initFilterRdo(contentType);
@@ -173,38 +199,56 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   const getModels = (contentType: MyContentType) => {
-    const { myTrainingV2s } = myTrainingService!;
-    const { inMyLectureV2s } = inMyLectureService!;
+    const { myTrainingTableViews } = myTrainingService!;
+    const { inMyLectureTableViews } = inMyLectureService!;
+    const { apls: offsetApl } = aplService!;
+    const { lectureTableViews } = lectureService!;
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
-        return inMyLectureV2s;
+        return inMyLectureTableViews;
+      case MyLearningContentType.Required:
+        return lectureTableViews;
+      case MyLearningContentType.PersonalCompleted:
+        return offsetApl.results;
       default:
-        return myTrainingV2s;
+        return myTrainingTableViews;
     }
   };
 
   const getTotalCount = (contentType: MyContentType): number => {
-    const { inMyLectureV2Count } = inMyLectureService!;
-    const { myTrainingV2Count } = myTrainingService!;
+    const { inMyLectureTableCount } = inMyLectureService!;
+    const { myTrainingTableCount } = myTrainingService!;
+    const { aplCount } = aplService!;
+    const { lectureTableCount } = lectureService!;
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
-        return inMyLectureV2Count;
+        return inMyLectureTableCount;
+      case MyLearningContentType.Required:
+        return lectureTableCount;
+      case MyLearningContentType.PersonalCompleted:
+        return aplCount.all;
       default:
-        return myTrainingV2Count;
+        return myTrainingTableCount;
     }
   };
 
   const isModelExist = (contentType: MyContentType) => {
-    const { myTrainingV2s } = myTrainingService!;
-    const { inMyLectureV2s } = inMyLectureService!;
+    const { myTrainingTableViews } = myTrainingService!;
+    const { inMyLectureTableViews } = inMyLectureService!;
+    const { apls: offsetApl } = aplService!;
+    const { lectureTableViews } = lectureService!;
 
     switch (contentType) {
       case MyLearningContentType.InMyList:
-        return inMyLectureV2s && inMyLectureV2s.length;
+        return inMyLectureTableViews && inMyLectureTableViews.length;
+      case MyLearningContentType.Required:
+        return lectureTableViews && lectureTableViews.length;
+      case MyLearningContentType.PersonalCompleted:
+        return offsetApl.results && offsetApl.results.length;
       default:
-        return myTrainingV2s && myTrainingV2s.length;
+        return myTrainingTableViews && myTrainingTableViews.length;
     }
   };
 
@@ -235,65 +279,71 @@ function MyLearningListContainerV2(props: Props) {
   };
 
   /* handlers */
-  const onChangeFilterCount = (count: number) => {
+  const onChangeFilterCount = useCallback((count: number) => {
     if (filterCount && filterCount === count) {
       fetchModelsByConditions(contentType, viewType);
     }
 
     setFilterCount(count);
-  };
+  }, [filterCount, contentType, viewType]);
 
-  const onClickFilter = () => {
+  const onClickFilter = useCallback(() => {
     setOpenFilter(prev => !prev);
-  };
+  }, []);
 
-  const onChangeViewType = (e: any, data: any) => {
+  const onChangeViewType = useCallback((e: any, data: any) => {
     setViewType(data.value);
-  };
+  }, []);
 
-  const onClickDelete = () => {
+  const onClickDelete = useCallback(() => {
     setOpenModal(true);
-  };
+  }, []);
 
-  const onCloseModal = () => {
+  const onCloseModal = useCallback(() => {
     setOpenModal(false);
-  };
+  }, []);
 
-  const onConfirmModal = () => {
+  const onConfirmModal = useCallback(() => {
     setOpenModal(false);
     //myTrainingView ids를 통해 delete 로직을 수행함.
     myTrainingService!.deleteBySelectedIds();
-  };
+  }, []);
 
-  const onClickSort = (column: string, direction: Direction) => {
+  const onClickSort = useCallback((column: string, direction: Direction) => {
     switch (contentType) {
       case MyLearningContentType.InMyList:
-        inMyLectureService!.sortInMyLectureV2sBy(column, direction);
+        inMyLectureService!.sortTableViews(column, direction);
         break;
       case MyLearningContentType.Required:
+        lectureService!.sortTableViews(column, direction);
         break;
       default:
-        myTrainingService!.sortMyTrainingV2sBy(column, direction);
+        myTrainingService!.sortTableViews(column, direction);
     }
-  };
+  }, [contentType]);
 
-
-  const onClickSeeMore = async () => {
+  const onClickSeeMore = useCallback(async () => {
     pageInfo.current.offset += pageInfo.current.limit;
     pageInfo.current.limit = PAGE_SIZE;
     switch (contentType) {
       case MyPageContentType.EarnedStampList:
-        await myTrainingService!.findAllMyTrainingsV2WithStampAndPage(pageInfo.current);
+        await myTrainingService!.findAllStampTableViewsWithPage(pageInfo.current);
         break;
       case MyLearningContentType.InMyList:
-        await inMyLectureService!.findAllInMyLectureV2WithPage(pageInfo.current);
+        await inMyLectureService!.findAllTableViewsWithPage(pageInfo.current);
+        break;
+      case MyLearningContentType.Required:
+        await lectureService!.findAllRqdTableViewsWithPage(pageInfo.current);
+        break;
+      case MyLearningContentType.PersonalCompleted:
+        await aplService!.findAllAplsWithPage(pageInfo.current);
         break;
       default:
-        await myTrainingService!.findAllMyTrainingsV2WithPage(pageInfo.current);
+        await myTrainingService!.findAllTableViewsWithPage(pageInfo.current);
     }
     checkShowSeeMore(contentType);
-    history.replace(myTrainingRoutes.currentPage(getPageNo()));
-  };
+    history.replace(`./${getPageNo()}`);
+  }, [contentType, match.params.pageNo]);
 
   /* Render Functions */
   const renderNoSuchContentPanel = (contentType: MyContentType, withFilter: boolean = false) => {
@@ -318,6 +368,7 @@ function MyLearningListContainerV2(props: Props) {
               viewType={viewType}
               onChangeViewType={onChangeViewType}
               resultEmpty={resultEmpty}
+              totalCount={getTotalCount(contentType)}
               filterCount={filterCount}
               openFilter={openFilter}
               onClickFilter={onClickFilter}
@@ -325,6 +376,7 @@ function MyLearningListContainerV2(props: Props) {
             />
             <MultiFilterBox
               contentType={contentType}
+              viewType={viewType}
               openFilter={openFilter}
               onChangeFilterCount={onChangeFilterCount}
             />
@@ -350,11 +402,15 @@ function MyLearningListContainerV2(props: Props) {
                     />
                   )
                 }
-                <MyLearningDeleteModal
-                  open={openModal}
-                  onClose={onCloseModal}
-                  onConfirm={onConfirmModal}
-                />
+                {openModal &&
+                  (
+                    <MyLearningDeleteModal
+                      open={openModal}
+                      onClose={onCloseModal}
+                      onConfirm={onConfirmModal}
+                    />
+                  )
+                }
               </>
             ) || renderNoSuchContentPanel(contentType, true)}
           </>
@@ -368,6 +424,7 @@ export default inject(mobxHelper.injectFrom(
   'profile.skProfileService',
   'myTraining.myTrainingService',
   'myTraining.inMyLectureService',
+  'myTraining.aplService',
   'lecture.lectureService'
 ))(withRouter(observer(MyLearningListContainerV2)));
 

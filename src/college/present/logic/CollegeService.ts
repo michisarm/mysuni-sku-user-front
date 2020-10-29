@@ -30,7 +30,7 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  favoriteChannels : ChannelModel [] = [];
+  favoriteChannels: ChannelModel[] = [];
 
   @observable
   channel: ChannelModel = new ChannelModel();
@@ -68,8 +68,8 @@ export default class CollegeService {
   }
 
   @computed
-  get favoriteChannelIdNames() : IdNameList {
-    const list : IdNameList = new IdNameList();
+  get favoriteChannelIdNames(): IdNameList {
+    const list: IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
       list.idNames.push({ id: channel.id, name: channel.name, active: false });
     });
@@ -215,7 +215,8 @@ export default class CollegeService {
 
   //channel 이름 검색 추가
   @action
-  async findChannelByName(name:string) {
+  async findChannelByName(name: string) {
+    // const encodedName = encodeURIComponent(name);
     const channels = await this.channelApi.findChannelByName(name);
     runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
   }

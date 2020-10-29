@@ -1,11 +1,13 @@
 import { decorate, observable, computed } from 'mobx';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
 import { LectureServiceType } from 'lecture/model';
 import { CubeType } from 'personalcube/personalcube/model';
 import { DifficultyLevel } from './DifficultyLevel';
 import CubeTypeNameType from './CubeTypeNameType';
 
-class InMyLectureModelV2 {
+
+class InMyLectureTableViewModel {
   //
   [key: string]: any;
   id: string = '';
@@ -26,30 +28,36 @@ class InMyLectureModelV2 {
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
 
-  constructor(inMyLectureV2?: InMyLectureModelV2) {
-    if (inMyLectureV2) {
-      Object.assign(this, inMyLectureV2);
+  constructor(inMyLectureTableView?: InMyLectureTableViewModel) {
+    if (inMyLectureTableView) {
+      Object.assign(this, inMyLectureTableView);
     }
   }
 
-  @computed get formattedLearningTime() {
-    const hour = Math.floor(this.learningTime / 60);
-    const minute = this.learningTime % 60;
-
-    return hour && `${hour}h ${minute}m` || `${minute}m`;
+  @computed get formattedLearningTime(): string {
+    return timeToHourMinutePaddingFormat(this.learningTime);
   }
 
   @computed get displayCubeType(): string {
     return CubeTypeNameType[this.cubeType];
   }
 
-  @computed get stampCountForDisplay() {
+  @computed get displayStampCount() {
     // 획득할 수 있는 stampCount 가 없는 경우 '-' 로 화면에 노출.
     if (!this.stampCount) {
       return '-';
     }
 
     return this.stampCount;
+  }
+
+  @computed get displayCollegeName() {
+    return this.category &&
+      this.category.college && this.category.college.name || '-';
+  }
+
+  @computed get displayDifficultyLevel(): string {
+    return this.difficultyLevel || '-';
   }
 
   /* functions */
@@ -60,9 +68,9 @@ class InMyLectureModelV2 {
 
 }
 
-export default InMyLectureModelV2;
+export default InMyLectureTableViewModel;
 
-decorate(InMyLectureModelV2, {
+decorate(InMyLectureTableViewModel, {
   category: observable,
   difficultyLevel: observable,
   name: observable,

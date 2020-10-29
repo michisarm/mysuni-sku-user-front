@@ -43,7 +43,7 @@ class TabContainer extends Component<Props, State> {
   //
   static defaultProps = {
     className: 'tab-menu offset0',
-    onChangeTab: () => {},
+    onChangeTab: () => { },
   };
 
   state = {

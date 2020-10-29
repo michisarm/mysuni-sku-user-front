@@ -1,26 +1,20 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
-import { Icon, Label, Dropdown } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
 
 
 interface Props {
   badgeCount: number
-  selectedYear: number
-  yearOptions: any[]
-  onChangeYear: (year: number) => void,
   onClickItem?: () => void,
 }
 
 @reactAutobind
-@observer
-class ContentHeaderBadgeView extends Component<Props> {
+class ContentHeaderBadgeView extends PureComponent<Props> {
 
   render() {
     //
-    const { badgeCount, selectedYear, yearOptions, onChangeYear, onClickItem } = this.props;
+    const { badgeCount, onClickItem } = this.props;
 
     return (
       <div className="cell-inner">
@@ -34,17 +28,6 @@ class ContentHeaderBadgeView extends Component<Props> {
               </span>
             </a>
           </Label>
-
-          {selectedYear !== 0 ?
-            <div className="year">
-              <Dropdown
-                className="inline tight"
-                value={selectedYear}
-                options={yearOptions}
-                onChange={(e, data) => onChangeYear(Number(data.value))}
-              />
-            </div> : ''
-          }
         </div>
       </div>
     );

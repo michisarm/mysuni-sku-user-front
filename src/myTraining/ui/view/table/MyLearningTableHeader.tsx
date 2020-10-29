@@ -1,11 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { Checkbox, Icon, Table } from 'semantic-ui-react';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType, MyPageContentType, TableHeaderColumn } from '../../model';
+import { MyLearningContentType, TableHeaderColumn } from '../../model';
 
 
 interface Props {
@@ -15,8 +15,9 @@ interface Props {
 }
 
 function MyLearningTableHeader(props: Props) {
+  console.log('myLearningTableHeader :: render :: ');
   const { contentType, onClickSort, myTrainingService } = props;
-  const { myTrainingV2s, selectedIds, selectAll, clearAll } = myTrainingService!;
+  const { myTrainingTableViews, selectedIds, selectAll, clearAll } = myTrainingService!;
 
   /* by 김동구
     contentType 에 따라 테이블 컬럼이 동적으로 변경됨.
@@ -34,19 +35,20 @@ function MyLearningTableHeader(props: Props) {
 
   /* effects */
   useEffect(() => {
-    // 기존의 선택된 체크박스를 초기화함.
-    clearAll();
-  }, []);
+    if (contentType === MyLearningContentType.InProgress) {
+      clearAll();
+    }
+  }, [contentType]);
 
-  const onCheckAll = (e: any, data: any) => {
+  const onCheckAll = useCallback((e: any, data: any) => {
     // 이미 전체 선택이 되어 있는 경우, 전체 해제
-    if (myTrainingV2s.length === selectedIds.length) {
+    if (myTrainingTableViews.length === selectedIds.length) {
       clearAll();
       return;
     }
     // 전체 선택
     selectAll();
-  };
+  }, [myTrainingTableViews, selectedIds]);
 
   /* functions */
   const getDireciton = (column: string) => {
@@ -65,7 +67,7 @@ function MyLearningTableHeader(props: Props) {
 
 
   /* handlers */
-  const handleClickSort = (column: string) => {
+  const handleClickSort = useCallback((column: string) => {
     // 클릭한 컬럼의 order 객체 를 구함.
     const clickedOrder = orders.filter(order => order.column === column)[0];
     // 클릭하지 않은 order 객체들 을 구함.
@@ -76,7 +78,7 @@ function MyLearningTableHeader(props: Props) {
 
     // 실제 테이블 리스트 데잍터 정렬을 위한 함수.
     onClickSort(clickedOrder.column, clickedOrder.direction);
-  };
+  }, [orders, onClickSort]);
 
 
   return (
@@ -84,31 +86,35 @@ function MyLearningTableHeader(props: Props) {
       <Table.Header>
         <Table.Row>
           {/* 학습중 탭에 한해 checkbox 가 보여짐. */}
-          {contentType === MyLearningContentType.InProgress && (
-            <Table.HeaderCell className="ck">
-              <Checkbox
-                checked={selectedIds.length === myTrainingV2s.length}
-                onChange={onCheckAll}
-              />
-            </Table.HeaderCell>
-          )}
+          {contentType === MyLearningContentType.InProgress &&
+            (
+              <Table.HeaderCell className="ck">
+                <Checkbox
+                  checked={selectedIds.length === myTrainingTableViews.length}
+                  onChange={onCheckAll}
+                />
+              </Table.HeaderCell>
+            )
+          }
           {headerColumns &&
             headerColumns.length &&
-            headerColumns.map(headerColumn => (
-              <Table.HeaderCell
-                key={`learning-header-column-${headerColumn.key}`}
-                className={headerColumn.text === '과정명' ? 'title' : ''}
-              >
-                {headerColumn.text}
-                {headerColumn.icon && (
-                  <a href="#" onClick={() => handleClickSort(headerColumn.text)}>
-                    <Icon className={getOrderIcon(headerColumn.text, true)}>
-                      <span className="blind">{getOrderIcon(headerColumn.text)}</span>
-                    </Icon>
-                  </a>
-                )}
-              </Table.HeaderCell>
-            ))}
+            headerColumns.map(headerColumn =>
+              (
+                <Table.HeaderCell
+                  key={`learning-header-${headerColumn.key}`}
+                  className={headerColumn.text === '과정명' ? 'title' : ''}
+                >
+                  {headerColumn.text}
+                  {headerColumn.icon && (
+                    <a href="#" onClick={() => handleClickSort(headerColumn.text)}>
+                      <Icon className={getOrderIcon(headerColumn.text, true)}>
+                        <span className="blind">{getOrderIcon(headerColumn.text)}</span>
+                      </Icon>
+                    </a>
+                  )}
+                </Table.HeaderCell>
+              )
+            )}
         </Table.Row>
       </Table.Header>
     </>

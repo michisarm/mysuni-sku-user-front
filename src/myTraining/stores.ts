@@ -3,6 +3,7 @@ import MyLearningSummaryService from './present/logic/MyLearningSummaryService';
 import InMyLectureService from './present/logic/InMyLectureService';
 import MyFeedService from './present/logic/MyFeedService';
 import ApprovalCubeService from './present/logic/ApprovalCubeService';
+import AplService from './present/logic/AplService';
 
 export default {
   myTraining: {
@@ -10,10 +11,11 @@ export default {
     myLearningSummaryService: MyLearningSummaryService.instance,
     inMyLectureService: InMyLectureService.instance,
     myFeedService: MyFeedService.instance,
+    aplService: AplService.instance
   },
   approvalCube: {
     approvalCubeService: ApprovalCubeService.instance,
-  },
+  }
 };
 
 export {
@@ -22,4 +24,5 @@ export {
   InMyLectureService,
   MyFeedService,
   ApprovalCubeService,
+  AplService
 };

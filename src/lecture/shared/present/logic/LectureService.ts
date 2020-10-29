@@ -5,8 +5,10 @@ import {
   observable,
   runInAction,
 } from 'mobx';
-import { autobind } from '@nara.platform/accent';
+import { autobind, Offset } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
+import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
+import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import LectureApi from '../apiclient/LectureApi';
 import LectureFlowApi from '../apiclient/LectureFlowApi';
 import StudentFlowApi from '../apiclient/StudentFlowApi';
@@ -21,6 +23,10 @@ import OrderByType from '../../../model/OrderByType';
 import LectureFilterRdoModel from '../../../model/LectureFilterRdoModel';
 import SharedRdoModel from '../../../model/SharedRdoModel';
 import StudentCdoModel from '../../../model/StudentCdoModel';
+import LectureTableViewModel from '../../../model/LectureTableViewModel';
+import LectureFilterRdoModelV2 from '../../../model/LectureFilterRdoModelV2';
+
+
 
 @autobind
 class LectureService {
@@ -52,6 +58,11 @@ class LectureService {
 
   @observable
   _lectureViews: LectureViewModel[] = [];
+
+  // 
+
+
+  //
 
   @action
   setLectureViews(views: any) {
@@ -518,12 +529,112 @@ class LectureService {
    */
   @action
   async countRequiredLectures() {
-    const count = await this.lectureFlowApi.countRequiredLectures();
+    const count = await this.lectureFlowApi.countRequiredLectures(this._lectureFilterRdoV2);
 
     runInAction(() => {
       this.requiredLecturesCount = count;
     });
   }
+
+  ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
+  @observable
+  _lectureTableViews: LectureTableViewModel[] = [];
+
+  @observable
+  _lectureTableViewCount: number = 0;
+
+  _lectureFilterRdoV2: LectureFilterRdoModelV2 = new LectureFilterRdoModelV2();
+
+  @computed get lectureTableViews() {
+    return this._lectureTableViews;
+  }
+
+  @computed get lectureTableCount() {
+    return this._lectureTableViewCount;
+  }
+
+  initFilterRdo() {
+    this._lectureFilterRdoV2 = new LectureFilterRdoModelV2();
+  }
+
+  changeFilterRdoWithConditions(conditions: FilterCondition) {
+    this._lectureFilterRdoV2.changeConditions(conditions);
+    this._lectureFilterRdoV2.setDefaultOffset();
+  }
+
+  getFilterCount() {
+    return this._lectureFilterRdoV2.getFilterCount();
+  }
+
+  @action
+  clearAllTableViews() {
+    this._lectureTableViews = [];
+    this._lectureTableViewCount = 0;
+  }
+
+  @action
+  async findAllRqdTableViews() {
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+      runInAction(() => {
+        this._lectureTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+        this._lectureTableViewCount = offsetTableViews.totalCount;
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  @action
+  async findAllRqdTableViewsByConditions() {
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+      runInAction(() => {
+        this._lectureTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+        this._lectureTableViewCount = offsetTableViews.totalCount;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  @action
+  async findAllRqdTableViewsWithPage(offset: Offset) {
+    this._lectureFilterRdoV2.changeOffset(offset);
+    const offsetTableViews = await this.lectureFlowApi.findAllRqdTableViews(this._lectureFilterRdoV2);
+
+    if (
+      offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+      const addedTableViews = offsetTableViews.results.map(result => new LectureTableViewModel(result));
+      runInAction(() => {
+        this._lectureTableViews = [...this._lectureTableViews, ...addedTableViews];
+      });
+    }
+  }
+
+  @action
+  sortTableViews(column: string, direction: Direction) {
+    const propKey = converToKey(column);
+
+    if (direction === Direction.ASC) {
+      this._lectureTableViews = this._lectureTableViews.sort((a, b) => a[propKey] - b[propKey]);
+      return;
+    }
+    if (direction === Direction.DESC) {
+      this._lectureTableViews = this._lectureTableViews.sort((a, b) => b[propKey] - a[propKey]);
+    }
+  }
+
+  ////////////////////////////////////////////////////////// 개편 //////////////////////////////////////////////////////////
 }
 
 LectureService.instance = new LectureService(
@@ -533,3 +644,17 @@ LectureService.instance = new LectureService(
 );
 
 export default LectureService;
+
+/* globals */
+const converToKey = (column: string): any => {
+  switch (column) {
+    case '학습시간':
+      return 'learningTime';
+    case '스탬프':
+      return 'stampCount';
+    case '등록일':
+      return 'creationTime';
+    default:
+      return '';
+  }
+};

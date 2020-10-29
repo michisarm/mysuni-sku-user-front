@@ -97,17 +97,14 @@ class MyLearningContentHeaderContainer extends Component<Props> {
           )}
         </ContentHeader.Cell>
         <ContentHeader.Cell>
-          <ContentHeaderStampView
+          {/* <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
             onClickItem={this.onClickMyStamp}
-          />
+          /> */}
         </ContentHeader.Cell>
         <ContentHeader.Cell>
           <ContentHeaderBadgeView
             badgeCount={myBadgeCount}
-            selectedYear={0}
-            yearOptions={[]}
-            onChangeYear={() => { }}
             onClickItem={this.onClickMyBadge}
           />
         </ContentHeader.Cell>

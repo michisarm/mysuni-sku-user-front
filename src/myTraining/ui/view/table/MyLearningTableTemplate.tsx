@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
@@ -20,7 +20,7 @@ function MyLearningTableTemplate(props: Props) {
   );
 }
 
-export default MyLearningTableTemplate;
+export default memo(MyLearningTableTemplate);
 
 /* globals */
 const getWrapperStyle = (contentType: MyContentType): string => {
@@ -38,6 +38,8 @@ const getTableStyle = (contentType: MyContentType): string => {
       return 'ml-02-02';
     case MyLearningContentType.Completed: /* mySUNI 학습완료 */
       return 'ml-02-06';
+    case MyLearningContentType.PersonalCompleted:
+      return 'ml-02-09';
     case MyPageContentType.EarnedStampList: /* My Stamp */
       return '';
     default:

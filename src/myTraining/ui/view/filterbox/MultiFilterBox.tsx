@@ -1,25 +1,25 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Table, Checkbox } from 'semantic-ui-react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import { Checkbox } from 'semantic-ui-react';
 import { observer, inject } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { CollegeService } from 'college/stores';
+import { LectureService } from 'lecture';
 import MyTrainingService from 'myTraining/present/logic/MyTrainingService';
 import InMyLectureService from 'myTraining/present/logic/InMyLectureService';
-import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
-import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
+import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import { MyLearningContentType } from 'myTraining/ui/model';
 import CheckedFilterView from './CheckedFilterView';
 import CheckboxOptions from '../../model/CheckboxOptions';
 
-
-
-
 interface Props {
   contentType: MyContentType;
+  viewType: ViewType;
   openFilter: boolean;
   onChangeFilterCount: (count: number) => void;
   collegeService?: CollegeService;
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
+  lectureService?: LectureService;
 }
 
 export type FilterCondition = {
@@ -44,8 +44,10 @@ export enum FilterConditionName {
   'Course' 가 학습유형에 묶여 있으면서도 검색 조건에 있어서 다른 학습유형과 분리하기 위함. 2020.10.08 by 김동구.
 */
 function MultiFilterBox(props: Props) {
-  const { contentType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService } = props;
+  const { contentType, viewType, openFilter, onChangeFilterCount, collegeService, myTrainingService, inMyLectureService, lectureService } = props;
   const { colleges } = collegeService!;
+
+  console.log('multifilterbox :: render :: ');
 
   /* states */
   const [conditions, setConditions] = useState<FilterCondition>({
@@ -70,7 +72,6 @@ function MultiFilterBox(props: Props) {
     if (!openFilter) {
       changeFilterRdo(contentType);
       const filterCount = getFilterCount(contentType);
-      //
       onChangeFilterCount(filterCount);
     }
   }, [openFilter]);
@@ -82,6 +83,9 @@ function MultiFilterBox(props: Props) {
       case MyLearningContentType.InMyList:
         inMyLectureService!.changeFilterRdoWithConditions(conditions);
         break;
+      case MyLearningContentType.Required:
+        lectureService!.changeFilterRdoWithConditions(conditions);
+        break;
       default:
         myTrainingService!.changeFilterRdoWithConditions(conditions);
     }
@@ -91,6 +95,8 @@ function MultiFilterBox(props: Props) {
     switch (contentType) {
       case MyLearningContentType.InMyList:
         return inMyLectureService!.getFilterCount();
+      case MyLearningContentType.Required:
+        return lectureService!.getFilterCount();
       default:
         return myTrainingService!.getFilterCount();
     }
@@ -229,21 +235,47 @@ function MultiFilterBox(props: Props) {
       case FilterConditionName.Organizer:
         setConditions({ ...conditions, organizers: conditions.organizers.filter(organizer => organizer !== condition) });
         break;
+      case FilterConditionName.Required:
+        setConditions({ ...conditions, required: '' });
     }
 
   };
+  /* render functions */
+  const displayRow = (contentType: MyContentType, viewType: ViewType, filterConditionName?: FilterConditionName) => {
+    switch (contentType) {
+      case MyLearningContentType.InProgress:
+      case MyLearningContentType.Completed: {
+        if (viewType === 'Course') {
+          if (filterConditionName && filterConditionName === FilterConditionName.Required) {
+            return true;
+          }
+          return false;
+        }
+        return true;
+      }
+      case MyLearningContentType.Required: {
+        if (filterConditionName && filterConditionName === FilterConditionName.Required) {
+          return false;
+        }
+        return true;
+      }
+      default:
+        return true;
+    }
+  };
 
+  /* render */
   return (
     <div className={(openFilter && 'filter-table on') || 'filter-table'}>
       {openFilter && (
         <>
           <div className="title">Filter</div>
-          <Table>
-            <Table.Body>
-              <Table.Row>
+          <table className="">
+            <tbody>
+              <tr>
                 {/* 컬리지 */}
-                <Table.HeaderCell>{FilterConditionName.College}</Table.HeaderCell>
-                <Table.Cell>
+                <th>{FilterConditionName.College}</th>
+                <td>
                   {/* select All 체크박스 */}
                   <Checkbox
                     className="base"
@@ -266,106 +298,114 @@ function MultiFilterBox(props: Props) {
                         />
                       </Fragment>
                     ))}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                {/* 학습유형 */}
-                <Table.HeaderCell>{FilterConditionName.LearningType}</Table.HeaderCell>
-                <Table.Cell>
-                  {/* select All 체크박스 */}
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.LearningType}
-                    label={SELECT_ALL}
-                    checked={(conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)}
-                    onChange={onCheckAll}
-                  />
-                  {CheckboxOptions.learningTypes.map((learningType, index) => (
-                    <Fragment key={`checkbox-learningType-${index}`}>
-                      <Checkbox
-                        className="base"
-                        name={FilterConditionName.LearningType}
-                        label={learningType.text}
-                        value={learningType.value}
-                        checked={conditions.learningTypes.includes(learningType.value) || conditions.serviceType === learningType.value}
-                        onChange={onCheckOne}
-                      />
-                    </Fragment>
-                  ))}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                {/* 난이도 */}
-                <Table.HeaderCell>{FilterConditionName.DifficultyLevel}</Table.HeaderCell>
-                <Table.Cell>
-                  {/* select All 체크박스 */}
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.DifficultyLevel}
-                    label={SELECT_ALL}
-                    checked={conditions.difficultyLevels.length === CheckboxOptions.difficultyLevels.length}
-                    onChange={onCheckAll}
-                  />
-                  {CheckboxOptions.difficultyLevels.map((difficultyLevel, index) => (
-                    <Fragment key={`checkbox-difficultyLevel-${index}`}>
-                      <Checkbox
-                        className="base"
-                        name={FilterConditionName.DifficultyLevel}
-                        label={difficultyLevel.text}
-                        value={difficultyLevel.value}
-                        checked={conditions.difficultyLevels.includes(difficultyLevel.value)}
-                        onChange={onCheckOne}
-                      />
-                    </Fragment>
-                  ))}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                {/* 교육기관 */}
-                <Table.HeaderCell>{FilterConditionName.Organizer}</Table.HeaderCell>
-                <Table.Cell>
-                  {/* select All 체크박스 */}
-                  <Checkbox
-                    className="base"
-                    name={FilterConditionName.Organizer}
-                    label={SELECT_ALL}
-                    checked={conditions.organizers.length === CheckboxOptions.organizers.length}
-                    onChange={onCheckAll}
-                  />
-                  {CheckboxOptions.organizers.map((organizer, index) => (
-                    <Fragment key={`checkbox-organizer-${index}`}>
-                      <Checkbox
-                        className="base"
-                        name={FilterConditionName.Organizer}
-                        label={organizer.text}
-                        value={organizer.value}
-                        checked={conditions.organizers.includes(organizer.value)}
-                        onChange={onCheckOne}
-                      />
-                    </Fragment>
-                  ))}
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                {/* 핵인싸 */}
-                <Table.HeaderCell>{FilterConditionName.Required}</Table.HeaderCell>
-                <Table.Cell>
-                  {CheckboxOptions.requireds.map((required, index) => (
-                    <Fragment key={`checkbox-required-${index}`}>
-                      <Checkbox
-                        className="base radio"
-                        name={FilterConditionName.Required}
-                        label={required.text}
-                        value={required.value}
-                        checked={conditions.required === required.value}
-                        onChange={onCheckOne}
-                      />
-                    </Fragment>
-                  ))}
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
+                </td>
+              </tr>
+              {displayRow(contentType, viewType) && (
+                <tr>
+                  {/* 학습유형 */}
+                  <th>{FilterConditionName.LearningType}</th>
+                  <td>
+                    {/* select All 체크박스 */}
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.LearningType}
+                      label={SELECT_ALL}
+                      checked={(conditions.learningTypes.length === CheckboxOptions.learningTypes.length - 1 && conditions.serviceType.length !== 0)}
+                      onChange={onCheckAll}
+                    />
+                    {CheckboxOptions.learningTypes.map((learningType, index) => (
+                      <Fragment key={`checkbox-learningType-${index}`}>
+                        <Checkbox
+                          className="base"
+                          name={FilterConditionName.LearningType}
+                          label={learningType.text}
+                          value={learningType.value}
+                          checked={conditions.learningTypes.includes(learningType.value) || conditions.serviceType === learningType.value}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                  </td>
+                </tr>
+              )}
+              {displayRow(contentType, viewType) && (
+                <tr>
+                  {/* 난이도 */}
+                  <th>{FilterConditionName.DifficultyLevel}</th>
+                  <td>
+                    {/* select All 체크박스 */}
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.DifficultyLevel}
+                      label={SELECT_ALL}
+                      checked={conditions.difficultyLevels.length === CheckboxOptions.difficultyLevels.length}
+                      onChange={onCheckAll}
+                    />
+                    {CheckboxOptions.difficultyLevels.map((difficultyLevel, index) => (
+                      <Fragment key={`checkbox-difficultyLevel-${index}`}>
+                        <Checkbox
+                          className="base"
+                          name={FilterConditionName.DifficultyLevel}
+                          label={difficultyLevel.text}
+                          value={difficultyLevel.value}
+                          checked={conditions.difficultyLevels.includes(difficultyLevel.value)}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                  </td>
+                </tr>
+              )}
+              {displayRow(contentType, viewType) && (
+                <tr>
+                  {/* 교육기관 */}
+                  <th>{FilterConditionName.Organizer}</th>
+                  <td>
+                    {/* select All 체크박스 */}
+                    <Checkbox
+                      className="base"
+                      name={FilterConditionName.Organizer}
+                      label={SELECT_ALL}
+                      checked={conditions.organizers.length === CheckboxOptions.organizers.length}
+                      onChange={onCheckAll}
+                    />
+                    {CheckboxOptions.organizers.map((organizer, index) => (
+                      <Fragment key={`checkbox-organizer-${index}`}>
+                        <Checkbox
+                          className="base"
+                          name={FilterConditionName.Organizer}
+                          label={organizer.text}
+                          value={organizer.value}
+                          checked={conditions.organizers.includes(organizer.value)}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                  </td>
+                </tr>
+              )}
+              {displayRow(contentType, viewType, FilterConditionName.Required) && (
+                <tr>
+                  {/* 핵인싸 */}
+                  <th>{FilterConditionName.Required}</th>
+                  <td>
+                    {CheckboxOptions.requireds.map((required, index) => (
+                      <Fragment key={`checkbox-required-${index}`}>
+                        <Checkbox
+                          className="base radio"
+                          name={FilterConditionName.Required}
+                          label={required.text}
+                          value={required.value}
+                          checked={conditions.required === required.value}
+                          onChange={onCheckOne}
+                        />
+                      </Fragment>
+                    ))}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
           {/* display selected conditions */}
           <CheckedFilterView
             colleges={colleges}
@@ -382,8 +422,9 @@ function MultiFilterBox(props: Props) {
 export default inject(mobxHelper.injectFrom(
   'college.collegeService',
   'myTraining.myTrainingService',
-  'myTraining.inMyLectureService'
-))(React.memo(observer(MultiFilterBox)));
+  'myTraining.inMyLectureService',
+  'lecture.lectureService'
+))(observer(MultiFilterBox));
 
 /* globals */
 const SELECT_ALL = 'Select All';

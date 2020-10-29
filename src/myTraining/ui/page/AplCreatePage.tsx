@@ -91,7 +91,7 @@ class AplCreatePage extends React.Component<Props, States> {
   }
 
   // 화면 처음 진입 시
-  init() {}
+  init() { }
 
   routeToAplConfirm() {
     const { aplQuery } = this.props.aplService!;

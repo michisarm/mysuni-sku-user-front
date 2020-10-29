@@ -1,7 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
-import { OffsetElementList } from 'shared/model';
-import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 
 class MyTrainingFlowApi {
 
@@ -13,14 +11,14 @@ class MyTrainingFlowApi {
   static instance: MyTrainingFlowApi;
 
   // 응답 데이터는 offset으로 전달받는다.
-  findAllMyTrainingsV2(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+  findAllTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
     return axiosApi
       .post(this.baseUrl + '/v2', myTrainingFilterRdo)
       .then(response => response && response.data || null)
       .catch(error => error && null);
   }
 
-  findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+  findAllStampTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
     return axiosApi.post(this.baseUrl + '/stamp/v2', myTrainingFilterRdo)
       .then(response => response && response.data || null)
       .catch(error => error && null);

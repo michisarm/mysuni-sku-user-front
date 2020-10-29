@@ -1,5 +1,6 @@
 import { observable, decorate, computed } from 'mobx';
 import moment from 'moment';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
 import { CategoryModel, LearningState } from 'shared/model';
 import { LectureServiceType } from 'lecture/model';
 import { DifficultyLevel } from './DifficultyLevel';
@@ -10,7 +11,8 @@ import { MyStampXlsxModel } from './MyStampXlsxModel';
 import CubeTypeNameType from './CubeTypeNameType';
 
 
-class MyTrainingModelV2 {
+
+class MyTrainingTableViewModel {
 
   [key: string]: any;
   id: string = '';
@@ -31,21 +33,21 @@ class MyTrainingModelV2 {
   createDate: number = 0; // 등록일
   stampCount: number = 0; // 스탬프
 
+  passCount: number = 0;
+  rowCount: number = 0;
+
   // for make observable object from json data.
-  constructor(myTrainingV2?: MyTrainingModelV2) {
-    if (myTrainingV2) {
-      Object.assign(this, myTrainingV2);
+  constructor(myTrainingTableView?: MyTrainingTableViewModel) {
+    if (myTrainingTableView) {
+      Object.assign(this, myTrainingTableView);
     }
   }
 
-  @computed get formattedLearningTime() {
-    const hour = Math.floor(this.learningTime / 60);
-    const minute = this.learningTime % 60;
-
-    return hour && `${hour}h ${minute}m` || `${minute}m`;
+  @computed get formattedLearningTime(): string {
+    return timeToHourMinutePaddingFormat(this.learningTime);
   }
 
-  @computed get stampCountForDisplay() {
+  @computed get displayStampCount() {
     // 획득할 수 있는 stampCount 가 없는 경우 '-' 로 화면에 노출.
     if (!this.stampCount) {
       return '-';
@@ -55,6 +57,19 @@ class MyTrainingModelV2 {
 
   @computed get displayCubeType(): string {
     return CubeTypeNameType[this.cubeType];
+  }
+
+  @computed get displayCollegeName(): string {
+    return this.category &&
+      this.category.college && this.category.college.name || '-';
+  }
+
+  @computed get displayDifficultyLevel(): string {
+    return this.difficultyLevel || '-';
+  }
+
+  @computed get displayProgressRate(): string {
+    return this.isCardType() ? '-' : `${this.passCount}/${this.rowCount}`;
   }
 
   /* functions */
@@ -120,9 +135,9 @@ class MyTrainingModelV2 {
   }
 }
 
-export default MyTrainingModelV2;
+export default MyTrainingTableViewModel;
 
-decorate(MyTrainingModelV2, {
+decorate(MyTrainingTableViewModel, {
   category: observable,
   difficultyLevel: observable,
   name: observable,

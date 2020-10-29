@@ -1,54 +1,48 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
-import { BadgeService } from 'lecture/stores';
 import { MyLearningSummaryService } from 'myTraining/stores';
-import routePaths from 'myTraining/routePaths';
+import myTrainingRoutePaths from 'myTraining/routePaths';
 import { ContentLayout, TabItemModel } from 'shared';
 import Tab from 'shared/components/Tab';
 import EarnedBadgeListContainer from 'certification/ui/logic/EarnedBadgeListContainer';
 import { MyPageContentType, MyPageContentTypeName } from '../model';
-import MyPageContentHeaderContainer from '../logic/MyPageContentHeaderContainer';
+import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 
+
 interface Props extends RouteComponentProps<RouteParams> {
-  badgeService?: BadgeService;
   myLearningSummaryService?: MyLearningSummaryService;
 }
 
 interface RouteParams {
-  tab: string,
-  pageNo?: string
+  tab: string;
+  pageNo?: string;
 }
 
 function MyPagePageV2(props: Props) {
-  const { badgeService, myLearningSummaryService, history, match } = props;
-  const { earnedCount } = badgeService!;
-  const { myLearningSummary: { acheiveStampCount } } = myLearningSummaryService!;
+  const { myLearningSummaryService, history, match } = props;
+  const { totalMyLearningSummary: { achieveBadgeCount, acheiveStampCount } } = myLearningSummaryService!;
   const currentTab = match.params.tab;
 
-  /* states */
-  const [myBadgeCount, setMyBadgeCount] = useState<number>(0);
-
-  /* effects */
+  /* 
+    새로고침 시 store 의 데이터가 사라진 경우, 
+    데이터를 다시 조회하도록 함. 
+  */
   useEffect(() => {
-    fetchAllTabCounts();
+    if (acheiveStampCount === 0 && achieveBadgeCount === 0) {
+      myLearningSummaryService!.findMyLearningSummaryV2();
+    }
   }, []);
-
-  /* functions */
-  const fetchAllTabCounts = async () => {
-    await badgeService!.getCountOfBadges(); // get myBadgeCount
-    setMyBadgeCount(earnedCount);
-  };
 
   const getTabs = (): TabItemModel[] => {
     return [
       {
         name: MyPageContentType.EarnedBadgeList,
-        item: getTabItem(MyPageContentType.EarnedBadgeList, myBadgeCount),
-        render: () => <EarnedBadgeListContainer badgeCount={myBadgeCount} />
+        item: getTabItem(MyPageContentType.EarnedBadgeList, achieveBadgeCount),
+        render: () => <EarnedBadgeListContainer />
       },
       {
         name: MyPageContentType.EarnedStampList,
@@ -67,11 +61,13 @@ function MyPagePageV2(props: Props) {
     );
   };
 
-  const onChangeTab = (tab: TabItemModel): string => {
-    history.push(routePaths.myPageTab(tab.name));
-    return routePaths.myPageTab(tab.name);
-  };
+  /* handlers */
+  const onChangeTab = useCallback((tab: TabItemModel): string => {
+    history.push(myTrainingRoutePaths.myPageTab(tab.name));
+    return myTrainingRoutePaths.myPageTab(tab.name);
+  }, []);
 
+  /* render */
   return (
     <ContentLayout
       className="MyPage"
@@ -82,7 +78,9 @@ function MyPagePageV2(props: Props) {
         ]
       }
     >
-      <MyPageContentHeaderContainer />
+      <MyContentHeaderContainer
+        contentType={MyPageContentType.EarnedBadgeList}
+      />
       <Tab
         tabs={getTabs()}
         defaultActiveName={currentTab}
@@ -93,7 +91,6 @@ function MyPagePageV2(props: Props) {
 }
 
 export default inject(mobxHelper.injectFrom(
-  'badge.badgeService',
   'myTraining.myLearningSummaryService'
 ))(withRouter(observer(MyPagePageV2)));
 

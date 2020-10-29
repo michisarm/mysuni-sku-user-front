@@ -5,13 +5,14 @@ import { mobxHelper } from '@nara.platform/accent';
 import routePaths from 'myTraining/routePaths';
 import { ActionEventService } from 'shared/stores';
 import { NotieService } from 'notie/stores';
-import { MyTrainingService, InMyLectureService } from 'myTraining/stores';
+import { MyTrainingService, InMyLectureService, AplService } from 'myTraining/stores';
 import { LectureService } from 'lecture/stores';
 import { TabItemModel, ContentLayout } from 'shared';
 import TabContainer from 'shared/components/Tab';
-import MyLearningContentHeaderContainer from '../logic/MyLearningContentHeaderContainer';
+import MyContentHeaderContainer from '../logic/MyContentHeaderContainer';
 import MyLearningListContainerV2 from '../logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyLearningContentTypeName } from '../model';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
   actionEventService?: ActionEventService;
@@ -19,6 +20,7 @@ interface Props extends RouteComponentProps<RouteParams> {
   myTrainingService?: MyTrainingService;
   inMyLectureService?: InMyLectureService;
   lectureService?: LectureService;
+  aplService?: AplService;
 }
 
 interface RouteParams {
@@ -27,7 +29,7 @@ interface RouteParams {
 }
 
 function MyLearningPageV2(props: Props) {
-  const { actionEventService, notieService, myTrainingService, inMyLectureService, lectureService } = props;
+  const { actionEventService, notieService, myTrainingService, inMyLectureService, lectureService, aplService } = props;
   const { history, match } = props;
   const currentTab = match.params.tab;
 
@@ -58,6 +60,7 @@ function MyLearningPageV2(props: Props) {
     */
     myTrainingService!.findAllTabCount(); // 학습중, 학습예정, mySUNI 학습완료, 취수/미이수
     inMyLectureService!.findAllTabCount();  // 관심목록
+    aplService!.findAllTabCount();
     lectureService!.countRequiredLectures(); // 권장과정
   };
 
@@ -66,6 +69,7 @@ function MyLearningPageV2(props: Props) {
     const { inprogressCount, completedCount, enrolledCount, retryCount } = myTrainingService!;
     const { inMyListCount } = inMyLectureService!;
     const { requiredLecturesCount } = lectureService!;
+    const { aplCount } = aplService!;
 
     return [
       {
@@ -93,6 +97,11 @@ function MyLearningPageV2(props: Props) {
         name: MyLearningContentType.Completed,
         item: getTabItem(MyLearningContentType.Completed, completedCount),
         render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />,
+      },
+      {
+        name: MyLearningContentType.PersonalCompleted,
+        item: getTabItem(MyLearningContentType.PersonalCompleted, aplCount.all),
+        render: () => <MyLearningListContainerV2 contentType={convertTabToContentType(currentTab)} />
       },
       {
         name: MyLearningContentType.Retry,
@@ -137,9 +146,21 @@ function MyLearningPageV2(props: Props) {
 
   /* render */
   return (
-    <ContentLayout className="myLearning" breadcrumb={[{ text: 'Learning' }, { text: getContentNameFromTab(currentTab) }]}>
-      <MyLearningContentHeaderContainer />
-      <TabContainer tabs={getTabs()} defaultActiveName={currentTab} onChangeTab={onChangeTab} />
+    <ContentLayout
+      className="mylearning"
+      breadcrumb={[
+        { text: 'Learning' },
+        { text: getContentNameFromTab(currentTab) }
+      ]}
+    >
+      <MyContentHeaderContainer
+        contentType={MyLearningContentType.InProgress}
+      />
+      <TabContainer
+        tabs={getTabs()}
+        defaultActiveName={currentTab}
+        onChangeTab={onChangeTab}
+      />
     </ContentLayout>
   );
 }
@@ -149,7 +170,8 @@ export default inject(mobxHelper.injectFrom(
   'notie.notieService',
   'lecture.lectureService',
   'myTraining.inMyLectureService',
-  'myTraining.myTrainingService'
+  'myTraining.myTrainingService',
+  'myTraining.aplService'
 ))(withRouter(observer(MyLearningPageV2)));
 
 /* globals */

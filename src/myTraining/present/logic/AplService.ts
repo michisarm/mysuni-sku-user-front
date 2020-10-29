@@ -1,3 +1,4 @@
+import { Offset } from '@nara.platform/accent';
 import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
@@ -11,8 +12,9 @@ import { AplCountModel } from '../../model/AplCountModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplFlowCdo } from '../../model/AplFlowCdo';
 import AplFlowApi from '../apiclient/AplFlowApi';
-import {ExcelView} from '../../../shared/model/ExcelView';
+import { ExcelView } from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
+
 
 @autobind
 export default class AplService {
@@ -98,6 +100,19 @@ export default class AplService {
     return serviceIdList;
   }*/
 
+  @computed get allowTime(): number {
+    const totalAllowHour = this.apls.results
+      .map(result => result.allowHour)
+      .reduce((a, b) => a + b, 0);
+
+    const totalAllowMinute = this.apls.results
+      .map(result => result.allowMinute)
+      .reduce((a, b) => a + b, 0);
+
+
+    return totalAllowHour * 60 + totalAllowMinute;
+  }
+
   constructor(aplApi: AplApi, aplFlowApi: AplFlowApi) {
     this.aplApi = aplApi;
     this.aplFlowApi = aplFlowApi;
@@ -110,8 +125,30 @@ export default class AplService {
       AplQueryModel.asAplRdo(this.aplQuery)
     );
     //apls.results.map((apl) => new AplListViewModel(apl));
-    runInAction(() => (this.apls = apls));
+    runInAction(() => this.apls = apls);
     return apls;
+  }
+
+  @action
+  async findAllAplsWithPage(offset: Offset) {
+    this.aplQuery.offset = offset.offset;
+    this.aplQuery.limit = offset.limit;
+
+    const apls = await this.aplApi.findAllAplsByQuery(
+      AplQueryModel.asAplRdo(this.aplQuery)
+    );
+
+    runInAction(() => this.apls.results = [...this.apls.results, ...apls.results]);
+  }
+
+  @action
+  async findAllTabCount() {
+    const aplCount = await this.aplApi.findAplCount(
+      AplQueryModel.asAplRdo(this.aplQuery)
+    );
+
+    runInAction(() => this.aplCount = aplCount);
+    return aplCount;
   }
 
   @action
@@ -187,6 +224,11 @@ export default class AplService {
   clearApls() {
     //
     this.apls = new OffsetElementList<AplListViewModel>();
+  }
+
+  @action
+  initQueryModel() {
+    this.aplQuery = new AplQueryModel();
   }
 
   @action

@@ -1,7 +1,7 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import { OffsetElementList } from 'shared/model';
-import InMyLectureModelV2 from 'myTraining/model/InMyLectureModelV2';
+import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
 import InMyLectureFilterRdoModel from 'myTraining/model/InMyLectureFilterRdoModel';
 import InMyLectureRdoModel from '../../model/InMyLectureRdoModel';
 import InMyLectureModel from '../../model/InMyLectureModel';
@@ -62,8 +62,8 @@ class InMyLectureApi {
   }
 
   ////////////////////////////// 개편 //////////////////////////////
-  findAllInMyLectureV2s(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
-    return axiosApi.post<OffsetElementList<InMyLectureModelV2>>('http://localhost:8233/mytraining/inmylecture/myLecture/v2', inMyLectureFilterRdo)
+  findAllTableViews(inMyLectureFilterRdo: InMyLectureFilterRdoModel) {
+    return axiosApi.post<OffsetElementList<InMyLectureTableViewModel>>('http://localhost:8233/mytraining/inmylecture/myLecture/v2', inMyLectureFilterRdo)
       .then(response => response && response.data || null)
       .catch(error => error && null);
   }

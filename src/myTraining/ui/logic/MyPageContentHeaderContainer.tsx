@@ -136,6 +136,9 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
         <ContentHeader.Cell>
           <ContentHeaderStampView
             stampCount={myLearningSummary.acheiveStampCount}
+            selectedYear={selectedYear}
+            yearOptions={yearOptions}
+            onChangeYear={this.onChangeYear}
             onClickItem={this.onClickMyStamp}
           />
         </ContentHeader.Cell>
@@ -143,9 +146,6 @@ class MyPageContentHeaderContainer extends Component<Props, State> {
         <ContentHeader.Cell>
           <ContentHeaderBadgeView
             badgeCount={myBadgeCount}
-            selectedYear={selectedYear}
-            yearOptions={yearOptions}
-            onChangeYear={this.onChangeYear}
             onClickItem={this.onClickMyBadge}
           />
         </ContentHeader.Cell>

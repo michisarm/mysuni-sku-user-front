@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { DeleteButton, DownloadExcelButton } from '../MyLearningButtons';
 import { MyLearningContentType, MyPageContentType } from '../../../../myTraining/ui/model';
-
 
 interface Props {
   contentType: MyContentType;
@@ -15,6 +14,7 @@ interface Props {
 function ListLeftTopPanel(props: Props) {
   const { contentType, totalCount, countMessage, onClickDelete, downloadExcel } = props;
 
+  console.log('ListLeftTopPanel :: render :: ');
   const renderButtons = (contentType: MyContentType) => {
     switch (contentType) {
       case MyLearningContentType.InProgress:
@@ -74,4 +74,4 @@ function ListLeftTopPanel(props: Props) {
   );
 }
 
-export default ListLeftTopPanel;
+export default memo(ListLeftTopPanel);

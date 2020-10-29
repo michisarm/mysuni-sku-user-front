@@ -1,16 +1,17 @@
 import { IObservableArray, action, computed, observable, runInAction } from 'mobx';
 import { autobind, Offset } from '@nara.platform/accent';
 import { CubeType, OffsetElementList } from 'shared/model';
-import MyTrainingModelV2 from 'myTraining/model/MyTrainingModelV2';
 import MyTrainingFilterRdoModel from 'myTraining/model/MyTrainingFilterRdoModel';
 import { Direction } from 'myTraining/ui/view/table/MyLearningTableHeader';
 import { FilterCondition } from 'myTraining/ui/view/filterbox/MultiFilterBox';
 import { MyContentType, ViewType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import MyTrainingApi from '../apiclient/MyTrainingApi';
 import MyTrainingFlowApi from '../apiclient/MyTrainingFlowApi';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingSimpleModel from '../../model/MyTrainingSimpleModel';
+
 
 
 
@@ -28,18 +29,6 @@ class MyTrainingService {
   _myTrainings: MyTrainingModel[] = [];
 
   @observable myTrainingCount: number = 0;
-
-  @observable
-  _myTrainingV2s: MyTrainingModelV2[] = [];
-
-  // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
-  myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
-
-  @observable
-  selectedIds: string[] = [];
-
-  @observable
-  myTrainingV2Count: number = 0;
 
   @observable
   inprogressCount: number = 0;
@@ -64,6 +53,10 @@ class MyTrainingService {
 
 
   // My Trainings ----------------------------------------------------------------------------------------------------------
+
+  @computed get myTrainings() {
+    return this._myTrainings;
+  }
 
   @action
   clear() {
@@ -295,13 +288,25 @@ class MyTrainingService {
 
   ///////////////////////////////////// 개편되는 MyLearningPage 서비스들 //////////////////////////////////////////////////////////////////////////
 
-  @computed get myTrainings() {
-    return (this._myTrainingV2s as IObservableArray).peek();
+  @observable
+  _myTrainingTableViews: MyTrainingTableViewModel[] = [];
+
+  @observable
+  _myTrainingTableViewCount: number = 0;
+
+  // store 에서 관리가 되나, 변동사항이 있더라도 리 랜더링하지 않음. observable하지 않음.
+  _myTrainingFilterRdo: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel();
+
+  @observable
+  selectedIds: string[] = [];
+
+  @computed get myTrainingTableViews() {
+    //
+    return this._myTrainingTableViews;
   }
 
-  @computed get myTrainingV2s() {
-    //
-    return this._myTrainingV2s;
+  @computed get myTrainingTableCount() {
+    return this._myTrainingTableViewCount;
   }
 
   @action
@@ -318,13 +323,13 @@ class MyTrainingService {
   }
 
   @action
-  clearAllMyTrainingV2() {
-    this._myTrainingV2s = [];
-    this.myTrainingV2Count = 0;
+  clearAllTableViews() {
+    this._myTrainingTableViews = [];
+    this._myTrainingTableViewCount = 0;
   }
 
   initFilterRdo(contentType: MyContentType) {
-    this.myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
+    this._myTrainingFilterRdo = MyTrainingFilterRdoModel.create(contentType);
   }
 
   changeFilterRdoWithViewType(viewType: ViewType) {
@@ -332,40 +337,39 @@ class MyTrainingService {
       viewType = '';
     }
 
-    this.myTrainingFilterRdo.changeViewType(viewType);
-    this.myTrainingFilterRdo.setDefaultOffset();
+    this._myTrainingFilterRdo.changeViewType(viewType);
+    this._myTrainingFilterRdo.setDefaultOffset();
   }
 
   changeFilterRdoWithConditions(conditions: FilterCondition) {
     /* 조건이 변경되면 offset 을 초기화 해, 새롭게 조회함. */
-    this.myTrainingFilterRdo.changeConditions(conditions);
-    this.myTrainingFilterRdo.setDefaultOffset();
+    this._myTrainingFilterRdo.changeConditions(conditions);
+    this._myTrainingFilterRdo.setDefaultOffset();
   }
 
   changeFilterRdoWithOffset(offset: Offset) {
-    this.myTrainingFilterRdo.changeOffset(offset);
+    this._myTrainingFilterRdo.changeOffset(offset);
   }
 
   getFilterCount() {
-    return this.myTrainingFilterRdo.getFilterCount();
+    return this._myTrainingFilterRdo.getFilterCount();
   }
 
   @action
-  async findAllMyTrainingV2(filterRdo?: MyTrainingFilterRdoModel) {
+  async findAllTableViews(filterRdo?: MyTrainingFilterRdoModel) {
 
     if (filterRdo) {
-      this.myTrainingFilterRdo = filterRdo;
+      this._myTrainingFilterRdo = filterRdo;
     }
-
     // 기존의 조건을 담고 있는 rdo와 새로운 조건을 가지는 rdo 병합.
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
 
-    if (offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
       runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
-        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
       return false;
     }
@@ -373,15 +377,15 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsV2WithStamp() {
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+  async findAllStampTableViews() {
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
-    if (offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
       runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
-        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
       return false;
     }
@@ -389,15 +393,15 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsV2WithStampByConditions() {
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+  async findAllStampTableViewsByConditions() {
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
-    if (offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
       runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
-        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
       });
       return false;
     }
@@ -405,69 +409,68 @@ class MyTrainingService {
   }
 
   @action
-  async findAllMyTrainingsV2WithStampAndPage(offset: Offset) {
-    this.myTrainingFilterRdo.changeOffset(offset);
+  async findAllStampTableViewsWithPage(offset: Offset) {
+    this._myTrainingFilterRdo.changeOffset(offset);
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(this.myTrainingFilterRdo);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(this._myTrainingFilterRdo);
 
-    if (offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
-      const addedMyTrainings = offsetMyTrainings.results.map(result => new MyTrainingModelV2(result));
-      runInAction(() => this._myTrainingV2s = [...this._myTrainingV2s, ...addedMyTrainings]);
+    if (offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+      const addedTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+      runInAction(() => this._myTrainingTableViews = [...this._myTrainingTableViews, ...addedTableViews]);
     }
   }
 
 
   @action
-  async findAllMyTrainingsV2WithPage(offset: Offset) {
+  async findAllTableViewsWithPage(offset: Offset) {
+    this._myTrainingFilterRdo.changeOffset(offset);
 
-    this.myTrainingFilterRdo.changeOffset(offset);
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
+    if (
+      offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+      const addedTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+      runInAction(() => {
+        this._myTrainingTableViews = [...this._myTrainingTableViews, ...addedTableViews];
+      });
+    }
+  }
+
+  @action
+  async findAllTableViewsWithServiceType(serviceType: string) {
+    this._myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
+    this._myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
+
+    const offsetTableViews: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
+
+    if (
+      offsetTableViews &&
+      offsetTableViews.results &&
+      offsetTableViews.results.length) {
+
+      runInAction(() => {
+        this._myTrainingTableViews = offsetTableViews.results.map(result => new MyTrainingTableViewModel(result));
+        this._myTrainingTableViewCount = offsetTableViews.totalCount;
+      });
+    }
+  }
+
+  @action
+  async findAllTableViewsByConditions() {
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(this._myTrainingFilterRdo);
 
     if (
       offsetMyTrainings &&
       offsetMyTrainings.results &&
       offsetMyTrainings.results.length) {
-      const addedMyTrainings = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
-      runInAction(() => {
-        this._myTrainingV2s = [...this._myTrainingV2s, ...addedMyTrainings];
-      });
-    }
-  }
-
-  @action
-  async findAllMyTrainingsV2WithServiceType(serviceType: string) {
-    this.myTrainingFilterRdo.changeOffset({ offset: 0, limit: 20 });
-    this.myTrainingFilterRdo.changeServiceType(serviceType.toUpperCase());
-
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
-
-    if (
-      offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
 
       runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
-        this.myTrainingV2Count = offsetMyTrainings.totalCount;
-      });
-    }
-  }
-
-  @action
-  async findllMyTrainingsV2WithConditions() {
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(this.myTrainingFilterRdo);
-
-    if (
-      offsetMyTrainings &&
-      offsetMyTrainings.results &&
-      offsetMyTrainings.results.length) {
-
-      runInAction(() => {
-        this._myTrainingV2s = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
-        this.myTrainingV2Count = offsetMyTrainings.totalCount;
+        this._myTrainingTableViews = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
+        this._myTrainingTableViewCount = offsetMyTrainings.totalCount;
       });
 
       return false;
@@ -476,26 +479,26 @@ class MyTrainingService {
     return true;
   }
 
-  async findAllMyTrainingsV2ForExcel() {
+  async findAllTableViewsForExcel() {
     // 기존의 rdo 를 copy 해 새로운 엑셀 조회용 rdo 생성. ( offset 을 변경함으로 기존의 Rdo 에 영향이 없도록 하기 위함.)
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this.myTrainingFilterRdo);
+    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this._myTrainingFilterRdo);
 
     // 엑셀 조회용 rdo 는 페이징 처리 없이 전체를 조회해야 함.
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2(filterRdoForExcel);
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllTableViews(filterRdoForExcel);
+    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
   }
 
-  async findAllMyTrainingsV2WithStampForExcel() {
-    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this.myTrainingFilterRdo);
+  async findAllStampTableViewsForExcel() {
+    const filterRdoForExcel: MyTrainingFilterRdoModel = new MyTrainingFilterRdoModel(this._myTrainingFilterRdo);
 
     filterRdoForExcel.changeOffset({ offset: 0, limit: 9999 });
 
-    const offsetMyTrainings: OffsetElementList<MyTrainingModelV2> = await this.myTrainingFlowApi.findAllMyTrainingsV2WithStamp(filterRdoForExcel);
-    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingModelV2(offsetMyTraining));
+    const offsetMyTrainings: OffsetElementList<MyTrainingTableViewModel> = await this.myTrainingFlowApi.findAllStampTableViews(filterRdoForExcel);
+    const myTrainingV2sForExcel = offsetMyTrainings.results.map(offsetMyTraining => new MyTrainingTableViewModel(offsetMyTraining));
 
     return myTrainingV2sForExcel;
 
@@ -513,7 +516,7 @@ class MyTrainingService {
 
   @action
   selectAll() {
-    this.selectedIds = this._myTrainingV2s.map(myTrainingV2 => myTrainingV2.id);
+    this.selectedIds = this._myTrainingTableViews.map(tableView => tableView.id);
   }
 
   @action
@@ -521,29 +524,27 @@ class MyTrainingService {
     this.selectedIds = [];
   }
 
-
-
   @action
   deleteBySelectedIds() {
-    this._myTrainingV2s = this._myTrainingV2s.filter(myTrainingV2 => !this.selectedIds.includes(myTrainingV2.id));
-    this.myTrainingV2Count -= this.selectedIds.length;
+    this._myTrainingTableViews = this._myTrainingTableViews.filter(tableView => !this.selectedIds.includes(tableView.id));
+    this._myTrainingTableViewCount -= this.selectedIds.length;
 
     // 삭제하기로 선택된 myTraining 들의 상태를 update 하기 위한 api.
     this.myTrainingFlowApi.updateBySelectedIds();
   }
 
   @action
-  sortMyTrainingV2sBy(column: string, direction: Direction) {
+  sortTableViews(column: string, direction: Direction) {
 
     // 전달되는 컬럼이 오브젝트의 프로퍼티와 상이해, 변환해야함.
-    const propKey = convertColumn(column);
+    const propKey = convertToKey(column);
 
     if (direction === Direction.ASC) {
-      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => a[propKey] - b[propKey]);
+      this._myTrainingTableViews = this._myTrainingTableViews.sort((a, b) => a[propKey] - b[propKey]);
       return;
     }
     if (direction === Direction.DESC) {
-      this._myTrainingV2s = this._myTrainingV2s.sort((a, b) => b[propKey] - a[propKey]);
+      this._myTrainingTableViews = this._myTrainingTableViews.sort((a, b) => b[propKey] - a[propKey]);
     }
   }
 }
@@ -558,7 +559,7 @@ Object.defineProperty(MyTrainingService, 'instance', {
   configurable: false,
 });
 
-export const convertColumn = (column: string): any => {
+export const convertToKey = (column: string): any => {
   switch (column) {
     case '학습시간':
       return 'learningTime';

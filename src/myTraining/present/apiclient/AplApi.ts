@@ -4,10 +4,10 @@ import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
-import {AplModel} from '../..';
+import { AplModel } from '../..';
 
 export default class AplApi {
-  URL = '/api';
+  URL = 'http://localhost:8233/apl';
 
   static instance: AplApi;
 
@@ -25,6 +25,12 @@ export default class AplApi {
             new OffsetElementList<AplListViewModel>(response.data)) ||
           new OffsetElementList()
       );
+  }
+
+  findAplCount(aplRdo: AplRdoModel) {
+    return axios.get(this.URL + '/summary/count', { params: aplRdo })
+      .then(response =>
+        response && response.data && new AplCountModel(response.data) || new AplCountModel());
   }
 
   findApl(aplId: string | undefined) {
