@@ -29,7 +29,6 @@ import Student from '../../../model/Student';
 import {
   LectureStructure,
   LectureStructureCubeItem,
-  State,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getReportItem } from './getReportItemMapFromCube';
@@ -41,6 +40,7 @@ import {
 import { setLectureReport } from 'lecture/detail/store/LectureReportStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import { State } from '../../../viewModel/LectureState';
 
 function getPersonalCubeByParams(params: LectureParams): Promise<PersonalCube> {
   const { cubeId } = params;

@@ -2,13 +2,12 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
+import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructureCubeItem,
-  LectureStructureItemType,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
-  State,
 } from '../../../viewModel/LectureStructure';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';

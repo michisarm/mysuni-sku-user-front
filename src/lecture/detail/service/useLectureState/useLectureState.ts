@@ -40,13 +40,7 @@ export function useLectureState(): [Value] {
     if (params === undefined) {
       return;
     }
-    getStateFromCube(params).then(lectureState => {
-      if (lectureState === undefined) {
-        setLectureState();
-      } else {
-        setLectureState(lectureState);
-      }
-    });
+    getStateFromCube(params);
   }, [params]);
 
   return [value];

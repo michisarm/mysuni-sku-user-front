@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { State } from '../../../viewModel/LectureStructure';
+import { State } from '../../../viewModel/LectureState';
 
 interface TestViewProps {
   name: string;
