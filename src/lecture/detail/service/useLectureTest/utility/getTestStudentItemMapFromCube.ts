@@ -17,7 +17,7 @@ import {
 // http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
-export async function getTestStudentItemMapFromLecture(
+export async function getTestStudentItemMapFromCube(
   lectureCardId: string
 ): Promise<void> {
   // void : return이 없는 경우 undefined
