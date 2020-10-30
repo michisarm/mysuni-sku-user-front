@@ -7,6 +7,8 @@ import SkuVideoPlayer from 'lecture/detail/service/useLectureMedia/components/Sk
 import { patronInfo } from '@nara.platform/dock';
 
 //샘플 페이지 : http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2jy/lecture-card/LECTURE-CARD-274
+//             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00003/cube/CUBE-2ka/lecture-card/LECTURE-CARD-27z
+//             http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kh/lecture-card/LECTURE-CARD-283
 
 interface LectureVideoViewProps {}
 
