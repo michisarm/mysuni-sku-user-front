@@ -3,24 +3,24 @@
  * http://localhost:3000/api/lecture/students/flow
  */
 
-import { onLectureState } from 'lecture/detail/store/LectureStateStore';
-import LectureState from 'lecture/detail/viewModel/LectureState';
+import { onLectureWebpage } from 'lecture/detail/store/LectureWebpageStore';
+import LectureWebpage from 'lecture/detail/viewModel/LectureWebpage';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
 import { useLectureRouterParams } from '../useLectureRouterParams';
-import { getStateFromCube } from './utility/getStateFromCube';
+import { getWebpageFromCube } from './utility/getWebpageFromCube';
 
-type Value = LectureState | undefined;
+type Value = LectureWebpage | undefined;
 
-export function useLectureState(): [Value] {
+export function useLectureWebpage(): [Value] {
   const params = useLectureRouterParams();
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureState-${++subscriberIdRef.current}`;
+    const next = `useLectureWebpage-${++subscriberIdRef.current}`;
     setSubscriberId(next);
   }, []);
 
@@ -28,7 +28,7 @@ export function useLectureState(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureState(next => {
+    return onLectureWebpage(next => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);
@@ -37,7 +37,7 @@ export function useLectureState(): [Value] {
     if (params === undefined) {
       return;
     }
-    getStateFromCube(params);
+    getWebpageFromCube(params);
   }, [params]);
 
   return [value];
