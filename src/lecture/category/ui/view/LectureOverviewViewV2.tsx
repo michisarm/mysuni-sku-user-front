@@ -139,6 +139,12 @@ class LectureOverviewViewV2 extends Component<Props, State> {
 
   // Program 일 경우 하위 교육 모두 Passed 일때 Test 가능하게 20201030 by gon
   chkPgmTest() {
+    // cube    : 교육최소단위                      cube-Test
+    // course  : cube 묶음                        cube-Test, course-Test
+    // program : cube or course in course 형태    cube-Test, course-Test, course-Test
+    // cube, course, program 모두 Test 까지 끝나야 학습완료임
+    // program 일때 cube in program, cube in course   학습완료 만 체크해서 Test 가능하게 되어 있었음.
+    //              course in program   학습완료 체크하는 로직 추가
     // api:own -> store:student 로 바꿔서 리턴함
     // student:{}
     // lecture:{lectures:[student:{}]}
