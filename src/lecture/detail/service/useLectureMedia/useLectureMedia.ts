@@ -23,7 +23,7 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
 
   const params = useParams<LectureParams>();
 
-  const getCubeReportItem = useCallback((params: LectureParams) => {
+  const getCubeLectureMediaItem = useCallback((params: LectureParams) => {
     getCubeLectureMedia(params);
   }, []);
 
@@ -32,11 +32,11 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
   // }, []);
 
   useEffect(() => {
-    if (params.cubeId !== undefined) {
-      getCubeReportItem(params);
-    } else {
-      // getCourseReportItem(params);
-    }
+    //if (params.cubeId !== undefined) {
+    getCubeLectureMediaItem(params);
+    // } else {
+    //   // getCourseReportItem(params);
+    // }
   }, [params]);
 
   useEffect(() => {

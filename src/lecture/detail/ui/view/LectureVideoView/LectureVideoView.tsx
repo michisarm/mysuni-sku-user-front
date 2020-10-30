@@ -48,23 +48,24 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
               <div className="course-video">
                 {getLectureMedia() &&
-                  (getLectureMedia().mediaType == 'LinkMedia' ||
-                    getLectureMedia().mediaType == 'ContentsProviderMedia') && (
+                  (getLectureMedia()?.mediaType == 'LinkMedia' ||
+                    getLectureMedia()?.mediaType ==
+                      'ContentsProviderMedia') && (
                     <video controls>
                       <source
-                        src={getLectureMedia().mediaContents.linkMediaUrl}
+                        src={getLectureMedia()?.mediaContents.linkMediaUrl}
                       ></source>
                     </video>
                   )}
                 {getLectureMedia() &&
-                  (getLectureMedia().mediaType == 'InternalMedia' ||
-                    getLectureMedia().mediaType == 'InternalMediaUpload') && (
+                  (getLectureMedia()?.mediaType == 'InternalMedia' ||
+                    getLectureMedia()?.mediaType == 'InternalMediaUpload') && (
                     <SkuVideoPlayer
                       cubeId=""
                       //deliveryId="2081ffc6-d685-4f12-9e45-ac2a0019e0b3"
                       deliveryId={
-                        getLectureMedia().mediaContents.internalMedias[0]
-                          .panoptoSessionId
+                        getLectureMedia()?.mediaContents.internalMedias[0]
+                          .panoptoSessionId || ''
                       }
                       //userId="djpaek@sk.com"
                       userId={patronInfo.getPatronId() || ''}
@@ -76,9 +77,9 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
                   )}
                 {getLectureTranscripts() &&
                   getLectureMedia() &&
-                  (getLectureMedia().mediaType == 'InternalMedia' ||
-                    getLectureMedia().mediaType == 'InternalMediaUpload') &&
-                  getLectureTranscripts().length > 0 &&
+                  (getLectureMedia()?.mediaType == 'InternalMedia' ||
+                    getLectureMedia()?.mediaType == 'InternalMediaUpload') &&
+                  (getLectureTranscripts()?.length || 0) > 0 &&
                   displayTranscript && (
                     <>
                       <button
@@ -91,7 +92,7 @@ const LectureVideoView: React.FC<LectureVideoViewProps> = function LectureVideoV
 
                       <div className="course-video-tanscript">
                         <div className="course-video-scroll">
-                          {getLectureTranscripts().map(lectureTranscript => {
+                          {getLectureTranscripts()?.map(lectureTranscript => {
                             return (
                               <>
                                 <strong>{toHHMM(lectureTranscript.idx)}</strong>

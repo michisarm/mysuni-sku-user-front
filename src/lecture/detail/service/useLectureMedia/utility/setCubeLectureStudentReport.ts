@@ -25,8 +25,8 @@ export async function setCubeLectureStudentReport(
   params: LectureReportCubeItemParams
 ): Promise<void> {
   await modifyStudent(
-    getLectureReport().studentReport?.id || '',
-    getLectureReport().studentReport?.homeworkFileBoxId || '',
-    getLectureReport().studentReport?.homeworkContent || ''
+    getLectureReport()?.studentReport?.id || '',
+    getLectureReport()?.studentReport?.homeworkFileBoxId || '',
+    getLectureReport()?.studentReport?.homeworkContent || ''
   );
 }
