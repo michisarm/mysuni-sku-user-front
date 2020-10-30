@@ -10,6 +10,7 @@
 
 import { axiosApi } from '@nara.platform/accent';
 import CubeIntro from '../model/CubeIntro';
+import Media from '../model/Media';
 import PersonalCube from '../model/PersonalCube';
 import Transcript from '../model/Transcript';
 
@@ -34,5 +35,11 @@ export function findCubeIntro(cubeIntroId: string): Promise<CubeIntro> {
 export function findAllTranscript(deliveryId: string, locale: string) {
   return axiosApi
     .get<Transcript[]>(`${BASE_URL}/transcripts/${deliveryId}/${locale}`)
+    .then(response => response && response.data);
+}
+
+export function findMedia(mediaId: string) {
+  return axiosApi
+    .get<Media>(`${BASE_URL}/medias/${mediaId}`)
     .then(response => response && response.data);
 }

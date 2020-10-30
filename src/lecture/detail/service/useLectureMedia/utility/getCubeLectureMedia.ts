@@ -5,7 +5,7 @@ import {
   modifyStudent,
 } from '../../../api/lectureApi';
 
-import { findAllTranscript } from '../../../api/mPersonalCubeApi';
+import { findAllTranscript, findMedia } from '../../../api/mPersonalCubeApi';
 import { findCubeIntro, findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
@@ -32,6 +32,8 @@ import {
 } from 'lecture/detail/store/LectureTranscriptStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import LectureParams, { toPath } from 'lecture/detail/viewModel/LectureParams';
+import { setLectureMedia } from 'lecture/detail/store/LectureMediaStore';
+import { getMediaItem } from './getMediaItemMapFromCube';
 
 function getPersonalCubeByParams(params: LectureParams): Promise<PersonalCube> {
   const { cubeId } = params;
@@ -98,37 +100,45 @@ async function getStateMapByParams(
   }
 }
 
-export async function getCubeLectureTranscript(
-  params: LectureRouterParams
+export async function getCubeLectureMedia(
+  params: LectureParams
 ): Promise<void> {
-  // const personalCube = await getPersonalCubeByParams(params);
-  // const cube = await getLectureStructureCubeItemByPersonalCube(
-  //   personalCube,
-  //   params
-  // );
-  // if (cube !== undefined) {
-  //   const stateMap = await getStateMapByParams(params);
-  //   let student: Student;
-  //   if (stateMap !== undefined) {
-  //     cube.state = stateMap.state;
-  //     cube.learningState = stateMap.learningState;
-  //     student = await findStudent(stateMap.studentId);
-  //     const cubeIntroId = personalCube.cubeIntro.id;
-  //     setLectureReport(
-  //       await getReportItem(cubeIntroId, stateMap.studentId, student)
-  //     );
-  //   }
-  // }
+  const personalCube = await getPersonalCubeByParams(params);
+  const cube = await getLectureStructureCubeItemByPersonalCube(
+    personalCube,
+    params
+  );
+  if (cube !== undefined) {
+    const stateMap = await getStateMapByParams(params);
+    let student: Student;
+    if (stateMap !== undefined) {
+      cube.state = stateMap.state;
+      cube.learningState = stateMap.learningState;
+      student = await findStudent(stateMap.studentId);
+      const cubeIntroId = personalCube.cubeIntro.id;
 
-  //TODO :   contentType: ContentType;contentId: string; lectureId: string; 를 이용하여 deliveryId 조회
+      if (
+        personalCube.contents.type == 'Audio' ||
+        personalCube.contents.type == 'Video'
+      ) {
+        //TODO :   contentType: ContentType;contentId: string; lectureId: string; 를 이용하여 deliveryId 조회
+        // deliveryId => panoptoSessionId 로 수정 필요함
+        const mediaId = personalCube.contents.contents.id;
 
-  //스크립트 api 조회: http://localhost:8090/api/personalCube/transcripts/0b24e458-bd52-408d-a18c-abd50023dde9/ko
-  const deliveryId = '5413f05b-d04e-47d9-a302-aba600128122';
+        const media = await findMedia(mediaId);
+        //TODO : 0번 배열 조회가 항상 맞는지 확인 필요함
+        const panoptoSessionId =
+          media.mediaContents.internalMedias[0].panoptoSessionId;
 
-  const transcript = await findAllTranscript(deliveryId, 'ko');
+        //스크립트 api 조회: http://localhost:8090/api/personalCube/transcripts/0b24e458-bd52-408d-a18c-abd50023dde9/ko
+        const transcript = await findAllTranscript(panoptoSessionId, 'ko');
 
-  //조회 결과 viewmodel setting
-  setLectureTranscripts(await getTranscriptItem(transcript));
+        //조회 결과 viewmodel setting
+        setLectureTranscripts(await getTranscriptItem(transcript));
+        setLectureMedia(await getMediaItem(media));
+      }
 
-  console.log(getLectureTranscripts);
+      console.log(getLectureTranscripts);
+    }
+  }
 }
