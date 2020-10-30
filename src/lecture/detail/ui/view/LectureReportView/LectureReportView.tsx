@@ -44,9 +44,9 @@ const LectureReportView: React.FC<LectureReportViewProps> = function LectureRepo
 
   const getFileBoxIdForReference = useCallback((depotId: string) => {
     const lectureReport = getLectureReport();
-    const studentReport: StudentReport = lectureReport.studentReport || {};
+    const studentReport: StudentReport = lectureReport?.studentReport || {};
     studentReport.homeworkFileBoxId = depotId;
-    lectureReport.studentReport = studentReport;
+    lectureReport && (lectureReport.studentReport = studentReport);
     setLectureReport(lectureReport);
   }, []);
 
