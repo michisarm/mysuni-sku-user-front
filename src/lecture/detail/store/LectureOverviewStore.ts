@@ -1,3 +1,4 @@
+import LectureComment from '../viewModel/LectureComment/LectureComment';
 import LectureBadge from '../viewModel/LectureOverview/LectureBadge';
 import LectureCourseSummary from '../viewModel/LectureOverview/LectureCourseSummary';
 import LectureCubeSummary from '../viewModel/LectureOverview/LectureCubeSummary';
@@ -54,6 +55,10 @@ const [setLectureFile, onLectureFile, getLectureFile] = createStore<
   LectureFile
 >();
 
+const [setLectureComment, onLectureComment, getLectureComment] = createStore<
+  LectureComment
+>();
+
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
@@ -82,4 +87,7 @@ export {
   setLectureFile,
   onLectureFile,
   getLectureFile,
+  setLectureComment,
+  onLectureComment,
+  getLectureComment,
 };

@@ -10,6 +10,7 @@ import LectureDescription from 'lecture/detail/viewModel/LectureOverview/Lecture
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
 import {
+  setLectureComment,
   setLectureCubeSummary,
   setLectureDescription,
   setLectureFile,
@@ -19,6 +20,7 @@ import {
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
 import { getFiles } from '../../../utility/depotFilesHelper';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
@@ -89,6 +91,11 @@ function getLectureFile(fileBoxId: string): Promise<LectureFile> {
   return getFiles(fileBoxIds).then(files => ({ files }));
 }
 
+function getLectureComment(lectureCard: LectureCard): LectureComment {
+  const { commentId, reviewId } = lectureCard;
+  return { commentId, reviewId };
+}
+
 function findCube(personalCubeId: string) {
   return findPersonalCube(personalCubeId);
 }
@@ -122,5 +129,16 @@ export async function getCubeLectureOverview(
   if (personalCube.contents.fileBoxId !== '') {
     const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
     setLectureFile(lectureFile);
+  }
+  const lectureComment = getLectureComment(lectureCard);
+  if (
+    lectureComment.commentId === undefined ||
+    lectureComment.commentId === null ||
+    lectureComment.reviewId === undefined ||
+    lectureComment.reviewId === null
+  ) {
+    setLectureComment();
+  } else {
+    setLectureComment(lectureComment);
   }
 }

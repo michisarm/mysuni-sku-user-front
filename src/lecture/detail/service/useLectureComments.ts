@@ -1,4 +1,29 @@
-/**
- * http://localhost:3000/lecture/cineroom/ne1-m2-c2/college/CLG00001/cube/CUBE-2kc/lecture-card/LECTURE-CARD-281
- * http://localhost:3000/api/feedback/comments/count?feedbackId=4ed705fa-93fb-4283-8565-65547fc3810e
- */
+/* eslint-disable consistent-return */
+
+import { useEffect, useRef, useState } from 'react';
+import { onLectureComment } from '../store/LectureOverviewStore';
+import LectureComment from '../viewModel/LectureComment/LectureComment';
+
+type Value = LectureComment | undefined;
+
+export function useLectureComment(): [Value] {
+  const subscriberIdRef = useRef<number>(0);
+  const [subscriberId, setSubscriberId] = useState<string>();
+  const [value, setValue] = useState<Value>();
+
+  useEffect(() => {
+    const next = `useLectureComment-${++subscriberIdRef.current}`;
+    setSubscriberId(next);
+  }, []);
+
+  useEffect(() => {
+    if (subscriberId === undefined) {
+      return;
+    }
+    return onLectureComment(next => {
+      setValue(next);
+    }, subscriberId);
+  }, [subscriberId]);
+
+  return [value];
+}
