@@ -9,6 +9,7 @@ import PersonalCube from 'lecture/detail/model/PersonalCube';
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { countByFeedbackId } from '../../../api/feedbackApi';
 import {
   setLectureComment,
   setLectureCubeSummary,
@@ -91,9 +92,15 @@ function getLectureFile(fileBoxId: string): Promise<LectureFile> {
   return getFiles(fileBoxIds).then(files => ({ files }));
 }
 
-function getLectureComment(lectureCard: LectureCard): LectureComment {
+async function getLectureComment(
+  lectureCard: LectureCard
+): Promise<LectureComment> {
   const { commentId, reviewId } = lectureCard;
-  return { commentId, reviewId };
+  if (commentId !== null) {
+    const { count } = await countByFeedbackId(commentId);
+    return { commentId, reviewId, commentsCount: count };
+  }
+  return { commentId, reviewId, commentsCount: 0 };
 }
 
 function findCube(personalCubeId: string) {
@@ -130,7 +137,7 @@ export async function getCubeLectureOverview(
     const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
     setLectureFile(lectureFile);
   }
-  const lectureComment = getLectureComment(lectureCard);
+  const lectureComment = await getLectureComment(lectureCard);
   if (
     lectureComment.commentId === undefined ||
     lectureComment.commentId === null ||

@@ -1,7 +1,13 @@
 /* eslint-disable consistent-return */
 
+import { CommentService } from '@nara.drama/feedback';
+import { autorun } from 'mobx';
 import { useEffect, useRef, useState } from 'react';
-import { onLectureComment } from '../store/LectureOverviewStore';
+import {
+  getLectureComment,
+  onLectureComment,
+  setLectureComment,
+} from '../store/LectureOverviewStore';
 import LectureComment from '../viewModel/LectureComment/LectureComment';
 
 type Value = LectureComment | undefined;
@@ -10,6 +16,19 @@ export function useLectureComment(): [Value] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
+
+  // TODO 화면이 갱신되지 않아 주석처리
+  // useEffect(() => {
+  //   const commentService = CommentService.instance;
+  //   return autorun(() => {
+  //     const count = commentService.commentCount.count;
+  //     const feedbackId = commentService.commentCount.feedbackId;
+  //     const next = getLectureComment();
+  //     if (next !== undefined && next.commentId === feedbackId) {
+  //       setLectureComment({ ...next, commentsCount: count });
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     const next = `useLectureComment-${++subscriberIdRef.current}`;

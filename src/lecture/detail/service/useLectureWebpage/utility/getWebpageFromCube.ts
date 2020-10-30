@@ -7,13 +7,23 @@ export async function getWebpageFromCube(params: LectureRouterParams) {
   const { contentId } = params;
   const cube = await findPersonalCube(contentId);
   const officeWeb = await findOfficeWeb(cube.contents.contents.id);
-  const { title, description, image } = officeWeb.webUrlInfo;
   const url = officeWeb.webPageUrl;
-  const webpage: LectureWebpage = {
-    title,
-    description,
-    image,
-    url,
-  };
-  setLectureWebpage(webpage);
+  if (officeWeb.webUrlInfo === null) {
+    const webpage: LectureWebpage = {
+      title: url,
+      description: undefined,
+      image: undefined,
+      url,
+    };
+    setLectureWebpage(webpage);
+  } else {
+    const { title, description, image } = officeWeb.webUrlInfo;
+    const webpage: LectureWebpage = {
+      title,
+      description,
+      image,
+      url,
+    };
+    setLectureWebpage(webpage);
+  }
 }

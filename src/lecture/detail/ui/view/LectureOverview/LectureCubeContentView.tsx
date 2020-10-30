@@ -9,6 +9,7 @@ import LectureSubcategoryView from './LectureCubeSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import LectureCubeInfoView from './LectureCubeInfoView';
 import { LectureCubeCommentsContainer } from '../../logic/LectureCubeCommentsContainer';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -17,6 +18,7 @@ interface LectureCubeContentViewProps {
   lectureSubcategory?: LectureSubcategory;
   lectureTags?: LectureTags;
   lectureFile?: LectureFile;
+  lectureComment?: LectureComment;
 }
 
 function hashLink(hash: string) {
@@ -31,6 +33,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureSubcategory,
   lectureTags,
   lectureFile,
+  lectureComment,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
@@ -55,7 +58,12 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
           }
         >
-          Comment<span className="count">0</span>
+          Comment
+          <span className="count">
+            {lectureComment !== undefined
+              ? `+${lectureComment.commentsCount}`
+              : ''}
+          </span>
         </a>
       </div>
       {activatedTab === 'overview' && (
