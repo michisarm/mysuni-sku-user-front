@@ -8,6 +8,7 @@ import LectureFileView from './LectureFileView';
 import LectureSubcategoryView from './LectureCubeSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import LectureCubeInfoView from './LectureCubeInfoView';
+import { LectureCubeCommentsContainer } from '../../logic/LectureCubeCommentsContainer';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -34,8 +35,10 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
     setActivatedTab('overview');
+  }, []);
+  const commentHashClick = useCallback(() => {
+    setActivatedTab('comment');
   }, []);
   return (
     <>
@@ -46,23 +49,35 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         >
           Overview
         </a>
-        <a href="#lms-comment" className="lms-comment">
-          Comment<span className="count">+12</span>
+        <a
+          onClick={commentHashClick}
+          className={
+            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+          }
+        >
+          Comment<span className="count">0</span>
         </a>
       </div>
-      {lectureDescription && (
-        <LectureDescriptionView htmlContent={lectureDescription.description} />
+      {activatedTab === 'overview' && (
+        <>
+          {lectureDescription && (
+            <LectureDescriptionView
+              htmlContent={lectureDescription.description}
+            />
+          )}
+          <div className="badge-detail border-none">
+            {lectureSubcategory && (
+              <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
+            )}
+            {lectureFile && <LectureFileView lectureFile={lectureFile} />}
+            {lectureDescription && (
+              <LectureCubeInfoView lectureDescription={lectureDescription} />
+            )}
+            {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+          </div>
+        </>
       )}
-      <div className="badge-detail border-none">
-        {lectureSubcategory && (
-          <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
-        )}
-        {lectureFile && <LectureFileView lectureFile={lectureFile} />}
-        {lectureDescription && (
-          <LectureCubeInfoView lectureDescription={lectureDescription} />
-        )}
-        {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-      </div>
+      {activatedTab === 'comment' && <LectureCubeCommentsContainer />}
     </>
   );
 };
