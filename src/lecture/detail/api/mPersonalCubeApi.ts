@@ -1,16 +1,7 @@
-// http://localhost:3000/api/personalCube/personalcubes/CUBE-2jq
-/**
- * category - Breadcrumb 영역 채널 / 카테고리
- * name - 이름
- * iconBox - 아이콘
- * subCategory - 관련 Category
- * tags - 태그
- * contents - type 에 따라서 content 표시
- */
-
 import { axiosApi } from '@nara.platform/accent';
 import CubeIntro from '../model/CubeIntro';
 import Media from '../model/Media';
+import OfficeWeb from '../model/OfficeWeb';
 import PersonalCube from '../model/PersonalCube';
 import Transcript from '../model/Transcript';
 
@@ -41,5 +32,12 @@ export function findAllTranscript(deliveryId: string, locale: string) {
 export function findMedia(mediaId: string) {
   return axiosApi
     .get<Media>(`${BASE_URL}/medias/${mediaId}`)
+    .then(response => response && response.data);
+}
+
+export function findOfficeWeb(officeWebId: string) {
+  const url = `${BASE_URL}/officewebs/${officeWebId}`;
+  return axiosApi
+    .get<OfficeWeb>(url)
     .then(response => response && response.data);
 }

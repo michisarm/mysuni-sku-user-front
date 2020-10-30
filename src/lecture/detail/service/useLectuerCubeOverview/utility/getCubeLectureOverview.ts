@@ -80,7 +80,7 @@ function getLectureTags(personalCube: PersonalCube): LectureTags {
 function getLectureInstructor(cubeIntro: CubeIntro): LectureInstructor {
   const { instructor } = cubeIntro;
   return {
-    instructors: instructor,
+    instructors: instructor === null ? [] : instructor,
   };
 }
 

@@ -1,11 +1,10 @@
 import Answer from '../model/Answer';
 import ExamQuestion from '../model/ExamQuestion';
 import LearningState from '../model/LearningState';
+import { State } from './LectureState';
 import { LectureType } from './LectureType';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
-
-export type State = 'None' | 'Progress' | 'Completed';
 
 interface Params {
   cineroomId?: string;

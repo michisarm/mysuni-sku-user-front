@@ -13,6 +13,7 @@ import CoursePlanComplex from '../model/CoursePlanComplex';
 import LectureCard from '../model/LectureCard';
 import LectureStudentView from '../model/LectureStudentView';
 import Student from '../model/Student';
+import StudentCdo from '../model/StudentCdo';
 import StudentJoin from '../model/StudentJoin';
 
 const BASE_URL = '/api/lecture';
@@ -62,6 +63,25 @@ export function findIsJsonStudentByCube(
   return axiosApi
     .get<StudentJoin[]>(url)
     .then(response => response && response.data);
+}
+
+export function registerStudent(studentCdo: StudentCdo): Promise<string> {
+  const url = `${BASE_URL}/students/flow`;
+  return axiosApi
+    .post<string>(url, studentCdo)
+    .then(response => response && response.data);
+}
+
+export function joinCommunity(studentCdo: StudentCdo): Promise<string> {
+  const url = `${BASE_URL}/students/flow/joinCommunity`;
+  return axiosApi
+    .post<string>(url, studentCdo)
+    .then(response => response && response.data);
+}
+
+export function deleteStudentByRollBookId(roolbookId: string) {
+  const url = `${BASE_URL}/students/flow/byRollBookId?roolbookId=${roolbookId}`;
+  return axiosApi.delete(url);
 }
 
 export function modifyStudent(

@@ -4,11 +4,10 @@ import LearningState from '../model/LearningState';
 import LectureView from '../model/LectureView';
 import LectureParams from './LectureParams';
 import LectureRouterParams from './LectureRouterParams';
+import { State } from './LectureState';
 import { LectureType } from './LectureType';
 
 export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
-
-export type State = 'None' | 'Progress' | 'Completed';
 
 interface Item {
   activated?: boolean;

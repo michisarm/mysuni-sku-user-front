@@ -11,7 +11,7 @@ import LectureCubeWebPagePage from './ui/logic/LectureCubeWebPagePage';
 
 function LectureDetailCubeSubRoutes() {
   const params = useLectureRouterParams();
-  const [cubeType] = useLectureCubeType(params.contentId);
+  const [cubeType] = useLectureCubeType(params && params.contentId);
   return (
     <>
       {cubeType !== undefined && cubeType.type === 'Video' && (

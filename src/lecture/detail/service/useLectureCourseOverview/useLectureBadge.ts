@@ -14,7 +14,7 @@ export function useLectureBadge(): [Value] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
-  const { lectureId } = useLectureRouterParams();
+  const params = useLectureRouterParams();
 
   useEffect(() => {
     const next = `useLectureBadge-${++subscriberIdRef.current}`;
@@ -31,8 +31,13 @@ export function useLectureBadge(): [Value] {
   }, [subscriberId]);
 
   useEffect(() => {
-    findByLectureUsid(lectureId).then(badges => setLectureBadge({ badges }));
-  }, [lectureId]);
+    if (params === undefined) {
+      return;
+    }
+    findByLectureUsid(params.lectureId).then(badges =>
+      setLectureBadge({ badges })
+    );
+  }, [params]);
 
   return [value];
 }

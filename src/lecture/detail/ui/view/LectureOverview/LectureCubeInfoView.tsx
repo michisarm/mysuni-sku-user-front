@@ -95,15 +95,13 @@ const LectureCubeInfoView: React.FC<LectureCubeInfoViewProps> = function Lecture
             {!isEmpty(lectureDescription.guide) && (
               <List.Item>
                 <div className="title">{/*Other Guides*/}기타안내</div>
-                <div className="detail">
-                  <div className="ql-snow">
-                    <div
-                      className="ql-editor"
-                      dangerouslySetInnerHTML={{
-                        __html: lectureDescription.guide!,
-                      }}
-                    />
-                  </div>
+                <div className="overview ql-snow">
+                  <div
+                    className="detail ql-editor"
+                    dangerouslySetInnerHTML={{
+                      __html: lectureDescription.guide!,
+                    }}
+                  />
                 </div>
               </List.Item>
             )}

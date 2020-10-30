@@ -15,6 +15,9 @@ export function useLectuerCubeOverview() {
   );
 
   useEffect(() => {
+    if (params === undefined) {
+      return;
+    }
     const { contentId, lectureId } = params;
     getCubeOverview(contentId, lectureId);
   }, [params]);

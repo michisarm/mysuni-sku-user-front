@@ -23,10 +23,10 @@ import PersonalCube from '../../../model/PersonalCube';
 import Student from '../../../model/Student';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { State } from '../../../viewModel/LectureState';
 import {
   LectureStructure,
   LectureStructureCubeItem,
-  State,
   StudentStateMap,
 } from '../../../viewModel/LectureStructure';
 import { getItemMapFromCube } from './getItemMapFromCube';

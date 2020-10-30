@@ -3,11 +3,11 @@ interface Unsubscribe {
 }
 
 interface SubscribeCallback<T> {
-  (next: T): void;
+  (next?: T): void;
 }
 
 interface Publish<T> {
-  (next: T, publisherId?: string): void;
+  (next?: T, publisherId?: string): void;
 }
 
 interface Subscribe<T> {
@@ -15,19 +15,19 @@ interface Subscribe<T> {
 }
 
 interface GetCurrent<T> {
-  (): T;
+  (): T | undefined;
 }
 
 export function createStore<T>(
   initialStore?: T
 ): [Publish<T>, Subscribe<T>, GetCurrent<T>] {
-  let store: T;
+  let store: T | undefined;
   if (initialStore !== undefined) {
     store = initialStore;
   }
   const subscriberMap = new Map<string, SubscribeCallback<T>>();
 
-  function publish(next: T, publisherId?: string) {
+  function publish(next?: T, publisherId?: string) {
     store = next;
     subscriberMap.forEach(callback => {
       callback(store);
@@ -44,7 +44,7 @@ export function createStore<T>(
     return () => subscriberMap.delete(subscriberId);
   }
 
-  function getCurrent(): T {
+  function getCurrent(): T | undefined {
     return store;
   }
 
