@@ -39,7 +39,7 @@ function MyContentHeaderContainer(props: Props) {
 
   /* effects */
   useEffect(() => {
-    myLearningSummaryService!.findMyLearningSummaryYear(selectedYear);
+    myLearningSummaryService!.findMyLearningSummaryByYear(selectedYear);
   }, [selectedYear]);
 
   /* handlers */

@@ -35,7 +35,7 @@ class MyLearningSummaryApi {
   }
 
   findMyLearningSummaryByYear(year: number) {
-    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/v2/${year}`)
+    return axiosApi.get<MyLearningSummaryModel>(`${this.baseUrl}/${year}/v2`)
       .then(response => response && response.data);
   }
   ////////////////////////////////////////////// 개편 //////////////////////////////////////////////

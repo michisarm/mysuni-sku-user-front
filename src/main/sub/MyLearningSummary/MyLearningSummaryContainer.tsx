@@ -39,7 +39,7 @@ class MyLearningSummaryContainer extends Component<Props> {
     //
     const { myLearningSummaryService } = this.props;
 
-    myLearningSummaryService!.findMyLearningSummary();
+    myLearningSummaryService!.findTotalMyLearningSummary();
   }
 
   getHourMinute(minuteTime: number) {
