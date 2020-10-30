@@ -13,12 +13,12 @@ import {
 import Student from '../../../model/Student';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
+import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
-  State,
 } from '../../../viewModel/LectureStructure';
 
 // exam
@@ -77,35 +77,37 @@ async function getSurveyItem(
   const routerParams = parseLectureParams(params);
   if (surveyId !== '') {
     const { titles, questions } = await findSurveyForm(surveyId);
-    let state: State = 'None';
-    let title = '';
-    if (
-      titles !== null &&
-      titles.defaultLanguage !== null &&
-      titles.langStringMap[titles.defaultLanguage] !== undefined
-    ) {
-      title = titles.langStringMap[titles.defaultLanguage];
-    }
-    const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-    if (answerSheet !== null) {
-      const { progress } = answerSheet;
-      if (progress === 'Complete') {
-        state = 'Completed';
-      } else {
-        state = 'Progress';
+    if (titles !== undefined && questions !== undefined) {
+      let state: State = 'None';
+      let title = '';
+      if (
+        titles !== null &&
+        titles.defaultLanguage !== null &&
+        titles.langStringMap[titles.defaultLanguage] !== undefined
+      ) {
+        title = titles.langStringMap[titles.defaultLanguage];
       }
+      const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+      if (answerSheet !== null) {
+        const { progress } = answerSheet;
+        if (progress === 'Complete') {
+          state = 'Completed';
+        } else {
+          state = 'Progress';
+        }
+      }
+      const item: LectureStructureSurveyItem = {
+        id: surveyId,
+        name: title,
+        questionCount: questions.length,
+        params,
+        routerParams,
+        path: `${toPath(params)}/survey`,
+        state,
+        type: 'SURVEY',
+      };
+      return item;
     }
-    const item: LectureStructureSurveyItem = {
-      id: surveyId,
-      name: title,
-      questionCount: questions.length,
-      params,
-      routerParams,
-      path: `${toPath(params)}/survey`,
-      state,
-      type: 'SURVEY',
-    };
-    return item;
   }
 }
 

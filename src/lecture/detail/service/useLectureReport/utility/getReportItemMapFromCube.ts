@@ -11,7 +11,7 @@ import {
   findSurveyForm,
 } from '../../../api/surveyApi';
 import Student from '../../../model/Student';
-import { State } from '../../../viewModel/LectureStructure';
+import { State } from '../../../viewModel/LectureState';
 import {
   LectureReport,
   StudentReport,

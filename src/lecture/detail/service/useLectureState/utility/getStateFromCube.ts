@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 
+import { SkProfileService } from '../../../../../profile/stores';
 import {
   deleteStudentByRollBookId,
   findIsJsonStudentByCube,
@@ -12,9 +13,11 @@ import CubeType from '../../../model/CubeType';
 import Student from '../../../model/Student';
 import StudentCdo from '../../../model/StudentCdo';
 import StudentJoin from '../../../model/StudentJoin';
+import { setLectureState } from '../../../store/LectureStateStore';
+import { updateCubeItemState } from '../../../utility/lectureStructureHelper';
+import LectureParams from '../../../viewModel/LectureParams';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
-import LectureState from '../../../viewModel/LectureState';
-import { State } from '../../../viewModel/LectureStructure';
+import LectureState, { State } from '../../../viewModel/LectureState';
 
 /** Actions */
 
@@ -53,6 +56,10 @@ import { State } from '../../../viewModel/LectureStructure';
   }
  */
 
+/**
+ * Student 가 없을 때 처리 확인
+ */
+
 const APPROVE = '학습하기';
 const SUBMIT = '신청하기';
 const CANCEL = '취소하기';
@@ -67,191 +74,286 @@ const WAIT = '학습예정';
 const JOIN = '가입하기';
 
 interface ChangeStateOption {
+  params: LectureRouterParams;
   studentJoin: StudentJoin;
-  student: Student;
+  student?: Student;
   cubeType: CubeType;
   lectureState: LectureState;
 }
 
-function submit(student: Student) {
+async function submit(
+  params: LectureRouterParams,
+  rollBookId: string,
+  student?: Student
+) {
   // classroomModal.show
   const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  let nextStudentCdo: StudentCdo = {
     rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
-    leaderEmails,
-    url,
-  } = student;
-  const studentCdo: StudentCdo = {
-    rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
+    name: member.name,
+    email: member.email,
+    company: member.company,
+    department: member.department,
     proposalState: 'Submitted',
-    leaderEmails,
-    url,
-    enClosed: false,
+    programLectureUsid: '',
+    courseLectureUsid: '',
+    leaderEmails: [],
+    url: '',
     classroomId: '',
     approvalProcess: false,
   };
-  return registerStudent(studentCdo);
+  if (student !== undefined) {
+    const {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      leaderEmails,
+      url,
+    } = student;
+    nextStudentCdo = {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      proposalState: 'Submitted',
+      leaderEmails,
+      url,
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+  await registerStudent(nextStudentCdo);
+  getStateFromCube(params);
 }
 
-function cancel(student: Student) {
+function cancel(params: LectureRouterParams, student: Student) {
   const { rollBookId } = student;
   return deleteStudentByRollBookId(rollBookId);
 }
 
 function changeRound() {}
 
-function approve(student: Student) {
-  // classroomModal.show
+async function approve(
+  params: LectureRouterParams,
+  rollBookId: string,
+  student?: Student
+) {
   const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  let nextStudentCdo: StudentCdo = {
     rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
-    leaderEmails,
-    url,
-  } = student;
-  const studentCdo: StudentCdo = {
-    rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
+    name: member.name,
+    email: member.email,
+    company: member.company,
+    department: member.department,
     proposalState: 'Approved',
-    leaderEmails,
-    url,
-    enClosed: false,
+    programLectureUsid: '',
+    courseLectureUsid: '',
+    leaderEmails: [],
+    url: '',
     classroomId: '',
     approvalProcess: false,
   };
-  return registerStudent(studentCdo);
+  if (student !== undefined) {
+    const {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      leaderEmails,
+      url,
+    } = student;
+    nextStudentCdo = {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      proposalState: 'Approved',
+      leaderEmails,
+      url,
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+  await registerStudent(nextStudentCdo);
+  getStateFromCube(params);
 }
 
-function join(student: Student) {
+async function join(
+  params: LectureRouterParams,
+  rollBookId: string,
+  student?: Student
+) {
   const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  let nextStudentCdo: StudentCdo = {
     rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
-    leaderEmails,
-    url,
-  } = student;
-  const studentCdo: StudentCdo = {
-    rollBookId,
-    name,
-    email,
-    company,
-    department,
-    programLectureUsid,
-    courseLectureUsid,
+    name: member.name,
+    email: member.email,
+    company: member.company,
+    department: member.department,
     proposalState: 'Submitted',
-    leaderEmails,
-    url,
-    enClosed: false,
+    programLectureUsid: '',
+    courseLectureUsid: '',
+    leaderEmails: [],
+    url: '',
     classroomId: '',
     approvalProcess: false,
   };
-  return joinCommunity(studentCdo);
+  if (student !== undefined) {
+    const {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      leaderEmails,
+      url,
+    } = student;
+    nextStudentCdo = {
+      rollBookId,
+      name,
+      email,
+      company,
+      department,
+      programLectureUsid,
+      courseLectureUsid,
+      proposalState: 'Submitted',
+      leaderEmails,
+      url,
+      enClosed: false,
+      classroomId: '',
+      approvalProcess: false,
+    };
+  }
+
+  await joinCommunity(nextStudentCdo);
+  getStateFromCube(params);
 }
 
 function getStateWhenSummited(option: ChangeStateOption): LectureState | void {
-  const { lectureState, cubeType, student } = option;
-  switch (cubeType) {
-    case 'ClassRoomLecture':
-    case 'ELearning':
-      return {
-        ...lectureState,
-        canAction: true,
-        action: () => cancel(student),
-        actionText: CANCEL,
-        stateText: WAIT,
-      };
+  const { params, lectureState, cubeType, student } = option;
+  if (student !== undefined) {
+    switch (cubeType) {
+      case 'ClassRoomLecture':
+      case 'ELearning':
+        return {
+          ...lectureState,
+          canAction: true,
+          action: () => cancel(params, student),
+          actionText: CANCEL,
+          stateText: WAIT,
+        };
+    }
   }
 }
 
 function getStateWhenApproved(option: ChangeStateOption): LectureState | void {
   const { lectureState, cubeType, student } = option;
 
-  let stateText = PROGRESS;
+  if (student !== undefined) {
+    let stateText = PROGRESS;
 
-  switch (student.learningState) {
-    case 'Passed':
-      stateText = COMPLETE;
-      break;
-    default:
-      break;
-  }
+    switch (student.learningState) {
+      case 'Passed':
+        stateText = COMPLETE;
+        break;
+      default:
+        break;
+    }
 
-  switch (cubeType) {
-    case 'WebPage':
-    case 'Experiential':
-    case 'Video':
-    case 'Audio':
-    case 'WebPage':
-    case 'Documents':
-      return {
-        ...lectureState,
-        canAction: false,
-        actionText: APPROVE,
-        stateText,
-      };
-    case 'ClassRoomLecture':
-    case 'ELearning':
-      /**
-       * 학습완료
-       * 승인대기
-       * 반려됨
-       * 학습예정
-       */
-      return {
-        ...lectureState,
-        hideAction: true,
-        stateText: student.learningState === null ? WAIT : stateText,
-      };
-    case 'Community':
-      return {
-        ...lectureState,
-        hideAction: true,
-        stateText: JOINED,
-      };
+    switch (cubeType) {
+      case 'WebPage':
+      case 'Experiential':
+      case 'Video':
+      case 'Audio':
+      case 'WebPage':
+      case 'Documents':
+        return {
+          ...lectureState,
+          canAction: false,
+          actionText: APPROVE,
+          stateText,
+        };
+      case 'ClassRoomLecture':
+      case 'ELearning':
+        /**
+         * 학습완료
+         * 승인대기
+         * 반려됨
+         * 학습예정
+         */
+        return {
+          ...lectureState,
+          hideAction: true,
+          stateText: student.learningState === null ? WAIT : stateText,
+        };
+      case 'Community':
+        return {
+          ...lectureState,
+          hideAction: true,
+          stateText: JOINED,
+        };
+    }
   }
 }
 
 function getStateWhenRejected(option: ChangeStateOption): LectureState | void {
-  const { lectureState, cubeType, student } = option;
-  switch (cubeType) {
-    case 'ClassRoomLecture':
-    case 'ELearning':
-      return {
-        ...lectureState,
-        canAction: true,
-        action: () => submit(student),
-        actionText: SUBMIT,
-        stateText: REJECTED,
-      };
+  const {
+    params,
+    lectureState,
+    cubeType,
+    student,
+    studentJoin: { rollBookId },
+  } = option;
+
+  if (student !== undefined) {
+    switch (cubeType) {
+      case 'ClassRoomLecture':
+      case 'ELearning':
+        return {
+          ...lectureState,
+          canAction: true,
+          action: () => submit(params, rollBookId, student),
+          actionText: SUBMIT,
+          stateText: REJECTED,
+        };
+    }
   }
 }
 
 function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
-  const { lectureState, cubeType, student } = option;
+  const {
+    params,
+    lectureState,
+    cubeType,
+    student,
+    studentJoin: { rollBookId },
+  } = option;
   switch (cubeType) {
     case 'WebPage':
     case 'Experiential':
@@ -263,7 +365,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         ...lectureState,
         canAction: true,
         actionText: APPROVE,
-        action: () => approve(student),
+        action: () => approve(params, rollBookId, student),
         hideState: true,
       };
     case 'ClassRoomLecture':
@@ -272,7 +374,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         ...lectureState,
         canAction: true,
         actionText: SUBMIT,
-        action: () => submit(student),
+        action: () => submit(params, rollBookId, student),
         hideState: true,
       };
     case 'Community':
@@ -280,20 +382,19 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         ...lectureState,
         canAction: true,
         actionText: JOIN,
-        action: () => join(student),
+        action: () => join(params, rollBookId, student),
         hideState: true,
       };
   }
 }
 
-export async function getStateFromCube(
-  params: LectureRouterParams
-): Promise<LectureState | void> {
+export async function getStateFromCube(params: LectureRouterParams) {
   const { contentId, lectureId } = params;
   const {
     contents: { type },
   } = await findPersonalCube(contentId);
   const studentJoins = await findIsJsonStudentByCube(lectureId);
+  console.log('studentJoins', studentJoins);
   if (studentJoins.length > 0) {
     const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
       (r, c) => {
@@ -308,7 +409,10 @@ export async function getStateFromCube(
       null
     );
     if (studentJoin !== null) {
-      const student = await findStudent(studentJoin.studentId);
+      const student =
+        studentJoin.studentId !== null
+          ? await findStudent(studentJoin.studentId)
+          : undefined;
       const { learningState, proposalState } = studentJoin;
       let state: State = 'None';
       if (proposalState === 'Approved') {
@@ -349,35 +453,72 @@ export async function getStateFromCube(
       }
 
       const lectureState = { state, learningState, proposalState, type };
+      updateCubeItemState(contentId, state, learningState);
       switch (proposalState) {
         case 'Approved':
-          return getStateWhenApproved({
-            lectureState,
-            student,
-            studentJoin,
-            cubeType: type,
-          });
+          {
+            const next = getStateWhenApproved({
+              params,
+              lectureState,
+              student,
+              studentJoin,
+              cubeType: type,
+            });
+            if (next === undefined) {
+              setLectureState();
+            } else {
+              setLectureState(next);
+            }
+          }
+          break;
         case 'Submitted':
-          return getStateWhenSummited({
-            lectureState,
-            student,
-            studentJoin,
-            cubeType: type,
-          });
-        case 'Canceled':
-          return getStateWhenCanceled({
-            lectureState,
-            student,
-            studentJoin,
-            cubeType: type,
-          });
+          {
+            const next = getStateWhenSummited({
+              params,
+              lectureState,
+              student,
+              studentJoin,
+              cubeType: type,
+            });
+            if (next === undefined) {
+              setLectureState();
+            } else {
+              setLectureState(next);
+            }
+          }
+          break;
         case 'Rejected':
-          return getStateWhenRejected({
-            lectureState,
-            student,
-            studentJoin,
-            cubeType: type,
-          });
+          {
+            const next = getStateWhenRejected({
+              params,
+              lectureState,
+              student,
+              studentJoin,
+              cubeType: type,
+            });
+            if (next === undefined) {
+              setLectureState();
+            } else {
+              setLectureState(next);
+            }
+          }
+          break;
+        default:
+          {
+            const next = getStateWhenCanceled({
+              params,
+              lectureState,
+              student,
+              studentJoin,
+              cubeType: type,
+            });
+            if (next === undefined) {
+              setLectureState();
+            } else {
+              setLectureState(next);
+            }
+          }
+          break;
       }
     }
   }

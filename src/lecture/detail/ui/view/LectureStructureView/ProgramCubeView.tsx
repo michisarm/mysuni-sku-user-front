@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHelper';
 import CubeType from '../../../model/CubeType';
-import { State } from '../../../viewModel/LectureStructure';
+import { State } from '../../../viewModel/LectureState';
 
 interface ProgramCubeViewProps {
   name: string;

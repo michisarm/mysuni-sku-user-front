@@ -13,12 +13,12 @@ import LectureView from '../../../model/LectureView';
 import Student from '../../../model/Student';
 import { parseLectureParams } from '../../../utility/lectureRouterParamsHelper';
 import LectureParams, { toPath } from '../../../viewModel/LectureParams';
+import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
-  State,
 } from '../../../viewModel/LectureStructure';
 
 // exam
