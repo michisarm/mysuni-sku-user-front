@@ -41,9 +41,11 @@ export async function getTestStudentItemMapFromCourse(
     serviceId: coursePlanComplex.courseLecture.usid,
   });
 
-  setLectureTestStudentItem({
-    studentId: studentInfo.own.id,
-    serviceType: studentInfo.own.serviceType,
-    learningState: studentInfo.own.learningState,
-  });
+  if (studentInfo.own !== null) {
+    setLectureTestStudentItem({
+      studentId: studentInfo.own.id,
+      serviceType: studentInfo.own.serviceType,
+      learningState: studentInfo.own.learningState,
+    });
+  }
 }

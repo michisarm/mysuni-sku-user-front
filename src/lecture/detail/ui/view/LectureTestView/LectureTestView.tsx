@@ -41,7 +41,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
 
     if (params.cubeId !== undefined) {
-      saveTestAnswerSheet(params.lectureId!, answerItemId, false, false);
+      saveTestAnswerSheet(params.lectureCardId!, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
@@ -66,7 +66,12 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             };
             setLectureTestAnswerItem(nextAnswerItem);
             if (params.cubeId !== undefined) {
-              saveTestAnswerSheet(params.lectureId!, answerItemId, true, true);
+              saveTestAnswerSheet(
+                params.lectureCardId!,
+                answerItemId,
+                true,
+                true
+              );
             } else {
               saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
