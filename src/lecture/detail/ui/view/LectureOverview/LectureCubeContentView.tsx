@@ -10,6 +10,8 @@ import LectureTagsView from './LectureTagsView';
 import LectureCubeInfoView from './LectureCubeInfoView';
 import { LectureCubeCommentsContainer } from '../../logic/LectureCubeCommentsContainer';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
+import LectureClassroom from '../../../viewModel/LectureClassroom';
+import LectureClassroomView from './LectureClassroomView';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -19,13 +21,7 @@ interface LectureCubeContentViewProps {
   lectureTags?: LectureTags;
   lectureFile?: LectureFile;
   lectureComment?: LectureComment;
-}
-
-function hashLink(hash: string) {
-  const element = document.getElementById(hash);
-  if (element !== null) {
-    element.scrollIntoView();
-  }
+  lectureClassroom?: LectureClassroom;
 }
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
@@ -34,6 +30,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureTags,
   lectureFile,
   lectureComment,
+  lectureClassroom,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
@@ -83,6 +80,9 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
             )}
             {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
           </div>
+          {lectureClassroom && (
+            <LectureClassroomView lectureClassroom={lectureClassroom} />
+          )}
         </>
       )}
       {activatedTab === 'comment' && <LectureCubeCommentsContainer />}

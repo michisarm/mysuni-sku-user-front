@@ -75,6 +75,7 @@ const JOIN = '가입하기';
 
 interface ChangeStateOption {
   params: LectureRouterParams;
+  studentJoins?: StudentJoin[];
   studentJoin: StudentJoin;
   student?: Student;
   cubeType: CubeType;
@@ -133,6 +134,34 @@ async function submit(
       approvalProcess: false,
     };
   }
+  await registerStudent(nextStudentCdo);
+  getStateFromCube(params);
+}
+
+async function mClassroomSubmit(
+  params: LectureRouterParams,
+  rollBookId: string,
+  classroomId: string
+) {
+  // classroomModal.show
+  const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  const nextStudentCdo: StudentCdo = {
+    rollBookId,
+    name: member.name,
+    email: member.email,
+    company: member.company,
+    department: member.department,
+    proposalState: 'Submitted',
+    programLectureUsid: '',
+    courseLectureUsid: '',
+    leaderEmails: [],
+    url: '',
+    classroomId,
+    approvalProcess: false,
+  };
   await registerStudent(nextStudentCdo);
   getStateFromCube(params);
 }
@@ -352,6 +381,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
     lectureState,
     cubeType,
     student,
+    studentJoins,
     studentJoin: { rollBookId },
   } = option;
   switch (cubeType) {
@@ -376,6 +406,14 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         actionText: SUBMIT,
         action: () => submit(params, rollBookId, student),
         hideState: true,
+        classroomSubmit: (round, classroomId) => {
+          if (studentJoins !== undefined) {
+            const rollbook = studentJoins.find(c => c.round == round);
+            if (rollbook !== undefined) {
+              mClassroomSubmit(params, rollbook.rollBookId, classroomId);
+            }
+          }
+        },
       };
     case 'Community':
       return {
@@ -509,6 +547,7 @@ export async function getStateFromCube(params: LectureRouterParams) {
               params,
               lectureState,
               student,
+              studentJoins,
               studentJoin,
               cubeType: type,
             });
