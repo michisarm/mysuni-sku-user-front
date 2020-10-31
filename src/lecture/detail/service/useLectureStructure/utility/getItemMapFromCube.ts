@@ -38,7 +38,7 @@ interface GetItemMapArg {
 }
 
 async function getTestItem(examId: string, params: LectureParams) {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
 
   if (examId !== '') {
     const { result } = await findExamination(examId);
@@ -74,7 +74,7 @@ async function getSurveyItem(
   surveyCaseId: string,
   params: LectureParams
 ) {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/survey`);
   if (surveyId !== '') {
     const { titles, questions } = await findSurveyForm(surveyId);
     if (titles !== undefined && questions !== undefined) {
@@ -116,7 +116,7 @@ async function getReportItem(
   params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const cubeIntro = await findCubeIntro(cubeIntroId);
   if (cubeIntro.reportFileBox.reportName !== '') {
     let state: State = 'None';
