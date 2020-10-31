@@ -1,3 +1,4 @@
+import { PatronKey } from '@nara.platform/accent';
 import Category from './Category';
 import Creator from './Creator';
 import CubeContents from './CubeContents';
@@ -25,4 +26,5 @@ export default interface PersonalCube {
   stateUpdateDate: number;
   time: number;
   openRequests: OpenRequest[];
+  patronKey: PatronKey;
 }

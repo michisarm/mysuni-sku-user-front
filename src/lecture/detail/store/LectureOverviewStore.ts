@@ -1,3 +1,4 @@
+import InMyLectureCdo from '../model/InMyLectureCdo';
 import LectureComment from '../viewModel/LectureComment/LectureComment';
 import LectureBadge from '../viewModel/LectureOverview/LectureBadge';
 import LectureCourseSummary from '../viewModel/LectureOverview/LectureCourseSummary';
@@ -6,6 +7,7 @@ import LectureDescription from '../viewModel/LectureOverview/LectureDescription'
 import LectureFile from '../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../viewModel/LectureOverview/LectureInstructor';
 import LecturePrecourse from '../viewModel/LectureOverview/LecturePrecourse';
+import LectureReview from '../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../viewModel/LectureOverview/LectureTags';
 import { createStore } from './Store';
@@ -59,6 +61,14 @@ const [setLectureComment, onLectureComment, getLectureComment] = createStore<
   LectureComment
 >();
 
+const [setLectureReview, onLectureReview, getLectureReview] = createStore<
+  LectureReview
+>();
+
+const [setInMyLectureCdo, onInMyLectureCdo, getInMyLectureCdo] = createStore<
+  InMyLectureCdo
+>();
+
 export {
   setLectureCubeSummary,
   onLectureCubeSummary,
@@ -90,4 +100,10 @@ export {
   setLectureComment,
   onLectureComment,
   getLectureComment,
+  setLectureReview,
+  onLectureReview,
+  getLectureReview,
+  setInMyLectureCdo,
+  onInMyLectureCdo,
+  getInMyLectureCdo,
 };
