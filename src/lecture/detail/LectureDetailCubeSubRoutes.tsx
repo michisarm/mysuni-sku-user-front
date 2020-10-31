@@ -23,6 +23,9 @@ function LectureDetailCubeSubRoutes() {
       {cubeType !== undefined && cubeType.type === 'WebPage' && (
         <LectureCubeWebPagePage />
       )}
+      {cubeType !== undefined && cubeType.type === 'Experiential' && (
+        <LectureCubeWebPagePage />
+      )}
       {cubeType !== undefined && cubeType.type === 'ELearning' && (
         <LectureCubeElearningPage />
       )}
