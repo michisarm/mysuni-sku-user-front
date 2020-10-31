@@ -44,12 +44,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
-        component={LectureDetailContainer}
+        component={LectureReportPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
-        component={LectureDetailContainer}
+        component={LectureReportPage}
       />
       {/* Content */}
       <Route
@@ -86,12 +86,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
-        component={LectureDetailContainer}
+        component={LectureReportPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/report"
-        component={LectureDetailContainer}
+        component={LectureReportPage}
       />
       <Route
         exact

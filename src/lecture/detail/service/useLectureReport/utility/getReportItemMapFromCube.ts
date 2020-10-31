@@ -1,31 +1,13 @@
 /* eslint-disable consistent-return */
-// report
-// http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
-import { patronInfo } from '@nara.platform/dock';
-import { findAnswerSheet } from '../../../api/assistantApi';
-import { findExamination } from '../../../api/examApi';
 import { findCubeIntro } from '../../../api/mPersonalCubeApi';
-import {
-  findAnswerSheetBySurveyCaseId,
-  findSurveyForm,
-} from '../../../api/surveyApi';
 import Student from '../../../model/Student';
-import { State } from '../../../viewModel/LectureState';
+import { State } from '../../../viewModel/LectureReport';
 import {
   LectureReport,
   StudentReport,
   ReportFileBox,
 } from 'lecture/detail/viewModel/LectureReport';
-
-// exam
-// http://localhost:3000/lp/adm/exam/examinations/CUBE-2k9/findExamination
-// http://localhost:3000/lp/adm/exam/exampaper/20-101/findExamPaperForm
-// http://localhost:3000/api/assistant/v1/answersheets?examId=CUBE-2jc&examineeId=r47a@ne1-m2
-
-// survey
-// http://localhost:3000/api/survey/surveyForms/25e11b3f-85cd-4a05-8dbf-6ae9bd111125
-// http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 export async function getReportItem(
   cubeIntroId: string,
@@ -57,8 +39,6 @@ export async function getReportItem(
         student.homeworkOperatorComment !== null ||
         student.homeworkOperatorFileBoxId !== null
       ) {
-        // TODO : 담당자 답변시 완료 상태가 맞는지 확인
-        state = 'Completed';
         studentReport.homeworkOperatorComment = student.homeworkOperatorComment;
         studentReport.homeworkOperatorFileBoxId =
           student.homeworkOperatorFileBoxId;
@@ -67,6 +47,9 @@ export async function getReportItem(
     }
     lectureReport.reportFileBox = reportFileBox;
     lectureReport.studentReport = studentReport;
+    if (student?.learningState == 'Passed') {
+      state = 'Completed';
+    }
     lectureReport.state = state;
   }
 

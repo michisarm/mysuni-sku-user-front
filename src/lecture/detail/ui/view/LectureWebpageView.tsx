@@ -1,13 +1,7 @@
 import React from 'react';
+import LectureWebpage from '../../viewModel/LectureWebpage';
 
-interface LectureUrlCardViewProps {
-  title: string;
-  description: string;
-  image: string;
-  url: string;
-}
-
-const LectureUrlCardView: React.FC<LectureUrlCardViewProps> = function LectureUrlCardView({
+const LectureWebpageView: React.FC<LectureWebpage> = function LectureWebpageView({
   title,
   description,
   image,
@@ -26,3 +20,5 @@ const LectureUrlCardView: React.FC<LectureUrlCardViewProps> = function LectureUr
     </div>
   );
 };
+
+export default LectureWebpageView;

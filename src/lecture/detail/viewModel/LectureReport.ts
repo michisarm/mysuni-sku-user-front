@@ -1,7 +1,12 @@
 import LearningState from '../model/LearningState';
 import { LectureType } from './LectureType';
+import LectureParams from './LectureParams';
+import LectureRouterParams from './LectureRouterParams';
+import CubeType from '../model/CubeType';
 
 export type State = 'None' | 'Progress' | 'Completed';
+
+export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
 
 //TODO 과제제출 , 답변 상태에 대한 처리 추가 필요함
 export interface StudentStateMap {
@@ -47,7 +52,7 @@ export interface LectureReportCubeItemParams extends Params {
 export interface StudentReport {
   id?: string;
   homeworkContent?: string | null;
-  homeworkFileBoxId?: string | null;
+  homeworkFileBoxId?: string;
   homeworkOperatorComment?: string | null;
   homeworkOperatorFileBoxId?: string | null;
 }
@@ -63,4 +68,44 @@ export interface LectureReport {
   studentReport?: StudentReport;
   reportFileBox?: ReportFileBox;
   state?: State;
+}
+
+interface Item {
+  activated?: boolean;
+  params: LectureParams;
+  routerParams: LectureRouterParams;
+  path: string;
+  state?: State;
+}
+
+export interface LectureStructureCubeItem extends Item {
+  id: string;
+  name: string;
+  cubeId: string;
+  cubeType: CubeType;
+  learningTime: number;
+  learningState?: LearningState;
+  test?: LectureStructureTestItem;
+  survey?: LectureStructureSurveyItem;
+  report?: LectureStructureReportItem;
+  serviceId?: string;
+}
+
+export interface LectureStructureTestItem extends Item {
+  id: string;
+  name: string;
+  questionCount: number;
+  type: LectureStructureItemType;
+}
+
+export interface LectureStructureSurveyItem extends Item {
+  id: string;
+  name: string;
+  questionCount: number;
+  type: LectureStructureItemType;
+}
+
+export interface LectureStructureReportItem extends Item {
+  name: string;
+  type: LectureStructureItemType;
 }

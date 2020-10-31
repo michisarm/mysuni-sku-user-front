@@ -7,16 +7,20 @@
 import React from 'react';
 import { useLectuerCubeOverview } from '../../service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureRouterParams } from '../../service/useLectureRouterParams';
+import { useLectureWebpage } from '../../service/useLectureWebpage/useLectureWebpage';
 import LectureDetailLayout from '../view/LectureDetailLayout';
+import LectureWebpageView from '../view/LectureWebpageView';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeFileContainer from './LectureCubeOverview/LectureCubeFileContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 
 function LectureCubeWebPagePage() {
   useLectuerCubeOverview();
+  const [lectureWebpage] = useLectureWebpage();
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />
+      {lectureWebpage && <LectureWebpageView {...lectureWebpage} />}
       <LectureCubeContentContainer />
     </LectureDetailLayout>
   );

@@ -1,16 +1,24 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { LectureReport } from 'lecture/detail/viewModel/LectureReport';
+import { getLectureReport } from 'lecture/detail/store/LectureReportStore';
 
-interface ReportHeaderProps {lectureReport:LectureReport}
+interface ReportHeaderProps {}
 
-const ReportHeader: React.FC<ReportHeaderProps> = function ReportHeader({lectureReport}) {
+const ReportHeader: React.FC<ReportHeaderProps> = function ReportHeader({}) {
   return (
     <div className="survey-header">
-      <div className="survey-header-left">{lectureReport?.reportFileBox?.reportName}</div>
+      <div className="survey-header-left">
+        {getLectureReport()?.reportFileBox?.reportName}
+      </div>
       <div className="survey-header-right">
-        {/* TODO : state에 따른 텍스트 확인 필요 */}
-        <Button className="ui button free submit p18">과제제출</Button>
+        <Button className="ui button free submit p18">
+          {getLectureReport()?.state == 'Completed'
+            ? '이수'
+            : getLectureReport()?.state == 'Progress'
+            ? '검수중'
+            : '과제 제출'}
+        </Button>
       </div>
     </div>
   );

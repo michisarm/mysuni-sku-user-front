@@ -3,10 +3,7 @@
  * http://localhost:3000/api/lecture/students/flow
  */
 
-import {
-  onLectureState,
-  setLectureState,
-} from 'lecture/detail/store/LectureStateStore';
+import { onLectureState } from 'lecture/detail/store/LectureStateStore';
 import LectureState from 'lecture/detail/viewModel/LectureState';
 /* eslint-disable consistent-return */
 

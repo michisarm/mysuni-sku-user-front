@@ -25,7 +25,7 @@ export default interface Student {
   rollBookId: string;
   examAttendance: boolean;
   updateTimeForTest: number;
-  homeworkFileBoxId: string | null;
+  homeworkFileBoxId?: string;
   homeworkContent: string | null;
   homeworkOperatorComment: string | null;
   homeworkOperatorFileBoxId: string | null;

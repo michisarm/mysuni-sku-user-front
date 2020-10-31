@@ -89,8 +89,10 @@ export function modifyStudent(
   fileBoxId: string,
   homework: string
 ): Promise<void> {
-  const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}/${homework}`;
-  return axiosApi.put<void>(url).then(response => response && response.data);
+  const url = `${BASE_URL}/students/flow/courseworkProcess/${studentId}/${fileBoxId}`;
+  return axiosApi
+    .put<void>(url, homework)
+    .then(response => response && response.data);
 }
 
 export function modifyStudentForExam(
