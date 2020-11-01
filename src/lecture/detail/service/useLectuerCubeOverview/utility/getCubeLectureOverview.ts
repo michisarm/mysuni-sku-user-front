@@ -129,10 +129,10 @@ async function getLectureReview(
       reviewSummary !== undefined &&
       reviewSummary.average !== undefined
     ) {
-      return { average: reviewSummary.average };
+      return { average: reviewSummary.average, id: reviewSummary.id };
     }
   }
-  return { average: 0 };
+  return { id: '', average: 0 };
 }
 
 function makeInMyLectureCdo(

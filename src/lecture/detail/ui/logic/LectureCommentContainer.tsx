@@ -1,10 +1,9 @@
-import { emit } from 'process';
 import React from 'react';
 import { SkProfileService } from '../../../../profile/stores';
 import LectureCommentsContainer from '../../../category/ui/logic/LectureCommentsContainer';
 import { useLectureComment } from '../../service/useLectureComments';
 
-export function LectureCubeCommentsContainer() {
+function LectureCommentContainer() {
   const [lectureComment] = useLectureComment();
   const {
     skProfile: {
@@ -26,3 +25,5 @@ export function LectureCubeCommentsContainer() {
     </>
   );
 }
+
+export default LectureCommentContainer;

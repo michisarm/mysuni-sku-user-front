@@ -8,7 +8,7 @@ import LectureFileView from './LectureFileView';
 import LectureSubcategoryView from './LectureCubeSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import LectureCubeInfoView from './LectureCubeInfoView';
-import { LectureCubeCommentsContainer } from '../../logic/LectureCubeCommentsContainer';
+import LectureCommentContainer from '../../logic/LectureCommentContainer';
 import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureClassroom from '../../../viewModel/LectureClassroom';
 import LectureClassroomView from './LectureClassroomView';
@@ -85,7 +85,7 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
           )}
         </>
       )}
-      {activatedTab === 'comment' && <LectureCubeCommentsContainer />}
+      {activatedTab === 'comment' && <LectureCommentContainer />}
     </>
   );
 };

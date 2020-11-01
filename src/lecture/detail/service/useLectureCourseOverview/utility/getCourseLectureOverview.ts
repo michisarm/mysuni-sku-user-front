@@ -1,10 +1,13 @@
 import { findCoursePlanContents } from '../../../api/lectureApi';
 import LectureDescription from '../../../viewModel/LectureOverview/LectureDescription';
 import {
+  setInMyLectureCdo,
+  setLectureComment,
   setLectureCourseSummary,
   setLectureDescription,
   setLectureInstructor,
   setLecturePrecourse,
+  setLectureReview,
   setLectureSubcategory,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
@@ -15,16 +18,35 @@ import { timeToHourMinuteFormat } from '../../../../../shared/helper/dateTimeHel
 import CoursePlanComplex from '../../../model/CoursePlanComplex';
 import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecourse';
 import LectureCourseSummary from '../../../viewModel/LectureOverview/LectureCourseSummary';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
+import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
+import InMyLectureCdo from '../../../model/InMyLectureCdo';
+import LectureParams from '../../../viewModel/LectureParams';
+import { CourseSetModel } from '../../../../../course/model';
+import { findInMyLecture } from '../../../api/mytrainingApi';
 
-function getLectureSummary(
+function getEmpty(text?: string) {
+  if (text === undefined || text === null || text == '') {
+    return undefined;
+  }
+  return text;
+}
+
+async function getLectureSummary(
+  params: LectureParams,
   coursePlanComplex: CoursePlanComplex
-): LectureCourseSummary {
+): Promise<LectureCourseSummary> {
+  const { serviceType, serviceId, lectureType, lectureId } = params;
   const category = coursePlanComplex.coursePlan.category;
   const learningTime = timeToHourMinuteFormat(
     coursePlanComplex.coursePlan.learningTime
   );
   const operator = coursePlanComplex.coursePlan.courseOperator;
   const iconBox = coursePlanComplex.coursePlan.iconBox;
+  const mylecture = await findInMyLecture(
+    lectureId || serviceId!,
+    lectureType !== undefined ? 'Course' : serviceType!
+  );
   return {
     name: coursePlanComplex.coursePlan.name,
     category: {
@@ -36,6 +58,7 @@ function getLectureSummary(
     stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
     passedCount: coursePlanComplex.courseLecture.passedStudentCount,
     iconBox,
+    mytrainingId: getEmpty(mylecture && mylecture.id),
   };
 }
 
@@ -93,11 +116,66 @@ function getLecturePrecourse(
   };
 }
 
+function getLectureComment(
+  coursePlanComplex: CoursePlanComplex
+): LectureComment {
+  const {
+    commentCountRdo: { feedbackId, count },
+    reviewSummary,
+  } = coursePlanComplex;
+  return {
+    commentId: feedbackId,
+    reviewId: reviewSummary.id,
+    commentsCount: count,
+  };
+}
+
+function getLectureReview(coursePlanComplex: CoursePlanComplex): LectureReview {
+  const {
+    reviewSummary: { id, average },
+  } = coursePlanComplex;
+  return {
+    id,
+    average,
+  };
+}
+
+function makeInMyLectureCdo(
+  params: LectureParams,
+  coursePlanComplex: CoursePlanComplex
+): InMyLectureCdo {
+  const { serviceType, serviceId, lectureType, lectureId } = params;
+  const lecture =
+    coursePlanComplex.courseLecture.usid !== null
+      ? coursePlanComplex.courseLecture
+      : coursePlanComplex.programLecture;
+  return {
+    baseUrl: coursePlanComplex.coursePlan.iconBox.baseUrl,
+    category: coursePlanComplex.coursePlan.category,
+    courseLectureUsids: lecture.courseLectureUsids,
+    lectureCardUsids: lecture.lectureCardUsids,
+    coursePlanId: coursePlanComplex.coursePlan.coursePlanId,
+    courseSetJson: (coursePlanComplex.coursePlanContents
+      .courseSet as unknown) as CourseSetModel,
+    cubeId: '',
+    description: coursePlanComplex.coursePlanContents.description,
+    learningTime: coursePlanComplex.coursePlan.learningTime,
+    name: coursePlanComplex.coursePlan.name,
+    requiredSubsidiaries: [],
+    reviewId: coursePlanComplex.reviewSummary.id,
+    serviceId: lectureId || serviceId!,
+    servicePatronKeyString: coursePlanComplex.coursePlan.patronKey.keyString,
+    serviceType: lectureType !== undefined ? 'Course' : serviceType!,
+    stampCount: coursePlanComplex.coursePlan.stamp.stampCount,
+  };
+}
+
 function findCoursePlanComplex(coursePlanId: string, serviceId: string) {
   return findCoursePlanContents(coursePlanId, serviceId);
 }
 
 export async function getCourseLectureOverview(
+  params: LectureParams,
   coursePlanId: string,
   serviceId: string,
   collegeId: string,
@@ -111,7 +189,7 @@ export async function getCourseLectureOverview(
   if (cineroomId !== undefined) {
     path = `/lecture/cineroom/${cineroomId}/college/${collegeId}`;
   }
-  const lectureSummary = getLectureSummary(coursePlanComplex);
+  const lectureSummary = await getLectureSummary(params, coursePlanComplex);
   setLectureCourseSummary(lectureSummary);
   const lectureDescription = getLectureDescription(coursePlanComplex);
   setLectureDescription(lectureDescription);
@@ -123,4 +201,9 @@ export async function getCourseLectureOverview(
   setLectureInstructor(lectureInstructor);
   const lecturePrecourse = getLecturePrecourse(coursePlanComplex, path);
   setLecturePrecourse(lecturePrecourse);
+  const lectureComment = getLectureComment(coursePlanComplex);
+  setLectureComment(lectureComment);
+  const lectureReview = getLectureReview(coursePlanComplex);
+  setLectureReview(lectureReview);
+  setInMyLectureCdo(makeInMyLectureCdo(params, coursePlanComplex));
 }

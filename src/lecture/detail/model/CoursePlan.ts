@@ -27,4 +27,5 @@ export default interface CoursePlan {
   required: number;
   hasPreCourse: string;
   instructor: Instructor[];
+  patronKey?: any;
 }

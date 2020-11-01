@@ -12,17 +12,25 @@ export function useLectureCourseOverview() {
 
   const getCourseOverview = useCallback(
     ({
+      params,
       coursePlanId,
       serviceId,
       collegeId,
       cineroomId,
     }: {
+      params: LectureParams;
       coursePlanId: string;
       serviceId: string;
       collegeId: string;
       cineroomId?: string;
     }) => {
-      getCourseLectureOverview(coursePlanId, serviceId, collegeId, cineroomId);
+      getCourseLectureOverview(
+        params,
+        coursePlanId,
+        serviceId,
+        collegeId,
+        cineroomId
+      );
     },
     []
   );
@@ -31,6 +39,7 @@ export function useLectureCourseOverview() {
     const lectureParams = parseLectureParams(params, pathname);
     const { contentId, lectureId } = lectureParams;
     getCourseOverview({
+      params,
       cineroomId: params.cineroomId,
       collegeId: params.collegeId,
       coursePlanId: contentId,
