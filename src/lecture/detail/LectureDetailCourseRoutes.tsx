@@ -5,6 +5,7 @@ import LectureDetailContainer from './ui/logic/LectureDetailContainer';
 import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureCourseOverviewPage';
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureTestPage from './ui/logic/LectureTestPage';
+import LectureSurveyPage from './ui/logic/LectureSurveyPage';
 
 export default function LectureDetailCourseRoutes() {
   return (
@@ -34,12 +35,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
-        component={LectureTestPage}
+        component={LectureSurveyPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/survey"
-        component={LectureDetailContainer}
+        component={LectureSurveyPage}
       />
       <Route
         exact
@@ -76,12 +77,12 @@ export default function LectureDetailCourseRoutes() {
       <Route
         exact
         path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
-        component={LectureDetailContainer}
+        component={LectureSurveyPage}
       />
       <Route
         exact
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/survey"
-        component={LectureDetailContainer}
+        component={LectureSurveyPage}
       />
       <Route
         exact
