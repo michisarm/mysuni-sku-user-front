@@ -14,13 +14,12 @@ function LectureStateContainer() {
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const [lectureClassroom] = useLectureClassroom(true);
   const hookAction = useCallback<() => void>(() => {
-    if (lectureState === undefined || lectureState.action === undefined) {
-      return () => {};
-    }
     if (lectureClassroom !== undefined) {
-      ClassroomModalViewRef.current?.show();
+      return ClassroomModalViewRef.current?.show();
     }
-    return lectureState.action;
+    if (lectureState !== undefined && lectureState.action !== undefined) {
+      return lectureState.action();
+    }
   }, [lectureState, lectureClassroom]);
   const onClassroomSelected = useCallback(
     (selected: ClassroomModel) => {

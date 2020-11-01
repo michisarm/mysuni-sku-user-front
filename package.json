@@ -101,7 +101,8 @@
       "import/no-duplicates": "off",
       "import/order": "off",
       "no-lonely-if": "off",
-      "react/jsx-indent": "off"
+      "react/jsx-indent": "off",
+      "consistent-return": "off"
     }
   },
   "browserslist": []
