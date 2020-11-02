@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLectureClassroom } from '../../../service/useLectureClassroom/useLectureClassroom';
 import { useLectureComment } from '../../../service/useLectureComments';
 import { useLectureDescription } from '../../../service/useLectureCourseOverview/useLectureDescription';
 import { useLectureSubcategory } from '../../../service/useLectureCourseOverview/useLectureSubcategory';
@@ -12,6 +13,7 @@ function LectureCubeContentContainer() {
   const [lectureFile] = useLectureFile();
   const [lectureTags] = useLectureTags();
   const [lectureComment] = useLectureComment();
+  const [lectureClassroom] = useLectureClassroom();
 
   return (
     <LectureCubeContentView
@@ -20,6 +22,7 @@ function LectureCubeContentContainer() {
       lectureTags={lectureTags}
       lectureFile={lectureFile}
       lectureComment={lectureComment}
+      lectureClassroom={lectureClassroom}
     />
   );
 }

@@ -1,27 +1,21 @@
-/**
- * http://localhost:3000/api/action-log-collector/events/study
- * http://localhost:3000/api/lecture/students/flow
- */
-
-import { onLectureState } from 'lecture/detail/store/LectureStateStore';
-import LectureState from 'lecture/detail/viewModel/LectureState';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { onLectureClassroom } from '../../store/LectureClassroomStore';
+import LectureClassroom from '../../viewModel/LectureClassroom';
 import { useLectureRouterParams } from '../useLectureRouterParams';
-import { getStateFromCube } from './utility/getStateFromCube';
+import { getClassroomFromCube } from './utility/getClassroomFromCube';
 
-type Value = LectureState | undefined;
+type Value = LectureClassroom | undefined;
 
-export function useLectureState(): [Value] {
+export function useLectureClassroom(notRequest?: boolean): [Value] {
   const params = useLectureRouterParams();
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [value, setValue] = useState<Value>();
 
   useEffect(() => {
-    const next = `useLectureState-${++subscriberIdRef.current}`;
+    const next = `useLectureClassroom-${++subscriberIdRef.current}`;
     setSubscriberId(next);
   }, []);
 
@@ -29,16 +23,19 @@ export function useLectureState(): [Value] {
     if (subscriberId === undefined) {
       return;
     }
-    return onLectureState(next => {
+    return onLectureClassroom(next => {
       setValue(next);
     }, subscriberId);
   }, [subscriberId]);
 
   useEffect(() => {
+    if (notRequest === true) {
+      return;
+    }
     if (params === undefined) {
       return;
     }
-    getStateFromCube(params);
+    getClassroomFromCube(params);
   }, [params]);
 
   return [value];

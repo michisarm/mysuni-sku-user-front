@@ -31,7 +31,7 @@ import {
 // http://localhost:3000/api/survey/answerSheets/bySurveyCaseId?surveyCaseId=595500ba-227e-457d-a73d-af766b2d68be
 
 async function getTestItem(lectureView: LectureView, params: LectureParams) {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/exam`);
   const { examination } = lectureView;
   if (examination !== null) {
     let state: State = 'None';
@@ -65,7 +65,7 @@ async function getTestItem(lectureView: LectureView, params: LectureParams) {
 }
 
 async function getSurveyItem(lectureView: LectureView, params: LectureParams) {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/survey`);
   const { surveyCase } = lectureView;
   if (surveyCase !== null) {
     const { surveyFormId } = surveyCase;
@@ -107,7 +107,7 @@ async function getReportItem(
   params: LectureParams,
   student?: Student
 ): Promise<LectureStructureReportItem | void> {
-  const routerParams = parseLectureParams(params);
+  const routerParams = parseLectureParams(params, `${toPath(params)}/report`);
   const coursePlan = await findCoursePlan(lectureView.coursePlanId);
   if (coursePlan.reportFileBox.reportName !== '') {
     let state: State = 'None';

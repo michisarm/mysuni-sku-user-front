@@ -1,13 +1,14 @@
 /* eslint-disable consistent-return */
 
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { parseLectureParams } from '../../utility/lectureRouterParamsHelper';
 import LectureParams from '../../viewModel/LectureParams';
 import { getCourseLectureOverview } from './utility/getCourseLectureOverview';
 
 export function useLectureCourseOverview() {
   const params = useParams<LectureParams>();
+  const { pathname } = useLocation();
 
   const getCourseOverview = useCallback(
     ({
@@ -27,7 +28,7 @@ export function useLectureCourseOverview() {
   );
 
   useEffect(() => {
-    const lectureParams = parseLectureParams(params);
+    const lectureParams = parseLectureParams(params, pathname);
     const { contentId, lectureId } = lectureParams;
     getCourseOverview({
       cineroomId: params.cineroomId,
@@ -35,5 +36,5 @@ export function useLectureCourseOverview() {
       coursePlanId: contentId,
       serviceId: lectureId,
     });
-  }, [params]);
+  }, [params, pathname]);
 }

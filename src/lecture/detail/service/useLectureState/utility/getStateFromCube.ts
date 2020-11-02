@@ -75,10 +75,12 @@ const JOIN = '가입하기';
 
 interface ChangeStateOption {
   params: LectureRouterParams;
+  studentJoins?: StudentJoin[];
   studentJoin: StudentJoin;
   student?: Student;
   cubeType: CubeType;
   lectureState: LectureState;
+  pathname?: string;
 }
 
 async function submit(
@@ -133,6 +135,37 @@ async function submit(
       approvalProcess: false,
     };
   }
+  await registerStudent(nextStudentCdo);
+  getStateFromCube(params);
+}
+
+async function mClassroomSubmit(
+  params: LectureRouterParams,
+  rollBookId: string,
+  classroomId: string,
+  pathname?: string
+) {
+  // classroomModal.show
+  const {
+    skProfile: { member },
+  } = SkProfileService.instance;
+  // classroomModal.show
+  const nextStudentCdo: StudentCdo = {
+    rollBookId,
+    name: member.name,
+    email: member.email,
+    company: member.company,
+    department: member.department,
+    proposalState: 'Submitted',
+    programLectureUsid: '',
+    courseLectureUsid: '',
+    leaderEmails: [],
+    url: pathname
+      ? `https://int.mysuni.sk.com/login?contentUrl=${pathname}`
+      : '',
+    classroomId,
+    approvalProcess: false,
+  };
   await registerStudent(nextStudentCdo);
   getStateFromCube(params);
 }
@@ -352,6 +385,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
     lectureState,
     cubeType,
     student,
+    studentJoins,
     studentJoin: { rollBookId },
   } = option;
   switch (cubeType) {
@@ -376,6 +410,19 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
         actionText: SUBMIT,
         action: () => submit(params, rollBookId, student),
         hideState: true,
+        classroomSubmit: (round, classroomId) => {
+          if (studentJoins !== undefined) {
+            const rollbook = studentJoins.find(c => c.round == round);
+            if (rollbook !== undefined) {
+              mClassroomSubmit(
+                params,
+                rollbook.rollBookId,
+                classroomId,
+                params.pathname
+              );
+            }
+          }
+        },
       };
     case 'Community':
       return {
@@ -389,7 +436,7 @@ function getStateWhenCanceled(option: ChangeStateOption): LectureState | void {
 }
 
 export async function getStateFromCube(params: LectureRouterParams) {
-  const { contentId, lectureId } = params;
+  const { contentId, lectureId, pathname } = params;
   const {
     contents: { type },
   } = await findPersonalCube(contentId);
@@ -509,8 +556,10 @@ export async function getStateFromCube(params: LectureRouterParams) {
               params,
               lectureState,
               student,
+              studentJoins,
               studentJoin,
               cubeType: type,
+              pathname,
             });
             if (next === undefined) {
               setLectureState();
