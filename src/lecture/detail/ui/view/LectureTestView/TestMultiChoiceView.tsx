@@ -38,16 +38,21 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
   return (
     <div className="course-survey-list">
       {question.items.map(item => (
-        <Checkbox
-          key={question.questionNo + '_' + item.itemNo}
-          className="base"
-          label={item.itemText}
-          name={`test_${question.questionNo}`}
-          value={item.itemNo}
-          checked={answer?.includes(item.itemNo)}
-          onChange={setAnswerFromCheckbox}
-          readOnly={readOnly}
-        />
+        <div className="radio-survey-list">
+          <Checkbox
+            key={question.questionNo + '_' + item.itemNo}
+            className="base"
+            label={item.itemText}
+            name={`test_${question.questionNo}`}
+            value={item.itemNo}
+            checked={answer?.includes(item.itemNo)}
+            onChange={setAnswerFromCheckbox}
+            readOnly={readOnly}
+          />
+          {item.imgSrc !== 'undefined' && item.imgSrc !== '' && (
+            <img src={item.imgSrc} />
+          )}
+        </div>
       ))}
     </div>
   );

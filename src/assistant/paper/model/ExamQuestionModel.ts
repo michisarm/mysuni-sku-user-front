@@ -12,10 +12,15 @@ export class ExamQuestionModel {
   direction: string = '';
   answer: string = '';
   items: QuestionItemModel[] = [];
+  questionImgSrc: string = '';
 
   constructor(question?: ExamQuestionModel) {
     if (question) {
-      const items = question.items && question.items.length && question.items.map(item => new QuestionItemModel(item)) || this.items;
+      const items =
+        (question.items &&
+          question.items.length &&
+          question.items.map(item => new QuestionItemModel(item))) ||
+        this.items;
       Object.assign(this, { ...question, items });
     }
   }
@@ -30,4 +35,5 @@ decorate(ExamQuestionModel, {
   direction: observable,
   answer: observable,
   items: observable,
+  questionImgSrc: observable,
 });
