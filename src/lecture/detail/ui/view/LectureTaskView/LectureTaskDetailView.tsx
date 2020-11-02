@@ -2,13 +2,7 @@ import {
   LectureTask,
   LectureTaskItem,
 } from 'lecture/detail/viewModel/LectureTask';
-import React, { Fragment, useCallback } from 'react';
-
-import moment from 'moment';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import LectureTaskTopLineView from './LectureTaskTopLineView';
-import BoardDetailContentHeaderView from 'board/ui/view/BoardDetailContentHeaderView';
-import { getLectureTaskDetail } from 'lecture/detail/store/LectureTaskStore';
+import React, { Fragment, useCallback, useRef } from 'react';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 
 interface LectureTaskDetailViewProps {
@@ -24,6 +18,7 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
 }) {
   console.log('taskId', taskId);
   console.log('taskDetail', taskDetail);
+  const textContainerRef = useRef<HTMLDivElement>(null);
 
   function onClickList() {
     // this.props.history.push(routePaths.supportNotice());
@@ -35,30 +30,36 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
         <span>상세보기-{taskId}</span>
       </Segment> */}
 
-      <div className="post-view">
-        <LectureTaskDetailContentHeaderView
-          title={taskDetail.title}
-          time={taskDetail.time}
-          deletable={true}
-          reply={true}
-          onClickList={onClickList}
-          onClickModify={onClickList}
-        />
+      <LectureTaskDetailContentHeaderView
+        title={taskDetail.title}
+        time={taskDetail.time}
+        deletable={true}
+        reply={true}
+        onClickList={onClickList}
+        onClickModify={onClickList}
+      />
 
-        {taskDetail && (
-          <div className="content-area">
-            <div className="content-inner ql-snow">
+      {taskDetail && (
+        <>
+          <div className="class-guide-txt fn-parents ql-snow">
+            <div className="text ql-editor">
               <div
-                className="ql-editor"
+                className="text description ql-editor"
                 dangerouslySetInnerHTML={{
                   __html: taskDetail.contents,
                 }}
+                ref={textContainerRef}
               />
             </div>
-            <div className="file">
-              <span>첨부파일 : </span>
-              <br />
-              {/* {(filesMap &&
+          </div>
+          <div className="ov-paragraph download-area task-read-down">
+            <div className="detail">
+              <div className="file-down-wrap">
+                <div className="down">
+                  <span>첨부파일 :</span>
+                  <a href="#">
+                    <span>파일명</span>
+                    {/* {(filesMap &&
                 filesMap.get('reference') &&
                 filesMap
                   .get('reference')
@@ -79,24 +80,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
                     </div>
                   ))) ||
                 '-'} */}
+                  </a>
+                </div>
+              </div>
             </div>
-            <br />
           </div>
-        )}
-      </div>
+        </>
+      )}
     </Fragment>
-
-    // <ContentLayout
-    // className="support"
-    // breadcrumb={[
-    //   { text: 'Support' },
-    //   { text: 'Notice' },
-    // ]}
-    // >
-    // <div className="post-view-wrap">
-    //   <NoticeDetailContainer />
-    // </div>
-    // </ContentLayout>
   );
 };
 

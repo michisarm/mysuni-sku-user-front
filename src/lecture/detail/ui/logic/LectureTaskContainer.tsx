@@ -49,18 +49,12 @@ function LectureTaskContainer() {
         </>
       )}
       {getLectureTaskViewType() !== 'list' && (
-        <ContentLayout
-          // className="support"
-          breadcrumb={[{ text: 'Support' }, { text: 'Notice' }]}
-        >
-          {/* <div className="post-view-wrap"></div> */}
-          <div className="post-view-wrap">
-            <LectureTaskDetailView
-              taskId={detailTaskId}
-              taskDetail={getLectureTaskDetail()}
-            />
-          </div>
-        </ContentLayout>
+        // <ContentLayout breadcrumb={[{ text: 'Support' }, { text: 'Notice' }]}>
+        <LectureTaskDetailView
+          taskId={detailTaskId}
+          taskDetail={getLectureTaskDetail()}
+        />
+        // </ContentLayout>
       )}
     </>
   );
