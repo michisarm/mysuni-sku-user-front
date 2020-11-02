@@ -2,7 +2,7 @@ import {
   LectureTask,
   LectureTaskItem,
 } from 'lecture/detail/viewModel/LectureTask';
-import React, { Fragment, useCallback } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 
 import moment from 'moment';
 import { Button, Icon, Segment } from 'semantic-ui-react';
@@ -13,6 +13,13 @@ interface LectureTaskViewProps {
   taskItem: LectureTask;
   moreView: (offset: number) => void;
   handleClickTaskRow: (id: string) => void;
+}
+
+function hashLink(hash: string) {
+  const element = document.getElementById(hash);
+  if (element !== null) {
+    element.scrollIntoView();
+  }
 }
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
@@ -74,6 +81,8 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
   moreView,
   handleClickTaskRow,
 }) {
+  const [activatedTab, setActivatedTab] = useState<string>('Posts');
+
   const onHandleClickTaskRow = useCallback(
     taskId => {
       console.log('taskId', taskId);
@@ -86,12 +95,44 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
     moreView(getLectureTaskOffset()!);
   }, []);
 
+  const postsHashClick = useCallback(() => {
+    hashLink('lms-overview');
+    setActivatedTab('Posts');
+  }, []);
+  const myPostsHashClick = useCallback(() => {
+    hashLink('lms-instructor-Info');
+    setActivatedTab('MyPosts');
+  }, []);
+  const overViewHashClick = useCallback(() => {
+    hashLink('lms-related-badge');
+    setActivatedTab('Overview');
+  }, []);
+
   return (
     <Fragment>
       <Segment className="full">
         <div className="support-list-wrap">
+          <div className="lms-inner-menu" id="lms-overview">
+            <a
+              onClick={postsHashClick}
+              className={activatedTab === 'Posts' ? 'lms-act' : ''}
+            >
+              Posts
+            </a>
+            <a
+              onClick={myPostsHashClick}
+              className={activatedTab === 'MyPosts' ? 'lms-act' : ''}
+            >
+              My Posts
+            </a>
+            <a
+              onClick={overViewHashClick}
+              className={activatedTab === 'Overview' ? 'lms-act' : ''}
+            >
+              Overview
+            </a>
+          </div>
           <LectureTaskTopLineView totalCount={taskItem.totalCount} />
-
           <div className="su-list qna">
             {taskItem.items.map((task, index) => {
               return renderPostRow(task, onHandleClickTaskRow);
