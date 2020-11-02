@@ -26,6 +26,37 @@ class Routes extends Component {
           from="/lecture/college/:collegeId/channels"
           to="/lecture/college/:collegeId/channels/pages/1"
         />
+        {/* community  */}
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new"
+          component={PostFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId"
+          component={PostDetailPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/edit"
+          component={PostFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/new"
+          component={ReplyFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId"
+          component={ReplyDetailPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit"
+          component={ReplyFormPage}
+        />
         <Route
           exact
           path="/lecture/college/:collegeId/channels/pages/:pageNo"
@@ -99,38 +130,6 @@ class Routes extends Component {
           exact
           path="/lecture/recommend/channel/:channelId/pages/:pageNo"
           component={RecommendChannelLecturesPage}
-        />
-
-        {/* community  */}
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId"
-          component={PostDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/edit"
-          component={PostFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/new"
-          component={ReplyFormPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId"
-          component={ReplyDetailPage}
-        />
-        <Route
-          exact
-          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit"
-          component={ReplyFormPage}
         />
 
         <Route component={NotFoundPage} />

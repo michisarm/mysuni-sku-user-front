@@ -1,5 +1,5 @@
 import { useLectureTask } from 'lecture/detail/service/useLectureTask/useLectureTask';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LectureTaskView from '../view/LectureTaskView/LectureTaskView';
 import {
   getLectureTaskDetail,
@@ -13,6 +13,7 @@ import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummar
 import { useLectuerCubeOverview } from 'lecture/detail/service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
+import { getCubeLectureTaskLearningCardId } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
@@ -47,8 +48,18 @@ function LectureTaskContainer() {
   };
 
   const handelClickCreateTask = () => {
+    console.log('taskDetail', taskDetail);
+    console.log('detailTaskId', detailTaskId);
+    getLearningCardId();
     setLectureTaskViewType('create');
   };
+
+  const getLearningCardId = useCallback(() => {
+    console.log('00000');
+
+    const id = getCubeLectureTaskLearningCardId();
+    console.log('id', id);
+  }, []);
 
   return (
     <>
@@ -78,7 +89,10 @@ function LectureTaskContainer() {
       {getLectureTaskViewType() === 'create' && (
         <LectureTaskCreateView
           taskId={detailTaskId}
+          postId={detailTaskId}
+          boardId={detailTaskId}
           handleOnClickList={onClickList}
+          handleCloseClick={onClickList}
         />
       )}
     </>

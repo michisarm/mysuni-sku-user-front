@@ -4,6 +4,7 @@
 
 import {
   findPersonalCube,
+  getTaskCreateId,
   getTaskDetail,
 } from 'lecture/detail/api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
@@ -66,4 +67,16 @@ export async function getTaskDetailCube(postParam: any): Promise<void> {
       setLectureTaskDetail({ ...taskItem });
     }
   }
+}
+
+export async function getTaskLearningCardId() {
+  // void : return이 없는 경우 undefined
+
+  // if (postParam.id !== undefined) {
+  // const addflag = !!getLectureTaskItem();
+  const taskItem = await getTaskCreateId();
+
+  return '1234';
+
+  // return taskItem
 }

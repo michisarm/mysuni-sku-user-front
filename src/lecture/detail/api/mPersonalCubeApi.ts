@@ -103,3 +103,10 @@ export function getTaskDetailBody(postId: string): Promise<TaskDetailBody> {
     return response && response.data;
   });
 }
+
+export function getTaskCreateId(): Promise<any> {
+  const url = `${BASE_URL}/course/learning/LEARNING-CARD-xl/${postId}`;
+  return axiosApi.get<TaskDetailBody>(url).then(response => {
+    return response && response.data;
+  });
+}
