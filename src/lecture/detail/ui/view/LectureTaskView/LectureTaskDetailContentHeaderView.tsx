@@ -11,6 +11,7 @@ interface Props {
   onClickList: (e: any) => void;
   subField?: React.ReactNode;
   deletable?: boolean;
+  reply?: boolean;
   onClickDelete?: (e: any) => void;
   onClickModify?: (e: any) => void;
 }
@@ -26,6 +27,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
       time,
       subField,
       deletable,
+      reply,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -60,6 +62,16 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
               >
                 <Icon name="delete" />
                 Delete
+              </Button>
+            )}
+            {reply && (
+              <Button
+                icon
+                className="left postset delete"
+                onClick={onClickDelete}
+              >
+                <Icon name="reply" />
+                Reply
               </Button>
             )}
             <Button

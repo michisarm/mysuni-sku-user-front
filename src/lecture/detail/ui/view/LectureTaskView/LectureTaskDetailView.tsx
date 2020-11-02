@@ -40,7 +40,9 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
           title={taskDetail.title}
           time={taskDetail.time}
           deletable={true}
+          reply={true}
           onClickList={onClickList}
+          onClickModify={onClickList}
         />
 
         {taskDetail && (
