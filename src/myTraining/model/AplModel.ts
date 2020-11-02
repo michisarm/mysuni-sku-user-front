@@ -18,7 +18,7 @@ export class AplModel extends QueryModel {
   channelId: string = '';
   channelName: string = '';
   startDate: number = 0;
-  endDate : number = 0;
+  endDate: number = 0;
   institute: string = '';
   requestHour: number = 0;
   requestMinute: number = 0;
@@ -134,20 +134,16 @@ export class AplModel extends QueryModel {
         SkProfileService.instance.skProfile.member.name ||
         patronInfo.getPatronName() ||
         '',
-      fileIds: aplModel.fileIds||'',
-      approvalYn: aplModel.approvalYn||false,
-      approvalId: aplModel.approvalId||'',
-      approvalName: aplModel.approvalName||'',
+      fileIds: aplModel.fileIds || '',
+      approvalYn: aplModel.approvalYn || false,
+      approvalId: aplModel.approvalId || '',
+      approvalName: aplModel.approvalName || '',
       updateTime: aplModel.updateTime,
-      causeOfReturn: aplModel.causeOfReturn||'',
-      cineroomId: aplModel.cineroomId||
-        '',
-      patronKeyString: aplModel.patronKeyString||
-        '',
-      patronType: aplModel.patronType||
-        '',
-      pavilionId: aplModel.pavilionId||
-        '',
+      causeOfReturn: aplModel.causeOfReturn || '',
+      cineroomId: aplModel.cineroomId || '',
+      patronKeyString: aplModel.patronKeyString || '',
+      patronType: aplModel.patronType || '',
+      pavilionId: aplModel.pavilionId || '',
     };
   }
 
@@ -162,7 +158,7 @@ export class AplModel extends QueryModel {
       교육형태: aplModel.typeName || '-',
       Channel: aplModel.channelName || '-',
       교육기간: aplModel.channelName || '-',
-      교육시간: aplModel.requestHour +':'+ aplModel.requestMinute|| '-',
+      교육시간: aplModel.requestHour + ':' + aplModel.requestMinute || '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplModel.state).get(
           aplModel.state

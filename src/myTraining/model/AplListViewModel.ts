@@ -14,21 +14,19 @@ export class AplListViewModel extends AplModel {
     //this.organizer = aplListView?.organizer || new IdName();
   }
 
-  static asXLSX(
-    aplListView: AplListViewModel,
-    index: number
-  ): AplXlsxModel {
+  static asXLSX(aplListView: AplListViewModel, index: number): AplXlsxModel {
     //
     return {
       No: String(index + 1),
       교육명: aplListView.title || '-',
       교육형태: aplListView.typeName || '-',
       Channel: aplListView.channelName || '-',
-      교육기간: moment(aplListView.startDate).format(
-        'YYYY.MM.DD')+'~'+moment(aplListView.endDate).format(
-        'YYYY.MM.DD'
-      )  || '-',
-      교육시간: aplListView.requestHour +':'+ aplListView.requestMinute|| '-',
+      교육기간:
+        moment(aplListView.startDate).format('YYYY.MM.DD') +
+          '~' +
+          moment(aplListView.endDate).format('YYYY.MM.DD') || '-',
+      교육시간:
+        aplListView.requestHour + ':' + aplListView.requestMinute || '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplListView.state).get(
           aplListView.state
