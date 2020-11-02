@@ -19,10 +19,9 @@ import './style/app.css';
 import 'react-quill/dist/quill.snow.css';
 
 //2020-10-29 add css
-// import './style/css/main.4a89658c.chunk.css';
-// import './style/css/2.72eb4562.chunk.css';
 import './style/css/2.bb824e3f.chunk.css';
-import './style/css/main.19ba8933.chunk.css';
+import './style/css/main.b3192832.chunk.css';
+
 
 
 import React from 'react';
