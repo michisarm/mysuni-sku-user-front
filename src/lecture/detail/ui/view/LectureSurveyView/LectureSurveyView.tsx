@@ -1,18 +1,21 @@
 import React from 'react';
 import LectureSurvey from '../../../viewModel/LectureSurvey';
 import LectureSurveyBooleanView from './LectureSurveyBooleanView';
-import LectureSurveyChoiceLayout from './LectureSurveyChoiceLayout';
 import LectureSurveyChoiceView from './LectureSurveyChoiceView';
 import LectureSurveyDateView from './LectureSurveyDateView';
 import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
+import LectureSurveyCriterionView from './LectureSurveyCriterionView';
+import LectureSurveyState from '../../../viewModel/LectureSurveyState';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
+  lectureSurveyState?: LectureSurveyState;
 }
 
 const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurveyView({
   lectureSurvey,
+  lectureSurveyState,
 }) {
   const { title } = lectureSurvey;
   return (
@@ -21,14 +24,25 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         <div className="survey-header">
           <div className="survey-header-left">{title}</div>
           <div className="survey-header-right">
-            {/* complete - 진행완료 , submit - 진행전, proceeding - 진행중 */}
-            <button className="ui button free submit p18">과제제출</button>
-            <button className="ui button free proceeding p18">검수중</button>
-            <button className="ui button free complete p18">참여완료</button>
+            {lectureSurveyState !== undefined &&
+              lectureSurveyState.state === 'Progress' && (
+                <button className="ui button free proceeding p18">
+                  진행중
+                </button>
+              )}
+            {lectureSurveyState !== undefined &&
+              lectureSurveyState.state === 'Completed' && (
+                <button className="ui button free complete p18">
+                  참여완료
+                </button>
+              )}
           </div>
         </div>
       </div>
       {lectureSurvey.surveyItems.map(item => {
+        if (item.type === 'Criterion') {
+          return <LectureSurveyCriterionView {...item} key={item.id} />;
+        }
         if (item.type === 'Choice') {
           return <LectureSurveyChoiceView {...item} key={item.id} />;
         }
@@ -46,6 +60,10 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         }
         return null;
       })}
+      <div className="survey-preview">
+        <button className="ui button fix line">저장</button>
+        <button className="ui button fix bg">제출</button>
+      </div>
     </>
   );
 };

@@ -441,7 +441,6 @@ export async function getStateFromCube(params: LectureRouterParams) {
     contents: { type },
   } = await findPersonalCube(contentId);
   const studentJoins = await findIsJsonStudentByCube(lectureId);
-  console.log('studentJoins', studentJoins);
   if (studentJoins.length > 0) {
     const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
       (r, c) => {

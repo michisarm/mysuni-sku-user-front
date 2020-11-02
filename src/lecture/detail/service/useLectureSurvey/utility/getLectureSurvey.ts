@@ -1,13 +1,31 @@
-import { findCoursePlanContents } from '../../../api/lectureApi';
+import { CriteriaItemModel } from '../../../../../survey/form/model/CriteriaItemModel';
+import { CriterionModel } from '../../../../../survey/form/model/CriterionModel';
+import {
+  findCoursePlanContents,
+  findIsJsonStudentByCube,
+} from '../../../api/lectureApi';
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
-import { findSurveyForm } from '../../../api/surveyApi';
+import {
+  findAnswerSheetBySurveyCaseId,
+  findSurveyForm,
+} from '../../../api/surveyApi';
+import LangStrings from '../../../model/LangStrings';
+import StudentJoin from '../../../model/StudentJoin';
 import Question from '../../../model/SurveyQuestion';
-import { setLectureSurvey } from '../../../store/LectureSurveyStore';
+import {
+  setLectureSurvey,
+  setLectureSurveyState,
+} from '../../../store/LectureSurveyStore';
 import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { State } from '../../../viewModel/LectureState';
 import LectureSurvey, {
   LectureSurveyItem,
   LectureSurveyItemChoice,
 } from '../../../viewModel/LectureSurvey';
+import LectureSurveyState, {
+  CriteriaItem,
+  LectureSurveyAnswerItem,
+} from '../../../viewModel/LectureSurveyState';
 
 function parseChoice(question: Question): LectureSurveyItem {
   const {
@@ -44,6 +62,60 @@ function parseChoice(question: Question): LectureSurveyItem {
         title: mTitle,
         no: mNo,
         image: mImage,
+      };
+    }) || [];
+  const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
+  return {
+    title,
+    image,
+    no,
+    id,
+    type,
+    isRequired,
+    canMultipleAnswer,
+    choices,
+    questionNumber,
+  };
+}
+
+function parseCriterion(
+  question: Question,
+  criterionList: CriterionModel[]
+): LectureSurveyItem {
+  const {
+    id,
+    questionItemType,
+    optional,
+    sentences,
+    sentencesImageUrl,
+    sequence,
+    answerItems,
+  } = question;
+  const title = sentences.langStringMap[sentences.defaultLanguage];
+  const image = sentencesImageUrl === '' ? undefined : sentencesImageUrl;
+  let no = parseInt(sequence.number);
+  if (isNaN(no)) {
+    no = 1;
+  }
+  const type = questionItemType;
+  const isRequired = !optional;
+  const canMultipleAnswer = answerItems.multipleChoice;
+  const criterion = criterionList?.find(
+    c => c.number === answerItems.criterionNumber
+  );
+  const choices: LectureSurveyItemChoice[] =
+    criterion?.criteriaItems?.map(({ value, names }) => {
+      const mTitle =
+        ((names.langStringMap as unknown) as Record<string, string>)[
+          names.defaultLanguage
+        ] || '';
+      let mNo = value ? value : 1;
+      if (isNaN(mNo)) {
+        mNo = 1;
+      }
+      return {
+        title: mTitle,
+        no: mNo,
       };
     }) || [];
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
@@ -172,6 +244,8 @@ async function parseSurveyForm(
         return parseEssay(question);
       case 'Matrix':
         return parseMatrix(question);
+      case 'Criterion':
+        return parseCriterion(question, surveyForm.criterionList);
       default:
         return parseEssay(question);
     }
@@ -183,6 +257,131 @@ async function parseSurveyForm(
   };
 }
 
+async function getCubeLectureSurveyState(
+  serviceId: string,
+  surveyCaseId: string
+): Promise<LectureSurveyState> {
+  let state: State = 'None';
+
+  const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  if (answerSheet !== null) {
+    const {
+      round,
+      progress,
+      evaluationSheet: { id, answerSheetId, answers },
+    } = answerSheet;
+    if (progress === 'Complete') {
+      state = 'Completed';
+    } else {
+      state = 'Progress';
+    }
+    const answerItem: LectureSurveyAnswerItem[] = answers.map(
+      ({
+        questionNumber,
+        answerItem: {
+          answerItemType,
+          criteriaItem,
+          itemNumbers,
+          sentence,
+          matrixItem,
+        },
+      }) => ({
+        questionNumber,
+        answerItemType,
+        criteriaItem: {
+          names: (criteriaItem.names as unknown) as LangStrings,
+          value: criteriaItem.value,
+          index: criteriaItem.index,
+        },
+        itemNumbers,
+        sentence,
+        matrixItem: matrixItem === null ? undefined : matrixItem,
+      })
+    );
+    return {
+      id,
+      answerSheetId,
+      answerItem,
+      state,
+      surveyCaseId,
+      round,
+      serviceId,
+    };
+  }
+  const studentJoins = await findIsJsonStudentByCube(serviceId);
+  if (studentJoins.length > 0) {
+    const studentJoin: StudentJoin | null = studentJoins.reduce<StudentJoin | null>(
+      (r, c) => {
+        if (r === null) {
+          return c;
+        }
+        if (c.updateTime > r.updateTime) {
+          return c;
+        }
+        return r;
+      },
+      null
+    );
+    if (studentJoin !== null) {
+      return { state, surveyCaseId, round: studentJoin.round, serviceId };
+    }
+  }
+  return { state, surveyCaseId, round: 1, serviceId };
+}
+async function getCourseLectureSurveyState(
+  serviceId: string,
+  surveyCaseId: string
+): Promise<LectureSurveyState> {
+  let state: State = 'None';
+
+  const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
+  if (answerSheet !== null) {
+    const {
+      round,
+      progress,
+      evaluationSheet: { id, answerSheetId, answers },
+    } = answerSheet;
+    if (progress === 'Complete') {
+      state = 'Completed';
+    } else {
+      state = 'Progress';
+    }
+    const answerItem: LectureSurveyAnswerItem[] = answers.map(
+      ({
+        questionNumber,
+        answerItem: {
+          answerItemType,
+          criteriaItem,
+          itemNumbers,
+          sentence,
+          matrixItem,
+        },
+      }) => ({
+        questionNumber,
+        answerItemType,
+        criteriaItem: {
+          names: (criteriaItem.names as unknown) as LangStrings,
+          value: criteriaItem.value,
+          index: criteriaItem.index,
+        },
+        itemNumbers,
+        sentence,
+        matrixItem: matrixItem === null ? undefined : matrixItem,
+      })
+    );
+    return {
+      id,
+      answerSheetId,
+      answerItem,
+      state,
+      surveyCaseId,
+      round,
+      serviceId,
+    };
+  }
+  return { state, surveyCaseId, round: 1, serviceId };
+}
+
 export async function getLectureSurvey(params: LectureRouterParams) {
   const { contentType, contentId, lectureId } = params;
   if (contentType === 'cube') {
@@ -190,7 +389,11 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     if (contents !== undefined && contents.surveyId != '') {
       const lectureSurvey = await parseSurveyForm(contents.surveyId);
       setLectureSurvey(lectureSurvey);
-      console.log('lectureSurvey', lectureSurvey);
+      const lectureSurveyTask = await getCubeLectureSurveyState(
+        lectureId,
+        contents.surveyCaseId
+      );
+      setLectureSurveyState(lectureSurveyTask);
     }
   }
   if (contentType === 'coures') {
@@ -202,7 +405,11 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     ) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
       setLectureSurvey(lectureSurvey);
-      console.log('lectureSurvey', lectureSurvey);
+      const lectureSurveyTask = await getCourseLectureSurveyState(
+        lectureId,
+        surveyCase.id
+      );
+      setLectureSurveyState(lectureSurveyTask);
     }
   }
 }

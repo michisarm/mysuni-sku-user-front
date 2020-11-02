@@ -1,3 +1,4 @@
+import { AnswerItemType } from '../../../survey/answer/model/AnswerItemType';
 import LangStrings from '../model/LangStrings';
 import { State } from './LectureState';
 
@@ -11,16 +12,16 @@ type LectureSurveyItemType =
 
 export interface LectureSurveyAnswerItem {
   questionNumber: string;
-  answerItemType: LectureSurveyItemType;
-  criteriaItem: CriteriaItem;
-  itemNumbers: string[];
-  sentence: string;
-  matrixItem?: MatrixItem[];
+  answerItemType?: AnswerItemType;
+  criteriaItem?: CriteriaItem;
+  itemNumbers?: string[];
+  sentence?: string;
+  matrixItem?: MatrixItem;
 }
 
 export interface CriteriaItem {
   names: LangStrings;
-  value: number;
+  value?: number;
   index: number;
 }
 
@@ -30,8 +31,11 @@ export interface MatrixItem {
 }
 
 export default interface LectureSurveyState {
-  id: string;
-  answerSheetId: string;
+  id?: string;
+  answerSheetId?: string;
   state: State;
-  answerItem: LectureSurveyAnswerItem[];
+  answerItem?: LectureSurveyAnswerItem[];
+  surveyCaseId: string;
+  serviceId: string;
+  round?: number;
 }

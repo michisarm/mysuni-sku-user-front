@@ -17,4 +17,5 @@ export default interface AnswerItems {
   rowItems?: Item[];
   imageUrls?: ImageUrl[];
   maxLength?: number;
+  criterionNumber?: string;
 }
