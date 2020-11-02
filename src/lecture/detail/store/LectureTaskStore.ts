@@ -1,4 +1,5 @@
 import { LectureTask } from '../viewModel/LectureTask';
+import { LectureTaskDetail } from '../viewModel/LectureTaskDetail';
 // import {
 //   LectureTestItem,
 //   LectureTestAnswerItem,
@@ -25,7 +26,7 @@ const [
   setLectureTaskDetail,
   onLectureTaskDetail,
   getLectureTaskDetail,
-] = createStore<object>({});
+] = createStore<LectureTaskDetail>();
 
 export {
   setLectureTaskItem,

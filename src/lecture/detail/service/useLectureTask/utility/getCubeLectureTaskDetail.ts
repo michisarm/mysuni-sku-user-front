@@ -1,6 +1,6 @@
 import { getTaskDetailCube } from './getTaskDetailCube';
 /* eslint-disable consistent-return */
 
-export async function getCubeLectureTaskDetail(postId: string): Promise<void> {
-  await getTaskDetailCube(postId);
+export async function getCubeLectureTaskDetail(postParam: any): Promise<void> {
+  await getTaskDetailCube(postParam);
 }

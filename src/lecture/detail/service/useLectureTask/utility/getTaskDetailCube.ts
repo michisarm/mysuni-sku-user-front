@@ -4,157 +4,20 @@
 
 import {
   findPersonalCube,
-  findTask,
-  findTaskChild,
-  findTaskCommentCount,
   getTaskDetail,
 } from 'lecture/detail/api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
-import Task from 'lecture/detail/model/Task';
 import {
-  getLectureTaskItem,
   setLectureTaskDetail,
   // setLectureChildTaskItem,
-  setLectureTaskItem,
 } from 'lecture/detail/store/LectureTaskStore';
-import {
-  LectureTask,
-  // LectureTaskChild,
-} from 'lecture/detail/viewModel/LectureTask';
-import { stringify } from 'querystring';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 
 function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
   return findPersonalCube(cubeId);
 }
 
-// async function getTaskItem(
-//   boardId: string,
-//   offset: number,
-//   limit: number,
-//   addflag?: boolean
-// ) {
-//   const lectureTask: LectureTask = {
-//     items: [],
-//     totalCount: 0,
-//     empty: false,
-//     offset: 0,
-//     limit: 0,
-//   };
-//   //TODO api 수정되면 바꿀 예정
-//   if (boardId !== '') {
-//     {
-//       //리스트 api
-//       const findTaskData = await findTask(boardId, offset, limit);
-//       lectureTask.totalCount = findTaskData.totalCount;
-//       lectureTask.offset = offset;
-//       const old = getLectureTaskItem();
-//       if (findTaskData.results.length !== 0) {
-//         if (addflag && old) {
-//           findTaskData.results.forEach(task => {
-//             old.items.push({
-//               id: task.id,
-//               boardId: task.boardId,
-//               readCount: task.readCount,
-//               title: task.title,
-//               writer: task.writer,
-//               time: task.time,
-//               child: false,
-//               count: 0,
-//               commentFeedbackId: task.commentFeedbackId,
-//               childItems: [],
-//             });
-//           });
-
-//           lectureTask.items = [...old.items];
-//           setLectureTaskItem(old);
-//         } else {
-//           findTaskData.results.forEach(task => {
-//             lectureTask.items.push({
-//               id: task.id,
-//               boardId: task.boardId,
-//               readCount: task.readCount,
-//               title: task.title,
-//               writer: task.writer,
-//               time: task.time,
-//               child: false,
-//               count: 0,
-//               commentFeedbackId: task.commentFeedbackId,
-//               childItems: [],
-//             });
-//           });
-//           setLectureTaskItem(lectureTask);
-//         }
-
-//         const idArr: string[] = [];
-//         lectureTask.items.map(item => {
-//           idArr.push(item.id);
-//         });
-
-//         //자식 리스트 api
-//         const findChildTaskData = await findTaskChild(idArr);
-
-//         if (findChildTaskData.results !== null) {
-//           lectureTask.items.forEach(parent => {
-//             parent.childItems = [];
-//           });
-//           findChildTaskData.results.forEach(child => {
-//             lectureTask.items.forEach(parent => {
-//               if (parent.id === child.postId) {
-//                 parent.childItems.push({
-//                   id: child.id,
-//                   postId: child.postId,
-//                   readCount: child.readCount,
-//                   title: child.title,
-//                   writer: child.writer,
-//                   time: child.time,
-//                   commentFeedbackId: child.commentFeedbackId,
-//                   count: 0,
-//                 });
-//               }
-//             });
-//           });
-//         }
-
-//         const commentFeedbackIdArr: string[] = [];
-//         lectureTask.items.map((item, idx) => {
-//           if (item.commentFeedbackId) {
-//             commentFeedbackIdArr.push(item.commentFeedbackId);
-//           }
-//           if (item.childItems) {
-//             item.childItems.map(childeItem => {
-//               if (childeItem.commentFeedbackId) {
-//                 commentFeedbackIdArr.push(childeItem.commentFeedbackId);
-//               }
-//             });
-//           }
-//         });
-
-//         // 댓글 count api
-//         const commentCount = await findTaskCommentCount(commentFeedbackIdArr);
-//         if (commentCount !== null) {
-//           commentCount.forEach(comment => {
-//             lectureTask.items.forEach(parent => {
-//               if (parent.commentFeedbackId === comment.feedbackId) {
-//                 parent.count = comment.count;
-//               }
-//               if (parent.childItems) {
-//                 parent.childItems.forEach(child => {
-//                   if (child.commentFeedbackId === comment.feedbackId) {
-//                     child.count = comment.count;
-//                   }
-//                 });
-//               }
-//             });
-//           });
-//         }
-//         return lectureTask;
-//       }
-//     }
-//   }
-// }
-
-async function getTaskItem(postId: string) {
+async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
     id: '11',
     fileBoxId: '',
@@ -166,38 +29,38 @@ async function getTaskItem(postId: string) {
       companyCode: '',
       companyName: '',
     },
-    contents: {
-      contents: '',
-      depotId: '',
-    },
+    contents: 'mock 데이터',
     time: 123,
     readCount: '0',
+    commentFeedbackId: '',
   };
   //
-  if (postId !== '') {
+  if (postParam.id !== '') {
     {
-      //리스트 api
-      const findTaskDetailData = await getTaskDetail(postId);
-      console.log('findTaskDetailData', findTaskDetailData);
+      //TODO. 리스트 api 수정 되면 변경하도록
+      const findTaskDetailData = await getTaskDetail(
+        postParam.id,
+        postParam.type
+      );
+
       if (findTaskDetailData) {
         lectureTaskDetail.id = findTaskDetailData.id;
         lectureTaskDetail.title = findTaskDetailData.title;
-        console.log('findTaskDetailData', findTaskDetailData);
+        lectureTaskDetail.commentFeedbackId =
+          findTaskDetailData.commentFeedbackId;
+        lectureTaskDetail.contents = findTaskDetailData.contents;
         return lectureTaskDetail;
       }
-      //컨텐츠 호출 api
-
-      //댓글
     }
   }
 }
 
-export async function getTaskDetailCube(postId: string): Promise<void> {
+export async function getTaskDetailCube(postParam: any): Promise<void> {
   // void : return이 없는 경우 undefined
 
-  if (postId !== undefined) {
+  if (postParam.id !== undefined) {
     // const addflag = !!getLectureTaskItem();
-    const taskItem = await getTaskItem(postId);
+    const taskItem = await getTaskItem(postParam);
     if (taskItem !== undefined) {
       //
       setLectureTaskDetail({ ...taskItem });

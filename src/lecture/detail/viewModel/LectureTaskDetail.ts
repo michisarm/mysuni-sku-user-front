@@ -23,9 +23,10 @@ export interface LectureTaskDetail {
   fileBoxId: string;
   title: string;
   writer: WriterModel;
-  contents: PostContentsModel;
+  contents: string;
   time: number;
   readCount: string;
+  commentFeedbackId: string;
 }
 
 export interface LectureTaskDetailCreateReplies {

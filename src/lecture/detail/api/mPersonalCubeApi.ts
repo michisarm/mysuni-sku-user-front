@@ -80,11 +80,21 @@ export function findTaskCommentCount(
   });
 }
 
-export function getTaskDetail(postId: string): Promise<TaskDetail> {
+export function getTaskDetail(
+  postId: string,
+  postType: string
+): Promise<TaskDetail> {
   const url = `${BASE_URL}/posts/${postId}`;
-  return axiosApi.get<TaskDetail>(url).then(response => {
-    return response && response.data;
-  });
+  const replyUrl = `${BASE_URL}/replies/${postId}`;
+  if (postType === 'parent') {
+    return axiosApi.get<TaskDetail>(url).then(response => {
+      return response && response.data;
+    });
+  } else {
+    return axiosApi.get<TaskDetail>(replyUrl).then(response => {
+      return response && response.data;
+    });
+  }
 }
 
 export function getTaskDetailBody(postId: string): Promise<TaskDetailBody> {

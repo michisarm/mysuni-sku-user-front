@@ -12,6 +12,7 @@ import LectureTaskDetailView from '../view/LectureTaskView/LectureTaskDetailView
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
 import { useLectuerCubeOverview } from 'lecture/detail/service/useLectuerCubeOverview/useLectuerCubeOverview';
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
+import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
@@ -25,36 +26,60 @@ function LectureTaskContainer() {
     setLectureTaskOffset(nextOffset);
   };
 
-  const moveToDetail = (type: string) => {
-    if (type) {
-      setLectureTaskViewType(type);
+  const moveToDetail = (param: any) => {
+    if (param.id) {
+      setLectureTaskViewType(param);
     } else {
-      setLectureTaskViewType(type);
+      setLectureTaskViewType(param);
     }
-    setDetailTaskId(type);
+    setDetailTaskId(param.id);
+  };
+
+  const onClickList = () => {
+    setLectureTaskViewType('list');
+  };
+
+  const hashLink = (hash: string) => {
+    const element = document.getElementById(hash);
+    if (element !== null) {
+      element.scrollIntoView();
+    }
+  };
+
+  const handelClickCreateTask = () => {
+    setLectureTaskViewType('create');
   };
 
   return (
     <>
+      <div id="Posts" />
       {getLectureTaskViewType() === 'list' && taskItem !== undefined && (
         <>
           <LectureCubeSummaryContainer />
           <ContentLayout className="support">
             <LectureTaskView
+              handelClickCreateTask={handelClickCreateTask}
               taskItem={taskItem}
               moreView={moreView}
               handleClickTaskRow={moveToDetail}
+              hashLink={hashLink}
             />
           </ContentLayout>
         </>
       )}
-      {getLectureTaskViewType() !== 'list' && (
-        // <ContentLayout breadcrumb={[{ text: 'Support' }, { text: 'Notice' }]}>
-        <LectureTaskDetailView
+      {getLectureTaskViewType() !== 'list' &&
+        getLectureTaskViewType() !== 'create' && (
+          <LectureTaskDetailView
+            taskId={detailTaskId}
+            taskDetail={taskDetail!}
+            handleOnClickList={onClickList}
+          />
+        )}
+      {getLectureTaskViewType() === 'create' && (
+        <LectureTaskCreateView
           taskId={detailTaskId}
-          taskDetail={getLectureTaskDetail()}
+          handleOnClickList={onClickList}
         />
-        // </ContentLayout>
       )}
     </>
   );

@@ -8,15 +8,12 @@ import moment from 'moment';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
-import LectureTaskPostView from './LectureTaskPostView';
-import LectureTaskMyPostView from './LectureTaskMyPostView';
 
-interface LectureTaskViewProps {
+interface LectureTaskMyPostViewProps {
   taskItem: LectureTask;
   moreView: (offset: number) => void;
-  handleClickTaskRow: (param: object) => void;
-  hashLink: (hash: string) => void;
-  handelClickCreateTask: () => void;
+  handleClickTaskRow: (id: string, type?: 'child') => void;
+  handelClickCreateTask: (type: string) => void;
 }
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
@@ -73,18 +70,17 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   );
 }
 
-const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView({
+const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function LectureTestView({
   taskItem,
   moreView,
   handleClickTaskRow,
-  hashLink,
   handelClickCreateTask,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('Posts');
 
   const onHandleClickTaskRow = useCallback(
     param => {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', param);
+      console.log('taskId', param);
       handleClickTaskRow(param);
     },
     [taskItem]
@@ -94,70 +90,33 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
     moreView(getLectureTaskOffset()!);
   }, []);
 
-  const postsHashClick = useCallback(() => {
-    hashLink('Posts');
-    setActivatedTab('Posts');
-  }, []);
-
-  const myPostsHashClick = useCallback(() => {
-    hashLink('MyPosts');
-    setActivatedTab('MyPosts');
-  }, []);
-
-  const overViewHashClick = useCallback(() => {
-    hashLink('lms-related-badge');
-    setActivatedTab('Overview');
-  }, []);
-
   return (
     <Fragment>
-      <Segment className="full">
-        <div className="support-list-wrap">
-          <div className="lms-inner-menu">
-            <a
-              onClick={postsHashClick}
-              className={activatedTab === 'Posts' ? 'lms-act' : ''}
-            >
-              Posts
-            </a>
-            <a
-              onClick={myPostsHashClick}
-              className={activatedTab === 'MyPosts' ? 'lms-act' : ''}
-            >
-              My Posts
-            </a>
-            <a
-              onClick={overViewHashClick}
-              className={activatedTab === 'Overview' ? 'lms-act' : ''}
-            >
-              Overview
-            </a>
-          </div>
-          {activatedTab === 'Posts' && (
-            <LectureTaskPostView
-              taskItem={taskItem}
-              moreView={moreView}
-              handleClickTaskRow={param => onHandleClickTaskRow(param)}
-              handelClickCreateTask={handelClickCreateTask}
-            />
-          )}
-          {activatedTab === 'MyPosts' && (
-            <LectureTaskMyPostView
-              taskItem={taskItem}
-              moreView={moreView}
-              handleClickTaskRow={onHandleClickTaskRow}
-              handelClickCreateTask={handelClickCreateTask}
-            />
-          )}
-          {activatedTab === 'Overview' && (
-            <>
-              <span>Overview</span>
-            </>
-          )}
+      <LectureTaskTopLineView
+        totalCount={taskItem.totalCount}
+        handelClickCreateTask={() => handelClickCreateTask('myPost')}
+      />
+
+      <>
+        <div className="su-list qna">
+          {taskItem.items.map((task, index) => {
+            return renderPostRow(task, onHandleClickTaskRow);
+          })}
         </div>
-      </Segment>
+        {taskItem.items.length < taskItem.totalCount && (
+          <div
+            className="more-comments"
+            onClick={() => onHandleClickMoreView()}
+          >
+            <Button icon className="left moreview">
+              <Icon className="moreview" />
+              list more
+            </Button>
+          </div>
+        )}
+      </>
     </Fragment>
   );
 };
 
-export default LectureTaskView;
+export default LectureTaskMyPostView;

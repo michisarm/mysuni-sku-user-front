@@ -8,10 +8,11 @@ import { Button, Icon } from 'semantic-ui-react';
 interface Props {
   title: string;
   time: number;
-  onClickList: (e: any) => void;
   subField?: React.ReactNode;
   deletable?: boolean;
   reply?: boolean;
+  readCount?: string;
+  onClickList?: (e: any) => void;
   onClickDelete?: (e: any) => void;
   onClickModify?: (e: any) => void;
 }
@@ -28,6 +29,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
       subField,
       deletable,
       reply,
+      readCount,
       onClickList,
       onClickDelete,
       onClickModify,
@@ -51,9 +53,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
                   </div>
                   <div className="ui label onlytext">
                     <span className="header-span-first">조회수</span>
-                    <span>
-                      {time && moment(time).format('YYYY.MM.DD HH:MM')}
-                    </span>
+                    <span>{readCount}</span>
                   </div>
                 </div>
                 <div className="right-area">

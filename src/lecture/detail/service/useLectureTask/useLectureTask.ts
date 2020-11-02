@@ -91,6 +91,7 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskViewType(next => {
+      console.log('next', next);
       // console.log('postId', postId);
       setViewFlag(next!);
       getCubeLectureTaskDetail(next!);

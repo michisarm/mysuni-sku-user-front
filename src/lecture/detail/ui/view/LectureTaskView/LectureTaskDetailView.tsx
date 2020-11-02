@@ -1,28 +1,25 @@
+import { CommentList } from '@nara.drama/feedback';
 import {
   LectureTask,
   LectureTaskItem,
 } from 'lecture/detail/viewModel/LectureTask';
+import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
 import React, { Fragment, useCallback, useRef } from 'react';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 
 interface LectureTaskDetailViewProps {
   taskId: string;
-  taskDetail: any;
+  taskDetail: LectureTaskDetail;
   // moreView: (offset: number) => void;
-  // handleClickTaskRow: (id: string) => void;
+  handleOnClickList: (id: string) => void;
 }
 
 const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTestView({
   taskId,
   taskDetail,
+  handleOnClickList,
 }) {
-  console.log('taskId', taskId);
-  console.log('taskDetail', taskDetail);
   const textContainerRef = useRef<HTMLDivElement>(null);
-
-  function onClickList() {
-    // this.props.history.push(routePaths.supportNotice());
-  }
 
   return (
     <Fragment>
@@ -30,17 +27,28 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
         <span>상세보기-{taskId}</span>
       </Segment> */}
 
-      <LectureTaskDetailContentHeaderView
+      {/* <LectureTaskDetailContentHeaderView
         title={taskDetail.title}
         time={taskDetail.time}
         deletable={true}
         reply={true}
         onClickList={onClickList}
         onClickModify={onClickList}
-      />
+      /> */}
+      {/* <span>{taskDetail.contents.contents}</span> */}
 
       {taskDetail && (
         <>
+          <LectureTaskDetailContentHeaderView
+            title={taskDetail.title}
+            time={taskDetail.time}
+            readCount={taskDetail.readCount}
+            deletable={true}
+            reply={true}
+            onClickList={handleOnClickList}
+            onClickModify={handleOnClickList}
+          />
+
           <div className="class-guide-txt fn-parents ql-snow">
             <div className="text ql-editor">
               <div
@@ -85,6 +93,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
               </div>
             </div>
           </div>
+          <CommentList
+            feedbackId={taskDetail.commentFeedbackId}
+            hideCamera
+            name={taskDetail.writer.name}
+            email={taskDetail.writer.email}
+            companyName={taskDetail.writer.companyName}
+            departmentName={taskDetail.writer.companyCode}
+          />
         </>
       )}
     </Fragment>

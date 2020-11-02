@@ -7,9 +7,7 @@ import { ListPanelTopLine } from 'shared';
 
 interface Props {
   totalCount: number;
-}
-function onClickCreateTask() {
-  console.log('onClickCreateTask');
+  handelClickCreateTask: () => void;
 }
 
 @reactAutobind
@@ -19,6 +17,7 @@ class LectureTaskTopLineView extends React.Component<Props> {
     //
     const {
       totalCount,
+      handelClickCreateTask,
       // searchSelectOptions,
       // onChange,
     } = this.props;
@@ -35,7 +34,7 @@ class LectureTaskTopLineView extends React.Component<Props> {
           /> */}
           <Button
             className="ui icon button left post"
-            onClick={onClickCreateTask}
+            onClick={handelClickCreateTask}
           >
             <Icon className="post" />
             post
