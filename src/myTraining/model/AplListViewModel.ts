@@ -2,7 +2,7 @@ import { DramaEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import moment from 'moment';
 import { AplXlsxModel } from './AplXlsxModel';
-import { AplModel } from '..';
+import { AplModel } from 'myTraining';
 import { SearchFilter } from './SearchFilter';
 import EnumUtil, { AplStateView } from '../../shared/ui/logic/EnumUtil';
 
