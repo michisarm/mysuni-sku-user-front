@@ -9,7 +9,7 @@ import { NameValueList, QueryModel } from '../../shared/model';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
 import { NewDatePeriod } from '../../shared/model/NewDatePeriod';
 
-export class AplModel extends QueryModel {
+export default class AplModel extends QueryModel {
   //
   id: string = '';
   title: string = '';

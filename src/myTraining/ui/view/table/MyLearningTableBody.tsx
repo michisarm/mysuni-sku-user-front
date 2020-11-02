@@ -9,11 +9,10 @@ import routePaths from 'lecture/routePaths';
 import { MyTrainingService } from 'myTraining/stores';
 import MyTrainingTableViewModel from 'myTraining/model/MyTrainingTableViewModel';
 import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewModel';
-import { AplModel } from 'myTraining';
 import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
+import { AplModel } from 'myTraining/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
 import { MyLearningContentType, MyPageContentType } from '../../model';
-
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;

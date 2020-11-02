@@ -4,7 +4,7 @@ import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import { Moment } from 'moment';
 import AplApi from '../apiclient/AplApi';
-import { AplModel } from '../..';
+import { AplModel } from '../../model'
 import { AplQueryModel } from '../../model/AplQueryModel';
 import { AplState } from '../../model/AplState';
 import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';

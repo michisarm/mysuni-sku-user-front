@@ -3,8 +3,9 @@ import { AplRdoModel } from '../../model/AplRdoModel';
 import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
+import { AplModel } from '../../model';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
-import { AplModel } from '../..';
+
 
 export default class AplApi {
   URL = 'http://localhost:8233/apl';

@@ -14,7 +14,7 @@ import AlertWin from '../../../shared/ui/logic/AlertWin';
 import SelectType from '../../model/SelectType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import SharedService from '../../../shared/present/logic/SharedService';
-import { AplModel } from '../..';
+import { AplModel } from '../../model';
 import AplCreateContainer from '../logic/AplCreateContainer';
 
 interface Props

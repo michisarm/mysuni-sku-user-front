@@ -5,6 +5,7 @@ export { default as MyTrainingTableViewModel } from './MyTrainingTableViewModel'
 export { default as InMyLectureTableViewModel } from './InMyLectureTableViewModel';
 export { default as InMyLectureCdoModel } from './InMyLectureCdoModel';
 export { default as MyFeedModel } from './MyFeedModel';
+export { default as AplModel } from './AplModel';
 
 export { ApprovalCubeModel } from './ApprovalCubeModel';
 export { default as CubeType } from './CubeType';

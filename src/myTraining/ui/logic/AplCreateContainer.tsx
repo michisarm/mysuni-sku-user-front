@@ -5,10 +5,11 @@ import { reactAutobind, reactAlert, mobxHelper } from '@nara.platform/accent';
 import { Button, TextArea, Form, Modal, Table } from 'semantic-ui-react';
 import moment, { Moment } from 'moment';
 import DatePicker from 'react-datepicker';
-import { AplModel, AplService } from '../..';
+import { AplModel } from '../../model';
 import AplMessageList from '../../present/logic/AplService';
 import { AplState } from '../../model/AplState';
 import SelectType from '../../model/SelectType';
+import AplService from '../../present/logic/AplService';
 
 interface Props {
   aplService?: AplService;
