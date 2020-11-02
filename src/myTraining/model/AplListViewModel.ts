@@ -10,8 +10,10 @@ export class AplListViewModel extends AplModel {
   //organizer: IdName = new IdName();
 
   constructor(aplListView?: AplListViewModel) {
-    super(aplListView);
-    //this.organizer = aplListView?.organizer || new IdName();
+    super();
+    if (aplListView) {
+      Object.assign(this, { ...aplListView });
+    }
   }
 
   static asXLSX(aplListView: AplListViewModel, index: number): AplXlsxModel {
