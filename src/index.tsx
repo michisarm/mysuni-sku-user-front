@@ -13,7 +13,7 @@ import './style/css/main.593f014c.chunk.css';
 // 0810 PSJ 뱃지 디자인 변경
 //import './style/css/2.2e9b8fef.chunk.css';
 // import './style/css/2.996508f7.chunk.css';
-import './style/css/2.19382c8f.chunk.css';
+//import './style/css/2.19382c8f.chunk.css';
 import './style/css/2.8e18ebd2.chunk.css';
 
 import './style/app.css';
