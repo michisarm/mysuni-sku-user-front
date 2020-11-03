@@ -6,8 +6,8 @@ export enum CubeStateView {
 }
 
 export enum AplStateView {
-  Created = '승인요청',
-  OpenApproval = '승인대기',
+  Created = ' ',
+  OpenApproval = '승인요청',
   Opened = '승인완료',
   Rejected = '반려',
 }

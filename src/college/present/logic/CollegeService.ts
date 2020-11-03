@@ -1,6 +1,6 @@
 
 import { IObservableArray, observable, action, runInAction, computed } from 'mobx';
-import { autobind, CachingFetch } from '@nara.platform/accent';
+import { autobind, CachingFetch, axiosApi as axios } from '@nara.platform/accent';
 
 import _ from 'lodash';
 import { IdNameList } from 'shared/model';
@@ -30,7 +30,7 @@ export default class CollegeService {
   _channels: ChannelModel[] = [];
 
   @observable
-  favoriteChannels: ChannelModel[] = [];
+  favoriteChannels : ChannelModel [] = [];
 
   @observable
   channel: ChannelModel = new ChannelModel();
@@ -41,6 +41,11 @@ export default class CollegeService {
   @observable
   collegeForPanopto: CollegeModel = new CollegeModel();
 
+  @observable
+  mainCollege: CollegeModel = new CollegeModel();
+
+  @observable
+  mainColleges: CollegeModel[] = [];
 
   constructor(collegeApi: CollegeApi = CollegeApi.instance, channelApi: ChannelApi = ChannelApi.instance) {
     this.collegeApi = collegeApi;
@@ -68,8 +73,8 @@ export default class CollegeService {
   }
 
   @computed
-  get favoriteChannelIdNames(): IdNameList {
-    const list: IdNameList = new IdNameList();
+  get favoriteChannelIdNames() : IdNameList {
+    const list : IdNameList = new IdNameList();
     this.favoriteChannels.map((channel) => {
       list.idNames.push({ id: channel.id, name: channel.name, active: false });
     });
@@ -215,8 +220,7 @@ export default class CollegeService {
 
   //channel 이름 검색 추가
   @action
-  async findChannelByName(name: string) {
-    // const encodedName = encodeURIComponent(name);
+  async findChannelByName(name:string) {
     const channels = await this.channelApi.findChannelByName(name);
     runInAction(() => this._channels = channels.map(channel => new ChannelModel(channel)));
   }
@@ -238,6 +242,22 @@ export default class CollegeService {
         this.channel = new ChannelModel(channel);
       }
     });
+  }
+
+  @action
+  async findCollegesForCurrentCineroom() {
+    //
+    // const colleges = await this.collegeApi.findAllColleges();
+    const mainColleges = await this.collegeApi.findCollegesForCurrentCineroom();
+    return runInAction(() => this.mainColleges = mainColleges);
+  }
+
+  @action
+  async findMainCollege(collegeId: string) {
+    //
+    const mainCollege = await this.collegeApi.findCollege(collegeId);
+    if (mainCollege) return runInAction(() => this.mainCollege = new CollegeModel(mainCollege));
+    return null;
   }
 
 }

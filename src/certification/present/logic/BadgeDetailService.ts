@@ -2,7 +2,7 @@ import {action, computed, IObservableArray, observable, runInAction} from 'mobx'
 import {autobind} from '@nara.platform/accent';
 import BadgeCompModel from '../../ui/model/BadgeCompModel';
 import {CoursePlanContentsModel, CoursePlanModel} from '../../../course/model';
-import {LectureApi} from '../../../lecture/shared';
+import LectureApi from '../../../lecture/shared/present/apiclient/LectureApi';
 import LectureViewModel from '../../../lecture/model/LectureViewModel';
 import CourseLectureApi from '../../../lecture/shared/present/apiclient/CourseLectureApi';
 import {CourseLectureModel} from '../../../lecture/model';

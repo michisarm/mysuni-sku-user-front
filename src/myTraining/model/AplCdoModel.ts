@@ -1,12 +1,14 @@
 import {patronInfo} from '@nara.platform/dock/src/snap/snap';
+import { IconBoxModel, QueryModel } from '../../shared/model';
 
 export class AplCdoModel {
   //
   // audienceKey: string = 'r2p8-r@nea-m5-c5';
-
   title: string = '';
   type: string = '';
   typeName: string = '';
+  collegeId: string = '';
+  collegeName: string = '';
   channelId: string = '';
   channelName: string = '';
   startDate: number = 0;
@@ -27,8 +29,6 @@ export class AplCdoModel {
   approvalName: string = '';
   updateTime: number = 0;
   causeOfReturn: string = '';
-  cineroomId: string = '';
-  patronKeyString: string = '';
-  patronType: string = '';
-  pavilionId: string = '';
+  approvalCompany: string = '';
+  approvalDepartment: string = '';
 }

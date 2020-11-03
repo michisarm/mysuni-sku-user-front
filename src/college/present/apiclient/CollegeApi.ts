@@ -44,6 +44,12 @@ export default class CollegeApi {
     return axios.get<JobGroupModel>(this.URLJob + `/${jobGroupId}`)
       .then(response => response && response.data || null);
   }
+
+  findCollegesForCurrentCineroom() {
+    //
+    return axios.get<CollegeModel[]>(this.URLCollege  + `/forCurrentCineroom`)
+      .then(response => response && response.data || null);
+  }
 }
 
 Object.defineProperty(CollegeApi, 'instance', {

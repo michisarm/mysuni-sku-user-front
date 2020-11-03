@@ -1,5 +1,5 @@
 import { axiosApi as axios } from '@nara.platform/accent';
-import { AplFlowCdo } from '../../model/AplFlowCdo';
+import { AplFlowCdoModel } from '../../model/AplFlowCdoModel';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
 
 export default class AplFlowApi {
@@ -7,7 +7,7 @@ export default class AplFlowApi {
 
   static instance: AplFlowApi;
 
-  saveApl(aplFlowCdo: AplFlowCdo) {
+  saveApl(aplFlowCdo: AplFlowCdoModel) {
     return axios
       .post<string>(this.flowURL, aplFlowCdo)
       .then((response) => (response && response.data) || null);

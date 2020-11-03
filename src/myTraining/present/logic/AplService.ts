@@ -3,17 +3,15 @@ import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
 import AplApi from '../apiclient/AplApi';
-import { AplModel } from '../../model'
 import { AplQueryModel } from '../../model/AplQueryModel';
 import { AplState } from '../../model/AplState';
 import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplCountModel } from '../../model/AplCountModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
-import { AplFlowCdo } from '../../model/AplFlowCdo';
 import AplFlowApi from '../apiclient/AplFlowApi';
-import { ExcelView } from '../../../shared/model/ExcelView';
+import {ExcelView} from '../../../shared/model/ExcelView';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
-
+import { AplModel } from '../../model';
 
 @autobind
 export default class AplService {
@@ -65,38 +63,6 @@ export default class AplService {
   @observable
   aplSearchInit: boolean = true;
 
-  /*
-  @computed
-  get cardIdList() {
-    return this.getServiceIdList('CARD');
-  }
-
-  @computed
-  get courseIdList() {
-    return this.getServiceIdList('COURSE');
-  }
-
-  @computed
-  get programIdList() {
-    return this.getServiceIdList('PROGRAM');
-  }
-
-  private getServiceIdList(serviceType: string): string[] {
-    const serviceIdList: string[] = [];
-    if (
-      this.menuapls &&
-      this.menuapls.results &&
-      this.menuapls.results.length
-    ) {
-      this.menuapls.results.forEach((menuapl) => {
-        if (menuapl.serviceType === serviceType) {
-          serviceIdList.push(menuapl.serviceId);
-        }
-      });
-    }
-    return serviceIdList;
-  }*/
-
   @computed get allowTime(): number {
     const totalAllowHour = this.apls.results
       .map(result => result.allowHour)
@@ -122,30 +88,8 @@ export default class AplService {
       AplQueryModel.asAplRdo(this.aplQuery)
     );
     //apls.results.map((apl) => new AplListViewModel(apl));
-    runInAction(() => this.apls = apls);
+    runInAction(() => (this.apls = apls));
     return apls;
-  }
-
-  @action
-  async findAllAplsWithPage(offset: Offset) {
-    this.aplQuery.offset = offset.offset;
-    this.aplQuery.limit = offset.limit;
-
-    const apls = await this.aplApi.findAllAplsByQuery(
-      AplQueryModel.asAplRdo(this.aplQuery)
-    );
-
-    runInAction(() => this.apls.results = [...this.apls.results, ...apls.results]);
-  }
-
-  @action
-  async findAllTabCount() {
-    const aplCount = await this.aplApi.findAplCount(
-      AplQueryModel.asAplRdo(this.aplQuery)
-    );
-
-    runInAction(() => this.aplCount = aplCount);
-    return aplCount;
   }
 
   @action
@@ -178,7 +122,7 @@ export default class AplService {
   }
 
   @action
-  async findCreatAapl(
+  async findCreatApl(
     aplType?: string | undefined,
     company?: string | null
   ) {
@@ -224,22 +168,13 @@ export default class AplService {
   }
 
   @action
-  initQueryModel() {
-    this.aplQuery = new AplQueryModel();
-  }
-
-  @action
   changeAplQueryProps(name: string, value: any) {
-    if (name === 'dateOptions' && value === 'All') {
-      this.aplQuery = _.set(this.aplQuery, name, '');
-      this.aplQuery = _.set(this.aplQuery, 'aplType', '');
-    }
-    if (value === '전체') value = '';
+    if (value === 'Select') value = '';
     this.aplQuery = _.set(this.aplQuery, name, value);
   }
 
   @action
-  clearaplQueryProps() {
+  clearAplQueryProps() {
     //
     this.aplQuery = new AplQueryModel();
   }
@@ -259,28 +194,20 @@ export default class AplService {
   @action
   changeAplProps(
     name: string,
-    value: string | {} | string[] | boolean | undefined
+    value: string | {} | string[] | boolean | undefined | Moment
   ) {
     //
-    if (name === 'isNameShow') {
-      if (value === '') value = undefined;
-      else {
-        value = (value as string) === 'Yes' ? true : false;
-      }
-    }
+    if (value === 'Select') value = '';
     this.apl = _.set(this.apl, name, value);
   }
 
+  /**SAVE 2020 10 28*/
   saveApl(
     apl: AplModel,
-    saveMode?: string
   ) {
     //
-    return this.aplFlowApi.saveApl(
-      new AplFlowCdo(
-        AplModel.asCdo(apl),
-        saveMode
-      )
+    return this.aplApi.saveApl(
+      AplModel.asCdo(apl),
     );
   }
 
@@ -309,12 +236,55 @@ export default class AplService {
   changeAplSearchInit(aplSearchType: boolean) {
     this.aplSearchInit = aplSearchType;
   }
-  /*
+
   @action
-  changeTreeActiveKey(treeActiveKey: any) {
-    this.treeActiveKey = treeActiveKey;
+  async findAllAplsWithPage(offset: Offset) {
+    this.aplQuery.offset = offset.offset;
+    this.aplQuery.limit = offset.limit;
+
+    const apls = await this.aplApi.findAllAplsByQuery(
+      AplQueryModel.asAplRdo(this.aplQuery)
+    );
+
+    runInAction(() => this.apls.results = [...this.apls.results, ...apls.results]);
   }
-  */
+
+  @action
+  async findAllTabCount() {
+    const aplCount = await this.aplApi.findAplCount(
+      AplQueryModel.asAplRdo(this.aplQuery)
+    );
+
+    runInAction(() => this.aplCount = aplCount);
+    return aplCount;
+  }
+
+  @action
+  async findCreatAapl(
+    aplType?: string | undefined,
+    company?: string | null
+  ) {
+    //
+    const apl = await this.aplApi.findCreateApl(
+      aplType,
+      company
+    );
+    runInAction(() => (this.apl = apl));
+    return apl;
+  }
+
+  @action
+  initQueryModel() {
+    this.aplQuery = new AplQueryModel();
+  }
+
+  @action
+  clearaplQueryProps() {
+    //
+    this.aplQuery = new AplQueryModel();
+  }
+
+
 }
 
 Object.defineProperty(AplService, 'instance', {
