@@ -120,7 +120,8 @@ class QuickNavContainer extends Component<Props, State> {
 
   onClickApl() {
     // 개인학습 등록 바로 가기
-    this.routeNav('/learning/add-personal-learning-create');
+    //this.routeNav('/learning/add-personal-learning-create');
+    this.routeNav('/my-training/apl/create');
   }
 
   onClickAdminSite() {

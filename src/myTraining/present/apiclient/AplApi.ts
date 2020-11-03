@@ -3,12 +3,21 @@ import { AplRdoModel } from '../../model/AplRdoModel';
 import { AplRequestCdoModel } from '../../model/AplRequestCdoModel';
 import { AplListViewModel } from '../../model/AplListViewModel';
 import { AplCountModel } from '../../model/AplCountModel';
-import { AplModel } from '../../model';
 import OffsetElementList from '../../../shared/model/OffsetElementList';
-
+import { AplCdoModel } from '../../model/AplCdoModel';
+import {AplModel} from '../../model';
 
 export default class AplApi {
-  URL = 'http://localhost:8233/apl';
+
+  serverUrl = '/api/mytraining/apl';
+  devUrl = process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === undefined || process.env.REACT_APP_MY_LEARNING_SUMMARY_API  === '' ?
+    this.serverUrl : process.env.REACT_APP_MY_LEARNING_SUMMARY_API ;
+  /*
+  URL = process.env.REACT_APP_ENVIRONMENT === undefined || process.env.REACT_AP P_ENVIRONMENT === 'server' ?
+    this.serverUrl : this.devUrl;
+  */
+
+  URL='http://localhost:8233/apl';
 
   static instance: AplApi;
 
@@ -28,12 +37,6 @@ export default class AplApi {
       );
   }
 
-  findAplCount(aplRdo: AplRdoModel) {
-    return axios.get(this.URL + '/summary/count', { params: aplRdo })
-      .then(response =>
-        response && response.data && new AplCountModel(response.data) || new AplCountModel());
-  }
-
   findApl(aplId: string | undefined) {
     //
     return axios
@@ -43,6 +46,12 @@ export default class AplApi {
           (response && response.data && new AplModel(response.data)) ||
           new AplModel()
       );
+  }
+
+  findAplCount(aplRdo: AplRdoModel) {
+    return axios.get(this.URL + '/summary/count', { params: aplRdo })
+      .then(response =>
+        response && response.data && new AplCountModel(response.data) || new AplCountModel());
   }
 
   //Query
@@ -99,6 +108,13 @@ export default class AplApi {
               new AplListViewModel(apl)
           )
       );
+  }
+
+  /* 2020 10 28 SAVE */
+  saveApl(aplCdo: AplCdoModel) {
+    return axios
+      .post<string>(this.URL, aplCdo)
+      .then((response) => (response && response.data) || null);
   }
 
   modifyApl(aplId: number | undefined, isUse: boolean) {

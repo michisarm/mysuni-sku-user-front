@@ -1,9 +1,13 @@
 import { decorate, observable } from 'mobx';
-import {AplRdoModel} from './AplRdoModel';
-import {QueryModel} from '../../shared/model';
+import { AplRdoModel } from './AplRdoModel';
+import { NewQueryModel } from '../../shared/model';
 
-export class AplQueryModel extends QueryModel {
+export class AplQueryModel extends NewQueryModel {
   //
+  collegeId: string = '';
+  collegeName: string = '';
+  channelId: string = '';
+  channelName: string = '';
   state: string = '';
   currentPage: number = 0;
 

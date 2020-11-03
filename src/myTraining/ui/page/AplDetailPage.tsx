@@ -5,9 +5,7 @@ import { reactAutobind, reactAlert } from '@nara.platform/accent';
 import moment from 'moment';
 import { patronInfo } from '@nara.platform/dock';
 import { Button, Container, Form, Breadcrumb, Header } from 'semantic-ui-react';
-import { AplService } from 'myTraining/stores';
-import { AplModel } from '../../model';
-
+import { AplService } from '../../index';
 // import AplDetailView from '../view/AplDetailView';
 // import AplBasicInfoContainer from '../view/AplBasicInfoContainer';
 import { AplState } from '../../model/AplState';
@@ -15,7 +13,7 @@ import { AplType } from '../../model/AplType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import SharedService from '../../../shared/present/logic/SharedService';
-
+import {AplModel} from '../../model';
 
 interface Props
   extends RouteComponentProps<{
@@ -52,7 +50,7 @@ interface States {
   focusYn: string;
 }
 
-@inject('AplService', 'sharedService')
+@inject('myTraining.aplService', 'shared.sharedService')
 @observer
 @reactAutobind
 class AplDetailPage extends React.Component<Props, States> {
@@ -113,7 +111,7 @@ class AplDetailPage extends React.Component<Props, States> {
   onChangeAplProps(name: string, value: string | number | {} | []) {
     //
     const { aplService } = this.props;
-    if (aplService) aplService.changeAplsProps(name, value);
+    if (aplService) aplService.changeAplProps(name, value);
   }
 
   confirmBlank(message: string | any, aplBlankField: string) {
@@ -216,8 +214,6 @@ class AplDetailPage extends React.Component<Props, States> {
       aplStateUpper = AplState.Created;
     } else if (aplState === AplState.Opened.toLowerCase()) {
       aplStateUpper = AplState.Opened;
-    } else if (aplState === AplState.Closed.toLowerCase()) {
-      aplStateUpper = AplState.Closed;
     }
     //this.onChangeAplProps('state', AplState);
     this.onChangeAplProps('state', aplStateUpper);
@@ -239,8 +235,6 @@ class AplDetailPage extends React.Component<Props, States> {
       aplStateUpper = AplState.Created;
     } else if (aplState === AplState.Opened.toLowerCase()) {
       aplStateUpper = AplState.Opened;
-    } else if (aplState === AplState.Closed.toLowerCase()) {
-      aplStateUpper = AplState.Closed;
     }
     //let message = '';
     const title = 'APL';
@@ -314,12 +308,9 @@ class AplDetailPage extends React.Component<Props, States> {
   handleAlertOk(type: string) {
     //
     if (type === 'modify') {
-      this.handleOKConfirmWinApl('modify');
+      this.handleOKConfirmWinApl();
     }
     if (type === '안내') this.handleCloseAlertWin();
-    if (type === 'save') {
-      this.handleOKConfirmWinApl('save');
-    }
     if (type === 'list') this.routeToAplList();
   }
 
@@ -331,7 +322,7 @@ class AplDetailPage extends React.Component<Props, States> {
     }
   }
 
-  handleOKConfirmWinApl(mode?: string) {
+  handleOKConfirmWinApl() {
     //
     const { apl } = this.props.aplService || ({} as AplService);
     const { aplService } = this.props;
@@ -340,7 +331,7 @@ class AplDetailPage extends React.Component<Props, States> {
     if (!this.state.saveAplOn) {
       this.setState({ saveAplOn: true });
       aplService
-        .saveApl(apl, mode && mode)
+        .saveApl(apl)
         .then(() => this.clearAll())
         .then(() => this.routeToAplList())
         .finally(() => {
@@ -385,7 +376,7 @@ class AplDetailPage extends React.Component<Props, States> {
       .startOf('day')
       .toDate()
       .getTime();
-    if (apl.period.startDateNumber < toDateStart) {
+    if (apl.period.startDateLong < toDateStart) {
       const aplMessageList = (
         <>
           <p className="center">
@@ -403,7 +394,7 @@ class AplDetailPage extends React.Component<Props, States> {
       return;
     }
 
-    if (apl.period.endDateNumber < apl.period.startDateNumber) {
+    if (apl.period.endDateLong < apl.period.startDateLong) {
       const aplMessageList = (
         <>
           <p className="center"> 종료일자는 시작일과 같거나 이후여야 합니다.</p>

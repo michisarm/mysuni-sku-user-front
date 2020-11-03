@@ -1,11 +1,9 @@
 import { DramaEntity } from '@nara.platform/accent';
 import { decorate, observable } from 'mobx';
 import moment from 'moment';
-import { AplModel } from '.';
 import { AplXlsxModel } from './AplXlsxModel';
-import { SearchFilter } from './SearchFilter';
 import EnumUtil, { AplStateView } from '../../shared/ui/logic/EnumUtil';
-
+import { AplModel } from './index';
 
 export class AplListViewModel extends AplModel {
   //organizer: IdName = new IdName();
@@ -24,12 +22,10 @@ export class AplListViewModel extends AplModel {
       교육명: aplListView.title || '-',
       교육형태: aplListView.typeName || '-',
       Channel: aplListView.channelName || '-',
-      교육기간:
-        moment(aplListView.startDate).format('YYYY.MM.DD') +
-        '~' +
-        moment(aplListView.endDate).format('YYYY.MM.DD') || '-',
-      교육시간:
-        aplListView.requestHour + ':' + aplListView.requestMinute || '-',
+      교육기간: moment(aplListView.startDate).format(
+        'YYYY.MM.DD')+'~'+moment(aplListView.endDate).format(
+        'YYYY.MM.DD')  || '-',
+      교육시간: aplListView.requestHour +':'+ aplListView.requestMinute|| '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplListView.state).get(
           aplListView.state

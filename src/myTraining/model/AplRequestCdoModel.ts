@@ -1,6 +1,6 @@
 import { decorate, observable } from 'mobx';
 import { AplState } from './AplState';
-import {IdName} from '../../shared/model';
+import { IdName } from '../../shared/model';
 
 export class AplRequestCdoModel {
   //

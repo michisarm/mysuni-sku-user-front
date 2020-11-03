@@ -36,7 +36,7 @@ interface States {
   pageIndex: number;
 }
 
-@inject('aplService', 'sharedService', 'skProfileService')
+@inject('myTraining.aplService', 'shared.sharedService', 'profile.skProfileService')
 @observer
 @reactAutobind
 class AplListPage extends React.Component<Props, States> {
@@ -72,7 +72,6 @@ class AplListPage extends React.Component<Props, States> {
     );
     */
     this.onSetSearchWeek(1);
-    this.onChangeAplQueryProps(`dateOptions`, SelectType.dateOptions[0].value);
     // this.onChangeAplQueryProps(`arrangeType`, paramArrangeType);
     // this.onSetSearchYear(1);
   }

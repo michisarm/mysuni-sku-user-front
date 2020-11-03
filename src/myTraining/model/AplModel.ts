@@ -5,25 +5,30 @@ import { AplCdoModel } from './AplCdoModel';
 import { AplXlsxModel } from './AplXlsxModel';
 import EnumUtil, { AplStateView } from '../../shared/ui/logic/EnumUtil';
 import { AplState } from './AplState';
-import { NameValueList, QueryModel } from '../../shared/model';
+import {IconBoxModel, NameValueList, NewQueryModel} from '../../shared/model';
 import SkProfileService from '../../profile/present/logic/SkProfileService';
-import { NewDatePeriod } from '../../shared/model/NewDatePeriod';
+import {AplType} from './AplType';
+import SelectOptions from "../ui/model/SelectOptions";
 
-export default class AplModel extends QueryModel {
+class AplModel extends NewQueryModel {
   //
   id: string = '';
   title: string = '';
   type: string = '';
   typeName: string = '';
+  collegeId: string = '';
+  collegeName: string = '';
   channelId: string = '';
   channelName: string = '';
   startDate: number = 0;
-  endDate: number = 0;
+  endDate : number = 0;
   institute: string = '';
   requestHour: number = 0;
   requestMinute: number = 0;
   allowHour: number = 0;
   allowMinute: number = 0;
+  updateHour: number = 0;
+  updateMinute: number = 0;
   content: string = '';
   state: string = '';
   creationTime: number = 0;
@@ -33,12 +38,17 @@ export default class AplModel extends QueryModel {
   approvalYn: boolean | undefined;
   approvalId: string = '';
   approvalName: string = '';
+  approvalTime: number = 0;
+  updateId: string = '';
+  updateName: string = '';
   updateTime: number = 0;
   causeOfReturn: string = '';
   cineroomId: string = '';
   patronKeyString: string = '';
   patronType: string = '';
   pavilionId: string = '';
+  approvalCompany: string = '';
+  approvalDepartment: string = '';
 
   // requiredSubsidiaries: IdName[] = [];
 
@@ -67,12 +77,17 @@ export default class AplModel extends QueryModel {
   static isBlank(aplModel: AplModel): string {
     if (!aplModel.title) return '교육명';
     if (!aplModel.type) return '교육형태';
+    /*if (!aplModel.typeName) return '교육형태명';*/
+    if (aplModel.type===AplType.Etc&&!aplModel.typeName) return '교육형태명';
+    if (!aplModel.collegeId) return 'College';
     if (!aplModel.channelId) return 'Channel';
-    if (!aplModel.period.startDateSub) return '교육시작일자';
-    if (!aplModel.period.endDateSub) return '교육종료일자';
+    /*if (!aplModel.channelId) return 'Channel';*/
+    if (!aplModel.period.startDateMoment) return '교육시작일자';
+    if (!aplModel.period.endDateMoment) return '교육종료일자';
     if (!aplModel.institute) return '교육기관';
     if (!aplModel.requestHour) return '교육시간(시)';
     if (!aplModel.requestMinute) return '교육시간(분)';
+    if (!aplModel.content) return '교육내용';
     if (!aplModel.approvalId) return '승인자';
     // if (aplModel.subsidiaries.length === 0) return '관계사 공개 범위 설정';
     return 'success';
@@ -89,6 +104,10 @@ export default class AplModel extends QueryModel {
         {
           name: 'type',
           value: aplModel.type,
+        },
+        {
+          name: 'collegeId',
+          value: aplModel.collegeId,
         },
         {
           name: 'channelId',
@@ -114,15 +133,17 @@ export default class AplModel extends QueryModel {
       title: aplModel.title,
       type: aplModel.type,
       typeName: aplModel.typeName,
+      collegeId: aplModel.collegeId,
+      collegeName: aplModel.collegeName,
       channelId: aplModel.channelId,
       channelName: aplModel.channelName,
-      startDate: aplModel && aplModel.period && aplModel.period.startDateNumber,
-      endDate: aplModel && aplModel.period && aplModel.period.endDateNumber,
+      startDate: aplModel && aplModel.period && aplModel.period.startDateLong,
+      endDate : aplModel && aplModel.period && aplModel.period.endDateLong,
       institute: aplModel.institute,
       requestHour: aplModel.requestHour,
-      requestMinute: aplModel.requestMinute,
-      allowHour: aplModel.allowHour,
-      allowMinute: aplModel.allowMinute,
+      requestMinute:aplModel.requestMinute,
+      allowHour: aplModel.requestHour,
+      allowMinute: aplModel.requestMinute,
       content: aplModel.content,
       state: aplModel.state,
       creationTime: aplModel.creationTime,
@@ -134,16 +155,14 @@ export default class AplModel extends QueryModel {
         SkProfileService.instance.skProfile.member.name ||
         patronInfo.getPatronName() ||
         '',
-      fileIds: aplModel.fileIds || '',
-      approvalYn: aplModel.approvalYn || false,
-      approvalId: aplModel.approvalId || '',
-      approvalName: aplModel.approvalName || '',
+      fileIds: aplModel.fileIds||'',
+      approvalYn: aplModel.approvalYn||false,
+      approvalId: aplModel.approvalId||'',
+      approvalName: aplModel.approvalName||'',
       updateTime: aplModel.updateTime,
-      causeOfReturn: aplModel.causeOfReturn || '',
-      cineroomId: aplModel.cineroomId || '',
-      patronKeyString: aplModel.patronKeyString || '',
-      patronType: aplModel.patronType || '',
-      pavilionId: aplModel.pavilionId || '',
+      causeOfReturn: aplModel.causeOfReturn||'',
+      approvalCompany: aplModel.approvalCompany||'',
+      approvalDepartment: aplModel.approvalDepartment||'',
     };
   }
 
@@ -157,8 +176,8 @@ export default class AplModel extends QueryModel {
       교육명: aplModel.title || '-',
       교육형태: aplModel.typeName || '-',
       Channel: aplModel.channelName || '-',
-      교육기간: aplModel.channelName || '-',
-      교육시간: aplModel.requestHour + ':' + aplModel.requestMinute || '-',
+      교육기간: moment(aplModel.startDate).format('YYYY.MM.DD HH:mm:ss')+'~'+ moment(aplModel.endDate).format('YYYY.MM.DD HH:mm:ss') || '-',
+      교육시간: aplModel.requestHour +':'+ aplModel.requestMinute|| '-',
       상태:
         EnumUtil.getEnumValue(AplStateView, aplModel.state).get(
           aplModel.state
@@ -174,6 +193,8 @@ decorate(AplModel, {
   title: observable,
   type: observable,
   typeName: observable,
+  collegeId: observable,
+  collegeName: observable,
   channelId: observable,
   channelName: observable,
   startDate: observable,
@@ -183,6 +204,8 @@ decorate(AplModel, {
   requestMinute: observable,
   allowHour: observable,
   allowMinute: observable,
+  updateHour: observable,
+  updateMinute: observable,
   content: observable,
   state: observable,
   creationTime: observable,
@@ -192,6 +215,13 @@ decorate(AplModel, {
   approvalYn: observable,
   approvalId: observable,
   approvalName: observable,
+  approvalTime: observable,
+  updateId: observable,
+  updateName: observable,
   updateTime: observable,
   causeOfReturn: observable,
+  approvalCompany: observable,
+  approvalDepartment: observable,
 });
+
+export default AplModel;

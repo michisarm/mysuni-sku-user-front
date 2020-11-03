@@ -4,8 +4,9 @@ export enum AplType {
   ELearning = 'ELearning',
   Video = 'Video',
   Audio = 'Audio',
+  Community = 'Community',
   WebPage = 'WebPage',
   Documents = 'Documents',
   Experiential = 'Experiential',
-  Community = 'Community',
+  Etc = 'Etc',
 }
