@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Table } from 'semantic-ui-react';
 import { MyLearningContentType, MyPageContentType } from 'myTraining/ui/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 
 interface Props {
   contentType: MyContentType;
@@ -42,6 +43,8 @@ const getTableStyle = (contentType: MyContentType): string => {
       return 'ml-02-09';
     case MyPageContentType.EarnedStampList: /* My Stamp */
       return '';
+    case MyApprovalContentType.PersonalLearning: /* 개인학습 */
+      return 'my-04-01';
     default:
       return 'ml-02-03';
   }

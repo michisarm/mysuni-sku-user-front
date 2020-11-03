@@ -23,9 +23,9 @@ const routePaths = {
 
 
   approval: () => '/approval',
-  approvalTab: (tab: string = 'ApprovalList') => `/approval/${tab}/pages/1`,
-  myApprovalList: () => routePaths.approvalTab('ApprovalList'),
-  myApprovalAddPersonalLearning: () => routePaths.approvalTab('ApprovalAddPersonalLearning'),
+  approvalTab: (tab: string = 'PaidCourse') => `/approval/${tab}/pages/1`,
+  approvalPaidCourse: () => routePaths.approvalTab('PaidCourse'),
+  approvalPersonalLearning: () => routePaths.approvalTab('PersonalLearning'),
 
 
   myPageLearning: () => '/my-training/learning',

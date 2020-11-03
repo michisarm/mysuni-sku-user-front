@@ -629,7 +629,7 @@ class MyTrainingService {
   }
 
   @action
-  deleteBySelectedIds() {
+  hideBySelectedIds() {
     this._myTrainingTableViews = this._myTrainingTableViews.filter(tableView => !this.selectedIds.includes(tableView.id));
     this._myTrainingTableViewCount -= this.selectedIds.length;
 

@@ -2,7 +2,6 @@ import { Offset } from '@nara.platform/accent';
 import { observable, action, runInAction, computed } from 'mobx';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
-import { Moment } from 'moment';
 import AplApi from '../apiclient/AplApi';
 import { AplModel } from '../../model'
 import { AplQueryModel } from '../../model/AplQueryModel';
@@ -28,9 +27,7 @@ export default class AplService {
   apl: AplModel = new AplModel();
 
   @observable
-  apls: OffsetElementList<AplListViewModel> = new OffsetElementList<
-    AplListViewModel
-  >();
+  apls: OffsetElementList<AplListViewModel> = new OffsetElementList<AplListViewModel>();
 
   @observable
   aplsForExcel: AplListViewModel[] = [];

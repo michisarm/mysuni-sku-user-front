@@ -3,8 +3,8 @@ import { inject, observer } from 'mobx-react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import moment from 'moment';
 import { Modal, Button, Icon } from 'semantic-ui-react';
-import { timeToHourMinute, timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
-import { AplService } from 'myTraining';
+import { timeToHourMinutePaddingFormat } from 'shared/helper/dateTimeHelper';
+import { AplService } from 'myTraining/stores';
 import MyLearningSummaryService from '../../present/logic/MyLearningSummaryService';
 
 

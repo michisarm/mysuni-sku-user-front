@@ -11,19 +11,17 @@ import { AplModel } from '../../model';
 // import AplDetailView from '../view/AplDetailView';
 // import AplBasicInfoContainer from '../view/AplBasicInfoContainer';
 import { AplState } from '../../model/AplState';
-import { AplType } from '../../model/AplType';
 import { APL_FOCUS_MAP } from '../../model/AplValidationData';
 import AlertWin from '../../../shared/ui/logic/AlertWin';
 import SharedService from '../../../shared/present/logic/SharedService';
 
 
-interface Props
-  extends RouteComponentProps<{
-    cineroomId: string;
-    aplId: string;
-    aplState: string;
-    aplType: string;
-  }> {
+interface Props extends RouteComponentProps<{
+  cineroomId: string;
+  aplId: string;
+  aplState: string;
+  aplType: string;
+}> {
   aplService: AplService;
   //menuMain: AplModel
   //menuApl: MenuAplModel

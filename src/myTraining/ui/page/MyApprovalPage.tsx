@@ -5,15 +5,18 @@ import { inject, observer } from 'mobx-react';
 import { mobxHelper } from '@nara.platform/accent';
 import { ContentLayout } from 'shared';
 import Tab, { TabItemModel } from 'shared/components/Tab';
-import { ApprovalCubeService } from 'myTraining/stores';
+import { ApprovalCubeService, AplService } from 'myTraining/stores';
 import routePaths from '../../routePaths';
 import MyApprovalContentType from '../model/MyApprovalContentType';
 import MyApprovalContentTypeName from '../model/MyApprovalContentTypeName';
 import MyApprovalListContainer from '../logic/MyApprovalListContainer';
 import MyApprovalContentHeader from '../view/MyApprovalContentHeader';
+import MyApprovalListContainerV2 from '../logic/MyApprovalListContainerV2';
+
 
 interface Props extends RouteComponentProps<RouteParams> {
   approvalCubeService?: ApprovalCubeService;
+  aplService?: AplService;
 }
 
 interface RouteParams {
@@ -22,17 +25,23 @@ interface RouteParams {
 }
 
 function MyApprovalPage(props: Props) {
-  const { approvalCubeService, history, match } = props;
-  const { approvalCubeOffsetList: { totalCount } } = approvalCubeService!;
+  const { approvalCubeService, aplService, history, match } = props;
+  const { approvalCubeOffsetList: { totalCount: paidCourseCount } } = approvalCubeService!;
+  const { apls: { totalCount: aplCount } } = aplService!;
   const currentTab = match.params.tab;
 
   /* functions */
   const getTabs = (): TabItemModel[] => {
     return [
       {
-        name: MyApprovalContentType.ApprovalList,
-        item: getTabItem(MyApprovalContentType.ApprovalList, totalCount),
+        name: MyApprovalContentType.PaidCourse,
+        item: getTabItem(MyApprovalContentType.PaidCourse, paidCourseCount),
         render: () => <MyApprovalListContainer />
+      },
+      {
+        name: MyApprovalContentType.PersonalLearning,
+        item: getTabItem(MyApprovalContentType.PersonalLearning, aplCount),
+        render: () => <MyApprovalListContainerV2 contentType={MyApprovalContentType.PersonalLearning} />
       }
     ];
   };
@@ -72,7 +81,8 @@ function MyApprovalPage(props: Props) {
 }
 
 export default inject(mobxHelper.injectFrom(
-  'approvalCube.approvalCubeService'
+  'approvalCube.approvalCubeService',
+  'myTraining.aplService'
 ))(withRouter(observer(MyApprovalPage)));
 
 /* globals */

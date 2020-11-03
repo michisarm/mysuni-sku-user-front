@@ -12,7 +12,9 @@ import InMyLectureTableViewModel from 'myTraining/model/InMyLectureTableViewMode
 import LectureTableViewModel from 'lecture/model/LectureTableViewModel';
 import { AplModel } from 'myTraining/model';
 import { MyContentType } from 'myTraining/ui/logic/MyLearningListContainerV2';
+import MyApprovalContentType from 'myTraining/ui/model/MyApprovalContentType';
 import { MyLearningContentType, MyPageContentType } from '../../model';
+
 
 interface Props extends RouteComponentProps {
   contentType: MyContentType;
@@ -233,6 +235,40 @@ function MyLearningTableBody(props: Props) {
     );
   };
 
+  const renderPersonalLearning = (model: AplModel, index: number) => {
+    return (
+      <>
+        <Table.Cell>
+          {totalCount - index} {/* No */}
+        </Table.Cell>
+        <Table.Cell className="title">
+          <a href="#"><span className="ellipsis">{model.title}</span></a> {/* title */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.channelName} {/* Channel */}
+        </Table.Cell>
+        <Table.Cell>
+          {`${model.allowHour}h ${model.allowMinute}m`} {/* 교육시간 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.creationTime} {/* 등록일자 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.creatorName} {/* 생성자 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.creatorId} {/* 생성자 E-mail */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.state} {/* 상태 */}
+        </Table.Cell>
+        <Table.Cell>
+          {model.updateTime} {/* 승인일자 */}
+        </Table.Cell>
+      </>
+    );
+  }
+
   return (
     <Table.Body>
       {contentType === MyLearningContentType.PersonalCompleted ||
@@ -265,6 +301,16 @@ function MyLearningTableBody(props: Props) {
         (models as AplModel[]).map((model: AplModel, index: number) => (
           <Table.Row key={`learning-body-${model.id}`}>
             {renderPersonalCompleted(model, index)}
+          </Table.Row>
+        ))
+      }
+      {
+        contentType === MyApprovalContentType.PersonalLearning &&
+        models &&
+        models.length &&
+        (models as AplModel[]).map((model: AplModel, index: number) => (
+          <Table.Row key={`learning-body-${model.id}`}>
+            {renderPersonalLearning(model, index)}
           </Table.Row>
         ))
       }

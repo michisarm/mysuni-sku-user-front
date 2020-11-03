@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback, lazy } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { mobxHelper, Offset } from '@nara.platform/accent';
@@ -13,6 +13,7 @@ import MyLearningDeleteModal from '../view/MyLearningDeleteModal';
 import { Direction } from '../view/table/MyLearningTableHeader';
 import { MyTrainingService, InMyLectureService, AplService } from '../../stores';
 import { LectureService, SeeMoreButton } from '../../../lecture';
+import MyApprovalContentType from '../model/MyApprovalContentType';
 
 
 interface Props extends RouteComponentProps<RouteParams> {
@@ -74,7 +75,7 @@ function MyLearningListContainerV2(props: Props) {
         checkShowSeeMore(contentType);
         return;
       }
-      /* 개인학습 완료 */
+      /* 개인학습 완료 & 승인관리 페이지 개인학습 */
       case MyLearningContentType.PersonalCompleted: {
         const offsetApl = await aplService!.findAllAplsByQuery();
         const isEmpty = offsetApl.results.length === 0 ? true : false;
@@ -303,10 +304,14 @@ function MyLearningListContainerV2(props: Props) {
     setOpenModal(false);
   }, []);
 
-  const onConfirmModal = useCallback(() => {
+  const onConfirmModal = useCallback(async () => {
     setOpenModal(false);
-    //myTrainingView ids를 통해 delete 로직을 수행함.
-    myTrainingService!.deleteBySelectedIds();
+    /* 
+      선택된 ids 를 통해 delete 로직을 수행함. 
+      delete 로직을 수행 후 목록 조회가 다시 필요함.
+    */
+    await myTrainingService!.hideBySelectedIds();
+    await myTrainingService!.findAllTableViews();
   }, []);
 
   const onClickSort = useCallback((column: string, direction: Direction) => {
@@ -433,4 +438,5 @@ const PAGE_SIZE = 20;
 
 /* types */
 export type ViewType = 'Course' | 'All' | ''; // 코스만보기 | 전체보기
-export type MyContentType = MyLearningContentType | MyPageContentType;
+export type ApprovalViewType = 'All' | 'Waiting' | 'Approval' | 'Reject';
+export type MyContentType = MyLearningContentType | MyPageContentType | MyApprovalContentType;
