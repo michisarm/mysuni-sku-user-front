@@ -5,7 +5,8 @@ import {
   LectureTaskItem,
 } from 'lecture/detail/viewModel/LectureTask';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import React, { Fragment, useCallback, useRef } from 'react';
+import React, { Fragment, useCallback, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
@@ -20,33 +21,23 @@ interface LectureTaskCreateViewProps {
 }
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTestView({
+  taskId,
   postId,
   boardId,
   handleOnClickList,
   handleCloseClick,
 }) {
-  // const { boardService, collegeService } = this.props;
-  // const { board } = boardService as BoardService;
-  const boardService = BoardService.instance;
-  boardService.board.id = boardId;
-
-  const textContainerRef = useRef<HTMLDivElement>(null);
-
-  console.log('boardId', boardId);
-  const board = {
-    id: boardId,
-  };
   return (
     <Fragment>
       <ContentLayout className="content">
-        <span>{boardId}</span>
-        <PostForm
-          boardId="1234"
-          // boardId={boardId}
-          postId={postId && postId !== 'new' ? postId : ''}
-          onCancel={handleCloseClick}
-          onSaveCallback={handleCloseClick}
-        />
+        {boardId && (
+          <PostForm
+            boardId={boardId}
+            postId={postId && postId !== 'new' ? postId : ''}
+            onCancel={handleCloseClick}
+            onSaveCallback={handleCloseClick}
+          />
+        )}
       </ContentLayout>
     </Fragment>
   );
