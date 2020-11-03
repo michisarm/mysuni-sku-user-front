@@ -104,9 +104,9 @@ export function modifyStudentForExam(
 }
 
 //close 버튼 또는 학습완료 시 상태 업데이트 조회
-export function progressByCardId(student: Student): Promise<void> {
+export function progressByCardId(studentCdo: StudentCdo): Promise<Student> {
   const url = `${BASE_URL}/students/flow/confirm/progressByCardId`;
   return axiosApi
-    .post<void>(url, student)
+    .post<Student>(url, studentCdo)
     .then(response => response && response.data);
 }

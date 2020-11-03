@@ -6,6 +6,7 @@ import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import WatchLog from 'lecture/detail/model/WatchLog';
+import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 
 function LectureVideoContainer() {
   useLectureMedia();
@@ -63,7 +64,7 @@ function LectureVideoContainer() {
   //     "leaderEmails": [],
   //     "url": ""
   // }
-  //
+  // confirmProgress
 
   //watchLog sample 코드 시작
   const [
@@ -71,6 +72,7 @@ function LectureVideoContainer() {
     getCubeWatchLogItem,
     setWatchLog,
     getWatchLogSumViewCount,
+    confirmProgress,
   ] = useLectureWatchLog();
 
   const params = useLectureRouterParams();
@@ -88,12 +90,14 @@ function LectureVideoContainer() {
     getCubeWatchLogItem(params);
     getWatchLogSumViewCount(params);
     setWatchLog(params, watchlog);
+    confirmProgress(params);
     console.log('watchLogValue : ', watchLogValue);
     console.log('getLectureWatchLogs : ', getLectureWatchLogs);
     console.log(
       'getLectureWatchLogSumViewCount : ',
       getLectureWatchLogSumViewCount
     );
+    console.log('getLectureConfirmProgress : ', getLectureConfirmProgress);
   }
   //watchLog sample 코드 끝
 

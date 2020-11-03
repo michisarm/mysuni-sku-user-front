@@ -13,7 +13,7 @@ import { onLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { getWatchLogSumViewSeconds } from './utility/getWatchLogSumViewSeconds';
 import WatchLog from 'lecture/detail/model/WatchLog';
-import { setLectureWatchLogSumViewCount } from 'lecture/detail/store/LectureWatchLogSumViewCountStore';
+import { confirmProgress } from './utility/confirmProgress';
 
 type WatchLogValues = LectureWatchLog[] | undefined;
 
@@ -21,6 +21,7 @@ export function useLectureWatchLog(): [
   WatchLogValues,
   (params: LectureRouterParams) => void,
   (params: LectureRouterParams, watchLog: WatchLog) => void,
+  (params: LectureRouterParams) => void,
   (params: LectureRouterParams) => void
 ] {
   const subscriberIdRef = useRef<number>(0);
@@ -42,6 +43,10 @@ export function useLectureWatchLog(): [
     },
     []
   );
+
+  const LectureConfirmProgress = useCallback((params: LectureRouterParams) => {
+    confirmProgress(params);
+  }, []);
 
   const getWatchLogSumViewCount = useCallback((params: LectureRouterParams) => {
     getWatchLogSumViewSeconds(params);
@@ -73,5 +78,6 @@ export function useLectureWatchLog(): [
     getCubeWatchLogItem,
     setWatchLog,
     getWatchLogSumViewCount,
+    LectureConfirmProgress,
   ];
 }

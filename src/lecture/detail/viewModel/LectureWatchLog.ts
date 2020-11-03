@@ -1,3 +1,5 @@
+import LearningState from '../model/LearningState';
+
 export default interface LectureWatchLog {
   id: string;
   patronKeyString: string;
@@ -6,3 +8,11 @@ export default interface LectureWatchLog {
   end: number;
   createdTime: number;
 }
+
+export interface StudentStateMap {
+  learningState: LearningState;
+  state: State;
+  studentId: string;
+}
+
+export type State = 'None' | 'Progress' | 'Completed';
