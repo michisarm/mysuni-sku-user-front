@@ -23,10 +23,15 @@ export interface LectureTaskDetail {
   fileBoxId: string;
   title: string;
   writer: WriterModel;
+  name: string;
   contents: string;
   time: number;
-  readCount: string;
+  readCount: number;
   commentFeedbackId: string;
+}
+
+export interface CommentInfo {
+  writer: WriterModel;
 }
 
 export interface LectureTaskDetailCreateReplies {

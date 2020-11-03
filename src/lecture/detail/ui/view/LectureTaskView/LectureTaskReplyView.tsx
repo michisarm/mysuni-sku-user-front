@@ -1,5 +1,5 @@
 import { CommentList } from '@nara.drama/feedback';
-import { BoardService, PostForm } from '@sku/personalcube';
+import { BoardService, PostForm, ReplyForm } from '@sku/personalcube';
 import {
   LectureTask,
   LectureTaskItem,
@@ -11,34 +11,36 @@ import { Checkbox } from 'semantic-ui-react';
 import { ContentLayout } from 'shared';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 
-interface LectureTaskCreateViewProps {
+interface LectureTaskReplyViewProps {
   postId: string;
   boardId: string;
+  replyId?: string;
   // moreView: (offset: number) => void;
   handleOnClickList: () => void;
   handleCloseClick: () => void;
 }
 
-const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTestView({
+const LectureTaskReplyView: React.FC<LectureTaskReplyViewProps> = function LectureTestView({
   postId,
   boardId,
+  replyId,
   handleOnClickList,
   handleCloseClick,
 }) {
+  console.log('postId', postId);
+  console.log('boardId', boardId);
   return (
     <Fragment>
       <ContentLayout className="content">
-        {boardId && (
-          <PostForm
-            boardId={boardId}
-            postId={postId && postId !== 'new' ? postId : ''}
-            onCancel={handleCloseClick}
-            onSaveCallback={handleCloseClick}
-          />
-        )}
+        <ReplyForm
+          postId={postId || ''}
+          replyId={replyId && replyId !== 'new' ? replyId : ''}
+          onCancel={handleCloseClick}
+          onSaveCallback={handleOnClickList}
+        />
       </ContentLayout>
     </Fragment>
   );
 };
 
-export default LectureTaskCreateView;
+export default LectureTaskReplyView;

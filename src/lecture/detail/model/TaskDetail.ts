@@ -1,6 +1,6 @@
-import { IdName } from 'shared/model';
+import TaskDetailBody from './TaskDetailBody';
 
-export default interface TaskDetail {
+export default interface TaskDetailPost {
   title: string;
   writer: string;
   readCount: number;
@@ -10,12 +10,12 @@ export default interface TaskDetail {
   replies: [];
   deleted: boolean;
   id: string;
+  contents: string;
 }
 
-export default interface TaskDetailBody {
-  contents: string;
-  fileBoxId: string;
-  id: string;
+export default interface TaskDetail {
+  post: TaskDetailPost;
+  postBody: TaskDetailBody;
 }
 
 export default interface TaskDetailComment {
@@ -23,9 +23,3 @@ export default interface TaskDetailComment {
   time: number;
   id: string;
 }
-
-// export default interface Task {
-//   empty: boolean;
-//   results: TaskItem[];
-//   totalCount: number;
-// }

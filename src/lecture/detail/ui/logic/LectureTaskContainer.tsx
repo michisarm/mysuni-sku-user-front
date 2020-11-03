@@ -5,6 +5,7 @@ import {
   getLectureTaskDetail,
   getLectureTaskViewType,
   setLectureTaskOffset,
+  setLectureTaskTab,
   setLectureTaskViewType,
 } from '../../store/LectureTaskStore';
 import { ContentLayout } from 'shared';
@@ -15,6 +16,7 @@ import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useL
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
 import { getCubeLectureTaskLearningCardId } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
+import LectureTaskReplyView from '../view/LectureTaskView/LectureTaskReplyView';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
@@ -28,7 +30,7 @@ function LectureTaskContainer() {
   useLectuerCubeOverview();
 
   const moreView = (offset: number) => {
-    const nextOffset = offset + 2;
+    const nextOffset = offset + 10;
     setLectureTaskOffset(nextOffset);
   };
 
@@ -48,16 +50,24 @@ function LectureTaskContainer() {
   };
 
   const onHandleSave = () => {
-    setLectureTaskViewType('init');
+    setLectureTaskViewType('list');
+  };
+
+  const onHandleReply = () => {
+    setLectureTaskViewType('list');
   };
 
   const onClickModify = (id: string) => {
-    console.log('onClickModify -> onClickModify', id);
     setLectureTaskViewType('edit');
   };
 
+  const onClickReplies = (id: string) => {
+    setLectureTaskViewType('reply');
+  };
+
   const hashLink = (hash: string) => {
-    console.log('hash', hash);
+    console.log('hashLink');
+    setLectureTaskTab(hash);
     const element = document.getElementById(hash);
     if (element !== null) {
       element.scrollIntoView();
@@ -110,11 +120,12 @@ function LectureTaskContainer() {
             taskDetail={taskDetail!}
             handleOnClickList={onClickList}
             handleOnClickModify={onClickModify}
+            handleOnClickReplies={onClickReplies}
           />
         )}
       {getLectureTaskViewType() === 'create' && (
         <LectureTaskCreateView
-          postId={detailTaskId}
+          postId=""
           boardId={boardId}
           handleOnClickList={onHandleSave}
           handleCloseClick={onClickList}
@@ -125,6 +136,14 @@ function LectureTaskContainer() {
           postId={detailTaskId}
           boardId={boardId}
           handleOnClickList={onHandleSave}
+          handleCloseClick={onClickList}
+        />
+      )}
+      {getLectureTaskViewType() === 'reply' && (
+        <LectureTaskReplyView
+          postId={detailTaskId}
+          boardId={boardId}
+          handleOnClickList={onHandleReply}
           handleCloseClick={onClickList}
         />
       )}

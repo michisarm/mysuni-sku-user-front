@@ -3,9 +3,12 @@ import {
   getLectureTaskTab,
   onLectureTaskItem,
   onLectureTaskOffset,
+  onLectureTaskTab,
   onLectureTaskViewType,
+  setLectureTaskDetail,
   setLectureTaskItem,
   setLectureTaskOffset,
+  setLectureTaskTab,
   setLectureTaskViewType,
 } from 'lecture/detail/store/LectureTaskStore';
 import {
@@ -16,6 +19,7 @@ import {
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { PatronKey } from 'shared/model';
 import {
   LectureStructureCourseItemParams,
   LectureStructureCubeItemParams,
@@ -30,11 +34,13 @@ export function useLectureTask(): [TaskValue] {
   const subscriberIdRef = useRef<number>(0);
   const [subscriberId, setSubscriberId] = useState<string>();
   const [taskValue, setTaskValue] = useState<TaskValue>();
-  const [limit, setLimit] = useState<number>(2);
+  const [limit, setLimit] = useState<number>(10);
   const params = useParams<
     LectureStructureCourseItemParams & LectureStructureCubeItemParams
   >();
   const [viewFlag, setViewFlag] = useState<string>('list');
+  // const [tabFlag, setTabFlag] = useState<string>('Posts');
+
   const param = useLectureRouterParams();
   const tab = getLectureTaskTab();
 
@@ -45,7 +51,7 @@ export function useLectureTask(): [TaskValue] {
         totalCount: 0,
         empty: false,
         offset: 0,
-        limit: 2,
+        limit: 10,
       });
       setLectureTaskViewType('list');
       setLectureTaskOffset(0);
@@ -70,6 +76,7 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
+
     return onLectureTaskOffset(next => {
       let contentId = '';
       let lectureId = '';
@@ -77,11 +84,13 @@ export function useLectureTask(): [TaskValue] {
         contentId = param.contentId;
         lectureId = param.lectureId;
       }
+      console.log('getLectureTaskTab()', getLectureTaskTab());
       getCubeLectureTask(
         contentId,
         lectureId,
         getLectureTaskOffset() || 0,
-        limit
+        limit,
+        getLectureTaskTab() || 'post'
       );
     }, subscriberId);
   }, [subscriberId]);
@@ -91,18 +100,41 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskViewType(next => {
-      // console.log('postId', postId);
-      console.log('next', next);
       setViewFlag(next!);
       getCubeLectureTaskDetail(next!);
+      if (next === 'create' || 'reply') {
+        setLectureTaskDetail();
+      }
+      if (next === 'list') {
+        setLectureTaskItem();
+        setLectureTaskOffset(0);
+      }
     }, subscriberId);
   }, [subscriberId]);
 
   useEffect(() => {
-    if (param !== undefined) {
-      console.log('tab', tab);
+    if (subscriberId === undefined) {
+      return;
     }
-  }, [tab]);
+    return onLectureTaskTab(next => {
+      console.log('next', next);
+
+      if (next === 'overview') {
+        return;
+      }
+
+      setLectureTaskItem();
+      // setLectureTaskTab(next);
+      setLectureTaskOffset(0);
+      // let contentId = '';
+      // let lectureId = '';
+      // if (param) {
+      //   contentId = param.contentId;
+      //   lectureId = param.lectureId;
+      // }
+      // getCubeLectureTask(contentId, lectureId, 0, limit, next!);
+    }, subscriberId);
+  }, [subscriberId]);
 
   return [taskValue];
 }

@@ -28,7 +28,8 @@ async function getTaskItem(
   boardId: string,
   offset: number,
   limit: number,
-  addflag?: boolean
+  addflag?: boolean,
+  tabType?: string
 ) {
   const lectureTask: LectureTask = {
     items: [],
@@ -40,8 +41,14 @@ async function getTaskItem(
   //TODO api 수정되면 바꿀 예정
   if (boardId !== '') {
     {
+      const findTaskData = await findTask(boardId, offset, limit, tabType!);
       //리스트 api
-      const findTaskData = await findTask(boardId, offset, limit);
+      // if(tabType === 'posts') {
+      //   findTaskData = await findTask(boardId, offset, limit);
+      // } else if(tabType === 'myPosts') {
+      //   findTaskData = await findTask(boardId, offset, limit);
+      // }
+
       lectureTask.totalCount = findTaskData.totalCount;
       lectureTask.offset = offset;
       const old = getLectureTaskItem();
@@ -154,24 +161,33 @@ export async function getTaskItemMapFromCube(
   cubeId: string,
   lectureCardId: string,
   offset: number,
-  limit: number
+  limit: number,
+  tabType: string
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-  const personalCube = await getPersonalCubeByParams(cubeId);
-  const examId =
-    personalCube && personalCube.contents && personalCube.contents.examId;
-  const boardId =
-    personalCube &&
-    personalCube.contents &&
-    personalCube.contents.contents &&
-    personalCube.contents.contents.id;
-  if (lectureCardId !== undefined) {
-    if (boardId !== undefined) {
-      const addflag = !!getLectureTaskItem();
-      const taskItem = await getTaskItem(boardId, offset, limit, addflag);
-      if (taskItem !== undefined) {
-        //
-        setLectureTaskItem({ ...taskItem });
+  if (cubeId) {
+    const personalCube = await getPersonalCubeByParams(cubeId);
+    const examId =
+      personalCube && personalCube.contents && personalCube.contents.examId;
+    const boardId =
+      personalCube &&
+      personalCube.contents &&
+      personalCube.contents.contents &&
+      personalCube.contents.contents.id;
+    if (lectureCardId !== undefined) {
+      if (boardId !== undefined) {
+        const addflag = !!getLectureTaskItem();
+        const taskItem = await getTaskItem(
+          boardId,
+          offset,
+          limit,
+          addflag,
+          tabType
+        );
+        if (taskItem !== undefined) {
+          //
+          setLectureTaskItem({ ...taskItem });
+        }
       }
     }
   }

@@ -51,10 +51,15 @@ export function findOfficeWeb(officeWebId: string) {
 export function findTask(
   boardId: string,
   offset: number,
-  limit: number
+  limit: number,
+  tabType: string
 ): Promise<Task> {
-  //시작점
-  const url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+  let url = '';
+  if (tabType === 'Posts') {
+    url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
+  } else {
+    url = `${BASE_URL}/posts/byBoardIdAndPatronkey?boardId=${boardId}&patronKey=${''}&offset=${offset}&limit=${limit}`;
+  }
   return axiosApi.get<Task>(url).then(response => {
     return response && response.data;
   });
@@ -84,7 +89,7 @@ export function getTaskDetail(
   postId: string,
   postType: string
 ): Promise<TaskDetail> {
-  const url = `${BASE_URL}/posts/${postId}`;
+  const url = `${BASE_URL}/posts/flow/detail/${postId}`;
   const replyUrl = `${BASE_URL}/replies/${postId}`;
   if (postType === 'parent') {
     return axiosApi.get<TaskDetail>(url).then(response => {
@@ -105,13 +110,18 @@ export function getTaskDetailBody(postId: string): Promise<TaskDetailBody> {
 }
 
 export function getTaskCreateId(lectureId: string): Promise<any> {
-  console.log('getTaskCreateId');
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@lectureId,', lectureId);
   const url = `${BASE_URL}/personalcubes/${lectureId}`;
-  console.log('url', url);
   return axiosApi.get<any>(url).then(response => {
-    console.log('response', response);
-    console.log('response', response.data);
     return response && response.data;
   });
+}
+
+export function findFileBox(depotIds: string) {
+  //
+  return axiosApi
+    .get<string>(
+      '/api/depot/depotFile/multiple' +
+        `?depotIds=%255B%2522${depotIds}%2522%255D`
+    )
+    .then(response => (response && response.data) || null);
 }

@@ -3,6 +3,7 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import {
+  findFileBox,
   findPersonalCube,
   getTaskCreateId,
   getTaskDetail,
@@ -20,19 +21,20 @@ function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
 
 async function getTaskItem(postParam: any) {
   const lectureTaskDetail: LectureTaskDetail = {
-    id: '11',
+    id: '',
     fileBoxId: '',
-    title: '222',
+    title: '',
+    name: '',
     writer: {
-      employeeId: 'Admin',
-      email: 'aa@mail.com',
-      name: 'Roy',
+      employeeId: '',
+      email: '',
+      name: '',
       companyCode: '',
       companyName: '',
     },
-    contents: 'mock 데이터',
-    time: 123,
-    readCount: '0',
+    contents: '',
+    time: 0,
+    readCount: 0,
     commentFeedbackId: '',
   };
   //
@@ -44,12 +46,35 @@ async function getTaskItem(postParam: any) {
         postParam.type
       );
 
+      //첨부파일 api
+      const findTaskDetailFileData = await findFileBox(
+        findTaskDetailData.postBody.fileBoxId
+      );
+
+      console.log('findTaskDetailFileData', findTaskDetailFileData);
+
+      console.log(findTaskDetailData);
       if (findTaskDetailData) {
-        lectureTaskDetail.id = findTaskDetailData.id;
-        lectureTaskDetail.title = findTaskDetailData.title;
-        lectureTaskDetail.commentFeedbackId =
-          findTaskDetailData.commentFeedbackId;
-        lectureTaskDetail.contents = findTaskDetailData.contents;
+        if (findTaskDetailData.post) {
+          lectureTaskDetail.id = findTaskDetailData.post.id;
+          lectureTaskDetail.title = findTaskDetailData.post.title;
+          lectureTaskDetail.name = findTaskDetailData.post.writer;
+          lectureTaskDetail.commentFeedbackId =
+            findTaskDetailData.post.commentFeedbackId;
+          lectureTaskDetail.readCount = findTaskDetailData.post.readCount;
+        } else {
+          lectureTaskDetail.id = findTaskDetailData.id;
+          lectureTaskDetail.title = findTaskDetailData.title;
+          lectureTaskDetail.name = findTaskDetailData.writer;
+          lectureTaskDetail.commentFeedbackId =
+            findTaskDetailData.commentFeedbackId;
+          lectureTaskDetail.readCount = findTaskDetailData.readCount;
+        }
+        if (findTaskDetailData.postBody) {
+          lectureTaskDetail.contents = findTaskDetailData.postBody.contents;
+        } else {
+          lectureTaskDetail.contents = findTaskDetailData.contents;
+        }
         return lectureTaskDetail;
       }
     }
@@ -58,7 +83,6 @@ async function getTaskItem(postParam: any) {
 
 export async function getTaskDetailCube(postParam: any): Promise<void> {
   // void : return이 없는 경우 undefined
-
   if (postParam.id !== undefined) {
     // const addflag = !!getLectureTaskItem();
     const taskItem = await getTaskItem(postParam);

@@ -88,7 +88,6 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
 
   const onHandleClickTaskRow = useCallback(
     param => {
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', param);
       handleClickTaskRow(param);
     },
     [taskItem]

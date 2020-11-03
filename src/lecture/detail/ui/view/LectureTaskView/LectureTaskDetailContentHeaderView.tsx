@@ -11,13 +11,15 @@ interface Props {
   taskDetail: LectureTaskDetail;
   title: string;
   time: number;
+  name: string;
   subField?: React.ReactNode;
   deletable?: boolean;
   reply?: boolean;
-  readCount?: string;
+  readCount?: number;
   onClickList?: (e: any) => void;
   onClickDelete?: (e: any) => void;
   onClickModify: (id: string) => void;
+  onClickReplies: (id: string) => void;
 }
 
 @reactAutobind
@@ -33,14 +35,20 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
       deletable,
       reply,
       readCount,
+      name,
+      taskDetail,
       onClickList,
       onClickDelete,
       onClickModify,
-      taskDetail,
+      onClickReplies,
     } = this.props;
 
     const handelClickModify = () => {
       onClickModify(taskDetail.id);
+    };
+
+    const handelClickReplies = () => {
+      onClickReplies(taskDetail.id);
     };
 
     return (
@@ -51,7 +59,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
               <div className="title">{title}</div>
               <div className="survey-read-side mb0">
                 <div className="title-area">
-                  <div className="ui label onlytext">프로필 정보{subField}</div>
+                  <div className="ui label onlytext">{name}</div>
                   <div className="ui label onlytext">
                     <span>
                       {time && moment(time).format('YYYY.MM.DD HH:MM')}
@@ -88,7 +96,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
                       <Button
                         icon
                         className="left postset delete"
-                        onClick={onClickDelete}
+                        onClick={handelClickReplies}
                       >
                         <Icon name="reply" />
                         Reply

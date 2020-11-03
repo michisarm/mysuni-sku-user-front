@@ -50,9 +50,7 @@ export function useLectureTaskDetail(): [TaskDetailValue] {
       return;
     }
     return onLectureTaskDetail(next => {
-      if (next) {
-        setTaskDetailValue(next);
-      }
+      setTaskDetailValue(next);
     }, subscriberId);
   }, [subscriberId]);
 
