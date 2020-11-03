@@ -104,9 +104,14 @@ export function getTaskDetailBody(postId: string): Promise<TaskDetailBody> {
   });
 }
 
-export function getTaskCreateId(): Promise<any> {
-  const url = `${BASE_URL}/course/learning/LEARNING-CARD-xl/${postId}`;
-  return axiosApi.get<TaskDetailBody>(url).then(response => {
+export function getTaskCreateId(lectureId: string): Promise<any> {
+  console.log('getTaskCreateId');
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@lectureId,', lectureId);
+  const url = `${BASE_URL}/personalcubes/${lectureId}`;
+  console.log('url', url);
+  return axiosApi.get<any>(url).then(response => {
+    console.log('response', response);
+    console.log('response', response.data);
     return response && response.data;
   });
 }

@@ -69,14 +69,14 @@ export async function getTaskDetailCube(postParam: any): Promise<void> {
   }
 }
 
-export async function getTaskLearningCardId() {
+export async function getTaskLearningCardId(lectureId: string) {
   // void : return이 없는 경우 undefined
 
   // if (postParam.id !== undefined) {
   // const addflag = !!getLectureTaskItem();
-  const taskItem = await getTaskCreateId();
+  const taskItem = await getTaskCreateId(lectureId);
 
-  return '1234';
+  return taskItem;
 
   // return taskItem
 }

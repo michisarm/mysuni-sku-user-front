@@ -14,11 +14,16 @@ import { useLectuerCubeOverview } from 'lecture/detail/service/useLectuerCubeOve
 import { useLectureTaskDetail } from 'lecture/detail/service/useLectureTask/useLectureTaskDetail';
 import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView';
 import { getCubeLectureTaskLearningCardId } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
+import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
   const [taskDetail] = useLectureTaskDetail();
   const [detailTaskId, setDetailTaskId] = useState<string>('');
+  const [boardId, setBoardId] = useState<string>('');
+  const [create, setCreate] = useState<boolean>();
+  const params = useLectureRouterParams();
+  console.log('params', params);
 
   useLectuerCubeOverview();
 
@@ -48,18 +53,25 @@ function LectureTaskContainer() {
   };
 
   const handelClickCreateTask = () => {
-    console.log('taskDetail', taskDetail);
-    console.log('detailTaskId', detailTaskId);
-    getLearningCardId();
+    setCreate(true);
     setLectureTaskViewType('create');
   };
 
-  const getLearningCardId = useCallback(() => {
-    console.log('00000');
+  useEffect(() => {
+    async function getContentId() {
+      if (params === undefined) {
+        return;
+      }
+      const contentData = await getCubeLectureTaskLearningCardId(
+        params.contentId
+      );
+      console.log('contentData', contentData);
+      // setBoardId(test);
 
-    const id = getCubeLectureTaskLearningCardId();
-    console.log('id', id);
-  }, []);
+      setBoardId(contentData.contents.contents.id);
+    }
+    getContentId();
+  }, [create]);
 
   return (
     <>
@@ -90,7 +102,7 @@ function LectureTaskContainer() {
         <LectureTaskCreateView
           taskId={detailTaskId}
           postId={detailTaskId}
-          boardId={detailTaskId}
+          boardId={boardId}
           handleOnClickList={onClickList}
           handleCloseClick={onClickList}
         />

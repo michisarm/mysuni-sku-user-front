@@ -5,9 +5,9 @@ export async function getCubeLectureTaskDetail(postParam: any): Promise<void> {
   await getTaskDetailCube(postParam);
 }
 
-export function getCubeLectureTaskLearningCardId() {
+export function getCubeLectureTaskLearningCardId(lectureId: string) {
   console.log('카드아이디');
-  const test = getTaskLearningCardId();
+  const test = getTaskLearningCardId(lectureId);
 
   return test;
 }

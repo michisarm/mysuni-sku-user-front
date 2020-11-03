@@ -1,5 +1,5 @@
 import { CommentList } from '@nara.drama/feedback';
-import { PostForm } from '@sku/personalcube';
+import { BoardService, PostForm } from '@sku/personalcube';
 import {
   LectureTask,
   LectureTaskItem,
@@ -20,30 +20,29 @@ interface LectureTaskCreateViewProps {
 }
 
 const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function LectureTestView({
-  taskId,
   postId,
+  boardId,
   handleOnClickList,
   handleCloseClick,
 }) {
-  console.log('LectureTaskCreateView', taskId);
+  // const { boardService, collegeService } = this.props;
+  // const { board } = boardService as BoardService;
+  const boardService = BoardService.instance;
+  boardService.board.id = boardId;
+
   const textContainerRef = useRef<HTMLDivElement>(null);
 
+  console.log('boardId', boardId);
+  const board = {
+    id: boardId,
+  };
   return (
     <Fragment>
-      {/* <Segment className="full">
-        <span>상세보기-{taskId}</span>
-      </Segment> */}
-      <ContentLayout
-        className="content"
-        // breadcrumb={[
-        //   { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-        //   { text: `${college.name} Lecture`, path: routePaths.lectureCardOverviewPrev(college.collegeId, cubeId, lectureCardId) },
-        //   { text: `${postId ? 'Edit Post' : 'New Post'}` },
-        // ]}
-      >
+      <ContentLayout className="content">
+        <span>{boardId}</span>
         <PostForm
-          // boardId={(board && board.id) || ''}
-          boardId="112222"
+          boardId="1234"
+          // boardId={boardId}
           postId={postId && postId !== 'new' ? postId : ''}
           onCancel={handleCloseClick}
           onSaveCallback={handleCloseClick}

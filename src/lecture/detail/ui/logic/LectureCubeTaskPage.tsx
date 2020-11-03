@@ -1,4 +1,5 @@
 import { useLectuerCubeOverview } from 'lecture/detail/service/useLectuerCubeOverview/useLectuerCubeOverview';
+import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import React, { useState } from 'react';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
@@ -7,6 +8,7 @@ import LectureTaskContainer from './LectureTaskContainer';
 
 function LectureCubeTaskPage() {
   useLectuerCubeOverview();
+
   return (
     <LectureDetailLayout>
       <LectureTaskContainer />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { patronInfo } from '@nara.platform/dock';
@@ -12,28 +11,38 @@ import { LectureCardService } from 'lecture/stores';
 import { LearningCardService } from 'course/stores';
 import routePaths from '../../../routePaths';
 
-
-
-interface Props extends RouteComponentProps<{ collegeId: string, cubeId: string, lectureCardId: string, postId: string }>{
-  collegeService?: CollegeService
-  boardService?: BoardService
-  personalCubeService?: PersonalCubeService
-  lectureCardService: LectureCardService
-  learningCardService: LearningCardService
+interface Props
+  extends RouteComponentProps<{
+    collegeId: string;
+    cubeId: string;
+    lectureCardId: string;
+    postId: string;
+  }> {
+  collegeService?: CollegeService;
+  boardService?: BoardService;
+  personalCubeService?: PersonalCubeService;
+  lectureCardService: LectureCardService;
+  learningCardService: LearningCardService;
 }
 
-@inject(mobxHelper.injectFrom(
-  'college.collegeService',
-  'personalCube.personalCubeService',
-  'personalCube.boardService',
-  'lecture.lectureCardService',
-  'course.learningCardService'
-))
+@inject(
+  mobxHelper.injectFrom(
+    'college.collegeService',
+    'personalCube.personalCubeService',
+    'personalCube.boardService',
+    'lecture.lectureCardService',
+    'course.learningCardService'
+  )
+)
 @observer
 @reactAutobind
 class PostFormPage extends React.Component<Props> {
   //
-  hasAdminRole = patronInfo.hasPavilionRole('SuperManager', 'CollegeManager', 'CompanyManager');
+  hasAdminRole = patronInfo.hasPavilionRole(
+    'SuperManager',
+    'CollegeManager',
+    'CompanyManager'
+  );
 
   componentDidMount(): void {
     this.init();
@@ -45,22 +54,43 @@ class PostFormPage extends React.Component<Props> {
   }
 
   async init() {
-    const { collegeService, personalCubeService, boardService, lectureCardService, learningCardService } = this.props;
+    const {
+      collegeService,
+      personalCubeService,
+      boardService,
+      lectureCardService,
+      learningCardService,
+    } = this.props;
     const { collegeId, lectureCardId } = this.props.match.params;
     collegeService!.findCollege(collegeId);
-    const lectureCard = await lectureCardService!.findLectureCard(lectureCardId);
-    const learningCard = await learningCardService!.findLearningCard(lectureCard!.learningCard.id);
-    const personalCube = await personalCubeService!.findPersonalCube(learningCard.personalCube.id);
+    const lectureCard = await lectureCardService!.findLectureCard(
+      lectureCardId
+    );
+    const learningCard = await learningCardService!.findLearningCard(
+      lectureCard!.learningCard.id
+    );
+    const personalCube = await personalCubeService!.findPersonalCube(
+      learningCard.personalCube.id
+    );
     boardService!.findBoard(personalCube!.contents.contents.id);
 
-    if(this.hasAdminRole){
+    if (this.hasAdminRole) {
       patronInfo.setWorkspaceById('ne1-m2-c2');
     }
   }
 
   routeTo() {
-    const { collegeId, cubeId, lectureCardId, postId } = this.props.match.params;
-    this.props.history.push(`/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${postId && postId !== 'new' ? `posts/${postId}` : ''}`);
+    const {
+      collegeId,
+      cubeId,
+      lectureCardId,
+      postId,
+    } = this.props.match.params;
+    this.props.history.push(
+      `/lecture/college/${collegeId}/cube/${cubeId}/lecture-card/${lectureCardId}/${
+        postId && postId !== 'new' ? `posts/${postId}` : ''
+      }`
+    );
   }
 
   render() {
@@ -69,18 +99,28 @@ class PostFormPage extends React.Component<Props> {
     const { boardService, collegeService } = this.props;
     const { board } = boardService as BoardService;
     const { college } = collegeService as CollegeService;
-
+    console.log('board', board);
     return (
       <ContentLayout
         className="content bg-white"
         breadcrumb={[
-          { text: `${college.name} College`, path: routePaths.collegeLectures(college.collegeId) },
-          { text: `${college.name} Lecture`, path: routePaths.lectureCardOverviewPrev(college.collegeId, cubeId, lectureCardId) },
+          {
+            text: `${college.name} College`,
+            path: routePaths.collegeLectures(college.collegeId),
+          },
+          {
+            text: `${college.name} Lecture`,
+            path: routePaths.lectureCardOverviewPrev(
+              college.collegeId,
+              cubeId,
+              lectureCardId
+            ),
+          },
           { text: `${postId ? 'Edit Post' : 'New Post'}` },
         ]}
       >
         <PostForm
-          boardId={board && board.id || ''}
+          boardId={(board && board.id) || ''}
           postId={postId && postId !== 'new' ? postId : ''}
           onCancel={this.routeTo}
           onSaveCallback={this.routeTo}
