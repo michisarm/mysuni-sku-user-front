@@ -229,14 +229,14 @@ const BadgeContentContainer: React.FC<Props> = Props => {
       reactAlert({
         title: '',
         message:
-          '관계사 HR을 통해 대상자를 별도 선발하는 뱃지입니다.<p>도전하기에 제한이 있을 수 있습니다.',
+          '별도 공지되는 신청 과정을 통해 운영하는 뱃지입니다.<p>해당 자격증을 이미 취득하셨거나, 취득 예정인 분은 <p>담당자에게 연락 주시기 바랍니다.',
       });
     } else {
       switch (badgeState) {
         case ChallengeState.WaitForChallenge:
           reactAlert({
             title: '',
-            message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.`,
+            message: `‘${badgeDetail.name}’ Badge 도전이 시작되었습니다.<p>‘도전 중 Badge’ 탭을 통해 Learning Path에 따라 학습해주세요.<p>뱃지 도전관련 문의는 담당자에게 연락 부탁드립니다.`,
           });
           // setAlertModal(!alertModal);
           onClickChallenge();
