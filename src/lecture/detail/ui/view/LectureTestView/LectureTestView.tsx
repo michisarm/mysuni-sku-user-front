@@ -6,7 +6,6 @@ import { setLectureTestAnswerItem } from 'lecture/detail/store/LectureTestStore'
 import React, { useCallback } from 'react';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import TestQuestionView from './TestQuestionView';
-import { useParams } from 'react-router-dom';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { saveCourseTestAnswerSheet } from 'lecture/detail/service/useLectureTest/utility/saveCourseLectureTest';
 
@@ -19,7 +18,6 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
   testItem,
   params,
 }) {
-  const lectureId = params.lectureId;
   const [testStudentItem] = useLectureTestStudent();
   const [answerItem] = useLectureTestAnswer();
 
@@ -41,7 +39,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
     }
 
     if (params.cubeId !== undefined) {
-      saveTestAnswerSheet(params.lectureCardId!, answerItemId, false, false);
+      saveTestAnswerSheet(params, answerItemId, false, false);
     } else {
       saveCourseTestAnswerSheet(params, answerItemId, false, false);
     }
@@ -66,12 +64,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
             };
             setLectureTestAnswerItem(nextAnswerItem);
             if (params.cubeId !== undefined) {
-              saveTestAnswerSheet(
-                params.lectureCardId!,
-                answerItemId,
-                true,
-                true
-              );
+              saveTestAnswerSheet(params, answerItemId, true, true);
             } else {
               saveCourseTestAnswerSheet(params, answerItemId, true, true);
             }
@@ -100,12 +93,24 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                           {testItem.name}
                         </div>
                         <div className="survey-header-right">
+                          {!testStudentItem ||
+                            !testStudentItem.learningState ||
+                            (testStudentItem.learningState !== 'Failed' &&
+                              testStudentItem.learningState !== 'Missed' &&
+                              testStudentItem.learningState !== 'TestWaiting' &&
+                              testStudentItem.learningState !== 'Passed' &&
+                              testStudentItem.learningState !==
+                                'TestPassed' && (
+                                <button className="ui button free submit p18">
+                                  Test
+                                </button>
+                              ))}
                           {testStudentItem &&
                             testStudentItem.learningState &&
                             (testStudentItem.learningState === 'Failed' ||
                               testStudentItem.learningState === 'Missed') && (
-                              <button className="ui button free submit p18">
-                                재응시
+                              <button className="ui button free proceeding p18">
+                                미이수
                               </button>
                             )}
                           {testStudentItem &&
@@ -120,7 +125,7 @@ const LectureTestView: React.FC<LectureTestViewProps> = function LectureTestView
                             (testStudentItem.learningState === 'Passed' ||
                               testStudentItem.learningState ===
                                 'TestPassed') && (
-                              <button className="ui button free complete p18">
+                              <button className="ui button free proceeding p18">
                                 이수
                               </button>
                             )}

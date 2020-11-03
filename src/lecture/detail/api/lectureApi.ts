@@ -15,6 +15,7 @@ import LectureStudentView from '../model/LectureStudentView';
 import Student from '../model/Student';
 import StudentCdo from '../model/StudentCdo';
 import StudentJoin from '../model/StudentJoin';
+import Test from '../model/Test';
 
 const BASE_URL = '/api/lecture';
 
@@ -101,4 +102,20 @@ export function modifyStudentForExam(
 ): Promise<void> {
   const url = `${BASE_URL}/students/flow/examProcess/${studentId}/${examId}`;
   return axiosApi.put<void>(url).then(response => response && response.data);
+}
+
+export function setCubeStudentExamId(
+  personalCubeId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCubeStudentExamId/${personalCubeId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
+}
+
+export function setCourseStudentExamId(
+  coursePlanId: string,
+  studentId: string
+): Promise<Test> {
+  const url = `${BASE_URL}/students/flow/setCourseStudentExamId/${coursePlanId}/${studentId}`;
+  return axiosApi.get<Test>(url).then(response => response && response.data);
 }

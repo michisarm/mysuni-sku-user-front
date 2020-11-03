@@ -5,7 +5,11 @@
 import { findExamination, findExamPaperForm } from '../../../api/examApi';
 import { LectureTestItem } from '../../../viewModel/LectureTest';
 import { setLectureTestItem } from 'lecture/detail/store/LectureTestStore';
-import { findCoursePlanContents } from 'lecture/detail/api/lectureApi';
+import {
+  findCoursePlanContents,
+  setCourseStudentExamId,
+  studentInfoView,
+} from 'lecture/detail/api/lectureApi';
 import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 
@@ -61,13 +65,28 @@ export async function getTestItemMapFromCourse(
   // void : return이 없는 경우 undefined
 
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
-  // TODO
-  // course는 Test가 복수개이기 때문에 examId를 course_plan_contents의 testId를 이용한 examination이 아니라 학습시작한 student의 student_score_json.examId의 examination를 사용해야한다.
-  // student에서 examId가져오는 api 필요(student에 examId가 없으면 api 내에서 랜덤으로 course의 examId를 넣어줘야 함)
-  const examId =
-    coursePlanComplex &&
-    coursePlanComplex.examination &&
-    coursePlanComplex.examination.id;
+
+  const studentInfo = await studentInfoView({
+    courseLectureIds: [],
+    lectureCardIds: coursePlanComplex.courseLecture.lectureCardUsids,
+    preLectureCardIds: [],
+    serviceId: coursePlanComplex.courseLecture.usid,
+  });
+
+  let examId =
+    studentInfo &&
+    studentInfo.own &&
+    studentInfo.own.studentScore &&
+    studentInfo.own.studentScore.examId;
+
+  if (examId === undefined || examId === null || examId === '') {
+    // 랜덤 지정된 Test
+    await setCourseStudentExamId(params.coursePlanId!, studentInfo.own.id).then(
+      response => {
+        examId = response.testId;
+      }
+    );
+  }
 
   if (examId !== undefined) {
     const testItem = await getTestItem(examId);

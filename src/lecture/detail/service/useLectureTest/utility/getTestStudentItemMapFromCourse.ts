@@ -46,6 +46,8 @@ export async function getTestStudentItemMapFromCourse(
       studentId: studentInfo.own.id,
       serviceType: studentInfo.own.serviceType,
       learningState: studentInfo.own.learningState,
+      examId: studentInfo.own.studentScore.examId,
+      paperId: studentInfo.own.studentScore.paperId,
     });
   }
 }

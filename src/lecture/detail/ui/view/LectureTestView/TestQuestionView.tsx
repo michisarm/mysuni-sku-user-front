@@ -61,7 +61,7 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       }
     }
     if (
-      question.questionImgSrc !== 'undefined' &&
+      question.questionImgSrc !== undefined &&
       question.questionImgSrc !== ''
     ) {
       questionClassName += ' survey-radio-img ';
@@ -72,11 +72,16 @@ const TestQuestionView: React.FC<TestQuestionViewProps> = function TestQuestionV
       <div key={question.id} className={questionClassName}>
         <p>
           <span>{question.questionNo}</span>
-          <p>
-            {question.direction} ({question.allocatedPoint}
-            점)
-          </p>
-          {question.questionImgSrc !== 'undefined' &&
+          {(question.questionImgSrc && (
+            <p>
+              {question.direction} ({question.allocatedPoint}점)
+            </p>
+          )) || (
+            <>
+              {question.direction} ({question.allocatedPoint}점)
+            </>
+          )}
+          {question.questionImgSrc !== undefined &&
             question.questionImgSrc !== '' && (
               <img src={question.questionImgSrc} />
             )}

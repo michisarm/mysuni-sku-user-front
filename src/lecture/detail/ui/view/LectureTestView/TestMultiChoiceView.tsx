@@ -49,7 +49,7 @@ const TestMultiChoiceView: React.FC<TestMultiChoiceViewProps> = function TestMul
             onChange={setAnswerFromCheckbox}
             readOnly={readOnly}
           />
-          {item.imgSrc !== 'undefined' && item.imgSrc !== '' && (
+          {item.imgSrc !== undefined && item.imgSrc !== '' && (
             <img src={item.imgSrc} />
           )}
         </div>

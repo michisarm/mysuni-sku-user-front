@@ -28,11 +28,12 @@ import {
   getLectureTestItem,
   getLectureTestStudentItem,
 } from 'lecture/detail/store/LectureTestStore';
+import LectureParams from 'lecture/detail/viewModel/LectureParams';
 import { getTestAnswerItemMapFromExam } from './getTestAnswerItemMapFromExam';
 import { getTestStudentItemMapFromCube } from './getTestStudentItemMapFromCube';
 
 export async function saveTestAnswerSheet(
-  lectureCardId: string,
+  params: LectureParams,
   answerSheetId: string,
   pFinished: boolean,
   pSubmitted: boolean
@@ -67,7 +68,7 @@ export async function saveTestAnswerSheet(
         answerSheetBody.examId
       );
     }
-    await getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+    await getTestStudentItemMapFromCube(params); // student 재호출
     getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
   } else {
     await registerAnswerSheet(answerSheetBody).then(async newAnswerSheetId => {
@@ -79,7 +80,7 @@ export async function saveTestAnswerSheet(
           answerSheetBody.examId
         );
       }
-      await getTestStudentItemMapFromCube(lectureCardId); // student 재호출
+      await getTestStudentItemMapFromCube(params); // student 재호출
       await getTestAnswerItemMapFromExam(testItem.id, testItem.questions); // answer 재호출
     });
   }

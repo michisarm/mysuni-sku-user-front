@@ -18,7 +18,7 @@ export function useLectureTestStudent(): [TestStudentValue] {
   const params = useParams<LectureParams>();
 
   const getCubeTestStudentItem = useCallback((params: LectureParams) => {
-    getCubeLectureTestStudent(params.lectureCardId!);
+    getCubeLectureTestStudent(params);
   }, []);
 
   const getCourseTestStudentItem = useCallback((params: LectureParams) => {

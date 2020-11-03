@@ -33,7 +33,7 @@ const TestSingleChoiceView: React.FC<TestSingleChoiceViewProps> = function TestS
             onChange={setAnswerFromRadio}
             readOnly={readOnly}
           />
-          {item.imgSrc !== 'undefined' && item.imgSrc !== '' && (
+          {item.imgSrc !== undefined && item.imgSrc !== '' && (
             <img src={item.imgSrc} />
           )}
         </div>
