@@ -1,23 +1,23 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
-import { observer } from 'mobx-react';
-
 import { Icon, Label, Dropdown } from 'semantic-ui-react';
 
 
 interface Props {
-  stampCount: number,
-  onClickItem?: () => void,
+  stampCount: number;
+  selectedYear: number;
+  yearOptions: any[];
+  onChangeYear: (e: any, data: any) => void;
+  onClickItem?: () => void;
 }
 
 @reactAutobind
-@observer
-class ContentHeaderStampView extends Component<Props> {
+class ContentHeaderStampView extends PureComponent<Props> {
   //
   render() {
     //
-    const { stampCount, onClickItem } = this.props;
+    const { stampCount, selectedYear, yearOptions, onChangeYear, onClickItem } = this.props;
 
     return (
       <div className="cell-inner">
@@ -31,6 +31,14 @@ class ContentHeaderStampView extends Component<Props> {
               </span>
             </a>
           </Label>
+          <div className="year">
+            <Dropdown
+              className="inline tight"
+              value={selectedYear}
+              options={yearOptions}
+              onChange={onChangeYear}
+            />
+          </div>
         </div>
       </div>
     );

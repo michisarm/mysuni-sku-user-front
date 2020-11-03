@@ -13,6 +13,7 @@ export { CategoryModel } from './CategoryModel';
 export { default as  SearchFilterType } from './SearchFilterType';
 export { CreatorModel } from './CreatorModel';
 export { QueryModel } from './QueryModel';
+export { NewQueryModel } from './NewQueryModel';
 export { default as IconBoxModel } from './IconBoxModel';
 export { IconType } from './IconType';
 export { CubeType } from './CubeType';

@@ -1732,10 +1732,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@sku/personalcube@0.1.2":
-  version "0.1.2"
-  resolved "https://sk-university-dev-nexus.cloudzcp.io/repository/npm-private/@sku/personalcube/-/personalcube-0.1.2.tgz#9a6cc01b7f124f00b2ef97e43a7958e26e7a2636"
-  integrity sha512-CV+zQUPYzuKTXYPm0Q/X9Hd9tGoOx4rZzXTU1XtGclWt+PiyOG4IQPaJLFcn1ISh/F2aaNdbS6yyae2OcRfq5A==
+"@sku/personalcube@0.1.4":
+  version "0.1.4"
+  resolved "https://sk-university-dev-nexus.cloudzcp.io/repository/npm-private/@sku/personalcube/-/personalcube-0.1.4.tgz#f43d56c54196a948b5cefb9d8e1d9d816b7ad471"
+  integrity sha512-d6Ejkp6idlEOQkE7jS8/TaoOzFUIDSASxZ3t/0n0sFHzPRpdJOmTKBGehkfEMp2YCKOyTzxhlJpxQxGIxgUqCA==
   dependencies:
     autobind-decorator "^2.4.0"
     axios "^0.19.0"

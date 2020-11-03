@@ -29,6 +29,7 @@ class InMyLectureModel extends DramaEntityObservableModel {
   learningTime: number = 0;
   stampCount: number = 0;
   coursePlanId: string = '';
+  //
 
   requiredSubsidiaries: IdName[] = [];
   cubeId: string = '';

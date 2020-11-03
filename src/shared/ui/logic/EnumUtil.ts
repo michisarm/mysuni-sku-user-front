@@ -2,9 +2,15 @@ export enum CubeStateView {
   Created = '저장',
   OpenApproval = '승인대기',
   Opened = '승인',
-  Rejected = '반려'
+  Rejected = '반려',
 }
 
+export enum AplStateView {
+  Created = ' ',
+  OpenApproval = '승인요청',
+  Opened = '승인완료',
+  Rejected = '반려',
+}
 
 type StringDict = { [key: string]: string };
 
@@ -20,4 +26,3 @@ const EnumUtil = {
 };
 
 export default EnumUtil;
-

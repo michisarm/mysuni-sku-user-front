@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reactAutobind } from '@nara.platform/accent';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -19,12 +19,12 @@ interface Props extends RouteComponentProps {
 }
 
 @reactAutobind
-class ContentHeaderProfileItem extends Component<Props> {
+class ContentHeaderProfileItem extends PureComponent<Props> {
   //
   static defaultProps = {
-    imageEditable: true,
+    imageEditable: false,
     myPageActive: false,
-    onEditImage: () => {},
+    onEditImage: () => { },
   };
 
   onClickMyPage() {
@@ -43,13 +43,13 @@ class ContentHeaderProfileItem extends Component<Props> {
           <div className="pic">
             <Image src={image} alt="Profile" />
           </div>
-          { myPageActive && (
+          {myPageActive && (
             <button onClick={this.onClickMyPage}>
               <Icon className="my20" />
               <span className="blind">my</span>
             </button>
           )}
-          { imageEditable && (
+          {imageEditable && (
             <ProfilPhotoChangeModal
               name={name}
               company={company}

@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject } from 'mobx-react';
 
@@ -17,7 +17,7 @@ interface Props {
   'shared.actionLogService',
 ))
 @reactAutobind
-class ContentHeaderTotalTimeItem extends Component<Props> {
+class ContentHeaderTotalTimeItem extends PureComponent<Props> {
   //
   static defaultProps = {
     minute: 0,
@@ -39,7 +39,7 @@ class ContentHeaderTotalTimeItem extends Component<Props> {
       onlyMinute = minute % 60;
     }
 
-    let total:any = null;
+    let total: any = null;
 
     if (hour < 1 && onlyMinute! < 1) {
       total = (
