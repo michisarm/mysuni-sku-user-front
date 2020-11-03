@@ -47,12 +47,12 @@ async function getTaskItem(postParam: any) {
         postParam.type
       );
 
-      //첨부파일 api
-      const findTaskDetailFileData = await findFileBox(
-        findTaskDetailData.postBody.fileBoxId
-      );
-
-      console.log('findTaskDetailFileData', findTaskDetailFileData);
+      if (findTaskDetailData.postBody) {
+        //첨부파일 api
+        const findTaskDetailFileData = await findFileBox(
+          findTaskDetailData.postBody.fileBoxId
+        );
+      }
 
       console.log(findTaskDetailData);
       if (findTaskDetailData) {
@@ -60,6 +60,7 @@ async function getTaskItem(postParam: any) {
           lectureTaskDetail.id = findTaskDetailData.post.id;
           lectureTaskDetail.title = findTaskDetailData.post.title;
           lectureTaskDetail.name = findTaskDetailData.post.writer;
+          lectureTaskDetail.time = findTaskDetailData.post.time;
           lectureTaskDetail.commentFeedbackId =
             findTaskDetailData.post.commentFeedbackId;
           lectureTaskDetail.readCount = findTaskDetailData.post.readCount;
@@ -67,6 +68,7 @@ async function getTaskItem(postParam: any) {
           lectureTaskDetail.id = findTaskDetailData.id;
           lectureTaskDetail.title = findTaskDetailData.title;
           lectureTaskDetail.name = findTaskDetailData.writer;
+          lectureTaskDetail.time = findTaskDetailData.time;
           lectureTaskDetail.commentFeedbackId =
             findTaskDetailData.commentFeedbackId;
           lectureTaskDetail.readCount = findTaskDetailData.readCount;
@@ -76,8 +78,9 @@ async function getTaskItem(postParam: any) {
           lectureTaskDetail.fileBoxId = findTaskDetailData.postBody.fileBoxId;
         } else {
           lectureTaskDetail.contents = findTaskDetailData.contents;
-          lectureTaskDetail.contents = '';
+          lectureTaskDetail.fileBoxId = findTaskDetailData.fileBoxId;
         }
+        console.log('lectureTaskDetail', lectureTaskDetail);
         return lectureTaskDetail;
       }
     }
@@ -86,7 +89,7 @@ async function getTaskItem(postParam: any) {
 
 export async function getTaskDetailCube(postParam: any): Promise<void> {
   // void : return이 없는 경우 undefined
-  if (postParam.id !== undefined) {
+  if (postParam && postParam.id !== undefined) {
     // const addflag = !!getLectureTaskItem();
     console.log('postParam', postParam);
 

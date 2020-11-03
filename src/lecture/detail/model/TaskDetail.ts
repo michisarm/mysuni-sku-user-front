@@ -11,6 +11,7 @@ export default interface TaskDetailPost {
   deleted: boolean;
   id: string;
   contents: string;
+  fileBoxId: string;
 }
 
 export default interface TaskDetail {

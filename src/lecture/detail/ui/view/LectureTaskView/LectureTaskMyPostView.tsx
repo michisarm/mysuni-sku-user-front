@@ -12,8 +12,8 @@ import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
 interface LectureTaskMyPostViewProps {
   taskItem: LectureTask;
   moreView: (offset: number) => void;
-  handleClickTaskRow: (id: string, type?: 'child') => void;
-  handelClickCreateTask: (type: string) => void;
+  handleClickTaskRow: (id: string) => void;
+  handelClickCreateTask: () => void;
 }
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
@@ -50,7 +50,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
       <a
         target="_blank"
         className="row"
-        onClick={() => handleClickTaskRow({ id: task.id, type: 'child' })}
+        onClick={() => handleClickTaskRow({ id: task.id, type: 'parent' })}
       >
         <span className="cell title">
           <span className="inner">
@@ -76,7 +76,7 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
   handleClickTaskRow,
   handelClickCreateTask,
 }) {
-  const [activatedTab, setActivatedTab] = useState<string>('Posts');
+  const [activatedTab, setActivatedTab] = useState<string>('myPost');
 
   const onHandleClickTaskRow = useCallback(
     param => {
@@ -94,27 +94,29 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
     <Fragment>
       <LectureTaskTopLineView
         totalCount={taskItem.totalCount}
-        handelClickCreateTask={() => handelClickCreateTask('myPost')}
+        handelClickCreateTask={handelClickCreateTask}
       />
 
-      <>
-        <div className="su-list qna">
-          {taskItem.items.map((task, index) => {
-            return renderPostRow(task, onHandleClickTaskRow);
-          })}
-        </div>
-        {taskItem.items.length < taskItem.totalCount && (
-          <div
-            className="more-comments"
-            onClick={() => onHandleClickMoreView()}
-          >
-            <Button icon className="left moreview">
-              <Icon className="moreview" />
-              list more
-            </Button>
+      {activatedTab === 'myPost' && (
+        <>
+          <div className="su-list qna">
+            {taskItem.items.map((task, index) => {
+              return renderPostRow(task, onHandleClickTaskRow);
+            })}
           </div>
-        )}
-      </>
+          {taskItem.items.length < taskItem.totalCount && (
+            <div
+              className="more-comments"
+              onClick={() => onHandleClickMoreView()}
+            >
+              <Button icon className="left moreview">
+                <Icon className="moreview" />
+                list more
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </Fragment>
   );
 };

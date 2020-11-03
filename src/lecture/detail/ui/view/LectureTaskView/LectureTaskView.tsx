@@ -13,14 +13,27 @@ import {
 } from 'lecture/detail/store/LectureTaskStore';
 import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
-import { useEffect } from 'react';
+import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
+import LectureSubcategory from 'lecture/detail/viewModel/LectureOverview/LectureSubcategory';
+import LectureTags from 'lecture/detail/viewModel/LectureOverview/LectureTags';
+import LectureFile from 'lecture/detail/viewModel/LectureOverview/LectureFile';
+import LectureDescriptionView from '../LectureOverview/LectureDescriptionView';
+import LectureFileView from '../LectureOverview/LectureFileView';
+import LectureCubeInfoView from '../LectureOverview/LectureCubeInfoView';
+import LectureTagsView from '../LectureOverview/LectureTagsView';
+import LectureSubcategoryView from '../LectureOverview/LectureCubeSubcategoryView';
 
 interface LectureTaskViewProps {
-  taskItem: LectureTask;
-  moreView: (offset: number) => void;
-  handleClickTaskRow: (param: object) => void;
-  hashLink: (hash: string) => void;
-  handelClickCreateTask: () => void;
+  taskItem?: LectureTask;
+  lectureDescription?: LectureDescription;
+  lectureSubcategory?: LectureSubcategory;
+  lectureTags?: LectureTags;
+  lectureFile?: LectureFile;
+  moreView?: (offset: number) => void;
+  handleClickTaskRow?: (param: object) => void;
+  listHashLink?: (hash: string) => void;
+  overviewHashLink?: (hash: string) => void;
+  handelClickCreateTask?: () => void;
 }
 
 function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
@@ -79,37 +92,34 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
 
 const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView({
   taskItem,
+  lectureDescription,
+  lectureSubcategory,
+  lectureTags,
+  lectureFile,
   moreView,
   handleClickTaskRow,
-  hashLink,
+  listHashLink,
+  overviewHashLink,
   handelClickCreateTask,
 }) {
-  const [activatedTab, setActivatedTab] = useState<string>('Posts');
-
+  const tabType = getLectureTaskTab();
   const onHandleClickTaskRow = useCallback(
     param => {
-      handleClickTaskRow(param);
+      handleClickTaskRow!(param);
     },
     [taskItem]
   );
 
-  const onHandleClickMoreView = useCallback(() => {
-    moreView(getLectureTaskOffset()!);
-  }, []);
-
   const postsHashClick = useCallback(() => {
-    hashLink('Posts');
-    setActivatedTab('Posts');
+    listHashLink!('Posts');
   }, []);
 
   const myPostsHashClick = useCallback(() => {
-    hashLink('MyPosts');
-    setActivatedTab('MyPosts');
+    listHashLink!('MyPosts');
   }, []);
 
   const overViewHashClick = useCallback(() => {
-    hashLink('lms-related-badge');
-    setActivatedTab('Overview');
+    overviewHashLink!('Overview');
   }, []);
 
   return (
@@ -119,45 +129,62 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
           <div className="lms-inner-menu">
             <a
               onClick={postsHashClick}
-              className={activatedTab === 'Posts' ? 'lms-act' : ''}
+              className={tabType === 'Posts' ? 'lms-act' : ''}
             >
               Posts
             </a>
             <a
               onClick={myPostsHashClick}
-              className={activatedTab === 'MyPosts' ? 'lms-act' : ''}
+              className={tabType === 'MyPosts' ? 'lms-act' : ''}
             >
               My Posts
             </a>
             <a
               onClick={overViewHashClick}
-              className={activatedTab === 'Overview' ? 'lms-act' : ''}
+              className={tabType === 'Overview' ? 'lms-act' : ''}
             >
               Overview
             </a>
           </div>
-          {activatedTab === 'Posts' && (
+          {tabType === 'Posts' && taskItem && (
             <LectureTaskPostView
               taskItem={taskItem}
-              moreView={moreView}
+              moreView={moreView!}
               handleClickTaskRow={param => onHandleClickTaskRow(param)}
-              handelClickCreateTask={handelClickCreateTask}
+              handelClickCreateTask={handelClickCreateTask!}
             />
           )}
-          {activatedTab === 'MyPosts' && (
+          {tabType === 'MyPosts' && taskItem && (
             <>
-              <span>마이포스트</span>
               <LectureTaskMyPostView
                 taskItem={taskItem}
-                moreView={moreView}
+                moreView={moreView!}
                 handleClickTaskRow={onHandleClickTaskRow}
-                handelClickCreateTask={handelClickCreateTask}
+                handelClickCreateTask={handelClickCreateTask!}
               />
             </>
           )}
-          {activatedTab === 'Overview' && (
+          {tabType === 'Overview' && (
             <>
-              <span>Overview</span>
+              {lectureDescription && (
+                <LectureDescriptionView
+                  htmlContent={lectureDescription.description}
+                />
+              )}
+              <div className="badge-detail border-none">
+                {lectureSubcategory && (
+                  <LectureSubcategoryView
+                    lectureSubcategory={lectureSubcategory}
+                  />
+                )}
+                {lectureFile && <LectureFileView lectureFile={lectureFile} />}
+                {lectureDescription && (
+                  <LectureCubeInfoView
+                    lectureDescription={lectureDescription}
+                  />
+                )}
+                {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+              </div>
             </>
           )}
         </div>

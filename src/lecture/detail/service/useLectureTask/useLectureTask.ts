@@ -84,6 +84,10 @@ export function useLectureTask(): [TaskValue] {
         contentId = param.contentId;
         lectureId = param.lectureId;
       }
+
+      if (getLectureTaskTab() === 'Overview') {
+        return;
+      }
       console.log('getLectureTaskTab()', getLectureTaskTab());
       getCubeLectureTask(
         contentId,
@@ -112,6 +116,7 @@ export function useLectureTask(): [TaskValue] {
     }, subscriberId);
   }, [subscriberId]);
 
+  //TODO
   useEffect(() => {
     if (subscriberId === undefined) {
       return;
@@ -119,9 +124,17 @@ export function useLectureTask(): [TaskValue] {
     return onLectureTaskTab(next => {
       console.log('next', next);
 
-      if (next === 'overview') {
+      if (next === 'Overview') {
+        setLectureTaskViewType('Overview');
         return;
       }
+
+      // else if (next === 'Posts') {
+      //   console.log('반대다');
+      //   console.log('next', next);
+      //   setLectureTaskViewType(next);
+      //   return;
+      // }
 
       setLectureTaskItem();
       // setLectureTaskTab(next);

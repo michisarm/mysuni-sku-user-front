@@ -17,6 +17,11 @@ import LectureTaskCreateView from '../view/LectureTaskView/LectureTaskCreateView
 import { getCubeLectureTaskLearningCardId } from 'lecture/detail/service/useLectureTask/utility/getCubeLectureTaskDetail';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
 import LectureTaskReplyView from '../view/LectureTaskView/LectureTaskReplyView';
+import { useLectureDescription } from 'lecture/detail/service/useLectureCourseOverview/useLectureDescription';
+import { useLectureSubcategory } from 'lecture/detail/service/useLectureCourseOverview/useLectureSubcategory';
+import { useLectureFile } from 'lecture/detail/service/useLectureFile';
+import { useLectureTags } from 'lecture/detail/service/useLectureCourseOverview/useLectureTags';
+import { useLectureTaskViewType } from 'lecture/detail/service/useLectureTask/useLectureTaskViewType';
 
 function LectureTaskContainer() {
   const [taskItem] = useLectureTask();
@@ -25,7 +30,11 @@ function LectureTaskContainer() {
   const [boardId, setBoardId] = useState<string>('');
   const [create, setCreate] = useState<boolean>();
   const params = useLectureRouterParams();
-  console.log('params', params);
+  const [lectureDescription] = useLectureDescription();
+  const [lectureSubcategory] = useLectureSubcategory();
+  const [lectureFile] = useLectureFile();
+  const [lectureTags] = useLectureTags();
+  const [viewType] = useLectureTaskViewType();
 
   useLectuerCubeOverview();
 
@@ -35,12 +44,6 @@ function LectureTaskContainer() {
   };
 
   const moveToDetail = (param: any) => {
-    console.log('param', param);
-    // if (param.id) {
-    //   setLectureTaskViewType(param);
-    // } else {
-    //   setLectureTaskViewType(param);
-    // }
     setLectureTaskViewType(param);
     setDetailTaskId(param.id);
   };
@@ -65,9 +68,20 @@ function LectureTaskContainer() {
     setLectureTaskViewType('reply');
   };
 
-  const hashLink = (hash: string) => {
-    console.log('hashLink');
+  const listHashLink = (hash: string) => {
+    console.log('hash', hash);
     setLectureTaskTab(hash);
+    setLectureTaskViewType('list');
+    const element = document.getElementById(hash);
+    if (element !== null) {
+      element.scrollIntoView();
+    }
+  };
+
+  const overviewHashLink = (hash: string) => {
+    console.log('hash', hash);
+    setLectureTaskTab(hash);
+    setLectureTaskViewType('Overview');
     const element = document.getElementById(hash);
     if (element !== null) {
       element.scrollIntoView();
@@ -87,18 +101,19 @@ function LectureTaskContainer() {
       const contentData = await getCubeLectureTaskLearningCardId(
         params.contentId
       );
-      console.log('contentData', contentData);
-      // setBoardId(test);
 
       setBoardId(contentData.contents.contents.id);
     }
     getContentId();
   }, [create]);
 
+  console.log('getLectureTaskViewType()', getLectureTaskViewType());
+  console.log('taskItem', taskItem);
+
   return (
     <>
       <div id="Posts" />
-      {getLectureTaskViewType() === 'list' && taskItem !== undefined && (
+      {viewType === 'list' && taskItem !== undefined && (
         <>
           <LectureCubeSummaryContainer />
           <ContentLayout className="support">
@@ -107,23 +122,26 @@ function LectureTaskContainer() {
               taskItem={taskItem}
               moreView={moreView}
               handleClickTaskRow={moveToDetail}
-              hashLink={hashLink}
+              listHashLink={listHashLink}
+              overviewHashLink={overviewHashLink}
+              lectureDescription={lectureDescription}
+              lectureSubcategory={lectureSubcategory}
+              lectureTags={lectureTags}
+              lectureFile={lectureFile}
             />
           </ContentLayout>
         </>
       )}
-      {getLectureTaskViewType() !== 'list' &&
-        getLectureTaskViewType() !== 'create' &&
-        getLectureTaskViewType() !== 'edit' && (
-          <LectureTaskDetailView
-            taskId={detailTaskId}
-            taskDetail={taskDetail!}
-            handleOnClickList={onClickList}
-            handleOnClickModify={onClickModify}
-            handleOnClickReplies={onClickReplies}
-          />
-        )}
-      {getLectureTaskViewType() === 'create' && (
+      {viewType !== 'list' && viewType !== 'create' && viewType !== 'edit' && (
+        <LectureTaskDetailView
+          taskId={detailTaskId}
+          taskDetail={taskDetail!}
+          handleOnClickList={onClickList}
+          handleOnClickModify={onClickModify}
+          handleOnClickReplies={onClickReplies}
+        />
+      )}
+      {viewType === 'create' && (
         <LectureTaskCreateView
           postId=""
           boardId={boardId}
@@ -131,7 +149,7 @@ function LectureTaskContainer() {
           handleCloseClick={onClickList}
         />
       )}
-      {getLectureTaskViewType() === 'edit' && (
+      {viewType === 'edit' && (
         <LectureTaskCreateView
           postId={detailTaskId}
           boardId={boardId}
@@ -139,13 +157,28 @@ function LectureTaskContainer() {
           handleCloseClick={onClickList}
         />
       )}
-      {getLectureTaskViewType() === 'reply' && (
+      {viewType === 'reply' && (
         <LectureTaskReplyView
           postId={detailTaskId}
           boardId={boardId}
           handleOnClickList={onHandleReply}
           handleCloseClick={onClickList}
         />
+      )}
+      {viewType === 'Overview' && (
+        <>
+          <LectureCubeSummaryContainer />
+          <ContentLayout className="support">
+            <LectureTaskView
+              lectureDescription={lectureDescription}
+              lectureSubcategory={lectureSubcategory}
+              lectureTags={lectureTags}
+              lectureFile={lectureFile}
+              listHashLink={listHashLink}
+              overviewHashLink={overviewHashLink}
+            />
+          </ContentLayout>
+        </>
       )}
     </>
   );

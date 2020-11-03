@@ -44,14 +44,12 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
 
   const findFiles = useCallback((type: string, fileBoxId: string) => {
     depot.getDepotFiles(fileBoxId).then(files => {
-      console.log('files', files);
       filesMap.set(type, files);
       const newMap = new Map(filesMap.set(type, files));
       setFilesMap(newMap);
     });
   }, []);
 
-  console.log('taskDetail', taskDetail);
   return (
     <Fragment>
       {taskDetail && (
@@ -82,28 +80,22 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
           </div>
           <div className="ov-paragraph download-area task-read-down">
             <div className="detail">
-              <div className="file-down-wrap">
-                <div className="down">
-                  <span>첨부파일 :</span>
-                  <br />
-                  <span>파일명</span>
-                  {filesMap.get('reference') &&
-                    filesMap
-                      .get('reference')
-                      .map((foundedFile: DepotFileViewModel, index: number) => (
-                        <div className="down">
-                          <a
-                            key={index}
-                            onClick={() =>
-                              depot.downloadDepotFile(taskDetail.fileBoxId)
-                            }
-                          >
-                            <span>{foundedFile.name}</span>
-                          </a>
-                        </div>
-                      ))}
-                </div>
-              </div>
+              {taskDetail.fileBoxId &&
+                filesMap.get('reference') &&
+                filesMap
+                  .get('reference')
+                  .map((foundedFile: DepotFileViewModel, index: number) => (
+                    <div className="down">
+                      <span>첨부파일 :</span>
+
+                      <a
+                        key={index}
+                        onClick={() => depot.downloadDepotFile(foundedFile.id)}
+                      >
+                        <span>{foundedFile.name}</span>
+                      </a>
+                    </div>
+                  ))}
             </div>
           </div>
           <CommentList

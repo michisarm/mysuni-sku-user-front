@@ -58,7 +58,7 @@ export function findTask(
   if (tabType === 'Posts') {
     url = `${BASE_URL}/posts/byBoardId?boardId=${boardId}&offset=${offset}&limit=${limit}`;
   } else {
-    url = `${BASE_URL}/posts/byBoardIdAndPatronkey?boardId=${boardId}&patronKey=${''}&offset=${offset}&limit=${limit}`;
+    url = `${BASE_URL}/posts/byBoardIdAndPatronKey?boardId=${boardId}&patronKey=${''}&offset=${offset}&limit=${limit}`;
   }
   return axiosApi.get<Task>(url).then(response => {
     return response && response.data;
