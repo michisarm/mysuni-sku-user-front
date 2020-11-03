@@ -1,4 +1,4 @@
-export default interface WatchLog {
+export default interface LectureWatchLog {
   id: string;
   patronKeyString: string;
   lectureUsid: string;
