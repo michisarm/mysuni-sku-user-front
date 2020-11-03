@@ -15,6 +15,7 @@ import LectureParams, { toPath } from '../../../viewModel/LectureParams';
 import { State } from '../../../viewModel/LectureState';
 import {
   ItemMap,
+  LectureStructureDiscussionItem,
   LectureStructureReportItem,
   LectureStructureSurveyItem,
   LectureStructureTestItem,
@@ -123,7 +124,7 @@ async function getReportItem(
     coursePlanComplex.coursePlan.reportFileBox.reportName !== ''
   ) {
     let state: State = 'None';
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null
@@ -138,6 +139,73 @@ async function getReportItem(
       path: `${toPath(params)}/report`,
       state,
       type: 'REPORT',
+    };
+    return item;
+  }
+}
+
+function getDisscussionItem(
+  coursePlanComplex: CoursePlanComplex,
+  params: LectureParams
+): LectureStructureDiscussionItem | void {
+  const routerParams = parseLectureParams(
+    params,
+    `${toPath(params)}/discussion`
+  );
+  if (
+    coursePlanComplex.coursePlanContents !== undefined &&
+    coursePlanComplex.coursePlanContents !== null &&
+    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !==
+      undefined &&
+    coursePlanComplex.coursePlanContents.courseSet.learningCardSet !== null &&
+    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
+      .discussions !== undefined &&
+    coursePlanComplex.coursePlanContents.courseSet.learningCardSet
+      .discussions !== null &&
+    coursePlanComplex.coursePlanContents.courseSet.learningCardSet.discussions
+      .length > 0
+  ) {
+    const state: State = 'None';
+    const item: LectureStructureDiscussionItem = {
+      id:
+        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
+          .discussions[0].id,
+      name:
+        coursePlanComplex.coursePlanContents.courseSet.learningCardSet
+          .discussions[0].name,
+      params,
+      routerParams,
+      path: `${toPath(params)}/discussion`,
+      state,
+      type: 'DISCUSSION',
+    };
+    return item;
+  }
+  if (
+    coursePlanComplex.coursePlanContents !== undefined &&
+    coursePlanComplex.coursePlanContents !== null &&
+    coursePlanComplex.coursePlanContents.courseSet.programSet !== undefined &&
+    coursePlanComplex.coursePlanContents.courseSet.programSet !== null &&
+    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
+      undefined &&
+    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions !==
+      null &&
+    coursePlanComplex.coursePlanContents.courseSet.programSet.discussions
+      .length > 0
+  ) {
+    const state: State = 'None';
+    const item: LectureStructureDiscussionItem = {
+      id:
+        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
+          .id,
+      name:
+        coursePlanComplex.coursePlanContents.courseSet.programSet.discussions[0]
+          .name,
+      params,
+      routerParams,
+      path: `${toPath(params)}/discussion`,
+      state,
+      type: 'DISCUSSION',
     };
     return item;
   }
@@ -160,6 +228,10 @@ export async function getItemMapFromCourse(
   const reportItem = await getReportItem(coursePlanComplex, params, student);
   if (reportItem !== undefined) {
     itemMap.report = reportItem;
+  }
+  const discussionItem = getDisscussionItem(coursePlanComplex, params);
+  if (discussionItem !== undefined) {
+    itemMap.discussion = discussionItem;
   }
   return itemMap;
 }

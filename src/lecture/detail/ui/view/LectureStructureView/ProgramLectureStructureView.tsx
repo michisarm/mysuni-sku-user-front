@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { LectureStructure } from '../../../viewModel/LectureStructure';
 import CourseView from './CourseView';
 import ProgramCubeView from './ProgramCubeView';
+import ProgramDiscussionView from './ProgramDiscussionView';
 import ProgramHeaderView from './ProgramHeaderView';
 import ProgramReportView from './ProgramReportView';
 import ProgramSurveyView from './ProgramSurveyView';
@@ -32,6 +33,7 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           test={course.test}
           survey={course.survey}
           report={course.report}
+          discussion={course.discussion}
           path={course.path}
         />
       ))}
@@ -70,6 +72,14 @@ const ProgramLectureStructureView: React.FC<ProgramLectureStructureViewProps> = 
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
           activated={lectureStructure.report.activated}
+        />
+      )}
+      {lectureStructure.discussion !== undefined && (
+        <ProgramDiscussionView
+          name={lectureStructure.discussion.name}
+          state={lectureStructure.discussion.state}
+          path={lectureStructure.discussion.path}
+          activated={lectureStructure.discussion.activated}
         />
       )}
     </>

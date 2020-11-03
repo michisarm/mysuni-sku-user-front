@@ -6,6 +6,7 @@ import LectureCourseOverviewPage from './ui/logic/LectureCourseOverview/LectureC
 import LectureReportPage from './ui/logic/LectureReport/LectureReportPage';
 import LectureTestPage from './ui/logic/LectureTestPage';
 import LectureSurveyPage from './ui/logic/LectureSurveyPage';
+import LectureDiscussionPage from './ui/logic/LectureDiscussionPage';
 
 export default function LectureDetailCourseRoutes() {
   return (
@@ -52,6 +53,16 @@ export default function LectureDetailCourseRoutes() {
         path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/report"
         component={LectureReportPage}
       />
+      <Route
+        exact
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
+        component={LectureDiscussionPage}
+      />
+      <Route
+        exact
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/discussion"
+        component={LectureDiscussionPage}
+      />
       {/* Content */}
       <Route
         exact
@@ -96,14 +107,14 @@ export default function LectureDetailCourseRoutes() {
       />
       <Route
         exact
-        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
-        component={LectureReportPage}
+        path="/lecture/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
+        component={LectureDiscussionPage}
       />
       <Route
         exact
-        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/course/:courseId/report"
-        component={LectureReportPage}
-      />{' '}
+        path="/lecture/cineroom/:cineroomId/college/:collegeId/course-plan/:coursePlanId/:serviceType/:serviceId/:lectureType/:contentId/:lectureId/discussion"
+        component={LectureDiscussionPage}
+      />
     </Switch>
   );
 }
