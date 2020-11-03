@@ -1,5 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
-import WatchLog from '../model/WatchLog';
+import WatchLog from '../model/Watchlog';
 
 const BASE_URL = '/api/watch-log-collector';
 

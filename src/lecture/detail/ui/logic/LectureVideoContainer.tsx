@@ -5,7 +5,7 @@ import React from 'react';
 import { useLectureMedia } from '../../service/useLectureMedia/useLectureMedia';
 import LectureVideoView from '../view/LectureVideoView/LectureVideoView';
 import { useLectureRouterParams } from 'lecture/detail/service/useLectureRouterParams';
-import WatchLog from 'lecture/detail/model/WatchLog';
+import WatchLog from 'lecture/detail/model/Watchlog';
 import { getLectureConfirmProgress } from 'lecture/detail/store/LectureConfirmProgressStore';
 
 function LectureVideoContainer() {

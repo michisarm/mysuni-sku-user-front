@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import WatchLog from 'lecture/detail/model/WatchLog';
+import WatchLog from 'lecture/detail/model/Watchlog';
 import LectureWatchLog from 'lecture/detail/viewModel/LectureWatchLog';
 
 export async function getWatchLogItem(

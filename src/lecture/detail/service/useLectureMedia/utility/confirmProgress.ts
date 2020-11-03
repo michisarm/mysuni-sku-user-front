@@ -2,7 +2,7 @@
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { registerWatchLog } from 'lecture/detail/api/watchLogApi';
+import { registerWatchLog } from 'lecture/detail/api/WatchlogApi';
 import LectureWatchLog, {
   State,
   StudentStateMap,

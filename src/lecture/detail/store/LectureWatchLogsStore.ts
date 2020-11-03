@@ -1,4 +1,4 @@
-import WatchLog from '../model/WatchLog';
+import WatchLog from '../model/Watchlog';
 import { createStore } from './Store';
 
 const [

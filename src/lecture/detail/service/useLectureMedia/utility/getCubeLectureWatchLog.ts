@@ -2,10 +2,10 @@
 import { findPersonalCube } from '../../../api/mPersonalCubeApi';
 import PersonalCube from '../../../model/PersonalCube';
 import { getWatchLogItem } from './getWatchLogItemMapFromCube';
-import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
-import { PatronKey } from 'shared/model/PatronKey';
-import { findWatchLogList } from 'lecture/detail/api/watchLogApi';
-import { setLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
+import LectureRouterParams from '../../../viewModel/LectureRouterParams';
+import { setLectureWatchLogs } from '../../../store/LectureWatchLogsStore';
+import { PatronKey } from '../../../../../shared/model';
+import { findWatchLogList } from '../../../api/WatchlogApi';
 
 function getPersonalCubeByParams(
   params: LectureRouterParams

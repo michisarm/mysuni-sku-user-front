@@ -12,7 +12,7 @@ import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureWatchLogs } from 'lecture/detail/store/LectureWatchLogsStore';
 import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 import { getWatchLogSumViewSeconds } from './utility/getWatchLogSumViewSeconds';
-import WatchLog from 'lecture/detail/model/WatchLog';
+import WatchLog from 'lecture/detail/model/Watchlog';
 import { confirmProgress } from './utility/confirmProgress';
 
 type WatchLogValues = LectureWatchLog[] | undefined;
