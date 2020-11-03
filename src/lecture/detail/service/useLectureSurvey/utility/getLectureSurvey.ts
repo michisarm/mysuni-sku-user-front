@@ -104,7 +104,7 @@ function parseCriterion(
     c => c.number === answerItems.criterionNumber
   );
   const choices: LectureSurveyItemChoice[] =
-    criterion?.criteriaItems?.map(({ value, names }) => {
+    criterion?.criteriaItems?.map(({ value, names, index }) => {
       const mTitle =
         ((names.langStringMap as unknown) as Record<string, string>)[
           names.defaultLanguage
@@ -116,6 +116,8 @@ function parseCriterion(
       return {
         title: mTitle,
         no: mNo,
+        index,
+        names: (names as unknown) as LangStrings,
       };
     }) || [];
   const questionNumber = `${sequence.index}-${sequence.groupNumber}-${sequence.number}`;
@@ -260,15 +262,15 @@ async function parseSurveyForm(
 async function getCubeLectureSurveyState(
   serviceId: string,
   surveyCaseId: string
-): Promise<LectureSurveyState> {
+): Promise<void> {
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-  if (answerSheet !== null) {
+  if (answerSheet !== null && answerSheet.id !== undefined) {
     const {
       round,
       progress,
-      evaluationSheet: { id, answerSheetId, answers },
+      evaluationSheet: { id: evaluationSheetId, answerSheetId, answers },
     } = answerSheet;
     if (progress === 'Complete') {
       state = 'Completed';
@@ -288,18 +290,21 @@ async function getCubeLectureSurveyState(
       }) => ({
         questionNumber,
         answerItemType,
-        criteriaItem: {
-          names: (criteriaItem.names as unknown) as LangStrings,
-          value: criteriaItem.value,
-          index: criteriaItem.index,
-        },
-        itemNumbers,
-        sentence,
+        criteriaItem:
+          criteriaItem === null
+            ? undefined
+            : {
+                names: (criteriaItem.names as unknown) as LangStrings,
+                value: criteriaItem.value,
+                index: criteriaItem.index,
+              },
+        itemNumbers: itemNumbers === null ? undefined : itemNumbers,
+        sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
       })
     );
-    return {
-      id,
+    const lectureSurveyState = {
+      evaluationSheetId,
       answerSheetId,
       answerItem,
       state,
@@ -307,6 +312,8 @@ async function getCubeLectureSurveyState(
       round,
       serviceId,
     };
+    setLectureSurveyState(lectureSurveyState);
+    return;
   }
   const studentJoins = await findIsJsonStudentByCube(serviceId);
   if (studentJoins.length > 0) {
@@ -323,16 +330,25 @@ async function getCubeLectureSurveyState(
       null
     );
     if (studentJoin !== null) {
-      return {
+      const lectureSurveyState = {
         state,
         surveyCaseId,
         round: studentJoin.round,
         serviceId,
         answerItem: [],
       };
+      setLectureSurveyState(lectureSurveyState);
+      return;
     }
   }
-  return { state, surveyCaseId, round: 1, serviceId, answerItem: [] };
+  const lectureSurveyState = {
+    state,
+    surveyCaseId,
+    round: 1,
+    serviceId,
+    answerItem: [],
+  };
+  setLectureSurveyState(lectureSurveyState);
 }
 export async function getCourseLectureSurveyState(
   serviceId: string,
@@ -341,11 +357,12 @@ export async function getCourseLectureSurveyState(
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
-  if (answerSheet !== null) {
+  if (answerSheet !== null && answerSheet.id !== undefined) {
     const {
+      id: answerSheetId,
       round,
       progress,
-      evaluationSheet: { id, answerSheetId, answers },
+      evaluationSheet: { id, answers },
     } = answerSheet;
     if (progress === 'Complete') {
       state = 'Completed';
@@ -365,13 +382,16 @@ export async function getCourseLectureSurveyState(
       }) => ({
         questionNumber,
         answerItemType,
-        criteriaItem: {
-          names: (criteriaItem.names as unknown) as LangStrings,
-          value: criteriaItem.value,
-          index: criteriaItem.index,
-        },
-        itemNumbers,
-        sentence,
+        criteriaItem:
+          criteriaItem === null
+            ? undefined
+            : {
+                names: (criteriaItem.names as unknown) as LangStrings,
+                value: criteriaItem.value,
+                index: criteriaItem.index,
+              },
+        itemNumbers: itemNumbers === null ? undefined : itemNumbers,
+        sentence: sentence === null ? undefined : sentence,
         matrixItem: matrixItem === null ? undefined : matrixItem,
       })
     );
@@ -385,6 +405,7 @@ export async function getCourseLectureSurveyState(
       serviceId,
     };
     setLectureSurveyState(lectureSurveyState);
+    return;
   }
   const lectureSurveyState = {
     state,

@@ -8,7 +8,7 @@ export class AnswerItemModel {
   itemNumbers: string[] = [];
   criteriaItem: CriteriaItemModel = new CriteriaItemModel();
   sentence: string = '';
-  matrixItem: MatrixItem | null = null;
+  matrixItem: MatrixItem[] | null = null;
 
   constructor(answerItem?: AnswerItemModel) {
     if (answerItem) {

@@ -1,22 +1,14 @@
-import { AnswerItemType } from '../../../survey/answer/model/AnswerItemType';
 import LangStrings from '../model/LangStrings';
 import { State } from './LectureState';
-
-type LectureSurveyItemType =
-  | 'Criterion'
-  | 'Choice'
-  | 'Essay'
-  | 'Date'
-  | 'Boolean'
-  | 'Matrix';
+import { LectureSurveyItemType } from './LectureSurvey';
 
 export interface LectureSurveyAnswerItem {
   questionNumber: string;
-  answerItemType?: AnswerItemType;
+  answerItemType?: LectureSurveyItemType;
   criteriaItem?: CriteriaItem;
   itemNumbers?: string[];
   sentence?: string;
-  matrixItem?: MatrixItem;
+  matrixItem?: MatrixItem[];
 }
 
 export interface CriteriaItem {
@@ -31,7 +23,7 @@ export interface MatrixItem {
 }
 
 export default interface LectureSurveyState {
-  id?: string;
+  evaluationSheetId?: string;
   answerSheetId?: string;
   state: State;
   answerItem: LectureSurveyAnswerItem[];

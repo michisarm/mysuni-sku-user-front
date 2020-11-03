@@ -1,4 +1,6 @@
-type LectureSurveyItemType =
+import LangStrings from '../model/LangStrings';
+
+export type LectureSurveyItemType =
   | 'Criterion'
   | 'Choice'
   | 'Essay'
@@ -25,6 +27,8 @@ export interface LectureSurveyItemChoice {
   title: string;
   image?: string;
   no: number;
+  index?: number;
+  names?: LangStrings;
 }
 
 export default interface LectureSurvey {

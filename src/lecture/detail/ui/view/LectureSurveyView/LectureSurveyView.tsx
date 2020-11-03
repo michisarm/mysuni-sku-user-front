@@ -43,24 +43,90 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
           </div>
         </div>
       </div>
-      {lectureSurvey.surveyItems.map(item => {
-        if (item.type === 'Criterion') {
-          return <LectureSurveyCriterionView {...item} key={item.id} />;
+      {lectureSurvey.surveyItems.map(lectureSurveyItem => {
+        if (lectureSurveyItem.type === 'Criterion') {
+          return (
+            <LectureSurveyCriterionView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
-        if (item.type === 'Choice') {
-          return <LectureSurveyChoiceView {...item} key={item.id} />;
+        if (lectureSurveyItem.type === 'Choice') {
+          return (
+            <LectureSurveyChoiceView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
-        if (item.type === 'Essay') {
-          return <LectureSurveyEssayView {...item} key={item.id} />;
+        if (lectureSurveyItem.type === 'Essay') {
+          return (
+            <LectureSurveyEssayView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
-        if (item.type === 'Date') {
-          return <LectureSurveyDateView {...item} key={item.id} />;
+        if (lectureSurveyItem.type === 'Date') {
+          return (
+            <LectureSurveyDateView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
-        if (item.type === 'Boolean') {
-          return <LectureSurveyBooleanView {...item} key={item.id} />;
+        if (lectureSurveyItem.type === 'Boolean') {
+          return (
+            <LectureSurveyBooleanView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
-        if (item.type === 'Matrix') {
-          return <LectureSurveyMatrixView {...item} key={item.id} />;
+        if (lectureSurveyItem.type === 'Matrix') {
+          return (
+            <LectureSurveyMatrixView
+              lectureSurveyItem={lectureSurveyItem}
+              lectureSurveyAnswerItem={
+                lectureSurveyState &&
+                lectureSurveyState.answerItem.find(
+                  c => c.questionNumber === lectureSurveyItem.questionNumber
+                )
+              }
+              key={lectureSurveyItem.id}
+            />
+          );
         }
         return null;
       })}

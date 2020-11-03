@@ -1,4 +1,5 @@
 export default interface AnswerSheetCdo {
+  id?: string;
   serviceId: string;
   round: number;
   surveyCaseId: string;
