@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { useLectuerCubeOverview } from '../../service/useLectuerCubeOverview/useLectuerCubeOverview';
+import LectureAudioView from '../view/LectureAudioView';
 import LectureDetailLayout from '../view/LectureDetailLayout';
 import LectureCubeContentContainer from './LectureCubeOverview/LectureCubeContentContainer';
 import LectureCubeSummaryContainer from './LectureCubeOverview/LectureCubeSummaryContainer';
@@ -15,6 +16,7 @@ function LectureCubeAudioPage() {
   return (
     <LectureDetailLayout>
       <LectureCubeSummaryContainer />
+      <LectureAudioView />
       <LectureCubeContentContainer />
     </LectureDetailLayout>
   );

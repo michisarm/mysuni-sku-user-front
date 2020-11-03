@@ -8,7 +8,10 @@ export async function getWebpageFromCube(params: LectureRouterParams) {
   const cube = await findPersonalCube(contentId);
   const officeWeb = await findOfficeWeb(cube.contents.contents.id);
   const url = officeWeb.webPageUrl;
-  if (officeWeb.webUrlInfo === null) {
+  if (
+    officeWeb.webUrlInfo === null ||
+    (officeWeb.webUrlInfo as unknown) === ''
+  ) {
     const webpage: LectureWebpage = {
       title: url,
       description: undefined,
