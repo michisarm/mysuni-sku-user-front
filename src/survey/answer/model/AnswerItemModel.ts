@@ -1,5 +1,6 @@
 import { AnswerItemType } from './AnswerItemType';
 import { CriteriaItemModel } from '../../form/model/CriteriaItemModel';
+import { MatrixItem } from '../../../lecture/detail/viewModel/LectureSurveyState';
 
 export class AnswerItemModel {
   //
@@ -7,6 +8,7 @@ export class AnswerItemModel {
   itemNumbers: string[] = [];
   criteriaItem: CriteriaItemModel = new CriteriaItemModel();
   sentence: string = '';
+  matrixItem: MatrixItem[] | null = null;
 
   constructor(answerItem?: AnswerItemModel) {
     if (answerItem) {
@@ -20,6 +22,6 @@ export class AnswerItemModel {
   }
 
   containsAnswer(number: string) {
-    return !!this.itemNumbers.find((itemNumber) => itemNumber === number);
+    return !!this.itemNumbers.find(itemNumber => itemNumber === number);
   }
 }

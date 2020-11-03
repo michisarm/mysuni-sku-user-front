@@ -9,8 +9,11 @@ export class CriterionModel {
     //
     if (criterion) {
       Object.assign(this, { ...criterion });
-      this.criteriaItems = criterion.criteriaItems && criterion.criteriaItems.length
-        && criterion.criteriaItems.map(item => new CriteriaItemModel(item)) || this.criteriaItems;
+      this.criteriaItems =
+        (criterion.criteriaItems &&
+          criterion.criteriaItems.length &&
+          criterion.criteriaItems.map(item => new CriteriaItemModel(item))) ||
+        this.criteriaItems;
     }
   }
 }
