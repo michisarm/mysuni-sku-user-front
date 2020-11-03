@@ -323,15 +323,21 @@ async function getCubeLectureSurveyState(
       null
     );
     if (studentJoin !== null) {
-      return { state, surveyCaseId, round: studentJoin.round, serviceId };
+      return {
+        state,
+        surveyCaseId,
+        round: studentJoin.round,
+        serviceId,
+        answerItem: [],
+      };
     }
   }
-  return { state, surveyCaseId, round: 1, serviceId };
+  return { state, surveyCaseId, round: 1, serviceId, answerItem: [] };
 }
-async function getCourseLectureSurveyState(
+export async function getCourseLectureSurveyState(
   serviceId: string,
   surveyCaseId: string
-): Promise<LectureSurveyState> {
+) {
   let state: State = 'None';
 
   const answerSheet = await findAnswerSheetBySurveyCaseId(surveyCaseId);
@@ -369,7 +375,7 @@ async function getCourseLectureSurveyState(
         matrixItem: matrixItem === null ? undefined : matrixItem,
       })
     );
-    return {
+    const lectureSurveyState = {
       id,
       answerSheetId,
       answerItem,
@@ -378,8 +384,16 @@ async function getCourseLectureSurveyState(
       round,
       serviceId,
     };
+    setLectureSurveyState(lectureSurveyState);
   }
-  return { state, surveyCaseId, round: 1, serviceId };
+  const lectureSurveyState = {
+    state,
+    surveyCaseId,
+    round: 1,
+    serviceId,
+    answerItem: [],
+  };
+  setLectureSurveyState(lectureSurveyState);
 }
 
 export async function getLectureSurvey(params: LectureRouterParams) {
@@ -389,11 +403,7 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     if (contents !== undefined && contents.surveyId != '') {
       const lectureSurvey = await parseSurveyForm(contents.surveyId);
       setLectureSurvey(lectureSurvey);
-      const lectureSurveyTask = await getCubeLectureSurveyState(
-        lectureId,
-        contents.surveyCaseId
-      );
-      setLectureSurveyState(lectureSurveyTask);
+      await getCubeLectureSurveyState(lectureId, contents.surveyCaseId);
     }
   }
   if (contentType === 'coures') {
@@ -405,11 +415,7 @@ export async function getLectureSurvey(params: LectureRouterParams) {
     ) {
       const lectureSurvey = await parseSurveyForm(surveyCase.surveyFormId);
       setLectureSurvey(lectureSurvey);
-      const lectureSurveyTask = await getCourseLectureSurveyState(
-        lectureId,
-        surveyCase.id
-      );
-      setLectureSurveyState(lectureSurveyTask);
+      await getCourseLectureSurveyState(lectureId, surveyCase.id);
     }
   }
 }

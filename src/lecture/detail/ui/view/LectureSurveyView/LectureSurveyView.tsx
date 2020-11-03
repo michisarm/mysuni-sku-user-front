@@ -7,6 +7,10 @@ import LectureSurveyEssayView from './LectureSurveyEssayView';
 import LectureSurveyMatrixView from './LectureSurveyMatrixView';
 import LectureSurveyCriterionView from './LectureSurveyCriterionView';
 import LectureSurveyState from '../../../viewModel/LectureSurveyState';
+import {
+  saveLectureSurveyState,
+  submitLectureSurveyState,
+} from '../../../service/useLectureSurvey/utility/saveLectureSurveyState';
 
 interface LectureSurveyViewProps {
   lectureSurvey: LectureSurvey;
@@ -61,8 +65,12 @@ const LectureSurveyView: React.FC<LectureSurveyViewProps> = function LectureSurv
         return null;
       })}
       <div className="survey-preview">
-        <button className="ui button fix line">저장</button>
-        <button className="ui button fix bg">제출</button>
+        <button className="ui button fix line" onClick={saveLectureSurveyState}>
+          저장
+        </button>
+        <button className="ui button fix bg" onClick={submitLectureSurveyState}>
+          제출
+        </button>
       </div>
     </>
   );

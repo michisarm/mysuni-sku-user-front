@@ -34,8 +34,8 @@ export default interface LectureSurveyState {
   id?: string;
   answerSheetId?: string;
   state: State;
-  answerItem?: LectureSurveyAnswerItem[];
+  answerItem: LectureSurveyAnswerItem[];
   surveyCaseId: string;
   serviceId: string;
-  round?: number;
+  round: number;
 }
