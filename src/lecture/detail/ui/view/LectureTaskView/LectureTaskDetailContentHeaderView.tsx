@@ -4,8 +4,11 @@ import { observer } from 'mobx-react';
 
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
+import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
+import { useCallback } from 'react';
 
 interface Props {
+  taskDetail: LectureTaskDetail;
   title: string;
   time: number;
   subField?: React.ReactNode;
@@ -14,7 +17,7 @@ interface Props {
   readCount?: string;
   onClickList?: (e: any) => void;
   onClickDelete?: (e: any) => void;
-  onClickModify?: (e: any) => void;
+  onClickModify: (id: string) => void;
 }
 
 @reactAutobind
@@ -33,11 +36,14 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
       onClickList,
       onClickDelete,
       onClickModify,
+      taskDetail,
     } = this.props;
 
+    const handelClickModify = () => {
+      onClickModify(taskDetail.id);
+    };
+
     return (
-      // <div className="title-area">
-      // <div className="title-inner">
       <>
         <div className="course-info-header">
           <div className="survey-header">
@@ -62,7 +68,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
                       <Button
                         icon
                         className="left postset edit"
-                        onClick={onClickModify}
+                        onClick={handelClickModify}
                       >
                         <Icon name="edit" />
                         Edit

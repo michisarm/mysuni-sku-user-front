@@ -1,6 +1,6 @@
 import {
   getLectureTaskOffset,
-  getLectureTaskViewType,
+  getLectureTaskTab,
   onLectureTaskItem,
   onLectureTaskOffset,
   onLectureTaskViewType,
@@ -35,8 +35,8 @@ export function useLectureTask(): [TaskValue] {
     LectureStructureCourseItemParams & LectureStructureCubeItemParams
   >();
   const [viewFlag, setViewFlag] = useState<string>('list');
-  const [postId, setPostId] = useState<string>('');
   const param = useLectureRouterParams();
+  const tab = getLectureTaskTab();
 
   useEffect(() => {
     if (param && param.contentId !== undefined) {
@@ -91,12 +91,18 @@ export function useLectureTask(): [TaskValue] {
       return;
     }
     return onLectureTaskViewType(next => {
-      console.log('next', next);
       // console.log('postId', postId);
+      console.log('next', next);
       setViewFlag(next!);
       getCubeLectureTaskDetail(next!);
     }, subscriberId);
   }, [subscriberId]);
+
+  useEffect(() => {
+    if (param !== undefined) {
+      console.log('tab', tab);
+    }
+  }, [tab]);
 
   return [taskValue];
 }

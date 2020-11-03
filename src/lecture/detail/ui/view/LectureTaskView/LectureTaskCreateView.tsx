@@ -11,11 +11,10 @@ import { ContentLayout } from 'shared';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
 
 interface LectureTaskCreateViewProps {
-  taskId: string;
   postId: string;
   boardId: string;
   // moreView: (offset: number) => void;
-  handleOnClickList: (id: string) => void;
+  handleOnClickList: () => void;
   handleCloseClick: () => void;
 }
 
@@ -33,19 +32,20 @@ const LectureTaskCreateView: React.FC<LectureTaskCreateViewProps> = function Lec
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   console.log('boardId', boardId);
-  const board = {
-    id: boardId,
-  };
+  // const board = {
+  //   id: boardId,
+  // };
+  const a = boardId;
   return (
     <Fragment>
       <ContentLayout className="content">
         <span>{boardId}</span>
         <PostForm
-          boardId="1234"
+          boardId={a}
           // boardId={boardId}
           postId={postId && postId !== 'new' ? postId : ''}
           onCancel={handleCloseClick}
-          onSaveCallback={handleCloseClick}
+          onSaveCallback={handleOnClickList}
         />
       </ContentLayout>
     </Fragment>

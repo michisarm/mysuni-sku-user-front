@@ -12,12 +12,14 @@ interface LectureTaskDetailViewProps {
   taskDetail: LectureTaskDetail;
   // moreView: (offset: number) => void;
   handleOnClickList: (id: string) => void;
+  handleOnClickModify: (id: string) => void;
 }
 
 const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function LectureTestView({
   taskId,
   taskDetail,
   handleOnClickList,
+  handleOnClickModify,
 }) {
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -40,13 +42,14 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
       {taskDetail && (
         <>
           <LectureTaskDetailContentHeaderView
+            taskDetail={taskDetail}
             title={taskDetail.title}
             time={taskDetail.time}
             readCount={taskDetail.readCount}
             deletable={true}
             reply={true}
             onClickList={handleOnClickList}
-            onClickModify={handleOnClickList}
+            onClickModify={handleOnClickModify}
           />
 
           <div className="class-guide-txt fn-parents ql-snow">

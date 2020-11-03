@@ -7,9 +7,13 @@ import React, { Fragment, useCallback, useState } from 'react';
 import moment from 'moment';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
-import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
+import {
+  getLectureTaskOffset,
+  getLectureTaskTab,
+} from 'lecture/detail/store/LectureTaskStore';
 import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
+import { useEffect } from 'react';
 
 interface LectureTaskViewProps {
   taskItem: LectureTask;
@@ -142,12 +146,15 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
             />
           )}
           {activatedTab === 'MyPosts' && (
-            <LectureTaskMyPostView
-              taskItem={taskItem}
-              moreView={moreView}
-              handleClickTaskRow={onHandleClickTaskRow}
-              handelClickCreateTask={handelClickCreateTask}
-            />
+            <>
+              <span>마이포스트</span>
+              <LectureTaskMyPostView
+                taskItem={taskItem}
+                moreView={moreView}
+                handleClickTaskRow={onHandleClickTaskRow}
+                handelClickCreateTask={handelClickCreateTask}
+              />
+            </>
           )}
           {activatedTab === 'Overview' && (
             <>

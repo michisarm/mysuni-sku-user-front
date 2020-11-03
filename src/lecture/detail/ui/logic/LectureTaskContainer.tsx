@@ -33,11 +33,13 @@ function LectureTaskContainer() {
   };
 
   const moveToDetail = (param: any) => {
-    if (param.id) {
-      setLectureTaskViewType(param);
-    } else {
-      setLectureTaskViewType(param);
-    }
+    console.log('param', param);
+    // if (param.id) {
+    //   setLectureTaskViewType(param);
+    // } else {
+    //   setLectureTaskViewType(param);
+    // }
+    setLectureTaskViewType(param);
     setDetailTaskId(param.id);
   };
 
@@ -45,7 +47,17 @@ function LectureTaskContainer() {
     setLectureTaskViewType('list');
   };
 
+  const onHandleSave = () => {
+    setLectureTaskViewType('init');
+  };
+
+  const onClickModify = (id: string) => {
+    console.log('onClickModify -> onClickModify', id);
+    setLectureTaskViewType('edit');
+  };
+
   const hashLink = (hash: string) => {
+    console.log('hash', hash);
     const element = document.getElementById(hash);
     if (element !== null) {
       element.scrollIntoView();
@@ -91,19 +103,28 @@ function LectureTaskContainer() {
         </>
       )}
       {getLectureTaskViewType() !== 'list' &&
-        getLectureTaskViewType() !== 'create' && (
+        getLectureTaskViewType() !== 'create' &&
+        getLectureTaskViewType() !== 'edit' && (
           <LectureTaskDetailView
             taskId={detailTaskId}
             taskDetail={taskDetail!}
             handleOnClickList={onClickList}
+            handleOnClickModify={onClickModify}
           />
         )}
       {getLectureTaskViewType() === 'create' && (
         <LectureTaskCreateView
-          taskId={detailTaskId}
           postId={detailTaskId}
           boardId={boardId}
-          handleOnClickList={onClickList}
+          handleOnClickList={onHandleSave}
+          handleCloseClick={onClickList}
+        />
+      )}
+      {getLectureTaskViewType() === 'edit' && (
+        <LectureTaskCreateView
+          postId={detailTaskId}
+          boardId={boardId}
+          handleOnClickList={onHandleSave}
           handleCloseClick={onClickList}
         />
       )}

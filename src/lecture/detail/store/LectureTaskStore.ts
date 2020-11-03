@@ -28,6 +28,10 @@ const [
   getLectureTaskDetail,
 ] = createStore<LectureTaskDetail>();
 
+const [setLectureTaskTab, onLectureTaskTab, getLectureTaskTab] = createStore<
+  string
+>('Posts');
+
 export {
   setLectureTaskItem,
   onLectureTaskItem,
@@ -41,4 +45,7 @@ export {
   setLectureTaskDetail,
   onLectureTaskDetail,
   getLectureTaskDetail,
+  setLectureTaskTab,
+  onLectureTaskTab,
+  getLectureTaskTab,
 };
