@@ -24,7 +24,7 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
 
   const params = useLectureRouterParams();
 
-  const getCubeReportItem = useCallback((params: LectureRouterParams) => {
+  const getCubeMediaItem = useCallback((params: LectureRouterParams) => {
     getCubeLectureMedia(params);
   }, []);
 
@@ -36,7 +36,7 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
     console.log('params : ', params);
     // if (params.cubeId !== undefined) {
 
-    params && getCubeReportItem(params);
+    params && getCubeMediaItem(params);
     // } else {
     // getCourseReportItem(params);
     // }

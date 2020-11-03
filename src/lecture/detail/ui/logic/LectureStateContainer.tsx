@@ -13,6 +13,7 @@ function LectureStateContainer() {
   const [lectureState] = useLectureState();
   const ClassroomModalViewRef = useRef<ClassroomModalView>(null);
   const [lectureClassroom] = useLectureClassroom(true);
+  /* eslint-disable */
   const hookAction = useCallback<() => void>(() => {
     if (lectureClassroom !== undefined) {
       return ClassroomModalViewRef.current?.show();
@@ -21,6 +22,7 @@ function LectureStateContainer() {
       return lectureState.action();
     }
   }, [lectureState, lectureClassroom]);
+  /* eslint-enable */
   const onClassroomSelected = useCallback(
     (selected: ClassroomModel) => {
       if (
