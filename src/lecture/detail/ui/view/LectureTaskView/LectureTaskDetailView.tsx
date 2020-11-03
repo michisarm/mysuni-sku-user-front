@@ -1,11 +1,13 @@
 import { CommentList } from '@nara.drama/feedback';
-import {
-  LectureTask,
-  LectureTaskItem,
-} from 'lecture/detail/viewModel/LectureTask';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import React, { Fragment, useCallback, useRef } from 'react';
+import React, { Fragment, useCallback, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import LectureTaskDetailContentHeaderView from './LectureTaskDetailContentHeaderView';
+import depot, {
+  FileBox,
+  ValidationType,
+  DepotFileViewModel,
+} from '@nara.drama/depot';
 
 interface LectureTaskDetailViewProps {
   taskId: string;
@@ -23,6 +25,31 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   handleOnClickReplies,
 }) {
   const textContainerRef = useRef<HTMLDivElement>(null);
+
+  const [filesMap, setFilesMap] = useState<Map<string, any>>(
+    new Map<string, any>()
+  );
+
+  useEffect(() => {
+    getFileIds();
+  }, [taskDetail]);
+
+  const getFileIds = useCallback(() => {
+    const referenceFileBoxId = taskDetail && taskDetail.fileBoxId;
+
+    Promise.resolve().then(() => {
+      if (referenceFileBoxId) findFiles('reference', referenceFileBoxId);
+    });
+  }, [taskDetail]);
+
+  const findFiles = useCallback((type: string, fileBoxId: string) => {
+    depot.getDepotFiles(fileBoxId).then(files => {
+      console.log('files', files);
+      filesMap.set(type, files);
+      const newMap = new Map(filesMap.set(type, files));
+      setFilesMap(newMap);
+    });
+  }, []);
 
   console.log('taskDetail', taskDetail);
   return (
@@ -57,24 +84,24 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             <div className="detail">
               <div className="file-down-wrap">
                 <div className="down">
-                  <div className="title">첨부파일</div>
-                  <div className="detail">
-                    {/* <div className="file-down-wrap">
-                      {lectureFile.files.map(file => (
+                  <span>첨부파일 :</span>
+                  <br />
+                  <span>파일명</span>
+                  {filesMap.get('reference') &&
+                    filesMap
+                      .get('reference')
+                      .map((foundedFile: DepotFileViewModel, index: number) => (
                         <div className="down">
-                          <a onClick={() => fileDownload(file.id)}>
-                            <span>{file.name}</span>
+                          <a
+                            key={index}
+                            onClick={() =>
+                              depot.downloadDepotFile(taskDetail.fileBoxId)
+                            }
+                          >
+                            <span>{foundedFile.name}</span>
                           </a>
                         </div>
                       ))}
-                      <div className="all-down">
-                        <a onClick={allFilesDownload}>
-                          <Icon className="icon-down-type4" />
-                          <span>전체 다운로드</span>
-                        </a>
-                      </div>
-                    </div> */}
-                  </div>
                 </div>
               </div>
             </div>

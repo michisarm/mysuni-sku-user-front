@@ -20,6 +20,7 @@ function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
 }
 
 async function getTaskItem(postParam: any) {
+  console.log('postParam', postParam);
   const lectureTaskDetail: LectureTaskDetail = {
     id: '',
     fileBoxId: '',
@@ -72,8 +73,10 @@ async function getTaskItem(postParam: any) {
         }
         if (findTaskDetailData.postBody) {
           lectureTaskDetail.contents = findTaskDetailData.postBody.contents;
+          lectureTaskDetail.fileBoxId = findTaskDetailData.postBody.fileBoxId;
         } else {
           lectureTaskDetail.contents = findTaskDetailData.contents;
+          lectureTaskDetail.contents = '';
         }
         return lectureTaskDetail;
       }
@@ -85,6 +88,8 @@ export async function getTaskDetailCube(postParam: any): Promise<void> {
   // void : return이 없는 경우 undefined
   if (postParam.id !== undefined) {
     // const addflag = !!getLectureTaskItem();
+    console.log('postParam', postParam);
+
     const taskItem = await getTaskItem(postParam);
     if (taskItem !== undefined) {
       //
