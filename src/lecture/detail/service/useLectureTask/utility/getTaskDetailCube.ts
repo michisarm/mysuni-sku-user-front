@@ -3,8 +3,10 @@
 // http://localhost:3000/api/personalCube/cubeintros/bb028da0-361e-4439-86cf-b544e642215
 
 import {
+  deleteTaskPost,
   findFileBox,
   findPersonalCube,
+  getCommentFeedbackId,
   getTaskCreateId,
   getTaskDetail,
 } from 'lecture/detail/api/mPersonalCubeApi';
@@ -20,7 +22,6 @@ function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
 }
 
 async function getTaskItem(postParam: any) {
-  console.log('postParam', postParam);
   const lectureTaskDetail: LectureTaskDetail = {
     id: '',
     fileBoxId: '',
@@ -41,20 +42,17 @@ async function getTaskItem(postParam: any) {
   //
   if (postParam.id !== '') {
     {
-      //TODO. 리스트 api 수정 되면 변경하도록
       const findTaskDetailData = await getTaskDetail(
         postParam.id,
         postParam.type
       );
 
-      if (findTaskDetailData.postBody) {
-        //첨부파일 api
-        const findTaskDetailFileData = await findFileBox(
-          findTaskDetailData.postBody.fileBoxId
+      if (postParam.type === 'child') {
+        const replyData = await getCommentFeedbackId(
+          findTaskDetailData.commentFeedbackId
         );
       }
 
-      console.log(findTaskDetailData);
       if (findTaskDetailData) {
         if (findTaskDetailData.post) {
           lectureTaskDetail.id = findTaskDetailData.post.id;
@@ -80,7 +78,6 @@ async function getTaskItem(postParam: any) {
           lectureTaskDetail.contents = findTaskDetailData.contents;
           lectureTaskDetail.fileBoxId = findTaskDetailData.fileBoxId;
         }
-        console.log('lectureTaskDetail', lectureTaskDetail);
         return lectureTaskDetail;
       }
     }
@@ -88,27 +85,20 @@ async function getTaskItem(postParam: any) {
 }
 
 export async function getTaskDetailCube(postParam: any): Promise<void> {
-  // void : return이 없는 경우 undefined
   if (postParam && postParam.id !== undefined) {
-    // const addflag = !!getLectureTaskItem();
-    console.log('postParam', postParam);
-
     const taskItem = await getTaskItem(postParam);
     if (taskItem !== undefined) {
-      //
       setLectureTaskDetail({ ...taskItem });
     }
   }
 }
 
 export async function getTaskLearningCardId(lectureId: string) {
-  // void : return이 없는 경우 undefined
-
-  // if (postParam.id !== undefined) {
-  // const addflag = !!getLectureTaskItem();
   const taskItem = await getTaskCreateId(lectureId);
-
   return taskItem;
+}
 
-  // return taskItem
+export async function deleteLectureTaskPost(id: string, type: string) {
+  const deleteItem = await deleteTaskPost(id, type);
+  return deleteItem;
 }

@@ -70,7 +70,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   );
 }
 
-const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function LectureTestView({
+const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function LectureTeskView({
   taskItem,
   moreView,
   handleClickTaskRow,

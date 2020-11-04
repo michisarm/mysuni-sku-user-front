@@ -19,6 +19,7 @@ import {
   LectureTask,
   // LectureTaskChild,
 } from 'lecture/detail/viewModel/LectureTask';
+import { compareAscendingByTime } from '../../../utility/lectureTaskHelper';
 
 function getPersonalCubeByParams(cubeId: string): Promise<PersonalCube> {
   return findPersonalCube(cubeId);
@@ -118,6 +119,10 @@ async function getTaskItem(
               });
             });
           }
+
+          lectureTask.items.forEach(value => {
+            value.childItems.sort(compareAscendingByTime);
+          });
 
           const commentFeedbackIdArr: string[] = [];
           lectureTask.items.map((item, idx) => {

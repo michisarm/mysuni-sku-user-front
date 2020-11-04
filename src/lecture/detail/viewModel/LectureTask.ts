@@ -26,7 +26,6 @@ export interface LectureTaskItem {
   count: number;
   childItems: LectureTaskChildItem[];
   commentFeedbackId?: string;
-  // replies: LectureTaskRepliesItem[];
 }
 
 export interface LectureTaskChildItem {

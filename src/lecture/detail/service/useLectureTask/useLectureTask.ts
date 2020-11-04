@@ -42,7 +42,6 @@ export function useLectureTask(): [TaskValue] {
   // const [tabFlag, setTabFlag] = useState<string>('Posts');
 
   const param = useLectureRouterParams();
-  const tab = getLectureTaskTab();
 
   useEffect(() => {
     if (param && param.contentId !== undefined) {
@@ -54,6 +53,7 @@ export function useLectureTask(): [TaskValue] {
         limit: 10,
       });
       setLectureTaskViewType('list');
+      setLectureTaskTab('Posts');
       setLectureTaskOffset(0);
     }
   }, [params]);
@@ -88,7 +88,6 @@ export function useLectureTask(): [TaskValue] {
       if (getLectureTaskTab() === 'Overview') {
         return;
       }
-      console.log('getLectureTaskTab()', getLectureTaskTab());
       getCubeLectureTask(
         contentId,
         lectureId,
@@ -123,7 +122,6 @@ export function useLectureTask(): [TaskValue] {
     }
     return onLectureTaskTab(next => {
       console.log('next', next);
-
       if (next === 'Overview') {
         setLectureTaskViewType('Overview');
         return;

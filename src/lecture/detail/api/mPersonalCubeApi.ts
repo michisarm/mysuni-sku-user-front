@@ -102,6 +102,13 @@ export function getTaskDetail(
   }
 }
 
+export function getCommentFeedbackId(commentFeedbackId: string): Promise<any> {
+  const url = `${FEEDBACK_URL}/feedback/${commentFeedbackId}/comment`;
+  return axiosApi.get<any>(url).then(response => {
+    return response;
+  });
+}
+
 export function getTaskDetailBody(postId: string): Promise<TaskDetailBody> {
   const url = `${BASE_URL}/posts/${postId}`;
   return axiosApi.get<TaskDetailBody>(url).then(response => {
@@ -114,6 +121,16 @@ export function getTaskCreateId(lectureId: string): Promise<any> {
   return axiosApi.get<any>(url).then(response => {
     return response && response.data;
   });
+}
+
+export function deleteTaskPost(postId: string, postType: string): Promise<any> {
+  const url = `${BASE_URL}/posts/${postId}`;
+  const replyUrl = `${BASE_URL}/replies/${postId}`;
+  if (postType === 'parent') {
+    return axiosApi.delete(url);
+  } else {
+    return axiosApi.delete(replyUrl);
+  }
 }
 
 export function findFileBox(depotIds: string) {

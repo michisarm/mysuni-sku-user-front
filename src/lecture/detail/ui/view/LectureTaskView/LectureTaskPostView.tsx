@@ -5,7 +5,7 @@ import {
 import React, { Fragment, useCallback, useState } from 'react';
 
 import moment from 'moment';
-import { Button, Icon, Segment } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import LectureTaskTopLineView from './LectureTaskTopLineView';
 import { getLectureTaskOffset } from 'lecture/detail/store/LectureTaskStore';
 
@@ -70,7 +70,7 @@ function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
   );
 }
 
-const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function LectureTestView({
+const LectureTaskPostView: React.FC<LectureTaskPostViewProps> = function LectureTeskView({
   taskItem,
   moreView,
   handleClickTaskRow,

@@ -5,7 +5,6 @@ import { observer } from 'mobx-react';
 import moment from 'moment';
 import { Button, Icon } from 'semantic-ui-react';
 import { LectureTaskDetail } from 'lecture/detail/viewModel/LectureTaskDetail';
-import { useCallback } from 'react';
 
 interface Props {
   taskDetail: LectureTaskDetail;
@@ -17,7 +16,7 @@ interface Props {
   reply?: boolean;
   readCount?: number;
   onClickList?: (e: any) => void;
-  onClickDelete?: (e: any) => void;
+  onClickDelete: (id: string) => void;
   onClickModify: (id: string) => void;
   onClickReplies: (id: string) => void;
 }
@@ -49,6 +48,10 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
 
     const handelClickReplies = () => {
       onClickReplies(taskDetail.id);
+    };
+
+    const handelClickDelete = () => {
+      onClickDelete(taskDetail.id);
     };
 
     return (
@@ -86,7 +89,7 @@ class LectureTaskDetailContentHeaderView extends Component<Props> {
                       <Button
                         icon
                         className="left postset delete"
-                        onClick={onClickDelete}
+                        onClick={handelClickDelete}
                       >
                         <Icon name="delete" />
                         Delete

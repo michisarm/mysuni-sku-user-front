@@ -1,16 +1,8 @@
-import {
-  LectureTask,
-  LectureTaskItem,
-} from 'lecture/detail/viewModel/LectureTask';
-import React, { Fragment, useCallback, useState } from 'react';
+import { LectureTask } from 'lecture/detail/viewModel/LectureTask';
+import React, { Fragment, useCallback } from 'react';
 
-import moment from 'moment';
-import { Button, Icon, Segment } from 'semantic-ui-react';
-import LectureTaskTopLineView from './LectureTaskTopLineView';
-import {
-  getLectureTaskOffset,
-  getLectureTaskTab,
-} from 'lecture/detail/store/LectureTaskStore';
+import { Segment } from 'semantic-ui-react';
+import { getLectureTaskTab } from 'lecture/detail/store/LectureTaskStore';
 import LectureTaskPostView from './LectureTaskPostView';
 import LectureTaskMyPostView from './LectureTaskMyPostView';
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
@@ -36,61 +28,7 @@ interface LectureTaskViewProps {
   handelClickCreateTask?: () => void;
 }
 
-function renderPostRow(task: LectureTaskItem, handleClickTaskRow: any) {
-  let childElement = null;
-
-  if (task.childItems) {
-    childElement = task.childItems.map((child, index) => {
-      return (
-        <a
-          target="_blank"
-          className="row reply"
-          key={index}
-          onClick={() => handleClickTaskRow({ id: child.id, type: 'child' })}
-        >
-          <span className="cell title">
-            <Icon className="reply16-b" />
-            <span className="blind">reply</span>
-            <span className="ellipsis">
-              {child.title}[{child.count}]
-            </span>
-          </span>
-          <span className="cell category">{child.writer}</span>
-          <span className="cell status">{child.readCount}</span>
-          <span className="cell date">
-            {task.time && moment(task.time).format('YYYY.MM.DD')}
-          </span>
-        </a>
-      );
-    });
-  }
-
-  return (
-    <>
-      <a
-        target="_blank"
-        className="row"
-        onClick={() => handleClickTaskRow({ id: task.id, type: 'child' })}
-      >
-        <span className="cell title">
-          <span className="inner">
-            <span className="ellipsis">
-              {task.title}[{task.count}]
-            </span>
-          </span>
-        </span>
-        <span className="cell category">{task.writer}</span>
-        <span className="cell status">{task.readCount}</span>
-        <span className="cell date">
-          {task.time && moment(task.time).format('YYYY.MM.DD')}
-        </span>
-      </a>
-      {childElement}
-    </>
-  );
-}
-
-const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView({
+const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTeskView({
   taskItem,
   lectureDescription,
   lectureSubcategory,
@@ -103,6 +41,7 @@ const LectureTaskView: React.FC<LectureTaskViewProps> = function LectureTestView
   handelClickCreateTask,
 }) {
   const tabType = getLectureTaskTab();
+
   const onHandleClickTaskRow = useCallback(
     param => {
       handleClickTaskRow!(param);
