@@ -25,8 +25,13 @@ import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 function getCoursePlanComplexByParams(
   params: LectureParams
 ): Promise<CoursePlanComplex> {
-  const { coursePlanId, serviceId } = params;
-  return findCoursePlanContents(coursePlanId!, serviceId!);
+  const { coursePlanId, serviceId, contentId, lectureId } = params;
+  if (contentId !== undefined && contentId !== null) {
+    // Program의 Course(Course in Course)
+    return findCoursePlanContents(contentId!, lectureId!);
+  } else {
+    return findCoursePlanContents(coursePlanId!, serviceId!); // Course
+  }
 }
 
 async function getTestItem(examId: string) {
@@ -63,14 +68,27 @@ export async function getTestItemMapFromCourse(
   params: LectureParams
 ): Promise<LectureTestItem | undefined> {
   // void : return이 없는 경우 undefined
-
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
 
+  let courseLectureIds: string[] = [];
+  let lectureCardIds: string[] = [];
+  let serviceId = '';
+  if (coursePlanComplex.coursePlanContents.courseSet.type === 'Card') {
+    lectureCardIds = coursePlanComplex.courseLecture.lectureCardUsids;
+    serviceId = coursePlanComplex.courseLecture.usid;
+  } else if (
+    coursePlanComplex.coursePlanContents.courseSet.type === 'Program'
+  ) {
+    courseLectureIds = coursePlanComplex.programLecture.courseLectureUsids;
+    lectureCardIds = coursePlanComplex.programLecture.lectureCardUsids;
+    serviceId = coursePlanComplex.programLecture.usid;
+  }
+
   const studentInfo = await studentInfoView({
-    courseLectureIds: [],
-    lectureCardIds: coursePlanComplex.courseLecture.lectureCardUsids,
+    courseLectureIds,
+    lectureCardIds,
     preLectureCardIds: [],
-    serviceId: coursePlanComplex.courseLecture.usid,
+    serviceId,
   });
 
   let examId =
@@ -81,11 +99,12 @@ export async function getTestItemMapFromCourse(
 
   if (examId === undefined || examId === null || examId === '') {
     // 랜덤 지정된 Test
-    await setCourseStudentExamId(params.coursePlanId!, studentInfo.own.id).then(
-      response => {
-        examId = response.testId;
-      }
-    );
+    await setCourseStudentExamId(
+      coursePlanComplex.coursePlan.coursePlanId!,
+      studentInfo.own.id
+    ).then(response => {
+      examId = response.testId;
+    });
   }
 
   if (examId !== undefined) {
@@ -95,5 +114,6 @@ export async function getTestItemMapFromCourse(
     }
     return testItem;
   }
+
   return undefined;
 }

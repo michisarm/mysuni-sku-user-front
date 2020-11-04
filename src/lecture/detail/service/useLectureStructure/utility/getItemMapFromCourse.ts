@@ -123,7 +123,7 @@ async function getReportItem(
     coursePlanComplex.coursePlan.reportFileBox.reportName !== ''
   ) {
     let state: State = 'None';
-    if (student !== undefined) {
+    if (student !== undefined && student !== null) {
       if (
         student.homeworkContent !== null ||
         student.homeworkFileBoxId !== null

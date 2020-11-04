@@ -24,30 +24,36 @@ import CoursePlanComplex from 'lecture/detail/model/CoursePlanComplex';
 function getCoursePlanComplexByParams(
   params: LectureParams
 ): Promise<CoursePlanComplex> {
-  const { coursePlanId, serviceId } = params;
-  return findCoursePlanContents(coursePlanId!, serviceId!);
+  const { coursePlanId, serviceId, contentId, lectureId } = params;
+  if (contentId !== undefined && contentId !== null) {
+    // Program의 Course(Course in Course)
+    return findCoursePlanContents(contentId!, lectureId!);
+  } else {
+    return findCoursePlanContents(coursePlanId!, serviceId!); // Course
+  }
 }
 
 export async function getTestStudentItemMapFromCourse(
   params: LectureParams
 ): Promise<void> {
   // void : return이 없는 경우 undefined
-
   const coursePlanComplex = await getCoursePlanComplexByParams(params);
-  const studentInfo = await studentInfoView({
-    courseLectureIds: [],
-    lectureCardIds: coursePlanComplex.courseLecture.lectureCardUsids,
-    preLectureCardIds: [],
-    serviceId: coursePlanComplex.courseLecture.usid,
-  });
-
-  if (studentInfo.own !== null) {
-    setLectureTestStudentItem({
-      studentId: studentInfo.own.id,
-      serviceType: studentInfo.own.serviceType,
-      learningState: studentInfo.own.learningState,
-      examId: studentInfo.own.studentScore.examId,
-      paperId: studentInfo.own.studentScore.paperId,
+  if (coursePlanComplex.courseLecture.usid !== null) {
+    const studentInfo = await studentInfoView({
+      courseLectureIds: [],
+      lectureCardIds: coursePlanComplex.courseLecture.lectureCardUsids,
+      preLectureCardIds: [],
+      serviceId: coursePlanComplex.courseLecture.usid,
     });
+
+    if (studentInfo.own !== null) {
+      setLectureTestStudentItem({
+        studentId: studentInfo.own.id,
+        serviceType: studentInfo.own.serviceType,
+        learningState: studentInfo.own.learningState,
+        examId: studentInfo.own.studentScore.examId,
+        paperId: studentInfo.own.studentScore.paperId,
+      });
+    }
   }
 }
