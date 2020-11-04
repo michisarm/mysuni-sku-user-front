@@ -7,6 +7,7 @@ import {
   DiskFileViewModel,
   EXTENSION_WHITELIST,
   FileBox,
+  FileBox2,
   fileUtil,
   MyDrive,
   PatronType,
@@ -694,7 +695,7 @@ class AplCreateContainer extends React.Component<Props, States> {
               <label>첨부파일</label>
               <div className="lg-attach">
                 <div className="attach-inner">
-                  <FileBox
+                  <FileBox2
                     vaultKey={{keyString: 'sku-depot', patronType: PatronType.Audience}}
                     patronKey={{keyString: 'sku-denizen', patronType: PatronType.Audience}}
                     /*validations={[{ type: ValidationType.Duplication, validator: depotHelper.duplicationValidator },{ type: ValidationType.Extension, validator: depotHelper.extensionValidator }]}*/
