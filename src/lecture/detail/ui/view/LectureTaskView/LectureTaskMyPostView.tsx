@@ -76,11 +76,8 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
   handleClickTaskRow,
   handelClickCreateTask,
 }) {
-  const [activatedTab, setActivatedTab] = useState<string>('myPost');
-
   const onHandleClickTaskRow = useCallback(
     param => {
-      console.log('taskId', param);
       handleClickTaskRow(param);
     },
     [taskItem]
@@ -96,27 +93,24 @@ const LectureTaskMyPostView: React.FC<LectureTaskMyPostViewProps> = function Lec
         totalCount={taskItem.totalCount}
         handelClickCreateTask={handelClickCreateTask}
       />
-
-      {activatedTab === 'myPost' && (
-        <>
-          <div className="su-list qna">
-            {taskItem.items.map((task, index) => {
-              return renderPostRow(task, onHandleClickTaskRow);
-            })}
+      <>
+        <div className="su-list qna">
+          {taskItem.items.map((task, index) => {
+            return renderPostRow(task, onHandleClickTaskRow);
+          })}
+        </div>
+        {taskItem.items.length < taskItem.totalCount && (
+          <div
+            className="more-comments"
+            onClick={() => onHandleClickMoreView()}
+          >
+            <Button icon className="left moreview">
+              <Icon className="moreview" />
+              list more
+            </Button>
           </div>
-          {taskItem.items.length < taskItem.totalCount && (
-            <div
-              className="more-comments"
-              onClick={() => onHandleClickMoreView()}
-            >
-              <Button icon className="left moreview">
-                <Icon className="moreview" />
-                list more
-              </Button>
-            </div>
-          )}
-        </>
-      )}
+        )}
+      </>
     </Fragment>
   );
 };

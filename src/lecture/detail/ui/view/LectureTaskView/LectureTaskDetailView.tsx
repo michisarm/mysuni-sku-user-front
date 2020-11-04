@@ -10,7 +10,6 @@ interface LectureTaskDetailViewProps {
   taskId: string;
   taskDetail: LectureTaskDetail;
   detailType: string;
-  // moreView: (offset: number) => void;
   handleOnClickList: (id: string) => void;
   handleOnClickModify: (id: string, type: string) => void;
   handleOnClickReplies: (id: string) => void;
@@ -26,7 +25,6 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
   handleOnClickReplies,
   handleOnClickDelete,
 }) {
-  console.log('taskId', taskId);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
   const [filesMap, setFilesMap] = useState<Map<string, any>>(
@@ -53,13 +51,22 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
     });
   }, []);
 
-  const OnClickModify = useCallback((id: string, type: string) => {
-    handleOnClickModify(id, type);
+  const OnClickModify = useCallback(() => {
+    handleOnClickModify(taskId, detailType);
   }, []);
 
-  const OnClickDelete = useCallback((id: string, type: string) => {
-    handleOnClickDelete(id, type);
+  const OnClickDelete = useCallback(() => {
+    handleOnClickDelete(taskId, detailType);
   }, []);
+
+  const OnClicList = useCallback(() => {
+    handleOnClickList(taskId);
+  }, []);
+
+  const onClickReplies = useCallback(() => {
+    handleOnClickReplies(taskId);
+  }, []);
+
   return (
     <Fragment>
       {taskDetail && (
@@ -72,10 +79,10 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             readCount={taskDetail.readCount}
             deletable={true}
             reply={detailType === 'parent' ? true : false}
-            onClickList={handleOnClickList}
-            onClickModify={id => OnClickModify(id, detailType)}
-            onClickReplies={handleOnClickReplies}
-            onClickDelete={id => OnClickDelete(id, detailType)}
+            onClickList={OnClicList}
+            onClickModify={OnClickModify}
+            onClickReplies={onClickReplies}
+            onClickDelete={OnClickDelete}
           />
 
           <div className="class-guide-txt fn-parents ql-snow">
@@ -117,34 +124,33 @@ const LectureTaskDetailView: React.FC<LectureTaskDetailViewProps> = function Lec
             companyName={taskDetail.writer.companyName}
             departmentName={taskDetail.writer.companyCode}
           />
-          {/* 여기에 버튼 추가 */}
           <div className="task-read-bottom">
             <Button
               className="ui icon button left post edit"
-              onClickList={handleOnClickList}
+              onClick={OnClickModify}
             >
               <Icon className="edit" />
               Edit
             </Button>
             <Button
               className="ui icon button left post delete"
-              // onClick={handelClickCreateTask}
+              onClick={OnClickDelete}
             >
               <Icon className="delete" />
               delete
             </Button>
             <Button
               className="ui icon button left post reply"
-              // onClick={handelClickCreateTask}
+              onClick={onClickReplies}
             >
               <Icon className="reply" />
               reply
             </Button>
             <Button
               className="ui icon button left post list2"
-              // onClick={handelClickCreateTask}
+              onClick={OnClicList}
             >
-              <Icon className="list2" />
+              <Icon className="list" />
               list
             </Button>
           </div>
