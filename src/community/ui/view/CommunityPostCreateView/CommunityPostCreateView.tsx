@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox, Form, Icon, Radio } from 'semantic-ui-react';
+import Editor from './Editor';
 
 function CommunityPostCreateView() {
   return (
@@ -34,7 +35,7 @@ function CommunityPostCreateView() {
         <Form.Field>
           <label>본문</label>
           <div className="ui editor-wrap">
-            {/*<Editor />*/}
+            <Editor contents=""/>
           </div>
         </Form.Field>
 
