@@ -26,18 +26,20 @@ const LectureInstructorView: React.FC<LectureInstructorViewProps> = function Lec
         </div>
       </div>
       <div className="scrolling course-profile">
-        {lectureInstructor.instructors.map(({ name, company, represent }) => (
-          <div className="ui profile tool-tip">
-            {represent === 1 && <Represent />}
-            <div className="pic s80">
-              <img alt="프로필사진" className="ui image" />
+        {lectureInstructor &&
+          lectureInstructor.instructors &&
+          lectureInstructor.instructors.map(({ name, company, represent }) => (
+            <div className="ui profile tool-tip">
+              {represent === 1 && <Represent />}
+              <div className="pic s80">
+                <img alt="프로필사진" className="ui image" />
+              </div>
+              <i>
+                <span className="tip-name">{name}</span>
+                <a className="tip-id">{company}</a>
+              </i>
             </div>
-            <i>
-              <span className="tip-name">{name}</span>
-              <a className="tip-id">{company}</a>
-            </i>
-          </div>
-        ))}
+          ))}
       </div>
     </>
   );

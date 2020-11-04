@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { setLectureDiscussion } from '../../store/LectureDiscussionStore';
 import {
   onLectureStructure,
   setLectureStructure,
@@ -61,6 +62,16 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
   ) {
     lectureStructure.report.activated = true;
   }
+  if (
+    lectureStructure.discussion !== undefined &&
+    lectureStructure.discussion.path === pathname
+  ) {
+    lectureStructure.discussion.activated = true;
+    setLectureDiscussion({
+      id: lectureStructure.discussion.id,
+      name: lectureStructure.discussion.name,
+    });
+  }
 
   lectureStructure.cubes.forEach(cube => {
     if (cube.path === pathname) {
@@ -88,6 +99,16 @@ function mergeActivated(lectureStructure: LectureStructure, pathname: string) {
     }
     if (course.report !== undefined && course.report.path === pathname) {
       course.report.activated = true;
+    }
+    if (
+      course.discussion !== undefined &&
+      course.discussion.path === pathname
+    ) {
+      course.discussion.activated = true;
+      setLectureDiscussion({
+        id: course.discussion.id,
+        name: course.discussion.name,
+      });
     }
     if (course.cubes !== undefined) {
       course.cubes.forEach(cube => {

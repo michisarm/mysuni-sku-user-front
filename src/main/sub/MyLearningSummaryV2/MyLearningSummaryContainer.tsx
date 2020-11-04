@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { reactAutobind, mobxHelper } from '@nara.platform/accent';
 import { inject, observer } from 'mobx-react';
@@ -9,37 +10,31 @@ import profileImg from 'style/../../public/images/all/img-profile-56-px.png';
 import { Icon, Image } from 'semantic-ui-react';
 import { ActionLogService } from 'shared/stores';
 import { SkProfileService } from 'profile/stores';
-import { BadgeService } from 'certification/stores';
+// import { BadgeService } from 'certification/stores';
 import { MyLearningSummaryService } from 'myTraining/stores';
 import { MyLearningSummaryModal } from 'myTraining';
 import { FavoriteChannelChangeModal } from 'shared';
-import {
-  HeaderWrapperView,
-  ItemWrapper,
-  HeaderItemView,
-  AdditionalToolsMyLearning,
-} from './MyLearningSummaryElementsView';
+import { HeaderWrapperView, ItemWrapper, HeaderItemView, AdditionalToolsMyLearning } from './MyLearningSummaryElementsView';
 import { ChannelModel } from '../../../college/model';
 import mainRoutePaths from '../../routePaths';
 import lectureRoutePaths from '../../../lecture/routePaths';
 import supportRoutePaths from '../../../board/routePaths';
 
-interface Props extends RouteComponentProps {
-  actionLogService?: ActionLogService;
-  skProfileService?: SkProfileService;
-  myLearningSummaryService?: MyLearningSummaryService;
 
-  badgeService?: BadgeService;
+interface Props extends RouteComponentProps {
+  actionLogService?: ActionLogService,
+  skProfileService?: SkProfileService,
+  myLearningSummaryService?: MyLearningSummaryService,
+
+  // badgeService?: BadgeService
 }
 
-@inject(
-  mobxHelper.injectFrom(
-    'shared.actionLogService',
-    'profile.skProfileService',
-    'myTraining.myLearningSummaryService',
-    'badge.badgeService'
-  )
-)
+@inject(mobxHelper.injectFrom(
+  'shared.actionLogService',
+  'profile.skProfileService',
+  'myTraining.myLearningSummaryService',
+  // 'badge.badgeService'
+))
 @observer
 @reactAutobind
 class MyLearningSummaryContainer extends Component<Props> {
@@ -51,15 +46,11 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   init() {
     //
-    const {
-      myLearningSummaryService,
-      badgeService,
-      skProfileService,
-    } = this.props;
-    myLearningSummaryService!.findMyLearningSummary();
-    // 관심채널설정 refresh 할때 날아가는 현상으로 추가
+    const { myLearningSummaryService, skProfileService } = this.props;
+    myLearningSummaryService!.findTotalMyLearningSummary();
     skProfileService!.findStudySummary();
-    badgeService!.getCountOfBadges();
+    // badgeService!.getCountOfBadges();
+
   }
 
   getHourMinute(minuteTime: number) {
@@ -115,21 +106,14 @@ class MyLearningSummaryContainer extends Component<Props> {
 
   render() {
     //
-    const {
-      myLearningSummaryService,
-      skProfileService,
-      badgeService,
-    } = this.props;
+    const { myLearningSummaryService, skProfileService } = this.props;
     const { skProfile, studySummaryFavoriteChannels } = skProfileService!;
     const { member } = skProfile;
-    const { myLearningSummary } = myLearningSummaryService!;
-    const favoriteChannels = studySummaryFavoriteChannels.map(
-      channel =>
-        new ChannelModel({ ...channel, channelId: channel.id, checked: true })
+    const { totalMyLearningSummary } = myLearningSummaryService!;
+    const favoriteChannels = studySummaryFavoriteChannels.map((channel) =>
+      new ChannelModel({ ...channel, channelId: channel.id, checked: true })
     );
-    const { hour, minute } = this.getHourMinute(
-      myLearningSummary.totalLearningTime
-    );
+    const { hour, minute } = this.getHourMinute(totalMyLearningSummary.totalLearningTime);
     let total: any = null;
 
     if (hour < 1 && minute < 1) {
@@ -188,7 +172,13 @@ class MyLearningSummaryContainer extends Component<Props> {
 
           <ItemWrapper>
             <div className="title">총 학습시간</div>
-            <MyLearningSummaryModal trigger={<a>{total}</a>} />
+            <MyLearningSummaryModal
+              trigger={(
+                <a>
+                  {total}
+                </a>
+              )}
+            />
           </ItemWrapper>
 
           <ItemWrapper
@@ -196,7 +186,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           >
             <HeaderItemView
               label="완료된 학습"
-              count={myLearningSummary.completeLectureCount}
+              count={totalMyLearningSummary.completeLectureCount}
               onClick={this.onClickComplete}
             />
           </ItemWrapper>
@@ -204,7 +194,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Stamp')}>
             <HeaderItemView
               label="My Stamp"
-              count={myLearningSummary.acheiveStampCount}
+              count={totalMyLearningSummary.acheiveStampCount}
               onClick={this.onClickStamp}
             />
           </ItemWrapper>
@@ -213,7 +203,7 @@ class MyLearningSummaryContainer extends Component<Props> {
           <ItemWrapper onClick={() => this.onClickLearningSummary('My Badge')}>
             <HeaderItemView
               label="My Badge"
-              count={badgeService!.earnedCount}
+              count={totalMyLearningSummary.achieveBadgeCount}
               onClick={this.onClickBadge}
             />
           </ItemWrapper>

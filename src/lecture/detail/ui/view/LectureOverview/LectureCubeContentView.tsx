@@ -8,6 +8,10 @@ import LectureFileView from './LectureFileView';
 import LectureSubcategoryView from './LectureCubeSubcategoryView';
 import LectureTagsView from './LectureTagsView';
 import LectureCubeInfoView from './LectureCubeInfoView';
+import LectureCommentContainer from '../../logic/LectureCommentContainer';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
+import LectureClassroom from '../../../viewModel/LectureClassroom';
+import LectureClassroomView from './LectureClassroomView';
 
 // http://ma.mysuni.sk.com/api/depot/depotFile/multiple?depotIds=%255B%252250%2522%255D
 
@@ -16,13 +20,8 @@ interface LectureCubeContentViewProps {
   lectureSubcategory?: LectureSubcategory;
   lectureTags?: LectureTags;
   lectureFile?: LectureFile;
-}
-
-function hashLink(hash: string) {
-  const element = document.getElementById(hash);
-  if (element !== null) {
-    element.scrollIntoView();
-  }
+  lectureComment?: LectureComment;
+  lectureClassroom?: LectureClassroom;
 }
 
 const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function LectureCubeContentView({
@@ -30,12 +29,16 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
   lectureSubcategory,
   lectureTags,
   lectureFile,
+  lectureComment,
+  lectureClassroom,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
   const overviewHashClick = useCallback(() => {
-    hashLink('lms-overview');
     setActivatedTab('overview');
+  }, []);
+  const commentHashClick = useCallback(() => {
+    setActivatedTab('comment');
   }, []);
   return (
     <>
@@ -46,23 +49,43 @@ const LectureCubeContentView: React.FC<LectureCubeContentViewProps> = function L
         >
           Overview
         </a>
-        <a href="#lms-comment" className="lms-comment">
-          Comment<span className="count">+12</span>
+        <a
+          onClick={commentHashClick}
+          className={
+            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+          }
+        >
+          Comment
+          <span className="count">
+            {lectureComment !== undefined
+              ? `+${lectureComment.commentsCount}`
+              : ''}
+          </span>
         </a>
       </div>
-      {lectureDescription && (
-        <LectureDescriptionView htmlContent={lectureDescription.description} />
+      {activatedTab === 'overview' && (
+        <>
+          {lectureDescription && (
+            <LectureDescriptionView
+              htmlContent={lectureDescription.description}
+            />
+          )}
+          <div className="badge-detail border-none">
+            {lectureSubcategory && (
+              <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
+            )}
+            {lectureFile && <LectureFileView lectureFile={lectureFile} />}
+            {lectureDescription && (
+              <LectureCubeInfoView lectureDescription={lectureDescription} />
+            )}
+            {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+          </div>
+          {lectureClassroom && (
+            <LectureClassroomView lectureClassroom={lectureClassroom} />
+          )}
+        </>
       )}
-      <div className="badge-detail border-none">
-        {lectureSubcategory && (
-          <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
-        )}
-        {lectureFile && <LectureFileView lectureFile={lectureFile} />}
-        {lectureDescription && (
-          <LectureCubeInfoView lectureDescription={lectureDescription} />
-        )}
-        {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-      </div>
+      {activatedTab === 'comment' && <LectureCommentContainer />}
     </>
   );
 };

@@ -446,7 +446,7 @@ const SelectOptions = {
     { key: '4', text: '최근 1개월', value: '4' },
     { key: '5', text: '최근 6개월', value: '5' },
     { key: '6', text: '최근 1년', value: '6' },
-  ],
+  ]
 };
 
 export default SelectOptions;

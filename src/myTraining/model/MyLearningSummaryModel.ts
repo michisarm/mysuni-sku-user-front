@@ -9,6 +9,7 @@ class MyLearningSummaryModel extends DramaEntityObservableModel {
   myCompanyLearningTime: number = 0;
   completeLectureCount: number = 0;
   acheiveStampCount: number = 0;
+  achieveBadgeCount: number = 0;
 
   aiCollegeTime: number = 0;
   dtCollegeTime: number = 0;
@@ -41,6 +42,7 @@ decorate(MyLearningSummaryModel, {
   myCompanyLearningTime: observable,
   completeLectureCount: observable,
   acheiveStampCount: observable,
+  achieveBadgeCount: observable,
   aiCollegeTime: observable,
   dtCollegeTime: observable,
   happyCollegeTime: observable,

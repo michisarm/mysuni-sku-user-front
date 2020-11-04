@@ -7,7 +7,7 @@ import SkProfileService from '../../../profile/present/logic/SkProfileService';
 
 
 interface Props {
-  skProfileService? : SkProfileService,
+  skProfileService?: SkProfileService,
   size?: 'mini' | 'tiny' | 'small' | 'large' | 'fullscreen',
   name: string,
   company: string,
@@ -16,7 +16,7 @@ interface Props {
 }
 
 interface States {
-  open : boolean,
+  open: boolean,
   photoTypeTemp: string,
   photoImageTemp: string,
 }
@@ -30,14 +30,14 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
   state = {
     open: false,
-    photoTypeTemp: '',
+    photoTypeTemp: '1',
     photoImageTemp: '',
   };
 
   onOpen() {
     //
     //초기 상태는 skprofile 조회 내용을 그대로 보여주기 위해 이전 설정을 초기화
-    this.setState({ open: true, photoTypeTemp: '', photoImageTemp: '' });
+    this.setState({ open: true, photoTypeTemp: '1', photoImageTemp: '' });
   }
 
   onClose() {
@@ -51,7 +51,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     const { skProfileService } = this.props;
     const { skProfile } = skProfileService!;
 
-    if (photoTypeTemp) skProfileService!.setProfileProp('photoType', photoTypeTemp );
+    if (photoTypeTemp) skProfileService!.setProfileProp('photoType', photoTypeTemp);
 
     if (photoImageTemp) skProfileService!.setProfileProp('photoImage', photoImageTemp);
 
@@ -68,10 +68,10 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     ];
 
     const hasNonPass = validations.some(validation => {
-      if ( typeof validation.validator === 'function' ) {
+      if (typeof validation.validator === 'function') {
         return !validation.validator(file);
       } else {
-        if (!validation.type || !validation.validValue ) {
+        if (!validation.type || !validation.validValue) {
           return false;
         }
         return !fileUtil.validate(file, validation.type, validation.validValue);
@@ -81,8 +81,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     return !hasNonPass;
   }
 
-  setProfileImageFile(file: File)
-  {
+  setProfileImageFile(file: File) {
     //
     if (!file || (file instanceof File && !this.validatedAll(file))) {
       return;
@@ -90,8 +89,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
 
     const fileReader = new FileReader();
 
-    fileReader.onload = (e: any) =>
-    {
+    fileReader.onload = (e: any) => {
       this.setState({ photoImageTemp: e.target.result });
     };
 
@@ -121,11 +119,9 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
     let photoFilePath: string = '';
 
     //IM 시스템으로부터 인터페이스받은 사용자 증명사진 보여줌.
-    if (protoType === '0')
-    {
+    if (protoType === '0') {
       photoFilePath = member && member.photoFilename && `${process.env.REACT_APP_SK_IM_PHOTO_ROOT_URL}/${member.companyCode.toLowerCase()}/${member.photoFilename}`;
-    } else if (protoType === '1')
-    {
+    } else if (protoType === '1') {
       //depot 서비스의 파일 업로드 API이용해서 업로드 호출후 반환된 이미지 base64 문자열을 그대로 보여줌.(profile 재조회 안함.)
 
       photoFilePath = photoImageTemp || skProfile!.photoImage; //base64Photo
@@ -145,7 +141,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
               <div className="left">
                 <div className="ui profile">
                   <div className="pic s110">
-                    <img src={photoFilePath} alt="userImg" id="blah" />
+                    <img src={photoFilePath} alt={photoFilePath ? 'userImg' : ''} id="blah" />
                   </div>
                 </div>
               </div>
@@ -155,7 +151,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                 <div className="text02">{department}</div>
                 <div className="upload">
                   <Form.Field>
-                    <Radio
+                    {/* <Radio
                       className="base mr15px"
                       label="IM"
                       name="radioGroup"
@@ -170,7 +166,7 @@ class ProfilPhotoChangeModal extends Component<Props, States> {
                       value="1"
                       onChange={(e: any, data: any) => this.setState({ photoTypeTemp: data.value })}
                       checked={protoType === '1'}
-                    />
+                    /> */}
                   </Form.Field>
                   {
                     protoType === '1' && (

@@ -1,6 +1,5 @@
 export default interface ReviewSummary {
-  versionBased: boolean;
-  maxStarCount: number;
-  reviewerCount: number;
+  id: string;
   average: number;
+  reviewerCount: number;
 }

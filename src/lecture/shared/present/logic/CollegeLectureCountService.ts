@@ -48,6 +48,14 @@ class CollegeLectureCountService {
     return total;
   }
 
+  getCollegesByChannelName(name: string) {
+    return this._collegeLectureCounts
+      .map(college => {
+        const selectedChannels = college.channelCounts.filter(channel => channel.name.includes(name));
+        return selectedChannels.length > 0 ? college : null;
+      });
+  }
+
   @action
   clearAll() {
     //

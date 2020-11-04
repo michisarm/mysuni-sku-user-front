@@ -15,4 +15,5 @@ export default interface LectureState {
   actionText?: string;
   action?: () => void;
   stateText?: string;
+  classroomSubmit?: (round: number, classroomId: string) => void;
 }

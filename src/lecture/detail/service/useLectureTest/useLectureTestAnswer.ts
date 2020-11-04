@@ -23,7 +23,7 @@ export function useLectureTestAnswer(): [AnswerValue] {
   const params = useParams<LectureParams>();
 
   const getCubeTestAnswerItem = useCallback((params: LectureParams) => {
-    getCubeLectureTestAnswer(params.cubeId!);
+    getCubeLectureTestAnswer(params);
   }, []);
 
   const getCourseTestAnswerItem = useCallback((params: LectureParams) => {

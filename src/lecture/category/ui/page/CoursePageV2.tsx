@@ -984,7 +984,6 @@ class CoursePageV2 extends Component<Props, State> {
   render() {
     //
     const { collegeService, coursePlanService } = this.props;
-    const { college } = collegeService;
     const { coursePlan } = coursePlanService;
     const typeViewObject = this.getTypeViewObject();
 
@@ -993,13 +992,13 @@ class CoursePageV2 extends Component<Props, State> {
         className="channel"
         breadcrumb={[
           {
-            text: `${college.name} College`,
-            path: routePaths.collegeLectures(college.collegeId),
+            text: `${coursePlan.category.college.name} College`,
+            path: routePaths.collegeLectures(coursePlan.category.college.id),
           },
           {
             text: `${coursePlan.category.channel.name} Channel`,
             path: routePaths.channelLectures(
-              college.collegeId,
+              coursePlan.category.college.id,
               coursePlan.category.channel.id
             ),
           },

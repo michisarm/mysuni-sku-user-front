@@ -11,6 +11,7 @@ import { getCubeLectureMedia } from './utility/getCubeLectureMedia';
 // import { setCubeLectureStudentReport } from './utility/setCubeLectureStudentReport';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 import { onLectureMedia } from 'lecture/detail/store/LectureMediaStore';
+import LectureRouterParams from 'lecture/detail/viewModel/LectureRouterParams';
 
 type TranscriptsValue = LectureTranscript[] | undefined;
 type MediaValue = LectureMedia | undefined;
@@ -21,9 +22,9 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
   const [transcriptsValue, setTranscriptsValue] = useState<TranscriptsValue>();
   const [mediaValue, setMediaValue] = useState<MediaValue>();
 
-  const params = useParams<LectureParams>();
+  const params = useLectureRouterParams();
 
-  const getCubeLectureMediaItem = useCallback((params: LectureParams) => {
+  const getCubeMediaItem = useCallback((params: LectureRouterParams) => {
     getCubeLectureMedia(params);
   }, []);
 
@@ -32,10 +33,12 @@ export function useLectureMedia(): [TranscriptsValue, MediaValue] {
   // }, []);
 
   useEffect(() => {
-    //if (params.cubeId !== undefined) {
-    getCubeLectureMediaItem(params);
+    console.log('params : ', params);
+    // if (params.cubeId !== undefined) {
+
+    params && getCubeMediaItem(params);
     // } else {
-    //   // getCourseReportItem(params);
+    // getCourseReportItem(params);
     // }
   }, [params]);
 

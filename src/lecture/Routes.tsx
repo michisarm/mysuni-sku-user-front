@@ -20,6 +20,37 @@ class Routes extends Component {
     //
     return (
       <Switch>
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/new"
+          component={PostFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId"
+          component={PostDetailPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/edit"
+          component={PostFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/new"
+          component={ReplyFormPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId"
+          component={ReplyDetailPage}
+        />
+        <Route
+          exact
+          path="/lecture/college/:collegeId/cube/:cubeId/lecture-card/:lectureCardId/posts/:postId/reply/:replyId/edit"
+          component={ReplyFormPage}
+        />
+
         {/* category */}
         <Redirect
           exact
@@ -131,6 +162,8 @@ class Routes extends Component {
           path="/lecture/recommend/channel/:channelId/pages/:pageNo"
           component={RecommendChannelLecturesPage}
         />
+
+        {/* community  */}
 
         <Route component={NotFoundPage} />
       </Switch>

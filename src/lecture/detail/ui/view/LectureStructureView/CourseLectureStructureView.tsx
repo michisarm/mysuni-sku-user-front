@@ -5,6 +5,7 @@ import {
   LectureStructureItemType,
 } from '../../../viewModel/LectureStructure';
 import CourseView from './CourseView';
+import DiscussionView from './DiscussionView';
 import ReportView from './ReportView';
 import SurveyView from './SurveyView';
 import TestView from './TestView';
@@ -52,6 +53,14 @@ const CourseLectureStructureView: React.FC<CourseLectureStructureViewProps> = fu
           state={lectureStructure.report.state}
           path={lectureStructure.report.path}
           activated={lectureStructure.report.activated}
+        />
+      )}
+      {lectureStructure.discussion !== undefined && (
+        <DiscussionView
+          name={lectureStructure.discussion.name}
+          state={lectureStructure.discussion.state}
+          path={lectureStructure.discussion.path}
+          activated={lectureStructure.discussion.activated}
         />
       )}
     </>

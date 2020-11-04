@@ -9,32 +9,49 @@ import PersonalCube from 'lecture/detail/model/PersonalCube';
 import LectureDescription from 'lecture/detail/viewModel/LectureOverview/LectureDescription';
 import LectureSummary from 'lecture/detail/viewModel/LectureOverview/LectureSummary';
 import { timeToHourMinuteFormat } from 'shared/helper/dateTimeHelper';
+import { CourseSetModel } from '../../../../../course/model';
+import { countByFeedbackId, findReviewSummary } from '../../../api/feedbackApi';
+import { findInMyLecture } from '../../../api/mytrainingApi';
+import InMyLectureCdo from '../../../model/InMyLectureCdo';
 import {
+  setInMyLectureCdo,
+  setLectureComment,
   setLectureCubeSummary,
   setLectureDescription,
   setLectureFile,
   setLectureInstructor,
   setLecturePrecourse,
+  setLectureReview,
   setLectureSubcategory,
   setLectureTags,
 } from '../../../store/LectureOverviewStore';
 import { getFiles } from '../../../utility/depotFilesHelper';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
 import LectureCubeSummary from '../../../viewModel/LectureOverview/LectureCubeSummary';
 import LectureFile from '../../../viewModel/LectureOverview/LectureFile';
 import LectureInstructor from '../../../viewModel/LectureOverview/LectureInstructor';
 import { getEmptyLecturePrecourse } from '../../../viewModel/LectureOverview/LecturePrecourse';
+import LectureReview from '../../../viewModel/LectureOverview/LectureReview';
 import LectureSubcategory from '../../../viewModel/LectureOverview/LectureSubcategory';
 import LectureTags from '../../../viewModel/LectureOverview/LectureTags';
 
-function getLectureSummary(
+function getEmpty(text?: string) {
+  if (text === undefined || text === null || text == '') {
+    return undefined;
+  }
+  return text;
+}
+
+async function getLectureSummary(
   personalCube: PersonalCube,
   cubeIntro: CubeIntro,
   lectureCard: LectureCard
-): LectureCubeSummary {
+): Promise<LectureCubeSummary> {
   const category = personalCube.category;
   const difficultyLevel = cubeIntro.difficultyLevel;
   const learningTime = timeToHourMinuteFormat(cubeIntro.learningTime);
   const operator = cubeIntro.operation.operator;
+  const mylecture = await findInMyLecture(lectureCard.usid, 'Card');
   return {
     name: personalCube.name,
     category: {
@@ -45,6 +62,7 @@ function getLectureSummary(
     learningTime,
     operator,
     passedCount: lectureCard.passedStudentCount,
+    mytrainingId: getEmpty(mylecture && mylecture.id),
   };
 }
 
@@ -89,6 +107,60 @@ function getLectureFile(fileBoxId: string): Promise<LectureFile> {
   return getFiles(fileBoxIds).then(files => ({ files }));
 }
 
+async function getLectureComment(
+  lectureCard: LectureCard
+): Promise<LectureComment> {
+  const { commentId, reviewId } = lectureCard;
+  if (commentId !== null) {
+    const { count } = await countByFeedbackId(commentId);
+    return { commentId, reviewId, commentsCount: count };
+  }
+  return { commentId, reviewId, commentsCount: 0 };
+}
+
+async function getLectureReview(
+  lectureCard: LectureCard
+): Promise<LectureReview> {
+  const { reviewId } = lectureCard;
+  if (reviewId !== null) {
+    const reviewSummary = await findReviewSummary(reviewId);
+    if (
+      reviewSummary !== null &&
+      reviewSummary !== undefined &&
+      reviewSummary.average !== undefined
+    ) {
+      return { average: reviewSummary.average, id: reviewSummary.id };
+    }
+  }
+  return { id: '', average: 0 };
+}
+
+function makeInMyLectureCdo(
+  personalCube: PersonalCube,
+  cubeIntro: CubeIntro,
+  lectureCard: LectureCard
+): InMyLectureCdo {
+  return {
+    serviceType: 'Card',
+    serviceId: lectureCard.usid,
+    category: personalCube.category,
+    name: personalCube.name,
+    description: cubeIntro.description.description,
+    cubeType: personalCube.contents.type,
+    learningTime: cubeIntro.learningTime,
+    stampCount: 0,
+    coursePlanId: '',
+    requiredSubsidiaries: personalCube.requiredSubsidiaries,
+    cubeId: personalCube.personalCubeId,
+    courseSetJson: new CourseSetModel(),
+    courseLectureUsids: [],
+    lectureCardUsids: [],
+    reviewId: lectureCard.reviewId,
+    baseUrl: personalCube.iconBox.baseUrl,
+    servicePatronKeyString: personalCube.patronKey.keyString,
+  };
+}
+
 function findCube(personalCubeId: string) {
   return findPersonalCube(personalCubeId);
 }
@@ -104,7 +176,7 @@ export async function getCubeLectureOverview(
   const personalCube = await findCube(personalCubeId);
   const cubeIntro = await findIntro(personalCube.cubeIntro.id);
   const lectureCard = await findLectureCard(lectureCardId);
-  const lectureSummary = getLectureSummary(
+  const lectureSummary = await getLectureSummary(
     personalCube,
     cubeIntro,
     lectureCard
@@ -123,4 +195,16 @@ export async function getCubeLectureOverview(
     const lectureFile = await getLectureFile(personalCube.contents.fileBoxId);
     setLectureFile(lectureFile);
   }
+  const lectureComment = await getLectureComment(lectureCard);
+  if (
+    lectureComment.commentId === undefined ||
+    lectureComment.commentId === null
+  ) {
+    setLectureComment();
+  } else {
+    setLectureComment(lectureComment);
+  }
+  const lectureReview = await getLectureReview(lectureCard);
+  setLectureReview(lectureReview);
+  setInMyLectureCdo(makeInMyLectureCdo(personalCube, cubeIntro, lectureCard));
 }

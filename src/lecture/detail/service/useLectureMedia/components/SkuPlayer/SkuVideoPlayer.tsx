@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
-import Plyr from 'plyr';
-import Hls from 'hls.js';
+// import Plyr from 'plyr';
+// import Hls from 'hls.js';
 import './plyr/plyr.css';
 
 const proxyUrl: string = 'http://proxy-panopto.api.mysuni.sk.com';
@@ -12,8 +12,8 @@ const mySuniServerDomain: string = 'http://ma.mysuni.sk.com';
 let videoSrc: string = '';
 let m3u8Src: string = '';
 let videoType: string = '';
-let player: Plyr;
-let hls: Hls;
+// let player: Plyr;
+// let hls: Hls;
 let videoTag: HTMLMediaElement;
 let durationTime: number = 0;
 let beforeCurrentTime: number = 0;
@@ -124,13 +124,13 @@ class SkuVideoPlayer extends React.PureComponent<IProps> {
       .then(res => res.json())
       .then(
         result => {
-          player.on('canplay', event => {
-            if (player.currentTime === 0 && result.seeking_time > 0) {
-              player.currentTime = result.seeking_time;
-              durationTime = result.seeking_time;
-              beforeCurrentTime = result.seeking_time;
-            }
-          });
+          // player.on('canplay', event => {
+          //   if (player.currentTime === 0 && result.seeking_time > 0) {
+          //     player.currentTime = result.seeking_time;
+          //     durationTime = result.seeking_time;
+          //     beforeCurrentTime = result.seeking_time;
+          //   }
+          // });
         },
         error => {
           console.log(error);
@@ -146,48 +146,48 @@ class SkuVideoPlayer extends React.PureComponent<IProps> {
     let _this = this;
 
     //timeupdate event
-    player.on('timeupdate', function(event) {
-      let instance = event.detail.plyr;
-      let seekTime: number = Number(instance.currentTime.toFixed());
-      const mySuniApiUrl = mySuniServerDomain + '/durations/video';
+    // player.on('timeupdate', function(event) {
+    //   let instance = event.detail.plyr;
+    //   let seekTime: number = Number(instance.currentTime.toFixed());
+    //   const mySuniApiUrl = mySuniServerDomain + '/durations/video';
 
-      if (seekTime > 0 && seekTime % 1 === 0) {
-        if (beforeCurrentTime !== seekTime) {
-          beforeCurrentTime = seekTime;
-          durationTime++;
-        }
-      }
+    //   if (seekTime > 0 && seekTime % 1 === 0) {
+    //     if (beforeCurrentTime !== seekTime) {
+    //       beforeCurrentTime = seekTime;
+    //       durationTime++;
+    //     }
+    //   }
 
-      if (seekTime > 0 && seekTime % progressChkTime === 0) {
-        //TODO send progress
-        var _data = {
-          cubeId: _this.props.cubeId,
-          deliveryId: _this.props.deliveryId,
-          userId: _this.props.userId,
-          seekTime: seekTime,
-          durationTime: durationTime,
-        };
+    //   if (seekTime > 0 && seekTime % progressChkTime === 0) {
+    //     //TODO send progress
+    //     var _data = {
+    //       cubeId: _this.props.cubeId,
+    //       deliveryId: _this.props.deliveryId,
+    //       userId: _this.props.userId,
+    //       seekTime: seekTime,
+    //       durationTime: durationTime,
+    //     };
 
-        fetch(mySuniApiUrl, {
-          method: 'post',
-          mode: 'cors',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(_data),
-        })
-          .then(res => res.json())
-          .then(
-            result => {
-              //console.log(result)
-            },
-            error => {
-              //console.log(error)
-            }
-          );
-      }
-    });
+    //     fetch(mySuniApiUrl, {
+    //       method: 'post',
+    //       mode: 'cors',
+    //       headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(_data),
+    //     })
+    //       .then(res => res.json())
+    //       .then(
+    //         result => {
+    //           //console.log(result)
+    //         },
+    //         error => {
+    //           //console.log(error)
+    //         }
+    //       );
+    //   }
+    // });
   }
 
   /**
@@ -197,7 +197,7 @@ class SkuVideoPlayer extends React.PureComponent<IProps> {
   public playerInit() {
     const _this = this;
     this.skuVideoPlayer.current?.load();
-    player = new Plyr('#skuvideoplayer');
+    // player = new Plyr('#skuvideoplayer');
 
     let accessTokenValue;
     if (window.location.href.indexOf('#') > 0) {
@@ -208,59 +208,59 @@ class SkuVideoPlayer extends React.PureComponent<IProps> {
         .split('=')[1];
     }
 
-    player.on('ready', function(event) {
-      var hslSource = null;
-      var sources = document.querySelectorAll('source'),
-        i;
+    // player.on('ready', function(event) {
+    //   var hslSource = null;
+    //   var sources = document.querySelectorAll('source'),
+    //     i;
 
-      for (i = 0; i < sources.length; ++i) {
-        if (sources[i].src.indexOf('.m3u8') > -1) {
-          hslSource = sources[i].src;
-        }
-      }
+    //   for (i = 0; i < sources.length; ++i) {
+    //     if (sources[i].src.indexOf('.m3u8') > -1) {
+    //       hslSource = sources[i].src;
+    //     }
+    //   }
 
-      if (hslSource !== null && Hls.isSupported()) {
-        var hlsConfig = {
-          debug: true,
-          xhrSetup: function(xhr: any, videoSrc: any) {
-            xhr.withCredentials = true; // do send cookie
-            xhr.setRequestHeader(
-              'Access-Control-Allow-Headers',
-              'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-            );
-            xhr.setRequestHeader(
-              'Access-Control-Allow-Methods',
-              'PUT, POST, PATCH, DELETE, GET'
-            );
-            xhr.setRequestHeader(
-              'Access-Control-Allow-Origin',
-              mySuniServerDomain
-            );
-            //xhr.setRequestHeader("Authorization", "Basic NWM3NDE1MjQtOGEyNy00NjU4LWE0YjQtYWMzZTAwNzc2NTFhOmNSa0RXY3cvb2xHZ080ek5yd0JTMyswb0ZPZktLazU5d3JMbWpGQlpveG89");
-          },
-        };
+    //   if (hslSource !== null && Hls.isSupported()) {
+    //     var hlsConfig = {
+    //       debug: true,
+    //       xhrSetup: function(xhr: any, videoSrc: any) {
+    //         xhr.withCredentials = true; // do send cookie
+    //         xhr.setRequestHeader(
+    //           'Access-Control-Allow-Headers',
+    //           'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    //         );
+    //         xhr.setRequestHeader(
+    //           'Access-Control-Allow-Methods',
+    //           'PUT, POST, PATCH, DELETE, GET'
+    //         );
+    //         xhr.setRequestHeader(
+    //           'Access-Control-Allow-Origin',
+    //           mySuniServerDomain
+    //         );
+    //         //xhr.setRequestHeader("Authorization", "Basic NWM3NDE1MjQtOGEyNy00NjU4LWE0YjQtYWMzZTAwNzc2NTFhOmNSa0RXY3cvb2xHZ080ek5yd0JTMyswb0ZPZktLazU5d3JMbWpGQlpveG89");
+    //       },
+    //     };
 
-        hls = new Hls(hlsConfig);
-        videoTag = document.getElementById(
-          'skuvideoplayer'
-        ) as HTMLMediaElement;
+    //     hls = new Hls(hlsConfig);
+    //     videoTag = document.getElementById(
+    //       'skuvideoplayer'
+    //     ) as HTMLMediaElement;
 
-        hls.loadSource(hslSource);
-        hls.attachMedia(videoTag);
-        hls.on(Hls.Events.MANIFEST_PARSED, function() {
-          console.log('MANIFEST_PARSED');
-        });
-      }
-    });
+    //     hls.loadSource(hslSource);
+    //     hls.attachMedia(videoTag);
+    //     hls.on(Hls.Events.MANIFEST_PARSED, function() {
+    //       console.log('MANIFEST_PARSED');
+    //     });
+    //   }
+    // });
 
     /**
      * 동영상 재생 종료
      */
-    player.on('ended', function(event) {
-      if (_this.props.hasNext) {
-        //TODO show next program infos
-      }
-    });
+    // player.on('ended', function(event) {
+    //   if (_this.props.hasNext) {
+    //     //TODO show next program infos
+    //   }
+    // });
   }
 
   public componentDidMount() {

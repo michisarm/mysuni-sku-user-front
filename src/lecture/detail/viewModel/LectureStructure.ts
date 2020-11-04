@@ -7,7 +7,11 @@ import LectureRouterParams from './LectureRouterParams';
 import { State } from './LectureState';
 import { LectureType } from './LectureType';
 
-export type LectureStructureItemType = 'REPORT' | 'EXAM' | 'SURVEY';
+export type LectureStructureItemType =
+  | 'REPORT'
+  | 'EXAM'
+  | 'SURVEY'
+  | 'DISCUSSION';
 
 interface Item {
   activated?: boolean;
@@ -27,6 +31,7 @@ export interface ItemMap {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  discussion?: LectureStructureDiscussionItem;
 }
 
 export interface LectureStructureTestItem extends Item {
@@ -44,6 +49,12 @@ export interface LectureStructureSurveyItem extends Item {
 }
 
 export interface LectureStructureReportItem extends Item {
+  name: string;
+  type: LectureStructureItemType;
+}
+
+export interface LectureStructureDiscussionItem extends Item {
+  id: string;
   name: string;
   type: LectureStructureItemType;
 }
@@ -71,6 +82,7 @@ export interface LectureStructureCourseItem extends Item {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  discussion?: LectureStructureDiscussionItem;
   lectureView?: LectureView;
 }
 
@@ -82,5 +94,6 @@ export interface LectureStructure {
   test?: LectureStructureTestItem;
   survey?: LectureStructureSurveyItem;
   report?: LectureStructureReportItem;
+  discussion?: LectureStructureDiscussionItem;
   type: LectureType;
 }

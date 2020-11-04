@@ -8,6 +8,7 @@ import LectureState from 'lecture/detail/viewModel/LectureState';
 /* eslint-disable consistent-return */
 
 import { useEffect, useRef, useState } from 'react';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 import { useLectureRouterParams } from '../useLectureRouterParams';
 import { getStateFromCube } from './utility/getStateFromCube';
 

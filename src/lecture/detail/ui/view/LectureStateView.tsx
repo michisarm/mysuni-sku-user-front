@@ -3,6 +3,7 @@ import LectureState from '../../viewModel/LectureState';
 
 interface LectureStateViewProps {
   lectureState: LectureState;
+  hookAction: () => void;
 }
 
 interface LectureStateViewInnerState {
@@ -33,6 +34,7 @@ function parseProps({
 
 const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateView({
   lectureState,
+  hookAction,
 }) {
   const {
     hideAction,
@@ -42,14 +44,13 @@ const LectureStateView: React.FC<LectureStateViewProps> = function LectureStateV
     action,
     stateText,
   } = lectureState;
-  const returnA = useCallback(() => 'a', []);
 
   return (
     <>
       {!hideAction && (
         <button
           className="ui button free bg p18"
-          onClick={canAction ? action : undefined}
+          onClick={canAction ? hookAction : undefined}
         >
           {actionText}
         </button>

@@ -1,4 +1,5 @@
 import { axiosApi } from '@nara.platform/accent';
+import RemoteClassroom from '../model/RemoteClassroom';
 import CubeIntro from '../model/CubeIntro';
 import Media from '../model/Media';
 import OfficeWeb from '../model/OfficeWeb';
@@ -9,6 +10,7 @@ import TaskChild from '../model/TaskChild';
 import TaskDetail from '../model/TaskDetail';
 import CommentCountRdo from '../model/CommentCountRdo';
 import TaskDetailBody from '../model/TaskDetailBody';
+import { ClassroomModel } from '../../../personalcube/classroom/model';
 
 const BASE_URL = '/api/personalCube';
 const FEEDBACK_URL = '/api/feedback';
@@ -141,4 +143,10 @@ export function findFileBox(depotIds: string) {
         `?depotIds=%255B%2522${depotIds}%2522%255D`
     )
     .then(response => (response && response.data) || null);
+}
+export function findClassrooms(cubeId: string) {
+  const url = `${BASE_URL}/classroomgroups/flow/classroomview/${cubeId}`;
+  return axiosApi
+    .get<ClassroomModel[]>(url)
+    .then(response => response && response.data);
 }

@@ -38,7 +38,7 @@ function parseCoursePlanComplex(
       id: coursePlanComplex.coursePlan.contentsId,
       name: coursePlanComplex.coursePlan.name,
       params,
-      routerParams: parseLectureParams(params),
+      routerParams: parseLectureParams(params, toPath(params)),
       path: toPath(params),
       serviceId: params.serviceId!,
     },
@@ -69,7 +69,7 @@ function parseCoursePlanComplex(
         coursePlanId,
         name,
         params: courseParams,
-        routerParams: parseLectureParams(courseParams),
+        routerParams: parseLectureParams(courseParams, toPath(courseParams)),
         path: toPath(courseParams),
         serviceId,
         lectureView,
@@ -90,7 +90,7 @@ function parseCoursePlanComplex(
         cubeType,
         learningTime,
         params: cubeParams,
-        routerParams: parseLectureParams(cubeParams),
+        routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
         path: toPath(cubeParams),
         serviceId,
       });
@@ -116,7 +116,7 @@ function parseCoursePlanComplex(
           cubeType,
           learningTime,
           params: cubeParams,
-          routerParams: parseLectureParams(cubeParams),
+          routerParams: parseLectureParams(cubeParams, toPath(cubeParams)),
           path: toPath(cubeParams),
         };
       });
@@ -243,6 +243,9 @@ export async function getCourseLectureStructure(
   if (itemMap.report !== undefined) {
     lectureStructure.report = itemMap.report;
   }
+  if (itemMap.discussion !== undefined) {
+    lectureStructure.discussion = itemMap.discussion;
+  }
 
   const getItemMapFromLectureArray: Promise<void>[] = [];
   lectureStructure.courses.forEach(course => {
@@ -264,6 +267,9 @@ export async function getCourseLectureStructure(
         }
         if (courseItemMap.report !== undefined) {
           course.report = courseItemMap.report;
+        }
+        if (courseItemMap.discussion !== undefined) {
+          course.discussion = courseItemMap.discussion;
         }
       }
     };

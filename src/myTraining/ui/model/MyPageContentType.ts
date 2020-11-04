@@ -1,8 +1,7 @@
-
 enum MyPageContentType {
-  CompletedList = 'CompletedList',
-  EarnedStampList = 'EarnedStampList',
-  ApprovalList = 'ApprovalList',
+  EarnedBadgeList = 'EarnedBadgeList',
+  EarnedStampList = 'EarnedStampList'
 }
 
 export default MyPageContentType;
+

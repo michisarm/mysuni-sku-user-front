@@ -11,6 +11,8 @@ import LecturePrecourse from '../../../viewModel/LectureOverview/LecturePrecours
 import LecturePrecourseView from './LecturePrecourseView';
 import LectureBadge from '../../../viewModel/LectureOverview/LectureBadge';
 import LectureBadgeView from './LectureBadgeView';
+import LectureComment from '../../../viewModel/LectureComment/LectureComment';
+import LectureCommentContainer from '../../logic/LectureCommentContainer';
 
 interface LectureCourseContentViewProps {
   lectureDescription?: LectureDescription;
@@ -19,6 +21,7 @@ interface LectureCourseContentViewProps {
   lectureInstructor?: LectureInstructor;
   lecturePrecourse?: LecturePrecourse;
   lectureBadge?: LectureBadge;
+  lectureComment?: LectureComment;
 }
 
 function hashLink(hash: string) {
@@ -35,6 +38,7 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   lectureInstructor,
   lecturePrecourse,
   lectureBadge,
+  lectureComment,
 }) {
   const [activatedTab, setActivatedTab] = useState<string>('overview');
 
@@ -53,6 +57,9 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
   const relatedHashClick = useCallback(() => {
     hashLink('lms-related-process');
     setActivatedTab('related');
+  }, []);
+  const commentHashClick = useCallback(() => {
+    setActivatedTab('comment');
   }, []);
 
   return (
@@ -86,27 +93,44 @@ const LectureCourseContentView: React.FC<LectureCourseContentViewProps> = functi
         >
           관련과정
         </a>
-        <a href="#lms-comment" className="lms-comment">
-          Comment<span className="count">+12</span>
+        <a
+          onClick={commentHashClick}
+          className={
+            activatedTab === 'comment' ? 'lms-comment lms-act' : 'lms-comment'
+          }
+        >
+          Comment
+          <span className="count">
+            {lectureComment !== undefined && lectureComment.commentsCount > 0
+              ? `+${lectureComment.commentsCount}`
+              : ''}
+          </span>
         </a>
       </div>
-      {lectureDescription && (
-        <LectureDescriptionView htmlContent={lectureDescription.description} />
-      )}
-      <div className="badge-detail">
-        {lectureSubcategory && (
-          <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
-        )}
-        {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
-      </div>
-      <div className="badge-detail" id="lms-instructor-Info">
-        <div className="ov-paragraph">
-          {lectureInstructor && (
-            <LectureInstructorView lectureInstructor={lectureInstructor} />
+      {activatedTab !== 'comment' && (
+        <>
+          {lectureDescription && (
+            <LectureDescriptionView
+              htmlContent={lectureDescription.description}
+            />
           )}
-        </div>
-      </div>
-      {lectureBadge && <LectureBadgeView lectureBadge={lectureBadge} />}
+          <div className="badge-detail">
+            {lectureSubcategory && (
+              <LectureSubcategoryView lectureSubcategory={lectureSubcategory} />
+            )}
+            {lectureTags && <LectureTagsView lectureTags={lectureTags} />}
+          </div>
+          <div className="badge-detail" id="lms-instructor-Info">
+            <div className="ov-paragraph">
+              {lectureInstructor && (
+                <LectureInstructorView lectureInstructor={lectureInstructor} />
+              )}
+            </div>
+          </div>
+          {lectureBadge && <LectureBadgeView lectureBadge={lectureBadge} />}
+        </>
+      )}
+      {activatedTab === 'comment' && <LectureCommentContainer />}
     </>
   );
 };

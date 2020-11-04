@@ -4,6 +4,8 @@ import { OffsetElementList } from 'shared/model';
 import MyTrainingRdoModel from '../../model/MyTrainingRdoModel';
 import MyTrainingModel from '../../model/MyTrainingModel';
 import MyTrainingTabModel from '../../model/MyTrainingTabModel';
+import MyTrainingFilterRdoModel from '../../model/MyTrainingFilterRdoModel';
+
 
 
 class MyTrainingApi {
@@ -52,9 +54,46 @@ class MyTrainingApi {
       .then(this.getOffsetElementList);
   }
 
+
+
   findAllTabMyTraining() {
     return axiosApi.get<MyTrainingTabModel>(this.baseUrl + '/tab/counts').then((response) => response.data);
   }
+
+  //////////////////////// 개편 ////////////////////////
+
+  findAllTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi
+      .post(`${this.baseUrl}/table/views`, myTrainingFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
+  findAllStampTableViews(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+    return axiosApi.post(`${this.baseUrl}/stamp/table/views`, myTrainingFilterRdo)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
+  findAllTabCount() {
+    return axiosApi.get<MyTrainingTabModel>(`${this.baseUrl}/tab/counts/v2`)
+      .then(response => response && response.data || null)
+      .catch(error => error && null);
+  }
+
+  updateBySelectedIds() {
+
+  }
+
+
+  /* 
+    findAllMyTrainingsV2WithStamp(myTrainingFilterRdo: MyTrainingFilterRdoModel) {
+      return axiosApi.post('http://localhost:8233/mytraining/mytrainings/stamps/v2', myTrainingFilterRdo)
+        .then(response => response && response.data || null)
+        .catch(error => error && null);
+    } 
+  */
+  //////////////////////// 개편 ////////////////////////
 }
 
 MyTrainingApi.instance = new MyTrainingApi();
