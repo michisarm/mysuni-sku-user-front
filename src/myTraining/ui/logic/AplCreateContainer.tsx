@@ -707,7 +707,8 @@ class AplCreateContainer extends React.Component<Props, States> {
                   <div className="bottom">
                     <span className="text1"><Icon className="info16" />
                       <span className="blind">information</span>
-                      파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
+                      DOC,PDF,EXL 파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.
+                      {/*파일 확장자가 exe를 제외한 모든 첨부파일을 등록하실 수 있습니다. / 1개 이상의 첨부파일을 등록하실 수 있습니다.*/}
                     </span>
                   </div>
                 </div>
