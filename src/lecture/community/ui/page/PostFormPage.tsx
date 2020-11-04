@@ -99,7 +99,6 @@ class PostFormPage extends React.Component<Props> {
     const { boardService, collegeService } = this.props;
     const { board } = boardService as BoardService;
     const { college } = collegeService as CollegeService;
-    console.log('board', board);
     return (
       <ContentLayout
         className="content bg-white"

@@ -76,7 +76,6 @@ export function useLectureTask(): [TaskValue] {
     if (subscriberId === undefined) {
       return;
     }
-
     return onLectureTaskOffset(next => {
       let contentId = '';
       let lectureId = '';
@@ -84,7 +83,6 @@ export function useLectureTask(): [TaskValue] {
         contentId = param.contentId;
         lectureId = param.lectureId;
       }
-
       if (getLectureTaskTab() === 'Overview') {
         return;
       }
@@ -115,35 +113,19 @@ export function useLectureTask(): [TaskValue] {
     }, subscriberId);
   }, [subscriberId]);
 
-  //TODO
   useEffect(() => {
     if (subscriberId === undefined) {
       return;
     }
     return onLectureTaskTab(next => {
-      console.log('next', next);
       if (next === 'Overview') {
         setLectureTaskViewType('Overview');
         return;
       }
 
-      // else if (next === 'Posts') {
-      //   console.log('반대다');
-      //   console.log('next', next);
-      //   setLectureTaskViewType(next);
-      //   return;
-      // }
-
       setLectureTaskItem();
-      // setLectureTaskTab(next);
       setLectureTaskOffset(0);
-      // let contentId = '';
-      // let lectureId = '';
-      // if (param) {
-      //   contentId = param.contentId;
-      //   lectureId = param.lectureId;
-      // }
-      // getCubeLectureTask(contentId, lectureId, 0, limit, next!);
+
     }, subscriberId);
   }, [subscriberId]);
 

@@ -99,7 +99,6 @@ function LectureTaskContainer() {
   }, []);
 
   const handelClickCreateTask = useCallback(() => {
-    console.log('create');
     setCreate(true);
     setLectureTaskViewType('create');
   }, []);
