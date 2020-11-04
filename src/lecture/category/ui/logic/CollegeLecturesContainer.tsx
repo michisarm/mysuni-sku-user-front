@@ -177,6 +177,9 @@ class CollegeLecturesContainer extends Component<Props, State> {
     // 20200728 category all 전체보기 선택 시 totalCount 메뉴에 있는 것으로 표시 by gon
     const category = JSON.parse(sessionStorage.getItem('category')!);
     let totalCount = 0;
+    if (category === null) {
+      return;
+    }
     category.map((data: any) => {
       if (data.collegeId === match.params.collegeId) {
         totalCount = data.totalCount;
@@ -241,34 +244,36 @@ class CollegeLecturesContainer extends Component<Props, State> {
           )
         );
     } else {
-      inMyLectureService!.addInMyLecture(
-        new InMyLectureCdoModel({
-          serviceId: lecture.serviceId,
-          serviceType: lecture.serviceType,
-          category: lecture.category,
-          name: lecture.name,
-          description: lecture.description,
-          cubeType: lecture.cubeType,
-          learningTime: lecture.learningTime,
-          stampCount: lecture.stampCount,
-          coursePlanId: lecture.coursePlanId,
+      inMyLectureService!
+        .addInMyLecture(
+          new InMyLectureCdoModel({
+            serviceId: lecture.serviceId,
+            serviceType: lecture.serviceType,
+            category: lecture.category,
+            name: lecture.name,
+            description: lecture.description,
+            cubeType: lecture.cubeType,
+            learningTime: lecture.learningTime,
+            stampCount: lecture.stampCount,
+            coursePlanId: lecture.coursePlanId,
 
-          requiredSubsidiaries: lecture.requiredSubsidiaries,
-          cubeId: lecture.cubeId,
-          courseSetJson: lecture.courseSetJson,
-          courseLectureUsids: lecture.courseLectureUsids,
-          lectureCardUsids: lecture.lectureCardUsids,
+            requiredSubsidiaries: lecture.requiredSubsidiaries,
+            cubeId: lecture.cubeId,
+            courseSetJson: lecture.courseSetJson,
+            courseLectureUsids: lecture.courseLectureUsids,
+            lectureCardUsids: lecture.lectureCardUsids,
 
-          reviewId: lecture.reviewId,
-          baseUrl: lecture.baseUrl,
-          servicePatronKeyString: lecture.patronKey.keyString,
-        })
-      ).then(() =>
-        inMyLectureService!.addInMyLectureInAllList(
-          lecture.serviceId,
-          lecture.serviceType
+            reviewId: lecture.reviewId,
+            baseUrl: lecture.baseUrl,
+            servicePatronKeyString: lecture.patronKey.keyString,
+          })
         )
-      );
+        .then(() =>
+          inMyLectureService!.addInMyLectureInAllList(
+            lecture.serviceId,
+            lecture.serviceType
+          )
+        );
     }
   }
 
